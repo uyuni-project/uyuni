@@ -67,7 +67,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         setRequestPathInfo("/systems/details/Overview");
 
-        s = ServerFactoryTest.createTestServer(user, true,
+        s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         request.addParameter("sid", s.getId().toString());
@@ -81,13 +81,13 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testSystemStatusWithErrata() throws Exception {
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
 
-        Org org = user.getOrg();
+        Org org = getTestUser().getOrg();
         Package p = PackageTest.createTestPackage(org);
 
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
         OrgFactory.save(org);
 
         int rows = ErrataCacheManager.insertNeededErrataCache(
@@ -141,7 +141,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testUnlockSystem() {
-        SystemManager.lockServer(user, s, "test reason");
+        SystemManager.lockServer(getTestUser(), s, "test reason");
         request.addParameter("lock", "0");
         actionPerform();
         verifyActionMessage("sdc.details.overview.unlocked.alert");
@@ -159,7 +159,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testLivePatchVersion() throws Exception {
         String kernelLiveVersion = "kgraft_patch_2_1_1";
-        MinionServer m = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer m = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         m.setKernelLiveVersion(kernelLiveVersion);
         m = TestUtils.saveAndFlush(m);
 

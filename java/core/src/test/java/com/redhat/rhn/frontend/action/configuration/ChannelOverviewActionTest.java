@@ -39,9 +39,9 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecuteNoFiles() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
         ConfigTestUtils.createConfigFile(cc);
 
         long ccid = cc.getId();
@@ -97,7 +97,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
 
         actionPerform();
 
-        return ConfigurationFactory.lookupConfigChannelByLabel(channelLabel, user.getOrg(),
+        return ConfigurationFactory.lookupConfigChannelByLabel(channelLabel, getTestUser().getOrg(),
                 ConfigChannelType.normal());
     }
 }

@@ -182,11 +182,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPackagesProfileUpdate() throws Exception {
         // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -245,7 +245,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testApplyPackageDelta() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         assertEquals(0, minion.getPackages().size());
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
@@ -286,7 +286,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testApplyPackageDeltaWithDuplicates() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/pkg_install.duplicates.json")),
@@ -305,7 +305,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testsPackageDeltaFromStateApply() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         assertEquals(0, minion.getPackages().size());
 
         Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
@@ -337,10 +337,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testPackagesProfileUpdateAllVersions() throws Exception {
         // set up minion, action and response: 6 packages installed
         // aaa_base, java, bash (x86_64 and i686), kernel-default (4.4.73-5.1 and 4.4.126-94.22.1)
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.allversions.json", action.getId()))
@@ -406,10 +406,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPackagesProfileUpdateMultiple() throws Exception {
         // set up minion, action and response: 3 packages installed
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
@@ -478,12 +478,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackagesProfileUpdateLivePatching() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         minion.setLastBoot(0L);
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -542,14 +542,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackagesProfileUpdateRhel7RES() throws Exception {
-        RhelUtilsTest.createResChannel(user, "7");
+        RhelUtilsTest.createResChannel(getTestUser(), "7");
         // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -611,11 +611,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPackagesProfileUpdateUbuntu() throws Exception {
         // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         minion.setMinionId("minion.ubuntu.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -670,11 +670,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPackagesProfileUpdateDebian() throws Exception {
         // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         minion.setMinionId("minion.debian.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -1018,7 +1018,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
@@ -1067,7 +1067,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
@@ -1081,11 +1081,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         ServerAction sa = ActionFactoryTest.createServerAction(server, action);
         action.addServerAction(sa);
 
@@ -1187,11 +1187,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private MinionServer testHardwareProfileUpdate(String jsonFile, Consumer<MinionServer> assertions)
             throws Exception {
         // Prepare test objects: minion server and action
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(server, action));
 
         // Setup an event message from file contents
@@ -1288,16 +1288,16 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testStateApplyActionTestMode() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("abcdefg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package testpackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package testpackage = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         testpackage.setPackageName(PackageNameTest.createTestPackageName("acct"));
 
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Collections.singletonList(minion.getId()),
                 new ArrayList<>(),
                 new Date());
@@ -1324,19 +1324,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         assertFalse(minion.getPackages().stream().anyMatch(p -> p.getName().equals("acct")),
                 "Package acct must not be installed");
-        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        List<Action> serversActions = ActionFactory.listActionsForServer(getTestUser(), minion);
         assertFalse(serversActions.stream().anyMatch(a -> a.getName().equals("Package List Refresh")),
                 "Package List Refresh must not be scheduled");
     }
 
     @Test
     public void testUpdateServerAction() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("abcdefg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Collections.singletonList(minion.getId()),
                 List.of(ApplyStatesEventMessage.CHANNELS),
                 new Date());
@@ -1383,10 +1383,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         } });
 
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("minionsles12sp1.test.local");
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
@@ -1447,15 +1447,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         String digest1 = "1111111111111111111111111111111111111111111111111111111111111111";
         String digest2 = "2222222222222222222222222222222222222222222222222222222222222222";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "matei-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
 
-        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
-        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", getTestUser());
+        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, getTestUser());
 
         TestUtils.flushSession();
         ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
@@ -1511,7 +1511,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void testContainerImageBuildMultipleVersions()  throws Exception {
         String digest = "1111111111111111111111111111111111111111111111111111111111111111";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
@@ -1519,8 +1519,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         String imageVersion1 = "latest";
         String imageVersion2 = "anotherversion";
 
-        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
-        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", getTestUser());
+        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, getTestUser());
 
         ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion1, profile,
                 // assert initial revision number
@@ -1570,14 +1570,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testContainerImageImport()  throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "mbologna-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
 
-        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", getTestUser());
 
         doTestContainerImageImport(server, imageName, imageVersion, store,
                 imgInfo -> {
@@ -1594,7 +1594,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private void doTestContainerImageInspect(String imageName, ImageInfo imgInfo, String digest,
                                              Consumer<ImageInfo> assertions) throws Exception {
         // schedule an inspect action
-        Long actionId = ImageInfoFactory.scheduleInspect(imgInfo, new Date(), user);
+        Long actionId = ImageInfoFactory.scheduleInspect(imgInfo, new Date(), getTestUser());
 
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
         inspectAction = TestUtils.reload(inspectAction);
@@ -1626,7 +1626,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.empty()));
         }});
         // schedule the build
-        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(),
+                getTestUser());
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
         buildAction = TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
@@ -1655,7 +1656,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private ImageInfo doTestContainerImageImport(MinionServer server, String imageName, String imageVersion,
                                                  ImageStore store, Consumer<ImageInfo> assertions) throws Exception {
         Long actionId = ImageInfoFactory.scheduleImport(
-                server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
+                server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), getTestUser());
         Action action = ActionFactory.lookupById(actionId);
         action = TestUtils.reload(action);
 
@@ -1686,7 +1687,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testKiwiImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
@@ -1698,42 +1699,42 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
+                            getTestUser().getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.initrd")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
+                            getTestUser().getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0-5.3.18-150300.59.54" +
                             "-default.kernel")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
+                            getTestUser().getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
-                            user.getOrg().getId())))));
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0.initrd",
-                            user.getOrg().getId())))));
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-5.3.18-150300.59.54-default.kernel",
-                            user.getOrg().getId())))));
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
-        ActivationKey key = ImageTestUtils.createActivationKey(user);
-        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+        ActivationKey key = ImageTestUtils.createActivationKey(getTestUser());
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, getTestUser());
 
         ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
@@ -1765,7 +1766,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testKiwiImageBuildWithBundle() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
@@ -1777,21 +1778,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
-                            user.getOrg().getId()))));
+                            getTestUser().getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-build129.tar.xz",
-                            user.getOrg().getId())))));
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
-        ActivationKey key = ImageTestUtils.createActivationKey(user);
-        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+        ActivationKey key = ImageTestUtils.createActivationKey(getTestUser());
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, getTestUser());
 
         ImageInfo image = doTestKiwiImageBuild(server, profile, "image.build.bundle.kiwi.json", (info) -> {
             // name and version is updated from the Kiwi build result
@@ -1813,7 +1814,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testKiwiImageInspect() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
@@ -1822,21 +1823,24 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/image", user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/image",
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel", user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/kernel",
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).removeFile(
-                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd", user.getOrg().getId())))));
+                    with(equal(Paths.get(String.format("/srv/www/os-images/%d/initrd",
+                            getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
-        ActivationKey key = ImageTestUtils.createActivationKey(user);
-        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+        ActivationKey key = ImageTestUtils.createActivationKey(getTestUser());
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, getTestUser());
 
         ImageInfo image = doTestKiwiImageInspect(server, profile, "image.inspect.kiwi.json", info -> {
             assertNotNull(info.getInspectAction().getId());
@@ -1877,16 +1881,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ImageInfoFactory.delete(image, saltServiceMock);
 
-        user = TestUtils.reload(user);
+        User reloadedTestUser = TestUtils.reload(getTestUser());
 
         String imageCategory = "Image" + image.getId();
-        assertFalse(user.getOrg().getPillars().stream().anyMatch(item -> (imageCategory.equals(item.getCategory()))));
+        assertFalse(reloadedTestUser.getOrg().getPillars().stream()
+                .anyMatch(item -> (imageCategory.equals(item.getCategory()))));
     }
 
     @Test
     public void testKiwiImageInspectCompressedImage() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
@@ -1898,21 +1903,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
                     with(equal("/var/lib/Kiwi/build06/images/POS_Image_JeOS6.x86_64-6.0.0-build06.tgz")),
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS6-6.0.0-0/",
-                            user.getOrg().getId()))));
+                            getTestUser().getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
             will(returnValue(Optional.empty()));
         }});
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
-        ActivationKey key = ImageTestUtils.createActivationKey(user);
-        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
+        ActivationKey key = ImageTestUtils.createActivationKey(getTestUser());
+        ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, getTestUser());
 
         doTestKiwiImageInspect(server, profile, "image.inspect.kiwi_compressed.json", (info) -> {
             assertNotNull(info.getInspectAction().getId());
             assertEquals(286, info.getPackages().size());
 
-            Pillar pillar = user.getOrg().getPillars().stream()
+            Pillar pillar = getTestUser().getOrg().getPillars().stream()
                 .filter(item -> ("Image" + info.getId()).equals(item.getCategory()))
                 .findFirst()
                 .get();
@@ -1943,7 +1948,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                                            Consumer<ImageInfo> assertions)
             throws Exception {
         // schedule the build
-        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), user);
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), getTestUser());
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
         buildAction = TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
@@ -1974,7 +1979,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             throws Exception {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), null, profile,
-                new Date(), user);
+                new Date(), getTestUser());
         ImageBuildAction buildAction =
                 (ImageBuildAction) ActionFactory.lookupById(actionId);
         buildAction = TestUtils.reload(buildAction);
@@ -1989,7 +1994,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageTestUtils.createImageFile(imgInfoBuild.get(), "initrd", "initrd");
         ImageTestUtils.createImageFile(imgInfoBuild.get(), "image", "image");
 
-        actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), user);
+        actionId = ImageInfoFactory.scheduleInspect(imgInfoBuild.get(), new Date(), getTestUser());
 
         // schedule an inspect action
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
@@ -2056,12 +2061,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         };
         saltServerActionService.setSaltApi(saltService);
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("dev-minsles12sp2.test.local");
 
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch1.setParentChannel(base);
         ch2.setParentChannel(base);
 
@@ -2070,7 +2075,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         channels.add(ch1);
         channels.add(ch2);
 
-        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(getTestUser(),
                 Collections.singleton(minion.getId()),
                 baseChannel,
                 channels,
@@ -2120,12 +2125,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(any(SubscribeChannelsAction.class)));
         } });
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("dev-minsles12sp2.test.local");
 
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch1.setParentChannel(base);
         ch2.setParentChannel(base);
 
@@ -2134,7 +2139,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         channels.add(ch1);
         channels.add(ch2);
 
-        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(getTestUser(),
                 Collections.singleton(minion.getId()),
                 baseChannel,
                 channels,
@@ -2168,10 +2173,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testFailDependentServerActions() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        Action applyStateAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
-        Action rebootAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        Action runScriptAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Action applyStateAction = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_APPLY_STATES);
+        Action rebootAction = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
+        Action runScriptAction = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         //Add dependency
         rebootAction.setPrerequisite(applyStateAction);
         runScriptAction.setPrerequisite(rebootAction);
@@ -2218,12 +2223,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         Date earliestAction = new Date();
         ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Collections.singletonList(minion.getId()),
                 new ArrayList<>(),
                 earliestAction);
@@ -2231,7 +2236,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
                 "root", "root", 10L, "#!/bin/csh\necho hello");
         ScriptRunAction runScript = ActionManager.scheduleScriptRun(
-                user, Collections.singletonList(minion.getId()), "Run script test", sad, earliestAction);
+                getTestUser(), Collections.singletonList(minion.getId()), "Run script test", sad, earliestAction);
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
         applyHighstate.addServerAction(saHighstate);
@@ -2287,10 +2292,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             }
         });
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user,
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(getTestUser(),
                 Collections.singletonList(minion.getId()), new ArrayList<>(), new Date());
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
@@ -2307,7 +2312,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
-        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        List<Action> serversActions = ActionFactory.listActionsForServer(getTestUser(), minion);
         //Verify that there are 2 actions scheduled, one apply state that we scheduled above and
         //2nd was because full package refresh was needed.
         assertEquals(2, serversActions.size(), "2 actions have been scheduled for server 1");
@@ -2323,10 +2328,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             }
         });
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(user,
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(getTestUser(),
                 Collections.singletonList(minion.getId()), new ArrayList<>(), new Date());
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
@@ -2343,14 +2348,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
-        List<Action> serversActions = ActionFactory.listActionsForServer(user, minion);
+        List<Action> serversActions = ActionFactory.listActionsForServer(getTestUser(), minion);
         //Verify that there is only one action scheduled, the apply state one that we scheduled above
         assertEquals(1, serversActions.size(), "2 actions have been scheduled for server 1");
     }
 
     @Test
     public void testMinionStartupResponse() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         String runningKernel = minion.getRunningKernel();
         assertNull(minion.getKernelLiveVersion());
         Long lastBoot = minion.getLastBoot();
@@ -2377,9 +2382,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JsonObject dummyObj = getJsonElement("hardware.profileupdate.primary_ips_empty_ssh.x86.json");
         JsonElement dummyJsonResult = dummyObj.get("suma-ref31-min-centos7.mgr.suse.de");
 
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        Action actionDiff = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DIFF);
+        Action actionDiff = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_CONFIGFILES_DIFF);
         ServerAction saDiff = ActionFactoryTest.createServerAction(server, actionDiff);
         actionDiff.addServerAction(saDiff);
 
@@ -2390,7 +2395,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSles16VerifyJobReturnIsProcessedWithoutError() throws Exception {
         // Setup: Create minion and migration scenario
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         ServerFactory.save(minion);
         ServerAction migrationServerAction = setupSles16MigrationScenario(minion);
         ApplyStatesAction verificationAction = createSles16VerificationAction(minion);
@@ -2438,7 +2443,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SUSEProduct sles15 = createSlesProduct("15.7", 1000000L, "SLES 15 SP7");
         SUSEProduct sles16 = createSlesProduct("16.0", 2000000L, "SLES 16.0");
         // Create DistUpgradeAction
-        DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(user,
+        DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(getTestUser(),
                 ActionFactory.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
@@ -2457,7 +2462,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * Creates an ApplyStatesAction for the sles16_verify state.
      */
     private ApplyStatesAction createSles16VerificationAction(MinionServer minion) throws Exception {
-        ApplyStatesAction applyStatesAction = (ApplyStatesAction) ActionFactoryTest.createAction(user,
+        ApplyStatesAction applyStatesAction = (ApplyStatesAction) ActionFactoryTest.createAction(getTestUser(),
                 ActionFactory.TYPE_APPLY_STATES);
         ApplyStatesActionDetails asDetails = new ApplyStatesActionDetails();
         asDetails.setMods(List.of("distupgrade.sles16_verify"));

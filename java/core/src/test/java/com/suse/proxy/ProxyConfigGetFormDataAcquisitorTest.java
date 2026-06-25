@@ -54,13 +54,13 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
     }
 
     @Test
     public void testWhenNoProxyConfigAndNoProxies() {
         final String expectedElectableParent = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(getTestUser(),
                 testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
@@ -85,15 +85,15 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testWhenNoProxyConfigAndMultipleProxies() {
-        Server proxyA = ServerFactoryTest.createTestServer(user, true,
+        Server proxyA = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
 
-        Server proxyB = ServerFactoryTest.createTestServer(user, true,
+        Server proxyB = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
 
-        ServerFactoryTest.createTestServer(user, true,
+        ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_NORMAL);
 
@@ -103,7 +103,7 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
                 proxyB.getName(),
         };
 
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(getTestUser(),
                 testMinionServer, new ProxyConfig(), GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //

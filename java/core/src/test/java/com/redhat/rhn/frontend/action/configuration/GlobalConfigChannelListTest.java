@@ -28,11 +28,11 @@ public class GlobalConfigChannelListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Make a config channel so that it will appear in the list.
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigTestUtils.giveUserChanAccess(user, channel);
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        ConfigTestUtils.giveUserChanAccess(getTestUser(), channel);
 
         setRequestPathInfo("/configuration/GlobalConfigChannelList");
         actionPerform();

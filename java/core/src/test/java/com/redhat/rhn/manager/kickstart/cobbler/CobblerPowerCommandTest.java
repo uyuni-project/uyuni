@@ -41,16 +41,16 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 
         for (CobblerPowerCommand.Operation operation : CobblerPowerCommand.Operation.values()) {
-            Server server = ServerTestUtils.createTestSystem(user);
+            Server server = ServerTestUtils.createTestSystem(getTestUser());
 
             // test powering on without configuring first
-            ValidatorError error = new CobblerPowerCommand(user, server, operation).store();
+            ValidatorError error = new CobblerPowerCommand(getTestUser(), server, operation).store();
             assertEquals(error.getKey(), "cobbler.powermanagement.not_configured");
 
             // test creating a new cobbler system profile first
-            assertNull(new CobblerPowerSettingsUpdateCommand(user, server, "ipmi",
+            assertNull(new CobblerPowerSettingsUpdateCommand(getTestUser(), server, "ipmi",
                 "192.168.0.1", "user", "password", null).store());
-            assertNull(new CobblerPowerCommand(user, server, operation).store());
+            assertNull(new CobblerPowerCommand(getTestUser(), server, operation).store());
 
             String cobblerName = CobblerSystemCreateCommand
                 .getCobblerSystemRecordName(server.getName(), server.getOrgId());

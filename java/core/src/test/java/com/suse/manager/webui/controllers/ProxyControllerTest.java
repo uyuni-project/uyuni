@@ -58,7 +58,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
 
         context().checking(new Expectations() {{
             oneOf(systemManager).createProxyContainerConfig(
-                    with(equal(user)), with(equal("pxy.acme.lab")), with(equal(8022)), with(equal("srv.acme.lab")),
+                    with(equal(getTestUser())), with(equal("pxy.acme.lab")), with(equal(8022)),
+                    with(equal("srv.acme.lab")),
                     with(equal(2048L)), with(equal("coyote@acme.lab")), with(equal("Root CA")),
                     with(equal(List.of("CA1", "CA2"))), with(equal(new SSLCertPair("CERT", "KEY"))),
                     with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)),
@@ -71,7 +72,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         String content = FileUtils.readStringFromFile(path);
         Request request = SparkTestUtils.createMockRequestWithBody("/manager/api/proxy/container-config",
                 Collections.emptyMap(), content);
-        assertEquals("\"pxy-config.tar.gz\"", proxyController.generateContainerConfig(request, response, user));
+        assertEquals("\"pxy-config.tar.gz\"",
+                proxyController.generateContainerConfig(request, response, getTestUser()));
         assertEquals(data, request.session().attribute("pxy-config.tar.gz"));
     }
 
@@ -81,11 +83,12 @@ public class ProxyControllerTest extends BaseControllerTestCase {
 
         context().checking(new Expectations() {{
             oneOf(systemManager).createProxyContainerConfig(
-                    with(equal(user)), with(equal("pxy.acme.lab")), with(equal(22)),
+                    with(equal(getTestUser())), with(equal("pxy.acme.lab")), with(equal(22)),
                     with(equal("srv.acme.lab")), with(equal(2048L)), with(equal("coyote@acme.lab")),
                     with(aNull(String.class)), with(aNull(List.class)), with(aNull(SSLCertPair.class)),
                     with(equal(new SSLCertPair("CA CERT", "CA KEY"))), with(equal("secret")),
-                    with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"), "DE", "Bavaria", "Nurnberg",
+                    with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"),
+                            "DE", "Bavaria", "Nurnberg",
                             "SUSE", "SUSE Unit", "roadrunner@acme.lab"))),
                     with(any(SSLCertManager.class)));
             will(returnValue(data));
@@ -96,7 +99,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
         String content = FileUtils.readStringFromFile(path);
         Request request = SparkTestUtils.createMockRequestWithBody("/manager/api/proxy/container-config",
                 Collections.emptyMap(), content);
-        assertEquals("\"pxy-config.tar.gz\"", proxyController.generateContainerConfig(request, response, user));
+        assertEquals("\"pxy-config.tar.gz\"",
+                proxyController.generateContainerConfig(request, response, getTestUser()));
         assertEquals(data, request.session().attribute("pxy-config.tar.gz"));
     }
 }

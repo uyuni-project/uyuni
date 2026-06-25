@@ -45,8 +45,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
     @Test
     public void testNotificationQueue() throws Exception {
-        Channel c = ChannelFactoryTest.createBaseChannel(user);
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Channel c = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         e.addChannel(c);
         ErrataFactory.save(e);
         Long id = e.getId(); //get id for later
@@ -57,7 +57,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         ErrataFactory.save(e);
         TestUtils.flushAndEvict(e);
 
-        Errata e2 = ErrataManager.lookupErrata(id, user); //lookup the errata
+        Errata e2 = ErrataManager.lookupErrata(id, getTestUser()); //lookup the errata
         assertEquals(1, e2.getNotificationQueue().size()); //should be only 1
     }
 
@@ -68,7 +68,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testBugs() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
 
         Bug bug1 = new Bug();
         bug1.setId(1001L);
@@ -87,7 +87,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         //Evict so we know we're going to the db for the next one
         TestUtils.flushAndEvict(errata);
-        Errata errata2 = ErrataManager.lookupErrata(id, user);
+        Errata errata2 = ErrataManager.lookupErrata(id, getTestUser());
 
         assertEquals(id, errata2.getId());
         assertEquals(errata2.getBugs().size(), 2);
@@ -102,7 +102,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testKeywords() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata.addKeyword("yankee");
         errata.addKeyword("hotel");
         errata.addKeyword("foxtrot");
@@ -118,8 +118,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPackages() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         errata.addPackage(pkg);
 
         assertEquals(2, errata.getPackages().size());
@@ -129,10 +129,10 @@ public class ErrataTest extends BaseTestCaseWithUser {
     @Test
     public void testAddChannelsToErrata() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(
-                user.getOrg().getId());
+                getTestUser().getOrg().getId());
         assertFalse(e.getFiles().isEmpty());
         assertFalse(e.getPackages().isEmpty());
-        Channel c = ChannelTestUtils.createTestChannel(user);
+        Channel c = ChannelTestUtils.createTestChannel(getTestUser());
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
         c = TestUtils.reload(c);
 
@@ -177,7 +177,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testBeanMethodsPublished() throws Exception {
-        Errata err = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata err = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         runBeanMethodsTest(err, 1);
     }
 
@@ -277,7 +277,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         err.setUpdateDate(now);
         assertEquals(err.getUpdateDate(), now);
 
-        Org org1 = user.getOrg();
+        Org org1 = getTestUser().getOrg();
 
         err.setOrg(org1);
         assertEquals(err.getOrg(), org1);
@@ -285,7 +285,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertNull(err.getOrg());
 
         //createTestChannel calls flush, so previous errata fields with non-null constraint should not be left null
-        Channel c1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel c1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         err.addChannel(c1);
         assertEquals(1, err.getChannels().size());
         err.setChannels(null);

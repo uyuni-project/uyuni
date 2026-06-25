@@ -31,11 +31,11 @@ public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTes
 
     @Test
     public void testKickstartPackageName() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ProvisionVirtualInstanceCommand cmd = new
-            ProvisionVirtualInstanceCommand(server.getId(), this.ksdata.getId(), user,
+            ProvisionVirtualInstanceCommand(server.getId(), this.ksdata.getId(), getTestUser(),
                     new Date(), "localhost");
         assertContains(cmd.getKickstartPackageNames(), "salt");
     }

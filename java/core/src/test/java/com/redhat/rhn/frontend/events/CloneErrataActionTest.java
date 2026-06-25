@@ -51,7 +51,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        admin = UserTestUtils.createUser("admin", user.getOrg().getId());
+        admin = UserTestUtils.createUser("admin", getTestUser().getOrg().getId());
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
         admin = TestUtils.saveAndFlush(admin);
     }

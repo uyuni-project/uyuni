@@ -34,7 +34,7 @@ public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
 
     @Test
     public void testVirtTypes() {
-        KickstartWizardHelper helper = new KickstartWizardHelper(user);
+        KickstartWizardHelper helper = new KickstartWizardHelper(getTestUser());
         Config.get().setString(ConfigDefaults.PRODUCT_NAME, ConfigDefaults.SPACEWALK.get(0));
         // applies to SUSE Manager too
         List types = helper.getVirtualizationTypes();

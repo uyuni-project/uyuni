@@ -60,13 +60,13 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDelete() {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
-        ActivationKey key = manager.createNewActivationKey(user, "Test");
-        ActivationKey temp = manager.lookupByKey(key.getKey(), user);
+        getTestUser().addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        ActivationKey key = manager.createNewActivationKey(getTestUser(), "Test");
+        ActivationKey temp = manager.lookupByKey(key.getKey(), getTestUser());
         assertNotNull(temp);
-        manager.remove(temp, user);
+        manager.remove(temp, getTestUser());
         try {
-            manager.lookupByKey(key.getKey(), user);
+            manager.lookupByKey(key.getKey(), getTestUser());
             String msg = "NUll lookup failed, because this object should exist!";
             fail(msg);
         }
@@ -76,17 +76,17 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDeployConfig() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.ACTIVATION_KEY_ADMIN);
 
         //need a tools channel for config deploy
-        Channel base = ChannelTestUtils.createBaseChannel(user);
-        ChannelTestUtils.setupBaseChannelForVirtualization(user, base);
+        Channel base = ChannelTestUtils.createBaseChannel(getTestUser());
+        ChannelTestUtils.setupBaseChannelForVirtualization(getTestUser(), base);
 
         ActivationKey key = createActivationKey();
         //Create a config channel
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        proc.add(key.getConfigChannelsFor(user), cc);
+        proc.add(key.getConfigChannelsFor(getTestUser()), cc);
         key.setDeployConfigs(true);
         ActivationKeyFactory.save(key);
         assertTrue(key.getDeployConfigs());
@@ -94,29 +94,29 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testConfigPermissions() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = createActivationKey();
 
         //need a tools channel for config deploy
-        Channel base = ChannelTestUtils.createBaseChannel(user);
-        ChannelTestUtils.setupBaseChannelForVirtualization(user, base);
+        Channel base = ChannelTestUtils.createBaseChannel(getTestUser());
+        ChannelTestUtils.setupBaseChannelForVirtualization(getTestUser(), base);
 
         key.setDeployConfigs(true);
         //Create a config channel
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        proc.add(key.getConfigChannelsFor(user), cc);
+        proc.add(key.getConfigChannelsFor(getTestUser()), cc);
         ActivationKeyFactory.save(key);
         assertTrue(key.getDeployConfigs());
         assertFalse(key.getChannels().isEmpty());
-        assertTrue(key.getConfigChannelsFor(user).contains(cc));
+        assertTrue(key.getConfigChannelsFor(getTestUser()).contains(cc));
     }
 
     @Test
     public void testLookup() {
         //first lets just check on permissions...
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
-        final ActivationKey key = manager.createNewActivationKey(user, "Test");
+        getTestUser().addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        final ActivationKey key = manager.createNewActivationKey(getTestUser(), "Test");
         ActivationKey temp;
         //we make newuser
         // unfortunately satellite is NOT multiorg aware...
@@ -135,16 +135,16 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
             // great!.. Exception for permission failure always welcome
         }
         try {
-            manager.lookupByKey(key.getKey() + "FOFOFOFOFOFOF", user);
+            manager.lookupByKey(key.getKey() + "FOFOFOFOFOFOF", getTestUser());
             String msg = "NUll lookup failed, because this object should NOT exist!";
             fail(msg);
         }
         catch (Exception e) {
          // great!.. Exception for null lookpu is controvoersial but convenient..
         }
-        temp = manager.lookupByKey(key.getKey(), user);
+        temp = manager.lookupByKey(key.getKey(), getTestUser());
         assertNotNull(temp);
-        assertEquals(user.getOrg(), temp.getOrg());
+        assertEquals(getTestUser().getOrg(), temp.getOrg());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         ActivationKey key;
         //test permissions
         try {
-            manager.createNewActivationKey(user,  "Test");
+            manager.createNewActivationKey(getTestUser(),  "Test");
             String msg = "Permission check failed :(.." +
                             "Activation key should not have gotten created" +
                             " because the user does not have activation key admin role";
@@ -166,9 +166,9 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         try {
             String keyName = "I_RULE_THE_WORLD";
             Long usageLimit = 1200L;
-            Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+            Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
             String note = "Test";
-            manager.createNewActivationKey(user,
+            manager.createNewActivationKey(getTestUser(),
                                                     keyName, note, usageLimit,
                                                     baseChannel, true);
 
@@ -185,27 +185,27 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreate() throws Exception {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
         String note = "Test";
-        final ActivationKey key = manager.createNewActivationKey(user, note);
-        assertEquals(user.getOrg(), key.getOrg());
+        final ActivationKey key = manager.createNewActivationKey(getTestUser(), note);
+        assertEquals(getTestUser().getOrg(), key.getOrg());
         assertEquals(note, key.getNote());
         assertNotNull(key.getKey());
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        final ActivationKey key1 = manager.createNewReActivationKey(user, server, note);
+        final ActivationKey key1 = manager.createNewReActivationKey(getTestUser(), server, note);
         assertEquals(server, key1.getServer());
 
-        ActivationKey temp = manager.lookupByKey(key.getKey(), user);
+        ActivationKey temp = manager.lookupByKey(key.getKey(), getTestUser());
         assertNotNull(temp);
-        assertEquals(user.getOrg(), temp.getOrg());
+        assertEquals(getTestUser().getOrg(), temp.getOrg());
         assertEquals(note, temp.getNote());
 
         String keyName = "I_RULE_THE_WORLD";
         Long usageLimit = 1200L;
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        final ActivationKey key2 = manager.createNewReActivationKey(user, server,
+        final ActivationKey key2 = manager.createNewReActivationKey(getTestUser(), server,
                                                 keyName, note, usageLimit,
                                                 baseChannel, true, null);
 
@@ -220,7 +220,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
         //since universal default == true we have to
         // check if the user org has it..
-        Token token = user.getOrg().getToken();
+        Token token = getTestUser().getOrg().getToken();
         assertEquals(channels, token.getChannels());
         assertEquals(usageLimit, token.getUsageLimit());
     }
@@ -228,7 +228,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testHasAppStreamModuleEnabled() throws Exception {
         ActivationKey key = createActivationKey();
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         key.getAppStreams().add(
             new TokenChannelAppStream(key.getToken(), channel, "ruby:3.3")
         );
@@ -241,7 +241,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testSaveChannelAppStreams() throws Exception {
         ActivationKey key = createActivationKey();
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
         List<String> toInclude = List.of("php:8.1", "nginx:1.24");
         List<String> toRemove = List.of();
@@ -265,7 +265,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testRemoveAppStreams() throws Exception {
         ActivationKey key = createActivationKey();
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
         key.getAppStreams().add(new TokenChannelAppStream(key.getToken(), channel, "nodejs:18"));
         key.getAppStreams().add(new TokenChannelAppStream(key.getToken(), channel, "mariadb:10.11"));
@@ -281,17 +281,17 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     public ActivationKey createActivationKey() {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
-        return  manager.createNewActivationKey(user, TestUtils.randomString());
+        getTestUser().addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        return  manager.createNewActivationKey(getTestUser(), TestUtils.randomString());
     }
 
     @Test
     public void testFindAll() {
-        ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
+        ActivationKeyFactory.createNewKey(getTestUser(), null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
         List<ActivationKey> activationKeys =
-                ActivationKeyManager.getInstance().findAll(user);
+                ActivationKeyManager.getInstance().findAll(getTestUser());
         assertEquals(1, activationKeys.size());
     }
 

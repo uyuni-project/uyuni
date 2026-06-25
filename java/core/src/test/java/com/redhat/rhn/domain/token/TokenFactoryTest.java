@@ -28,7 +28,7 @@ public class TokenFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test TokenFactory.lookup
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Org arg1 = user.getOrg();
+        Org arg1 = getTestUser().getOrg();
         try {
             TokenFactory.lookup(0L, arg1);
         }

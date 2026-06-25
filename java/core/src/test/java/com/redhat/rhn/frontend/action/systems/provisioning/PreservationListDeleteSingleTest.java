@@ -39,7 +39,7 @@ public class PreservationListDeleteSingleTest extends RhnMockStrutsTestCase {
     public void testForwardToDelete() {
         setRequestPathInfo(
                 "/systems/provisioning/preservation/PreservationListDeleteSingle");
-        FileList list = FileListTest.createTestFileList(user.getOrg());
+        FileList list = FileListTest.createTestFileList(getTestUser().getOrg());
         CommonFactory.saveFileList(list);
         TestUtils.flushAndEvict(list);
         addRequestParameter(RequestContext.FILE_LIST_ID, list.getId().toString());

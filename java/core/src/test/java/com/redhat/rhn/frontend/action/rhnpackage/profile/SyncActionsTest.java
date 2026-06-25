@@ -46,14 +46,14 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
     @Test
     public void testSyncSystemsSubmit() throws Exception {
 
-        UserTestUtils.addManagement(user.getOrg());
+        UserTestUtils.addManagement(getTestUser().getOrg());
 
-        Channel testChannel = ChannelFactoryTest.createTestChannel(user);
-        Channel testChannel2 = ChannelFactoryTest.createTestChannel(user);
+        Channel testChannel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel testChannel2 = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        Package p1 = PackageTest.createTestPackage(user.getOrg());
-        Package p2 = PackageTest.createTestPackage(user.getOrg());
-        Package p3 = PackageTest.createTestPackage(user.getOrg());
+        Package p1 = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package p2 = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package p3 = PackageTest.createTestPackage(getTestUser().getOrg());
 
         ChannelTestUtility.testAddPackage(testChannel, p1);
         ChannelTestUtility.testAddPackage(testChannel, p2);
@@ -61,9 +61,9 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         ChannelFactory.save(testChannel);
         ChannelFactory.save(testChannel2);
 
-        Server s1 = ServerFactoryTest.createTestServer(user, true,
+        Server s1 = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        Server s2 = ServerFactoryTest.createTestServer(user, true,
+        Server s2 = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         s1.addChannel(testChannel);

@@ -31,9 +31,9 @@ public class FileDetailsActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-            ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+            ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
 
             setRequestPathInfo("/configuration/file/FileDetails");
             addRequestParameter("cfid", revision.getConfigFile().getId().toString());

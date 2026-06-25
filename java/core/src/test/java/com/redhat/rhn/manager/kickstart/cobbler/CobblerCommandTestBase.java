@@ -60,10 +60,10 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUpCobblerCommandTestBase() throws Exception {
         // Make the default user admin
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
 
-        this.ksdata = KickstartDataTest.createKickstartWithDefaultKey(this.user.getOrg());
+        this.ksdata = KickstartDataTest.createKickstartWithDefaultKey(this.getTestUser().getOrg());
         this.ksdata.getTree().setBasePath("/tmp/opt/repo/f9-x86_64/");
 
         if (connectToCobbler) {
@@ -73,7 +73,7 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
         }
 
         KickstartableTreeTest.createKickstartTreeItems(this.ksdata.getTree());
-        CobblerDistroCreateCommand dcreate = new CobblerDistroCreateCommand(ksdata.getTree(), user);
+        CobblerDistroCreateCommand dcreate = new CobblerDistroCreateCommand(ksdata.getTree(), getTestUser());
         dcreate.store();
     }
 

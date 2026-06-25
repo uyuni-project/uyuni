@@ -63,14 +63,14 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        server = ServerFactoryTest.createTestServer(user, true);
+        server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        List<Package> generatedPackages = PackageTestUtils.createSubsequentPackages(user.getOrg());
+        List<Package> generatedPackages = PackageTestUtils.createSubsequentPackages(getTestUser().getOrg());
         oldPkg = generatedPackages.get(0);
         newerPkg = generatedPackages.get(1);
         newestPkg = generatedPackages.get(2);
 
-        channel = ChannelTestUtils.createBaseChannel(user);
+        channel = ChannelTestUtils.createBaseChannel(getTestUser());
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
     }
 
@@ -98,7 +98,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
@@ -106,7 +106,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // install the package & subcribe the system to the original cnl (with retracted errata)
         PackageTestUtils.installPackageOnServer(oldPkg, server);
-        SystemManager.subscribeServerToChannel(user, server, channel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
 
         // refresh the newest package cache
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
@@ -120,7 +120,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // now let's subscribe the system to the cloned channel, where the patch is not retracted
         SystemManager.unsubscribeServerFromChannel(server, channel);
-        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, clonedChannel);
         pkgs = PackageManager.systemPackageList(server.getId(), null);
         pkgs.elaborate();
         pkg = assertSingleAndGet(pkgs);
@@ -140,7 +140,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
@@ -148,7 +148,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // subscribe the system to the channel with the retracted patch
         // the newest installable package should be the "newerPkg", since the "newestPkg" is retracted
-        SystemManager.subscribeServerToChannel(user, server, channel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
 
         // refresh the newest package cache
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
@@ -160,7 +160,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // now subscribe to the clone, where the patch is not retracted
         // the newest package should be "newestPkg" now
         SystemManager.unsubscribeServerFromChannel(server, channel);
-        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, clonedChannel);
         pkg = assertSingleAndGet(PackageManager.systemAvailablePackages(server.getId(), null));
         assertEquals(newestPkg.getId(), pkg.getPackageId());
     }
@@ -177,7 +177,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
@@ -215,7 +215,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
@@ -253,29 +253,29 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
         vendorPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
 
         PackageTestUtils.installPackageOnServer(oldPkg, server);
-        SystemManager.subscribeServerToChannel(user, server, channel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
 
         // refresh the newest package cache
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
         ChannelFactory.refreshNewestPackageCache(clonedChannel, "java::test");
 
         // list the possible package updates when subscribed to the original
-        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(getTestUser(), newerPkg.getId()));
         // newest is retracted
-        assertTrue(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()).isEmpty());
+        assertTrue(SystemManager.listPotentialSystemsForPackage(getTestUser(), newestPkg.getId()).isEmpty());
 
         // list the possible package updates when subscribed to the clone
         SystemManager.unsubscribeServerFromChannel(server, channel);
-        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
-        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newerPkg.getId()));
-        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(user, newestPkg.getId()));
+        SystemManager.subscribeServerToChannel(getTestUser(), server, clonedChannel);
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(getTestUser(), newerPkg.getId()));
+        assertSingleAndGet(SystemManager.listPotentialSystemsForPackage(getTestUser(), newestPkg.getId()));
     }
 
     private <T> T assertSingleAndGet(Collection<T> items) {

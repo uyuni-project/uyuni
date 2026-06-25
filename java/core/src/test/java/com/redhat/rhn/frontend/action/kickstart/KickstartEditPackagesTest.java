@@ -23,14 +23,14 @@ public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testDisplay() throws Exception {
-        KickstartData k = KickstartTestHelper.createTestKickStart(user);
+        KickstartData k = KickstartTestHelper.createTestKickStart(getTestUser());
         setupForDisplay(k);
         actionPerform();
     }
 
     @Test
     public void testEditWithAdd() throws Exception {
-        KickstartData k = KickstartTestHelper.createTestKickStart(user);
+        KickstartData k = KickstartTestHelper.createTestKickStart(getTestUser());
         setupForEdit(k);
         addRequestParameter("packageList", "@ Base\ntomcat-testing\n");
         actionPerform();
@@ -38,7 +38,7 @@ public class KickstartEditPackagesTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEditWithDelete() throws Exception {
-        KickstartData k = KickstartTestHelper.createTestKickStart(user);
+        KickstartData k = KickstartTestHelper.createTestKickStart(getTestUser());
         setupForEdit(k);
         addRequestParameter("packageList", "");
         actionPerform();

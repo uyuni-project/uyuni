@@ -37,7 +37,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testFileInInitSls() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
         ConfigChannel fromDb = ConfigurationFactory.lookupConfigChannelById(channel.getId());
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
@@ -66,7 +66,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDirectoryInInitSls() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addDirToChannel(channel);
         ConfigChannel fromDb = ConfigurationFactory.lookupConfigChannelById(channel.getId());
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
@@ -91,7 +91,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSymlinkInInitSls() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addSymlinkToChannel(channel);
         ConfigChannel fromDb = ConfigurationFactory.lookupConfigChannelById(channel.getId());
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
@@ -113,7 +113,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetSaltUriForConfigFile() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigFile file = ConfigChannelSaltManagerTestUtils
                 .addFileToChannel(channel)
                 .getConfigFile();
@@ -129,7 +129,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetSaltBaseUriForChannel() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         String saltUri = ConfigChannelSaltManager.getInstance().getSaltBaseUriForChannel(channel);
 
         String expectedUri = "salt://" +

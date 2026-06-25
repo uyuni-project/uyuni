@@ -31,10 +31,10 @@ public class CompareRevisionActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //Make the user a config admin
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Create the revision to copy
-        ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         Long cfid = revision.getConfigFile().getId();
         Long crid = revision.getId();
 

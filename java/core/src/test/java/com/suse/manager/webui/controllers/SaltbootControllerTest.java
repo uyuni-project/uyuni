@@ -43,9 +43,9 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testSaltbootController() throws Exception {
-        ImageStore store = ImageTestUtils.createImageStore("registry.reg", user);
-        ImageTestUtils.createImageInfo("myimage1", "1.0.0", store, user);
-        ImageInfo image = ImageTestUtils.createImageInfo("myimage2", "1.0.0", store, user);
+        ImageStore store = ImageTestUtils.createImageStore("registry.reg", getTestUser());
+        ImageTestUtils.createImageInfo("myimage1", "1.0.0", store, getTestUser());
+        ImageInfo image = ImageTestUtils.createImageInfo("myimage2", "1.0.0", store, getTestUser());
 
         String path = new File(TestUtils.findTestData(TEST_DIR + "image_pillar.json")
                      .getPath()).getAbsolutePath();
@@ -60,7 +60,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
 
 
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("orgid", user.getOrg().getId().toString());
+        queryParams.put("orgid", getTestUser().getOrg().getId().toString());
 
         Request request = SparkTestUtils.createMockRequestWithParams(
             "http://localhost:8080/saltboot/boot/POS_Image_JeOS7.x86_64-7.1.0-1/POS_Image_JeOS7.x86_64-7.1.0.initrd",
@@ -88,7 +88,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
     @Test
     public void testSaltbootControllerWithInvalidUrl() throws Exception {
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("orgid", user.getOrg().getId().toString());
+        queryParams.put("orgid", getTestUser().getOrg().getId().toString());
 
         Request request = SparkTestUtils.createMockRequestWithParams(
                 "http://localhost:8080/saltboot/boot/something",

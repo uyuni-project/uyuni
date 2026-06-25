@@ -46,7 +46,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        ksdata = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
         tree = ksdata.getTree();
         tree.setBasePath("/tmp");
         File images = new File("/tmp/images");
@@ -98,7 +98,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
     public void testKsSessionDownload() throws Exception {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         KickstartSession ksession =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
 
         ksession.setKstree(tree);
         ksession.setKsdata(ksdata);
@@ -133,7 +133,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         FileUtils.touch(new File("/tmp/Server/" + fileName));
 
         KickstartSession ksession =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         ksession.setKstree(tree);
         ksession.setKsdata(ksdata);
         ksession = TestUtils.saveAndFlush(ksession);
@@ -158,7 +158,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
     public void testDirHit() throws Exception {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         KickstartSession ksession =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         ksession = TestUtils.saveAndFlush(ksession);
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/");
         request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/images/");

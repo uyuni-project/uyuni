@@ -47,8 +47,8 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      */
     @BeforeEach
     public void setUp() throws Exception {
-        connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
-        servers = setUpTestProvisionableSsmServers(user);
+        connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
+        servers = setUpTestProvisionableSsmServers(getTestUser());
     }
 
     /**

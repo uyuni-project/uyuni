@@ -48,17 +48,18 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSubscribeChannels() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         Path slsPath = getSaltRootPath()
                 .resolve("custom").resolve("custom_" + server.getMachineId() + ".sls");
         assertFalse(slsPath.toFile().exists());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Channel 1", "cfg-channel-1");
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
+                "Channel 1", "cfg-channel-1");
 
-        SaltConfigSubscriptionService.subscribeChannels(server, Collections.singletonList(channel1), user);
+        SaltConfigSubscriptionService.subscribeChannels(server, Collections.singletonList(channel1), getTestUser());
         StateRevision revision1 = StateFactory.latestStateRevision(server).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
         assertTrue(slsPath.toFile().exists());
@@ -66,30 +67,31 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel1));
 
         // Test for server groups
-        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
-        SaltConfigSubscriptionService.subscribeChannels(serverGroup, Collections.singletonList(channel1), user);
+        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(getTestUser());
+        SaltConfigSubscriptionService.subscribeChannels(serverGroup, Collections.singletonList(channel1),
+                getTestUser());
         revision1 = StateFactory.latestStateRevision(serverGroup).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
 
         // Test for orgs
         Org org = UserTestUtils.createOrg("Test Org");
-        SaltConfigSubscriptionService.subscribeChannels(org, Collections.singletonList(channel1), user);
+        SaltConfigSubscriptionService.subscribeChannels(org, Collections.singletonList(channel1), getTestUser());
         revision1 = StateFactory.latestStateRevision(org).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
 
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
 
         // Test revision creator assignment
-        User other = UserTestUtils.createUser("other", user.getOrg().getId());
+        User other = UserTestUtils.createUser("other", getTestUser().getOrg().getId());
         List<ConfigChannel> channelList = new ArrayList<>();
         channelList.add(channel2);
         channelList.add(channel3);
@@ -111,11 +113,11 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         // Test subscribe to existing channel
         channelList.clear();
         channelList.add(channel1);
-        SaltConfigSubscriptionService.subscribeChannels(server, channelList, user);
+        SaltConfigSubscriptionService.subscribeChannels(server, channelList, getTestUser());
         ServerStateRevision revision3 = StateFactory.latestStateRevision(server).get();
 
         // Should be a new revision with no changes
-        assertEquals(user, revision3.getCreator());
+        assertEquals(getTestUser(), revision3.getCreator());
         assertEquals(3, revision3.getConfigChannels().size());
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel1::equals));
         assertTrue(revision2.getConfigChannels().stream().anyMatch(channel2::equals));
@@ -124,15 +126,15 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUnsubscribeChannels() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(getTestUser());
         Org org = UserTestUtils.createOrg("Test Org");
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
 
         List<ConfigChannel> initialChannels = new ArrayList<>();
@@ -140,40 +142,40 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         initialChannels.add(channel2);
         initialChannels.add(channel3);
 
-        SaltConfigSubscriptionService.subscribeChannels(server, initialChannels, user);
-        SaltConfigSubscriptionService.subscribeChannels(serverGroup, initialChannels, user);
-        SaltConfigSubscriptionService.subscribeChannels(org, initialChannels, user);
+        SaltConfigSubscriptionService.subscribeChannels(server, initialChannels, getTestUser());
+        SaltConfigSubscriptionService.subscribeChannels(serverGroup, initialChannels, getTestUser());
+        SaltConfigSubscriptionService.subscribeChannels(org, initialChannels, getTestUser());
 
         List<ConfigChannel> channelsToUnsubscribe = new ArrayList<>();
         channelsToUnsubscribe.add(channel1);
         channelsToUnsubscribe.add(channel3);
 
         // Test for servers
-        SaltConfigSubscriptionService.unsubscribeChannels(server, channelsToUnsubscribe, user);
+        SaltConfigSubscriptionService.unsubscribeChannels(server, channelsToUnsubscribe, getTestUser());
         StateRevision revision1 = StateFactory.latestStateRevision(server).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel2::equals));
 
         // Test for server groups
-        SaltConfigSubscriptionService.unsubscribeChannels(serverGroup, channelsToUnsubscribe, user);
+        SaltConfigSubscriptionService.unsubscribeChannels(serverGroup, channelsToUnsubscribe, getTestUser());
         revision1 = StateFactory.latestStateRevision(serverGroup).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel2::equals));
 
         // Test for orgs
-        SaltConfigSubscriptionService.unsubscribeChannels(org, channelsToUnsubscribe, user);
+        SaltConfigSubscriptionService.unsubscribeChannels(org, channelsToUnsubscribe, getTestUser());
         revision1 = StateFactory.latestStateRevision(org).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel2::equals));
 
         // Test revision creator assignment
-        User other = UserTestUtils.createUser("other", user.getOrg().getId());
+        User other = UserTestUtils.createUser("other", getTestUser().getOrg().getId());
         channelsToUnsubscribe.clear();
         channelsToUnsubscribe.add(channel2);
 
@@ -188,25 +190,25 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         channelsToUnsubscribe.clear();
         channelsToUnsubscribe.add(channel1);
 
-        SaltConfigSubscriptionService.unsubscribeChannels(server, channelsToUnsubscribe, user);
+        SaltConfigSubscriptionService.unsubscribeChannels(server, channelsToUnsubscribe, getTestUser());
         ServerStateRevision revision3 = StateFactory.latestStateRevision(server).get();
 
         // Should be a new revision with no changes
-        assertEquals(user, revision3.getCreator());
+        assertEquals(getTestUser(), revision3.getCreator());
         assertEquals(0, revision3.getConfigChannels().size());
     }
 
     @Test
     public void testSetConfigChannels() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        ServerGroup serverGroup = ServerGroupTestUtils.createManaged(getTestUser());
         Org org = UserTestUtils.createOrg("Test Org");
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
 
         List<ConfigChannel> channelList = new ArrayList<>();
@@ -214,31 +216,31 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         channelList.add(channel2);
 
         // Test for servers
-        SaltConfigSubscriptionService.setConfigChannels(server, channelList, user);
+        SaltConfigSubscriptionService.setConfigChannels(server, channelList, getTestUser());
         StateRevision revision1 = StateFactory.latestStateRevision(server).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(2, revision1.getConfigChannels().size());
         assertEquals(channelList, revision1.getConfigChannels());
 
         // Test for server groups
-        SaltConfigSubscriptionService.setConfigChannels(serverGroup, channelList, user);
+        SaltConfigSubscriptionService.setConfigChannels(serverGroup, channelList, getTestUser());
         revision1 = StateFactory.latestStateRevision(serverGroup).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(2, revision1.getConfigChannels().size());
         assertEquals(channelList, revision1.getConfigChannels());
 
         // Test for orgs
-        SaltConfigSubscriptionService.setConfigChannels(org, channelList, user);
+        SaltConfigSubscriptionService.setConfigChannels(org, channelList, getTestUser());
         revision1 = StateFactory.latestStateRevision(org).get();
 
-        assertEquals(user, revision1.getCreator());
+        assertEquals(getTestUser(), revision1.getCreator());
         assertEquals(2, revision1.getConfigChannels().size());
         assertEquals(channelList, revision1.getConfigChannels());
 
         // Test revision creator assignment
-        User other = UserTestUtils.createUser("other", user.getOrg().getId());
+        User other = UserTestUtils.createUser("other", getTestUser().getOrg().getId());
         channelList.clear();
         channelList.add(channel2);
         channelList.add(channel3);

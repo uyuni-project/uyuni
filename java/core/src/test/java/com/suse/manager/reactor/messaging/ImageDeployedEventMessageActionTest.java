@@ -89,7 +89,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         ActionManager.setTaskomaticApi(taskomaticMock);
 
         // setup a minion
-        testMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         grains = getGrains();
 
@@ -146,12 +146,12 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     public void testBaseChannelChanged() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
-        Channel oldBase = ChannelTestUtils.createBaseChannel(user);
+        Channel oldBase = ChannelTestUtils.createBaseChannel(getTestUser());
         oldBase.setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
-        SystemManager.subscribeServerToChannel(user, testMinion, oldBase);
-        Channel oldChild = ChannelTestUtils.createChildChannel(user, oldBase);
+        SystemManager.subscribeServerToChannel(getTestUser(), testMinion, oldBase);
+        Channel oldChild = ChannelTestUtils.createChildChannel(getTestUser(), oldBase);
         oldChild.setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
-        SystemManager.subscribeServerToChannel(user, testMinion, oldChild);
+        SystemManager.subscribeServerToChannel(getTestUser(), testMinion, oldChild);
         System.out.println(testMinion.getChannels());
 
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
@@ -184,8 +184,8 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         Channel testBaseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
         SUSEProductTestUtils.createTestSUSEProductChannel(testBaseChannelX8664, product, true);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         channel2.setParentChannel(testBaseChannelX8664);
         channel3.setParentChannel(testBaseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product, true);

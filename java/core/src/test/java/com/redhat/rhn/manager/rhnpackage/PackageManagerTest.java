@@ -99,12 +99,12 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         pc.setIndexData(false);
         pc.setStart(1);
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         PackageManagerTest.addPackageToSystemAndChannel(
                 "test-package-name" + TestUtils.randomString(), server,
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
 
         DataResult<PackageListItem> dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
@@ -122,9 +122,9 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         pc.setIndexData(false);
         pc.setStart(1);
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         // create 2 packages with same NEVRA in different channels
         PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
@@ -133,20 +133,20 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
 
         Package p1 = new Package();
-        PackageTest.populateTestPackage(p1, user.getOrg(), pname, pevr, parch);
+        PackageTest.populateTestPackage(p1, getTestUser().getOrg(), pname, pevr, parch);
         p1 = TestUtils.saveAndFlush(p1);
 
         Package p2 = new Package();
-        PackageTest.populateTestPackage(p2, user.getOrg(), pname, pevr, parch);
+        PackageTest.populateTestPackage(p2, getTestUser().getOrg(), pname, pevr, parch);
         p2 = TestUtils.saveAndFlush(p2);
 
-        Channel c1 = ChannelFactoryTest.createTestChannel(user);
-        Channel c2 = ChannelFactoryTest.createTestChannel(user);
+        Channel c1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel c2 = ChannelFactoryTest.createTestChannel(getTestUser());
         PackageTest.addPackageToChannelNewestPackage(p1, c1);
         PackageTest.addPackageToChannelNewestPackage(p2, c2);
 
         PackageManagerTest.associateSystemToPackage(server, p1);
-        server = SystemManager.subscribeServerToChannel(user, server, c1);
+        server = SystemManager.subscribeServerToChannel(getTestUser(), server, c1);
 
         DataResult<PackageListItem> dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
@@ -195,7 +195,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradable() throws Exception {
-        Map<String, Object> info = ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+        Map<String, Object> info =
+                ErrataCacheManagerTest.createServerNeededCache(getTestUser(), ErrataFactory.ERRATA_TYPE_BUG);
         Server s = (Server) info.get("server");
         Package p = (Package) info.get("package");
         p = TestUtils.saveAndReload(p);
@@ -222,13 +223,13 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         pc.setIndexData(false);
         pc.setStart(1);
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         PackageManagerTest.addPackageToSystemAndChannel(
                 "test-package-name" + TestUtils.randomString(), server,
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
 
         // hard code for now.
         DataResult<PackageListItem> dr = PackageManager.systemAvailablePackages(server.getId(), pc);
@@ -353,7 +354,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateLotsofPackagesInChannel() throws Exception {
         String rand = TestUtils.randomString();
-        Channel c = ChannelTestUtils.createTestChannel(user);
+        Channel c = ChannelTestUtils.createTestChannel(getTestUser());
         for (int i = 0; i < 10; i++) {
             addPackageToChannel(rand, c);
         }
@@ -361,8 +362,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPossiblePackagesForPushingIntoChannel() throws Exception {
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        Channel c = ChannelTestUtils.createTestChannel(user);
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
+        Channel c = ChannelTestUtils.createTestChannel(getTestUser());
         DataResult<PackageComparison> dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
         assertFalse(dr.isEmpty());
@@ -371,9 +372,9 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetServerNeededUpdatePackageByName() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server s = ServerFactoryTest.createTestServer(user);
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server s = ServerFactoryTest.createTestServer(getTestUser());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         addPackageToSystemAndChannel("some-test-package", s, c);
         // Not enough time actually test the results of this query for now
         // Just testing that it runs without SQL error. -mmccune
@@ -383,7 +384,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPackageIdsInSet() {
-        DataResult<PackageOverview> dr = PackageManager.packageIdsInSet(user, "packages_to_add",
+        DataResult<PackageOverview> dr = PackageManager.packageIdsInSet(getTestUser(), "packages_to_add",
                                                        new PageControl());
         assertNotNull(dr);
     }
@@ -477,15 +478,15 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         String packageName = "kernel";
         String[] channelarches = {"channel-ia32", "channel-x86_64"};
         DataResult dr = PackageManager.lookupPackageNameOverview(
-                user.getOrg(), packageName, channelarches);
+                getTestUser().getOrg(), packageName, channelarches);
 
         assertNotNull(dr);
     }
 
     @Test
     public void testLookupPackageForChannelFromChannel() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Package pack = PackageTest.createTestPackage(null);
         ChannelTestUtility.testAddPackage(channel1, pack);
@@ -504,10 +505,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupCustomPackagesForChannel() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Package pack = PackageTest.createTestPackage(user.getOrg());
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
         List<PackageOverview> test = PackageManager.lookupCustomPackagesForChannel(
-                channel1.getId(), user.getOrg().getId());
+                channel1.getId(), getTestUser().getOrg().getId());
 
         assertEquals(1, test.size());
         PackageOverview packOver = test.get(0);
@@ -515,27 +516,27 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         ChannelTestUtility.testAddPackage(channel1, pack);
         test = PackageManager.lookupCustomPackagesForChannel(
-                channel1.getId(), user.getOrg().getId());
+                channel1.getId(), getTestUser().getOrg().getId());
 
         assertTrue(test.isEmpty());
     }
 
     @Test
     public void testListOrphanPackages() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Package pack = PackageTest.createTestPackage(user.getOrg());
-        List<PackageOverview> test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
+        List<PackageOverview> test = PackageManager.listOrphanPackages(getTestUser().getOrg().getId(), false);
 
         assertEquals(1, test.size());
         PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
         ChannelTestUtility.testAddPackage(channel1, pack);
-        test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
+        test = PackageManager.listOrphanPackages(getTestUser().getOrg().getId(), false);
 
         assertTrue(test.isEmpty());
-        PackageTest.createTestPackage(user.getOrg());
-        test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
+        PackageTest.createTestPackage(getTestUser().getOrg());
+        test = PackageManager.listOrphanPackages(getTestUser().getOrg().getId(), false);
 
         assertEquals(1, test.size());
 
@@ -544,11 +545,11 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testUpgradablePackagesFromServerSet() throws Exception {
         // Setup
-        Org org = user.getOrg();
+        Org org = getTestUser().getOrg();
 
         //   Create the server and add to the SSM
-        Server server = ServerTestUtils.createTestSystem(user);
-        ServerTestUtils.addServersToSsm(user, server.getId());
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
+        ServerTestUtils.addServersToSsm(getTestUser(), server.getId());
 
         //   Create upgraded package EVR so package will show up from the query
         PackageEvr upgradedPackageEvr =
@@ -561,7 +562,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_BUG);
 
         // Test
-        DataResult<SsmUpgradablePackageListItem> result = PackageManager.upgradablePackagesFromServerSet(user);
+        DataResult<SsmUpgradablePackageListItem> result = PackageManager.upgradablePackagesFromServerSet(getTestUser());
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -573,25 +574,25 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         final int numPackagesToDelete = 50;
 
         // Setup
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         Set<Long> doomedPackageIds = new HashSet<>(numPackagesToDelete);
         for (int ii = 0; ii < numPackagesToDelete; ii++) {
-            Package pack = PackageTest.createTestPackage(user.getOrg());
+            Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
             doomedPackageIds.add(pack.getId());
         }
 
         int numPackagesBeforeDelete =
-            PackageFactory.lookupOrphanPackages(user.getOrg()).size();
+            PackageFactory.lookupOrphanPackages(getTestUser().getOrg()).size();
         assertTrue(numPackagesBeforeDelete >= numPackagesToDelete);
 
 
         // Test
-        PackageManager.deletePackages(doomedPackageIds, user);
+        PackageManager.deletePackages(doomedPackageIds, getTestUser());
 
         // Verify
         int numPackagesAfterDelete =
-        PackageFactory.lookupOrphanPackages(user.getOrg()).size();
+        PackageFactory.lookupOrphanPackages(getTestUser().getOrg()).size();
                 assertEquals(numPackagesBeforeDelete - numPackagesToDelete,
                              numPackagesAfterDelete);
 
@@ -635,8 +636,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         String test = st.toString();
         System.out.println(test);
 
-        Package p = PackageTest.createTestPackage(user.getOrg());
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelTestUtility.testAddPackage(c, p);
         ChannelFactory.save(c);
 

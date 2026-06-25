@@ -82,7 +82,7 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         // A commit will happen in taskomatic, so we need to clean up everything in the end
 
         // Fill in the rhnRepoRegenQueue table to request the repodata generation execution
-        Channel testChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel testChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelManager.queueChannelChange(testChannel.getLabel(), "createchannel", "createchannel");
 
         // Create the run for the task

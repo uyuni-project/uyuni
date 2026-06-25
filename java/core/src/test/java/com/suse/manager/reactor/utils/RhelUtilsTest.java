@@ -186,7 +186,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                                          Consumer<Optional<RhelUtils.RhelProduct>> response)
             throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/suse/manager/reactor/utils/productdata", false, false);
+                getTestUser(), "/com/suse/manager/reactor/utils/productdata", false, false);
         Map<String, State.ApplyResult> map = new JsonParser<>(
                 State.apply(Collections.emptyList()).getReturnType()).parse(
                         TestUtils.readAll(TestUtils.findTestData(json)));
@@ -218,7 +218,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         String whatProvidesSLL = map.get("cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
-        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         if (setupMinion != null) {
             setupMinion.accept(minionServer);
@@ -242,7 +242,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testDetectRhelProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_res.json",
                 minionServer -> {
-                    Channel resChannel = createResChannel(user, "7");
+                    Channel resChannel = createResChannel(getTestUser(), "7");
                     minionServer.addChannel(resChannel);
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
@@ -260,7 +260,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testDetectCentOSProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos_res.json",
                 minionServer -> {
-                    Channel resChannel = createResChannel(user, "6");
+                    Channel resChannel = createResChannel(getTestUser(), "6");
                     minionServer.addChannel(resChannel);
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
@@ -278,7 +278,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testDetectRhelProductSLL() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_sll.json",
                 minionServer -> {
-                    Channel resChannel = createSLLChannel(user, "9");
+                    Channel resChannel = createSLLChannel(getTestUser(), "9");
                     minionServer.addChannel(resChannel);
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },

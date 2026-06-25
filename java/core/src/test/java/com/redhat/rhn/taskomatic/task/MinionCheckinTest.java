@@ -61,7 +61,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testExecuteOnActiveMinions() throws Exception {
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion1.setMinionId("minion1");
 
         Optional<MinionServer> minion = MinionServerFactory
@@ -94,7 +94,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testExecuteOnInactiveMinions() throws Exception {
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion1.setMinionId("minion1");
 
         Optional<MinionServer> minion = MinionServerFactory

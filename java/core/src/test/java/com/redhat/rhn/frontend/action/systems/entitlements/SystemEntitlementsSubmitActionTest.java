@@ -103,12 +103,12 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             String dispatchKey,
                                             String msg) {
 
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                             ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         ServerFactory.save(server);
-        OrgFactory.save(user.getOrg());
-        UserFactory.save(user);
+        OrgFactory.save(getTestUser().getOrg());
+        UserFactory.save(getTestUser());
         systemEntitlementManager.removeAllServerEntitlements(server);
         assertFalse(SystemManager.hasEntitlement(server.getId(), ent));
 
@@ -127,7 +127,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     }
 
     private EntitlementServerGroup  findGroupOfType(ServerGroupType type) {
-        for (EntitlementServerGroup grp : user.getOrg().getEntitledServerGroups()) {
+        for (EntitlementServerGroup grp : getTestUser().getOrg().getEntitledServerGroups()) {
             if (type.equals(grp.getGroupType())) {
                 return grp;
             }
@@ -154,9 +154,9 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             ) {
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        ServerGroupTest.createTestServerGroup(user.getOrg(), groupType);
+        ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), groupType);
 
         addRequestParameter("addOnEntitlement", selectKey);
         dispatch(SystemEntitlementsSubmitAction.KEY_ADD_ENTITLED, server);
@@ -172,10 +172,10 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {
-        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, false, systemEntitlementManager);
+        Server server = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 1, false, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
-        ServerGroupTest.createTestServerGroup(user.getOrg(),
+        ServerGroupTest.createTestServerGroup(getTestUser().getOrg(),
                 groupType);
 
         addRequestParameter("addOnEntitlement", selectKey);
@@ -196,9 +196,9 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                                 Entitlement ent,
                                                 ServerGroupType groupType
                                                 ) {
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        ServerGroupTest.createTestServerGroup(user.getOrg(), groupType);
+        ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), groupType);
 
         assertTrue(SystemManager.hasEntitlement(server.getId(),
                                         EntitlementManager.MANAGEMENT));

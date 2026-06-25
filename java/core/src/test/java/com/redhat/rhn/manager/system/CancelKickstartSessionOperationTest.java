@@ -39,17 +39,17 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
 
     @Test
     public void testOperation() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        KickstartSession ksession = KickstartSessionTest.createKickstartSession(k, user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
+        KickstartSession ksession = KickstartSessionTest.createKickstartSession(k, getTestUser());
         Server s = ksession.getOldServer();
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action a = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_KICKSTART_INITIATE);
         ksession.setAction(a);
         ActionFactory.save(a);
         KickstartFactory.saveKickstartData(k);
         ksession = TestUtils.saveAndFlush(ksession);
 
-        CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(user, s.getId());
+        CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(getTestUser(), s.getId());
         dso.store();
 
         TestUtils.flushAndClearSession();

@@ -27,19 +27,20 @@ public class ConfigChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsTypeMethods() {
-        ConfigChannel cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.local(),
+        ConfigChannel cc =
+                ConfigurationFactory.createNewConfigChannel(getTestUser().getOrg(), ConfigChannelType.local(),
                 "test", "test", "test");
         assertTrue(cc.isLocalChannel());
 
-        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.normal(),
+        cc = ConfigurationFactory.createNewConfigChannel(getTestUser().getOrg(), ConfigChannelType.normal(),
                 "test", "test", "test");
         assertTrue(cc.isNormalChannel());
 
-        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.sandbox(),
+        cc = ConfigurationFactory.createNewConfigChannel(getTestUser().getOrg(), ConfigChannelType.sandbox(),
                 "test", "test", "test");
         assertTrue(cc.isSandboxChannel());
 
-        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.state(),
+        cc = ConfigurationFactory.createNewConfigChannel(getTestUser().getOrg(), ConfigChannelType.state(),
                 "test", "test", "test");
         assertTrue(cc.isStateChannel());
     }

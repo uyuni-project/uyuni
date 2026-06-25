@@ -54,11 +54,11 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
     public void setUp() throws Exception {
 
         // setup a minion
-        testMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
 
-        testGroup1 = ServerGroupTestUtils.createManaged(user);
-        testGroup2 = ServerGroupTestUtils.createManaged(user);
+        testGroup1 = ServerGroupTestUtils.createManaged(getTestUser());
+        testGroup2 = ServerGroupTestUtils.createManaged(getTestUser());
         testMinion.addGroup(testGroup1);
         testMinion.addGroup(testGroup2);
     }
@@ -70,7 +70,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
      */
     @Test
     public void testImageSyncedPillarCreatedRemoved() {
-        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
+        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", getTestUser());
         img1.setRevisionNumber(5);
 
         JsonParser<Event> jsonParser = new JsonParser<>(new TypeToken<>() {

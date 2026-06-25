@@ -424,9 +424,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkApilistAllPeripheralChannels() throws Exception {
         String apiUnderTest = "/hub/listAllPeripheralChannels";
 
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        Channel testBaseChannel = ChannelTestUtils.createBaseChannel(user);
-        Channel testChildChannel = ChannelTestUtils.createChildChannel(user, testBaseChannel);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        Channel testBaseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
+        Channel testChildChannel = ChannelTestUtils.createChildChannel(getTestUser(), testBaseChannel);
 
         String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
@@ -443,7 +443,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 apiUnderTest + " API call not listing channel " + testBaseChannel);
         assertEquals(testBaseChannel.getName(), testBaseChannelInfo.get().getName());
         assertEquals(testBaseChannel.getLabel(), testBaseChannelInfo.get().getLabel());
-        assertEquals(user.getOrg().getId(), testBaseChannelInfo.get().getOrgId());
+        assertEquals(getTestUser().getOrg().getId(), testBaseChannelInfo.get().getOrgId());
         assertNull(testBaseChannelInfo.get().getParentChannelId());
 
         Optional<ChannelInfoJson> testChildChannelInfo = allChannels.stream()
@@ -453,7 +453,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 apiUnderTest + " API call not listing channel " + testChildChannel);
         assertEquals(testChildChannel.getName(), testChildChannelInfo.get().getName());
         assertEquals(testChildChannel.getLabel(), testChildChannelInfo.get().getLabel());
-        assertEquals(user.getOrg().getId(), testChildChannelInfo.get().getOrgId());
+        assertEquals(getTestUser().getOrg().getId(), testChildChannelInfo.get().getOrgId());
         assertEquals(testBaseChannel.getId(), testChildChannelInfo.get().getParentChannelId());
     }
 

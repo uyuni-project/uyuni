@@ -48,7 +48,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      */
     @Test
     public void testStoreConfigFile() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
 
         manager.generateConfigChannelFiles(channel);
@@ -72,7 +72,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      */
     @Test
     public void testStoreConfigDir() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addDirToChannel(channel);
 
         manager.generateConfigChannelFiles(channel);
@@ -96,7 +96,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      */
     @Test
     public void testStoreConfigSymlink() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addSymlinkToChannel(channel);
 
         manager.generateConfigChannelFiles(channel);

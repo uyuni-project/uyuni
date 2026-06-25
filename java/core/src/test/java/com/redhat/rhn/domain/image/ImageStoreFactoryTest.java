@@ -40,13 +40,13 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testPermanentOsImageStoreExists() {
         Optional<ImageStore> osImgStoreOpt =
-                ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg());
+                ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", getTestUser().getOrg());
 
         assertTrue(osImgStoreOpt.isPresent());
         ImageStore osImgStore = osImgStoreOpt.get();
 
         assertEquals(ImageStoreFactory.TYPE_OS_IMAGE, osImgStore.getStoreType());
-        assertEquals(user.getOrg().getId() + "/", osImgStore.getUri());
+        assertEquals(getTestUser().getOrg().getId() + "/", osImgStore.getUri());
 
         Org newOrg = UserTestUtils.createOrg("My New Org");
 
@@ -82,8 +82,8 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListImageStore() {
-        ImageStore store = createImageStore("mystore", user);
-        List<ImageStore> list = ImageStoreFactory.listImageStores(user.getOrg());
+        ImageStore store = createImageStore("mystore", getTestUser());
+        List<ImageStore> list = ImageStoreFactory.listImageStores(getTestUser().getOrg());
 
         assertEquals(2, list.size());
         // Permanent OS Image store should always be present
@@ -93,9 +93,9 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertNull(list.stream().filter(s -> s.equals(store)).findFirst().get().getCreds());
 
         RegistryCredentials creds = createCredentials();
-        ImageStore storeWithCreds = createImageStore("mystorewithcreds", creds, user);
+        ImageStore storeWithCreds = createImageStore("mystorewithcreds", creds, getTestUser());
 
-        list = ImageStoreFactory.listImageStores(user.getOrg());
+        list = ImageStoreFactory.listImageStores(getTestUser().getOrg());
         assertEquals(3, list.size());
         ImageStore resultStore = list.stream().filter(s -> s.equals(storeWithCreds)).findFirst().get();
         assertEquals(creds, resultStore.getCreds());
@@ -104,20 +104,22 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListByTypeLabelAndOrg() throws Exception {
         RegistryCredentials creds = createCredentials();
-        ImageStore store = createImageStore("mystore", creds, user);
+        ImageStore store = createImageStore("mystore", creds, getTestUser());
 
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());
         List<ImageStore> iList =
-                ImageStoreFactory.listByTypeLabelAndOrg(ImageStoreFactory.TYPE_REGISTRY.getLabel(), user.getOrg());
+                ImageStoreFactory.listByTypeLabelAndOrg(ImageStoreFactory.TYPE_REGISTRY.getLabel(),
+                        getTestUser().getOrg());
 
         assertEquals(1, iList.size());
         assertEquals(store, iList.get(0));
         assertEquals(creds, iList.get(0).getCreds());
 
-        iList = ImageStoreFactory.listByTypeLabelAndOrg(ImageStoreFactory.TYPE_OS_IMAGE.getLabel(), user.getOrg());
+        iList = ImageStoreFactory.listByTypeLabelAndOrg(ImageStoreFactory.TYPE_OS_IMAGE.getLabel(),
+                getTestUser().getOrg());
         assertEquals(1, iList.size());
 
-        iList = ImageStoreFactory.listByTypeLabelAndOrg("non-existent-type", user.getOrg());
+        iList = ImageStoreFactory.listByTypeLabelAndOrg("non-existent-type", getTestUser().getOrg());
         assertEquals(0, iList.size());
 
 
@@ -132,7 +134,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupById() {
-        ImageStore store = createImageStore("mystore", user);
+        ImageStore store = createImageStore("mystore", getTestUser());
 
         assertNotNull(store.getId());
 
@@ -146,12 +148,12 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByIdAndOrg() {
-        ImageStore store = createImageStore("mystore", user);
+        ImageStore store = createImageStore("mystore", getTestUser());
 
         assertNotNull(store.getId());
 
         Optional<ImageStore> lookup =
-                ImageStoreFactory.lookupByIdAndOrg(store.getId(), user.getOrg());
+                ImageStoreFactory.lookupByIdAndOrg(store.getId(), getTestUser().getOrg());
         assertTrue(lookup.isPresent());
         assertEquals(store, lookup.get());
 
@@ -165,16 +167,16 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByIdsAndOrg() {
-        ImageStore store1 = createImageStore("mystore1", user);
-        ImageStore store2 = createImageStore("mystore2", user);
-        ImageStore store3 = createImageStore("mystore3", user);
+        ImageStore store1 = createImageStore("mystore1", getTestUser());
+        ImageStore store2 = createImageStore("mystore2", getTestUser());
+        ImageStore store3 = createImageStore("mystore3", getTestUser());
 
         List<Long> ids = new ArrayList<>();
         ids.add(store1.getId());
         ids.add(store2.getId());
 
         List<ImageStore> lookup =
-                ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
+                ImageStoreFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(2, lookup.size());
         assertTrue(lookup.stream().filter(store1::equals).findFirst().isPresent());
         assertTrue(lookup.stream().filter(store2::equals).findFirst().isPresent());
@@ -191,17 +193,17 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ids.add(store1.getId());
         ids.add(100L);
         assertFalse(ImageStoreFactory.lookupById(100L).isPresent());
-        lookup = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        lookup = ImageStoreFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(1, lookup.size());
         assertEquals(store1, lookup.get(0));
     }
 
     @Test
     public void testLookupImageStore() {
-        ImageStore store = createImageStore("mystore", user);
+        ImageStore store = createImageStore("mystore", getTestUser());
 
         ImageStore i =
-                ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg()).get();
+                ImageStoreFactory.lookupBylabelAndOrg("mystore", getTestUser().getOrg()).get();
 
         assertEquals(store, i);
         assertNull(i.getCreds());
@@ -215,21 +217,22 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDelete() {
-        createImageStore("mystore", user);
-        assertTrue(ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg())
+        createImageStore("mystore", getTestUser());
+        assertTrue(ImageStoreFactory.lookupBylabelAndOrg("mystore", getTestUser().getOrg())
                 .isPresent());
 
         ImageStore i =
-                ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg()).get();
+                ImageStoreFactory.lookupBylabelAndOrg("mystore", getTestUser().getOrg()).get();
 
         ImageStoreFactory.delete(i);
-        assertFalse(ImageStoreFactory.lookupBylabelAndOrg("mystore", user.getOrg())
+        assertFalse(ImageStoreFactory.lookupBylabelAndOrg("mystore", getTestUser().getOrg())
                 .isPresent());
 
         // Should not be able to delete the permanent OS Image store
         try {
             ImageStoreFactory
-                    .delete(ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg()).get());
+                    .delete(ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store",
+                            getTestUser().getOrg()).get());
             fail("Deleting OS Image store should not be allowed.");
         }
         catch (IllegalArgumentException e) {

@@ -38,7 +38,7 @@ public class KickstartCryptoKeysEditActionTest extends BaseKickstartEditTestCase
      */
     @BeforeEach
     public void setUp() throws Exception {
-        key = CryptoTest.createTestKey(user.getOrg());
+        key = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         TestUtils.flushAndEvict(key);
     }

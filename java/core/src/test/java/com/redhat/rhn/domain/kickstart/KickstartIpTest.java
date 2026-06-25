@@ -32,7 +32,7 @@ public class KickstartIpTest extends BaseTestCaseWithUser {
 
     @Test
     public void testKickstartDataTest() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         assertNotNull(k);
         k = addIpRangesToKickstart(k);
         assertEquals(2, k.getIps().size());

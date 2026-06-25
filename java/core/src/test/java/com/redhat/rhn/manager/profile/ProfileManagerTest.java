@@ -68,24 +68,24 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
 
         // Give our user ORG_ADMIN
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
     }
 
     @Test
     public void testSyncSystems() throws Exception {
-        Channel testChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel testChannel = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        Package p1 = PackageTest.createTestPackage(user.getOrg());
-        Package p2 = PackageTest.createTestPackage(user.getOrg());
+        Package p1 = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package p2 = PackageTest.createTestPackage(getTestUser().getOrg());
 
         ChannelTestUtility.testAddPackage(testChannel, p1);
         ChannelTestUtility.testAddPackage(testChannel, p2);
         ChannelFactory.save(testChannel);
 
-        Server s1 = ServerFactoryTest.createTestServer(user, true,
+        Server s1 = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        Server s2 = ServerFactoryTest.createTestServer(user, true,
+        Server s2 = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         s1.addChannel(testChannel);
@@ -109,7 +109,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         TestUtils.commitAndCloseSession();
 
         PackageAction action = ProfileManager.syncToSystem(
-                user, s1.getId(), s2.getId(), idCombos,
+                getTestUser(), s1.getId(), s2.getId(), idCombos,
                 ProfileManager.OPTION_REMOVE, new Date());
         assertNotNull(action);
         assertNotNull(action.getPrerequisite());
@@ -118,10 +118,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateProfileFails() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         try {
-            ProfileManager.createProfile(user, server,
+            ProfileManager.createProfile(getTestUser(), server,
                     "Profile test name" + TestUtils.randomString(),
                     "Profile test description");
             fail("Should not be able to create a profile for a server which " +
@@ -134,12 +134,12 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateProfile() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
 
-        Profile p = ProfileManager.createProfile(user, server,
+        Profile p = ProfileManager.createProfile(getTestUser(), server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
@@ -148,12 +148,12 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCopyFrom() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
 
-        Profile p = ProfileManager.createProfile(user, server,
+        Profile p = ProfileManager.createProfile(getTestUser(), server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
@@ -164,17 +164,17 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCompatibleWithServer() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
-        Profile p = ProfileManager.createProfile(user, server,
+        Profile p = ProfileManager.createProfile(getTestUser(), server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
         assertNotNull(p.getId(), "Profile has no id");
 
-        List<Profile> list = ProfileManager.compatibleWithServer(server, user.getOrg());
+        List<Profile> list = ProfileManager.compatibleWithServer(server, getTestUser().getOrg());
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         for (Object o : list) {
@@ -193,9 +193,9 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCompatibleWithChannel() throws Exception {
-        Profile p = createProfileWithServer(user);
+        Profile p = createProfileWithServer(getTestUser());
         DataResult<ProfileDto> dr = ProfileManager.compatibleWithChannel(p.getBaseChannel(),
-                user.getOrg(), null);
+                getTestUser().getOrg(), null);
         assertNotNull(dr);
         assertFalse(dr.isEmpty());
         assertInstanceOf(ProfileDto.class, dr.iterator().next());
@@ -666,7 +666,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetChildChannelsNeededForProfile() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
         Channel childChannel1 = ChannelTestUtils.createChildChannel(server.getCreator(),
                 server.getBaseChannel());
 

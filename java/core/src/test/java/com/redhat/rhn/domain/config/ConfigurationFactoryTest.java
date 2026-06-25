@@ -57,7 +57,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateNewConfigChannel() {
         String label = "testlabel";
-        ConfigChannel channel = ConfigurationFactory.createNewConfigChannel(user.getOrg(),
+        ConfigChannel channel = ConfigurationFactory.createNewConfigChannel(getTestUser().getOrg(),
                 ConfigChannelType.normal(), "testname",
                 label, "testdescription");
         assertNotNull(channel.getId());
@@ -74,7 +74,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         channel2.setName("newName");
         //now look up the new way
         ConfigChannel channel3 =
-            ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(),
+            ConfigurationFactory.lookupConfigChannelByLabel(label, getTestUser().getOrg(),
                                     ConfigChannelType.normal()
                                     );
         assertEquals(channel2, channel3);
@@ -84,7 +84,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testSaveNewConfigFile() {
         //Create a channel to put the file in
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         //Create a config file
         ConfigFile file = channel.createConfigFile(
@@ -108,7 +108,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     public void testSaveNewConfigRevision() {
 
         //Create a file to put this revision in
-        ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());
+        ConfigFile file = ConfigTestUtils.createConfigFile(getTestUser().getOrg());
 
         //Create a content and info to put into this revision
         ConfigContent content = ConfigTestUtils.createConfigContent(234L, true);
@@ -144,7 +144,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //now let's add them to two different ConfigRevisions and make sure that we don't
         //have any trouble saving them.
-        ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());
+        ConfigFile file = ConfigTestUtils.createConfigFile(getTestUser().getOrg());
         ConfigContent content = ConfigTestUtils.createConfigContent();
 
         ConfigRevision rev1 =
@@ -171,8 +171,8 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //now let's add them to two different ConfigFiles and make sure that we don't
         //have any trouble saving them.
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         ConfigFile file1 = channel.createConfigFile(
                 ConfigFileState.normal(), name1);
@@ -190,7 +190,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     public void testRemoveConfigChannel() {
 
         //Let's create a channel/file/revision
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         ConfigChannel channel = cr.getConfigFile().getConfigChannel();
         assertNotNull(cr.getId());
 
@@ -223,11 +223,11 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         String startData = "this is some original data";
         ByteArrayInputStream stream =
             new ByteArrayInputStream(startData.getBytes(StandardCharsets.UTF_8));
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         ConfigRevision cr2 = ConfigurationFactory.createNewRevisionFromStream(
-                user, stream, (long) startData.length(), cr.getConfigFile());
-        assertEquals(user.getId(), cr2.getChangedById());
-        assertEquals(user.getLogin(), cr2.getChangedBy().getLogin());
+                getTestUser(), stream, (long) startData.length(), cr.getConfigFile());
+        assertEquals(getTestUser().getId(), cr2.getChangedById());
+        assertEquals(getTestUser().getLogin(), cr2.getChangedBy().getLogin());
     }
 
 

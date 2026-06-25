@@ -75,8 +75,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testfilterSSHMinionIdsBootstrap() {
-        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH);
-        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT);
+        MinionPendingRegistrationService.addMinion(getTestUser(), "m1", ContactMethodUtil.SSH_PUSH);
+        MinionPendingRegistrationService.addMinion(getTestUser(), "m2", ContactMethodUtil.DEFAULT);
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
@@ -90,7 +90,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testfilterSSHMinionIds() throws Exception {
-        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
 
         List<String> minionIds = new ArrayList<>();
@@ -103,10 +103,10 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testfilterSSHMinionIdsMixedMinions() throws Exception {
-        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         List<String> minionIds = new ArrayList<>();
         minionIds.add(sshMinion.getMinionId());

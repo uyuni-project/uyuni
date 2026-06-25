@@ -45,12 +45,12 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         assertNotNull(k);
-        Profile p  = ProfileTest.createTestProfile(user,
+        Profile p  = ProfileTest.createTestProfile(getTestUser(),
                 k.getKickstartDefaults().getKstree().getChannel());
-        ksession = createKickstartSession(k, user);
+        ksession = createKickstartSession(k, getTestUser());
         s = ksession.getOldServer();
         ksession.setServerProfile(p);
         ksession = TestUtils.saveAndFlush(ksession);

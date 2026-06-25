@@ -19,27 +19,41 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 /**
  * Basic test class with a User
  */
 public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 
-    protected User user;
+    @RegisterExtension
+    private final UserTestCaseExtension userTestExtension = new UserTestCaseExtension(this);
 
     @BeforeEach
     public void setUpBaseTestCaseWithUser() throws Exception {
-        user = UserTestUtils.createUser(this);
-        KickstartDataTest.setupTestConfiguration(user);
+        //user = UserTestUtils.createUser(this);
+        KickstartDataTest.setupTestConfiguration(getTestUser());
     }
 
      @Override
     protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
+        TestUtils.deleteOrgOfUser(getTestUser());
     }
 
     @Override
     protected void afterCleanupDatabaseCommits() {
-        user = null;
+        nullifyTestUser();
+    }
+
+    protected User getTestUser() {
+        return userTestExtension.getTestUser();
+    }
+
+    protected void nullifyTestUser() {
+        userTestExtension.nullifyTestUser();
+    }
+
+    protected void saveAndFlushTestUser() {
+        userTestExtension.saveAndFlushTestUser();
     }
 }

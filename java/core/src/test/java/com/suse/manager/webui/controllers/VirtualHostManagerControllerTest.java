@@ -113,15 +113,15 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     @Test
     public void testGet() {
-        VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", user.getOrg());
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", getTestUser().getOrg());
         String json = (String)VirtualHostManagerController
-                .get(getRequestWithCsrf(""), response, user);
+                .get(getRequestWithCsrf(""), response, getTestUser());
         Map<String, Object> model = GSON.fromJson(json, Map.class);
         List<Map<String, Object>> data = (List<Map<String, Object>>)model.get("data");
         assertEquals(1, data.size());
         assertEquals("myVHM", data.get(0).get("label"));
         assertEquals("File", data.get(0).get("gathererModule"));
-        assertEquals(user.getOrg().getName(), data.get(0).get("orgName"));
+        assertEquals(getTestUser().getOrg().getName(), data.get(0).get("orgName"));
         assertEquals((Object)vhm.getId(), ((Double)data.get(0).get("id")).longValue());
     }
 
@@ -137,7 +137,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
         Request request = getRequestWithCsrf("/manager/api/vhms");
         String result = (String)
-                VirtualHostManagerController.get(request, response, user);
+                VirtualHostManagerController.get(request, response, getTestUser());
         Map<String, Object> model = GSON.fromJson(result, Map.class);
         assertTrue(((List)model.get("data")).isEmpty());
     }
@@ -162,7 +162,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
                 return true;
             }
         });
-        VirtualHostManagerController.create(request, response, user);
+        VirtualHostManagerController.create(request, response, getTestUser());
 
         VirtualHostManager created = VirtualHostManagerFactory.getInstance()
                 .lookupByLabel(label);
@@ -188,7 +188,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
         Request request = createMockRequestWithParams("/manager/api/vhms/create", queryParams,
                 new Object[] {});
-        String result = VirtualHostManagerController.create(request, response, user);
+        String result = VirtualHostManagerController.create(request, response, getTestUser());
         Map<String, Object> res = GSON.fromJson(result, Map.class);
         List<String> errs = (List<String>)res.get("messages");
         assertEquals(1, errs.size());
@@ -201,9 +201,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testDelete() throws UnsupportedEncodingException {
         String label = "TestVHM_" + TestUtils.randomString(10);
-        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, getTestUser().getOrg());
         Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
-        VirtualHostManagerController.delete(request, response, user);
+        VirtualHostManagerController.delete(request, response, getTestUser());
         TestUtils.flushSession();
 
         assertNull(factory.lookupByLabel(label));
@@ -218,7 +218,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete/" + vhm.getId(), "");
-        VirtualHostManagerController.delete(request, response, user);
+        VirtualHostManagerController.delete(request, response, getTestUser());
 
         // the original VHM is not deleted
         assertNotNull(factory.lookupByLabel(label));

@@ -39,7 +39,7 @@ public class CPUTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateLookup() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         CPU unit = createTestCpu(server);
 
         unit.setServer(server);
@@ -50,7 +50,7 @@ public class CPUTest extends BaseTestCaseWithUser {
 
         assertNotNull(unit.getId());
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
+                getTestUser().getOrg());
         assertNotNull(server2.getCpu());
         assertEquals(unit.getFamily(), server2.getCpu().getFamily());
         assertEquals(unit.getArch(), server2.getCpu().getArch());

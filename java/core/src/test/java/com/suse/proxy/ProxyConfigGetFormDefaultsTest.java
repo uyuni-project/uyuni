@@ -69,7 +69,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
     }
 
@@ -96,7 +96,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
         //
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(getTestUser(),
                 testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
@@ -134,7 +134,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
 
 
         //
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(getTestUser(),
                 testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //

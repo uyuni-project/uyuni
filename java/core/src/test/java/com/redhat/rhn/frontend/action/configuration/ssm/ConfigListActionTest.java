@@ -38,21 +38,21 @@ public class ConfigListActionTest extends RhnMockStrutsTestCase {
 
     private void doTheTest(String path) {
         //give the user org_admin role.
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //create the revision, file, and channel.
-        ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         revision.getConfigFile().setLatestConfigRevision(revision);
         ConfigurationFactory.commit(revision);
 
         //create a server and add it to the enterprise entitled group for server grouping
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        server.subscribeConfigChannel(revision.getConfigFile().getConfigChannel(), user);
+        server.subscribeConfigChannel(revision.getConfigFile().getConfigChannel(), getTestUser());
         ServerFactory.save(server);
 
         //add the server to the system list and save.
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server.getId());
         RhnSetFactory.save(set);
 

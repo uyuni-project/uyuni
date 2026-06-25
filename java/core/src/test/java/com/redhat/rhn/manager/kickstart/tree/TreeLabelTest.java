@@ -83,11 +83,11 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
     public void testValidateLabel() throws Exception {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
         KickstartFactory.saveKickstartableTree(tree);
         tree = TestUtils.reload(tree);
         tree.setLabel("jlkasf_asdf-ajksldfX890234");
-        TreeEditOperation cmd = new TreeEditOperation(tree.getId(), user);
+        TreeEditOperation cmd = new TreeEditOperation(tree.getId(), getTestUser());
         assertTrue(cmd.validateLabel());
 
         tree.setLabel("jlkasf_asdf-ajksldf.890234**((*(*(9");

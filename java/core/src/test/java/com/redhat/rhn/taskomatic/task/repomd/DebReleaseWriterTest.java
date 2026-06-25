@@ -51,7 +51,7 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGenerateRelease() throws Exception {
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setChannelArch(ChannelFactory.findArchByLabel("channel-ia64-deb"));
 
         PackageArch pa = PackageFactory.lookupPackageArchByLabel("amd64-deb");

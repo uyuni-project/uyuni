@@ -34,7 +34,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        KickstartWizardHelper cmd = new KickstartWizardHelper(user);
+        KickstartWizardHelper cmd = new KickstartWizardHelper(getTestUser());
         cmd.createCommand("selinux", "--permissive", ksdata);
     }
 

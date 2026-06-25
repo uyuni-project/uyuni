@@ -96,7 +96,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         contentManager = new ContentManager();
         contentManager.setModulemdApi(new MockModulemdApi());
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
     }
 
     /**
@@ -104,10 +104,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testLookupContentProject() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         assertNotNull(cp.getId());
 
-        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
+        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", getTestUser());
         assertEquals(cp, fromDb.get());
     }
 
@@ -116,7 +116,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testLookupNonexistingProject() {
-        assertFalse(ContentManager.lookupProject("idontexist", user).isPresent());
+        assertFalse(ContentManager.lookupProject("idontexist", getTestUser()).isPresent());
     }
 
     /**
@@ -124,13 +124,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testListContentProjects() {
-        ContentProject cp1 = contentManager.createProject("cplabel1", "cpname1", "description1", user);
-        ContentProject cp2 = contentManager.createProject("cplabel2", "cpname2", "description2", user);
+        ContentProject cp1 = contentManager.createProject("cplabel1", "cpname1", "description1", getTestUser());
+        ContentProject cp2 = contentManager.createProject("cplabel2", "cpname2", "description2", getTestUser());
         User anotherAdmin = UserTestUtils.createUser("Chuck", "rangers");
         anotherAdmin.addPermanentRole(ORG_ADMIN);
         ContentProject cp3 = contentManager.createProject("cplabel3", "cpname3", "description3", anotherAdmin);
 
-        assertEquals(Arrays.asList(cp1, cp2), ContentManager.listProjects(user));
+        assertEquals(Arrays.asList(cp1, cp2), ContentManager.listProjects(getTestUser()));
         assertEquals(singletonList(cp3), ContentManager.listProjects(anotherAdmin));
     }
 
@@ -139,9 +139,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMultipleCreateContentProject() {
-        contentManager.createProject("cplabel", "cpname", "description", user);
+        contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         try {
-            contentManager.createProject("cplabel", "differentname", null, user);
+            contentManager.createProject("cplabel", "differentname", null, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityExistsException e) {
@@ -154,10 +154,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testUpdateContentProject() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
-        ContentProject updated = contentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"), user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description",
+                getTestUser());
+        ContentProject updated = contentManager.updateProject(cp.getLabel(), of("new name"), of("new desc"),
+                getTestUser());
 
-        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", getTestUser()).get();
         assertEquals(fromDb, updated);
         assertEquals("new name", fromDb.getName());
         assertEquals("new desc", fromDb.getDescription());
@@ -168,15 +170,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRemoveContentProject() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
-        contentManager.createEnvironment("cplabel", Optional.empty(), "one", "one", "one", false, user);
-        contentManager.createEnvironment("cplabel", Optional.of("one"), "two", "two", "two", false, user);
-        contentManager.createEnvironment("cplabel", Optional.of("two"), "three", "three", "three", false, user);
-        int entitiesAffected = contentManager.removeProject(cp.getLabel(), user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
+        contentManager.createEnvironment("cplabel", Optional.empty(), "one", "one", "one", false,
+                getTestUser());
+        contentManager.createEnvironment("cplabel", Optional.of("one"), "two", "two", "two", false,
+                getTestUser());
+        contentManager.createEnvironment("cplabel", Optional.of("two"), "three", "three", "three", false,
+                getTestUser());
+        int entitiesAffected = contentManager.removeProject(cp.getLabel(), getTestUser());
         assertEquals(1, entitiesAffected);
         TestUtils.flushAndClearSession();
 
-        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
+        Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", getTestUser());
         assertFalse(fromDb.isPresent());
     }
 
@@ -185,7 +190,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testContentProjectCrossOrg() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
 
         User anotherUser = UserTestUtils.createUser("Chuck", "rangers");
         anotherUser.addPermanentRole(ORG_ADMIN);
@@ -214,7 +219,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testContentProjectPermissions() {
-        User guy = UserTestUtils.createUser("Regular user", user.getOrg().getId());
+        User guy = UserTestUtils.createUser("Regular user", getTestUser().getOrg().getId());
 
         try {
             contentManager.createProject("cplabel", "cpname", "description", guy);
@@ -238,7 +243,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
             // expected
         }
 
-        ContentProject project = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject project = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         assertEquals(project, ContentManager.lookupProject("cplabel", guy).get());
     }
 
@@ -247,19 +252,22 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testContentEnvironmentLifecycle() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
 
         ContentEnvironment fst = contentManager.
-                createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false,
+                        getTestUser());
         ContentEnvironment snd = contentManager
-                .createEnvironment(cp.getLabel(), of(fst.getLabel()), "snd", "second env", "desc2", false, user);
+                .createEnvironment(cp.getLabel(), of(fst.getLabel()), "snd", "second env", "desc2", false,
+                        getTestUser());
         assertEquals(asList(fst, snd), ContentProjectFactory.listProjectEnvironments(cp));
 
         ContentEnvironment mid = contentManager.
-                createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", false, user);
+                createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", false,
+                        getTestUser());
         assertEquals(asList(fst, mid, snd), ContentProjectFactory.listProjectEnvironments(cp));
 
-        int numRemoved = contentManager.removeEnvironment(fst.getLabel(), cp.getLabel(), user);
+        int numRemoved = contentManager.removeEnvironment(fst.getLabel(), cp.getLabel(), getTestUser());
         assertEquals(1, numRemoved);
         assertEquals(asList(mid, snd), ContentProjectFactory.listProjectEnvironments(cp));
         assertEquals(mid, cp.getFirstEnvironmentOpt().get());
@@ -272,16 +280,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRemoveEnvironmentTargets() throws Exception {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         Channel channel = createChannelInEnvironment(env, empty());
 
         SoftwareEnvironmentTarget tgt = new SoftwareEnvironmentTarget(env, channel);
         ContentProjectFactory.save(tgt);
         env.addTarget(tgt);
 
-        contentManager.removeEnvironment("fst", "cplabel", user);
+        contentManager.removeEnvironment("fst", "cplabel", getTestUser());
         TestUtils.flushAndClearSession();
 
         // the target is removed
@@ -303,11 +311,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAddingEnvironmentAfterMismatchedPredecessor() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
-        contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
+        contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         try {
             contentManager.createEnvironment(cp.getLabel(), of("NONEXISTING"), "snd", "snd env", "desc",
-                    false, user);
+                    false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -322,17 +330,20 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPopulateNewEnvironment() throws Exception {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
 
         ContentEnvironment fst = contentManager.
-                createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false,
+                        getTestUser());
         fst.setVersion(3L);
         Channel channel = createChannelInEnvironment(fst, empty());
         fst.addTarget(new SoftwareEnvironmentTarget(fst, channel));
-        contentManager.createEnvironment(cp.getLabel(), of(fst.getLabel()), "last", "last env", "desc2", false, user);
+        contentManager.createEnvironment(cp.getLabel(), of(fst.getLabel()), "last", "last env", "desc2", false,
+                getTestUser());
 
         ContentEnvironment mid = contentManager.
-                createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", false, user);
+                createEnvironment(cp.getLabel(), of(fst.getLabel()), "mid", "middle env", "desc", false,
+                        getTestUser());
         assertEquals(1, mid.getTargets().size());
         Channel newChannel = mid.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertEquals(channel, newChannel.asCloned().map(ClonedChannel::getOriginal).get());
@@ -345,13 +356,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testUpdateContentEnvironment() {
-        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         contentManager
-                .createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false , user);
+                .createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false , getTestUser());
         contentManager.updateEnvironment("fst", "cplabel", of("new env name"),
-                of("new description"), user);
+                of("new description"), getTestUser());
         ContentEnvironment fromDb = ContentManager
-                .lookupEnvironment("fst", "cplabel", user).get();
+                .lookupEnvironment("fst", "cplabel", getTestUser()).get();
 
         assertEquals("new env name", fromDb.getName());
         assertEquals("new description", fromDb.getDescription());
@@ -362,11 +373,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testEnvironmentPermissions() {
-        contentManager.createProject("cplabel", "cpname", "description", user);
+        contentManager.createProject("cplabel", "cpname", "description", getTestUser());
         ContentEnvironment env =
-                contentManager.createEnvironment("cplabel", empty(), "dev", "dev env", "...", false, user);
+                contentManager.createEnvironment("cplabel", empty(), "dev", "dev env", "...", false, getTestUser());
 
-        User guy = UserTestUtils.createUser("Regular user", user.getOrg().getId());
+        User guy = UserTestUtils.createUser("Regular user", getTestUser().getOrg().getId());
         assertEquals(env, ContentManager.lookupEnvironment("dev", "cplabel", guy).get());
         assertEquals(singletonList(env), ContentManager.listProjectEnvironments("cplabel", guy));
 
@@ -400,21 +411,22 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testChangeProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        ProjectSource source = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource source = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(),
+                getTestUser());
         ProjectSource fromDb = ContentManager.lookupProjectSource(
-                "cplabel", SW_CHANNEL, channel.getLabel(), user).get();
+                "cplabel", SW_CHANNEL, channel.getLabel(), getTestUser()).get();
         assertEquals(source, fromDb);
         assertEquals(channel, fromDb.asSoftwareSource().get().getChannel());
         assertEquals(singletonList(source), cp.getSources());
 
         source.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
         ProjectSource projectSource = ContentProjectFactory.lookupProjectSource(
-                cp, SW_CHANNEL, channel.getLabel(), user).get();
+                cp, SW_CHANNEL, channel.getLabel(), getTestUser()).get();
         assertEquals(DETACHED, projectSource.getState());
         assertEquals(singletonList(source), cp.getSources());
     }
@@ -426,11 +438,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAttachProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         assertEquals(1, cp.getSources().size());
         assertEquals(ATTACHED, cp.getSources().get(0).getState());
@@ -443,12 +455,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMultipleAttachProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         assertEquals(1, cp.getSources().size());
         assertEquals(ATTACHED, cp.getSources().get(0).getState());
@@ -461,15 +473,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAttachBuiltProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(),
+                getTestUser());
         src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
 
         // attach the same source
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // it should stay in BUILT state
         assertEquals(1, cp.getSources().size());
@@ -483,15 +496,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAttachDetachedProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(),
+                getTestUser());
         src.setState(DETACHED); // programmatically set to DETACHED (normally this happens when detaching BUILT source))
 
         // attach the same source
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // it should go back to BUILT state
         assertEquals(1, cp.getSources().size());
@@ -505,12 +519,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAttachSourceMissingEntities() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
         try {
-            contentManager.attachSource("cplabel", SW_CHANNEL, "notthere", empty(), user);
+            contentManager.attachSource("cplabel", SW_CHANNEL, "notthere", empty(), getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -518,7 +532,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         try {
-            contentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), empty(), user);
+            contentManager.attachSource("idontexist", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -533,13 +547,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testDetachProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(),
+                getTestUser());
         src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
 
         assertEquals(1, cp.getSources().size());
         assertEquals(DETACHED, cp.getSources().get(0).getState());
@@ -552,12 +567,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testDetachAttachedProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
 
         // freshly attached, non-built source should be removed after detaching
         assertEquals(0, cp.getSources().size());
@@ -570,14 +585,15 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMultipleDetachingProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ProjectSource src = contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(),
+                getTestUser());
         src.setState(BUILT); // programmatically set to BUILT (normally this happens after building project)
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
 
         assertEquals(1, cp.getSources().size());
         assertEquals(DETACHED, cp.getSources().get(0).getState());
@@ -591,14 +607,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testDeleteSourceChannel() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
-        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
+        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(),
+                getTestUser()).isPresent());
         ChannelFactory.remove(channel);
-        assertFalse(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
+        assertFalse(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(),
+                getTestUser()).isPresent());
     }
 
     /**
@@ -609,13 +627,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testDeleteSourceProject() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
-        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(), user).isPresent());
-        contentManager.removeProject("cplabel", user);
+        assertTrue(ContentManager.lookupProjectSource("cplabel", SW_CHANNEL, channel.getLabel(),
+                getTestUser()).isPresent());
+        contentManager.removeProject("cplabel", getTestUser());
         // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
                 .createQuery("FROM SoftwareProjectSource s where s.contentProject = :cp", SoftwareProjectSource.class)
@@ -627,9 +646,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateAndListFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
-        List<ContentFilter> filters = ContentManager.listFilters(user);
+        List<ContentFilter> filters = ContentManager.listFilters(getTestUser());
         assertEquals(1, filters.size());
         ContentFilter fromDb = filters.get(0);
         assertInstanceOf(PackageFilter.class, fromDb);
@@ -643,20 +663,21 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         long id = -1234565L;
         // cleanup first
         try {
-            contentManager.removeFilter(id, user);
+            contentManager.removeFilter(id, getTestUser());
         }
         catch (EntityNotExistsException e) {
             // pass
         }
-        assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
+        assertFalse(ContentManager.lookupFilterById(id, getTestUser()).isPresent());
     }
 
     @Test
     public void testLookupFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
-        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
+        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), getTestUser()).get();
         assertEquals(filter, fromDb);
         assertEquals(Rule.DENY, fromDb.getRule());
     }
@@ -664,7 +685,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testLookupFilterNonAuthorizedUser() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
         User anotherAdmin = UserTestUtils.createUser("Regular user", "rangers");
         anotherAdmin.addPermanentRole(ORG_ADMIN);
@@ -675,11 +697,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testUpdateFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
         FilterCriteria newCriteria = new FilterCriteria(Matcher.CONTAINS, "name", "bbb");
-        contentManager.updateFilter(filter.getId(), of("newname"), empty(), of(newCriteria), user);
-        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), user).get();
+        contentManager.updateFilter(filter.getId(), of("newname"), empty(), of(newCriteria), getTestUser());
+        ContentFilter fromDb = ContentManager.lookupFilterById(filter.getId(), getTestUser()).get();
         assertEquals("newname", fromDb.getName());
         assertEquals(newCriteria, fromDb.getCriteria());
     }
@@ -687,67 +710,72 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRemoveFilter() {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
         Long id = filter.getId();
-        contentManager.removeFilter(id, user);
-        assertFalse(ContentManager.lookupFilterById(id, user).isPresent());
+        contentManager.removeFilter(id, getTestUser());
+        assertFalse(ContentManager.lookupFilterById(id, getTestUser()).isPresent());
     }
 
     @Test
     public void testAttachFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
-        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
 
-        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", getTestUser()).get();
         assertEquals(1, fromDb.getProjectFilters().size());
         ContentProjectFilter projectFilter = fromDb.getProjectFilters().get(0);
         assertEquals(ContentProjectFilter.State.ATTACHED, projectFilter.getState());
 
         // attaching a DETACHED filter should result in BUILT filter
         projectFilter.setState(ContentProjectFilter.State.DETACHED);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        fromDb = ContentManager.lookupProject("cplabel", user).get();
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        fromDb = ContentManager.lookupProject("cplabel", getTestUser()).get();
         assertEquals(ContentProjectFilter.State.BUILT, fromDb.getProjectFilters().get(0).getState());
     }
 
     @Test
     public void testDetachNoFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
-        contentManager.detachFilter("cplabel", filter.getId(), user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
+        contentManager.detachFilter("cplabel", filter.getId(), getTestUser());
     }
 
     @Test
     public void testDetachFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.detachFilter("cplabel", filter.getId(), user);
-        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.detachFilter("cplabel", filter.getId(), getTestUser());
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", getTestUser()).get();
         assertTrue(fromDb.getProjectFilters().isEmpty());
     }
 
     @Test
     public void testDetachBuiltFilter() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria,
+                getTestUser());
 
-        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
         cp.getProjectFilters().get(0).setState(ContentProjectFilter.State.BUILT);
-        contentManager.detachFilter("cplabel", filter.getId(), user);
-        ContentProject fromDb = ContentManager.lookupProject("cplabel", user).get();
+        contentManager.detachFilter("cplabel", filter.getId(), getTestUser());
+        ContentProject fromDb = ContentManager.lookupProject("cplabel", getTestUser()).get();
         assertEquals(1, fromDb.getProjectFilters().size());
         assertEquals(ContentProjectFilter.State.DETACHED, fromDb.getProjectFilters().get(0).getState());
     }
@@ -757,10 +785,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectNoEnvs() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -773,12 +801,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectNoSources() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -794,17 +822,17 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProject() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         assertEquals(Long.valueOf(0), env.getVersion());
 
         // 1. build the project with a source
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel());
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         List<EnvironmentTarget> tgts = env.getTargets();
         assertEquals(1, tgts.size());
@@ -820,9 +848,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // 2. change the project source and rebuild
         Channel newChannel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, newChannel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, newChannel.getLabel(), empty(), getTestUser());
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel()); // leader is the same
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(Long.valueOf(2), env.getVersion());
 
         tgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.asSoftwareTarget().get().getStatus()));
@@ -845,10 +873,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(channel.getErratas(), tgtChannel.getErratas());
 
         // 3. remove a source and rebuild
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), getTestUser());
         assertEquals(1, cp.getActiveSources().size());
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(Long.valueOf(3), env.getVersion());
 
         assertEquals(newChannel, cp.lookupSwSourceLeader().get().getChannel()); // leader is changed
@@ -867,17 +895,17 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectExistingChannel() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
 
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         Channel alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         List<EnvironmentTarget> environmentTargets = env.getTargets();
         assertEquals(1, environmentTargets.size());
         assertEquals(alreadyExistingTgt, environmentTargets.get(0).asSoftwareTarget().get().getChannel());
@@ -890,20 +918,20 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectExistingChannelCrossOrg() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
 
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         Org otherOrg = UserTestUtils.createOrg("testOrg2");
         Channel alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
         alreadyExistingTgt.setOrg(otherOrg);
 
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (InvalidChannelLabelException e) {
@@ -920,21 +948,21 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testBuildProjectTwoUsers() throws Exception {
         String userInSameOrg = "userInSameOrg";
-        User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", user.getOrg().getId());
+        User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", getTestUser().getOrg().getId());
         adminSameOrg.addPermanentRole(ORG_ADMIN);
-        User userSameOrg = UserTestUtils.createUser(userInSameOrg, user.getOrg().getId());
+        User userSameOrg = UserTestUtils.createUser(userInSameOrg, getTestUser().getOrg().getId());
         Org otherOrg = UserTestUtils.createOrg("testOrg2");
         User userOtherOrg = UserTestUtils.createUser(userInSameOrg, otherOrg.getId());
 
         // project is created by one user
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
 
         // ... build by another user
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
         contentManager.buildProject("cplabel", empty(), false, adminSameOrg);
         assertEquals(Long.valueOf(1), env.getVersion());
 
@@ -955,27 +983,27 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectHistoryAdded() throws Exception {
-        User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", user.getOrg().getId());
+        User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", getTestUser().getOrg().getId());
         adminSameOrg.addPermanentRole(ORG_ADMIN);
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
 
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(Long.valueOf(1), env.getVersion());
 
         List<ContentProjectHistoryEntry> history =
-                ContentManager.lookupProject("cplabel", user).get().getHistoryEntries();
+                ContentManager.lookupProject("cplabel", getTestUser()).get().getHistoryEntries();
         assertEquals(1, history.size());
         assertEquals(Long.valueOf(1), history.get(0).getVersion());
-        assertEquals(user, history.get(0).getUser());
+        assertEquals(getTestUser(), history.get(0).getUser());
 
         contentManager.buildProject("cplabel", empty(), false, adminSameOrg);
         assertEquals(Long.valueOf(2), env.getVersion());
-        history = ContentManager.lookupProject("cplabel", user).get().getHistoryEntries();
+        history = ContentManager.lookupProject("cplabel", getTestUser()).get().getHistoryEntries();
         assertEquals(2, history.size());
         assertEquals(Long.valueOf(2), history.get(1).getVersion());
         assertEquals(adminSameOrg, history.get(1).getUser());
@@ -986,17 +1014,17 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectModularSources() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
+        Channel channel = MockModulemdApi.createModularTestChannel(getTestUser());
 
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         assertEquals(Long.valueOf(0), env.getVersion());
 
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
         assertEquals(channel, cp.lookupSwSourceLeader().get().getChannel());
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // When no module filter is applied, modular channels must be cloned as-is.
         // Assert that the target channel is also modular
@@ -1013,24 +1041,24 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testDiffProject() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment devEnv = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
 
         // 1. build the project with a source
         Channel channel1 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // 2. add new environments
         ContentEnvironment testEnv = contentManager.createEnvironment(
-                cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                cp.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
         ContentEnvironment prodEnv = contentManager.createEnvironment(
-                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, user);
+                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, getTestUser());
 
         // 3. promote dev to test
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         List<EnvironmentTarget> testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1039,7 +1067,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("cplabel-test-" + channel1.getLabel(), tgtChannel1.getLabel());
 
         // 4. promote test to prod
-        contentManager.promoteProject("cplabel", "test", false, user);
+        contentManager.promoteProject("cplabel", "test", false, getTestUser());
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1049,11 +1077,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // Use environment diff - all envs the same - no diff expected
         contentManager.diffProject(cp);
-        List<ContentEnvironmentDiff> diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        List<ContentEnvironmentDiff> diffDev =
+                ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "dev");
         assertTrue(diffDev.isEmpty());
-        List<ContentEnvironmentDiff> diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        List<ContentEnvironmentDiff> diffTest =
+                ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "test");
         assertTrue(diffTest.isEmpty());
-        List<ContentEnvironmentDiff> diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        List<ContentEnvironmentDiff> diffProd =
+                ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "prod");
         assertTrue(diffProd.isEmpty());
 
         // Remove a package from the original channel
@@ -1061,7 +1092,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(channel1.getPackages().remove(existingPackage));
 
         // Add an errata with package to the original channel
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         Set<Package> errataPackages = errata.getPackages();
         Package pack = errataPackages.iterator().next();
         channel1.addErrata(errata);
@@ -1070,15 +1101,15 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // add a package to the original channel and a filter for it to the project
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "filtered-package");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
-        Package testFilteredPackage = PackageTest.createTestPackage(user.getOrg(), "filtered-package");
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, getTestUser());
+        Package testFilteredPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "filtered-package");
         channel1.getPackages().add(testFilteredPackage);
         ChannelFactory.save(channel1);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
 
         // Execute diff to see if all errata and packages have the expected state
         contentManager.diffProject(cp);
-        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        diffDev = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "dev");
         assertEquals(4, diffDev.size());
         diffDev.forEach(d -> {
             if (d.getEntryType().equals(EntryType.ERRATA)) {
@@ -1109,7 +1140,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
 
         // 5. build with changes
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(Long.valueOf(2), devEnv.getVersion());
 
         // We need to clear and reload as buildProject uses mode queries inside a doWithoutAutoFlush area
@@ -1118,9 +1149,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         devEnv = TestUtils.reload(devEnv);
 
         contentManager.diffProject(cp);
-        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        diffDev = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "dev");
         assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
-        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        diffTest = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "test");
         assertEquals(3, diffTest.size());
         diffTest.forEach(d -> {
             if (d.getEntryType().equals(EntryType.ERRATA)) {
@@ -1145,7 +1176,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         });
 
         // 6. promote dev to test
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
 
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         TestUtils.flushAndClearSession();
@@ -1157,11 +1188,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
 
         contentManager.diffProject(cp);
-        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        diffDev = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "dev");
         assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
-        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        diffTest = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "test");
         assertTrue(diffTest.isEmpty());
-        diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        diffProd = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "prod");
         assertEquals(3, diffProd.size());
         diffProd.forEach(d -> {
             if (d.getEntryType().equals(EntryType.ERRATA)) {
@@ -1186,7 +1217,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         });
 
         // 7. last promotion test to prod
-        contentManager.promoteProject("cplabel", "test", false, user);
+        contentManager.promoteProject("cplabel", "test", false, getTestUser());
 
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         TestUtils.flushAndClearSession();
@@ -1198,11 +1229,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
 
         contentManager.diffProject(cp);
-        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        diffDev = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "dev");
         assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
-        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        diffTest = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "test");
         assertTrue(diffTest.isEmpty());
-        diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        diffProd = ContentManager.listEnvironmentDifference(getTestUser(), "cplabel", "prod");
         assertTrue(diffProd.isEmpty());
     }
 
@@ -1213,26 +1244,26 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromoteProject() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment devEnv = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
 
         // 1. build the project with a source
         Channel channel1 = createPopulatedChannel();
         Channel channel2 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // 2. add new environments
         ContentEnvironment testEnv = contentManager.createEnvironment(
-                cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                cp.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
         ContentEnvironment prodEnv = contentManager.createEnvironment(
-                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, user);
+                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, getTestUser());
 
         // 3. promote
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         List<EnvironmentTarget> testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1243,10 +1274,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("cplabel-test-" + channel2.getLabel(), tgtChannel2.getLabel());
 
         // 3. change project sources (this shouldn't effect the next promotion and should be effective only after build)
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), getTestUser());
 
         // 4. promote further
-        contentManager.promoteProject("cplabel", "test", false, user);
+        contentManager.promoteProject("cplabel", "test", false, getTestUser());
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1257,7 +1288,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("cplabel-prod-" + channel2.getLabel(), tgtChannel2.getLabel());
 
         // 5. build with changed sources
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(Long.valueOf(2), devEnv.getVersion());
         assertEquals(1, devEnv.getTargets().size());
         assertEquals(2, testEnv.getTargets().size());
@@ -1265,7 +1296,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertNull(ChannelFactory.lookupByLabel("cplabel-dev-" + channel1.getLabel())); // channel has been deleted
 
         // 6. next promotion cycle
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
         testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1275,7 +1306,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertNull(ChannelFactory.lookupByLabel("cplabel-test-" + channel1.getLabel())); // channel has been deleted
 
         // 7. last promotion cycle
-        contentManager.promoteProject("cplabel", "test", false, user);
+        contentManager.promoteProject("cplabel", "test", false, getTestUser());
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();
         prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
@@ -1290,10 +1321,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromoteEmptyProject() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         try {
-            contentManager.promoteProject("cplabel", "idontexist", false, user);
+            contentManager.promoteProject("cplabel", "idontexist", false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -1308,16 +1339,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromoteSingleEnv() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        contentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+        contentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
 
         Channel channel1 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         try {
-            contentManager.promoteProject("cplabel", "dev", false, user);
+            contentManager.promoteProject("cplabel", "dev", false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1330,16 +1361,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromoteWithNoBuild() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        contentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
-        contentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        contentManager.createEnvironment(cp.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
+        contentManager.createEnvironment(cp.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
 
         Channel channel1 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
 
         try {
-            contentManager.promoteProject("cplabel", "dev", false, user);
+            contentManager.promoteProject("cplabel", "dev", false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (IllegalStateException e) {
@@ -1354,26 +1385,26 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectWithFilters() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         assertEquals(Long.valueOf(0), env.getVersion());
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, getTestUser());
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // ATTACHED filters should get BUILT
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(1, cp.getProjectFilters().size());
         assertEquals(ContentProjectFilter.State.BUILT, cp.getProjectFilters().get(0).getState());
 
         // DETACHED filters should get removed
-        contentManager.detachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.detachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertTrue(cp.getProjectFilters().isEmpty());
     }
 
@@ -1384,24 +1415,24 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectWithNevrFilters() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build without filters
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
 
         // build with filters
         Package pack = channel.getPackages().iterator().next();
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevr", pack.getNameEvr());
         ContentFilter filter = contentManager.createFilter(
-                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
     }
 
@@ -1410,21 +1441,21 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectWithUnmatchingModuleFilters() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
+        Channel channel = MockModulemdApi.createModularTestChannel(getTestUser());
 
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build with unmatching filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:notexists");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
+                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
             fail("An exception must be thrown.");
         }
         catch (RuntimeException e) {
@@ -1434,19 +1465,19 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testBuildProjectWithModuleFilters() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        Channel channel = MockModulemdApi.createModularTestChannel(getTestUser());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build with matching filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter-2", Rule.ALLOW, EntityType.MODULE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+                "my-filter-2", Rule.ALLOW, EntityType.MODULE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
 
         // Only the packages from postgresql:10 should be in the target
@@ -1459,18 +1490,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectRegularSourcesModuleFilters() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
 
         // Nothing should be filtered
@@ -1485,48 +1516,49 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectWithNevraFilters() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         Channel channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build without filters
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
 
         // build with filters
         Package pack = channel.getPackages().iterator().next();
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevra", pack.getNameEvra());
         ContentFilter filter = contentManager.createFilter(
-                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
     }
 
     @Test
     public void testBuildProjectWithErrataFilter() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment env = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         Channel channel = createPopulatedChannel();
         Errata erratum = channel.getErratas().iterator().next();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build without filters
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
         assertEquals(erratum, env.getTargets().get(0).asSoftwareTarget().get()
                 .getChannel().getErratas().iterator().next());
 
         // build with filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
-        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.ERRATUM, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.ERRATUM, criteria,
+                getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
     }
 
@@ -1537,19 +1569,19 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildAlreadyBuildingProject() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var env = contentManager.createEnvironment(
-                project.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                project.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         env.getTargets().iterator().next().setStatus(Status.BUILDING);
         TestUtils.flushSession();
 
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1565,36 +1597,36 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testClonedChannelLinks() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var devEnv = contentManager.createEnvironment(
-                project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                project.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
         var testEnv = contentManager.createEnvironment(
-                project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                project.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
 
         // build the project with 2 channels
         var channel1 = createPopulatedChannel();
         var channel2 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // check that built channels have the originals set correctly
         assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
 
         // promote project
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment
-        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
-        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", getTestUser()).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", getTestUser()).get();
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // delete a source && build the project
-        contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // check the originals of the "test" channels: one should point to a channel in the "dev" environment,
@@ -1604,13 +1636,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(expectedTestOriginals, getOriginalChannels(getEnvChannels(testEnv)));
 
         // add the channel again && build
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment again
-        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
-        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", getTestUser()).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", getTestUser()).get();
         assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
     }
@@ -1623,34 +1655,34 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testClonedChannelLinksInEnvPath() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var devEnv = contentManager.createEnvironment(
-                project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                project.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
         var testEnv = contentManager.createEnvironment(
-                project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                project.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
 
         // build the project with 1 channel
         var channel1 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // promote project
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment
-        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
-        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", getTestUser()).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", getTestUser()).get();
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // create a new environment "in the middle"
         var middleEnv = contentManager.createEnvironment(
-                project.getLabel(), of("dev"), "mid", "mid env", "desc", false, user);
+                project.getLabel(), of("dev"), "mid", "mid env", "desc", false, getTestUser());
         TestUtils.flushAndClearSession();
-        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
-        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", getTestUser()).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", getTestUser()).get();
 
         // check the originals of the mid environment correspond to channels in the dev environment
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(middleEnv)));
@@ -1658,10 +1690,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(getEnvChannels(middleEnv), getOriginalChannels(getEnvChannels(testEnv)));
 
         // check that after removing the middle env, the originals of the test point to dev channels again
-        contentManager.removeEnvironment("mid", "cplabel", user);
+        contentManager.removeEnvironment("mid", "cplabel", getTestUser());
         TestUtils.flushAndClearSession();
-        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
-        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
+        devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", getTestUser()).get();
+        testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", getTestUser()).get();
         // check the originals of the mid environment correspond to channels in the dev environment
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
     }
@@ -1678,30 +1710,30 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testFixingClonedChannelLinks() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var devEnv = contentManager.createEnvironment(
-                project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                project.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
         var testEnv = contentManager.createEnvironment(
-                project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                project.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
 
         // build the project
         var channel1 = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // check that built channel has the original set correctly
         assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(devEnv)));
 
         // promote project
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
 
         // now "break" the testEnv channel
         getEnvChannels(testEnv).forEach(chan -> chan.asCloned().get().setOriginal(channel1));
         assertEquals(Set.of(channel1), getOriginalChannels(getEnvChannels(testEnv)));
 
         // promote project again and check that the original of testEnv channel was fixed
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
 
         assertEquals(getEnvChannels(devEnv), getOriginalChannels(getEnvChannels(testEnv)));
     }
@@ -1714,16 +1746,16 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testFixingClonedChannelLinks2() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var srcChan = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, srcChan.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, srcChan.getLabel(), empty(), getTestUser());
 
         // 2 environments, 1 channel in each
         var devEnv = contentManager.createEnvironment(
-                project.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+                project.getLabel(), empty(), "dev", "dev env", "desc", false, getTestUser());
         var testEnv = contentManager.createEnvironment(
-                project.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+                project.getLabel(), of("dev"), "test", "test env", "desc", false, getTestUser());
 
         var devChan = createChannelInEnvironment(devEnv, of(srcChan.getLabel()));
         var devTarget = new SoftwareEnvironmentTarget(devEnv, devChan);
@@ -1740,7 +1772,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(testChan.isCloned());
 
         // let's build the project and check that the procedure fixed the channel in the dev environment
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -1750,7 +1782,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(testChan.isCloned());
 
         // let's promote the project and check that the procedure fixed the channel in the test environment as well
-        contentManager.promoteProject("cplabel", "dev", false, user);
+        contentManager.promoteProject("cplabel", "dev", false, getTestUser());
         TestUtils.flushAndClearSession();
 
         devChan = ChannelFactory.lookupById(devChan.getId());
@@ -1781,26 +1813,26 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromotingBuildingProject() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         var fstEnv = contentManager.createEnvironment(
-                project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+                project.getLabel(), empty(), "fst", "first env", "fst", false, getTestUser());
         contentManager.createEnvironment(
-                project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+                project.getLabel(), of("fst"), "snd", "second env", "snd", false, getTestUser());
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // 1st promote runs ok
-        contentManager.promoteProject("cplabel", "fst", false, user);
+        contentManager.promoteProject("cplabel", "fst", false, getTestUser());
 
         // now we change the target from the 1st environment to BUILDING
         fstEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
 
         // now the promote must fail
         try {
-            contentManager.promoteProject("cplabel", "fst", false, user);
+            contentManager.promoteProject("cplabel", "fst", false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1815,26 +1847,26 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPromotingPromotingProject() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
         contentManager.createEnvironment(
-                project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+                project.getLabel(), empty(), "fst", "first env", "fst", false, getTestUser());
         var sndEnv = contentManager.createEnvironment(
-                project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+                project.getLabel(), of("fst"), "snd", "second env", "snd", false, getTestUser());
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // 1st promote runs ok
-        contentManager.promoteProject("cplabel", "fst", false, user);
+        contentManager.promoteProject("cplabel", "fst", false, getTestUser());
 
         // now we change the target from the 2nd environment to BUILDING
         sndEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
 
         // now the promote must fail
         try {
-            contentManager.promoteProject("cplabel", "fst", false, user);
+            contentManager.promoteProject("cplabel", "fst", false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1849,20 +1881,25 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildPromoteInProgress() throws Exception {
-        var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(project);
-        var env1 = contentManager.createEnvironment(project.getLabel(), empty(), "env1", "env 1", "1", false, user);
-        var env2 = contentManager.createEnvironment(project.getLabel(), of("env1"), "env2", "env 2", "2", false, user);
-        var env3 = contentManager.createEnvironment(project.getLabel(), of("env2"), "env3", "env 3", "3", false, user);
-        var env4 = contentManager.createEnvironment(project.getLabel(), of("env3"), "env4", "env 4", "4", false, user);
-        var env5 = contentManager.createEnvironment(project.getLabel(), of("env4"), "env5", "env 5", "5", false, user);
+        var env1 = contentManager.createEnvironment(project.getLabel(), empty(), "env1", "env 1", "1", false,
+                getTestUser());
+        var env2 = contentManager.createEnvironment(project.getLabel(), of("env1"), "env2", "env 2", "2", false,
+                getTestUser());
+        var env3 = contentManager.createEnvironment(project.getLabel(), of("env2"), "env3", "env 3", "3", false,
+                getTestUser());
+        var env4 = contentManager.createEnvironment(project.getLabel(), of("env3"), "env4", "env 4", "4", false,
+                getTestUser());
+        var env5 = contentManager.createEnvironment(project.getLabel(), of("env4"), "env5", "env 5", "5", false,
+                getTestUser());
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // build & promote everything possible
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         List.of(1, 2, 3, 4).forEach(i ->
-                contentManager.promoteProject("cplabel", "env" + i, false, user));
+                contentManager.promoteProject("cplabel", "env" + i, false, getTestUser()));
 
         // PHASE 1: Test building
         // 1st target BUILDING -> requested build should fail
@@ -1878,7 +1915,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // 3rd target BUILDING -> build passes
         getFirstTarget(env3).setStatus(Status.BUILDING);
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            contentManager.buildProject("cplabel", empty(), false, getTestUser());
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1888,7 +1925,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // PHASE 2: Test promoting of environment env2
         // 1st promote is OK
         try {
-            contentManager.promoteProject("cplabel", "env2", false, user);
+            contentManager.promoteProject("cplabel", "env2", false, getTestUser());
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1912,7 +1949,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // env5 is building -> requested promote should be ok
         getFirstTarget(env5).setStatus(Status.BUILDING);
         try {
-            contentManager.promoteProject("cplabel", "env2", false, user);
+            contentManager.promoteProject("cplabel", "env2", false, getTestUser());
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1927,12 +1964,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testModularDataAlignmentNoModulesSource() throws Exception {
-        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false,
+                getTestUser());
 
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         // we already have a modular target cloned from the past
         var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
@@ -1942,7 +1980,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         alreadyExistingTgt.setModules(modules);
         env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // building project with unmodular source should reset the modular data in corresponding target
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
@@ -1955,17 +1993,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testModularFiltersStripTargetModules() throws Exception {
-        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false,
+                getTestUser());
 
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
-        contentManager.attachFilter("cplabel", filter.getId(), user);
+                "my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, getTestUser());
+        contentManager.attachFilter("cplabel", filter.getId(), getTestUser());
 
-        var channel = MockModulemdApi.createModularTestChannel(user);
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        var channel = MockModulemdApi.createModularTestChannel(getTestUser());
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
 
         var alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
         Modules modules = new Modules();
@@ -1975,7 +2014,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         env.addTarget(new SoftwareEnvironmentTarget(env, alreadyExistingTgt));
 
         // both source and current target have modular metadata...
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
 
         // ...but presence of a filter strips it away
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
@@ -1987,14 +2026,15 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testModularDataAlignment() throws Exception {
-        var cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        var cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false,
+                getTestUser());
 
         // verify that a non-modular source results in an non-modular target
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
 
         // verify that a modular source results in a modular target
@@ -2002,7 +2042,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         modules.setRelativeFilename("srcfilename");
         modules.setChannel(channel);
         channel.setModules(modules);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         var tgtChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
         assertTrue(tgtChannel.isModular());
         assertEquals("srcfilename",  tgtChannel.getModules().getRelativeFilename());
@@ -2010,7 +2050,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // verify that a non-modular source strips the modular data
         HibernateFactory.getSession().remove(channel.getModules());
         channel.setModules(null);
-        contentManager.buildProject("cplabel", empty(), false, user);
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());
     }
 
@@ -2021,18 +2061,18 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testModularDataAlignmentPromote() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
+        Channel channel = MockModulemdApi.createModularTestChannel(getTestUser());
 
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment fst = contentManager.createEnvironment(
-                cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
+                cp.getLabel(), empty(), "fst", "first env", "desc", false, getTestUser());
         ContentEnvironment snd = contentManager.createEnvironment(
-                cp.getLabel(), of("fst"), "snd", "second env", "desc", false, user);
+                cp.getLabel(), of("fst"), "snd", "second env", "desc", false, getTestUser());
 
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
-        contentManager.promoteProject("cplabel", "fst", false, user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
+        contentManager.buildProject("cplabel", empty(), false, getTestUser());
+        contentManager.promoteProject("cplabel", "fst", false, getTestUser());
 
         String relativeFilename = channel.getModules().getRelativeFilename();
         Channel fstTgt = fst.getTargets().get(0).asSoftwareTarget().get().getChannel();
@@ -2073,7 +2113,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
     private void assertBuildFails(String projectLabel) {
         try {
-            contentManager.buildProject(projectLabel, empty(), false, user);
+            contentManager.buildProject(projectLabel, empty(), false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -2083,7 +2123,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
     private void assertPromoteFails(String projectLabel, String envLabel) {
         try {
-            contentManager.promoteProject(projectLabel, envLabel, false, user);
+            contentManager.promoteProject(projectLabel, envLabel, false, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -2096,10 +2136,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private Channel createPopulatedChannel() throws Exception {
-        Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(user, false));
+        Channel channel = TestUtils.reload(ChannelFactoryTest.createTestChannel(getTestUser(), false));
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
-        Package pack = PackageTest.createTestPackage(user.getOrg());
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         ChannelTestUtility.testAddPackage(channel, pack);
         channel.addErrata(errata);
         ChannelFactory.save(channel);

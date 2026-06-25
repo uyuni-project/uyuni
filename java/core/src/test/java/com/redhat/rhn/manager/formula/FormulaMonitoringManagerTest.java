@@ -86,14 +86,14 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
 
         FormulaFactory.setSystemEntitlementManager(sysEntMgr);
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         FormulaFactory.setMetadataDirOfficial(metadataDir + File.separator);
 
         // No group or system level assignment of the `prometheus-exporters` Formula
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
         // Create a group level assignment of the Formula
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
         systemManager.addServerToServerGroup(minion, group);
         FormulaFactory.saveGroupFormulas(group, Arrays.asList(PROMETHEUS_EXPORTERS));

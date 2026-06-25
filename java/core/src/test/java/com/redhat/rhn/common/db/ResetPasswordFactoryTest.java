@@ -37,17 +37,17 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testToken() {
-        String tok = ResetPasswordFactory.generatePasswordToken(user);
+        String tok = ResetPasswordFactory.generatePasswordToken(getTestUser());
         assertNotNull(tok);
         assertEquals(64, tok.length());
     }
 
     @Test
     public void testDirectCreate() {
-        ResetPassword rp = new ResetPassword(user.getId(),
-                        ResetPasswordFactory.generatePasswordToken(user));
+        ResetPassword rp = new ResetPassword(getTestUser().getId(),
+                        ResetPasswordFactory.generatePasswordToken(getTestUser()));
         assertNotNull(rp);
-        assertEquals(rp.getUserId(), user.getId());
+        assertEquals(rp.getUserId(), getTestUser().getId());
         assertNotNull(rp.getToken());
         assertTrue(rp.isValid());
         assertFalse(rp.isExpired());
@@ -55,8 +55,8 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testExpired() {
-        ResetPassword rp = new ResetPassword(user.getId(),
-                        ResetPasswordFactory.generatePasswordToken(user));
+        ResetPassword rp = new ResetPassword(getTestUser().getId(),
+                        ResetPasswordFactory.generatePasswordToken(getTestUser()));
         assertNotNull(rp);
         assertFalse(rp.isExpired());
 
@@ -80,9 +80,9 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFactoryCreate() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         assertNotNull(rp);
-        assertEquals(rp.getUserId(), user.getId());
+        assertEquals(rp.getUserId(), getTestUser().getId());
         assertNotNull(rp.getToken());
         assertTrue(rp.isValid());
     }
@@ -95,19 +95,19 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRecoverAndDelete() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         ResetPassword found = ResetPasswordFactory.lookupByToken(rp.getToken());
-        assertEquals(found.getUserId(), user.getId());
+        assertEquals(found.getUserId(), getTestUser().getId());
         assertNotNull(found.getToken());
         assertTrue(found.isValid());
         assertEquals(rp.getToken(), found.getToken());
-        int rmv = ResetPasswordFactory.deleteUserTokens(user.getId());
+        int rmv = ResetPasswordFactory.deleteUserTokens(getTestUser().getId());
         assertEquals(1, rmv);
     }
 
     @Test
     public void testInvalidateOne() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         assertNotNull(rp);
         ResetPasswordFactory.invalidateToken(rp.getToken());
         ResetPassword found = ResetPasswordFactory.lookupByToken(rp.getToken());
@@ -116,13 +116,13 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testInvalidate() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         assertNotNull(rp);
-        int rmvd = ResetPasswordFactory.deleteUserTokens(user.getId());
+        int rmvd = ResetPasswordFactory.deleteUserTokens(getTestUser().getId());
         assertEquals(1, rmvd);
-        ResetPassword rp1 = ResetPasswordFactory.createNewEntryFor(user);
-        ResetPassword rp2 = ResetPasswordFactory.createNewEntryFor(user);
-        ResetPassword rp3 = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp1 = ResetPasswordFactory.createNewEntryFor(getTestUser());
+        ResetPassword rp2 = ResetPasswordFactory.createNewEntryFor(getTestUser());
+        ResetPassword rp3 = ResetPasswordFactory.createNewEntryFor(getTestUser());
         assertNotSame(rp1, rp2);
         assertNotSame(rp1, rp3);
         assertNotSame(rp2, rp3);
@@ -139,16 +139,16 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(found);
         assertTrue(found.isValid());
 
-        int inv = ResetPasswordFactory.invalidateUserTokens(user.getId());
+        int inv = ResetPasswordFactory.invalidateUserTokens(getTestUser().getId());
         assertEquals(3, inv);
 
-        rmvd = ResetPasswordFactory.deleteUserTokens(user.getId());
+        rmvd = ResetPasswordFactory.deleteUserTokens(getTestUser().getId());
         assertEquals(3, rmvd);
     }
 
     @Test
     public void testFindErrors() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         assertNotNull(rp);
 
         // Everything OK
@@ -166,7 +166,7 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
         }
 
         // Invalid token
-        ResetPassword rp1 = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp1 = ResetPasswordFactory.createNewEntryFor(getTestUser());
         rp1.setIsValid(false);
         errors = ResetPasswordFactory.findErrors(rp1);
         assertEquals(1, errors.size());

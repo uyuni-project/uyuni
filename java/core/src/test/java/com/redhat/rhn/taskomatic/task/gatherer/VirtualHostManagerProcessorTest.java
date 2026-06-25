@@ -57,7 +57,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         virtualHostManager = new VirtualHostManager();
         virtualHostManager.setId(101L);
         virtualHostManager.setLabel("vhmanager");
-        virtualHostManager.setOrg(user.getOrg());
+        virtualHostManager.setOrg(getTestUser().getOrg());
     }
 
     /**
@@ -114,7 +114,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     @Test
     public void testServerExists() throws Exception {
         // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "101-esxi_host_1_id");
+        Server existingHost = ServerTestUtils.createForeignSystem(getTestUser(), "101-esxi_host_1_id");
 
         // gatherer reports this host (name even doesn't have to be the same, important
         // thing is the digital server id is equal)
@@ -134,7 +134,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateVirtInstanceWithExistingServer() throws Exception {
         // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "101-existing_host_id");
+        Server existingHost = ServerTestUtils.createForeignSystem(getTestUser(), "101-existing_host_id");
 
         // gatherer reports this host
         Map<String, HostJson> data = createHostData("existing_host_id", null);
@@ -163,7 +163,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     @Test
     public void testExistingVirtInstanceWithExistingServer() throws Exception {
         // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "101-existing_host_id");
+        Server existingHost = ServerTestUtils.createForeignSystem(getTestUser(), "101-existing_host_id");
         // create a VI for host
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setConfirmed(1L);
@@ -317,7 +317,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
         // guest already registered by usual registration process
         String vmUuid = "51283028dab94084b66117b5bf1d3661";
-        VirtualInstance registeredGuest = new GuestBuilder(user)
+        VirtualInstance registeredGuest = new GuestBuilder(getTestUser())
                 .createGuest()
                 .withUuid(vmUuid)
                 .inStoppedState()
@@ -328,7 +328,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // gatherer reports this guest belonging to a host _after_ registration
         String foreignSystemId = "foreign_system_id" + TestUtils.randomString();
         Server hostServer = ServerTestUtils
-                .createForeignSystem(user, "101-" + foreignSystemId);
+                .createForeignSystem(getTestUser(), "101-" + foreignSystemId);
         Map<String, HostJson> data = createHostData(foreignSystemId,
                 pairsToMap("vm name", vmUuid));
 
@@ -766,7 +766,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
     private VirtualInstance createRegisteredGuestWithForeignHost(String guestUuid,
             String digitalServerId) throws Exception {
-        return new GuestBuilder(user)
+        return new GuestBuilder(getTestUser())
             .createGuest()
             .withUuid(guestUuid)
             .withForeignEntitledHost(digitalServerId)
@@ -776,7 +776,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     private VirtualInstance createRegisteredGuestWithHost(String guestUuid) throws Exception {
-        return new GuestBuilder(user)
+        return new GuestBuilder(getTestUser())
             .createGuest()
             .withUuid(guestUuid)
             .withVirtHost()

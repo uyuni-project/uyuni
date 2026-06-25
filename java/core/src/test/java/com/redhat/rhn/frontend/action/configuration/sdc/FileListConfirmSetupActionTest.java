@@ -57,11 +57,11 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
      * @throws Exception under exceptional circumstances
      */
     private Server setupTest(RhnSet set, String feature) throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         SystemManagerTest.giveCapability(server.getId(), feature, 1L);
 
         //create a normal config revision
-        ConfigRevision rev1 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision rev1 = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
 
         //create a config revision for a directory
         ConfigFile file2 = ConfigTestUtils
@@ -81,7 +81,7 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
         RhnSetManager.store(set);
 
         //we have to subscribe the server to the global channel.
-        server.subscribeConfigChannel(file2.getConfigChannel(), user);
+        server.subscribeConfigChannel(file2.getConfigChannel(), getTestUser());
         SystemManager.storeServer(server);
         return server;
     }
@@ -112,28 +112,28 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
     public void testDeploy() throws Exception {
 
         runTheTest("/systems/details/configuration/DeployFileConfirm",
-                RhnSetDecl.CONFIG_FILE_NAMES.get(user),
+                RhnSetDecl.CONFIG_FILE_NAMES.get(getTestUser()),
                 SystemManager.CAP_CONFIGFILES_DEPLOY);
     }
 
     @Test
     public void testDiff() throws Exception {
         runTheTest("/systems/details/configuration/DiffFileConfirm",
-                RhnSetDecl.CONFIG_FILE_NAMES.get(user),
+                RhnSetDecl.CONFIG_FILE_NAMES.get(getTestUser()),
                 SystemManager.CAP_CONFIGFILES_DIFF);
     }
 
     @Test
     public void testImport() throws Exception {
         runTheTest("/systems/details/configuration/addfiles/ImportFileConfirm",
-                RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(user),
+                RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(getTestUser()),
                 SystemManager.CAP_CONFIGFILES_UPLOAD);
     }
 
     @Test
     public void testImportWithNewPath() throws Exception {
         //create the server
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         SystemManagerTest.giveCapability(server.getId(),
                             SystemManager.CAP_CONFIGFILES_UPLOAD, 1L);
@@ -142,7 +142,7 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
                 .lookupOrInsertConfigFileName("/etc/foo" + TestUtils.randomString());
 
         //add the filename to the set
-        RhnSet set = RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(user);
+        RhnSet set = RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(getTestUser());
         set.addElement(name.getId());
         RhnSetManager.store(set);
 

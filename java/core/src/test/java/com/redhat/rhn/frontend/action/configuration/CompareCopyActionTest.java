@@ -33,16 +33,16 @@ public class CompareCopyActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //Make the user a config admin
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Create the revision to compare
-        ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         Long cfid = revision.getConfigFile().getId();
         Long crid = revision.getId();
 
         //Create another revision, file, and channel to appear in the list
         String path = revision.getConfigFile().getConfigFileName().getPath();
-        ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg(), path);
+        ConfigFile file = ConfigTestUtils.createConfigFile(getTestUser().getOrg(), path);
         ConfigTestUtils.createConfigRevision(file);
 
         setRequestPathInfo("/configuration/file/CompareCopy");

@@ -57,9 +57,9 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-        ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
+        ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         mockRequest = new RhnMockHttpServletRequest();
         request = new RhnHttpServletRequest(mockRequest);
         helper = new KickstartHelper(request);
@@ -69,7 +69,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     public void testKsPathparse() {
         // URL:
         String url = "http://rhn.redhat.com/ks/cfg/org/" +
-            user.getOrg().getId().toString() +
+            getTestUser().getOrg().getId().toString() +
                 "/label/" + ksdata.getLabel();
         request.setAttribute(RequestContext.REQUESTED_URI, url);
         Map<String, Object> options = helper.parseKickstartUrl(url);
@@ -84,7 +84,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     public void testKsViewLabel() {
         // URL:
         String url = "http://rhn.redhat.com/ks/cfg/org/" +
-            user.getOrg().getId().toString() +
+            getTestUser().getOrg().getId().toString() +
                 "/view_label/" + ksdata.getLabel();
         request.setAttribute(RequestContext.REQUESTED_URI, url);
         Map<String, Object> options = helper.parseKickstartUrl(url);
@@ -101,12 +101,12 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         range.setMaxString("127.0.0.2");
         range.setMinString("127.0.0.1");
         range.setKsdata(ksdata);
-        range.setOrg(user.getOrg());
+        range.setOrg(getTestUser().getOrg());
         ksdata.getIps().add(range);
 
         // URL:
         String url = "http://rhn.redhat.com/ks/cfg/org/" +
-            user.getOrg().getId().toString() +
+            getTestUser().getOrg().getId().toString() +
                 "/mode/ip_range";
         request.setAttribute(RequestContext.REQUESTED_URI, url);
         helper = new KickstartHelper(request);
@@ -117,27 +117,27 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
 
     @Test
     public void testValidateKickstartChannel() throws Exception {
-        Channel base = ChannelTestUtils.createBaseChannel(user);
-        Channel tools = ChannelTestUtils.createChildChannel(user, base);
+        Channel base = ChannelTestUtils.createBaseChannel(getTestUser());
+        Channel tools = ChannelTestUtils.createChildChannel(getTestUser(), base);
         ksdata.getTree().setChannel(base);
         ksdata.getTree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
         assertTrue(ksdata.isRhel6());
-        assertFalse(helper.verifyKickstartChannel(ksdata, user));
+        assertFalse(helper.verifyKickstartChannel(ksdata, getTestUser()));
 
         PackageManagerTest.addPackageToChannel("rhn-kickstart", tools);
-        assertFalse(helper.verifyKickstartChannel(ksdata, user));
+        assertFalse(helper.verifyKickstartChannel(ksdata, getTestUser()));
         ksdata.getTree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
-        assertTrue(helper.verifyKickstartChannel(ksdata, user, false));
+        assertTrue(helper.verifyKickstartChannel(ksdata, getTestUser(), false));
     }
 
 
     @Test
     public void testKsSessionPathparse() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartSession session =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         KickstartFactory.saveKickstartSession(session);
         session = TestUtils.reload(session);
         assertNotSame(session.getState(), KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);

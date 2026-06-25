@@ -59,16 +59,16 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        server = ServerFactoryTest.createTestServer(user);
+        server = ServerFactoryTest.createTestServer(getTestUser());
 
-        List<Package> generatedPackages = PackageTestUtils.createSubsequentPackages(user.getOrg());
+        List<Package> generatedPackages = PackageTestUtils.createSubsequentPackages(getTestUser().getOrg());
         oldPkg = generatedPackages.get(0);
         newerPkg = generatedPackages.get(1);
         newestPkg = generatedPackages.get(2);
 
-        subscribedChannel = ChannelTestUtils.createBaseChannel(user);
+        subscribedChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         subscribedChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
-        SystemManager.subscribeServerToChannel(user, server, subscribedChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, subscribedChannel);
     }
 
     /**
@@ -85,7 +85,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         PackageTestUtils.installPackageOnServer(oldPkg, server);
 
         // newest is retracted
-        Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata retracted = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         retracted.addPackage(newestPkg);
         subscribedChannel.addErrata(retracted);
@@ -122,7 +122,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         PackageTestUtils.installPackageOnServer(oldPkg, server);
 
         // newest is retracted
-        Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata retracted = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         retracted.addPackage(newestPkg);
         subscribedChannel.addErrata(retracted);
@@ -160,7 +160,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, subscribedChannel);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedChannel = ccc.create();
 
         // set the patch in original to retracted
@@ -183,7 +183,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
 
         // but if we subscribe to a channel, where the "newest" is not retracted, it should make it to the cache
         SystemManager.unsubscribeServerFromChannel(server, subscribedChannel);
-        SystemManager.subscribeServerToChannel(user, server, clonedChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, clonedChannel);
         ErrataCacheManager.insertCacheForChannelPackages(clonedChannel.getId(), null, List.of(newestPkg.getId()));
         DataResult<ErrataCacheDto> result = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(2, result.size()); // both should be in the cache

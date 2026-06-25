@@ -36,9 +36,9 @@ public class PreservationListActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        FileList f = FileListTest.createTestFileList(user.getOrg());
+        FileList f = FileListTest.createTestFileList(getTestUser().getOrg());
         CommonFactory.saveFileList(f);
         TestUtils.flushAndEvict(f);
         setRequestPathInfo("/systems/provisioning/preservation/PreservationList");

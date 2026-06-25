@@ -47,7 +47,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
 
     @Test
     public void testSetupExecute() throws Exception {
-        ChannelTestUtils.createChildChannel(user,
+        ChannelTestUtils.createChildChannel(getTestUser(),
                 ksdata.getTree().getChannel());
 
         actionPerform();
@@ -71,7 +71,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
 
     @Test
     public void testSubmitExecute() throws Exception {
-        KickstartWizardHelper wcmd = new KickstartWizardHelper(user);
+        KickstartWizardHelper wcmd = new KickstartWizardHelper(getTestUser());
         wcmd.createCommand("url",
                 "--url /rhn/kickstart/ks-f9-x86_64", ksdata);
 
@@ -85,7 +85,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
         addRequestParameter(KickstartSoftwareEditAction.TREE,
                 ksdata.getTree().getId().toString());
 
-        Channel child = ChannelTestUtils.createChildChannel(user,
+        Channel child = ChannelTestUtils.createChildChannel(getTestUser(),
                 ksdata.getTree().getChannel());
 
         addRequestParameter(KickstartSoftwareEditAction.CHILD_CHANNELS,

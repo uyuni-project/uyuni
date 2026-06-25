@@ -305,7 +305,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testFormulaDataCleanUp() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         String minionId = minion.getMinionId();
         String formulaName = "test-formula";
         Map<String, Object> formulaData = singletonMap("fooKey", "barVal");
@@ -323,14 +323,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        systemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(getTestUser(), minion.getId());
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
     }
 
     @Test
     public void testEmptyFormulaDataCleanUp() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         String minionId = minion.getMinionId();
 
         String formulaName = "test-formula";
@@ -341,7 +341,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
-        systemManager.deleteServer(user, minion.getId());
+        systemManager.deleteServer(getTestUser(), minion.getId());
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
     }
@@ -1280,25 +1280,25 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannels() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
 
         ch11.setParentChannel(base1);
 
         server.addChannel(base1);
         server.addChannel(ch11);
 
-        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base2 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch21 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
         TestUtils.flushSession();
 
-        systemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22));
+        systemManager.updateServerChannels(getTestUser(), server, of(base2), Arrays.asList(ch21, ch22));
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
@@ -1308,15 +1308,15 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannelsNoChildren() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         ProductName pnbase = MgrSyncUtils.findOrCreateProductName("Product Name Base");
         ProductName pnch1 = MgrSyncUtils.findOrCreateProductName("Product Name Child 1");
         ProductName pnch2 = MgrSyncUtils.findOrCreateProductName("Product Name Child 2");
 
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
         base1.setProductName(pnbase);
-        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch11.setProductName(pnch1);
 
         ch11.setParentChannel(base1);
@@ -1324,18 +1324,18 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         server.addChannel(base1);
         server.addChannel(ch11);
 
-        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base2 = ChannelFactoryTest.createBaseChannel(getTestUser());
         base2.setProductName(pnbase);
-        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch21 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch21.setProductName(pnch1);
-        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch22.setProductName(pnch2);
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
         TestUtils.flushSession();
 
-        systemManager.updateServerChannels(user, server, of(base2), Collections.emptyList());
+        systemManager.updateServerChannels(getTestUser(), server, of(base2), Collections.emptyList());
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(1, server.getChildChannels().size());
@@ -1344,28 +1344,28 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannelsNoBase() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch11 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch11 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
 
         ch11.setParentChannel(base1);
 
         server.addChannel(base1);
         server.addChannel(ch11);
 
-        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch21 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch22 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base2 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch21 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
+        Channel ch22 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
         TestUtils.flushSession();
 
         Assertions.assertThrows(ChannelSubscriptionException.class,
-                () -> systemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22)));
+                () -> systemManager.updateServerChannels(getTestUser(), server, empty(), Arrays.asList(ch21, ch22)));
 
-        systemManager.updateServerChannels(user, server, empty(), Collections.emptyList());
+        systemManager.updateServerChannels(getTestUser(), server, empty(), Collections.emptyList());
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
@@ -1378,8 +1378,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfile() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer minion = systemManager.createSystemProfile(user, "test system", data);
-        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+        MinionServer minion = systemManager.createSystemProfile(getTestUser(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), getTestUser().getOrg());
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
@@ -1411,8 +1411,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileWithUserOrg() {
         String hwAddr = "be:b0:bc:a3:a7:ae";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer minion = systemManager.createSystemProfile(user, user.getOrg(), "test system", data);
-        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+        MinionServer minion = systemManager.createSystemProfile(getTestUser(), getTestUser().getOrg(),
+                "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), getTestUser().getOrg());
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
@@ -1441,8 +1442,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileWithJustOrg() {
         String hwAddr = "be:b0:bc:a3:a7:af";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer minion = systemManager.createSystemProfile(null, user.getOrg(), "test system", data);
-        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+        MinionServer minion = systemManager.createSystemProfile(null, getTestUser().getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), getTestUser().getOrg());
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
@@ -1473,7 +1474,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "be:b0:bc:a3:a7:af";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> systemManager.createSystemProfile(user, org, "test system", data));
+                () -> systemManager.createSystemProfile(getTestUser(), org, "test system", data));
     }
 
     @Test
@@ -1491,18 +1492,19 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testListSystemProfile() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = systemManager.createSystemProfile(getTestUser(), "test system",
                 singletonMap("hwAddress", hwAddr));
         TestUtils.flushSession();
         TestUtils.evict(emptyProfileMinion);
 
-        ServerTestUtils.createTestSystem(user);
-        MinionServerFactoryTest.createTestMinionServer(user);
+        ServerTestUtils.createTestSystem(getTestUser());
+        MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
-        DataResult<SystemOverview> systemOverviews = SystemManager.systemList(user, null);
+        DataResult<EmptySystemProfileOverview> emptyProfiles =
+                SystemManager.listEmptySystemProfiles(getTestUser(), null);
+        DataResult<SystemOverview> systemOverviews = SystemManager.systemList(getTestUser(), null);
 
         assertEquals(1, emptyProfiles.getTotalSize());
         EmptySystemProfileOverview emptyProfile = emptyProfiles.iterator().next();
@@ -1520,15 +1522,16 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testListSystemProfileTradSystem() {
-        UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
+        MinionServer emptyProfileMinion = systemManager.createSystemProfile(getTestUser(), "test system",
                 singletonMap("hwAddress", hwAddr));
         TestUtils.flushSession();
         deleteAllMinionServers();
         TestUtils.evict(emptyProfileMinion);
 
-        DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
+        DataResult<EmptySystemProfileOverview> emptyProfiles =
+                SystemManager.listEmptySystemProfiles(getTestUser(), null);
         assertTrue(emptyProfiles.isEmpty());
     }
 
@@ -1542,11 +1545,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 "anotherTestOrg" + this.getClass().getSimpleName()
         );
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
-        UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
-        systemManager.createSystemProfile(user, "test system", singletonMap("hwAddress", hwAddr));
+        systemManager.createSystemProfile(getTestUser(), "test system", singletonMap("hwAddress", hwAddr));
 
-        assertEquals(1, SystemManager.listEmptySystemProfiles(user, null).getTotalSize());
+        assertEquals(1, SystemManager.listEmptySystemProfiles(getTestUser(), null).getTotalSize());
         assertEquals(0, SystemManager.listEmptySystemProfiles(foreignUser, null).getTotalSize());
     }
 
@@ -1558,9 +1561,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testCreateSystemProfileExistingHwAddress() {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         Map<String, Object> data = singletonMap("hwAddress", hwAddr);
-        MinionServer profile = systemManager.createSystemProfile(user, "test system", data);
+        MinionServer profile = systemManager.createSystemProfile(getTestUser(), "test system", data);
         try {
-            systemManager.createSystemProfile(user, "test system 2", data);
+            systemManager.createSystemProfile(getTestUser(), "test system 2", data);
             fail("System creation should have failed!");
         }
         catch (SystemsExistException e) {
@@ -1696,7 +1699,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> data = new HashMap<>();
         hostName.ifPresent(n -> data.put("hostname", n));
         hwAddr.ifPresent(a -> data.put("hwAddress", a));
-        return systemManager.createSystemProfile(user, hostName.orElse("test system"), data);
+        return systemManager.createSystemProfile(getTestUser(), hostName.orElse("test system"), data);
     }
 
     /**
@@ -1778,10 +1781,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private void doTestInstalledPackages(boolean archAsLabel) throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
 
         // installed on server and known to Uyuni
-        Package pack = PackageTest.createTestPackage(user.getOrg());
+        Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
         InstalledPackage knownPackage = new InstalledPackage();
         knownPackage.setArch(pack.getPackageArch());
         knownPackage.setName(pack.getPackageName());
@@ -1822,8 +1825,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListDupesByIp() throws Exception {
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
 
         createIfaceForServer(server1, "eth0", "172.17.0.2", "11:22:33:44:55:77");
         createIfaceForServer(server2, "eth0", "172.17.0.2", "11:22:33:44:55:78");
@@ -1834,19 +1837,19 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListNoDupesByIp() throws Exception {
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
 
         createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
         createIfaceForServer(server2, "eth0", "10.1.1.99", "11:22:33:44:55:78");
 
-        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+        assertTrue(SystemManager.listDuplicatesByIP(getTestUser(), 24).isEmpty());
     }
 
     @Test
     public void testListDupesByIpOtherIface() throws Exception {
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
 
         createIfaceForServer(server1, "eth0", "10.1.1.1", "11:22:33:44:55:77");
         createIfaceForServer(server2, "eth1", "10.1.1.1", "11:22:33:44:55:78");
@@ -1857,29 +1860,29 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListNoDupesForDocker() throws Exception {
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
 
         createIfaceForServer(server1, "docker0", "172.17.0.2", "11:22:33:44:55:77");
         createIfaceForServer(server2, "docker0", "172.17.0.2", "11:22:33:44:55:78");
 
-        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+        assertTrue(SystemManager.listDuplicatesByIP(getTestUser(), 24).isEmpty());
     }
 
     @Test
     public void testListNoDupesForVirbr() throws Exception {
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
 
         createIfaceForServer(server1, "virbr0", "192.168.178.1", "11:22:33:44:55:77");
         createIfaceForServer(server2, "virbr0", "192.168.178.1", "11:22:33:44:55:78");
 
-        assertTrue(SystemManager.listDuplicatesByIP(user, 24).isEmpty());
+        assertTrue(SystemManager.listDuplicatesByIP(getTestUser(), 24).isEmpty());
     }
 
     @Test
     public void testSystemEventHistory() throws Exception {
-        final Server server = ServerTestUtils.createTestSystem(user);
+        final Server server = ServerTestUtils.createTestSystem(getTestUser());
 
         createTestAction(server, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
         createHistoryEntry(server, "Event 1");
@@ -1890,7 +1893,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         createTestAction(server, ActionFactory.TYPE_PACKAGES_UPDATE);
         createHistoryEntry(server, "Event 3");
 
-        final Org org = user.getOrg();
+        final Org org = getTestUser().getOrg();
 
         // Test pagination
         final List<SystemEventDto> firstPageEvents = SystemManager.systemEventHistory(server, org, null, 0, 5);
@@ -1924,13 +1927,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemEventDetails() throws Exception {
-        final Server server = ServerTestUtils.createTestSystem(user);
+        final Server server = ServerTestUtils.createTestSystem(getTestUser());
 
         Long historyEventId = createHistoryEntry(server, "Event 1");
         Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ServerAction::setStatusPickedUp);
 
         final Long sid = server.getId();
-        final Long oid = user.getOrg().getId();
+        final Long oid = getTestUser().getOrg().getId();
 
         // Retrieve an history event
         SystemEventDetailsDto eventDetail = SystemManager.systemEventDetails(sid, oid, historyEventId);
@@ -1951,7 +1954,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(actionEventId, eventDetail.getId());
         assertEquals("Apply states", eventDetail.getHistoryTypeName());
         assertEquals("Picked Up", eventDetail.getHistoryStatus());
-        assertEquals("RHN-JAVA Test Action scheduled by " + user.getLogin(), eventDetail.getSummary());
+        assertEquals("RHN-JAVA Test Action scheduled by " + getTestUser().getLogin(), eventDetail.getSummary());
         assertNotNull(eventDetail.getCreated());
         assertNotNull(eventDetail.getPickedUp());
         assertNull(eventDetail.getCompleted());
@@ -1960,7 +1963,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateProxyContainerConfig() throws InstantiationException, IOException {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String proxyName = "pxy.mgr.lab";
         String serverName = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
@@ -1991,8 +1994,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Set.of("pxy.mgr.lab", "pxy-test.mgr.lab")));
         }});
 
-        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        byte[] actual = systemManager.createProxyContainerConfig(getTestUser(), proxyName, 8022, serverName,
+                maxCache, email, rootCA, otherCAs, new SSLCertPair(cert, key),
+                null, null, null, certManager);
         Map<String, String> content = readTarData(actual);
 
         Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
@@ -2019,7 +2023,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
         // For some reason duplicating the ORG_ADMIN role setting is required
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         String proxyName = "pxy.mgr.lab";
         createTestProxy(proxyName);
         context().checking(new Expectations() {{
@@ -2042,7 +2046,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testCreateChainedProxyContainerConfig() throws InstantiationException, IOException {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         final long maxCache = 4096;
         final String email = "admin@mgr.lab";
         final String rootCA = "Dummy Root CA";
@@ -2082,24 +2086,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         //PXY1
-        byte[] pxy1Config = systemManager.createProxyContainerConfig(user, pxy1Name, 8022, pxy0Name, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        byte[] pxy1Config = systemManager.createProxyContainerConfig(getTestUser(), pxy1Name, 8022, pxy0Name,
+                maxCache, email, rootCA, otherCAs, new SSLCertPair(cert, key),
+                null, null, null, certManager);
         Map<String, Object> sshYaml = getSshYaml(pxy1Config);
         assertEquals(pxy1SshPushKey, sshYaml.get("server_ssh_push"));
         assertEquals(pxy1SshPushPubKey, sshYaml.get("server_ssh_push_pub"));
         assertEquals(pxy0PubKey, sshYaml.get("server_ssh_key_pub"));
 
         //PXY2A
-        byte[] pxy2AConfig = systemManager.createProxyContainerConfig(user, pxy2AName, 8022, pxy1Name, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        byte[] pxy2AConfig = systemManager.createProxyContainerConfig(getTestUser(), pxy2AName, 8022, pxy1Name,
+                maxCache, email, rootCA, otherCAs, new SSLCertPair(cert, key),
+                null, null, null, certManager);
         Map<String, Object> sshYamlA = getSshYaml(pxy2AConfig);
         assertEquals(pxy2ASshPushKey, sshYamlA.get("server_ssh_push"));
         assertEquals(pxy2ASshPushPubKey, sshYamlA.get("server_ssh_push_pub"));
         assertEquals(pxy1SshPushPubKey, sshYamlA.get("server_ssh_key_pub"));
 
         //PXY2B
-        byte[] pxy2BConfig = systemManager.createProxyContainerConfig(user, pxy2BName, 8022, pxy1Name, maxCache, email,
-                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+        byte[] pxy2BConfig = systemManager.createProxyContainerConfig(getTestUser(), pxy2BName, 8022, pxy1Name,
+                maxCache, email, rootCA, otherCAs, new SSLCertPair(cert, key),
+                null, null, null, certManager);
         Map<String, Object> sshYamlB = getSshYaml(pxy2BConfig);
         assertEquals(pxy2BSshPushKey, sshYamlB.get("server_ssh_push"));
         assertEquals(pxy2BSshPushPubKey, sshYamlB.get("server_ssh_push_pub"));
@@ -2116,7 +2123,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     private void createTestProxy(String fqdn) {
         Server proxy = ServerFactoryTest.createUnentitledTestServer(
-                user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
+                getTestUser(), true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
         proxy.setName(fqdn);
         proxy.setHostname(fqdn);
         proxy.getFqdns().add(new ServerFQDN(proxy, fqdn));
@@ -2160,7 +2167,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     private Long createTestAction(Server server, ActionType actionType, Consumer<ServerAction> statusSetter)
             throws Exception {
-        final Action action = ActionFactoryTest.createAction(user, actionType);
+        final Action action = ActionFactoryTest.createAction(getTestUser(), actionType);
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
 
         statusSetter.accept(serverAction);
@@ -2184,7 +2191,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private Set<Long> listDupesByIpAddress(String byIpAdress) {
-        return SystemManager.listDuplicatesByIP(user, 24).stream()
+        return SystemManager.listDuplicatesByIP(getTestUser(), 24).stream()
                 .filter(grp -> grp.getKey().equals(byIpAdress))
                 .findFirst()
                 .get()

@@ -36,7 +36,7 @@ public class ConfigActionFormatterTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetRelatedObjectDescription() throws Exception {
-        ConfigAction action = (ConfigAction) ActionFactoryTest.createAction(user,
+        ConfigAction action = (ConfigAction) ActionFactoryTest.createAction(getTestUser(),
             ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         ConfigActionFormatter formatter = new ConfigActionFormatter(action);
 

@@ -63,27 +63,27 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        server = ServerFactoryTest.createTestServer(user);
+        server = ServerFactoryTest.createTestServer(getTestUser());
 
         // The original package with a bug
-        pkg = PackageTest.createTestPackage(user.getOrg());
+        pkg = PackageTest.createTestPackage(getTestUser().getOrg());
 
         // The first version ptf addressing the issue
-        ptfMaster = PackageTestUtils.createPtfMaster("12987", "1", user.getOrg());
-        ptfPackage = PackageTestUtils.createPtfPackage(pkg, "12987", "1", user.getOrg());
+        ptfMaster = PackageTestUtils.createPtfMaster("12987", "1", getTestUser().getOrg());
+        ptfPackage = PackageTestUtils.createPtfPackage(pkg, "12987", "1", getTestUser().getOrg());
 
         // The second version of the same ptf
-        updatedPtfMaster = PackageTestUtils.createPtfMaster("12987", "2", user.getOrg());
-        updatedPtfPackage = PackageTestUtils.createPtfPackage(pkg, "12987", "2", user.getOrg());
+        updatedPtfMaster = PackageTestUtils.createPtfMaster("12987", "2", getTestUser().getOrg());
+        updatedPtfPackage = PackageTestUtils.createPtfPackage(pkg, "12987", "2", getTestUser().getOrg());
 
         // A normal package unrelatad to the ptf
-        standard = PackageTest.createTestPackage(user.getOrg());
-        updatedStandard = PackageTestUtils.newVersionOfPackage(standard, null, "3.0.0", null, user.getOrg());
+        standard = PackageTest.createTestPackage(getTestUser().getOrg());
+        updatedStandard = PackageTestUtils.newVersionOfPackage(standard, null, "3.0.0", null, getTestUser().getOrg());
 
-        channel = ChannelTestUtils.createBaseChannel(user);
+        channel = ChannelTestUtils.createBaseChannel(getTestUser());
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
 
-        SystemManager.subscribeServerToChannel(user, server, channel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
         server = TestUtils.saveAndReload(server);
     }
 
@@ -102,7 +102,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
         assertEquals(2, installablePackages.size());
         // No packages should be part of a PTF
         assertEquals(0L, installablePackages.stream()
-                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
+                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
                                             .filter(Package::isPartOfPtf)
                                             .count());
     }
@@ -127,7 +127,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
 
         // Convert to database packages
         List<Package> packages = upgradablePackages.stream()
-                                                   .flatMap(e -> PackageFactory.lookupByNevraIds(user.getOrg(),
+                                                   .flatMap(e -> PackageFactory.lookupByNevraIds(getTestUser().getOrg(),
                                                        e.getNameId(), e.getEvrId(), e.getArchId()).stream())
                                                    .filter(Objects::nonNull)
                                                    .toList();
@@ -157,7 +157,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
         assertEquals(1, installedPtf.size());
         // The package retrieved must be a master ptf package
         assertEquals(0L, installedPtf.stream()
-                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
+                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
                                             .filter(p -> !p.isMasterPtfPackage())
                                             .count());
     }
@@ -176,7 +176,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
         assertEquals(1, installablePackages.size());
         // The package retrieved must be a master ptf package
         assertEquals(0L, installablePackages.stream()
-                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
+                                            .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
                                             .filter(p -> !p.isMasterPtfPackage())
                                             .count());
     }

@@ -55,17 +55,17 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGeneratePillarForServer() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
         ServerFactory.addServerToGroup(minion, group);
         String machineId = TestUtils.randomString();
         minion.setDigitalServerId(machineId);
 
-        Channel channel1 = ChannelTestUtils.createBaseChannel(user);
+        Channel channel1 = ChannelTestUtils.createBaseChannel(getTestUser());
         minion.addChannel(channel1);
 
-        Channel channel2 = ChannelTestUtils.createBaseChannel(user);
+        Channel channel2 = ChannelTestUtils.createBaseChannel(getTestUser());
         minion.addChannel(channel2);
 
         ServerFactory.save(minion);
@@ -128,8 +128,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGeneratePillarForServerGPGCheckOn() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel channel1 = ChannelTestUtils.createBaseChannel(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel channel1 = ChannelTestUtils.createBaseChannel(getTestUser());
         minion.addChannel(channel1);
         ServerFactory.save(minion);
 
@@ -150,8 +150,8 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGeneratePillarForServerGPGCheckOff() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel channel1 = ChannelTestUtils.createBaseChannel(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel channel1 = ChannelTestUtils.createBaseChannel(getTestUser());
         channel1.setGPGCheck(false);
         minion.addChannel(channel1);
         ServerFactory.save(minion);
@@ -180,15 +180,15 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testGeneratePillarForProxyServer() throws Exception {
         // create a minion
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
         ServerFactory.addServerToGroup(minion, group);
         String machineId = TestUtils.randomString();
         minion.setDigitalServerId(machineId);
 
         // create a channel for the minion
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         minion.addChannel(channel);
         ServerFactory.save(minion);
 

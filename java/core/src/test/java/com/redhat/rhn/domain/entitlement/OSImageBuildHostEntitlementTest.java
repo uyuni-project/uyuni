@@ -62,10 +62,10 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     @Override
     @Test
     public void testIsAllowedOnServer() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
+        Server traditional = ServerTestUtils.createTestSystem(getTestUser());
         traditional.setOs("SLES");
         traditional.setRelease("12.2");
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOs("SLES");
         minion.setRelease("12.2");
 

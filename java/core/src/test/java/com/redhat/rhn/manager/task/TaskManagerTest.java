@@ -36,26 +36,26 @@ public class TaskManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testGetChannelPackageExtraTags() throws Exception {
-        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         PackageExtraTagsKeys tag1 = PackageManagerTest.createExtraTagKey("Tag1");
         PackageExtraTagsKeys tag2 = PackageManagerTest.createExtraTagKey("Tag2");
         PackageExtraTagsKeys tag3 = PackageManagerTest.createExtraTagKey("Tag3");
 
-        Package pkg1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Package pkg1 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         pkg1.getExtraTags().add(PackageManagerTest.createExtraTag(tag1, "value1", pkg1));
         pkg1.getExtraTags().add(PackageManagerTest.createExtraTag(tag2, "value2", pkg1));
         PackageFactory.save(pkg1);
 
-        Package pkg2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Package pkg2 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         pkg2.getExtraTags().add(PackageManagerTest.createExtraTag(tag2, "value2", pkg2));
         pkg2.getExtraTags().add(PackageManagerTest.createExtraTag(tag3, "value3", pkg2));
         PackageFactory.save(pkg2);
 
         TestUtils.flushAndClearSession();
 
-        pkg1 = PackageFactory.lookupByIdAndOrg(pkg1.getId(), user.getOrg());
-        pkg2 = PackageFactory.lookupByIdAndOrg(pkg2.getId(), user.getOrg());
+        pkg1 = PackageFactory.lookupByIdAndOrg(pkg1.getId(), getTestUser().getOrg());
+        pkg2 = PackageFactory.lookupByIdAndOrg(pkg2.getId(), getTestUser().getOrg());
 
         assertEquals(2, pkg1.getExtraTags().size());
         assertEquals("value1", pkg1.getExtraTagsKV().get(tag1));

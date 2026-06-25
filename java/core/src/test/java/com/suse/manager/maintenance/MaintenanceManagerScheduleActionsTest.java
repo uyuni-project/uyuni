@@ -69,7 +69,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     public void setUp() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
 
         taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -95,19 +95,19 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         }});
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(getTestUser(), "test-schedule-2", SINGLE, empty());
 
-        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         assertTrue(mm.isSystemInMaintenanceMode(sys1));
         assertTrue(mm.isSystemInMaintenanceMode(sys2));
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false);
 
         try {
             ActionChainManager.scheduleApplyStates(
-                    user, List.of(sys1.getId(), sys2.getId()), empty(), new Date(12345), null);
+                    getTestUser(), List.of(sys1.getId(), sys2.getId()), empty(), new Date(12345), null);
             fail("NoMaintenanceWindowException should have been thrown.");
         }
         catch (NotInMaintenanceModeException e) {
@@ -115,7 +115,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         }
 
         // no exception should happen here:
-        ActionChainManager.scheduleApplyStates(user, List.of(sys2.getId()), empty(), new Date(12345), null);
+        ActionChainManager.scheduleApplyStates(getTestUser(), List.of(sys2.getId()), empty(), new Date(12345), null);
     }
 
     /**
@@ -131,15 +131,16 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         }});
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calString);
-        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(getTestUser(), "testcalendar", calString);
+        MaintenanceSchedule schedule = mm.createSchedule(getTestUser(), "test-schedule-2", SINGLE, of(mc));
 
-        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
+        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false);
         assertTrue(mm.isSystemInMaintenanceMode(sys1));
 
         try {
-            ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId()), empty(), new Date(12345), null);
+            ActionChainManager.scheduleApplyStates(getTestUser(), List.of(sys1.getId()), empty(), new Date(12345),
+                    null);
             fail("NoMaintenanceWindowException should have been thrown.");
         }
         catch (NotInMaintenanceModeException e) {
@@ -148,7 +149,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
 
         ZonedDateTime start = ZonedDateTime.parse("2020-04-30T09:15:00+02:00", ISO_OFFSET_DATE_TIME);
         Date date = Date.from(start.toInstant());
-        ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId()), empty(), date, null);
+        ActionChainManager.scheduleApplyStates(getTestUser(), List.of(sys1.getId()), empty(), date, null);
     }
 
     /**
@@ -160,14 +161,14 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(getTestUser(), "test-schedule-3", SINGLE, empty());
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false);
 
         try {
-            ActionManager.scheduleHardwareRefreshAction(user, sys1, new Date(12345));
+            ActionManager.scheduleHardwareRefreshAction(getTestUser(), sys1, new Date(12345));
         }
         catch (NotInMaintenanceModeException e) {
             fail("NoMaintenanceWindowException should NOT have been thrown.");
@@ -180,14 +181,14 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleChannelChangeNoMaintWindow() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(getTestUser(), "test-schedule-3", SINGLE, empty());
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false);
 
         try {
-            ActionManager.scheduleApplyStates(user, Collections.singletonList(sys1.getId()),
+            ActionManager.scheduleApplyStates(getTestUser(), Collections.singletonList(sys1.getId()),
                     Collections.singletonList(ApplyStatesEventMessage.CHANNELS), new Date(12345));
         }
         catch (NotInMaintenanceModeException e) {

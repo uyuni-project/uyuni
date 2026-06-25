@@ -43,7 +43,7 @@ public class KickstartFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test KickstartFactory.lookupSslCryptoKeys
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Org arg0 = user.getOrg();
+        Org arg0 = getTestUser().getOrg();
         KickstartFactory.lookupSslCryptoKeys(arg0);
     }
 
@@ -53,7 +53,7 @@ public class KickstartFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test KickstartFactory.lookupSslCryptoKeyById
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Org arg1 = user.getOrg();
+        Org arg1 = getTestUser().getOrg();
         KickstartFactory.lookupSslCryptoKeyById(0L, arg1);
     }
 
@@ -73,8 +73,8 @@ public class KickstartFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test KickstartFactory.setKickstartSessionHistoryMessage
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
-        KickstartSession arg0 = KickstartSessionTest.createKickstartSession(k, user);
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
+        KickstartSession arg0 = KickstartSessionTest.createKickstartSession(k, getTestUser());
         KickstartSessionState arg1 = KickstartFactory.SESSION_STATE_FAILED;
         TestUtils.save(arg0);
 

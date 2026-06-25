@@ -112,57 +112,61 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
     }
 
     private void createPaygSLESSapServer() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
         server.setPayg(true);
         ServerFactory.save(server);
 
         installSUSEProductsOnServer(server, Set.of(
-            createTestSUSEProduct(user, "sles_sap", "15.4", ARCH_X86_64, "AiO", true),
-            createTestSUSEProduct(user, "sle-module-basesystem", "15.4", ARCH_X86_64, "MODULE", false),
-            createTestSUSEProduct(user, "sle-manager-tools", "15", ARCH_X86_64, "SLE-M-T", false)
+            createTestSUSEProduct(getTestUser(), "sles_sap", "15.4", ARCH_X86_64, "AiO", true),
+            createTestSUSEProduct(getTestUser(), "sle-module-basesystem", "15.4", ARCH_X86_64, "MODULE", false),
+            createTestSUSEProduct(getTestUser(), "sle-manager-tools", "15", ARCH_X86_64, "SLE-M-T", false)
         ));
     }
 
     private void createSLES12Server() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_IBM_Z));
         ServerFactory.save(server);
 
         installSUSEProductsOnServer(server, Set.of(
-            createTestSUSEProduct(user, "sles", "12.3", ARCH_IBM_Z, "SLES-Z", true)
+            createTestSUSEProduct(getTestUser(), "sles", "12.3", ARCH_IBM_Z, "SLES-Z", true)
         ));
     }
 
     private void createOpenSUSEServer() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
         ServerFactory.save(server);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.MONITORING);
 
         installSUSEProductsOnServer(server, Set.of(
-            createTestSUSEProduct(user, "opensuse", "15.2", ARCH_X86_64, "OPENSUSE", true),
-            createTestSUSEProduct(user, "sle-manager-tools", "15", ARCH_X86_64, "SLE-M-T", false)
+            createTestSUSEProduct(getTestUser(), "opensuse", "15.2", ARCH_X86_64, "OPENSUSE", true),
+            createTestSUSEProduct(getTestUser(), "sle-manager-tools", "15", ARCH_X86_64, "SLE-M-T", false)
         ));
     }
 
     private void createSUSEManagerProxy() {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
         ServerFactory.save(server);
 
         installSUSEProductsOnServer(server, Set.of(
-            createTestSUSEProduct(user, "suse-manager-proxy", "4.3", ARCH_X86_64, "SMP", true),
-            createTestSUSEProduct(user, "sle-module-basesystem", "15.4", ARCH_X86_64, "MODULE", false),
-            createTestSUSEProduct(user, "sle-module-server-applications", "15.4", ARCH_X86_64, "MODULE", false),
-            createTestSUSEProduct(user, "sle-module-suse-manager-proxy", "15.4", ARCH_X86_64, "MODULE", false)
+            createTestSUSEProduct(getTestUser(), "suse-manager-proxy", "4.3",
+                    ARCH_X86_64, "SMP", true),
+            createTestSUSEProduct(getTestUser(), "sle-module-basesystem", "15.4",
+                    ARCH_X86_64, "MODULE", false),
+            createTestSUSEProduct(getTestUser(), "sle-module-server-applications", "15.4",
+                    ARCH_X86_64, "MODULE", false),
+            createTestSUSEProduct(getTestUser(), "sle-module-suse-manager-proxy", "15.4",
+                    ARCH_X86_64, "MODULE", false)
         ));
     }
 
     private void createTraditionalClient() {
         Server server = ServerFactoryTest.createUnentitledTestServer(
-            user, true, ServerFactoryTest.TYPE_SERVER_NORMAL, new Date()
+                getTestUser(), true, ServerFactoryTest.TYPE_SERVER_NORMAL, new Date()
         );
         server.setServerArch(ServerFactory.lookupServerArchByName(ARCH_X86_64));
         ServerFactory.save(server);
@@ -170,9 +174,9 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
 
         installSUSEProductsOnServer(server, Set.of(
-            createTestSUSEProduct(user, "sles_sap", "12", ARCH_X86_64, "AiO", true),
-            createTestSUSEProduct(user, "sles-ltss", "12", ARCH_X86_64, "SLES12-GA-LTSS-X86", false),
-            createTestSUSEProduct(user, "sle-module-legacy", "12", ARCH_X86_64, "MODULE", false)
+            createTestSUSEProduct(getTestUser(), "sles_sap", "12", ARCH_X86_64, "AiO", true),
+            createTestSUSEProduct(getTestUser(), "sles-ltss", "12", ARCH_X86_64, "SLES12-GA-LTSS-X86", false),
+            createTestSUSEProduct(getTestUser(), "sle-module-legacy", "12", ARCH_X86_64, "MODULE", false)
         ));
     }
 }

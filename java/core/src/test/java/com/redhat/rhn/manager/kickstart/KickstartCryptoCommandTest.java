@@ -35,9 +35,9 @@ public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
     @Test
     public void testCommand() {
         KickstartCryptoKeyCommand cmd =
-            new KickstartCryptoKeyCommand(ksdata.getId(), user);
+            new KickstartCryptoKeyCommand(ksdata.getId(), getTestUser());
 
-        CryptoKey key = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey key = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         key = TestUtils.reload(key);
         List ids = new LinkedList<>();

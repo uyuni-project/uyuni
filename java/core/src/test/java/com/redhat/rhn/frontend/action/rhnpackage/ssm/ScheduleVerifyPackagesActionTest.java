@@ -33,7 +33,7 @@ public class ScheduleVerifyPackagesActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         setRequestPathInfo("/ssm/PackageVerifySchedule");
 
-        utils = new SsmActionTestUtils(user);
+        utils = new SsmActionTestUtils(getTestUser());
     }
 
     @Test

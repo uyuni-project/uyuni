@@ -37,7 +37,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
     public void testLookupPackagesByToken() throws Exception {
 
         // setup
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         int numPkgsBefore = key.getPackages().size();
 
         TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
@@ -74,7 +74,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
     public void testLookupPackages() throws Exception {
 
         // setup
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         int numPkgsBefore = key.getPackages().size();
 
         TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
@@ -131,7 +131,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
     public void testLookupPackage() throws Exception {
 
         // setup
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         TokenPackage pkg = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg);
 

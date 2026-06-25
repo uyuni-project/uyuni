@@ -51,11 +51,11 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         PackageManagerTest.addPackageToSystemAndChannel(
                 "test-package-name" + TestUtils.randomString(), server,
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
         server = TestUtils.reload(server);
         //.do?sid=1000010000
         setRequestPathInfo("/systems/details/packages/PackageList");
@@ -68,21 +68,21 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
     @MethodSource("executeWithPtfArguments")
     public void testExecuteWithPtf(String osVersion, String zypperVersion, boolean uninstallationSupported)
         throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        Package standard = PackageTest.createTestPackage(user.getOrg());
+        Package standard = PackageTest.createTestPackage(getTestUser().getOrg());
         standard.setDescription("Standard package");
 
-        Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
-        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+        Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", getTestUser().getOrg());
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", getTestUser().getOrg());
 
         // Set an OS that does not support PTFs uninstallation
         server.setOs(ServerConstants.SLES);
         server.setRelease(osVersion);
 
-        Package zypperPackage = PackageTest.createTestPackage(user.getOrg(), "zypper");
+        Package zypperPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "zypper");
         PackageEvr zyppEvr = PackageEvrFactory.lookupOrCreatePackageEvr(null, zypperVersion, "0", PackageType.RPM);
 
         zypperPackage.setPackageEvr(zyppEvr);
@@ -91,7 +91,7 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage, zypperPackage));
         channel = TestUtils.saveAndReload(channel);
 
-        SystemManager.subscribeServerToChannel(user, server, channel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
         PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage, zypperPackage), server);
 
         server = TestUtils.reload(server);

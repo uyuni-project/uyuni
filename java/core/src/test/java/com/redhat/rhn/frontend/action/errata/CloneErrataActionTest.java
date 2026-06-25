@@ -40,16 +40,16 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setRequestPathInfo("/errata/manage/CloneErrata");
-        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        getTestUser().getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
     @Test
     public void testEmptySet() {
-        RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
+        RhnSet errataToClone = RhnSetFactory.createRhnSet(getTestUser().getId(),
                                                           "clone_errata_list",
                                                           SetCleanup.NOOP);
         RhnSetManager.store(errataToClone);
-        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
+        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(getTestUser());
         assertEquals(0, set.size());
 
         request.addParameter("dispatch", "Clone Errata");
@@ -61,21 +61,21 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testNonEmptySet() throws Exception {
 
-        RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
+        RhnSet errataToClone = RhnSetFactory.createRhnSet(getTestUser().getId(),
                                                           "clone_errata_list",
                                                           SetCleanup.NOOP);
 
-        Channel original = ChannelFactoryTest.createTestChannel(user);
+        Channel original = ChannelFactoryTest.createTestChannel(getTestUser());
 
         for (int j = 0; j < 5; ++j) {
-            Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+            Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
             original.addErrata(e);
             errataToClone.addElement(e.getId());
         }
 
         RhnSetManager.store(errataToClone);
 
-        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
+        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(getTestUser());
         assertEquals(5, set.size());
 
         request.addParameter("dispatch", "Clone Errata");

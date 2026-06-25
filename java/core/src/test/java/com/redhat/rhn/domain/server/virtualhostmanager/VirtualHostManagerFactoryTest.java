@@ -62,12 +62,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
 
-        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD,
+        createAndSaveVirtualHostManager("mylabel", getTestUser().getOrg(), SUSE_CLOUD,
                 config);
         VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
-        assertEquals(user.getOrg(), fromDb.getOrg());
+        assertEquals(getTestUser().getOrg(), fromDb.getOrg());
         assertEquals(SUSE_CLOUD, fromDb.getGathererModule());
         assertTrue(fromDb.getConfigs().isEmpty());
     }
@@ -81,7 +81,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
 
-        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        createAndSaveVirtualHostManager("mylabel", getTestUser().getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
@@ -98,7 +98,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("password", "The savior of the universe");
         config.put("param1", "oldparam1");
 
-        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        createAndSaveVirtualHostManager("mylabel", getTestUser().getOrg(), SUSE_CLOUD, config);
         VirtualHostManager vhm = factory.lookupByLabel("mylabel");
 
         Map<String, String> updConfig = new HashMap<>();
@@ -131,7 +131,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("password", "The savior of the universe");
         config.put("testkey", "43");
 
-        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        createAndSaveVirtualHostManager("mylabel", getTestUser().getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals(1, virtualHostManager.getConfigs().size());
@@ -172,7 +172,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("password", "The savior of the universe");
         config.put("testkey", "43");
         String myLabel = "myLabel";
-        VirtualHostManager vhm = createAndSaveVirtualHostManager(myLabel, user.getOrg(),
+        VirtualHostManager vhm = createAndSaveVirtualHostManager(myLabel, getTestUser().getOrg(),
                 SUSE_CLOUD, config);
         assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
         assertNotNull(factory.lookupByLabel(myLabel));
@@ -187,14 +187,14 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDeleteVirtualHostManagerDontCascade() throws Exception {
-        Server server = ServerTestUtils.createForeignSystem(user, "server_digital_id");
+        Server server = ServerTestUtils.createForeignSystem(getTestUser(), "server_digital_id");
         Long serverId = server.getId();
 
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
 
-        VirtualHostManager vhm = createAndSaveVirtualHostManager("myLabel", user.getOrg(),
+        VirtualHostManager vhm = createAndSaveVirtualHostManager("myLabel", getTestUser().getOrg(),
                 SUSE_CLOUD, config);
 
         vhm.addServer(server);
@@ -214,11 +214,11 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("password", "The savior of the universe");
 
         VirtualHostManager manager1 = createAndSaveVirtualHostManager("mylabel",
-                user.getOrg(), SUSE_CLOUD, config);
+                getTestUser().getOrg(), SUSE_CLOUD, config);
         VirtualHostManager manager2 = createAndSaveVirtualHostManager("mylabel2",
-                user.getOrg(), SUSE_CLOUD, config);
+                getTestUser().getOrg(), SUSE_CLOUD, config);
 
-        List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
+        List<VirtualHostManager> managers = factory.listVirtualHostManagers(getTestUser().getOrg());
 
         assertEquals(2, managers.size());
         assertContains(managers, manager1);
@@ -235,7 +235,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("password", "barpass");
 
         VirtualHostManager manager = createAndSaveVirtualHostManager("label",
-                user.getOrg(), SUSE_CLOUD, config);
+                getTestUser().getOrg(), SUSE_CLOUD, config);
 
         Long id = manager.getCredentials().getId();
         assertNotNull(CredentialsFactory.lookupCredentialsById(id));
@@ -251,7 +251,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     public void testFailOnNullParameters() {
         try {
             // should throw a NullPointerException
-            createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
+            createAndSaveVirtualHostManager("mylabel", getTestUser().getOrg(), SUSE_CLOUD, null);
         }
         catch (NullPointerException e) {
             return;

@@ -64,7 +64,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         mountPointDir = Files.createTempDirectory("rpmrepotest");
 
-        channel = ChannelFactoryTest.createTestChannel(user);
+        channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
 
         metadataPath = mountPointDir.resolve(Path.of("rhn", "repodata", channel.getLabel()));

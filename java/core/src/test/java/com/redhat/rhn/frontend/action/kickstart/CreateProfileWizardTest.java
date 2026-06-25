@@ -56,14 +56,14 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
         // Create some crypto keys that should get associated
         // with the new KickstartData
-        CryptoKey sslkey = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey sslkey = CryptoTest.createTestKey(getTestUser().getOrg());
         sslkey.setCryptoKeyType(KickstartFactory.KEY_TYPE_SSL);
         KickstartFactory.saveCryptoKey(sslkey);
         TestUtils.flushAndEvict(sslkey);
 
         // Create a GPG key as well, so we can test that just SSL
         // keys are associated.
-        CryptoKey gpgkey = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey gpgkey = CryptoTest.createTestKey(getTestUser().getOrg());
         gpgkey.setCryptoKeyType(KickstartFactory.KEY_TYPE_GPG);
         KickstartFactory.saveCryptoKey(gpgkey);
         TestUtils.flushAndEvict(gpgkey);
@@ -89,7 +89,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testRhel7() throws Exception {
-        Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel treeChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(treeChannel);
         tree.setInstallType(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_7"));
@@ -110,14 +110,14 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         actionPerform();
         testActionHasNoMessages();
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
-                label, user.getOrg().getId());
+                label, getTestUser().getOrg().getId());
         assertEquals("--permissive", ksdata.getCommand("selinux").getArguments());
     }
 
     @Test
     public void testSuccess() throws Exception {
 
-        Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel treeChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(treeChannel);
         tree.setBasePath("rhn/kickstart/ks-rhel-i386-server-7");
@@ -161,7 +161,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testFtpDownload() throws Exception {
-        Channel treeChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel treeChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.
             createTestKickstartableTree(treeChannel);
 
@@ -209,7 +209,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(KICKSTART_LABEL, label);
         KickstartVirtualizationType type = KickstartFactory.lookupVirtualizationTypes().iterator().next();
         addRequestParameter(CreateProfileWizardAction.VIRTUALIZATION_TYPE_LABEL_PARAM, type.getLabel());
-        Channel c = ChannelTestUtils.createBaseChannel(user);
+        Channel c = ChannelTestUtils.createBaseChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(c);
         addRequestParameter(KSTREE_ID, tree.getId().toString());
         actionPerform();
@@ -225,7 +225,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         KickstartVirtualizationType type = KickstartFactory.lookupVirtualizationTypes().iterator().next();
         addRequestParameter(CreateProfileWizardAction.VIRTUALIZATION_TYPE_LABEL_PARAM,
             type.getLabel());
-        Channel c = ChannelTestUtils.createBaseChannel(user);
+        Channel c = ChannelTestUtils.createBaseChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(c);
         addRequestParameter(KSTREE_ID, tree.getId().toString());
 
@@ -275,7 +275,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testLabelAlreadyExists() throws Exception {
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         String[] array = new String[1];
         array[0] = "kickstart.error.labelexists";
         clearRequestParameters();
@@ -290,7 +290,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
     public void verifyKSCommandsDefaults(String labelIn) {
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
-                                            labelIn, user.getOrg().getId());
+                                            labelIn, getTestUser().getOrg().getId());
         assertNotNull(ksdata);
         //checking to make sure defaults were set correctly
         assertNotNull(ksdata.getCommand("rootpw"));

@@ -69,14 +69,14 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setRequestPathInfo("/systems/details/Edit");
-        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
+        getTestUser().setOrg(TestUtils.saveAndFlush(getTestUser().getOrg()));
 
         // mocking JSP is hard, so let's test with traditional
-        s = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        ChannelTestUtils.setupBaseChannelForVirtualization(user, s.getBaseChannel());
+        s = ServerTestUtils.createTestSystem(getTestUser(), ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        ChannelTestUtils.setupBaseChannelForVirtualization(getTestUser(), s.getBaseChannel());
 
-        UserTestUtils.addVirtualization(user.getOrg());
-        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
+        getTestUser().setOrg(TestUtils.saveAndFlush(getTestUser().getOrg()));
 
         request.addParameter("sid", s.getId().toString());
     }
@@ -192,7 +192,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testSetBaseEntitlement() throws Exception {
-        UserTestUtils.addManagement(user.getOrg());
+        UserTestUtils.addManagement(getTestUser().getOrg());
         Long id = s.getId();
         String name = s.getName();
         systemEntitlementManager.removeAllServerEntitlements(s);

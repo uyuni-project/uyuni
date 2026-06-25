@@ -83,7 +83,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         sshPushSystemMock = mock(SystemSummary.class);
         saltSSHServiceMock = mock(SaltSSHService.class);
-        minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // Create script action directory
         File scriptDir = new File(SUMA_STATE_FILES_ROOT_PATH + "/" + SCRIPTS_DIR);
         if (!scriptDir.exists()) {
@@ -270,7 +270,7 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
 
     private Action createRebootAction(Date earliestAction) {
         Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
-        action.setOrg(user.getOrg());
+        action.setOrg(getTestUser().getOrg());
         action.setEarliestAction(earliestAction);
         return action;
     }

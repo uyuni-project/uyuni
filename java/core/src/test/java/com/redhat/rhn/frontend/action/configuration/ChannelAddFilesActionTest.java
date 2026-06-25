@@ -31,9 +31,9 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testUpload() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelUploadFiles");
@@ -44,9 +44,9 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testImport() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelImportFiles");
@@ -57,9 +57,9 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testCreate() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelCreateFiles");

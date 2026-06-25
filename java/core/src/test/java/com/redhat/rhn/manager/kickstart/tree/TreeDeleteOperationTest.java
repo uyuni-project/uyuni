@@ -29,15 +29,15 @@ public class TreeDeleteOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testDelete() throws Exception {
-        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        TreeCreateOperation cmd = new TreeCreateOperation(getTestUser());
         setTestTreeParams(cmd);
         cmd.store();
         TreeDeleteOperation deleteCmd = new TreeDeleteOperation(
-                                                     cmd.getTree().getId(), user);
+                                                     cmd.getTree().getId(), getTestUser());
         assertNotNull(deleteCmd);
         assertNull(deleteCmd.store());         // actually does a remove operation
         assertNull(KickstartFactory.
-              lookupKickstartTreeByIdAndOrg(cmd.getTree().getId(), user.getOrg()));
+              lookupKickstartTreeByIdAndOrg(cmd.getTree().getId(), getTestUser().getOrg()));
     }
 
 }

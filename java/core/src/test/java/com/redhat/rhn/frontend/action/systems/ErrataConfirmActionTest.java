@@ -74,25 +74,25 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
         addRequestParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());
         // Create System
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         RhnSet errata = RhnSetDecl.ERRATA.createCustom(
-                                        server.getId()).get(user);
+                                        server.getId()).get(getTestUser());
 
         //Fully create channels so that errata can be added to them.
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         // Create a set of Errata IDs
         for (int i = 0; i < 5; i++) {
-            Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+            Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
             e.addChannel(channel);
             ErrataFactory.save(e);
             errata.addElement(e.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
                     e.getPackages().iterator().next().getId(),
                     server.getId(), e.getId());
-            UserFactory.save(user);
+            UserFactory.save(getTestUser());
         }
         RhnSetManager.store(errata); //save the set
         addRequestParameter("allowVendorChange", new String("false"));
@@ -119,12 +119,12 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
 
         addRequestParameter("all", "false");
-        RhnSet errata = RhnSetDecl.ERRATA.get(user);
+        RhnSet errata = RhnSetDecl.ERRATA.get(getTestUser());
         // Create System
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         //Fully create channels so that errata can be added to them.
-        ChannelFactoryTest.createTestChannel(user);
+        ChannelFactoryTest.createTestChannel(getTestUser());
 
 
         RhnSetManager.store(errata); //save the set

@@ -41,8 +41,8 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testNonSubmit() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
         for (String config : GeneralConfigAction.getAllowedConfigs()) {
             String value = Config.get().getString(config);
@@ -64,8 +64,8 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testSubmit() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
         Config.get().setString("web.com.redhat.rhn.frontend." +
                 "action.satellite.GeneralConfigAction.command",

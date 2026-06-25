@@ -138,9 +138,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     @Test
     public void testKsDataByTree() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
         KickstartData ksdata = KickstartDataTest.
-            createKickstartWithOptions(user.getOrg());
+            createKickstartWithOptions(getTestUser().getOrg());
         ksdata.getKickstartDefaults().setKstree(k);
         KickstartFactory.saveKickstartData(ksdata);
         TestUtils.flushAndEvict(ksdata);
@@ -316,7 +316,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     @Test
     public void testListCandidatesForBacksync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
 
         assertEquals(Collections.singletonList(k),
                 KickstartFactory.listCandidatesForBacksync());
@@ -329,11 +329,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     @Test
     public void testListCandidatesForBacksyncNoSync() throws Exception {
         KickstartableTree k = createTestKickstartableTree(
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
         k.setKernelOptions("option1=val1");
         KickstartFactory.saveKickstartableTree(k);
         KickstartableTree k2 = createTestKickstartableTree(
-                ChannelFactoryTest.createTestChannel(user));
+                ChannelFactoryTest.createTestChannel(getTestUser()));
         k2.setKernelOptionsPost("option2=val2");
         KickstartFactory.saveKickstartableTree(k2);
 

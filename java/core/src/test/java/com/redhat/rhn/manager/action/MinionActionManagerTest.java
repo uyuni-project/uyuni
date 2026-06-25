@@ -120,17 +120,17 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackageInstallWithStagingInsideWindow() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -153,13 +153,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         int preScheduleSize = dr.size();
 
-        handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
+        handler.schedulePackageInstall(getTestUser(), minion1.getId().intValue(), packageIds,
                 Date.from(scheduledActionTime.toInstant()));
 
-        dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Install", dr.get(0).getTypeName());
     }
@@ -170,17 +170,17 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackageInstallWithStagingBeforeWindow() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -205,13 +205,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         int preScheduleSize = dr.size();
 
-        handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
+        handler.schedulePackageInstall(getTestUser(), minion1.getId().intValue(), packageIds,
                 Date.from(scheduledActionTime.toInstant()));
 
-        dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Install", dr.get(0).getTypeName());
     }
@@ -223,17 +223,17 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackageInstallWithStagingAfterWindow() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -255,13 +255,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         int preScheduleSize = dr.size();
 
-        handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
+        handler.schedulePackageInstall(getTestUser(), minion1.getId().intValue(), packageIds,
                 Date.from(scheduledActionTime.toInstant()));
 
-        dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Install", dr.get(0).getTypeName());
     }
@@ -274,17 +274,17 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPackageInstallWithStagingBeforeWindowExceedingDuration()
         throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "90");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -307,13 +307,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         }});
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         int preScheduleSize = dr.size();
 
-        handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
+        handler.schedulePackageInstall(getTestUser(), minion1.getId().intValue(), packageIds,
                 Date.from(scheduledActionTime.toInstant()));
 
-        dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Install", dr.get(0).getTypeName());
     }
@@ -325,17 +325,17 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackageInstallWithoutStaging() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(false);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(false);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -357,13 +357,13 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         int preScheduleSize = dr.size();
 
-        handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
+        handler.schedulePackageInstall(getTestUser(), minion1.getId().intValue(), packageIds,
                 Date.from(scheduledActionTime.toInstant()));
 
-        dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals("Package Install", dr.get(0).getTypeName());
     }
@@ -374,22 +374,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testChainPackageInstallWithStagingInsideWindow() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg1 = PackageTest.createTestPackage(getTestUser().getOrg());
         List packageIds = new LinkedList<>();
         packageIds.add(pkg1.getId().intValue());
 
-        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg2 = PackageTest.createTestPackage(getTestUser().getOrg());
         packageIds.add(pkg2.getId().intValue());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0.5");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
 
@@ -410,7 +410,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
        } });
 
-        ActionChainManager.schedulePackageInstalls(user,
+        ActionChainManager.schedulePackageInstalls(getTestUser(),
                 Arrays.asList(minion1.getId(), minion2.getId()), null,
                 Date.from(scheduledActionTime.toInstant()), null);
     }
@@ -421,23 +421,23 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPatchInstallWithStagingInsideWindow() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
         final String updateTag = "SLE-SERVER";
         channel1.setUpdateTag(updateTag);
 
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
-        server1.setOrg(user.getOrg());
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server1.setOrg(getTestUser().getOrg());
         server1.addChannel(channel1);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.getPackages().add(createTestPackage(getTestUser(), channel1, "noarch"));
 
         ChannelFactory.save(channel1);
 
@@ -450,7 +450,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -470,7 +470,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         TestUtils.flushSession();
-        ErrataManager.applyErrata(user, errataIds,
+        ErrataManager.applyErrata(getTestUser(), errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
 
@@ -480,23 +480,23 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPatchInstallWithStagingBeforeWindow() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
         final String updateTag = "SLE-SERVER";
         channel1.setUpdateTag(updateTag);
 
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
-        server1.setOrg(user.getOrg());
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server1.setOrg(getTestUser().getOrg());
         server1.addChannel(channel1);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.getPackages().add(createTestPackage(getTestUser(), channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ErrataCacheManager.insertNeededErrataCache(
@@ -508,7 +508,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "2");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
 
@@ -529,7 +529,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         TestUtils.flushSession();
-        ErrataManager.applyErrata(user, errataIds,
+        ErrataManager.applyErrata(getTestUser(), errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
 
@@ -541,24 +541,24 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPatchInstallWithStagingBeforeWindowExceedingDuration()
         throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         final String updateTag = "SLE-SERVER";
         channel1.setUpdateTag(updateTag);
 
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
-        server1.setOrg(user.getOrg());
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server1.setOrg(getTestUser().getOrg());
         server1.addChannel(channel1);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.getPackages().add(createTestPackage(getTestUser(), channel1, "noarch"));
 
         ChannelFactory.save(channel1);
 
@@ -571,7 +571,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "90");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -592,7 +592,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         TestUtils.flushSession();
-        ErrataManager.applyErrata(user, errataIds,
+        ErrataManager.applyErrata(getTestUser(), errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
 
@@ -604,28 +604,28 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPatchInstallWithStagingAfterWindow() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser());
         final String updateTag = "SLE-SERVER";
         channel1.setUpdateTag(updateTag);
         channel2.setUpdateTag(updateTag);
         channel3.setUpdateTag(updateTag);
 
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
-        server1.setOrg(user.getOrg());
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server1.setOrg(getTestUser().getOrg());
         server1.addChannel(channel1);
         server1.addChannel(channel3);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.getPackages().add(createTestPackage(getTestUser(), channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ChannelFactory.save(channel2);
@@ -639,7 +639,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -660,7 +660,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             never(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
         TestUtils.flushSession();
-        ErrataManager.applyErrata(user, errataIds,
+        ErrataManager.applyErrata(getTestUser(), errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
 
@@ -670,22 +670,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPatchInstallWithoutStaging() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
         final String updateTag = "SLE-SERVER";
         channel1.setUpdateTag(updateTag);
 
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
-        server1.setOrg(user.getOrg());
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server1.setOrg(getTestUser().getOrg());
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.getPackages().add(createTestPackage(getTestUser(), channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ErrataCacheManager.insertNeededErrataCache(
@@ -697,7 +697,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<>();
         serverIds.add(server1.getId());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(false);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(false);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
@@ -716,7 +716,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         TestUtils.flushSession();
-        ErrataManager.applyErrata(user, errataIds,
+        ErrataManager.applyErrata(getTestUser(), errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
 
@@ -726,22 +726,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testStagingJobsScheduleTime() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(executionTime.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -759,7 +759,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -779,22 +780,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testStagingJobsScheduleTimeOutsideWindow() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(executionTime.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -812,7 +813,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -832,22 +834,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoStagingJobsWhenImmediateExecution() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -865,7 +867,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -885,22 +888,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoStagingJobsWhenWindowStartEqualsFinish() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "0");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -919,7 +922,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -939,22 +943,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoStagingJobsWhenWindowIsZeroAdvance() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "0");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -973,7 +977,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -992,22 +997,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoStagingJobsWhenWindowIsZeroLength() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
+        UserFactory.save(getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion1.setOrg(getTestUser().getOrg());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        minion2.setOrg(getTestUser().getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -1026,7 +1031,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();
@@ -1045,22 +1051,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoStagingJobsWhenTraditionalClient() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        UserFactory.save(user);
-        Server s1 = ServerTestUtils.createTestSystem(user);
-        s1.setOrg(user.getOrg());
-        Server s2 = ServerTestUtils.createTestSystem(user);
+        UserFactory.save(getTestUser());
+        Server s1 = ServerTestUtils.createTestSystem(getTestUser());
+        s1.setOrg(getTestUser().getOrg());
+        Server s2 = ServerTestUtils.createTestSystem(getTestUser());
         s2.setOrg(s2.getOrg());
 
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
+        getTestUser().getOrg().getOrgConfig().setStagingContentEnabled(true);
         Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0");
         Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(s1.getId(), s2.getId())));
@@ -1078,7 +1084,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
         Map<Long, Map<Long, ZonedDateTime>> actionsDataMap =
-                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action), user.getOrg());
+                MinionActionManager.scheduleStagingJobsForMinions(Collections.singletonList(action),
+                        getTestUser().getOrg());
         List<ZonedDateTime> scheduleTimes =
                 actionsDataMap.values().stream().map(s -> new ArrayList<>(s.values()))
                         .flatMap(List::stream).toList();

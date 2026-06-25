@@ -86,7 +86,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecuteNewSystemsDefault() {
 
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         NetworkInterface networkInterface = server.getNetworkInterfaces().iterator().next();
         ServerNetAddress4 ip4 = new ServerNetAddress4(networkInterface.getInterfaceId(), EXPECTED_ADDRESS);
         ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
@@ -114,7 +114,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
     @SuppressWarnings("unchecked")
     @Test
     public void testExecuteSaveNewSystem() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -142,7 +142,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         testActionHasNoErrors();
         verifyActionMessage("kickstart.powermanagement.saved");
 
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser());
         SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
 
         assertEquals(EXPECTED_TYPE, systemRecord.getPowerType());
@@ -159,7 +159,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
     @SuppressWarnings("unchecked")
     @Test
     public void testExecuteReadSavedSystem() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -197,7 +197,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testExecuteOverwriteExistingSystem() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -225,7 +225,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
             request.getAttribute(PowerManagementAction.POWER_PASSWORD));
         assertEquals(EXPECTED_ID_2, request.getAttribute(PowerManagementAction.POWER_ID));
 
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser());
         SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
 
         assertEquals(EXPECTED_ADDRESS_2, systemRecord.getPowerAddress());
@@ -240,7 +240,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testPowerOn() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -263,7 +263,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testPowerOff() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -286,7 +286,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testReboot() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");
@@ -309,7 +309,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testGetStatus() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod("POST");

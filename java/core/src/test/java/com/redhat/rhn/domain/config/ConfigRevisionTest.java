@@ -33,12 +33,12 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateConfigRevision() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
 
         cr.setConfigFileType(ConfigFileType.dir());
-        cr.setChangedById(user.getId());
+        cr.setChangedById(getTestUser().getId());
         ConfigurationFactory.commit(cr);
         Long crid = cr.getId();
         TestUtils.flushAndEvict(cr);
@@ -50,9 +50,9 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
         assertTrue(cr.isDirectory());
 
         assertNotNull(cr.getChangedById());
-        assertEquals(cr.getChangedById(), user.getId());
+        assertEquals(cr.getChangedById(), getTestUser().getId());
         assertNotNull(cr.getChangedBy());
-        assertEquals(user.getLogin(), cr.getChangedBy().getLogin());
+        assertEquals(getTestUser().getLogin(), cr.getChangedBy().getLogin());
     }
 }
 

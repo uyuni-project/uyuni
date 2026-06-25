@@ -42,7 +42,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        ksdata = KickstartDataTest.createKickstartWithProfile(user);
+        ksdata = KickstartDataTest.createKickstartWithProfile(getTestUser());
         ksdata.getKickstartDefaults().setProfile(null);
         addRequestParameter(RequestContext.KICKSTART_ID, ksdata.getId().toString());
         KickstartFactory.saveKickstartData(ksdata);
@@ -53,7 +53,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");
         actionPerform();
         assertNotNull(request.getParameter(RequestContext.KICKSTART_ID));
@@ -62,8 +62,8 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testSubmit() throws Exception {
         assertNull(ksdata.getKickstartDefaults().getProfile());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Profile p = ProfileManagerTest.createProfileWithServer(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Profile p = ProfileManagerTest.createProfileWithServer(getTestUser());
         ksdata.getKickstartDefaults().setProfile(p);
         addDispatchCall(KickstartPackageProfileSetupAction.CLEAR_METHOD);
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");

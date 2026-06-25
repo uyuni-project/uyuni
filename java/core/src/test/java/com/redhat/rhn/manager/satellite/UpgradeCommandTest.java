@@ -36,11 +36,11 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradeProfiles() throws Exception {
-        TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
+        TaskFactory.createTask(getTestUser().getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
         List<Task> l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
         assertInstanceOf(Task.class, l.get(0));
 
-        KickstartData ksd = KickstartTestHelper.createTestKickStart(user);
+        KickstartData ksd = KickstartTestHelper.createTestKickStart(getTestUser());
 
         KickstartSession ksession =
             KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);

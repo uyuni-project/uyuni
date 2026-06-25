@@ -36,15 +36,15 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorDbPersistence() {
         // Arrange
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser());
         connection.invokeMethod("new_profile");
         var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         k.setCobblerId(profileId.toString());
-        Server s = ServerFactoryTest.createTestServer(user, false);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), false);
 
         // Act
-        new CobblerSystemCreateCommand(user, k, s);
+        new CobblerSystemCreateCommand(getTestUser(), k, s);
 
         // Assert
     }
@@ -52,15 +52,15 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorUnknown1() {
         // Arrange
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser());
         connection.invokeMethod("new_profile");
         var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         k.setCobblerId(profileId.toString());
-        Server s = ServerFactoryTest.createTestServer(user, false);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), false);
 
         // Act
-        new CobblerSystemCreateCommand(user, s, k, "mediaPathIn", "activationKeysIn");
+        new CobblerSystemCreateCommand(getTestUser(), s, k, "mediaPathIn", "activationKeysIn");
 
         // Assert
     }
@@ -77,7 +77,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(admin, false);
 
         // Act
-        new CobblerSystemCreateCommand(user, s, "cobblerProfileName", k);
+        new CobblerSystemCreateCommand(getTestUser(), s, "cobblerProfileName", k);
 
         // Assert
     }
@@ -85,11 +85,11 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorCobblerPassthrough() {
         // Arrange
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
-        Server s = ServerFactoryTest.createTestServer(user, false);
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), false);
 
         // Act
-        new CobblerSystemCreateCommand(user, "cobblerProfileName", k, s.getName(), 0L);
+        new CobblerSystemCreateCommand(getTestUser(), "cobblerProfileName", k, s.getName(), 0L);
 
         // Assert
     }
@@ -97,10 +97,10 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorUnknown2() {
         // Arrange
-        Server s = ServerFactoryTest.createTestServer(user, false);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), false);
 
         // Act
-        new CobblerSystemCreateCommand(user, s, "nameIn");
+        new CobblerSystemCreateCommand(getTestUser(), s, "nameIn");
 
         // Assert
     }
@@ -108,12 +108,13 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testStore() {
         // Arrange
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser());
         connection.invokeMethod("new_profile");
         String profileName = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles"))
                 .get(0).get("name").toString();
-        Server s = ServerFactoryTest.createTestServer(user, false);
-        CobblerSystemCreateCommand cobblerSystemCreateCommand = new CobblerSystemCreateCommand(user, s, profileName);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), false);
+        CobblerSystemCreateCommand cobblerSystemCreateCommand =
+                new CobblerSystemCreateCommand(getTestUser(), s, profileName);
 
         // Act
         ValidatorError error = cobblerSystemCreateCommand.store();

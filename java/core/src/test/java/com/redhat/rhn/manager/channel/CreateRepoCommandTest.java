@@ -42,7 +42,7 @@ public class CreateRepoCommandTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        repoCommand = new CreateRepoCommand(user.getOrg());
+        repoCommand = new CreateRepoCommand(getTestUser().getOrg());
     }
 
     @Test
@@ -142,9 +142,9 @@ public class CreateRepoCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void canCreateRepoWithSSLData() throws InvalidCertificateException {
-        SslCryptoKey caCert = KickstartFactoryTest.createTestSslKey(user.getOrg());
-        SslCryptoKey sslClientCert = KickstartFactoryTest.createTestSslKey(user.getOrg());
-        SslCryptoKey sslClientKey = KickstartFactoryTest.createTestSslKey(user.getOrg());
+        SslCryptoKey caCert = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
+        SslCryptoKey sslClientCert = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
+        SslCryptoKey sslClientKey = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
 
         repoCommand.setLabel("TestWitSSLData");
         repoCommand.setType("yum");
@@ -155,7 +155,8 @@ public class CreateRepoCommandTest extends BaseTestCaseWithUser {
 
         TestUtils.flushAndClearSession();
 
-        ContentSource contentSource = ChannelFactory.lookupContentSource(repoCommand.getRepo().getId(), user.getOrg());
+        ContentSource contentSource = ChannelFactory.lookupContentSource(repoCommand.getRepo().getId(),
+                getTestUser().getOrg());
         assertNotNull(contentSource);
         assertNotNull(contentSource.getSslSets());
         assertEquals(1, contentSource.getSslSets().size(), "One SSL set must be associated with the content source");

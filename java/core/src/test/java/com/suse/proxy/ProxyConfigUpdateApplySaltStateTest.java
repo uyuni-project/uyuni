@@ -71,7 +71,8 @@ public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
         assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
 
         assertNotNull(proxyConfigUpdateContext.getAction());
-        Action scheduledAction = ActionManager.lookupAction(user, proxyConfigUpdateContext.getAction().getId());
+        Action scheduledAction = ActionManager.lookupAction(getTestUser(),
+                proxyConfigUpdateContext.getAction().getId());
         assertNotNull(scheduledAction);
         assertEquals(scheduledAction, proxyConfigUpdateContext.getAction());
     }
@@ -82,10 +83,10 @@ public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
      * @return the ProxyConfigUpdateContext
      */
     private ProxyConfigUpdateContext getProxyConfigUpdateContext() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(null, null, user);
+                new ProxyConfigUpdateContext(null, null, getTestUser());
         proxyConfigUpdateContext.setProxyConfigFiles(new HashMap<>());
         proxyConfigUpdateContext.setProxyMinion(minion);
         return proxyConfigUpdateContext;

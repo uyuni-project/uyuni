@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.multiorg;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestStatics;
@@ -31,9 +32,10 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testExecuteSubmit() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        TestUtils.saveAndFlush(getTestUser());
+
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());
         addRequestParameter("login", "newlogin" + TestUtils.randomString());
@@ -50,9 +52,10 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEmptyFields() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        TestUtils.saveAndFlush(getTestUser());
+
         addSubmitted();
         setRequestPathInfo("/admin/multiorg/OrgCreate");
         actionPerform();
@@ -63,12 +66,13 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCreateDupeUser() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        User savedTestUser = TestUtils.saveAndFlush(getTestUser());
+
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());
-        addRequestParameter("login", user.getLogin());
+        addRequestParameter("login", savedTestUser.getLogin());
         addRequestParameter("email", "test@redhat.com");
         addRequestParameter("desiredpassword", "password");
         addRequestParameter("desiredpasswordConfirm", "password");

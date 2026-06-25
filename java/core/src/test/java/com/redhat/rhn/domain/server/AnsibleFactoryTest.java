@@ -48,8 +48,8 @@ class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
 
     @Test
     void testSaveAndFindAnsiblePath() {
-        MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
         AnsiblePath playbookPath = new PlaybookPath(minionServer2, Path.of("/tmp/test2"));
@@ -74,7 +74,7 @@ class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
 
     @Test
     void testRemoveAnsiblePath() {
-        MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
         inventoryPath = AnsibleFactory.saveAnsiblePath(inventoryPath);
 
@@ -84,12 +84,12 @@ class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
 
     @Test
     void correctlyListsAnsibleInventoryServersByControlNode() {
-        MinionServer controlMinion = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlMinion = ServerTestUtils.createAnsibleControlNode(getTestUser(), saltApi, context);
 
-        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         InventoryPath firstInventory = new InventoryPath(controlMinion, Path.of("/tmp/test/one"), Set.of(one, two));
         AnsibleFactory.saveAnsiblePath(firstInventory);
@@ -109,16 +109,16 @@ class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
 
     @Test
     void correctlyListsAnsibleInventoryServersExcludingControlNode() {
-        MinionServer controlOne = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
-        MinionServer controlTwo = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
-        MinionServer controlThree = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlOne = ServerTestUtils.createAnsibleControlNode(getTestUser(), saltApi, context);
+        MinionServer controlTwo = ServerTestUtils.createAnsibleControlNode(getTestUser(), saltApi, context);
+        MinionServer controlThree = ServerTestUtils.createAnsibleControlNode(getTestUser(), saltApi, context);
 
-        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer five = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer six = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer five = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer six = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         InventoryPath firstInventory = new InventoryPath(controlOne, Path.of("/tmp/test/one"), Set.of(one, two));
         AnsibleFactory.saveAnsiblePath(firstInventory);

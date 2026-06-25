@@ -320,7 +320,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
+        Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 2, true, sysEntMgr);
         host.setHostname("LibVirtHost");
         host.setCpu(CPUTest.createTestCpu(host));
         host.getGuests()
@@ -402,7 +402,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
+        Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 2, true, sysEntMgr);
         sysEntMgr.setBaseEntitlement(host, EntitlementManager.FOREIGN);
         host.setHostname("VMwareHost");
         host.setCpu(CPUTest.createTestCpu(host));
@@ -493,7 +493,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
+        Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 2, true, sysEntMgr);
         sysEntMgr.setBaseEntitlement(host, EntitlementManager.FOREIGN);
         host.setHostname("CloudHost");
         CPU cpu = CPUTest.createTestCpu(host);

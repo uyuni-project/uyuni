@@ -49,7 +49,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
         manager = new VirtualHostManager();
         manager.setLabel("myLabel");
         manager.setGathererModule("myModule");
-        manager.setOrg(user.getOrg());
+        manager.setOrg(getTestUser().getOrg());
     }
 
     /**
@@ -67,7 +67,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
         assertTrue(actual.contains("<name>gatherer_module</name>"));
         assertTrue(actual.contains("<string>myModule</string>"));
         assertTrue(actual.contains("<name>org_id</name>"));
-        assertTrue(actual.contains("<i4>" + user.getOrg().getId() + "</i4>"));
+        assertTrue(actual.contains("<i4>" + getTestUser().getOrg().getId() + "</i4>"));
     }
 
     /**

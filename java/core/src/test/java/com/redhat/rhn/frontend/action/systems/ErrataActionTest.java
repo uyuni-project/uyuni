@@ -46,8 +46,8 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
         setRequestPathInfo(pathInfo);
         addSubmitted();
         addRequestParameter(RequestContext.DISPATCH, Boolean.toString(true));
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         Package p = e.getPackages().iterator().next();
         ErrataCacheManager.insertNeededErrataCache(server.getId(),
                 e.getId(), p.getId());
@@ -67,24 +67,24 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter("allowVendorChange", "true");
 
         // Create System
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         RhnSet errata = RhnSetDecl.ERRATA.createCustom(
-                                        server.getId()).get(user);
+                                        server.getId()).get(getTestUser());
         //Fully create channels so that errata can be added to them.
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        channel.setChannelFamily(user.getOrg().getPrivateChannelFamily());
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        channel.setChannelFamily(getTestUser().getOrg().getPrivateChannelFamily());
         ChannelFactory.save(channel);
 
         // Create a set of Errata IDs
         for (int i = 0; i < 5; i++) {
-            Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+            Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
             e.addChannel(channel);
             ErrataFactory.save(e);
             errata.addElement(e.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
                     e.getPackages().iterator().next().getId(),
                     server.getId(), e.getId());
-            UserFactory.save(user);
+            UserFactory.save(getTestUser());
         }
         RhnSetManager.store(errata); //save the set
 

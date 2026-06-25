@@ -31,9 +31,9 @@ public class KickstartSessionUpdateCommandTest extends BaseKickstartCommandTestC
 
     @Test
     public void testUpdateSession() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartSession session =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         KickstartFactory.saveKickstartSession(session);
         session = TestUtils.reload(session);
         KickstartSessionUpdateCommand cmd =

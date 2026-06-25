@@ -96,7 +96,7 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        this.minion = MinionServerFactoryTest.createTestMinionServer(user);
+        this.minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.addFqdn(DUMMY_PROXY_FQDN);
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
@@ -211,7 +211,7 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, systemManager, user);
+                new ProxyConfigUpdateContext(request, systemManager, getTestUser());
         proxyConfigUpdateContext.setProxyMinion(minionIn);
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);

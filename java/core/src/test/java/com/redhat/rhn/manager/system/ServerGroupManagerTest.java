@@ -60,7 +60,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testCreate() {
         try {
-            manager.create(user, NAME, DESCRIPTION);
+            manager.create(getTestUser(), NAME, DESCRIPTION);
             String msg = "Unprivileged user creates a servergroup." +
                             "Only a user with Sys Group Admin privilege " +
                             " should be able to create/remove a system group.";
@@ -70,8 +70,8 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
             //Great... No privilege won't let you create a server group.
         }
 
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ServerGroup sg = manager.create(getTestUser(), NAME, DESCRIPTION);
         assertNotNull(sg);
         assertEquals(NAME, sg.getName());
         assertEquals(DESCRIPTION, sg.getDescription());
@@ -79,31 +79,31 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAccess() {
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
-        assertTrue(manager.canAccess(user, sg));
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ManagedServerGroup sg = manager.create(getTestUser(), NAME, DESCRIPTION);
+        assertTrue(manager.canAccess(getTestUser(), sg));
 
-        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, getTestUser().getOrg().getId());
         assertFalse(manager.canAccess(newUser, sg));
         List admins = new ArrayList<>();
         admins.add(newUser);
-        manager.associateAdmins(sg, admins, user);
+        manager.associateAdmins(sg, admins, getTestUser());
         assertTrue(manager.canAccess(newUser, sg));
 
-        manager.dissociateAdmins(sg, admins, user);
+        manager.dissociateAdmins(sg, admins, getTestUser());
         assertFalse(manager.canAccess(newUser, sg));
 
-        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
+        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, getTestUser().getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
         assertTrue(manager.canAccess(orgAdmin, sg));
     }
 
     @Test
     public void testRemove() {
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ManagedServerGroup sg = manager.create(getTestUser(), NAME, DESCRIPTION);
         sg = TestUtils.reload(sg);
-        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, getTestUser().getOrg().getId());
         try {
             manager.remove(newUser, sg);
             fail("Permission error. Can't remove if you don't have access");
@@ -114,7 +114,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
         List admins = new ArrayList<>();
         admins.add(newUser);
-        manager.associateAdmins(sg, admins, user);
+        manager.associateAdmins(sg, admins, getTestUser());
         try {
             manager.remove(newUser, sg);
             fail("Permission error. Can't remove if you are not Sys Group Admin");
@@ -123,8 +123,8 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
             //passed
         }
 
-        manager.dissociateAdmins(sg, admins, user);
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        manager.dissociateAdmins(sg, admins, getTestUser());
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         try {
             manager.remove(newUser, sg);
             fail("Permission error. Can't remove if you don't have access");
@@ -133,9 +133,9 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
             //passed
         }
 
-        manager.remove(user, sg);
+        manager.remove(getTestUser(), sg);
         try {
-            manager.lookup(sg.getId(), user);
+            manager.lookup(sg.getId(), getTestUser());
             fail("Group Not Found Exception not thrown");
         }
         catch (Exception e) {
@@ -146,25 +146,25 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListNoAssociatedAdmins() {
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ServerGroup sg = manager.create(user, NAME, DESCRIPTION);
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ServerGroup sg = manager.create(getTestUser(), NAME, DESCRIPTION);
         TestUtils.flushAndEvict(sg);
         try {
-            manager.listNoAdminGroups(user);
+            manager.listNoAdminGroups(getTestUser());
             fail("ORG ADmin permission needed for this!");
         }
         catch (Exception e) {
           //passed
         }
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Collection<ServerGroup> groups = manager.listNoAdminGroups(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Collection<ServerGroup> groups = manager.listNoAdminGroups(getTestUser());
 
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(NAME + "ALPHA", DESCRIPTION,
-                user.getOrg());
+                getTestUser().getOrg());
         TestUtils.flushAndEvict(sg1);
 
-        Collection<ServerGroup> groups1 = manager.listNoAdminGroups(user);
+        Collection<ServerGroup> groups1 = manager.listNoAdminGroups(getTestUser());
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
         assertEquals(new HashSet<>(groups), new HashSet<>(groups1));
@@ -173,33 +173,33 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAddRemoveAdmins() {
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
-        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ManagedServerGroup sg = manager.create(getTestUser(), NAME, DESCRIPTION);
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, getTestUser().getOrg().getId());
         List admins = new ArrayList<>();
         admins.add(newUser);
-        manager.associateAdmins(sg, admins, user);
+        manager.associateAdmins(sg, admins, getTestUser());
 
         Set expected = new HashSet<>(admins);
-        expected.add(user);
-        assertEquals(expected, sg.getAssociatedAdminsFor(user));
+        expected.add(getTestUser());
+        assertEquals(expected, sg.getAssociatedAdminsFor(getTestUser()));
 
-        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
+        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, getTestUser().getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
         List admins1 = new ArrayList<>();
         admins1.add(orgAdmin);
-        manager.associateAdmins(sg, admins1, user);
+        manager.associateAdmins(sg, admins1, getTestUser());
         //even though we asked the
         //Manager to associate an org admin
         // we expect that sg.getAssociatedAdminsFor(user)
         // to give us only the  associated admins (No orgAdmin admins).
-        assertEquals(expected, sg.getAssociatedAdminsFor(user));
+        assertEquals(expected, sg.getAssociatedAdminsFor(getTestUser()));
 
-        manager.dissociateAdmins(sg, admins, user);
+        manager.dissociateAdmins(sg, admins, getTestUser());
         expected.removeAll(admins);
-        assertEquals(expected, sg.getAssociatedAdminsFor(user));
+        assertEquals(expected, sg.getAssociatedAdminsFor(getTestUser()));
 
-        manager.dissociateAdmins(sg, admins1, user);
-        assertEquals(expected, sg.getAssociatedAdminsFor(user));
+        manager.dissociateAdmins(sg, admins1, getTestUser());
+        assertEquals(expected, sg.getAssociatedAdminsFor(getTestUser()));
     }
 }

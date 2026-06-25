@@ -50,10 +50,10 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsType() {
-        Package pkgRpm = PackageTest.createTestPackage(user.getOrg(),
+        Package pkgRpm = PackageTest.createTestPackage(getTestUser().getOrg(),
                 PackageFactory.lookupPackageArchByLabel("x86_64"));
 
-        Package pkgDeb = PackageTest.createTestPackage(user.getOrg(),
+        Package pkgDeb = PackageTest.createTestPackage(getTestUser().getOrg(),
                 PackageFactory.lookupPackageArchByLabel("amd64-deb"));
 
         assertTrue(pkgRpm.isTypeRpm());
@@ -65,7 +65,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPackage() {
-        Package pkg = createTestPackage(user.getOrg());
+        Package pkg = createTestPackage(getTestUser().getOrg());
         assertNotNull(pkg);
         //make sure we got written to the db
         assertNotNull(pkg.getId());
@@ -266,7 +266,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetNevraWithEpoch() {
-        Package pkg = createTestPackage(user.getOrg());
+        Package pkg = createTestPackage(getTestUser().getOrg());
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr("1", "2", "3", PackageType.RPM);
         pkg.setPackageEvr(evr);
 
@@ -290,7 +290,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetExtraTag() {
-        Package pkg = createTestPackage(user.getOrg());
+        Package pkg = createTestPackage(getTestUser().getOrg());
         pkg.getExtraTags().add(PackageManagerTest.createExtraTag("mytag", "myvalue", pkg));
 
         assertEquals("myvalue", pkg.getExtraTag("mytag"));
@@ -299,12 +299,12 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRetrievePtfInformation() {
-        Package masterPtfPackage = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
+        Package masterPtfPackage = PackageTestUtils.createPtfMaster("123456", "1", getTestUser().getOrg());
 
         assertTrue(masterPtfPackage.isMasterPtfPackage());
         assertFalse(masterPtfPackage.isPartOfPtf());
 
-        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", getTestUser().getOrg());
 
         assertFalse(ptfPackage.isMasterPtfPackage());
         assertTrue(ptfPackage.isPartOfPtf());

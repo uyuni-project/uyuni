@@ -65,12 +65,12 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     @Test
     public void testExecute() throws Exception {
         // Create 2 minions
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // Create an action for the 2 minions. Process a 'batch-start' event where both minions are available.
         // No server action should be marked as 'FAILED'.
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         Action foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());
@@ -104,7 +104,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
 
         // Create an action for the 2 minions. Process a 'batch-start' event where both minions are down.
         // Both server action should be marked as 'FAILED'.
-        action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());
@@ -139,7 +139,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         // Create an action for the 2 minions. Process a 'batch-start' event where 'minion1'
         // is available but 'minion2' is down.
         // Only the server action for 'minion1' should be marked as 'FAILED'.
-        action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());

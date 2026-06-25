@@ -21,17 +21,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.UserTestCaseExtension;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class MessageQueueTest extends RhnBaseTestCase {
 
+    @RegisterExtension
+    private final UserTestCaseExtension userTestExtension = new UserTestCaseExtension();
+
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
-    protected User user;
 
     @BeforeEach
     public void setUp() {
@@ -44,15 +48,23 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
         TestDBAction.deRegisterAction();
         MessageQueue.stopMessaging();
 
-        user = null;
+        nullifyTestUser();
         logger.debug("tearDown - end");
+    }
+
+    protected User getTestUser() {
+        return userTestExtension.getTestUser();
+    }
+
+    protected void nullifyTestUser() {
+        userTestExtension.nullifyTestUser();
     }
 
     @Test

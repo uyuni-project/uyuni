@@ -394,7 +394,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
 
         // set up the minion
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // setting the minion as manager
         MgrServerInfo mgrServerInfo = new MgrServerInfo();
         mgrServerInfo.setServer(minion);
@@ -411,7 +411,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
                 fillContextWithDummyData(
-                        new ProxyConfigUpdateContext(request, null, user)
+                        new ProxyConfigUpdateContext(request, null, getTestUser())
                 );
         proxyConfigUpdateContext.setProxyMinion(minion);
 
@@ -468,11 +468,11 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // associate a child channel providing mgrpxy
         Channel channelWithMgrpxy = createChannelWithMgrPxy(minion);
         // subscribe to the channel
-        SystemManager.subscribeServerToChannel(user, minion, channelWithMgrpxy);
+        SystemManager.subscribeServerToChannel(getTestUser(), minion, channelWithMgrpxy);
         ChannelFactory.refreshNewestPackageCache(channelWithMgrpxy, JAVA_TEST);
 
         assertFalse(isMgrpxyInstalled(minion));
@@ -480,7 +480,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
                 fillContextWithDummyData(
-                        new ProxyConfigUpdateContext(request, null, user)
+                        new ProxyConfigUpdateContext(request, null, getTestUser())
                 );
         proxyConfigUpdateContext.setProxyMinion(minion);
 
@@ -515,7 +515,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion with base channel
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // associate a child channel providing mgrpxy
         Channel channelWithMgrpxy = createChannelWithMgrPxy(minion);
         ChannelFactory.refreshNewestPackageCache(channelWithMgrpxy, JAVA_TEST);
@@ -525,7 +525,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
                 fillContextWithDummyData(
-                        new ProxyConfigUpdateContext(request, null, user)
+                        new ProxyConfigUpdateContext(request, null, getTestUser())
                 );
         proxyConfigUpdateContext.setProxyMinion(minion);
 
@@ -560,20 +560,20 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion with base channel
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // add proxy info
         ProxyInfo proxyInfo = new ProxyInfo();
         proxyInfo.setServer(minion);
         minion.setProxyInfo(proxyInfo);
         // add package to minion
-        Channel channelWithMgrpxy = ChannelFactoryTest.createTestChannel(user);
+        Channel channelWithMgrpxy = ChannelFactoryTest.createTestChannel(getTestUser());
         PackageManagerTest.addPackageToSystemAndChannel(MGRPXY, minion, channelWithMgrpxy);
 
         assertTrue(isMgrpxyInstalled(minion));
 
         ProxyConfigUpdateContext proxyConfigUpdateContext =
                 fillContextWithDummyData(
-                        new ProxyConfigUpdateContext(request, null, user)
+                        new ProxyConfigUpdateContext(request, null, getTestUser())
                 );
         proxyConfigUpdateContext.setProxyMinion(minion);
 
@@ -655,10 +655,10 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
      * @throws Exception on errors
      */
     private Channel createChannelWithMgrPxy(Server server) throws Exception {
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         server.addChannel(baseChannel);
-        Package pkg = PackageTest.createTestPackage(user.getOrg(), MGRPXY);
-        Channel childChannel = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg(), MGRPXY);
+        Channel childChannel = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
         childChannel.getPackages().add(pkg);
         return childChannel;
     }

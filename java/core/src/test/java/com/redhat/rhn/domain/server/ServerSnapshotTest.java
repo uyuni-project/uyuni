@@ -32,7 +32,7 @@ public class ServerSnapshotTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRollbackGroups() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
 
         assertNotEmpty(server.getGroups());
 

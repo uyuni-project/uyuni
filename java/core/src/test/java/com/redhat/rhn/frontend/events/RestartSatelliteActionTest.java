@@ -30,9 +30,9 @@ public class RestartSatelliteActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAction() {
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        command = new TestRestartCommand(user);
-        RestartSatelliteEvent event = new RestartSatelliteEvent(user);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        command = new TestRestartCommand(getTestUser());
+        RestartSatelliteEvent event = new RestartSatelliteEvent(getTestUser());
         RestartSatelliteAction action = new RestartSatelliteAction() {
             @Override
             protected RestartCommand getCommand(User currentUser) {

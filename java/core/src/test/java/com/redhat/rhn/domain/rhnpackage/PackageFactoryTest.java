@@ -51,7 +51,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupWithUser() {
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         assertNotNull(pkg.getOrg().getId());
 
         User usr = new UserTestUtils.UserBuilder().orgId(pkg.getOrg().getId()).build();
@@ -71,12 +71,12 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByNameAndServer() throws Exception {
-        Server testServer = ServerFactoryTest.createTestServer(user, true);
+        Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
         testServer.addChannel(channel);
 
-        Package testPackage = PackageTest.createTestPackage(user.getOrg());
+        Package testPackage = PackageTest.createTestPackage(getTestUser().getOrg());
 
         //Test a package the satellite knows about
         InstalledPackage testInstPack = new InstalledPackage();
@@ -106,14 +106,14 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         arches.add("channel-ia64");
 
         List<PackageOverview> results =
-                PackageFactory.packageSearch(pids, arches, user.getId(), null,
+                PackageFactory.packageSearch(pids, arches, getTestUser().getId(), null,
                         PackageSearchAction.ARCHITECTURE);
         assertNotNull(results);
     }
 
     @Test
     public void testPackageDelete() {
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
         Long id = pkg.getId();
         Org org = pkg.getOrg();
         TestUtils.flushAndEvict(pkg);
@@ -127,7 +127,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testPackageSourceLookup() {
-       Package pack = PackageTest.createTestPackage(user.getOrg());
+       Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
 
        List<PackageSource> list = PackageFactory.lookupPackageSources(pack);
         assertFalse(list.isEmpty());
@@ -136,16 +136,16 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testFindMissingProductPackageOnServer() throws Exception {
-       Server testServer = ServerFactoryTest.createTestServer(user, true);
+       Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
        testServer.addChannel(channel);
 
        // Create an installed package so the Server package list won't be empty
-       ErrataTestUtils.createTestInstalledPackage(ErrataTestUtils.createTestPackage(user, channel, "x86_64"),
+       ErrataTestUtils.createTestInstalledPackage(ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64"),
                testServer);
 
-       Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
        PackageProvides provideProduct = new PackageProvides();
        provideProduct.setCapability(productCap);
@@ -165,12 +165,12 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFindMissingProductPackageNoPackageProfile() throws Exception {
-        Server testServer = ServerFactoryTest.createTestServer(user, true);
+        Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
         testServer.addChannel(channel);
 
-        Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Package testPackage = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
         PackageProvides provideProduct = new PackageProvides();
         provideProduct.setCapability(productCap);
@@ -191,12 +191,12 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testInstalledProductPackage() throws Exception {
-       Server testServer = ServerFactoryTest.createTestServer(user, true);
+       Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
        testServer.addChannel(channel);
 
-       Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
        PackageProvides provideProduct = new PackageProvides();
        provideProduct.setCapability(productCap);
@@ -223,13 +223,13 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testInstalledProductPackageProvidesOtherProduct() throws Exception {
-       Server testServer = ServerFactoryTest.createTestServer(user, true);
+       Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
        testServer.addChannel(channel);
 
 
-       Package testPackage1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage1 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
 
        PackageProvides provideProduct = new PackageProvides();
@@ -239,7 +239,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
        provideProduct = TestUtils.saveAndFlush(provideProduct);
 
-       Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage2 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
 
        PackageProvides provideProduct2 = new PackageProvides();
        provideProduct2.setCapability(productCap);
@@ -275,13 +275,13 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testInstalledProductPackageProvidesOtherProduct2() throws Exception {
-       Server testServer = ServerFactoryTest.createTestServer(user, true);
+       Server testServer = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
        testServer.addChannel(channel);
 
 
-       Package testPackage1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage1 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
        PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
 
        PackageProvides provideProduct = new PackageProvides();
@@ -290,7 +290,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setSense(0L);
        provideProduct = TestUtils.saveAndFlush(provideProduct);
 
-       Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       Package testPackage2 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
 
        PackageProvides provideProduct2 = new PackageProvides();
        provideProduct2.setCapability(productCap);
@@ -327,11 +327,11 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     @Test
    public void testCapabilities() throws Exception {
-       Package pkg = PackageTest.createTestPackage(user.getOrg());
+       Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
 
        createPackageProperties(pkg);
        TestUtils.flushAndClearSession();
-       pkg = PackageFactory.lookupByIdAndUser(pkg.getId(), user);
+       pkg = PackageFactory.lookupByIdAndUser(pkg.getId(), getTestUser());
 
        assertEquals(1, pkg.getProvides().size());
        assertEquals(1, pkg.getRequires().size());

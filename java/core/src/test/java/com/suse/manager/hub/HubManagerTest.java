@@ -202,7 +202,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
 
 
-        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, getTestUser().getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 
@@ -277,7 +277,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             );
 
             if (User.class.equals(firstParameterClass)) {
-                params.add(0, user);
+                params.add(0, getTestUser());
                 expectedMessage += "You need to have at least a SUSE Manager Administrator role to perform this action";
             }
             else if (IssAccessToken.class.equals(firstParameterClass)) {

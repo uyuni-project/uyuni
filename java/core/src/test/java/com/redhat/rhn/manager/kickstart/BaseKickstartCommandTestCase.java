@@ -30,7 +30,7 @@ public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUpBaseKickstartCommandTestCase() throws Exception {
         this.ksdata = KickstartDataTest.
-            createKickstartWithChannel(user.getOrg());
+            createKickstartWithChannel(getTestUser().getOrg());
 
     }
 

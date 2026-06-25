@@ -50,7 +50,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testCleanupNotDeletingChannels() throws Exception {
         int initialChannelCount = ChannelFactory.listAllBaseChannels().size();
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         assertEquals(initialChannelCount + 1, ChannelFactory.listAllBaseChannels().size());
 
@@ -80,7 +80,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         AccessToken withMinionInvalid = new AccessToken();
         withMinionInvalid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
         withMinionInvalid.setStart(Date.from(Instant.now()));
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         withMinionInvalid.setMinion(minion);
         withMinionInvalid.setValid(false);
         withMinionInvalid.setToken("valid2");
@@ -131,9 +131,9 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGenerate() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).isPresent());
         assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).isPresent());
         MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
@@ -142,9 +142,9 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUnneeded() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(base);
         testMinionServer.getChannels().add(base);
         testMinionServer.getChannels().add(child);
@@ -165,9 +165,9 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUnnededTokensInvalidatedOnRefresh() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(base);
         testMinionServer.getChannels().add(base);
         testMinionServer.getChannels().add(child);
@@ -180,7 +180,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRegenerate() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         AccessToken valid = new AccessToken();
         valid.setStart(Date.from(Instant.now()));
         valid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
@@ -198,15 +198,15 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRefresh() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         assertFalse(AccessTokenFactory.refreshTokens(testMinionServer));
         assertEquals(0, testMinionServer.getAccessTokens().size());
 
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
         testMinionServer.getChannels().add(base);
         assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
 
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(base);
         testMinionServer.getChannels().add(child);
         assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
@@ -217,9 +217,9 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRefreshSame() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(base);
         testMinionServer.getChannels().add(base);
         testMinionServer.getChannels().add(child);
@@ -258,9 +258,9 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRefreshNoInitialTokens() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(base);
 
         AccessTokenFactory.refreshTokens(testMinionServer);

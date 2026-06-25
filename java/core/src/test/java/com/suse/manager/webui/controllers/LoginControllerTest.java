@@ -84,7 +84,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
-        LoginHelper.successfulLogin(mockRequest, response.raw(), user);
+        LoginHelper.successfulLogin(mockRequest, response.raw(), getTestUser());
         ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
 
         @SuppressWarnings("unchecked")
@@ -232,7 +232,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
                 new HashMap<>(),
-                Json.GSON.toJson(new LoginController.LoginCredentials(user.getLogin(), "password")),
+                Json.GSON.toJson(new LoginController.LoginCredentials(getTestUser().getLogin(), "password")),
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 

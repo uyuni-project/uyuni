@@ -47,7 +47,7 @@ public class AnsibleControlNodeEntitlementTest extends BaseEntitlementTestCase {
      */
     @Test
     public void testIsAllowedOnSaltClients() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         assertTrue(EntitlementManager.ANSIBLE_CONTROL_NODE.isAllowedOnServer(minion));
     }
 
@@ -56,7 +56,8 @@ public class AnsibleControlNodeEntitlementTest extends BaseEntitlementTestCase {
      */
     @Test
     public void testIsForbiddenOnTraditionalClients() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         assertFalse(EntitlementManager.ANSIBLE_CONTROL_NODE.isAllowedOnServer(server));
     }
 }

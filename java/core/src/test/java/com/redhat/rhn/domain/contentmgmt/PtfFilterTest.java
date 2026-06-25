@@ -45,21 +45,24 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        UserTestUtils.addUserRole(user, ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), ORG_ADMIN);
         contentManager = new ContentManager();
 
         // Create some packages
-        testOnePackage = PackageTest.createTestPackage(user.getOrg(), "vim-data");
-        updatedOnePackage = PackageTestUtils.newVersionOfPackage(testOnePackage, null, "2.0.0", null, user.getOrg());
+        testOnePackage = PackageTest.createTestPackage(getTestUser().getOrg(), "vim-data");
+        updatedOnePackage = PackageTestUtils.newVersionOfPackage(testOnePackage, null, "2.0.0", null,
+                getTestUser().getOrg());
 
-        testTwoPackage = PackageTest.createTestPackage(user.getOrg(), "kernel-default");
+        testTwoPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "kernel-default");
 
-        ptfOneMasterPackage = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
-        ptfOnePackage = PackageTestUtils.createPtfPackage(testOnePackage, "123456", "1", user.getOrg());
+        ptfOneMasterPackage = PackageTestUtils.createPtfMaster("123456", "1", getTestUser().getOrg());
+        ptfOnePackage = PackageTestUtils.createPtfPackage(testOnePackage, "123456", "1",
+                getTestUser().getOrg());
         PackageTestUtils.associatePackageToPtf(ptfOneMasterPackage, ptfOnePackage);
 
-        ptfTwoMasterPackage = PackageTestUtils.createPtfMaster("987654", "1", user.getOrg());
-        ptfTwoPackage = PackageTestUtils.createPtfPackage(testTwoPackage, "987654", "1", user.getOrg());
+        ptfTwoMasterPackage = PackageTestUtils.createPtfMaster("987654", "1", getTestUser().getOrg());
+        ptfTwoPackage = PackageTestUtils.createPtfPackage(testTwoPackage, "987654", "1",
+                getTestUser().getOrg());
         PackageTestUtils.associatePackageToPtf(ptfTwoMasterPackage, ptfTwoPackage);
     }
 
@@ -67,7 +70,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     public void testAllPtfFilter() {
 
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.PTF_ALL, "ptf_all", "ALL");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("all-ptfs", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("all-ptfs", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(updatedOnePackage));
@@ -78,7 +81,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testPtfNumberLowerFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWER, "ptf_number", "567890");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-1", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-1", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertTrue(filter.test(ptfOneMasterPackage));
@@ -90,7 +93,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testPtfNumberLowerEqualsFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.LOWEREQ, "ptf_number", "987654");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-2", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-2", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertTrue(filter.test(ptfOneMasterPackage));
@@ -102,7 +105,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testPtfNumberEqualsFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "ptf_number", "123456");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-3", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-3", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertTrue(filter.test(ptfOneMasterPackage));
@@ -114,7 +117,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testPtfNumberGreaterFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATER, "ptf_number", "567890");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-4", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-4", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(ptfOneMasterPackage));
@@ -126,7 +129,7 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testPtfNumberGreaterEqualsFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.GREATEREQ, "ptf_number", "987654");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-5", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-number-5", ALLOW, PTF, criteria, getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(ptfOneMasterPackage));
@@ -138,7 +141,8 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testFixedPackageEquals() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "ptf_package", "vim-data");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-1", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-1", ALLOW, PTF, criteria,
+                getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(testTwoPackage));
@@ -151,7 +155,8 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testFixedPackageMatches() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "ptf_package", "[a-z]+-[a-z]+");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-2", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-2", ALLOW, PTF, criteria,
+                getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(testTwoPackage));
@@ -164,7 +169,8 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     @Test
     public void testFixedPackageContains() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "ptf_package", "default");
-        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-3", ALLOW, PTF, criteria, user);
+        PtfFilter filter = (PtfFilter) contentManager.createFilter("ptf-package-3", ALLOW, PTF, criteria,
+                getTestUser());
 
         assertFalse(filter.test(testOnePackage));
         assertFalse(filter.test(testTwoPackage));

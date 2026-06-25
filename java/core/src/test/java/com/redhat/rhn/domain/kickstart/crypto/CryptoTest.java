@@ -37,7 +37,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCryptoKey() {
-        CryptoKey key = createTestKey(user.getOrg());
+        CryptoKey key = createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         key = TestUtils.reload(key);
         assertNotNull(key.getId());
@@ -48,7 +48,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBigKey() {
-        CryptoKey key = createTestKey(user.getOrg());
+        CryptoKey key = createTestKey(getTestUser().getOrg());
         assertNotNull(key);
 
         StringBuilder buffer = new StringBuilder();
@@ -64,7 +64,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCryptoKeyKickstartAssoc() throws Exception {
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         ksdata = addKeyToKickstart(ksdata);
         assertNotNull(ksdata.getCryptoKeys());
         assertFalse(ksdata.getCryptoKeys().isEmpty());

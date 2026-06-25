@@ -40,12 +40,12 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        server = ServerTestUtils.createTestSystem(user);
+        server = ServerTestUtils.createTestSystem(getTestUser());
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         setRequestPathInfo("/systems/details/RemoveFromSSM");
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.clear();
         set.addElement(server.getId());
         RhnSetManager.store(set);
@@ -58,7 +58,7 @@ public class RemoveFromSSMTest extends RhnMockStrutsTestCase {
 
         actionPerform();
         assertEquals(request.getParameter("sid"), server.getId().toString());
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         assertFalse(set.contains(server.getId()));
 
     }

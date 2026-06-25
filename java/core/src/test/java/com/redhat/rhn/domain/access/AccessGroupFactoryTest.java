@@ -34,6 +34,6 @@ public class AccessGroupFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test AccessGroupFactory.listCustom
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        AccessGroupFactory.listCustom(user.getOrg());
+        AccessGroupFactory.listCustom(getTestUser().getOrg());
     }
 }

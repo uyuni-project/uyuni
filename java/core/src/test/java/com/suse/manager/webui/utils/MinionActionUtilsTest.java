@@ -81,11 +81,13 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(getTestUser()),
+                action);
         sa.setStatusCompleted();
         action.addServerAction(sa);
-        ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
+        ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(getTestUser()),
+                action);
         sa2.setStatusFailed();
         action.addServerAction(sa2);
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
@@ -116,11 +118,13 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptActionsPickedUp() throws Exception {
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(getTestUser()),
+                action);
         sa.setStatusPickedUp();
         action.addServerAction(sa);
-        ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
+        ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(getTestUser()),
+                action);
         sa2.setStatusCompleted();
         action.addServerAction(sa2);
         Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
@@ -155,21 +159,21 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     @Test
     public void canRetrieveActionChain() {
         String testLabel = "testActionChain_" + RandomStringUtils.randomAlphanumeric(8);
-        ActionChain existingActionChain = ActionChainFactory.createActionChain(testLabel, user);
+        ActionChain existingActionChain = ActionChainFactory.createActionChain(testLabel, getTestUser());
         assertNotNull(existingActionChain);
 
         // Empty value
-        ActionChain actionChain = MinionActionUtils.getActionChain(Optional.empty(), user);
+        ActionChain actionChain = MinionActionUtils.getActionChain(Optional.empty(), getTestUser());
         assertNull(actionChain);
 
         // Retrieve existing
-        actionChain = MinionActionUtils.getActionChain(Optional.of(testLabel), user);
+        actionChain = MinionActionUtils.getActionChain(Optional.of(testLabel), getTestUser());
         assertNotNull(actionChain);
         assertEquals(existingActionChain, actionChain);
 
         // Create new one
         String newLabel = "testNewChain_" + RandomStringUtils.randomAlphanumeric(8);
-        actionChain = MinionActionUtils.getActionChain(Optional.of(newLabel), user);
+        actionChain = MinionActionUtils.getActionChain(Optional.of(newLabel), getTestUser());
         assertNotNull(actionChain);
         assertEquals(newLabel, actionChain.getLabel());
     }

@@ -34,7 +34,7 @@ public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
         setRequestPathInfo("/systems/details/ErrataConfirm");
 
         // Create Server
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         addRequestParameter("sid", server.getId().toString());
         addRequestParameter("allowVendorChange", new String("false"));
 

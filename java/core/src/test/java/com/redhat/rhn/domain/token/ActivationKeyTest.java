@@ -60,12 +60,12 @@ import java.util.List;
 public class ActivationKeyTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
     }
     @Test
     public void testKeyGeneration() throws Exception {
 
-        ActivationKey k = createTestActivationKey(user);
+        ActivationKey k = createTestActivationKey(getTestUser());
         String note = k.getNote();
         String key = k.getKey();
 
@@ -89,14 +89,14 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
         // test out ActivationKeyManager.findByServer while we're here...
         ActivationKey k4 = ActivationKeyManager.
-            getInstance().findByServer(server, user).iterator().next();
+            getInstance().findByServer(server, getTestUser()).iterator().next();
         assertNotNull(k4);
         assertEquals(key, k4.getKey());
 
 
         try {
             ActivationKeyManager.getInstance().
-                findByServer(null, user).iterator().next();
+                findByServer(null, getTestUser()).iterator().next();
             String msg = "Permission check failed :(.." +
                             " Activation key should not have existed" +
                             " for a server of 'null' id. An exception " +
@@ -126,7 +126,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     public void testBadKeys() {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         try {
-            manager.createNewActivationKey(user, "A,B", "Cool", null, null, false);
+            manager.createNewActivationKey(getTestUser(), "A,B", "Cool", null, null, false);
             fail("Validator exception Not raised for an invalid name");
         }
         catch (ValidatorException ve) {
@@ -139,19 +139,19 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         String keyName = " Test Space  ";
         ActivationKey k = manager.createNewActivationKey
-            (user, keyName, "Cool Duplicate", null, null, false);
-        assertEquals(ActivationKey.makePrefix(user.getOrg()) +
+            (getTestUser(), keyName, "Cool Duplicate", null, null, false);
+        assertEquals(ActivationKey.makePrefix(getTestUser().getOrg()) +
                 keyName.trim().replace(" ", ""), k.getKey());
         String newKey = keyName + " FOO  ";
-        manager.changeKey(newKey , k, user);
-        assertNotNull(ActivationKey.makePrefix(user.getOrg()) + newKey.trim());
+        manager.changeKey(newKey , k, getTestUser());
+        assertNotNull(ActivationKey.makePrefix(getTestUser().getOrg()) + newKey.trim());
     }
 
     @Test
     public void testLookupBySession() throws Exception {
         // Still have that weird error creating a test server
         // sometimes in hosted.
-        ActivationKey k = createTestActivationKey(user);
+        ActivationKey k = createTestActivationKey(getTestUser());
         KickstartData ksdata = KickstartDataTest.
             createKickstartWithOptions(k.getOrg());
         KickstartFactory.saveKickstartData(ksdata);
@@ -168,7 +168,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
     @Test
     public void testNullServer() {
-        ActivationKey key = ActivationKeyFactory.createNewKey(user,
+        ActivationKey key = ActivationKeyFactory.createNewKey(getTestUser(),
                 TestUtils.randomString());
         assertNotNull(key.getEntitlements());
         assertEquals(1, key.getEntitlements().size());
@@ -177,15 +177,15 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     // See BZ: 191007
     @Test
     public void testCreateWithCustomGroups() {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        ServerGroup testGroup = ServerGroupTestUtils.createManaged(user);
+        ServerGroup testGroup = ServerGroupTestUtils.createManaged(getTestUser());
         s.getManagedGroups().add((ManagedServerGroup)testGroup);
 
         //Three, one for the server entitlement, one for the user permission to the
         //server, one as the testGroup.
         assertEquals(1, s.getManagedGroups().size());
-        ActivationKey key = createTestActivationKey(user, s);
+        ActivationKey key = createTestActivationKey(getTestUser(), s);
         assertNotNull(key);
         key = TestUtils.reload(key);
         assertNotNull(key.getId());
@@ -194,11 +194,11 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     @Test
     public void testAddGetKeys() throws Exception {
 
-        ActivationKey k = createTestActivationKey(user);
+        ActivationKey k = createTestActivationKey(getTestUser());
 
         for (int i = 0; i < 5; i++) {
             Channel c = ChannelFactoryTest.
-                createTestChannel(user);
+                createTestChannel(getTestUser());
             k.addChannel(c);
         }
         assertEquals(5, k.getChannels().size());
@@ -206,18 +206,18 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByServer() throws Exception {
-        ActivationKey k = createTestActivationKey(user);
+        ActivationKey k = createTestActivationKey(getTestUser());
         Server s = k.getServer();
-        createTestActivationKey(user, s);
-        createTestActivationKey(user, s);
-        createTestActivationKey(user, s);
+        createTestActivationKey(getTestUser(), s);
+        createTestActivationKey(getTestUser(), s);
+        createTestActivationKey(getTestUser(), s);
         List keys = ActivationKeyFactory.lookupByServer(s);
         assertEquals(4, keys.size());
     }
 
     @Test
     public void testCreateNewKeys() throws Exception {
-        ActivationKey k = createTestActivationKey(user);
+        ActivationKey k = createTestActivationKey(getTestUser());
         Server s = k.getServer();
         for (int i = 0; i < 10; i++) {
             ActivationKey tk = createTestActivationKey(s.getCreator(), s);
@@ -247,10 +247,10 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     public void testDuplicateKeyCreation() {
         String keyName = "Hey!";
         ActivationKeyManager.getInstance().createNewActivationKey
-                (user, keyName, null, null, null, false);
+                (getTestUser(), keyName, null, null, null, false);
         try {
             ActivationKeyManager.getInstance().createNewActivationKey
-                                (user, keyName, "Cool Duplicate", null, null, false);
+                                (getTestUser(), keyName, "Cool Duplicate", null, null, false);
             String msg = "Duplicate Key exception not raised..";
             fail(msg);
         }
@@ -308,21 +308,21 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     public void testChangeConfigChannelsRankingOrder() {
         //create activation key and subscribe configuration channels in order 1,2,3
         ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey
-                (user, "anyKeyName", null, null, null, false);
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 3", "cfg-channel-3");
+                (getTestUser(), "anyKeyName", null, null, null, false);
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 2", "cfg-channel-2");
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 3", "cfg-channel-3");
 
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        proc.add(key.getConfigChannelsFor(user), channel1);
-        proc.add(key.getConfigChannelsFor(user), channel2);
-        proc.add(key.getConfigChannelsFor(user), channel3);
+        proc.add(key.getConfigChannelsFor(getTestUser()), channel1);
+        proc.add(key.getConfigChannelsFor(getTestUser()), channel2);
+        proc.add(key.getConfigChannelsFor(getTestUser()), channel3);
 
         //save and reload key, check configuration channels order
         TestUtils.saveAndFlush(key);
         ActivationKey key1 = ActivationKeyFactory.lookupByKey(key.getKey());
         assertNotNull(key1);
-        List<ConfigChannel> configChannels1 = key1.getConfigChannelsFor(user);
+        List<ConfigChannel> configChannels1 = key1.getConfigChannelsFor(getTestUser());
         assertEquals(3, configChannels1.size());
         assertEquals("cfg-channel-1", configChannels1.get(0).getLabel());
         assertEquals("cfg-channel-2", configChannels1.get(1).getLabel());
@@ -331,15 +331,15 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
 
         //change configuration channels ranking order to 3,1,2
         ConfigChannelListProcessor proc1 = new ConfigChannelListProcessor();
-        proc1.add(key1.getConfigChannelsFor(user), channel2);
-        proc1.add(key1.getConfigChannelsFor(user), channel3);
-        proc1.add(key1.getConfigChannelsFor(user), channel1);
+        proc1.add(key1.getConfigChannelsFor(getTestUser()), channel2);
+        proc1.add(key1.getConfigChannelsFor(getTestUser()), channel3);
+        proc1.add(key1.getConfigChannelsFor(getTestUser()), channel1);
 
         //save and reload key, check configuration channels order
         TestUtils.saveAndFlush(key1);
         ActivationKey key2 = ActivationKeyFactory.lookupByKey(key.getKey());
         assertNotNull(key2);
-        List<ConfigChannel> configChannels2 = key2.getConfigChannelsFor(user);
+        List<ConfigChannel> configChannels2 = key2.getConfigChannelsFor(getTestUser());
         assertEquals(3, configChannels2.size());
         assertEquals("cfg-channel-2", configChannels2.get(0).getLabel());
         assertEquals("cfg-channel-3", configChannels2.get(1).getLabel());

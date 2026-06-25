@@ -33,10 +33,10 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
     public void testChannelFamily() throws Exception {
 
         ChannelFamily cfam = ChannelFamilyFactory.
-                            lookupOrCreatePrivateFamily(user.getOrg());
+                            lookupOrCreatePrivateFamily(getTestUser().getOrg());
 
         //add a channel
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         c.setChannelFamily(cfam);
 
         assertEquals(c.getChannelFamilies().size(), 1);

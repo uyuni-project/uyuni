@@ -38,16 +38,16 @@ public class UserSerializerTest extends BaseTestCaseWithUser {
     public void testSerializeUser() {
         UserSerializer serializer = new UserSerializer();
         Writer output = new StringWriter();
-        serializer.serialize(user, output, new XmlRpcSerializer());
+        serializer.serialize(getTestUser(), output, new XmlRpcSerializer());
 
         String actual = output.toString();
         assertTrue(actual.contains("<member><name>id</name><value><i4>" +
-                user.getId() + "</i4></value></member>"));
+                getTestUser().getId() + "</i4></value></member>"));
         assertTrue(actual.contains("<member><name>login</name><value><string>" +
-                user.getLogin() + "</string></value></member>"));
+                getTestUser().getLogin() + "</string></value></member>"));
         assertTrue(actual.contains("<member><name>login_uc</name><value><string>" +
-                user.getLoginUc() + "</string></value></member>"));
+                getTestUser().getLoginUc() + "</string></value></member>"));
         assertTrue(actual.contains("<member><name>enabled</name><value><boolean>" +
-                String.valueOf(user.isDisabled() ? 0 : 1) + "</boolean></value></member>"));
+                String.valueOf(getTestUser().isDisabled() ? 0 : 1) + "</boolean></value></member>"));
     }
 }

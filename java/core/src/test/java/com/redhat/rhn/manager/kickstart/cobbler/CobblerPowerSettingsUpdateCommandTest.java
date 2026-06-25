@@ -38,7 +38,7 @@ public class CobblerPowerSettingsUpdateCommandTest extends BaseTestCaseWithUser 
     @Test
     public void testStore() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
 
         // test creating a new cobbler system profile
         String expectedPowerType = TestUtils.randomString();
@@ -47,7 +47,7 @@ public class CobblerPowerSettingsUpdateCommandTest extends BaseTestCaseWithUser 
         String expectedPowerPassword = TestUtils.randomString();
         String expectedPowerId = TestUtils.randomString();
 
-        assertNull(new CobblerPowerSettingsUpdateCommand(user, server, expectedPowerType,
+        assertNull(new CobblerPowerSettingsUpdateCommand(getTestUser(), server, expectedPowerType,
             expectedPowerAddress, expectedPowerUsername, expectedPowerPassword,
             expectedPowerId).store());
 
@@ -66,7 +66,7 @@ public class CobblerPowerSettingsUpdateCommandTest extends BaseTestCaseWithUser 
         expectedPowerPassword = TestUtils.randomString();
         expectedPowerId = TestUtils.randomString();
 
-        assertNull(new CobblerPowerSettingsUpdateCommand(user, server, expectedPowerType,
+        assertNull(new CobblerPowerSettingsUpdateCommand(getTestUser(), server, expectedPowerType,
             expectedPowerAddress, expectedPowerUsername, expectedPowerPassword,
             expectedPowerId).store());
 

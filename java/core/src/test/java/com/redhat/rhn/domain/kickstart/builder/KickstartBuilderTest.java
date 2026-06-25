@@ -52,7 +52,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), RoleFactory.ORG_ADMIN);
     }
 
 
@@ -64,7 +64,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreate() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         tree.setInstallType(KickstartFactory.
@@ -90,7 +90,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testBuildCommands() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
 
         List<String> lines = parser.getOptionLines();
@@ -107,11 +107,11 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     private KickstartData createBareKickstartData() throws Exception {
         KickstartData ksData = new KickstartData();
-        ksData.setOrg(user.getOrg());
+        ksData.setOrg(getTestUser().getOrg());
         ksData.setLabel("testlabel");
         ksData.setActive(Boolean.TRUE);
         ksData.setOrgDefault(false);
-        ksData.setKickstartDefaults(KickstartDataTest.createDefaults(ksData, user));
+        ksData.setKickstartDefaults(KickstartDataTest.createDefaults(ksData, getTestUser()));
         KickstartFactory.saveKickstartData(ksData);
         return ksData;
     }
@@ -123,16 +123,16 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         try {
-            KickstartRawDataTest.createRawData(user,
+            KickstartRawDataTest.createRawData(getTestUser(),
                     "badvirttype", tree, "some contents", "whatever");
             fail();
         }
         catch (InvalidVirtualizationTypeException e) {
             // expected
         }
-        KickstartRawDataTest.createRawData(user, "decent", tree,
+        KickstartRawDataTest.createRawData(getTestUser(), "decent", tree,
                 "some contents", KickstartVirtualizationType.XEN_PARAVIRT);
-        KickstartRawData data = KickstartRawDataTest.createRawData(user,
+        KickstartRawData data = KickstartRawDataTest.createRawData(getTestUser(),
                 "boring", tree, "some contents",
                 KickstartVirtualizationType.PARA_HOST);
         assertNotNull(data);
@@ -140,7 +140,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testEncryptRootpw() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
 
         List<String> lines = new LinkedList<>();
@@ -154,7 +154,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildPackages() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
 
@@ -175,7 +175,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     public void testBuidEmptyPackages() throws Exception {
         // No idea if this is valid or not but I see no reason why the builder shouldn't
         // be ready for it:
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
         List<String> lines = new LinkedList<>();
         KickstartData ksData = createBareKickstartData();
         builder.buildPackages(ksData, lines);
@@ -185,7 +185,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testBuildPreScripts() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = parser.getPreScriptLines();
 
@@ -200,7 +200,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildPreScriptWithInterpreter() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter /usr/bin/python");
@@ -214,7 +214,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildPreScriptNewlines() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter /usr/bin/python");
@@ -230,7 +230,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildPreScriptWithMissingInterpreter() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
         lines.add("%pre --interpreter");
@@ -247,7 +247,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildMultiplePreScripts() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
         lines.add("%pre");
@@ -263,7 +263,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuidPreScriptWithNochroot() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         // Should not parse:
         List<String> lines = new LinkedList<>();
@@ -281,7 +281,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildPostScriptWithNochroot() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
         lines.add("%post --interpreter blah --nochroot");
@@ -297,7 +297,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBuildScriptWithEmptyLines() throws Exception {
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         List<String> lines = new LinkedList<>();
 
@@ -309,7 +309,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testConstruct() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         KickstartData ksData = builder.createFromParser(parser, "mykslabel",
@@ -325,7 +325,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructWithExistingLabel() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         builder.createFromParser(parser, "mykslabel",
@@ -345,7 +345,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructWithInvaidVirtType() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         try {
@@ -361,7 +361,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructUpgradeKickstart() throws Exception {
         KickstartParser parser = createKickstartParser("upgrade.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         KickstartData data = builder.createFromParser(parser, "upgrade-ks",
@@ -375,7 +375,7 @@ public class KickstartBuilderTest extends BaseTestCaseWithUser {
     @Test
     public void testImportUseDefautDownloadLocation() throws Exception {
         KickstartParser parser = createKickstartParser("samplekickstart1.ks");
-        KickstartBuilder builder = new KickstartBuilder(user);
+        KickstartBuilder builder = new KickstartBuilder(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree();
         KickstartData data = builder.createFromParser(parser,
                 "testing-profile", KickstartVirtualizationType.XEN_PARAVIRT,

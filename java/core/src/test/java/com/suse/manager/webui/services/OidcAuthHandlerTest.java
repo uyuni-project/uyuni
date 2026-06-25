@@ -98,13 +98,14 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
         OidcAuthHandler handler = getHandler();
         String username = handler.handleOidcLogin(token);
 
-        Assertions.assertEquals(user.getLogin(), username);
+        Assertions.assertEquals(getTestUser().getLogin(), username);
     }
 
     @Test
     public void testIssuerMismatch() throws JoseException {
         String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256,
-                "https://not-me.localhost", List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, user.getId()));
+                "https://not-me.localhost", List.of(MCP_AUDIENCE, MLM_AUDIENCE),
+                Map.of(USERNAME_CLAIM, getTestUser().getId()));
 
         OidcAuthHandler handler = getHandler();
 
@@ -119,7 +120,7 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testAudienceMismatch() throws JoseException {
         String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, ISSUER,
-                List.of(MCP_AUDIENCE), Map.of(USERNAME_CLAIM, user.getId()));
+                List.of(MCP_AUDIENCE), Map.of(USERNAME_CLAIM, getTestUser().getId()));
 
         OidcAuthHandler handler = getHandler();
 
@@ -130,7 +131,7 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testUsernameClaimMismatch() throws JoseException {
         String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, ISSUER,
-                List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of("not_uyuni_username", user.getLogin()));
+                List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of("not_uyuni_username", getTestUser().getLogin()));
 
         OidcAuthHandler handler = getHandler();
 
@@ -147,12 +148,12 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
         KeyPair ecdsaKeyPair = keyPairGenerator.generateKeyPair();
 
         String token = issueValidToken(ecdsaKeyPair.getPrivate(),
-                AlgorithmIdentifiers.ECDSA_USING_P256_CURVE_AND_SHA256, user.getLogin());
+                AlgorithmIdentifiers.ECDSA_USING_P256_CURVE_AND_SHA256, getTestUser().getLogin());
 
         OidcAuthHandler handler = getHandler(ecdsaKeyPair.getPublic());
         String username = handler.handleOidcLogin(token);
 
-        Assertions.assertEquals(user.getLogin(), username);
+        Assertions.assertEquals(getTestUser().getLogin(), username);
     }
 
     @Test
@@ -241,10 +242,10 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
             OidcAuthHandler handler = new OidcAuthHandler();
 
             String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, issuer,
-                    List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, user.getLogin()));
+                    List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, getTestUser().getLogin()));
             String username = handler.handleOidcLogin(token);
 
-            assertEquals(user.getLogin(), username);
+            assertEquals(getTestUser().getLogin(), username);
         }
         finally {
             wireMockServer.stop();
@@ -315,10 +316,10 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
                             .withBody(jwks)));
 
             String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, issuer,
-                    List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, user.getLogin()));
+                    List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, getTestUser().getLogin()));
             String username = handler.handleOidcLogin(token);
 
-            assertEquals(user.getLogin(), username);
+            assertEquals(getTestUser().getLogin(), username);
             assertEquals(jwksUri, handler.getJwksUri());
         }
         finally {
@@ -372,7 +373,8 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     private String issueValidToken() throws JoseException {
-        return issueValidToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, user.getLogin());
+        return issueValidToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256,
+                getTestUser().getLogin());
     }
 
     private String issueValidToken(PrivateKey privateKey, String algorithm, String username) throws JoseException {
@@ -388,7 +390,7 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
         claims.setGeneratedJwtId();
         claims.setIssuedAtToNow();
         claims.setAudience(List.of("uyuni-server"));
-        claims.setClaim(USERNAME_CLAIM, user.getId());
+        claims.setClaim(USERNAME_CLAIM, getTestUser().getId());
         return claims;
     }
 

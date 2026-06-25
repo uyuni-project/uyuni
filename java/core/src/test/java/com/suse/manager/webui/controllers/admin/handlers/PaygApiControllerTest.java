@@ -65,7 +65,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     public void setUp() throws Exception {
         clearDb();
 
-        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, getTestUser().getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
 
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -104,7 +104,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
             PaygSshData paygInfo = createPaygSshData();
             paygApiContoller.removePaygInstance(
                     getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
-                    response, user);
+                    response, getTestUser());
             fail("permission check not ok");
         }
         catch (PermissionException e) {
@@ -131,7 +131,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
             PaygSshData paygInfo = createPaygSshData();
             paygApiContoller.updatePayg(
                     getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
-                    response, user);
+                    response, getTestUser());
             fail("permission check not ok");
         }
         catch (PermissionException e) {
@@ -201,7 +201,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         try {
             paygApiContoller.createPayg(
                     getRequestWithCsrf("/manager/api/admin/config/payg"),
-                    response, user);
+                    response, getTestUser());
             fail("permission check not ok");
         }
         catch (PermissionException e) {

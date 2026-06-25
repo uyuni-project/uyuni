@@ -38,7 +38,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
 
-        this.ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        this.ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         ksdata = TestUtils.saveAndFlush(ksdata);
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }

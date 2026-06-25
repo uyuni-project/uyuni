@@ -84,7 +84,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
                 .collect(Collectors.toMap(SCCSubscription::getSccId, s -> s));
         Map<Long, SUSEProduct> productsBySccId = SUSEProductFactory.productsByProductIds();
 
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         SCCSubscriptionJson subscription = new SCCSubscriptionJson();
         subscription.setId(123L);
         subscription.setSystemLimit(0);

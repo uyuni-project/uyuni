@@ -45,7 +45,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
         action = new TestScapSetupAction();
 
-        server = MinionServerFactoryTest.createTestMinionServer(user);
+        server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         request.setAttribute(RequestContext.SYSTEM, server);
@@ -143,7 +143,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
         server.setOs(ServerConstants.SLES);
         server.setRelease("15.6");
 
-        Package scapPackage = PackageTest.createTestPackage(user.getOrg(), "openscap-utils");
+        Package scapPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "openscap-utils");
         PackageTestUtils.installPackageOnServer(scapPackage, server);
 
         action.setupScapEnablementInfo(mockContext);
@@ -159,7 +159,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
         server.setOs(ServerConstants.DEBIAN);
         server.setRelease("12");
 
-        Package scapLibPackage = PackageTest.createTestPackage(user.getOrg(), "libopenscap25");
+        Package scapLibPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "libopenscap25");
         PackageTestUtils.installPackageOnServer(scapLibPackage, server);
 
         action.setupScapEnablementInfo(mockContext);
@@ -171,7 +171,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
             mockContext.getRequest().getAttribute(ScapSetupAction.REQUIRED_PKG)
         );
 
-        Package scapCommonPackage = PackageTest.createTestPackage(user.getOrg(), "openscap-utils");
+        Package scapCommonPackage = PackageTest.createTestPackage(getTestUser().getOrg(), "openscap-utils");
         PackageTestUtils.installPackageOnServer(scapCommonPackage, server);
 
         action.setupScapEnablementInfo(mockContext);

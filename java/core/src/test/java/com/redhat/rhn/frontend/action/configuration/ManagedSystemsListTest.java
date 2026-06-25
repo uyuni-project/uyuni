@@ -34,12 +34,12 @@ public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Make a channel so it will appear in the list.
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 ConfigChannelType.local());
-        Server serv = ConfigTestUtils.giveUserChanAccess(user, channel);
+        Server serv = ConfigTestUtils.giveUserChanAccess(getTestUser(), channel);
         //This list only shows channels that actually have files in them
         //  it is more of a managed systems list, rather than a local channel list.
         ConfigFile file = ConfigTestUtils.createConfigFile(channel);

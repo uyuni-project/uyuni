@@ -54,12 +54,12 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         baseChannel.setUpdateTag("SLE-SERVER");
         createTestSUSEProductChannel(baseChannel, product, true);
 
-        Errata errata = createTestErrata(user.getId());
+        Errata errata = createTestErrata(getTestUser().getId());
         errata.setAdvisoryName("SUSE-2016-1234");
         baseChannel.addErrata(errata);
 
-        Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(baseChannel, user);
-        Errata clonedErrata = createTestErrata(user.getId());
+        Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(baseChannel, getTestUser());
+        Errata clonedErrata = createTestErrata(getTestUser().getId());
         ErrataHelper.setUniqueAdvisoryCloneName(errata, clonedErrata);
         clonedChannel.addErrata(clonedErrata);
 
@@ -85,7 +85,7 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         baseChannel.setUpdateTag("SLE-SERVER");
         createTestSUSEProductChannel(baseChannel, product, true);
 
-        Errata errata = createTestErrata(user.getId());
+        Errata errata = createTestErrata(getTestUser().getId());
         errata = TestUtils.reload(errata);
 
         errata.setAdvisoryName("SUSE-2016-1234");

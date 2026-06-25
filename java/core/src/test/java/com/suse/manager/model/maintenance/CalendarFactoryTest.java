@@ -49,31 +49,31 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     public void testListCalendarsWithSchedules() {
         MaintenanceCalendar calendarNoSchedule = new MaintenanceCalendar();
         calendarNoSchedule.setLabel("my-calendar-no-schedule");
-        calendarNoSchedule.setOrg(user.getOrg());
+        calendarNoSchedule.setOrg(getTestUser().getOrg());
         calendarNoSchedule.setIcal("some content");
         calendarFactory.save(calendarNoSchedule);
 
         MaintenanceCalendar calendar = new MaintenanceCalendar();
         calendar.setLabel("my-calendar-with-schedule");
-        calendar.setOrg(user.getOrg());
+        calendar.setOrg(getTestUser().getOrg());
         calendar.setIcal("some content");
         calendarFactory.save(calendar);
 
         MaintenanceSchedule schedule = new MaintenanceSchedule();
         schedule.setCalendar(calendar);
         schedule.setName("my-schedule-with-calendar");
-        schedule.setOrg(user.getOrg());
+        schedule.setOrg(getTestUser().getOrg());
         schedule.setScheduleType(MaintenanceSchedule.ScheduleType.SINGLE);
         scheduleFactory.save(schedule);
 
         MaintenanceSchedule schedule2 = new MaintenanceSchedule();
         schedule2.setCalendar(calendar);
         schedule2.setName("my-schedule-with-calendar-2");
-        schedule2.setOrg(user.getOrg());
+        schedule2.setOrg(getTestUser().getOrg());
         schedule2.setScheduleType(MaintenanceSchedule.ScheduleType.SINGLE);
         scheduleFactory.save(schedule2);
 
-        List<CalendarAssignment> result = calendarFactory.listCalendarToSchedulesAssignments(user);
+        List<CalendarAssignment> result = calendarFactory.listCalendarToSchedulesAssignments(getTestUser());
 
         assertEquals(3, result.size());
 

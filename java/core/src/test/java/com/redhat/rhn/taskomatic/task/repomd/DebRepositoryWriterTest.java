@@ -52,7 +52,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testWriteRepoMetadata() throws Exception {
-        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         PackageExtraTagsKeys multiArchTag = PackageManagerTest.createExtraTagKey("Multi-Arch");
 

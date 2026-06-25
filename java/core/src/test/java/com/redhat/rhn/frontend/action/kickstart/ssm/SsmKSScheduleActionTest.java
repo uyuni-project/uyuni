@@ -52,7 +52,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testCreateSystemRecordsByProfile() throws Exception {
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
         Distro distro = new Distro.Builder<String>()
                 .setName("test-distro")
                 .setKernel("kernel")
@@ -60,10 +60,10 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .setKsmeta(Optional.empty())
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
-        ServerTestUtils.addServersToSsm(user, server1.getId());
-        ServerTestUtils.addServersToSsm(user, server2.getId());
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
+        ServerTestUtils.addServersToSsm(getTestUser(), server1.getId());
+        ServerTestUtils.addServersToSsm(getTestUser(), server2.getId());
 
         String listUniqueName = TagHelper.generateUniqueName(ListHelper.LIST);
         addRequestParameter("list_" + listUniqueName + "_radio", profile.getId());
@@ -91,25 +91,25 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testCreateSystemRecordsByIp() throws Exception {
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
 
-        KickstartData kickstartData = KickstartDataTest.createKickstartWithProfile(user);
+        KickstartData kickstartData = KickstartDataTest.createKickstartWithProfile(getTestUser());
         KickstartIpTest.addIpRangesToKickstart(kickstartData);
 
         Profile profile = Profile.lookupById(connection, kickstartData.getCobblerId());
 
-        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
         // this is comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server1, "server1", "192.168.2.2",
             "deadbeef");
 
-        Server server2 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
         // this is not comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server2, "server2", "192.178.2.2",
             "deadbeef");
 
-        ServerTestUtils.addServersToSsm(user, server1.getId());
-        ServerTestUtils.addServersToSsm(user, server2.getId());
+        ServerTestUtils.addServersToSsm(getTestUser(), server1.getId());
+        ServerTestUtils.addServersToSsm(getTestUser(), server2.getId());
 
         String listUniqueName = TagHelper.generateUniqueName(ListHelper.LIST);
         addRequestParameter("ip", "true");
@@ -137,9 +137,9 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testCreateSystemRecordsWithoutProfile() throws Exception {
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
-        Server server = ServerTestUtils.createTestSystem(user);
-        ServerTestUtils.addServersToSsm(user, server.getId());
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
+        ServerTestUtils.addServersToSsm(getTestUser(), server.getId());
 
         String listUniqueName = TagHelper.generateUniqueName(ListHelper.LIST);
         addRequestParameter("list_" + listUniqueName + "_radio", "non existing profile");
@@ -162,9 +162,9 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testCreateSystemRecordsWithExistingKickstart() throws Exception {
-        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
 
-        KickstartData kickstartData = KickstartDataTest.createKickstartWithProfile(user);
+        KickstartData kickstartData = KickstartDataTest.createKickstartWithProfile(getTestUser());
         KickstartIpTest.addIpRangesToKickstart(kickstartData);
 
         Distro distro = new Distro.Builder<String>()
@@ -175,7 +175,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
 
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
         // this is comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server, "server1", "192.168.2.2",
             "deadbeef");
@@ -185,7 +185,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         command.setScheduleDate(new Date());
         command.store();
 
-        ServerTestUtils.addServersToSsm(user, server.getId());
+        ServerTestUtils.addServersToSsm(getTestUser(), server.getId());
 
         String listUniqueName = TagHelper.generateUniqueName(ListHelper.LIST);
         addRequestParameter("ip", "true");

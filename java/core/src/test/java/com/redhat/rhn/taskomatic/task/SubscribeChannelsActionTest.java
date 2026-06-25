@@ -65,20 +65,20 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSubscribeChannelsMinions() throws Exception {
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch1.setParentChannel(base);
         ch1 = TestUtils.saveAndFlush(ch1);
-        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch2.setParentChannel(base);
         ch2 = TestUtils.saveAndFlush(ch2);
         ServerAction serverAction;
         long serverId = 0;
 
-        final MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        final MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         serverId = server.getId();
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
-                .createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+                .createAction(getTestUser(), ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
         serverAction = createChildServerAction(action, server, ServerAction::setStatusQueued);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -102,7 +102,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
 
             JobDataMap dataMap = new JobDataMap();
             dataMap.putAsString("action_id", action.getId());
-            dataMap.putAsString("user_id", user.getId());
+            dataMap.putAsString("user_id", getTestUser().getId());
 
             allowing(jobDetail).getJobDataMap();
             will(returnValue(dataMap));

@@ -29,9 +29,9 @@ public class OrgDetailsActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        addRequestParameter("oid", user.getOrg().getId().toString());
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        addRequestParameter("oid", getTestUser().getOrg().getId().toString());
         setRequestPathInfo("/admin/multiorg/OrgDetails");
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();

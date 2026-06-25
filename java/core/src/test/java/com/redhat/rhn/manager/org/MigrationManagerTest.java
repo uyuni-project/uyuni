@@ -180,8 +180,8 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(origOrg);
         ConfigChannel configChannel2 = ConfigTestUtils.createConfigChannel(origOrg);
 
-        server2.subscribeConfigChannel(configChannel, user);
-        server2.subscribeConfigChannel(configChannel2, user);
+        server2.subscribeConfigChannel(configChannel, getTestUser());
+        server2.subscribeConfigChannel(configChannel2, getTestUser());
 
         assertEquals(2, server2.getConfigChannelCount());
 

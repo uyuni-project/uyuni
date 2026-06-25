@@ -87,7 +87,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
      */
     @Test
     public void getProxyConfigWithValidServerWhenProxyConfigNotExists() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         ProxyConfig proxyConfig = new ProxyConfigGetFacadeImpl().getProxyConfig(minion);
         assertNull(proxyConfig);
@@ -98,7 +98,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
      */
     @Test
     public void getProxyConfigWithValidServerWhenProxyConfigExists() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         Pillar pillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<>(), minion);
         pillar.add(ProxyConfigUtils.PROXY_FQDN_FIELD, DUMMY_PROXY_FQDN);
@@ -123,7 +123,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         final String[] expectedValidationErrorMessages = { "Server not found" };
 
         //
-        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, null,
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(getTestUser(), null,
                 GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
@@ -144,10 +144,10 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
                 "\"registry.suse.com/suse/multi-linux-manager/99.98/x86_64\"}";
         final String expectedParents = "[\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"]";
 
-        Server server = ServerFactoryTest.createTestServer(user, false,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), false,
                 ServerConstants.getServerGroupTypeProxyEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         PackageManagerTest.addPackageToSystemAndChannel(ProxyConfigUtils.MGRPXY, server, channel);
 
         // mocking the ConfigDefaults
@@ -162,7 +162,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
         //
-        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, server,
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(getTestUser(), server,
                 GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));

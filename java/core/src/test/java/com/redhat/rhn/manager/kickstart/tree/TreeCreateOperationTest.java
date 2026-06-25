@@ -30,7 +30,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testCreate() throws Exception {
-        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        TreeCreateOperation cmd = new TreeCreateOperation(getTestUser());
         setTestTreeParams(cmd);
         assertNull(cmd.store());
         assertNotNull(cmd.getUser());
@@ -45,7 +45,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
 
     // helper method
     private void testPopulateKernelOptsForSuse(String distroLabel) throws Exception {
-        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        TreeCreateOperation cmd = new TreeCreateOperation(getTestUser());
         setTestTreeParams(cmd);
         cmd.setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(distroLabel));
@@ -67,7 +67,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testCreateRhelistro() throws Exception {
-        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        TreeCreateOperation cmd = new TreeCreateOperation(getTestUser());
         setTestTreeParams(cmd);
         cmd.setKernelOptions("");
         cmd.store();
@@ -76,7 +76,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testPopulateKernelOptsForRhel8() throws Exception {
-        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        TreeCreateOperation cmd = new TreeCreateOperation(getTestUser());
         setTestTreeParams(cmd);
         cmd.setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_8));

@@ -30,7 +30,7 @@ public class KickstartDefaultsTest extends BaseTestCaseWithUser {
 
     @Test
     public void testVirtFields() throws Exception {
-        KickstartData ksdata = KickstartTestHelper.createTestKickStart(user);
+        KickstartData ksdata = KickstartTestHelper.createTestKickStart(getTestUser());
         KickstartDefaults ksdefaults = ksdata.getKickstartDefaults();
         assertNotNull(ksdefaults);
     }

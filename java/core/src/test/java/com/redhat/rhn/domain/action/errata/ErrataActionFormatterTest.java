@@ -36,7 +36,7 @@ public class ErrataActionFormatterTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetRelatedObjectDescription() throws Exception {
-        ErrataAction action = (ErrataAction) ActionFactoryTest.createAction(user,
+        ErrataAction action = (ErrataAction) ActionFactoryTest.createAction(getTestUser(),
             ActionFactory.TYPE_ERRATA);
         ErrataActionFormatter formatter = new ErrataActionFormatter(action);
 

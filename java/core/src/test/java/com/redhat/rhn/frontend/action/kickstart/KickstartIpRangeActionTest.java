@@ -42,8 +42,8 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
-        this.ksdata.setOrg(user.getOrg());
+        this.ksdata = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
+        this.ksdata.setOrg(getTestUser().getOrg());
         ksdata = TestUtils.saveAndFlush(ksdata);
 
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());

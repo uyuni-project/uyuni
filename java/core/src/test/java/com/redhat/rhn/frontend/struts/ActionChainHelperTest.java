@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
@@ -57,7 +58,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     @Test
     public void testReadActionChain() {
         ActionChain chain = ActionChainFactory.createActionChain(TestUtils.randomString(),
-            user);
+                getTestUser());
 
         // poor-man's DynaActionForm mocking
         final Map<String, Object> formMap = new HashMap<>();
@@ -68,17 +69,17 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             }
         };
 
-        assertNull(ActionChainHelper.readActionChain(form, user));
+        assertNull(ActionChainHelper.readActionChain(form, getTestUser()));
 
         formMap.put(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.ACTION_CHAIN.asString());
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, chain.getLabel());
 
-        ActionChain retrievedChain = ActionChainHelper.readActionChain(form, user);
+        ActionChain retrievedChain = ActionChainHelper.readActionChain(form, getTestUser());
         assertNotNull(retrievedChain);
         assertEquals(chain.getId(), retrievedChain.getId());
 
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, TestUtils.randomString());
-        ActionChain newChain = ActionChainHelper.readActionChain(form, user);
+        ActionChain newChain = ActionChainHelper.readActionChain(form, getTestUser());
         assertNotNull(newChain);
         assertFalse(chain.getId().equals(newChain.getId()));
     }
@@ -89,17 +90,17 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     @Test
     public void testPrepopulateActionChains() {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        user = new RequestContext(request).getCurrentUser();
+        User testUser = new RequestContext(request).getCurrentUser();
 
         List<ActionChain> actionChains = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
-                user));
+                    testUser));
         }
 
         List<Map<String, String>> result = new LinkedList<>();
 
-        for (ActionChain actionChain : ActionChainFactory.getActionChains(user)) {
+        for (ActionChain actionChain : ActionChainFactory.getActionChains(testUser)) {
             Map<String, String> map = new HashMap<>();
             map.put("id", actionChain.getLabel());
             map.put("text", actionChain.getLabel());

@@ -58,7 +58,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
     @Test
    public void testKickstartsInOrg() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         DataResult<KickstartDto> dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
         assertFalse(dr.isEmpty());
         KickstartDto row = dr.get(0);
@@ -96,27 +96,27 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetActivationKeysInOrg() {
-        ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
+        ActivationKeyFactory.createNewKey(getTestUser(), null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
         PageControl pc = new PageControl();
         pc.setStart(1);
 
         DataResult<ActivationKeyDto> result =
-                KickstartLister.getInstance().getActivationKeysInOrg(user.getOrg(), pc);
+                KickstartLister.getInstance().getActivationKeysInOrg(getTestUser().getOrg(), pc);
         assertEquals(1, result.size());
     }
 
     @Test
     public void testGetActiveActivationKeysInOrg() {
-        ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
+        ActivationKeyFactory.createNewKey(getTestUser(), null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
         PageControl pc = new PageControl();
         pc.setStart(1);
 
         DataResult<ActivationKeyDto> result =
-                KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
+                KickstartLister.getInstance().getActiveActivationKeysInOrg(getTestUser().getOrg(),
                         pc);
         assertEquals(1, result.size());
     }
@@ -132,13 +132,13 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
                 .build(connection);
         Profile.create(connection, "test-profile", distro);
         KickstartLister kickstartLister = KickstartLister.getInstance();
-        List<CobblerProfileDto> profiles = kickstartLister.listCobblerProfiles(user);
+        List<CobblerProfileDto> profiles = kickstartLister.listCobblerProfiles(getTestUser());
 
         assertEquals(1, profiles.size());
 
         // Bootstrap profile should NOT be returned
         Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
-        profiles = kickstartLister.listCobblerProfiles(user);
+        profiles = kickstartLister.listCobblerProfiles(getTestUser());
         assertEquals(1, profiles.size());
     }
 }

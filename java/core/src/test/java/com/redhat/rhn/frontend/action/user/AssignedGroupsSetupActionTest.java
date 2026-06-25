@@ -31,7 +31,7 @@ public class AssignedGroupsSetupActionTest extends RhnMockStrutsTestCase {
     public void testPerformExecute() throws Exception {
         setRequestPathInfo("/users/AssignedSystemGroups");
         addRequestParameter("availableGroups", "someGroups");
-        UserTestUtils.addManagement(user.getOrg());
+        UserTestUtils.addManagement(getTestUser().getOrg());
         actionPerform();
         DynaActionForm form = (DynaActionForm) getActionForm();
         // verify the dyna form got the right values we expected.

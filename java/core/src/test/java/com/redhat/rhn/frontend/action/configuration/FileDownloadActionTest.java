@@ -33,9 +33,9 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testPlaintextExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-            ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+            ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
 
             setRequestPathInfo("/configuration/file/FileDownload");
             addRequestParameter("cfid", revision.getConfigFile().getId().toString());
@@ -45,16 +45,16 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
             String contentType = response.getContentType();
             assertTrue(contentType.startsWith("text/plain"));
 
-            revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+            revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
             revision.getConfigContent().setBinary(true);
             ConfigurationFactory.commit(revision);
         }
 
     @Test
         public void testBinaryExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
-            ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+            ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
             revision.getConfigContent().setBinary(true);
             ConfigurationFactory.commit(revision);
 

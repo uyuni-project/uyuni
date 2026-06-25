@@ -75,7 +75,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     @Override
     @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         systemEntitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
         Map<String, Object> grains = new HashMap<>();

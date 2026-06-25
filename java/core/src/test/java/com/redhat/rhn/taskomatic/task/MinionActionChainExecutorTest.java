@@ -81,17 +81,17 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void rejectsActionChainsWithOldEarliestDate() {
-        ActionChain actionChain = ActionChainFactory.getOrCreateActionChain("testRejectActionChains", user);
+        ActionChain actionChain = ActionChainFactory.getOrCreateActionChain("testRejectActionChains", getTestUser());
 
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
+        ServerAction sa1 = ActionFactoryTest.addServerAction(getTestUser(), a1, ServerAction::setStatusQueued);
         a1 = TestUtils.saveAndReload(a1);
         ActionChainFactory.queueActionChainEntry(a1, actionChain, sa1.getServer());
 
-        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_PACKAGES_UPDATE);
+        Action a2 = ActionFactoryTest.createEmptyAction(getTestUser(), ActionFactory.TYPE_PACKAGES_UPDATE);
         a2.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
-        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ServerAction::setStatusQueued);
+        ServerAction sa2 = ActionFactoryTest.addServerAction(getTestUser(), a2, ServerAction::setStatusQueued);
         a2 = TestUtils.saveAndReload(a2);
         ActionChainFactory.queueActionChainEntry(a2, actionChain, sa2.getServer());
 
@@ -101,7 +101,7 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
             expectations.ignoring(jobDetail).getJobDataMap();
             expectations.will(returnValue(new JobDataMap(Map.of(
                 "actionchain_id", String.valueOf(actionChain.getId()),
-                "user_id", String.valueOf(user.getId()),
+                "user_id", String.valueOf(getTestUser().getId()),
                 "staging_job", String.valueOf(false),
                 "force_pkg_list_refresh", String.valueOf(false)
             ))));

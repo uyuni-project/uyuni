@@ -44,19 +44,19 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
      */
     @BeforeEach
     public void setUpBaseSessionTestCase() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
 
-        sess = KickstartSessionTest.createKickstartSession(k, user);
+        sess = KickstartSessionTest.createKickstartSession(k, getTestUser());
         s = sess.getOldServer();
         addRequestParameter(RequestContext.SID,
                 s.getId().toString());
 
-        Action a = ActionFactoryTest.createAction(user,
+        Action a = ActionFactoryTest.createAction(getTestUser(),
                 ActionFactory.TYPE_KICKSTART_INITIATE);
         sess.setAction(a);
 
         sess = KickstartSessionTest.addHistory(sess);
-        Profile p  = ProfileTest.createTestProfile(user,
+        Profile p  = ProfileTest.createTestProfile(getTestUser(),
                 k.getKickstartDefaults().getKstree().getChannel());
         sess.setServerProfile(p);
         sess = TestUtils.saveAndFlush(sess);

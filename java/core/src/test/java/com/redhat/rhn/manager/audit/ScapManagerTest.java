@@ -61,7 +61,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testXccdfEvalTransformXccdf11() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -71,7 +71,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
         File resumeXsl = new File(TestUtils.findTestData(
@@ -91,7 +91,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testXccdfEvalTransformXccdfWithTailoring() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -101,7 +101,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/xml/scap/ssg/content/ssg-sle15-ds-1.2.xml",
                 "--profile suse_test --tailoring-file /root/tailoring.xml", new Date());
 
@@ -128,7 +128,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testXccdfEvalResume() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -138,7 +138,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
         String resume = """
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -335,7 +335,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testXccdfEvalTransformXccdf12() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -345,7 +345,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml",
                 "--profile xccdf_org.ssgproject.content_profile_rht-ccp", new Date());
 
@@ -393,7 +393,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testXccdfEvalError() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -403,7 +403,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
         File resumeXsl = new File(TestUtils.findTestData(
@@ -417,7 +417,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
     }
     @Test
     public void testRemediationExtraction() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -425,7 +425,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
+        ScapAction action = ActionManager.scheduleXccdfEval(getTestUser(),
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
         File resumeXsl = new File(TestUtils.findTestData(
             "/com/redhat/rhn/manager/audit/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in")

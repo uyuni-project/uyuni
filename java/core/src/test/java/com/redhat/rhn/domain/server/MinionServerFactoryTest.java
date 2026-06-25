@@ -45,7 +45,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testFindByMachineId() {
-        MinionServer minionServer = createTestMinionServer(user);
+        MinionServer minionServer = createTestMinionServer(getTestUser());
         Optional<MinionServer> minion = MinionServerFactory.findByMachineId(minionServer.getMachineId());
         assertEquals(minionServer, minion.orElse(null));
     }
@@ -55,7 +55,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testFindByMinionId() {
-        MinionServer minionServer = createTestMinionServer(user);
+        MinionServer minionServer = createTestMinionServer(getTestUser());
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(minionServer.getMinionId());
         assertEquals(minionServer, minion.orElse(null));
     }
@@ -65,7 +65,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testListMinions() {
-        MinionServer minionServer = createTestMinionServer(user);
+        MinionServer minionServer = createTestMinionServer(getTestUser());
         List<MinionServer> minions = MinionServerFactory.listMinions();
         assertTrue(minions.contains(minionServer));
     }
@@ -75,16 +75,16 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupById() {
-        MinionServer minionServer = createTestMinionServer(user);
+        MinionServer minionServer = createTestMinionServer(getTestUser());
         Optional<MinionServer> minion = MinionServerFactory.lookupById(minionServer.getId());
         assertEquals(minionServer, minion.orElse(null));
     }
 
     @Test
     public void testListMinionIdsAndContactMethods() {
-        MinionServer minionServer1 = createTestMinionServer(user);
+        MinionServer minionServer1 = createTestMinionServer(getTestUser());
         minionServer1.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
-        MinionServer minionServer2 = createTestMinionServer(user);
+        MinionServer minionServer2 = createTestMinionServer(getTestUser());
         minionServer2.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
 
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
@@ -99,13 +99,13 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testListMinionsByActions() throws Exception {
-        MinionServer minion1 = createTestMinionServer(user);
-        MinionServer minion2 = createTestMinionServer(user);
-        MinionServer minion3 = createTestMinionServer(user);
+        MinionServer minion1 = createTestMinionServer(getTestUser());
+        MinionServer minion2 = createTestMinionServer(getTestUser());
+        MinionServer minion3 = createTestMinionServer(getTestUser());
 
         // ActionFactoryTest.createAction() for TYPE_REBOOT create another minion Server
         // we have 4 minions in this test
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         Set<MinionServer> minionServer = action.getServerActions().stream()
                 .map(ServerAction::getServer)
                 .map(s -> s.asMinionServer().orElse(null))

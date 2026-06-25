@@ -31,8 +31,8 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testErrataMailer() throws Exception {
-        final Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        final Channel c = ChannelFactoryTest.createBaseChannel(user);
+        final Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
+        final Channel c = ChannelFactoryTest.createBaseChannel(getTestUser());
         // Override the methods that make the size of the task grow really huge
         // We still test the majority of the stuff in ErrataMailer(), just not
         // the queries that get all the users and errata.
@@ -46,7 +46,7 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
                 row.put("name", "test_client_hostname");
                 row.put("release", "test_release");
                 row.put("arch", "test_arch");
-                row.put("user_id", user.getId());   // existing user id needed
+                row.put("user_id", getTestUser().getId());   // existing user id needed
                 retval.add(row);
                 return retval;
             }
@@ -57,7 +57,7 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
                 Row row = new Row();
                 row.put("channel_id", c.getId());
                 row.put("errata_id", e.getId());
-                row.put("org_id", user.getOrg().getId());
+                row.put("org_id", getTestUser().getOrg().getId());
                 retval.add(row);
                 return retval;
             }

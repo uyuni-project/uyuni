@@ -37,19 +37,19 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
     public void testExecute() throws Exception {
         setRequestPathInfo("/errata/details/ErrataConfirmSubmit");
         addDispatchCall("confirm.jsp.confirm");
-        RhnSet updateMe = RhnSetDecl.SYSTEMS_AFFECTED.create(user);
+        RhnSet updateMe = RhnSetDecl.SYSTEMS_AFFECTED.create(getTestUser());
         // Create Errata
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         // Create package
         // Create a set of System IDs
         for (int i = 0; i < 5; i++) {
-            Server s = ServerFactoryTest.createTestServer(user, true,
+            Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
             updateMe.addElement(s.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
                     e.getPackages().iterator().next().getId(),
                     s.getId(), e.getId());
-            UserFactory.save(user);
+            UserFactory.save(getTestUser());
         }
         RhnSetManager.store(updateMe); //save the set
 

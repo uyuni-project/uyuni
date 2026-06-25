@@ -49,7 +49,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateCommand() throws Exception {
-        setupKey(new CreateCryptoKeyCommand(user.getOrg()));
+        setupKey(new CreateCryptoKeyCommand(getTestUser().getOrg()));
         CryptoKey key = cmd.getCryptoKey();
         key = TestUtils.reload(key);
         assertNotNull(key.getId());
@@ -58,9 +58,9 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDuplicate() throws Exception {
-        setupKey(new CreateCryptoKeyCommand(user.getOrg()));
+        setupKey(new CreateCryptoKeyCommand(getTestUser().getOrg()));
         String usedDesc = cmd.getCryptoKey().getDescription();
-        cmd = new CreateCryptoKeyCommand(user.getOrg());
+        cmd = new CreateCryptoKeyCommand(getTestUser().getOrg());
         cmd.setDescription(usedDesc);
         cmd.setType("GPG");
         cmd.setContents(SHA256Crypt.sha256Hex(RandomStringUtils.random(28)));
@@ -70,10 +70,10 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testEdit() throws Exception {
-        CryptoKey key = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey key = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         TestUtils.flushAndEvict(key);
-        setupKey(new EditCryptoKeyCommand(user, key.getId()));
+        setupKey(new EditCryptoKeyCommand(getTestUser(), key.getId()));
         assertNotNull(cmd.getCryptoKey());
         assertNull(cmd.store());
 
@@ -81,7 +81,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDelete() throws Exception {
-        CryptoKey key = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey key = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
         TestUtils.flushAndEvict(key);
@@ -89,29 +89,29 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         assertNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
 
         //second method
-        CryptoKey key2 = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey key2 = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key2);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key2.getId(), key2.getOrg()));
         TestUtils.flushAndEvict(key2);
 
         //CryptoKey will be deleted by the cmd.store command in setupKey
-        setupKey(new DeleteCryptoKeyCommand(user, key2.getId()));
+        setupKey(new DeleteCryptoKeyCommand(getTestUser(), key2.getId()));
         assertNull(KickstartFactory.lookupCryptoKeyById(key2.getId(), key2.getOrg()));
     }
 
     @Test
     public void testDuplicateDelete() throws Exception {
-        CryptoKey key = CryptoTest.createTestKey(user.getOrg());
+        CryptoKey key = CryptoTest.createTestKey(getTestUser().getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
         TestUtils.flushAndEvict(key);
 
         //CryptoKey will be deleted by the cmd.store command in setupKey
-        setupKey(new DeleteCryptoKeyCommand(user, key.getId()));
+        setupKey(new DeleteCryptoKeyCommand(getTestUser(), key.getId()));
         assertNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
 
         try {
-            setupKey(new DeleteCryptoKeyCommand(user, key.getDescription()));
+            setupKey(new DeleteCryptoKeyCommand(getTestUser(), key.getDescription()));
 
             // if no exception was thrown there is a problem
             fail();

@@ -168,51 +168,51 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testGetSystemGroups() throws Exception {
-        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
+        ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
 
         PageControl pc = new PageControl();
         pc.setIndexData(false);
         pc.setFilterColumn("earliest");
         pc.setStart(1);
-        DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, pc);
+        DataResult<ScheduledAction> dr = ActionManager.pendingActions(getTestUser(), pc);
         assertNotNull(dr);
         assertFalse(dr.isEmpty());
     }
 
     @Test
     public void testLookupAction() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         Long actionId = a1.getId();
 
         //Users must have access to a server for the action to lookup the action
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true);
         a1.addServerAction(ServerActionTest.createServerAction(s, a1));
         ActionFactory.save(a1);
 
-        Action a2 = ActionManager.lookupAction(user, actionId);
+        Action a2 = ActionManager.lookupAction(getTestUser(), actionId);
         assertNotNull(a2);
     }
 
     @Test
     public void testActionsArchivedOnSystemDeleteUser() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionFactory.save(action);
 
-        Action result = ActionManager.lookupAction(user, action.getId());
+        Action result = ActionManager.lookupAction(getTestUser(), action.getId());
         assertNotNull(result);
 
-        systemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(getTestUser(), server.getId());
 
         try {
             // Regular users cannot see orphan actions
-            ActionManager.lookupAction(user, action.getId());
+            ActionManager.lookupAction(getTestUser(), action.getId());
             fail("Must throw LookupException.");
         }
         catch (LookupException ignored) {
@@ -222,21 +222,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testActionsArchivedOnSystemDeleteAdmin() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerTestUtils.createTestSystem(user);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
         serverAction.setStatusCompleted();
 
         action.addServerAction(serverAction);
         ActionFactory.save(action);
 
-        Action result = ActionManager.lookupAction(user, action.getId());
+        Action result = ActionManager.lookupAction(getTestUser(), action.getId());
         assertNotNull(result);
 
-        systemManager.deleteServer(user, server.getId());
+        systemManager.deleteServer(getTestUser(), server.getId());
         // Admins should see orphan actions
-        result = ActionManager.lookupAction(user, action.getId());
+        result = ActionManager.lookupAction(getTestUser(), action.getId());
         assertNotNull(result);
         assertEquals(1, (long) result.getArchived());
         assertServerActionCount(action, 0);
@@ -244,35 +244,35 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testFailedActions() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Action parent = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
-                .createTestServer(user), parent);
+                .createTestServer(getTestUser()), parent);
 
         child.setStatusFailed();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
 
-        DataResult<ScheduledAction> dr = ActionManager.failedActions(user, null);
+        DataResult<ScheduledAction> dr = ActionManager.failedActions(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testPendingActions() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Action parent = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
-                .createTestServer(user), parent);
+                .createTestServer(getTestUser()), parent);
 
         child.setStatusQueued();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
 
-        DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, null);
+        DataResult<ScheduledAction> dr = ActionManager.pendingActions(getTestUser(), null);
 
         Long actionid = parent.getId();
         TestUtils.arraySearch(dr.toArray(), "getId", actionid);
@@ -390,7 +390,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
 
-        Action parent = createActionWithServerActions(user, 1);
+        Action parent = createActionWithServerActions(getTestUser(), 1);
         List<Action> actionList = createActionList(parent);
 
         context().checking(new Expectations() { {
@@ -398,16 +398,16 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 1);
-        assertEquals(1, actionsCountForUser(user));
+        assertEquals(1, actionsCountForUser(getTestUser()));
 
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
         assertServerActionCount(parent, 0);
-        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(getTestUser())); // shouldn't have been deleted
     }
 
     @Test
     public void testSimpleCancelMinionActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 3);
+        Action parent = createActionWithMinionServerActions(getTestUser(), ServerAction::setStatusQueued, 3);
         List actionList = createActionList(new Action [] {parent});
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -432,12 +432,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 3);
-        assertEquals(1, actionsCountForUser(user));
+        assertEquals(1, actionsCountForUser(getTestUser()));
 
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
 
         assertServerActionCount(parent, 0);
-        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(getTestUser())); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
 
@@ -447,7 +447,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testCancelMinionActionsMixedStatus() throws Exception {
-        Action action = createActionWithMinionServerActions(user, ServerAction::setStatusPickedUp, 3);
+        Action action = createActionWithMinionServerActions(getTestUser(), ServerAction::setStatusPickedUp, 3);
 
         // Set first server action to COMPLETED
         Iterator<ServerAction> iterator = action.getServerActions().iterator();
@@ -467,7 +467,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         List<Action> actionList = createActionList(action);
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
 
         assertServerActionCount(action, 3);
         assertServerActionStatus(action, serverCompleted, ServerAction::isStatusCompleted);
@@ -477,14 +477,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSimpleCancelMixedActions() throws Exception {
-        Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 4,
+        Action parent = createActionWithMinionServerActions(getTestUser(), ServerAction::setStatusQueued, 4,
                 i -> {
                     try {
                         if (i < 3) {
-                            return MinionServerFactoryTest.createTestMinionServer(user);
+                            return MinionServerFactoryTest.createTestMinionServer(getTestUser());
                         }
                         else {
-                            return ServerFactoryTest.createTestServer(user, true,
+                            return ServerFactoryTest.createTestServer(getTestUser(), true,
                                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
                         }
                     }
@@ -521,12 +521,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .findFirst();
 
         assertServerActionCount(parent, 4);
-        assertEquals(1, actionsCountForUser(user));
+        assertEquals(1, actionsCountForUser(getTestUser()));
 
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
 
         assertServerActionCount(parent, 0);
-        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(getTestUser())); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
 
@@ -534,21 +534,21 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testCancelActionWithChildren() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-        Action parent = createActionWithServerActions(user, 1);
-        Action child = createActionWithServerActions(user, 1);
+        Action parent = createActionWithServerActions(getTestUser(), 1);
+        Action child = createActionWithServerActions(getTestUser(), 1);
         child.setPrerequisite(parent);
         List<Action> actionList = createActionList(parent);
 
         assertServerActionCount(parent, 1);
-        assertEquals(2, actionsCountForUser(user));
+        assertEquals(2, actionsCountForUser(getTestUser()));
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
         } });
 
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
         assertServerActionCount(parent, 0);
-        assertEquals(2, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(2, actionsCountForUser(getTestUser())); // shouldn't have been deleted
     }
 
     @Test
@@ -559,19 +559,19 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
         } });
 
-        Action parent = createActionWithServerActions(user, 2);
+        Action parent = createActionWithServerActions(getTestUser(), 2);
         List<Action> actionList = Collections.singletonList(parent);
 
         assertServerActionCount(parent, 2);
-        assertEquals(1, actionsCountForUser(user));
-        ActionManager.cancelActions(user, actionList);
+        assertEquals(1, actionsCountForUser(getTestUser()));
+        ActionManager.cancelActions(getTestUser(), actionList);
         assertServerActionCount(parent, 0);
-        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(getTestUser())); // shouldn't have been deleted
     }
 
     @Test
     public void testCancelActionForSubsetOfServerWithMultipleServerActions() throws Exception {
-        Action parent = createActionWithServerActions(user, 2);
+        Action parent = createActionWithServerActions(getTestUser(), 2);
         List<Action> actionList = Collections.singletonList(parent);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -602,10 +602,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 2);
-        assertEquals(1, actionsCountForUser(user));
-        ActionManager.cancelActions(user, actionList, activeServers);
+        assertEquals(1, actionsCountForUser(getTestUser()));
+        ActionManager.cancelActions(getTestUser(), actionList, activeServers);
         assertServerActionCount(parent, 1);
-        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(getTestUser())); // shouldn't have been deleted
         // check that action was indeed not canceled on taskomatic side
         context().assertIsSatisfied();
     }
@@ -615,11 +615,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
 
-        Server first = ServerFactoryTest.createTestServer(user, true);
-        Server second = ServerFactoryTest.createTestServer(user, true);
+        Server first = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server second = ServerFactoryTest.createTestServer(getTestUser(), true);
         List<Server> servers = List.of(first, second);
 
-        Action parent = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action parent = ActionFactoryTest.createEmptyAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
             if (first.equals(server)) {
@@ -633,7 +633,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.save(parent);
 
-        Action child = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_ERRATA);
+        Action child = ActionFactoryTest.createEmptyAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         child.setPrerequisite(parent);
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
@@ -645,7 +645,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         // Should not cancel, there are pending prerequisites
         List<Action> actionsToCancel = List.of(TestUtils.reload(child));
         Assertions.assertThrows(ActionIsChildException.class,
-            () -> ActionManager.cancelActions(user, actionsToCancel)
+            () -> ActionManager.cancelActions(getTestUser(), actionsToCancel)
         );
 
         context().checking(new Expectations() { {
@@ -654,24 +654,24 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         // Should cancel, first server has a failed prerequisite
         Assertions.assertDoesNotThrow(
-            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(first.getId()))
+            () -> ActionManager.cancelActions(getTestUser(), actionsToCancel, List.of(first.getId()))
         );
 
         // Should not cancel, second server as a valid pending prerequisite
         Assertions.assertThrows(ActionIsChildException.class,
-            () -> ActionManager.cancelActions(user, actionsToCancel, List.of(second.getId()))
+            () -> ActionManager.cancelActions(getTestUser(), actionsToCancel, List.of(second.getId()))
         );
     }
 
     @Test
     public void testCancelActionWithParentFails() throws Exception {
-        Action parent = createActionWithServerActions(user, 1);
-        Action child = createActionWithServerActions(user, 1);
+        Action parent = createActionWithServerActions(getTestUser(), 1);
+        Action child = createActionWithServerActions(getTestUser(), 1);
         child.setPrerequisite(parent);
         List actionList = createActionList(new Action [] {child});
 
         try {
-            ActionManager.cancelActions(user, actionList);
+            ActionManager.cancelActions(getTestUser(), actionList);
             fail("Exception not thrown when deleting action with a prerequisite.");
         }
         catch (ActionIsChildException e) {
@@ -684,30 +684,30 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
 
-        Action parent1 = createActionWithServerActions(user, 3);
+        Action parent1 = createActionWithServerActions(getTestUser(), 3);
         for (int i = 0; i < 9; i++) {
-            Action child = createActionWithServerActions(user, 2);
+            Action child = createActionWithServerActions(getTestUser(), 2);
             child.setPrerequisite(parent1);
         }
-        Action parent2 = createActionWithServerActions(user, 3);
+        Action parent2 = createActionWithServerActions(getTestUser(), 3);
         for (int i = 0; i < 9; i++) {
-            Action child = createActionWithServerActions(user, 2);
+            Action child = createActionWithServerActions(getTestUser(), 2);
             child.setPrerequisite(parent2);
         }
-        assertEquals(42, serverActionsCountForUser(user));
+        assertEquals(42, serverActionsCountForUser(getTestUser()));
 
         List<Action> actionList = createActionList(parent1, parent2);
 
         assertServerActionCount(parent1, 3);
-        assertEquals(20, actionsCountForUser(user));
+        assertEquals(20, actionsCountForUser(getTestUser()));
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
         } });
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
         assertServerActionCount(parent1, 0);
-        assertEquals(20, actionsCountForUser(user));
-        assertEquals(0, serverActionsCountForUser(user));
+        assertEquals(20, actionsCountForUser(getTestUser()));
+        assertEquals(0, serverActionsCountForUser(getTestUser()));
     }
 
     @Test
@@ -715,13 +715,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         Session session = HibernateFactory.getSession();
-        Action parentAction = createActionWithServerActions(user, 1);
+        Action parentAction = createActionWithServerActions(getTestUser(), 1);
         Server server = parentAction.getServerActions().iterator().next()
             .getServer();
         ActionFactory.save(parentAction);
 
-        KickstartDataTest.setupTestConfiguration(user);
-        KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartDataTest.setupTestConfiguration(getTestUser());
+        KickstartData ksData = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
         ksSession = TestUtils.saveAndFlush(ksSession);
         ksSession = TestUtils.reload(ksSession);
@@ -742,7 +742,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
         } });
 
-        ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(getTestUser(), actionList);
 
         // New history entry should have been created:
         assertEquals(2, ksSession.getHistory().size());
@@ -753,43 +753,43 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCompletedActions() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Action parent = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
-                .createTestServer(user), parent);
+                .createTestServer(getTestUser()), parent);
 
         child.setStatusCompleted();
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
 
-        DataResult<ScheduledAction> dr = ActionManager.completedActions(user, null);
+        DataResult<ScheduledAction> dr = ActionManager.completedActions(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testRecentlyScheduledActions() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Action parent = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
-                .createTestServer(user), parent);
+                .createTestServer(getTestUser()), parent);
 
         child.setStatusCompleted();
         child.setCreated(new Date(System.currentTimeMillis()));
 
         parent.addServerAction(child);
         ActionFactory.save(parent);
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
 
-        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(getTestUser(), null, 30);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testLookupFailLookupAction() {
         try {
-            ActionManager.lookupAction(user, -1L);
+            ActionManager.lookupAction(getTestUser(), -1L);
             fail("Expected to fail");
         }
         catch (LookupException le) {
@@ -799,7 +799,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRescheduleAction() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -821,12 +821,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testInProgressSystems() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatusQueued();
         ActionFactory.save(a1);
-        DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(user, a1, null);
+        DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(getTestUser(), a1, null);
         assertFalse(dr.isEmpty());
         assertNotNull(dr.get(0));
         ActionedSystem as = dr.get(0);
@@ -836,25 +836,25 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testFailedSystems() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatusFailed();
         ActionFactory.save(a1);
 
-        assertFalse(ActionManager.failedSystems(user, a1, null).isEmpty());
+        assertFalse(ActionManager.failedSystems(getTestUser(), a1, null).isEmpty());
     }
 
     @Test
     public void testCreateErrataAction() throws Exception {
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         assertEquals("JAVA-Test-", errata.getAdvisory().substring(0, 10));
         assertEquals("Test synopsis", errata.getSynopsis());
 
-        Action a = ActionManager.createErrataAction(null, user.getOrg(), errata);
+        Action a = ActionManager.createErrataAction(null, getTestUser().getOrg(), errata);
         assertNotNull(a);
         assertNull(a.getSchedulerUser());
-        assertEquals(user.getOrg(), a.getOrg());
+        assertEquals(getTestUser().getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
         assertTrue(a.getName().startsWith("Patch Update: JAVA-Test-"));
         assertTrue(a.getName().endsWith(" - Test synopsis"));
@@ -863,10 +863,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, ea.getErrata().size());
         assertEquals(errata, ea.getErrata().iterator().next());
 
-        a = ActionManager.createErrataAction(user, user.getOrg(), errata);
+        a = ActionManager.createErrataAction(getTestUser(), getTestUser().getOrg(), errata);
         assertNotNull(a);
-        assertEquals(user, a.getSchedulerUser());
-        assertEquals(user.getOrg(), a.getOrg());
+        assertEquals(getTestUser(), a.getSchedulerUser());
+        assertEquals(getTestUser().getOrg(), a.getOrg());
         assertInstanceOf(ErrataAction.class, a);
         assertTrue(a.getName().startsWith("Patch Update: JAVA-Test-"));
         assertTrue(a.getName().endsWith(" - Test synopsis"));
@@ -894,25 +894,25 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSchedulePackageRemoval() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
-        RhnSet set = RhnSetManager.createSet(user.getId(), "removable_package_list",
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
+        RhnSet set = RhnSetManager.createSet(getTestUser().getId(), "removable_package_list",
                 SetCleanup.NOOP);
         assertNotNull(srvr);
         assertNotNull(set);
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
 
         set.addElement(pkg.getPackageName().getId(), pkg.getPackageEvr().getId(),
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
         List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
-        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(getTestUser(), packages,
                 ActionFactory.TYPE_PACKAGES_REMOVE, new Date(), srvr);
 
         assertNotNull(pa);
         assertNotNull(pa.getId());
-        PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());
+        PackageAction pa1 = (PackageAction) ActionManager.lookupAction(getTestUser(), pa.getId());
         assertNotNull(pa1);
         assertEquals(pa, pa1);
     }
@@ -920,25 +920,25 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSchedulePackageVerify() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
-        RhnSet set = RhnSetManager.createSet(user.getId(), "verify_package_list",
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
+        RhnSet set = RhnSetManager.createSet(getTestUser().getId(), "verify_package_list",
                 SetCleanup.NOOP);
         assertNotNull(srvr);
         assertNotNull(set);
 
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg());
 
         set.addElement(pkg.getPackageName().getId(), pkg.getPackageEvr().getId(),
                 pkg.getPackageArch().getId());
         RhnSetManager.store(set);
 
         List<Map<String, Long>> packages = ActionManager.convertPackagesFromRhnSetToListOfMaps(set);
-        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(user, packages,
+        PackageAction pa = (PackageAction) ActionManager.schedulePackageAction(getTestUser(), packages,
                 ActionFactory.TYPE_PACKAGES_VERIFY, new Date(), srvr);
 
         assertNotNull(pa);
         assertNotNull(pa.getId());
-        PackageAction pa1 = (PackageAction) ActionManager.lookupAction(user, pa.getId());
+        PackageAction pa1 = (PackageAction) ActionManager.lookupAction(getTestUser(), pa.getId());
         assertNotNull(pa1);
         assertEquals(pa, pa1);
     }
@@ -946,7 +946,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testScheduleScriptRun() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
         SystemManagerTest.giveCapability(srvr.getId(), "script.run", 1L);
         assertNotNull(srvr);
 
@@ -957,11 +957,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 "root", "root", 10L, "#!/bin/csh\necho hello");
         assertNotNull(sad);
         ScriptRunAction sra = ActionManager.scheduleScriptRun(
-                user, serverIds, "Run script test", sad, new Date());
+                getTestUser(), serverIds, "Run script test", sad, new Date());
         assertNotNull(sra);
         assertNotNull(sra.getId());
         ScriptRunAction pa1 = (ScriptRunAction)
-                ActionManager.lookupAction(user, sra.getId());
+                ActionManager.lookupAction(getTestUser(), sra.getId());
         assertNotNull(pa1);
         assertEquals(sra, pa1);
         ScriptActionDetails sad1 = pa1.getScriptActionDetails();
@@ -971,15 +971,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testScheduleKickstart() throws Exception {
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartDataTest.setupTestConfiguration(getTestUser());
         KickstartData testKickstartData
-            = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+            = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
 
         KickstartAction ka
             = ActionManager.scheduleKickstartAction(testKickstartData,
-                                                    user,
+                getTestUser(),
                                                     srvr,
                                                     new Date(System.currentTimeMillis()),
                                                     "",
@@ -989,7 +989,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(ka.getId());
         KickstartActionDetails kad = ka.getKickstartActionDetails();
         KickstartAction ka2 = (KickstartAction)
-            ActionManager.lookupAction(user, ka.getId());
+            ActionManager.lookupAction(getTestUser(), ka.getId());
         assertNotNull(ka2);
         assertEquals(ka, ka2);
         KickstartActionDetails kad2 = ka2.getKickstartActionDetails();
@@ -999,12 +999,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testScheduleGuestKickstart() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartDataTest.setupTestConfiguration(getTestUser());
         KickstartData testKickstartData
-            = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+            = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
 
         KickstartSession ksSession =
             KickstartSessionTest.createKickstartSession(srvr, testKickstartData);
@@ -1014,7 +1014,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ProvisionVirtualInstanceCommand command =
             new ProvisionVirtualInstanceCommand(srvr.getId(),
                                                 testKickstartData.getId(),
-                                                user,
+                    getTestUser(),
                                                 new Date(System.currentTimeMillis()),
                                                 kickstartHost);
 
@@ -1034,7 +1034,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartGuestActionDetails kad =
             ka.getKickstartGuestActionDetails();
         KickstartGuestAction ka2 = (KickstartGuestAction)
-            ActionManager.lookupAction(user, ka.getId());
+            ActionManager.lookupAction(getTestUser(), ka.getId());
         assertNotNull(ka2);
         assertNotNull(kad.getCobblerSystemName());
         assertEquals(ka, ka2);
@@ -1054,7 +1054,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testSchedulePackageDelta() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
 
-        Server srvr = ServerFactoryTest.createTestServer(user, true);
+        Server srvr = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         List<PackageListItem> profileList = new ArrayList<>();
         profileList.add(ProfileManagerTest.
@@ -1069,13 +1069,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 createPackageListItem("kernel-2.4.23-EL-mmccune", 500341));
 
 
-        RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
+        RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(getTestUser());
 
 
         List<PackageMetadata> pkgs = ProfileManager.comparePackageLists(new DataResult<>(profileList),
                 new DataResult<>(systemList), "foo");
 
-        PackageAction pa = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs, new Date());
+        PackageAction pa = ActionManager.schedulePackageRunTransaction(getTestUser(), srvr, pkgs, new Date());
         assertInstanceOf(PackageAction.class, pa);
 
         Map<String, Object> params = new HashMap<>();
@@ -1093,16 +1093,16 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(SubscribeChannelsAction.class)));
         } });
 
-        MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(user);
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
 
         Optional<Channel> baseChannel = Optional.of(base);
         Set<Channel> channels = new HashSet<>();
         channels.add(ch1);
         channels.add(ch2);
-        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(getTestUser(),
                 Collections.singleton(srvr.getId()),
                 baseChannel,
                 channels,
@@ -1138,18 +1138,18 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         ImageInfoFactory.setTaskomaticApi(taskomaticMock);
 
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
-        ImageStore store = createImageStore("registry.reg", user);
-        ActivationKey ak = createActivationKey(user);
-        ImageProfile prof = createImageProfile("myprofile", store, ak, user);
-        ActionChain actionChain = ActionChainFactory.createActionChain("my-test-ac", user);
+        ImageStore store = createImageStore("registry.reg", getTestUser());
+        ActivationKey ak = createActivationKey(getTestUser());
+        ImageProfile prof = createImageProfile("myprofile", store, ak, getTestUser());
+        ActionChain actionChain = ActionChainFactory.createActionChain("my-test-ac", getTestUser());
 
         ImageBuildAction action = ActionChainManager.scheduleImageBuild(server.getId(),
                 "1.0.0",
                 prof,
                 new Date(),
-                actionChain, user);
+                actionChain, getTestUser());
 
         assertNotNull(action);
         assertEquals("Build an Image Profile", action.getActionTypeName());
@@ -1179,7 +1179,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void aTestSchedulePackageDelta() throws Exception {
         Server srvr = ServerFactory.lookupById(1005385254L);
-        RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
+        RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(getTestUser());
 
         List<PackageListItem> a = new ArrayList<>();
         PackageListItem pli = new PackageListItem();
@@ -1257,7 +1257,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                     pm.getSystem() != null ? pm.getSystem().getRelease() : pm.getOther().getRelease());
         }
 
-        Action action = ActionManager.schedulePackageRunTransaction(user, srvr, pkgs,
+        Action action = ActionManager.schedulePackageRunTransaction(getTestUser(), srvr, pkgs,
                 new Date());
         System.out.println("Action is an [" + action.getClass().getName() + "]");
     }
