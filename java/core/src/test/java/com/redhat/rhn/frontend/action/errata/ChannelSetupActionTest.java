@@ -28,7 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ChannelSetupActionTest
  */
-public class ChannelSetupActionTest extends RhnBaseTestCase {
+public class ChannelSetupActionTest extends BaseTestCase {
 
     /**
      * A dummy test until the other two are fixed.

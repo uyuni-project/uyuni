@@ -26,7 +26,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.ErrataManagerTest;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 /**
  * DeleteBugActionTest
  */
-public class DeleteBugActionTest extends RhnBaseTestCase {
+public class DeleteBugActionTest extends BaseTestCase {
 
     @Test
     public void testDeleteBug() throws Exception {
