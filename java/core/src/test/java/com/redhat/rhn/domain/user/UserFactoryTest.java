@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -132,7 +133,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         List<User> userList = UserFactory.lookupByIds(idList);
         assertNotNull(userList);
         assertNotNull(userList.get(1).getFirstNames());
-        assertContains(userList.get(1).getLogin(), "testUserSecond");
+        assertTrue(userList.get(1).getLogin().contains("testUserSecond"));
     }
 
     @Test

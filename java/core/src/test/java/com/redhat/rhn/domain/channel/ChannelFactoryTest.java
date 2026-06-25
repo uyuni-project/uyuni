@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -48,7 +49,7 @@ import java.util.List;
 /**
  * ChannelFactoryTest
  */
-public class ChannelFactoryTest extends RhnBaseTestCase {
+public class ChannelFactoryTest extends BaseTestCase {
 
     @Test
     public void testChannelFactory() {
@@ -439,7 +440,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         List<String> labels = ChannelFactory.findChannelArchLabelsSyncdChannels();
         assertNotNull(labels);
-        assertNotEmpty(labels);
+        assertFalse(labels.isEmpty());
     }
 
     @Test

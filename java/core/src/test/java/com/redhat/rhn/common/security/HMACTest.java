@@ -17,6 +17,7 @@ package com.redhat.rhn.common.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * Test for HMAC
  *
  */
-public class HMACTest extends RhnBaseTestCase {
+public class HMACTest extends BaseTestCase {
 
     public void doTestSHA256(String data, String key, String expect) {
 

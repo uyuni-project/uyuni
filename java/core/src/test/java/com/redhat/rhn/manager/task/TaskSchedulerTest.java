@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -38,7 +39,7 @@ import java.util.List;
 /**
  * TaskSchedulerTest
  */
-public class TaskSchedulerTest extends RhnBaseTestCase {
+public class TaskSchedulerTest extends BaseTestCase {
 
     @Test
     public void testUpdateByChannel() throws Exception {
