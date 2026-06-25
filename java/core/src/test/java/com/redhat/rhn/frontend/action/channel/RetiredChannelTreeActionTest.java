@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
@@ -25,6 +28,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -34,7 +38,7 @@ import java.util.Date;
 /**
  * RetiredChannelTreeSetupActionTest
  */
-public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
+public class RetiredChannelTreeActionTest extends BaseTestCase {
 
     @Test
     public void testPerformExecute() throws Exception {
@@ -57,6 +61,7 @@ public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
         sah.executeAction();
         DataResult dr = (DataResult) sah.getRequest().getAttribute(
                 RequestContext.PAGE_LIST);
-        assertNotEmpty(dr);
+        assertNotNull(dr);
+        assertFalse(dr.isEmpty());
    }
 }

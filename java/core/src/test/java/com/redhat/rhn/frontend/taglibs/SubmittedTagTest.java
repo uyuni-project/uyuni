@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.taglibs;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
@@ -33,7 +34,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * SubmittedTagTest
  */
-public class SubmittedTagTest extends RhnBaseTestCase {
+public class SubmittedTagTest extends BaseTestCase {
 
     @Test
     public void testRender() throws Exception {
