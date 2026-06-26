@@ -1945,6 +1945,18 @@ Then(/^the health check tool (should be|should not be) running on "([^"]*)"$/) d
   node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'should be' ? '4' : '0'}", check_errors: true, verbose: true)
 end
 
+Then(/^podman container "([^"]*)" should be (running|healthy) on "([^"]*)"$/) do |container, state, host|
+  node = get_target(host)
+  case state
+  when 'running'
+    node.run("podman inspect --format '{{.State.Running}}' #{container} | grep -x true", check_errors: true, verbose: true, runs_in_container: false)
+  when 'healthy'
+    node.run("podman inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' #{container} | grep -x healthy", check_errors: true, verbose: true, runs_in_container: false)
+  else
+    raise "Unsupported container state '#{state}'"
+  end
+end
+
 When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run('rm -rf /root/server-supportconfig')
