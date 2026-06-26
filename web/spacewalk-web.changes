@@ -1,3 +1,4 @@
+- Show loading indicator on CVE Audit page (gh#uyuni-project/uyuni#11627)
 -------------------------------------------------------------------
 Wed Jun 17 17:37:25 CEST 2026 - michael.calmer@suse.com
 
