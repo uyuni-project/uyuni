@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Fri Jun 26 16:20:01 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.17-0
+  * Fix user role selection when org admin
+    role is enabled (bsc#1259254)
+  * Do not serialize null root CA in listPeripheralServers
+    (bsc#1262720)
+  * Fix Stopwatch is not running errors in API logs (bsc#1262720)
+  * Fix reposync crashing when syncing specific
+    products (bsc#1269088)
+  * Prevent inventory refresh before ansible package
+    is installed (bsc#1244141)
+  * Fix oval sync not triggering for RHEL and
+    derivatives (bsc#1269261)
+  * Fix inventory refresh triggering from unrelated
+    inotify events (bsc#1268309)
+  * Support parsing of uname_test and dynamic fallback CPE
+    derivation in OVAL sync (bsc#1269038)
+
+-------------------------------------------------------------------
 Wed Jun 17 14:42:26 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.16-0

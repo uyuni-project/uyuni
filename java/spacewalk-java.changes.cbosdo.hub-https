@@ -1,3 +1,0 @@
-- Do not serialize null root CA in listPeripheralServers
-  (bsc#1262720)
-- Fix Stopwatch is not running errors in API logs (bsc#1262720)

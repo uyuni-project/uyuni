@@ -1,2 +1,0 @@
-- Prevent inventory refresh before ansible package
-  is installed (bsc#1244141)
