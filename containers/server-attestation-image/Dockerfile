@@ -36,6 +36,7 @@ LABEL org.opencontainers.image.version=5.2.8
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 HEALTHCHECK --interval=5m --timeout=5s --retries=1 CMD ["pgrep", "-f", "com.suse.coco.CoCoAttestation"]
 
