@@ -66,6 +66,14 @@ $stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
+# Layer 3 per-scenario watchdog ceiling (see the Around hook below). Backstop against hangs that
+# Ruby's Timeout.timeout cannot interrupt (e.g. a blocked Playwright pipe call).
+# Regular scenarios are expected to finish well under 30 min; default the ceiling to 40 min.
+SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to_i : 2400
+# Scenarios tagged @long_running (e.g. "Synchronize products" in the Setup Wizard: ~40 min in CI,
+# up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
+# job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
+LONG_SCENARIO_HARD_LIMIT = ENV['LONG_SCENARIO_HARD_LIMIT'].to_i
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
@@ -286,6 +294,49 @@ Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
+end
+
+# Layer 3 watchdog: a hard per-scenario ceiling that survives hangs which Ruby's Timeout.timeout
+# cannot interrupt (a thread blocked inside the Playwright pipe / a Concurrent future). A monitor
+# thread tears down the browser session once the deadline passes; that makes the stuck driver call
+# raise, so the scenario fails and the run continues instead of hanging for hours. Capybara
+# recreates a fresh session for the next scenario.
+Around do |scenario, block|
+  limit =
+    if scenario.source_tag_names.include?('@long_running')
+      LONG_SCENARIO_HARD_LIMIT
+    else
+      SCENARIO_HARD_LIMIT
+    end
+
+  # limit <= 0 disables the watchdog (e.g. @long_running with no LONG_SCENARIO_HARD_LIMIT set, such
+  # as a 13 h product sync in BV); the external job wall-clock remains the backstop in that case.
+  if limit <= 0
+    block.call
+    next
+  end
+
+  finished = false
+  watchdog =
+    Thread.new do
+      sleep limit
+      unless finished
+        warn "WATCHDOG: scenario '#{scenario.name}' exceeded its hard limit of #{limit}s - " \
+             'tearing down the browser session to unblock the run'
+        begin
+          Capybara.current_session.driver.quit
+        rescue StandardError => e
+          warn "WATCHDOG: failed to quit the driver: #{e.message}"
+        end
+      end
+    end
+
+  begin
+    block.call
+  ensure
+    finished = true
+    watchdog.kill
+  end
 end
 
 Before('@skip') do
