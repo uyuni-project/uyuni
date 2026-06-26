@@ -56,7 +56,6 @@
         <dependency org="suse" name="log4j-api" rev="2.17.2" />
         <dependency org="suse" name="log4j-core" rev="2.17.2" />
         <dependency org="suse" name="jsch" rev="0.2.22" />
-        <dependency org="suse" name="jctools-core" rev="4.0.5" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="postgresql" rev="42.2.25" />
