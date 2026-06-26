@@ -340,7 +340,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
   begin
-    accept_alert do
+    accept_alert(wait: Capybara.default_max_wait_time) do
       step %(I click on "#{text}")
     end
   rescue Capybara::ModalNotFound
@@ -351,7 +351,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
   begin
-    accept_confirm do
+    accept_confirm(wait: Capybara.default_max_wait_time) do
       click_button(text)
     end
   rescue Capybara::ModalNotFound
@@ -1252,13 +1252,7 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
-  end
+  refresh_page
 end
 
 When(/^I make a list of the existing systems$/) do

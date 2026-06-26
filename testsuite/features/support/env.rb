@@ -106,7 +106,12 @@ def capybara_register_driver
       ],
       ignoreHTTPSErrors: true,
       acceptDownloads: true,
-      viewport: { width: 2048, height: 2048 }
+      viewport: { width: 2048, height: 2048 },
+      # Hard browser-context bounds so a wedged action/navigation can never hang the run
+      # indefinitely (the old Selenium driver enforced this via Http::Default read_timeout: 240).
+      # NOTE: capybara-playwright-driver expects these in SECONDS and multiplies by 1000 internally.
+      default_timeout: Capybara.default_max_wait_time,
+      default_navigation_timeout: 240
     )
   end
 end
