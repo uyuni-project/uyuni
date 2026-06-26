@@ -90,7 +90,8 @@ public class UserTestUtilsTest extends RhnBaseTestCase {
     @Test
     void testCreateTestAddress() {
         User user = UserTestUtils.createUser();
-        Address address = UserTestUtils.createTestAddress(user);
+        Address address = UserTestUtils.createTestAddress();
+        user.setAddress(address);
         assertNotNull(address);
         assertEquals("444 Castro", address.getAddress1());
     }
