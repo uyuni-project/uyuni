@@ -1950,3 +1950,67 @@ When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node.run('rm -rf /root/server-supportconfig')
   node.run('rm -rf /root/server-supportconfig.tar.gz')
 end
+
+# Patch test preparation steps
+
+When(/^I downgrade "([^"]*)" via zypper on "([^"]*)"$/) do |packages, host|
+  node = get_target(host)
+
+  # Split packages in case multiple are provided (e.g., "curl libcurl4")
+  package_list = packages.split
+  first_package = package_list.first
+
+  # Get currently installed version to exclude from downgrade candidates
+  current_version, _code = node.run("rpm -q #{first_package} --qf '%{VERSION}-%{RELEASE}'", check_errors: false)
+
+  # Get list of available older versions for the first package
+  versions_output, _code = node.run("zypper se -s #{first_package} 2>/dev/null | grep '^v  '", check_errors: false)
+
+  # Extract versions - match exact package name in column 2, get version from column 4
+  matching_lines =
+    versions_output.lines.select do |line|
+      cols = line.split('|')
+      next false if cols.length < 4
+      cols[1].strip == first_package
+    end
+
+  available_versions = matching_lines
+    .map { |line| line.split('|')[3].strip }
+    .uniq
+    .reject { |v| v == current_version.strip }
+    .sort
+    .reverse
+
+  raise "No older versions available for #{first_package} on #{host}" if available_versions.empty?
+
+  target_version = available_versions.first
+  log "Downgrading #{packages} from #{current_version.strip} to version: #{target_version}"
+
+  # Build package list with versions using = separator for both transactional and regular systems
+  packages_with_versions = package_list.map { |pkg| "#{pkg}=#{target_version}" }.join(' ')
+
+  if transactional_system?(host)
+    cmd = "transactional-update --no-selfupdate --non-interactive --continue pkg install --oldpackage #{packages_with_versions}"
+    output, _code = node.run(cmd, timeout: 300, check_errors: true)
+    raise "Failed to downgrade #{packages} on #{host}" unless output.include?('to downgrade')
+  else
+    cmd = "zypper install --no-confirm --oldpackage #{packages_with_versions}"
+    node.run(cmd, timeout: 300, check_errors: true)
+  end
+end
+
+When(/^I wait until zypper reports patches are available on "([^"]*)"$/) do |host|
+  node = get_target(host)
+
+  repeat_until_timeout(timeout: 120, message: "Patches did not appear on #{host}") do
+    output, _code = node.run("zypper list-patches 2>/dev/null | grep -c 'patch needed'", check_errors: false)
+    patch_count = output.strip.to_i
+    log "Patches available: #{patch_count}" if patch_count.positive?
+    break if patch_count.positive?
+
+    sleep 3
+  end
+
+  output, _code = node.run("zypper list-patches", check_errors: false)
+  raise "No patches appeared after downgrade on #{host}" unless output.include?('patch needed')
+end
