@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.Server;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * This enum defines the operating system families for which we can retrieve OVAL data.
@@ -41,7 +40,7 @@ public enum OsFamily {
     ORACLE_LINUX("Oracle Linux", "OEL", "oel",
             oneOf("7", "8", "9", "10")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
-            withPrefix("7.", "8.", "9.")),
+            oneOf("7", "8", "9")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04", "26.04")),
     DEBIAN("Debian", "Debian", "debian", oneOf("11", "12", "13"));
 
@@ -81,12 +80,6 @@ public enum OsFamily {
 
     private static String oneOf(String ... legalReleases) {
         return "(" + String.join("|", escapePeriods(legalReleases)) + ")";
-    }
-
-    private static String withPrefix(String ... legalReleasePrefixes) {
-        return "(" + Arrays.stream(escapePeriods(legalReleasePrefixes))
-                .map(prefix -> prefix + ".*")
-                .collect(Collectors.joining("|")) + ")";
     }
 
     private static String[] escapePeriods(String ... strings) {
