@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 26 14:44:22 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Add org.uyuni.version LABEL to the image
+
+-------------------------------------------------------------------
 Wed Jun 17 14:54:12 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8
