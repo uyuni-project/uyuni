@@ -87,6 +87,8 @@ type State = {
 };
 
 export class InputBase<ValueType = string> extends Component<InputBaseProps<ValueType>, State> {
+  private validationVersion = 0;
+
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -167,6 +169,9 @@ export class InputBase<ValueType = string> extends Component<InputBaseProps<Valu
   }
 
   componentWillUnmount() {
+    // Invalidate previous validations
+    this.validationVersion++;
+
     if (Object.keys(this.context).length > 0) {
       this.context.unregisterInput(this);
       if (this.props.name instanceof Array) {
@@ -205,6 +210,7 @@ export class InputBase<ValueType = string> extends Component<InputBaseProps<Valu
    * for a given branch.
    */
   validate<InferredValueType = ValueType>(value: InferredValueType, errors?: string[] | object): void {
+    const version = ++this.validationVersion;
     const results: ReturnType<Validator>[] = [];
     let isValid = true;
 
@@ -228,6 +234,11 @@ export class InputBase<ValueType = string> extends Component<InputBaseProps<Valu
     }
 
     Promise.all(results).then((result) => {
+      if (version !== this.validationVersion) {
+        // Version mismatch: this validation result is stale and we can ignore it
+        return;
+      }
+
       result.forEach((r) => {
         isValid = isValid && r;
       });
