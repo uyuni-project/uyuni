@@ -329,6 +329,9 @@ public class FormulaManager {
     public List<FormulaData> getCombinedFormulaDataForSystems(User user, List<Long> systemIDs,
             String formulaName) {
         List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(systemIDs);
+        for (MinionServer minion : minions) {
+            FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
+        }
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
