@@ -18,6 +18,7 @@ package com.redhat.rhn.testing;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -25,6 +26,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
@@ -453,6 +456,34 @@ public class TestUtils {
                 "/" + object.getClass().getPackage().getName()
                         .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
+    }
+
+    /**
+     * Overrides the ConfigDefaults instance
+     * @param configDefaultsIn the ConfigDefaults instance
+     * @throws NoSuchFieldException if a field with the specified name is not found.
+     * @throws IllegalAccessException if the field is not accessible.
+     */
+    public static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field field = ConfigDefaults.class.getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, configDefaultsIn);
+    }
+
+    /**
+     * Deletes all the AccessTokens
+     */
+    public static void deleteAllAccessTokens() {
+        List<AccessToken> allAccessTokens = AccessTokenFactory.all();
+        allAccessTokens.forEach(AccessTokenFactory::delete);
+    }
+
+    /**
+     * delete last mgr-sync refresh entry in suseManagerInfo: used only in testing
+     */
+    public static void deleteLastMgrSyncRefresh() {
+        HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseManagerInfo").executeUpdate();
     }
 
     //=========================================================================

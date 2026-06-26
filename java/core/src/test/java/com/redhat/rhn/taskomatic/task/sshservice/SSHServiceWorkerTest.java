@@ -51,6 +51,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -91,6 +92,12 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         }
         String jsonResult = TestUtils.readAll(TestUtils.findTestData("minion.startup.applied.state.response.json"));
         sampleSystemInfo = Json.GSON.fromJson(jsonResult, SystemInfo.class);
+    }
+
+    @AfterEach
+    public void tearDownSSHServiceWorkerTest() {
+        // The worker commits, so mark the session for cleanup on every test
+        commitHappened();
     }
 
     /**
@@ -208,9 +215,6 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
         assertNull(futureServerAction.getResultCode());
         assertTrue(minion.getLastBoot() > 1L);
-
-        // The worker commits, so mark the session for cleanup
-        commitHappened();
     }
 
     @Test

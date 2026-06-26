@@ -276,9 +276,7 @@ public class MockConnection extends CobblerConnection {
                 if (getItemResolveItem == null) {
                     // Log a warning because in production this should not happen, however it is possible that the
                     // Mock doesn't implement everything as desired.
-                    this.log.warn(
-                            String.format("Requested attribute \"%s\" for uuid \"%s\" not found!", args[0], args[1])
-                    );
+                    this.log.warn("Requested attribute \"{}\" for uuid \"{}\" not found!", args[1], args[0]);
                     return null;
                 }
                 // Then get the attribute and return it
