@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 26 14:42:06 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Avoid using alts and fix salined link to prevent start fail
+    (bsc#1268743)
+  * Add org.uyuni.version LABEL to the image
+
+-------------------------------------------------------------------
 Fri Jun 19 16:31:16 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9
