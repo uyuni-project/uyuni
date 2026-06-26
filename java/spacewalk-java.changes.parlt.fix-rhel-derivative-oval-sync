@@ -1,0 +1,2 @@
+- Fix oval sync not triggering for RHEL and
+  derivatives (bsc#1269261)
