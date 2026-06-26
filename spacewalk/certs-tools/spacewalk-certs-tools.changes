@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 26 14:41:19 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Fix incorrect RPM checksum format
+
+-------------------------------------------------------------------
 Wed Jun 17 14:18:20 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7-0
