@@ -1,2 +1,0 @@
-- Do not report db container ready during upgrade
-  (bsc#1263823)

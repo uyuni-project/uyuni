@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 26 14:42:55 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.12
+  * Do not report db container ready during upgrade
+    (bsc#1263823)
+  * Grant access to uyuni-server-attestation container (bsc#1269267)
+
+-------------------------------------------------------------------
 Wed Jun 17 14:50:41 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.11
