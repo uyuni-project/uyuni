@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -48,8 +49,8 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
         //add some channels
         Channel c1 = ChannelFactoryTest.createTestChannel(org);
         Channel c2 = ChannelFactoryTest.createTestChannel(org);
-        e.addChannel(c1);
-        e.addChannel(c2);
+        c1.addErrata(e);
+        c2.addErrata(e);
 
         ErrataFactory.save(e);
 
