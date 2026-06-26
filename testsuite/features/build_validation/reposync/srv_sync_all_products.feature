@@ -1,6 +1,7 @@
 # Copyright 2017-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@long_running
 Feature: Synchronize products in the products page of the Setup Wizard
 
   Scenario: Refresh SCC

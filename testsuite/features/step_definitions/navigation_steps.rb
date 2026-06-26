@@ -163,12 +163,12 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 end
 
 When(/^I switch to last opened window$/) do
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+  switch_to_window(windows.last)
 end
 
 When(/^I close the last opened window$/) do
-  page.driver.browser.close
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+  current_window.close
+  switch_to_window(windows.first)
 end
 
 #
@@ -305,7 +305,7 @@ end
 
 # Go back in the browser history
 When(/^I go back$/) do
-  page.driver.go_back
+  page.go_back
 end
 
 #
@@ -340,7 +340,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
   begin
-    accept_alert do
+    accept_alert(wait: Capybara.default_max_wait_time) do
       step %(I click on "#{text}")
     end
   rescue Capybara::ModalNotFound
@@ -351,7 +351,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
   begin
-    accept_confirm do
+    accept_confirm(wait: Capybara.default_max_wait_time) do
       click_button(text)
     end
   rescue Capybara::ModalNotFound
@@ -947,11 +947,7 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
     begin
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
+    rescue Capybara::ElementNotFound, NoMethodError
       # page mid-navigation, retry
     end
   end
@@ -964,11 +960,7 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
     begin
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
+    rescue Capybara::ElementNotFound, NoMethodError
       # page mid-navigation, retry
     end
   end
@@ -1176,12 +1168,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    begin
-      break if has_no_xpath?(path, wait: 1)
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      # We need to consider the case that after obtaining the element it is detached from the page document
-      break
-    end
+    break if has_no_xpath?(path, wait: 1)
   end
 end
 
@@ -1242,7 +1229,22 @@ When(/^I enter the controller hostname as the redfish server address$/) do
 end
 
 When(/^I clear browser cookies$/) do
-  page.driver.browser.manage.delete_all_cookies
+  page.driver.with_playwright_page { |pw_page| pw_page.context.clear_cookies }
+end
+
+# Click a link that triggers a browser download and persist it to /tmp/downloads.
+# Playwright has no "default download directory" (unlike the old Selenium Chrome preference).
+# Best practice: drop to the native Playwright page and trigger the click inside expect_download
+# with a native locator. Mixing Capybara DSL inside the download wait is a known flakiness source.
+When(/^I download the file by following "([^"]*)"$/) do |link|
+  FileUtils.mkdir_p('/tmp/downloads')
+  page.driver.with_playwright_page do |pw_page|
+    download =
+      pw_page.expect_download do
+        pw_page.get_by_role('link', name: link).click
+      end
+    download.save_as(File.join('/tmp/downloads', download.suggested_filename))
+  end
 end
 
 When(/^I close the modal dialog$/) do
@@ -1250,13 +1252,7 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
-  end
+  refresh_page
 end
 
 When(/^I make a list of the existing systems$/) do
