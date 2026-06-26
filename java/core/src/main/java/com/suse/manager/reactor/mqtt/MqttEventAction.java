@@ -42,6 +42,7 @@ public class MqttEventAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(MqttEventAction.class);
 
     private final MqttPublisherService mqttPublisherService;
+    private final String topicPrefix;
 
     /**
      * Constructor taking the publisher service.
@@ -49,6 +50,7 @@ public class MqttEventAction implements MessageAction {
      */
     public MqttEventAction(MqttPublisherService mqttPublisherServiceIn) {
         this.mqttPublisherService = mqttPublisherServiceIn;
+        this.topicPrefix = mqttPublisherServiceIn.getTopicPrefix();
     }
 
     /**
@@ -99,7 +101,7 @@ public class MqttEventAction implements MessageAction {
                     .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey)
                     .ifPresent(key -> data.put("managementKey", key));
         });
-        mqttPublisherService.publish("uyuni/events/systems/registered", data);
+        mqttPublisherService.publish(topicPrefix + "/systems/registered", data);
     }
 
     private void handleJobReturn(JobReturnEventMessage jobMsg) {
@@ -114,7 +116,7 @@ public class MqttEventAction implements MessageAction {
                 data.put("retcode", event.getData().getRetcode());
                 data.put("timestamp", event.getData().getTimestamp());
             }
-            mqttPublisherService.publish("uyuni/events/jobs/returned", data);
+            mqttPublisherService.publish(topicPrefix + "/jobs/returned", data);
         }
     }
 
@@ -126,7 +128,7 @@ public class MqttEventAction implements MessageAction {
         data.put("forcePackageListRefresh",
                 applyMsg.isForcePackageListRefresh());
         data.put("directCall", applyMsg.isDirectCall());
-        mqttPublisherService.publish("uyuni/events/states/applied", data);
+        mqttPublisherService.publish(topicPrefix + "/states/applied", data);
     }
 
     private void handleImageDeployed(ImageDeployedEventMessage imageMsg) {
@@ -136,7 +138,7 @@ public class MqttEventAction implements MessageAction {
             event.getMachineId().ifPresent(
                     id -> data.put("machineId", id));
             data.put("grains", event.getGrains());
-            mqttPublisherService.publish("uyuni/events/images/deployed", data);
+            mqttPublisherService.publish(topicPrefix + "/images/deployed", data);
         }
     }
 
@@ -154,7 +156,7 @@ public class MqttEventAction implements MessageAction {
                         event.getData().getTimestamp());
             }
             mqttPublisherService.publish(
-                    "uyuni/events/batches/started", data);
+                    topicPrefix + "/batches/started", data);
         }
     }
 
