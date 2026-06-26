@@ -26,6 +26,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -44,19 +46,39 @@ public class MqttPublisherService {
     private static final Logger LOG = LogManager.getLogger(MqttPublisherService.class);
 
     private static final String DEFAULT_BROKER_URL = "tcp://mosquitto:1883";
+    private static final String DEFAULT_TOPIC_PREFIX = "uyuni/localhost";
     private static final String CLIENT_ID_PREFIX = "uyuni-publisher-";
     private static final int CONNECTION_TIMEOUT_SECONDS = 15;
     private static final int KEEP_ALIVE_INTERVAL_SECONDS = 60;
     private static final int CONNECT_WAIT_MS = 10000;
     private static final int DISCONNECT_WAIT_MS = 5000;
 
+    private static volatile MqttPublisherService instance;
+
     private final String brokerUrl;
     private final String clientId;
+    private final String topicPrefix;
     private final Gson gson;
     private final ExecutorService executorService;
 
     private MqttAsyncClient client;
     private boolean isConnecting = false;
+
+    /**
+     * Returns the global instance of the publisher service.
+     * @return the active MqttPublisherService instance, or null if not initialized
+     */
+    public static MqttPublisherService getInstance() {
+        return instance;
+    }
+
+    /**
+     * Sets the global instance of the publisher service.
+     * @param instanceIn the instance to set
+     */
+    public static synchronized void setInstance(MqttPublisherService instanceIn) {
+        instance = instanceIn;
+    }
 
     /**
      * Default constructor using standard broker URL from system property
@@ -73,6 +95,7 @@ public class MqttPublisherService {
     public MqttPublisherService(String brokerUrlIn) {
         this.brokerUrl = brokerUrlIn;
         this.clientId = CLIENT_ID_PREFIX + UUID.randomUUID().toString().substring(0, 8);
+        this.topicPrefix = resolveFqdn();
         this.gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
@@ -82,9 +105,37 @@ public class MqttPublisherService {
             return t;
         });
 
-        LOG.warn("Initializing MqttPublisherService with broker: {} and client ID: {}",
-                this.brokerUrl, this.clientId);
+        LOG.warn("Initializing MqttPublisherService with broker: {}, " +
+                "client ID: {}, topic prefix: {}",
+                this.brokerUrl, this.clientId, this.topicPrefix);
         connectAsync();
+        setInstance(this);
+    }
+
+    /**
+     * Resolve the server FQDN for use in topic naming.
+     * Falls back to {@code DEFAULT_TOPIC_PREFIX} on failure.
+     * @return the topic prefix in the form "uyuni/fqdn"
+     */
+    private static String resolveFqdn() {
+        try {
+            String fqdn = InetAddress.getLocalHost().getCanonicalHostName();
+            LOG.info("Resolved server FQDN for MQTT topics: {}", fqdn);
+            return "uyuni/" + fqdn;
+        }
+        catch (UnknownHostException e) {
+            LOG.warn("Unable to resolve server FQDN, using default " +
+                    "topic prefix: {}", DEFAULT_TOPIC_PREFIX, e);
+            return DEFAULT_TOPIC_PREFIX;
+        }
+    }
+
+    /**
+     * Returns the FQDN-based topic prefix (e.g. "uyuni/uyuni.example.com").
+     * @return the topic prefix string
+     */
+    public String getTopicPrefix() {
+        return topicPrefix;
     }
 
     /**
@@ -133,8 +184,8 @@ public class MqttPublisherService {
         executorService.submit(() -> {
             try {
                 if (client == null || !client.isConnected()) {
-                    LOG.warn("MQTT client not connected. Attempting reconnect "
-                            + "and skipping publish to: {}", topic);
+                    LOG.warn("MQTT client not connected. Attempting reconnect " +
+                            "and skipping publish to: {}", topic);
                     connectAsync();
                     return;
                 }
