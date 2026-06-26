@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Jun 26 16:17:08 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.13-0
+  * Make inventory path not nullable in
+    rhnActionInventory (bsc#1268309)
+  * Fix user role selection when org admin
+    role is enabled (bsc#1259254)
+
+-------------------------------------------------------------------
 Wed Jun 17 14:36:03 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12-0
