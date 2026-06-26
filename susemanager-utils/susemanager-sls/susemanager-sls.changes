@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun 26 14:40:36 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.13-0
+  * Prevent inventory refresh before ansible package
+    is installed (bsc#1244141)
+
+-------------------------------------------------------------------
 Wed Jun 17 14:17:06 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12-0
