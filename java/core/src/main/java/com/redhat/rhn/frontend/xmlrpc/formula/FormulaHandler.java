@@ -177,6 +177,7 @@ public class FormulaHandler extends BaseHandler {
             List<String> formulas) throws IOFaultException {
         try {
             ServerGroup group = ServerGroupFactory.lookupById(systemGroupId.longValue());
+            FormulaUtil.ensureUserHasPermissionsOnServerGroup(loggedInUser, group);
             FormulaFactory.saveGroupFormulas(group, formulas);
             List<String> minions = group.getServers().stream()
                     .map(Server::asMinionServer)
