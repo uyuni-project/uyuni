@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
-
+<script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
 <div class="form-group">
     <label class="col-lg-3 control-label"><bean:message key="username.displayname"/></label>
     <div id="loginname" class="col-lg-6 form-control-static"><c:out escapeXml="true" value="${user.login}" /></div>
@@ -47,8 +47,11 @@
 <div class="form-group">
     <label class="col-lg-3 control-label"><bean:message key="password.displayname"/></label>
     <div class="col-lg-6">
-        <div id="desiredpassword-input-group">
-            <input type="password" autocomplete="new-password" name="desiredpassword" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"/>
+        <div id="desiredpassword-input-group" class="input-group">
+            <input type="password" autocomplete="new-password" onkeyup="updateTickIcon()" name="desiredpassword" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"/>
+            <span class="input-group-addon input-group-text">
+                <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="desiredtick"></i>
+            </span>
         </div>
     </div>
 </div>
@@ -56,8 +59,11 @@
 <div class="form-group">
     <label class="col-lg-3 control-label"><bean:message key="confirmpass.displayname"/></label>
     <div class="col-lg-6">
-        <div id="desiredpasswordconfirm-input-group">
-            <input id="confirmpass" type="password" autocomplete="new-password" name="desiredpasswordConfirm" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"/>
+        <div id="desiredpasswordconfirm-input-group" class="input-group">
+            <input id="confirmpass" type="password" onkeyup="updateTickIcon()" autocomplete="new-password" name="desiredpasswordConfirm" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"/>
+            <span class="input-group-addon input-group-text">
+                <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="confirmtick"></i>
+            </span>
         </div>
     </div>
 </div>
