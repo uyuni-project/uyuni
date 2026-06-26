@@ -59,7 +59,7 @@ public class MqttEventActionTest {
                         Optional.of(grains));
         mqttEventAction.execute(msg);
 
-        assertEquals("uyuni/events/systems/registered",
+        assertEquals(mockPublisherService.getTopicPrefix() + "/systems/registered",
                 mockPublisherService.lastTopic);
         assertNotNull(mockPublisherService.lastPayload);
         assertTrue(mockPublisherService.lastPayload instanceof Map);
@@ -80,7 +80,7 @@ public class MqttEventActionTest {
                         "state1", "state2");
         mqttEventAction.execute(msg);
 
-        assertEquals("uyuni/events/states/applied",
+        assertEquals(mockPublisherService.getTopicPrefix() + "/states/applied",
                 mockPublisherService.lastTopic);
         assertNotNull(mockPublisherService.lastPayload);
         assertTrue(mockPublisherService.lastPayload instanceof Map);
