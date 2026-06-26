@@ -60,6 +60,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(EndpointInfoSerializer.class);
         SERIALIZER_CLASSES.add(ErrataOverviewSerializer.class);
         SERIALIZER_CLASSES.add(ErrataSerializer.class);
+        SERIALIZER_CLASSES.add(SyncErrataWithPackagesResponseSerializer.class);
         SERIALIZER_CLASSES.add(HistoryEventSerializer.class);
         SERIALIZER_CLASSES.add(ManagedServerGroupSerializer.class);
         SERIALIZER_CLASSES.add(OrgSerializer.class);

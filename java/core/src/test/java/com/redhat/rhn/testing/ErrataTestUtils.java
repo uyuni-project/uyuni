@@ -32,6 +32,8 @@ import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+import com.redhat.rhn.domain.errata.ErrataFile;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -46,8 +48,12 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -550,6 +556,160 @@ public class ErrataTestUtils {
         copy.setLastModified(original.getLastModified());
 
         // Copy the packages
-        copy.setPackages(new HashSet<>(original.getPackages()));
+        copy.replacePackages(new HashSet<>(original.getPackages()));
+    }
+
+    /**
+     * Builder for creating test erratas with fluent API.
+     * Does NOT add default packages or CVEs - only what you specify.
+     *
+     * Usage:
+     * <pre>
+     * Errata errata = ErrataTestUtils.errataBuilder(user)
+     *     .withAdvisory("CUSTOM-2024-001")
+     *     .withCves("CVE-2024-1234", "CVE-2024-5678")
+     *     .withPackages(pkg1, pkg2)
+     *     .build();
+     * </pre>
+     */
+    public static class ErrataBuilder {
+        private static int advisorySeq = 1000;
+
+        private final User user;
+        private String advisory = null;
+        private Set<String> cveNames = new HashSet<>();
+        private Set<Package> packages = new HashSet<>();
+        private boolean createDummyTestPackage = false;
+
+        private ErrataBuilder(User userIn) {
+            this.user = userIn;
+        }
+
+        /**
+         * Set a custom advisoryIn name (e.g., "CUSTOM-2024-001").
+         * If not set, uses auto-generated "JAVA-Test-{seq}".
+         *
+         * @param advisoryIn the advisoryIn name
+         * @return this builder
+         */
+        public ErrataBuilder withAdvisory(String advisoryIn) {
+            this.advisory = advisoryIn;
+            return this;
+        }
+
+        /**
+         * Add CVEs by name (will be created during build()).
+         *
+         * @param cveNamesIn CVE identifiers (e.g., "CVE-2024-1234")
+         * @return this builder
+         */
+        public ErrataBuilder withCves(String... cveNamesIn) {
+            Collections.addAll(this.cveNames, cveNamesIn);
+            return this;
+        }
+
+        /**
+         * Add packagesIn to the errata.
+         *
+         * @param packagesIn packagesIn to add
+         * @return this builder
+         */
+        public ErrataBuilder withPackages(Package... packagesIn) {
+            Collections.addAll(this.packages, packagesIn);
+            return this;
+        }
+
+        /**
+         * Define if errata should build a dummy test package
+         *
+         * @param createDummyTestPackageIn whether to create and associate a dummy test package
+         * @return this builder
+         */
+        public ErrataBuilder withDummyPackage(boolean createDummyTestPackageIn) {
+            this.createDummyTestPackage = createDummyTestPackageIn;
+            return this;
+        }
+
+        /**
+         * Build the errata and persist it.
+         * Creates a minimal errata with default test values (copied from fillOutErrata structure).
+         * Does NOT add default packages - only what you specify.
+         *
+         * @return the created errata
+         */
+        public Errata build() {
+            Errata errata = new Errata();
+
+            String name = advisory != null ? advisory : "JAVA-Test-" + advisorySeq++;
+            errata.setOrg(user.getOrg());
+            errata.setAdvisory(name);
+            errata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
+            errata.setProduct("Red Hat Linux");
+            errata.setDescription("Test desc ..");
+            errata.setSynopsis("Test synopsis");
+            errata.setSolution("Test solution");
+            errata.setNotes("Test notes for test errata");
+            errata.setTopic("test topic");
+            errata.setRefersTo("rhn unit tests");
+            errata.setUpdateDate(new Date());
+            errata.setIssueDate(new Date());
+            errata.setAdvisoryName(name);
+            errata.setAdvisoryRel(2L);
+            errata.setErrataFrom("maint-coord@suse.de");
+            errata.setLocallyModified(Boolean.FALSE);
+            errata.setSeverity(Severity.getById(1));
+
+            // Create CVEs from names
+            Set<Cve> allCves = new HashSet<>();
+            for (String cveName : cveNames) {
+                allCves.add(createTestCve(cveName));
+            }
+
+            // Set user-specified CVEs and packages
+            errata.setCves(allCves);
+            for (Package pkg : packages) {
+                errata.addPackage(pkg);
+            }
+
+            if (createDummyTestPackage) {
+                Package testPackage = PackageTest.createTestPackage(user.getOrg());
+
+                ErrataFile ef;
+                Set<Package> errataFilePackages = new HashSet<>();
+                errataFilePackages.add(testPackage);
+                errata.addPackage(testPackage);
+                ef = ErrataFactory.createErrataFile(ErrataFactory.
+                                lookupErrataFileType("RPM"),
+                        "SOME FAKE CHECKSUM: 123456789012",
+                        "test errata file" + TestUtils.randomString(), errataFilePackages);
+
+                errata.addFile(ef);
+            }
+
+            return TestUtils.saveAndFlush(errata);
+        }
+    }
+
+    /**
+     * Create an errata builder.
+     *
+     * @param user the errata owner
+     * @return a new builder instance
+     */
+    public static ErrataBuilder errataBuilder(User user) {
+        return new ErrataBuilder(user);
+    }
+
+    // As last_modified field is marked as updatable=false, hibernate ignores the setter
+    // need to use native sql to force updating it
+    public static void setErrataLastModified(Errata errata, Instant lastModifiedInstant) {
+        // Ensure the errata is persisted before updating
+        HibernateFactory.getSession().flush();
+
+        HibernateFactory.getSession().createNativeQuery(
+                        "UPDATE rhnErrata SET last_modified = :lastMod WHERE id = :errataId"
+                ).setParameter("lastMod", Timestamp.from(lastModifiedInstant))
+                .setParameter("errataId", errata.getId())
+                .executeUpdate();
     }
 }

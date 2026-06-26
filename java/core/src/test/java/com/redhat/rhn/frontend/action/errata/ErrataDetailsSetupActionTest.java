@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -85,7 +86,7 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
         errata.addKeyword("test");
         Channel ch = ChannelFactoryTest.createTestChannel(sah.getUser().getOrg());
         ch.setUpdateTag("SLE-Module-Basesystem");
-        errata.addChannel(ch);
+        ch.addErrata(errata);
 
         ErrataFactory.save(errata);
 

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -55,7 +56,7 @@ public class NotifyActionTest extends RhnBaseTestCase {
         User user = requestContext.getCurrentUser();
         Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelFactoryTest.createBaseChannel(user);
-        published.addChannel(c);
+        c.addErrata(published);
 
         //test default case
         request.addParameter("eid", published.getId().toString());
@@ -63,7 +64,7 @@ public class NotifyActionTest extends RhnBaseTestCase {
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
 
         Long id = published.getId();
-        TestUtils.flushAndEvict(published);
+        TestUtils.flushAndClearSession();
         Errata errata = ErrataManager.lookupErrata(id, user);
         assertEquals(1, errata.getNotificationQueue().size());
     }
