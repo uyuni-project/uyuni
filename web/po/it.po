@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-06-25 19:12+0000\n"
+"PO-Revision-Date: 2026-06-26 12:12+0000\n"
 "Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -889,7 +889,7 @@ msgstr ""
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:134
 #: ../html/src/components/states-picker.tsx:463
 msgid "Channel Name"
-msgstr ""
+msgstr "Nome Canale"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:145
 #: ../html/src/components/table/nested-data.example.tsx:62
@@ -1679,7 +1679,7 @@ msgstr "Entrambi i valori devono essere numeri interi positivi"
 #: ../html/src/components/table/SelectedRowDetails.tsx:60
 #: ../html/src/manager/admin/setup/products/products.tsx:341
 msgid "Clear"
-msgstr ""
+msgstr "Libera"
 
 #: ../html/src/components/input/select/DEPRECATED_Select.tsx:108
 #: ../html/src/components/input/select/Select.tsx:14
@@ -1695,7 +1695,7 @@ msgstr ""
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:645
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:646
 msgid "Loading..."
-msgstr ""
+msgstr "Caricamento..."
 
 #: ../html/src/components/large-text-attachment.tsx:75
 msgid "Data is present."
@@ -1769,7 +1769,7 @@ msgstr "Nome Pachetto"
 
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
-msgstr ""
+msgstr "Elementi {da} - {a} di {totale}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1901,12 +1901,12 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:327
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: ../html/src/components/policies-picker.tsx:178
 #: ../html/src/components/states-picker.tsx:466
 msgid "Assign"
-msgstr ""
+msgstr "Assegnare"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:153
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:55
@@ -2115,7 +2115,7 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:442
 msgid "Edit Channel Ranks"
-msgstr ""
+msgstr "Modifica classifiche di stato"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
@@ -2127,47 +2127,43 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Non ci sono stati assegnati."
 
 #: ../html/src/components/states-picker.tsx:463
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
-#, fuzzy
 msgid "State Name"
-msgstr "Stato"
+msgstr "Nome Stato"
 
 #: ../html/src/components/states-picker.tsx:464
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
-#, fuzzy
 msgid "State Label"
-msgstr "Stato"
+msgstr "Etichetta di stato"
 
 #: ../html/src/components/states-picker.tsx:464
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
-msgstr ""
+msgstr "Etichetta Canale"
 
 #: ../html/src/components/states-picker.tsx:527
 msgid "Select the systems to schedule for immediate state execution and confirm."
-msgstr ""
+msgstr "Selezionare i sistemi da pianificare per l'esecuzione immediata dello stato e confermare."
 
 #: ../html/src/components/states-picker.tsx:538
 msgid "This table is empty"
-msgstr ""
+msgstr "Questa Tabelle è vuota"
 
 #: ../html/src/components/states-picker.tsx:545
 #: ../html/src/components/states-picker.tsx:586
-#, fuzzy
 msgid "System Name"
-msgstr "Stato"
+msgstr "Nome Sistema"
 
 #: ../html/src/components/states-picker.tsx:565
 msgid "Execute States"
-msgstr ""
+msgstr "Stati di esecuzione"
 
 #: ../html/src/components/states-picker.tsx:570
-#, fuzzy
 msgid "Select Sytems"
-msgstr "Sistemi"
+msgstr "Seleziona un Sistema"
 
 #: ../html/src/components/systems.tsx:21
 #, fuzzy
@@ -2208,11 +2204,11 @@ msgstr ""
 #: ../html/src/components/systems.tsx:102
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:193
 msgid "Security Advisory"
-msgstr ""
+msgstr "avviso di sicurezza"
 
 #: ../html/src/components/systems.tsx:115
 msgid "System Locked"
-msgstr ""
+msgstr "Sistema Bloccato"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
 msgid "less than"
@@ -2247,17 +2243,17 @@ msgstr ""
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/components/table/TableFilter.tsx:75
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #: ../html/src/components/table/SearchField.tsx:53
 #: ../html/src/components/table/TableFilter.tsx:79
 msgid "Select a filter"
-msgstr ""
+msgstr "Seleziona un filtro"
 
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
 msgid "All"
-msgstr ""
+msgstr "Tutto"
 
 #: ../html/src/components/table/nested-data.example.tsx:45
 #, fuzzy
@@ -2297,11 +2293,11 @@ msgstr "Sistemi"
 
 #: ../html/src/components/tree/tree.tsx:117
 msgid "Invalid data"
-msgstr ""
+msgstr "Data non valida"
 
 #: ../html/src/components/tree/tree.tsx:125
 msgid "No data"
-msgstr ""
+msgstr "No data"
 
 #: ../html/src/components/utils/HelpIcon.example.tsx:4
 msgid "Text to display on hover"
@@ -2309,7 +2305,7 @@ msgstr ""
 
 #: ../html/src/components/utils/HelpLink.tsx:16
 msgid "Help"
-msgstr ""
+msgstr "Aiuto"
 
 #: ../html/src/components/utils/loading/text-border.example.tsx:7
 #: ../html/src/components/utils/loading/text.example.tsx:7
@@ -2320,32 +2316,32 @@ msgstr ""
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:22
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "Canale base non trovato o non autorizzato."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:19
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:23
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "Canale figlio non trovato o non autorizzato."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
 msgid "Invalid channel id"
-msgstr ""
+msgstr "Canale id non valido"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
-msgstr ""
+msgstr "Canali richiesti"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
 msgid "none"
-msgstr ""
+msgstr "Nessuno"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
-msgstr ""
+msgstr "Questo canale richiesto"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
@@ -2357,7 +2353,7 @@ msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
-msgstr ""
+msgstr "non definito"
 
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
@@ -2549,35 +2545,35 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "È necessario riavviare affinché le modifiche alla configurazione abbiano effetto."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "An internal error has occurred. See the server logs for details."
-msgstr ""
+msgstr "Si è verificato un errore interno. Consulta i registri del server per i dettagli."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:24
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "Abilitazione del monitoraggio non riuscita. Consulta i registri del server per i dettagli."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
-msgstr ""
+msgstr "Impossibile abilitare tutti i servizi di monitoraggio. Alcuni servizi sono ancora disabilitati. Consulta i registri del server per i dettagli."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:28
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "Disattivazione del monitoraggio non riuscita. Consulta i registri del server per i dettagli."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:30
 msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
-msgstr ""
+msgstr "Impossibile disabilitare tutti i servizi di monitoraggio. Alcuni servizi sono ancora abilitati. Consulta i registri del server per i dettagli."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "Monitoraggio abilitato con successo."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "Monitoraggio disabilitato con successo."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
@@ -2597,11 +2593,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:49
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "Lo stato del monitoraggio non è cambiato."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "Si è verificato un errore. Stato di monitoraggio sconosciuto. Aggiorna la pagina."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
 msgid "Tomcat (Java JMX)"
@@ -2613,26 +2609,26 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "PostgreSQL database"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "Server self monitoring"
-msgstr ""
+msgstr "Automonitoraggio del server"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:74
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:76
 #: ../html/src/manager/appstreams/panel-appstream.tsx:22
 msgid "Enabled"
-msgstr ""
+msgstr "Abilitato"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:84
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:86
 msgid "Disabled"
-msgstr ""
+msgstr "Disabilitato"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:138
 msgid "Server Monitoring"
-msgstr ""
+msgstr "Monitoraggio server"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:140
 msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
@@ -2647,7 +2643,7 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:276
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:298
 msgid "Enable"
-msgstr ""
+msgstr "consentire"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:243
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:263
