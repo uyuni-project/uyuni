@@ -224,7 +224,8 @@ spec:
         - mountPath: /srv/spacewalk
           name: srv-spacewalk
         - mountPath: /etc/pki/trust/anchors/
-          name: ca-certs
+          name: trust-anchors
+          readOnly: true
         - mountPath: /run/salt/master
           name: run-salt-master
         - mountPath: /etc/apache2
@@ -247,20 +248,12 @@ spec:
           name: etc-sssd
         - mountPath: /etc/rhn
           name: etc-rhn
-        - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
-          name: ca-cert
-          readOnly: true
-          subPath: ca.crt
         - mountPath: /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
           name: ca-cert
           readOnly: true
           subPath: ca.crt
         - mountPath: /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
           name: ca-cert
-          readOnly: true
-          subPath: ca.crt
-        - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
-          name: db-ca-cert
           readOnly: true
           subPath: ca.crt
         - mountPath: /etc/pki/
@@ -349,8 +342,6 @@ spec:
             name: srv-susemanager
           - mountPath: /mnt/srv/spacewalk
             name: srv-spacewalk
-          - mountPath: /mnt/etc/pki/trust/anchors/
-            name: ca-certs
           - mountPath: /mnt/run/salt/master
             name: run-salt-master
           - mountPath: /mnt/etc/apache2
@@ -476,9 +467,6 @@ spec:
       - name: srv-spacewalk
         persistentVolumeClaim:
           claimName: srv-spacewalk
-      - name: ca-certs
-        persistentVolumeClaim:
-          claimName: ca-certs
       - name: run-salt-master
         persistentVolumeClaim:
           claimName: run-salt-master
@@ -516,10 +504,23 @@ spec:
           defaultMode: 420
           name: uyuni-ca
         name: ca-cert
-      - configMap:
+      - name: trust-anchors
+        projected:
           defaultMode: 420
-          name: db-ca
-        name: db-ca-cert
+          sources:
+            - configMap:
+                name: uyuni-ca
+                items:
+                  - key: ca.crt
+                    path: LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+            - configMap:
+                name: db-ca
+                items:
+                  - key: ca.crt
+                    path: DB-RHN-ORG-TRUSTED-SSL-CERT
+            - configMap:
+                name: custom-cas
+                optional: true
       - name: tls
         secret:
           defaultMode: 420
