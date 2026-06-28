@@ -74,6 +74,13 @@ SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to
 # up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
 # job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
 LONG_SCENARIO_HARD_LIMIT = ENV['LONG_SCENARIO_HARD_LIMIT'].to_i
+# Seconds the Layer 3 watchdog waits for a graceful driver.quit before escalating to SIGKILL of the
+# browser subprocess tree (a quit issued over a wedged Playwright pipe can itself block forever).
+WATCHDOG_QUIT_GRACE = ENV['WATCHDOG_QUIT_GRACE'] ? ENV['WATCHDOG_QUIT_GRACE'].to_i : 60
+# Small positive wait for "is it there right now" existence gates. capybara-playwright-driver does
+# NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
+# timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
+IMMEDIATE_WAIT = ENV['IMMEDIATE_WAIT'] ? ENV['IMMEDIATE_WAIT'].to_i : 1
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
@@ -189,7 +196,7 @@ end
 def web_session_is_active?
   return false unless capybara_session_created?
 
-  page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
+  page.has_selector?('header', wait: IMMEDIATE_WAIT) || page.has_selector?('#username-field', wait: IMMEDIATE_WAIT)
 rescue Capybara::ElementNotFound, NoMethodError
   # the page is mid-navigation and not in a usable state
   false
@@ -215,7 +222,7 @@ end
 
 # Try to get the minion details when on minion page
 def click_details_if_present
-  return unless page.has_content?('Bootstrap Minions', wait: 0) && page.has_content?('Details', wait: 0)
+  return unless page.has_content?('Bootstrap Minions', wait: IMMEDIATE_WAIT) && page.has_content?('Details', wait: IMMEDIATE_WAIT)
 
   begin
     click_button('Details')
@@ -287,7 +294,9 @@ end
 AfterStep do
   next unless capybara_session_created?
 
-  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
+  # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
+  # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
+  log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
 end
 
 Before do
@@ -296,11 +305,53 @@ Before do
   log "This scenario ran at: #{current_time}\n"
 end
 
-# Layer 3 watchdog: a hard per-scenario ceiling that survives hangs which Ruby's Timeout.timeout
-# cannot interrupt (a thread blocked inside the Playwright pipe / a Concurrent future). A monitor
-# thread tears down the browser session once the deadline passes; that makes the stuck driver call
-# raise, so the scenario fails and the run continues instead of hanging for hours. Capybara
-# recreates a fresh session for the next scenario.
+# Recursively SIGKILL every descendant process of the given PID (the Playwright Node server and the
+# whole Chromium process tree). Scoped to our own descendants so parallel workers - which run in
+# separate Ruby processes - are never affected. Killed depth-first so we enumerate grandchildren
+# before their parent can reparent them.
+def kill_descendant_processes(root_pid)
+  children = `pgrep -P #{root_pid} 2>/dev/null`.split.map(&:to_i)
+  children.each do |child_pid|
+    kill_descendant_processes(child_pid)
+    begin
+      Process.kill('KILL', child_pid)
+    rescue Errno::ESRCH, Errno::EPERM
+      # already gone, or not ours to kill
+    end
+  end
+end
+
+# Tear down a wedged browser to unblock a stuck scenario. A graceful driver.quit is tried first, but
+# bounded: a quit issued over the same wedged Playwright pipe can block forever too. If it does not
+# return within WATCHDOG_QUIT_GRACE seconds we escalate to SIGKILL of our browser subprocess tree -
+# severing the pipe makes the blocked read return, so the stuck driver call raises - then quit again
+# (now fast, the process is dead) so Capybara can build a fresh session for the next scenario.
+def unblock_wedged_browser
+  quitter =
+    Thread.new do
+      Capybara.current_session.driver.quit
+    rescue StandardError => e
+      warn "WATCHDOG: driver.quit raised: #{e.message}"
+    end
+  return if quitter.join(WATCHDOG_QUIT_GRACE)
+
+  warn "WATCHDOG: driver.quit did not return within #{WATCHDOG_QUIT_GRACE}s - " \
+       'force-killing the browser subprocess tree'
+  quitter.kill
+  kill_descendant_processes(Process.pid)
+  begin
+    Capybara.current_session.driver.quit
+  rescue StandardError => e
+    warn "WATCHDOG: post-kill driver.quit raised: #{e.message}"
+  end
+end
+
+# Layer 3 watchdog: a hard per-scenario ceiling that survives hangs which neither Ruby's
+# Timeout.timeout nor a plain driver.quit can interrupt. A thread blocked inside the Playwright pipe
+# never returns to the Ruby interpreter, so it cannot be interrupted in-process; the only reliable
+# unblock is killing the browser process at the OS level. A monitor thread enforces the deadline and
+# escalates to SIGKILL if the graceful teardown itself wedges (see unblock_wedged_browser), so the
+# scenario fails and the run continues instead of hanging for hours.
 Around do |scenario, block|
   limit =
     if scenario.source_tag_names.include?('@long_running')
@@ -320,15 +371,11 @@ Around do |scenario, block|
   watchdog =
     Thread.new do
       sleep limit
-      unless finished
-        warn "WATCHDOG: scenario '#{scenario.name}' exceeded its hard limit of #{limit}s - " \
-             'tearing down the browser session to unblock the run'
-        begin
-          Capybara.current_session.driver.quit
-        rescue StandardError => e
-          warn "WATCHDOG: failed to quit the driver: #{e.message}"
-        end
-      end
+      next if finished
+
+      warn "WATCHDOG: scenario '#{scenario.name}' exceeded its hard limit of #{limit}s - " \
+           'tearing down the browser session to unblock the run'
+      unblock_wedged_browser
     end
 
   begin

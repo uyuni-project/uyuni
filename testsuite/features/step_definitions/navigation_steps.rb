@@ -623,7 +623,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     visit Capybara.app_host
   end
   begin
-    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: 0).any?
+    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: IMMEDIATE_WAIT).any?
   rescue NoMethodError, Capybara::NotSupportedByDriverError
     # driver is not ready yet after session reset, proceed to full login
   end
@@ -1298,12 +1298,12 @@ end
 When(/^I click on the search button$/) do
   click_button_and_wait('Search', match: :first)
   # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
-  if has_text?('Could not connect to search server.', wait: 0)
+  if has_text?('Could not connect to search server.', wait: IMMEDIATE_WAIT)
     repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
-      break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
+      break unless has_text?('Could not connect to search server.', wait: IMMEDIATE_WAIT) || has_text?('No matches found', wait: IMMEDIATE_WAIT)
 
       sleep 1
-      click_button('Search', match: :first, wait: false)
+      click_button('Search', match: :first, wait: IMMEDIATE_WAIT)
     end
   end
 end
