@@ -109,7 +109,8 @@ public class ImageUploadController {
 
                     Path tempFile = null;
                     try {
-                        tempFile = Files.createTempFile("upload-", ".img");
+                        tempFile = Files.createTempFile(Paths.get(SALT_FILE_GENERATION_TEMP_PATH), "upload-", ".img");
+                        tempFile.toFile().setReadable(true, false);
                         diskFileItem.write(tempFile);
 
                     }
