@@ -117,6 +117,9 @@ public class ImageUploadController {
                         throw new RuntimeException("cannot create tmp file", eIn);
                     }
 
+                    // Ensure the base directory exists
+                    GlobalInstanceHolder.SALT_API.mkDir(baseDir, "0755");
+
                     // copy file to final location using salt
                     GlobalInstanceHolder.SALT_API.copyFile(tempFile, destination)
                         .orElseThrow(() -> new RuntimeException("Can't move the image file"));
