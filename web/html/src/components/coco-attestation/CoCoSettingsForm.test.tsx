@@ -1,6 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
-
-import { click, render, screen, selectOptions } from "utils/test-utils";
+import { click, render, screen, selectOptions, type, upload } from "utils/test-utils";
 
 import { CoCoSettingsForm } from "./CoCoSettingsForm";
 import { Settings } from "./Utils";
@@ -81,7 +79,7 @@ describe("CoCoSettingsForm", () => {
     await click(screen.getByText("Save"));
 
     expect(saveHandler).toHaveBeenCalledTimes(1);
-    await expect(saveHandler.mock.lastCall?.[0]).resolves.toEqual({
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
       enabled: true,
       environmentType: "KVM_INTEL",
       attestOnBoot: true,
@@ -169,7 +167,7 @@ describe("CoCoSettingsForm", () => {
 
     // The inputData should be unchanged
     expect(saveHandler).toHaveBeenCalledTimes(1);
-    await expect(saveHandler.mock.lastCall?.[0]).resolves.toEqual({
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
       enabled: true,
       environmentType: "KVM_IBM_Z",
       attestOnBoot: true,
@@ -204,7 +202,7 @@ describe("CoCoSettingsForm", () => {
     await click(screen.getByLabelText("Paste the data"));
 
     const hostKeyDocumentText = screen.getByLabelText("PEM certificate");
-    await paste(hostKeyDocumentText, "dummy certificate data");
+    await type(hostKeyDocumentText, "dummy certificate data");
 
     // Click on save
     await click(screen.getByText("Save"));
