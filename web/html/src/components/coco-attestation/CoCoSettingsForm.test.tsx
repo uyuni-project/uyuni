@@ -180,4 +180,45 @@ describe("CoCoSettingsForm", () => {
       },
     });
   });
+
+  test("calls the save handler with the expected additional data", async () => {
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    // Enable the attestation
+    await click(screen.getByRole("button", { name: "Enable attestation" }));
+
+    // Change the environment to IBM Z
+    selectOptions(screen.getByLabelText("Environment Type"), "KVM on IBM Z");
+
+    const secureExecutionHeaderInput = screen.getByLabelText("Secure execution header");
+    const file = new File(["dummy binary data"], "secure-extension-header.bin", { type: "application/octet-stream" });
+    upload(secureExecutionHeaderInput, file);
+
+    await click(screen.getByLabelText("Paste the data"));
+
+    const hostKeyDocumentText = screen.getByLabelText("PEM certificate");
+    paste(hostKeyDocumentText, "dummy certificate data");
+
+    // Click on save
+    await click(screen.getByText("Save"));
+
+    expect(saveHandler).toHaveBeenCalledTimes(1);
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
+      enabled: true,
+      environmentType: "KVM_IBM_Z",
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {
+        secure_execution_header: "ZHVtbXkgYmluYXJ5IGRhdGE=",
+        host_key_document: "dummy certificate data",
+      },
+    });
+  });
 });
