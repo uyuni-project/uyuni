@@ -163,6 +163,13 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 end
 
 When(/^I switch to last opened window$/) do
+  # Playwright registers new tab handles asynchronously after a target="_blank" click.
+  # Poll briefly so windows.last is the new tab, not the current one.
+  repeat_until_timeout(message: 'No new window was opened', timeout: 10) do
+    break if windows.count > 1
+
+    sleep 0.3
+  end
   switch_to_window(windows.last)
 end
 
@@ -620,7 +627,15 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     capybara_register_driver
     Capybara.reset_sessions!
   ensure
-    visit Capybara.app_host
+    begin
+      visit Capybara.app_host
+    rescue Playwright::Error => e
+      # net::ERR_ABORTED can fire when SUMA's SSE/streaming connection collides with a new
+      # page navigation. Wait briefly for connections to settle and retry once.
+      warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
+      sleep 1
+      visit Capybara.app_host
+    end
   end
   begin
     next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: IMMEDIATE_WAIT).any?
@@ -936,20 +951,18 @@ When(/^I click on the clear SSM button$/) do
 end
 
 When(/^I click on the filter button$/) do
-  find_and_wait_click('button.spacewalk-button-filter').click
+  page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   raise ScriptError, "Filter was not applied: 'filtered' text did not appear" unless check_text?('filtered', timeout: 20)
 end
 
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
+  # Use a Playwright locator instead of Capybara's find() so the button is re-resolved from the
+  # DOM on every click iteration. After the list re-renders the old DOM node is detached, but a
+  # locator picks up the new one automatically -- no StaleElementReference or DOM-detachment errors.
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless check_text?(text)
 
-    begin
-      find('button.spacewalk-button-filter').click
-      check_text?('is filtered')
-    rescue Capybara::ElementNotFound, NoMethodError
-      # page mid-navigation, retry
-    end
+    page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   end
 end
 
@@ -957,12 +970,7 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if check_text?(text)
 
-    begin
-      find('button.spacewalk-button-filter').click
-      check_text?('is filtered')
-    rescue Capybara::ElementNotFound, NoMethodError
-      # page mid-navigation, retry
-    end
+    page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   end
 end
 

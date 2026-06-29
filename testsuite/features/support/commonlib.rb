@@ -164,7 +164,21 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, **options)
+  begin
+    click_button(locator, **options)
+  rescue Playwright::Error => e
+    raise unless e.message.include?('Timeout') && locator
+
+    # Playwright's action timeout fired while waiting for the post-click navigation to settle
+    # (common on slow JSP pages like Cobbler where form processing exceeds 11 s).
+    # Retry via the native Playwright locator with an extended 60 s timeout.
+    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- retrying with 60 s timeout"
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.get_by_role('button', name: locator)
+             .or(pw_page.locator("input[type=submit][value='#{locator}']"))
+             .click(timeout: 60_000)
+    end
+  end
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
