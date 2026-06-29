@@ -1237,16 +1237,12 @@ end
 # Best practice: drop to the native Playwright page and trigger the click inside expect_download
 # with a native locator. Mixing Capybara DSL inside the download wait is a known flakiness source.
 When(/^I download the file by following "([^"]*)"$/) do |link|
-  FileUtils.mkdir_p('/tmp/downloads')
+  # capybara-playwright-driver's built-in on('download') handler auto-saves every download to
+  # Capybara.save_path (set to /tmp/downloads in env.rb). Just trigger it; the following
+  # "wait until file ... exists" step confirms completion. Manually waiting/saving here as well
+  # double-handles the same Download object and is a known flakiness/hang source.
   page.driver.with_playwright_page do |pw_page|
-    # Explicit timeout: expect_download otherwise waits on the page default, and if the click does not
-    # actually start a download the block would stall. (Note: download.save_as waits for completion
-    # with no timeout - if the body never finishes, that line can still hang; bound it server-side.)
-    download =
-      pw_page.expect_download(timeout: Capybara.default_max_wait_time * 1000) do
-        pw_page.get_by_role('link', name: link).click
-      end
-    download.save_as(File.join('/tmp/downloads', download.suggested_filename))
+    pw_page.get_by_role('link', name: link).click
   end
 end
 

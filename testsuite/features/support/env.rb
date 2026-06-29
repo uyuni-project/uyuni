@@ -135,6 +135,11 @@ Capybara.javascript_driver = :playwright
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
+# capybara-playwright-driver registers a mandatory on('download') handler that does
+# FileUtils.mkdir_p(Capybara.save_path) on EVERY download. If save_path is nil this raises a
+# TypeError inside the Playwright dispatch thread, breaking the connection so the run hangs forever
+# on the first download. Setting it both fixes that and gives the driver a directory to auto-save to.
+Capybara.save_path = ENV.fetch('DOWNLOAD_DIR', '/tmp/downloads')
 Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
@@ -294,23 +299,6 @@ AfterStep do
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
   log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
-end
-
-# DEBUG INSTRUMENTATION: log every JS dialog (alert/confirm/prompt/beforeunload) with its type,
-# message and page URL, and auto-accept beforeunload so an unhandled leave-page prompt can never hang
-# the run (the documented "page hangs forever" footgun on this driver). Capybara's accept_*/dismiss_*
-# blocks still handle the dialogs they expect; this only adds visibility plus a beforeunload safety net.
-Before do
-  page.driver.with_playwright_page do |pw_page|
-    pw_page.on('dialog') do |dialog|
-      warn "DIALOG seen: type=#{dialog.type} message=#{dialog.message.inspect} url=#{pw_page.url}"
-      dialog.accept if dialog.type == 'beforeunload'
-    rescue StandardError
-      # another handler (e.g. Capybara accept_confirm) already dealt with it
-    end
-  end
-rescue StandardError => e
-  warn "dialog logger setup skipped: #{e.message}"
 end
 
 Before do
