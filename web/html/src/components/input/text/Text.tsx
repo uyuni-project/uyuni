@@ -36,9 +36,27 @@ export const Text = (props: Props) => {
     <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
-          setValue(event.target.name, event.target.value);
+          const value = type === "file" ? (event.target.files?.[0]?.name ?? event.target.value) : event.target.value;
+          setValue(event.target.name, value);
         };
         const fieldValue = formContext.model?.[props.name] || props.defaultValue || "";
+        // File inputs cannot have their value set programmatically (browser security restriction),
+        // so we render them as uncontrolled and derive the model value from the selected file name.
+        if (type === "file") {
+          return (
+            <input
+              className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
+              type="file"
+              name={props.name}
+              id={props.name}
+              onChange={onChange}
+              disabled={props.disabled}
+              onBlur={onBlur}
+              title={props.title}
+              required={required}
+            />
+          );
+        }
         return (
           <ControlledInput
             className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
