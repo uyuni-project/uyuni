@@ -74,9 +74,6 @@ SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to
 # up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
 # job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
 LONG_SCENARIO_HARD_LIMIT = ENV['LONG_SCENARIO_HARD_LIMIT'].to_i
-# Seconds the Layer 3 watchdog waits for a graceful driver.quit before escalating to SIGKILL of the
-# browser subprocess tree (a quit issued over a wedged Playwright pipe can itself block forever).
-WATCHDOG_QUIT_GRACE = ENV['WATCHDOG_QUIT_GRACE'] ? ENV['WATCHDOG_QUIT_GRACE'].to_i : 60
 # Small positive wait for "is it there right now" existence gates. capybara-playwright-driver does
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
@@ -299,6 +296,23 @@ AfterStep do
   log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
 end
 
+# DEBUG INSTRUMENTATION: log every JS dialog (alert/confirm/prompt/beforeunload) with its type,
+# message and page URL, and auto-accept beforeunload so an unhandled leave-page prompt can never hang
+# the run (the documented "page hangs forever" footgun on this driver). Capybara's accept_*/dismiss_*
+# blocks still handle the dialogs they expect; this only adds visibility plus a beforeunload safety net.
+Before do
+  page.driver.with_playwright_page do |pw_page|
+    pw_page.on('dialog') do |dialog|
+      warn "DIALOG seen: type=#{dialog.type} message=#{dialog.message.inspect} url=#{pw_page.url}"
+      dialog.accept if dialog.type == 'beforeunload'
+    rescue StandardError
+      # another handler (e.g. Capybara accept_confirm) already dealt with it
+    end
+  end
+rescue StandardError => e
+  warn "dialog logger setup skipped: #{e.message}"
+end
+
 Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
@@ -321,37 +335,25 @@ def kill_descendant_processes(root_pid)
   end
 end
 
-# Tear down a wedged browser to unblock a stuck scenario. A graceful driver.quit is tried first, but
-# bounded: a quit issued over the same wedged Playwright pipe can block forever too. If it does not
-# return within WATCHDOG_QUIT_GRACE seconds we escalate to SIGKILL of our browser subprocess tree -
-# severing the pipe makes the blocked read return, so the stuck driver call raises - then quit again
-# (now fast, the process is dead) so Capybara can build a fresh session for the next scenario.
+# Unblock a wedged scenario by SIGKILLing our browser subprocess tree (the Playwright Node server
+# and Chromium). This is the ONLY reliable unblock: a thread blocked inside the Playwright pipe never
+# returns to the Ruby interpreter, and a graceful driver.quit issued from here would itself block on
+# the gem's connection mutex that the wedged main thread still holds (observed: the watchdog parked
+# in futex_wait, the browser never died, the run hung past its deadline). Severing the pipe makes the
+# reader hit EOF, so the main thread's pending call raises, the scenario fails, and Capybara rebuilds
+# a fresh browser for the next scenario. We deliberately do NOT call driver.quit - it can re-wedge.
 def unblock_wedged_browser
-  quitter =
-    Thread.new do
-      Capybara.current_session.driver.quit
-    rescue StandardError => e
-      warn "WATCHDOG: driver.quit raised: #{e.message}"
-    end
-  return if quitter.join(WATCHDOG_QUIT_GRACE)
-
-  warn "WATCHDOG: driver.quit did not return within #{WATCHDOG_QUIT_GRACE}s - " \
-       'force-killing the browser subprocess tree'
-  quitter.kill
   kill_descendant_processes(Process.pid)
-  begin
-    Capybara.current_session.driver.quit
-  rescue StandardError => e
-    warn "WATCHDOG: post-kill driver.quit raised: #{e.message}"
-  end
 end
 
 # Layer 3 watchdog: a hard per-scenario ceiling that survives hangs which neither Ruby's
-# Timeout.timeout nor a plain driver.quit can interrupt. A thread blocked inside the Playwright pipe
-# never returns to the Ruby interpreter, so it cannot be interrupted in-process; the only reliable
-# unblock is killing the browser process at the OS level. A monitor thread enforces the deadline and
-# escalates to SIGKILL if the graceful teardown itself wedges (see unblock_wedged_browser), so the
-# scenario fails and the run continues instead of hanging for hours.
+# Timeout.timeout nor a graceful driver.quit can interrupt. A thread blocked inside the Playwright
+# pipe never returns to the Ruby interpreter, so it cannot be interrupted in-process; the only
+# reliable unblock is killing the browser process at the OS level (see unblock_wedged_browser). A
+# monitor thread enforces the deadline and SIGKILLs the browser subtree, so the scenario fails and
+# the run continues instead of hanging for hours. NOTE: this is best-effort - the guaranteed backstop
+# is an external job-level activity timeout (Jenkins `timeout(activity: true)`), because no in-process
+# mechanism can fully guarantee interrupting a native pipe wait.
 Around do |scenario, block|
   limit =
     if scenario.source_tag_names.include?('@long_running')

@@ -1239,8 +1239,11 @@ end
 When(/^I download the file by following "([^"]*)"$/) do |link|
   FileUtils.mkdir_p('/tmp/downloads')
   page.driver.with_playwright_page do |pw_page|
+    # Explicit timeout: expect_download otherwise waits on the page default, and if the click does not
+    # actually start a download the block would stall. (Note: download.save_as waits for completion
+    # with no timeout - if the body never finishes, that line can still hang; bound it server-side.)
     download =
-      pw_page.expect_download do
+      pw_page.expect_download(timeout: Capybara.default_max_wait_time * 1000) do
         pw_page.get_by_role('link', name: link).click
       end
     download.save_as(File.join('/tmp/downloads', download.suggested_filename))
