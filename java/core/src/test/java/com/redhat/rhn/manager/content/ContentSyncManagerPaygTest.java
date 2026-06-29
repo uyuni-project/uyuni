@@ -125,7 +125,6 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
 
     @AfterEach
     public void tearDown() throws Exception {
-        super.tearDownRhnBaseTestCase();
         clearDb();
     }
 

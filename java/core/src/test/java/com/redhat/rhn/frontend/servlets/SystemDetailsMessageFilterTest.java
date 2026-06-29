@@ -22,14 +22,15 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.SaltTestCaseUtils;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
+import com.redhat.rhn.testing.SaltTestRootPath;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -37,19 +38,16 @@ import java.util.Iterator;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SystemDetailsMessageFilterTest extends MockObjectTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
+    @SaltTestRootPath
     protected Path tmpSaltRoot;
+
     private User user;
 
     @BeforeEach
     public void setUp() throws IOException {
-        tmpSaltRoot = setupSaltConfigurationForTests();
         user = UserTestUtils.createUser(this);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     @Test

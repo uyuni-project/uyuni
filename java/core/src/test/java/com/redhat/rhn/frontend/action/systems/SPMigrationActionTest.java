@@ -31,14 +31,15 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.SaltTestCaseUtils;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
+import com.redhat.rhn.testing.SaltTestRootPath;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -49,7 +50,8 @@ import java.util.TimeZone;
 /**
  * Unit test for {@link SPMigrationAction}
  */
-public class SPMigrationActionTest extends BaseTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+public class SPMigrationActionTest extends BaseTestCase {
 
     private Server server;
     private RhnMockHttpServletRequest request;
@@ -58,11 +60,12 @@ public class SPMigrationActionTest extends BaseTestCase implements SaltTestCaseU
     private SUSEProduct addonProduct;
     private RhnMockDynaActionForm form;
     private Channel baseChannel;
+
+    @SaltTestRootPath
     protected Path tmpSaltRoot;
 
     @BeforeEach
     public void setUp() throws Exception {
-        tmpSaltRoot = setupSaltConfigurationForTests();
         Context.getCurrentContext().setTimezone(TimeZone.getDefault());
         request = TestUtils.getRequestWithSessionAndUser();
         requestContext = new RequestContext(request);
@@ -82,11 +85,6 @@ public class SPMigrationActionTest extends BaseTestCase implements SaltTestCaseU
         form.set("baseChannel", baseChannel.getId());
 
         server.setInstalledProducts(Set.of(SUSEProductTestUtils.getInstalledProduct(baseProduct)));
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     @Test
