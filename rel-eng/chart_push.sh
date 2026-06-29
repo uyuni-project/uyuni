@@ -40,7 +40,7 @@ if [ -f "${SRPM_PKG_DIR}/Chart.yaml" ]; then
         CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
         mkdir ${SRPM_PKG_DIR}/tar
         tar xf $CHART_TAR -C ${SRPM_PKG_DIR}/tar
-        sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/multi-linux-manager\/${VERSION}/x86_64/" -i ${SRPM_PKG_DIR}/tar/values.yaml
+        sed -i "s|^repository: .\+$|repository: registry.suse.com/suse/multi-linux-manager/${VERSION}/x86_64|" ${SRPM_PKG_DIR}/tar/values.yaml
         tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar --sort=name --mtime="@0" --owner=0 --group=0 --numeric-owner --pax-option="delete=atime,delete=ctime" .
         rm -rf ${SRPM_PKG_DIR}/tar
         NAME="suse\/multi-linux-manager\/${VERSION}\/${NAME}"
