@@ -34,6 +34,7 @@ import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,8 +87,19 @@ public class ImageUploadController {
 
             try {
                 items.stream().forEach(item -> {
-                    if (ImageInfoFactory.lookupDeltaImageFile(user.getOrg(), item.getName()).isPresent() ||
-                        ImageInfoFactory.lookupImageFile(user.getOrg(), item.getName()).isPresent()) {
+                    String submittedName = item.getName();
+                    String safeName = FilenameUtils.getName(submittedName);
+                    if (safeName == null || safeName.trim().isBlank() || !safeName.equals(submittedName)) {
+                        throw new IllegalArgumentException("Invalid filename");
+                    }
+                    Path baseDir = Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()))
+                            .toAbsolutePath().normalize();
+                    Path destination = baseDir.resolve(safeName).normalize();
+                    if (!destination.startsWith(baseDir)) {
+                        throw new IllegalArgumentException("Invalid image destination");
+                    }
+                    if (ImageInfoFactory.lookupDeltaImageFile(user.getOrg(), safeName).isPresent() ||
+                        ImageInfoFactory.lookupImageFile(user.getOrg(), safeName).isPresent()) {
                         throw new EntityExistsException("Image file already exists");
                     }
                     DiskFileItem diskFileItem = (DiskFileItem) item;
@@ -106,8 +118,7 @@ public class ImageUploadController {
                     }
 
                     // copy file to final location using salt
-                    GlobalInstanceHolder.SALT_API.copyFile(tempFile,
-                        Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName()))
+                    GlobalInstanceHolder.SALT_API.copyFile(tempFile, destination)
                         .orElseThrow(() -> new RuntimeException("Can't move the image file"));
                 });
             }
