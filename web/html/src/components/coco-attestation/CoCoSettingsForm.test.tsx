@@ -199,12 +199,12 @@ describe("CoCoSettingsForm", () => {
 
     const secureExecutionHeaderInput = screen.getByLabelText("Secure execution header");
     const file = new File(["dummy binary data"], "secure-extension-header.bin", { type: "application/octet-stream" });
-    upload(secureExecutionHeaderInput, file);
+    await upload(secureExecutionHeaderInput, file);
 
     await click(screen.getByLabelText("Paste the data"));
 
     const hostKeyDocumentText = screen.getByLabelText("PEM certificate");
-    paste(hostKeyDocumentText, "dummy certificate data");
+    await paste(hostKeyDocumentText, "dummy certificate data");
 
     // Click on save
     await click(screen.getByText("Save"));

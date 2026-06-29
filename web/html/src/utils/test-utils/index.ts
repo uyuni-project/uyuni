@@ -24,16 +24,32 @@ export const click = async (...args: Parameters<typeof userEvent.click>) => {
   });
 };
 
+export const upload = async (...args: Parameters<typeof userEvent.upload>) => {
+  await act(async () => {
+    await new Promise<void>((resolve) => {
+      userEvent.upload(...args);
+      asyncIdleCallback(() => resolve(), 0);
+    });
+  });
+};
+
+export const paste = async (...args: Parameters<typeof userEvent.paste>) => {
+  await act(async () => {
+    await new Promise<void>((resolve) => {
+      userEvent.paste(...args);
+      asyncIdleCallback(() => resolve(), 0);
+    });
+  });
+};
+
 // @testing-library/user-event has messed up exports, just manually reexport everything
 export const {
   dblClick,
-  upload,
   clear,
   selectOptions,
   deselectOptions,
   tab,
   hover,
   unhover,
-  paste,
   // `type` is intentionally omitted here, see `./forms.ts`
 } = userEvent;
