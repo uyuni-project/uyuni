@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.reflect.TypeToken;
@@ -54,6 +55,16 @@ import spark.Spark;
 public class ImageUploadController {
 
     private static final Logger LOG = LogManager.getLogger(ImageUploadController.class);
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private static String tempPath = SALT_FILE_GENERATION_TEMP_PATH;
+
+    static void setSaltApi(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
+
+    static void setTempPath(String tempPathIn) {
+        tempPath = tempPathIn;
+    }
 
     private ImageUploadController() { }
 
@@ -79,7 +90,7 @@ public class ImageUploadController {
         try {
             DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
                     .setBufferSize(0)
-                    .setPath(SALT_FILE_GENERATION_TEMP_PATH)
+                    .setPath(Paths.get(tempPath))
                     .get();
 
             List<? extends FileItem> items =
@@ -109,8 +120,10 @@ public class ImageUploadController {
 
                     Path tempFile = null;
                     try {
-                        tempFile = Files.createTempFile(Paths.get(SALT_FILE_GENERATION_TEMP_PATH), "upload-", ".img");
-                        tempFile.toFile().setReadable(true, false);
+                        tempFile = Files.createTempFile(Paths.get(tempPath), "upload-", ".img");
+                        if (!tempFile.toFile().setReadable(true, false)) {
+                            throw new IOException("Cannot set temp file as readable");
+                        }
                         diskFileItem.write(tempFile);
 
                     }
@@ -119,10 +132,10 @@ public class ImageUploadController {
                     }
 
                     // Ensure the base directory exists
-                    GlobalInstanceHolder.SALT_API.mkDir(baseDir, "0755");
+                    saltApi.mkDir(baseDir, "0755");
 
                     // copy file to final location using salt
-                    GlobalInstanceHolder.SALT_API.copyFile(tempFile, destination)
+                    saltApi.copyFile(tempFile, destination)
                         .orElseThrow(() -> new RuntimeException("Can't move the image file"));
                 });
             }

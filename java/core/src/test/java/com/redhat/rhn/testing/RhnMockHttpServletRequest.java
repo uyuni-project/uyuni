@@ -612,6 +612,10 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         contentType = s;
     }
 
+    public void setContentLength(int len) {
+        contentLength = len;
+    }
+
     @Override
     public ServletInputStream getInputStream() throws IOException {
         return inputStream;
