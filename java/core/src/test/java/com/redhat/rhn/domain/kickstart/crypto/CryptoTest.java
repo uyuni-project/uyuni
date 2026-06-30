@@ -21,10 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -34,6 +36,10 @@ import java.nio.charset.StandardCharsets;
  */
 public class CryptoTest extends BaseTestCaseWithUser {
 
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     @Test
     public void testCryptoKey() {

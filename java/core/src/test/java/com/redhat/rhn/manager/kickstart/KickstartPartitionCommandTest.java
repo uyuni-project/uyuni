@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * KickstartPartitionCommandTest - test for KickstartDetailsCommand
  */
-public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
+public class KickstartPartitionCommandTest extends KickstartBaseTest {
 
 
     @Test

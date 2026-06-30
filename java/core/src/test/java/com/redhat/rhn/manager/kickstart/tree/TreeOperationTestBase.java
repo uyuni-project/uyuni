@@ -17,14 +17,22 @@ package com.redhat.rhn.manager.kickstart.tree;
 
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Base class for Tree operations tests
  */
 public abstract class TreeOperationTestBase extends BaseTestCaseWithUser {
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     protected void setTestTreeParams(BaseTreeEditOperation cmd) throws Exception {
         cmd.setInstallType(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_7"));

@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
@@ -69,6 +70,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         cobblerMock = new MockConnection("http://localhost", "token");
 

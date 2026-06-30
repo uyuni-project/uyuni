@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
@@ -61,7 +62,9 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        KickstartTestUtils.setupTestConfiguration(user);
     }
+
     @Test
     public void testKeyGeneration() throws Exception {
 
