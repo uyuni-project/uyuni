@@ -82,8 +82,8 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
         snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
-        assertContains(list, snap);
-        assertContains(snap.getGroups(), grp);
+        TestUtils.assertContains(list, snap);
+        TestUtils.assertContains(snap.getGroups(), grp);
 
     }
 
@@ -101,7 +101,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         snap = TestUtils.saveAndFlush(snap);
         Set<PackageNevra> list = handler.listSnapshotPackages(admin,
                 snap.getId().intValue());
-         assertContains(list, packN);
+         TestUtils.assertContains(list, packN);
     }
 
     @Test

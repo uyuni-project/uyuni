@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,7 @@ public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTes
         ProvisionVirtualInstanceCommand cmd = new
             ProvisionVirtualInstanceCommand(server.getId(), this.ksdata.getId(), user,
                     new Date(), "localhost");
-        assertContains(cmd.getKickstartPackageNames(), "salt");
+        TestUtils.assertContains(cmd.getKickstartPackageNames(), "salt");
     }
 
 }

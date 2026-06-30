@@ -86,20 +86,20 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 "/tmp/kickstart/snippets");
         Config.get().setString(ConfigDefaults.MOUNT_POINT,
                 "/tmp/kickstart/mount_point");
-        createDirIfNotExists(new File("/tmp/kickstart/mount_point"));
+        TestUtils.createDirIfNotExists(new File("/tmp/kickstart/mount_point"));
 
         Config.get().setString(ConfigDefaults.KICKSTART_MOUNT_POINT,
                 "/tmp/kickstart/kickstart_mount_point");
-        createDirIfNotExists(new File("/tmp/kickstart/kickstart_mount_point"));
+        TestUtils.createDirIfNotExists(new File("/tmp/kickstart/kickstart_mount_point"));
 
         Config.get().setString(CobblerConnection.class.getName(),
                 MockConnection.class.getName());
 
-        createDirIfNotExists(new File(ConfigDefaults.get()
+        TestUtils.createDirIfNotExists(new File(ConfigDefaults.get()
                 .getKickstartConfigDir() + File.separator + KickstartData.WIZARD_DIR));
-        createDirIfNotExists(new File(ConfigDefaults.get()
+        TestUtils.createDirIfNotExists(new File(ConfigDefaults.get()
                 .getKickstartConfigDir() + File.separator + KickstartData.RAW_DIR));
-        createDirIfNotExists(CobblerSnippet.getSpacewalkSnippetsDir());
+        TestUtils.createDirIfNotExists(CobblerSnippet.getSpacewalkSnippetsDir());
 
         KickstartableTreeTest.createKickstartTreeItems(u);
 

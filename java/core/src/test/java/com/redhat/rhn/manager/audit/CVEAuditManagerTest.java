@@ -57,11 +57,13 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,7 +80,8 @@ import java.util.Set;
  * Unit tests for {@link CVEAuditManager}.
  *
  */
-public class CVEAuditManagerTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class CVEAuditManagerTest extends BaseTestCase {
 
     /**
      * Test insertion and deletion for table suseCVEServerChannel:

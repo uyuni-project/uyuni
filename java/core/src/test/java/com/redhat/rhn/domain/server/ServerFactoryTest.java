@@ -965,8 +965,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = ServerFactory.listSnapshots(server2.getOrg(),
                 server2, null, null);
-        assertContains(list, snap);
-        assertContains(snap.getGroups(), grp);
+        TestUtils.assertContains(list, snap);
+        TestUtils.assertContains(snap.getGroups(), grp);
     }
 
     @Test
@@ -1012,7 +1012,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         link = TestUtils.saveAndFlush(link);
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
-        assertContains(tags, tag);
+        TestUtils.assertContains(tags, tag);
     }
 
     @Test
@@ -1239,10 +1239,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
 
         errataName = out.get(srv.getId()).get(ce.getId());
-        assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
     }
 
     @Test
@@ -1273,10 +1273,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
 
         errataName = out.get(srv.getId()).get(ce.getId());
-        assertContains(errataName,
+        TestUtils.assertContains(errataName,
                 new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false, false));
     }
 

@@ -51,7 +51,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
         mailer.verify();
-        assertContains(mailer.getBody(), "minion1");
+        TestUtils.assertContains(mailer.getBody(), "minion1");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
         mailer.verify();
-        assertContains(mailer.getBody(), "minion1");
+        TestUtils.assertContains(mailer.getBody(), "minion1");
     }
 
     @Test

@@ -433,7 +433,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
         catch (ValidationException exc) {
             assertEquals(exc.getErrorCode(), 2800);
-            assertContains(
+            TestUtils.assertContains(
                     exc.getMessage(),
                     "Unable to delete channel. The channel you have tried to delete has been cloned. " +
                     "You must delete the clones before you can delete this channel.");

@@ -612,7 +612,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                     "Exception expected and no success");
         }
         catch (IllegalArgumentException e) {
-            assertContains(e.getMessage(), "Illegal base64 character");
+            TestUtils.assertContains(e.getMessage(), "Illegal base64 character");
         }
         catch (Exception e) {
             fail("Wrong exception thrown");

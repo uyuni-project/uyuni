@@ -428,8 +428,8 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         List<ConfigChannel> assignedChannels2 = handler.listAssignedConfigChannels(admin, group2.getName());
 
-        assertContains(assignedChannels1, cc1);
-        assertContains(assignedChannels2, cc2);
+        TestUtils.assertContains(assignedChannels1, cc1);
+        TestUtils.assertContains(assignedChannels2, cc2);
     }
 
     @Test
@@ -456,8 +456,8 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
         List<ConfigChannel> assignedChannels2 = handler.listAssignedConfigChannels(admin, group2.getName());
 
-        assertContains(assignedChannels1, cc1);
-        assertContains(assignedChannels1, cc2);
+        TestUtils.assertContains(assignedChannels1, cc1);
+        TestUtils.assertContains(assignedChannels1, cc2);
         assertTrue(assignedChannels2.isEmpty(), "Unexpected assigned channels");
     }
 
@@ -483,12 +483,12 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.subscribeConfigChannel(admin, group1.getName(), Arrays.asList(ccLabel1, ccLabel2));
         List<ConfigChannel> assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
 
-        assertContains(assignedChannels1, cc1);
-        assertContains(assignedChannels1, cc2);
+        TestUtils.assertContains(assignedChannels1, cc1);
+        TestUtils.assertContains(assignedChannels1, cc2);
 
         handler.unsubscribeConfigChannel(admin, group1.getName(), List.of(ccLabel1));
         assignedChannels1 = handler.listAssignedConfigChannels(admin, group1.getName());
-        assertContains(assignedChannels1, cc2);
+        TestUtils.assertContains(assignedChannels1, cc2);
         assertFalse(assignedChannels1.contains(cc1), "Unexpected channel found");
     }
 

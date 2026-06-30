@@ -263,7 +263,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     public void testMigrateBootstrapServer() {
         User origOrgAdmin = origOrgAdmins.iterator().next();
         Server bootstrapServer = ServerFactoryTest.createUnentitledTestServer(origOrgAdmin,
-            true, ServerFactoryTest.TYPE_SERVER_NORMAL, getNow());
+            true, ServerFactoryTest.TYPE_SERVER_NORMAL, TestUtils.getNow());
         systemEntitlementManager.addEntitlementToServer(bootstrapServer, EntitlementManager.BOOTSTRAP);
 
         assertEquals(1, bootstrapServer.getEntitlements().size());

@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,7 +116,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         assertEquals(singletonList(new Module("postgresql", "10")), modules);
 
         List<ContentFilter> filters = result.getFilters();
-        assertNotEmpty(filters);
+        TestUtils.assertNotEmpty(filters);
         // The original module filter must be absent
         assertTrue(filters.stream().noneMatch(filter1::equals));
         // The package filter must be unmodified
@@ -252,7 +253,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         ContentFilter filter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
-        assertNotEmpty(result);
+        TestUtils.assertNotEmpty(result);
         // Since "perl" is not served as a modular package, there shouldn't be any deny filters for name "perl"
         assertTrue(result.stream().noneMatch(f -> isDenyNameMatches(f, "perl")));
         // No override should exist for perl-5.26
@@ -273,7 +274,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
-        assertNotEmpty(result);
+        TestUtils.assertNotEmpty(result);
         // Filter out every "perl" in all sources (including perl-5.26)
         assertTrue(result.stream().anyMatch(f -> isDenyNameMatches(f, "perl")));
         // Override perl-5.24 to be in the target
