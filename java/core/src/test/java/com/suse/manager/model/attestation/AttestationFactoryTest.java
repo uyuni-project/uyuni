@@ -156,7 +156,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
         assertNotNull(reports);
-        assertNotEmpty(reports);
+        TestUtils.assertNotEmpty(reports);
         reports.forEach(r -> assertEquals(report, r));
     }
 
@@ -170,13 +170,13 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationReport> optReport = attestationFactory.lookupReportById(reportId);
         List<CoCoAttestationResult> results = optReport.orElseThrow().getResults();
-        assertNotEmpty(results);
+        TestUtils.assertNotEmpty(results);
         List<CoCoResultType> rTypeList = results.stream()
                 .map(CoCoAttestationResult::getResultType)
                 .collect(Collectors.toList());
-        assertContains(rTypeList, CoCoResultType.SEV_SNP);
-        assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
-        assertNotContains(rTypeList, CoCoResultType.NONE);
+        TestUtils.assertContains(rTypeList, CoCoResultType.SEV_SNP);
+        TestUtils.assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
+        TestUtils.assertNotContains(rTypeList, CoCoResultType.NONE);
 
         assertTrue(results.stream()
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))

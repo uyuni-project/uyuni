@@ -29,10 +29,12 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Date;
 import java.util.function.Consumer;
@@ -40,7 +42,8 @@ import java.util.function.Consumer;
 /**
  * ServerActionTest
  */
-public class ServerActionTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class ServerActionTest extends BaseTestCase {
 
     @Test
     public void testFail() {

@@ -512,15 +512,15 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         List<EnvironmentTarget> targetsDev = envdev.getTargets();
         assertEquals(2, targetsDev.size());
-        assertContains(targetsDev, target);
-        assertContains(targetsDev, target2);
+        TestUtils.assertContains(targetsDev, target);
+        TestUtils.assertContains(targetsDev, target2);
 
         Channel channel3 = ChannelTestUtils.createBaseChannel(user);
         SoftwareEnvironmentTarget target3 = new SoftwareEnvironmentTarget(envtest, channel3);
         envtest.addTarget(target3);
         List<EnvironmentTarget> targetsTest = envtest.getTargets();
         assertEquals(1, targetsTest.size());
-        assertContains(targetsTest, target3);
+        TestUtils.assertContains(targetsTest, target3);
     }
 
     /**

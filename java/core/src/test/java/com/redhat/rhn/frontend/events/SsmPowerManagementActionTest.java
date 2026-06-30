@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateComman
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.MockConnection;
@@ -78,7 +79,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
             String cobblerName = CobblerSystemCreateCommand
                 .getCobblerSystemRecordName(server.getName(), server.getOrgId());
             SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
-            assertContains(MockConnection.getPowerCommands(), "power_system on " +
+            TestUtils.assertContains(MockConnection.getPowerCommands(), "power_system on " +
                 systemRecord.getId());
         }
     }

@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +42,7 @@ import java.util.List;
  * @author Jason Dobies
  */
 @Disabled
-public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
+public class SsmOperationDataPopulatorTest extends BaseTestCase {
 
     @AfterEach
     public void tearDown() {

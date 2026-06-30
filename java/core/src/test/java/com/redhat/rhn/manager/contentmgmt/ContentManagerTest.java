@@ -828,8 +828,8 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, tgts.size());
         Set<String> tgtLabels = tgts.stream()
                 .map(tgt -> tgt.asSoftwareTarget().get().getChannel().getLabel()).collect(toSet());
-        assertContains(tgtLabels, "cplabel-fst-" + channel.getLabel());
-        assertContains(tgtLabels, "cplabel-fst-" + newChannel.getLabel());
+        TestUtils.assertContains(tgtLabels, "cplabel-fst-" + channel.getLabel());
+        TestUtils.assertContains(tgtLabels, "cplabel-fst-" + newChannel.getLabel());
         Channel base = tgts.stream()
                 .filter(t -> t.asSoftwareTarget().get().getChannel()
                         .getLabel().equals("cplabel-fst-" + channel.getLabel()))

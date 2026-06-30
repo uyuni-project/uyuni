@@ -15,8 +15,6 @@
 
 package org.cobbler;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -113,7 +111,7 @@ public class ImageTest {
     public void testList() {
         List<Image> result = Image.list(connection);
         Assertions.assertEquals(1, result.size());
-        assertContains(result, image);
+        TestUtils.assertContains(result, image);
     }
 
     /**

@@ -196,8 +196,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                 .map(p -> (Long) p.get("id"))
                 .collect(Collectors.toList());
         assertEquals(2, ids.size());
-        assertContains(ids, pack4.getId());
-        assertContains(ids, pack5.getId());
+        TestUtils.assertContains(ids, pack4.getId());
+        TestUtils.assertContains(ids, pack5.getId());
     }
 
     /**
@@ -410,8 +410,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         // check that packages and errata have been aligned
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
-        assertContains(errata.getChannels(), srcChannel);
-        assertContains(errata.getChannels(), tgtChannel);
+        TestUtils.assertContains(errata.getChannels(), srcChannel);
+        TestUtils.assertContains(errata.getChannels(), tgtChannel);
     }
 
     /**
@@ -476,8 +476,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         assertEquals(2, tgtChan.getErrataCount());
         tgtChan = TestUtils.reload(tgtChan);
-        assertContains(tgtChan.getErratas(), e1);
-        assertContains(tgtChan.getErratas(), e5);
+        TestUtils.assertContains(tgtChan.getErratas(), e1);
+        TestUtils.assertContains(tgtChan.getErratas(), e5);
     }
 
     // nothing exciting, allow filter should have no effect
@@ -595,7 +595,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         assertEquals(1, tgtChannel.getPackageCount());
         assertEquals(0, tgtChannel.getErrataCount());
-        assertContains(tgtChannel.getPackages(), olderPkg);
+        TestUtils.assertContains(tgtChannel.getPackages(), olderPkg);
     }
 
     /**

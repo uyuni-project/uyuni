@@ -161,18 +161,18 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
             .collect(Collectors.toSet());
 
         assertEquals(repoNamesSet.size(), 12);
-        assertContains(repoNamesSet, "sles-12.1-Pool");
-        assertContains(repoNamesSet, "sles-12.1-Updates");
-        assertContains(repoNamesSet, "sles-12.1-debuginfo");
-        assertContains(repoNamesSet, "sles-15.1-Pool");
-        assertContains(repoNamesSet, "sles-15.1-Updates");
-        assertContains(repoNamesSet, "sles-15.1-debuginfo");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.1-Pool");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.1-Updates");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.1-debuginfo");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.5-Pool");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.5-Updates");
-        assertContains(repoNamesSet, "sle-module-basesystem-15.5-debuginfo");
+        TestUtils.assertContains(repoNamesSet, "sles-12.1-Pool");
+        TestUtils.assertContains(repoNamesSet, "sles-12.1-Updates");
+        TestUtils.assertContains(repoNamesSet, "sles-12.1-debuginfo");
+        TestUtils.assertContains(repoNamesSet, "sles-15.1-Pool");
+        TestUtils.assertContains(repoNamesSet, "sles-15.1-Updates");
+        TestUtils.assertContains(repoNamesSet, "sles-15.1-debuginfo");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.1-Pool");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.1-Updates");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.1-debuginfo");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.5-Pool");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.5-Updates");
+        TestUtils.assertContains(repoNamesSet, "sle-module-basesystem-15.5-debuginfo");
 
         assertNotNull(data.getRmtHosts());
         assertEquals(paygInstanceInfo.getRmtHost().get("ip"), data.getRmtHosts().getIp());

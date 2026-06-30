@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.content;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
@@ -191,25 +190,25 @@ public class ContentSyncManagerPaygTest extends BaseTestCase {
                                         .collect(Collectors.toSet());
 
             assertAll("Repositories with auth",
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Server-4.2-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Server-4.2-Updates")),
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Server-4.3-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Server-4.3-Updates")),
-                () -> assertTrue(authRepos.contains("SLE-Module-Basesystem15-SP3-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Module-Basesystem15-SP4-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools12-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools12-Updates")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools15-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools15-Updates")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools-For-Micro5-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Manager-Tools-For-Micro5-Updates")),
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Proxy-4.3-Pool")),
-                () -> assertTrue(authRepos.contains("SLE-Product-SUSE-Manager-Proxy-4.3-Updates")),
-                () -> assertTrue(authRepos.contains("RES-7-SUSE-Manager-Tools")),
-                () -> assertTrue(authRepos.contains("RES8-Manager-Tools-Pool")),
-                () -> assertTrue(authRepos.contains("RES8-Manager-Tools-Updates")),
-                () -> assertTrue(authRepos.contains("EL9-Manager-Tools-Pool")),
-                () -> assertTrue(authRepos.contains("EL9-Manager-Tools-Updates"))
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.2-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.2-Updates"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.3-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Server-4.3-Updates"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Module-Basesystem15-SP3-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Module-Basesystem15-SP4-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools12-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools12-Updates"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools15-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools15-Updates"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools-For-Micro5-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Manager-Tools-For-Micro5-Updates"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Proxy-4.3-Pool"),
+                () -> TestUtils.assertContains(authRepos, "SLE-Product-SUSE-Manager-Proxy-4.3-Updates"),
+                () -> TestUtils.assertContains(authRepos, "RES-7-SUSE-Manager-Tools"),
+                () -> TestUtils.assertContains(authRepos, "RES8-Manager-Tools-Pool"),
+                () -> TestUtils.assertContains(authRepos, "RES8-Manager-Tools-Updates"),
+                () -> TestUtils.assertContains(authRepos, "EL9-Manager-Tools-Pool"),
+                () -> TestUtils.assertContains(authRepos, "EL9-Manager-Tools-Updates")
             );
 
             Set<String> noAuthRepos = auth.stream()
@@ -219,15 +218,15 @@ public class ContentSyncManagerPaygTest extends BaseTestCase {
                                           .collect(Collectors.toSet());
 
             assertAll("Repositories without auth",
-                () -> assertTrue(noAuthRepos.contains("rockylinux-8")),
-                () -> assertTrue(noAuthRepos.contains("rockylinux-9")),
-                () -> assertTrue(noAuthRepos.contains("oraclelinux7")),
-                () -> assertTrue(noAuthRepos.contains("oraclelinux8")),
-                () -> assertTrue(noAuthRepos.contains("oraclelinux9")),
-                () -> assertTrue(noAuthRepos.contains("almalinux8")),
-                () -> assertTrue(noAuthRepos.contains("almalinux9")),
-                () -> assertTrue(noAuthRepos.contains("debian-11-pool")),
-                () -> assertTrue(noAuthRepos.contains("ubuntu-2204-amd64-main"))
+                () -> TestUtils.assertContains(noAuthRepos, "rockylinux-8"),
+                () -> TestUtils.assertContains(noAuthRepos, "rockylinux-9"),
+                () -> TestUtils.assertContains(noAuthRepos, "oraclelinux7"),
+                () -> TestUtils.assertContains(noAuthRepos, "oraclelinux8"),
+                () -> TestUtils.assertContains(noAuthRepos, "oraclelinux9"),
+                () -> TestUtils.assertContains(noAuthRepos, "almalinux8"),
+                () -> TestUtils.assertContains(noAuthRepos, "almalinux9"),
+                () -> TestUtils.assertContains(noAuthRepos, "debian-11-pool"),
+                () -> TestUtils.assertContains(noAuthRepos, "ubuntu-2204-amd64-main")
             );
         }
         finally {

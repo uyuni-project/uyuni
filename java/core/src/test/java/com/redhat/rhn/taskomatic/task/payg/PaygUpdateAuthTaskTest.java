@@ -11,7 +11,6 @@
 
 package com.redhat.rhn.taskomatic.task.payg;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -303,7 +302,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }});
         paygUpdateAuthTask.execute(null);
         paygData = TestUtils.reload(paygData);
-        assertContains(paygData.getErrorMessage(), "My JSchException exception");
+        TestUtils.assertContains(paygData.getErrorMessage(), "My JSchException exception");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
     }
 
@@ -327,14 +326,14 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         // First Call with error
         paygUpdateAuthTask.execute(null);
         paygData = TestUtils.reload(paygData);
-        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        TestUtils.assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
 
         // Second Call with error
         paygUpdateAuthTask.execute(null);
         paygData = TestUtils.reload(paygData);
-        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        TestUtils.assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
         assertEquals(NotificationType.PAYG_AUTHENTICATION_UPDATE_FAILED,
@@ -375,7 +374,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygUpdateAuthTask.execute(null);
         paygData = TestUtils.reload(paygData);
 
-        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        TestUtils.assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
         creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
@@ -388,7 +387,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygUpdateAuthTask.execute(null);
         paygData = TestUtils.reload(paygData);
 
-        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        TestUtils.assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
         assertEquals(NotificationType.PAYG_AUTHENTICATION_UPDATE_FAILED,
