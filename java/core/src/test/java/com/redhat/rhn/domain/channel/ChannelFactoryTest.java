@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -316,7 +316,7 @@ public class ChannelFactoryTest extends BaseTestCase {
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.createUser(this);
         // Setup test config since kickstartable trees are required
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
 
         List<Channel> channels = ChannelFactory.getKickstartableChannels(user.getOrg());
         assertNotNull(channels);

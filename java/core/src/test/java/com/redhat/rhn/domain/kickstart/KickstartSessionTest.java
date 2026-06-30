@@ -27,18 +27,21 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Date;
 
 /**
  * KickstartSessionTest
  */
-public class KickstartSessionTest extends BaseTestCaseWithUser {
+@ExtendWith(SaltTestCaseExtension.class)
+public class KickstartSessionTest extends KickstartBaseTest {
     private KickstartData k;
     private KickstartSession ksession;
     private Server s;

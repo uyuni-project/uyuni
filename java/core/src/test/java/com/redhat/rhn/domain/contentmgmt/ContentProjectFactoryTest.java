@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -62,6 +63,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         contentManager = new ContentManager();
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
     @Test

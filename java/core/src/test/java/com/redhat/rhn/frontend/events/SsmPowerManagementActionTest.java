@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.events;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.action.ssm.PowerManagementConfigurationActionTest;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -52,6 +53,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         servers = PowerManagementConfigurationActionTest
             .setUpTestProvisionableSsmServers(user);

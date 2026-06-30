@@ -35,17 +35,20 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Map;
 
-public class KickstartHelperTest extends BaseTestCaseWithUser {
+@ExtendWith(SaltTestCaseExtension.class)
+public class KickstartHelperTest extends KickstartBaseTest {
 
     private KickstartHelper helper;
     private KickstartData ksdata;

@@ -18,10 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.access.AccessGroupFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippetTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,6 +33,11 @@ import java.util.List;
  * CobblerSnippetListerTest
  */
 public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     @Test
     public void testList() {

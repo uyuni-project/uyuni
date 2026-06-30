@@ -29,8 +29,9 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.KickstartBaseTest;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -38,6 +39,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.cobbler.Distro;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.util.Arrays;
@@ -51,7 +53,8 @@ import java.util.Optional;
 /**
  * KickstartableTreeTest
  */
-public class KickstartableTreeTest extends BaseTestCaseWithUser {
+@ExtendWith(SaltTestCaseExtension.class)
+public class KickstartableTreeTest extends KickstartBaseTest {
 
     public static final String TEST_BOOT_PATH = "test-boot-image-i186";
     public static final File KICKSTART_TREE_PATH = new File("/tmp/kickstart/images");

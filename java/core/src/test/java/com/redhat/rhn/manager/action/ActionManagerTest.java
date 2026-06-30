@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -163,6 +164,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
 
@@ -720,7 +722,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             .getServer();
         ActionFactory.save(parentAction);
 
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
         ksSession = TestUtils.saveAndFlush(ksSession);
@@ -973,7 +975,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testScheduleKickstart() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData testKickstartData
             = KickstartDataTest.createKickstartWithChannel(user.getOrg());
 
@@ -1002,7 +1004,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData testKickstartData
             = KickstartDataTest.createKickstartWithChannel(user.getOrg());
 
