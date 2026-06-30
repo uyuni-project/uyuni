@@ -2,6 +2,11 @@ import { type ReactNode, Component } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton } from "components/buttons";
+import {
+  type CoCoScheduleRequest,
+  COCO_ATTESTATION_ACTION_TYPE,
+  scheduleSsmCoCoAttestation,
+} from "components/coco-attestation/coco-api";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -9,7 +14,6 @@ import { Column } from "components/table/Column";
 import { TargetSystems } from "components/target-systems";
 
 import { LocalizedMoment, localizedMoment } from "utils/datetime";
-import Network from "utils/network";
 
 import { CoCoSystemData } from "./types";
 
@@ -51,14 +55,14 @@ class CoCoSSMSchedule extends Component<Props, State> {
   };
 
   onSchedule = () => {
-    const request = {
-      serverIds: this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      actionType: "coco.attestation",
+    const serverIds = this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id);
+    const request: CoCoScheduleRequest = {
+      actionType: COCO_ATTESTATION_ACTION_TYPE,
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
     };
 
-    Network.post(`/rhn/manager/api/systems/coco/scheduleAction`, request)
+    return scheduleSsmCoCoAttestation(serverIds, request)
       .then((data) => {
         // Notify the successful outcome
         const msg = MessagesUtils.info(
@@ -100,7 +104,7 @@ class CoCoSSMSchedule extends Component<Props, State> {
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
             systemIds={this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id)}
-            actionType="coco.attestation"
+            actionType={COCO_ATTESTATION_ACTION_TYPE}
           />
 
           <div className="row">

@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 
+import {
+  type SingleCoCoSettingsResponse,
+  getSystemCoCoSettings,
+  saveSystemCoCoSettings,
+} from "components/coco-attestation/coco-api";
 import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Loading } from "components/utils";
 
-import Network from "utils/network";
+import Network, { type JsonResult } from "utils/network";
 
 interface Props {
   serverId: number;
@@ -22,7 +27,7 @@ export const CoCoSettings: React.FC<Props> = ({
   const emptySettings: Settings = useMemo(
     () => ({
       enabled: false,
-      environmentType: Object.values(availableEnvironmentTypes)[0],
+      environmentType: Object.keys(availableEnvironmentTypes)[0],
       attestOnBoot: false,
       attestOnSchedule: false,
       inputData: {},
@@ -41,7 +46,7 @@ export const CoCoSettings: React.FC<Props> = ({
     setSettings(emptySettings);
   }
 
-  function handleResult(result: any): void {
+  function handleResult(result: JsonResult<SingleCoCoSettingsResponse>): void {
     if (!result.success) {
       setMessages(MessagesUtils.error(result.messages));
       setLoading(false);
@@ -58,15 +63,15 @@ export const CoCoSettings: React.FC<Props> = ({
     }
   }
 
-  function onSave(settingsPromise: Promise<Settings>): void {
-    settingsPromise
-      .then((data) => Network.post(`/rhn/manager/api/systems/${serverId}/details/coco/settings`, data))
+  function onSave(settingsPromise: Promise<Settings>): Promise<void> {
+    return settingsPromise
+      .then((data) => saveSystemCoCoSettings(serverId, data))
       .then(handleResult, handleRequestError);
   }
 
   useEffect(() => {
     setLoading(true);
-    Network.get(`/rhn/manager/api/systems/${serverId}/details/coco/settings`).then(handleResult, handleRequestError);
+    getSystemCoCoSettings(serverId).then(handleResult, handleRequestError);
   }, [serverId]);
 
   if (loading) {

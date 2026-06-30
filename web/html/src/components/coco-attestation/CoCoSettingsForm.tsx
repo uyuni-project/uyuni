@@ -15,7 +15,7 @@ interface Props {
   initialData: Settings;
   availableEnvironmentTypes: Record<string, string>;
   showOnScheduleOption?: boolean;
-  saveHandler: (data: Promise<Settings>) => void;
+  saveHandler: (data: Promise<Settings>) => Promise<unknown>;
 }
 
 interface FormModel {
@@ -85,7 +85,8 @@ export const CoCoSettingsForm: React.FC<Props> = ({
 
   // Convert the settings object to the form model, which includes additional fields for handling UI-specific data.
   function computeFormModel(settings: Settings): FormModel {
-    const { enabled, environmentType, attestOnBoot, attestOnSchedule } = settings;
+    const { enabled, environmentType, attestOnBoot } = settings;
+    const attestOnSchedule = settings.attestOnSchedule ?? false;
 
     let [currentSecureExecutionHeader, currentHostKeyDocument]: (string | undefined)[] = [undefined, undefined];
 
@@ -126,7 +127,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
       enabled: model.enabled,
       environmentType: model.environmentType,
       attestOnBoot: model.attestOnBoot,
-      attestOnSchedule: model.attestOnSchedule,
+      attestOnSchedule: showOnScheduleOption ? model.attestOnSchedule : false,
       inputData: inputData,
     };
   }
@@ -303,7 +304,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
           </FormGroup>
         )}
 
-        {model.attestOnSchedule && (
+        {showOnScheduleOption && model.attestOnSchedule && (
           <FormGroup>
             <BootstrapPanel title={t("Select a schedule")}>
               <RecurringEventPicker

@@ -4,10 +4,16 @@ import { Messages, MessageType, Utils as MessagesUtils } from "components/messag
 import { TopPanel } from "components/panels/TopPanel";
 
 import { LocalizedMoment, localizedMoment } from "utils/datetime";
-import Network from "utils/network";
 
 import { ActionChain, ActionSchedule } from "./action-schedule";
 import { AsyncButton, Button } from "./buttons";
+import {
+  type CoCoScheduleRequest,
+  COCO_ATTESTATION_ACTION_TYPE,
+  getGlobalCoCoAttestationsUrl,
+  getSystemCoCoAttestationsUrl,
+  scheduleSystemCoCoAttestation,
+} from "./coco-attestation/coco-api";
 import CoCoAttestationTable from "./coco-attestation/CoCoAttestationTable";
 import CoCoReport from "./coco-attestation/CoCoReport";
 import { AttestationReport } from "./coco-attestation/Utils";
@@ -53,13 +59,17 @@ class CoCoScansList extends Component<Props, State> {
   };
 
   onSchedule = () => {
-    const request = {
-      actionType: "coco.attestation",
+    if (this.props.serverId === undefined) {
+      return false;
+    }
+
+    const request: CoCoScheduleRequest = {
+      actionType: COCO_ATTESTATION_ACTION_TYPE,
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
     };
 
-    Network.post(`/rhn/manager/api/systems/${this.props.serverId}/details/coco/scheduleAction`, request)
+    return scheduleSystemCoCoAttestation(this.props.serverId, request)
       .then((data) => {
         // Notify the successful outcome
         const msg = MessagesUtils.info(
@@ -144,7 +154,7 @@ class CoCoScansList extends Component<Props, State> {
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
           systemIds={[this.props.serverId]}
-          actionType="coco.attestation"
+          actionType={COCO_ATTESTATION_ACTION_TYPE}
         />
       </TopPanel>
     );
@@ -168,9 +178,7 @@ class CoCoScansList extends Component<Props, State> {
         )}
         <CoCoAttestationTable
           dataUrl={
-            this.props.serverId
-              ? `/rhn/manager/api/systems/${this.props.serverId}/details/coco/listAttestations`
-              : "/rhn/manager/api/audit/confidential-computing/listAttestations"
+            this.props.serverId ? getSystemCoCoAttestationsUrl(this.props.serverId) : getGlobalCoCoAttestationsUrl()
           }
           showSystem={this.props.serverId === undefined}
           onReportDetails={this.onDetails}
