@@ -19,12 +19,15 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Basic test class with a User
  */
+@ExtendWith(UserForTestCaseExtension.class)
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
+    @UserForTest
     protected User user;
 
     /**
@@ -34,7 +37,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      */
     @BeforeEach
     public void setUpJMockBaseTestCaseWithUser() throws Exception {
-        user = UserTestUtils.createUser();
         KickstartDataTest.setupTestConfiguration(user);
     }
 
