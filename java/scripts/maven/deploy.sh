@@ -140,6 +140,10 @@ BRANDING_VERSION=""
 
 # Executes a command on the target system using the configured executor.
 deploy_execute() {
+    if [ "$VERBOSE" = true ]; then
+        echo "$EXECUTOR_COMMAND ${EXECUTOR_PARAMETERS[@]} $@" >&2
+    fi
+
     # Execute the command with parameters as a proper array
     "$EXECUTOR_COMMAND" "${EXECUTOR_PARAMETERS[@]}" $@
 }
