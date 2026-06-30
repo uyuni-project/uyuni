@@ -40,7 +40,8 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
@@ -64,12 +65,14 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class ProxyHandlerTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class ProxyHandlerTest extends MockObjectTestCase {
 
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
