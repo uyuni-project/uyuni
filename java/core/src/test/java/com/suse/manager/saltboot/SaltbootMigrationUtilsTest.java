@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -45,6 +46,7 @@ public class SaltbootMigrationUtilsTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         MockConnection.clear();
         client = new MockConnection("http://localhost", "token");
     }

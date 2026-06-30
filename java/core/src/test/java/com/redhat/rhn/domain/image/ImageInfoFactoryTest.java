@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.CustomDataKeyTest;
 import com.redhat.rhn.domain.org.Org;
@@ -104,6 +105,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltApiMock = context.mock(TestSaltApi.class);
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
     @Test

@@ -15,10 +15,8 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
@@ -35,16 +33,6 @@ public abstract class JMockBaseTestCaseWithUser extends MockObjectTestCase {
 
     @SaltTestRootPath
     protected Path tmpSaltRoot;
-
-    /**
-     * Called once per test method to set up the test environment.
-     *
-     * @throws Exception if an error occurs during setup
-     */
-    @BeforeEach
-    public void setUpJMockBaseTestCaseWithUser() throws Exception {
-        KickstartDataTest.setupTestConfiguration(user);
-    }
 
     @Override
     protected void cleanupDatabaseCommits() {

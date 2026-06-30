@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductTestUtils;
@@ -1685,6 +1686,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageBuild() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1764,6 +1766,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageBuildWithBundle() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1812,6 +1815,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageInspect() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");

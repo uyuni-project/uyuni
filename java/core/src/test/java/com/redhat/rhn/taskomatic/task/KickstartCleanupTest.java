@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -42,7 +42,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Statement;
 import java.util.Date;
 
-public class KickstartCleanupTest extends BaseTestCaseWithUser {
+public class KickstartCleanupTest extends KickstartBaseTest {
 
     @BeforeEach
     public void setUp() throws Exception {

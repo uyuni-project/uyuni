@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -80,7 +80,7 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
         PxtSessionDelegate pxtDelegate = pxtDelegateFactory.newPxtSessionDelegate();
 
         pxtDelegate.updateWebUserId(request, response, user.getId());
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
     @Override

@@ -63,6 +63,7 @@ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.CustomDataKeyTest;
 import com.redhat.rhn.domain.org.Org;
@@ -1070,7 +1071,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Long sid = server.getId();
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
-        KickstartDataTest.setupTestConfiguration(admin);
+        KickstartTestUtils.setupTestConfiguration(admin);
         assertEquals(1, handler.deleteSystem(cert.toString()));
         assertNull(ServerFactory.lookupById(sid));
     }
@@ -1108,7 +1109,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
         server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
-        KickstartDataTest.setupTestConfiguration(admin);
+        KickstartTestUtils.setupTestConfiguration(admin);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
         KickstartDataTest.addCommand(admin, k, "url", "--url http://cascade.sfbay.redhat." +
         "com/rhn/kickstart/ks-rhel-i386-server-5");
