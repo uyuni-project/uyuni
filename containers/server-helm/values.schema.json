@@ -3,7 +3,8 @@
   "title": "Values",
   "type": "object",
   "required": [
-    "global"
+    "global",
+    "repository"
   ],
   "properties": {
     "repository": {

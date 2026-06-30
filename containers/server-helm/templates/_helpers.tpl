@@ -7,7 +7,7 @@
 {{- if .local.tag -}}
 {{- $tag = .local.tag -}}
 {{- end -}}
-{{- $uri := (printf "%s/%s:%s" .global.Values.repository .name $tag) -}}
+{{- $uri := (printf "%s/%s:%s" (required "The repository value is required!" .global.Values.repository) .name $tag) -}}
 {{- if .local.image -}}
 {{- $uri = (printf "%s:%s" .local.image $tag) -}}
 {{- end -}}

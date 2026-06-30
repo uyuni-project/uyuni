@@ -184,3 +184,18 @@ tests:
       - equal:
           path: spec.template.spec.imagePullSecrets[0].name
           value: "my-registry-key"
+
+  - it: should fail to render if the repository value is not set
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      repository: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "The repository value is required!"
