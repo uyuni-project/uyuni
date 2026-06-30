@@ -1,7 +1,11 @@
-import { click, render, screen, selectOptions, type, upload } from "utils/test-utils";
+import { click, render, screen, selectOptions, type, upload, waitFor } from "utils/test-utils";
 
 import { CoCoSettingsForm } from "./CoCoSettingsForm";
 import { Settings } from "./Utils";
+
+jest.mock("components/picker/recurring-event-picker", () => ({
+  RecurringEventPicker: () => <div data-testid="recurring-event-picker" />,
+}));
 
 describe("CoCoSettingsForm", () => {
   const availableEnvironmentTypes = {
@@ -11,7 +15,7 @@ describe("CoCoSettingsForm", () => {
   };
 
   let initialData: Settings;
-  let saveHandler: jest.MockedFunction<(data: Promise<Settings>) => void>;
+  let saveHandler: jest.MockedFunction<(data: Promise<Settings>) => Promise<void>>;
 
   beforeEach(() => {
     initialData = {
@@ -22,7 +26,7 @@ describe("CoCoSettingsForm", () => {
       inputData: {},
     };
 
-    saveHandler = jest.fn();
+    saveHandler = jest.fn<Promise<void>, [Promise<Settings>]>(() => Promise.resolve());
 
     URL.createObjectURL = jest.fn(() => "blob:mock-url");
     URL.revokeObjectURL = jest.fn();
@@ -86,6 +90,107 @@ describe("CoCoSettingsForm", () => {
       attestOnSchedule: false,
       inputData: {},
     });
+  });
+
+  test("does not change disabled execution toggles", async () => {
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    const onBootToggler = screen.getByRole("button", { name: "Perform attestation during the boot process" });
+    await click(onBootToggler);
+
+    expect(onBootToggler.querySelector("i.fa-toggle-off")).not.toBeNull();
+
+    await click(screen.getByText("Save"));
+
+    expect(saveHandler).toHaveBeenCalledTimes(1);
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
+      enabled: false,
+      environmentType: "KVM_AMD",
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {},
+    });
+  });
+
+  test("does not render or submit schedule state when the schedule option is hidden", async () => {
+    initialData.attestOnSchedule = true;
+
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    expect(screen.queryByRole("button", { name: "Perform attestation on a schedule" })).toBeNull();
+    expect(screen.queryByText("Select a schedule")).toBeNull();
+
+    await click(screen.getByText("Save"));
+
+    expect(saveHandler).toHaveBeenCalledTimes(1);
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
+      enabled: false,
+      environmentType: "KVM_AMD",
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {},
+    });
+  });
+
+  test("renders the schedule picker when the schedule option is enabled", async () => {
+    initialData.enabled = true;
+
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption
+        saveHandler={saveHandler}
+      />
+    );
+
+    expect(screen.queryByText("Select a schedule")).toBeNull();
+
+    await click(screen.getByRole("button", { name: "Perform attestation on a schedule" }));
+
+    expect(screen.getByText("Select a schedule")).not.toBeNull();
+    expect(screen.getByTestId("recurring-event-picker")).not.toBeNull();
+  });
+
+  test("keeps the save button waiting while the save handler promise is pending", async () => {
+    let resolveSave: () => void = () => undefined;
+    saveHandler = jest.fn<Promise<void>, [Promise<Settings>]>(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSave = resolve;
+        })
+    );
+
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    const saveButton = screen.getByRole("button", { name: "Save" });
+    await click(saveButton);
+
+    expect((saveButton as HTMLButtonElement).disabled).toBe(true);
+
+    resolveSave();
+    await waitFor(() => expect((saveButton as HTMLButtonElement).disabled).toBe(false));
   });
 
   test("allows to reset to the initial data after making changes", async () => {
