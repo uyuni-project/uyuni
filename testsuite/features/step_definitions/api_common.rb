@@ -158,6 +158,50 @@ When(/^I delete user "([^"]*)"$/) do |user|
   $api_test.user.delete(user)
 end
 
+# admin.gpg namespace
+
+# Return a canonical fingerprint string for comparisons and API calls.
+def normalized_gpg_fingerprint(fingerprint)
+  fingerprint.delete(' ').upcase
+end
+
+# Find an uploaded GPG key by fingerprint, ignoring spaces and case.
+def find_gpg_key(fingerprint)
+  expected = normalized_gpg_fingerprint(fingerprint)
+  $api_test.admin.gpg.list_keys.find do |key|
+    normalized_gpg_fingerprint(key['fingerprint']).casecmp(expected).zero?
+  end
+end
+
+When(/^I upload the GPG key "([^"]*)" via API$/) do |filename|
+  key_path = File.expand_path("../upload_files/#{filename}", __dir__)
+  assert_equal(1, $api_test.admin.gpg.upload_key(File.read(key_path)))
+end
+
+When(/^I make sure the GPG key with fingerprint "([^"]*)" is not present via API$/) do |fingerprint|
+  key = find_gpg_key(fingerprint)
+  assert_equal(1, $api_test.admin.gpg.remove_key(normalized_gpg_fingerprint(fingerprint))) unless key.nil?
+end
+
+When(/^I remove the GPG key with fingerprint "([^"]*)" via API$/) do |fingerprint|
+  assert_equal(1, $api_test.admin.gpg.remove_key(normalized_gpg_fingerprint(fingerprint)))
+end
+
+Then(/^I should see GPG key fingerprint "([^"]*)" via API$/) do |fingerprint|
+  @gpg_key = find_gpg_key(fingerprint)
+  refute_nil(@gpg_key)
+end
+
+Then(/^I should not see GPG key fingerprint "([^"]*)" via API$/) do |fingerprint|
+  assert_nil(find_gpg_key(fingerprint))
+end
+
+Then(/^the GPG key fingerprint "([^"]*)" should have user name "([^"]*)" via API$/) do |fingerprint, name|
+  key = find_gpg_key(fingerprint)
+  refute_nil(key)
+  assert_includes(key['names'], name)
+end
+
 When(/^I make sure "([^"]*)" is not present$/) do |user|
   $api_test.user.list_users
            .map { |u| u['login'] }
