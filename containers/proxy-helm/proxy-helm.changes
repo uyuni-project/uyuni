@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 30 11:04:57 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Error out if the repository is not set (bsc#1269667)
+
+-------------------------------------------------------------------
 Wed Jun 17 15:00:00 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8
