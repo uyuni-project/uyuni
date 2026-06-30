@@ -50,7 +50,7 @@ usage() {
     print "Deploys the Uyuni webapp."
     print ""
     print "Mandatory Arguments:"
-    print "  <type>                 The type of deployment to perform: backend, frontend, salt, restart-only or all."
+    print "  <type>                 The type of deployment to perform: backend, frontend, webapp, salt, restart-only or all."
     print ""
     print "Optional Arguments:"
     print "  -m,--mode <mode>        Deployment mode: local, remote, container, remote-container, kubectl (default: $DEPLOY_MODE)"
@@ -111,7 +111,7 @@ while [[ $# -gt 0 ]]; do
             usage
             exit 0
             ;;
-        frontend|backend|salt|restart-only|all)
+        frontend|backend|webapp|salt|restart-only|all)
             DEPLOY_TARGET="$1"
             shift
             ;;
@@ -410,6 +410,11 @@ main() {
             ;;
 
         frontend)
+            deploy_frontend
+            ;;
+
+        webapp)
+            deploy_backend
             deploy_frontend
             ;;
 
