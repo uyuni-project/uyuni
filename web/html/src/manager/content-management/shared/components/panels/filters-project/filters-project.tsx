@@ -22,14 +22,14 @@ type FiltersProps = {
   messages?: ProjectMessageType[];
 };
 
-const renderFilterEntry = (filter, projectId, symbol, last) => {
+const renderFilterEntry = (filter, projectId) => {
   const descr = getClmFilterDescription(filter);
   const filterButton = (
-    <div className={styles.icon_wrapper_vertical_center}>
+    <div>
       <LinkButton
         id={`edit-filter-${filter.id}`}
         icon="fa-edit"
-        title={t("Edit Filter {name}", { name: filter.name })}
+        title={t("Edit {name}", { name: filter.name })}
         className="btn-tertiary pull-right js-spa"
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
@@ -37,33 +37,21 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
   );
 
   let filterClassName;
-  let filterIconName;
 
-  if (filter.state === statesEnum.enum.ATTACHED.key) {
-    filterClassName = `text-success`;
-    filterIconName = "fa-plus";
-  } else if (filter.state === statesEnum.enum.EDITED.key) {
+  if (filter.state === statesEnum.enum.EDITED.key) {
     filterClassName = `text-warning`;
-    filterIconName = "fa-edit";
   } else if (filter.state === statesEnum.enum.DETACHED.key) {
     filterClassName = `text-danger ${styles.dettached}`;
-    filterIconName = "fa-minus";
   } else {
     filterClassName = `${styles.wrapper}`;
   }
 
   return (
     <Fragment key={`filter_list_item_${filter.id}`}>
-      <li className={`list-group-item ${styles.wrapper} ${filterClassName}`}>
-        {filterIconName && <i className={`fa ${filterIconName}`}></i>}
-        {descr}
+      <li className={` ${styles.filter_list_wrapper} ${filterClassName}`}>
+        <div>{descr}</div>
         {filterButton}
       </li>
-      {!last && (
-        <div style={{ margin: "4px" }} className="row text-center">
-          {symbol}
-        </div>
-      )}
     </Fragment>
   );
 };
@@ -137,14 +125,7 @@ const FiltersProject = (props: FiltersProps) => {
                     {t("AppStreams")} <small>{t("enabled module streams")}</small>
                   </h4>
                   <ul className="list-group">
-                    {moduleFilters.map((filter, index) =>
-                      renderFilterEntry(
-                        filter,
-                        props.projectId,
-                        <i className="fa fa-plus-circle" />,
-                        index === moduleFilters.length - 1
-                      )
-                    )}
+                    {moduleFilters.map((filter) => renderFilterEntry(filter, props.projectId))}
                   </ul>
                 </>
               )}
@@ -159,14 +140,7 @@ const FiltersProject = (props: FiltersProps) => {
                     {t("Deny")} <small>{t("filter out")}</small>
                   </h4>
                   <ul className="list-group">
-                    {denyFilters.map((filter, index) =>
-                      renderFilterEntry(
-                        filter,
-                        props.projectId,
-                        <i className="fa fa-filter" />,
-                        index === denyFilters.length - 1
-                      )
-                    )}
+                    {denyFilters.map((filter) => renderFilterEntry(filter, props.projectId))}
                   </ul>
                 </>
               )}
@@ -180,14 +154,7 @@ const FiltersProject = (props: FiltersProps) => {
                     <small>{t("select from the full source even if you have excluded them before with deny")}</small>
                   </h4>
                   <ul className="list-group">
-                    {allowFilters.map((filter, index) =>
-                      renderFilterEntry(
-                        filter,
-                        props.projectId,
-                        <i className="fa fa-plus-circle" />,
-                        index === allowFilters.length - 1
-                      )
-                    )}
+                    {allowFilters.map((filter) => renderFilterEntry(filter, props.projectId))}
                   </ul>
                 </>
               )}

@@ -1,15 +1,18 @@
+@import "../../../../../../branding/css/variables.scss";
+
 :global(.old-theme),
 :global(.new-theme) {
-  .wrapper {
-    position: relative;
-    padding: 10px
-  }
+  .filter_list_wrapper {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid $eos-bc-gray-100;
+    border-bottom: 0;
 
-  .icon_wrapper_vertical_center {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    &:last-child {
+      border-bottom: 1px solid $eos-bc-gray-100;
+    }
   }
 
   .dettached {

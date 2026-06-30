@@ -1,28 +1,34 @@
 :global(.old-theme),
 :global(.new-theme) {
-    .radio label {
-        font-weight: normal;
-    }
+  .radio label {
+    font-weight: normal;
+  }
 
-    .open_option_wrapper{
-        padding-left: 0px;
-    }
+  .open_option_wrapper {
+    padding-left: 0px;
+    margin-top: 6px !important;
+  }
 
-    .open_option_wrapper label {
-        vertical-align: middle
-    }
-    .open_option_wrapper input[type=text] {
-        width: 200px;
-        display:inline-block;
-    }
+  .open_option_wrapper label {
+    padding-top: 0 !important;
+    line-height: 23px;
+  }
+  .open_option_wrapper input[type="radio"] {
+    vertical-align: bottom;
+  }
 
-    .open_option_wrapper_align_wrapper {
-        position: relative;
-    }
+  .open_option_wrapper input[type="text"] {
+    width: 200px;
+    display: inline-block;
+  }
 
-    .open_option_wrapper_align_content {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+  .open_option_wrapper_align_wrapper {
+    position: relative;
+  }
+
+  .open_option_wrapper_align_content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
