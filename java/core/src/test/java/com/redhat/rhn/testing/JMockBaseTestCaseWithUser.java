@@ -21,14 +21,20 @@ import com.redhat.rhn.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Path;
+
 /**
  * Basic test class with a User
  */
 @ExtendWith(UserForTestCaseExtension.class)
-public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public abstract class JMockBaseTestCaseWithUser extends MockObjectTestCase {
 
     @UserForTest
     protected User user;
+
+    @SaltTestRootPath
+    protected Path tmpSaltRoot;
 
     /**
      * Called once per test method to set up the test environment.
