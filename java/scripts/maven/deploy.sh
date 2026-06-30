@@ -23,6 +23,7 @@ DEPLOY_NAMESPACE="default"
 CONTAINER_BACKEND="podman"
 RESTART_TOMCAT=false
 RESTART_TASKOMATIC=false
+REBUILD=false
 VERBOSE=false
 
 # SSH configuration if needed by the chosen deploy mode
@@ -56,6 +57,7 @@ usage() {
     print "  -h,--host <hostname>    The target host for the deployment."
     print "  -b,--backend <backend>  Container backend: podman, podman-remote, kubectl (default: $CONTAINER_BACKEND)"
     print "  -n,--namespace <ns>     Kubernetes namespace where to look for the pod (default: $DEPLOY_NAMESPACE)"
+    print "  -R, --rebuild           Rebuild the code before deploying (runs 'mvn package' and 'npm run build')"
     print "  -r,--restart            Restart tomcat and taskomatic at the end of the deployment"
     print "  --restart-tomcat        Restart only tomcat at the end of the deployment"
     print "  --restart-taskomatic    Restart only taskomatic at the end of the deployment"
@@ -87,6 +89,10 @@ while [[ $# -gt 0 ]]; do
         -n|--namespace)
             DEPLOY_NAMESPACE="$2"
             shift 2
+            ;;
+         -R|--rebuild)
+            REBUILD=true
+            shift
             ;;
         -r|--restart)
             RESTART_TOMCAT=true
@@ -315,6 +321,12 @@ deploy_backend() {
     local TARGET_DIR="/usr/share/susemanager/www/tomcat/webapps/rhn"
     local SOURCE_WEBAPP_DIR="${UYUNI_DIR}/java/webapp/target/webapp-${SPACEWALK_JAVA_VERSION}"
 
+    if [ "$REBUILD" = true ]; then
+        print "Rebuilding backend with Maven..."
+        (cd "$UYUNI_DIR/java" && mvn package)
+    fi
+
+
     # Check if the file to deploy exists
     if [ ! -d "$SOURCE_WEBAPP_DIR" ]; then
         print_error "Error: Webapp directory $SOURCE_WEBAPP_DIR does not exist."
@@ -343,8 +355,13 @@ deploy_frontend() {
     local FRONTEND_DIR="$UYUNI_DIR/web/html/src/dist"
     local TARGET_DIR="/usr/share/susemanager/www/htdocs"
 
+    if [ "$REBUILD" = true ]; then
+        print "Rebuilding frontend with npm..."
+        (cd "$UYUNI_DIR" && npm --prefix web run build -- --check-spec=false)
+    fi
+
     if [ ! -d "$FRONTEND_DIR" ]; then
-        print_error "Error: Frontend directory $SOURCE_WEBAPP_DIR does not exist."
+        print_error "Error: Frontend directory $FRONTEND_DIR does not exist."
         print_error "Please build the frontend first by calling npm."
         exit 1
     fi
