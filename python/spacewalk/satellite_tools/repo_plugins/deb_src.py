@@ -177,15 +177,13 @@ class DebRepo:
             if "/" not in suite:
                 if arch is None:
                     rhnSQL.initDB()
-                    h = rhnSQL.prepare(
-                        """
+                    h = rhnSQL.prepare("""
                                        SELECT ca.label AS arch_label
                                        FROM rhnChannel AS c
                                        LEFT JOIN rhnChannelArch AS ca
                                            ON c.channel_arch_id = ca.id
                                        WHERE c.label = :channel_label
-                                       """
-                    )
+                                       """)
                     h.execute(channel_label=channel_label)
                     row = h.fetchone_dict()
                     if row and "arch_label" in row:
@@ -254,7 +252,7 @@ class DebRepo:
         Returns proxies dict for requests with python-requests.
         """
         if self.proxy:
-            (_, netloc, _, _, _) = urlparse.urlsplit(self.proxy)
+            _, netloc, _, _, _ = urlparse.urlsplit(self.proxy)
             proxies = {"http": "http://" + netloc, "https": "http://" + netloc}
             if self.proxy_username and self.proxy_password:
                 proxies = {
@@ -474,12 +472,13 @@ class ContentSource:
 
             # keep authtokens for mirroring
             # pylint: disable-next=invalid-name,unused-variable
-            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+            _scheme, _netloc, _path, query, _fragid = urlparse.urlsplit(url)
             if query:
                 self.authtoken = query
 
     def get_md_checksum_type(self):
-        pass
+        # all supported Debian OSes should support sha256 already
+        return "sha256"
 
     def get_products(self):
         # No products
