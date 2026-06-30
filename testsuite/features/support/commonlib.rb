@@ -175,7 +175,7 @@ def click_button_and_wait(locator = nil, **options)
     # page navigation to finish instead of re-clicking (the button is gone on the new page).
     warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- waiting for page load to complete"
     page.driver.with_playwright_page do |pw_page|
-      pw_page.wait_for_load_state('load', timeout: 60_000)
+      pw_page.wait_for_load_state(state: 'load', timeout: 60_000)
     end
   end
   begin
@@ -200,7 +200,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     # Playwright dispatches the click and returns before Senna's AJAX navigation updates
     # the DOM. Wait for domcontentloaded so the next step sees the new page content.
-    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state('domcontentloaded', timeout: 5_000) }
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'domcontentloaded', timeout: 5_000) }
   rescue Playwright::Error
     # No navigation occurred or already at domcontentloaded -- acceptable
   end
