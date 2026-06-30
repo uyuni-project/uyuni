@@ -1,0 +1,1 @@
+- Replace ca-certs PVC with a projected volume of CAs.

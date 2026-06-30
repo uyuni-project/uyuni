@@ -92,3 +92,58 @@ tests:
                 key: password
                 name: myscccreds
                 optional: false
+
+  - it: should mark the custom-cas projected source as optional
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[?(@.name=="trust-anchors")].projected.sources[?(@.configMap.name=="custom-cas")].configMap.optional
+          value: true
+
+  - it: should mount the trust-anchors projected volume read-only at /etc/pki/trust/anchors/
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].volumeMounts
+          content:
+            mountPath: /etc/pki/trust/anchors/
+            name: trust-anchors
+            readOnly: true
+
+  - it: should declare the trust-anchors projected volume aggregating uyuni-ca, db-ca and custom-cas
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: trust-anchors
+            projected:
+              defaultMode: 420
+              sources:
+                - configMap:
+                    name: uyuni-ca
+                    items:
+                      - key: ca.crt
+                        path: LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+                - configMap:
+                    name: db-ca
+                    items:
+                      - key: ca.crt
+                        path: DB-RHN-ORG-TRUSTED-SSL-CERT
+                - configMap:
+                    name: custom-cas
+                    optional: true
+
+  - it: should not declare the removed ca-certs volume in the deployment
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: ca-certs
+            persistentVolumeClaim:
+              claimName: ca-certs
