@@ -14,7 +14,13 @@ import localRules from "./eslint-local-rules/index.js";
 const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig([
-  globalIgnores(["html/src/dist/**/*", "html/src/vendors/**/*", "html/javascript/**/*"]),
+  globalIgnores([
+    "html/src/dist/**/*",
+    "html/src/storybook/generated/**/*",
+    "html/src/vendors/**/*",
+    "html/javascript/**/*",
+    "storybook-static/**/*",
+  ]),
   eslint.configs.recommended,
   tseslint.configs.recommended,
   {
