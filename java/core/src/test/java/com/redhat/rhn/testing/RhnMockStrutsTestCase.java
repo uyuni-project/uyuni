@@ -46,11 +46,13 @@ import java.util.TimeZone;
  * Struts Actions use a User.
  */
 @ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith(UserForTestCaseExtension.class)
 public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
+    @UserForTest(userName = TestStatics.TEST_USER, orgName = TestStatics.TEST_ORG)
     protected User user;
 
     /**
@@ -65,7 +67,6 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
         request.setServerName("localhost");
         request.setMethod("GET");
-        user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         addRequestParameter(RequestContext.USER_ID, user.getId().toString());
         WebSession s = requestContext.getWebSession();
