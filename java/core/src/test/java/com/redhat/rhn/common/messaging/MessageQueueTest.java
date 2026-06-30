@@ -21,16 +21,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(UserForTestCaseExtension.class)
 public class MessageQueueTest extends RhnBaseTestCase {
 
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
+
+    @UserForTest
     protected User user;
 
     @BeforeEach
@@ -44,7 +50,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
@@ -65,7 +71,6 @@ public class MessageQueueTest extends RhnBaseTestCase {
         assertTrue(me.getMessageReceived());
         logger.debug("testPublish - end");
     }
-
 
     @Test
     public void testMultiThreadedPublish() throws Exception {
