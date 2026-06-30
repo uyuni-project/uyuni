@@ -40,16 +40,9 @@ import java.util.Date;
  * test to simulate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
+public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCaseUtils  {
 
     protected Path tmpSaltRoot;
-
-    /**
-     * Default Constructor
-     */
-    public RhnBaseTestCase() {
-        MessageQueue.configureDefaultActions(new TestSaltApi());
-    }
 
     /**
      * Called once per test method.
@@ -57,6 +50,7 @@ public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
      */
     @BeforeEach
     protected void setUpRhnBaseTestCase() throws Exception {
+        MessageQueue.configureDefaultActions(new TestSaltApi());
         tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
@@ -66,8 +60,6 @@ public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
      */
     @AfterEach
     public void tearDownRhnBaseTestCase() throws Exception {
-        TestCaseHelper.tearDownHelper();
-
         cleanupSaltConfiguration(tmpSaltRoot);
     }
 

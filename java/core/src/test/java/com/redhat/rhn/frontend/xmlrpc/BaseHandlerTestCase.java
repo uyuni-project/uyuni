@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -30,13 +29,12 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 public class BaseHandlerTestCase extends RhnBaseTestCase {
     /*
      * admin - Org Admin
-     * regular - retgular user
+     * regular - regular user
      * adminKey/regularKey - session keys for respective users
      */
 
@@ -46,12 +44,9 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String adminKey;
     protected String regularKey;
     protected String satAdminKey;
-    private boolean committed;
 
     @BeforeEach
     public void setUpBaseHandlerTestCase() throws Exception {
-        committed = false;
-
         admin = new UserTestUtils.UserBuilder()
                 .userName(TestStatics.TEST_ADMIN_USER)
                 .orgAdmin(true)
@@ -79,23 +74,12 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         KickstartDataTest.setupTestConfiguration(admin);
     }
 
-    @AfterEach
-    public void tearDownBaseHandlerTestCase() throws Exception {
-        // If at some point we created a user and committed the transaction, we need
-        // clean up our mess
-        if (committed) {
-            UserFactory.deleteUser(regular.getId());
-            UserFactory.deleteUser(satAdmin.getId());
-            OrgFactory.deleteOrg(admin.getOrg().getId(), admin);
-            TestUtils.deleteAllAccessTokens();
-            TestUtils.commitAndCloseSession();
-        }
-        committed = false;
-    }
-
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        committed = true;
+    @Override
+    protected void cleanupDatabaseCommits() {
+        UserFactory.deleteUser(regular.getId());
+        UserFactory.deleteUser(satAdmin.getId());
+        TestUtils.deleteOrgOfUser(admin);
+        TestUtils.deleteAllAccessTokens();
     }
 
     protected void addAccessGroup(User user, AccessGroup group) {
