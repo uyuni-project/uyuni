@@ -230,19 +230,36 @@ public class OpenApiToAsciidocParser {
             schema = resultSchema.get$ref() != null ? resolveSchema(resultSchema.get$ref()) : resultSchema;
         }
 
+        if ("array".equals(schema.getType()) && schema.getItems() != null) {
+            Schema<?> itemSchema = schema.getItems();
+            Schema<?> resolved = itemSchema.get$ref() != null ? resolveSchema(itemSchema.get$ref()) : itemSchema;
+            String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
+
+            writer.println("* [.array]#array# :");
+            writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
+            if (resolved != null && resolved.getProperties() != null) {
+                resolved.getProperties().forEach((name, prop) -> {
+                    Schema<?> propertySchema = (Schema<?>) prop;
+                    String propDesc = propertySchema.getDescription() != null ?
+                            " - " + propertySchema.getDescription() : "";
+                    writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
+                });
+            }
+            writer.println(" ");
+            return;
+        }
+
         if (isSimpleType(schema)) {
             String type = schema.getType();
-            String label = operation.getOperationId()
-                    .replace("get", "")
-                    .replaceAll("([a-z])([A-Z])", "$1 $2")
-                    .toLowerCase()
-                    .trim();
+            String label = Optional.ofNullable(responses.get("200").getDescription())
+                    .filter(d -> !d.isBlank())
+                    .orElseGet(() -> operation.getOperationId()
+                            .replace("get", "")
+                            .replaceAll("([a-z])([A-Z])", "$1 $2")
+                            .toLowerCase().trim());
 
-            if (label.contains("system version")) {
-                label = "version";
-            }
-
-            writer.printf("* [.%s]#%s#  %s%n ", type, type, label);
+            String displayType = "integer".equals(type) ? "int" : type;
+            writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
             return;
         }
 
@@ -306,7 +323,7 @@ public class OpenApiToAsciidocParser {
             return null;
         }
         String name = ref.substring(ref.lastIndexOf('/') + 1);
-        return name.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+        return name.replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase();
     }
 
     private boolean isSimpleType(Schema<?> schema) {
