@@ -87,6 +87,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
             UserFactory.deleteUser(regular.getId());
             UserFactory.deleteUser(satAdmin.getId());
             OrgFactory.deleteOrg(admin.getOrg().getId(), admin);
+            TestUtils.deleteAllAccessTokens();
             TestUtils.commitAndCloseSession();
         }
         committed = false;

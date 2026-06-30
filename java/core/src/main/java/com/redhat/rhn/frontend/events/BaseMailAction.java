@@ -14,10 +14,8 @@
  */
 package com.redhat.rhn.frontend.events;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MailHelper;
@@ -52,18 +50,7 @@ public abstract class BaseMailAction {
      * @return the mailer associated with this class
      */
     protected Mail getMail() {
-        String clazz = Config.get().getString("web.mailer_class");
-        if (clazz == null) {
-            return new SmtpMail();
-        }
-        try {
-            Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
-            return cobj.getDeclaredConstructor().newInstance();
-        }
-        catch (Exception | LinkageError e) {
-            getLogger().error("An exception was thrown while initializing custom mailer class", e);
-            return new SmtpMail();
-        }
+        return MailHelper.createMailFromConfig();
     }
 
     /**

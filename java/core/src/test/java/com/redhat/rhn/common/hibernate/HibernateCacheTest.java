@@ -42,9 +42,11 @@ class HibernateCacheTest extends MockObjectTestCase {
         Session session = HibernateFactory.getSession();
         SessionFactory sessionFactory = session.getSessionFactory();
         // clear l2 cache
-        session.getSessionFactory().getCache().evictAll();
+        session.getSessionFactory().getCache().evictAllRegions();
         // clear l1 cache
         session.clear();
+        session.flush();
+
         stats = sessionFactory.getStatistics();
         stats.setStatisticsEnabled(true);
         stats.clear();
@@ -63,7 +65,7 @@ class HibernateCacheTest extends MockObjectTestCase {
             assertEquals(i + 1, stats.getConnectCount());
             assertEquals(i + 1, stats.getSessionOpenCount());
             assertEquals(i + 1, stats.getSessionOpenCount());
-            assertEqualsStats(new HibernateStatsSnapshot(
+            assertEqualsStats(i, new HibernateStatsSnapshot(
                     timezoneIds.size(), // queries are executed only on the first iteration
                                         // query cache hits on subsequent iterations
                     (long) timezoneIds.size() * i,
@@ -89,7 +91,7 @@ class HibernateCacheTest extends MockObjectTestCase {
             assertEquals(i + 1, stats.getConnectCount());
             assertEquals(i + 1, stats.getSessionOpenCount());
             assertEquals(i + 1, stats.getSessionOpenCount());
-            assertEqualsStats(new HibernateStatsSnapshot(
+            assertEqualsStats(i, new HibernateStatsSnapshot(
                     // no queries expected, as we're using session.find()
                     0,
                     0,
@@ -164,21 +166,21 @@ class HibernateCacheTest extends MockObjectTestCase {
      *
      * @param snapshot the expected values to compare against
      */
-    void assertEqualsStats(HibernateStatsSnapshot snapshot) {
+    void assertEqualsStats(int iteration, HibernateStatsSnapshot snapshot) {
         assertEquals(snapshot.getQueryExecutionCount(), stats.getQueryExecutionCount(),
-                "Unexpected number of query executions");
+                "Unexpected number of query executions at iteration %d".formatted(iteration));
         assertEquals(snapshot.getQueryCacheHitCount(), stats.getQueryCacheHitCount(),
-                "Unexpected number of query cache hits");
+                "Unexpected number of query cache hits at iteration %d".formatted(iteration));
         assertEquals(snapshot.getQueryCacheMissCount(), stats.getQueryCacheMissCount(),
-                "Unexpected number of query cache misses");
+                "Unexpected number of query cache misses at iteration %d".formatted(iteration));
         assertEquals(snapshot.getQueryCachePutCount(), stats.getQueryCachePutCount(),
-                "Unexpected number of query cache puts");
+                "Unexpected number of query cache puts at iteration %d".formatted(iteration));
         assertEquals(snapshot.getSecondLevelCacheHitCount(), stats.getSecondLevelCacheHitCount(),
-                "Unexpected number of 2nd level cache hits");
+                "Unexpected number of 2nd level cache hits at iteration %d".formatted(iteration));
         assertEquals(snapshot.getSecondLevelCacheMissCount(), stats.getSecondLevelCacheMissCount(),
-                "Unexpected number of 2nd level cache misses");
+                "Unexpected number of 2nd level cache misses at iteration %d".formatted(iteration));
         assertEquals(snapshot.getSecondLevelCachePutCount(), stats.getSecondLevelCachePutCount(),
-                "Unexpected number of 2nd level cache puts");
+                "Unexpected number of 2nd level cache puts at iteration %d".formatted(iteration));
     }
 
     class HibernateStatsSnapshot {
