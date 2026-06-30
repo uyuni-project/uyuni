@@ -834,6 +834,9 @@ public class ListTag extends BodyTagSupport {
      */
     @Override
     public int doStartTag() throws JspException {
+        // Reset filter first so that a tag reused from the pool after a previous
+        // failed request (where doEndTag/release was never called) starts clean.
+        filter = null;
         verifyEnvironment();
         addDecorator(decoratorName);
         setupPageData();
