@@ -250,12 +250,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "true");
 
         assertThrows(UnsupportedOperationException.class, () -> handler.scheduleSupportDataUpload(
-                admin, server.getId().intValue(), "012345", "-i LVM", "EU", getNow()));
+                admin, server.getId().intValue(), "012345", "-i LVM", "EU", TestUtils.getNow()));
 
         Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "false");
 
         Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
-                "012345", "-i LVM", "EU", getNow());
+                "012345", "-i LVM", "EU", TestUtils.getNow());
         assertNotNull(aid);
 
         Action action = ActionFactory.lookupById(Long.valueOf(aid));
@@ -2759,12 +2759,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
 
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        TestUtils.assertContains(result.get(1).get("friendly").toString(),
                 "SUSE Linux Enterprise High Performance Computing 12 SP2");
-        assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
 
     @Test
@@ -2816,13 +2816,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
 
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(0).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        TestUtils.assertContains(result.get(0).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(1).get("friendly").toString(),
+        TestUtils.assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(1).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
@@ -2880,10 +2880,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
         assertEquals(1, result.size());
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(0).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(0).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
@@ -2981,14 +2981,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
 
         //Case #2 Include targets even missing successor.
 
         List<Map<String, Object>> targets  = handler.listMigrationTargets(admin, server.getId().intValue(), false);
         assertEquals(1, targets.size());
-        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
+        TestUtils.assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
         String ident = targets.get(0).get("ident").toString();
 
         //Case #2-1 ident is provided but removeProductsWithNoSuccessorAfterMigration was passed as false so we expect
@@ -3000,7 +3000,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
         //Case #2-2 ident is not provided but removeProductsWithNoSuccessorAfterMigration was passed as true
         // so we expect no target to be found
@@ -3011,7 +3011,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
 
         //Case #2-3 ident is provided and als removeProductsWithNoSuccessorAfterMigration was passed
@@ -3084,7 +3084,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // case#2 all targets returned even with missing successors ones
         targets = handler.listMigrationTargets(admin, server.getId().intValue(), false);
         assertEquals(1, targets.size());
-        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
+        TestUtils.assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
     }
 
     @Test
@@ -3426,7 +3426,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw UnsupportedOperationException");
         }
         catch (IllegalArgumentException e) {
-            assertContains(e.getMessage(), "not available in assigned channels");
+            TestUtils.assertContains(e.getMessage(), "not available in assigned channels");
         }
 
         // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
@@ -3520,7 +3520,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
         assertEquals(1, result);
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
-        assertNotEmpty(packageStates);
+        TestUtils.assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());
         assertEquals(PackageStates.REMOVED.getId(), packageStates.iterator().next().getPackageStateTypeId());
         assertEquals(VersionConstraints.LATEST.getId(), packageStates.iterator().next().getVersionConstraintId());

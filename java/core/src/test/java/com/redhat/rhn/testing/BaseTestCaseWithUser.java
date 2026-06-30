@@ -21,14 +21,20 @@ import com.redhat.rhn.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Path;
+
 /**
  * Basic test class with a User
  */
 @ExtendWith(UserForTestCaseExtension.class)
-public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public abstract class BaseTestCaseWithUser extends BaseTestCase {
 
     @UserForTest(useClassNameForOrg = true)
     protected User user;
+
+    @SaltTestRootPath
+    protected Path tmpSaltRoot;
 
     @BeforeEach
     public void setUpBaseTestCaseWithUser() throws Exception {

@@ -96,7 +96,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         List<String> names = mm.listScheduleNamesByUser(user);
         assertEquals(1, names.size());
-        assertContains(names, "test server");
+        TestUtils.assertContains(names, "test server");
 
         Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
@@ -119,7 +119,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         List<String> labels = mm.listCalendarLabelsByUser(user);
         assertEquals(1, labels.size());
-        assertContains(labels, "testcalendar");
+        TestUtils.assertContains(labels, "testcalendar");
 
         Optional<MaintenanceCalendar> dbCalOpt = mm.lookupCalendarByUserAndLabel(user, "testcalendar");
         assertNotNull(dbCalOpt.orElse(null));
@@ -143,7 +143,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         List<String> names = mm.listScheduleNamesByUser(user);
         assertEquals(1, names.size());
-        assertContains(names, "test server");
+        TestUtils.assertContains(names, "test server");
 
         Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
@@ -539,23 +539,23 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         /* check results */
         List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
         assertEquals(2, sapActionsAfter.size()); // First chain should be unchanged, second should be removed.
-        assertContains(sapActionsAfter, sapAction1);
-        assertContains(sapActionsAfter, sapAction2);
+        TestUtils.assertContains(sapActionsAfter, sapAction1);
+        TestUtils.assertContains(sapActionsAfter, sapAction2);
 
         List<Action> coreActionsAfter = ActionFactory.listActionsForServer(user, coreServer);
-        assertContains(coreActionsAfter, coreAction3);
-        assertContains(coreActionsAfter, coreAction4);
+        TestUtils.assertContains(coreActionsAfter, coreAction3);
+        TestUtils.assertContains(coreActionsAfter, coreAction4);
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
         assertEquals(2, upResult.size());
         for (RescheduleResult r : upResult) {
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
                 assertEquals("Cancel", r.getStrategy());
-                assertContains(r.getActionsServers().get(sapAction3), sapServer);
+                TestUtils.assertContains(r.getActionsServers().get(sapAction3), sapServer);
                 // depending actions from a chain are not part of the result
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 assertEquals("Cancel", r.getStrategy());
-                assertContains(r.getActionsServers().get(coreAction1), coreServer);
+                TestUtils.assertContains(r.getActionsServers().get(coreAction1), coreServer);
                 // depending actions from a chain are not part of the result
             }
         }

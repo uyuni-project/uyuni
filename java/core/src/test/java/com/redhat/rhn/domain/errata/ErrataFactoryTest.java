@@ -352,7 +352,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
             List<Long> list = ErrataFactory.listErrataChannelPackages(chan.getId(),
                     e.getId());
-            assertContains(list, p.getId());
+            TestUtils.assertContains(list, p.getId());
 
         }
         catch (Exception e) {

@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageNameTest;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +40,7 @@ import java.util.Set;
 /**
  * PackageActionDetailsTest
  */
-public class PackageActionDetailsTest extends RhnBaseTestCase {
+public class PackageActionDetailsTest extends BaseTestCase {
 
     @Test
     public void testBeanMethods() {

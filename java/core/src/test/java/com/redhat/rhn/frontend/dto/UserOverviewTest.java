@@ -27,9 +27,6 @@ import org.junit.jupiter.api.Test;
 public class UserOverviewTest extends BaseTestCase {
     private UserOverview uo;
 
-    /*
-     * @see RhnBaseTestCase#setUp()
-     */
     @BeforeEach
     public void setUp() {
         uo = new UserOverview();

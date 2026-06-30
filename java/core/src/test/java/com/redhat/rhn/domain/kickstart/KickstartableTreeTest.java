@@ -62,7 +62,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
     public static void createKickstartTreeItems(File basePath, User u) throws Exception {
         //Alright setup things we need for trees
-        createDirIfNotExists(basePath);
+        TestUtils.createDirIfNotExists(basePath);
         KickstartableTree tree = new KickstartableTree();
         tree.setChannel(ChannelTestUtils.createBaseChannel(u));
         tree.setInstallType(KickstartFactory.
@@ -73,15 +73,15 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     }
 
     public static void createKickstartTreeItems(KickstartableTree tree) {
-        createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
-        createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
 
         FileUtils.writeStringToFile("kernel", tree.getDefaultKernelPaths()[0]);
         FileUtils.writeStringToFile("kernel-xen", tree.getKernelXenPath());
 
 
-        createDirIfNotExists(new File(tree.getDefaultInitrdPaths()[0]).getParentFile());
-        createDirIfNotExists(new File(tree.getInitrdXenPath()).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getDefaultInitrdPaths()[0]).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getInitrdXenPath()).getParentFile());
 
         FileUtils.writeStringToFile("initrd-xen", tree.getInitrdXenPath());
         FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPaths()[0]);
@@ -302,9 +302,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
         for (Map.Entry<Long, String[]> entry : archMap.entrySet()) {
             KickstartableTree tree = this.createSUSEKsTreeByArch(entry.getKey(), ksRoot);
-            assertContains(Arrays.asList(tree.getDefaultKernelPaths()),
+            TestUtils.assertContains(Arrays.asList(tree.getDefaultKernelPaths()),
                            String.format(entry.getValue()[1], entry.getValue()[0]));
-            assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
+            TestUtils.assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
                            String.format(entry.getValue()[2], entry.getValue()[0]));
         }
     }

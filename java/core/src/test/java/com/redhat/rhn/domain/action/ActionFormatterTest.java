@@ -21,24 +21,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * ActionFormatterTest  - test the formatters associated with the Actions.
  */
-public class ActionFormatterTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith(UserForTestCaseExtension.class)
+public class ActionFormatterTest extends BaseTestCase {
 
-    private User user;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        user = UserTestUtils.createUser(this);
-    }
+    @UserForTest(useClassNameForOrg = true)
+    protected User user;
 
     /**
      * Test formatting an Action

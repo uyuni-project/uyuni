@@ -23,14 +23,17 @@ import com.redhat.rhn.frontend.action.common.RhnSetActionTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * BaseSystemListActionTest
  */
-public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public abstract class BaseSystemListActionTestCase extends BaseTestCase {
 
     @Test
     public void testAddOne() throws Exception {

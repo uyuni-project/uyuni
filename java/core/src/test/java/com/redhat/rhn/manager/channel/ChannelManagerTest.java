@@ -167,7 +167,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.vendorChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.myChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
 
@@ -214,7 +214,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -233,13 +233,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
     public void testOwnedChannelsTree() {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.createUser()).isEmpty());
-        assertNotEmpty(ChannelManager.ownedChannelsTree(user));
+        TestUtils.assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
 
     @Test
@@ -253,7 +253,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ChannelFactory.save(channel);
 
         DataResult<ChannelTreeNode> dr = ChannelManager.retiredChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -867,7 +867,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Map<Channel, Channel> children = ChannelManager.
                                 findCompatibleChildren(parent, parent1, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
 
         // look for a a clone of a cloned channel
@@ -882,7 +882,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         children = ChannelManager.
                 findCompatibleChildren(parent, parent2, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
         assertEquals(child2, children.values().iterator().next());
     }
@@ -912,7 +912,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
         assertEquals(child1, children.values().iterator().next());
 
