@@ -26,7 +26,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -40,6 +41,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -48,7 +50,8 @@ import java.util.Set;
 /** JUnit test case for the User
  *  class.
  */
-public class UserTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class UserTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
