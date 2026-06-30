@@ -10,8 +10,7 @@
  */
 package com.redhat.rhn.testing;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
 
@@ -19,22 +18,9 @@ import java.nio.file.Path;
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
  * but it extends from {@link MockObjectTestCase}.
  */
-public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
 
+    @SaltTestRootPath
     protected Path tmpSaltRoot;
-
-    @BeforeEach
-    public void setUpRhnJmockBaseTestCase() throws Exception {
-        tmpSaltRoot = setupSaltConfigurationForTests();
-    }
-
-    /**
-     * Called once per test method to clean up.
-     *
-     * @throws Exception if an error occurs during tear down
-     */
-    @AfterEach
-    public void tearDownRhnJmockBaseTestCase() throws Exception {
-        cleanupSaltConfiguration(tmpSaltRoot);
-    }
 }
