@@ -92,3 +92,11 @@ tests:
                 key: password
                 name: myscccreds
                 optional: false
+
+  - it: should fail to render if the repository value is not set
+    set:
+      global.fqdn: uyuni.example.com
+      repository: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "The repository value is required!"
