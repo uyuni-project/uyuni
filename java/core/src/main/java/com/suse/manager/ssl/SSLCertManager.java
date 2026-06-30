@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -145,11 +146,13 @@ public class SSLCertManager {
                         return Arrays.stream(line.split(","))
                                 .filter(dns -> dns.contains("DNS:"))
                                 .map(dns -> dns.split(":")[1].trim())
+                                // Filter out SANs which are definitely not FQDN - without any .
+                                .filter(name -> name.contains("."))
                                 .collect(Collectors.toSet());
                     }
                     return null;
                 })
-                .filter(name -> name != null)
+                .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }
