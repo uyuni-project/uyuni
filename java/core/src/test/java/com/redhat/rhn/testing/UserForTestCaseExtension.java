@@ -49,16 +49,17 @@ public class UserForTestCaseExtension extends TestCaseExtension implements Befor
             throw new IllegalStateException("Annotation params userName and orgName must be used together");
         }
 
-        if (useClassNameForOrg) {
-            temporaryUser = UserTestUtils.createUser(instance);
-        }
-        else if (useUserName && useOrgName) {
-            temporaryUser = UserTestUtils.createUser(annotation.userName(), annotation.orgName());
-        }
-        else {
-            temporaryUser = UserTestUtils.createUser();
-        }
+        // if (useClassNameForOrg) {
+        //     temporaryUser = UserTestUtils.createUser(instance);
+        // }
+        // else if (useUserName && useOrgName) {
+        //     temporaryUser = UserTestUtils.createUser(annotation.userName(), annotation.orgName());
+        // }
+        // else {
+        //     temporaryUser = UserTestUtils.createUser();
+        // }
 
+        temporaryUser = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         field.set(instance, temporaryUser);
     }
 }
