@@ -50,7 +50,7 @@ usage() {
     print "Deploys the Uyuni webapp."
     print ""
     print "Mandatory Arguments:"
-    print "  <type>                 The type of deployment to perform: backend, frontend, salt or all."
+    print "  <type>                 The type of deployment to perform: backend, frontend, salt, restart-only or all."
     print ""
     print "Optional Arguments:"
     print "  -m,--mode <mode>        Deployment mode: local, remote, container, remote-container, kubectl (default: $DEPLOY_MODE)"
@@ -111,7 +111,7 @@ while [[ $# -gt 0 ]]; do
             usage
             exit 0
             ;;
-        frontend|backend|salt|all)
+        frontend|backend|salt|restart-only|all)
             DEPLOY_TARGET="$1"
             shift
             ;;
@@ -415,6 +415,15 @@ main() {
 
         salt)
             deploy_salt
+            ;;
+
+        restart-only)
+            # Just restart services without deploying anything.
+            # If the user didn't specify which one to restart, restart both by default.
+            if [ "$RESTART_TOMCAT" = false ] && [ "$RESTART_TASKOMATIC" = false ]; then
+                RESTART_TOMCAT=true
+                RESTART_TASKOMATIC=true
+            fi
             ;;
 
         all)
