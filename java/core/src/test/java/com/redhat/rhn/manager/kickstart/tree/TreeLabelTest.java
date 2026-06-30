@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -81,6 +82,7 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testValidateLabel() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
 
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));

@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.admin.handlers;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestStatics;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.admin.PaygAdminManager;
@@ -121,7 +121,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         ResultJson resultJson = GSON.fromJson(json, ResultJson.class);
         assertTrue(resultJson.isSuccess());
         assertEquals(resultJson.getMessages().size(), 1);
-        assertContains(resultJson.getMessages().get(0).toString(), "success");
+        TestUtils.assertContains(resultJson.getMessages().get(0).toString(), "success");
         assertNull(resultJson.getErrors());
     }
 

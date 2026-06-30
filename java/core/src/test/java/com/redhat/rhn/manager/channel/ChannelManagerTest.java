@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -88,6 +89,7 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -114,6 +116,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     private static TaskomaticApi taskomaticApi;
 
@@ -167,7 +174,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.vendorChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -179,7 +186,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.myChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
 
@@ -214,7 +221,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -233,13 +240,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
     public void testOwnedChannelsTree() {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.createUser()).isEmpty());
-        assertNotEmpty(ChannelManager.ownedChannelsTree(user));
+        TestUtils.assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
 
     @Test
@@ -253,7 +260,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ChannelFactory.save(channel);
 
         DataResult<ChannelTreeNode> dr = ChannelManager.retiredChannelTree(user, null);
-        assertNotEmpty(dr);
+        TestUtils.assertNotEmpty(dr);
     }
 
     @Test
@@ -867,7 +874,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Map<Channel, Channel> children = ChannelManager.
                                 findCompatibleChildren(parent, parent1, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
 
         // look for a a clone of a cloned channel
@@ -882,7 +889,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         children = ChannelManager.
                 findCompatibleChildren(parent, parent2, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
         assertEquals(child2, children.values().iterator().next());
     }
@@ -912,7 +919,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
 
-        assertNotEmpty(children.keySet());
+        TestUtils.assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
         assertEquals(child1, children.values().iterator().next());
 

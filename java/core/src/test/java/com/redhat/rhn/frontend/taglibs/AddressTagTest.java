@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -33,7 +33,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * AddressMenuTagTest
  */
-public class AddressTagTest extends RhnBaseTestCase {
+public class AddressTagTest extends BaseTestCase {
 
     private ActionHelper sah;
 

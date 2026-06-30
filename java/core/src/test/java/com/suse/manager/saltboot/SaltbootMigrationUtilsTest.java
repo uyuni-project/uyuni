@@ -20,10 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
@@ -39,12 +40,13 @@ import java.util.List;
 /**
  * Test for {@link SaltbootMigrationUtils}.
  */
-public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
+public class SaltbootMigrationUtilsTest extends BaseTestCaseWithUser {
 
     private CobblerConnection client;
 
     @BeforeEach
     public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         MockConnection.clear();
         client = new MockConnection("http://localhost", "token");
     }

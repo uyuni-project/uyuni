@@ -17,14 +17,14 @@ package com.redhat.rhn.domain.rhnpackage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * PackageEvrTest
  */
-public class PackageEvrFactoryTest extends RhnBaseTestCase {
+public class PackageEvrFactoryTest extends BaseTestCase {
 
     /**
      * Simple test to make sure we can create

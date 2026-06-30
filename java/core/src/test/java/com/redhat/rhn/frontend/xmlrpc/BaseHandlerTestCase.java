@@ -19,19 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.access.AccessGroup;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-public class BaseHandlerTestCase extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class BaseHandlerTestCase extends BaseTestCase {
     /*
      * admin - Org Admin
      * regular - regular user
@@ -71,7 +74,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         org.addRole(RoleFactory.SYSTEM_GROUP_ADMIN);
 
         // Setup configuration for kickstart tests (mock cobbler etc.)
-        KickstartDataTest.setupTestConfiguration(admin);
+        KickstartTestUtils.setupTestConfiguration(admin);
     }
 
     @Override

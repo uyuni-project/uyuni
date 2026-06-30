@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * KickstartLocaleCommandTest - test for KickstartDetailsCommand
  */
-public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
+public class KickstartLocaleCommandTest extends KickstartBaseTest {
 
     @Test
     public void testKickstartLocaleCommand() throws Exception {

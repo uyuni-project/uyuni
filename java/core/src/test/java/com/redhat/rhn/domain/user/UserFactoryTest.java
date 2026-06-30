@@ -30,13 +30,15 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +49,8 @@ import java.util.TimeZone;
 /**
  * JUnit test case for the User class.
  */
-public class UserFactoryTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class UserFactoryTest extends BaseTestCase {
     private UserFactory factory;
 
     @BeforeEach
@@ -132,7 +135,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         List<User> userList = UserFactory.lookupByIds(idList);
         assertNotNull(userList);
         assertNotNull(userList.get(1).getFirstNames());
-        assertContains(userList.get(1).getLogin(), "testUserSecond");
+        assertTrue(userList.get(1).getLogin().contains("testUserSecond"));
     }
 
     @Test

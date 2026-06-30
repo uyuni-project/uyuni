@@ -252,7 +252,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.SLES_PREFIX));
 
-        assertContains(ksdata.getKickstartPackageNames(), "salt");
+        TestUtils.assertContains(ksdata.getKickstartPackageNames(), "salt");
     }
 
     @Test

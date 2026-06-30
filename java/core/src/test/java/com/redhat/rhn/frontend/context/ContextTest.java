@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.context;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,9 +27,7 @@ import java.util.TimeZone;
 /**
  * ContextTest to test the static access to the Context object
  */
-public class ContextTest extends RhnBaseTestCase {
-
-
+public class ContextTest extends BaseTestCase {
 
     @Test
     public void testCreateContext() {

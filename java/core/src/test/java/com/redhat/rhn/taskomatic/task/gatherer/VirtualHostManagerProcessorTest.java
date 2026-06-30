@@ -122,7 +122,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        assertContains(virtualHostManager.getServers(), existingHost);
+        TestUtils.assertContains(virtualHostManager.getServers(), existingHost);
     }
 
     /**
@@ -205,7 +205,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         VirtualInstance guestFromDb = guestsFromDb.iterator().next();
         assertNotNull(newHost);
-        assertContains(newHost.getGuests(), guestFromDb);
+        TestUtils.assertContains(newHost.getGuests(), guestFromDb);
 
         assertNotNull(guestFromDb);
         assertEquals(guestFromDb.getHostSystem(), newHost);
@@ -243,7 +243,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, virtualInstances.size());
         VirtualInstance guest = virtualInstances.iterator().next();
-        assertContains(host.getGuests(), guest);
+        TestUtils.assertContains(host.getGuests(), guest);
         assertEquals(host, guest.getHostSystem());
 
         // now our guest is reported by a different host
@@ -259,7 +259,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, virtualInstances.size());
         guest = virtualInstances.iterator().next();
-        assertContains(anotherHost.getGuests(), guest);
+        TestUtils.assertContains(anotherHost.getGuests(), guest);
         assertEquals(anotherHost, guest.getHostSystem());
         // the original host shouldn't know about the guest anymore
         host = ServerFactory.lookupForeignSystemByDigitalServerId("101-existing_host_id");
@@ -342,7 +342,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance guestFromDb = guestsFromDb.iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
         assertEquals(1, hostServer.getGuests().size());
-        assertContains(hostServer.getGuests(), guestFromDb);
+        TestUtils.assertContains(hostServer.getGuests(), guestFromDb);
     }
 
     /**
@@ -422,7 +422,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         VirtualInstanceFactory factory = VirtualInstanceFactory.getInstance();
         assertTrue(factory.lookupVirtualInstanceByUuid("06b6-0065-9810-4186b513b33bd6190360").isEmpty());
-        assertNotEmpty(factory.lookupVirtualInstanceByUuid("06b6006598104186b513b33bd6190360"));
+        TestUtils.assertNotEmpty(factory.lookupVirtualInstanceByUuid("06b6006598104186b513b33bd6190360"));
     }
 
     /**

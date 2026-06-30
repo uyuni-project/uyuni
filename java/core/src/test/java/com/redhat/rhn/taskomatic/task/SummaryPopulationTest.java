@@ -16,14 +16,14 @@ package com.redhat.rhn.taskomatic.task;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * SummaryPopulationTest
  */
-public class SummaryPopulationTest extends RhnBaseTestCase {
+public class SummaryPopulationTest extends BaseTestCase {
 
     @Test
     public void testExecute() {

@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTestHelper;
@@ -36,6 +37,8 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradeProfiles() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+
         TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
         List<Task> l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
         assertInstanceOf(Task.class, l.get(0));

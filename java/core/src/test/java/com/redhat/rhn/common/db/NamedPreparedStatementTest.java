@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NamedPreparedStatementTest extends RhnBaseTestCase {
+public class NamedPreparedStatementTest extends BaseTestCase {
 
     private Session session;
 

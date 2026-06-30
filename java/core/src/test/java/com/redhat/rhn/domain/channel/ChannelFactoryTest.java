@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -33,8 +33,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * ChannelFactoryTest
  */
-public class ChannelFactoryTest extends RhnBaseTestCase {
+public class ChannelFactoryTest extends BaseTestCase {
 
     @Test
     public void testChannelFactory() {
@@ -316,7 +316,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.createUser(this);
         // Setup test config since kickstartable trees are required
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
 
         List<Channel> channels = ChannelFactory.getKickstartableChannels(user.getOrg());
         assertNotNull(channels);
@@ -439,7 +439,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         List<String> labels = ChannelFactory.findChannelArchLabelsSyncdChannels();
         assertNotNull(labels);
-        assertNotEmpty(labels);
+        assertFalse(labels.isEmpty());
     }
 
     @Test

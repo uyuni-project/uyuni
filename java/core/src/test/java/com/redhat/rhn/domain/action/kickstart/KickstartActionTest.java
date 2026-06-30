@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.common.FileList;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -33,7 +33,7 @@ import java.util.Date;
 /**
  * KickstartActionTest
  */
-public class KickstartActionTest extends RhnBaseTestCase {
+public class KickstartActionTest extends BaseTestCase {
 
     /**
      * Test fetching a KickstartAction

@@ -28,11 +28,13 @@ import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.errata.cache.UpdateErrataCacheCommand;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ErrataTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +44,8 @@ import java.util.stream.IntStream;
 /**
  * RendererHelperTest
  */
-public class RendererHelperTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class RendererHelperTest extends BaseTestCase {
 
     private static final int PAGE_SIZE = 5;
 

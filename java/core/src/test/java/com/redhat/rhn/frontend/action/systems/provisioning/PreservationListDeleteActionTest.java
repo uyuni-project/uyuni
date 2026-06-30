@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.FileListTest;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * PreservationListDeleteActionTest
  */
-public class PreservationListDeleteActionTest extends RhnBaseTestCase {
+public class PreservationListDeleteActionTest extends BaseTestCase {
     private Action action = null;
 
     @BeforeEach

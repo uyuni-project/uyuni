@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +98,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
             fail("Should throw NoSuchImageStoreException.");
         }
         catch (NoSuchImageStoreException e) {
-            assertContains(e.getMessage(), "registry.mgr");
+            TestUtils.assertContains(e.getMessage(), "registry.mgr");
             return;
         }
         fail();

@@ -18,7 +18,7 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-public class CredentialsTest extends JMockBaseTestCaseWithUser {
+public class CredentialsTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
