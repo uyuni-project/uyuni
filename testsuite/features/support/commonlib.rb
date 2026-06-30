@@ -171,12 +171,11 @@ def click_button_and_wait(locator = nil, **options)
 
     # Playwright's action timeout fired while waiting for the post-click navigation to settle
     # (common on slow JSP pages like Cobbler where form processing exceeds 11 s).
-    # Retry via the native Playwright locator with an extended 60 s timeout.
-    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- retrying with 60 s timeout"
+    # The click itself was dispatched and the form submitted -- just wait for the resulting
+    # page navigation to finish instead of re-clicking (the button is gone on the new page).
+    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- waiting for page load to complete"
     page.driver.with_playwright_page do |pw_page|
-      pw_page.get_by_role('button', name: locator)
-             .or(pw_page.locator("input[type=submit][value='#{locator}']"))
-             .click(timeout: 60_000)
+      pw_page.wait_for_load_state('load', timeout: 60_000)
     end
   end
   begin
@@ -197,6 +196,13 @@ def click_link_and_wait(locator = nil, **options)
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
     $stdout.puts e.message # Skip errors related to .senna-loading element
+  end
+  begin
+    # Playwright dispatches the click and returns before Senna's AJAX navigation updates
+    # the DOM. Wait for domcontentloaded so the next step sees the new page content.
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state('domcontentloaded', timeout: 5_000) }
+  rescue Playwright::Error
+    # No navigation occurred or already at domcontentloaded -- acceptable
   end
 end
 

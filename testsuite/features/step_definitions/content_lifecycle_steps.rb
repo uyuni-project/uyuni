@@ -121,13 +121,12 @@ When(/^I add "([^"]*)" calendar file as url$/) do |file|
   get_target('server').run("chmod 644 #{dest}")
   url = "https://#{get_target('server').full_hostname}/pub/" + file
   log "URL: #{url}"
-  # The React create-calendar panel renders this field as disabled during component mount and
-  # enables it asynchronously. Playwright's lower latency reaches fill_in before React finishes.
-  # Poll up to 10 s for the field to become enabled before attempting to fill it.
-  raise ScriptError, "Field 'calendar-data-text' did not become enabled" unless
-    has_field?('calendar-data-text', disabled: false, wait: 10)
-
-  step %(I enter "#{url}" as "calendar-data-text")
+  # Playwright's locator.fill waits for the element to be visible, attached, and editable
+  # before typing -- this handles any React async initialization of the field without a
+  # separate has_field? guard (which has proved unreliable with the Playwright driver).
+  page.driver.with_playwright_page do |pw_page|
+    pw_page.locator('#calendar-data-text').fill(url)
+  end
 end
 
 When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
