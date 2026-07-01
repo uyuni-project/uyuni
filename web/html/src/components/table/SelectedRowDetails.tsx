@@ -1,6 +1,6 @@
 import { Button } from "components/buttons";
 
-type SearchPanelPropss = {
+type SelectedRowDetailsProps = {
   /** total number of filtered items */
   itemCount: number;
 
@@ -17,53 +17,49 @@ type SearchPanelPropss = {
   onSelectAll: () => void;
 };
 
-/** Panel containing the search fields for a table */
-export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SearchPanelPropss) {
+/** Panel containing selected row details for a table */
+export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SelectedRowDetailsProps) {
+  const isVisible = selectable && selectedCount > 0;
+  const allSelected = selectedCount === props.itemCount;
   return (
-    <>
-      {selectable && selectedCount > 0 && (
-        <div className="selected-row-details">
-          <span>
-            {selectedCount === props.itemCount ? (
-              <>
-                {t(
-                  `All {totalCount, plural,
-                    one {1 item selected.}
-                    other {{totalCount} items selected.}
-                  }` as string,
-                  { totalCount: props.itemCount }
-                )}
-                <button className="btn btn-tertiary ms-2" onClick={props.onClear}>
-                  {t("Clear")}
-                </button>
-              </>
-            ) : (
-              <>
-                {t(
-                  `{itemCount, plural,
+    <div className={`selected-row-details ${isVisible ? "show-details" : "hide-details"}`}>
+      {allSelected ? (
+        <>
+          {t(
+            `All {totalCount, plural,
+                    one {1 item}
+                    other {{totalCount} items}
+                  } across all pages selected.` as string,
+            { totalCount: props.itemCount }
+          )}
+          <Button className="btn-tertiary ms-2" handler={props.onClear}>
+            {t("Clear All")}
+          </Button>
+        </>
+      ) : (
+        <>
+          {t(
+            `{itemCount, plural,
                     one {1 item selected.}
                     other {{itemCount} items selected.}
                   }` as string,
-                  { itemCount: selectedCount }
-                )}
-                <Button className="btn btn-tertiary ms-2" handler={props.onSelectAll}>
-                  {t(
-                    `Select all {totalCount, plural,
-                    one {1 item.}
-                    other {{totalCount} items.}
-                  }` as string,
-                    { totalCount: props.itemCount }
-                  )}
-                </Button>
-                <span aria-hidden="true">&nbsp;|&nbsp;</span>
-                <Button className="btn btn-tertiary" handler={props.onClear}>
-                  {t("Clear")}
-                </Button>
-              </>
+            { itemCount: selectedCount }
+          )}
+          <Button className="btn-tertiary ms-2" handler={props.onSelectAll}>
+            {t(
+              `Select all {totalCount, plural,
+                    one {1 item}
+                    other {{totalCount} items}
+                  } across all pages` as string,
+              { totalCount: props.itemCount }
             )}
-          </span>
-        </div>
+          </Button>
+          <span aria-hidden="true">&nbsp;|&nbsp;</span>
+          <Button className="btn-tertiary" handler={props.onClear}>
+            {t("Clear All")}
+          </Button>
+        </>
       )}
-    </>
+    </div>
   );
 }
