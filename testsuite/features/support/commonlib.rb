@@ -122,25 +122,16 @@ end
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
 def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  # WORKAROUND: Chrome 134+ raises Capybara::ElementNotFound, StaleElementReferenceError, or
-  # NoMethodError (CDP response type mismatch) during page navigation, bypassing Capybara's
-  # synchronize() retry mechanism. All three are caught and retried. All other exceptions still
-  # propagate. Uses a plain Time.now loop instead of repeat_until_timeout / Timeout.timeout to
-  # avoid interrupting WebDriver mid-call, which corrupts the Selenium session.
-  deadline = Time.now + timeout
-  while Time.now < deadline
-    begin
-      return true if has_text?(text1, wait: 1)
-      return true if !text2.nil? && has_text?(text2, wait: 1)
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
-      # page mid-navigation, let it settle and retry
-      sleep 2
-    end
-  end
+  # Rely on Capybara's (Playwright-backed) native auto-waiting instead of a hand-rolled
+  # polling loop: has_text? already polls the page until the text appears or `wait` elapses.
+  # When two candidates are given, OR them into a single Regexp so the whole `timeout` budget
+  # is shared across both instead of being spent sequentially on each one (the old loop waited
+  # 1s on text1 before ever looking at text2). Capybara.default_normalize_ws collapses
+  # whitespace for us. Regexp.union escapes both strings, so regex metacharacters stay literal.
+  pattern = text2.nil? ? text1 : Regexp.union(text1, text2)
+  has_text?(pattern, wait: timeout)
+rescue Capybara::ElementNotFound, NoMethodError
+  # Page was mid-navigation / driver transiently unusable: treat as "not found".
   false
 end
 
@@ -158,13 +149,13 @@ end
 
 # This Ruby function refreshes the current page and handles any modal not found errors.
 def refresh_page
-  begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
+  # A bare reload usually fires no JS prompt, so bound the wait: the Playwright driver passes
+  # this straight to the modal future and value!(nil) would otherwise block forever.
+  accept_prompt(wait: Capybara.default_max_wait_time) do
+    execute_script 'window.location.reload()'
   end
+rescue Capybara::ModalNotFound
+  # no beforeunload dialog appeared - page reloaded normally
 end
 
 #
@@ -173,7 +164,20 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, **options)
+  begin
+    click_button(locator, **options)
+  rescue Playwright::Error => e
+    raise unless e.message.include?('Timeout') && locator
+
+    # Playwright's action timeout fired while waiting for the post-click navigation to settle
+    # (common on slow JSP pages like Cobbler where form processing exceeds 11 s).
+    # The click itself was dispatched and the form submitted -- just wait for the resulting
+    # page navigation to finish instead of re-clicking (the button is gone on the new page).
+    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- waiting for page load to complete"
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.wait_for_load_state(state: 'load', timeout: 60_000)
+    end
+  end
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -185,13 +189,28 @@ end
 # Clicks on a link and waits for any AJAX transition to complete.
 #
 # @param locator [String, nil] The locator for the link to click.
+# @param force [Boolean] When true, uses Playwright force-click (bypasses overlay/actionability
+#   checks). Useful for <a> elements styled as buttons where the standard click is intercepted.
 # @param options [Hash] Additional options for the click action.
-def click_link_and_wait(locator = nil, **options)
-  click_link(locator, **options)
+def click_link_and_wait(locator = nil, force: false, **options)
+  if force && locator
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.get_by_role('link', name: locator, exact: false).click(force: true)
+    end
+  else
+    click_link(locator, **options)
+  end
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
     $stdout.puts e.message # Skip errors related to .senna-loading element
+  end
+  begin
+    # Playwright dispatches the click and returns before Senna's AJAX navigation updates
+    # the DOM. Wait for domcontentloaded so the next step sees the new page content.
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'domcontentloaded', timeout: 5_000) }
+  rescue Playwright::Error
+    # No navigation occurred or already at domcontentloaded -- acceptable
   end
 end
 

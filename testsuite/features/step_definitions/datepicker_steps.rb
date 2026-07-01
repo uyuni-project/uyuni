@@ -13,7 +13,7 @@ Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
   date_input = find('input[data-testid="date-picker"]')
   date_input.click
-  # TODO: Switch this over to .clear once we update Selenium
+  # TODO: Evaluate switching this over to .clear now that the Playwright driver is in use
   date_input.send_keys [:control, 'a'], :backspace, value.strftime('%Y-%m-%d'), :enter
 end
 
@@ -76,12 +76,12 @@ When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
 
   date_input = find('input[data-testid="date-picker"]')
   date_input.click
-  # TODO: Switch this over to .clear once we update Selenium
+  # TODO: Evaluate switching this over to .clear now that the Playwright driver is in use
   date_input.send_keys [:control, 'a'], :backspace, action_date, :enter
 
   time_input = find('input[data-testid="time-picker"]')
   time_input.click
-  # TODO: Switch this over to .clear once we update Selenium
+  # TODO: Evaluate switching this over to .clear now that the Playwright driver is in use
   time_input.send_keys [:control, 'a'], :backspace, action_time, :enter
 end
 
