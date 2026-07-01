@@ -21,7 +21,8 @@ import java.util.Arrays;
 public enum CoCoResultType {
     NONE(0),
     SEV_SNP(1),
-    SECURE_BOOT(2);
+    SECURE_BOOT(2),
+    IBM_PVATTEST(3);
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final int value;

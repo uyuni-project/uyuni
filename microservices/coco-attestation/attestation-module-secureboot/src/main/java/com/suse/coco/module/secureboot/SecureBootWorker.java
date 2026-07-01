@@ -21,7 +21,16 @@ public class SecureBootWorker implements AttestationWorker {
     private static final Logger LOGGER = LogManager.getLogger(SecureBootWorker.class);
 
     @Override
-    public boolean process(SqlSession session, AttestationResult result) {
+    public boolean processRequest(SqlSession session, AttestationResult result) {
+        LOGGER.debug("Processing attestation request {}", result.getId());
+
+        //no input data
+        result.setInData("{}");
+        return true;
+    }
+
+    @Override
+    public boolean processVerification(SqlSession session, AttestationResult result) {
         try {
             LOGGER.debug("Processing attestation result {}", result.getId());
 

@@ -10010,6 +10010,18 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label">
         <source>KVM on AMD Epyc - Turin</source>
       </trans-unit>
+      <trans-unit id="coco.environment.kvm_ibm_z16.description">
+        <source>KVM on IBM z16 series</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_ibm_z16.label">
+        <source>KVM on IBM z16 series</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_ibm_z17.description">
+        <source>KVM on IBM z17 series</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_ibm_z17.label">
+        <source>KVM on IBM z17 series</source>
+      </trans-unit>
       <trans-unit id="coco.resultType.none.description">
         <source>Result Type not found</source>
       </trans-unit>
@@ -10025,6 +10037,12 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.resultType.secure_boot.label">
         <source>Secure Boot</source>
       </trans-unit>
+      <trans-unit id="coco.resultType.ibm_pvattest.description">
+        <source>IBM Secure Execution (IBM SEL)</source>
+      </trans-unit>
+      <trans-unit id="coco.resultType.ibm_pvattest.label">
+        <source>IBM SEL PVATTEST</source>
+      </trans-unit>
       <trans-unit id="coco.status.pending.description">
         <source>Pending</source>
       </trans-unit>
@@ -10033,6 +10051,15 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="coco.status.failed.description">
         <source>Failed</source>
+      </trans-unit>
+      <trans-unit id="coco.status.requested.description">
+        <source>Requested</source>
+      </trans-unit>
+      <trans-unit id="coco.status.queued.description">
+        <source>Queued</source>
+      </trans-unit>
+      <trans-unit id="coco.status.submitted.description">
+        <source>Submitted</source>
       </trans-unit>
       <trans-unit id="system.audit.coco.unsupported">
         <source>This system does not have any Confidential Computing capability.</source>

@@ -17,6 +17,7 @@ package com.suse.manager.attestation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,8 +40,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.attestation.AttestationFactory;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.attestation.CoCoReportStatus;
+import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -52,7 +54,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -115,7 +116,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateAttestationAction() throws TaskomaticApiException {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        mgr.createConfig(user, minion, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        var config = mgr.createConfig(user, minion, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        config.setInData(Map.of("dummyConfigKey1", "dummyConfigVal1", "dummyConfigKey2", "dummyConfigVal2"));
+
         Date now = new Date();
         CoCoAttestationAction action = mgr.scheduleAttestationAction(user, minion, now);
         assertNotNull(action);
@@ -124,14 +127,18 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         Optional<ServerCoCoAttestationReport> latestReport = f.lookupLatestReportByServer(minion);
         Map<String, Object> inData = latestReport.orElse(new ServerCoCoAttestationReport()).getInData();
         assertNotNull(inData);
-        String nonceReport = (String) inData.getOrDefault("nonce", "not in report");
+        //no more data at initial stage
+        assertEquals(0, inData.size());
+
+        Map<String, Object> configData = latestReport.orElse(new ServerCoCoAttestationReport()).getConfigData();
+        assertNotNull(configData);
+        assertEquals(2, configData.size());
+        assertTrue(configData.containsKey("dummyConfigKey1"));
+        assertTrue(configData.containsKey("dummyConfigKey2"));
+
         Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElse(new Pillar());
-        Map<String, Object> attestationData = (Map<String, Object>) pillar.getPillar()
-                .getOrDefault("attestation_data", new HashMap<>());
-        String noncePillar = (String) attestationData.getOrDefault("nonce", "not in pillar");
-        assertEquals(nonceReport, noncePillar);
-        assertEquals("KVM_AMD_EPYC_GENOA",
-                attestationData.getOrDefault("environment_type", "environment_type not found"));
+        //no more pillars at initial stage
+        assertNull(pillar.getPillar());
     }
 
     @Test
@@ -170,7 +177,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, reports.size());
 
         ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
-        assertEquals(CoCoAttestationStatus.SUCCEEDED, latestReport.getStatus());
+        assertEquals(CoCoReportStatus.SUCCEEDED, latestReport.getStatus());
         assertEquals("Some details", latestReport.getResults().get(0).getDetailsOpt().orElse(""));
     }
 
@@ -267,7 +274,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     }
     private void fakeSuccessfullAttestation(ServerCoCoAttestationReport reportIn) {
         reportIn.getResults().forEach(res -> {
-            res.setStatus(CoCoAttestationStatus.SUCCEEDED);
+            res.setStatus(CoCoResultStatus.SUCCEEDED);
             res.setDetails("Some details");
             res.setAttested(new Date());
         });

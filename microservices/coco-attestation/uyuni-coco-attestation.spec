@@ -53,6 +53,15 @@ BuildArch:      noarch
 System daemon used by %{productprettyname} to validate the results of confidential computing attestation.
 
 %ifarch x86_64
+%package module-pvattest
+Summary:        Confidential computing Pvattest attestation module for %{productprettyname}
+Requires:       s390-tools
+
+%description module-pvattest
+Module for the %{productprettyname} Confidential Computing Attestation that uses Pvattest.
+%endif
+
+%ifarch x86_64
 %package module-snpguest
 Summary:        Confidential computing SNPGuest attestation module for %{productprettyname}
 Requires:       snpguest
@@ -78,6 +87,11 @@ Package containing the Javadoc API documentation for %{name}.
 %setup -q
 
 %ifnarch x86_64
+# Disable the module pvattest as it requires x86_64
+%pom_disable_module 'attestation-module-pvattest'
+%endif
+
+%ifnarch x86_64
 # Disable the module snpguest as it requires x86_64
 %pom_disable_module 'attestation-module-snpguest'
 %endif
@@ -92,6 +106,8 @@ Package containing the Javadoc API documentation for %{name}.
 %pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="client"]' 'scram-client' attestation-core/pom.xml
 %pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="common"]' 'scram-common' attestation-core/pom.xml
 %endif
+
+%{mvn_package} ':attestation-module-pvattest' module-pvattest
 
 %{mvn_package} ':attestation-module-snpguest' module-snpguest
 
@@ -123,18 +139,24 @@ ln -s -f -r %{buildroot}%{_javadir}/uyuni-coco-attestation/*.jar %{buildroot}%{_
 
 %ifarch x86_64
 # Install snpguest certificates
-cd attestation-module-snpguest/src/package/certs/
+cd attestation-module-snpguest/src/package/certs/snpguest
 for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
     echo $FILE
-    install -D -p -m 644 $FILE %{buildroot}%{_datadir}/coco-attestation/certs/$FILE
+    install -D -p -m 644 $FILE %{buildroot}%{_datadir}/coco-attestation/certs/snpguest/$FILE
 done
 cd -
+%endif
+
+%ifarch x86_64
+# Install pvattest certificate
+install  -D -p -m 644 attestation-module-pvattest/src/package/certs/pvattest/DigiCertCA.pem  %{buildroot}%{_datadir}/coco-attestation/certs/pvattest/DigiCertCA.pem
 %endif
 
 %files core -f .mfiles
 %dir %{_datadir}/coco-attestation/
 %dir %{_datadir}/coco-attestation/conf/
 %dir %{_datadir}/coco-attestation/lib/
+%dir %{_datadir}/coco-attestation/certs/
 %dir %{_datadir}/coco-attestation/classes/
 %{_datadir}/coco-attestation/lib/*
 %attr(755, root, root) %{_sbindir}/coco-attestation
@@ -146,10 +168,18 @@ cd -
 %exclude %{_datadir}/coco-attestation/lib/attestation-module-*
 
 %ifarch x86_64
+%files module-pvattest -f .mfiles-module-pvattest
+%dir %{_datadir}/coco-attestation/certs/pvattest/
+%{_datadir}/coco-attestation/lib/attestation-module-pvattest.jar
+%{_datadir}/coco-attestation/certs/pvattest/*
+%license LICENSE
+%endif
+
+%ifarch x86_64
 %files module-snpguest -f .mfiles-module-snpguest
-%dir %{_datadir}/coco-attestation/certs/
+%dir %{_datadir}/coco-attestation/certs/snpguest/
 %{_datadir}/coco-attestation/lib/attestation-module-snpguest.jar
-%{_datadir}/coco-attestation/certs/*
+%{_datadir}/coco-attestation/certs/snpguest/*
 %license LICENSE
 %endif
 
