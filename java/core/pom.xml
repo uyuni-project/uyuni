@@ -400,11 +400,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.jctools</groupId>
-            <artifactId>jctools-core</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>mchange-commons-java</artifactId>
             <scope>runtime</scope>
