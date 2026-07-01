@@ -48,7 +48,7 @@
         <div class="panel-body">
           <p><bean:message key="satconfig.jsp.description"/></p>
           <hr />
-          <div class="form-group">
+          <div class="row">
             <label class="col-lg-3 control-label">
               <bean:message key="org-config.orgadm-mgmt.jsp"/>
             </label>

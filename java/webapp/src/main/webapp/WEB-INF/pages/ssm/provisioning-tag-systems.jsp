@@ -16,7 +16,7 @@
     <html:form styleClass="form-horizontal" action="/systems/ssm/provisioning/TagSystems" method="post">
       <rhn:csrf />
       <rhn:submitted />
-      <div class="form-group">
+      <div class="row">
         <label class="col-md-3 control-label">
           <bean:message key="ssm.operations.provisioning.tagsystems.label"/>
         </label>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="row">
         <div class="col-md-offset-3 offset-md-3 col-md-6">
           <button type="submit" class="btn btn-primary">
             <bean:message key='ssm.operations.provisioning.tagsystems.button'/>

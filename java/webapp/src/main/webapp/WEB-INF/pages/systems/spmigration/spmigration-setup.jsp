@@ -41,7 +41,7 @@
     <html:form method="post" styleId="migrationForm"
         action="/systems/details/SPMigration.do?sid=${system.id}">
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="col-sm-2 control-label">
                     <bean:message key="spmigration.jsp.setup.installed-products" />
                 </label>
@@ -62,7 +62,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-sm-2 control-label"> <bean:message
                         key="spmigration.jsp.setup.target-products" />
                 </label>
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <c:if test="${empty targetProducts.missingChannels}">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-sm-2 control-label">
                         <bean:message key="spmigration.jsp.setup.base-channel" />
                     </label>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                     <c:if test="${empty targetProducts.missingChannels}">
                         <%@ include file="/WEB-INF/pages/systems/spmigration/channel-details.jspf"%>
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <c:if test="${!isRedHatMinion}">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-sm-2 control-label">
                         <bean:message key="spmigration.jsp.allow.vendor.change" />
                     </label>
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                     <button type="submit" name="dispatch" class="btn btn-primary" id="submitButton"
                         value='<bean:message key="spmigration.jsp.setup.submit" />'

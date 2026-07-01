@@ -45,7 +45,7 @@
                     <h4><bean:message key="orgdetails.jsp.header"/></h4>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="org.name.jsp"/>:
                         </label>
@@ -54,13 +54,13 @@
                                 <span class="help-block"><strong>Tip:</strong>Between 3 and 128 characters</span>
                             </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.id.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static">
                             <bean:write name="orgDetailsForm" property="id"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="org.active.users.jsp"/>:
                         </label>
@@ -68,28 +68,28 @@
                             <a href="/rhn/admin/multiorg/OrgUsers.do?oid=${param.oid}"><rhn:icon type="header-organisation" /><bean:write name="orgDetailsForm" property="users"/></a>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.systems.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="systems"/></div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.system.groups.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="groups"/></div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.actkeys.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="actkeys"/></div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.kickstart.profiles.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="ksprofiles"/></div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="org.config.channels.jsp"/>:</label>
                         <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="cfgchannels"/></div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-primary">
                                 <bean:message key="orgdetails.jsp.submit"/>

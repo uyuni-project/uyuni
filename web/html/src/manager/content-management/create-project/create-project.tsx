@@ -36,7 +36,7 @@ const CreateProject = () => {
         errors={project.errors}
         onChange={(newProperties) => setProject({ ...project, properties: newProperties })}
       />
-      <div className="form-group">
+      <div className="row">
         <div className="col-md-offset-2 offset-md-2 col-md-10">
           <TopPanelButtons
             onCreate={() =>

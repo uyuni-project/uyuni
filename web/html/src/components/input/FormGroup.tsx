@@ -12,5 +12,5 @@ type Props = {
 
 export function FormGroup(props: Props) {
   const className = !DEPRECATED_unsafeEquals(props.className, null) ? props.className : "";
-  return <div className={`form-group${props.isError ? " has-error" : ""} ${className}`}>{props.children}</div>;
+  return <div className={`row${props.isError ? " has-error" : ""} ${className}`}>{props.children}</div>;
 }

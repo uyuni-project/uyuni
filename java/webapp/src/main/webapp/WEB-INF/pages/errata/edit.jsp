@@ -37,7 +37,7 @@
 
             <h2><bean:message key="errata.edit.senderratamail"/></h2>
             <p><bean:message key="errata.edit.youmaynotify" /></p>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="dispatch" styleClass="btn btn-default">
                         <bean:message key="errata.edit.sendnotification" />
@@ -52,7 +52,7 @@
             <%-- Edit the errata details --%>
             <h2><bean:message key="errata.edit.editerrata" /></h2>
             <p><bean:message key="errata.edit.instructions" /></p>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.synopsis"/>
                 </label>
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.advisory"/>
                 </label>
@@ -69,7 +69,7 @@
                     <html:text property="advisoryName" size="25" maxlength="32" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.advisoryrelease"/>
                 </label>
@@ -77,7 +77,7 @@
                     <html:text property="advisoryRelease" size="4" maxlength="4" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group" id="errata_type">
+            <div class="row" id="errata_type">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.advisorytype"/>
                 </label>
@@ -88,7 +88,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group" id="errata_severity">
+            <div class="row" id="errata_severity">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.advisoryseverity"/>
                 </label>
@@ -100,7 +100,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group" id="errata_status">
+            <div class="row" id="errata_status">
                 <label class="col-lg-3 control-label">
                     <bean:message key="details.jsp.advisorystatus"/>
                 </label>
@@ -108,7 +108,7 @@
                     <html:text property="advisoryStatus" size="30" maxlength="64" styleClass="form-control" disabled="true"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.product"/>
                 </label>
@@ -116,7 +116,7 @@
                     <html:text property="product" size="30" maxlength="64" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.from"/>
                 </label>
@@ -124,7 +124,7 @@
                     <html:text property="errataFrom" size="30" maxlength="127" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.topic"/>
                 </label>
@@ -132,7 +132,7 @@
                     <html:textarea property="topic" cols="80" rows="6" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.description"/>
                 </label>
@@ -140,7 +140,7 @@
                     <html:textarea property="description" cols="80" rows="6" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.solution"/>
                 </label>
@@ -148,16 +148,16 @@
                     <html:textarea property="solution" cols="80" rows="6" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.bugs"/></h3>
                 </div>
             </div>
 
             <c:forEach items="${bugs}" var="bug">
-                <div class="form-group">
+                <div class="row">
                     <div class="well well-sm">
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-lg-3 control-label">
                                     <bean:message key="errata.create.jsp.id"/>
                                 </label>
@@ -167,7 +167,7 @@
                                                size="6" value="${bug.id}" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-lg-3 control-label">
                                     <bean:message key="errata.create.jsp.summary"/>
                                 </label>
@@ -177,7 +177,7 @@
                                                value="${bug.summary}" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-lg-3 control-label">
                                     <bean:message key="errata.create.jsp.bugurl"/>
                                 </label>
@@ -187,7 +187,7 @@
                                                value="${bug.url}" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                     <a class="btn btn-danger"
                                        href="/rhn/errata/manage/DeleteBug.do?eid=<c:out value="${param.eid}"/>&amp;bid=<c:out value="${bug.id}"/>">
@@ -200,15 +200,15 @@
             </c:forEach>
 
             <%-- Display an empty bug shell for input --%>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <h3><bean:message key="errata.create.jsp.newbug"/></h3>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="errata.create.jsp.id"/>
                             </label>
@@ -216,7 +216,7 @@
                                 <html:text property="buglistIdNew" value="" size="6" styleClass="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="errata.create.jsp.summary"/>
                             </label>
@@ -224,7 +224,7 @@
                                 <html:text property="buglistSummaryNew" value="" size="60" styleClass="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="errata.create.jsp.bugurl"/>
                             </label>
@@ -235,7 +235,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.keywords"/>
                 </label>
@@ -246,7 +246,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.references"/>
                 </label>
@@ -254,7 +254,7 @@
                     <html:textarea property="refersTo" cols="40" rows="6" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="errata.create.jsp.notes"/>
                 </label>
@@ -263,7 +263,7 @@
                 </div>
             </div>
             <rhn:hidden name="eid" value="${param.eid}" />
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="dispatch" styleClass="btn btn-primary">
                         <bean:message key="errata.edit.updateerrata"/>

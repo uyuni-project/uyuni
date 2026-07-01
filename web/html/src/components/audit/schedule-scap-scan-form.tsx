@@ -346,7 +346,7 @@ export const ScheduleScapScanForm = ({
             />
           </div>
 
-          <div className="form-group">
+          <div className="row">
             <div className="col-md-offset-3 col-md-6">
               {renderButtons()}
               {createRecurringLink && (

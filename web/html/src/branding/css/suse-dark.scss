@@ -5,7 +5,6 @@ $theme: "suse-dark";
 @import "./base/bootstrap/scaffolding-variables.scss";
 
 .new-theme {
-  @import "./base/bootstrap/grid-patch.scss";
   @import "bootstrap/scss/bootstrap";
 
   @import "./variables.scss";

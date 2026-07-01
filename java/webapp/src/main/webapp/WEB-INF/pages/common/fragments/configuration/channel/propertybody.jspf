@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/pages/common/fragments/editareaYaml.jspf" %>
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         <bean:message key="channelOverview.jsp.name-edit" />
     </label>
@@ -7,7 +7,7 @@
         <html:text property="cofName" maxlength="128" size="18" styleClass="form-control"></html:text>
     </div>
 </div>
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
     <bean:message key="channelOverview.jsp.label-edit" />
     </label>
@@ -15,7 +15,7 @@
         <html:text property="cofLabel" maxlength="64" styleClass="form-control" size="18"></html:text>
     </div>
 </div>
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
     <bean:message key="channelOverview.jsp.descr-edit" />
     </label>
@@ -24,7 +24,7 @@
     </div>
 </div>
 <c:if test="${param.type == 'state'}">
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
         <bean:message key="channelOverview.jsp.sls-edit" />
         </label>
@@ -33,7 +33,7 @@
         </div>
     </div>
 </c:if>
-<div class="form-group">
+<div class="row">
     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
     <html:submit styleClass="btn btn-primary">
         <c:choose>

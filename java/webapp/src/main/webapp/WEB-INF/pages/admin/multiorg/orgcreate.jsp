@@ -20,7 +20,7 @@
             <rhn:csrf />
             <html:hidden property="submitted" value="true"/>
             <h4><bean:message key="orgdetails.jsp.header"/></h4>
-            <div class="form-group">
+            <div class="row">
                 <label for="orgName" class="col-lg-3 control-label">
                     <rhn:required-field key="org.name.jsp"/>:
                 </label>
@@ -44,7 +44,7 @@
                 <h4><bean:message key="orgcreate.jsp.adminheader"/></h4>
                 <p><bean:message key="orgcreate.header2"/></p>
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="login">
                     <rhn:required-field key="desiredlogin"/>:
                 </label>
@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="desiredpass">
                     <bean:message key="desiredpass" />
                     <span name="password-asterisk" class="required-form-field">*</span>:
@@ -81,7 +81,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="confirmpass" class="col-lg-3 control-label">
                     <bean:message key="confirmpass" />
                     <span name="password-asterisk" class="required-form-field">*</span>:
@@ -106,7 +106,7 @@
             </script>
 
             <c:if test="${empty param.account_type}">
-                <div class="form-group">
+                <div class="row">
                     <label for="pam" class="col-lg-3 control-label">
                         <bean:message key="usercreate.jsp.pam"/>
                     </label>
@@ -130,7 +130,7 @@
                 </div>
             </c:if>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="email" class="col-lg-3 control-label">
                     <rhn:required-field key="email"/>:
                 </label>
@@ -141,7 +141,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="firstNames">
                     <rhn:required-field key="firstNames"/>:
                 </label>
@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="lastName">
                     <rhn:required-field key="lastName"/>:
                 </label>
@@ -170,7 +170,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <span class="help-block">
                         <span class="required-form-field">*</span> - <bean:message key="usercreate.requiredField" />
@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit styleClass="btn btn-primary">
                         <bean:message key="orgcreate.jsp.submit"/>

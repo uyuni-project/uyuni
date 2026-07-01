@@ -14,7 +14,7 @@
         <p><bean:message key="activation-key.jsp.delete.warning" /></p>
         <form action="/rhn/activationkeys/Delete.do" class="form-horizontal"
               id ="delete_confirm" name = "delete_confirm" method="POST">
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="kickstart.activationkeys.jsp.description"/>:
                 </label>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="kickstart.activationkeys.jsp.key"/>
                 </label>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <rhn:hidden name="tid" value="${param.tid}"/>
                     <rhn:csrf />
