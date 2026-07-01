@@ -77,7 +77,7 @@ for DIR in "${DISKCHECKDIRS_ARR[@]}"; do
         continue
     fi
 
-    USEDSPACE=$(df -PH "$DIR" | tail -1 | awk '{print $5}' | sed -e 's/%//')
+    USEDSPACE=$(df -PH -- "$DIR" | tail -1 | awk '{print $5}' | sed -e 's/%//')
     if [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
         updateSeverity 3
     elif [ "$USEDSPACE" -gt "$DISKCHECKALERT" ]; then
