@@ -504,7 +504,7 @@ public class HardwareMapper {
             if (zhost == null) {
                 // create a new z/OS host server entry
                 zhost = ServerFactory.createServer();
-                // TODO extract this cpuarch + "-redhat-linux" in some common util
+                // OLDTODO extract this cpuarch + "-redhat-linux" in some common util
                 zhost.setServerArch(ServerFactory
                         .lookupServerArchByLabel(cpuarch + "-redhat-linux"));
                 zhost.setName(name);
@@ -519,7 +519,7 @@ public class HardwareMapper {
                                 "CPU Arch: %s", os, sysvalues.get("Type"), cpuarch));
 
                 zhost.setDigitalServerId(identifier);
-                zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
+                zhost.setOrg(OrgFactory.getSatelliteOrg()); // OLDTODO clarify this
                 zhost.setSecret(RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom()));
                 zhost.setAutoUpdate("N");
                 zhost.setContactMethod(ServerFactory
@@ -556,7 +556,7 @@ public class HardwareMapper {
                 hostcpu.setStepping(null);
                 hostcpu.setModel(cpuarch);
                 hostcpu.setVendor(type);
-                zhost.setCpu(hostcpu); // TODO test if this deletes any existing CPU
+                zhost.setCpu(hostcpu); // OLDTODO test if this deletes any existing CPU
                 hostcpu.setServer(zhost);
             }
 
@@ -1035,7 +1035,7 @@ public class HardwareMapper {
                     result = String.format("%s|%s", vendorFromDb, modelFromDb);
                 }
                 else {
-                    // TODO lookup in hwdata
+                    // OLDTODO lookup in hwdata
                     result = String.format("%s|%s", pciVendorDesc, pciDeviceDesc);
                 }
                 break;
@@ -1066,7 +1066,7 @@ public class HardwareMapper {
                 result = String.format("%s|%s", vendorFromDb, modelFromDb);
             }
             else {
-                // TODO lookup in hwdata
+                // OLDTODO lookup in hwdata
                 result = String.format("%s|%s", vendorId, usbDeviceDesc);
             }
         }
@@ -1091,7 +1091,7 @@ public class HardwareMapper {
                 String usbDeviceDesc = p.length > 1 ?
                         String.format("%04x", Integer.parseInt(p[1], 16)) : "";
 
-                // TODO lookup in hwdata
+                // OLDTODO lookup in hwdata
                 result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
             }
         }

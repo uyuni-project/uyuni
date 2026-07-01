@@ -195,7 +195,7 @@ public class ChannelOverviewTasks extends RhnAction {
     }
 
 
-    // TODO: generalize and move this somewhere it can be used by other
+    // OLDTODO: generalize and move this somewhere it can be used by other
     // action-producers!
     private void makeMessage(int successes, HttpServletRequest request) {
         if (successes > 0) {

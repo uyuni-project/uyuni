@@ -207,7 +207,7 @@ public class StatesAPI {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
-        // TODO add org,group support
+        // OLDTODO add org,group support
 
         // Find matches among this server's current packages states
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));

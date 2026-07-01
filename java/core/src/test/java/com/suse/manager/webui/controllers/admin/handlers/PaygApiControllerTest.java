@@ -190,7 +190,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         assertEquals("", returnData.getData().getProperties().getBastionKey());
         assertEquals("", returnData.getData().getProperties().getBastionKeyPassword());
 
-        //FIXME check data in the database
+        //OLDTODO check data in the database
 
         context.assertIsSatisfied();
     }

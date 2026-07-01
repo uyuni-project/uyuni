@@ -51,7 +51,7 @@ public class RhnPatchDiffWriter implements DiffVisitor, DiffWriter {
         diff = new StringBuilder();
 
 
-        String dateString = fromDate.toString(); //TODO: format the date
+        String dateString = fromDate.toString(); //OLDTODO: format the date
         writeHeader(FROM_LABEL, fromPath, dateString);
         dateString = toDate.toString();
         writeHeader(TO_LABEL, toPath, dateString);

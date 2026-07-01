@@ -476,7 +476,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         //if we didn't find one, we just haven't created it yet.
         ConfigChannel channel = ConfigurationFactory.createNewLocalChannel(this, cct);
 
-        //TODO: Adding the new channel to the set of local channels should
+        //OLDTODO: Adding the new channel to the set of local channels should
         //happen in the createNewLocalChannel method.  However, the way things
         //are currently set up, I have to work with the member variable, because using
         //accessors and mutators would create an infinite loop.  Fix this setup.

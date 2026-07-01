@@ -693,7 +693,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                             "kickstart.session.newtokennote", getTargetServer().getName());
         }
         else {
-            // TODO: translate this
+            // OLDTODO: translate this
             note = "Automatically generated activation key.";
         }
 
@@ -719,7 +719,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         Boolean deployConfig = this.getKsdata().
                 getKickstartDefaults().getCfgManagementFlag();
 
-        // TODO: Proxy logic
+        // OLDTODO: Proxy logic
 
         // Setup the KickstartSession
         kickstartSession.setPackageFetchCount(0L);
@@ -926,7 +926,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         log.debug("PROFILE_TYPE={}", profileTypeIn);
 
         if (profileTypeIn == null ||
-                profileTypeIn.isEmpty() || // TODO: fix this hack
+                profileTypeIn.isEmpty() || // OLDTODO: fix this hack
                 profileTypeIn.equals(TARGET_PROFILE_TYPE_NONE)) {
             return null;
         }
@@ -979,7 +979,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
 
-        // TODO: Compute missing packages and forward user to the missing page
+        // OLDTODO: Compute missing packages and forward user to the missing page
 
         return retval;
     }

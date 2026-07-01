@@ -31,7 +31,7 @@ public class CobblerSnippetEditActionTest extends RhnMockStrutsTestCase {
     }
 
     /**
-     * TODO: Right now this blows up with a permission denied.
+     * OLDTODO: Right now this blows up with a permission denied.
 
     @Test
     public void testDelete() throws Exception {

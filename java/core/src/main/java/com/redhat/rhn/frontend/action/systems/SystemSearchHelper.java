@@ -230,7 +230,7 @@ public class SystemSearchHelper {
      * @param searchResults The list of results to process
      * @param viewMode the view mode
      * @return server map
-     * TODO:  Look into a quicker/more efficient implementation.  This appears to
+     * OLDTODO:  Look into a quicker/more efficient implementation.  This appears to
      * work....but I think it can be become quicker.
      */
     protected static Map<Long, Map<String, Object>> getResultMapFromPackagesIndex(User user,

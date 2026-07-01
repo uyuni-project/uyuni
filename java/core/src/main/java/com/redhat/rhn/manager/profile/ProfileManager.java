@@ -781,7 +781,7 @@ public class ProfileManager extends BaseManager {
 
         // finally for each channel needed, subscribe the server
         // to that channel. if there's an error throw an exception
-        // TODO: what type of exception
+        // OLDTODO: what type of exception
         // once subscribed, throw away any of the remaining missing
         // packages.
 
@@ -955,7 +955,7 @@ public class ProfileManager extends BaseManager {
 
         // finally for each channel needed, subscribe the server
         // to that channel. if there's an error throw an exception
-        // TODO: what type of exception
+        // OLDTODO: what type of exception
         // once subscribed, throw away any of the remaining missing
         // packages.
 
