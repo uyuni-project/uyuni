@@ -32,7 +32,7 @@ function channelIcon(channel) {
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <i className={iconClass} data-bs-toggle="tooltip" title={iconTitle} style={iconStyle} />;
 }
 
 export enum RecurringActionType {
@@ -300,7 +300,9 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 headerClass="text-center"
                 header={t("Description")}
                 columnKey="description"
-                cell={(row) => <i className="fa fa-info-circle fa-1-5x text-primary" title={row.description} />}
+                cell={(row) => (
+                  <i className="fa fa-info-circle fa-1-5x" data-bs-toggle="tooltip" title={row.description} />
+                )}
               />
             </Table>
           </div>
@@ -328,7 +330,8 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
                 columnKey="description"
                 cell={(row) => (
                   <i
-                    className="fa fa-info-circle fa-1-5x text-primary"
+                    className="fa fa-info-circle fa-1-5x"
+                    data-bs-toggle="tooltip"
                     title={row.description || t("No description")}
                   />
                 )}
