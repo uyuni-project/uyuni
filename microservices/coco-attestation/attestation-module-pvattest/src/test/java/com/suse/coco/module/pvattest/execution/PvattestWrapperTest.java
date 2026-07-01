@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.suse.coco.module.pvattest.PvattestTestHelper;
@@ -114,6 +113,7 @@ public class PvattestWrapperTest {
         }
     }
 
+    private final String pvattestVerificationCommand = "/usr/bin/pvattest";
     private final MockShellCommandExecutor mockCommandExecutor = new MockShellCommandExecutor();
     private final PvattestWrapper testPvattestWrapper = new PvattestWrapper(mockCommandExecutor);
 
@@ -138,7 +138,7 @@ public class PvattestWrapperTest {
 
     private void checkVersion(PvattestWrapper pvaw) throws ExecutionException {
         assertEquals("2.41.0-6", pvaw.version());
-        assertEquals("pvattest --version", pvaw.getLastExecutedCommand());
+        assertEquals("%s --version".formatted(pvattestVerificationCommand), pvaw.getLastExecutedCommand());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class PvattestWrapperTest {
     private void checkCreateNoVerifyCommand(PvattestWrapper pvaw) {
         String command = pvaw.getLastExecutedCommand();
 
-        assertTrue(command.startsWith("pvattest create -v "));
+        assertTrue(command.startsWith("%s create -v ".formatted(pvattestVerificationCommand)));
         assertTrue(command.contains(" -k "));
         assertTrue(command.contains(" -o "));
         assertTrue(command.contains(" -a "));
@@ -202,15 +202,16 @@ public class PvattestWrapperTest {
     }
 
     private void checkCreateVerifyDownloadCertificatesKO(PvattestWrapper pvaw) {
+        String hostKeyDocumentContent = PvattestTestHelper.testCertificate20240714();
         assertThrows(RuntimeException.class,
-                () -> pvaw.createVerifyDownloadCertificates(PvattestTestHelper.testCertificate20240714()),
+                () -> pvaw.createVerifyDownloadCertificates(hostKeyDocumentContent),
                 "error: Host-key verification failed: After validity period");
     }
 
     private void checkCreateVerifyDownloadCertificatesCommand(PvattestWrapper pvaw) {
         String command = pvaw.getLastExecutedCommand();
 
-        assertTrue(command.startsWith("pvattest create -v "));
+        assertTrue(command.startsWith("%s create -v ".formatted(pvattestVerificationCommand)));
         assertTrue(command.contains(" -k "));
         assertTrue(command.contains(" -o "));
         assertTrue(command.contains(" -a "));
@@ -244,18 +245,10 @@ public class PvattestWrapperTest {
         assertEquals(PvattestTestHelper.testAttestationResultYaml(), result.attestationResponseContent());
     }
 
-    private void checkVerifyAttestationResponseKO(PvattestWrapper pvaw)  {
-        assertThrowsExactly(RuntimeException.class,
-                () -> pvaw.verifyAttestationResponse(PvattestTestHelper.testAttestationResponseContentBase64(),
-                        PvattestTestHelper.secureExecutionHeaderContentBase64(),
-                        PvattestTestHelper.testAttestationProtectionKeyContentBase64()),
-                "error: Host-key verification failed: After validity period");
-    }
-
     private void checkVerifyAttestationResponseCommand(PvattestWrapper pvaw) {
         String command = pvaw.getLastExecutedCommand();
 
-        assertTrue(command.startsWith("pvattest verify -v "));
+        assertTrue(command.startsWith("%s verify -v ".formatted(pvattestVerificationCommand)));
         assertTrue(command.contains(" -i "));
         assertTrue(command.contains(" --hdr "));
         assertTrue(command.contains(" --arpk "));
@@ -292,7 +285,7 @@ public class PvattestWrapperTest {
 
     @Test
     @Disabled("disabled: run only in local to test certificates download")
-    public void testDownloadingIbmCertificates() throws IOException, CertificateEncodingException {
+    public void testDownloadingIbmCertificates() throws IOException {
         X509Certificate ibmCert = testPvattestWrapper.downloadIbmZHostKeySigningCertificate();
         assertNotNull(ibmCert);
 
