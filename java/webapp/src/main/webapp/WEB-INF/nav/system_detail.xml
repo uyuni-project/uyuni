@@ -77,6 +77,8 @@
 
     <rhn-tab name="AppStreams" acl="authorized_for(systems.software.appstreams); system_has_modular_channels()" url="/rhn/manager/systems/details/appstreams" />
 
+    <rhn-tab name="Btrfs Snapshots" acl="system_is_transactional()" url="/rhn/manager/systems/details/snapshots" />
+
     <rhn-tab name="PTF" acl="has_ptf_repositories(); system_supports_ptf_removal() or system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/manager/systems/details/ptf/overview</rhn-tab-url>
       <rhn-tab name="system.detail.nav.remove" acl="system_supports_ptf_removal()">
