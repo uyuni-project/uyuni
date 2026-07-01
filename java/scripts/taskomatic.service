@@ -5,6 +5,7 @@ Requires=apache2.service
 
 [Service]
 Type=simple
+PassEnvironment=DISKTHRESHOLD DISKCHECKALERT DISKCHECKDIRS
 EnvironmentFile=/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 ExecStart=/usr/sbin/taskomatic
 Restart=on-failure
