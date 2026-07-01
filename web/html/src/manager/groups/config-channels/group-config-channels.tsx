@@ -5,7 +5,7 @@ import { Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
-// See java/build/classes/com/suse/manager/webui/templates/groups/custom.jade
+// See java/spacewalk-java/build/classes/com/suse/manager/webui/templates/groups/custom.jade
 declare global {
   interface Window {
     groupId?: any;

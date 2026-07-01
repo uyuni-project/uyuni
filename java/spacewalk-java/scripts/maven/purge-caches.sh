@@ -85,11 +85,11 @@ if [ "$FORCE" == false ]; then
 fi
 
 echo "Wipe the obs-to-maven cache"
-delete_path "$UYUNI_DIR/java/.obs-to-maven-cache/"
+delete_path "$UYUNI_DIR/java/spacewalk-java/.obs-to-maven-cache/"
 echo "Remove the Maven local repository"
 delete_path "${HOME:?}/.m2/"
 echo "Remove the Maven spacewalk-java repository"
-delete_path "$UYUNI_DIR/java/repository/"
+delete_path "$UYUNI_DIR/java/spacewalk-java/repository/"
 
 if [ "$ALSO_TARGET" == true ]; then
     echo "Wipe the Maven target directories"
@@ -106,9 +106,9 @@ if [ "$ALSO_IVY" == true ]; then
     echo "Wipe the Ivy cache"
     delete_path "${HOME:?}/.ivy2/"
     echo "Remove the local Ivy repository"
-    delete_path "$UYUNI_DIR/java/buildconf/ivy/repository/"
+    delete_path "$UYUNI_DIR/java/spacewalk-java/buildconf/ivy/repository/"
     echo "Wipe the Ivy resolved libraries"
-    delete_path "$UYUNI_DIR/java/lib/"
+    delete_path "$UYUNI_DIR/java/spacewalk-java/lib/"
     echo "Clean ant build files"
-    delete_path "$UYUNI_DIR/java/build/"
+    delete_path "$UYUNI_DIR/java/spacewalk-java/build/"
 fi

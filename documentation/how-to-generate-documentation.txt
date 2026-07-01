@@ -99,7 +99,7 @@ API docs
     # Build
     cd $SW_GIT/java; ant apidoc-html
     # Move to DOCS_GIT repo
-    rm -rf $DOCS_GIT/documentation/api/$VERS; cp -r $SW_GIT/java/build/reports/apidocs/html $DOCS_GIT/documentation/api/$VERS
+    rm -rf $DOCS_GIT/documentation/api/$VERS; cp -r $SW_GIT/java/spacewalk-java/build/reports/apidocs/html $DOCS_GIT/documentation/api/$VERS
     # Check your work
     cd $DOCS_GIT; git status
     # if sane file list, like a few additions, few deletions, and several modifications,

@@ -40,7 +40,7 @@
       <copy file="buildconf/eclipse.project" tofile=".project" />
       <copy file="buildconf/eclipse.classpath" tofile=".classpath" />
       <copy toDir="${basedir}">
-        <fileset dir="${basedir}/../../java/conf/eclipse">
+        <fileset dir="${basedir}/../../java/spacewalk-java/conf/eclipse">
           <include name=".checkstyle"/>
           <include name=".settings/*"/>
         </fileset>

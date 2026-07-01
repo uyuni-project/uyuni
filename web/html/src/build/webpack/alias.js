@@ -9,6 +9,6 @@ export default {
   core: path.resolve(__dirname, "../../core/"),
   manager: path.resolve(__dirname, "../../manager/"),
   utils: path.resolve(__dirname, "../../utils/"),
-  branding: path.resolve(__dirname, "../../branding/"),
+  branding: path.resolve(__dirname, "../../java/branding/"),
   jquery: path.resolve(__dirname, "./jquery.js"),
 };
