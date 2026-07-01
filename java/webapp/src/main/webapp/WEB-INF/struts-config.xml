@@ -739,6 +739,7 @@
             <form-property name="sslclientkey" type="java.lang.String"/>
             <form-property name="filters" type="java.lang.String"/>
             <form-property name="metadataSigned" type="java.lang.Boolean"/>
+            <form-property name="downloadStrategyId" type="java.lang.Integer"/>
         </form-bean>
 
         <form-bean name="cobblerSnippetsForm"
