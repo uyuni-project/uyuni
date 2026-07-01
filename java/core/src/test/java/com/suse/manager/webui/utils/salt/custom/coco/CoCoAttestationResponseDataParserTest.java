@@ -520,6 +520,7 @@ public class CoCoAttestationResponseDataParserTest extends JMockBaseTestCaseWith
 
         optResult = responseDataParser.getResult(CoCoIbmZAttestationResponseData.PVATTEST_RESPONSE_TAG);
         assertTrue(optResult.isEmpty());
+        assertTrue(ibmChunk.getPvattestResponse().isEmpty());
     }
 
     @Test
@@ -572,12 +573,15 @@ public class CoCoAttestationResponseDataParserTest extends JMockBaseTestCaseWith
 
         optResult = responseDataParser.getResult(CoCoAmdEpycAttestationResponseData.SNP_GUEST_RESPONSE_TAG);
         assertTrue(optResult.isEmpty());
+        assertTrue(amdChunk.getSnpguestResponse().isEmpty());
 
         optResult = responseDataParser.getResult(CoCoAmdEpycAttestationResponseData.VLEK_CERTIFICATE_TAG);
         assertTrue(optResult.isEmpty());
+        assertTrue(amdChunk.getVlekCertificate().isEmpty());
 
         optResult = responseDataParser.getResult(CoCoSecureBootAttestationResponseData.SECURE_BOOT_ENABLED_TAG);
         assertTrue(optResult.isEmpty());
+        assertTrue(bootChunk.getSecureBoot().isEmpty());
 
         optResult = responseDataParser.getResult(CoCoIbmZAttestationResponseData.PVATTEST_RESPONSE_TAG);
         assertTrue(optResult.isPresent());
