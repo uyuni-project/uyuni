@@ -189,9 +189,17 @@ end
 # Clicks on a link and waits for any AJAX transition to complete.
 #
 # @param locator [String, nil] The locator for the link to click.
+# @param force [Boolean] When true, uses Playwright force-click (bypasses overlay/actionability
+#   checks). Useful for <a> elements styled as buttons where the standard click is intercepted.
 # @param options [Hash] Additional options for the click action.
-def click_link_and_wait(locator = nil, **options)
-  click_link(locator, **options)
+def click_link_and_wait(locator = nil, force: false, **options)
+  if force && locator
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.get_by_role('link', name: locator, exact: false).click(force: true)
+    end
+  else
+    click_link(locator, **options)
+  end
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e

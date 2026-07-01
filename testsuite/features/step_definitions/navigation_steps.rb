@@ -322,7 +322,7 @@ When(/^I click on "([^"]*)"$/) do |text|
   begin
     click_button_and_wait(text, match: :first)
   rescue Capybara::ElementNotFound
-    click_link_and_wait(text, match: :first)
+    click_link_and_wait(text, match: :first, force: true)
   end
 end
 
