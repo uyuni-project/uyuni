@@ -1,10 +1,10 @@
 import { type ReactNode, Fragment, useEffect, useState } from "react";
 
 import { SectionState } from "components/FormulaForm";
+import { Panel } from "components/panels/Panel";
 import { Highlight } from "components/table/Highlight";
 
 import { isFiltered } from "./FormulaComponentGenerator";
-import SectionToggle from "./SectionToggle";
 
 type Props = {
   id: string;
@@ -19,50 +19,40 @@ type Props = {
 
 const Group = (props: Props) => {
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
-
   useEffect(() => {
     if (props.sectionsExpanded !== SectionState.Mixed) {
       setVisible(props.sectionsExpanded !== SectionState.Collapsed);
     }
   }, [props.sectionsExpanded]);
 
-  const isVisible = () => {
-    return visible;
-  };
-
-  const setVisibility = (index, visible) => {
-    setVisible(visible);
-    props.setSectionsExpanded(SectionState.Mixed);
-  };
-
   return props.isVisibleByCriteria?.() ? (
-    <div
-      className={
-        visible ? "formula-content-section-open group-heading" : "formula-content-section-closed group-heading"
+    <Panel
+      key={props.id}
+      headingLevel="h4"
+      className="formula-content-section"
+      collapseId={props.id.replace(/[.#\s]/g, "-")}
+      collapsClose={!visible}
+      header={
+        <div className="group-heading">
+          <span id={props.id}>
+            {isFiltered(props.criteria) ? (
+              <Highlight
+                enabled={isFiltered(props.criteria)}
+                text={props.header?.toString() || ""}
+                highlight={props.criteria}
+              />
+            ) : (
+              props.header
+            )}
+          </span>
+        </div>
       }
     >
-      <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
-        <h4 id={props.id} key={props.id}>
-          {isFiltered(props.criteria) ? (
-            <Highlight
-              enabled={isFiltered(props.criteria)}
-              text={props.header ? props.header.toString() : ""}
-              highlight={props.criteria}
-            />
-          ) : (
-            props.header
-          )}
-        </h4>
-      </SectionToggle>
-      <div>
-        {visible ? (
-          <Fragment>
-            {props.help ? <p>{props.help}</p> : null}
-            {props.children}
-          </Fragment>
-        ) : null}
-      </div>
-    </div>
+      <Fragment>
+        {props.help && props.help !== props.header ? <p>{props.help}</p> : null}
+        {props.children}
+      </Fragment>
+    </Panel>
   ) : null;
 };
 

@@ -1,12 +1,11 @@
-import "./formula-form.css";
-
 import { Component, Fragment } from "react";
 
 import { productName } from "core/user-preferences";
 
+import { Button } from "components/buttons";
 import { SectionState } from "components/FormulaForm";
+import { Panel } from "components/panels/Panel";
 import { Highlight } from "components/table/Highlight";
-import { DEPRECATED_onClick } from "components/utils";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
@@ -17,12 +16,12 @@ import {
   generateFormulaComponentForId,
   isFiltered,
 } from "./FormulaComponentGenerator";
-import SectionToggle from "./SectionToggle";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
+const getSafeCollapseId = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, "-");
 
 type EditGroupProps = {
   id: string;
@@ -118,52 +117,59 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
       Component = EditDictionaryGroup;
     }
 
+    const isPrimitiveGroup =
+      getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_LIST ||
+      getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_DICTIONARY;
+
     return this.props.isVisibleByCriteria?.() ? (
-      <div
-        id={this.props.id}
-        className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
+      <Panel
+        key={this.props.id}
+        headingLevel="h4"
+        className="formula-content-section"
+        collapseId={getSafeCollapseId(this.props.id)}
+        collapsClose={!this.state.visible}
+        header={
+          <Highlight
+            enabled={isFiltered(this.props.criteria)}
+            text={this.props.element.$name}
+            highlight={this.props.criteria}
+          />
+        }
       >
-        <div className="group-heading">
-          <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
-            <h4>
-              <Highlight
-                enabled={isFiltered(this.props.criteria)}
-                text={this.props.element.$name}
-                highlight={this.props.criteria}
-              />
-            </h4>
-          </SectionToggle>
-          <i
-            className="fa fa-plus"
-            id={this.props.id + "#add_item"}
-            data-bs-toggle="tooltip"
-            title={
-              this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
-            }
-            /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
-            disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
-            {...DEPRECATED_onClick(this.handleAddItem)}
-          ></i>
-        </div>
-        <div>
-          {this.state.visible ? (
-            <Fragment>
-              {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
-              <Component
-                handleRemoveItem={this.handleRemoveItem}
-                isDisabled={this.isDisabled()}
-                id={this.props.id}
-                key={this.props.key}
-                element={this.props.element}
-                value={this.props.value}
-                sectionsExpanded={this.props.sectionsExpanded}
-                setSectionsExpanded={this.props.setSectionsExpanded}
-                formulaForm={this.props.formulaForm}
-              />
-            </Fragment>
+        <Fragment>
+          {"$help" in this.props.element && this.props.element.$help !== this.props.element.$name ? (
+            <p>{this.props.element.$help}</p>
           ) : null}
-        </div>
-      </div>
+          <Component
+            handleRemoveItem={this.handleRemoveItem}
+            handleAddItem={this.handleAddItem}
+            isDisabled={this.isDisabled()}
+            id={this.props.id}
+            key={this.props.key}
+            element={this.props.element}
+            value={this.props.value}
+            sectionsExpanded={this.props.sectionsExpanded}
+            setSectionsExpanded={this.props.setSectionsExpanded}
+            formulaForm={this.props.formulaForm}
+          />
+          <div className={`form-group ${!isPrimitiveGroup ? "form-add-button" : ""}`}>
+            <div className="col-lg-3 "></div>
+            <div className="col-lg-9 ">
+              {isPrimitiveGroup && <hr className="mt-1 mb-3" />}
+              <Button
+                className="btn-default"
+                id={this.props.id + "#add_item"}
+                text={t(`Add ${this.props.element.$name}`)}
+                title={
+                  this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : undefined
+                }
+                disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+                handler={this.handleAddItem}
+              />
+            </div>
+          </div>
+        </Fragment>
+      </Panel>
     ) : null;
   }
 }
@@ -175,6 +181,7 @@ type EditPrimitiveGroupProps = {
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
+  handleAddItem?: (...args: any[]) => any;
 };
 
 /*
@@ -183,42 +190,66 @@ type EditPrimitiveGroupProps = {
  */
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simpleWrapper = (name, required, element, help = null) => {
+  simpleWrapper = (name, required, element, i, help = null, isLastItem = false) => {
     return (
       <Fragment>
-        <div className="col-lg-3">{element}</div>
+        <div className="col-lg-4 offset-lg-3">{element}</div>
         {required ? (
           <span className="required-form-field" style={{ float: "left", paddingRight: "10px" }}>
             *
           </span>
         ) : null}
         <HelpIcon text={this.props.element["$help"]} />
+        <div className="col-lg-3">
+          <RemoveButton
+            minItems={this.props.element.$minItems!}
+            currentLength={this.props.value.length}
+            handleRemoveItem={() => this.props.handleRemoveItem(i)}
+          />
+        </div>
       </Fragment>
     );
   };
 
   render() {
     const elements: React.ReactNode[] = [];
+    const itemIndices: string[] = [];
+
+    // Collect all valid indices (not "$meta")
     for (const i in this.props.value) {
-      if (i === "$meta") {
-        continue;
+      if (i !== "$meta") {
+        itemIndices.push(i);
       }
+    }
+
+    for (const idx in itemIndices) {
+      const i = itemIndices[idx];
       const id = this.props.id + "#" + i;
+
+      // Create a wrapper that passes isLastItem information
+      const wrapperWithContext = (name, required, element, help = null) => {
+        return this.simpleWrapper(name, required, element, i, help);
+      };
+
       elements.push(
-        <div className="form-group" id={id} key={id}>
-          {generateFormulaComponentForId(
-            this.props.element.$prototype,
-            this.props.value[i],
-            this.props.formulaForm,
-            id,
-            this.simpleWrapper,
-            this.props.isDisabled
-          )}
-          <RemoveButton
-            minItems={this.props.element.$minItems!}
-            currentLength={this.props.value.length}
-            handleRemoveItem={() => this.props.handleRemoveItem(i)}
-          />
+        <div className="form-group formula-primitive-group-item" id={id} key={id}>
+          <div className="formula-primitive-group-item-content">
+            {generateFormulaComponentForId(
+              this.props.element.$prototype,
+              this.props.value[i],
+              this.props.formulaForm,
+              id,
+              wrapperWithContext,
+              this.props.isDisabled
+            )}
+          </div>
+        </div>
+      );
+    }
+    if (itemIndices.length === 0) {
+      return (
+        <div className="col-lg-4 offset-lg-3">
+          {t("No items added yet. Use")} <strong>{t(`Add ${this.props.element.$name}`)}</strong> {t("to create one.")}
         </div>
       );
     }
@@ -242,12 +273,12 @@ type EditPrimitiveDictionaryGroupProps = {
 class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGroupProps> {
   pairElementWrapper(elementName) {
     return (name, required, element) => (
-      <div key={elementName}>
-        <label className="col-lg-1 control-label">
+      <div className="d-inline-block me-3" key={elementName}>
+        <label className="control-label me-3">
           {elementName}
           {required ? <span className="required-form-field"> *</span> : null}:
         </label>
-        <div className="col-lg-3">{element}</div>
+        <div className="d-inline-block">{element}</div>
       </div>
     );
   }
@@ -261,7 +292,7 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
       }
       const id = this.props.id + "#" + i;
       elements.push(
-        <div className="form-group" id={id} key={id}>
+        <div className="d-flex align-items-center offset-lg-3 mb-3 gap-3" id={id} key={id}>
           {generateFormulaComponentForId(
             this.props.element.$prototype.$key,
             this.props.value[i][0],
@@ -286,7 +317,18 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
         </div>
       );
     }
-    return <div id={this.props.id + "$elements"}>{elements}</div>;
+    if (this.props.value.length === 0) {
+      return (
+        <div className="col-lg-4 offset-lg-3">
+          {t("No items added yet. Use")} <strong>{t(`Add ${this.props.element.$name}`)}</strong> {t("to create one.")}
+        </div>
+      );
+    }
+    return (
+      <div id={this.props.id + "$elements"} className="pair-group">
+        {elements}
+      </div>
+    );
   }
 }
 
@@ -299,15 +341,16 @@ type RemoveButtonProps = {
 class RemoveButton extends Component<RemoveButtonProps> {
   render() {
     return (
-      <button
-        className="btn btn-default"
-        type="button"
-        title={this.props.minItems >= this.props.currentLength ? "Min number of items reached" : "Remove item"}
-        onClick={() => this.props.handleRemoveItem()}
+      <Button
+        className="btn-tertiary"
+        icon="fa-times"
+        title={this.props.minItems >= this.props.currentLength ? t("Min number of items reached") : t("Remove item")}
+        aria-label={
+          this.props.minItems >= this.props.currentLength ? t("Min number of items reached") : t("Remove item")
+        }
+        handler={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
-      >
-        <i className="fa fa-minus" /> Remove
-      </button>
+      />
     );
   }
 }
@@ -356,10 +399,13 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
           <span className="required-form-field"> *</span>:
         </label>
         <div className="col-lg-6">{innerHTML}</div>
-        <i
-          className="fa fa-question-circle"
-          title={t("This field is used as a 'key' identifier in the resulting pillar data.")}
-        ></i>
+        <div className="col-lg-3">
+          <HelpIcon
+            text={t(
+              "This field is used as a 'key' identifier in the resulting pillar data. It must be unique across all items in this group and should not be changed once set."
+            )}
+          />
+        </div>
       </div>
     );
   }
@@ -415,26 +461,43 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
       }
 
       elements.push(
-        <div
-          id={id}
+        <Panel
           key={id}
-          className={this.isVisible(i) ? "formula-content-section-open" : "formula-content-section-closed"}
-        >
-          <div className="group-heading">
-            <SectionToggle index={i} setVisible={this.setVisible} isVisible={this.isVisible}>
-              <h4>{this.generateItemName(i)}</h4>
-            </SectionToggle>
-            <i
-              className="fa fa-minus"
+          headingLevel="h4"
+          className="formula-content-section"
+          collapseId={getSafeCollapseId(id)}
+          collapsClose={!this.isVisible(i)}
+          header={
+            <div className="group-heading">
+              {this.props.element.$itemName
+                ? this.generateItemName(i)
+                : `${this.props.element.$name}-${parseInt(i, 10) + 1}`}
+            </div>
+          }
+          buttons={
+            <Button
+              className="btn-tertiary"
+              icon="fa-trash"
               title={
-                this.props.element.$minItems! >= this.props.value.length ? "Min number of items reached" : "Remove item"
+                this.props.element.$minItems! >= this.props.value.length
+                  ? t("Min number of items reached")
+                  : this.props.element.$itemName
+                    ? t(`Remove ${this.generateItemName(i)}`)
+                    : t(`Remove ${this.props.element.$name}-${parseInt(i, 10) + 1}`)
               }
-              /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
               disabled={this.props.element.$minItems! >= this.props.value.length || this.props.isDisabled}
-              {...DEPRECATED_onClick(() => this.props.handleRemoveItem(i))}
+              handler={() => this.props.handleRemoveItem(i)}
             />
-          </div>
-          <div>{this.state.visibility.get(i) !== false ? item_elements : null}</div>
+          }
+        >
+          <div className="group-section"> {item_elements}</div>
+        </Panel>
+      );
+    }
+    if (this.props.value.length === 0) {
+      return (
+        <div className="col-lg-4 offset-lg-3">
+          {t("No items added yet. Use")} <strong>{t(`Add ${this.props.element.$name}`)}</strong> {t("to create one.")}
         </div>
       );
     }
