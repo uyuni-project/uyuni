@@ -128,8 +128,6 @@ public class PvattestWorker implements AttestationWorker {
         outputBuilder.setLength(0);
 
         try {
-            Optional<String> optString;
-
             LOGGER.debug("Processing attestation response {}", result.getId());
 
             AttestationReport report = session.selectOne("PvattestModule.retrieveReport", result.getReportId());
@@ -203,10 +201,6 @@ public class PvattestWorker implements AttestationWorker {
 
     private void appendSuccess(String message) {
         appendOutput(message, null);
-    }
-
-    private void appendSuccess(String message, ProcessOutput output) {
-        appendOutput(message, output);
     }
 
     private void appendOutput(String message, ProcessOutput processOutput) {

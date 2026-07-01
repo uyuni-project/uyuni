@@ -120,15 +120,6 @@ public class CertificateHelper {
 
     /**
      * @param urlIn url of the file to download
-     * @return downloaded file as string content
-     * @throws IOException if something goes wrong
-     */
-    private static String downloadStringContent(String urlIn) throws IOException {
-        return downloadStringContent(urlIn, DEFAULT_DOWNLOAD_TIMEOUT_SECONDS);
-    }
-
-    /**
-     * @param urlIn url of the file to download
      * @param timeoutSeconds download timeout in seconds
      * @return downloaded file as string content
      * @throws IOException if something goes wrong
@@ -153,6 +144,10 @@ public class CertificateHelper {
                 throw new IOException(errorString);
             }
 
+        }
+        catch (InterruptedException iex) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Interrupted download [%s]: %s".formatted(urlIn, iex.getMessage()));
         }
         catch (Exception ex) {
             String exMessage = (ex.getMessage() == null) ? "" : " : " + ex.getMessage();

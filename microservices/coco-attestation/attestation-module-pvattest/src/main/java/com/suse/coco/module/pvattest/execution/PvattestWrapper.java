@@ -42,6 +42,8 @@ public class PvattestWrapper {
     private static final Logger LOGGER = LogManager.getLogger(PvattestWrapper.class);
     private static final String PVATTEST_PACKAGE = "s390-tools";
 
+    protected static final Path PVATTEST = Path.of("/usr/bin/pvattest");
+
     //the root CA certificate
     private static final Path DEFAULT_DIGI_CERT_CA_FILE =
             Path.of("/usr/share/coco-attestation/certs/pvattest/DigiCertCA.pem");
@@ -120,7 +122,7 @@ public class PvattestWrapper {
      */
     public String version() throws ExecutionException {
         try {
-            ProcessOutput output = commandExecutor.executeProcess("pvattest", "--version");
+            ProcessOutput output = commandExecutor.executeProcess(PVATTEST.toString(), "--version");
             checkCommandNotFailed(output);
             return getFirstLine(output.standardOutput()).replaceFirst("pvattest version ", "");
         }
@@ -208,7 +210,7 @@ public class PvattestWrapper {
             }
 
             List<String> commandLines = new ArrayList<>();
-            commandLines.add("pvattest");
+            commandLines.add(PVATTEST.toString());
             commandLines.add("create"); //create an attestation measurement request
             commandLines.add("-v"); //verbose: provide more detailed output
 
@@ -335,8 +337,9 @@ public class PvattestWrapper {
 
     private void checkCommandNotFailed(ProcessOutput output) {
         if (output.failed()) {
-            LOGGER.error("Failure: exit code %d when running command [%s]%n%s%n"
-                    .formatted(output.exitCode(), commandExecutor.getLastExecutedCommand(), output.getErrorMessage()));
+            String errorMessage = "Failure: exit code %d when running command [%s]%n%s%n"
+                    .formatted(output.exitCode(), commandExecutor.getLastExecutedCommand(), output.getErrorMessage());
+            LOGGER.error(errorMessage);
 
             throw new RuntimeException(output.getErrorMessage());
         }
@@ -393,14 +396,6 @@ public class PvattestWrapper {
         return tempFile;
     }
 
-    private Path createTempBinaryFile(Path tempDir, String prefix, String suffix, String base64EncodedContent)
-            throws IOException {
-        Path tempFile = Files.createTempFile(tempDir, prefix, suffix, tempFileAttributes);
-        Files.write(tempFile, Base64.getDecoder().decode(base64EncodedContent.replace("\n", "")));
-        tempFiles.add(tempFile);
-        return tempFile;
-    }
-
     private Path createTempBinaryFile(Path tempDir, String prefix, String suffix, byte[] content)
             throws IOException {
         Path tempFile = Files.createTempFile(tempDir, prefix, suffix, tempFileAttributes);
@@ -413,7 +408,7 @@ public class PvattestWrapper {
         if (null != str) {
             return str.split("\n")[0];
         }
-        return null;
+        return "";
     }
 
     /**
@@ -460,7 +455,7 @@ public class PvattestWrapper {
             Path attestationResultFile = createTempFile(tempDir, "attestation_result_", ".yaml");
 
             List<String> commandLines = new ArrayList<>();
-            commandLines.add("pvattest");
+            commandLines.add(PVATTEST.toString());
             commandLines.add("verify"); //Verify an attestation response
             commandLines.add("-v"); //verbose: provide more detailed output
 
