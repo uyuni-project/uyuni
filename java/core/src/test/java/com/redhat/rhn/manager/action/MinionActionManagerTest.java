@@ -437,7 +437,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.addPackage(createTestPackage(user, channel1, "noarch"));
 
         ChannelFactory.save(channel1);
 
@@ -496,7 +496,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.addPackage(createTestPackage(user, channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ErrataCacheManager.insertNeededErrataCache(
@@ -558,7 +558,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.addPackage(createTestPackage(user, channel1, "noarch"));
 
         ChannelFactory.save(channel1);
 
@@ -625,7 +625,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.addPackage(createTestPackage(user, channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ChannelFactory.save(channel2);
@@ -685,7 +685,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         channel1.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(createTestPackage(user, channel1, "noarch"));
+        e1.addPackage(createTestPackage(user, channel1, "noarch"));
 
         ChannelFactory.save(channel1);
         ErrataCacheManager.insertNeededErrataCache(

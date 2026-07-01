@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -116,7 +117,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // clone a channel with its errata, and the errata's packages are EMPTY
         Errata emptyErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
 
-        emptyErrata.setPackages(new HashSet<>());
+        emptyErrata.clearPackages();
         ErrataFactory.save(emptyErrata);
 
         foundErrata = ErrataFactory.lookupById(emptyErrata.getId());
@@ -482,7 +483,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         //unique errata for user's org. Applicable to one user channel
         Channel channel1 = ChannelFactoryTest.createTestChannel(admin);
-        userErrata.addChannel(channel1);
+        channel1.addErrata(userErrata);
 
         ErrataFactory.save(userErrata);
 
@@ -500,7 +501,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Errata vendorErrata = ErrataFactoryTest.createTestErrata(null, Optional.of(userErrata.getAdvisory()));
 
         Channel channel2 = ChannelFactoryTest.createTestChannel(admin);
-        vendorErrata.addChannel(channel2);
+        channel2.addErrata(vendorErrata);
 
         ErrataFactory.save(vendorErrata);
 

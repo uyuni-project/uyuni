@@ -58,7 +58,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.MissingErrataAttributeException;
 import com.redhat.rhn.frontend.xmlrpc.NoChannelsSelectedException;
-import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -66,10 +65,18 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.impl.channel.software.SyncFromOriginalServiceImpl;
+import com.suse.impl.channel.software.SyncFromVendorServiceImpl;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.errata.ErrataParserFactory;
 import com.suse.manager.errata.ErrataParsingException;
 import com.suse.manager.errata.VendorSpecificErrataParser;
+import com.suse.spec.channel.software.SyncFromOriginalService;
+import com.suse.spec.channel.software.SyncFromVendorService;
+import com.suse.spec.channel.software.dto.ErrataCriteria;
+import com.suse.spec.channel.software.dto.SyncOperation;
+import com.suse.spec.channel.software.dto.SyncRequest;
+import com.suse.spec.channel.software.dto.SyncResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -96,6 +103,9 @@ import java.util.stream.Collectors;
 public class ErrataHandler extends BaseHandler {
 
     private static Logger log = LogManager.getLogger(ErrataHandler.class);
+
+    private final SyncFromVendorService syncFromVendorService = new SyncFromVendorServiceImpl();
+    private final SyncFromOriginalService syncFromOriginalService = new SyncFromOriginalServiceImpl();
 
     /**
      * GetDetails - Retrieves the details for a given errata.
@@ -827,9 +837,14 @@ public class ErrataHandler extends BaseHandler {
      *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
+     * @deprecated Use syncErrataWithPackagesFromVendor instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames) {
-        return clone(loggedInUser, channelLabel, advisoryNames, false, false);
+        ErrataCriteria criteria = new ErrataCriteria(advisoryNames, null, null);
+        SyncRequest request = new SyncRequest(criteria, SyncOperation.ERRATA_AND_PACKAGES, false, false, false);
+        SyncResponse response = syncFromVendorService.sync(loggedInUser, channelLabel, request);
+        return response.erratas().toArray();
     }
 
     /**
@@ -847,75 +862,14 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @apidoc.returntype #return_int_success()
+     * @deprecated Use syncErrataWithPackagesFromVendor instead
      */
+    @Deprecated(since = "2026.06")
     public int cloneAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
-        clone(loggedInUser, channelLabel, advisoryNames, false, true);
+        ErrataCriteria criteria = new ErrataCriteria(advisoryNames, null, null);
+        SyncRequest request = new SyncRequest(criteria, SyncOperation.ERRATA_AND_PACKAGES, true, false, false);
+        syncFromVendorService.sync(loggedInUser, channelLabel, request);
         return 1;
-    }
-
-
-    private Object[] clone(User loggedInUser, String channelLabel,
-            List<String> advisoryNames, boolean inheritPackages,
-            boolean asynchronous) {
-        Channel channel = ChannelFactory.lookupByLabelAndUser(channelLabel,
-                loggedInUser);
-
-        if (channel == null) {
-            throw new NoSuchChannelException();
-        }
-
-        Channel original = ChannelFactory.lookupOriginalChannel(channel);
-
-        //if calling cloneAsOriginal, do additional checks to verify a clone
-        if (inheritPackages) {
-            if (!channel.isCloned()) {
-                throw new InvalidChannelException("Cloned channel expected: " +
-                        channel.getLabel());
-            }
-
-            if (original == null) {
-                throw new InvalidChannelException("Cannot access original " +
-                        "of the channel: " + channel.getLabel());
-            }
-
-            // check access to the original
-            if (ChannelFactory.lookupByIdAndUser(original.getId(), loggedInUser) == null) {
-                throw new PermissionCheckFailureException("User " + loggedInUser.getLogin() +
-                        " does not have access to channel " + original.getLabel());
-            }
-        }
-
-
-        if (!UserManager.verifyChannelAdmin(loggedInUser, channel)) {
-            throw new PermissionCheckFailureException();
-        }
-
-        List<Errata> errataToClone = new ArrayList<>();
-        List<Long> errataIds = new ArrayList<>();
-        Optional<Org> originalChannelOrg = ofNullable(original).map(Channel::getOrg);
-        //We loop through once, making sure all the errata exist
-        for (String advisory : advisoryNames) {
-            Errata toClone = lookupAccessibleErratum(advisory, originalChannelOrg, loggedInUser.getOrg());
-            errataToClone.add(toClone);
-            errataIds.add(toClone.getId());
-        }
-
-        if (asynchronous) {
-            ErrataManager.cloneErrataApiAsync(channel, errataIds, loggedInUser,
-                    inheritPackages);
-            return new ArrayList<Errata>().toArray();
-        }
-        else if (ErrataManager.channelHasPendingAsyncCloneJobs(channel)) {
-            throw new InvalidChannelException(
-                    "Channel " +
-                            channel.getLabel() +
-                            " has pending asynchronous errata clone jobs. You must wait" +
-                    "until asychronous errata clone jobs are done.");
-        }
-        else {
-            return ErrataManager.cloneErrataApi(channel, errataToClone,
-                    loggedInUser, inheritPackages);
-        }
     }
 
     /**
@@ -960,9 +914,14 @@ public class ErrataHandler extends BaseHandler {
      *          #return_array_begin()
      *              $ErrataSerializer
      *          #array_end()
+     * @deprecated Use syncErrataWithPackagesFromOriginal instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames) {
-        return clone(loggedInUser, channelLabel, advisoryNames, true, false);
+        ErrataCriteria criteria = new ErrataCriteria(advisoryNames, null, null);
+        SyncRequest request = new SyncRequest(criteria, SyncOperation.ERRATA_AND_PACKAGES, false, false, false);
+        SyncResponse response = syncFromOriginalService.sync(loggedInUser, channelLabel, request);
+        return response.erratas().toArray();
     }
 
     /**
@@ -984,9 +943,13 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @apidoc.returntype #return_int_success()
+     * @deprecated Use syncErrataWithPackagesFromOriginal instead
      */
+    @Deprecated(since = "2026.06")
     public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
-        clone(loggedInUser, channelLabel, advisoryNames, true, true);
+        ErrataCriteria criteria = new ErrataCriteria(advisoryNames, null, null);
+        SyncRequest request = new SyncRequest(criteria, SyncOperation.ERRATA_AND_PACKAGES, true, false, false);
+        syncFromOriginalService.sync(loggedInUser, channelLabel, request);
         return 1;
     }
 
@@ -1171,7 +1134,7 @@ public class ErrataHandler extends BaseHandler {
             newErrata.addKeyword(keyword);
         }
 
-        newErrata.setPackages(new HashSet<>());
+        newErrata.clearPackages();
         for (Integer pid : packageIds) {
             Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());

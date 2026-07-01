@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2019--2026 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -12,12 +13,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-/*
- * Copyright (c) 2010 SUSE LLC
- */
 package com.redhat.rhn.domain.errata;
 
 import static com.redhat.rhn.domain.errata.AdvisoryStatus.RETRACTED;
+import static com.suse.utils.Predicates.isProvided;
 
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -53,6 +52,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -232,7 +232,7 @@ public class ErrataFactory extends HibernateFactory {
                                             User user, boolean inheritPackages, boolean performPostActions) {
         List<com.redhat.rhn.domain.errata.Errata> toReturn = new ArrayList<>();
         for (Errata errata : errataList) {
-            errata.addChannel(chan);
+            chan.addErrata(errata);
             ErrataManager.replaceChannelNotifications(errata.getId(), chan.getId(), new Date());
 
             Set<Package> packagesToPush = new HashSet<>();
@@ -284,7 +284,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static void addToChannel(Errata errata, Channel chan, User user,
                                       Set<Package> packages) {
-        errata.addChannel(chan);
+        chan.addErrata(errata);
         addErrataPackagesToChannel(errata, chan, user, packages);
         ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
     }
@@ -1109,7 +1109,7 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setAdvisoryStatus(original.getAdvisoryStatus());
 
         // Copy the packages
-        cloned.setPackages(new HashSet<>(original.getPackages()));
+        cloned.replacePackages(new HashSet<>(original.getPackages()));
 
         // Copy the keywords
         original.getKeywords().forEach(k -> cloned.addKeyword(k));
@@ -1325,5 +1325,124 @@ public class ErrataFactory extends HibernateFactory {
         return clone;
     }
 
+    /**
+     * Lookup erratas published in a specific channel.
+     * Optionally filter by advisory names and/or date range (lastModified).
+     * Returns all erratas in the channel regardless of org ownership.
+     *
+     * @param channel the channel to search in
+     * @param advisories list of advisory names to filter by (optional)
+     * @param startDate filter erratas issued on or after this date (optional)
+     * @param endDate filter erratas issued on or before this date (optional)
+     * @return Set of errata in the channel matching the criteria
+     */
+    public static Set<Errata> lookupErrataByChannel(
+            Channel channel, List<String> advisories, Date startDate, Date endDate
+    ) {
+        return lookupErrataByChannelOrOrg(null, channel, advisories, startDate, endDate);
+    }
+
+    /**
+     * Lookup erratas belonging to a specific organization.
+     * Optionally filter by advisory names and/or date range (lastModified).
+     * Returns ONLY erratas where org_id matches the specified organization.
+     * Does NOT include vendor erratas (org_id IS NULL).
+     *
+     * @param org the organization (must not be null)
+     * @param advisories list of advisory names to filter by (optional)
+     * @param startDate filter erratas issued on or after this date (optional)
+     * @param endDate filter erratas issued on or before this date (optional)
+     * @return Set of erratas belonging to the org, or empty set if org is null
+     */
+    public static Set<Errata> lookupErrataByOrg(
+            Org org, List<String> advisories, Date startDate, Date endDate
+    ) {
+        if (org == null) {
+            return new HashSet<>();
+        }
+        return lookupErrataByChannelOrOrg(org, null, advisories, startDate, endDate);
+    }
+
+    /**
+     * Lookup vendor erratas (org_id is null).
+     * Optionally filter by advisory names and/or date range (lastModified).
+     * Returns ONLY vendor erratas, NOT organization-specific erratas.
+     *
+     * @param advisories list of advisory names to filter by (optional)
+     * @param startDate filter erratas issued on or after this date (optional)
+     * @param endDate filter erratas issued on or before this date (optional)
+     * @return Set of vendor erratas matching the criteria
+     */
+    public static Set<Errata> lookupErrataFromVendor(
+            List<String> advisories, Date startDate, Date endDate
+    ) {
+        return lookupErrataByChannelOrOrg(null, null, advisories, startDate, endDate);
+    }
+
+    /**
+     * Lookup erratas by channel OR by org/vendor with optional filters.
+     * If channel is provided: returns all erratas in that channel (org parameter is ignored).<br>
+     * If channel is null: uses mutually exclusive org filter:
+     *   - If org is provided: returns ONLY erratas where org_id = org
+     *   - If org is null: returns ONLY vendor erratas (org_id IS NULL)
+     *
+     * @param org the organization to filter by (ignored if channel is provided, mutually exclusive with channel)
+     * @param channel the channel to filter by (mutually exclusive with org)
+     * @param advisories list of advisory names to filter by (optional)
+     * @param startDate filter erratas issued on or after this date (optional)
+     * @param endDate filter erratas issued on or before this date (optional)
+     * @return Set of matching erratas matching the criteria
+     */
+    private static Set<Errata> lookupErrataByChannelOrOrg(
+            Org org,
+            Channel channel,
+            List<String> advisories,
+            Date startDate,
+            Date endDate
+    ) {
+        if (channel != null && org != null) {
+            throw new IllegalArgumentException("channel and org parameters are mutually exclusive");
+        }
+
+        StringBuilder hql = new StringBuilder("SELECT DISTINCT e FROM Errata e");
+        Map<String, Object> params = new HashMap<>();
+
+        // Mutually exclusive channel / org filter
+        if (channel != null) {
+            hql.append(" WHERE :channel IN elements(e.channels) ");
+            params.put("channel", channel);
+        }
+        else {
+            // When channel is not provided
+            // Either look for matching org or vendor, mutually exclusive
+            if (org != null) {
+                hql.append(" WHERE e.org = :org ");
+                params.put("org", org);
+            }
+            else {
+                hql.append(" WHERE e.org is null ");
+            }
+        }
+
+        if (isProvided(advisories)) {
+            hql.append(" AND e.advisoryName IN (:advisories) ");
+            params.put("advisories", advisories);
+        }
+
+        if (startDate != null) {
+            hql.append(" AND e.lastModified > :startDate ");
+            params.put("startDate", startDate);
+        }
+
+        if (endDate != null) {
+            hql.append(" AND e.lastModified < :endDate ");
+            params.put("endDate", endDate);
+        }
+
+        Query<Errata> query = getSession().createQuery(hql.toString(), Errata.class);
+        params.forEach(query::setParameter);
+
+        return new HashSet<>(query.list());
+    }
 }
 

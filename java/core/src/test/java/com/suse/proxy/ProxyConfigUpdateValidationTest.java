@@ -656,7 +656,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         server.addChannel(baseChannel);
         Package pkg = PackageTest.createTestPackage(user.getOrg(), MGRPXY);
         Channel childChannel = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
-        childChannel.getPackages().add(pkg);
+        childChannel.addPackage(pkg);
         return childChannel;
     }
 

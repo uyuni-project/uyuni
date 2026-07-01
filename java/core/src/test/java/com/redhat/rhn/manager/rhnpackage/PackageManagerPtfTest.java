@@ -90,7 +90,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     @Test
     public void testSystemAvailablePackageList() {
         // Add the packages to the channel
-        channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
+        channel.addPackages(List.of(pkg, ptfPackage, ptfMaster));
         channel = TestUtils.saveAndReload(channel);
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
 
@@ -109,7 +109,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradable() {
-        channel.getPackages().addAll(
+        channel.addPackages(
             List.of(pkg, standard, ptfPackage, ptfMaster, updatedPtfPackage, updatedPtfMaster, updatedStandard)
         );
         channel = TestUtils.saveAndReload(channel);
@@ -144,7 +144,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     @Test
     public void testSystemInstalledPtfList() {
         // Add the packages to the channel
-        channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
+        channel.addPackages(List.of(pkg, ptfPackage, ptfMaster));
         channel = TestUtils.saveAndReload(channel);
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
 
@@ -164,7 +164,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     @Test
     public void testSystemAvailablePtfList() {
         // Add the packages to the channel
-        channel.getPackages().addAll(List.of(pkg, ptfPackage, ptfMaster));
+        channel.addPackages(List.of(pkg, ptfPackage, ptfMaster));
         channel = TestUtils.saveAndReload(channel);
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
 

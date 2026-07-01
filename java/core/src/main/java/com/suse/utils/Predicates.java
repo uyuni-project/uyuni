@@ -143,6 +143,16 @@ public final class Predicates {
     }
 
     /**
+     * Determines whether ANY provided objects are considered to be provided, as per {@link #isProvided(Object)}.
+     *
+     * @param args the varargs to be evaluated
+     * @return true if any of the elements in the varargs are considered provided, otherwise false
+     */
+    public static boolean anyProvided(Object... args) {
+        return !(allAbsent(args));
+    }
+
+    /**
      * Determines whether ALL provided objects are considered to be absent, as per {@link #isAbsent(Object)}.
      *
      * @param args the varargs to be evaluated
@@ -155,6 +165,4 @@ public final class Predicates {
     private Predicates() {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
-
-
 }

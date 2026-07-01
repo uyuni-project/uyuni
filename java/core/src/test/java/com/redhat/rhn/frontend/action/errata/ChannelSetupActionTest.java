@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -68,7 +69,7 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(org.getId());
         //make sure we have a channel for the errata
         Channel c1 = ChannelFactoryTest.createTestChannel(org);
-        e.addChannel(c1);
+        c1.addErrata(e);
         ErrataFactory.save(e);
         //setup the request object
         sah.getRequest().addParameter("eid", e.getId().toString());
