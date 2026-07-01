@@ -14,11 +14,11 @@ import { inferEntityParams } from "./recurring-actions-utils";
 
 /**
  * See:
- *  - java/core/src/main/resources/com/suse/manager/webui/templates/groups/recurring-actions.jade
- *  - java/core/src/main/resources/com/suse/manager/webui/templates/minion/recurring-actions.jade
- *  - java/core/src/main/resources/com/suse/manager/webui/templates/org/recurring-actions.jade
- *  - java/core/src/main/resources/com/suse/manager/webui/templates/schedule/recurring-actions.jade
- *  - java/core/src/main/resources/com/suse/manager/webui/templates/yourorg/recurring-actions.jade
+ *  - java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/groups/recurring-actions.jade
+ *  - java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/minion/recurring-actions.jade
+ *  - java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/org/recurring-actions.jade
+ *  - java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/schedule/recurring-actions.jade
+ *  - java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/yourorg/recurring-actions.jade
  */
 declare global {
   interface Window {

@@ -88,7 +88,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v ${src_dir}/containers/server-image/root/usr/lib/entrypoint-lib.sh:/usr/lib/entrypoint-lib.sh \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts.conf:/etc/tomcat/conf.d/tomcat_java_opts.conf \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
-    -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
+    -v ${src_dir}/java/spacewalk-java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
     -v ${src_dir}/python/billingdataservice/billing-data-service.service:/usr/lib/systemd/system/billing-data-service.service \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \

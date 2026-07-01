@@ -20,10 +20,9 @@ on:
       - 'Manager-[0-9]+.[0-9]+-MU-[0-9]+.[0-9]+.[0-9]+'
     # Only execute on directories that have changelogs
     paths:
-      - 'branding/**'
       - 'client/**'
       - 'containers/**'
-      - 'java/**'
+      - 'java/**/**'
       - 'projects/**'
       - 'proxy/**'
       - 'python/**'

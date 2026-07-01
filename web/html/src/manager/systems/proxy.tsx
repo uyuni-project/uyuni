@@ -14,7 +14,7 @@ type ProxyType = {
   path: string[];
 };
 
-// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/proxy.jade
+// See java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/minion/proxy.jade
 declare global {
   interface Window {
     proxies?: any;
