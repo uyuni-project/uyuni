@@ -1,8 +1,9 @@
 import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
-import Badge from "components/badge/Badge";
-import { CounterBadge } from "components/badge/CounterBadge";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
+
+import { Badge } from "./Badge";
+import { CounterBadge } from "./CounterBadge";
 export default () => {
   return (
     <>
