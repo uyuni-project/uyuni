@@ -1071,7 +1071,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         baseChan.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
-        e1.getPackages().add(p1v2);
+        e1.addPackage(p1v2);
 
         ChannelFactory.save(baseChan);
 
@@ -1168,33 +1168,33 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e1.getId());
         baseChan.addErrata(e1);
-        e1.getPackages().add(p1v2);
-        e1.getPackages().add(p2v4);
-        baseChan.getPackages().add(p1v2);
-        baseChan.getPackages().add(p2v4);
+        e1.addPackage(p1v2);
+        e1.addPackage(p2v4);
+        baseChan.addPackage(p1v2);
+        baseChan.addPackage(p2v4);
 
         Errata e2 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e2.getId());
         baseChan.addErrata(e2);
-        e2.getPackages().add(p1v3);
-        baseChan.getPackages().add(p1v3);
+        e2.addPackage(p1v3);
+        baseChan.addPackage(p1v3);
 
         Errata e3 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e3.getId());
         baseChan.addErrata(e3);
-        e3.getPackages().add(p1v3arch2);
-        baseChan.getPackages().add(p1v3arch2);
+        e3.addPackage(p1v3arch2);
+        baseChan.addPackage(p1v3arch2);
 
         Errata e4 = ErrataFactoryTest.createTestErrata(user.getId());
         errataIds.add(e4.getId());
         childChan.addErrata(e4);
-        e4.getPackages().add(p1v2);
-        childChan.getPackages().add(p1v2);
+        e4.addPackage(p1v2);
+        childChan.addPackage(p1v2);
 
         Errata e5 = ErrataFactoryTest.createTestErrata(user.getId());
         childChan.addErrata(e4);
-        e4.getPackages().add(p1v4);
-        childChan.getPackages().add(p1v4);
+        e4.addPackage(p1v4);
+        childChan.addPackage(p1v4);
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);
