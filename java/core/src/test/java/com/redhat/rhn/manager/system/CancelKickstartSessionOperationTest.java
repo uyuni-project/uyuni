@@ -50,7 +50,7 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
         ksession.setAction(a);
         ActionFactory.save(a);
         KickstartFactory.saveKickstartData(k);
-        ksession = TestUtils.saveAndFlush(ksession);
+        TestUtils.saveAndFlush(ksession); //reassign variable if still needed
 
         CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(user, s.getId());
         dso.store();

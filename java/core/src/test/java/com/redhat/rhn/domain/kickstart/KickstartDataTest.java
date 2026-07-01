@@ -87,7 +87,7 @@ public class KickstartDataTest extends KickstartBaseTest {
         kf.setKsdata(k);
 
         kf.setFileList(TestUtils.saveAndReload(kf.getFileList()));
-        kf = TestUtils.saveAndFlush(kf);
+        TestUtils.saveAndFlush(kf); //reassign variable if still needed
 
         KickstartDefaults d = createDefaults(k, user);
         assertNotNull(d);
@@ -96,7 +96,7 @@ public class KickstartDataTest extends KickstartBaseTest {
         KickstartDefaultRegToken t = new KickstartDefaultRegToken();
         t.setKsdata(k);
         t.setToken(TokenTest.createTestToken());
-        t = TestUtils.saveAndFlush(t);
+        TestUtils.saveAndFlush(t); //reassign variable if still needed
     }
 
     @Test
@@ -360,7 +360,7 @@ public class KickstartDataTest extends KickstartBaseTest {
         d.setCfgManagementFlag(Boolean.FALSE);
         d.setRemoteCommandFlag(Boolean.FALSE);
         KickstartDefaults kickstartDefaults = TestUtils.saveAndFlush(d);
-        t = TestUtils.saveAndFlush(t);
+        TestUtils.saveAndFlush(t); //reassign variable if still needed
         return kickstartDefaults;
     }
 

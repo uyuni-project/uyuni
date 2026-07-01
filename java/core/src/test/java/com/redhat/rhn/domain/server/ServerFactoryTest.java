@@ -1009,7 +1009,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         link.setServer(server2);
         link.setSnapshot(snap);
         link.setTag(tag);
-        link = TestUtils.saveAndFlush(link);
+        TestUtils.saveAndFlush(link); //reassign variable if still needed
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
         TestUtils.assertContains(tags, tag);
@@ -1198,11 +1198,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);
 
-        e1 = TestUtils.saveAndFlush(e1);
-        e2 = TestUtils.saveAndFlush(e2);
-        e3 = TestUtils.saveAndFlush(e3);
-        e4 = TestUtils.saveAndFlush(e4);
-        e5 = TestUtils.saveAndFlush(e5);
+        //reassign variable(s) if still needed
+        TestUtils.saveAndFlush(e1);
+        TestUtils.saveAndFlush(e2);
+        TestUtils.saveAndFlush(e3);
+        TestUtils.saveAndFlush(e4);
+        TestUtils.saveAndFlush(e5);
 
         Map<Long, Map<String, Tuple2<String, String>>> out =
                 ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
@@ -1295,7 +1296,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         minion = TestUtils.reload(minion);
-        proxy = TestUtils.reload(proxy);
+        TestUtils.reload(proxy); //reassign variable if still needed
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),

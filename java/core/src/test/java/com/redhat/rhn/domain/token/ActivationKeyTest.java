@@ -72,7 +72,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         String note = k.getNote();
         String key = k.getKey();
 
-        k = TestUtils.saveAndFlush(k);
+        TestUtils.saveAndFlush(k); //reassign variable if still needed
 
         ActivationKey k2 = ActivationKeyFactory.lookupByKey(key);
         assertEquals(key, k2.getKey());
@@ -163,7 +163,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         KickstartFactory.saveKickstartSession(sess);
         k.setKickstartSession(sess);
         ActivationKeyFactory.save(k);
-        k = TestUtils.reload(k);
+        TestUtils.reload(k); //reassign variable if still needed
 
         ActivationKey lookedUp = ActivationKeyFactory.lookupByKickstartSession(sess);
         assertNotNull(lookedUp);

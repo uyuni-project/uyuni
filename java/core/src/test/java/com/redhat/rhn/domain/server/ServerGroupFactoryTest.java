@@ -74,7 +74,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(user.getOrg(),
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroupFactory.save(sg);
-        sg = TestUtils.saveAndFlush(sg);
+        TestUtils.saveAndFlush(sg); //reassign variable if still needed
     }
 
     @Test

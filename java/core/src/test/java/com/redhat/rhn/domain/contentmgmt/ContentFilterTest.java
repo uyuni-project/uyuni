@@ -305,7 +305,7 @@ public class ContentFilterTest extends BaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
 
         pack = TestUtils.saveAndReload(pack);
         String packageName = pack.getPackageName().getName();
@@ -668,7 +668,7 @@ public class ContentFilterTest extends BaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
 
         pack = TestUtils.saveAndReload(pack);
 

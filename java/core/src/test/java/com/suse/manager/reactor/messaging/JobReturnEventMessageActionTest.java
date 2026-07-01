@@ -1658,7 +1658,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Long actionId = ImageInfoFactory.scheduleImport(
                 server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
         Action action = ActionFactory.lookupById(actionId);
-        action = TestUtils.reload(action);
+        action = TestUtils.reload(action); //reassign variable if still needed
 
         // Process the image inspect return event
         Map<String, String> placeholders = new HashMap<>();
@@ -1997,7 +1997,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // schedule an inspect action
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
-        inspectAction = TestUtils.reload(inspectAction);
+        TestUtils.reload(inspectAction); //reassign variable if still needed
         // Process the image inspect return event
         Optional<JobReturnEvent> event = JobReturnEvent
                 .parse(getJobReturnEvent(returnEventJson, actionId));
