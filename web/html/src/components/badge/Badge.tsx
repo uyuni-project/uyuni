@@ -16,7 +16,7 @@ type BadgeProps =
       color?: SpecialColor;
     };
 
-const Badge = (props: BadgeProps) => {
+export const Badge = (props: BadgeProps) => {
   const { text, icon, variant = "status", color = variant === "status" ? "default" : "gray" } = props;
   // Determine the class name based on the status prop
 
@@ -29,4 +29,3 @@ const Badge = (props: BadgeProps) => {
     </span>
   );
 };
-export default Badge;
