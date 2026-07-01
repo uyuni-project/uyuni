@@ -52,6 +52,9 @@ spec:
 {{- if eq (default .Values.services.type .Values.services.reportdb.type) "NodePort" }}
       nodePort: {{ .Values.services.reportdb.ports.pgsql }}
 {{- end }}
+{{- if eq (default .Values.services.type .Values.services.reportdb.type) "LoadBalancer" }}
+  externalTrafficPolicy: Local
+{{- end }}
   selector:
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: uyuni

@@ -138,7 +138,6 @@ Here is a list of the ports to map:
 
 | Protocol | Port  | Service name | Service port |                                                  |
 | -------- | ----- | ------------ | ------------ | ------------------------------------------------ |
-| TCP      | 5432  | reportdb     | 5432         |                                                  |
 | TCP      | 4505  | salt         | 4505         |                                                  |
 | TCP      | 4506  | salt         | 4506         |                                                  |
 | TCP      | 8001  | taskomatic   | 8001         | Only if installed with `exposeJavaDebug = true`  |
@@ -149,6 +148,13 @@ Here is a list of the ports to map:
 Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
 Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
+
+Exposing the report database externally requires configuring the `reportdb` service as a `NodePort` or `LoadBalancer` (via the `services.reportdb` value).
+
+Be aware of a critical security behavior: external database connections require SSL, whereas internal cluster connections do not.
+However, Traefik ingress TCP routes mask client IPs, causing PostgreSQL to view external traffic as internal.
+
+If you expose the database using a Traefik ingress TCP route and endpoint, you risk allowing clients to establish unencrypted, insecure connections.
 
 ### Ingress vs Gateway API
 
