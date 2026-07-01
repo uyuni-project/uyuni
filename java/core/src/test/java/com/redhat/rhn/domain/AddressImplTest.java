@@ -89,7 +89,7 @@ public class AddressImplTest extends RhnBaseTestCase {
         TestUtils.flushAndClearSession();
 
         User reloaded = UserFactory.lookupById(user.getId());
-        Address reloadedAddress = reloaded.getEnterpriseUser().getAddress();
+        Address reloadedAddress = reloaded.getAddress();
 
         assertNotNull(reloadedAddress);
         assertNotNull(reloadedAddress.getId());
@@ -125,7 +125,7 @@ public class AddressImplTest extends RhnBaseTestCase {
         TestUtils.flushAndClearSession();
 
         User reloaded = UserFactory.lookupById(user.getId());
-        Address reloadedAddress = reloaded.getEnterpriseUser().getAddress();
+        Address reloadedAddress = reloaded.getAddress();
 
         assertNotNull(reloadedAddress);
         assertEquals("Rua Professor Fernando da Fonseca", reloadedAddress.getAddress1());
@@ -169,7 +169,7 @@ public class AddressImplTest extends RhnBaseTestCase {
         TestUtils.flushAndClearSession();
 
         User reloaded = UserFactory.lookupById(user.getId());
-        Address reloadedAddress = reloaded.getEnterpriseUser().getAddress();
+        Address reloadedAddress = reloaded.getAddress();
 
         assertNotNull(reloadedAddress);
         assertEquals(addressId, reloadedAddress.getId()); // Same ID - updated, not recreated
@@ -205,7 +205,7 @@ public class AddressImplTest extends RhnBaseTestCase {
         TestUtils.flushAndClearSession();
 
         User reloaded = UserFactory.lookupById(userId);
-        assertNull(reloaded.getEnterpriseUser().getAddress());
+        assertNull(reloaded.getAddress());
 
         // Address should still exist in DB (no cascade delete configured)
         AddressImpl orphanedAddress = HibernateFactory.getSession().find(AddressImpl.class, addressId);

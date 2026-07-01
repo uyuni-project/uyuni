@@ -53,7 +53,7 @@ public class EditAddressSetupAction extends RhnAction {
         request.setAttribute(RhnHelper.TARGET_USER, user);
         form.set("uid", user.getId());
         if (!RhnValidationHelper.getFailedValidation(request)) {
-            Address address = user.getEnterpriseUser().getAddress();
+            Address address = user.getAddress();
             if (address == null) {
                 address = new AddressImpl();
             }

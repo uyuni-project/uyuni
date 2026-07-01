@@ -61,7 +61,7 @@ public class AddressesAction extends RhnAction {
         request.setAttribute(RhnHelper.TARGET_USER, user);
 
         // Set the Address on the Request
-        Address address = user.getEnterpriseUser().getAddress();
+        Address address = user.getAddress();
         request.setAttribute(RhnHelper.TARGET_ADDRESS, address);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

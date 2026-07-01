@@ -171,9 +171,8 @@ public interface Address extends Serializable {
 
     /**
      * Sets the user associated with this address
-     * @param <T> Type of User
      * @param user New value for user
      */
-    <T extends User> void setUser(T user);
+    void setUser(User user);
 
 }
