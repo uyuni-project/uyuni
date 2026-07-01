@@ -1,0 +1,1 @@
+- Make clone channel appstreams idempotent (bsc#1254201)
