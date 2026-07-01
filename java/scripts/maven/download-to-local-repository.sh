@@ -91,3 +91,4 @@ else
     echo "Skipping obs-to-maven since configuration hasn't changed since last run"
 fi
 
+date +"Dependencies were last updated on %Y-%m-%d %H:%M:%S" > "$EXECUTION_FILE"
