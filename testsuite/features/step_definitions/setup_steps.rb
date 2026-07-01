@@ -387,9 +387,9 @@ Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_
 
   case target_status
   when 'selected'
-    raise ScriptError, "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
+    raise ScriptError, "xpath: #{xpath} is not selected" unless has_selector?(:xpath, xpath, checked: true)
   when 'unselected'
-    raise ScriptError, "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
+    raise ScriptError, "xpath: #{xpath} is selected" unless has_selector?(:xpath, xpath, checked: false)
   else
     log "Target status #{target_status} not supported"
   end

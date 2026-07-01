@@ -316,10 +316,14 @@ When(/^I go back$/) do
 end
 
 #
-# Click on a button
+# Click on a button or a link styled as a button (e.g. <a class="btn">)
 #
 When(/^I click on "([^"]*)"$/) do |text|
-  click_button_and_wait(text, match: :first)
+  begin
+    click_button_and_wait(text, match: :first)
+  rescue Capybara::ElementNotFound
+    click_link_and_wait(text, match: :first)
+  end
 end
 
 #
@@ -338,8 +342,8 @@ end
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
-  within(:xpath, "//div[@id=\"#{element_id}\"]") do
-    click_button_and_wait(text, match: :first)
+  page.driver.with_playwright_page do |pw_page|
+    pw_page.locator("##{element_id} button", has_text: text).click(force: true)
   end
 end
 
