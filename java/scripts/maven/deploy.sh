@@ -23,6 +23,7 @@ DEPLOY_NAMESPACE="default"
 CONTAINER_BACKEND="podman"
 RESTART_TOMCAT=false
 RESTART_TASKOMATIC=false
+REBUILD=false
 VERBOSE=false
 
 # SSH configuration if needed by the chosen deploy mode
@@ -46,20 +47,33 @@ print_error() {
 usage() {
     print "Usage: $0 <type> [options]"
     print ""
-    print "Deploys the Uyuni webapp."
+    print "Deploys Uyuni components to a target system."
     print ""
     print "Mandatory Arguments:"
-    print "  <type>                 The type of deployment to perform: backend, frontend, salt or all."
+    print "  <type>                 Deployment type to run (see 'Deployment Types')."
+    print ""
+    print "Deployment Types:"
+    print "  backend                Deploy Java artifacts (Tomcat and Taskomatic)."
+    print "  frontend               Deploy Typescript artifacts."
+    print "  salt                   Deploy Salt states/modules/reactor files."
+    print "  restart-only           Do not deploy files, only restart selected services."
+    print "  webapp                 Deploy both backend and frontend."
+    print "  all                    Deploy all the possible artifacts."
     print ""
     print "Optional Arguments:"
-    print "  -m,--mode <mode>        Deployment mode: local, remote, container, remote-container, kubectl (default: $DEPLOY_MODE)"
-    print "  -h,--host <hostname>    The target host for the deployment."
-    print "  -b,--backend <backend>  Container backend: podman, podman-remote, kubectl (default: $CONTAINER_BACKEND)"
-    print "  -n,--namespace <ns>     Kubernetes namespace where to look for the pod (default: $DEPLOY_NAMESPACE)"
-    print "  -r,--restart            Restart tomcat and taskomatic at the end of the deployment"
-    print "  --restart-tomcat        Restart only tomcat at the end of the deployment"
-    print "  --restart-taskomatic    Restart only taskomatic at the end of the deployment"
-    print "  -v,--verbose            Print detailed messages"
+    print "  -m,--mode <mode>        Executor mode: local, remote, container,"
+    print "                          remote-container, kubectl (default: $DEPLOY_MODE)"
+    print "  -h,--host <hostname>    Target host for remote and remote-container modes."
+    print "  -b,--backend <backend>  Container backend: podman, podman-remote, kubectl"
+    print "                          (default: $CONTAINER_BACKEND)"
+    print "  -n,--namespace <ns>     Kubernetes namespace used with kubectl mode"
+    print "                          (default: $DEPLOY_NAMESPACE)"
+    print "  -R, --rebuild           Rebuild before deploy: backend runs 'mvn package',"
+    print "                          frontend runs 'npm --prefix web run build -- --check-spec=false'"
+    print "  -r,--restart            Restart both tomcat and taskomatic after deployment."
+    print "  --restart-tomcat        Restart only tomcat after deployment."
+    print "  --restart-taskomatic    Restart only taskomatic after deployment."
+    print "  -v,--verbose            Print detailed messages and executed commands."
     print "  --help                  Show this help message."
     print
 }
@@ -88,6 +102,10 @@ while [[ $# -gt 0 ]]; do
             DEPLOY_NAMESPACE="$2"
             shift 2
             ;;
+         -R|--rebuild)
+            REBUILD=true
+            shift
+            ;;
         -r|--restart)
             RESTART_TOMCAT=true
             RESTART_TASKOMATIC=true
@@ -105,7 +123,7 @@ while [[ $# -gt 0 ]]; do
             usage
             exit 0
             ;;
-        frontend|backend|salt|all)
+        frontend|backend|webapp|salt|restart-only|all)
             DEPLOY_TARGET="$1"
             shift
             ;;
@@ -140,6 +158,10 @@ BRANDING_VERSION=""
 
 # Executes a command on the target system using the configured executor.
 deploy_execute() {
+    if [ "$VERBOSE" = true ]; then
+        echo "$EXECUTOR_COMMAND ${EXECUTOR_PARAMETERS[@]} $@" >&2
+    fi
+
     # Execute the command with parameters as a proper array
     "$EXECUTOR_COMMAND" "${EXECUTOR_PARAMETERS[@]}" $@
 }
@@ -311,6 +333,12 @@ deploy_backend() {
     local TARGET_DIR="/usr/share/susemanager/www/tomcat/webapps/rhn"
     local SOURCE_WEBAPP_DIR="${UYUNI_DIR}/java/webapp/target/webapp-${SPACEWALK_JAVA_VERSION}"
 
+    if [ "$REBUILD" = true ]; then
+        print "Rebuilding backend with Maven..."
+        (cd "$UYUNI_DIR/java" && mvn package)
+    fi
+
+
     # Check if the file to deploy exists
     if [ ! -d "$SOURCE_WEBAPP_DIR" ]; then
         print_error "Error: Webapp directory $SOURCE_WEBAPP_DIR does not exist."
@@ -339,8 +367,13 @@ deploy_frontend() {
     local FRONTEND_DIR="$UYUNI_DIR/web/html/src/dist"
     local TARGET_DIR="/usr/share/susemanager/www/htdocs"
 
+    if [ "$REBUILD" = true ]; then
+        print "Rebuilding frontend with npm..."
+        (cd "$UYUNI_DIR" && npm --prefix web run build -- --check-spec=false)
+    fi
+
     if [ ! -d "$FRONTEND_DIR" ]; then
-        print_error "Error: Frontend directory $SOURCE_WEBAPP_DIR does not exist."
+        print_error "Error: Frontend directory $FRONTEND_DIR does not exist."
         print_error "Please build the frontend first by calling npm."
         exit 1
     fi
@@ -392,8 +425,22 @@ main() {
             deploy_frontend
             ;;
 
+        webapp)
+            deploy_backend
+            deploy_frontend
+            ;;
+
         salt)
             deploy_salt
+            ;;
+
+        restart-only)
+            # Just restart services without deploying anything.
+            # If the user didn't specify which one to restart, restart both by default.
+            if [ "$RESTART_TOMCAT" = false ] && [ "$RESTART_TASKOMATIC" = false ]; then
+                RESTART_TOMCAT=true
+                RESTART_TASKOMATIC=true
+            fi
             ;;
 
         all)
