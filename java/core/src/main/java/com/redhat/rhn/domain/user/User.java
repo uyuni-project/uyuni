@@ -379,15 +379,11 @@ public interface User extends Serializable {
      */
     String getCompany();
 
-    // ***********************************
-    // Address Interface
-    // ***********************************
-
     /**
-     * Getter for address1
-     * @return Address1
+     * Get the user's address
+     * @return the address
      */
-    String getAddress1();
+    Address getAddress();
 
     /**
      * Setter for address
@@ -395,101 +391,6 @@ public interface User extends Serializable {
      */
     void setAddress(Address addressIn);
 
-    /**
-     * Setter for address1
-     * @param address1In New value for address1
-     */
-    void setAddress1(String address1In);
-
-    /**
-     * Getter for address2
-     * @return Address2
-     */
-    String getAddress2();
-
-    /**
-     * Setter for address2
-     * @param address2In New value for address2
-     */
-    void setAddress2(String address2In);
-
-    /**
-     * Getter for city
-     * @return City
-     */
-    String getCity();
-
-    /**
-     * Setter for city
-     * @param cityIn New value for city
-     */
-    void setCity(String cityIn);
-
-    /**
-     * Getter for state
-     * @return State
-     */
-    String getState();
-
-    /**
-     * Setter for state
-     * @param stateIn New value for state
-     */
-    void setState(String stateIn);
-
-    /**
-     * Getter for zip
-     * @return Zip
-     */
-    String getZip();
-
-    /**
-     * Setter for zip
-     * @param zipIn New value for zip
-     */
-    void setZip(String zipIn);
-
-    /**
-     * Getter for country
-     * @return Country
-     */
-    String getCountry();
-
-    /**
-     * Setter for country
-     * @param countryIn New value for country
-     */
-    void setCountry(String countryIn);
-
-    /**
-     * Getter for phone
-     * @return Phone
-     */
-    String getPhone();
-
-    /**
-     * Setter for phone
-     * @param phoneIn New value for phone
-     */
-    void setPhone(String phoneIn);
-
-    /**
-     * Getter for fax
-     * @return Fax
-     */
-    String getFax();
-
-    /**
-     * Setter for fax
-     * @param faxIn New value for fax
-     */
-    void setFax(String faxIn);
-
-    /**
-     * Get the EnterpriseUser
-     * @return enterprise user
-     */
-    EnterpriseUser getEnterpriseUser();
 
     /**
      * Retrieves the set of  Pane object instances

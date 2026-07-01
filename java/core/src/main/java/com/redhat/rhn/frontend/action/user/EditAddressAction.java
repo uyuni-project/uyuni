@@ -78,7 +78,7 @@ public class EditAddressAction extends RhnAction {
         }
 
         // Create address if user doesn't have one yet
-        Address address = targetUser.getEnterpriseUser().getAddress();
+        Address address = targetUser.getAddress();
         if (address == null) {
             address = UserFactory.createAddress();
             targetUser.setAddress(address);

@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -107,9 +108,10 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         action.execute(mapping, form, request, response);
 
         User user = UserFactory.lookupById(usr.getId());
+        Address address = user.getAddress();
 
         // If we get here, then we should have changed the address, so check that.
-        assertEquals(user.getAddress1(), newAddr1);
+        assertEquals(address.getAddress1(), newAddr1);
     }
 
     @Test

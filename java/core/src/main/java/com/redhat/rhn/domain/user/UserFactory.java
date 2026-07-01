@@ -343,8 +343,8 @@ public class UserFactory extends HibernateFactory {
         inParams.put("parentCompany", StringUtils.defaultIfEmpty(usr.getCompany(), null));
         inParams.put("company", StringUtils.defaultIfEmpty(usr.getCompany(), null));
         inParams.put("title", StringUtils.defaultIfEmpty(usr.getTitle(), null));
-        inParams.put("phone", StringUtils.defaultIfEmpty(usr.getPhone(), null));
-        inParams.put("fax", StringUtils.defaultIfEmpty(usr.getFax(), null));
+        inParams.put("phone", addr != null ? StringUtils.defaultIfEmpty(addr.getPhone(), null) : null);
+        inParams.put("fax", addr != null ? StringUtils.defaultIfEmpty(addr.getFax(), null) : null);
         inParams.put("email", StringUtils.defaultIfEmpty(usr.getEmail(), null));
         inParams.put("pin", 0);
         inParams.put("fnameOl", " ");

@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -37,8 +38,9 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
 
         User user = sah.getUser();
-        user.setPhone("555-1212");
-        user.setFax("555-1212");
+        Address address = user.getAddress();
+        address.setPhone("555-1212");
+        address.setFax("555-1212");
 
         sah.executeAction();
 
@@ -46,14 +48,14 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         RhnMockDynaActionForm form = sah.getForm();
         assertAll(
                 "Check if the user information is correct",
-                () -> assertEquals(user.getAddress1(), form.get("address1")),
-                () -> assertEquals(user.getAddress2(), form.get("address2")),
-                () -> assertEquals(user.getPhone(), form.get("phone")),
-                () -> assertEquals(user.getFax(), form.get("fax")),
-                () -> assertEquals(user.getCity(), form.get("city")),
-                () -> assertEquals(user.getState(), form.get("state")),
-                () -> assertEquals(user.getCountry(), form.get("country")),
-                () -> assertEquals(user.getZip(), form.get("zip"))
+                () -> assertEquals(address.getAddress1(), form.get("address1")),
+                () -> assertEquals(address.getAddress2(), form.get("address2")),
+                () -> assertEquals(address.getPhone(), form.get("phone")),
+                () -> assertEquals(address.getFax(), form.get("fax")),
+                () -> assertEquals(address.getCity(), form.get("city")),
+                () -> assertEquals(address.getState(), form.get("state")),
+                () -> assertEquals(address.getCountry(), form.get("country")),
+                () -> assertEquals(address.getZip(), form.get("zip"))
         );
     }
 

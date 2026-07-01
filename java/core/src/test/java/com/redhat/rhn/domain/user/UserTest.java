@@ -124,10 +124,11 @@ public class UserTest extends RhnJmockBaseTestCase {
         TestUtils.flushAndEvict(usr);
 
         UserImpl reloadedUser = UserFactory.lookupById(usr.getId());
+        Address reloaderUserAddress = reloadedUser.getAddress();
         assertEquals(usr, reloadedUser);
         assertEquals(addr, reloadedUser.getAddress());
-        assertEquals(addr.getAddress1(), reloadedUser.getAddress1());
-        assertEquals(addr.getAddress2(), reloadedUser.getAddress2());
+        assertEquals(addr.getAddress1(), reloaderUserAddress.getAddress1());
+        assertEquals(addr.getAddress2(), reloaderUserAddress.getAddress2());
     }
 
 
@@ -178,11 +179,12 @@ public class UserTest extends RhnJmockBaseTestCase {
         usr.setTitle(foo);
         assertEquals(foo, usr.getTitle());
 
-        usr.setPhone(foo);
-        assertEquals(foo, usr.getPhone());
+        Address address = usr.getAddress();
+        address.setPhone(foo);
+        assertEquals(foo, address.getPhone());
 
-        usr.setFax(foo);
-        assertEquals(foo, usr.getFax());
+        address.setFax(foo);
+        assertEquals(foo, address.getFax());
 
         usr.setEmail(foo);
         assertEquals(foo, usr.getEmail());

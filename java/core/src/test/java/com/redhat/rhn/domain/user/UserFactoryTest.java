@@ -295,8 +295,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         assertNotNull(usr.getOrg());
 
-        assertNotNull(usr.getEnterpriseUser().getAddress());
-        Address dbAddr = usr.getEnterpriseUser().getAddress();
+        assertNotNull(usr.getAddress());
+        Address dbAddr = usr.getAddress();
         assertTrue(dbAddr.getId().intValue() > 0);
         assertEquals("444 Castro", dbAddr.getAddress1());
     }
@@ -322,7 +322,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertNotNull(usr.getOrg());
 
         // No address should be created when none is provided
-        Address address = usr.getEnterpriseUser().getAddress();
+        Address address = usr.getAddress();
         assertNull(address);
 
     }
