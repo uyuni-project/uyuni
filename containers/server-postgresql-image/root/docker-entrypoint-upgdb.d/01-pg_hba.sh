@@ -18,12 +18,8 @@ if [ -f "$NAMESPACE_FILE" ] ; then
     # reverse lookup does nor work during initialization, we must check also IP
     POD_IP=$(getent hosts $(cat /etc/hostname) 2>/dev/null | sed 's/[[:space:]].*//')
     POD_NETWORK=$(echo "${POD_IP:-10.42.0.0}" | cut -d. -f1,2).0.0/16
-    INTERNAL_ACCESS="$POD_NETWORK .$NAMESPACE.svc.cluster.local"
-
-    # handle external access via traefik
-    # it matches the IP so it must be rejected explicitly, by domain
-    EXTERNAL_RULES="hostssl reportdb all .kube-system.svc.cluster.local scram-sha-256
-host all all .kube-system.svc.cluster.local reject"
+    INTERNAL_ACCESS="$POD_NETWORK"
+    EXTERNAL_RULES=""
 else
     # podman
     INTERNAL_ACCESS="uyuni-server uyuni-server-attestation-0 uyuni-server-attestation-1 uyuni-server-attestation-2 uyuni-server-attestation-3"

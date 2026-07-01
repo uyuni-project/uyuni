@@ -20,12 +20,6 @@ tests:
         documentSelector:
           path: metadata.name
           value: salt-publish-route
-      - equal:
-          path: spec.routes[0].services[0].port
-          value: 5432
-        documentSelector:
-          path: metadata.name
-          value: reportdb-pgsql-route
       - hasDocuments:
           count: 0
         documentSelector:
