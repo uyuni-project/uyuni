@@ -1,0 +1,2 @@
+- Remove the postgresql TCP route (bsc#1270038)
+- Add a value to change pods CIDR in the database

@@ -57,6 +57,8 @@ spec:
                 secretKeyRef:
                   key: password
                   name: reportdb-credentials
+            - name: POD_NETWORK
+              value: {{ .Values.db.podsCIDR | quote }}
           image: {{ include "uyuni.image" (dict "name" "server-postgresql" "global" . "local" .Values.db) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db

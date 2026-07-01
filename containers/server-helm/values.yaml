@@ -284,6 +284,10 @@ db:
   # WARNING: using a third party database is not tested and supported for now.
   enable: true
 
+  # Network IP range to allow plain text connections from, usually the cluster pods CIDR
+  # The default has been adjusted with rke2's pods CIDR default.
+  podsCIDR: 10.42.0.0/16
+
   # Configuration of the internal database connection
   # WARNING: Only taken into account if db is disabled
   internal:
