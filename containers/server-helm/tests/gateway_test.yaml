@@ -38,7 +38,7 @@ tests:
         template: routes.yaml
 
       - hasDocuments:
-          count: 3
+          count: 2
         template: tcp-routes.yaml
 
       - hasDocuments:
@@ -78,7 +78,7 @@ tests:
           matchMany: true
 
       - hasDocuments:
-          count: 6
+          count: 5
         template: tcp-routes.yaml
         documentSelector:
           path: spec.parentRefs[?(@.name=="test-gw")].name
@@ -137,14 +137,6 @@ tests:
           kind: TCPRoute
           apiVersion: gateway.networking.k8s.io/v1alpha2
           name: salt-request
-          namespace: myns
-          any: true
-        template: tcp-routes.yaml
-
-      - containsDocument:
-          kind: TCPRoute
-          apiVersion: gateway.networking.k8s.io/v1alpha2
-          name: reportdb-pgsql
           namespace: myns
           any: true
         template: tcp-routes.yaml
