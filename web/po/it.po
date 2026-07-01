@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-06-30 17:12+0000\n"
+"PO-Revision-Date: 2026-07-01 18:12+0000\n"
 "Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -403,7 +403,7 @@ msgstr ""
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:164
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
-msgstr ""
+msgstr "dettagli"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:41
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:35
@@ -875,7 +875,7 @@ msgstr "Organizzazione"
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:112
 #: ../html/src/manager/admin/setup/products/products.tsx:503
 msgid "Filter by architecture"
-msgstr ""
+msgstr "Filtra per architettura"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:127
 #, fuzzy
@@ -899,7 +899,7 @@ msgstr "Nome Canale"
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 msgid "Architecture"
-msgstr ""
+msgstr "Architettura"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:151
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:236
@@ -1407,7 +1407,7 @@ msgstr ""
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
 #: ../html/src/manager/admin/setup/products/products.tsx:605
 msgid "Arch"
-msgstr ""
+msgstr "arco"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:247
 msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
@@ -2488,7 +2488,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 msgid "Filter by name"
-msgstr ""
+msgstr "filtrato per nome"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:160
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
@@ -2997,16 +2997,16 @@ msgstr "Aggiorna"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "Si prega di avere pazienza, questo potrebbe richiedere diversi minuti."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
 #: ../html/src/manager/images/image-view-overview.tsx:147
 msgid "Completed"
-msgstr ""
+msgstr "Completato"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:198
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "Operazione non riuscita: risposta vuota dal server"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:135
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
@@ -3014,48 +3014,48 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:186
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "L'aggiornamento del catalogo prodotti è in esecuzione..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:213
 msgid "The following product installations failed. Please check log files."
-msgstr ""
+msgstr "Le seguenti installazioni del prodotto non sono riuscite. Si prega di controllare i file di registro."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:260
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr ""
+msgstr "I canali selezionati sono stati programmati con successo per la sincronizzazione."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
-msgstr ""
+msgstr "Attualmente è in esecuzione in background un aggiornamento dei dati del prodotto. Per favore riprova più tardi."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:301
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "Il catalogo prodotti è ancora in aggiornamento, attendi."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "Select some product first."
-msgstr ""
+msgstr "Seleziona prima un prodotto."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:312
 #: ../html/src/manager/admin/setup/products/products.tsx:321
 msgid "Add products"
-msgstr ""
+msgstr "Aggiungi prodotti"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid "Clear products selection"
-msgstr ""
+msgstr "Cancella la selezione dei prodotti"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "Perché non tutti i prodotti vengono visualizzati nell'elenco?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:387
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
+msgstr "I prodotti visualizzati in questo elenco sono direttamente collegati alle credenziali della tua Organizzazione (Mirror credentials) e ai tuoi abbonamenti SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:392
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
-msgstr ""
+msgstr "Se ritieni che manchino dei prodotti, assicurati di aver aggiunto le credenziali di organizzazione corrette nel passaggio precedente della procedura guidata."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:402
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
@@ -3063,47 +3063,44 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:521
 msgid "Filter by product Description"
-msgstr ""
+msgstr "Filtra per descrizione del prodotto"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:597
 msgid "Product Description"
-msgstr ""
+msgstr "Descrizione Prodotto"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:612
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
-msgstr ""
+msgstr "Canali"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Recommended"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:800
-#, fuzzy
 msgid " channels sync failed"
-msgstr "Applica lo stato alto"
+msgstr " sincronizzazione dei canali non riuscita"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:808
-#, fuzzy
 msgid " channels sync in progress"
-msgstr "Applica lo stato alto"
+msgstr " sincronizzazione dei canali in corso"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:816
-#, fuzzy
 msgid " channels synced"
-msgstr "Applica lo stato alto"
+msgstr " Canali Sincronizzati"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
+msgstr "Per abilitare questo prodotto, il prodotto principale deve essere selezionato per primo"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "Select this product"
-msgstr ""
+msgstr "seleziona questo prodotto"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:854
 msgid "This product is mirrored."
-msgstr ""
+msgstr "Questo prodotto è specchiato."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:886
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:78
@@ -3111,59 +3108,59 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:494
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:558
 msgid "recommended"
-msgstr ""
+msgstr "Consigliato"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:942
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "Aggiornamento del catalogo prodotti SCC in corso"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:945
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "Risincronizzazione del prodotto dei canali di pianificazione"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:948
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "Risincronizzazione programmata del prodotto dei canali"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:951
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "Pianifica la risincronizzazione del prodotto dei canali"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1011
 msgid "Show product's channels"
-msgstr ""
+msgstr "Mostra i canali del prodotto"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "Product Channels - "
-msgstr ""
+msgstr "Canali di prodotto - "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1089
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "Seleziona i canali opzionali che desideri aggiungere e conferma."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "Canali obbligatori"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
-msgstr ""
+msgstr "Canali opzionali"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1130
 msgid "not synced"
-msgstr ""
+msgstr "non sincronizzati"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "sync in progress"
-msgstr ""
+msgstr "sincronizzazione in corso"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1136
 msgid "synced"
-msgstr ""
+msgstr "sincronizzato"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1139
 msgid "sync failed"
-msgstr ""
+msgstr "sincronizzazione fallita"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
@@ -3236,91 +3233,91 @@ msgstr "configurazione guidata"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:96
 msgid " running"
-msgstr ""
+msgstr " in esecuzione"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:104
 msgid " finished"
-msgstr ""
+msgstr " finito"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:112
 msgid " failed"
-msgstr ""
+msgstr " fallito"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:120
 msgid " interrupted"
-msgstr ""
+msgstr " interrotto"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:128
 msgid " ready to run"
-msgstr ""
+msgstr " pronto per l'avvio"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:136
 msgid " skipped"
-msgstr ""
+msgstr " saltato"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:156
 msgid "Task Engine Status"
-msgstr ""
+msgstr "Stato del motore di attività"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:166
 msgid "Last Execution Times"
-msgstr ""
+msgstr "Ultimi tempi di esecuzione"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:170
 msgid "Runtime Status"
-msgstr ""
+msgstr "stato di esecuzione"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:184
 msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
-msgstr ""
+msgstr "Il server è in esecuzione o ha terminato di eseguire le seguenti attività negli ultimi 5 minuti."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:187
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "I dati vengono aggiornati ogni "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:189
 msgid " seconds"
-msgstr ""
+msgstr " secondi"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
 msgid "Task Id"
-msgstr ""
+msgstr "id attività"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:201
 msgid "Task Name"
-msgstr ""
+msgstr "nome attività"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:207
 msgid "Start Time"
-msgstr ""
+msgstr "ora di inizio"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:213
 msgid "End Time"
-msgstr ""
+msgstr "ora di fine"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:223
 msgid "Elapsed Time"
-msgstr ""
+msgstr "tempo trascorso"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:236
 msgid "Data"
-msgstr ""
+msgstr "dati"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:247
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "Al momento non ci sono attività in esecuzione sul server."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:266
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:113
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
+msgstr "Sessione scaduta, ricarica la pagina per visualizzare i dati aggiornati."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:268
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:115
 #: ../html/src/utils/network.ts:104
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "Errore del server, controlla i file di registro."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 msgid "An error occurred while displaying the list of packages."
@@ -3373,7 +3370,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "Interessante, patch disponibili in canali non assegnati"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
@@ -4840,7 +4837,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "include recommended"
-msgstr ""
+msgstr "includere consigliato"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:36
 #: ../html/src/manager/images/image-stores.tsx:184
