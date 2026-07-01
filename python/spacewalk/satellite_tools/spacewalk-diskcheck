@@ -23,23 +23,28 @@ function parseArguments {
 }
 
 function parseConfiguration {
-    if [ -f $1 ]; then
-        DISKCHECKDIRS=`grep ^[[:blank:]]*spacecheck_dirs $1 | sed -e "s/.*=[[:blank:]]*//"`
-        DISKCHECKALERT=`grep ^[[:blank:]]*spacecheck_free_alert $1 | sed -e "s/.*=[[:blank:]]*//"`
-        DISKTHRESHOLD=`grep ^[[:blank:]]*spacecheck_free_critical $1 | sed -e "s/.*=[[:blank:]]*//"`
+    local conf="$1"
+
+    if [ -z "${DISKCHECKDIRS}" ] && [ -f "$conf" ]; then
+        DISKCHECKDIRS=$(grep '^[[:blank:]]*spacecheck_dirs' "$conf" | sed -e 's/.*=[[:blank:]]*//')
+    fi
+    if [ -z "${DISKCHECKALERT}" ] && [ -f "$conf" ]; then
+        DISKCHECKALERT=$(grep '^[[:blank:]]*spacecheck_free_alert' "$conf" | sed -e 's/.*=[[:blank:]]*//')
+    fi
+    if [ -z "${DISKTHRESHOLD}" ] && [ -f "$conf" ]; then
+        DISKTHRESHOLD=$(grep '^[[:blank:]]*spacecheck_free_critical' "$conf" | sed -e 's/.*=[[:blank:]]*//')
     fi
 
-    if [ "$DISKCHECKDIRS" = "" ]; then
-        DISKCHECKDIRS="/var/spacewalk /var/cache /srv"
-    fi
+    [ -z "${DISKCHECKDIRS}" ] && DISKCHECKDIRS="/var/spacewalk /var/cache /srv"
+    [ -z "${DISKCHECKALERT}" ] && DISKCHECKALERT=90
+    [ -z "${DISKTHRESHOLD}" ]  && DISKTHRESHOLD=95
 
-    if [ "$DISKCHECKALERT" = "" ]; then
-        DISKCHECKALERT=90
-    fi
+    # Strip surrounding quotes that may have been introduced via env or rhn.conf.
+    DISKCHECKDIRS="${DISKCHECKDIRS%\"}"; DISKCHECKDIRS="${DISKCHECKDIRS#\"}"
+    DISKCHECKDIRS="${DISKCHECKDIRS%\'}"; DISKCHECKDIRS="${DISKCHECKDIRS#\'}"
 
-    if [ "$DISKTHRESHOLD" = "" ]; then
-        DISKTHRESHOLD=95
-    fi
+    # Split into a bash array for safe iteration.
+    read -ra DISKCHECKDIRS_ARR <<< "$DISKCHECKDIRS"
 }
 
 function ensureSpacewalkRunning {
@@ -65,17 +70,17 @@ ensureSpacewalkRunning
 parseArguments "$@"
 parseConfiguration /etc/rhn/rhn.conf
 
-for DIR in $DISKCHECKDIRS
-do
-    if [ ! -d $DIR ]; then
+for DIR in "${DISKCHECKDIRS_ARR[@]}"; do
+    if [ ! -d "$DIR" ]; then
+        echo "DISKCHECK: Directory $DIR does not exist"
         updateSeverity 1
         continue
     fi
 
-    USEDSPACE=`df -PH $DIR | tail -1 | awk '{print $5}' | sed -e"s/\%//"`
-    if [ $USEDSPACE -gt $DISKTHRESHOLD ]; then
+    USEDSPACE=$(df -PH -- "$DIR" | tail -1 | awk '{print $5}' | sed -e 's/%//')
+    if [ "$USEDSPACE" -gt "$DISKTHRESHOLD" ]; then
         updateSeverity 3
-    elif [ $USEDSPACE -gt $DISKCHECKALERT ]; then
+    elif [ "$USEDSPACE" -gt "$DISKCHECKALERT" ]; then
         updateSeverity 2
     fi
 done
