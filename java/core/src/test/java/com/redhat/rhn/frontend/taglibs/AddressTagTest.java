@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -62,10 +63,9 @@ public class AddressTagTest extends RhnBaseTestCase {
         // setup mock objects
         RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
         String expectedData = getPopulatedReturnValue(sah.getUser().getId());
-        addtg.setType(Address.TYPE_MARKETING);
         addtg.setUser(sah.getUser());
         addtg.setAddress(
-                (Address) sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_MARKETING));
+                (Address) sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS));
 
         // ok let's test the tag
         tth.assertDoStartTag(Tag.SKIP_BODY);
@@ -82,9 +82,7 @@ public class AddressTagTest extends RhnBaseTestCase {
         RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
         String expectedData = getEmptyReturnValue(sah.getUser().getId());
 
-        // The test User in the super class shouldn't have
-        // a SHIPPING address
-        addtg.setType(Address.TYPE_MARKETING);
+        // The test User should not have an address
         addtg.setUser(sah.getUser());
         // ok let's test the tag
         tth.assertDoStartTag(Tag.SKIP_BODY);
@@ -99,14 +97,14 @@ public class AddressTagTest extends RhnBaseTestCase {
                 "Phone: 650-555-1212<br />" +
                 "Fax: 650-555-1212<br />" +
                 "</address>" +
-                "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +
+                "<a class=\"btn btn-default\" href=\"/EditAddress.do?uid=" +
                 uid + "\">" + "Edit</a>";
     }
 
     private String getEmptyReturnValue(Long uid) {
         return "<strong>Mailing Address</strong>" +
                 "<div class=\"alert alert-info\">Address not filled in</div>" +
-                "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +
+                "<a class=\"btn btn-default\" href=\"/EditAddress.do?uid=" +
                 uid + "\">Add address</a>";
     }
 

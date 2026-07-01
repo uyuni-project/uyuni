@@ -60,17 +60,9 @@ public class AddressesAction extends RhnAction {
         // Set the User on the Request
         request.setAttribute(RhnHelper.TARGET_USER, user);
 
-        // Set the Addresses on the Request
-        Address marketing = user.getEnterpriseUser().getAddress();
-            //UserManager.getMostRecentAddressByType(user, Address.TYPE_MARKETING);
-        //Address billing =
-            //UserManager.getMostRecentAddressByType(user, Address.TYPE_BILLING);
-        //Address shipping =
-            //UserManager.getMostRecentAddressByType(user, Address.TYPE_SHIPPING);
-
-        request.setAttribute(RhnHelper.TARGET_ADDRESS_MARKETING, marketing);
-        //request.setAttribute(RhnHelper.TARGET_ADDRESS_BILLING, billing);
-        //request.setAttribute(RhnHelper.TARGET_ADDRESS_SHIPPING, shipping);
+        // Set the Address on the Request
+        Address address = user.getAddress();
+        request.setAttribute(RhnHelper.TARGET_ADDRESS, address);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

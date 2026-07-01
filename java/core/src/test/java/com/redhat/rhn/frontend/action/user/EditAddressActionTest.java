@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -91,10 +92,9 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         request.addParameter("uid", userIdRaw);
     }
 
-    private void executeAction(String addressType) {
+    private void executeAction() {
 
         mapping.addForwardConfig(success);
-        form.set("type", addressType);
         form.set("phone", "650-555-1212");
         form.set("fax", "650-555-1212");
         String newAddr1 = "444 Castro St " + TestUtils.randomString();
@@ -108,19 +108,18 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         action.execute(mapping, form, request, response);
 
         User user = UserFactory.lookupById(usr.getId());
+        Address address = user.getAddress();
 
         // If we get here, then we should have changed the address, so check that.
-        assertEquals(user.getAddress1(), newAddr1);
+        assertEquals(address.getAddress1(), newAddr1);
     }
 
     @Test
     public void testPerformExecuteNewAddressFailure() {
         setUpFailure();
-        // Creating a user automatically creates a MARKETING address, so as long
-        // as that is the only address in the User, we know there is no SHIPPING
-        // address.
+        // Creating a user automatically creates an address
         try {
-            executeAction(Address.TYPE_MARKETING);
+            executeAction();
             fail("Should have failed.");
         }
         catch (RuntimeException e) {
@@ -134,6 +133,6 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         // Creating a user automatically creates a MARKETING address, so as long
         // as that is the only address in the User, we know there is no SHIPPING
         // address.
-        executeAction(Address.TYPE_MARKETING);
+        executeAction();
     }
 }

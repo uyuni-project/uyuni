@@ -32,7 +32,6 @@
                         </div>
                     </div>
                     <html:hidden property="uid" value="${param.uid}"/>
-                    <html:hidden property="type"/>
                 </html:form>
             </div>
         </div>

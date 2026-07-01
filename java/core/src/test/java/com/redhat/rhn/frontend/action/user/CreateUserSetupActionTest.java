@@ -38,7 +38,6 @@ public class CreateUserSetupActionTest extends RhnBaseTestCase {
 
         // verify the dyna form got the right values we expected.
         RhnMockDynaActionForm form = sah.getForm();
-        assertEquals("US", form.get("country"));
         assertEquals(Boolean.TRUE, form.get("contact_email"));
         assertEquals(Boolean.TRUE, form.get("contact_partner"));
         assertEquals(LocalizationService.getInstance().getMessage("user prefix Mr."),
