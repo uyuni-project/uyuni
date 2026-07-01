@@ -1391,16 +1391,15 @@ class RepoSync(object):
         skipped = 0
         packages = []
 
-        if self.metadata_only:
+        if self.metadata_only and isinstance(plug.repo, (yum_src.ZypperRepo)):
             # Download the repository filelists.xml file.
             plug.get_filelists()
             # Get package metadata from filelist file so we can assign it to apkg later
-            rpm_packages_medatata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
+            packages_medatata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
                             plug._retrieve_md_path("filelists"),
-                            self.urls[0]["source_url"][0],
+                            plug.repo.baseurl[0],
                             CACHE_DIR,
                             skip_import=True)}
-
         try:
             packages = plug.list_packages(filters, self.latest)
         except repo.GeneralRepoException as exc:
@@ -1505,7 +1504,7 @@ class RepoSync(object):
 
                 # TODO: This is for lazy sync only. Not sure of metadata_only impact on other unknown scenario
                 if self.metadata_only:
-                    pack_metadata = rpm_packages_medatata[pack.checksum]
+                    pack_metadata = packages_medatata[pack.checksum]
                     pack.a_pkg = RPM_Package()
                     pack.a_pkg.header = pack_metadata["header"]
                     pack.a_pkg.payload_size = pack_metadata["package_size"]
