@@ -106,7 +106,7 @@
   </module>
   <module name="Header">
     <property name="severity" value="ignore"/>
-    <property name="headerFile" value="/svn/trunk/eng/java/buildconf/LICENSE.txt"/>
+    <property name="headerFile" value="/svn/trunk/eng/java/spacewalk-java/buildconf/LICENSE.txt"/>
     <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="header"/>
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>

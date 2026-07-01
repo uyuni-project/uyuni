@@ -70,9 +70,9 @@ printf "   * JDBC String:        ${PINK}jdbc:postgresql://db:54320/spaceschema${
 printf "\n"
 
 printf "${YELLOW}🛠️  Build & Test Commands (Ant):${RESET}\n"
-printf "   * Download Deps:      ${PINK}ant -f java/manager-build.xml ivy${RESET}\n"
-printf "   * Compile Code:       ${PINK}ant -f java/manager-build.xml compile${RESET}\n"
-printf "   * Run Unit Tests:     ${PINK}ant -f java/manager-build.xml test-report${RESET}\n"
+printf "   * Download Deps:      ${PINK}ant -f java/spacewalk-java/manager-build.xml ivy${RESET}\n"
+printf "   * Compile Code:       ${PINK}ant -f java/spacewalk-java/manager-build.xml compile${RESET}\n"
+printf "   * Run Unit Tests:     ${PINK}ant -f java/spacewalk-java/manager-build.xml test-report${RESET}\n"
 printf "     Setup View:       ${PINK}python3 -m http.server 9000 --directory java/test-results/html${RESET}\n"
 printf "     View Reports:       ${PINK}${UNIT_TEST_URL}${RESET}\n"
 printf "\n"

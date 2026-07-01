@@ -222,11 +222,11 @@ show_configuration() {
 parse_versions() {
     # Prefer xmllint, it's faster than calling maven
     if command -v xmllint &> /dev/null; then
-        SPACEWALK_JAVA_VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" "$UYUNI_DIR/java/pom.xml")
-        BRANDING_VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" "$UYUNI_DIR/branding/pom.xml")
+        SPACEWALK_JAVA_VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" "$UYUNI_DIR/java/spacewalk-java/pom.xml")
+        BRANDING_VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" "$UYUNI_DIR/java/branding/pom.xml")
     else
-        SPACEWALK_JAVA_VERSION=$(mvn -f "$UYUNI_DIR/java" -q help:evaluate -DforceStdout -Dexpression=project.version)
-        BRANDING_VERSION=$(mvn -f "$UYUNI_DIR/branding" -q help:evaluate -DforceStdout -Dexpression=project.version)
+        SPACEWALK_JAVA_VERSION=$(mvn -f "$UYUNI_DIR/java/spacewalk-java" -q help:evaluate -DforceStdout -Dexpression=project.version)
+        BRANDING_VERSION=$(mvn -f "$UYUNI_DIR/java/branding" -q help:evaluate -DforceStdout -Dexpression=project.version)
     fi
 
     print_detailed "Using spacewalk-java version ${SPACEWALK_JAVA_VERSION} and branding version ${BRANDING_VERSION}"
@@ -337,7 +337,7 @@ check_prerequisites() {
 
 deploy_backend() {
     local TARGET_DIR="/usr/share/susemanager/www/tomcat/webapps/rhn"
-    local SOURCE_WEBAPP_DIR="${UYUNI_DIR}/java/webapp/target/webapp-${SPACEWALK_JAVA_VERSION}"
+    local SOURCE_WEBAPP_DIR="${UYUNI_DIR}/java/spacewalk-java/webapp/target/webapp-${SPACEWALK_JAVA_VERSION}"
 
     if [ "$REBUILD" = true ]; then
         print "Rebuilding backend with Maven..."

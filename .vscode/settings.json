@@ -1,6 +1,6 @@
 {
   "typescript.tsdk": "${workspaceFolder}/web/node_modules/typescript/lib",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2,
@@ -19,13 +19,16 @@
     "projectKey": "uyuni-project_uyuni"
   },
   "java.test.config": {
-    "vmArgs": ["-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"]
+    "vmArgs": ["-Drhn.config.dir=${workspaceFolder}/java/spacewalk-java/buildconf/test"]
   },
   "java.completion.importOrder": ["#", "com.redhat.rhn", "com.suse", "com", "org", "java", "javax"],
-  "java.project.referencedLibraries": ["java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"],
+  "java.project.referencedLibraries": [
+    "java/spacewalk-java/lib/*.jar",
+    "java/spacewalk-java/buildconf/ivy/repository/suse/*jar"
+  ],
   "ant.home": "/usr/share/ant",
   "ant.executable": "/usr/bin/ant",
-  "ant.buildFilenames": "java/manager-build.xml",
+  "ant.buildFilenames": "java/spacewalk-java/manager-build.xml",
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms2G -Xlog:disable",
   "java.configuration.runtimes": [
     {
@@ -34,11 +37,11 @@
       "default": true
     }
   ],
-  "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
+  "java.checkstyle.configuration": "${workspaceFolder}/java/spacewalk-java/buildconf/checkstyle.xml",
   "java.checkstyle.properties": {
-    "checkstyle.cache.file": "${workspaceFolder}/java/build/checkstyle.cache.src",
-    "checkstyle.header.file": "${workspaceFolder}/java/buildconf/LICENSE.txt",
-    "checkstyle.suppressions.file": "${workspaceFolder}/java/buildconf/checkstyle-suppressions.xml",
+    "checkstyle.cache.file": "${workspaceFolder}/java/spacewalk-java/build/checkstyle.cache.src",
+    "checkstyle.header.file": "${workspaceFolder}/java/spacewalk-java/buildconf/LICENSE.txt",
+    "checkstyle.suppressions.file": "${workspaceFolder}/java/spacewalk-java/buildconf/checkstyle-suppressions.xml",
     "javadoc.lazy": "false",
     "javadoc.method.scope": "public",
     "javadoc.type.scope": "package",
@@ -54,7 +57,7 @@
       "source.fixAll.checkstyle": "explicit"
     }
   },
-  "java.format.settings.url": "${workspaceFolder}/java/conf/eclipse/code_formatter_rhn.xml",
+  "java.format.settings.url": "${workspaceFolder}/java/spacewalk-java/conf/eclipse/code_formatter_rhn.xml",
   "java.format.settings.profile": "RHN",
   "vscode-postgres.virtualFolders": ["functions"],
   "prettier.configPath": "web/.prettierrc",
@@ -86,5 +89,8 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    ".github/CODEOWNERS": "properties"
   }
 }
