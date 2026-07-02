@@ -25,3 +25,5 @@ Feature: RKE2 Server Health
 
   Scenario: The setup marker exists
     Then the setup marker file should exist on "server"
+
+    
