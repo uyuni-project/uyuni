@@ -48,14 +48,22 @@ ALTER TABLE web_user_site_info DROP CONSTRAINT IF EXISTS wusi_ipb_ck;
 ALTER TABLE web_user_site_info ALTER COLUMN is_po_box DROP DEFAULT;
 
 -- Convert CHAR(1) values ('0'/'1') to BOOLEAN (false/true)
-ALTER TABLE web_user_site_info
-ALTER COLUMN is_po_box TYPE BOOLEAN
-    USING (is_po_box = '1');
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'web_user_site_info'
+          AND column_name = 'is_po_box'
+          AND data_type <> 'boolean'
+    ) THEN
+ALTER TABLE web_user_site_info DROP CONSTRAINT IF EXISTS wusi_ipb_ck;
+ALTER TABLE web_user_site_info ALTER COLUMN is_po_box DROP DEFAULT;
+ALTER TABLE web_user_site_info ALTER COLUMN is_po_box TYPE BOOLEAN USING (is_po_box = '1');
+END IF;
+END $$;
 
 -- Set NOT NULL constraint
-ALTER TABLE web_user_site_info
-    ALTER COLUMN is_po_box SET NOT NULL;
+ALTER TABLE web_user_site_info ALTER COLUMN is_po_box SET NOT NULL;
 
 -- Set default value
-ALTER TABLE web_user_site_info
-    ALTER COLUMN is_po_box SET DEFAULT FALSE;
+ALTER TABLE web_user_site_info ALTER COLUMN is_po_box SET DEFAULT FALSE;
