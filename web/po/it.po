@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-07-01 18:12+0000\n"
+"PO-Revision-Date: 2026-07-02 17:12+0000\n"
 "Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.1\n"
+"X-Generator: Weblate 2026.7\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -3380,25 +3380,24 @@ msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "interessante, Patch disponibili in un target di migrazione del prodotto"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "Interessante, almeno una patch disponibile in un canale assegnato"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:64
 msgid "Not affected"
-msgstr ""
+msgstr "non interessato"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
 msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
-#, fuzzy
 msgid "Patched"
-msgstr "Patch"
+msgstr "Corretto"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:70
 msgid "A patch has been successfully installed on the client."
@@ -3451,11 +3450,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
-msgstr ""
+msgstr "Verifica delle CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:261
 msgid "CVE"
-msgstr ""
+msgstr "CVE Vulnerabilità ed Esposizioni Comuni"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:318
 msgid "Audit Servers"
@@ -3470,7 +3469,7 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:33
 #: ../html/src/manager/systems/virtual-list.tsx:64
 msgid "Download CSV"
-msgstr ""
+msgstr "Scaricare CSV"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
 msgid "MITRE CVE link"
@@ -3487,15 +3486,15 @@ msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "Installa una nuova patch su questo sistema."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:460
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
+msgstr "Patch disponibile, ma il sistema deve essere migrato a un prodotto più recente."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:472
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "Patch disponibile, ma deve essere clonata nel canale."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:484
 msgid "Install a new partial patch on this system."
@@ -3505,16 +3504,16 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:528
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:531
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "Se vedi questo segnala un bug."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:512
 #: ../html/src/manager/images/image-view-overview.tsx:646
 msgid "Rebuild"
-msgstr ""
+msgstr "ricostruire"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:520
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "Patch disponibile ma deve essere clonata nel canale."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:523
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:33
@@ -3522,11 +3521,11 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:40
 #: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
-msgstr ""
+msgstr "Canale"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
 msgid "Errata"
-msgstr ""
+msgstr "Errori"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:80
 msgid "An error occurred while uploading the SCAP content."
@@ -3802,7 +3801,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
-msgstr ""
+msgstr "Stato dei dati di corrispondenza"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:96
 msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
@@ -3810,55 +3809,55 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:105
 msgid "No match data is currently available."
-msgstr ""
+msgstr "Al momento non sono disponibili dati di corrispondenza."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "Ora puoi anche attivare una prima esecuzione cliccando sul pulsante qui sotto."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:115
 msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr ""
+msgstr "I dati corrispondenti sono attualmente in fase di ricalcolo, è stato avviato {timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:125
 msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
-msgstr ""
+msgstr "Sono stati calcolati gli ultimi dati di corrispondenza riusciti {timeFromNow}, è possibile attivare una nuova esecuzione facendo clic sul pulsante sottostante."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:134
 msgid "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
+msgstr "I dati di corrispondenza vengono calcolati tramite una pianificazione delle attività, ogni notte per impostazione predefinita (è possibile "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:136
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "modificare la pianificazione delle attività dalla pagina di amministrazione"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:138
 msgid "). "
-msgstr ""
+msgstr "). "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:160
 msgid "Refresh matching data"
-msgstr ""
+msgstr "Aggiorna i dati corrispondenti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "Numero di parte non supportato rilevato"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
+msgstr "Il sistema fisico è segnalato come ospite virtuale, si prega di controllare i dati hardware"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
+msgstr "L'ospite virtuale ha un host sconosciuto, supponendo che si tratti di un sistema fisico"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "Il sistema ha un numero sconosciuto di sockets, si suppone 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
-msgstr ""
+msgstr "Due abbonamenti con lo stesso codice articolo sono in un bundle, uniti in un unico"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
