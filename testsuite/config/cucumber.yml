@@ -32,6 +32,7 @@ salt_ssh: --tags @scope_salt_ssh
 salt: --tags @scope_salt
 software_channels_and_repositories: --tags @scope_software_channels_and_repositories
 spacewalk_utils: --tags @scope_spacewalk_utils
+storage_benchmark: --tags @scope_storage_benchmark
 tomcat: --tags @scope_tomcat
 virtual_host_manager: --tags @scope_virtual_host_manager
 visualization: --tags @scope_visualization
