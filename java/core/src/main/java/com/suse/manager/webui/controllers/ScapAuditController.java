@@ -1728,8 +1728,12 @@ public class ScapAuditController {
      */
     private Action createBashRemediationAction(ApplyRemediationJson body, User user, Server server) {
         final long scriptTimeout = 300L;
+        String script = body.getRemediationContent();
+        if (!script.stripLeading().startsWith("#!")) {
+            script = "#!/bin/bash\n" + script;
+        }
         ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
-                "root", "root", scriptTimeout, body.getRemediationContent());
+                "root", "root", scriptTimeout, script);
         ScriptRunAction action = (ScriptRunAction) ActionFactory.createAction(ActionFactory.TYPE_SCRIPT_RUN);
         action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());
         action.setOrg(user.getOrg());
