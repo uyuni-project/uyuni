@@ -16,7 +16,6 @@ SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 UYUNI_DIR="$(realpath "$SCRIPT_DIR/../../..")"
 
 # Default configuration values
-DEPLOY_TARGET="backend"
 DEPLOY_HOST="server.tf.local"
 DEPLOY_MODE="remote-container"
 DEPLOY_NAMESPACE="default"
@@ -112,7 +111,7 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         frontend|backend|webapp|salt|restart-only|all)
-            DEPLOY_TARGET="$1"
+            DEPLOY_TYPE="$1"
             shift
             ;;
         *)
@@ -122,6 +121,13 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ -z "$DEPLOY_TYPE" ]; then
+    print_error "Error: missing mandatory deployment type."
+    usage
+    exit 1
+fi
+
 
 # Check mandatory parameters
 if [ -z "$DEPLOY_HOST" ]; then
@@ -404,7 +410,7 @@ main() {
     parse_versions
     check_prerequisites
 
-    case $DEPLOY_TARGET in
+    case $DEPLOY_TYPE in
         backend)
             deploy_backend
             ;;
