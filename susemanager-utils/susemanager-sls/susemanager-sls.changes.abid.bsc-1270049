@@ -1,0 +1,1 @@
+- Fix SCAP remediation truncation at <sub> element (bsc#1270049)

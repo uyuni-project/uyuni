@@ -1,0 +1,1 @@
+- Ensure SCAP bash remediation run under bash, not sh (bsc#1270049)
