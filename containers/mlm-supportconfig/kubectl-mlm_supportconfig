@@ -225,7 +225,11 @@ collect_rancher_on_node() {
     dst="${WORK}/nodes/$(basename "$debug_pod_tarball")"
     if kubectl cp -n "$NS" "${debug_pod}:${debug_pod_tarball}" "$dst" 2>/dev/null; then
         kubectl exec -n "$NS" "$debug_pod" -- rm -f "$debug_pod_tarball" >/dev/null 2>&1 || true
-        record "$label" "OK ($(basename "$dst"))"
+        pushd $(dirname $dst)
+        tar xf $dst
+        rm -f $dst
+        popd
+        record "$label" "OK ($(basename "${dst%%.tar.gz}"))"
     else
         warn "kubectl cp from ${debug_pod} failed"
         record "$label" "PARTIAL (copy failed)"
@@ -333,11 +337,12 @@ collect_pod_data() {
         done
     fi
 
-    if kubectl logs -n "$NS" "$pod" --all-containers --timestamps --prefix=true > "${dst_dir}/logs.txt" 2>/dev/null; then
+    if kubectl logs -n "$NS" "$pod" --all-containers --timestamps --prefix=true > "${dst_dir}/logs.txt" 2>${dst_dir}/stderr; then
         record "logs:${pod}" "OK"
     else
-        rm -f "${dst_dir}/logs.txt"
-        record "logs:${pod}" "SKIPPED (no read permission or no logs)"
+        err=$(cat ${dst_dir}/stderr)
+        rm -f ${dst_dir}/stderr
+        record "logs:${pod}" "ERROR ($err)"
     fi
 
     # Logs (previous)
