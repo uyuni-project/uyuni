@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { saveSsmCoCoSettings } from "components/coco-attestation/api";
 import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -22,7 +23,7 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
   const emptySettings = useMemo<Settings>(
     () => ({
       enabled: false,
-      environmentType: Object.values(availableEnvironmentTypes)[0],
+      environmentType: Object.keys(availableEnvironmentTypes)[0],
       attestOnBoot: false,
       attestOnSchedule: false,
       inputData: {},
@@ -31,12 +32,10 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
   );
 
   function onSave(data: Settings) {
-    const request = {
-      serverIds: systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      settings: data,
-    };
-
-    Network.post(`/rhn/manager/api/systems/coco/settings`, request).then(
+    return saveSsmCoCoSettings(
+      systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
+      data
+    ).then(
       (response) =>
         setMessages(
           response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
