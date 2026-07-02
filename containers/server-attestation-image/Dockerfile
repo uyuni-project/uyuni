@@ -11,6 +11,7 @@ ARG ARCH_SPECIFIC_MODULES
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     zypper ref && zypper --non-interactive up && \
     zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+        mozilla-nss-sysinit \
         uyuni-coco-attestation-core \
         uyuni-coco-attestation-module-secureboot \
         ${ARCH_SPECIFIC_MODULES} \
