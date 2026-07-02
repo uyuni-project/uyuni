@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: GPL-2.0-Only
 #
 
-# kubectl-mlm_supportconfig — collect a support bundle for MLM 
-# workloads running on Kubernetes (server-helm or proxy-helm).
+# kubectl-mlm_supportconfig — collect a support bundle for SUSE
+# Multi-Linux Manager workloads running on Kubernetes (server-helm or
+# proxy-helm).
 #
 # Invocation (as a kubectl plugin):
 #
@@ -13,24 +14,38 @@
 #     kubectl mlm-supportconfig <pod> <namespace>      # just that pod
 #
 # For each selected pod the plugin collects, best-effort:
-#   - `supportconfig` from every container that has the binary
+#   - `supportconfig` (via `-t <dir>`) from every container that has the
+#     binary — output is a DIRECTORY tree, not a nested tarball, so
+#     automated supportconfig analyzers can walk the files directly
 #   - `kubectl logs --all-containers` (current + previous)
 #   - `kubectl describe pod` and `kubectl get pod -o yaml`
 #
 # Once per distinct node hosting a selected pod, it also runs:
 #   - The Rancher logs-collector via `kubectl debug node/...` (node-level
-#     journald, container runtime logs, kernel info, etc.)
+#     journald, container runtime logs, kernel info, etc.). The image
+#     defaults to `rancherlabs/swiss-army-knife`; override via the
+#     `RANCHER_SUPPORT_IMAGE` env var for air-gapped clusters.
 #
 # Once per namespace, it also collects:
 #   - All namespace events (text + yaml), sorted by lastTimestamp
-#   - Namespace objects beyond pods: Deployments, Services, ConfigMaps,
-#     Secrets, Ingress/IngressRoute(TCP), PVCs, Certificates
-#   - Cluster baseline: `kubectl version`, node list and full node spec
-#   - Helm release state (values, manifest, history) if `helm` is on PATH
+#   - Namespace objects beyond pods: Deployments, Services, Endpoints,
+#     EndpointSlices, NetworkPolicies, ConfigMaps, Secrets, Ingress,
+#     Traefik IngressRoute/IngressRouteTCP, PVCs, cert-manager
+#     Certificates (CRDs that aren't installed are silently skipped)
+#   - Cluster baseline: `kubectl version`, nodes (wide + yaml),
+#     PersistentVolumes and StorageClasses
+#   - Resource-usage snapshot: `kubectl top pod --containers` and
+#     `kubectl top node` (skipped if metrics-server is unavailable)
+#   - Helm release state if `helm` is on PATH: `helm list`, plus
+#     per-release `helm status`, `helm history` and `helm get notes`.
+#     `helm get values` and `helm get manifest` are deliberately NOT
+#     collected because they commonly contain install-time passwords
+#     and rendered Secret data.
 #
 # Every step is independent: a failure in one is recorded in SUMMARY.txt
 # and the script keeps going. Exit code is 0 whenever a bundle was
-# produced (even partial).
+# produced (even partial); 1 if tar itself failed; 2 for bootstrap
+# errors (kubectl missing, bad args, mktemp failure).
 
 set -u
 
@@ -125,8 +140,18 @@ collect_rancher_on_node() {
     if [[ $rc -ne 0 ]]; then
         warn "kubectl debug failed on ${node} (exit $rc):"
         printf "%s\n" "$debug_out" | sed 's/^/   /' >&2
-        warn "Common causes: missing RBAC (need create on pods + nodes/proxy),"
-        warn "or PodSecurity policy blocking privileged pods."
+        warn ""
+        warn "Common causes:"
+        warn "  - missing RBAC (need create on pods + nodes/proxy)"
+        warn "  - PodSecurity policy blocking privileged pods"
+        warn ""
+        warn "Alternatives for collecting node-level data on ${node}:"
+        warn "  - SSH to the node and run rancher2_logs_collector.sh directly"
+        warn "  - Apply the pod-form collector:"
+        warn "      kubectl apply -f https://raw.githubusercontent.com/rancherlabs/support-tools/master/collection/rancher/v2.x/logs-collector/logs_collector.yaml"
+        warn "    (k8s-API view only, no node-level data — partial coverage)"
+        warn ""
+        warn "Docs: https://github.com/rancherlabs/support-tools/tree/master/collection/rancher/v2.x/logs-collector"
         record "$label" "SKIPPED (kubectl debug failed)"
         return
     fi
@@ -242,7 +267,7 @@ run_supportconfig_in_container() {
         return
     fi
 
-    local supportconfig_timeout=$(( $(date +%s) + 1800 ))   # 30 min cap
+    local supportconfig_timeout=$(( $(date +%s) + 2700 ))
     local outcome=""
     while [[ $(date +%s) -lt $supportconfig_timeout ]]; do
         if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.failed" 2>/dev/null; then
@@ -283,7 +308,7 @@ run_supportconfig_in_container() {
         record "$label" "FAILED (full log: $(basename "$log_dst"))"
         ;;
       *)
-        warn "supportconfig in ${pod}/${container} did not finish within 30 min"
+        warn "supportconfig in ${pod}/${container} timed out"
         record "$label" "TIMEOUT"
         ;;
     esac
@@ -440,7 +465,7 @@ collect_helm_state() {
     fi
 
     mkdir -p "${WORK}/helm"
-    if ! helm list -n "$NS" > "${WORK}/helm/list.txt" 2>/dev/null; then
+    if ! helm list -n "$NS" -o yaml > "${WORK}/helm/list.yaml" 2>/dev/null; then
         rm -rf "${WORK}/helm"
         record "helm:list" "SKIPPED (helm list failed)"
         return
@@ -460,18 +485,11 @@ collect_helm_state() {
         dst="${WORK}/helm/${r}"
         mkdir -p "$dst"
 
-        if helm get values "$r" -n "$NS" -o yaml > "${dst}/values.yaml" 2>/dev/null; then
-            record "helm:${r}:values" "OK"
+        if helm status "$r" -n "$NS" > "${dst}/status.txt" 2>/dev/null; then
+            record "helm:${r}:status" "OK"
         else
-            rm -f "${dst}/values.yaml"
-            record "helm:${r}:values" "SKIPPED"
-        fi
-
-        if helm get manifest "$r" -n "$NS" > "${dst}/manifest.yaml" 2>/dev/null; then
-            record "helm:${r}:manifest" "OK"
-        else
-            rm -f "${dst}/manifest.yaml"
-            record "helm:${r}:manifest" "SKIPPED"
+            rm -f "${dst}/status.txt"
+            record "helm:${r}:status" "SKIPPED"
         fi
 
         if helm history "$r" -n "$NS" > "${dst}/history.txt" 2>/dev/null; then
@@ -480,11 +498,23 @@ collect_helm_state() {
             rm -f "${dst}/history.txt"
             record "helm:${r}:history" "SKIPPED"
         fi
+
+        if helm get notes "$r" -n "$NS" > "${dst}/notes.txt" 2>/dev/null; then
+            if [[ -s "${dst}/notes.txt" ]]; then
+                record "helm:${r}:notes" "OK"
+            else
+                rm -f "${dst}/notes.txt"
+                record "helm:${r}:notes" "NONE (no post-install notes)"
+            fi
+        else
+            rm -f "${dst}/notes.txt"
+            record "helm:${r}:notes" "SKIPPED (helm get notes failed)"
+        fi
     done
 }
 
 # Discover pods and unique nodes
-log "[0/5] Discovering pods and nodes"
+log "Discovering pods and nodes"
 
 if [[ -n "$POD" ]]; then
     PODS=( "$POD" )
@@ -493,6 +523,26 @@ else
     if [[ ${#PODS[@]} -eq 0 ]]; then
         warn "No pods found in namespace ${NS} (or no list permission)."
         record "namespace" "EMPTY or no list permission"
+    fi
+fi
+
+# Sanity-check: does the namespace actually contain Uyuni/MLM workloads?
+if [[ ${#PODS[@]} -gt 0 ]]; then
+    images=$(kubectl get pods -n "$NS" \
+            -o jsonpath='{range .items[*].spec.containers[*]}{.image}{"\n"}{end}' \
+            2>/dev/null)
+    rc=$?
+
+    if [[ $rc -ne 0 ]]; then
+        warn "Could not list pods in namespace ${NS} to sanity-check images (exit $rc)."
+        record "namespace-check" "SKIPPED (cannot list pods for image check)"
+    elif printf "%s\n" "$images" | grep -qE '(uyuni|multi-linux-manager)'; then
+        record "namespace-check" "OK (Uyuni/MLM images detected)"
+    else
+        warn "Namespace ${NS} contains no pods running Uyuni or"
+        warn "Multi-Linux Manager images. Did you pass the right namespace?"
+        warn "Continuing — the bundle will reflect whatever pods are in ${NS}."
+        record "namespace-check" "WARNING (no Uyuni/MLM images found)"
     fi
 fi
 
@@ -517,7 +567,7 @@ record "selected" "${#PODS[@]} pod(s), ${#NODES[@]} node(s)"
 if [[ ${#NODES[@]} -eq 0 ]]; then
     record "rancher-collector" "SKIPPED (no nodes identified)"
 else
-    log "[1/5] Rancher collector on ${#NODES[@]} node(s)"
+    log "Rancher collector on ${#NODES[@]} node(s)"
     for n in "${NODES[@]}"; do
         collect_rancher_on_node "$n"
     done
@@ -527,7 +577,7 @@ fi
 # Per-pod loop
 # ---------------------------------------------------------------------------
 if [[ ${#PODS[@]} -gt 0 ]]; then
-    log "[2/5] Per-pod collection (supportconfig, logs, describe)"
+    log "Per-pod collection (supportconfig, logs, describe)"
     for p in "${PODS[@]}"; do
         [[ -z "$p" ]] && continue
         collect_pod_data "$p"
@@ -537,7 +587,7 @@ fi
 # ---------------------------------------------------------------------------
 # Namespace events
 # ---------------------------------------------------------------------------
-log "[3/5] Namespace events"
+log "Namespace events"
 
 if kubectl get events -n "$NS" --sort-by=.lastTimestamp -o wide > "${WORK}/${NS}-events.txt" 2>/dev/null \
         && [[ -s "${WORK}/${NS}-events.txt" ]]; then
@@ -558,7 +608,7 @@ fi
 # ---------------------------------------------------------------------------
 # Cluster + namespace + helm state
 # ---------------------------------------------------------------------------
-log "[4/5] Cluster, namespace objects, metrics, helm releases"
+log "Cluster, namespace objects, metrics, helm releases"
 collect_namespace_objects
 collect_cluster_baseline
 collect_metrics_snapshot
@@ -567,7 +617,7 @@ collect_helm_state
 # ---------------------------------------------------------------------------
 # Bundle and report
 # ---------------------------------------------------------------------------
-log "[5/5] Bundling"
+log "Bundling"
 echo >> "$SUMMARY"
 echo "Bundle created $(date)" >> "$SUMMARY"
 
