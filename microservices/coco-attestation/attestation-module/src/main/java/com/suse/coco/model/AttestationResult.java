@@ -22,7 +22,9 @@ public class AttestationResult {
     private long id;
     private long reportId;
     private int resultType;
+    private int envType;
     private AttestationStatus status;
+    private String inData;
     private String description;
     private String details;
     private String processOutput;
@@ -52,12 +54,28 @@ public class AttestationResult {
         this.resultType = resultTypeIn;
     }
 
+    public int getEnvType() {
+        return envType;
+    }
+
+    public void setEnvType(int envTypeIn) {
+        this.envType = envTypeIn;
+    }
+
     public AttestationStatus getStatus() {
         return status;
     }
 
     public void setStatus(AttestationStatus statusIn) {
         this.status = statusIn;
+    }
+
+    public String getInData() {
+        return inData;
+    }
+
+    public void setInData(String inDataIn) {
+        inData = inDataIn;
     }
 
     public String getDescription() {
@@ -114,7 +132,9 @@ public class AttestationResult {
             .add("id=" + id)
             .add("reportId=" + reportId)
             .add("resultType=" + resultType)
+            .add("envType=" + envType)
             .add("status='" + status + "'")
+            .add("inData=" + inData)
             .add("description='" + description + "'")
             .add("attested=" + attested)
             .toString();

@@ -12,7 +12,6 @@
 package com.suse.coco.attestation;
 
 import com.suse.coco.module.AttestationModuleLoader;
-import com.suse.coco.module.AttestationWorker;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,7 +81,8 @@ class ProcessingThread extends AbstractProcessorThread {
         try {
             while (!Thread.currentThread().isInterrupted() && listeningThread.isRunning()) {
                 // Load the pending attestation results of the supported types
-                List<Long> results = service.getPendingResultByType(moduleLoader.getSupportedResultTypes(), batchSize);
+                List<Long> results =
+                        service.getResultByStatusAndType(moduleLoader.getSupportedResultTypes(), batchSize);
                 if (results.isEmpty()) {
                     LOGGER.info("No attestation result to process - Waiting");
                     synchronized (dataAvailableLock) {
@@ -97,10 +97,7 @@ class ProcessingThread extends AbstractProcessorThread {
                 // Process each one of them in a separate worker thread
                 results.forEach(resultId -> executorService.execute(() -> {
                     try {
-                        service.processAttestationResult(resultId, (session, result) -> {
-                            AttestationWorker worker = moduleLoader.createWorker(result.getResultType());
-                            return worker.process(session, result);
-                        });
+                        service.processAttestationResult(resultId, moduleLoader::createWorker);
                     }
                     catch (Exception ex) {
                         LOGGER.error("Unable to correctly process attestation result with id {}", resultId, ex);

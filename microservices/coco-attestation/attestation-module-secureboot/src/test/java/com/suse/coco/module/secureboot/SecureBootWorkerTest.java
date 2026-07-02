@@ -19,6 +19,7 @@ import com.suse.coco.model.AttestationStatus;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -60,7 +61,7 @@ class SecureBootWorkerTest {
             .thenReturn(message);
 
         // Ensure the result is correct
-        assertEquals(expectedOutcome, worker.process(session, result));
+        assertEquals(expectedOutcome, worker.processVerification(session, result));
     }
 
     static Stream<Arguments> messagesProvider() {
@@ -77,5 +78,14 @@ class SecureBootWorkerTest {
             Arguments.of(10L, false, "Could not allocate space: reasons\n"),
             Arguments.of(11L, false, "Totally unexpected error message\n")
         );
+    }
+
+
+    @Test
+    @DisplayName("Correctly creates input json file while processing request")
+    void testProcessRequest() {
+        worker.processRequest(null, result);
+
+        assertEquals("{}", result.getInData());
     }
 }
