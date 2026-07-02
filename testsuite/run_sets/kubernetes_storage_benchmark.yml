@@ -1,0 +1,11 @@
+# This file describes optional real-world storage benchmark features.
+#
+# These benchmarks can be long-running and noisy. Do not include this run set in
+# the normal functional testsuite. Run it explicitly when comparing RKE2 storage
+# backends.
+
+## RKE2 storage benchmark BEGIN ##
+
+- features/kubernetes/srv_rke2_storage_benchmark.feature
+
+## RKE2 storage benchmark END ##
