@@ -36,6 +36,15 @@ export default () => {
           <Badge text="Info" icon="fa-info-circle" color="info" />
           <Badge text="Running" icon="fa-spinner fa-spin" color="running" />
         </StoryRow>
+        <strong>Small</strong>
+        <StoryRow>
+          <Badge text="Default" small />
+          <Badge text="Success" small icon="fa-check" color="success" />
+          <Badge text="Warning" small icon="fa-exclamation-triangle" color="warning" />
+          <Badge text="Error" small icon="fa-ban" color="error" />
+          <Badge text="Info" small icon="fa-info-circle" color="info" />
+          <Badge text="Running" small icon="fa-spinner fa-spin" color="running" />
+        </StoryRow>
       </StripedStorySection>
       <StorySection>
         &lt;Badge text="Default" /&gt; <br />
@@ -48,6 +57,18 @@ export default () => {
         &lt;Badge text="Info" icon="fa-info-circle" color="info" /&gt;
         <br />
         &lt;Badge text="Running" icon="fa-spinner fa-spin" color="running" /&gt;
+        <br />
+        <strong>Small</strong>
+        &lt;Badge text="Default" small /&gt; <br />
+        &lt;Badge text="Success" small icon="fa-check" color="success" /&gt;
+        <br />
+        &lt;Badge text="Warning" small icon="fa-exclamation-triangle" color="warning" /&gt;
+        <br />
+        &lt;Badge text="Error" small icon="fa-ban" color="error" /&gt;
+        <br />
+        &lt;Badge text="Info" small icon="fa-info-circle" color="info" /&gt;
+        <br />
+        &lt;Badge text="Running" small icon="fa-spinner fa-spin" color="running" /&gt;
       </StorySection>
       <h4>Special Badge</h4>
       <p>
@@ -72,6 +93,14 @@ export default () => {
           <Badge text="Beta" color="yellow" variant="special" />
           <Badge text="Internal" color="blue" variant="special" />
         </StoryRow>
+        <strong>Small</strong>
+        <StoryRow>
+          <Badge text="Default" small variant="special" />
+          <Badge text="New" small color="green" variant="special" />
+          <Badge text="Removed" small color="red" variant="special" />
+          <Badge text="Beta" small color="yellow" variant="special" />
+          <Badge text="Internal" small color="blue" variant="special" />
+        </StoryRow>
       </StripedStorySection>
       <StorySection>
         &lt;Badge text="Default" variant="special" /&gt; <br />
@@ -82,7 +111,17 @@ export default () => {
         &lt;Badge text="Beta" color="yellow" variant="special" /&gt;
         <br />
         &lt;Badge text="Internal" color="blue" variant="special" /&gt;
+        <strong>Small</strong>
+        &lt;Badge text="Default" small variant="special" /&gt; <br />
+        &lt;Badge text="New" small color="green" variant="special" /&gt;
+        <br />
+        &lt;Badge text="Removed" small color="red" variant="special" /&gt;
+        <br />
+        &lt;Badge text="Beta" small color="yellow" variant="special" /&gt;
+        <br />
+        &lt;Badge text="Internal" small color="blue" variant="special" /&gt;
       </StorySection>
+
       <h4 className="mt-5">Counter Badge</h4>
       <p>
         The Counter Badge is used to display a numeric value associated with another UI element, such as a button, tab,
