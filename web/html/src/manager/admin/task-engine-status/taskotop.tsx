@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { Badge } from "components/badge/Badge";
 import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -12,7 +13,6 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
-import { Badge } from "components/badge/Badge";
 
 type Props = {
   refreshInterval: number;

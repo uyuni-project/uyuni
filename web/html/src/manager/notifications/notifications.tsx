@@ -2,8 +2,9 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { CounterBadge } from "components/badge/CounterBadge";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type Props = Record<never, never>;
 

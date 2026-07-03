@@ -8,6 +8,7 @@ type BadgeProps =
       icon?: string;
       variant?: "status";
       color?: StatusColor;
+      title?: string;
       small?: boolean;
     }
   | {
@@ -29,7 +30,7 @@ export const Badge = (props: BadgeProps) => {
     .filter(Boolean)
     .join(" ");
   return (
-    <span className={badgeClassName} data-bs-toggle="tooltip" title={variant === "special" ? props.title : undefined}>
+    <span className={badgeClassName} title={props.title} {...(props.title ? { "data-bs-toggle": "tooltip" } : {})}>
       {icon && <i className={`fa ${icon}`} aria-hidden="true" />}
       {text}
     </span>

@@ -130,18 +130,18 @@ export default () => {
       <strong>Best Practices: </strong>
       <ul>
         <li>Use only for numeric values.</li>
-        <li>Keep the count concise (e.g. use 99+ instead of large numbers).</li>
+        <li>Keep the count concise (e.g. use 999+ instead of large numbers).</li>
         <li>Place the badge close to the element it describes (icon, button, tab, etc.).</li>
       </ul>
       <StripedStorySection>
         <StoryRow>
-          <CounterBadge count="1" />
-          <CounterBadge count="999+" status="highlight" />
+          <CounterBadge count={1} />
+          <CounterBadge count={999} status="highlight" />
         </StoryRow>
       </StripedStorySection>
       <StorySection>
-        &lt;CounterBadge count="1" /&gt; <br />
-        &lt;CounterBadge count="999+" status="highlight" /&gt;
+        &lt;CounterBadge count=&#123;1&#125; /&gt; <br />
+        &lt;CounterBadge count=&#123;999&#125; status="highlight" /&gt;
       </StorySection>
       <h4 className="mt-5">Badge in Panel:</h4>
       <BootstrapPanel title="Panel">
@@ -152,8 +152,8 @@ export default () => {
         <Badge text="Info" icon="fa-info-circle" color="info" />
         <Badge text="Running" icon="fa-spinner fa-spin" color="running" />
         <h4 className="mt-5">Counter Badge</h4>
-        <CounterBadge count="1" />
-        <CounterBadge count="999+" status="highlight" />
+        <CounterBadge count={1} />
+        <CounterBadge count={999} status="highlight" />
         <h4 className="mt-5">Special Badge</h4>
         <Badge text="Default" variant="special" />
         <Badge text="New" color="green" variant="special" />

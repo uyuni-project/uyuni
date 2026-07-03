@@ -3,6 +3,7 @@ import { type ChangeEvent, type ReactNode, Component } from "react";
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { Badge } from "components/badge/Badge";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
@@ -12,7 +13,6 @@ import { Toggler } from "components/toggler";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
-import { Badge } from "components/badge/Badge";
 
 declare global {
   var actionChains: ActionChain[];

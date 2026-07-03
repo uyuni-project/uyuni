@@ -4,6 +4,7 @@ import _partition from "lodash/partition";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { Badge } from "components/badge/Badge";
 import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
@@ -23,7 +24,6 @@ import Network from "utils/network";
 import { SetupHeader } from "../setup-header";
 import { searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
-import { Badge } from "components/badge/Badge";
 
 declare global {
   interface Window {

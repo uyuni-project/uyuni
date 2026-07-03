@@ -3,6 +3,7 @@ import { type MouseEvent, type ReactNode, Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
+import { Badge } from "components/badge/Badge";
 import { MessagesContainer } from "components/toastr/toastr";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -11,7 +12,6 @@ import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
-import { Badge } from "components/badge/Badge";
 
 type LinkProps = {
   url: string;

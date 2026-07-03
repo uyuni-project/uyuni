@@ -2,13 +2,13 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { Badge } from "components/badge/Badge";
 import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { Highlight } from "components/table/Highlight";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { Badge } from "components/badge/Badge";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";

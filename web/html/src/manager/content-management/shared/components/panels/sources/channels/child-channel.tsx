@@ -2,12 +2,12 @@ import type { FC, ReactElement } from "react";
 
 import { ChildChannelType } from "core/channels/type/channels.type";
 
+import { Badge } from "components/badge/Badge";
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
 import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
-import { Badge } from "components/badge/Badge";
 
 type Props = {
   /** The child channel */

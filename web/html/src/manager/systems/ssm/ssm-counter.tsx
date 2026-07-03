@@ -1,11 +1,11 @@
 import { useState } from "react";
 
+import { CounterBadge } from "components/badge/CounterBadge";
 import { Button } from "components/buttons";
 
 import Network from "utils/network";
 
 import { useWebSocket } from "../../shared/websocket/useWebSocket";
-import { CounterBadge } from "components/badge/CounterBadge";
 
 type Props = {
   count?: number;
