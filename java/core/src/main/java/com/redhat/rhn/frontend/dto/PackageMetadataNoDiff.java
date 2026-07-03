@@ -58,4 +58,12 @@ public class PackageMetadataNoDiff extends PackageMetadata {
     public void handlePackageRunTransaction(Long packageDeltaId) {
         //does nothing
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean packageNotExistingOnBoth() {
+        return false;
+    }
 }
