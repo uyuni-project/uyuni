@@ -1,2 +1,0 @@
-- Add mozilla-nss-sysinit package to ensure proper PKCS#11
-  initialization in Java (bsc#1270104)
