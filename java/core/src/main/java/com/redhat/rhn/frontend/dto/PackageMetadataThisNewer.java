@@ -26,4 +26,21 @@ public class PackageMetadataThisNewer extends PackageMetadata {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getMessage("message.thissystemnewer");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_DOWNGRADE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.actiondowngrade", other.getEvr());
+    }
 }
