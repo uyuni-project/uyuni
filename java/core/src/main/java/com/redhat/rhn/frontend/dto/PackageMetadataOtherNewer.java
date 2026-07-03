@@ -77,4 +77,12 @@ public class PackageMetadataOtherNewer extends PackageMetadata {
         }
         handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_INSERT, getOther());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canRemoveFromMissingPackages() {
+        return true;
+    }
 }
