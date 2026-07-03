@@ -41,10 +41,10 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     public static final int ACTION_UPGRADE = 2;
     public static final int ACTION_DOWNGRADE = 3;
 
-    private PackageListItem system;
-    private PackageListItem other; // could be another system or a profile
+    protected PackageListItem system;
+    protected PackageListItem other; // could be another system or a profile
     private int comparison;
-    private String compareParam;
+    protected String compareParam;
     private int actionStatus;
     private List<Channel> channels;
 
@@ -109,26 +109,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * @return Returns the comparison.
      */
     public String getComparison() {
-        LocalizationService ls = LocalizationService.getInstance();
-
-        switch(comparison) {
-            case KEY_THIS_ONLY:
-                return ls.getMessage("message.thissystemonly");
-            case KEY_THIS_NEWER:
-                return ls.getMessage("message.thissystemnewer");
-            case KEY_OTHER_ONLY:
-                if (compareParam != null) {
-                    return ls.getMessage("message.otheronly", compareParam);
-                }
-                return ls.getMessage("message.profileonly");
-            case KEY_OTHER_NEWER:
-                if (compareParam != null) {
-                    return ls.getMessage("message.othernewer", compareParam);
-                }
-                return ls.getMessage("message.profilenewer");
-            default:
-                return "";
-        }
+        return "";
     }
 
     /**
