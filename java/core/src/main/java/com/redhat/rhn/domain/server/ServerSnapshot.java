@@ -532,7 +532,7 @@ public class ServerSnapshot extends BaseDomainHelper {
             snapshotPkg.setVersion((String) pkgDiff.get("snapshot_version"));
             snapshotPkg.setRelease((String) pkgDiff.get("snapshot_release"));
 
-            PackageMetadata pm = PackageMetadataFactory.createFromPkgDiffComparison(
+            PackageMetadata pm = PackageMetadataFactory.createFromPackageDiffComparison(
                     ((Number) pkgDiff.get("comparison")).intValue(), systemPkg, snapshotPkg);
 
             pkgsMeta.add(pm);

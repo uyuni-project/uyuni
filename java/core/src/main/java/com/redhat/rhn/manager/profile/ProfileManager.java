@@ -36,10 +36,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
-import com.redhat.rhn.frontend.dto.PackageMetadataNoDiff;
-import com.redhat.rhn.frontend.dto.PackageMetadataOtherNewer;
+import com.redhat.rhn.frontend.dto.PackageMetadataFactory;
 import com.redhat.rhn.frontend.dto.PackageMetadataOtherOnly;
-import com.redhat.rhn.frontend.dto.PackageMetadataThisNewer;
 import com.redhat.rhn.frontend.dto.PackageMetadataThisOnly;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
@@ -449,7 +447,6 @@ public class ProfileManager extends BaseManager {
         log.debug("    Sys: {} get: {}", syspkgitem.getName(), syspkgitem.getVersion());
         log.debug("    Pro: {} get: {}", profpkgitem.getName(), profpkgitem.getVersion());
 
-        PackageMetadata retval = null;
         PackageEvr evr1 = new PackageEvr(
                 syspkgitem.getEpoch() == null ? "0" : syspkgitem.getEpoch(),
                 syspkgitem.getVersion(),
@@ -465,20 +462,7 @@ public class ProfileManager extends BaseManager {
         );
         int rc = evr1.compareTo(evr2);
         log.debug("    rc: {}", rc);
-
-        // do nothing if they are equal
-        if (rc < 0) {
-            retval = new PackageMetadataOtherNewer(syspkgitem, profpkgitem, param);
-
-        }
-        else if (rc > 0) {
-            retval = new PackageMetadataThisNewer(syspkgitem, profpkgitem, param);
-
-        }
-        else if (rc == 0) {
-            retval = new PackageMetadataNoDiff(syspkgitem, profpkgitem, param);
-        }
-        return retval;
+        return PackageMetadataFactory.createFromPackageEvrComparison(rc, syspkgitem, profpkgitem, param);
     }
 
     /**
