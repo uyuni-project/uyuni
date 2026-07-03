@@ -20,20 +20,44 @@ public class PackageMetadataFactory {
     }
 
     /**
-     * Creates a PackageMetadata object from a pkgDiffComparison index
+     * Creates a PackageMetadata object from a package diff comparison
      *
-     * @param pkgDiffComparison the comparison index
-     * @param systemIn          PackageListItem for the current system
-     * @param otherIn           PackageListItem for the profile or other system
+     * @param packageDiffComparison the comparison index
+     * @param systemIn              PackageListItem for the current system
+     * @param otherIn               PackageListItem for the profile or other system
      * @return the created PackageMetadata
      */
-    public static PackageMetadata createFromPkgDiffComparison(int pkgDiffComparison, PackageListItem systemIn, PackageListItem otherIn) {
-        return switch (pkgDiffComparison) {
+    public static PackageMetadata createFromPackageDiffComparison(int packageDiffComparison,
+                                                                  PackageListItem systemIn, PackageListItem otherIn) {
+        return switch (packageDiffComparison) {
             case -2 -> new PackageMetadataOtherOnly(systemIn, otherIn, null);
             case -1 -> new PackageMetadataOtherNewer(systemIn, otherIn, null);
             case 1 -> new PackageMetadataThisNewer(systemIn, otherIn, null);
             case 2 -> new PackageMetadataThisOnly(systemIn, otherIn, null);
             default -> new PackageMetadataNoDiff(systemIn, otherIn, null);
         };
+    }
+
+    /**
+     * Creates a PackageMetadata object from a package evr comparison
+     *
+     * @param packageEvrComparison the comparison index
+     * @param systemIn             PackageListItem for the current system
+     * @param otherIn              PackageListItem for the profile or other system
+     * @param compareParamIn       The parameter to the comparison string.
+     * @return the created PackageMetadata
+     */
+    public static PackageMetadata createFromPackageEvrComparison(int packageEvrComparison,
+                                                                 PackageListItem systemIn, PackageListItem otherIn,
+                                                                 String compareParamIn) {
+        if (packageEvrComparison < 0) {
+            return new PackageMetadataOtherNewer(systemIn, otherIn, compareParamIn);
+        }
+        else if (packageEvrComparison > 0) {
+            return new PackageMetadataThisNewer(systemIn, otherIn, compareParamIn);
+        }
+        else {
+            return new PackageMetadataNoDiff(systemIn, otherIn, compareParamIn);
+        }
     }
 }
