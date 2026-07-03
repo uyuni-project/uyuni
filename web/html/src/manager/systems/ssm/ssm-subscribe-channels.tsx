@@ -4,6 +4,7 @@ import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { Badge } from "components/badge/Badge";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
@@ -17,7 +18,6 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
-import { Badge } from "components/badge/Badge";
 
 // See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
