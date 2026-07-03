@@ -421,4 +421,12 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     public boolean avoidCheckIfMissing() {
         return false;
     }
+
+    /**
+     * checks if the package exists on one but not the other
+     * @return true if the package exists on one but not the other
+     */
+    public boolean packageNotExistingOnBoth() {
+        return true;
+    }
 }

@@ -320,9 +320,7 @@ public class ProfileManager extends BaseManager {
                             pm.getOtherEvr();
                     // If the package exists on one but not the other we
                     // need to add it to the compare map
-                    if (pm.getComparisonAsInt() !=
-                            PackageMetadata.KEY_NO_DIFF) {
-
+                    if (pm.packageNotExistingOnBoth()) {
                         if ((j + 1) == plist.size()) {
                             // this is the last entry in plist; therefore,
                             // this must be a difference between pkgs
@@ -386,8 +384,7 @@ public class ProfileManager extends BaseManager {
         else {
             PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem,
                     profpkgitem, param);
-            if (pm != null && pm.getComparisonAsInt() !=
-                    PackageMetadata.KEY_NO_DIFF) {
+            if (pm.packageNotExistingOnBoth()) {
                 log.debug("*** adding a PM(3): {}", pm.hashCode());
                 result.add(pm);
             }
