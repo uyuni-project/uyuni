@@ -64,7 +64,7 @@ describe("LargeTextInput", () => {
 
     await waitFor(() => expect(onValidate).toHaveBeenLastCalledWith(false));
 
-    await upload(screen.getByLabelText("Certificate File"), new File(["certificate content"], "certificate.pem"));
+    upload(screen.getByLabelText("Certificate File"), new File(["certificate content"], "certificate.pem"));
 
     await waitFor(() => expect(onValidate).toHaveBeenLastCalledWith(true));
   });
@@ -105,7 +105,7 @@ describe("LargeTextInput", () => {
 
     render(<LargeTextInputTestForm required onContent={onContent} />);
 
-    await upload(screen.getByLabelText("Certificate File"), new File(["certificate content"], "certificate.pem"));
+    upload(screen.getByLabelText("Certificate File"), new File(["certificate content"], "certificate.pem"));
     await click(screen.getByRole("button", { name: "Read" }));
 
     await waitFor(() => expect(onContent).toHaveBeenCalledWith("certificate content"));
