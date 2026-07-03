@@ -105,4 +105,12 @@ public class PackageMetadataThisOnly extends PackageMetadata {
         }
         handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_DELETE, getSystem());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean avoidCheckIfMissing() {
+        return true;
+    }
 }
