@@ -53,7 +53,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     private int comparison;
     protected String compareParam;
     protected int actionStatus;
-    private List<Channel> channels;
+    protected List<Channel> channels;
 
     protected static final Logger LOGGER = LogManager.getLogger(PackageMetadata.class);
 
@@ -103,14 +103,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      */
     public String getComparison() {
         return "";
-    }
-
-    /**
-     * Sets the comparison to given value.
-     * @param comparisonIn The comparison to set.
-     */
-    public void setComparison(int comparisonIn) {
-        comparison = comparisonIn;
     }
 
     /**

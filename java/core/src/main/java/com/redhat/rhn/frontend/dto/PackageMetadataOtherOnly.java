@@ -30,6 +30,15 @@ public class PackageMetadataOtherOnly extends PackageMetadata {
     }
 
     /**
+     * Constructs a PackageMetadataOtherOnly out of an existing PackageMetadata, mutating the type
+     * @param src the source PackageMetadata
+     */
+    public PackageMetadataOtherOnly(PackageMetadata src) {
+        super(src.system, src.other, KEY_OTHER_ONLY, src.compareParam);
+        setChannels(src.channels);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

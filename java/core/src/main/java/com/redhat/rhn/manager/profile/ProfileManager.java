@@ -314,20 +314,17 @@ public class ProfileManager extends BaseManager {
                     }
                 }
                 else {
-                    PackageMetadata pm = compareAndCreatePackageMetaData(
-                            syspkgitem, profpkgitem, param);
-                    String evrKey = pm.getSystemEvr() + "|" +
-                            pm.getOtherEvr();
-                    // If the package exists on one but not the other we
-                    // need to add it to the compare map
+                    PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem, profpkgitem, param);
+                    String evrKey = pm.getSystemEvr() + "|" + pm.getOtherEvr();
+                    // If the package exists on one but not the other, we need to add it to the compare map
                     if (pm.packageNotExistingOnBoth()) {
                         if ((j + 1) == plist.size()) {
                             // this is the last entry in plist; therefore,
                             // this must be a difference between pkgs
                             log.debug("Adding to cm: {} comp: {}", evrKey, pm.getComparison());
-                            pm.setComparison(
-                                    PackageMetadata.KEY_OTHER_ONLY);
-                            compareMap.put(evrKey, pm);
+
+                            PackageMetadata otherOnlyPm = new PackageMetadataOtherOnly(pm);
+                            compareMap.put(evrKey, otherOnlyPm);
                             skipPkg.add(syspkgitem.getNevra());
                             skipPkg.add(profpkgitem.getNevra());
                         }
@@ -336,8 +333,7 @@ public class ProfileManager extends BaseManager {
                         log.debug("Removing from cm: {}", evrKey);
                         compareMap.remove(evrKey);
                         skipPkg.add(profpkgitem.getNevra());
-                        // pkg found in both plist & syslist, skip to next
-                        // syslist entry
+                        // pkg found in both plist & syslist, skip to next syslist entry
                         break;
                     }
                 }
