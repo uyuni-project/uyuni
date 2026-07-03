@@ -90,6 +90,9 @@ Download the plugin from the upstream repository and install it:
 # Download
 curl -sSLO https://raw.githubusercontent.com/uyuni-project/uyuni/refs/heads/master/containers/mlm-supportconfig/kubectl-mlm_supportconfig
 
+# Check the file
+curl -sSL https://raw.githubusercontent.com/uyuni-project/uyuni/refs/heads/master/containers/mlm-supportconfig/kubectl-mlm_supportconfig.sha512 | sha512sum -c
+
 # system-wide
 sudo install -m 0755 kubectl-mlm_supportconfig /usr/local/bin/
 
