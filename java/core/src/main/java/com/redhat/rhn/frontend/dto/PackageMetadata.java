@@ -62,6 +62,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
         compareParam = compareParamIn;
         actionStatus = ACTION_NONE;
         channels = new ArrayList<>();
+        updateActionStatus();
     }
 
     /**
