@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul 03 15:43:34 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.14-0
+  * Fix SCAP remediation truncation at <sub> element (bsc#1270049)
+
+-------------------------------------------------------------------
 Fri Jun 26 14:40:36 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.13-0
