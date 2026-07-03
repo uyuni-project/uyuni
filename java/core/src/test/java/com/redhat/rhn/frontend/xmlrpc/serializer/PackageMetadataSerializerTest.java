@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.PackageMetadataOtherNewer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ public class PackageMetadataSerializerTest  {
         builtin = new XmlRpcSerializer();
         builtin.addCustomSerializer(new BigDecimalSerializer());
     }
+
     @Test
     public void testSerialize() throws XmlRpcException {
 
@@ -55,14 +57,14 @@ public class PackageMetadataSerializerTest  {
         otherListItem.setEvr("2.2.25-5");
 
         // Configure package metadata:
-        PackageMetadata pkgData = new PackageMetadata(systemListItem, otherListItem);
-        pkgData.setComparison(4);
+        PackageMetadata pkgData = new PackageMetadataOtherNewer(systemListItem, otherListItem, null);
+
 
         Writer output = new StringWriter();
         os.serialize(pkgData, output, builtin);
         String result = output.toString();
 
-        assertEquals(os.getSupportedClass(), PackageMetadata.class);
+        assertEquals(PackageMetadata.class, os.getSupportedClass());
 
         assertTrue(result.contains("<name>package_name_id</name>"));
         assertTrue(result.contains("<name>package_name</name>"));
