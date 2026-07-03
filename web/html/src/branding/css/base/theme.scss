@@ -8,9 +8,9 @@
   font-weight: 600;
   padding: 2px 6px;
   margin-left: 6px;
-  border-radius: 3px;
-  background-color: #f0ad4e;
-  color: #fff;
+  border-radius: 4px;
+  background: $eos-bc-yellow-500;
+  color: darken($eos-bc-yellow-900, 35%);
   vertical-align: middle;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -416,6 +416,10 @@ nav.navbar-pf {
           display: block;
           color: inherit;
           width: auto;
+        }
+
+        .badge {
+          margin-left: 6px;
         }
       }
       div.nodeLink:hover,
@@ -1164,23 +1168,6 @@ i.fa.pointer {
       vertical-align: middle;
     }
   }
-}
-
-.tag-base {
-  padding: 0 0.5em;
-  border-radius: 2px;
-  font-size: 85%;
-}
-
-.recommended-tag-base {
-  @extend .tag-base;
-  background-color: $yellow;
-}
-
-.mandatory-tag-base {
-  @extend .tag-base;
-  background-color: $red;
-  color: white;
 }
 
 .line-separator {

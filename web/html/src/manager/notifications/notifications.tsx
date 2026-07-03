@@ -2,6 +2,8 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { CounterBadge } from "components/badge/CounterBadge";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type Props = Record<never, never>;
@@ -91,7 +93,7 @@ class Notifications extends Component<Props, State> {
         <i className={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa fa-bell-slash" : "fa fa-bell"}></i>
         {!DEPRECATED_unsafeEquals(this.state.websocket, null) && this.state.unreadMessagesLength > 0 ? (
           <div id="notification-counter" className={this.state.classStyle}>
-            {this.state.unreadMessagesLength}
+            <CounterBadge count={this.state.unreadMessagesLength} status="highlight" />
           </div>
         ) : null}
       </a>

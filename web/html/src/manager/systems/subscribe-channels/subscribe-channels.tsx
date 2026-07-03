@@ -3,6 +3,7 @@ import { type ChangeEvent, type ReactNode, Component } from "react";
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { Badge } from "components/badge/Badge";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
@@ -553,15 +554,9 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
             ></i>
           ) : null}
           &nbsp;
-          {c.recommended ? (
-            <span className="recommended-tag-base" title={"This channel is recommended"}>
-              {t("recommended")}
-            </span>
-          ) : null}
+          {c.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
           {mandatoryChannels && mandatoryChannels.has(c.id) ? (
-            <span className="mandatory-tag-base" title={"This channel is mandatory"}>
-              {t("mandatory")}
-            </span>
+            <Badge text={t("Mandatory")} small color="red" variant="special" />
           ) : null}
           <ChannelAnchorLink id={c.id} newWindow={true} />
         </div>

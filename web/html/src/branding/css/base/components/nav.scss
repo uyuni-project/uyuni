@@ -1,7 +1,5 @@
 $nav-tabs-offset: 30px;
 
-
-
 .nav-tabs {
   margin-bottom: 0.25rem;
   border-bottom: 1px solid $eos-bc-gray-100;
@@ -23,25 +21,29 @@ $nav-tabs-offset: 30px;
 
     a {
       color: $eos-bc-gray-1000;
-  
+
       &:hover {
         border-color: $eos-bc-green-500;
         padding-bottom: 1px;
         border-bottom-width: 5px;
         text-decoration: none !important;
       }
-  
-      &:active, &:focus {
+
+      &:active,
+      &:focus {
         color: $eos-bc-gray-1000;
         background: transparent;
       }
-  
+
       // TODO: Check disabled states
     }
-  
+
     &.active {
       a {
-        &, &:hover, &:active, &:focus {
+        &,
+        &:hover,
+        &:active,
+        &:focus {
           color: $eos-bc-gray-1000;
         }
       }

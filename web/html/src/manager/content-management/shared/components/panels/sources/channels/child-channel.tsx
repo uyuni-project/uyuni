@@ -2,6 +2,7 @@ import type { FC, ReactElement } from "react";
 
 import { ChildChannelType } from "core/channels/type/channels.type";
 
+import { Badge } from "components/badge/Badge";
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
 
@@ -70,19 +71,16 @@ const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement
       <span>
         {tooltip ? (
           <span>
-            <i className="fa fa-info-circle spacewalk-help-link" title={tooltip}></i>
+            <i
+              className="fa fa-info-circle spacewalk-help-link"
+              data-bs-toggle="tooltip"
+              data-bs-custom-class="wide-tooltip"
+              title={tooltip}
+            ></i>
           </span>
         ) : null}
-        {recommended ? (
-          <span className="recommended-tag-base" title={t("This channel is recommended")}>
-            {t("recommended")}
-          </span>
-        ) : null}
-        {isReqiredByBase ? (
-          <span className="mandatory-tag-base" title={t("This channel is mandatory")}>
-            {t("mandatory")}
-          </span>
-        ) : null}
+        {recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
+        {isReqiredByBase ? <Badge text={t("Mandatory")} small color="red" variant="special" /> : null}
         <ChannelAnchorLink id={id} newWindow={true} />
       </span>
     </div>

@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { Badge } from "components/badge/Badge";
 import { AsyncButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -67,26 +68,26 @@ function actionsFor(id, state, update, enabled) {
 
 const stateMapping = {
   accepted: {
-    uiName: t("accepted"),
+    uiName: t("Accepted"),
     label: "success",
   },
   pending: {
-    uiName: t("pending"),
-    label: "info",
-  },
-  rejected: {
-    uiName: t("rejected"),
+    uiName: t("Pending"),
     label: "warning",
   },
+  rejected: {
+    uiName: t("Rejected"),
+    label: "error",
+  },
   denied: {
-    uiName: t("denied"),
-    label: "danger",
+    uiName: t("Denied"),
+    label: "error",
   },
 };
 
 function labelFor(state) {
   const mapping = stateMapping[state];
-  return <span className={"label label-" + mapping.label}>{mapping.uiName}</span>;
+  return <Badge text={mapping.uiName} color={mapping.label} />;
 }
 
 type Props = Record<never, never>;

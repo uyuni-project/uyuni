@@ -4,6 +4,7 @@ import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
+import { Badge } from "components/badge/Badge";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
@@ -484,16 +485,14 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
                     <span>
                       <i
                         className="fa fa-info-circle spacewalk-help-link"
+                        data-bs-toggle="tooltip"
+                        data-bs-custom-class="wide-tooltip"
                         title={this.dependenciesTooltip(child.id)}
                       ></i>
                     </span>
                   ) : null}
                   &nbsp;
-                  {child.recommended ? (
-                    <span className="recommended-tag-base" title={"This extension is recommended"}>
-                      {t("recommended")}
-                    </span>
-                  ) : null}
+                  {child.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
                 </div>
                 <div className="col-md-4">
                   <div className="row radio">

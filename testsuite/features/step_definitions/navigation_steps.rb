@@ -685,7 +685,7 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
-  within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
+  within(:xpath, '//div[@id="spacewalk-set-system_list-counter"]') do
     raise ScriptError, "There are not #{arg} systems selected" unless check_text?(arg)
   end
 end

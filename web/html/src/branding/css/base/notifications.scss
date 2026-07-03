@@ -9,20 +9,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $notification-badge;
     position: absolute;
-    left: 19px;
-    top: -5px;
-    color: #333;
-    font-size: 0.9em;
-    min-width: 19px;
-    height: 19px;
-    padding: 0px 2px;
-    border-radius: 10px;
-    border: 1px solid #333;
+    left: 17px;
+    top: -10px;
   }
   #notification-counter.highlight-updated-value {
-    transform:scale(1.5,1.5);
+    transform: scale(1.5, 1.5);
   }
 }
 

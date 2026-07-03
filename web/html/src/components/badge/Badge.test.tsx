@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import { Badge } from "./Badge";
 
 describe("Badge Component", () => {
@@ -12,6 +13,13 @@ describe("Badge Component", () => {
 
     expect(badge.className).toContain("badge--status");
     expect(badge.className).toContain("badge--default");
+  });
+
+  test("renders the small badge with the correct CSS class", () => {
+    render(<Badge text="Active" small />);
+    const badge = screen.getByText("Active");
+
+    expect(badge.className).toContain("badge--sm");
   });
 
   test("uses the default special color", () => {
