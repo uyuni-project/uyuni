@@ -3,6 +3,8 @@
   border-radius: 4px;
   margin: 2px;
   font-weight: 600;
+  align-self: center;
+
   &:empty {
     display: block;
   }
@@ -14,6 +16,12 @@
   &--sm {
     padding: 3px 6px;
     font-size: 11px;
+    border-radius: 3px;
+
+    i {
+      margin-right: 3px;
+      font-size: 10px;
+    }
   }
 
   &--status {
