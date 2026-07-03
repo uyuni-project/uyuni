@@ -18,6 +18,16 @@ package com.redhat.rhn.frontend.dto;
 public class PackageMetadataNoDiff extends PackageMetadata {
 
     /**
+     * Constructs a PackageMetadataNoDiff
+     * @param systemIn PackageListItem for the current system
+     * @param otherIn PackageListItem for the profile or other system
+     * @param compareParamIn The parameter to the comparison string.
+     */
+    public PackageMetadataNoDiff(PackageListItem systemIn, PackageListItem otherIn, String compareParamIn) {
+        super(systemIn, otherIn, KEY_NO_DIFF, compareParamIn);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
