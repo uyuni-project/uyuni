@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.metrics.PrometheusExporter;
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.reactor.mqtt.MqttPublisherService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -133,6 +134,7 @@ public class RhnServletListener implements ServletContextListener {
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs
         if (sce != null) {
+            new MqttPublisherService();
             saltReactor.start();
             logStart("Salt reactor");
         }
@@ -164,6 +166,13 @@ public class RhnServletListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         saltReactor.stop();
         logStop("Salt reactor");
+
+        if (sce != null) {
+            MqttPublisherService publisher = MqttPublisherService.getInstance();
+            if (publisher != null) {
+                publisher.shutdown();
+            }
+        }
 
         stopMessaging();
         logStop("Messaging");
