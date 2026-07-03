@@ -413,4 +413,12 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     public boolean canRemoveFromMissingPackages() {
         return false;
     }
+
+    /**
+     * checks if it makes sense to skip the check whether it's missing
+     * @return true to skip the check, false to do the check
+     */
+    public boolean avoidCheckIfMissing() {
+        return false;
+    }
 }
