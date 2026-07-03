@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
 
 public class PackageMetadataThisOnly extends PackageMetadata {
     /**
@@ -92,5 +93,16 @@ public class PackageMetadataThisOnly extends PackageMetadata {
     public String getActionStatus() {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getMessage("message.actionremove");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("compare returned [KEY_THIS_ONLY]; deleting package from system");
+        }
+        handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_DELETE, getSystem());
     }
 }

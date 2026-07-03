@@ -14,12 +14,20 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PackageMetadata represents some information about a Package
@@ -46,6 +54,8 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     protected String compareParam;
     protected int actionStatus;
     private List<Channel> channels;
+
+    protected static final Logger LOGGER = LogManager.getLogger(PackageMetadata.class);
 
     /**
      * Constructs a PackageMetadata
@@ -370,5 +380,29 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     @Override
     public String getSelectionKey() {
         return getIdCombo();
+    }
+
+    /**
+     * handles a package runTransaction action.
+     * @param packageDeltaId the package delta id
+     */
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        //empty
+    }
+
+    protected void handlePackageRunTransaction(Long packageDeltaId, String actionFactoryTxnOperation,
+                                               PackageListItem packageListItem) {
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_package_delta_element");
+        Map<String, Object> params = new HashMap<>();
+        params.put("delta_id", packageDeltaId);
+
+        params.put("operation", actionFactoryTxnOperation);
+        params.put("n", getName());
+        params.put("v", packageListItem.getVersion());
+        params.put("r", packageListItem.getRelease());
+        String epoch = packageListItem.getEpoch();
+        params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+        params.put("a", packageListItem.getArch() != null ? packageListItem.getArch() : "");
+        m.executeUpdate(params);
     }
 }
