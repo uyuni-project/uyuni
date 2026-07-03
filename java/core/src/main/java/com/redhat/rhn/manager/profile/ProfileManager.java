@@ -36,6 +36,11 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.PackageMetadataNoDiff;
+import com.redhat.rhn.frontend.dto.PackageMetadataOtherNewer;
+import com.redhat.rhn.frontend.dto.PackageMetadataOtherOnly;
+import com.redhat.rhn.frontend.dto.PackageMetadataThisNewer;
+import com.redhat.rhn.frontend.dto.PackageMetadataThisOnly;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ProfilePackageOverviewDto;
@@ -223,8 +228,7 @@ public class ProfileManager extends BaseManager {
                 // No packages in profile with same name.  We know its only in the System
                 for (PackageListItem packageListItemIn : syslist) {
                     PackageListItem syspkgitem = packageListItemIn;
-                    PackageMetadata pm = createPackageMetadata(syspkgitem,
-                            null, PackageMetadata.KEY_THIS_ONLY, param);
+                    PackageMetadata pm =  new PackageMetadataThisOnly(syspkgitem, null, param);
                     log.debug("plist is null - adding KEY_THIS_ONLY: {}", pm.getSystem().getVersion());
                     skipPkg.add(syspkgitem.getNevra());
                     result.add(pm);
@@ -254,9 +258,7 @@ public class ProfileManager extends BaseManager {
             if (syslist == null) {
                 // No packages in system with same name.  We know its only in the Profile
                 for (PackageListItem packageListItemIn : plist) {
-                    PackageMetadata pm = createPackageMetadata(null,
-                            packageListItemIn, PackageMetadata.KEY_OTHER_ONLY,
-                            param);
+                    PackageMetadata pm = new PackageMetadataOtherOnly(null, packageListItemIn, param);
 
                     result.add(pm);
                 }
@@ -267,8 +269,7 @@ public class ProfileManager extends BaseManager {
 
                     if (!skipPkg.contains(profpkgitem.getNevra())) {
 
-                        PackageMetadata pm = createPackageMetadata(
-                                null, profpkgitem, PackageMetadata.KEY_OTHER_ONLY, param);
+                        PackageMetadata pm = new PackageMetadataOtherOnly(null, profpkgitem, param);
                         log.debug("*** adding a PM(4): {}", pm.hashCode());
                         result.add(pm);
                     }
@@ -305,14 +306,11 @@ public class ProfileManager extends BaseManager {
                     // need to compare the EVR; therefore, if at end of the
                     // list, add both packages to the result
                     if ((j + 1) == plist.size()) {
-                        PackageMetadata pm = createPackageMetadata(
-                                syspkgitem, null,
-                                PackageMetadata.KEY_THIS_ONLY, param);
+                        PackageMetadata pm = new PackageMetadataThisOnly(syspkgitem, null, param);
                         skipPkg.add(syspkgitem.getNevra());
                         result.add(pm);
 
-                        pm = createPackageMetadata(null, profpkgitem,
-                                PackageMetadata.KEY_OTHER_ONLY, param);
+                        pm = new PackageMetadataOtherOnly(null, profpkgitem, param);
                         skipPkg.add(profpkgitem.getNevra());
                         result.add(pm);
                     }
@@ -354,8 +352,7 @@ public class ProfileManager extends BaseManager {
                 // or recording a difference; therefore, add one now
                 log.debug("Checking on : {}", syspkgitem.getEvr());
 
-                PackageMetadata pm = createPackageMetadata(syspkgitem,
-                        null, PackageMetadata.KEY_THIS_ONLY, param);
+                PackageMetadata pm = new PackageMetadataThisOnly(syspkgitem, null, param);
 
                 log.debug("*** adding a PM(1): {}", pm.hashCode());
                 skipPkg.add(syspkgitem.getNevra());
@@ -380,13 +377,11 @@ public class ProfileManager extends BaseManager {
         if (compareArch(syspkgitem.getArch(), profpkgitem.getArch()) != 0) {
 
             // pkg arches do not match; therefore, no need to check evr
-            PackageMetadata pm = createPackageMetadata(syspkgitem, null,
-                    PackageMetadata.KEY_THIS_ONLY, param);
+            PackageMetadata pm = new PackageMetadataThisOnly(syspkgitem, null, param);
             skipPkg.add(syspkgitem.getNevra());
             result.add(pm);
 
-            pm = createPackageMetadata(null, profpkgitem,
-                    PackageMetadata.KEY_OTHER_ONLY, param);
+            pm = new PackageMetadataOtherOnly(null, profpkgitem, param);
             skipPkg.add(profpkgitem.getNevra());
             result.add(pm);
         }
@@ -473,27 +468,15 @@ public class ProfileManager extends BaseManager {
 
         // do nothing if they are equal
         if (rc < 0) {
-            retval = createPackageMetadata(
-                    syspkgitem,
-                    profpkgitem,
-                    PackageMetadata.KEY_OTHER_NEWER,
-                    param);
+            retval = new PackageMetadataOtherNewer(syspkgitem, profpkgitem, param);
 
         }
         else if (rc > 0) {
-            retval = createPackageMetadata(
-                    syspkgitem,
-                    profpkgitem,
-                    PackageMetadata.KEY_THIS_NEWER,
-                    param);
+            retval = new PackageMetadataThisNewer(syspkgitem, profpkgitem, param);
 
         }
         else if (rc == 0) {
-            retval = createPackageMetadata(
-                    syspkgitem,
-                    profpkgitem,
-                    PackageMetadata.KEY_NO_DIFF,
-                    param);
+            retval = new PackageMetadataNoDiff(syspkgitem, profpkgitem, param);
         }
         return retval;
     }
@@ -1182,23 +1165,6 @@ public class ProfileManager extends BaseManager {
         }
 
         return dr;
-    }
-
-
-    /**
-     * Creates a packagemetadata
-     * @param sys PackageListItem info
-     * @param other packageListItem to compare with
-     * @param comparison comparison
-     * @param param compare string param
-     * @return Packagemetadata with the information from the PackageListItem
-     */
-    private static PackageMetadata createPackageMetadata(PackageListItem sys,
-            PackageListItem other, int comparison, String param) {
-        PackageMetadata pm = new PackageMetadata(sys, other);
-        pm.setComparison(comparison);
-        pm.setCompareParam(param);
-        return pm;
     }
 
     /**
