@@ -405,4 +405,12 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
         params.put("a", packageListItem.getArch() != null ? packageListItem.getArch() : "");
         m.executeUpdate(params);
     }
+
+    /**
+     * checks if it can be removed from missing packages
+     * @return true if it can be removed from missing packages
+     */
+    public boolean canRemoveFromMissingPackages() {
+        return false;
+    }
 }

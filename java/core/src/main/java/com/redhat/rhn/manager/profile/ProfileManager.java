@@ -678,8 +678,7 @@ public class ProfileManager extends BaseManager {
             }
 
             for (PackageMetadata pm : missingPackages) {
-                int compare = pm.getComparisonAsInt();
-                if (compare == PackageMetadata.KEY_OTHER_ONLY || compare == PackageMetadata.KEY_OTHER_NEWER) {
+                if (pm.canRemoveFromMissingPackages()) {
                     dr.remove(pm);
                 }
             }
@@ -762,9 +761,7 @@ public class ProfileManager extends BaseManager {
         // if we still have some missing packages, just remove them.
         if (!missingPackages.isEmpty()) {
             for (PackageMetadata pm : missingPackages) {
-                int compare = pm.getComparisonAsInt();
-                if (compare == PackageMetadata.KEY_OTHER_ONLY ||
-                        compare == PackageMetadata.KEY_OTHER_NEWER) {
+                if (pm.canRemoveFromMissingPackages()) {
                     if (log.isDebugEnabled()) {
                         log.debug("Removing pm [{}]", pm.getName());
                     }
@@ -852,9 +849,7 @@ public class ProfileManager extends BaseManager {
             }
 
             for (PackageMetadata pm : missingPackages) {
-                int compare = pm.getComparisonAsInt();
-                if (compare == PackageMetadata.KEY_OTHER_ONLY ||
-                        compare == PackageMetadata.KEY_OTHER_NEWER) {
+                if (pm.canRemoveFromMissingPackages()) {
                     dr.remove(pm);
                 }
             }
@@ -933,9 +928,7 @@ public class ProfileManager extends BaseManager {
         // if we still have some missing packages, just remove them.
         if (!missingPackages.isEmpty()) {
             for (PackageMetadata pm : missingPackages) {
-                int compare = pm.getComparisonAsInt();
-                if (compare == PackageMetadata.KEY_OTHER_ONLY ||
-                        compare == PackageMetadata.KEY_OTHER_NEWER) {
+                if (pm.canRemoveFromMissingPackages()) {
                     if (log.isDebugEnabled()) {
                         log.debug("Removing pm [{}]", pm.getName());
                     }
