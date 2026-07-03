@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.StringUtils;
@@ -103,13 +102,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      */
     public String getComparison() {
         return "";
-    }
-
-    /**
-     * @param aCompareParam The parameter to the comparison string.
-     */
-    public void setCompareParam(String aCompareParam) {
-        compareParam = aCompareParam;
     }
 
     /**

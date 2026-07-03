@@ -86,22 +86,22 @@ public class PackageMetadataTest extends BaseTestCase {
     public void testGetComparison() {
         PackageMetadata pm = new PackageMetadataOtherNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals("Profile newer", pm.getComparison());
-        pm.setCompareParam("foo");
+        pm = new PackageMetadataOtherNewer(new PackageListItem(), new PackageListItem(), "foo");
         assertEquals("foo newer", pm.getComparison());
 
         pm = new PackageMetadataThisOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals("This system only", pm.getComparison());
-        pm.setCompareParam("foo");
+        pm = new PackageMetadataThisOnly(new PackageListItem(), new PackageListItem(), "foo");
         assertEquals("This system only", pm.getComparison());
 
         pm = new PackageMetadataThisNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals("This system newer", pm.getComparison());
-        pm.setCompareParam("foo");
+        pm = new PackageMetadataThisNewer(new PackageListItem(), new PackageListItem(), "foo");
         assertEquals("This system newer", pm.getComparison());
 
         pm = new PackageMetadataOtherOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals("Profile only", pm.getComparison());
-        pm.setCompareParam("foo");
+        pm = new PackageMetadataOtherOnly(new PackageListItem(), new PackageListItem(), "foo");
         assertEquals("foo only", pm.getComparison());
     }
 }
