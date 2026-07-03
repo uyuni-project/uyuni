@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jul 03 15:44:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Add mozilla-nss-sysinit package to ensure proper PKCS#11
+    initialization in Java (bsc#1270104)
+
+-------------------------------------------------------------------
 Fri Jun 26 14:44:22 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9
