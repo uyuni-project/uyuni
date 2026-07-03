@@ -28,6 +28,9 @@ const LargeTextInputTestForm = ({ required = false, onContent, onValidate }: Lar
       <button type="button" onClick={() => inputRef.current?.getContent().then(onContent)}>
         Read
       </button>
+      <button type="button" onClick={() => setModel({})}>
+        Reset
+      </button>
     </Form>
   );
 };
@@ -106,5 +109,19 @@ describe("LargeTextInput", () => {
     await click(screen.getByRole("button", { name: "Read" }));
 
     await waitFor(() => expect(onContent).toHaveBeenCalledWith("certificate content"));
+  });
+
+  test("restores the default input mode when the form model is reset", async () => {
+    render(<LargeTextInputTestForm required onContent={jest.fn()} />);
+
+    await click(screen.getByLabelText("Paste the data"));
+    await type(screen.getByLabelText("PEM certificate"), "certificate content");
+
+    expect((screen.getByLabelText("Paste the data") as HTMLInputElement).checked).toBe(true);
+
+    await click(screen.getByRole("button", { name: "Reset" }));
+
+    await waitFor(() => expect((screen.getByLabelText("Upload a file") as HTMLInputElement).checked).toBe(true));
+    expect(screen.getByLabelText("Certificate File")).not.toBeNull();
   });
 });

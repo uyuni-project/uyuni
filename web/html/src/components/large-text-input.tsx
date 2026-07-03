@@ -82,27 +82,26 @@ export const LargeTextInput = forwardRef<LargeTextInputRef, Props>(
     }, [required, notNeededOptionLabel, uploadOptionLabel, pasteOptionLabel]);
 
     const initialMode = required ? LargeTextInputMode.Upload : LargeTextInputMode.NotNeeded;
+    const inputModeField = `${name}_inputMode`;
 
     // Retrieve the form context to store the state
     const { model, setModelValue } = useContext(FormContext);
-    const inputMode = model?.[`${name}_inputMode`] ?? initialMode;
+    const currentInputMode = model?.[inputModeField];
+    const validInputMode = Object.values(LargeTextInputMode).includes(currentInputMode as LargeTextInputMode);
+    const inputMode = validInputMode ? (currentInputMode as LargeTextInputMode) : initialMode;
 
     // Initialize the input mode
     useEffect(() => {
-      // If a valid mode is already set, do not override it
-      if (Object.values(LargeTextInputMode).includes(model?.[`${name}_inputMode`] as LargeTextInputMode)) {
+      if (validInputMode) {
         return;
       }
 
-      // Set to "Not Needed" if the input is not required, "Upload" otherwise
-      const initialMode = required ? LargeTextInputMode.Upload : LargeTextInputMode.NotNeeded;
-      setModelValue?.(`${name}_inputMode`, initialMode);
-    }, [name, required, setModelValue]);
+      setModelValue?.(inputModeField, initialMode);
+    }, [initialMode, inputModeField, setModelValue, validInputMode]);
 
     // Expose the getContent method to allow retrieving the content of the input
     useImperativeHandle(ref, () => ({
       getContent(): Promise<string | undefined> {
-        const inputMode = model?.[`${name}_inputMode`];
         switch (inputMode) {
           case LargeTextInputMode.Upload:
             return new Promise((resolve, reject) => {
@@ -129,12 +128,13 @@ export const LargeTextInput = forwardRef<LargeTextInputRef, Props>(
     return (
       <>
         <Radio
-          name={`${name}_inputMode`}
+          name={inputModeField}
           label={label}
           title={label}
           hint={hint}
           inline={true}
           required
+          defaultValue={initialMode}
           labelClass="col-md-3"
           divClass="col-md-6"
           items={availableModes}
