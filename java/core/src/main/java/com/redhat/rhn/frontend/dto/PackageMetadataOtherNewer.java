@@ -16,12 +16,15 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.manager.action.ActionManager;
 
 public class PackageMetadataOtherNewer extends PackageMetadata {
     /**
      * Constructs a PackageMetadataOtherNewer
-     * @param systemIn PackageListItem for the current system
-     * @param otherIn PackageListItem for the profile or other system
+     *
+     * @param systemIn       PackageListItem for the current system
+     * @param otherIn        PackageListItem for the profile or other system
      * @param compareParamIn The parameter to the comparison string.
      */
     public PackageMetadataOtherNewer(PackageListItem systemIn, PackageListItem otherIn, String compareParamIn) {
@@ -55,5 +58,23 @@ public class PackageMetadataOtherNewer extends PackageMetadata {
     public String getActionStatus() {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getMessage("message.actionupgrade", other.getEvr());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(
+                    "compare returned [KEY_OTHER_NEWER]; deleting package [{}-{}] " +
+                            "from system installing package [{}-{}] to system",
+                    getName(), getSystemEvr(), getName(), getOther().getEvr());
+        }
+
+        if (ActionManager.isPackageRemovable(getName())) {
+            handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_DELETE, getSystem());
+        }
+        handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_INSERT, getOther());
     }
 }
