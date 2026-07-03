@@ -19,6 +19,16 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 public class PackageMetadataThisNewer extends PackageMetadata {
     /**
+     * Constructs a PackageMetadataThisNewer
+     * @param systemIn PackageListItem for the current system
+     * @param otherIn PackageListItem for the profile or other system
+     * @param compareParamIn The parameter to the comparison string.
+     */
+    public PackageMetadataThisNewer(PackageListItem systemIn, PackageListItem otherIn, String compareParamIn) {
+        super(systemIn, otherIn, KEY_THIS_NEWER, compareParamIn);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -49,23 +49,19 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
 
     /**
      * Constructs a PackageMetadata
-     * @param sys PackageListItem for the current system
-     * @param victim PackageListItem for the profile or other system
+     * @param systemIn PackageListItem for the current system
+     * @param otherIn PackageListItem for the profile or other system
+     * @param comparisonIn The comparison to set.
+     * @param compareParamIn The parameter to the comparison string.
      */
-    public PackageMetadata(PackageListItem sys, PackageListItem victim) {
-        system = sys;
-        other = victim;
-        comparison = KEY_NO_DIFF;
-        compareParam = null;
+    protected PackageMetadata(PackageListItem systemIn, PackageListItem otherIn, int comparisonIn,
+                              String compareParamIn) {
+        system = systemIn;
+        other = otherIn;
+        comparison = comparisonIn;
+        compareParam = compareParamIn;
         actionStatus = ACTION_NONE;
         channels = new ArrayList<>();
-    }
-
-    /**
-     * Default ctor
-     */
-    public PackageMetadata() {
-        this(new PackageListItem(), new PackageListItem());
     }
 
     /**
