@@ -30,7 +30,7 @@ export const Badge = (props: BadgeProps) => {
     .join(" ");
   const formatBadgeText = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
   return (
-    <span className={badgeClassName}>
+    <span className={badgeClassName} data-bs-toggle="tooltip" title={variant === "special" ? props.title : undefined}>
       {icon && <i className={`fa ${icon}`} aria-hidden="true" />}
       {formatBadgeText(text)}
     </span>

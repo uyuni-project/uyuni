@@ -12,6 +12,7 @@ import { Toggler } from "components/toggler";
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
+import { Badge } from "components/badge/Badge";
 
 declare global {
   var actionChains: ActionChain[];
@@ -553,15 +554,9 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
             ></i>
           ) : null}
           &nbsp;
-          {c.recommended ? (
-            <span className="recommended-tag-base" title={"This channel is recommended"}>
-              {t("recommended")}
-            </span>
-          ) : null}
+          {c.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
           {mandatoryChannels && mandatoryChannels.has(c.id) ? (
-            <span className="mandatory-tag-base" title={"This channel is mandatory"}>
-              {t("mandatory")}
-            </span>
+            <Badge text={t("Mandatory")} small color="red" variant="special" />
           ) : null}
           <ChannelAnchorLink id={c.id} newWindow={true} />
         </div>

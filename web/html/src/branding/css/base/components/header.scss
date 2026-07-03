@@ -97,17 +97,6 @@
     display: flex;
     align-items: center;
     gap: 4px;
-
-    .badge {
-      flex-shrink: 0;
-      border-radius: 8px;
-      background: $gray-light;
-      display: block;
-      padding: 2px 6px;
-      margin-bottom: -2px;
-      text-align: center;
-      color: darken($gray-dark, 20%);
-    }
   }
 
   a {

@@ -72,9 +72,10 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 2) {
     return (
       <span>
-        <i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")} />
+        <i className="fa fa-check-circle fa-1-5x text-success" data-bs-toggle="tooltip" title={t("Successful")} />
         <a
           title={t("Go to event")}
+          data-bs-toggle="tooltip"
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
         >
           {t(props.name + " is successful")}
@@ -84,9 +85,10 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 3) {
     return (
       <span>
-        <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />
+        <i className="fa fa-times-circle-o fa-1-5x text-danger" data-bs-toggle="tooltip" title={t("Failed")} />
         <a
           title={t("Go to event")}
+          data-bs-toggle="tooltip"
           href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
         >
           {t(props.name + " has failed")}
@@ -96,7 +98,7 @@ function StatusIcon(props: StatusIconProps) {
   } else {
     return (
       <span>
-        <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+        <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />
         {t("No information")}
       </span>
     );

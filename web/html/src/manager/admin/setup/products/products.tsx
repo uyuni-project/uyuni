@@ -25,6 +25,7 @@ import { getProductSelectionState } from "./product-check/product-selection.util
 import { ProductCheck } from "./product-check/ProductCheck";
 import { searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
+import { Badge } from "components/badge/Badge";
 
 declare global {
   interface Window {
@@ -815,7 +816,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
       );
     } else if (channelList.filter((c) => c.status === _CHANNEL_STATUS.synced).length > 0) {
       return (
-        <span className="text-success" title={t(testPrefix + " channels synced")}>
+        <span className="text-success" data-bs-toggle="tooltip" title={t(testPrefix + " channels synced")}>
           {wrapPrefix}
           <i className={"fa fa-check-circle " + iconSize}></i>
           {wrapSuffix}
@@ -881,11 +882,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
         {...DEPRECATED_onClick(handleDescriptionClick)}
       >
         {currentItem.label}&nbsp;
-        {currentItem.recommended ? (
-          <span className="recommended-tag" title={"This extension is recommended"}>
-            {t("recommended")}
-          </span>
-        ) : null}
+        {currentItem.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
       </span>
     );
 

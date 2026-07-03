@@ -8,6 +8,7 @@ import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
+import { Badge } from "components/badge/Badge";
 
 type ChildChannelsProps = {
   channels: Channel[];
@@ -135,20 +136,17 @@ class ChildChannels extends Component<ChildChannelsProps, ChildChannelsState> {
               &nbsp;
               {toolTip ? (
                 <span>
-                  <i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i>
+                  <i
+                    className="fa fa-info-circle spacewalk-help-link"
+                    data-bs-toggle="tooltip"
+                    data-bs-custom-class="wide-tooltip"
+                    title={toolTip}
+                  ></i>
                 </span>
               ) : null}
               &nbsp;
-              {c.recommended ? (
-                <span className="recommended-tag-base" title={"This channel is recommended"}>
-                  {t("recommended")}
-                </span>
-              ) : null}
-              {isMandatory ? (
-                <span className="mandatory-tag-base" title={"This channel is mandatory"}>
-                  {t("mandatory")}
-                </span>
-              ) : null}
+              {c.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
+              {isMandatory ? <Badge text={t("Mandatory")} small color="red" variant="special" /> : null}
               <ChannelAnchorLink id={c.id} newWindow={true} />
             </div>
           );
