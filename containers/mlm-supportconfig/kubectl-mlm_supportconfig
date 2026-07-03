@@ -241,7 +241,7 @@ run_supportconfig_in_container() {
     local pod="$1" container="$2" dst_dir="$3"
     local label="supportconfig:${pod}/${container}"
     local bname="k8s-${pod}-${container}-${STAMP}"
-    local scc_dir="/tmp/scc-${bname}"
+    local scc_dir="/scc-${bname}"
 
     if ! kubectl exec -n "$NS" -c "$container" "$pod" -- which supportconfig >/dev/null 2>&1; then
         record "$label" "SKIPPED (no supportconfig in container)"
@@ -251,16 +251,16 @@ run_supportconfig_in_container() {
     log "supportconfig in ${pod}/${container} (detached)"
 
     kubectl exec -n "$NS" -c "$container" "$pod" -- bash -c "
-      rm -f /tmp/${bname}.done /tmp/${bname}.failed
+      rm -f /${bname}.done /${bname}.failed
       rm -rf ${scc_dir}
       mkdir -p ${scc_dir}
       nohup bash -c '
         export TERM=dumb
-        supportconfig -t ${scc_dir} > /tmp/${bname}.log 2>&1
+        supportconfig -t ${scc_dir} > /${bname}.log 2>&1
         if ls -A ${scc_dir} 2>/dev/null | head -1 | grep -q .; then
-          touch /tmp/${bname}.done
+          touch /${bname}.done
         else
-          touch /tmp/${bname}.failed
+          touch /${bname}.failed
         fi
       ' </dev/null >/dev/null 2>&1 &
     " 2>/dev/null
@@ -274,10 +274,10 @@ run_supportconfig_in_container() {
     local supportconfig_timeout=$(( $(date +%s) + 2700 ))
     local outcome=""
     while [[ $(date +%s) -lt $supportconfig_timeout ]]; do
-        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.failed" 2>/dev/null; then
+        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/${bname}.failed" 2>/dev/null; then
             outcome="failed"; break
         fi
-        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.done" 2>/dev/null; then
+        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/${bname}.done" 2>/dev/null; then
             outcome="done"; break
         fi
         sleep 20
@@ -289,7 +289,7 @@ run_supportconfig_in_container() {
         if kubectl cp -n "$NS" -c "$container" \
                 "${pod}:${scc_dir}" "$local_dir" 2>/dev/null; then
             kubectl exec -n "$NS" -c "$container" "$pod" -- rm -rf \
-                "$scc_dir" "/tmp/${bname}.done" "/tmp/${bname}.log" \
+                "$scc_dir" "/${bname}.done" "/${bname}.log" \
                 >/dev/null 2>&1 || true
             record "$label" "OK (supportconfig-${container}/)"
         else
@@ -299,15 +299,15 @@ run_supportconfig_in_container() {
         ;;
       failed)
         local log_dst="${dst_dir}/supportconfig-${container}-failed.log"
-        kubectl cp -n "$NS" -c "$container" "${pod}:/tmp/${bname}.log" "$log_dst" 2>/dev/null \
+        kubectl cp -n "$NS" -c "$container" "${pod}:/${bname}.log" "$log_dst" 2>/dev/null \
             || warn "Could not copy supportconfig log out of ${pod}/${container}"
 
         warn "supportconfig in ${pod}/${container} failed."
         warn "Last 80 lines of supportconfig log (full log in bundle: $(basename "$log_dst")):"
-        kubectl exec -n "$NS" -c "$container" "$pod" -- tail -n 80 "/tmp/${bname}.log" 2>&1 | sed 's/^/   /' >&2 || true
+        kubectl exec -n "$NS" -c "$container" "$pod" -- tail -n 80 "/${bname}.log" 2>&1 | sed 's/^/   /' >&2 || true
 
         kubectl exec -n "$NS" -c "$container" "$pod" -- rm -rf \
-            "$scc_dir" "/tmp/${bname}.failed" "/tmp/${bname}.log" \
+            "$scc_dir" "/${bname}.failed" "/${bname}.log" \
             >/dev/null 2>&1 || true
         record "$label" "FAILED (full log: $(basename "$log_dst"))"
         ;;
