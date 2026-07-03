@@ -484,17 +484,39 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
     let icon;
 
     if (!row.patches || row.installedPackages === 0) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
     } else if (row.patches.critical > 0) {
-      icon = <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")} />;
+      icon = (
+        <i
+          className="fa fa-exclamation-circle fa-1-5x text-danger"
+          data-bs-toggle="tooltip"
+          title={t("Critical updates available")}
+        />
+      );
     } else if (row.patches.noncritical > 0) {
       icon = (
-        <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Non-critical updates available")} />
+        <i
+          className="fa fa-exclamation-triangle fa-1-5x text-warning"
+          data-bs-toggle="tooltip"
+          title={t("Non-critical updates available")}
+        />
       );
     } else if (row.packages > 0) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Package updates available")} />;
+      icon = (
+        <i
+          className="fa fa-exclamation-triangle fa-1-5x text-warning"
+          data-bs-toggle="tooltip"
+          title={t("Package updates available")}
+        />
+      );
     } else {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Image is up to date")} />;
+      icon = (
+        <i
+          className="fa fa-check-circle fa-1-5x text-success"
+          data-bs-toggle="tooltip"
+          title={t("Image is up to date")}
+        />
+      );
     }
 
     return icon;
@@ -503,17 +525,19 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
   renderStatusIcon(row) {
     let icon;
     if (row.external) {
-      icon = <i className="fa fa-minus-circle fa-1-5x text-muted" title={t("Built externally")} />;
+      icon = (
+        <i className="fa fa-minus-circle fa-1-5x text-muted" data-bs-toggle="tooltip" title={t("Built externally")} />
+      );
     } else if (row.statusId === 0) {
-      icon = <i className="fa fa-clock-o fa-1-5x" title={t("Queued")} />;
+      icon = <i className="fa fa-clock-o fa-1-5x" data-bs-toggle="tooltip" title={t("Queued")} />;
     } else if (row.statusId === 1) {
-      icon = <i className="fa fa-exchange fa-1-5x text-info" title={t("Building")} />;
+      icon = <i className="fa fa-exchange fa-1-5x text-info" data-bs-toggle="tooltip" title={t("Building")} />;
     } else if (row.statusId === 2) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Built")} />;
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" data-bs-toggle="tooltip" title={t("Built")} />;
     } else if (row.statusId === 3) {
-      icon = <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />;
+      icon = <i className="fa fa-times-circle-o fa-1-5x text-danger" data-bs-toggle="tooltip" title={t("Failed")} />;
     } else {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("Unknown")} />;
+      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("Unknown")} />;
     }
 
     return icon;
@@ -521,7 +545,13 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
 
   renderRuntimeIcon = (row) => {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
+      return (
+        <i
+          className="fa fa-circle-o-notch fa-spin fa-1-5x"
+          data-bs-toggle="tooltip"
+          title={t("Waiting for update ...")}
+        />
+      );
     }
 
     let icon = <span>-</span>;
@@ -529,13 +559,20 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
+          data-bs-toggle="tooltip"
           title={t("All instances are consistent with {productName}", { productName })}
         />
       );
     } else if (row.runtimeStatus === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
     } else if (row.runtimeStatus === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")} />;
+      icon = (
+        <i
+          className="fa fa-exclamation-triangle fa-1-5x text-warning"
+          data-bs-toggle="tooltip"
+          title={t("Outdated instances found")}
+        />
+      );
     }
 
     return icon;
@@ -570,7 +607,13 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
 
   renderInstances = (row) => {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
+      return (
+        <i
+          className="fa fa-circle-o-notch fa-spin fa-1-5x"
+          data-bs-toggle="tooltip"
+          title={t("Waiting for update ...")}
+        />
+      );
     }
 
     let totalCount = 0;

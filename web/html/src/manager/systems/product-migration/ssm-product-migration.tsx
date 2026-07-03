@@ -140,7 +140,7 @@ export const SSMProductMigration: FC<Props> = ({
 
     return (
       <span>
-        <i className={`fa fa-1-5x ${className}`} title={title}></i>
+        <i className={`fa fa-1-5x ${className}`} data-bs-toggle="tooltip" title={title}></i>
         {system.reason ?? t("The products installed on this system can be migrated.")}
         {system.details !== null && (
           <LinkButton

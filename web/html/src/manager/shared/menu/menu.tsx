@@ -11,6 +11,7 @@ import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
+import { Badge } from "components/badge/Badge";
 
 type LinkProps = {
   url: string;
@@ -51,7 +52,7 @@ class Node extends Component<NodeProps> {
   };
 
   render() {
-    const betaBadge = this.props.isBeta ? <span className="menu-beta-badge">BETA</span> : null;
+    const betaBadge = this.props.isBeta ? <Badge text={t("BETA")} small color="yellow" variant="special" /> : null;
 
     return (
       <div

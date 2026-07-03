@@ -17,6 +17,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
+import { Badge } from "components/badge/Badge";
 
 // See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
@@ -484,16 +485,14 @@ class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
                     <span>
                       <i
                         className="fa fa-info-circle spacewalk-help-link"
+                        data-bs-toggle="tooltip"
+                        data-bs-custom-class="wide-tooltip"
                         title={this.dependenciesTooltip(child.id)}
                       ></i>
                     </span>
                   ) : null}
                   &nbsp;
-                  {child.recommended ? (
-                    <span className="recommended-tag-base" title={"This extension is recommended"}>
-                      {t("recommended")}
-                    </span>
-                  ) : null}
+                  {child.recommended ? <Badge text={t("Recommended")} small color="yellow" variant="special" /> : null}
                 </div>
                 <div className="col-md-4">
                   <div className="row radio">

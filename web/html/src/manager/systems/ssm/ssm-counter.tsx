@@ -5,6 +5,7 @@ import { Button } from "components/buttons";
 import Network from "utils/network";
 
 import { useWebSocket } from "../../shared/websocket/useWebSocket";
+import { CounterBadge } from "components/badge/CounterBadge";
 
 type Props = {
   count?: number;
@@ -24,9 +25,9 @@ export function SsmCounter(props: Props) {
     <>
       <a href="/rhn/ssm/index.do" id="manage-ssm" title={t("Manage selected system set")} className="hide-overflow">
         <div id="header_selcount" className="hide-overflow">
-          <span id="spacewalk-set-system_list-counter" className="badge">
-            {count}
-          </span>
+          <div id="spacewalk-set-system_list-counter">
+            <CounterBadge count={count} />
+          </div>
           <span id="ssm-text" className="hide-overflow">
             {count === 1 ? t("system selected") : t("systems selected")}
           </span>

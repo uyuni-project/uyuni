@@ -131,7 +131,9 @@ body {
       .fa-plus-circle {
         font-size: 4em;
         color: $gray;
-        text-shadow: -1px -1px 0px $gray-dark-1, 1px 1px 0px $white;
+        text-shadow:
+          -1px -1px 0px $gray-dark-1,
+          1px 1px 0px $white;
         margin-top: 13px;
         margin-right: 0;
       }
@@ -194,7 +196,7 @@ ul.subscriptions-list {
 }
 
 .list-header {
-  border-bottom: 2px solid $gray-light!important;
+  border-bottom: 2px solid $gray-light !important;
   font-weight: 700;
 }
 
@@ -219,14 +221,6 @@ ul.product-list {
     overflow: auto;
     border-bottom: 1px solid $gray-light;
     .product-details-wrapper {
-      .recommended-tag {
-        @extend .recommended-tag-base;
-      }
-      .text-muted {
-        .recommended-tag {
-          background-color: $gray-light;
-        }
-      }
       .product-hover:hover {
         color: $orange-light;
       }
@@ -238,10 +232,6 @@ ul.product-list {
       .product-description {
         color: $green-dark;
       }
-      .recommended-tag {
-        background-color: $gray-light;
-        color: $gray-dark;
-      }
     }
     .col {
       display: inline-block;
@@ -250,7 +240,6 @@ ul.product-list {
       float: none;
       * {
         vertical-align: middle;
-        font-weight: normal;
         margin: 0;
       }
       > * {

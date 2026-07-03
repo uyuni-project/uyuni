@@ -12,6 +12,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
+import { Badge } from "components/badge/Badge";
 
 type Props = {
   refreshInterval: number;
@@ -90,52 +91,22 @@ class TaskoTop extends Component<Props> {
     let cell;
     switch (status) {
       case "running":
-        cell = (
-          <div>
-            <i className="fa fa-cog fa-spin"></i>
-            {t(" running")}
-          </div>
-        );
+        cell = <Badge text={t("Running")} icon="fa-cog fa-spin" color="running" />;
         break;
       case "finished":
-        cell = (
-          <div className="text-success">
-            <i className="fa fa-thumbs-o-up"></i>
-            {t(" finished")}
-          </div>
-        );
+        cell = <Badge text={t(" Finished")} icon="fa-check" color="success" />;
         break;
       case "failed":
-        cell = (
-          <div className="text-danger">
-            <i className="fa fa-exclamation-triangle"></i>
-            {t(" failed")}
-          </div>
-        );
+        cell = <Badge text={t("Failed")} icon="fa-times-circle" color="error" />;
         break;
       case "interrupted":
-        cell = (
-          <div className="text-warning">
-            <i className="fa fa-stop"></i>
-            {t(" interrupted")}
-          </div>
-        );
+        cell = <Badge text={t("Interrupted")} icon="fa-exclamation-triangle" color="warning" />;
         break;
       case "ready_to_run":
-        cell = (
-          <div className="text-primary">
-            <i className="fa fa-list-ul"></i>
-            {t(" ready to run")}
-          </div>
-        );
+        cell = <Badge text={t("Ready to run")} icon="fa-list" color="info" />;
         break;
       case "skipped":
-        cell = (
-          <div>
-            <i className="fa fa-angle-double-right"></i>
-            {t(" skipped")}
-          </div>
-        );
+        cell = <Badge text={t("skipped")} icon="fa-angle-double-right" />;
         break;
       default:
         cell = null;

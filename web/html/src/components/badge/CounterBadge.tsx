@@ -1,5 +1,5 @@
 type CounterBadgeProps = {
-  count?: string;
+  count: number;
   status?: "default" | "highlight";
 };
 

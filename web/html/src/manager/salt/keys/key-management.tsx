@@ -8,6 +8,7 @@ import { Column } from "components/table/Column";
 import { Highlight } from "components/table/Highlight";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
+import { Badge } from "components/badge/Badge";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -67,26 +68,26 @@ function actionsFor(id, state, update, enabled) {
 
 const stateMapping = {
   accepted: {
-    uiName: t("accepted"),
+    uiName: t("Accepted"),
     label: "success",
   },
   pending: {
-    uiName: t("pending"),
-    label: "info",
-  },
-  rejected: {
-    uiName: t("rejected"),
+    uiName: t("Pending"),
     label: "warning",
   },
+  rejected: {
+    uiName: t("Rejected"),
+    label: "error",
+  },
   denied: {
-    uiName: t("denied"),
-    label: "danger",
+    uiName: t("Denied"),
+    label: "error",
   },
 };
 
 function labelFor(state) {
   const mapping = stateMapping[state];
-  return <span className={"label label-" + mapping.label}>{mapping.uiName}</span>;
+  return <Badge text={mapping.uiName} color={mapping.label} />;
 }
 
 type Props = Record<never, never>;
