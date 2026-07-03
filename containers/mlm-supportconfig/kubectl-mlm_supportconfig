@@ -339,6 +339,7 @@ collect_pod_data() {
 
     if kubectl logs -n "$NS" "$pod" --all-containers --timestamps --prefix=true > "${dst_dir}/logs.txt" 2>${dst_dir}/stderr; then
         record "logs:${pod}" "OK"
+        rm -f ${dst_dir}/stderr
     else
         err=$(cat ${dst_dir}/stderr)
         rm -f ${dst_dir}/stderr
