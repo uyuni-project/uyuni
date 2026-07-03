@@ -66,4 +66,21 @@ public class PackageMetadataThisOnly extends PackageMetadata {
     public String getActionTargetNevra() {
         return system.getNevra();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_REMOVE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.actionremove");
+    }
 }

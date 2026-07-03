@@ -29,4 +29,21 @@ public class PackageMetadataOtherNewer extends PackageMetadata {
         }
         return ls.getMessage("message.profilenewer");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_UPGRADE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.actionupgrade", other.getEvr());
+    }
 }
