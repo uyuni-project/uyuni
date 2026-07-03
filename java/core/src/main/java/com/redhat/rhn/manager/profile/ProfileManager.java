@@ -1082,7 +1082,7 @@ public class ProfileManager extends BaseManager {
             // retrieve the packages with the same name that exist w/in channels
             List<PackageListItem> pkgsInChannel = pkgsInChannelsByNameId.get(pm.getMapHash());
 
-            if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
+            if (pm.avoidCheckIfMissing()) {
                 // makes no sense to check whether missing
                 continue;
             }
