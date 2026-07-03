@@ -30,4 +30,21 @@ public class PackageMetadataOtherOnly extends PackageMetadata {
         }
         return ls.getMessage("message.profileonly");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_INSTALL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.install");
+    }
 }

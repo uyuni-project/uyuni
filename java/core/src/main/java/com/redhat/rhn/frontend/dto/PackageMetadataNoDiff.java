@@ -25,4 +25,19 @@ public class PackageMetadataNoDiff extends PackageMetadata {
         return "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_NONE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        return "";
+    }
 }

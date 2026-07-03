@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -45,7 +44,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     protected PackageListItem other; // could be another system or a profile
     private int comparison;
     protected String compareParam;
-    private int actionStatus;
+    protected int actionStatus;
     private List<Channel> channels;
 
     /**
@@ -82,20 +81,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * @return the localized action status string.
      */
     public String getActionStatus() {
-        LocalizationService ls = LocalizationService.getInstance();
-
-        switch(actionStatus) {
-            case ACTION_INSTALL:
-                return ls.getMessage("message.install");
-            case ACTION_REMOVE:
-                return ls.getMessage("message.actionremove");
-            case ACTION_DOWNGRADE:
-                return ls.getMessage("message.actiondowngrade", other.getEvr());
-            case ACTION_UPGRADE:
-                return ls.getMessage("message.actionupgrade", other.getEvr());
-            default:
-                return "";
-        }
+        return "";
     }
 
     /**
@@ -290,22 +276,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * Updates the action status.
      */
     public void updateActionStatus() {
-        switch(comparison) {
-            case KEY_THIS_ONLY:
-                actionStatus = ACTION_REMOVE;
-                break;
-            case KEY_THIS_NEWER:
-                actionStatus = ACTION_DOWNGRADE;
-                break;
-            case KEY_OTHER_ONLY:
-                actionStatus = ACTION_INSTALL;
-                break;
-            case KEY_OTHER_NEWER:
-                actionStatus = ACTION_UPGRADE;
-                break;
-            default:
-                actionStatus = ACTION_NONE;
-        }
+        //empty default
     }
 
     /**
