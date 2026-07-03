@@ -8,7 +8,7 @@
   padding: 15px;
 
   .close {
-    border: 1px solid $eos-bc-gray-1000;
+    border: 1px solid $modal-border;
     border-radius: 2px;
     width: 22px;
     height: 22px;
@@ -20,8 +20,8 @@
 
     // Emulate the old theme verbatim
     line-height: 1;
-    color: $eos-bc-gray-1000;
-    text-shadow: 0 1px 0 $white;
+    color: $body-color;
+    text-shadow: 0 1px 0 $body-background;
     order: 1;
 
     &:hover {
