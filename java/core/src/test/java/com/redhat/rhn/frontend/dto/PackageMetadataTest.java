@@ -29,7 +29,7 @@ public class PackageMetadataTest extends BaseTestCase {
 
     @Test
     public void testParameterizedCtor() {
-        PackageMetadata pm = new PackageMetadata(null, null);
+        PackageMetadata pm = new PackageMetadataNoDiff(null, null, null);
 
         assertNull(pm.getSystem());
         assertNull(pm.getOther());
@@ -49,7 +49,7 @@ public class PackageMetadataTest extends BaseTestCase {
 
     @Test
     public void testDefaultCtor() {
-        PackageMetadata pm = new PackageMetadata();
+        PackageMetadata pm = new PackageMetadataNoDiff(new PackageListItem(), new PackageListItem(), null);
 
         assertNotNull(pm.getSystem());
         assertNotNull(pm.getOther());
@@ -69,47 +69,37 @@ public class PackageMetadataTest extends BaseTestCase {
 
     @Test
     public void testGetActionStatusAsInt() {
-        PackageMetadata pm = new PackageMetadata();
-        pm.setComparison(PackageMetadata.KEY_OTHER_NEWER);
-        pm.updateActionStatus();
+        PackageMetadata pm = new PackageMetadataOtherNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals(PackageMetadata.ACTION_UPGRADE, pm.getActionStatusAsInt());
 
-        pm.setComparison(PackageMetadata.KEY_THIS_ONLY);
-        pm.updateActionStatus();
+        pm = new PackageMetadataThisOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals(PackageMetadata.ACTION_REMOVE, pm.getActionStatusAsInt());
 
-        pm.setComparison(PackageMetadata.KEY_THIS_NEWER);
-        pm.updateActionStatus();
+        pm = new PackageMetadataThisNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals(PackageMetadata.ACTION_DOWNGRADE, pm.getActionStatusAsInt());
 
-        pm.setComparison(PackageMetadata.KEY_OTHER_ONLY);
-        pm.updateActionStatus();
+        pm = new PackageMetadataOtherOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals(PackageMetadata.ACTION_INSTALL, pm.getActionStatusAsInt());
     }
 
     @Test
     public void testGetComparison() {
-        PackageMetadata pm = new PackageMetadata();
-
-        pm.setComparison(PackageMetadata.KEY_OTHER_NEWER);
+        PackageMetadata pm = new PackageMetadataOtherNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals("Profile newer", pm.getComparison());
         pm.setCompareParam("foo");
         assertEquals("foo newer", pm.getComparison());
 
-        pm.setCompareParam(null);
-        pm.setComparison(PackageMetadata.KEY_THIS_ONLY);
+        pm = new PackageMetadataThisOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals("This system only", pm.getComparison());
         pm.setCompareParam("foo");
         assertEquals("This system only", pm.getComparison());
 
-        pm.setCompareParam(null);
-        pm.setComparison(PackageMetadata.KEY_THIS_NEWER);
+        pm = new PackageMetadataThisNewer(new PackageListItem(), new PackageListItem(), null);
         assertEquals("This system newer", pm.getComparison());
         pm.setCompareParam("foo");
         assertEquals("This system newer", pm.getComparison());
 
-        pm.setCompareParam(null);
-        pm.setComparison(PackageMetadata.KEY_OTHER_ONLY);
+        pm = new PackageMetadataOtherOnly(new PackageListItem(), new PackageListItem(), null);
         assertEquals("Profile only", pm.getComparison());
         pm.setCompareParam("foo");
         assertEquals("foo only", pm.getComparison());
