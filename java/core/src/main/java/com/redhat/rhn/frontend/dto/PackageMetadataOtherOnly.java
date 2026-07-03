@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
 
 public class PackageMetadataOtherOnly extends PackageMetadata {
     /**
@@ -55,5 +56,18 @@ public class PackageMetadataOtherOnly extends PackageMetadata {
     public String getActionStatus() {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getMessage("message.install");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}",
+                    getName(), getOtherEvr());
+        }
+
+        handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_INSERT, getOther());
     }
 }

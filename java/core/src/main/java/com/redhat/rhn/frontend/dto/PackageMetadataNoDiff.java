@@ -50,4 +50,12 @@ public class PackageMetadataNoDiff extends PackageMetadata {
     public String getActionStatus() {
         return "";
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        //does nothing
+    }
 }
