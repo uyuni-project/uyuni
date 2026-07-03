@@ -26,4 +26,44 @@ public class PackageMetadataThisOnly extends PackageMetadata {
         LocalizationService ls = LocalizationService.getInstance();
         return ls.getMessage("message.thissystemonly");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPackageType() {
+        return system.getPackageType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEpoch() {
+        return system.getEpoch();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersion() {
+        return system.getVersion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRelease() {
+        return system.getRelease();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionTargetNevra() {
+        return system.getNevra();
+    }
 }
