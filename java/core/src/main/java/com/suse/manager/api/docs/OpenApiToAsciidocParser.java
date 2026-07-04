@@ -38,6 +38,8 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 
 /**
  * Converts the generated OpenAPI specification into AsciiDoc files.
@@ -209,18 +211,21 @@ public class OpenApiToAsciidocParser {
 
     private void writeReturn(PrintWriter writer, Operation operation) {
         var responses = operation.getResponses();
-        if (responses == null || responses.get("200") == null || responses.get("200").getContent() == null) {
+        if (responses == null) {
+            return;
+        }
+        ApiResponse successResponse = getSuccessResponse(responses);
+        if (successResponse == null || successResponse.getContent() == null) {
             return;
         }
 
-        Schema<?> responseSchema = responses.get("200").getContent().get("application/json").getSchema();
-        if (responseSchema == null) {
+        var jsonContent = successResponse.getContent().get("application/json");
+        if (jsonContent == null || jsonContent.getSchema() == null) {
             return;
         }
-
-        Schema<?> schema = responseSchema;
-        if (responseSchema.get$ref() != null) {
-            schema = resolveSchema(responseSchema.get$ref());
+        Schema<?> schema = jsonContent.getSchema();
+        if (schema.get$ref() != null) {
+            schema = resolveSchema(schema.get$ref());
         }
         String refName = "";
 
@@ -236,14 +241,20 @@ public class OpenApiToAsciidocParser {
             String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
 
             writer.println("* [.array]#array# :");
-            writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
-            if (resolved != null && resolved.getProperties() != null) {
-                resolved.getProperties().forEach((name, prop) -> {
-                    Schema<?> propertySchema = (Schema<?>) prop;
-                    String propDesc = propertySchema.getDescription() != null ?
-                            " - " + propertySchema.getDescription() : "";
-                    writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
-                });
+            if (resolved != null && isSimpleType(resolved)) {
+                String itemType = "integer".equals(resolved.getType()) ? "int" : resolved.getType();
+                writer.printf("    * [.%s]#%s#%n", itemType, itemType);
+            }
+            else {
+                writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
+                if (resolved != null && resolved.getProperties() != null) {
+                    resolved.getProperties().forEach((name, prop) -> {
+                        Schema<?> propertySchema = prop;
+                        String propDesc = propertySchema.getDescription() != null ?
+                                " - " + propertySchema.getDescription() : "";
+                        writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
+                    });
+                }
             }
             writer.println(" ");
             return;
@@ -251,7 +262,7 @@ public class OpenApiToAsciidocParser {
 
         if (isSimpleType(schema)) {
             String type = schema.getType();
-            String label = Optional.ofNullable(responses.get("200").getDescription())
+            String label = Optional.ofNullable(successResponse.getDescription())
                     .filter(d -> !d.isBlank())
                     .orElseGet(() -> operation.getOperationId()
                             .replace("get", "")
@@ -264,6 +275,19 @@ public class OpenApiToAsciidocParser {
         }
 
         printStruct(writer, schema, 0, refName);
+    }
+
+    private ApiResponse getSuccessResponse(ApiResponses responses) {
+        ApiResponse response = responses.get("200");
+        if (response != null) {
+            return response;
+        }
+        for (Map.Entry<String, ApiResponse> entry : responses.entrySet()) {
+            if (entry.getKey().startsWith("2")) {
+                return entry.getValue();
+            }
+        }
+        return responses.get("default");
     }
 
     private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel) {
