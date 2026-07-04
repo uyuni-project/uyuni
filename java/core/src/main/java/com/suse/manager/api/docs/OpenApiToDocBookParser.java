@@ -184,8 +184,8 @@ public class OpenApiToDocBookParser {
                     "Session token, must be obtained via auth.login."));
         }
 
-        Map<String, Schema> allProps = getAllPossibleProperties(op);
-        for (Map.Entry<String, Schema> e : allProps.entrySet()) {
+        Map<String, Schema<?>> allProps = getAllPossibleProperties(op);
+        for (Map.Entry<String, Schema<?>> e : allProps.entrySet()) {
             String name = e.getKey();
             if (!activeParams.contains(name)) {
                 continue;
@@ -198,8 +198,8 @@ public class OpenApiToDocBookParser {
         return params;
     }
 
-    private Map<String, Schema> getAllPossibleProperties(Operation op) {
-        Map<String, Schema> props = new LinkedHashMap<>();
+    private Map<String, Schema<?>> getAllPossibleProperties(Operation op) {
+        Map<String, Schema<?>> props = new LinkedHashMap<>();
         if (op.getParameters() != null) {
             for (Parameter param : op.getParameters()) {
                 props.put(param.getName(), param.getSchema());
@@ -207,7 +207,7 @@ public class OpenApiToDocBookParser {
         }
         Schema<?> body = getBodySchema(op);
         if (body != null && body.getProperties() != null) {
-            props.putAll((Map<String, Schema>) body.getProperties());
+            body.getProperties().forEach(props::put);
         }
         return props;
     }
@@ -285,8 +285,16 @@ public class OpenApiToDocBookParser {
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             Schema<?> resolvedInner = inner.get$ref() != null ?
                     resolveSchema(inner.get$ref()) : inner;
-            String innerLabel = inner.get$ref() != null ?
-                    extractRefName(inner.get$ref()) : (label.isEmpty() ? "namespace" : label);
+            String innerLabel;
+            if (inner.get$ref() != null) {
+                innerLabel = extractRefName(inner.get$ref());
+            }
+            else if (label.isEmpty()) {
+                innerLabel = "namespace";
+            }
+            else {
+                innerLabel = label;
+            }
             return renderReturnSchema(resolvedInner, innerLabel.isEmpty() ? "namespace" : innerLabel);
         }
         return renderStructList(schema, label);
@@ -304,7 +312,7 @@ public class OpenApiToDocBookParser {
         sb.append("  <para>struct ").append(escapeXml(label)).append("</para>\n");
         sb.append("  <itemizedlist spacing=\"compact\">\n");
         schema.getProperties().forEach((name, prop) -> {
-            Schema<?> propSchema = (Schema<?>) prop;
+            Schema<?> propSchema = prop;
             String desc = propSchema.getDescription();
             String body = String.format("string \"%s\"", name);
             if (desc != null && !desc.isBlank()) {
