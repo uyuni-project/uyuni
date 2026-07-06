@@ -164,10 +164,12 @@ Feature: Recurring Actions
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
+  @skip_if_github_validation
   Scenario: Pre-requisite: check that there are updates available
     Given I am on the Systems overview page of this "sle_minion"
     And I wait until I see "Software Updates Available" text, refreshing the page
 
+  @skip_if_github_validation
   Scenario: Create a recurring action to apply "uptodate" state to a system group
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
@@ -238,6 +240,7 @@ Feature: Recurring Actions
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled" is completed
 
+  @skip_if_github_validation
   Scenario: Edit the group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
@@ -254,6 +257,7 @@ Feature: Recurring Actions
     And I should see a "Group" text
     And I should see a "0 35 * ? * *" text
 
+  @skip_if_github_validation
   Scenario: View the group recurring actions details
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
@@ -373,6 +377,7 @@ Feature: Recurring Actions
     When I click on "Back"
     Then I should see a "Schedules" text
 
+  @skip_if_github_validation
   Scenario: View all types of recurring actions in the list of all actions
     When I follow the left menu "Schedule > Recurring Actions"
     Then I should not see a "Create" text
@@ -383,6 +388,7 @@ Feature: Recurring Actions
     And I should see a "schedule_name_org" text
     And I should see a "Organization" text
 
+ @skip_if_github_validation
  Scenario: View details in list of all actions
     When I follow the left menu "Schedule > Recurring Actions"
     And I click the "schedule_name_minion" item details button
@@ -401,6 +407,7 @@ Feature: Recurring Actions
     And I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_org' has been deleted." text
 
+  @skip_if_github_validation
   Scenario: Cleanup: Delete the group Recurring Action
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
