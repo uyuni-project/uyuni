@@ -35,17 +35,17 @@ import java.util.Map;
  * side.
  */
 public class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
-    public static final int KEY_NO_DIFF = 0;
-    public static final int KEY_THIS_ONLY = 1;
-    public static final int KEY_THIS_NEWER = 2;
-    public static final int KEY_OTHER_ONLY = 3;
-    public static final int KEY_OTHER_NEWER = 4;
+    protected static final int KEY_NO_DIFF = 0;
+    protected static final int KEY_THIS_ONLY = 1;
+    protected static final int KEY_THIS_NEWER = 2;
+    protected static final int KEY_OTHER_ONLY = 3;
+    protected static final int KEY_OTHER_NEWER = 4;
 
-    public static final int ACTION_NONE = -1;
-    public static final int ACTION_INSTALL = 0;
-    public static final int ACTION_REMOVE = 1;
-    public static final int ACTION_UPGRADE = 2;
-    public static final int ACTION_DOWNGRADE = 3;
+    protected static final int ACTION_NONE = -1;
+    protected static final int ACTION_INSTALL = 0;
+    protected static final int ACTION_REMOVE = 1;
+    protected static final int ACTION_UPGRADE = 2;
+    protected static final int ACTION_DOWNGRADE = 3;
 
     protected PackageListItem system;
     protected PackageListItem other; // could be another system or a profile
