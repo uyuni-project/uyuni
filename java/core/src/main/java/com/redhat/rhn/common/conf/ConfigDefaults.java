@@ -26,6 +26,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -102,6 +105,7 @@ public class ConfigDefaults {
     public static final String VENDOR_NAME = "java.vendor_name";
     public static final String PRODUCT_VERSION_MGR = "web.version";
     public static final String PRODUCT_VERSION_UYUNI = "web.version.uyuni";
+    public static final String PRODUCT_VERSION_EOL = "web.version.eol";
     public static final String ENTERPRISE_LINUX_NAME = "java.enterprise_linux_name";
     public static final String VENDOR_SERVICE_NAME = "java.vendor_service_name";
 
@@ -822,6 +826,25 @@ public class ConfigDefaults {
             return Config.get().getString(PRODUCT_VERSION_UYUNI);
         }
         return Config.get().getString(PRODUCT_VERSION_MGR);
+    }
+
+    /**
+     * Return the product end of life date, if configured.
+     *
+     * @return the product end of life date, or an empty optional if it is not set or cannot be
+     * parsed as an ISO 8601 date
+     */
+    public Optional<LocalDate> getProductEndOfLifeDate() {
+        String value = Config.get().getString(PRODUCT_VERSION_EOL);
+        if (StringUtils.isBlank(value)) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE));
+        }
+        catch (DateTimeParseException ex) {
+            return Optional.empty();
+        }
     }
 
     /**
