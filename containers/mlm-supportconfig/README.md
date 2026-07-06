@@ -31,10 +31,11 @@ It also dumps, for the target namespace:
 
 * namespace events (sorted by `lastTimestamp`, text and YAML);
 * namespace objects beyond pods — Deployments, Services, Endpoints,
-  EndpointSlices, NetworkPolicies, ConfigMaps, Secrets, Ingress,
+  EndpointSlices, NetworkPolicies, ConfigMaps, Ingress,
   Traefik `IngressRoute`/`IngressRouteTCP`, PVCs, cert-manager
   Certificates (each best-effort: CRDs that aren't installed are
   silently skipped);
+* the list of secrets in the namespace and their type;
 * a resource-usage snapshot — `kubectl top pod --containers` and
   `kubectl top node` (silently skipped if `metrics-server` isn't
   installed in the cluster);
