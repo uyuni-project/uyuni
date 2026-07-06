@@ -388,8 +388,8 @@ Feature: Recurring Actions
     And I should see a "schedule_name_org" text
     And I should see a "Organization" text
 
- @skip_if_github_validation
- Scenario: View details in list of all actions
+  @skip_if_github_validation
+  Scenario: View details in list of all actions
     When I follow the left menu "Schedule > Recurring Actions"
     And I click the "schedule_name_minion" item details button
     Then I should see a "Every Wednesday at 01:35" text
