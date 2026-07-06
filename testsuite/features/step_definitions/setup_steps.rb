@@ -141,7 +141,9 @@ end
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   within(:xpath, xpath) do
-    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
+    checkbox = find(:xpath, './div/input[@type=\'checkbox\']')
+    selected = checkbox.checked? || evaluate_script('arguments[0].indeterminate === true', checkbox.native)
+    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not selected" unless selected
   end
 end
 
