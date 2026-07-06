@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 06 11:48:26 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.19-0
+  * Check access rights on two formula API calls (bsc#1269253)
+  * Sanitize uploaded image name (bsc#1269534)
+
+-------------------------------------------------------------------
 Fri Jul 03 15:44:02 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.18-0

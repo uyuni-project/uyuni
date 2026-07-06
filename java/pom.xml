@@ -20,7 +20,7 @@
     </parent>
 
     <artifactId>spacewalk-java</artifactId>
-    <version>5.2.18</version>
+    <version>5.2.19</version>
     <packaging>pom</packaging>
 
     <modules>
