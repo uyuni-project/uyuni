@@ -22,6 +22,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
@@ -741,7 +742,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(executionTime.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -794,7 +795,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(executionTime.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -847,7 +848,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -900,7 +901,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -954,7 +955,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -1007,7 +1008,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(minion1.getId(), minion2.getId())));
@@ -1060,7 +1061,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         final ZonedDateTime executionTime = now.plusHours(24);
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
         ActionFactory.scheduleForExecution(action,
                 new HashSet<>(Arrays.asList(s1.getId(), s2.getId())));
