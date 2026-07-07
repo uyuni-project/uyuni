@@ -181,7 +181,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -227,7 +227,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -276,7 +276,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -314,7 +314,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         pkgMap.put("arch_id", p.getPackageArch().getId());
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -368,7 +368,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkgMap);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -427,7 +427,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(p2map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_REMOVE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_REMOVE, user,
                 "test remove action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinion, action);
@@ -540,17 +540,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
                 long scriptActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                                ActionTypeEnum.TYPE_SCRIPT_RUN.equals(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long rebootActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
+                                ActionTypeEnum.TYPE_REBOOT.equals(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long highstateActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                                ActionTypeEnum.TYPE_APPLY_STATES.equals(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
@@ -681,7 +681,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactory.createAndSaveAction(
-                ActionFactory.TYPE_SUBSCRIBE_CHANNELS, user, "Subscribe to channels", Date.from(now.toInstant()));
+                ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS, user, "Subscribe to channels", Date.from(now.toInstant()));
         action.setSaltApi(saltService);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
