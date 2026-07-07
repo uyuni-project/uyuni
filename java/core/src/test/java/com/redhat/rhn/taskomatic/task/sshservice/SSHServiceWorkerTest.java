@@ -21,8 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
@@ -269,10 +271,11 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
     }
 
     private Action createRebootAction(Date earliestAction) {
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
-        action.setOrg(user.getOrg());
-        action.setEarliestAction(earliestAction);
-        return action;
+        return new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_REBOOT)
+                .withOrg(user.getOrg())
+                .withEarliest(earliestAction)
+                .build();
     }
 
     private ServerAction createChildServerAction(Action action, Consumer<ServerAction> statusSetter,

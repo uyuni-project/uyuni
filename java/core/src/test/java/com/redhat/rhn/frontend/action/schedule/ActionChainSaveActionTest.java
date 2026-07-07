@@ -18,10 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -59,14 +61,20 @@ public class ActionChainSaveActionTest extends BaseTestCase {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, testUser);
         for (int i = 0; i < 6; i++) {
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(testUser.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(testUser.getOrg())
+                    .build();
+
             ActionFactory.save(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(testUser), i / 2);
         }
-        Action lastAction = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        lastAction.setOrg(testUser.getOrg());
+        Action lastAction = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(testUser.getOrg())
+                .build();
+
         ActionFactory.save(lastAction);
         ActionChainFactory.queueActionChainEntry(lastAction, actionChain,
             ServerFactoryTest.createTestServer(testUser), 3);
