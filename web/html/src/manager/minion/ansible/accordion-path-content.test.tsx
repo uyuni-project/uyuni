@@ -1,4 +1,4 @@
-import { click, render, screen, server, waitFor } from "utils/test-utils";
+import { click, render, screen, server } from "utils/test-utils";
 
 import AccordionPathContent from "./accordion-path-content";
 import { createNewAnsiblePath } from "./ansible-path-type";
@@ -6,7 +6,7 @@ import { createNewAnsiblePath } from "./ansible-path-type";
 const API_INVENTORY_DETAILS = "/rhn/manager/api/systems/details/ansible/introspect-inventory/2";
 
 describe("AccordionPathContent summary", () => {
-  test("Render accordion collapsed element", async () => {
+  test("Render accordion collapsed element", () => {
     const path = createNewAnsiblePath({
       id: 1,
       minionServerId: 1000,
@@ -14,7 +14,7 @@ describe("AccordionPathContent summary", () => {
       type: "playbook",
     });
     render(<AccordionPathContent path={path} onSelectPlaybook={() => {}} />);
-    screen.getByText("/srv/ansible/playbooks");
+    expect(screen.getByText("/srv/ansible/playbooks")).toBeDefined();
   });
 
   test("Open accordion and load element details", async () => {
@@ -46,14 +46,12 @@ describe("AccordionPathContent summary", () => {
     const pathAccordionButtonToOpen = screen.getByRole("button", { name: path.path }) as HTMLButtonElement; // get the clickable element
     await click(pathAccordionButtonToOpen);
 
-    screen.getByText("Loading content..");
+    expect(screen.getByText("Loading content..")).toBeDefined();
 
     // wait until the render loads and changes, then check for content
-    await waitFor(() => {
-      screen.getByText("Registered Systems:");
-      screen.getByText("Unknown Hostnames:");
-      screen.getByText("my-ansible-managed-client-1.tf.local", { exact: false });
-      screen.getByText("minion.tf.local");
-    });
+    expect(await screen.findByText("Registered Systems:")).toBeDefined();
+    expect(await screen.findByText("Unknown Hostnames:")).toBeDefined();
+    expect(await screen.findByText("my-ansible-managed-client-1.tf.local", { exact: false })).toBeDefined();
+    expect(await screen.findByText("minion.tf.local")).toBeDefined();
   });
 });
