@@ -1037,8 +1037,12 @@ public class ActionManager extends BaseManager {
             throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_REFRESH_LIST,
-                user.orElse(null), server.getOrg(), earliest);
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST)
+                .withSchedulerUser(user.orElse(null))
+                .withOrg(server.getOrg())
+                .withEarliest(earliest)
+                .build();
 
         ActionFactory.createAddServerAction(server, action);
 
@@ -1396,9 +1400,11 @@ public class ActionManager extends BaseManager {
             throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(srvr.getId());
 
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                null, schedulerOrg, earliestAction);
-
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST)
+                .withOrg(schedulerOrg)
+                .withEarliest(earliestAction)
+                .build();
         ActionFactory.createAddServerAction(srvr, action);
 
         ActionFactory.save(action);
@@ -2192,9 +2198,12 @@ public class ActionManager extends BaseManager {
                                                   Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
-        InventoryAction action = (InventoryAction) ActionFactory.createAction(ActionFactory.TYPE_INVENTORY,
-                user.orElse(null), server.getOrg(), earliest);
-
+        InventoryAction action = (InventoryAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_INVENTORY)
+                .withSchedulerUser(user.orElse(null))
+                .withOrg(server.getOrg())
+                .withEarliest(earliest)
+                .build();
         InventoryActionDetails details = new InventoryActionDetails();
         details.setInventoryPath(inventoryPath);
         action.setDetails(details);
