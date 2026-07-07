@@ -1,0 +1,2 @@
+- Prevent Bootstrap modal handling for ReactModal dialogs and invalid
+  modal targets.
