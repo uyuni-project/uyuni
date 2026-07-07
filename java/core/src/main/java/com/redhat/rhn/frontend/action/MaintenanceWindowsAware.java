@@ -16,6 +16,10 @@
 package com.redhat.rhn.frontend.action;
 
 
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
+
 import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +38,16 @@ public interface MaintenanceWindowsAware {
      * @param request the {@link HttpServletRequest}
      * @param systemIds the set of IDs of involved systems
      */
-    void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds);
+    default void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (ActionFactory.isMaintenancemodeOnly(referenceMaintenanceWindowsType())) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 
+    /**
+     * Retrieves the reference action type to check if the maintenance mode only is on
+     * @return the reference action type
+     */
+    ActionTypeEnum referenceMaintenanceWindowsType();
 }
 

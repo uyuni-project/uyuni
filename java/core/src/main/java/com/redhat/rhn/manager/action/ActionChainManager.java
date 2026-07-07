@@ -627,8 +627,8 @@ public class ActionChainManager {
      * @param serverIds the affected servers' IDs
      * @return created actions
      */
-    private static Set<Action> createActions(User user, ActionTypeEnum actionTypeEnum, String name,
-                                             Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
+    private static Set<Action> createActions(User user, ActionTypeEnum actionTypeEnum, String name, Date earliest,
+                                             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {

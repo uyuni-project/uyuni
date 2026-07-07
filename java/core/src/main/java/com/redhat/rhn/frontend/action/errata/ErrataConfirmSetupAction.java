@@ -14,10 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
@@ -25,7 +24,6 @@ import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
-import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -87,9 +85,7 @@ public class ErrataConfirmSetupAction extends RhnListAction implements Maintenan
     }
 
     @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_ERRATA.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_ERRATA;
     }
 }
