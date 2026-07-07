@@ -264,10 +264,6 @@
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
         </dependency>
-        <dependency>
-            <groupId>suse</groupId>
-            <artifactId>simple-core</artifactId>
-        </dependency>
 
         <!-- Runtime Dependencies -->
         <dependency>

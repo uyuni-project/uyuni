@@ -148,7 +148,6 @@ BuildRequires:  prometheus-metrics-java-model
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0
-BuildRequires:  simple-core
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -232,7 +231,6 @@ Requires:       prometheus-metrics-java-exposition-textformats
 Requires:       prometheus-metrics-java-model
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 1.0.0
-Requires:       simple-core
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -383,7 +381,6 @@ Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
 Requires:       quartz
-Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
