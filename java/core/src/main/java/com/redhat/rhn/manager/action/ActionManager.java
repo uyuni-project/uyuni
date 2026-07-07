@@ -1809,7 +1809,13 @@ public class ActionManager extends BaseManager {
         }
 
         // Schedule the main action
-        var action = (DistUpgradeAction) ActionFactory.createAction(actionType, scheduler, actionName, earliestAction);
+        DistUpgradeAction action = (DistUpgradeAction) new ActionBuilder()
+                .ofType(actionType)
+                .withSchedulerUser(scheduler)
+                .withName(actionName)
+                .withEarliest(earliestAction)
+                .build();
+
         detailsMap.values().stream()
             .map(details -> details.getServer())
             .forEach(server -> ActionFactory.createAddServerAction(server, action));

@@ -372,23 +372,15 @@ public class ActionFactory extends HibernateFactory {
             sometimes hibernate is no fun
         */
         ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
-        Action action = createAction(lookedUpType, schedulerUser, actionName, earliestAction);
+        Action action = new ActionBuilder()
+                .ofType(lookedUpType)
+                .withSchedulerUser(schedulerUser)
+                .withName(actionName)
+                .withEarliest(earliestAction)
+                .build();
         save(action);
         HibernateFactory.getSession().flush();
         return action;
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param actionName the action name
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionName,
-                                      Date earliestIn) {
-        return createAction(typeIn, schedulerUserIn, actionName, schedulerUserIn.getOrg(), earliestIn);
     }
 
     /**
