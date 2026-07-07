@@ -110,7 +110,7 @@ public class PackageMetadataThisOnly extends PackageMetadata {
      * {@inheritDoc}
      */
     @Override
-    public boolean avoidCheckIfMissing() {
+    public boolean isSkipMissingCheck() {
         return true;
     }
 }

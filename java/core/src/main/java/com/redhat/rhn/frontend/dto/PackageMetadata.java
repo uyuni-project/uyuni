@@ -34,7 +34,7 @@ import java.util.Map;
  * similar to the hash, array, map or whatever it is on the perl
  * side.
  */
-public class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
+public abstract class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
     protected static final int KEY_NO_DIFF = 0;
     protected static final int KEY_THIS_ONLY = 1;
     protected static final int KEY_THIS_NEWER = 2;
@@ -86,9 +86,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * Return the localized action status string.
      * @return the localized action status string.
      */
-    public String getActionStatus() {
-        return "";
-    }
+    public abstract String getActionStatus();
 
     /**
      * Returns the comparison key.
@@ -100,9 +98,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * @return Returns the comparison.
      */
-    public String getComparison() {
-        return "";
-    }
+    public abstract String getComparison();
 
     /**
      * Returns the System's PackageListItem
@@ -266,9 +262,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * Updates the action status.
      */
-    public void updateActionStatus() {
-        //empty default
-    }
+    public abstract void updateActionStatus();
 
     /**
      * @return Returns target Nevra to be displayed on webui
@@ -370,9 +364,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * handles a package runTransaction action.
      * @param packageDeltaId the package delta id
      */
-    public void handlePackageRunTransaction(Long packageDeltaId) {
-        //empty
-    }
+    public abstract void handlePackageRunTransaction(Long packageDeltaId);
 
     protected void handlePackageRunTransaction(Long packageDeltaId, String actionFactoryTxnOperation,
                                                PackageListItem packageListItem) {
@@ -394,7 +386,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * checks if it can be removed from missing packages
      * @return true if it can be removed from missing packages
      */
-    public boolean canRemoveFromMissingPackages() {
+    public boolean isRemovableFromMissingPackages() {
         return false;
     }
 
@@ -402,7 +394,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * checks if it makes sense to skip the check whether it's missing
      * @return true to skip the check, false to do the check
      */
-    public boolean avoidCheckIfMissing() {
+    public boolean isSkipMissingCheck() {
         return false;
     }
 
@@ -410,7 +402,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * checks if the package exists on one but not the other
      * @return true if the package exists on one but not the other
      */
-    public boolean packageNotExistingOnBoth() {
+    public boolean existsOnOneSideOnly() {
         return true;
     }
 }
