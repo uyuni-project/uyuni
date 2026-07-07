@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -381,24 +380,6 @@ public class ActionFactory extends HibernateFactory {
         save(action);
         HibernateFactory.getSession().flush();
         return action;
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param actionNameIn the action name
-     * @param orgIn the Org of this action
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionNameIn, Org orgIn,
-                                      Date earliestIn) {
-        Action pa = createAction(typeIn, earliestIn);
-        pa.setName(actionNameIn);
-        pa.setOrg(orgIn);
-        pa.setSchedulerUser(schedulerUserIn);
-        return pa;
     }
 
     /**
