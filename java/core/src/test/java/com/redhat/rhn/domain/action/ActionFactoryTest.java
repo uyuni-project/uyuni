@@ -244,10 +244,12 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupConfigRevisionAction() {
-        Action newA = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
-        newA.setOrg(user.getOrg());
+        Action newA = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_CONFIGFILES_DIFF)
+                .withSchedulerUser(user)
+                .withOrg(user.getOrg())
+                .build();
 
-        newA.setSchedulerUser(user);
 
         Server newS = ServerFactoryTest.createTestServer(user, true);
         ConfigRevisionAction crad = new ConfigRevisionAction();
@@ -274,10 +276,12 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupConfigRevisionResult() {
-        Action newA = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
-        newA.setOrg(user.getOrg());
+        Action newA = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_CONFIGFILES_DIFF)
+                .withSchedulerUser(user)
+                .withOrg(user.getOrg())
+                .build();
 
-        newA.setSchedulerUser(user);
 
         Server newS = ServerFactoryTest.createTestServer(user, true);
         ConfigRevisionAction crad = new ConfigRevisionAction();
@@ -463,9 +467,14 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static Action createAction(User user, ActionType type) throws Exception {
-        Action newA = ActionFactory.createAction(type);
+        Action newA = new ActionBuilder()
+                .ofType(type)
+                .withSchedulerUser(user)
+                .withOrg(user.getOrg())
+                .withName("RHN-JAVA Test Action")
+                .build();
+
         Long orgId = user.getOrg().getId();
-        newA.setSchedulerUser(user);
 
         if (newA instanceof ErrataAction newAction) {
             setupTestErrataAction(newAction, orgId);
@@ -521,14 +530,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
             setupTestVirtualInstRefAction(newAction, user);
         }
 
-        newA.setName("RHN-JAVA Test Action");
-        newA.setActionType(type);
-        newA.setOrg(user.getOrg());
-        newA.setEarliestAction(new Date());
         newA.setVersion(0L);
         newA.setArchived(0L);
-        newA.setCreated(new Date());
-        newA.setModified(new Date());
         return ActionFactory.save(newA);
     }
 
@@ -667,16 +670,15 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static Action createEmptyAction(User user, ActionType type) {
-        Action newA = ActionFactory.createAction(type);
-        newA.setSchedulerUser(user);
-        newA.setName("RHN-JAVA Test Action #" + RandomStringUtils.randomAlphanumeric(16));
-        newA.setActionType(type);
-        newA.setOrg(user.getOrg());
-        newA.setEarliestAction(new Date());
+        Action newA = new ActionBuilder()
+                .ofType(type)
+                .withSchedulerUser(user)
+                .withOrg(user.getOrg())
+                .withName("RHN-JAVA Test Action #" + RandomStringUtils.randomAlphanumeric(16))
+                .build();
+
         newA.setVersion(0L);
         newA.setArchived(0L);
-        newA.setCreated(new Date());
-        newA.setModified(new Date());
         return newA;
     }
 

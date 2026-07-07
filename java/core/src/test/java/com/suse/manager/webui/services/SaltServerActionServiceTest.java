@@ -984,10 +984,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private Action createRebootAction(Date earliestAction) {
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
-        action.setOrg(user.getOrg());
-        action.setEarliestAction(earliestAction);
-        return action;
+        return new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_REBOOT)
+                .withOrg(user.getOrg())
+                .withEarliest(earliestAction)
+                .build();
     }
 
     /**
