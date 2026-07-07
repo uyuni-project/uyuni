@@ -22,7 +22,11 @@ export type DialogProps = {
   closableModal?: boolean;
 };
 
-ReactModal.setAppElement(document.body);
+const appElement = document.querySelectorAll("header.navbar-pf, .spacewalk-main-column-layout");
+if (appElement.length > 0) {
+  const setAppElement = ReactModal.setAppElement as (appElement: HTMLElement | NodeList) => void;
+  setAppElement(appElement);
+}
 
 export function Dialog(props: DialogProps) {
   const closableModal = props.closableModal ?? true;
@@ -43,13 +47,7 @@ export function Dialog(props: DialogProps) {
         {!props.hideHeader && (
           <div className="modal-header">
             {closableModal && (
-              <button
-                type="button"
-                className="close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={() => props.onClose?.()}
-              >
+              <button type="button" className="close" aria-label="Close" onClick={() => props.onClose?.()}>
                 <span aria-hidden="true">
                   <i className="fa fa-close"></i>
                 </span>
