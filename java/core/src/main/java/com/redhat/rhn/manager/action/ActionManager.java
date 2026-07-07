@@ -1181,7 +1181,7 @@ public class ActionManager extends BaseManager {
         Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
 
-        ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCRIPT_RUN,
+        ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_SCRIPT_RUN,
                 scheduler, name, earliest);
         ActionFactory.scheduleForExecution(sra, sidSet);
 
@@ -1384,7 +1384,7 @@ public class ActionManager extends BaseManager {
             checkSaltOrManagementEntitlement(sid);
         }
 
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler,
+        Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, scheduler,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
         ActionFactory.scheduleForExecution(action, serverIds);
         return action;
@@ -1713,7 +1713,7 @@ public class ActionManager extends BaseManager {
         // Use helper method to define action name based on recurring flag
         String finalActionName = defineScapActionName(recurring);
 
-        ScapAction action = (ScapAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+        ScapAction action = (ScapAction) ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_SCAP_XCCDF_EVAL,
                 scheduler,
                 finalActionName,
                 earliestAction);
@@ -1791,7 +1791,7 @@ public class ActionManager extends BaseManager {
                                                               ActionChain actionChain, boolean dryRun,
                                                               Map<Long, DistUpgradeActionDetails> detailsMap)
         throws TaskomaticApiException {
-        ActionType actionType = ActionFactory.TYPE_DIST_UPGRADE;
+        ActionTypeEnum actionTypeEnum = ActionTypeEnum.TYPE_DIST_UPGRADE;
 
         // Construct the action name
         String actionName = ActionFactory.TYPE_DIST_UPGRADE.getName();
@@ -1805,7 +1805,7 @@ public class ActionManager extends BaseManager {
             List<DistUpgradeAction> actionsList = new ArrayList<>();
             for (DistUpgradeActionDetails details : detailsMap.values()) {
                 var action = (DistUpgradeAction) ActionFactory.createAndSaveAction(
-                    actionType, scheduler, actionName, earliestAction
+                        actionTypeEnum, scheduler, actionName, earliestAction
                 );
 
                 action.setDetailsMap(Map.of(details.getServer().getId(), details));
@@ -1820,7 +1820,7 @@ public class ActionManager extends BaseManager {
 
         // Schedule the main action
         DistUpgradeAction action = (DistUpgradeAction) new ActionBuilder()
-                .ofType(actionType)
+                .ofType(actionTypeEnum)
                 .withSchedulerUser(scheduler)
                 .withName(actionName)
                 .withEarliest(earliestAction)
