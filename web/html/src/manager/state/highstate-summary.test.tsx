@@ -15,16 +15,16 @@ describe("Highstate summary", () => {
     server.mockGetJson(API_SUMMARY, data);
 
     render(<HighstateSummary minionId={1000} />);
-    await screen.findByRole("table");
+    expect(await screen.findByRole("table")).toBeDefined();
 
     const rows = screen.getAllByRole("row");
 
     // Table headers
-    within(rows[0]).getByRole("columnheader", { name: "State Source" });
-    within(rows[0]).getByRole("columnheader", { name: "Type" });
-    within(rows[0]).getByRole("columnheader", { name: "Inherited From" });
+    expect(within(rows[0]).getByRole("columnheader", { name: "State Source" })).toBeDefined();
+    expect(within(rows[0]).getByRole("columnheader", { name: "Type" })).toBeDefined();
+    expect(within(rows[0]).getByRole("columnheader", { name: "Inherited From" })).toBeDefined();
 
-    within(rows[1]).getByText("Internal states");
+    expect(within(rows[1]).getByText("Internal states")).toBeDefined();
   });
 
   test("Render state sources", async () => {
@@ -57,25 +57,25 @@ describe("Highstate summary", () => {
     server.mockGetJson(API_SUMMARY, data);
 
     render(<HighstateSummary minionId={1000} />);
-    await screen.findByRole("table");
+    expect(await screen.findByRole("table")).toBeDefined();
 
     const rows = screen.getAllByRole("row");
     expect(rows.length).toBe(4);
 
     // 1: Directly assigned state channel
-    within(rows[1]).getByRole("link", { name: "My state channel" });
-    within(rows[1]).getByText("State channel");
-    within(rows[1]).getByText("-");
+    expect(within(rows[1]).getByRole("link", { name: "My state channel" })).toBeDefined();
+    expect(within(rows[1]).getByText("State channel")).toBeDefined();
+    expect(within(rows[1]).getByText("-")).toBeDefined();
 
     // 2: Formula inherited from system group
-    within(rows[2]).getByRole("link", { name: "My formula" });
-    within(rows[2]).getByText("Formula");
-    within(rows[2]).getByRole("link", { name: "My group" });
+    expect(within(rows[2]).getByRole("link", { name: "My formula" })).toBeDefined();
+    expect(within(rows[2]).getByText("Formula")).toBeDefined();
+    expect(within(rows[2]).getByRole("link", { name: "My group" })).toBeDefined();
 
     // 3: Config channel inherited from org
-    within(rows[3]).getByRole("link", { name: "My config channel" });
-    within(rows[3]).getByText("Config channel");
-    within(rows[3]).getByRole("link", { name: "My org" });
+    expect(within(rows[3]).getByRole("link", { name: "My config channel" })).toBeDefined();
+    expect(within(rows[3]).getByText("Config channel")).toBeDefined();
+    expect(within(rows[3]).getByRole("link", { name: "My org" })).toBeDefined();
   });
 });
 
@@ -85,7 +85,7 @@ describe("Highstate output", () => {
     server.mockGetJson(API_HIGHSTATE, "my-example-highstate-string");
 
     render(<HighstateSummary minionId={1000} />);
-    await screen.findByText("There are no entries to show.");
+    expect(await screen.findByText("There are no entries to show.")).toBeDefined();
 
     const highstateLink = screen.getByRole("button", { name: "Show full highstate output" }) as HTMLButtonElement;
     expect(highstateLink.disabled).toBeFalsy();
@@ -93,6 +93,6 @@ describe("Highstate output", () => {
     expect(highstateLink.disabled).toBeTruthy();
     await waitForElementToBeRemoved(highstateLink);
 
-    screen.getByText("my-example-highstate-string");
+    expect(await screen.findByText("my-example-highstate-string")).toBeDefined();
   });
 });
