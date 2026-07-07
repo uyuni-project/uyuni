@@ -383,15 +383,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn) {
-        return createAction(typeIn, new Date());
-    }
-
-    /**
      * Create a new Action from scratch with the given earliestIn execution time.
      * @param actionTypeIn the type of Action we want to create
      * @param earliestIn The earliest time that this action can occur.

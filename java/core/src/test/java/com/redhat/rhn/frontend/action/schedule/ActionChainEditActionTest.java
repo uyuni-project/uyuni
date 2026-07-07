@@ -21,12 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionChainFactoryTest;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -98,8 +99,11 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     public void testSchedule() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
             actionChain, ServerFactoryTest.createTestServer(user), 0);
         actionChain = TestUtils.saveAndFlush(actionChain);
