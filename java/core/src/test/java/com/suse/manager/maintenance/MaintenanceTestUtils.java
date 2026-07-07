@@ -17,7 +17,7 @@ package com.suse.manager.maintenance;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.server.Server;
@@ -33,16 +33,16 @@ public class MaintenanceTestUtils {
      * Create an Errata Action for the given server at a specific point in time
      *
      * @param user the user
-     * @param type action type
+     * @param actionTypeEnum action type
      * @param server the server
      * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
      * @param prerequisite dependend action
      * @return the Action
      * @throws Exception if any failure occurs
      */
-    public static Action createActionForServerAt(User user, ActionType type, Server server, String datetime,
-            Action prerequisite) throws Exception {
-        Action action = ActionFactoryTest.createAction(user, type);
+    public static Action createActionForServerAt(User user, ActionTypeEnum actionTypeEnum, Server server,
+                                                 String datetime, Action prerequisite) throws Exception {
+        Action action = ActionFactoryTest.createAction(user, actionTypeEnum);
         action.setPrerequisite(prerequisite);
         ZonedDateTime start = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
@@ -59,15 +59,16 @@ public class MaintenanceTestUtils {
      * Create an Errata Action for the given server at a specific point in time
      *
      * @param user the user
-     * @param type action type
+     * @param actionTypeEnum action type
      * @param server the server
      * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
      * @return the Action
      * @throws Exception if any failure occurs
      */
-    public static Action createActionForServerAt(User user, ActionType type, Server server, String datetime)
+    public static Action createActionForServerAt(User user, ActionTypeEnum actionTypeEnum, Server server,
+                                                 String datetime)
             throws Exception {
-        return createActionForServerAt(user, type, server, datetime, null);
+        return createActionForServerAt(user, actionTypeEnum, server, datetime, null);
     }
 
     private MaintenanceTestUtils() {

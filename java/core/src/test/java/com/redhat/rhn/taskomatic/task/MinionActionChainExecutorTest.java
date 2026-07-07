@@ -24,8 +24,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -83,13 +83,13 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
     public void rejectsActionChainsWithOldEarliestDate() {
         ActionChain actionChain = ActionChainFactory.getOrCreateActionChain("testRejectActionChains", user);
 
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
         ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
         a1 = TestUtils.saveAndReload(a1);
         ActionChainFactory.queueActionChainEntry(a1, actionChain, sa1.getServer());
 
-        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_PACKAGES_UPDATE);
+        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         a2.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
         ServerAction sa2 = ActionFactoryTest.addServerAction(user, a2, ServerAction::setStatusQueued);
         a2 = TestUtils.saveAndReload(a2);

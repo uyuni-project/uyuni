@@ -46,8 +46,7 @@ public class ActionFormatterTest extends BaseTestCase {
      */
     @Test
     public void testActionFormatter() throws Exception {
-        Action a = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         a.setSchedulerUser(user);
 
         ActionFormatter af = a.getFormatter();
@@ -67,8 +66,7 @@ public class ActionFormatterTest extends BaseTestCase {
     @Test
     public void testActionLinks() throws Exception {
         // We know that TYPE_REBOOT has ServerActions associated with it
-        Action areboot = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_REBOOT);
+        Action areboot = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         ActionFormatter af = areboot.getFormatter();
         ServerAction sa = (ServerAction) areboot.getServerActions().toArray()[0];
         sa.setStatusFailed();
@@ -94,7 +92,7 @@ public class ActionFormatterTest extends BaseTestCase {
     @Test
     public void testErrataFormatter() throws Exception {
 
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
         assertEquals("Patch Update", af.getActionType());
@@ -113,7 +111,7 @@ public class ActionFormatterTest extends BaseTestCase {
     @Test
     public void testScriptFormatter() throws Exception {
 
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         a = TestUtils.reload(a);
         a.setSchedulerUser(user);
         ActionFormatter af = a.getFormatter();

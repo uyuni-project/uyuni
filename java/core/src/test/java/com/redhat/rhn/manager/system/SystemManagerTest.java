@@ -45,7 +45,7 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -500,14 +500,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, SystemManager.countActions(server.getId()));
 
         Action action = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+                ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
         ServerActionTest.createServerAction(server, action);
         ActionFactory.save(action);
 
         assertEquals(1, SystemManager.countActions(server.getId()));
 
         Action action2 = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+                ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
         ServerActionTest.createServerAction(server, action2);
         ActionFactory.save(action);
 
@@ -522,14 +522,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, SystemManager.countActions(server.getId()));
 
         Action action = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_PACKAGES_DELTA);
+                ActionTypeEnum.TYPE_PACKAGES_DELTA);
         ServerActionTest.createServerAction(server, action);
         ActionFactory.save(action);
 
         assertEquals(1, SystemManager.countActions(server.getId()));
 
         Action action2 = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_PACKAGES_AUTOUPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_AUTOUPDATE);
         ServerActionTest.createServerAction(server, action2);
         ActionFactory.save(action);
 
@@ -1881,13 +1881,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testSystemEventHistory() throws Exception {
         final Server server = ServerTestUtils.createTestSystem(user);
 
-        createTestAction(server, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+        createTestAction(server, ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
         createHistoryEntry(server, "Event 1");
-        createTestAction(server, ActionFactory.TYPE_APPLY_STATES);
-        createTestAction(server, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        createTestAction(server, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        createTestAction(server, ActionTypeEnum.TYPE_APPLY_STATES);
+        createTestAction(server, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
+        createTestAction(server, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         createHistoryEntry(server, "Event 2");
-        createTestAction(server, ActionFactory.TYPE_PACKAGES_UPDATE);
+        createTestAction(server, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         createHistoryEntry(server, "Event 3");
 
         final Org org = user.getOrg();
@@ -1927,7 +1927,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         final Server server = ServerTestUtils.createTestSystem(user);
 
         Long historyEventId = createHistoryEntry(server, "Event 1");
-        Long actionEventId = createTestAction(server, ActionFactory.TYPE_APPLY_STATES, ServerAction::setStatusPickedUp);
+        Long actionEventId = createTestAction(server, ActionTypeEnum.TYPE_APPLY_STATES,
+                ServerAction::setStatusPickedUp);
 
         final Long sid = server.getId();
         final Long oid = user.getOrg().getId();
@@ -2154,13 +2155,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return historyEvent.getId();
     }
 
-    private void createTestAction(Server server, ActionType actionType) throws Exception {
-        createTestAction(server, actionType, ServerAction::setStatusCompleted);
+    private void createTestAction(Server server, ActionTypeEnum actionTypeEnum) throws Exception {
+        createTestAction(server, actionTypeEnum, ServerAction::setStatusCompleted);
     }
 
-    private Long createTestAction(Server server, ActionType actionType, Consumer<ServerAction> statusSetter)
+    private Long createTestAction(Server server, ActionTypeEnum actionTypeEnum, Consumer<ServerAction> statusSetter)
             throws Exception {
-        final Action action = ActionFactoryTest.createAction(user, actionType);
+        final Action action = ActionFactoryTest.createAction(user, actionTypeEnum);
         final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
 
         statusSetter.accept(serverAction);
