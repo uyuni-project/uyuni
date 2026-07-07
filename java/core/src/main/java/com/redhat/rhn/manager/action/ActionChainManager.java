@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
@@ -266,7 +267,7 @@ public class ActionChainManager {
         Set<Long> serverIds
     ) throws TaskomaticApiException {
         var actions = createActions(
-            user, ActionFactory.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, serverIds
+            user, ActionTypeEnum.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, serverIds
         );
         AppStreamAction action = (AppStreamAction) actions.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
@@ -302,7 +303,7 @@ public class ActionChainManager {
 
         Set<Long> sidSet = new HashSet<>(sids);
 
-        Set<Action> result = createActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_SCRIPT_RUN, name,
             earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ScriptActionDetails actionScript = ActionFactory.createScriptActionDetails(
@@ -338,7 +339,7 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<>(sids);
 
         String summary = "Apply highstate" + (test.orElse(false) ? " in test-mode" : "");
-        Set<Action> result = createActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_APPLY_STATES, summary,
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
@@ -520,7 +521,7 @@ public class ActionChainManager {
      */
     public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        Set<Action> result = createActions(user, ActionFactory.TYPE_REBOOT,
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_REBOOT,
             ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, null, serverIds);
         taskoScheduleActions(result, user, actionChain);
         return result;
@@ -618,7 +619,7 @@ public class ActionChainManager {
     /**
      * Creates generic actions on multiple servers.
      * @param user the user scheduling actions
-     * @param type the type
+     * @param actionTypeEnum the type
      * @param name the name
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
@@ -626,12 +627,12 @@ public class ActionChainManager {
      * @param serverIds the affected servers' IDs
      * @return created actions
      */
-    private static Set<Action> createActions(User user, ActionType type, String name,
-            Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
+    private static Set<Action> createActions(User user, ActionTypeEnum actionTypeEnum, String name,
+                                             Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
-            Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
+            Action action = ActionFactory.createAndSaveAction(actionTypeEnum, user, name, earliest);
             ActionFactory.scheduleForExecution(action, serverIds);
             result.add(action);
         }
@@ -641,7 +642,7 @@ public class ActionChainManager {
                 nextSortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             }
             for (Long serverId : serverIds) {
-                Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
+                Action action = ActionFactory.createAndSaveAction(actionTypeEnum, user, name, earliest);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
@@ -759,7 +760,7 @@ public class ActionChainManager {
                                                               Date earliest,
                                                               ActionChain actionChain)
             throws TaskomaticApiException {
-        Set<Action> result = createActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
                 earliest, actionChain, null, serverIds);
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -790,7 +791,7 @@ public class ActionChainManager {
 
         ImageInfo info = ImageInfoFactory.createImageInfo(buildHostId, version, profile);
 
-        Set<Action> result = createActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
                 earliest, actionChain, null, Collections.singleton(buildHostId));
 
         ImageBuildAction action = (ImageBuildAction)result.stream().findFirst()
@@ -836,7 +837,7 @@ public class ActionChainManager {
             throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
-        Set<Action> result = createActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
+        Set<Action> result = createActions(scheduler, ActionTypeEnum.TYPE_PLAYBOOK,
                 String.format("Execute playbook '%s'", playbookName), earliest, actionChain, null,
                 singleton(controlNodeId));
         PlaybookAction action = (PlaybookAction) result.stream().findFirst()

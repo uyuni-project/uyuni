@@ -355,13 +355,13 @@ public class ActionFactory extends HibernateFactory {
 
     /**
      * Creates, saves and returns a new Action
-     * @param typeIn the type of Action we want to create
+     * @param actionTypeEnum the type of Action we want to create
      * @param schedulerUser the user who created this action
      * @param actionName the action name
      * @param earliestAction the earliest execution date
      * @return a saved Action
      */
-    public static Action createAndSaveAction(ActionType typeIn, User schedulerUser, String actionName,
+    public static Action createAndSaveAction(ActionTypeEnum actionTypeEnum, User schedulerUser, String actionName,
                                              Date earliestAction) {
         /*
             We have to re-lookup the type here, because most likely a static final variable
@@ -370,7 +370,7 @@ public class ActionFactory extends HibernateFactory {
             will be different from the final static variable
             sometimes hibernate is no fun
         */
-        ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
+        ActionType lookedUpType = lookupActionTypeByLabel(actionTypeEnum.getLabel());
         Action action = new ActionBuilder()
                 .ofType(lookedUpType)
                 .withSchedulerUser(schedulerUser)
