@@ -1019,6 +1019,12 @@
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Btrfs Snapshots" xml:space="preserve">
+        <source>Btrfs Snapshots</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/snapshots</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Repositories" xml:space="preserve">
         <source>Repositories</source>
         <context-group name="ctx">
