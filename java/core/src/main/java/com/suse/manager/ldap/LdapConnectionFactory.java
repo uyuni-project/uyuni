@@ -21,7 +21,6 @@ import com.unboundid.util.ssl.SSLUtil;
 import java.security.GeneralSecurityException;
 
 import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Creates the LDAP connections used by {@link UnboundIdLdapAuthenticationService}.
@@ -70,9 +69,7 @@ public class LdapConnectionFactory {
         }
         try {
             // Until custom CA trust is wired in, rely on the JVM default trust store.
-            SSLUtil sslUtil = new SSLUtil();
-            SSLSocketFactory factory = sslUtil.createSSLSocketFactory();
-            return factory;
+            return new SSLUtil().createSSLSocketFactory();
         }
         catch (GeneralSecurityException e) {
             throw new LdapException("Unable to initialize TLS for LDAPS connection", e);
@@ -112,8 +109,9 @@ public class LdapConnectionFactory {
     public LDAPConnectionPool createServicePool(LdapServerConfig config) throws LdapException {
         LDAPConnection connection = openConnection(config);
         try {
-            if (config.getBindDn().isPresent()) {
-                connection.bind(new SimpleBindRequest(config.getBindDn().get(),
+            var bindDn = config.getBindDn();
+            if (bindDn.isPresent()) {
+                connection.bind(new SimpleBindRequest(bindDn.get(),
                         config.getBindPassword().orElse("")));
             }
             return new LDAPConnectionPool(connection, INITIAL_POOL_CONNECTIONS, MAX_POOL_CONNECTIONS);
