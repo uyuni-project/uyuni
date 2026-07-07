@@ -206,10 +206,6 @@ artifacts:
   - artifact: prometheus-metrics-exposition-textformats
     package: prometheus-metrics-java-exposition-textformats
     repository: Uyuni_Other
-  - artifact: simple-core
-    # How comes that package is not noarch?
-    arch: x86_64
-    repository: Uyuni_Other
   - artifact: sitemesh
     repository: Uyuni
   - artifact: slf4j-api
