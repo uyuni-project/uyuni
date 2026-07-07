@@ -24,8 +24,8 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
@@ -81,7 +81,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatusCompleted();
         action.addServerAction(sa);
@@ -116,7 +116,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptActionsPickedUp() throws Exception {
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltApi, saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatusPickedUp();
         action.addServerAction(sa);

@@ -97,7 +97,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookup() throws Exception {
 
-        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         assertInstanceOf(HardwareRefreshAction.class, a);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupById(id);
@@ -111,7 +111,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupLastCompletedAction() throws Exception {
-        ConfigAction a = (ConfigAction) createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        ConfigAction a = (ConfigAction) createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         assertInstanceOf(ConfigDeployAction.class, a);
         //complete it
         assertNotNull(a.getServerActions());
@@ -134,7 +134,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListPendingActions() throws Exception {
         VirtualInstanceRefreshAction a = (VirtualInstanceRefreshAction) createAction(user,
-                ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
+                ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH);
         assertInstanceOf(VirtualInstanceRefreshAction.class, a);
         //complete it
         assertNotNull(a.getServerActions());
@@ -153,7 +153,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupWithLoggedInUser() throws Exception {
-        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         Long id = a.getId();
         Action a2 = ActionFactory.lookupByUserAndId(user, id);
         assertNotNull(a2);
@@ -169,7 +169,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupScriptAction() throws Exception {
-        Action newA = createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action newA = createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
 
@@ -187,7 +187,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSchedulerUser() throws Exception {
-        Action newA = createAction(user, ActionFactory.TYPE_REBOOT);
+        Action newA = createAction(user, ActionTypeEnum.TYPE_REBOOT);
         newA.setSchedulerUser(user);
         ActionFactory.save(newA);
 
@@ -200,7 +200,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupErrataAction() throws Exception {
-        Action newA = createAction(user, ActionFactory.TYPE_ERRATA);
+        Action newA = createAction(user, ActionTypeEnum.TYPE_ERRATA);
         assertNotNull(newA.getId());
         assertInstanceOf(ErrataAction.class, newA);
         ErrataAction ea = (ErrataAction) newA;
@@ -214,7 +214,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupDaemonConfig() throws Exception {
-        Action newA = createAction(user, ActionFactory.TYPE_DAEMON_CONFIG);
+        Action newA = createAction(user, ActionTypeEnum.TYPE_DAEMON_CONFIG);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
         assertNotNull(a);
@@ -228,7 +228,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testAddServerToAction() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user);
-        Action a = createAction(user, ActionFactory.TYPE_ERRATA);
+        Action a = createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());
@@ -320,7 +320,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Instant testStartInstant = ZonedDateTime.now().toInstant();
         Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(originalInstant));
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
@@ -346,7 +346,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Instant testStartInstant = ZonedDateTime.now().toInstant();
         Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(originalInstant));
 
         ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
@@ -372,7 +372,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Instant testStartInstant = ZonedDateTime.now().toInstant();
         Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
 
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
         a1.setEarliestAction(Date.from(originalInstant));
 
         ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
@@ -394,19 +394,19 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateAction() throws Exception {
-        Action a = createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         assertNotNull(a);
     }
 
     @Test
     public void testCheckActionArchType() throws Exception {
-        Action newA = createAction(user, ActionFactory.TYPE_PACKAGES_VERIFY);
+        Action newA = createAction(user, ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         assertTrue(ActionFactory.checkActionArchType(newA, "verify"));
     }
 
     @Test
     public void testUpdateServerActions() {
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
         ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
         ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
@@ -434,11 +434,11 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void rejectScheduledActionsMarkPendingServerActionsAsFailed() {
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
         ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusCompleted);
         ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
-        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_APPLY_STATES);
+        Action a2 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_APPLY_STATES);
         ServerAction sa3 = addServerAction(user, a2, ServerAction::setStatusQueued);
         ServerAction sa4 = addServerAction(user, a2, ServerAction::setStatusPickedUp);
 
@@ -466,9 +466,9 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         assertTrue(sa4.isStatusPickedUp());
     }
 
-    public static Action createAction(User user, ActionType type) throws Exception {
+    public static Action createAction(User user, ActionTypeEnum actionTypeEnum) throws Exception {
         Action newA = new ActionBuilder()
-                .ofType(type)
+                .ofType(actionTypeEnum)
                 .withSchedulerUser(user)
                 .withOrg(user.getOrg())
                 .withName("RHN-JAVA Test Action")
@@ -669,9 +669,9 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         return ServerActionTest.createServerAction(newS, newA, statusSetter);
     }
 
-    public static Action createEmptyAction(User user, ActionType type) {
+    public static Action createEmptyAction(User user, ActionTypeEnum actionTypeEnum) {
         Action newA = new ActionBuilder()
-                .ofType(type)
+                .ofType(actionTypeEnum)
                 .withSchedulerUser(user)
                 .withOrg(user.getOrg())
                 .withName("RHN-JAVA Test Action #" + RandomStringUtils.randomAlphanumeric(16))

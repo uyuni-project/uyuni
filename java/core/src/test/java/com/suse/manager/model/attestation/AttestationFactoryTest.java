@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
@@ -182,7 +183,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cnf.getEnvironmentType(), report.getEnvironmentType());
         assertNull(report.getAction());
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_COCO_ATTESTATION);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_COCO_ATTESTATION);
         report.setAction(action);
         action.addCocoAttestationReport(report);
 

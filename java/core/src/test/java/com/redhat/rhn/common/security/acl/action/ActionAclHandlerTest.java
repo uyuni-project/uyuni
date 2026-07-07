@@ -17,8 +17,8 @@ package com.redhat.rhn.common.security.acl.action;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -37,7 +37,7 @@ public class ActionAclHandlerTest extends BaseTestCase {
         ActionAclHandler access = new ActionAclHandler();
         Action newA = ActionFactoryTest.createAction(
                 UserTestUtils.createUser(this),
-                ActionFactory.TYPE_PACKAGES_REMOVE
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE
         );
 
         String[] foo = {"remove"};

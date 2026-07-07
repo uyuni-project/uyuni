@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
@@ -167,8 +168,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testGetSystemGroups() throws Exception {
-        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
 
         PageControl pc = new PageControl();
         pc.setIndexData(false);
@@ -181,7 +182,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testLookupAction() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         Long actionId = a1.getId();
 
         //Users must have access to a server for the action to lookup the action
@@ -197,7 +198,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testActionsArchivedOnSystemDeleteUser() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
         serverAction.setStatusCompleted();
 
@@ -223,7 +224,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testActionsArchivedOnSystemDeleteAdmin() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
         serverAction.setStatusCompleted();
 
@@ -244,7 +245,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testFailedActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
@@ -261,7 +262,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testPendingActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
@@ -280,7 +281,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private Action createActionWithServerActions(User user, int numServerActions)
         throws Exception {
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
         baseChannel.setParentChannel(null);
         for (int i = 0; i < numServerActions; i++) {
@@ -315,7 +316,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                                                        int numServerActions,
                                                        Function<Integer, ? extends Server> serverFactory)
             throws Exception {
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
         baseChannel.setParentChannel(null);
 
@@ -618,7 +619,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Server second = ServerFactoryTest.createTestServer(user, true);
         List<Server> servers = List.of(first, second);
 
-        Action parent = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action parent = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
             if (first.equals(server)) {
@@ -632,7 +633,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.save(parent);
 
-        Action child = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_ERRATA);
+        Action child = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_ERRATA);
         child.setPrerequisite(parent);
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
@@ -753,7 +754,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCompletedActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
@@ -770,7 +771,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRecentlyScheduledActions() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action parent = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
 
@@ -798,7 +799,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRescheduleAction() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -820,7 +821,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testInProgressSystems() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatusQueued();
@@ -835,7 +836,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testFailedSystems() throws Exception {
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatusFailed();
@@ -879,7 +880,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testAddServerToAction() throws Exception {
         User usr = UserTestUtils.createUser();
         Server s = ServerFactoryTest.createTestServer(usr);
-        Action a = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_ERRATA);
+        Action a = ActionFactoryTest.createAction(usr, ActionTypeEnum.TYPE_ERRATA);
         ActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());

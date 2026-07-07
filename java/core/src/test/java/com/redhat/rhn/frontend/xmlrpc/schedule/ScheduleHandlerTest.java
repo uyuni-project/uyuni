@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.server.Server;
@@ -61,17 +62,17 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
         Action a1 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction1 = ServerActionTest.createServerAction(server, a1);
         saction1.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
         saction2.setStatusQueued();
 
         Action a3 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction3 = ServerActionTest.createServerAction(server, a3);
         saction3.setStatusFailed();
 
@@ -108,17 +109,17 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
         Action a1 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction1 = ServerActionTest.createServerAction(server, a1);
         saction1.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
         saction2.setStatusQueued();
 
         Action a3 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction3 = ServerActionTest.createServerAction(server, a3);
         saction3.setStatusFailed();
 
@@ -145,7 +146,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusCompleted();
 
@@ -169,7 +170,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusQueued();
 
@@ -193,7 +194,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusFailed();
 
@@ -217,7 +218,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         a.setArchived(1L);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusQueued();
@@ -241,13 +242,13 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         a.setArchived(1L);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusQueued();
 
         Action a2 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         a2.setArchived(1L);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
         saction2.setStatusQueued();
@@ -276,12 +277,12 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //has increased
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action a = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusCompleted();
 
         Action a2 = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction2 = ServerActionTest.createServerAction(server, a2);
         saction2.setStatusCompleted();
 
@@ -300,7 +301,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action action = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
         saction.setStatusCompleted();
 
@@ -321,7 +322,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action action = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
         saction.setStatusQueued();
 
@@ -342,7 +343,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         //create a new action
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Action action = ActionFactoryTest.createAction(admin,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction saction = ServerActionTest.createServerAction(server, action);
         saction.setStatusFailed();
 
@@ -362,10 +363,10 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     public void testCannotCancelPendingActionsWithPrerequisite() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        Action parent = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        Action parent = ActionFactoryTest.createEmptyAction(admin, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerActionTest.createServerAction(server, parent);
 
-        Action child = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_SCRIPT_RUN);
+        Action child = ActionFactoryTest.createEmptyAction(admin, ActionTypeEnum.TYPE_SCRIPT_RUN);
         child.setPrerequisite(parent);
         ActionFactory.save(child);
         ServerActionTest.createServerAction(server, child);
@@ -381,7 +382,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     public void testCannotCancelPickedUpAction() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 
-        Action action = ActionFactoryTest.createEmptyAction(admin, ActionFactory.TYPE_PACKAGES_UPDATE);
+        Action action = ActionFactoryTest.createEmptyAction(admin, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
         serverAction.setStatusPickedUp();
 

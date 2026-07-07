@@ -54,7 +54,7 @@ public class PackageActionTest extends BaseTestCase {
 
         Action newA = ActionFactoryTest.createAction(
                 UserTestUtils.createUser(this),
-                ActionFactory.TYPE_PACKAGES_VERIFY);
+                ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         assertNotNull(newA.getId());
         assertInstanceOf(PackageAction.class, newA);
         PackageAction p = (PackageAction) newA;
@@ -101,7 +101,7 @@ public class PackageActionTest extends BaseTestCase {
     public void testCreatePackageUpdateAction() throws Exception {
         User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction) ActionFactoryTest.createAction(usr,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithNvre(usr, testAction);
         ActionFactory.save(testAction);
         TestUtils.flushAndEvict(testAction);
@@ -125,7 +125,7 @@ public class PackageActionTest extends BaseTestCase {
     public void testCreatePackageUpdateActionWithName() throws Exception {
         User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithName(usr, testAction);
         ActionFactory.save(testAction);
         TestUtils.flushAndEvict(testAction);

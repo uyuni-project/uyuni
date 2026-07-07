@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.action.schedule;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.BaseTestCase;
@@ -39,7 +39,7 @@ public class ActionDetailsSetupActionTest extends BaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         User user = sah.getUser();
-        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         a1.setSchedulerUser(user);
         sah.getRequest().addParameter("aid", a1.getId().toString());
 

@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageCapabilityTest;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -46,7 +46,7 @@ public class PackageActionRemovalFailureTest extends BaseTestCase {
     public void testPackageActionRemovalFailure() throws Exception {
         User usr = UserTestUtils.createUser(this);
         PackageAction pkgaction = (PackageAction) ActionFactoryTest.createAction(
-                                         usr, ActionFactory.TYPE_PACKAGES_VERIFY);
+                                         usr, ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         Server server = ServerFactoryTest.createTestServer(usr);
         PackageName name = PackageNameTest.createTestPackageName();
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr();
