@@ -456,8 +456,12 @@ public class ActionManager extends BaseManager {
         String actionName = LocalizationService.getInstance().getMessage("action.name",
                 errata.getAdvisory(), errata.getSynopsis());
 
-        ErrataAction aa = (ErrataAction) ActionFactory.createAction(ActionFactory.TYPE_ERRATA, user, actionName, org,
-                new Date());
+        ErrataAction aa = (ErrataAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withSchedulerUser(user)
+                .withOrg(org)
+                .withName(actionName)
+                .build();
 
         aa.addErrata(errata);
         return aa;
@@ -1955,10 +1959,13 @@ public class ActionManager extends BaseManager {
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring, boolean direct) {
 
-        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.createAction(ActionFactory.TYPE_APPLY_STATES,
-                scheduler, defineStatesActionName(mods, recurring),
-                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
-
+        ApplyStatesAction action = (ApplyStatesAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_APPLY_STATES)
+                .withSchedulerUser(scheduler)
+                .withOrg(scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg())
+                .withName(defineStatesActionName(mods, recurring))
+                .withEarliest(earliest)
+                .build();
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
@@ -2014,9 +2021,13 @@ public class ActionManager extends BaseManager {
     public static ImageBuildAction scheduleImageBuild(User scheduler, List<Long> sids,
                                                       String version, ImageProfile profile, Date earliest) {
 
-        ImageBuildAction action = (ImageBuildAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_BUILD,
-                scheduler, "Image Build " + profile.getLabel(),
-                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
+        ImageBuildAction action = (ImageBuildAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_IMAGE_BUILD)
+                .withSchedulerUser(scheduler)
+                .withOrg(scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg())
+                .withName("Image Build " + profile.getLabel())
+                .withEarliest(earliest)
+                .build();
 
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
         actionDetails.setVersion(version);
@@ -2044,9 +2055,13 @@ public class ActionManager extends BaseManager {
                                                           ImageStore store, Date earliest) {
 
         String actionName = "Image Inspect " + store.getUri() + "/" + name + ":" + version;
-        ImageInspectAction action = (ImageInspectAction) ActionFactory.createAction(ActionFactory.TYPE_IMAGE_INSPECT,
-                scheduler, actionName,
-                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
+        ImageInspectAction action = (ImageInspectAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_IMAGE_INSPECT)
+                .withSchedulerUser(scheduler)
+                .withOrg(scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg())
+                .withName(actionName)
+                .withEarliest(earliest)
+                .build();
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
@@ -2155,9 +2170,13 @@ public class ActionManager extends BaseManager {
     public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
                                                    UploadGeoType uploadGeoType, Date earliest) {
 
-        SupportDataAction action = (SupportDataAction) ActionFactory.createAction(ActionFactory.TYPE_SUPPORTDATA_GET,
-                scheduler, "Get and Upload Support data",
-                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliest);
+        SupportDataAction action = (SupportDataAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_SUPPORTDATA_GET)
+                .withSchedulerUser(scheduler)
+                .withOrg(scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg())
+                .withName("Get and Upload Support data")
+                .withEarliest(earliest)
+                .build();
 
         SupportDataActionDetails actionDetails = new SupportDataActionDetails();
         actionDetails.setCaseNumber(caseNumber);
