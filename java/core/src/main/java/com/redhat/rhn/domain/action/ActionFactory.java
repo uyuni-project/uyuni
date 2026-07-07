@@ -382,18 +382,6 @@ public class ActionFactory extends HibernateFactory {
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
      * @param schedulerUserIn the user who created this action
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn,
-                                      Date earliestIn) {
-        return createAction(typeIn, schedulerUserIn, typeIn.getName(), schedulerUserIn.getOrg(), earliestIn);
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
      * @param actionName the action name
      * @param earliestIn the earliest execution date
      * @return the Action created
