@@ -48,6 +48,33 @@ public class LdapServerConfigTest {
     }
 
     @Test
+    public void transportSwitchUpdatesPortWhenNoExplicitPortIsSet() {
+        // Regression: selecting PLAIN without an explicit port must use the PLAIN default (389),
+        // not remain on the LDAPS default (636).
+        LdapServerConfig config = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")
+                .transport(LdapTransport.PLAIN)
+                .anonymousBind()
+                .build();
+
+        assertEquals(LdapTransport.PLAIN, config.getTransport());
+        assertEquals(389, config.getPort());
+    }
+
+    @Test
+    public void explicitPortSurvivesLaterTransportChange() {
+        // An explicitly chosen port must win even if the transport is set afterwards.
+        LdapServerConfig config = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")
+                .port(1636)
+                .transport(LdapTransport.PLAIN)
+                .anonymousBind()
+                .build();
+
+        assertEquals(1636, config.getPort());
+    }
+
+    @Test
     public void overridesAreHonored() {
         LdapServerConfig config = LdapServerConfig
                 .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")

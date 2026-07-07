@@ -240,7 +240,10 @@ public final class LdapServerConfig {
             this.serverType = Objects.requireNonNull(serverTypeIn, "serverType must not be null");
             this.host = Objects.requireNonNull(hostIn, "host must not be null");
             this.userBaseDn = Objects.requireNonNull(userBaseDnIn, "userBaseDn must not be null");
-            this.port = transport.getDefaultPort();
+            // Leave the port unset (0) so it can follow the transport's default until either the
+            // transport or an explicit port is chosen; build() resolves a still-unset port to the
+            // transport default.
+            this.port = 0;
             this.userFilter = serverTypeIn.getDefaultUserFilter();
             this.loginAttribute = serverTypeIn.getDefaultLoginAttribute();
             this.groupBaseDn = userBaseDnIn;

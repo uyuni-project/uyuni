@@ -39,6 +39,10 @@ public record LdapUser(
         String email,
         List<String> groupLabels) {
 
+    /**
+     * Canonical constructor. Requires a login and a distinguished name, and defensively copies the
+     * group labels (treating {@code null} as an empty, immutable list).
+     */
     public LdapUser {
         Objects.requireNonNull(login, "login must not be null");
         Objects.requireNonNull(distinguishedName, "distinguishedName must not be null");
