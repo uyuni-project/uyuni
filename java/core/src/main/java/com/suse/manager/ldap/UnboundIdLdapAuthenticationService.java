@@ -102,8 +102,8 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
                     config.getLastNameAttribute(), config.getEmailAttribute());
             int count = result.getEntryCount();
             if (count > 1) {
-                LOG.warn("LDAP authentication failed for [{}]: ambiguous user search (base DN={}, filter={}, "
-                        + "matched {} entries)", login, config.getUserBaseDn(), filter, count);
+                LOG.warn("LDAP authentication failed for [{}]: ambiguous user search (base DN={}, filter={}, " +
+                        "matched {} entries)", login, config.getUserBaseDn(), filter, count);
                 return null;
             }
             return count == 1 ? result.getSearchEntries().get(0) : null;
@@ -113,7 +113,7 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
         }
     }
 
-    private boolean credentialBindSucceeds(String userDn, String password) {
+    private boolean credentialBindSucceeds(String userDn, String password) throws LdapException {
         LDAPConnection connection = null;
         try {
             connection = connectionFactory.openConnection(config);
@@ -121,12 +121,14 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
             return ResultCode.SUCCESS.equals(code);
         }
         catch (LDAPException e) {
-            // Wrong password (and similar) surface here as a normal, expected rejection.
-            return false;
-        }
-        catch (LdapException e) {
-            LOG.warn("Could not open a connection for the credential bind of [{}]", userDn, e);
-            return false;
+            if (ResultCode.INVALID_CREDENTIALS.equals(e.getResultCode())) {
+                // A wrong password is a normal, expected authentication rejection.
+                return false;
+            }
+            // Any other result code (server unreachable, timeout, TLS failure, etc.) is an
+            // infrastructure problem the caller must be able to tell apart from a wrong password,
+            // so it is surfaced as an LdapException rather than silently reported as a failed login.
+            throw new LdapException("Credential bind failed for [" + userDn + "]", e);
         }
         finally {
             if (connection != null) {
