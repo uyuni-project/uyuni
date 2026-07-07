@@ -14,34 +14,56 @@
  */
 package com.suse.scc;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
-import com.redhat.rhn.testing.httpservermock.HttpServerMock;
-import com.redhat.rhn.testing.httpservermock.Responder;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCFileClient;
+import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.SCCSystemJson;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.common.FileSource;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.extension.Parameters;
+import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
+import com.github.tomakehurst.wiremock.http.Request;
+import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -50,20 +72,42 @@ import java.util.List;
  */
 public class SCCClientTest  {
 
+    private WireMockServer wireMockServer;
+
+    private SCCClient sccClient;
+
+    @BeforeEach
+    void setup() throws URISyntaxException {
+        var serverConfig = WireMockConfiguration.wireMockConfig()
+                .dynamicPort()
+                .extensions(new SCCResponseTransformer());
+
+        wireMockServer = new WireMockServer(serverConfig);
+        wireMockServer.start();
+
+        SCCConfig config = new SCCConfigBuilder()
+                .setUrl(new URI(wireMockServer.baseUrl()))
+                .setUsername("user")
+                .setPassword("password")
+                .setLoggingDir(System.getProperty("java.io.tmpdir"))
+                .setSkipOwner(true)
+                .createSCCConfig();
+
+        sccClient = new SCCWebClient(config);
+    }
+
+    @AfterEach
+    void tearDown() {
+        wireMockServer.stop();
+    }
+
     /**
      * Test for {@link com.suse.scc.client.SCCWebClient#listProducts()}.
      */
     @Test
     public void testListProducts() throws Exception {
-        HttpServerMock serverMock = new HttpServerMock();
-        URI uri = serverMock.getURI();
-        SCCRequester<List<SCCProductJson>> requester = new SCCRequester<>(uri) {
-            @Override
-            public List<SCCProductJson> request(SCCClient scc) throws SCCClientException {
-                return scc.listProducts();
-            }
-        };
-        List<SCCProductJson> products = serverMock.getResult(requester, new SCCServerStub(uri));
+        setupWireMockServer(wireMockServer, "products/unscoped");
+        List<SCCProductJson> products = sccClient.listProducts();
 
         // Assertions
         assertEquals(2, products.size());
@@ -125,17 +169,8 @@ public class SCCClientTest  {
      */
     @Test
     public void testListRepositories() throws Exception {
-        HttpServerMock serverMock = new HttpServerMock();
-        URI uri = serverMock.getURI();
-        SCCRequester<List<SCCRepositoryJson>> requester =
-                new SCCRequester<>(uri) {
-                    @Override
-                    public List<SCCRepositoryJson> request(SCCClient scc)
-                            throws SCCClientException {
-                        return scc.listRepositories();
-                    }
-                };
-        List<SCCRepositoryJson> repos = serverMock.getResult(requester, new SCCServerStub(uri));
+        setupWireMockServer(wireMockServer, "repositories");
+        List<SCCRepositoryJson> repos = sccClient.listRepositories();
 
         // Assertions
         assertEquals(2, repos.size());
@@ -158,19 +193,9 @@ public class SCCClientTest  {
      */
     @Test
     public void testListSubscriptions() throws Exception {
-        HttpServerMock serverMock = new HttpServerMock();
-        URI uri = serverMock.getURI();
-        SCCRequester<List<SCCSubscriptionJson>> requester =
-                new SCCRequester<>(uri) {
+        setupWireMockServer(wireMockServer, "subscriptions");
 
-                    @Override
-                    public List<SCCSubscriptionJson> request(SCCClient scc)
-                            throws SCCClientException {
-                        return scc.listSubscriptions();
-                    }
-                };
-        List<SCCSubscriptionJson> subs =
-                serverMock.getResult(requester, new SCCServerStub(uri));
+        List<SCCSubscriptionJson> subs = sccClient.listSubscriptions();
 
         // Assertions
         assertEquals(2, subs.size());
@@ -262,34 +287,17 @@ public class SCCClientTest  {
      */
     @Test
     public void testErrorResponse() throws Exception {
-        Responder errorResponder = (requestIn, responseIn) -> {
-            responseIn.setCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
-            try {
-                responseIn.getPrintStream().close();
-            }
-            catch (IOException e) {
-                // never happens
-            }
-        };
+        wireMockServer.stubFor(
+            get(urlMatching("/connect/organizations/products/unscoped(\\?page=2){0,1}"))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR))
+        );
 
-        HttpServerMock serverMock = new HttpServerMock();
-        URI uri = serverMock.getURI();
-        SCCRequester<List<SCCProductJson>> requester = new SCCRequester<>(uri) {
-            @Override
-            public List<SCCProductJson> request(SCCClient scc) throws SCCClientException {
-                try {
-                    scc.listProducts();
-                    fail("Did not get an exception, expected error 500");
-                    return null;
-                }
-                catch (SCCClientException e) {
-                    assertTrue(e.getMessage().contains("500"));
-                    throw e;
-                }
-            }
-        };
+        var exception = assertThrows("Did not get an exception, expected error 500", SCCClientException.class,
+            () -> sccClient.listProducts());
 
-        serverMock.getResult(requester, errorResponder);
+        String expectedMessage = "Got response code 500 connecting to %s/connect/organizations/products/unscoped"
+            .formatted(wireMockServer.baseUrl());
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     /**
@@ -304,5 +312,67 @@ public class SCCClientTest  {
                 "cpe:/o:suse:rancher:2.5.8", false, null, "",
                 List.of(), List.of(), List.of(), List.of(), ProductType.base, false);
         assertNull(product.getArch());
+    }
+
+
+    private static void setupWireMockServer(WireMockServer mockServer, String path) {
+        mockServer.stubFor(
+            get(urlMatching("/connect/organizations/" + path + "(\\?page=2){0,1}"))
+                .willReturn(aResponse().withTransformers("scc-response-transformer"))
+        );
+    }
+
+    private static class SCCResponseTransformer extends ResponseDefinitionTransformer {
+
+        @Override
+        public String getName() {
+            return "scc-response-transformer";
+        }
+
+        @Override
+        public boolean applyGlobally() {
+            return false;
+        }
+
+        @Override
+        public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files,
+                                            Parameters parameters) {
+            String time = DateTimeFormatter.RFC_1123_DATE_TIME.format(Instant.now().atZone(ZoneOffset.UTC));
+            String filename = request.getUrl().replaceFirst("/", "").replaceFirst("\\?page=", "") + ".json";
+
+            var responseBuilder = ResponseDefinitionBuilder.like(responseDefinition)
+                .but()
+                .withHeader("Content-Type", "application/json")
+                .withHeader("Date", time)
+                .withHeader("Last-Modified", time)
+                .withHeader("Per-Page", "1")
+                .withHeader("Total", "2")
+                .withBody(loadResponseBody(filename))
+                .withStatus(HttpStatus.SC_OK);
+
+            String path = request.getUrl();
+            if (!path.endsWith("2")) {
+                String baseUrl = request.getScheme() + "://" + request.getHeader("Host");
+                String link = "<" + baseUrl + path + "2>";
+                responseBuilder.withHeader("Link", "%1$s; rel=\"last\", %1$s; rel=\"next\"".formatted(link));
+            }
+
+            return responseBuilder.build();
+        }
+
+        private byte[] loadResponseBody(String filename) {
+            try {
+                URL url = TestUtils.findTestData(filename);
+                try (InputStream in = url.openStream(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                    in.transferTo(out);
+                    out.flush();
+
+                    return out.toByteArray();
+                }
+            }
+            catch (ClassNotFoundException | IOException ex) {
+                throw new IllegalStateException("Unable to generate HTTP response for " + filename, ex);
+            }
+        }
     }
 }
