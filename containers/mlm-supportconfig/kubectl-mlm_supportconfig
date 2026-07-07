@@ -376,12 +376,19 @@ collect_pod_data() {
 collect_namespace_objects() {
     mkdir -p "${WORK}/namespace"
 
-    if kubectl get all,endpoints,endpointslices,networkpolicy,pvc,configmap,secret,ingress \
+    if kubectl get all,endpoints,endpointslices,networkpolicy,pvc,configmap,ingress \
             -n "$NS" -o yaml > "${WORK}/namespace/core.yaml" 2>/dev/null; then
         record "namespace-objects:core" "OK"
     else
         rm -f "${WORK}/namespace/core.yaml"
         record "namespace-objects:core" "SKIPPED (no read permission)"
+    fi
+    
+    if kubectl get secrets -n "$NS" > "${WORK}/namespace/secrets.yaml" 2>/dev/null; then
+        record "namespace-objects:secrets" "OK"
+    else
+        rm -f "${WORK}/namespace/secrets.yaml"
+        record "namespace-secrets:core" "SKIPPED (no read permission)"
     fi
 
     if kubectl get ingressroute,ingressroutetcp -n "$NS" -o yaml > "${WORK}/namespace/traefik.yaml" 2>/dev/null \
