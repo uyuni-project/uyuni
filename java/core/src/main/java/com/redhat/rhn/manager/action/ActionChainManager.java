@@ -108,7 +108,7 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
-                null, ActionFactory.TYPE_PACKAGES_UPDATE);
+                null, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
     }
 
     /**
@@ -126,7 +126,7 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
-                null, ActionFactory.TYPE_PACKAGES_REMOVE);
+                null, ActionTypeEnum.TYPE_PACKAGES_REMOVE);
     }
 
     /**
@@ -154,7 +154,7 @@ public class ActionChainManager {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
                 actions.add(schedulePackageActionByOs(user, server, entry.getValue(),
                         earliestAction, actionChain, sortOrder,
-                        ActionFactory.TYPE_PACKAGES_UPDATE));
+                        ActionTypeEnum.TYPE_PACKAGES_UPDATE));
             }
             return actions;
         }
@@ -172,7 +172,7 @@ public class ActionChainManager {
                 List<Map<String, Long>> packages = entry.getKey();
                 actions.addAll(
                         schedulePackageActionsByOs(user, servers, packages,
-                        earliestAction, null, ActionFactory.TYPE_PACKAGES_UPDATE)
+                        earliestAction, null, ActionTypeEnum.TYPE_PACKAGES_UPDATE)
                 );
             }
             return actions;
@@ -213,14 +213,14 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return (PackageAction) schedulePackageActions(user, packages,
-            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
+                ActionTypeEnum.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
     }
 
     /**
      * Schedules generic package actions on multiple servers.
      * @param user the user scheduling actions
      * @param packages a list of "package maps"
-     * @param type the type
+     * @param actionTypeEnum the type
      * @param earliestAction the earliest execution date
      * @param actionChain the action chain or null
      * @param sortOrder the sort order or null
@@ -232,13 +232,13 @@ public class ActionChainManager {
      * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
      */
     private static Set<Action> schedulePackageActions(User user,
-            List<Map<String, Long>> packages, ActionType type, Date earliestAction,
+            List<Map<String, Long>> packages, ActionTypeEnum actionTypeEnum, Date earliestAction,
             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = type.getPackageActionName();
+        String name = actionTypeEnum.getPackageActionName();
 
-        Set<Action> result = createActions(user, type, name, earliestAction,
+        Set<Action> result = createActions(user, actionTypeEnum, name, earliestAction,
             actionChain, sortOrder, serverIds);
 
         ActionManager.addPackageActionDetails(result, packages);
@@ -594,7 +594,7 @@ public class ActionChainManager {
         ActionChain actionChain) throws TaskomaticApiException {
 
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
     }
 
     /**
@@ -613,7 +613,7 @@ public class ActionChainManager {
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) throws TaskomaticApiException {
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
-                ActionFactory.TYPE_PACKAGES_REMOVE);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE);
     }
 
     /**
@@ -707,7 +707,7 @@ public class ActionChainManager {
      */
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
-            Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
+            Integer sortOrder, ActionTypeEnum linuxActionType) throws TaskomaticApiException {
         Set<Action> actions = schedulePackageActions(user, packages, linuxActionType,
                 earliest, actionChain, sortOrder, Set.of(server.getId()));
         return (PackageAction) actions.iterator().next();
@@ -727,7 +727,7 @@ public class ActionChainManager {
      */
     private static List<Action> schedulePackageActionsByOs(User user,
             Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
-            ActionChain actionChain, ActionType linuxActionType)
+            ActionChain actionChain, ActionTypeEnum linuxActionType)
         throws TaskomaticApiException {
 
         List<Action> result = new LinkedList<>();
