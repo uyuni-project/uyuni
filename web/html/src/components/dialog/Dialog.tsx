@@ -22,11 +22,8 @@ export type DialogProps = {
   closableModal?: boolean;
 };
 
-const appElement = document.querySelectorAll("header.navbar-pf, .spacewalk-main-column-layout");
-if (appElement.length > 0) {
-  const setAppElement = ReactModal.setAppElement as (appElement: HTMLElement | NodeList) => void;
-  setAppElement(appElement);
-}
+const appElement = document.querySelector<HTMLElement>(".spacewalk-main-column-layout") ?? document.body;
+ReactModal.setAppElement(appElement);
 
 export function Dialog(props: DialogProps) {
   const closableModal = props.closableModal ?? true;
