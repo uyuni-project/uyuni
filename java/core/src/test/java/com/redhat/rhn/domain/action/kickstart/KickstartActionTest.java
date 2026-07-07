@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -41,9 +42,8 @@ public class KickstartActionTest extends BaseTestCase {
      */
     @Test
     public void testLookupKickstartAction() throws Exception {
-        Action newA = ActionFactoryTest.createAction(
-                UserTestUtils.createUser(this),
-            ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(this),
+                ActionTypeEnum.TYPE_KICKSTART_INITIATE);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
 
@@ -57,9 +57,8 @@ public class KickstartActionTest extends BaseTestCase {
     @Test
     public void testKickstartInitiateAction() throws Exception {
 
-        Action newA = ActionFactoryTest.createAction(
-                UserTestUtils.createUser(this),
-                ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(this),
+                ActionTypeEnum.TYPE_KICKSTART_INITIATE);
         Long id = newA.getId();
         String appendTestString = "Append Test String";
 
@@ -92,9 +91,8 @@ public class KickstartActionTest extends BaseTestCase {
     @Test
     public void testKickstartScheduleSyncAction() throws Exception {
 
-        Action newA = ActionFactoryTest.createAction(
-                UserTestUtils.createUser(this),
-                ActionFactory.TYPE_KICKSTART_SCHEDULE_SYNC);
+        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(this),
+                ActionTypeEnum.TYPE_KICKSTART_SCHEDULE_SYNC);
         Long id = newA.getId();
         String appendTestString = "Append Test String";
 

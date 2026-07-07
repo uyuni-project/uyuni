@@ -26,8 +26,8 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
@@ -1471,13 +1471,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
 
         // non-offending action
-        Action allowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action allowedAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         // assign it to both systems
         ServerActionTest.createServerAction(systemWith, allowedAction);
         ServerActionTest.createServerAction(systemWithout, allowedAction);
 
         // offending action
-        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        Action disallowedAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_APPLY_STATES);
         // assign it to one system only
         ServerActionTest.createServerAction(systemWith, disallowedAction);
 

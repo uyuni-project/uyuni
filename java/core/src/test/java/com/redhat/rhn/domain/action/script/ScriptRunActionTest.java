@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -44,7 +45,7 @@ public class ScriptRunActionTest extends BaseTestCase {
     @Test
     public void testScriptAction() throws Exception {
         User usr = UserTestUtils.createUser(this);
-        Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
+        Action newA = ActionFactoryTest.createAction(usr, ActionTypeEnum.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         assertInstanceOf(ScriptRunAction.class, newA);
         ScriptRunAction action = (ScriptRunAction) newA;
@@ -104,7 +105,7 @@ public class ScriptRunActionTest extends BaseTestCase {
     @Test
     public void testScriptActionDetails() throws Exception {
         User usr = UserTestUtils.createUser(this);
-        Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
+        Action newA = ActionFactoryTest.createAction(usr, ActionTypeEnum.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         assertInstanceOf(ScriptRunAction.class, newA);
         ScriptRunAction action = (ScriptRunAction) newA;

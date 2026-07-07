@@ -30,6 +30,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -288,17 +289,17 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         // assign an action not tied to maintenance mode
         MaintenanceTestUtils.createActionForServerAt(
-                        user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
+                        user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
         MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
+                .createActionForServerAt(user, ActionTypeEnum.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign an offending action to one system
         MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
+                .createActionForServerAt(user, ActionTypeEnum.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
 
         assertExceptionThrown(
                 () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId()), false),
@@ -365,7 +366,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         Server server = ServerTestUtils.createTestSystem(user);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ZonedDateTime start = ZonedDateTime.parse("2020-04-21T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
 
@@ -415,18 +416,18 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         //sapAction1
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
+                user, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
+                user, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         //coreAction2
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
         List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
@@ -492,18 +493,18 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Action Chain which start inside of the window, but has parts outside of the window
         // Expected Result: No change
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
+                user, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_REBOOT, sapServer,
+                user, ActionTypeEnum.TYPE_REBOOT, sapServer,
                 "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: Cancel all Actions
         Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T09:59:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T09:59:00+02:00"); //moved
         //sapAction4
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
+                user, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
 
         List<Action> sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         assertEquals(4, sapActionsBefore.size());
@@ -511,17 +512,17 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Action Chain which is inside of a Window but the window gets moved.
         // Expected Result: Cancel all Actions
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                user, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         //coreAction2
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
+                user, ActionTypeEnum.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: No change
         Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-04-30T11:59:30+02:00"); //stay
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-04-30T11:59:30+02:00"); //stay
         Action coreAction4 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
+                user, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
 
         List<Action> coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
         assertEquals(4, coreActionsBefore.size());

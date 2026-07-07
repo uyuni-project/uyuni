@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -39,7 +40,7 @@ public class PackageListSetupActionTest extends RhnMockStrutsTestCase {
         setRequestPathInfo("/schedule/PackageList");
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);
         ServerActionTest.createServerAction(server, a);
         ActionFactory.save(a);

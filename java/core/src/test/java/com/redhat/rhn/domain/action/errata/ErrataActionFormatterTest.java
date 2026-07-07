@@ -16,8 +16,8 @@ package com.redhat.rhn.domain.action.errata;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -37,7 +37,7 @@ public class ErrataActionFormatterTest extends BaseTestCaseWithUser {
     @Test
     public void testGetRelatedObjectDescription() throws Exception {
         ErrataAction action = (ErrataAction) ActionFactoryTest.createAction(user,
-            ActionFactory.TYPE_ERRATA);
+                ActionTypeEnum.TYPE_ERRATA);
         ErrataActionFormatter formatter = new ErrataActionFormatter(action);
 
         Errata errata = action.getErrata().iterator().next();

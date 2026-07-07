@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -105,7 +106,7 @@ public class ServerActionTest extends BaseTestCase {
     @Test
     public void testCreate() throws Exception {
         User user = UserTestUtils.createUser(this);
-        ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         new ActionPackageDetails();
         ServerAction child = createServerAction(ServerFactoryTest
                 .createTestServer(user), parent);
@@ -126,9 +127,7 @@ public class ServerActionTest extends BaseTestCase {
      */
     @Test
     public void testLookupServerAction() throws Exception {
-        Action newA = ActionFactoryTest.createAction(
-                UserTestUtils.createUser(this),
-                ActionFactory.TYPE_REBOOT);
+        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser(this), ActionTypeEnum.TYPE_REBOOT);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
         assertNotNull(a);

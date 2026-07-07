@@ -752,11 +752,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // prerequisite is still queued
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction prereqServerAction = createChildServerAction(prereq, ServerAction::setStatusQueued, 5L);
 
         // action is queued as well
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -797,7 +797,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteCompletedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService testService = countSaltActionCalls(counter);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusCompleted, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -839,7 +839,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteFailedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService testService = countSaltActionCalls(counter);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusFailed, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -861,10 +861,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltServerActionService testService = countSaltActionCalls(counter);
 
         // prerequisite failed
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         createChildServerAction(prereq, ServerAction::setStatusFailed, 0L);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -890,7 +890,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // create action without servers
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
         saltServerActionService.executeSSHAction(action, minion);
@@ -917,7 +917,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -943,7 +943,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             }
         };
         SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
         try {
             testService.executeSSHAction(action, minion);
@@ -1004,12 +1004,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // prerequisite is still queued
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ServerAction prereqServerAction = createChildServerAction(prereq, ServerAction::setStatusQueued, 5L);
         prereq.setServerActions(Collections.singleton(prereqServerAction));
 
         // action is queued as well
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -1026,7 +1026,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
 
         // set the auto generated server action to failed
         action.getServerActions().forEach(sa -> sa.fail("not needed"));
@@ -1061,7 +1061,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer firstMinion = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer secondMinion = MinionServerFactoryTest.createTestMinionServer(user);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
 
         // set the auto generated server action to failed
         action.getServerActions().forEach(sa -> sa.fail("not needed"));
@@ -1119,7 +1119,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testAnsiblePlaybookAction() throws Exception {
         MinionServer controlNode = MinionServerFactoryTest.createTestMinionServer(user);
 
-        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_PLAYBOOK);
+        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_PLAYBOOK);
         PlaybookActionDetails details = new PlaybookActionDetails();
         details.setInventoryPath("/path/to/my/hosts");
         details.setPlaybookPath("/path/to/myplaybook.yml");

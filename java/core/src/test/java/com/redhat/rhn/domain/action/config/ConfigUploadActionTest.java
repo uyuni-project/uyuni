@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -36,7 +37,7 @@ public class ConfigUploadActionTest extends BaseTestCase {
         //create the action
         User user = UserTestUtils.createUser("bob", "ibm");
         Action a =
-            ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
+            ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
 
         //look it back up
         Action lookedUp = ActionFactory.lookupByUserAndId(user, a.getId());

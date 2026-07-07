@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.SaltTestCaseExtension;
@@ -41,7 +42,7 @@ public class ConfigActionTest extends BaseTestCase {
         User usr = UserTestUtils.createUser(this);
 
         ConfigAction testAction = (ConfigAction)ActionFactoryTest.createAction(usr,
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ConfigRevisionActionTest.createTestRevision(usr, testAction);
         ActionFactory.save(testAction);
         TestUtils.flushAndEvict(testAction);
@@ -63,7 +64,7 @@ public class ConfigActionTest extends BaseTestCase {
     @Test
     public void testCreateConfigDeployAction() throws Exception {
         User user = UserTestUtils.createUser(this);
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
 
         assertNotNull(a);
         assertInstanceOf(ConfigAction.class, a);
@@ -74,7 +75,7 @@ public class ConfigActionTest extends BaseTestCase {
     @Test
     public void testCreateConfigVerifyAction() throws Exception {
         User user = UserTestUtils.createUser(this);
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_VERIFY);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_VERIFY);
 
         assertNotNull(a);
         assertInstanceOf(ConfigAction.class, a);
@@ -85,7 +86,7 @@ public class ConfigActionTest extends BaseTestCase {
     @Test
     public void testCreateConfigDiffAction() throws Exception {
         User user = UserTestUtils.createUser(this);
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DIFF);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
 
         assertNotNull(a);
         assertInstanceOf(ConfigAction.class, a);

@@ -383,43 +383,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new Action from scratch with the given earliestIn execution time.
-     * @param actionTypeIn the type of Action we want to create
-     * @param earliestIn The earliest time that this action can occur.
-     * @return the Action created
-     */
-    public static Action createAction(ActionType actionTypeIn, Date earliestIn) {
-        try {
-            Optional<ActionTypeEnum> actionTypeEnum = ActionTypeEnum.of(actionTypeIn);
-
-            Action newAction;
-            if (actionTypeEnum.isPresent()) {
-                newAction = actionTypeEnum.get().createAction();
-            }
-            else {
-                newAction = new Action();
-            }
-
-            newAction.setActionType(actionTypeIn);
-            newAction.setCreated(new Date());
-            newAction.setModified(new Date());
-            if (earliestIn == null) {
-                earliestIn = new Date();
-            }
-            newAction.setEarliestAction(earliestIn);
-            //in perl (modules/rhn/RHN/DB/Scheduler.pm) version is given a 2. So that's what I did.
-            newAction.setVersion(2L);
-            newAction.setArchived(0L); //not archived
-
-            return newAction;
-        }
-        catch (ReflectiveOperationException eIn) {
-            LOG.error("Error while creating action of type {}", actionTypeIn.getLabel(), eIn);
-            throw new RuntimeException(eIn);
-        }
-    }
-
-    /**
      * Lookup an Action by the id, assuming that it is in the same Org as
      * the user doing the search.  This method ensures security around the
      * Action.
