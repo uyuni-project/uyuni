@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -57,5 +58,29 @@ public class ColumnFilter extends BaseListFilter {
     public String toString() {
         return new ToStringBuilder(this).append("Column Key", key).
                             append("Attribute", attr).toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ColumnFilter other = (ColumnFilter) obj;
+        return Objects.equals(key, other.key) &&
+               Objects.equals(attr, other.attr);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, attr);
     }
 }
