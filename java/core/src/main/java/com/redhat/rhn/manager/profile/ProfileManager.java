@@ -317,7 +317,7 @@ public class ProfileManager extends BaseManager {
                     PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem, profpkgitem, param);
                     String evrKey = pm.getSystemEvr() + "|" + pm.getOtherEvr();
                     // If the package exists on one but not the other, we need to add it to the compare map
-                    if (pm.packageNotExistingOnBoth()) {
+                    if (pm.existsOnOneSideOnly()) {
                         if ((j + 1) == plist.size()) {
                             // this is the last entry in plist; therefore,
                             // this must be a difference between pkgs
@@ -380,7 +380,7 @@ public class ProfileManager extends BaseManager {
         else {
             PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem,
                     profpkgitem, param);
-            if (pm.packageNotExistingOnBoth()) {
+            if (pm.existsOnOneSideOnly()) {
                 log.debug("*** adding a PM(3): {}", pm.hashCode());
                 result.add(pm);
             }
@@ -671,7 +671,7 @@ public class ProfileManager extends BaseManager {
             }
 
             for (PackageMetadata pm : missingPackages) {
-                if (pm.canRemoveFromMissingPackages()) {
+                if (pm.isRemovableFromMissingPackages()) {
                     dr.remove(pm);
                 }
             }
@@ -754,7 +754,7 @@ public class ProfileManager extends BaseManager {
         // if we still have some missing packages, just remove them.
         if (!missingPackages.isEmpty()) {
             for (PackageMetadata pm : missingPackages) {
-                if (pm.canRemoveFromMissingPackages()) {
+                if (pm.isRemovableFromMissingPackages()) {
                     if (log.isDebugEnabled()) {
                         log.debug("Removing pm [{}]", pm.getName());
                     }
@@ -842,7 +842,7 @@ public class ProfileManager extends BaseManager {
             }
 
             for (PackageMetadata pm : missingPackages) {
-                if (pm.canRemoveFromMissingPackages()) {
+                if (pm.isRemovableFromMissingPackages()) {
                     dr.remove(pm);
                 }
             }
@@ -921,7 +921,7 @@ public class ProfileManager extends BaseManager {
         // if we still have some missing packages, just remove them.
         if (!missingPackages.isEmpty()) {
             for (PackageMetadata pm : missingPackages) {
-                if (pm.canRemoveFromMissingPackages()) {
+                if (pm.isRemovableFromMissingPackages()) {
                     if (log.isDebugEnabled()) {
                         log.debug("Removing pm [{}]", pm.getName());
                     }
@@ -1075,7 +1075,7 @@ public class ProfileManager extends BaseManager {
             // retrieve the packages with the same name that exist w/in channels
             List<PackageListItem> pkgsInChannel = pkgsInChannelsByNameId.get(pm.getMapHash());
 
-            if (pm.avoidCheckIfMissing()) {
+            if (pm.isSkipMissingCheck()) {
                 // makes no sense to check whether missing
                 continue;
             }

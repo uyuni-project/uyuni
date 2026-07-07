@@ -53,11 +53,11 @@ public class PackageMetadataFactory {
         if (packageEvrComparison < 0) {
             return new PackageMetadataOtherNewer(systemIn, otherIn, compareParamIn);
         }
-        else if (packageEvrComparison > 0) {
+
+        if (packageEvrComparison > 0) {
             return new PackageMetadataThisNewer(systemIn, otherIn, compareParamIn);
         }
-        else {
-            return new PackageMetadataNoDiff(systemIn, otherIn, compareParamIn);
-        }
+
+        return new PackageMetadataNoDiff(systemIn, otherIn, compareParamIn);
     }
 }
