@@ -469,8 +469,24 @@ public class ActionFactory extends HibernateFactory {
      * @param actionTypeEnumIn the ActionTypeEnum to lookup
      * @return Returns the ActionType corresponding to actionTypeEnumIn
      */
-    protected static ActionType lookupActionTypeByLabel(ActionTypeEnum actionTypeEnumIn) {
+    public static ActionType lookupActionTypeByEnum(ActionTypeEnum actionTypeEnumIn) {
+        if (actionTypeEnumIn == null) {
+            return null;
+        }
         return lookupActionTypeByLabel(actionTypeEnumIn.getLabel());
+    }
+
+    /**
+     * Checks if the action type is in maintenance mode only
+     * @param actionTypeEnumIn
+     * @return true if the action type exists and is in maintenance mode only
+     */
+    public static boolean isMaintenancemodeOnly(ActionTypeEnum actionTypeEnumIn) {
+        ActionType actionType = lookupActionTypeByEnum(actionTypeEnumIn);
+        if (null != actionType) {
+            return actionType.isMaintenancemodeOnly();
+        }
+        return false;
     }
 
     /**
@@ -1026,187 +1042,187 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing Package Refresh List action.  [ID:1]
      */
     public static final ActionType TYPE_PACKAGES_REFRESH_LIST =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
 
     /**
      * The constant representing Hardware Refreshlist action.  [ID:2]
      */
     public static final ActionType TYPE_HARDWARE_REFRESH_LIST =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
 
     /**
      * The constant representing Package Update action.  [ID:3]
      */
     public static final ActionType TYPE_PACKAGES_UPDATE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_UPDATE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
     /**
      * The constant representing Package Remove action.  [ID:4]
      */
     public static final ActionType TYPE_PACKAGES_REMOVE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_REMOVE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_REMOVE);
 
     /**
      * The constant representing Errata action.  [ID:5]
      */
     public static final ActionType TYPE_ERRATA =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_ERRATA);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_ERRATA);
 
     /**
      * The constant representing RHN Get server up2date config action. [ID:6]
      */
     public static final ActionType TYPE_UP2DATE_CONFIG_GET =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_UP2DATE_CONFIG_GET);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_UP2DATE_CONFIG_GET);
 
     /**
      * The constant representing RHN Update server up2date config action.  [ID:7]
      */
     public static final ActionType TYPE_UP2DATE_CONFIG_UPDATE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_UP2DATE_CONFIG_UPDATE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_UP2DATE_CONFIG_UPDATE);
 
     /**
      * The constant representing Package Delta action.  [ID:8]
      */
     public static final ActionType TYPE_PACKAGES_DELTA =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_DELTA);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_DELTA);
 
     /**
      * The constant representing Reboot action.  [ID:9]
      */
     public static final ActionType TYPE_REBOOT =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_REBOOT);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_REBOOT);
 
     /**
      * The constant representing Rollback Config action.  [ID:10]
      */
     public static final ActionType TYPE_ROLLBACK_CONFIG =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_ROLLBACK_CONFIG);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_ROLLBACK_CONFIG);
 
     /**
      * The constant representing "Refresh server-side transaction list"  [ID:11]
      */
     public static final ActionType TYPE_ROLLBACK_LISTTRANSACTIONS =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_ROLLBACK_LISTTRANSACTIONS);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_ROLLBACK_LISTTRANSACTIONS);
 
     /**
      * The constant representing "Automatic package installation".  [ID:13]
      */
     public static final ActionType TYPE_PACKAGES_AUTOUPDATE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_AUTOUPDATE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_AUTOUPDATE);
 
     /**
      * The constant representing "Package Synchronization".  [ID:14]
      */
     public static final ActionType TYPE_PACKAGES_RUNTRANSACTION =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_RUNTRANSACTION);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_RUNTRANSACTION);
 
 
     /**
      * The constant representing "Import config file data from system".  [ID:15]
      */
     public static final ActionType TYPE_CONFIGFILES_UPLOAD =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD);
 
     /**
      * The constant representing "Deploy config files to system".  [ID:16]
      */
     public static final ActionType TYPE_CONFIGFILES_DEPLOY =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
 
     /**
      * The constant representing "Verify deployed config files" [ID:17]
      */
     public static final ActionType TYPE_CONFIGFILES_VERIFY =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CONFIGFILES_VERIFY);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_VERIFY);
 
     /**
      * The constant representing
      * "Show differences between profiled config files and deployed config files"  [ID:18]
      */
     public static final ActionType TYPE_CONFIGFILES_DIFF =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
 
     /**
      * The constant representing "Initiate a kickstart".  [ID:19]
      */
     public static final ActionType TYPE_KICKSTART_INITIATE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_KICKSTART_INITIATE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_KICKSTART_INITIATE);
 
 
     /**
      * The constant representing "Initiate a kickstart for a guest".
      */
     public static final ActionType TYPE_KICKSTART_INITIATE_GUEST =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_KICKSTART_INITIATE_GUEST);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_KICKSTART_INITIATE_GUEST);
 
     /**
      * The constant representing "Schedule a package sync for kickstarts".  [ID:20]
      */
     public static final ActionType TYPE_KICKSTART_SCHEDULE_SYNC =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_KICKSTART_SCHEDULE_SYNC);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_KICKSTART_SCHEDULE_SYNC);
 
     /**
      * The constant representing
      * "Upload config file data based upon mtime to server" [ID:23]
      */
     public static final ActionType TYPE_CONFIGFILES_MTIME_UPLOAD =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CONFIGFILES_MTIME_UPLOAD);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_MTIME_UPLOAD);
 
     /**
      * The constant representing "Run an arbitrary script".  [ID:30]
      */
     public static final ActionType TYPE_SCRIPT_RUN =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_SCRIPT_RUN);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_SCRIPT_RUN);
 
     /**
      * The constant representing "RHN Daemon Configuration".  [ID:32]
      */
     public static final ActionType TYPE_DAEMON_CONFIG =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_DAEMON_CONFIG);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_DAEMON_CONFIG);
 
     /**
      * The constant representing "Verify deployed packages"  [ID:33]
      */
     public static final ActionType TYPE_PACKAGES_VERIFY =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_VERIFY);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_VERIFY);
 
     /**
      * The constant representing "Lock packages"  [ID:502]
      */
     public static final ActionType TYPE_PACKAGES_LOCK =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PACKAGES_LOCK);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PACKAGES_LOCK);
 
     /**
      * The constant representing "Allows for rhn-applet use with an PRODUCTNAME"  [ID:34]
      */
     public static final ActionType TYPE_RHN_APPLET_USE_SATELLITE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_RHN_APPLET_USE_SATELLITE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_RHN_APPLET_USE_SATELLITE);
 
     /**
      * The constant representing "Rollback a transaction".  [ID:197542]
      */
     public static final ActionType TYPE_ROLLBACK_ROLLBACK =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_ROLLBACK_ROLLBACK);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_ROLLBACK_ROLLBACK);
 
     /**
      * The constant representing "Subscribes a server to the RHN Tools channel
      * associated with its base channel." [ID:46]
      */
     public static final ActionType TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL);
 
     /**
      * The constant represting "Subscribes a virtualization guest to the RHN Tools channel
      * associated with its base channel." [ID: 47]
      */
     public static final ActionType TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL);
 
     public static final ActionType TYPE_SCAP_XCCDF_EVAL =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_SCAP_XCCDF_EVAL);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_SCAP_XCCDF_EVAL);
 
     public static final ActionType TYPE_CLIENTCERT_UPDATE_CLIENT_CERT =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT);
 
     public static final String TXN_OPERATION_INSERT = "insert";
     public static final String TXN_OPERATION_DELETE = "delete";
@@ -1215,73 +1231,73 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing Image deploy action.  [ID:500]
      */
     public static final ActionType TYPE_DEPLOY_IMAGE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_DEPLOY_IMAGE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_DEPLOY_IMAGE);
 
     /**
      * The constant representing distribution upgrade action.  [ID:501]
      */
     public static final ActionType TYPE_DIST_UPGRADE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_DIST_UPGRADE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_DIST_UPGRADE);
 
     /**
      * The constant representing application of salt states.  [ID:503]
      */
     public static final ActionType TYPE_APPLY_STATES =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_APPLY_STATES);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES);
 
     /**
      * The constant representing application of image build.  [ID:504]
      */
     public static final ActionType TYPE_IMAGE_BUILD =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_IMAGE_BUILD);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_IMAGE_BUILD);
 
     /**
      * The constant representing application of image inspect.  [ID:505]
      */
     public static final ActionType TYPE_IMAGE_INSPECT =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_IMAGE_INSPECT);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_IMAGE_INSPECT);
 
     /**
      * The constant representing setting of channels.  [ID:506]
      */
     public static final ActionType TYPE_SUBSCRIBE_CHANNELS =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
 
     /**
      * The constant representing "Execute an Ansible playbook" [ID:521]
      */
     public static final ActionType TYPE_PLAYBOOK =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_PLAYBOOK);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_PLAYBOOK);
 
     /**
      * The constant representing "Confidential Compute Attestation" [ID:523]
      */
     public static final ActionType TYPE_COCO_ATTESTATION =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_COCO_ATTESTATION);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_COCO_ATTESTATION);
 
     /**
      * The constant representing appstreams changes action. [ID:524]
      */
     public static final ActionType TYPE_APPSTREAM_CONFIGURE =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_APPSTREAM_CONFIGURE);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPSTREAM_CONFIGURE);
 
     /**
      * The constant representing "Refresh Ansible inventories" [ID:525]
      */
     public static final ActionType TYPE_INVENTORY =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_INVENTORY);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_INVENTORY);
 
     /**
      * The constant representing "Support Data Get" [ID:526]
      */
     public static final ActionType TYPE_SUPPORTDATA_GET =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_SUPPORTDATA_GET);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_SUPPORTDATA_GET);
 
     /**
      * The constant representing "Refresh Virtual Machine list" [ID:527]
      */
     public static final ActionType TYPE_VIRT_PROFILE_REFRESH =
-            lookupActionTypeByLabel(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH);
+            lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH);
 
 }
 

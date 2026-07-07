@@ -24,6 +24,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -191,5 +192,10 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
     @Override
     public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
         MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+    }
+
+    @Override
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return null;
     }
 }

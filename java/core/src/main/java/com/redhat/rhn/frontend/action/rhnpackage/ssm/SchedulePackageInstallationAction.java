@@ -17,14 +17,13 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
-import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -163,9 +162,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
     }
 
     @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (ActionFactory.TYPE_PACKAGES_UPDATE.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }
