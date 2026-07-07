@@ -31,10 +31,12 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -481,8 +483,11 @@ public class ActionManager extends BaseManager {
         //make that a strict business rule, here is where we can verify that
         //the given channel is the sandbox for the given server.
 
-        ConfigUploadAction a = (ConfigUploadAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_UPLOAD,
-                user, earliest);
+        ConfigUploadAction a = (ConfigUploadAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_CONFIGFILES_UPLOAD)
+                .withSchedulerUser(user)
+                .withEarliest(earliest)
+                .build();
 
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
@@ -546,7 +551,11 @@ public class ActionManager extends BaseManager {
                                                       Collection<Long> revisions,
                                                       Collection<Server> servers,
                                                       ActionType type, Date earliest) throws TaskomaticApiException {
-        ConfigAction a = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+        ConfigAction a = (ConfigAction) new ActionBuilder()
+                .ofType(type)
+                .withSchedulerUser(user)
+                .withEarliest(earliest)
+                .build();
 
         for (Server server : servers) {
             checkConfigActionOnServer(type, server);
@@ -1056,7 +1065,11 @@ public class ActionManager extends BaseManager {
             return null;
         }
 
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_RUNTRANSACTION, scheduler, new Date());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_PACKAGES_RUNTRANSACTION)
+                .withSchedulerUser(scheduler)
+                .build();
+
         ActionFactory.createAddServerAction(server, action);
         action.setEarliestAction(earliest);
 
@@ -1234,9 +1247,12 @@ public class ActionManager extends BaseManager {
                     scheduler, srvr, earliestAction, appendString, kickstartHost);
         }
 
-        KickstartAction ksaction = (KickstartAction) ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE,
-                scheduler,
-                earliestAction);
+        KickstartAction ksaction = (KickstartAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_KICKSTART_INITIATE)
+                .withSchedulerUser(scheduler)
+                .withEarliest(earliestAction)
+                .build();
+
         ActionFactory.createAddServerAction(srvr, ksaction);
 
         KickstartActionDetails kad = new KickstartActionDetails();
@@ -1264,10 +1280,12 @@ public class ActionManager extends BaseManager {
     public static KickstartGuestAction scheduleKickstartGuestAction(ProvisionVirtualInstanceCommand pcmd,
                                                                     Long ksSessionId) {
 
-        KickstartGuestAction ksAction = (KickstartGuestAction)
-                ActionFactory.createAction(ActionFactory.TYPE_KICKSTART_INITIATE_GUEST,
-                        pcmd.getUser(),
-                        pcmd.getScheduleDate());
+        KickstartGuestAction ksAction = (KickstartGuestAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_KICKSTART_INITIATE_GUEST)
+                .withSchedulerUser(pcmd.getUser())
+                .withEarliest(pcmd.getScheduleDate())
+                .build();
+
         ActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
 
         KickstartGuestActionDetails kad = new KickstartGuestActionDetails();
@@ -1314,7 +1332,11 @@ public class ActionManager extends BaseManager {
      * @return Currently scheduled KickstartAction
      */
     public static Action scheduleRebootAction(User scheduler, Server srvr, Date earliestAction) {
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT, scheduler, earliestAction);
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_REBOOT)
+                .withSchedulerUser(scheduler)
+                .withEarliest(earliestAction)
+                .build();
         ActionFactory.createAddServerAction(srvr, action);
         return action;
     }
@@ -1330,7 +1352,11 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr, Date earliestAction) {
         checkSaltOrManagementEntitlement(srvr.getId());
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, scheduler, earliestAction);
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST)
+                .withSchedulerUser(scheduler)
+                .withEarliest(earliestAction)
+                .build();
         ActionFactory.createAddServerAction(srvr, action);
         return action;
     }
@@ -1700,9 +1726,11 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleReboot(User scheduler, Server server, Date earliestAction)
             throws TaskomaticApiException {
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT,
-                scheduler,
-                earliestAction);
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_REBOOT)
+                .withSchedulerUser(scheduler)
+                .withEarliest(earliestAction)
+                .build();
         ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
@@ -1726,9 +1754,11 @@ public class ActionManager extends BaseManager {
             throw new MissingCapabilityException("spacewalk-client-cert", server);
         }
 
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
-                scheduler,
-                (earliestAction == null ? new Date() : earliestAction));
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT)
+                .withSchedulerUser(scheduler)
+                .withEarliest(earliestAction)
+                .build();
         ActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);

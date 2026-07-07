@@ -19,6 +19,7 @@ import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -396,7 +397,11 @@ public class ActionChainManager {
         }
         else {
             for (Server server : servers) {
-                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+                ConfigAction action = (ConfigAction) new ActionBuilder()
+                        .ofType(type)
+                        .withSchedulerUser(user)
+                        .withEarliest(earliest)
+                        .build();
                 ActionManager.checkConfigActionOnServer(type, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions, action,
@@ -444,7 +449,12 @@ public class ActionChainManager {
         ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
-            ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+            ConfigAction action = (ConfigAction) new ActionBuilder()
+                    .ofType(type)
+                    .withSchedulerUser(user)
+                    .withEarliest(earliest)
+                    .build();
+
             ActionFactory.save(action);
 
             for (Server server : servers) {
@@ -461,7 +471,11 @@ public class ActionChainManager {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Server server : servers) {
-                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+                ConfigAction action = (ConfigAction) new ActionBuilder()
+                        .ofType(type)
+                        .withSchedulerUser(user)
+                        .withEarliest(earliest)
+                        .build();
                 ActionFactory.save(action);
                 result.add(action);
                 ActionManager.checkConfigActionOnServer(type, server);

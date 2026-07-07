@@ -20,11 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -466,8 +468,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        ConfigAction configAction = (ConfigAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                user, Date.from(now.toInstant()));
+        ConfigAction configAction = (ConfigAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY)
+                .withSchedulerUser(user)
+                .withEarliest(Date.from(now.toInstant()))
+                .build();
 
         ActionFactory.addServerToAction(minion1, configAction);
         ActionFactory.addServerToAction(minion2, configAction);
