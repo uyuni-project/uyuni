@@ -1,0 +1,16 @@
+include ./minion-header.jade
+
+#snapshots
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.title = "#{title}";
+    window.serverId = "#{server.id}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/details/snapshots')
+        .then(function(module) {
+            module.renderer('snapshots', {
+                serverId: "#{server.id}",
+            })
+        });
