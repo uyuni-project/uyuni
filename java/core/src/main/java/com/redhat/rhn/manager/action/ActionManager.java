@@ -1022,7 +1022,7 @@ public class ActionManager extends BaseManager {
         checkSaltOrManagementEntitlement(server.getId());
 
         Action action = schedulePackageAction(scheduler,
-                null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
+                null, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
 
         ActionFactory.save(action);
         return (PackageAction) action;
@@ -1154,7 +1154,7 @@ public class ActionManager extends BaseManager {
         return ActionManager.schedulePackageAction(
                 scheduler,
                 packagesList,
-                ActionFactory.TYPE_PACKAGES_LOCK,
+                ActionTypeEnum.TYPE_PACKAGES_LOCK,
                 earliest,
                 servers
         );
@@ -1456,21 +1456,22 @@ public class ActionManager extends BaseManager {
      * @param scheduler      The user scheduling the action.
      * @param pkgs           A list of maps containing keys 'name_id', 'evr_id' and
      *                       optional 'arch_id' with Long values.
-     * @param type           The type of the package action.  One of the static types found in
+     * @param actionTypeEnum The type of the package action.  One of the static types found in
      *                       ActionFactory
      * @param earliestAction The earliest time that this action could happen.
      * @param servers        The server(s) that this action is for.
      * @return The action that has been scheduled.
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs,
+                                               ActionTypeEnum actionTypeEnum,
                                                Date earliestAction, Server... servers) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<>();
         for (Server s : servers) {
             serverIds.add(s.getId());
         }
 
-        return schedulePackageAction(scheduler, pkgs, type, earliestAction, serverIds);
+        return schedulePackageAction(scheduler, pkgs, actionTypeEnum, earliestAction, serverIds);
     }
 
     /**
@@ -1480,27 +1481,28 @@ public class ActionManager extends BaseManager {
      * @param scheduler      The user scheduling the action.
      * @param pkgs           A list of maps containing keys 'name_id', 'evr_id' and
      *                       optional 'arch_id' with Long values.
-     * @param type           The type of the package action.  One of the static types found in
+     * @param actionTypeEnum The type of the package action.  One of the static types found in
      *                       ActionFactory
      * @param earliestAction The earliest time that this action could happen.
      * @param serverIds      The server ids that this action is for.
      * @return The action that has been scheduled.
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs, ActionType type,
+    public static Action schedulePackageAction(User scheduler, List<Map<String, Long>> pkgs,
+                                               ActionTypeEnum actionTypeEnum,
                                                Date earliestAction, Set<Long> serverIds)
             throws TaskomaticApiException {
 
-        String name = type.getPackageActionName();
+        String name = actionTypeEnum.getPackageActionName();
 
-        Action action = ActionFactory.createAndSaveAction(type, scheduler, name, earliestAction);
+        Action action = ActionFactory.createAndSaveAction(actionTypeEnum, scheduler, name, earliestAction);
         ActionFactory.scheduleForExecution(action, serverIds);
 
         ActionFactory.save(action);
 
         addPackageActionDetails(List.of(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
-        if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+        if (ActionTypeEnum.TYPE_PACKAGES_UPDATE == actionTypeEnum) {
             MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), scheduler.getOrg());
         }
 
