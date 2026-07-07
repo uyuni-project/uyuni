@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -532,7 +533,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         Action removal = null;
         if (!installed.isEmpty()) {
             removal = ActionManager.schedulePackageAction(user, installed,
-                    ActionFactory.TYPE_PACKAGES_REMOVE, scheduleDate, hostServer);
+                    ActionTypeEnum.TYPE_PACKAGES_REMOVE, scheduleDate, hostServer);
         }
 
         // Install packages on the host server.
@@ -540,7 +541,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         if (!this.packagesToInstall.isEmpty()) {
             log.debug("** Creating packageAction");
             packageAction = ActionManager.schedulePackageAction(this.user, this.packagesToInstall,
-                    ActionFactory.TYPE_PACKAGES_UPDATE, scheduleDate, hostServer);
+                    ActionTypeEnum.TYPE_PACKAGES_UPDATE, scheduleDate, hostServer);
 
             packageAction.setPrerequisite(removal);
             log.debug("** Created packageAction ? {}", packageAction.getId());

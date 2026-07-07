@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
@@ -85,7 +86,7 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
             Date now = new Date();
             try {
                 PackageAction a = (PackageAction) ActionManager.schedulePackageAction(user,
-                        (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, now,
+                        (List) null, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST, now,
                         serverIds);
                 ActionFactory.save(a);
                 ActionMessages msgs = new ActionMessages();
