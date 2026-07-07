@@ -14,19 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SUBSCRIBE_CHANNELS;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
-import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -177,9 +176,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
     }
 
     @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_SUBSCRIBE_CHANNELS.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS;
     }
 }

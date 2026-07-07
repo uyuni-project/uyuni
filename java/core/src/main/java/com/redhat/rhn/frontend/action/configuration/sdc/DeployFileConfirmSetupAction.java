@@ -15,13 +15,7 @@
 
 package com.redhat.rhn.frontend.action.configuration.sdc;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_CONFIGFILES_DEPLOY;
-
-import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
-
-import java.util.Set;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 
 /**
  * DeployFileConfirmSetupAction, for sdc configuration
@@ -29,9 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class DeployFileConfirmSetupAction extends FileListConfirmSetupAction {
 
     @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
     }
 }
