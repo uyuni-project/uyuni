@@ -84,7 +84,7 @@ public class PackageMetadataOtherOnly extends PackageMetadata {
      * {@inheritDoc}
      */
     @Override
-    public boolean canRemoveFromMissingPackages() {
+    public boolean isRemovableFromMissingPackages() {
         return true;
     }
 }

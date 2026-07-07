@@ -63,7 +63,7 @@ public class PackageMetadataNoDiff extends PackageMetadata {
      * {@inheritDoc}
      */
     @Override
-    public boolean packageNotExistingOnBoth() {
+    public boolean existsOnOneSideOnly() {
         return false;
     }
 }
