@@ -1,0 +1,1 @@
+- Fix hubsync package download checksum lookup (bsc#1270040)
