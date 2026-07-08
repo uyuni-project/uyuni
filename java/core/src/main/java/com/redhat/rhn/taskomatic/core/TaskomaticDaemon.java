@@ -146,7 +146,7 @@ public class TaskomaticDaemon {
             parseOverrides(commandLine);
         }
         try {
-            this.kernel = new SchedulerKernel();
+            this.kernel = SchedulerKernel.getInstance();
             Runnable r = () -> {
                 try {
                     kernel.startup();

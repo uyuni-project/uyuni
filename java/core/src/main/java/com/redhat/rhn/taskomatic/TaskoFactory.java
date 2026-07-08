@@ -15,10 +15,7 @@
  */
 package com.redhat.rhn.taskomatic;
 
-import static org.quartz.TriggerKey.triggerKey;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
@@ -642,8 +639,7 @@ public class TaskoFactory extends HibernateFactory {
         String jobLabel = "single-" + bunchName + "-";
         int count = 0;
         while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count).isEmpty() ||
-                (SchedulerKernel.getScheduler() != null && SchedulerKernel.getScheduler()
-                        .getTrigger(triggerKey(jobLabel + count, TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+                TaskoQuartzHelper.hasTrigger(jobLabel, orgId)) {
             count++;
         }
         return jobLabel + count;
