@@ -33,11 +33,13 @@ import org.quartz.DateBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.jdbcjobstore.Constants;
+import org.quartz.impl.matchers.GroupMatcher;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -68,6 +70,7 @@ public class TaskoQuartzHelper {
      */
     private TaskoQuartzHelper() {
     }
+
     /**
      * unschedule quartz trigger
      * just for sanity purposes
@@ -76,8 +79,7 @@ public class TaskoQuartzHelper {
     public static void unscheduleTrigger(Trigger trigger) {
         try {
             log.warn("Removing trigger {}.{}", trigger.getKey().getGroup(), trigger.getKey().getName());
-            SchedulerKernel.getScheduler().unscheduleJob(
-                    triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
+            getQuartzScheduler().unscheduleJob(triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
         }
         catch (SchedulerException e) {
             log.error("Unable to remove scheduled trigger {}", trigger.getJobKey(), e);
@@ -130,7 +132,7 @@ public class TaskoQuartzHelper {
         jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
+        Date date = getQuartzScheduler().scheduleJob(jobDetail.build(), trigger);
         log.info("Job {} scheduled successfully.", schedule.getJobLabel());
         return date;
     }
@@ -152,7 +154,7 @@ public class TaskoQuartzHelper {
         String quartzGroupName = getGroupName(schedule.getOrgId());
         TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp, quartzGroupName);
 
-        Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
+        Trigger retryTrigger = getQuartzScheduler().getTrigger(retryTriggerKey);
         if (retryTrigger != null) {
             log.warn("Retry trigger {} already exists", retryTriggerKey);
             return retryTrigger.getStartTime();
@@ -177,7 +179,7 @@ public class TaskoQuartzHelper {
         }
 
         // schedule job
-        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
+        Date date = getQuartzScheduler().scheduleJob(jobDetail.build(), trigger);
         log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
         return date;
     }
@@ -237,7 +239,7 @@ public class TaskoQuartzHelper {
      */
     public static void destroyJob(TriggerKey key) {
         try {
-            SchedulerKernel.getScheduler().unscheduleJob(key);
+            getQuartzScheduler().unscheduleJob(key);
             log.info("Job {} unscheduled successfully.", key.getName());
         }
         catch (SchedulerException e) {
@@ -311,4 +313,58 @@ public class TaskoQuartzHelper {
             e -> log.warn("Error removing invalid triggers.", e)
         );
     }
+
+    /**
+     * Check if a trigger exists for the given job label.
+     * @param jobLabel the label of the job
+     * @return true if a trigger exists, false otherwise
+     * @throws SchedulerException if there is an issue with the scheduler while checking for the trigger
+     */
+    public static boolean hasTrigger(String jobLabel) throws SchedulerException {
+        return getQuartzScheduler().getTrigger(triggerKey(jobLabel)) != null;
+    }
+
+    /**
+     * Check if a trigger exists for the given job label and organization ID.
+     * @param jobLabel the label of the job
+     * @param orgId the organization ID associated with the job
+     * @return true if a trigger exists, false otherwise
+     * @throws SchedulerException if there is an issue with the scheduler while checking for the trigger
+     */
+    public static boolean hasTrigger(String jobLabel, Integer orgId) throws SchedulerException {
+        return getQuartzScheduler().getTrigger(triggerKey(jobLabel, getGroupName(orgId))) != null;
+    }
+
+    /**
+     * Retrieve the trigger for the given job label and organization ID, including any retry
+     * triggers if the main trigger is not found.
+     * @param jobLabel the label of the job
+     * @param orgId the organization ID associated with the job
+     * @return the trigger if found, or null if no trigger exists for the given job label and organization ID
+     */
+    public static Trigger getTriggerIncludingRetries(String jobLabel, Integer orgId) {
+        try {
+            TriggerKey triggerKey = triggerKey(jobLabel, TaskoQuartzHelper.getGroupName(orgId));
+            Trigger trigger = getQuartzScheduler().getTrigger(triggerKey);
+            if (trigger != null) {
+                return trigger;
+            }
+
+            // Try to find retry triggers as fallback
+            triggerKey = getQuartzScheduler().getTriggerKeys(GroupMatcher.anyGroup()).stream()
+                .filter(it -> it.getName().startsWith(jobLabel + "-retry"))
+                .findFirst().orElse(null);
+
+            return getQuartzScheduler().getTrigger(triggerKey);
+        }
+        catch (SchedulerException ex) {
+            log.warn("Error while retrieving trigger for {} {}", jobLabel, orgId, ex);
+            return null;
+        }
+    }
+
+    private static Scheduler getQuartzScheduler() {
+        return SchedulerKernel.getInstance().getScheduler();
+    }
+
 }

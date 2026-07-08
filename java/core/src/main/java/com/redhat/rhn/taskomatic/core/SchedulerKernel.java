@@ -14,12 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.core;
 
-import static java.util.stream.Collectors.toSet;
-
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.ConfigException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.org.Org;
@@ -38,90 +35,82 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.jdbcjobstore.PostgreSQLDelegate;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.utils.Key;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 /**
  * Taskomatic Kernel.
  */
-public class SchedulerKernel {
+public final class SchedulerKernel {
 
-    private static Logger log = LogManager.getLogger(SchedulerKernel.class);
-    private final byte[] shutdownLock = new byte[0];
-    private static SchedulerFactory factory = null;
-    private static Scheduler scheduler = null;
-    private static TaskoXmlRpcServer xmlrpcServer = null;
-    private ChainedListener chainedTriggerListener = null;
-    private String dataSourceConfigPath = "org.quartz.jobStore.dataSource";
-    private String dataSourcePrefix = "org.quartz.dataSource";
-    private String defaultDataSource = "rhnDs";
+    private static final Logger LOG = LogManager.getLogger(SchedulerKernel.class);
+
+    private static final String DATASOURCE_CONFIG_PATH = "org.quartz.jobStore.dataSource";
+    private static final String DATASOURCE_PREFIX = "org.quartz.dataSource";
+    private static final String DEFAULT_DATASOURCE = "rhnDs";
+
+    // Singleton instance holder to ensure the initialization is lazy and thread-safe
+    private static final class InstanceHolder {
+        static final SchedulerKernel INSTANCE = new SchedulerKernel(Config.get());
+    }
+
+    private final Scheduler scheduler;
+
+    private final CountDownLatch shutDownSignal;
+
+    private final TaskoXmlRpcServer xmlrpcServer;
+
+    private final ChainedListener chainedTriggerListener;
 
     /**
      * Kernel main driver behind Taskomatic
-     * @throws InstantiationException thrown if this.scheduler can't be initialized.
-     * @throws UnknownHostException thrown if xmlrcp host is unknown
      */
-    public SchedulerKernel() throws InstantiationException, UnknownHostException {
-        Properties props = Config.get().getNamespaceProperties("org.quartz");
-        String dbUser = Config.get().getString(ConfigDefaults.DB_USER);
-        String dbPass = Config.get().getString(ConfigDefaults.DB_PASSWORD);
-        props.setProperty(dataSourceConfigPath, defaultDataSource);
-        String ds = dataSourcePrefix + "." + defaultDataSource;
-        props.setProperty(ds + ".user", dbUser);
-        props.setProperty(ds + ".password", dbPass);
-
-        props.setProperty("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate");
-
-        String driver = Config.get().getString(ConfigDefaults.DB_CLASS, "org.postgresql.Driver");
-        props.setProperty(ds + ".driver", driver);
-        props.setProperty(ds + ".URL", ConfigDefaults.get().getJdbcConnectionString());
-
+    private SchedulerKernel(Config config) {
         try {
-            SchedulerKernel.factory = new StdSchedulerFactory(props);
-            SchedulerKernel.scheduler = SchedulerKernel.factory.getScheduler();
-            SchedulerKernel.scheduler.setJobFactory(new RhnJobFactory());
+            // Build the trigger listener chain and register listeners used by task execution.
+            chainedTriggerListener = new ChainedListener();
+            chainedTriggerListener.addListener(new TaskEnvironmentListener());
 
-            // Setup TriggerListener chain
-            this.chainedTriggerListener = new ChainedListener();
-            this.chainedTriggerListener.addListener(new TaskEnvironmentListener());
+            // Create and configure the Quartz scheduler with the configured trigger listeners.
+            scheduler = createQuartScheduler(config, chainedTriggerListener);
 
-            try {
-                scheduler.getListenerManager()
-                        .addTriggerListener(this.chainedTriggerListener);
-            }
-            catch (SchedulerException e) {
-                throw new ConfigException(e.getLocalizedMessage(), e);
-            }
-            xmlrpcServer = new TaskoXmlRpcServer(Config.get());
-            xmlrpcServer.start();
+            // Initialize the XML-RPC endpoint used to expose Taskomatic operations.
+            xmlrpcServer = new TaskoXmlRpcServer(config);
 
-            PrometheusExporter.INSTANCE.startHttpServer();
-            PrometheusExporter.INSTANCE.registerScheduler(SchedulerKernel.scheduler, "taskomatic");
-        }
-        catch (SchedulerException e) {
-            log.error("Failed to initialize Quartz scheduler", e);
-            throw new InstantiationException("this.scheduler failed");
+            // Latch used to block until a shutdown signal is received.
+            shutDownSignal = new CountDownLatch(1);
         }
         catch (IOException ex) {
-            log.error("Failed to initialize the TaskoXmlRpcServer", ex);
+            LOG.error("Failed to initialize the TaskoXmlRpcServer", ex);
             throw new IllegalStateException("Failed to initialize the TaskoXmlRpcServer", ex);
         }
+    }
+
+    /**
+     * Retrieves the singleton instance
+     * @return the singleton instance
+     */
+    public static SchedulerKernel getInstance() {
+        return InstanceHolder.INSTANCE;
     }
 
     /**
      * returns scheduler
      * @return scheduler
      */
-    public static Scheduler getScheduler() {
-        return SchedulerKernel.scheduler;
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 
     /**
@@ -134,19 +123,22 @@ public class SchedulerKernel {
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
+
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions(GlobalInstanceHolder.SALT_API);
+
         try {
             TaskoQuartzHelper.cleanInvalidTriggers();
-            SchedulerKernel.scheduler.start();
+            scheduler.start();
             initializeAllSatSchedules();
-            synchronized (this.shutdownLock) {
-                try {
-                    this.shutdownLock.wait();
-                }
-                catch (InterruptedException ignored) {
-                    //ignored
-                }
+
+            xmlrpcServer.start();
+
+            try {
+                shutDownSignal.await();
+            }
+            catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
             }
         }
         catch (SchedulerException e) {
@@ -166,23 +158,24 @@ public class SchedulerKernel {
     }
 
     /**
-     * Shutsdown the application
+     * Shutdown the application
      */
     protected void shutdown() {
         try {
-            SchedulerKernel.scheduler.standby();
-            SchedulerKernel.scheduler.shutdown();
+            xmlrpcServer.stop();
+
+            scheduler.standby();
+            scheduler.shutdown();
         }
         catch (SchedulerException e) {
-            log.warn("Failed to cleanly stop the scheduler", e);
+            LOG.warn("Failed to cleanly stop the scheduler", e);
         }
         finally {
             MessageQueue.stopMessaging();
             HibernateFactory.closeSessionFactory();
+
             // Wake up thread waiting in startup() so it can exit
-            synchronized (this.shutdownLock) {
-                this.shutdownLock.notifyAll();
-            }
+            shutDownSignal.countDown();
         }
     }
 
@@ -190,26 +183,26 @@ public class SchedulerKernel {
     /**
      * load DB schedule configuration
      */
-    public void initializeAllSatSchedules() {
-        Set<String> jobNames;
-        Date now = new Date();
+    private void initializeAllSatSchedules() {
         try {
-            jobNames = SchedulerKernel.scheduler.getJobKeys(GroupMatcher.anyJobGroup())
-                    .stream().map(Key::getName).collect(toSet());
+            Date now = new Date();
+            Set<String> jobNames = scheduler.getJobKeys(GroupMatcher.anyJobGroup()).stream()
+                            .map(Key::getName)
+                            .collect(Collectors.toSet());
+
             for (TaskoSchedule schedule : TaskoFactory.listActiveSchedulesByOrg(null)) {
                 if (!jobNames.contains(schedule.getJobLabel())) {
                     schedule.sanityCheckForPredefinedSchedules();
-                    log.info("Initializing {}", schedule.getJobLabel());
+                    LOG.info("Initializing {}", schedule.getJobLabel());
                     TaskoQuartzHelper.createJob(schedule);
                 }
                 else {
-                    List<TaskoRun> runList =
-                            TaskoFactory.listNewerRunsBySchedule(schedule.getId(), now);
+                    List<TaskoRun> runList = TaskoFactory.listNewerRunsBySchedule(schedule.getId(), now);
                     if (!runList.isEmpty()) {
                         // there're runs in the future
                         // reinit the schedule
-                        log.warn("Reinitializing {}, found {} runs in the future.",
-                                schedule.getJobLabel(), runList.size());
+                        LOG.warn("Reinitializing {}, found {} runs in the future.",
+                            schedule.getJobLabel(), runList.size());
                         TaskoFactory.reinitializeScheduleFromNow(schedule, now);
                         for (TaskoRun run : runList) {
                             TaskoFactory.deleteRun(run);
@@ -217,15 +210,17 @@ public class SchedulerKernel {
                     }
                 }
             }
+
             // delete outdated reposync leftovers
             TaskomaticApi tasko = new TaskomaticApi();
             for (Org org : OrgFactory.lookupAllOrgs()) {
                 int removed = tasko.unscheduleInvalidRepoSyncSchedules(org);
                 if (removed > 0) {
-                    log.warn("{} outdated repo-sync schedules detected and removed within org {}",
+                    LOG.warn("{} outdated repo-sync schedules detected and removed within org {}",
                             removed, org.getId());
                 }
             }
+
             // close unfinished runs
             int interrupted = 0;
             for (TaskoRun run : TaskoFactory.listUnfinishedRuns()) {
@@ -235,12 +230,55 @@ public class SchedulerKernel {
                 interrupted++;
             }
             if (interrupted > 0) {
-                log.warn("Number of interrupted runs: {}", interrupted);
+                LOG.warn("Number of interrupted runs: {}", interrupted);
             }
-            HibernateFactory.closeSession();
         }
         catch (Exception e) {
-            log.error("Unexpected error while initializing schedules", e);
+            LOG.error("Unexpected error while initializing schedules", e);
         }
+        finally {
+            HibernateFactory.closeSession();
+        }
+    }
+
+    private static Scheduler createQuartScheduler(Config config, TriggerListener triggerListener) {
+        try {
+            Properties props = buildSchedulerProperties(config);
+            SchedulerFactory factory = new StdSchedulerFactory(props);
+            Scheduler scheduler = factory.getScheduler();
+
+            scheduler.setJobFactory(new RhnJobFactory());
+            scheduler.getListenerManager().addTriggerListener(triggerListener);
+
+            PrometheusExporter.INSTANCE.startHttpServer();
+            PrometheusExporter.INSTANCE.registerScheduler(scheduler, "taskomatic");
+
+            return scheduler;
+        }
+        catch (SchedulerException ex) {
+            LOG.error("Failed to initialize Quartz scheduler", ex);
+            throw new IllegalStateException("Failed to initialize Taskomatic scheduler kernel", ex);
+        }
+    }
+
+    private static Properties buildSchedulerProperties(Config config) {
+        Properties props = config.getNamespaceProperties("org.quartz");
+
+        String dbUser = config.getString(ConfigDefaults.DB_USER);
+        String dbPass = config.getString(ConfigDefaults.DB_PASSWORD);
+        String dbDriver = config.getString(ConfigDefaults.DB_CLASS, "org.postgresql.Driver");
+
+        String dataSourcePrefix = DATASOURCE_PREFIX + "." + DEFAULT_DATASOURCE;
+
+        props.setProperty(DATASOURCE_CONFIG_PATH, DEFAULT_DATASOURCE);
+
+        props.setProperty(dataSourcePrefix + ".user", dbUser);
+        props.setProperty(dataSourcePrefix + ".password", dbPass);
+        props.setProperty(dataSourcePrefix + ".driver", dbDriver);
+        props.setProperty(dataSourcePrefix + ".URL", ConfigDefaults.get().getJdbcConnectionString());
+
+        props.setProperty("org.quartz.jobStore.driverDelegateClass", PostgreSQLDelegate.class.getName());
+
+        return props;
     }
 }
