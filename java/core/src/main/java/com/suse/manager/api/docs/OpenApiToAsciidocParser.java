@@ -256,7 +256,7 @@ public class OpenApiToAsciidocParser {
                     });
                 }
             }
-            writer.println(" ");
+            writer.println();
             return;
         }
 
@@ -360,7 +360,7 @@ public class OpenApiToAsciidocParser {
         List<String> fields = new ArrayList<>();
         if (operation.getParameters() != null) {
             operation.getParameters().stream()
-                    .filter(parameter -> Objects.equals(parameter.getRequired(), requiredOnly))
+                    .filter(parameter -> Boolean.TRUE.equals(parameter.getRequired()) == requiredOnly)
                     .map(Parameter::getName)
                     .forEach(fields::add);
         }
@@ -381,7 +381,11 @@ public class OpenApiToAsciidocParser {
         Map<String, Schema> props = new LinkedHashMap<>();
         if (operation.getParameters() != null) {
             for (Parameter parameter : operation.getParameters()) {
-                props.put(parameter.getName(), parameter.getSchema());
+                Schema schema = parameter.getSchema();
+                if (schema != null && schema.getDescription() == null && parameter.getDescription() != null) {
+                    schema.setDescription(parameter.getDescription());
+                }
+                props.put(parameter.getName(), schema);
             }
         }
         Schema<?> body = getBodySchema(operation);
