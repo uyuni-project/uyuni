@@ -522,7 +522,8 @@ public class ActionChainManager {
     public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = createActions(user, ActionTypeEnum.TYPE_REBOOT,
-            ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, null, serverIds);
+                ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_REBOOT).getName(),
+                earliest, actionChain, null, serverIds);
         taskoScheduleActions(result, user, actionChain);
         return result;
     }
@@ -664,7 +665,7 @@ public class ActionChainManager {
         try {
             for (Action action : actions) {
                 if (actionChain == null) {
-                    if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
+                    if (ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
                         // Subscribing to channels is handled by the MinionActionExecutor even
                         // for traditional clients. Also the user must be passed for traditional
                         // clients.
@@ -674,7 +675,7 @@ public class ActionChainManager {
                         taskomaticApi.scheduleActionExecution(action);
                     }
                 }
-                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
+                if (ActionTypeEnum.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
                     MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
                 }
             }

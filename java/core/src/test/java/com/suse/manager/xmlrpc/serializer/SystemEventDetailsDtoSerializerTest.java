@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
@@ -44,8 +45,8 @@ public class SystemEventDetailsDtoSerializerTest {
         final SystemEventDetailsDto dto = new SystemEventDetailsDto();
 
         dto.setId(25L);
-        dto.setHistoryType(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getLabel());
-        dto.setHistoryTypeName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
+        dto.setHistoryType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
+        dto.setHistoryTypeName("Hardware List Refresh");
         dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
         dto.setSummary("Hardware List Refresh scheduled by (system)");
         dto.setCreated(Date.from(LocalDateTime.of(2021, 10, 5, 16, 55)

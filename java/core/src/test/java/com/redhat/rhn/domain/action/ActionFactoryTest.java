@@ -142,7 +142,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a.setEarliestAction(earliest);
 
         List<ServerAction> sa = ActionFactory.listPendingServerActionsByTypes(
-                List.of(ActionFactory.TYPE_VIRT_PROFILE_REFRESH));
+                List.of(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH)));
 
         assertEquals(1, sa.size());
     }

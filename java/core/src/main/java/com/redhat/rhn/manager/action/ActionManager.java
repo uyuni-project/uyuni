@@ -1385,7 +1385,8 @@ public class ActionManager extends BaseManager {
         }
 
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, scheduler,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
+                ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST).getName(),
+                earliestAction);
         ActionFactory.scheduleForExecution(action, serverIds);
         return action;
     }
@@ -1519,7 +1520,7 @@ public class ActionManager extends BaseManager {
         if (packageMaps != null) {
             List<Map<String, Long>> pkgMaps;
 
-            if (actions.iterator().next().getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+            if (ActionTypeEnum.TYPE_PACKAGES_REMOVE.equals(actions.iterator().next().getActionType())) {
                 // our packages.pkgremove state is handling duplicates
                 pkgMaps = packageMaps;
             }
@@ -1796,7 +1797,7 @@ public class ActionManager extends BaseManager {
         ActionTypeEnum actionTypeEnum = ActionTypeEnum.TYPE_DIST_UPGRADE;
 
         // Construct the action name
-        String actionName = ActionFactory.TYPE_DIST_UPGRADE.getName();
+        String actionName = ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_DIST_UPGRADE).getName();
         if (dryRun) {
             actionName += " (Dry Run)";
         }

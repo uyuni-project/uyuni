@@ -95,7 +95,7 @@ public class ServerActionTest extends BaseTestCase {
 
         Action parent = new ApplyStatesAction();
         parent.setId(243L);
-        parent.setActionType(ActionFactory.TYPE_APPLY_STATES);
+        parent.setActionType(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES));
         sa.setParentActionWithCheck(parent);
         assertNotEquals(sa, sa2);
 
