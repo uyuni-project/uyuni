@@ -12,7 +12,7 @@ type Props = {
 
 export function SsmCounter(props: Props) {
   const [count, setCount] = useState(props.count ?? 0);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState<string[]>([]);
   useWebSocket(errors, setErrors, "ssm-count", (value: number) => {
     setCount(value);
   });
