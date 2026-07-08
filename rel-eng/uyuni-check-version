@@ -141,7 +141,7 @@ def spacewalk_java_api_ver(args, project, java_api):
                     break
     # pylint: disable-next=broad-exception-caught
     except Exception as e:
-        print(f"Failed to read archive: {e}")
+        print_error(f"Failed to read archive: {e}")
     finally:
         remove(local_path)
 
