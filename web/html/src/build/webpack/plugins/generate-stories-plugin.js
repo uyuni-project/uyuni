@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+import { findExampleFiles, storyGroupName } from "../../storybook/example-discovery.js";
+
 /** Automatically gather all imports for story files */
 export default class GenerateStoriesPlugin {
   didApply = false;
@@ -34,28 +36,21 @@ export default class GenerateStoriesPlugin {
 
   /**
    *
-   * @param {import("webpack").Compiler} compiler
+   * @param {import("webpack").Compiler} _compiler
    * @param {Function} callback
    */
-  async beforeOrWatchRun(compiler, callback) {
+  async beforeOrWatchRun(_compiler, callback) {
     if (this.didApply) {
       callback();
       return;
     }
     this.didApply = true;
 
-    const files = await fs.readdir(this.inputDir, { recursive: true });
-    const storyFilePaths = files
-      .filter(
-        (item) => !item.startsWith("node_modules") && (item.endsWith(".example.ts") || item.endsWith(".example.tsx"))
-      )
-      .sort();
+    const storyFilePaths = await findExampleFiles(this.inputDir);
 
     const stories = storyFilePaths.map((filePath) => {
       const safeName = this.wordify(filePath);
-      // We use the parent directory name as the group name
-      const groupName = path.dirname(filePath).split("/").pop() ?? "Unknown";
-      return storyTemplate(filePath, safeName, groupName);
+      return storyTemplate(filePath, safeName, storyGroupName(filePath));
     });
 
     const output = fileTemplate(stories.join(""));
@@ -89,7 +84,7 @@ const fileTemplate = (content) =>
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.
- * See: web/html/src/build/plugins/generate-stories-plugin.js
+ * See: web/html/src/build/webpack/plugins/generate-stories-plugin.js
  */
 
 /* eslint-disable */
