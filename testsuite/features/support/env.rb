@@ -148,8 +148,7 @@ $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 World(MiniTest::Assertions)
 
 # Initialize the API client
-$api_test = new_api_client
-
+$api_test = new_api_client unless get_target('server').run_local('[[ "${UYUNI_NOT_INSTALLED:-}" == "true" ]]', check_errors: false).last.zero?
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new if $code_coverage_mode
 

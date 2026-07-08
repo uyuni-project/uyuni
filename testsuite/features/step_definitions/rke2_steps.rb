@@ -9,6 +9,12 @@ Then('the setup marker file should exist on "server"') do
   raise 'Server setup marker file does not exist' unless status.include? 'EXISTS'
 end
 
+Then(/^the environment variable "([^"]*)" is set on "([^"]*)"$/) do |var_name, host|
+  node = get_target(host)
+  _out, code = node.run("printenv #{var_name}", check_errors: false, runs_in_container: false)
+  raise "Environment variable '#{var_name}' is not set on #{host}" unless code.zero?
+end
+
 Given(/^The Kubernetes cluster is ready on "(.*)"$/) do |target|
   _out, code = get_target(target).run_local('kubectl get nodes && kubectl get namespace uyuni')
   raise "Kubernetes cluster is not ready or uyuni namespace is missing on #{target}" unless code.zero?
@@ -20,6 +26,22 @@ end
 
 And(/^(?:the|I wait until the) "(.*)" pod on "(.*)" in the namespace "(.*)" (?:becomes|should become) ready within (.*) minutes$/) do |name, target, namespace, mins|
   wait_for_pods(target, name, namespace, mins.to_i)
+end
+
+When(/^I apply the RKE2 YAML file "([^"]*)" on "([^"]*)"$/) do |filename, target|
+  _out, code = get_target(target).run_local("kubectl apply -f #{filename}")
+  raise ScriptError, "Failed to apply #{filename} on #{target}" unless code.zero?
+end
+
+When(/^I wait until "([^"]*)" helm chart is deployed in namespace "([^"]*)" on "([^"]*)"$/) do |chart, namespace, target|
+  node = get_target(target)
+  node.run_until_ok("helm status #{chart} --namespace #{namespace} | grep -q 'STATUS: deployed'", runs_in_container: false)
+end
+
+When(/^I set "([^"]*)" storage class as default on "([^"]*)"$/) do |storage_class, target|
+  cmd = "kubectl patch storageclass #{storage_class} -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
+  _out, code = get_target(target).run_local(cmd)
+  raise ScriptError, "Failed to set #{storage_class} as default storage class on #{target}" unless code.zero?
 end
 
 ### External CA setup and teardown steps
