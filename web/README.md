@@ -30,7 +30,7 @@ npm run proxy https://server.tf.local
 
 The external Storybook exists to improve frontend development and review workflows without replacing the legacy in-app style guide. It gives new and actively changed React components a standalone place for interactive documentation, args/controls, local regression checks.
 
-## How to run the storybook?
+## How to run Storybook?
 
 Inside the web directory run:
 
@@ -38,7 +38,7 @@ Inside the web directory run:
 npm run storybook
 ```
 
-This starts Storybook at [http://localhost:6006](http://localhost:6006). It reuses the existing `.example.tsx` files as generated legacy stories and supports new `.stories.tsx` files with Storybook args and controls. While Storybook is running, newly added, removed, or renamed `.example.tsx` files are regenerated automatically.
+This starts Storybook at [http://localhost:6006](http://localhost:6006). It reuses the existing `.example.ts` and `.example.tsx` files as generated legacy stories and supports new `.stories.tsx` files with Storybook args and controls. While Storybook is running, newly added, removed, or renamed `.example.ts` / `.example.tsx` files are regenerated automatically.
 
 To build a static Storybook locally:
 
@@ -48,7 +48,7 @@ npm run build-storybook
 
 The output is written to `storybook-static`.
 
-New or actively changed reusable components should get real `.stories.tsx` stories. Existing `.example.tsx` files are kept for compatibility and are wrapped automatically.
+New or actively changed reusable components should get real `.stories.tsx` stories. Existing `.example.ts` and `.example.tsx` files are kept for compatibility and are wrapped automatically.
 
 ## Legacy style guide of reusable components 
 
