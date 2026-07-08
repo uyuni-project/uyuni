@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -178,8 +177,9 @@ public class OpenApiToAsciidocParser {
         }
 
         Map<String, Schema> allProps = getAllPossibleProperties(operation);
-        allProps.forEach((paramName, schema) -> {
-            if (entry.activeParams().contains(paramName)) {
+        for (String paramName : entry.activeParams()) {
+            Schema schema = allProps.get(paramName);
+            if (schema != null) {
                 String type;
                 if ("array".equals(schema.getType())) {
                     type = "[.array]#string array#";
@@ -189,13 +189,13 @@ public class OpenApiToAsciidocParser {
                 }
                 String descriptionText = findDescription(schema);
                 writer.printf(
-                        "* %s  %s%s%n ",
+                        "* %s  %s%s%n%n",
                         type,
                         paramName,
                         descriptionText.isEmpty() ? "" : " - " + descriptionText
                 );
             }
-        });
+        }
 
         writer.println("\nReturns:\n");
         writeReturn(writer, operation);
@@ -437,7 +437,7 @@ public class OpenApiToAsciidocParser {
     private record DocEntry(String method, String anchor, Operation operation, List<String> activeParams) {
 
         static DocEntry create(String method, Operation operation, List<String> params, boolean securityRequired) {
-            String suffix = params.stream().sorted().collect(Collectors.joining("-"));
+            String suffix = String.join("-", params);
             String authPart = securityRequired ? "loggedInUser" : "";
 
             List<String> anchorParts = new ArrayList<>();
