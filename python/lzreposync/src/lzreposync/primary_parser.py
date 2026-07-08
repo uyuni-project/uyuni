@@ -1,9 +1,9 @@
 #  pylint: disable=missing-module-docstring
 
 import datetime
-import gzip
 import re
 from urllib.parse import urljoin
+from uyuni.common.fileutils import decompress_open
 from xml.dom import pulldom
 
 import rpm
@@ -136,14 +136,14 @@ class PrimaryParseError(Exception):
 class PrimaryParser:
     def __init__(self, primary_file, repository="", arch_filter=".*"):
         """
-        primary_file: In gzip format
+        primary_file: In gzip or xz format
         # TODO: use  uyuni.common.fileutils.decompress_open for different format handling (gz, xz, ect), However! we should close the file manually
         """
         if self.is_valid_primary_file(primary_file):
             self.primary_file = primary_file
         else:
             raise ValueError(
-                f"Bad format for primary file {primary_file}. Accepted formats: gzip"
+                f"Bad format for primary file {primary_file}. Accepted formats: gzip or xz"
             )
         self.current_package = None
         self.current_hdr = None
@@ -165,7 +165,7 @@ class PrimaryParser:
         Currently supported: Gzip
         """
         # Checking Gzip format
-        with gzip.open(primary_file) as fd:
+        with decompress_open(primary_file) as fd:
             # Checking the file magic number
             try:
                 fd.read(1)
@@ -180,12 +180,12 @@ class PrimaryParser:
 
     def parse_primary(self):
         """
-        Parser the primary.xml file (gzip format) using xml.dom.pulldom This is an incremental parsing,
+        Parser the primary.xml file (gzip or xz format) using xml.dom.pulldom This is an incremental parsing,
         it means that not the whole xml file is loaded in memory at once, but package by package.
         IMPORTANT!: We are ignoring 'src' packages
         """
 
-        with gzip.open(self.primary_file) as gz_primary:
+        with decompress_open(self.primary_file) as gz_primary:
             doc = pulldom.parse(gz_primary)
             for event, node in doc:
                 if (
