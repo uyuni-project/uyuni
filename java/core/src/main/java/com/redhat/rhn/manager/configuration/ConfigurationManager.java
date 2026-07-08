@@ -2291,7 +2291,7 @@ public class ConfigurationManager extends BaseManager {
 
         SsmConfigFilesEvent event =
                 new SsmConfigFilesEvent(usr.getId(), serverConfigMap, servers,
-                        ActionFactory.TYPE_CONFIGFILES_DEPLOY, datePicked, actionChain);
+                        ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY, datePicked, actionChain);
         MessageQueue.publish(event);
 
         Map<String, Long> m = new HashMap<>();

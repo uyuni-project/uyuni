@@ -15,8 +15,7 @@
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
@@ -89,7 +88,7 @@ public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction 
             HttpServletRequest request,
             HttpServletResponse response) {
         return schedule(mapping, formIn, request,
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
     }
 
 
@@ -105,7 +104,7 @@ public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction 
             HttpServletRequest request,
             HttpServletResponse response) {
         return schedule(mapping, formIn, request,
-                ActionFactory.TYPE_CONFIGFILES_DIFF);
+                ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
     }
 
     /**
@@ -118,7 +117,7 @@ public class ConfigListSubmitAction extends BaseSetOperateOnSelectedItemsAction 
     private ActionForward schedule(ActionMapping mapping,
             ActionForm formIn,
             HttpServletRequest request,
-            ActionType feature) {
+            ActionTypeEnum feature) {
         RhnSet set = updateSet(request);
         if (set.isEmpty()) {
             return handleEmptySelection(mapping, formIn, request);
