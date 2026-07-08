@@ -571,7 +571,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             assertTrue(r.isSuccess());
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertTrue(ActionTypeEnum.TYPE_ERRATA.equals(a.getActionType()));
+                    assertTrue(ActionTypeEnum.TYPE_ERRATA.equalsType(a.getActionType()));
 
                     assertEquals(sapAction1, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(sapServer.getId(), s.getId()));
@@ -579,7 +579,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertTrue(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.equals(a.getActionType()));
+                    assertTrue(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.equalsType(a.getActionType()));
 
                     assertEquals(coreAction3, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));

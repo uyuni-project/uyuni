@@ -131,7 +131,7 @@ public enum ActionTypeEnum {
      * @param actionTypeIn
      * @return true if equal, false otherwise
      */
-    public boolean equals(ActionType actionTypeIn) {
+    public boolean equalsType(ActionType actionTypeIn) {
         return (ActionTypeEnum.of(actionTypeIn).orElse(null) == this);
     }
 
