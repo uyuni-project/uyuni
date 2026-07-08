@@ -14,230 +14,96 @@
  */
 package com.redhat.rhn.taskomatic.core;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
- * Implementation of the Taskomatic schedule task execution system.
- * This class serves merely as an interface between the native daemon
- * library and the actual scheduler setup and running logic implemented
- * in SchedulerKernel.
+ * Entry point for starting Taskomatic scheduling.
+ * <p>
+ * This class obtains the {@link SchedulerKernel} singleton and starts it in
+ * a dedicated worker thread.
+ * <p>
+ * Despite its name, this class does not perform Unix-style daemonization
+ * (no fork/detach/pidfile handling). It is expected to run in the foreground,
+ * while process supervision and restart behavior are provided externally, by
+ * systemd through the taskomatic shell wrapper.
  * @see SchedulerKernel
  */
 public class TaskomaticDaemon {
 
-    public static final int ERR_SCHED_CREATE = -5;
-    public static final int SUCCESS = Integer.MIN_VALUE;
-    public static final Logger LOG = LogManager.getLogger(TaskomaticDaemon.class);
+    private static final Logger LOG = LogManager.getLogger(TaskomaticDaemon.class);
 
-    private Map<String, Option> masterOptionsMap = new HashMap<>();
-    private SchedulerKernel kernel;
+    private static final int SUCCESS = 0;
+
+    private static final int FAILURE = -1;
+
+    private final SchedulerKernel kernel;
 
     /**
-     * Main entry point for the native daemon
+     * Creates a new TaskomaticDaemon instance with the provided SchedulerKernel.
      *
-     * @param argv "Command-line" parameters
+     * @param kernelIn the {@link SchedulerKernel} instance to use for scheduling operations
+     */
+    private TaskomaticDaemon(SchedulerKernel kernelIn) {
+        this.kernel = kernelIn;
+    }
+
+    /**
+     * Main entry point for taskomatic
+     *
+     * @param argv "Command-line" parameters (currently ignored)
      */
     public static void main(String[] argv) {
-        TaskomaticDaemon daemon = new TaskomaticDaemon();
-        daemon.registerImplementation(argv);
+        TaskomaticDaemon taskomatic = new TaskomaticDaemon(SchedulerKernel.getInstance());
+        int exitCode = taskomatic.run();
+
+        System.exit(exitCode);
     }
 
     /**
-     * Starts TaskomaticDaemon
+     * Starts the scheduler kernel and waits until it exits.
      *
-     * @param argv Arguments configured in the daemon's config file
-     * @return Integer indicating status (null indicates success, else value indicates
-     * error code)
+     * @return {@link #SUCCESS} when startup runs to completion, {@link #FAILURE} otherwise
      */
-    public Integer start(String[] argv) {
-        Integer retval = null;
-        Options options = buildOptionsList();
-        int status;
-        if (options != null) {
-            status = startupWithOptions(options, argv);
-            if (status != SUCCESS) {
-                retval = status;
-            }
-        }
-        else {
-            status = startupWithoutOptions();
-            if (status != SUCCESS) {
-                retval = status;
-            }
-        }
-        return retval;
-    }
-
-    /**
-     * Parse startup options using jakarta-commons-cli and start
-     * the daemon implementation
-     *
-     * @param options Master list of options built by the daemon implementation
-     * @param argv    Startup arguments
-     * @return int indicates status where <code>TaskomaticDaemon.SUCCESS</code>
-     * indicates success and any other number indicates failure
-     */
-    private int startupWithOptions(Options options, String[] argv) {
-        int retval = SUCCESS;
-        CommandLineParser parser = null;
+    int run() {
         try {
-            parser = new DefaultParser();
-            CommandLine cl = parser.parse(options, argv);
-            retval = onStartup(cl);
+            CompletableFuture<Void> resultFuture = new CompletableFuture<>();
+
+            // With current implementation, using a separate thread here is mostly equivalent to
+            // running startup() in main, but we keep this split to separate lifecycle orchestration
+            // from the actual execution
+            Thread kernelThread = new Thread(() -> startKernel(resultFuture), "kernel-daemon");
+            kernelThread.start();
+            
+            // SchedulerKernel.startup() blocks until shutdown, so waiting here keeps the process alive.
+            resultFuture.get();
+            return SUCCESS;
         }
-        catch (ParseException e) {
-            retval = onOptionsParseError(e);
-            if (retval == SUCCESS) {
-                retval = onStartup(null);
-            }
+        catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            LOG.fatal("Thread interrupted while starting SchedulerKernel", ex);
+            return FAILURE;
         }
-        return retval;
+        catch (ExecutionException ex) {
+            LOG.fatal("Unable to start SchedulerKernel", ex.getCause());
+            return FAILURE;
+        }
+        catch (RuntimeException ex) {
+            LOG.fatal("Unexpected exception while starting TaskomaticDaemon", ex);
+            return FAILURE;
+        }
     }
 
-    /**
-     * Start the daemon implementation with no startup parameters
-     *
-     * @return int indicates status where <code>TaskomaticDaemon.SUCCESS</code>
-     * indicates success and any other number indicates failure
-     */
-    private int startupWithoutOptions() {
-        return onStartup(null);
-    }
-
-    protected Options buildOptionsList() {
-        Options accum = new Options();
-        createOption(accum, TaskomaticConstants.CLI_DEBUG,
-                false, null, "turn on debug mode");
-        createOption(accum, TaskomaticConstants.CLI_DAEMON,
-                false, null, "turn on daemon mode");
-        createOption(accum, TaskomaticConstants.CLI_SINGLE,
-                false, null, "run a single task and exit");
-        createOption(accum, TaskomaticConstants.CLI_HELP,
-                false, null, "prints out help screen");
-        createOption(accum, TaskomaticConstants.CLI_PIDFILE,
-                true, "<pidfile>", "use PID file <pidfile>");
-        createOption(accum, TaskomaticConstants.CLI_TASK,
-                true, "taskname", "run this task (may be specified multiple times)");
-        createOption(accum, TaskomaticConstants.CLI_DBURL,
-                true, "url", "jdbcurl");
-        createOption(accum, TaskomaticConstants.CLI_DBUSER,
-                true, "username", "database username");
-        createOption(accum, TaskomaticConstants.CLI_DBPASSWORD,
-                true, "password", "database password");
-        return accum;
-    }
-
-    protected int onStartup(CommandLine commandLine) {
-        int retval = SUCCESS;
-
-        if (commandLine != null) {
-            parseOverrides(commandLine);
-        }
+    private void startKernel(CompletableFuture<Void> resultFuture) {
         try {
-            this.kernel = SchedulerKernel.getInstance();
-            Runnable r = () -> {
-                try {
-                    kernel.startup();
-                }
-                catch (Throwable e) {
-                    LOG.fatal(e.getMessage());
-                    LOG.fatal(ExceptionUtils.getStackTrace(e));
-                    System.exit(-1);
-                }
-            };
-            Thread t = new Thread(r);
-            t.start();
+            kernel.startup();
+            resultFuture.complete(null);
         }
-        catch (Throwable t) {
-            LOG.fatal("Fatal error starting Taskomatic", t);
-            System.exit(-1);
+        catch (TaskomaticException | RuntimeException ex) {
+            resultFuture.completeExceptionally(ex);
         }
-        return retval;
-    }
-
-    protected int onShutdown(boolean breakFromUser) {
-        return 0;
-    }
-
-    private Map<String, Object> parseOverrides(CommandLine commandLine) {
-        Map<String, Object> configOverrides = new HashMap<>();
-        // Loop thru all possible options and let's see what we get
-        for (String optionName : this.masterOptionsMap.keySet()) {
-            if (commandLine.hasOption(optionName)) {
-
-                // All of these options are single-value options so they're
-                // grouped together here
-                if (optionName.equals(TaskomaticConstants.CLI_PIDFILE) ||
-                        optionName.equals(TaskomaticConstants.CLI_DBURL) ||
-                        optionName.equals(TaskomaticConstants.CLI_DBUSER) ||
-                        optionName.equals(TaskomaticConstants.CLI_DBPASSWORD)) {
-                    configOverrides.put(optionName,
-                            commandLine.getOptionValue(optionName));
-                }
-
-                // The presence of these options toggle them on, hence the use of
-                // Boolean.TRUE
-                else if (optionName.equals(TaskomaticConstants.CLI_DEBUG) ||
-                        optionName.equals(TaskomaticConstants.CLI_DAEMON) ||
-                        optionName.equals(TaskomaticConstants.CLI_SINGLE)) {
-                    configOverrides.put(optionName, Boolean.TRUE);
-                }
-
-                // Possibly multi-value list of task implementations to schedule
-                else if (optionName.equals(TaskomaticConstants.CLI_TASK)) {
-                    String[] taskImpls = commandLine.getOptionValues(optionName);
-                    if (taskImpls != null && taskImpls.length > 0) {
-                        configOverrides.put(optionName, Arrays.asList(taskImpls));
-                    }
-                }
-            }
-        }
-        return configOverrides;
-    }
-
-    private void createOption(Options accum, String longopt, boolean arg,
-                              String argName, String description) {
-        Option option = Option.builder(longopt)
-                .argName(argName)
-                .longOpt(longopt)
-                .hasArg(arg)
-                .desc(description)
-                .build();
-        accum.addOption(option);
-        this.masterOptionsMap.putIfAbsent(longopt, option);
-    }
-
-    /**
-     * Registers the daemon implementation with the scheduler
-     *
-     * @param argv startup parameters (if any)
-     */
-    protected void registerImplementation(String[] argv) {
-        start(argv);
-    }
-
-    /**
-     * Lifecycle method called when startup parameters cannot be parsed. This gives
-     * the daemon implementation an opportunity to do something about the error such
-     * as display a usage message.
-     *
-     * @param e the ParseException
-     * @return int indicates error code. If TaskomaticDaemon.SUCCESS is returned, then
-     * the framework will still try to start the daemon implementation _without_ parameters.
-     */
-    protected int onOptionsParseError(ParseException e) {
-        return SUCCESS;
     }
 }
