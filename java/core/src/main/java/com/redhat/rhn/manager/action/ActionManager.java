@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
@@ -236,13 +235,13 @@ public class ActionManager extends BaseManager {
      * This is useful especially in cases where we want to find the last deployed config action
      *
      * @param user   the user doing the search (needed for permission checking)
-     * @param type   the action type of the action to be queried.
+     * @param typeEnum the action type of the action to be queried.
      * @param server the server whose latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
+    public static Action lookupLastCompletedAction(User user, ActionTypeEnum typeEnum, Server server) {
         // TODO: check on user visibility ??
-        return ActionFactory.lookupLastCompletedAction(user, type, server);
+        return ActionFactory.lookupLastCompletedAction(user, typeEnum, server);
     }
 
     /**

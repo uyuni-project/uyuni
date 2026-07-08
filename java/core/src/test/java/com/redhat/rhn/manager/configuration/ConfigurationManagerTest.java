@@ -26,6 +26,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -1097,7 +1098,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                                     recentlyScheduledActions(user, null, 1);
         ConfigAction ca = null;
         for (ScheduledAction action : actions) {
-            if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.getName().
+            if (ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY).getName().
                     equals(action.getTypeName())) {
                 ca = (ConfigAction)ActionManager.lookupAction(user,
                         action.getId());
