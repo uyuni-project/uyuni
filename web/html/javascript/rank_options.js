@@ -79,9 +79,13 @@ supports javascript but does not support ajax..
 @param formName name of the form who has to be submitted.
 */
 function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
-    element = document.getElementById(rankingWidgetName);
-    storer = document.getElementById(storerName);
-    form = document.getElementById(formName);
+    const element = document.getElementById(rankingWidgetName);
+    const storer = document.getElementById(storerName);
+    const form = document.getElementById(formName) || document.forms[formName];
+    if (!element || !storer || !form) {
+        return false;
+    }
+
     storer.value = make_ranking_csv(rankingWidgetName);
     form.submit();
     return true;
@@ -98,9 +102,13 @@ function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
  * @param formName name of the form who has to be submitted.
  */
 function handle_ranking (rankingWidgetName, storerName, formName) {
-    element = document.getElementById(rankingWidgetName);
-    storer = document.getElementById(storerName);
-    form = document.getElementById(formName);
+    const element = document.getElementById(rankingWidgetName);
+    const storer = document.getElementById(storerName);
+    const form = document.getElementById(formName) || document.forms[formName];
+    if (!element || !storer || !form) {
+        return false;
+    }
+
     storer.value = make_ranking_csv(rankingWidgetName);
     return false;
 }
@@ -111,9 +119,13 @@ This function binds the values of each element of a list box  ('listBox') in a c
 @return a comma separated list of list elements...
 */
 function make_ranking_csv(listBoxName) {
-    var values =  new Array();
-    var listBox  = document.getElementById(listBoxName);
-    for (var i = 0; i < listBox.options.length; i++) {
+    const values =  new Array();
+    const listBox  = document.getElementById(listBoxName);
+    if (!listBox) {
+        return "";
+    }
+
+    for (let i = 0; i < listBox.options.length; i++) {
         values.push(listBox.options[i].value);
     }
     return values.join(',');
