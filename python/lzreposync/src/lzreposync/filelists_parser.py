@@ -1,11 +1,11 @@
 #  pylint: disable=missing-module-docstring
 
-import gzip
 import logging
 import os
 import re
 import shutil
 import xml.etree.ElementTree as ET
+from uyuni.common.fileutils import decompress_open
 from xml.dom import pulldom
 
 # In octal
@@ -59,7 +59,7 @@ class PackageFilelistNotFound(Exception):
 class FilelistsParser:
     def __init__(self, filelists_file, cache_dir="./.cache", arch_filter=".*"):
         """
-        filelists_file: In gzip format
+        filelists_file: In gzip or xz format
         """
         self.filelists_file = filelists_file
         self.cache_dir = cache_dir
@@ -70,12 +70,12 @@ class FilelistsParser:
 
     def parse_filelists(self):
         """
-        Parse the given filelists.xml file (in gzip format) and save the filelist information
+        Parse the given filelists.xml file (in gzip or xz format) and save the filelist information
         of each package in a separate file, where the name of the file is the 'pkgid' with no extension,
         for eg the file name should be like: 1c51349b5b35baa58f4941528d25a1306e84b71109051705138dc3577a38bad4
         """
 
-        with gzip.open(self.filelists_file) as gz_filelists:
+        with decompress_open(self.filelists_file) as gz_filelists:
             doc = pulldom.parse(gz_filelists)
             for event, node in doc:
                 if event == pulldom.START_ELEMENT and node.tagName == "filelists":

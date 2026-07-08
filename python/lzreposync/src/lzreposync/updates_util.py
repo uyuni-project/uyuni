@@ -1,11 +1,11 @@
 #  pylint: disable=missing-module-docstring
-import gzip
 import logging
 import os
 import time
 import xml.etree.ElementTree as etree
 from shutil import copyfile
 from urllib.parse import unquote, urlparse
+from uyuni.common.fileutils import decompress_open
 
 import requests
 
@@ -203,7 +203,7 @@ def get_updates(infile, md_type="updateinfo"):
     """
     if md_type == "updateinfo":
         notices = {}
-        with gzip.open(infile) as gz_updateinfo:
+        with decompress_open(infile) as gz_updateinfo:
             # pylint: disable-next=invalid-name,unused-variable
             for _event, elem in etree.iterparse(gz_updateinfo):
                 if elem.tag == "update":
