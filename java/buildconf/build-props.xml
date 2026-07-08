@@ -95,7 +95,7 @@
             value="postgresql-jdbc ongres-stringprep/saslprep ongres-stringprep/stringprep ${ongres-scram}" />
 
   <property name="common.jar.dependencies"
-            value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
+            value="commons-beanutils commons-codec commons-collections commons-digester commons-discovery
               commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps}
               ${commons-compress} ${javamail} smtp jdom ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
@@ -136,7 +136,7 @@
             value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
-            value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
+            value="commons-beanutils commons-codec commons-collections commons-digester commons-discovery
               commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps} ${commons-compress}
               ${tomcat-jars} ${javamail} jdom jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
@@ -144,7 +144,7 @@
               ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
-            value="antlr4/antlr4-runtime ${c3p0} commons-collections commons-beanutils commons-cli commons-codec
+            value="antlr4/antlr4-runtime ${c3p0} commons-collections commons-beanutils commons-codec
               commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6
               commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
               ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom

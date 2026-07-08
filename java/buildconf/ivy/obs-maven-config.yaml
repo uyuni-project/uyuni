@@ -31,9 +31,6 @@ artifacts:
   - artifact: commons-beanutils
     package: apache-commons-beanutils
     repository: Leap_sle
-  - artifact: commons-cli
-    package: apache-commons-cli
-    repository: Leap
   - artifact: commons-codec
     package: apache-commons-codec
     repository: Leap

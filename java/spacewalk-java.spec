@@ -92,7 +92,6 @@ BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
 BuildRequires:  antlr4-java >= 4.13.0
-BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io >= 2.11.0
@@ -181,7 +180,6 @@ Requires:       apache-commons-fileupload2-jakarta-servlet6
 Requires:       jcache
 Requires:       ehcache >= 3.11.1
 Requires:       apache-commons-beanutils
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
 Requires:       apache-commons-io
@@ -364,7 +362,6 @@ BuildRequires:  systemd-rpm-macros
 %endif
 
 Requires:       jcache
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-text
