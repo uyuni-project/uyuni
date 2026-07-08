@@ -158,7 +158,7 @@ public class OpenApiToDocBookParser {
         List<String> fields = new ArrayList<>();
         if (op.getParameters() != null) {
             op.getParameters().stream()
-                    .filter(p -> Objects.equals(p.getRequired(), requiredOnly))
+                    .filter(p -> Boolean.TRUE.equals(p.getRequired()) == requiredOnly)
                     .map(Parameter::getName)
                     .forEach(fields::add);
         }
@@ -202,7 +202,11 @@ public class OpenApiToDocBookParser {
         Map<String, Schema<?>> props = new LinkedHashMap<>();
         if (op.getParameters() != null) {
             for (Parameter param : op.getParameters()) {
-                props.put(param.getName(), param.getSchema());
+                Schema<?> schema = param.getSchema();
+                if (schema != null && schema.getDescription() == null && param.getDescription() != null) {
+                    schema.setDescription(param.getDescription());
+                }
+                props.put(param.getName(), schema);
             }
         }
         Schema<?> body = getBodySchema(op);
@@ -251,7 +255,7 @@ public class OpenApiToDocBookParser {
 
     private String renderReturnSchema(Schema<?> schema, String label) {
         if (schema == null) {
-            return "";
+            return "<listitem><para></para></listitem>";
         }
         if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
             Object resultProp = schema.getProperties().get("result");
@@ -279,8 +283,8 @@ public class OpenApiToDocBookParser {
         }
         if (isSimpleType(schema)) {
             String type = "integer".equals(schema.getType()) ? "int" : schema.getType();
-            return String.format("<listitem><para>%s - %s</para></listitem>",
-                    escapeXml(type), escapeXml(label));
+            String text = (label == null || label.isBlank()) ? type : type + " - " + label;
+            return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             Schema<?> resolvedInner = inner.get$ref() != null ?
@@ -313,9 +317,9 @@ public class OpenApiToDocBookParser {
         sb.append("  <itemizedlist spacing=\"compact\">\n");
         schema.getProperties().forEach((name, prop) -> {
             Schema<?> propSchema = prop;
-            String desc = propSchema.getDescription();
-            String body = String.format("string \"%s\"", name);
-            if (desc != null && !desc.isBlank()) {
+            String desc = findDescription(propSchema);
+            String body = String.format("%s \"%s\"", formatType(propSchema), name);
+            if (!desc.isBlank()) {
                 body += " - " + desc;
             }
             sb.append("    <listitem><para>")
