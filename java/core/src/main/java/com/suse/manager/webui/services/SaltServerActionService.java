@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -488,7 +489,7 @@ public class SaltServerActionService {
                 Action action = ActionFactory.lookupById(stateId.getActionId());
                 if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                         .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
-                        action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        ActionTypeEnum.TYPE_REBOOT.equals(action.getActionType())) {
 
                     Optional<ServerAction> rebootServerAction =
                             action.getServerActions().stream()
@@ -965,7 +966,7 @@ public class SaltServerActionService {
         /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
          *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
          */
-        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+        if (!ActionTypeEnum.TYPE_REBOOT.equals(action.getActionType())) {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
                     Optional.of(Xor.right(function)), null);
         }
@@ -1105,8 +1106,8 @@ public class SaltServerActionService {
                         LOG.debug("Updating action for server: {}", minionServer.getId());
                     }
                     try {
-                        if (action.get().getActionType().equals(
-                                ActionFactory.TYPE_REBOOT) && success && retcode == 0) {
+                        if (ActionTypeEnum.TYPE_REBOOT.equals(action.get().getActionType()) &&
+                                success && retcode == 0) {
                             // Reboot has been scheduled so set reboot action to PICKED_UP.
                             // Wait until next "minion/start/event" to set it to COMPLETED.
                             if (sa.isStatusQueued()) {
@@ -1114,7 +1115,7 @@ public class SaltServerActionService {
                             }
                             return;
                         }
-                        else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
+                        else if (ActionTypeEnum.TYPE_KICKSTART_INITIATE.equals(action.get().getActionType()) &&
                                 success) {
                             KickstartAction ksAction = (KickstartAction) action.get();
                             if (!ksAction.getKickstartActionDetails().getUpgrade()) {

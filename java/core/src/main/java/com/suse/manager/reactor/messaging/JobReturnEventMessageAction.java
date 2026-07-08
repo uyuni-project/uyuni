@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -371,7 +372,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         boolean isDistUpgrade = action.map(Action::getActionType)
-                .map(type -> type.equals(ActionFactory.TYPE_DIST_UPGRADE))
+                .map(ActionTypeEnum.TYPE_DIST_UPGRADE::equals)
                 .orElse(false);
 
         if (isDistUpgrade) {

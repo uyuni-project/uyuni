@@ -28,6 +28,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
@@ -88,7 +89,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleHighstateNoMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
-        assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
+        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenancemodeOnly());
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
@@ -124,7 +125,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleHighstateOutsideMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
-        assertTrue(ActionFactory.TYPE_APPLY_STATES.isMaintenancemodeOnly());
+        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenancemodeOnly());
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
@@ -157,7 +158,8 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleHwRefreshNoMaintWindow() throws Exception {
         // this tests assumes that HW refresh is not a maintenance-mode-only action
-        assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
+        assertFalse(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST)
+                .isMaintenancemodeOnly());
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
