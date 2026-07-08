@@ -357,7 +357,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions a set of revision IDs
      * @param serverIds a set of server IDs
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -365,11 +365,11 @@ public class ActionChainManager {
      * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActions(User user, Collection<Long> revisions,
-        Collection<Long> serverIds, ActionType type, Date earliest,
+        Collection<Long> serverIds, ActionTypeEnum typeEnum, Date earliest,
         ActionChain actionChain) throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-        return createConfigActionForServers(user, revisions, servers, type, earliest,
+        return createConfigActionForServers(user, revisions, servers, typeEnum, earliest,
             actionChain);
     }
 
@@ -378,7 +378,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions a set of revision IDs
      * @param servers a set of servers
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -386,12 +386,12 @@ public class ActionChainManager {
      * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActionForServers(User user,
-        Collection<Long> revisions, Collection<Server> servers, ActionType type,
+        Collection<Long> revisions, Collection<Server> servers, ActionTypeEnum typeEnum,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
             Action action = ActionManager.createConfigActionForServers(user, revisions,
-                servers, type, earliest);
+                servers, typeEnum, earliest);
             if (action != null) {
                 result.add(action);
             }
@@ -399,11 +399,11 @@ public class ActionChainManager {
         else {
             for (Server server : servers) {
                 ConfigAction action = (ConfigAction) new ActionBuilder()
-                        .ofType(type)
+                        .ofType(typeEnum)
                         .withSchedulerUser(user)
                         .withEarliest(earliest)
                         .build();
-                ActionManager.checkConfigActionOnServer(type, server);
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions, action,
                     server);
@@ -419,7 +419,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions maps servers to multiple revision IDs
      * @param serverIds a set of server IDs
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -427,10 +427,10 @@ public class ActionChainManager {
      */
     public static Set<Action> createConfigActions(User user,
             Map<Long, Collection<Long>> revisions, Collection<Long> serverIds,
-            ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+            ActionTypeEnum typeEnum, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
             List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-            return createConfigActionForServers(user, revisions, servers, type, earliest,
+            return createConfigActionForServers(user, revisions, servers, typeEnum, earliest,
                 actionChain);
     }
 
@@ -439,7 +439,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions maps servers to multiple revision IDs
      * @param servers a set of server objects
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -447,11 +447,11 @@ public class ActionChainManager {
      */
     public static Set<Action> createConfigActionForServers(User user,
         Map<Long, Collection<Long>> revisions, Collection<Server> servers,
-        ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+        ActionTypeEnum typeEnum, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
             ConfigAction action = (ConfigAction) new ActionBuilder()
-                    .ofType(type)
+                    .ofType(typeEnum)
                     .withSchedulerUser(user)
                     .withEarliest(earliest)
                     .build();
@@ -459,7 +459,7 @@ public class ActionChainManager {
             ActionFactory.save(action);
 
             for (Server server : servers) {
-                ActionManager.checkConfigActionOnServer(type, server);
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionFactory.addServerToAction(server.getId(), action);
 
                 ActionManager.addConfigurationRevisionsToAction(user,
@@ -473,13 +473,13 @@ public class ActionChainManager {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Server server : servers) {
                 ConfigAction action = (ConfigAction) new ActionBuilder()
-                        .ofType(type)
+                        .ofType(typeEnum)
                         .withSchedulerUser(user)
                         .withEarliest(earliest)
                         .build();
                 ActionFactory.save(action);
                 result.add(action);
-                ActionManager.checkConfigActionOnServer(type, server);
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server,
                     sortOrder);
                 ActionManager.addConfigurationRevisionsToAction(user,

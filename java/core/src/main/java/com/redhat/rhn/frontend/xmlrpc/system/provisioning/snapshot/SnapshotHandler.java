@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot;
 
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.server.Server;
@@ -497,7 +497,7 @@ public class SnapshotHandler extends BaseHandler {
     private void doRollback(User loggedInUser, ServerSnapshot snapshot)
         throws com.redhat.rhn.taskomatic.TaskomaticApiException {
         SystemManager.ensureAvailableToUser(loggedInUser, snapshot.getServer().getId());
-        ActionManager.checkConfigActionOnServer(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+        ActionManager.checkConfigActionOnServer(ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY,
                 snapshot.getServer());
         snapshot.cancelPendingActions();
         snapshot.rollbackChannels();
