@@ -12,9 +12,11 @@ from itertools import chain
 from os import remove
 from os.path import dirname, expanduser, realpath
 from re import match
+
 # pylint: disable-next=redefined-builtin
 from sys import exit
 import libarchive
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -103,25 +105,45 @@ def obs_get_product_ver(args, project, product):
 
 # pylint: disable-next=redefined-outer-name
 def spacewalk_java_api_ver(args, project, java_api):
-    source = match(
-        "^(.+).tar.gz", obs_get_package_source(args, project, java_api["package"], 0)
-    ).group(1)
-    # pylint: disable-next=consider-using-f-string
-    file_path = "{0}/{1}/{2}.obscpio".format(project, java_api["package"], source)
-    file_local_path = "/tmp/" + source + ".cpio"
-    with open(file_local_path, "wb") as cfile:
-        cfile.write(obs_get_file(args, file_path, True))
+    pkg = java_api["package"]
+    file_path = f"{project}/{pkg}/{pkg}.obscpio"
+    local_path = f"/tmp/{pkg}.cpio"
+
     try:
-        with libarchive.SeekableArchive(file_local_path) as cfile:
-            for line in cfile.read(java_api["path"]).decode("utf-8").split("\n"):
-                api_version = match(
-                    # pylint: disable-next=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,consider-using-f-string
-                    "^\s*{}\s*=\s*(.+)$".format(java_api["variable"]), line
-                )
-                if api_version:
-                    return api_version.group(1)
+        file_content = obs_get_file(args, file_path, True)
+    except urllib.error.HTTPError:
+        # Compat for non-Git workflow repositories
+        source_raw = obs_get_package_source(args, project, pkg, 0)
+        source_match = match(r"^(.+)\.tar\.gz", source_raw)
+        source = source_match.group(1) if source_match else pkg
+        file_path = f"{project}/{pkg}/{source}.obscpio"
+        local_path = f"/tmp/{source}.cpio"
+        file_content = obs_get_file(args, file_path, True)
+
+    with open(local_path, "wb") as cfile:
+        cfile.write(file_content)
+
+    try:
+        with libarchive.file_reader(local_path) as archive:
+            for entry in archive:
+                if entry.pathname == java_api["path"]:
+                    # Read all blocks for this specific entry
+                    content = b"".join(entry.get_blocks())
+
+                    for line in content.decode("utf-8").splitlines():
+                        api_version = match(
+                            # pylint: disable-next=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,consider-using-f-string
+                            "^\s*{}\s*=\s*(.+)$".format(java_api["variable"]),
+                            line,
+                        )
+                        if api_version:
+                            return api_version.group(1)
+                    break
+    # pylint: disable-next=broad-exception-caught
+    except Exception as e:
+        print(f"Failed to read archive: {e}")
     finally:
-        remove(file_local_path)
+        remove(local_path)
 
 
 def parse_arguments():
