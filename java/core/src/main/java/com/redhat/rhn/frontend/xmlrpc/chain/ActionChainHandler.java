@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -687,7 +688,7 @@ public class ActionChainHandler extends BaseHandler {
 
         try {
             ActionChainManager.createConfigActions(loggedInUser, revisionIds, server,
-                    ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date(),
+                    ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY, new Date(),
                     this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
             return BaseHandler.VALID;
         }
