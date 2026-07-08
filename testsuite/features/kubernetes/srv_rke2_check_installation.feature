@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 @rke2
+@no_user_creation
 Feature: RKE2 Server Health
   In order to manage systems using a Kubernetes installation
   As the system administrator

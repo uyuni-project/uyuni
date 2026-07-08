@@ -32,13 +32,16 @@ class RemoteNode
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
+    # A Bare Host has no container to exec into, even though the mgrctl binary ships in the base image.
+    uyuni_not_installed = !ssh('kubectl get deployment uyuni -n uyuni', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
+
     $named_nodes[host] = @hostname
     if @host == 'server'
-      @has_mgrctl = ssh('which mgrctl', host: @target).last.zero?
+      @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
 
-    if @host == 'server' && !@has_kubectl
+    if @host == 'server' && !@has_kubectl && !uyuni_not_installed
       # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
       run('rm -f /etc/motd && touch /etc/motd')
       out, code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
@@ -52,8 +55,13 @@ class RemoteNode
 
     # Determine OS version and OS family both inside the container and on the local host
     # in the case of non-containerized systems, both fields will be identical:
-    @os_version, @os_family = get_os_version
     @local_os_version, @local_os_family = get_os_version(runs_in_container: false)
+    if uyuni_not_installed
+      @os_version = @local_os_version
+      @os_family = @local_os_family
+    else
+      @os_version, @os_family = get_os_version
+    end
 
     if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
