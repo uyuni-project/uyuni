@@ -27,7 +27,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
@@ -484,11 +484,11 @@ public class MinionsAPI {
         List<String> allowedActions = new ArrayList<>();
         if (SystemManager.serverHasFeature(server.getId(), "ftr_package_remove") &&
             ServerFactory.isPtfUninstallationSupported(server)) {
-            allowedActions.add(ActionFactory.TYPE_PACKAGES_REMOVE.getLabel());
+            allowedActions.add(ActionTypeEnum.TYPE_PACKAGES_REMOVE.getLabel());
         }
 
         if (SystemManager.serverHasFeature(server.getId(), "ftr_package_updates")) {
-            allowedActions.add(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel());
+            allowedActions.add(ActionTypeEnum.TYPE_PACKAGES_UPDATE.getLabel());
         }
 
         return result(response, ResultJson.success(allowedActions), new TypeToken<>() { });
@@ -566,10 +566,10 @@ public class MinionsAPI {
         try {
             PackageAction action;
 
-            if (ActionFactory.TYPE_PACKAGES_REMOVE.getLabel().equals(scheduleRequest.getActionType())) {
+            if (ActionTypeEnum.TYPE_PACKAGES_REMOVE.getLabel().equals(scheduleRequest.getActionType())) {
                 action = ActionChainManager.schedulePackageRemoval(user, server, pkgMap, earliestDate, chain);
             }
-            else if (ActionFactory.TYPE_PACKAGES_UPDATE.getLabel().equals(scheduleRequest.getActionType())) {
+            else if (ActionTypeEnum.TYPE_PACKAGES_UPDATE.getLabel().equals(scheduleRequest.getActionType())) {
                 action = ActionChainManager.schedulePackageInstall(user, server, pkgMap, earliestDate, chain);
             }
             else {

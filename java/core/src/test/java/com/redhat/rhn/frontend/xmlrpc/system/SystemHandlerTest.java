@@ -38,6 +38,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
@@ -390,7 +391,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -413,7 +414,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -510,7 +511,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         int result = handler.setChildChannels(admin, sid, channelLabels);
         server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -533,7 +534,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -620,7 +621,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Set base channel to base1
         int result = handler.setBaseChannel(admin, sid, base1.getLabel());
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -640,7 +641,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         result = handler.setBaseChannel(admin, sid, base2.getLabel());
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -706,7 +707,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Set base channel to base1
         int result = handler.setBaseChannel(admin, sid, base1.getLabel());
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
@@ -726,7 +727,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         result = handler.setBaseChannel(admin, sid, base2.getLabel());
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
-                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .filter(a -> ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equals(a.getActionType()))
                 .findFirst();
         assertTrue(first.isPresent(), "No Subscribe Channels Action created");
         if (first.isPresent()) {
