@@ -49,6 +49,7 @@ end
 # @return [String] The product name.
 def product
   return $product unless $product.nil?
+  return if ENV.key?('UYUNI_NOT_INSTALLED') && ENV['UYUNI_NOT_INSTALLED'] == 'true'
 
   patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
   server = get_target('server')
