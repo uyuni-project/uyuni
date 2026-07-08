@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -817,8 +818,8 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion,
-                List.of(ActionFactory.TYPE_REBOOT));
+        List<ActionType> typesIn = List.of(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_REBOOT));
+        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion, typesIn);
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             Action action = sa.getParentAction();
@@ -843,7 +844,7 @@ public class SaltUtils {
      * @param systemId system id
      * @return true if there's prerequisite action of the given type in the completed state
      */
-    public static boolean prerequisiteIsCompleted(Action action, Optional<ActionType> prereqType, long systemId) {
+    public static boolean prerequisiteIsCompleted(Action action, Optional<ActionTypeEnum> prereqType, long systemId) {
         if (action == null) {
             return false;
         }
