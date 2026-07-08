@@ -29,6 +29,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -2223,7 +2224,7 @@ public class ConfigurationManager extends BaseManager {
 
             Action act = ActionManager.createConfigActionForServers(
                     user, revs, system,
-                    ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+                    ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY,
                     datePicked);
             ActionFactory.save(act);
         }

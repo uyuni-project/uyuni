@@ -537,7 +537,7 @@ public class ActionManager extends BaseManager {
         //diff actions are non-destructive, so there is no point to schedule them for any
         //later than now.
         return createConfigAction(user, revisions, serverIds,
-                ActionFactory.TYPE_CONFIGFILES_DIFF, new Date());
+                ActionTypeEnum.TYPE_CONFIGFILES_DIFF, new Date());
     }
 
     /**
@@ -546,7 +546,7 @@ public class ActionManager extends BaseManager {
      * @param user      The user scheduling the action.
      * @param revisions A set of revision ids as Longs
      * @param servers   A set of server objects
-     * @param type      The type of config action
+     * @param typeEnum  The type of config action
      * @param earliest  The earliest time this action could execute.
      * @return The created config action
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
@@ -554,15 +554,16 @@ public class ActionManager extends BaseManager {
     public static Action createConfigActionForServers(User user,
                                                       Collection<Long> revisions,
                                                       Collection<Server> servers,
-                                                      ActionType type, Date earliest) throws TaskomaticApiException {
+                                                      ActionTypeEnum typeEnum, Date earliest)
+            throws TaskomaticApiException {
         ConfigAction a = (ConfigAction) new ActionBuilder()
-                .ofType(type)
+                .ofType(typeEnum)
                 .withSchedulerUser(user)
                 .withEarliest(earliest)
                 .build();
 
         for (Server server : servers) {
-            checkConfigActionOnServer(type, server);
+            checkConfigActionOnServer(typeEnum, server);
             ActionFactory.addServerToAction(server.getId(), a);
 
             //now that we made a server action, we must make config revision actions
@@ -603,12 +604,12 @@ public class ActionManager extends BaseManager {
     /**
      * Checks that a server can be the target of a ConfigAction
      *
-     * @param type   type of ConfigAction
+     * @param typeEnum type of ConfigAction
      * @param server a server object
      * @throws MissingCapabilityException if server does not have needed capabilities
      */
-    public static void checkConfigActionOnServer(ActionType type, Server server) {
-        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(type) &&
+    public static void checkConfigActionOnServer(ActionTypeEnum typeEnum, Server server) {
+        if ((ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY == typeEnum) &&
                 !SystemManager.clientCapable(server.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY)) {
             throw new MissingCapabilityException(SystemManager.CAP_CONFIGFILES_DEPLOY, server);
         }
@@ -620,17 +621,17 @@ public class ActionManager extends BaseManager {
      * @param user      The user scheduling the action.
      * @param revisions A set of revision ids as Longs
      * @param serverIds A set of server ids as Longs
-     * @param type      The type of config action
+     * @param typeEnum      The type of config action
      * @param earliest  The earliest time this action could execute.
      * @return The created config action
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static Action createConfigAction(User user, Collection<Long> revisions,
-                                            Collection<Long> serverIds, ActionType type, Date earliest)
+                                            Collection<Long> serverIds, ActionTypeEnum typeEnum, Date earliest)
             throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-        return createConfigActionForServers(user, revisions, servers, type, earliest);
+        return createConfigActionForServers(user, revisions, servers, typeEnum, earliest);
     }
 
     /**
