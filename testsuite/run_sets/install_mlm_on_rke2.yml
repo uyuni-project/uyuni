@@ -8,6 +8,4 @@
 
 # IDEMPOTENT
 
-- features/kubernetes/srv_rke2_check_installation.feature
-- features/kubernetes/proxy_rke2_install.feature
-- features/kubernetes/srv_rke2_tftpd_sanity.feature
+- features/kubernetes/srv_install_rke2.feature

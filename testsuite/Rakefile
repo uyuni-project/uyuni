@@ -64,6 +64,16 @@ namespace :cucumber do
       end
       Rake::Task[task_name].enhance([watchdog_task])
     end
+    if filename == :install_mlm_on_rke2
+      # This run set installs the server from a Bare Host, so RemoteNode#initialize must take the
+      # plain-SSH path instead of the mgrctl/container branch (see remote_node.rb's bare_host guard).
+      # `||=` still lets an explicit external override win.
+      not_installed_task = :"#{filename}_export_not_installed"
+      task not_installed_task do
+        ENV['UYUNI_NOT_INSTALLED'] ||= 'true'
+      end
+      Rake::Task[task_name].enhance([not_installed_task])
+    end
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
     Rake::Task[task_name].enhance do
