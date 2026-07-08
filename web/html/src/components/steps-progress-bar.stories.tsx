@@ -1,7 +1,7 @@
 import { Form, Text } from "./input";
 import { StepsProgressBar } from "./steps-progress-bar";
 
-export default () => {
+const StepsProgressBarExample = () => {
   const detailsForm = [
     <Form divClass="col-md-12" key="detailsForm" formDirection="form-horizontal">
       <Text
@@ -26,4 +26,15 @@ export default () => {
     { title: "Users", content: <p>Final step reached!</p>, validate: null },
   ];
   return <StepsProgressBar steps={steps}></StepsProgressBar>;
+};
+
+const meta = {
+  title: "Components/StepsProgressBar",
+  component: StepsProgressBar,
+};
+
+export default meta;
+
+export const Default = {
+  render: () => <StepsProgressBarExample />,
 };
