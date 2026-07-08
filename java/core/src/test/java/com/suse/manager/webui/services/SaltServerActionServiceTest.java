@@ -540,17 +540,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
                 long scriptActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ActionTypeEnum.TYPE_SCRIPT_RUN.equals(ace.getAction().getActionType()))
+                                ActionTypeEnum.TYPE_SCRIPT_RUN.equalsType(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long rebootActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ActionTypeEnum.TYPE_REBOOT.equals(ace.getAction().getActionType()))
+                                ActionTypeEnum.TYPE_REBOOT.equalsType(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 long highstateActionId = actionChain.getEntries().stream()
                         .filter(ace -> ace.getServerId().equals(minionServer.getServerId()) &&
-                                ActionTypeEnum.TYPE_APPLY_STATES.equals(ace.getAction().getActionType()))
+                                ActionTypeEnum.TYPE_APPLY_STATES.equalsType(ace.getAction().getActionType()))
                         .map(ActionChainEntry::getActionId)
                         .findFirst().get();
                 assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() +
