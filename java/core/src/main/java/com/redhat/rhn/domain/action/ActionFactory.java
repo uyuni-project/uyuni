@@ -423,11 +423,12 @@ public class ActionFactory extends HibernateFactory {
      * find the last deployed config action ...
      *
      * @param user the user doing the search (needed for permssion checking)
-     * @param type the action type of the action to be queried.
-     * @param server the server who's latest completed action is desired.
+     * @param typeEnum the action type of the action to be queried.
+     * @param server the server whose latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
+    public static Action lookupLastCompletedAction(User user, ActionTypeEnum typeEnum, Server server) {
+        ActionType type = ActionFactory.lookupActionTypeByEnum(typeEnum);
         return getSession().createNativeQuery("""
                 SELECT *
                 FROM   rhnAction a

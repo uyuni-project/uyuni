@@ -123,7 +123,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ConfigRevisionAction cra = a.getConfigRevisionActions().iterator().next();
         Server server = cra.getServer();
 
-        Action action = ActionFactory.lookupLastCompletedAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY, server);
+        Action action = ActionFactory.lookupLastCompletedAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY, server);
         assertEquals(a, action);
     }
 

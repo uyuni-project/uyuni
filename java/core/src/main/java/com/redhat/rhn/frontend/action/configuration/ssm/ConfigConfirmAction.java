@@ -16,8 +16,6 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
@@ -79,14 +77,14 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
 
-        Set<Long> systems = getSystemIds(ctxt, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        Set<Long> systems = getSystemIds(ctxt, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         populateMaintenanceWindows(ctxt.getRequest(), systems);
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 
-    private Set<Long> getSystemIds(RequestContext ctxt, ActionType actionType) {
+    private Set<Long> getSystemIds(RequestContext ctxt, ActionTypeEnum actionTypeEnum) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionType.getLabel()).stream()
+        return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionTypeEnum.getLabel()).stream()
                 .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
     }
