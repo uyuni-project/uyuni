@@ -1520,7 +1520,7 @@ public class ActionManager extends BaseManager {
         if (packageMaps != null) {
             List<Map<String, Long>> pkgMaps;
 
-            if (ActionTypeEnum.TYPE_PACKAGES_REMOVE.equals(actions.iterator().next().getActionType())) {
+            if (ActionTypeEnum.TYPE_PACKAGES_REMOVE.equalsType(actions.iterator().next().getActionType())) {
                 // our packages.pkgremove state is handling duplicates
                 pkgMaps = packageMaps;
             }

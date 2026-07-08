@@ -489,7 +489,7 @@ public class SaltServerActionService {
                 Action action = ActionFactory.lookupById(stateId.getActionId());
                 if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                         .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
-                        ActionTypeEnum.TYPE_REBOOT.equals(action.getActionType())) {
+                        ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType())) {
 
                     Optional<ServerAction> rebootServerAction =
                             action.getServerActions().stream()
@@ -966,7 +966,7 @@ public class SaltServerActionService {
         /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
          *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
          */
-        if (!ActionTypeEnum.TYPE_REBOOT.equals(action.getActionType())) {
+        if (!ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType())) {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
                     Optional.of(Xor.right(function)), null);
         }
@@ -1106,7 +1106,7 @@ public class SaltServerActionService {
                         LOG.debug("Updating action for server: {}", minionServer.getId());
                     }
                     try {
-                        if (ActionTypeEnum.TYPE_REBOOT.equals(action.get().getActionType()) &&
+                        if (ActionTypeEnum.TYPE_REBOOT.equalsType(action.get().getActionType()) &&
                                 success && retcode == 0) {
                             // Reboot has been scheduled so set reboot action to PICKED_UP.
                             // Wait until next "minion/start/event" to set it to COMPLETED.
@@ -1115,7 +1115,7 @@ public class SaltServerActionService {
                             }
                             return;
                         }
-                        else if (ActionTypeEnum.TYPE_KICKSTART_INITIATE.equals(action.get().getActionType()) &&
+                        else if (ActionTypeEnum.TYPE_KICKSTART_INITIATE.equalsType(action.get().getActionType()) &&
                                 success) {
                             KickstartAction ksAction = (KickstartAction) action.get();
                             if (!ksAction.getKickstartActionDetails().getUpgrade()) {

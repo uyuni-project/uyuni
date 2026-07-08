@@ -372,7 +372,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         boolean isDistUpgrade = action.map(Action::getActionType)
-                .map(ActionTypeEnum.TYPE_DIST_UPGRADE::equals)
+                .map(ActionTypeEnum.TYPE_DIST_UPGRADE::equalsType)
                 .orElse(false);
 
         if (isDistUpgrade) {
