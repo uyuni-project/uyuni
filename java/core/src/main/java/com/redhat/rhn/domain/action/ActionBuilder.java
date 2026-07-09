@@ -28,21 +28,11 @@ public class ActionBuilder {
     private static final Logger LOG = LogManager.getLogger(ActionBuilder.class);
 
     private ActionTypeEnum actionTypeEnum;
+    private ActionType actionType;
     private User schedulerUser;
     private Org org;
     private String actionName;
     private Date earliest;
-
-    /**
-     * default constructor
-     */
-    public ActionBuilder() {
-        actionTypeEnum = null;
-        schedulerUser = null;
-        org = null;
-        actionName = null;
-        earliest = null;
-    }
 
     /**
      * Sets the action type
@@ -51,6 +41,7 @@ public class ActionBuilder {
      */
     public ActionBuilder ofType(ActionType actionTypeIn) {
         actionTypeEnum = ActionTypeEnum.of(actionTypeIn).orElse(null);
+        actionType = actionTypeIn;
         return this;
     }
 
@@ -61,6 +52,7 @@ public class ActionBuilder {
      */
     public ActionBuilder ofType(ActionTypeEnum actionTypeEnumIn) {
         actionTypeEnum = actionTypeEnumIn;
+        actionType = null;
         return this;
     }
 
@@ -110,12 +102,13 @@ public class ActionBuilder {
      */
     public Action build() {
         Action action;
-        ActionType actionType;
+        ActionType buildActionType;
         if (null != actionTypeEnum) {
             try {
                 action = actionTypeEnum.createAction();
-                actionType = ActionFactory.lookupActionTypeByLabel(actionTypeEnum.getLabel());
-                action.setActionType(actionType);
+                buildActionType = (null != actionType) ? actionType :
+                        ActionFactory.lookupActionTypeByLabel(actionTypeEnum.getLabel());
+                action.setActionType(buildActionType);
             }
             catch (ReflectiveOperationException eIn) {
                 LOG.error("Error while creating action of type {}", actionTypeEnum.getLabel(), eIn);
@@ -124,7 +117,7 @@ public class ActionBuilder {
         }
         else {
             action = new Action();
-            actionType = null;
+            buildActionType = null;
         }
 
         action.setCreated(new Date());
@@ -133,15 +126,13 @@ public class ActionBuilder {
 
         Optional.ofNullable(schedulerUser).ifPresent(action::setSchedulerUser);
 
-        Optional.ofNullable(org).
-                ifPresentOrElse(action::setOrg,
-                        () -> Optional.ofNullable(schedulerUser)
-                                .ifPresent(u -> action.setOrg(u.getOrg())));
+        Optional.ofNullable(org)
+                .or(() -> Optional.ofNullable(schedulerUser).map(User::getOrg))
+                .ifPresent(action::setOrg);
 
         Optional.ofNullable(actionName)
-                .ifPresentOrElse(action::setName,
-                        () -> Optional.ofNullable(actionType)
-                                .ifPresent(t -> action.setName(t.getName())));
+                .or(() -> Optional.ofNullable(buildActionType).map(ActionType::getName))
+                .ifPresent(action::setName);
 
         //in perl (modules/rhn/RHN/DB/Scheduler.pm) version is given a 2. So that's what I did.
         action.setVersion(2L);
