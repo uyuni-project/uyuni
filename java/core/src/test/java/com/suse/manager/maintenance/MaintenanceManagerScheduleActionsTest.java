@@ -89,7 +89,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleHighstateNoMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
-        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenancemodeOnly());
+        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenanceModeOnly());
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
@@ -125,7 +125,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     @Test
     public void testScheduleHighstateOutsideMaintWindow() throws Exception {
         // this tests assumes that APPLY STATES is a maintenance-mode-only action
-        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenancemodeOnly());
+        assertTrue(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_APPLY_STATES).isMaintenanceModeOnly());
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
@@ -159,7 +159,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     public void testScheduleHwRefreshNoMaintWindow() throws Exception {
         // this tests assumes that HW refresh is not a maintenance-mode-only action
         assertFalse(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST)
-                .isMaintenancemodeOnly());
+                .isMaintenanceModeOnly());
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
