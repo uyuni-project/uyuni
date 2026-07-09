@@ -101,9 +101,8 @@ function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
  * @param rankingWidgetName the name of the ranking widget list box.
  * @param storerName name of the element in whom the CS string will be stored
  *        ('rankedValues' in the case of SDC channel rankings)
- * @param formName name of the form who has to be submitted.
  */
-function handle_ranking (rankingWidgetName, storerName, formName) {
+function handle_ranking (rankingWidgetName, storerName) {
     const element = document.getElementById(rankingWidgetName);
     const storer = document.getElementById(storerName);
     if (!element || !storer) {
