@@ -19,6 +19,7 @@ import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -35,6 +36,8 @@ import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.SaltParameters;
+import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
@@ -48,6 +51,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,6 +63,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -82,12 +87,21 @@ public class HardwareRefreshAction extends Action {
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
-        // salt-ssh minions in the 'true' partition
-        // regular minions in the 'false' partition
-        Map<Boolean, List<MinionSummary>> partitionBySSHPush = minionSummaries.stream()
+        var partitionByTransactional = minionSummaries.stream()
+                .collect(Collectors.partitioningBy(MinionSummary::isTransactionalUpdate));
+
+        List<MinionSummary> transactionalMinions = partitionByTransactional.get(true);
+        List<MinionSummary> nonTransactionalMinions = partitionByTransactional.get(false);
+
+        if (!transactionalMinions.isEmpty()) {
+            ret.put(TransactionalUpdateCalls.apply(List.of(SaltParameters.HARDWARE_PREREQ)),
+                    transactionalMinions);
+        }
+
+        // Non-transactional: ssh-push gets profile-update only; regular gets sync-all first.
+        Map<Boolean, List<MinionSummary>> partitionBySSHPush = nonTransactionalMinions.stream()
                 .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
 
-        // Separate SSH push minions from regular minions to apply different states
         List<MinionSummary> sshPushMinions = partitionBySSHPush.get(true);
         List<MinionSummary> regularMinions = partitionBySSHPush.get(false);
 
@@ -111,15 +125,58 @@ public class HardwareRefreshAction extends Action {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        if (serverAction.isStatusFailed()) {
-            serverAction.setResultMsg("Failure");
-        }
-        else {
-            serverAction.setResultMsg("Success");
-        }
-        serverAction.getServer().asMinionServer()
-                .ifPresent(minionServer -> handleHardwareProfileUpdate(minionServer,
-                        Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class), serverAction));
+        serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+            if (minionServer.doesOsSupportsTransactionalUpdate()) {
+                if (serverAction.isStatusFailed()) {
+                    serverAction.setResultMsg("Failed to apply prerequisite states.");
+                }
+                else if (!hasChanges(jsonResult)) {
+                    MessageQueue.publish(new ApplyStatesEventMessage(
+                            minionServer.getId(),
+                            false,
+                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE));
+                    serverAction.setResultMsg(
+                            "Prerequisite states already satisfied. Hardware profile update scheduled.");
+                }
+                else {
+                    String pendingState = minionServer.getPendingRebootState();
+                    if (pendingState != null &&
+                            !ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE.equals(pendingState)) {
+                        serverAction.setStatusFailed();
+                        serverAction.setResultMsg(
+                                "Another transactional follow-up state is already pending: " +
+                                pendingState);
+                    }
+                    else {
+                        minionServer.setPendingRebootState(
+                                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
+                        serverAction.setResultMsg(
+                                "Prerequisite states applied. A system reboot is required " +
+                                "before updating the hardware profile.");
+                    }
+                }
+                return;
+            }
+
+            serverAction.setResultMsg(serverAction.isStatusFailed() ? "Failure" : "Success");
+
+            handleHardwareProfileUpdate(
+                    minionServer,
+                    Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class),
+                    serverAction);
+        });
+    }
+
+    private boolean hasChanges(JsonElement jsonResult) {
+        Map<String, State.ApplyResult> results = Json.GSON.fromJson(
+                jsonResult,
+                new TypeToken<Map<String, State.ApplyResult>>() { }.getType());
+
+        return results != null && results.values().stream()
+                .map(State.ApplyResult::getChanges)
+                .filter(Objects::nonNull)
+                .anyMatch(changes -> !changes.isJsonObject() ||
+                        changes.getAsJsonObject().size() > 0);
     }
 
     /**

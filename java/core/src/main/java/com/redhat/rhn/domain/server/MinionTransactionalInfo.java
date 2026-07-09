@@ -12,6 +12,7 @@ package com.redhat.rhn.domain.server;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
@@ -54,6 +55,12 @@ public class MinionTransactionalInfo implements Serializable {
     // Each entry: {"number": N, "active": bool, "default": bool, "description": "...", "date": "..."}
     @Column(name = "snapshot_details")
     private String snapshotDetails;
+
+    @Column(name = "pending_reboot_state")
+    private String pendingRebootState;
+
+    @Column(name = "pending_reboot_set_at")
+    private Date pendingRebootSetAt;
 
     /**
      * Default constructor required by Hibernate.
@@ -136,5 +143,27 @@ public class MinionTransactionalInfo implements Serializable {
      */
     public void setSnapshotDetails(String snapshotDetailsIn) {
         this.snapshotDetails = snapshotDetailsIn;
+    }
+
+    /**
+     * @return the state to apply after the next confirmed reboot, or null
+     */
+    public String getPendingRebootState() {
+        return pendingRebootState;
+    }
+
+    /**
+     * @param pendingRebootStateIn state to apply after reboot, or null to clear
+     */
+    public void setPendingRebootState(String pendingRebootStateIn) {
+        pendingRebootState = pendingRebootStateIn;
+        pendingRebootSetAt = pendingRebootStateIn == null ? null : new Date();
+    }
+
+    /**
+     * @return when the pending reboot state was recorded, or null
+     */
+    public Date getPendingRebootSetAt() {
+        return pendingRebootSetAt;
     }
 }
