@@ -4277,8 +4277,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence Earliest occurrence of the package install
      * @return package action id
      */
-    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids,
-            Date earliestOccurrence, ActionTypeEnum actionTypeEnum) {
+    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids, Date earliestOccurrence) {
         HashSet<Long> lsids = new HashSet<>();
         for (Integer sid : sids) {
             Server server;
@@ -4299,7 +4298,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         try {
-            return ActionManager.schedulePackageAction(loggedInUser, null, actionTypeEnum,
+            return ActionManager.schedulePackageAction(loggedInUser, null, ActionTypeEnum.TYPE_PACKAGES_UPDATE,
                     earliestOccurrence, lsids).getId();
         }
         catch (MissingEntitlementException e) {
@@ -4484,9 +4483,7 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
                                         Date earliestOccurrence) {
 
-        return schedulePackagesUpdateAction(loggedInUser, sids,
-                earliestOccurrence,
-                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
+        return schedulePackagesUpdateAction(loggedInUser, sids, earliestOccurrence);
     }
 
     /**

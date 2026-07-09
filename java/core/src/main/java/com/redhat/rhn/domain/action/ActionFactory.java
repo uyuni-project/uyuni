@@ -472,7 +472,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ActionType lookupActionTypeByEnum(ActionTypeEnum actionTypeEnumIn) {
         if (actionTypeEnumIn == null) {
-            return null;
+            throw new IllegalArgumentException("ActionFactory.lookupActionTypeByEnum invoked with null ActionTypeEnum");
         }
         return lookupActionTypeByLabel(actionTypeEnumIn.getLabel());
     }
@@ -483,7 +483,12 @@ public class ActionFactory extends HibernateFactory {
      * @return true if the action type exists and is in maintenance mode only
      */
     public static boolean isMaintenanceModeOnly(ActionTypeEnum actionTypeEnumIn) {
+        if (null == actionTypeEnumIn) {
+            return false;
+        }
+
         ActionType actionType = lookupActionTypeByEnum(actionTypeEnumIn);
+
         if (null != actionType) {
             return actionType.isMaintenanceModeOnly();
         }
@@ -497,7 +502,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ActionType lookupActionTypeByLabel(String label) {
         if (label == null) {
-            return null;
+            throw new IllegalArgumentException("ActionFactory.lookupActionTypeByLabel invoked with null label");
         }
         return singleton.lookupObjectByParam(ActionType.class, "label", label, true);
     }

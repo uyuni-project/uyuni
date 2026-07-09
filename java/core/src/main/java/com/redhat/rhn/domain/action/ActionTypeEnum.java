@@ -47,9 +47,8 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 
-import org.apache.commons.lang3.Strings;
-
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 public enum ActionTypeEnum {
@@ -123,7 +122,7 @@ public enum ActionTypeEnum {
      * @throws ReflectiveOperationException if something goes wrong
      */
     public Action createAction() throws ReflectiveOperationException  {
-        return actionClass.asSubclass(Action.class).getDeclaredConstructor().newInstance();
+        return actionClass.getDeclaredConstructor().newInstance();
     }
 
     /**
@@ -159,7 +158,7 @@ public enum ActionTypeEnum {
      */
     public static Optional<ActionTypeEnum> of(String labelIn) {
         return Arrays.stream(ActionTypeEnum.values())
-                .filter(type -> Strings.CS.equals(labelIn, type.getLabel()))
+                .filter(type -> Objects.equals(labelIn, type.getLabel()))
                 .findFirst();
     }
 
@@ -170,6 +169,8 @@ public enum ActionTypeEnum {
      * @return the ActionTypeEnum matching the given label, if present
      */
     public static Optional<ActionTypeEnum> of(ActionType actionTypeIn) {
-        return actionTypeIn == null ? Optional.empty() : of(actionTypeIn.getLabel());
+        return Optional.ofNullable(actionTypeIn)
+                .map(ActionType::getLabel)
+                .flatMap(ActionTypeEnum::of);
     }
 }
