@@ -77,16 +77,14 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
 
-        Set<Long> systems = getSystemIds(ctxt, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
-        populateMaintenanceWindows(ctxt.getRequest(), systems);
-        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
-    }
-
-    private Set<Long> getSystemIds(RequestContext ctxt, ActionTypeEnum actionTypeEnum) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionTypeEnum.getLabel()).stream()
+        Set<Long> systems = cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null,
+                        ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY.getLabel()).stream()
                 .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
+
+        populateMaintenanceWindows(ctxt.getRequest(), systems);
+        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 
     @Override

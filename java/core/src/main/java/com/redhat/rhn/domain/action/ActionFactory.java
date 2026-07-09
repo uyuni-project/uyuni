@@ -483,7 +483,12 @@ public class ActionFactory extends HibernateFactory {
      * @return true if the action type exists and is in maintenance mode only
      */
     public static boolean isMaintenanceModeOnly(ActionTypeEnum actionTypeEnumIn) {
+        if (null == actionTypeEnumIn) {
+            return false;
+        }
+
         ActionType actionType = lookupActionTypeByEnum(actionTypeEnumIn);
+
         if (null != actionType) {
             return actionType.isMaintenanceModeOnly();
         }
