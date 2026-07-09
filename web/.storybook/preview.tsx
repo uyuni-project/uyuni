@@ -173,7 +173,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Components", "Manager", "Legacy"],
+        order: ["Components", "Manager", "Legacy Example Stories"],
         method: "alphabetical",
       },
     },
