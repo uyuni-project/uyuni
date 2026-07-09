@@ -22,6 +22,7 @@ import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
 import { getProductSelectionState } from "./product-check/product-selection.utils";
+import { getSelectionSummary } from "./product-check/product-selection-summary.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
 import { searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
@@ -691,7 +692,6 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
 
   handleSelectedItem = () => {
     const currentItem = this.props.item;
-
     // add base product first (the server fails if it tries to add extentions first)
     let arr = [this.props.item];
 
@@ -826,7 +826,8 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
 
   render() {
     const currentItem = this.props.item;
-
+    const selectionState = getProductSelectionState(currentItem, this.props.bypassProps.selectedItems);
+    const selectionSummary = getSelectionSummary(currentItem, this.props.bypassProps.selectedItems);
     /** generate item selector content **/
     let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
@@ -837,10 +838,15 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
           onChange={this.handleSelectedItem}
           selectionState={getProductSelectionState(currentItem, this.props.bypassProps.selectedItems)}
           disabled={this.props.bypassProps.readOnlyMode || this.props.childrenDisabled}
+          data-bs-toggle="tooltip"
           title={
             this.props.childrenDisabled
               ? t("To enable this product, the parent product should be selected first")
-              : t("Select this product")
+              : selectionState === "partially"
+                ? t(`${selectionSummary.selected}/${selectionSummary.total} child products selected`)
+                : selectionState === "checked"
+                  ? t("Product selected")
+                  : t("Select this product")
           }
         />
       );
