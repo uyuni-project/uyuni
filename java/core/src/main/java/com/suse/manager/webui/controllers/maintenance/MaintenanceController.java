@@ -110,7 +110,7 @@ public class MaintenanceController {
 
         Map<String, Object> data = new HashMap<>();
 
-        if (actionType.isMaintenancemodeOnly()) {
+        if (actionType.isMaintenanceModeOnly()) {
             try {
                 MM.calculateUpcomingMaintenanceWindows(systemIds)
                         .ifPresent(windows -> data.put("maintenanceWindows", windows));

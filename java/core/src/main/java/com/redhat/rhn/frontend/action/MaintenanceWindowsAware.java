@@ -39,7 +39,7 @@ public interface MaintenanceWindowsAware {
      * @param systemIds the set of IDs of involved systems
      */
     default void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (ActionFactory.isMaintenancemodeOnly(referenceMaintenanceWindowsType())) {
+        if (ActionFactory.isMaintenanceModeOnly(referenceMaintenanceWindowsType())) {
             MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
         }
     }
