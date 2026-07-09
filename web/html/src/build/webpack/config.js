@@ -196,9 +196,7 @@ export default (env, opts) => {
           test: /\.(scss)$/,
           use: [
             MiniCssExtractPlugin.loader,
-            ...scssProcessingLoaders({
-              localIdentName: isProductionMode ? "[hash:base64:5]" : undefined,
-            }),
+            ...scssProcessingLoaders(isProductionMode ? { localIdentName: "[hash:base64:5]" } : undefined),
           ],
         },
       ],
