@@ -178,7 +178,7 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
             DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
 
         Set<Long> systemsWithMaintAwareAction = actionChain.getEntries().stream()
-                .filter(e -> e.getAction().getActionType().isMaintenancemodeOnly())
+                .filter(e -> e.getAction().getActionType().isMaintenanceModeOnly())
                 .map(e -> e.getServer().getId())
                 .collect(Collectors.toSet());
 

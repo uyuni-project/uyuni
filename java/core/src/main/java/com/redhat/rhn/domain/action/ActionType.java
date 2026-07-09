@@ -123,7 +123,7 @@ public class ActionType implements Serializable {
     /**
      * @return return maintenance mode only
      */
-    public boolean isMaintenancemodeOnly() {
+    public boolean isMaintenanceModeOnly() {
         return maintenancemodeOnly;
     }
 
@@ -150,7 +150,7 @@ public class ActionType implements Serializable {
                                   .append(this.getTriggersnapshot(),
                                           other.getTriggersnapshot())
                                   .append(this.getUnlockedonly(), other.getUnlockedonly())
-                                  .append(this.isMaintenancemodeOnly(), other.isMaintenancemodeOnly())
+                                  .append(this.isMaintenanceModeOnly(), other.isMaintenanceModeOnly())
                                   .isEquals();
     }
 
@@ -173,7 +173,7 @@ public class ActionType implements Serializable {
                                     .append(getLabel())
                                     .append(getTriggersnapshot())
                                     .append(getUnlockedonly())
-                                    .append(isMaintenancemodeOnly())
+                                    .append(isMaintenanceModeOnly())
                                     .toHashCode();
     }
 }
