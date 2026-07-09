@@ -30,7 +30,7 @@ import java.util.List;
  * @apidoc.namespace saltkey
  * @apidoc.doc Provides methods to manage salt keys
  */
-public class SaltKeyHandler extends BaseHandler {
+public class SaltKeyHandler extends BaseHandler implements SaltKeyHandlerApi {
 
     private final SaltKeyUtils saltKeyUtils;
 
