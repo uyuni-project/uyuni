@@ -70,7 +70,7 @@ This function should get called when a form submit action is clicked.
 Behaviour:
 1) Basically joins the values of the rankingWidgetElements into a comma separated string,
 2) Stores the value in the element provided by 'storerName'
-3) Does a form submit..
+3) Does a form submit if the form can be resolved.
 This comma separated magic is required for handling cases where the browser
 supports javascript but does not support ajax..
 @param rankingWidgetName the name of the ranking widget list box.
@@ -82,20 +82,22 @@ function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
     const element = document.getElementById(rankingWidgetName);
     const storer = document.getElementById(storerName);
     const form = document.getElementById(formName) || document.forms[formName];
-    if (!element || !storer || !form) {
+    if (!element || !storer) {
         return false;
     }
 
     storer.value = make_ranking_csv(rankingWidgetName);
-    form.submit();
+    if (form) {
+        form.submit();
+    }
     return true;
 }
 
 /**
  * This function does the same thing that handle_ranking_dispatch does,
  * but without submitting the form. This is necessary so that you can submit
- * a form with more than one rankingWidget in it. The last rakingWidget should
- * call handle_config_channels_dispatch to submit the form.
+ * a form with more than one rankingWidget in it. The last rankingWidget should
+ * call handle_ranking_dispatch to submit the form.
  * @param rankingWidgetName the name of the ranking widget list box.
  * @param storerName name of the element in whom the CS string will be stored
  *        ('rankedValues' in the case of SDC channel rankings)
@@ -104,8 +106,7 @@ function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
 function handle_ranking (rankingWidgetName, storerName, formName) {
     const element = document.getElementById(rankingWidgetName);
     const storer = document.getElementById(storerName);
-    const form = document.getElementById(formName) || document.forms[formName];
-    if (!element || !storer || !form) {
+    if (!element || !storer) {
         return false;
     }
 
