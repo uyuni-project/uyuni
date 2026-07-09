@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2024 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,11 +28,12 @@ import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.webui.controllers.download.PackageInfo;
+import com.suse.manager.webui.controllers.download.PackagePathParser;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -51,7 +52,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -116,116 +116,6 @@ public class DownloadController {
         head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
         head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
-    }
-
-    /**
-     * Encapsulates package info.
-     * Public only for unit tests.
-     */
-    public static class PkgInfo {
-        private final String name;
-        private final String version;
-        private final String release;
-        private final String epoch;
-        private final String arch;
-        private Optional<Long> orgId = Optional.empty();
-        private Optional<String> checksum = Optional.empty();
-
-        /**
-         * Constructor
-         * @param nameIn package name
-         * @param epochIn epoch
-         * @param versionIn version
-         * @param releaseIn release
-         * @param archIn architecture
-         */
-        public PkgInfo(String nameIn, String epochIn, String versionIn, String releaseIn, String archIn) {
-            this.name = nameIn;
-            this.version = versionIn;
-            this.release = releaseIn;
-            this.epoch = epochIn;
-            this.arch = archIn;
-        }
-
-        /**
-         * @return package name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * @return version
-         */
-        public String getVersion() {
-            return version;
-        }
-
-        /**
-         * @return release
-         */
-        public String getRelease() {
-            return release;
-        }
-
-        /**
-         * @return epoch
-         */
-        public String getEpoch() {
-            return epoch;
-        }
-
-        /**
-         * @return arch
-         */
-        public String getArch() {
-            return arch;
-        }
-
-        /**
-         * Set the checksum
-         * @param checksumIn the checksum
-         */
-        public void setChecksum(String checksumIn) {
-            checksum = Optional.ofNullable(checksumIn);
-        }
-
-        /**
-         * Return the checksum if available
-         * @return the optional checksum
-         */
-        public Optional<String> getChecksum() {
-            return checksum;
-        }
-
-        /**
-         * Set the org id
-         * @param orgIdIn the org id
-         */
-        public void setOrgId(Long orgIdIn) {
-            orgId = Optional.ofNullable(orgIdIn);
-        }
-
-        /**
-         * Set the org id as string
-         * @param orgIdIn the org is as string
-         */
-        public void setOrgId(String orgIdIn) {
-            try {
-                orgId = Optional.of(Long.valueOf(orgIdIn));
-            }
-            catch (NumberFormatException e) {
-                orgId = Optional.empty();
-            }
-        }
-
-        /**
-         * Return the org id if available
-         * @return the optional org id
-         */
-        public Optional<Long> getOrgId() {
-            return orgId;
-        }
     }
 
     /**
@@ -504,7 +394,7 @@ public class DownloadController {
         processToken(request, channel, basename);
 
         String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
-        PkgInfo pkgInfo = parsePackageFileName(path);
+        PackageInfo pkgInfo = PackagePathParser.parse(path);
         Package pkg = PackageFactory.lookupByChannelLabelNevraCs(channel, pkgInfo.getName(),
                 pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
                 pkgInfo.getChecksum());
@@ -518,48 +408,6 @@ public class DownloadController {
         File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
 
         return downloadFile(request, response, file);
-    }
-
-    /**
-     * Parse URL path to extract package info.
-     * Only public for unit tests.
-     * @param path url path
-     * @return name, epoch, vesion, release, arch of package
-     */
-    public PkgInfo parsePackageFileName(String path) {
-        List<String> parts = Arrays.asList(path.split("/"));
-        String extension = FilenameUtils.getExtension(path);
-        String basename = FilenameUtils.getBaseName(path);
-        String arch = StringUtils.substringAfterLast(basename, ".");
-        String rest = StringUtils.substringBeforeLast(basename, ".");
-        String release;
-        String name;
-        String version;
-        String epoch;
-
-        // Debian packages names need spacial handling
-        if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
-            name = StringUtils.substringBeforeLast(rest, "_");
-            rest = StringUtils.substringAfterLast(rest, "_");
-            PackageEvr pkgEv = PackageEvr.parseDebian(rest);
-            epoch = pkgEv.getEpoch();
-            version = pkgEv.getVersion();
-            release = pkgEv.getRelease();
-        }
-        else {
-            release = StringUtils.substringAfterLast(rest, "-");
-            rest = StringUtils.substringBeforeLast(rest, "-");
-            version = StringUtils.substringAfterLast(rest, "-");
-            name = StringUtils.substringBeforeLast(rest, "-");
-            epoch = null;
-        }
-        PkgInfo p = new PkgInfo(name, epoch, version, release, arch);
-        // path is getPackage/<org>/<checksum>/filename
-        if (parts.size() == 9 && parts.get(5).equals("getPackage")) {
-            p.setOrgId(parts.get(6));
-            p.setChecksum(parts.get(7));
-        }
-        return p;
     }
 
     /**
