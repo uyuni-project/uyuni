@@ -21,20 +21,18 @@ import java.lang.reflect.Field;
 
 public class UserForTestCaseExtension extends TestCaseExtension implements BeforeEachCallback, AfterEachCallback {
     @Override
-    public void beforeEach(ExtensionContext extensionContextIn) throws Exception {
-        extendAnnotatedValue(extensionContextIn, UserForTest.class, null, User.class);
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
+        injectAnnotatedFields(extensionContext, UserForTest.class, User.class);
     }
 
     @Override
-    public void afterEach(ExtensionContext extensionContextIn) throws Exception {
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
         //empty
     }
 
     @Override
-    protected void setInstanceField(Field field, Object instance, Object extensionObjectValue)
-            throws IllegalAccessException {
-        UserForTest annotation = field.getAnnotation(UserForTest.class);
-        User user = UserTestUtils.createUser(annotation.userName(), annotation.orgName());
-        field.set(instance, user);
+    protected Object resolveFieldValue(ExtensionContext extensionContext, Field targetField) {
+        UserForTest annotation = targetField.getAnnotation(UserForTest.class);
+        return UserTestUtils.createUser(annotation.userName(), annotation.orgName());
     }
 }
