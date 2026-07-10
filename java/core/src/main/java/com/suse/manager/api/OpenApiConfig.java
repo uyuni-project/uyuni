@@ -15,6 +15,7 @@
 package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
+import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 
@@ -100,6 +101,7 @@ public final class OpenApiConfig {
     public static Map<String, Class<?>> getHandlerClasses() {
         return Map.of(
             "access", AccessHandler.class,
+            "admin.ssh", AdminSshHandler.class,
             "api", ApiHandler.class,
             "saltkey", SaltKeyHandler.class
         );
