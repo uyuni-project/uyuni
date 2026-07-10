@@ -43,7 +43,7 @@ public class PackagePathParser {
     /**
      * Parse a download URL path to extract package information.
      * @param urlPath the URL path
-     * @return builder with parsed package info
+     * @return parsed package info
      */
     public static PackageInfo parse(String urlPath) {
         String filename = FilenameUtils.getName(urlPath);

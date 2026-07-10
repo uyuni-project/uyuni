@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -667,6 +667,31 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertTrue(e.getBody().contains("Server is not compliant"));
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    @Test
+    public void testFailDownloadWhenInvalidPackagePath() throws Exception {
+        Token token = new DownloadTokenBuilder(user.getOrg().getId()).usingServerSecret().build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
+        String tokenChannel = accessToken.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenChannel, "");
+
+        String invalidFile = "invalid-package-name.cenas";
+        Request request = getMockRequestWithParamsAndHeaders(params, Collections.emptyMap(), invalidFile);
+
+        try {
+            downloadController.downloadPackage(request, response);
+            fail(String.format("%s should halt 400 if an invalid package path is given",
+                    DownloadController.class.getSimpleName()));
+        }
+        catch (spark.HaltException e) {
+            assertEquals(400, e.statusCode());
+            assertTrue(e.body().contains("Invalid package path"));
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
