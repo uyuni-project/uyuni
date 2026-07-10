@@ -16,6 +16,8 @@
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.manager.maintenance.MaintenanceManager;
@@ -38,8 +40,22 @@ public class MaintenanceWindowHelper {
      *
      * @param request the Struts request
      * @param systemIds list of {@link Server}s
+     * @param referenceMaintenanceWindowsType the reference action type to check if maintenance mode is on
      */
-    public static void prepopulateMaintenanceWindows(HttpServletRequest request,
+    public static void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds,
+                                                  ActionTypeEnum referenceMaintenanceWindowsType) {
+        if (ActionFactory.isMaintenanceModeOnly(referenceMaintenanceWindowsType)) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
+
+    /**
+     * Given the systems, populate the request object with available maintenance windows.
+     *
+     * @param request the Struts request
+     * @param systemIds list of {@link Server}s
+     */
+    private static void prepopulateMaintenanceWindows(HttpServletRequest request,
             Set<Long> systemIds) {
         try {
             maintenanceManager
