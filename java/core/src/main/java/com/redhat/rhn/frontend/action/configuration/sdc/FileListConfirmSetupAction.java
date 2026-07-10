@@ -19,7 +19,6 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -40,7 +39,7 @@ import java.util.Set;
 /**
  * FileListConfirmSetupAction, for sdc configuration
  */
-public abstract class FileListConfirmSetupAction extends BaseListAction implements MaintenanceWindowsAware {
+public abstract class FileListConfirmSetupAction extends BaseListAction {
     public static final String SELECT_ALL = "selectall";
 
     /**

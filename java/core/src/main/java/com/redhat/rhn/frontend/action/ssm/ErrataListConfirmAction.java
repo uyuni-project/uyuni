@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -61,8 +60,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Confirm application of errata to systems in SSM.
  */
-public class ErrataListConfirmAction extends RhnAction implements
-        Listable<ErrataOverview>, MaintenanceWindowsAware {
+public class ErrataListConfirmAction extends RhnAction implements Listable<ErrataOverview> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(ErrataListConfirmAction.class);

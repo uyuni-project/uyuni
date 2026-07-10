@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -58,7 +57,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * ChannelDeployConfirmAction
  */
-public class ChannelDeployConfirmAction extends RhnAction implements MaintenanceWindowsAware {
+public class ChannelDeployConfirmAction extends RhnAction {
 
     /**
      * ${@inheritDoc}

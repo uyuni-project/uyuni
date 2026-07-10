@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -64,7 +63,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Handles the display and capturing of scheduling package verifications for systems in
  * the SSM.
  */
-public class SchedulePackageVerifyAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class SchedulePackageVerifyAction extends RhnAction implements Listable {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SchedulePackageVerifyAction.class);

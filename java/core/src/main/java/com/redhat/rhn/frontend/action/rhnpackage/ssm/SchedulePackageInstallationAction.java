@@ -19,7 +19,6 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
@@ -60,8 +59,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * SSM action that handles prompting the user for when to install the package as well as
  * creating the action when the user confirms the creation.
  */
-public class SchedulePackageInstallationAction extends RhnListAction implements
-        Listable<EssentialServerDto>, MaintenanceWindowsAware {
+public class SchedulePackageInstallationAction extends RhnListAction implements Listable<EssentialServerDto> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SchedulePackageInstallationAction.class);

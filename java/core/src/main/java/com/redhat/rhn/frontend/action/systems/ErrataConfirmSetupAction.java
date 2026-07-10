@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -62,7 +61,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * ErrataConfirmSetupAction
  */
-public class ErrataConfirmSetupAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class ErrataConfirmSetupAction extends RhnAction implements Listable {
 
     public static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
     /** Logger instance */

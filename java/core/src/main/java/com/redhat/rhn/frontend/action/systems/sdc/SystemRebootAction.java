@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -49,7 +48,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * SystemRebootAction handles the interaction of the system reboot.
  */
-public class SystemRebootAction extends RhnAction implements MaintenanceWindowsAware {
+public class SystemRebootAction extends RhnAction {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SystemRebootAction.class);
 

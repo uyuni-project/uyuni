@@ -26,9 +26,4 @@ public class DeployFileConfirmSetupAction extends FileListConfirmSetupAction {
     public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
     }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
-    }
 }

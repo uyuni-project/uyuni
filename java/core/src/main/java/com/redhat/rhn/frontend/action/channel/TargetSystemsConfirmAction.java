@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -64,7 +63,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * TargetSystemsConfirmAction
  */
-public class TargetSystemsConfirmAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class TargetSystemsConfirmAction extends RhnAction implements Listable {
 
     private static final Logger LOG = LogManager.getLogger(TargetSystemsConfirmAction.class);
 
