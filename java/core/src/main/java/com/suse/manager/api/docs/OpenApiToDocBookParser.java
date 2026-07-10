@@ -241,6 +241,10 @@ public class OpenApiToDocBookParser {
 
         Schema<?> schema = respSchema.get$ref() != null ?
                 resolveSchema(respSchema.get$ref()) : respSchema;
+        Schema<?> docSchema = getDocResponseSchema(resp);
+        if (docSchema != null) {
+            schema = resolveSchemaReference(docSchema);
+        }
 
         String label = (responseDescription != null && !responseDescription.isBlank()) ?
                 responseDescription :
@@ -250,6 +254,12 @@ public class OpenApiToDocBookParser {
                         .toLowerCase().trim();
 
         return renderReturnSchema(schema, label);
+    }
+
+    private Schema<?> getDocResponseSchema(ApiResponse response) {
+        Object schema = response.getExtensions() == null ? null :
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
+        return schema instanceof Schema<?> docSchema ? docSchema : null;
     }
 
     private String renderReturnSchema(Schema<?> schema, String label) {
@@ -313,7 +323,7 @@ public class OpenApiToDocBookParser {
     private String renderAdditionalPropertiesReturn(Schema<?> inner, String label) {
         Schema<?> resolvedInner = resolveSchemaReference(inner);
         String innerLabel = getAdditionalPropertiesLabel(inner, label);
-        return renderReturnSchema(resolvedInner, innerLabel.isEmpty() ? "namespace" : innerLabel);
+        return renderReturnSchema(resolvedInner, innerLabel.isEmpty() ? "map" : innerLabel);
     }
 
     private String getAdditionalPropertiesLabel(Schema<?> inner, String label) {
@@ -321,7 +331,7 @@ public class OpenApiToDocBookParser {
             return extractRefName(inner.get$ref());
         }
         if (label.isEmpty()) {
-            return "namespace";
+            return "map";
         }
         return label;
     }

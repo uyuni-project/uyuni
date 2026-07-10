@@ -225,8 +225,13 @@ public class OpenApiToAsciidocParser {
         }
         Schema<?> schema = resolveSchemaReference(jsonContent.getSchema());
         String refName = "";
+        Schema<?> docSchema = getDocResponseSchema(successResponse);
+        if (docSchema != null) {
+            refName = docSchema.get$ref() != null ? extractRefName(docSchema.get$ref()) : "";
+            schema = resolveSchemaReference(docSchema);
+        }
 
-        if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
+        if (docSchema == null && schema.getProperties() != null && schema.getProperties().containsKey("result")) {
             Schema<?> resultSchema = (Schema<?>) schema.getProperties().get("result");
             refName = extractRefName(resultSchema.get$ref());
             schema = resolveSchemaReference(resultSchema);
@@ -242,7 +247,13 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        printStruct(writer, schema, 0, refName);
+        printStruct(writer, schema, 0, refName, responseDescription(successResponse));
+    }
+
+    private Schema<?> getDocResponseSchema(ApiResponse response) {
+        Object schema = response.getExtensions() == null ? null :
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
+        return schema instanceof Schema<?> docSchema ? docSchema : null;
     }
 
     private void writeArrayReturn(PrintWriter writer, Schema<?> schema, ApiResponse successResponse) {
@@ -328,7 +339,8 @@ public class OpenApiToAsciidocParser {
         return responses.get("default");
     }
 
-    private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel) {
+    private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel,
+                             String responseDescription) {
         if (schema == null) {
             return;
         }
@@ -336,11 +348,14 @@ public class OpenApiToAsciidocParser {
         String marker = indent == 0 ? "*" : "**";
 
         String label = "";
-        if (forcedLabel != null && !forcedLabel.isEmpty()) {
+        if (responseDescription != null && !responseDescription.isEmpty()) {
+            label = responseDescription;
+        }
+        else if (forcedLabel != null && !forcedLabel.isEmpty()) {
             label = forcedLabel;
         }
         if (label.isEmpty() && schema.getAdditionalProperties() != null) {
-            label = "namespace";
+            label = "map";
         }
 
         if (schema.getProperties() != null || schema.getAdditionalProperties() != null) {
@@ -360,6 +375,10 @@ public class OpenApiToAsciidocParser {
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             Schema<?> resolvedInner = inner.get$ref() != null ? resolveSchema(inner.get$ref()) : inner;
+            while (resolvedInner.getProperties() == null &&
+                    resolvedInner.getAdditionalProperties() instanceof Schema<?> nested) {
+                resolvedInner = nested.get$ref() != null ? resolveSchema(nested.get$ref()) : nested;
+            }
             if (resolvedInner.getProperties() != null) {
                 resolvedInner.getProperties().forEach((name, property) -> {
                     Schema<?> propertySchema = (Schema<?>) property;

@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.api.ApiResponseWrapper;
 import com.suse.manager.api.docs.ApiEndpointDoc;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.List;
 import java.util.Set;
 
@@ -153,6 +155,7 @@ public interface AccessHandlerApi {
     int revokeAccess(User loggedInUser, String label, List<String> namespaces, List<String> modes);
 
     @Schema(name = "RevokeAccessRequest")
+    @JsonPropertyOrder({"label", "namespaces", "modes"})
     interface RevokeAccessRequest {
 
         /**
@@ -175,6 +178,7 @@ public interface AccessHandlerApi {
     }
 
     @Schema(name = "CreateRoleRequest")
+    @JsonPropertyOrder({"label", "description", "permissionsFrom"})
     interface CreateRoleRequest {
 
         /**
@@ -213,6 +217,7 @@ public interface AccessHandlerApi {
     }
 
     @Schema(name = "Namespace", description = "namespace")
+    @JsonPropertyOrder({"namespace", "accessMode", "description"})
     interface NamespaceDoc {
 
         /**
@@ -235,6 +240,7 @@ public interface AccessHandlerApi {
     }
 
     @Schema(name = "GrantAccessRequest")
+    @JsonPropertyOrder({"label", "namespaces", "modes"})
     interface GrantAccessRequest {
 
         /**
