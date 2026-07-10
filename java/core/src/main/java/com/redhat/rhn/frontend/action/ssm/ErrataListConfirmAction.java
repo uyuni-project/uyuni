@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -89,7 +90,7 @@ public class ErrataListConfirmAction extends RhnAction implements
         getStrutsDelegate().prepopulateDatePicker(request, (DynaActionForm) formIn, "date", YEAR_RANGE_POSITIVE);
 
         Set<Long> systemIds = new HashSet<>(getSystemIds(request));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_ERRATA);
 
         ActionChainHelper.prepopulateActionChains(request);
 
@@ -164,10 +165,5 @@ public class ErrataListConfirmAction extends RhnAction implements
     public List<ErrataOverview> getResult(RequestContext context) {
         return ErrataManager.lookupSelectedErrataInSystemSet(context.getCurrentUser(),
                 getSetDecl().getLabel());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_ERRATA;
     }
 }

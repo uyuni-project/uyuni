@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -105,7 +106,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         request.setAttribute("date", picker);
 
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_REMOVE);
 
         // Pre-populate the Action Chain selector
         ActionChainHelper.prepopulateActionChains(request);
@@ -217,11 +218,6 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         strutsDelegate.saveMessages(request, msgs);
 
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_REMOVE;
     }
 }
 
