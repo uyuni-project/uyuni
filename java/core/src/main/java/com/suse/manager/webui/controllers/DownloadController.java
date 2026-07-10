@@ -394,7 +394,17 @@ public class DownloadController {
         processToken(request, channel, basename);
 
         String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
-        PackageInfo pkgInfo = PackagePathParser.parse(path);
+        PackageInfo pkgInfo;
+        try {
+            pkgInfo = PackagePathParser.parse(path);
+        }
+        catch (IllegalArgumentException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Invalid package path: {}", StringUtil.sanitizeLogInput(path), e);
+            }
+            halt(HttpStatus.SC_BAD_REQUEST, String.format("Invalid package path: %s", path));
+            return null;
+        }
         Package pkg = PackageFactory.lookupByChannelLabelNevraCs(channel, pkgInfo.getName(),
                 pkgInfo.getVersion(), pkgInfo.getRelease(), pkgInfo.getEpoch(), pkgInfo.getArch(),
                 pkgInfo.getChecksum());
