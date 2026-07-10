@@ -2736,7 +2736,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     boolean isUbuntu2404() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("24.04");
     }
-
+    
     boolean isUbuntu2604() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("26.04");
     }
