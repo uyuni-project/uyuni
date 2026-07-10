@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -106,7 +107,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
         ActionChainHelper.prepopulateActionChains(request);
 
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
         return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -223,10 +224,5 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
 
 
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }
