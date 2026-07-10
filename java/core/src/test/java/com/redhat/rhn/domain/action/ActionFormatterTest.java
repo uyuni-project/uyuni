@@ -37,7 +37,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(UserForTestCaseExtension.class)
 public class ActionFormatterTest extends BaseTestCase {
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     protected User user;
 
     /**

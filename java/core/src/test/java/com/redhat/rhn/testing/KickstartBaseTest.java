@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(UserForTestCaseExtension.class)
 public class KickstartBaseTest extends BaseTestCase {
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     protected User user;
 
     @BeforeEach

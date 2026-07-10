@@ -28,7 +28,7 @@ import java.nio.file.Path;
 @ExtendWith(SaltTestCaseExtension.class)
 public abstract class BaseTestCaseWithUser extends BaseTestCase {
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     protected User user;
 
     @SaltTestRootPath
