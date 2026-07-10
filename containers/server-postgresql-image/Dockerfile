@@ -30,7 +30,7 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VE
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 # Hard code the postgres UID / GID to the upstream image value and what was in the big container
-# The files are chown'ed in the entrypoint
+# Ownership and permissions are fixed at runtime by /usr/bin/sanity_run.sh
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
