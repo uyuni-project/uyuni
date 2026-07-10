@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.sdc;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
@@ -23,6 +24,7 @@ import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnSetHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -40,6 +42,13 @@ import java.util.Set;
  */
 public abstract class FileListConfirmSetupAction extends BaseListAction implements MaintenanceWindowsAware {
     public static final String SELECT_ALL = "selectall";
+
+    /**
+     * Retrieves the reference action type to check if the maintenance mode only is on
+     * @return the reference action type
+     */
+    abstract ActionTypeEnum getReferenceMaintenanceWindowsType();
+
     /**
      * {@inheritDoc}
      */
@@ -69,7 +78,8 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
         ctxt.getRequest().setAttribute("date", picker);
 
         Set<Long> systemIds = Set.of(ctxt.lookupServer().getId());
-        populateMaintenanceWindows(ctxt.getRequest(), systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(ctxt.getRequest(), systemIds,
+                getReferenceMaintenanceWindowsType());
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 

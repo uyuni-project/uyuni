@@ -71,6 +71,11 @@ public class VerifyConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     }
 
     @Override
+    public ActionTypeEnum getReferenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_PACKAGES_VERIFY;
+    }
+
+    @Override
     public ActionTypeEnum referenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_PACKAGES_VERIFY;
     }
