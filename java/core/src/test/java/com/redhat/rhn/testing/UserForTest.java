@@ -24,6 +24,14 @@ public @interface UserForTest {
     String REGULAR_USER = "testUser";
     String DEFAULT_ORG = "testOrg";
 
+    enum UserRole {
+        REGULAR,
+        ORG_ADMIN,
+        SAT_ADMIN
+    }
+
     String userName() default REGULAR_USER;
     String orgName() default DEFAULT_ORG;
+    UserRole role() default UserRole.REGULAR;
+
 }
