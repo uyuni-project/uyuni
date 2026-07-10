@@ -185,12 +185,11 @@ public class OpenApiToDocBookParser {
         }
 
         Map<String, Schema<?>> allProps = getAllPossibleProperties(op);
-        for (Map.Entry<String, Schema<?>> e : allProps.entrySet()) {
-            String name = e.getKey();
-            if (!activeParams.contains(name)) {
+        for (String name : activeParams) {
+            Schema<?> schema = allProps.get(name);
+            if (schema == null) {
                 continue;
             }
-            Schema<?> schema = e.getValue();
             String type = formatType(schema);
             String desc = findDescription(schema);
             params.add(new ParamDoc(type, name, desc));
@@ -271,6 +270,11 @@ public class OpenApiToDocBookParser {
             Schema<?> item = schema.getItems();
             Schema<?> resolvedItem = item.get$ref() != null ?
                     resolveSchema(item.get$ref()) : item;
+            if (resolvedItem != null && isSimpleType(resolvedItem) && label != null && !label.isBlank()) {
+                String itemType = "integer".equals(resolvedItem.getType()) ? "int" : resolvedItem.getType();
+                return String.format("<listitem><para>array(%s) %s</para></listitem>",
+                        escapeXml(itemType), escapeXml(label));
+            }
             String itemLabel = item.get$ref() != null ? extractRefName(item.get$ref()) : "";
             StringBuilder sb = new StringBuilder();
             sb.append("<listitem>\n");

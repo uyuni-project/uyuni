@@ -240,12 +240,20 @@ public class OpenApiToAsciidocParser {
             Schema<?> resolved = itemSchema.get$ref() != null ? resolveSchema(itemSchema.get$ref()) : itemSchema;
             String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
 
-            writer.println("* [.array]#array# :");
             if (resolved != null && isSimpleType(resolved)) {
                 String itemType = "integer".equals(resolved.getType()) ? "int" : resolved.getType();
+                String label = Optional.ofNullable(successResponse.getDescription())
+                        .filter(d -> !d.isBlank())
+                        .orElse("");
+                if (!label.isEmpty()) {
+                    writer.printf("* [.array]#%s array#  %s%n", itemType, label);
+                    return;
+                }
+                writer.println("* [.array]#array# :");
                 writer.printf("    * [.%s]#%s#%n", itemType, itemType);
             }
             else {
+                writer.println("* [.array]#array# :");
                 writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
                 if (resolved != null && resolved.getProperties() != null) {
                     resolved.getProperties().forEach((name, prop) -> {

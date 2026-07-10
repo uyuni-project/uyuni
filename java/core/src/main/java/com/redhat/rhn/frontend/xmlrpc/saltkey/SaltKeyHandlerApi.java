@@ -36,7 +36,8 @@ public interface SaltKeyHandlerApi {
     @ApiEndpointDoc(
         summary = "List accepted salt keys",
         method = HttpMethod.GET,
-        responseClass = SaltKeyListResponse.class
+        responseClass = SaltKeyListResponse.class,
+        responseDescription = "Accepted salt key list"
     )
     List<String> acceptedList(User loggedInUser);
 
@@ -49,7 +50,8 @@ public interface SaltKeyHandlerApi {
     @ApiEndpointDoc(
         summary = "List pending salt keys",
         method = HttpMethod.GET,
-        responseClass = SaltKeyListResponse.class
+        responseClass = SaltKeyListResponse.class,
+        responseDescription = "Pending salt key list"
     )
     List<String> pendingList(User loggedInUser);
 
@@ -62,7 +64,8 @@ public interface SaltKeyHandlerApi {
     @ApiEndpointDoc(
         summary = "List of rejected salt keys",
         method = HttpMethod.GET,
-        responseClass = SaltKeyListResponse.class
+        responseClass = SaltKeyListResponse.class,
+        responseDescription = "Rejected salt key list"
     )
     List<String> rejectedList(User loggedInUser);
 
@@ -75,7 +78,8 @@ public interface SaltKeyHandlerApi {
     @ApiEndpointDoc(
         summary = "List of denied salt keys",
         method = HttpMethod.GET,
-        responseClass = SaltKeyListResponse.class
+        responseClass = SaltKeyListResponse.class,
+        responseDescription = "Denied salt key list"
     )
     List<String> deniedList(User loggedInUser);
 
