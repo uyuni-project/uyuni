@@ -28,7 +28,7 @@ import java.util.Optional;
  * @apidoc.namespace admin.ssh
  * @apidoc.doc Provides methods to manage SSH data.
  */
-public class AdminSshHandler extends BaseHandler {
+public class AdminSshHandler extends BaseHandler implements AdminSshHandlerApi {
 
     private final SaltApi saltApi;
 
