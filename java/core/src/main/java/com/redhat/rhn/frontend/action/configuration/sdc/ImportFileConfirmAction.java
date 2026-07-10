@@ -33,10 +33,4 @@ public class ImportFileConfirmAction extends FileListConfirmSetupAction {
         // no-op
         return null;
     }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        // no-op
-        return null;
-    }
 }

@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -56,8 +55,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Confirm reboot of given systems
  */
-public class RebootSystemConfirmAction extends RhnAction
-    implements Listable<SystemOverview>, MaintenanceWindowsAware {
+public class RebootSystemConfirmAction extends RhnAction implements Listable<SystemOverview> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(RebootSystemConfirmAction.class);

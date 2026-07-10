@@ -74,9 +74,4 @@ public class RemoveConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_PACKAGES_REMOVE;
     }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_REMOVE;
-    }
 }
