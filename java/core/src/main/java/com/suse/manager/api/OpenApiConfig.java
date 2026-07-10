@@ -16,6 +16,7 @@ package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 
@@ -99,7 +100,8 @@ public final class OpenApiConfig {
     public static Map<String, Class<?>> getHandlerClasses() {
         return Map.of(
             "access", AccessHandler.class,
-            "api", ApiHandler.class
+            "api", ApiHandler.class,
+            "saltkey", SaltKeyHandler.class
         );
     }
 }

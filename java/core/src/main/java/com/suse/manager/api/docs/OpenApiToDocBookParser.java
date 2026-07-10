@@ -185,12 +185,11 @@ public class OpenApiToDocBookParser {
         }
 
         Map<String, Schema<?>> allProps = getAllPossibleProperties(op);
-        for (Map.Entry<String, Schema<?>> e : allProps.entrySet()) {
-            String name = e.getKey();
-            if (!activeParams.contains(name)) {
+        for (String name : activeParams) {
+            Schema<?> schema = allProps.get(name);
+            if (schema == null) {
                 continue;
             }
-            Schema<?> schema = e.getValue();
             String type = formatType(schema);
             String desc = findDescription(schema);
             params.add(new ParamDoc(type, name, desc));
@@ -257,51 +256,82 @@ public class OpenApiToDocBookParser {
         if (schema == null) {
             return "<listitem><para></para></listitem>";
         }
-        if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
-            Object resultProp = schema.getProperties().get("result");
-            if (resultProp instanceof Schema<?> resultSchema) {
-                String innerLabel = resultSchema.get$ref() != null ?
-                        extractRefName(resultSchema.get$ref()) : label;
-                Schema<?> resolved = resultSchema.get$ref() != null ?
-                        resolveSchema(resultSchema.get$ref()) : resultSchema;
-                return renderReturnSchema(resolved, innerLabel);
-            }
+        Schema<?> resultSchema = getResultSchema(schema);
+        if (resultSchema != null) {
+            return renderReturnSchema(resolveSchemaReference(resultSchema), getResultLabel(resultSchema, label));
         }
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
-            Schema<?> item = schema.getItems();
-            Schema<?> resolvedItem = item.get$ref() != null ?
-                    resolveSchema(item.get$ref()) : item;
-            String itemLabel = item.get$ref() != null ? extractRefName(item.get$ref()) : "";
-            StringBuilder sb = new StringBuilder();
-            sb.append("<listitem>\n");
-            sb.append("  <para>array</para>\n");
-            sb.append("  <itemizedlist spacing=\"compact\">\n");
-            sb.append(indentLines(renderReturnSchema(resolvedItem, itemLabel), 4));
-            sb.append("\n  </itemizedlist>\n");
-            sb.append("</listitem>");
-            return sb.toString();
+            return renderArrayReturn(schema, label);
         }
         if (isSimpleType(schema)) {
-            String type = "integer".equals(schema.getType()) ? "int" : schema.getType();
-            String text = (label == null || label.isBlank()) ? type : type + " - " + label;
-            return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+            return renderSimpleReturn(schema, label);
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
-            Schema<?> resolvedInner = inner.get$ref() != null ?
-                    resolveSchema(inner.get$ref()) : inner;
-            String innerLabel;
-            if (inner.get$ref() != null) {
-                innerLabel = extractRefName(inner.get$ref());
-            }
-            else if (label.isEmpty()) {
-                innerLabel = "namespace";
-            }
-            else {
-                innerLabel = label;
-            }
-            return renderReturnSchema(resolvedInner, innerLabel.isEmpty() ? "namespace" : innerLabel);
+            return renderAdditionalPropertiesReturn(inner, label);
         }
         return renderStructList(schema, label);
+    }
+
+    private Schema<?> getResultSchema(Schema<?> schema) {
+        if (schema.getProperties() == null || !schema.getProperties().containsKey("result")) {
+            return null;
+        }
+        Object resultProp = schema.getProperties().get("result");
+        return resultProp instanceof Schema<?> resultSchema ? resultSchema : null;
+    }
+
+    private String getResultLabel(Schema<?> resultSchema, String label) {
+        return resultSchema.get$ref() != null ? extractRefName(resultSchema.get$ref()) : label;
+    }
+
+    private String renderArrayReturn(Schema<?> schema, String label) {
+        Schema<?> item = schema.getItems();
+        Schema<?> resolvedItem = resolveSchemaReference(item);
+        if (resolvedItem != null && isSimpleType(resolvedItem) && label != null && !label.isBlank()) {
+            String itemType = formatSimpleType(resolvedItem);
+            return String.format("<listitem><para>array(%s) %s</para></listitem>",
+                    escapeXml(itemType), escapeXml(label));
+        }
+
+        String itemLabel = item.get$ref() != null ? extractRefName(item.get$ref()) : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("<listitem>\n");
+        sb.append("  <para>array</para>\n");
+        sb.append("  <itemizedlist spacing=\"compact\">\n");
+        sb.append(indentLines(renderReturnSchema(resolvedItem, itemLabel), 4));
+        sb.append("\n  </itemizedlist>\n");
+        sb.append("</listitem>");
+        return sb.toString();
+    }
+
+    private String renderSimpleReturn(Schema<?> schema, String label) {
+        String type = formatSimpleType(schema);
+        String text = (label == null || label.isBlank()) ? type : type + " - " + label;
+        return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+    }
+
+    private String renderAdditionalPropertiesReturn(Schema<?> inner, String label) {
+        Schema<?> resolvedInner = resolveSchemaReference(inner);
+        String innerLabel = getAdditionalPropertiesLabel(inner, label);
+        return renderReturnSchema(resolvedInner, innerLabel.isEmpty() ? "namespace" : innerLabel);
+    }
+
+    private String getAdditionalPropertiesLabel(Schema<?> inner, String label) {
+        if (inner.get$ref() != null) {
+            return extractRefName(inner.get$ref());
+        }
+        if (label.isEmpty()) {
+            return "namespace";
+        }
+        return label;
+    }
+
+    private Schema<?> resolveSchemaReference(Schema<?> schema) {
+        return schema.get$ref() != null ? resolveSchema(schema.get$ref()) : schema;
+    }
+
+    private String formatSimpleType(Schema<?> schema) {
+        return "integer".equals(schema.getType()) ? "int" : schema.getType();
     }
 
     private String renderStructList(Schema<?> schema, String label) {
