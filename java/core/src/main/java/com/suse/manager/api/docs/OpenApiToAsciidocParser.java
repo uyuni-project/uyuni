@@ -223,66 +223,96 @@ public class OpenApiToAsciidocParser {
         if (jsonContent == null || jsonContent.getSchema() == null) {
             return;
         }
-        Schema<?> schema = jsonContent.getSchema();
-        if (schema.get$ref() != null) {
-            schema = resolveSchema(schema.get$ref());
-        }
+        Schema<?> schema = resolveSchemaReference(jsonContent.getSchema());
         String refName = "";
 
         if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
             Schema<?> resultSchema = (Schema<?>) schema.getProperties().get("result");
             refName = extractRefName(resultSchema.get$ref());
-            schema = resultSchema.get$ref() != null ? resolveSchema(resultSchema.get$ref()) : resultSchema;
+            schema = resolveSchemaReference(resultSchema);
         }
 
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
-            Schema<?> itemSchema = schema.getItems();
-            Schema<?> resolved = itemSchema.get$ref() != null ? resolveSchema(itemSchema.get$ref()) : itemSchema;
-            String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
-
-            if (resolved != null && isSimpleType(resolved)) {
-                String itemType = "integer".equals(resolved.getType()) ? "int" : resolved.getType();
-                String label = Optional.ofNullable(successResponse.getDescription())
-                        .filter(d -> !d.isBlank())
-                        .orElse("");
-                if (!label.isEmpty()) {
-                    writer.printf("* [.array]#%s array#  %s%n", itemType, label);
-                    return;
-                }
-                writer.println("* [.array]#array# :");
-                writer.printf("    * [.%s]#%s#%n", itemType, itemType);
-            }
-            else {
-                writer.println("* [.array]#array# :");
-                writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
-                if (resolved != null && resolved.getProperties() != null) {
-                    resolved.getProperties().forEach((name, prop) -> {
-                        Schema<?> propertySchema = prop;
-                        String propDesc = propertySchema.getDescription() != null ?
-                                " - " + propertySchema.getDescription() : "";
-                        writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
-                    });
-                }
-            }
-            writer.println();
+            writeArrayReturn(writer, schema, successResponse);
             return;
         }
 
         if (isSimpleType(schema)) {
-            String type = schema.getType();
-            String label = Optional.ofNullable(successResponse.getDescription())
-                    .filter(d -> !d.isBlank())
-                    .orElseGet(() -> operation.getOperationId()
-                            .replace("get", "")
-                            .replaceAll("([a-z])([A-Z])", "$1 $2")
-                            .toLowerCase().trim());
-
-            String displayType = "integer".equals(type) ? "int" : type;
-            writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
+            writeSimpleReturn(writer, schema, successResponse, operation);
             return;
         }
 
         printStruct(writer, schema, 0, refName);
+    }
+
+    private void writeArrayReturn(PrintWriter writer, Schema<?> schema, ApiResponse successResponse) {
+        Schema<?> itemSchema = schema.getItems();
+        Schema<?> resolved = resolveSchemaReference(itemSchema);
+        String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
+
+        if (resolved != null && isSimpleType(resolved)) {
+            writeSimpleArrayReturn(writer, resolved, successResponse);
+            return;
+        }
+
+        writer.println("* [.array]#array# :");
+        writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
+        printArrayStructProperties(writer, resolved);
+        writer.println();
+    }
+
+    private void writeSimpleArrayReturn(PrintWriter writer, Schema<?> resolved, ApiResponse successResponse) {
+        String itemType = displayType(resolved);
+        String label = responseDescription(successResponse);
+        if (!label.isEmpty()) {
+            writer.printf("* [.array]#%s array#  %s%n", itemType, label);
+            return;
+        }
+        writer.println("* [.array]#array# :");
+        writer.printf("    * [.%s]#%s#%n", itemType, itemType);
+        writer.println();
+    }
+
+    private void printArrayStructProperties(PrintWriter writer, Schema<?> resolved) {
+        if (resolved == null || resolved.getProperties() == null) {
+            return;
+        }
+        resolved.getProperties().forEach((name, prop) -> {
+            Schema<?> propertySchema = prop;
+            String propDesc = propertySchema.getDescription() != null ?
+                    " - " + propertySchema.getDescription() : "";
+            writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
+        });
+    }
+
+    private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
+                                   ApiResponse successResponse, Operation operation) {
+        String displayType = displayType(schema);
+        String label = Optional.of(responseDescription(successResponse))
+                .filter(d -> !d.isBlank())
+                .orElseGet(() -> operation.getOperationId()
+                        .replace("get", "")
+                        .replaceAll("([a-z])([A-Z])", "$1 $2")
+                        .toLowerCase().trim());
+
+        writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
+    }
+
+    private Schema<?> resolveSchemaReference(Schema<?> schema) {
+        if (schema == null || schema.get$ref() == null) {
+            return schema;
+        }
+        return resolveSchema(schema.get$ref());
+    }
+
+    private String responseDescription(ApiResponse response) {
+        return Optional.ofNullable(response.getDescription())
+                .filter(d -> !d.isBlank())
+                .orElse("");
+    }
+
+    private String displayType(Schema<?> schema) {
+        return "integer".equals(schema.getType()) ? "int" : schema.getType();
     }
 
     private ApiResponse getSuccessResponse(ApiResponses responses) {
