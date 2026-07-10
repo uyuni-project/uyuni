@@ -52,7 +52,7 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
-    @UserForTest(userName = TestStatics.TEST_USER, orgName = TestStatics.TEST_ORG)
+    @UserForTest
     protected User user;
 
     /**

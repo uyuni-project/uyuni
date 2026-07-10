@@ -19,7 +19,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserForTest {
-    boolean useClassNameForOrg() default false;
-    String userName() default "";
-    String orgName() default "";
+
+    // Default names
+    String REGULAR_USER = "testUser";
+    String DEFAULT_ORG = "testOrg";
+
+    String userName() default REGULAR_USER;
+    String orgName() default DEFAULT_ORG;
 }
