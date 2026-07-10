@@ -23,6 +23,11 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 public class DeployFileConfirmSetupAction extends FileListConfirmSetupAction {
 
     @Override
+    public ActionTypeEnum getReferenceMaintenanceWindowsType() {
+        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
+    }
+
+    @Override
     public ActionTypeEnum referenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
     }
