@@ -100,14 +100,6 @@ public class ChannelFactoryTest extends BaseTestCase {
         return c;
     }
 
-    public static Channel createBaseChannel(User user,
-                                            ChannelFamily fam) {
-        Channel c = createTestChannel(null, fam);
-        ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
-        c.setProductName(pn);
-        return c;
-    }
-
     public static Channel createTestChannel(User user) {
         Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
         // assume we want the user to have access to this channel once created
