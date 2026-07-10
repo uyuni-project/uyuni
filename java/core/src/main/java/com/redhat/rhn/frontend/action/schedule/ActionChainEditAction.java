@@ -24,9 +24,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -45,8 +43,6 @@ import org.hibernate.ObjectNotFoundException;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -176,25 +172,8 @@ public class ActionChainEditAction extends RhnAction {
         DatePicker datePicker = getStrutsDelegate().prepopulateDatePicker(request, form,
             DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
 
-        Set<Long> systemsWithMaintAwareAction = actionChain.getEntries().stream()
-                .filter(e -> e.getAction().getActionType().isMaintenanceModeOnly())
-                .map(e -> e.getServer().getId())
-                .collect(Collectors.toSet());
-
-        if (!systemsWithMaintAwareAction.isEmpty()) {
-            populateMaintenanceWindows(request, systemsWithMaintAwareAction);
-        }
+        //no need to populate maintenance windows
 
         request.setAttribute(DATE_ATTRIBUTE, datePicker);
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return null;
     }
 }
