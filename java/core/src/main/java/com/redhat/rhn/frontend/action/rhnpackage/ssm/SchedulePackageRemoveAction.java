@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -68,8 +67,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Handles the display and capture of scheduling package removals for systems in the SSM.
  *
  */
-public class SchedulePackageRemoveAction extends RhnListAction implements
-        Listable<Row>, MaintenanceWindowsAware {
+public class SchedulePackageRemoveAction extends RhnListAction implements Listable<Row> {
 
     private static Logger log = LogManager.getLogger(SchedulePackageRemoveAction.class);
 

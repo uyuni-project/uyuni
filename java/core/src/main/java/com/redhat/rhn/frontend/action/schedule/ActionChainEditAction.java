@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -56,7 +55,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Controller for the Action Chain list page.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class ActionChainEditAction extends RhnAction implements MaintenanceWindowsAware {
+public class ActionChainEditAction extends RhnAction {
 
     /** Query string parameter name. */
     public static final String ACTION_CHAIN_ID_PARAMETER = "id";

@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -63,7 +62,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Confirm that you want to schedule package installation
  * @author sherr
  */
-public class TargetSystemsConfirmAction extends RhnAction implements MaintenanceWindowsAware {
+public class TargetSystemsConfirmAction extends RhnAction {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(TargetSystemsConfirmAction.class);

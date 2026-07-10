@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * DiffConfirmAction
  */
-public class ConfigConfirmAction extends BaseListAction implements MaintenanceWindowsAware {
+public class ConfigConfirmAction extends BaseListAction {
 
     /**
      * {@inheritDoc}

@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -63,7 +62,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author paji
  * BaseSystemPackagesAction
  */
-public abstract class BaseSystemPackagesConfirmAction extends RhnAction implements MaintenanceWindowsAware {
+public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(BaseSystemPackagesConfirmAction.class);
 

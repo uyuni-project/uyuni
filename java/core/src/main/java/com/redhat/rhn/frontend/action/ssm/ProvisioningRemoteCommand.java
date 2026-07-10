@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -63,8 +62,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Bo Maryniuk
  */
-public class ProvisioningRemoteCommand extends RhnAction implements
-        Listable<SystemOverview>, MaintenanceWindowsAware {
+public class ProvisioningRemoteCommand extends RhnAction implements Listable<SystemOverview> {
     private static final String[] FORM_FIELD_IDS = {
         "uid", "gid", "script_body",
     };

@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -41,7 +40,7 @@ import java.util.stream.Collectors;
 /**
  * GlobalRevisionDeploySetup
  */
-public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements MaintenanceWindowsAware {
+public class GlobalRevisionDeployConfirmSetup extends BaseListAction {
 
     /**
      * {@inheritDoc}

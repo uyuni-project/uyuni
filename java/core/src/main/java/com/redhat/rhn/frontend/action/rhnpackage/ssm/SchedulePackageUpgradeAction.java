@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmUpgradePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -67,7 +66,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  */
-public class SchedulePackageUpgradeAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class SchedulePackageUpgradeAction extends RhnAction implements Listable {
 
     private static Logger log = LogManager.getLogger(SchedulePackageUpgradeAction.class);
 
