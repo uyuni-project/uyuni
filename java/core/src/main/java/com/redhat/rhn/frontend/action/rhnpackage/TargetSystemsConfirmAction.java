@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -99,7 +100,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
         request.setAttribute("date", picker);
 
         Set<Long> systemIds = items.stream().map(SystemOverview::getId).collect(Collectors.toSet());
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         ActionChainHelper.prepopulateActionChains(request);
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?pid=" +
@@ -203,10 +204,5 @@ public class TargetSystemsConfirmAction extends RhnAction implements Maintenance
         params.put("pid", pid);
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm) formIn, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }

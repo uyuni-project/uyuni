@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -86,7 +87,7 @@ public class RebootSystemConfirmAction extends RhnAction
         ActionChainHelper.prepopulateActionChains(request);
 
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(new RequestContext(request).getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_REBOOT);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -148,10 +149,5 @@ public class RebootSystemConfirmAction extends RhnAction
     public List<SystemOverview> getResult(RequestContext context) {
         return SystemManager.inSet(context.getCurrentUser(),
               getSetDecl().getLabel());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_REBOOT;
     }
 }

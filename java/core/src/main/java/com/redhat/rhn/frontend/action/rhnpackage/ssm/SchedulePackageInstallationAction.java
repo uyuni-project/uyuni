@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -145,7 +146,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
         ActionChainHelper.prepopulateActionChains(request);
 
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
         return strutsDelegate.forwardParams(
                 actionMapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
@@ -159,10 +160,5 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
 
         return SystemManager.systemsSubscribedToChannelInSet(cid, user,
                 SetLabels.SYSTEM_LIST);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }
