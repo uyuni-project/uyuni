@@ -19,7 +19,6 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -44,7 +43,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * ErrataConfirmSetupAction
  */
-public class ErrataConfirmSetupAction extends RhnListAction implements MaintenanceWindowsAware {
+public class ErrataConfirmSetupAction extends RhnListAction {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,

@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -46,7 +45,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * SSM enabling systems for config management.
  * EnableListAction
  */
-public class EnableListAction extends RhnListAction implements MaintenanceWindowsAware {
+public class EnableListAction extends RhnListAction {
 
     /**
      * {@inheritDoc}

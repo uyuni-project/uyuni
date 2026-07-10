@@ -26,9 +26,4 @@ public class DiffFileConfirmSetupAction extends FileListConfirmSetupAction {
     public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_CONFIGFILES_DIFF;
     }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_CONFIGFILES_DIFF;
-    }
 }
