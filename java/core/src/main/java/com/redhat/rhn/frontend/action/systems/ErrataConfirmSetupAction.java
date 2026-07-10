@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -90,7 +91,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request,
                 (DynaActionForm)formIn, "date", YEAR_RANGE_POSITIVE);
 
-        populateMaintenanceWindows(request, Set.of(server.getId()));
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, Set.of(server.getId()), ActionTypeEnum.TYPE_ERRATA);
 
         //Setup the Action Chain widget
         ActionChainHelper.prepopulateActionChains(request);
@@ -223,10 +224,5 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
         Long sid = context.getParamAsLong("sid");
         return SystemManager.errataInSet(context.getCurrentUser(),
                     ErrataSetupAction.getSetDecl(sid).getLabel(), null);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_ERRATA;
     }
 }

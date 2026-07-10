@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -93,7 +94,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         RequestContext ctx = new RequestContext(req);
         RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(ctx.getCurrentUser());
         Set<Long> systemIds = buildIds(systems);
-        populateMaintenanceWindows(req, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(req, systemIds, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ActionChainHelper.prepopulateActionChains(req);
 
         ConfigActionHelper.setupRequestAttributes(ctx, cc);
@@ -216,10 +217,5 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
             s.add(id);
         }
         return s;
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
     }
 }

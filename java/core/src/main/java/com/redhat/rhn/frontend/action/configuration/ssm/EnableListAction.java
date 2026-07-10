@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -78,7 +79,7 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         Set<Long> systemIds = getSystemIds(user);
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
         request.setAttribute("date", picker);
 
@@ -99,10 +100,5 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
         String setLabel = SYSTEMS.getLabel();
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystemsInSet(user, pcIn, setLabel);
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }
