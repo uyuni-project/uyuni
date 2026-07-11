@@ -185,7 +185,7 @@ public class OpenApiToAsciidocParser {
                     type = "[.array]#string array#";
                 }
                 else {
-                    type = "[." + schema.getType() + "]#" + schema.getType() + "#";
+                    type = "[." + displayType(schema) + "]#" + displayType(schema) + "#";
                 }
                 String descriptionText = findDescription(schema);
                 writer.printf(
