@@ -6100,3 +6100,19 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ('', '/manager/api/audit/scap/custom-remediation', 'POST', 'W', True),
     ('', '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType', 'DELETE', 'W', True),
     ('', '/manager/api/audit/scap/scan/rule-apply-remediation', 'POST', 'W', True);
+
+-- =============================================================================
+-- Swagger UI and API Endpoints
+-- =============================================================================
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.webui.controllers.SwaggerController.createView', '/manager/swagger', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.webui.controllers.SwaggerController.getNamespaces',
+        '/manager/api/openapi/namespaces', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.webui.controllers.SwaggerController.getSpec',
+        '/manager/api/openapi/:namespace', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;

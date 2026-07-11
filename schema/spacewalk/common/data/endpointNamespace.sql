@@ -9777,3 +9777,14 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.channel.listSoftwareChannelsByAutoSync' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/channel/listSoftwareChannelsByAutoSync' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'docs.swagger' AND ns.access_mode = 'R'
+      AND ep.endpoint IN (
+        '/manager/swagger',
+        '/manager/api/openapi/namespaces',
+        '/manager/api/openapi/:namespace'
+      )
+      AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
