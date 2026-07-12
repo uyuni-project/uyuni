@@ -308,7 +308,8 @@ public class OpenApiToAsciidocParser {
             Schema<?> propertySchema = prop;
             String propDesc = propertySchema.getDescription() != null ?
                     " - " + propertySchema.getDescription() : "";
-            writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
+            String propertyType = structPropertyType(propertySchema);
+            writer.printf("** [.%s]#%s#  \"%s\"%s%n", propertyType, propertyType, name, propDesc);
         });
     }
 
@@ -340,6 +341,18 @@ public class OpenApiToAsciidocParser {
 
     private String displayType(Schema<?> schema) {
         return "integer".equals(schema.getType()) ? "int" : schema.getType();
+    }
+
+    private String structPropertyType(Schema<?> schema) {
+        String type = schema.getType();
+        if ("integer".equals(type)) {
+            return "int";
+        }
+        if ("string".equals(type) || "boolean".equals(type) || "number".equals(type)) {
+            return type;
+        }
+        // arrays, objects and $ref types keep the legacy "string" fallback
+        return "string";
     }
 
     private ApiResponse getSuccessResponse(ApiResponses responses) {
@@ -385,7 +398,9 @@ public class OpenApiToAsciidocParser {
                 if (propertySchema.getDescription() != null) {
                     propertyDescription = " - " + propertySchema.getDescription();
                 }
-                writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propertyDescription);
+                String propertyType = structPropertyType(propertySchema);
+                writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, propertyType, propertyType, name,
+                        propertyDescription);
             });
         }
 
@@ -402,7 +417,9 @@ public class OpenApiToAsciidocParser {
                     if (propertySchema.getDescription() != null) {
                         propertyDescription = " - " + propertySchema.getDescription();
                     }
-                    writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propertyDescription);
+                    String propertyType = structPropertyType(propertySchema);
+                    writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, propertyType, propertyType, name,
+                            propertyDescription);
                 });
             }
             else if (isSimpleType(resolvedInner)) {
@@ -410,7 +427,8 @@ public class OpenApiToAsciidocParser {
                 if (resolvedInner.getDescription() != null) {
                     description = " - " + resolvedInner.getDescription();
                 }
-                writer.printf("%s** [.string]#string#%s%n", prefix, description);
+                String innerType = structPropertyType(resolvedInner);
+                writer.printf("%s** [.%s]#%s#%s%n", prefix, innerType, innerType, description);
             }
         }
     }
