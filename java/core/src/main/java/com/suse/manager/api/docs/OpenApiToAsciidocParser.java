@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -90,6 +91,18 @@ public class OpenApiToAsciidocParser {
     public void generateDocumentation(String outputDir) throws IOException {
         Path pathDir = Paths.get(outputDir);
         Files.createDirectories(pathDir);
+        for (Map.Entry<String, String> entry : generateDocumentation().entrySet()) {
+            Path filePath = pathDir.resolve(entry.getKey() + ".adoc");
+            Files.writeString(filePath, entry.getValue(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Generates AsciiDoc documentation in memory for all tags present in the OpenAPI specification.
+     *
+     * @return generated documentation mapped by tag
+     */
+    public Map<String, String> generateDocumentation() {
         Map<String, List<DocEntry>> taggedOps = new TreeMap<>();
 
         openAPI.getPaths().forEach((path, pathItem) -> {
@@ -101,9 +114,11 @@ public class OpenApiToAsciidocParser {
             }
         });
 
+        Map<String, String> documents = new TreeMap<>();
         for (Map.Entry<String, List<DocEntry>> entry : taggedOps.entrySet()) {
-            writeAdocFile(entry.getKey(), entry.getValue(), pathDir);
+            documents.put(entry.getKey(), renderAdocFile(entry.getKey(), entry.getValue()));
         }
+        return documents;
     }
 
     private void processOperation(String method, Operation operation, Map<String, List<DocEntry>> operationsByTag) {
@@ -126,9 +141,9 @@ public class OpenApiToAsciidocParser {
         entries.add(DocEntry.create(method, operation, required, securityRequired));
     }
 
-    private void writeAdocFile(String tag, List<DocEntry> entries, Path dir) throws IOException {
-        Path filePath = dir.resolve(tag + ".adoc");
-        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(filePath, StandardCharsets.UTF_8))) {
+    private String renderAdocFile(String tag, List<DocEntry> entries) {
+        StringWriter buffer = new StringWriter();
+        try (PrintWriter writer = new PrintWriter(buffer)) {
             writer.printf("[#apidoc-%s]%n= %s%n%n== Available methods%n%n", tag, tag);
             for (DocEntry entry : entries) {
                 writer.printf("* <<apidoc-%s-%s,%s>>%n", tag, entry.anchor(),
@@ -139,6 +154,7 @@ public class OpenApiToAsciidocParser {
                 writeMethod(writer, tag, entry);
             }
         }
+        return buffer.toString();
     }
 
     private void writeMethod(PrintWriter writer, String tag, DocEntry entry) {
@@ -225,8 +241,13 @@ public class OpenApiToAsciidocParser {
         }
         Schema<?> schema = resolveSchemaReference(jsonContent.getSchema());
         String refName = "";
+        Schema<?> docSchema = getDocResponseSchema(successResponse);
+        if (docSchema != null) {
+            refName = docSchema.get$ref() != null ? extractRefName(docSchema.get$ref()) : "";
+            schema = resolveSchemaReference(docSchema);
+        }
 
-        if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
+        if (docSchema == null && schema.getProperties() != null && schema.getProperties().containsKey("result")) {
             Schema<?> resultSchema = (Schema<?>) schema.getProperties().get("result");
             refName = extractRefName(resultSchema.get$ref());
             schema = resolveSchemaReference(resultSchema);
@@ -242,7 +263,13 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        printStruct(writer, schema, 0, refName);
+        printStruct(writer, schema, 0, refName, responseDescription(successResponse));
+    }
+
+    private Schema<?> getDocResponseSchema(ApiResponse response) {
+        Object schema = response.getExtensions() == null ? null :
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
+        return schema instanceof Schema<?> docSchema ? docSchema : null;
     }
 
     private void writeArrayReturn(PrintWriter writer, Schema<?> schema, ApiResponse successResponse) {
@@ -328,7 +355,8 @@ public class OpenApiToAsciidocParser {
         return responses.get("default");
     }
 
-    private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel) {
+    private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel,
+                             String responseDescription) {
         if (schema == null) {
             return;
         }
@@ -336,11 +364,14 @@ public class OpenApiToAsciidocParser {
         String marker = indent == 0 ? "*" : "**";
 
         String label = "";
-        if (forcedLabel != null && !forcedLabel.isEmpty()) {
+        if (responseDescription != null && !responseDescription.isEmpty()) {
+            label = responseDescription;
+        }
+        else if (forcedLabel != null && !forcedLabel.isEmpty()) {
             label = forcedLabel;
         }
         if (label.isEmpty() && schema.getAdditionalProperties() != null) {
-            label = "namespace";
+            label = "map";
         }
 
         if (schema.getProperties() != null || schema.getAdditionalProperties() != null) {
@@ -360,6 +391,10 @@ public class OpenApiToAsciidocParser {
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             Schema<?> resolvedInner = inner.get$ref() != null ? resolveSchema(inner.get$ref()) : inner;
+            while (resolvedInner.getProperties() == null &&
+                    resolvedInner.getAdditionalProperties() instanceof Schema<?> nested) {
+                resolvedInner = nested.get$ref() != null ? resolveSchema(nested.get$ref()) : nested;
+            }
             if (resolvedInner.getProperties() != null) {
                 resolvedInner.getProperties().forEach((name, property) -> {
                     Schema<?> propertySchema = (Schema<?>) property;

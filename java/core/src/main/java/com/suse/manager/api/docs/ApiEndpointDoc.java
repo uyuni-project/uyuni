@@ -15,7 +15,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.swagger.models.HttpMethod;
+import spark.route.HttpMethod;
 
 /**
  * Annotation to provide API documentation for handler methods.
@@ -37,7 +37,7 @@ public @interface ApiEndpointDoc {
     /**
      * @return HTTP method exposed for the endpoint
      */
-    HttpMethod method() default HttpMethod.POST;
+    HttpMethod method() default HttpMethod.post;
 
     /**
      * @return request body type
@@ -53,6 +53,11 @@ public @interface ApiEndpointDoc {
      * @return response body type
      */
     Class<?> responseClass() default Void.class;
+
+    /**
+     * @return optional response body type to use when rendering legacy API documentation
+     */
+    Class<?> legacyDocResponseClass() default Void.class;
 
     /**
      * @return response description

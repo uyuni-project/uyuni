@@ -13,7 +13,7 @@ package com.suse.manager.api.test.contract;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 
 import org.jmock.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

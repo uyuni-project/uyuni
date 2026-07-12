@@ -16,14 +16,16 @@ import com.suse.manager.api.ApiResponseWrapper;
 import com.suse.manager.api.docs.ApiEndpointDoc;
 import com.suse.manager.api.docs.PublicApiEndpoint;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.List;
 import java.util.Map;
 
-import io.swagger.models.HttpMethod;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import spark.route.HttpMethod;
 
 /**
  * API contract for {@link ApiHandler}.
@@ -39,8 +41,9 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the server version.",
-        method = HttpMethod.GET,
-        responseClass = StringResponse.class
+        method = HttpMethod.get,
+        responseClass = StringResponse.class,
+        responseDescription = "version"
     )
     String systemVersion();
 
@@ -52,7 +55,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the server product name.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = StringResponse.class
     )
     String productName();
@@ -65,7 +68,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the version of the API.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = StringResponse.class
     )
     String getVersion();
@@ -78,8 +81,10 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists available API namespaces",
-        method = HttpMethod.GET,
-        responseClass = ApiNamespacesResponse.class
+        method = HttpMethod.get,
+        responseClass = ApiNamespacesResponse.class,
+        legacyDocResponseClass = ApiNamespaceDoc.class,
+        responseDescription = "namespace"
     )
     Map<String, String> getApiNamespaces();
 
@@ -91,8 +96,10 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists all available api calls grouped by namespace",
-        method = HttpMethod.GET,
-        responseClass = ApiCallListResponse.class
+        method = HttpMethod.get,
+        responseClass = ApiCallListResponse.class,
+        legacyDocResponseClass = LegacyMethodInfoDoc.class,
+        responseDescription = "method_info"
     )
     Map<String, Object> getApiCallList();
 
@@ -105,8 +112,10 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists all available api calls for the specified namespace",
-        method = HttpMethod.GET,
-        responseClass = ApiNamespaceCallListResponse.class
+        method = HttpMethod.get,
+        responseClass = ApiNamespaceCallListResponse.class,
+        legacyDocResponseClass = LegacyMethodInfoDoc.class,
+        responseDescription = "method_info"
     )
     Map getApiNamespaceCallList(
         @Parameter(
@@ -118,6 +127,7 @@ public interface ApiHandlerApi {
     );
 
     @Schema(name = "MethodInfo", description = "Information about an API method")
+    @JsonPropertyOrder({"name", "parameters", "exceptions", "return"})
     interface MethodInfoDoc {
 
         /**
@@ -143,6 +153,52 @@ public interface ApiHandlerApi {
          */
         @Schema(description = "method return type", requiredMode = REQUIRED)
         String getReturn();
+    }
+
+    @Schema(name = "method_info", description = "Information about an API method")
+    @JsonPropertyOrder({"name", "parameters", "exceptions", "return"})
+    interface LegacyMethodInfoDoc {
+
+        /**
+         * @return method name
+         */
+        @Schema(description = "method name", requiredMode = REQUIRED)
+        String getName();
+
+        /**
+         * @return method parameters
+         */
+        @Schema(description = "method parameters", requiredMode = REQUIRED)
+        String getParameters();
+
+        /**
+         * @return method exceptions
+         */
+        @Schema(description = "method exceptions", requiredMode = REQUIRED)
+        String getExceptions();
+
+        /**
+         * @return method return type
+         */
+        @Schema(description = "method return type", requiredMode = REQUIRED)
+        String getReturn();
+    }
+
+    @Schema(name = "namespace")
+    @JsonPropertyOrder({"namespace", "handler"})
+    interface ApiNamespaceDoc {
+
+        /**
+         * @return API namespace
+         */
+        @Schema(description = "API namespace", requiredMode = REQUIRED)
+        String getNamespace();
+
+        /**
+         * @return API Handler
+         */
+        @Schema(description = "API Handler", requiredMode = REQUIRED)
+        String getHandler();
     }
 
     @Schema(name = "ApiResponseString")

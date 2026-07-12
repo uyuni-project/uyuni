@@ -26,9 +26,9 @@ import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -101,14 +101,14 @@ public abstract class BaseOpenApiTest {
         return handlerMock;
     }
 
-    @Before
+    @BeforeEach
     public void commonSetUp() {
         ensureOpenApiIsLoaded();
         initializeMocks();
         initializeRouteFactory();
     }
 
-    @After
+    @AfterEach
     public void commonTearDown() {
         context.assertIsSatisfied();
     }
@@ -183,10 +183,10 @@ public abstract class BaseOpenApiTest {
 
         private void validateInputAgainstSwagger() {
             PathItem pathItem = getOpenApi().getPaths().get(path);
-            Assert.assertNotNull("Path %s not found in Swagger spec.".formatted(path), pathItem);
+            Assertions.assertNotNull(pathItem, "Path %s not found in Swagger spec.".formatted(path));
 
             Operation operation = getOperation(pathItem, httpMethod);
-            Assert.assertNotNull("Method %s not defined for %s".formatted(httpMethod, path), operation);
+            Assertions.assertNotNull(operation, "Method %s not defined for %s".formatted(httpMethod, path));
 
             validateQueryParams(operation);
             validateRequestBody(operation);
@@ -208,7 +208,7 @@ public abstract class BaseOpenApiTest {
                     .toList();
 
             if (!undocumented.isEmpty()) {
-                Assert.fail(
+                Assertions.fail(
                         "CONTRACT VIOLATION (Query Param) for %s in %s: %s are not documented."
                                 .formatted(path, getHandlerClass(), undocumented)
                 );
@@ -226,7 +226,7 @@ public abstract class BaseOpenApiTest {
                     .orElse(null);
 
             if (content == null || content.getSchema() == null) {
-                Assert.fail(
+                Assertions.fail(
                         "CONTRACT VIOLATION (Request Body): Test sent body but no JSON schema defined for " + path
                 );
             }
@@ -274,7 +274,7 @@ public abstract class BaseOpenApiTest {
             SchemaLoader.load(rawSchema).validate(new JSONObject(new JSONTokener(jsonToValidate)));
         }
         catch (Exception e) {
-            Assert.fail(
+            Assertions.fail(
                     """
                     CONTRACT VIOLATION (Schema Validation):
                     Path: %s

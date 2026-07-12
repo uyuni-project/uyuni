@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.swagger.v3.core.util.Json;
@@ -99,11 +100,11 @@ public final class OpenApiConfig {
      * @return API namespaces mapped to handler classes
      */
     public static Map<String, Class<?>> getHandlerClasses() {
-        return Map.of(
-            "access", AccessHandler.class,
-            "admin.ssh", AdminSshHandler.class,
-            "api", ApiHandler.class,
-            "saltkey", SaltKeyHandler.class
-        );
+        Map<String, Class<?>> handlers = new LinkedHashMap<>();
+        handlers.put("access", AccessHandler.class);
+        handlers.put("admin.ssh", AdminSshHandler.class);
+        handlers.put("api", ApiHandler.class);
+        handlers.put("saltkey", SaltKeyHandler.class);
+        return handlers;
     }
 }

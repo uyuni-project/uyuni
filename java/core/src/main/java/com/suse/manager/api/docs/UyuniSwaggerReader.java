@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import io.swagger.models.HttpMethod;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
@@ -43,6 +42,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import spark.route.HttpMethod;
 
 /**
  * Builds an OpenAPI specification from annotated XML-RPC handlers.
@@ -51,6 +51,7 @@ public class UyuniSwaggerReader {
 
     private static final Logger LOG = LogManager.getLogger(UyuniSwaggerReader.class);
 
+    public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
 
@@ -161,7 +162,7 @@ public class UyuniSwaggerReader {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
-            apiResponses.addApiResponse(HTTP_200, createIntegerResponse());
+            apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, createIntegerResponse()));
             operation.setResponses(apiResponses);
             return;
         }
@@ -185,14 +186,15 @@ public class UyuniSwaggerReader {
                 mediaType.setSchema(schema);
                 content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
                 response.setContent(content);
-                apiResponses.addApiResponse(HTTP_200, response);
+                apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
             }
             else {
                 processApiResponseClass(apiDoc, apiResponses);
             }
         }
         else {
-            apiResponses.addApiResponse(HTTP_200, new ApiResponse().description("Success"));
+            ApiResponse response = new ApiResponse().description("Success");
+            apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
         }
 
         operation.setResponses(apiResponses);
@@ -212,7 +214,17 @@ public class UyuniSwaggerReader {
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
 
         response.setContent(content);
-        apiResponses.addApiResponse(HTTP_200, response);
+        apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
+    }
+
+    private ApiResponse addDocResponseSchema(ApiEndpointDoc apiDoc, ApiResponse response) {
+        if (apiDoc.legacyDocResponseClass() == Void.class) {
+            return response;
+        }
+
+        resolveAndRegisterSchema(apiDoc.legacyDocResponseClass());
+        response.addExtension(DOC_RESPONSE_SCHEMA_EXTENSION, buildSchemaRef(apiDoc.legacyDocResponseClass()));
+        return response;
     }
 
     private void processLiteralParameters(Method method, Operation operation) {
@@ -267,10 +279,10 @@ public class UyuniSwaggerReader {
 
     private void setOperationOnPathItem(PathItem pathItem, HttpMethod httpMethod, Operation operation) {
         switch (httpMethod) {
-            case GET -> pathItem.setGet(operation);
-            case PUT -> pathItem.setPut(operation);
-            case DELETE -> pathItem.setDelete(operation);
-            case PATCH -> pathItem.setPatch(operation);
+            case get -> pathItem.setGet(operation);
+            case put -> pathItem.setPut(operation);
+            case delete -> pathItem.setDelete(operation);
+            case patch -> pathItem.setPatch(operation);
             default -> pathItem.setPost(operation);
         }
     }

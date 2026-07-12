@@ -17,9 +17,9 @@ import com.suse.manager.api.docs.ApiEndpointDoc;
 
 import java.util.List;
 
-import io.swagger.models.HttpMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import spark.route.HttpMethod;
 
 /**
  * API contract for {@link SaltKeyHandler}.
@@ -35,7 +35,7 @@ public interface SaltKeyHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List accepted salt keys",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = SaltKeyListResponse.class,
         responseDescription = "Accepted salt key list"
     )
@@ -49,7 +49,7 @@ public interface SaltKeyHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List pending salt keys",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = SaltKeyListResponse.class,
         responseDescription = "Pending salt key list"
     )
@@ -63,7 +63,7 @@ public interface SaltKeyHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List of rejected salt keys",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = SaltKeyListResponse.class,
         responseDescription = "Rejected salt key list"
     )
@@ -77,7 +77,7 @@ public interface SaltKeyHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List of denied salt keys",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = SaltKeyListResponse.class,
         responseDescription = "Denied salt key list"
     )
