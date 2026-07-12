@@ -17,6 +17,7 @@ package com.suse.manager.api;
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
@@ -104,6 +105,7 @@ public final class OpenApiConfig {
         handlers.put("access", AccessHandler.class);
         handlers.put("admin.ssh", AdminSshHandler.class);
         handlers.put("api", ApiHandler.class);
+        handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
         return handlers;
     }
