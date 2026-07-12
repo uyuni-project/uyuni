@@ -220,6 +220,41 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" product has been added
     And I wait until all synchronized channels for "suma-retail-branch-server-extension-52-sp7" have finished
 
+@server
+@susemanager
+@transactional_server
+  Scenario: Add SUSE MLM Server Extension 5.2 with SL Micro 6.2 as base OS
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Micro 6.2" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
+    And I select "SUSE Linux Micro 6.2 x86_64" as a product
+    And I select "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-server-52" have finished
+
+@server
+@susemanager
+@skip_if_transactional_server
+  Scenario: Add SUSE MLM Server Extension 5.2 with SLES 15 SP7 as base OS
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+    And I select "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Multi-Linux Manager Server Extension for SLE 5.2 x86_64 (BETA)" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-server-52-sp7" have finished
+
 @scc_credentials
 @susemanager
   Scenario: Installer update channels got enabled when products were added

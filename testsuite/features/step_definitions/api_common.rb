@@ -344,60 +344,22 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
-  base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
-  base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
+  client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
+  base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
+
   key = $api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
 
-  $stdout.puts "Activation key #{key} created" unless key.nil?
+  $stdout.puts "Activation key #{key} created"
+  contact_method = client.include?('ssh_minion') ? 'ssh-push' : 'default'
+  success = $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
+  raise 'Failed to set activation key details' unless success
 
-  is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
-  entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
-  $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
+  $api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
 
-  # Get the list of child channels for this base channel
-  child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
-
-  # Define which clients trigger which exclusions
-  channel_filters = {
-    /sle15sp6|slemicro55/ => %w[
-      suse-manager-proxy
-      suse-manager-retail-branch-server
-      suse-manager-server
-    ],
-    /sle15sp7|slmicro6[12]/ => %w[
-      suse-multi-linux-manager-proxy
-      suse-multi-linux-manager-retail-branch-server
-      suse-multi-linux-manager-server
-    ]
-  }.freeze
-
-  # Apply the filters to don't have wrong child channels on normal minions
-  channel_filters.each do |pattern, exclusions|
-    child_channels.reject! { |channel| exclusions.any? { |ex| channel.include?(ex) } } if client.match?(pattern)
-  end
-
-  if client.include?('proxy_nontransactional')
-    # The non-transactional proxy for 5.1 and 5.2 is based on the same HostOS SLES15 SP7
-    # we need to determine the proxy version and exclude the channels for the other proxy version.
-    version = product_version_full
-    version_to_exclude =
-      if version&.include?('5.1')
-        '5.2'
-      elsif version&.include?('5.2') || version&.include?('head')
-        '5.1'
-      else
-        nil
-      end
-
-    # Reject the channels containing the version we want to exclude
-    child_channels.reject! { |channel| channel.include?(version_to_exclude) } if version_to_exclude
-  end
-
+  # Attach the child channels appropriate for this client's role
+  child_channels = child_channels_for_activation_key(client, base_channel_label)
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
-
-  # Add child channels to the key
   $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
