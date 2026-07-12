@@ -25,11 +25,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 import java.util.Set;
 
-import io.swagger.models.HttpMethod;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import spark.route.HttpMethod;
 
 /**
  * API contract for {@link AccessHandler}.
@@ -61,7 +61,7 @@ public interface AccessHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List existing roles.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = AccessGroupListResponse.class
     )
     List<AccessGroup> listRoles(User loggedInUser);
@@ -74,7 +74,7 @@ public interface AccessHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List available namespaces.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = NamespaceListResponse.class
     )
     List<Namespace> listNamespaces(User loggedInUser);
@@ -106,7 +106,7 @@ public interface AccessHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "List permissions granted by a role.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = NamespaceListResponse.class
     )
     Set<Namespace> listPermissions(

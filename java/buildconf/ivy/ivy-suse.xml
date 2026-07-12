@@ -95,24 +95,37 @@
         <!-- Open API -->
         <dependency org="io.swagger.core.v3" name="swagger-core-jakarta" rev="2.2.41" >
             <exclude org="jakarta.servlet" module="jakarta.servlet-api"/>
-        </dependency>
-        <dependency org="io.swagger.core.v3" name="swagger-jaxrs2-jakarta" rev="2.2.41" >
-            <exclude org="jakarta.servlet" module="jakarta.servlet-api"/>
+            <exclude org="com.fasterxml.jackson.core" module="jackson-annotations"/>
+            <exclude org="com.fasterxml.jackson.core" module="jackson-core"/>
+            <exclude org="com.fasterxml.jackson.core" module="jackson-databind"/>
+            <exclude org="org.slf4j" module="slf4j-api"/>
+            <exclude org="ch.qos.logback" module="logback-classic"/>
+            <exclude org="ch.qos.logback" module="logback-core"/>
+            <exclude org="org.apache.commons" module="commons-lang3"/>
+            <exclude org="commons-io" module="commons-io"/>
+            <exclude org="org.yaml" module="snakeyaml"/>
+            <exclude org="com.fasterxml.jackson.dataformat" module="jackson-dataformat-yaml"/>
+            <exclude org="com.fasterxml.jackson.datatype" module="jackson-datatype-jsr310"/>
         </dependency>
         <dependency org="io.swagger.core.v3" name="swagger-annotations-jakarta" rev="2.2.41" />
 
-        <dependency org="io.swagger.parser.v3" name="swagger-parser" rev="2.1.18" >
-            <exclude org="javax.servlet" module="javax.servlet-api"/>
-            <exclude org="io.swagger.core.v3" module="swagger-core"/>
-            <exclude org="io.swagger.core.v3" module="swagger-models"/>
-            <exclude org="io.swagger.core.v3" module="swagger-annotations"/>
+        <dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-yaml" rev="2.17.3" >
+            <exclude org="com.fasterxml.jackson.core" module="jackson-databind"/>
+            <exclude org="org.yaml" module="snakeyaml"/>
         </dependency>
+        <dependency org="com.fasterxml.jackson.datatype" name="jackson-datatype-jsr310" rev="2.17.3" >
+            <exclude org="com.fasterxml.jackson.core" module="jackson-annotations"/>
+        </dependency>
+
         <dependency org="com.github.erosb" name="everit-json-schema" rev="1.14.3" >
             <exclude org="org.objenesis" module="objenesis-test"/>
+            <exclude org="commons-validator" module="commons-validator"/>
+            <exclude org="com.jayway.jsonpath" module="json-path"/>
         </dependency>
 
         <dependency org="org.json" name="json" rev="20231013" >
             <exclude org="org.objenesis" module="objenesis-test"/>
+            <exclude org="com.jayway.jsonpath" module="json-path"/>
         </dependency>
 
         <!-- Tomcat jars -->

@@ -21,11 +21,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 import java.util.Map;
 
-import io.swagger.models.HttpMethod;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import spark.route.HttpMethod;
 
 /**
  * API contract for {@link ApiHandler}.
@@ -41,7 +41,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the server version.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = StringResponse.class,
         responseDescription = "version"
     )
@@ -55,7 +55,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the server product name.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = StringResponse.class
     )
     String productName();
@@ -68,7 +68,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Returns the version of the API.",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = StringResponse.class
     )
     String getVersion();
@@ -81,7 +81,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists available API namespaces",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = ApiNamespacesResponse.class,
         legacyDocResponseClass = ApiNamespaceDoc.class,
         responseDescription = "namespace"
@@ -96,7 +96,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists all available api calls grouped by namespace",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = ApiCallListResponse.class,
         legacyDocResponseClass = MethodInfoDoc.class,
         responseDescription = "method_info"
@@ -112,7 +112,7 @@ public interface ApiHandlerApi {
     @PublicApiEndpoint
     @ApiEndpointDoc(
         summary = "Lists all available api calls for the specified namespace",
-        method = HttpMethod.GET,
+        method = HttpMethod.get,
         responseClass = ApiNamespaceCallListResponse.class,
         legacyDocResponseClass = MethodInfoDoc.class,
         responseDescription = "method_info"
