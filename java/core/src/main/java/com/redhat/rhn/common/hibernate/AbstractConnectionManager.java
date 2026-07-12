@@ -18,6 +18,8 @@ package com.redhat.rhn.common.hibernate;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTED;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLED_BACK;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -25,6 +27,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.MappingSettings;
+import org.hibernate.type.format.jackson.JacksonJsonFormatMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +148,14 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
             // Invoke each configurator to add additional entries to Hibernate config
             configurators.forEach(configurator -> configurator.addConfig(config));
+
+            /*
+             * Use a plain ObjectMapper by default for JSON columns, so unrelated
+             * dependencies do not change Hibernate JSON serialization through
+             * Jackson module auto-discovery.
+             */
+            config.getProperties().putIfAbsent(MappingSettings.JSON_FORMAT_MAPPER, new JacksonJsonFormatMapper(
+                    new ObjectMapper()));
 
             // TODO: Fix auto-discovery (see commit: e92b062)
             getAnnotatedClasses().forEach(config::addAnnotatedClass);
