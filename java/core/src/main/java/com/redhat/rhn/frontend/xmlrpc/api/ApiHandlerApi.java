@@ -98,7 +98,7 @@ public interface ApiHandlerApi {
         summary = "Lists all available api calls grouped by namespace",
         method = HttpMethod.get,
         responseClass = ApiCallListResponse.class,
-        legacyDocResponseClass = MethodInfoDoc.class,
+        legacyDocResponseClass = LegacyMethodInfoDoc.class,
         responseDescription = "method_info"
     )
     Map<String, Object> getApiCallList();
@@ -114,7 +114,7 @@ public interface ApiHandlerApi {
         summary = "Lists all available api calls for the specified namespace",
         method = HttpMethod.get,
         responseClass = ApiNamespaceCallListResponse.class,
-        legacyDocResponseClass = MethodInfoDoc.class,
+        legacyDocResponseClass = LegacyMethodInfoDoc.class,
         responseDescription = "method_info"
     )
     Map getApiNamespaceCallList(
@@ -126,7 +126,7 @@ public interface ApiHandlerApi {
         ) String namespace
     );
 
-    @Schema(name = "method_info", description = "Information about an API method")
+    @Schema(name = "MethodInfo", description = "Information about an API method")
     @JsonPropertyOrder({"name", "parameters", "exceptions", "return"})
     interface MethodInfoDoc {
 
@@ -147,6 +147,35 @@ public interface ApiHandlerApi {
          */
         @Schema(description = "method exceptions", requiredMode = REQUIRED)
         List<String> getExceptions();
+
+        /**
+         * @return method return type
+         */
+        @Schema(description = "method return type", requiredMode = REQUIRED)
+        String getReturn();
+    }
+
+    @Schema(name = "method_info", description = "Information about an API method")
+    @JsonPropertyOrder({"name", "parameters", "exceptions", "return"})
+    interface LegacyMethodInfoDoc {
+
+        /**
+         * @return method name
+         */
+        @Schema(description = "method name", requiredMode = REQUIRED)
+        String getName();
+
+        /**
+         * @return method parameters
+         */
+        @Schema(description = "method parameters", requiredMode = REQUIRED)
+        String getParameters();
+
+        /**
+         * @return method exceptions
+         */
+        @Schema(description = "method exceptions", requiredMode = REQUIRED)
+        String getExceptions();
 
         /**
          * @return method return type

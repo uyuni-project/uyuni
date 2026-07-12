@@ -201,6 +201,7 @@ public interface AccessHandlerApi {
     }
 
     @Schema(name = "AccessGroup", description = "access group")
+    @JsonPropertyOrder({"label", "description"})
     interface AccessGroupDoc {
 
         /**

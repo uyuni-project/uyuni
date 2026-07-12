@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -96,13 +97,26 @@ public class OpenApiToDocBookParser {
         Path pathDir = Paths.get(outputDir);
         Files.createDirectories(pathDir);
 
+        for (Map.Entry<String, String> entry : generateDocumentation().entrySet()) {
+            Files.writeString(pathDir.resolve(entry.getKey()), entry.getValue(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Generates DocBook XML documentation in memory.
+     *
+     * @return generated documentation mapped by file name
+     */
+    public Map<String, String> generateDocumentation() {
         Map<String, HandlerDoc> handlers = collectHandlers();
+        Map<String, String> documents = new TreeMap<>();
 
         for (Map.Entry<String, HandlerDoc> entry : handlers.entrySet()) {
-            writeHandlerFile(entry.getValue(), pathDir);
+            documents.put(entry.getKey() + ".xml", renderHandlerFile(entry.getValue()));
         }
 
-        writeBookIndex(handlers, pathDir);
+        documents.put("book.xml", renderBookIndex(handlers));
+        return documents;
     }
 
     private Map<String, HandlerDoc> collectHandlers() {
@@ -371,10 +385,9 @@ public class OpenApiToDocBookParser {
         return sb.toString();
     }
 
-    private void writeHandlerFile(HandlerDoc handler, Path dir) throws IOException {
-        Path filePath = dir.resolve(handler.name + ".xml");
-        try (PrintWriter w = new PrintWriter(
-                Files.newBufferedWriter(filePath, StandardCharsets.UTF_8))) {
+    private String renderHandlerFile(HandlerDoc handler) {
+        StringWriter buffer = new StringWriter();
+        try (PrintWriter w = new PrintWriter(buffer)) {
             w.printf(XML_PREAMBLE);
             w.printf(DOCTYPE_CHAPTER);
             w.println();
@@ -387,6 +400,7 @@ public class OpenApiToDocBookParser {
             }
             w.printf("</chapter>%n");
         }
+        return buffer.toString();
     }
 
     private void writeCall(PrintWriter w, CallDoc call) {
@@ -441,10 +455,9 @@ public class OpenApiToDocBookParser {
         w.printf("  </sect1>%n%n");
     }
 
-    private void writeBookIndex(Map<String, HandlerDoc> handlers, Path dir) throws IOException {
-        Path filePath = dir.resolve("book.xml");
-        try (PrintWriter w = new PrintWriter(
-                Files.newBufferedWriter(filePath, StandardCharsets.UTF_8))) {
+    private String renderBookIndex(Map<String, HandlerDoc> handlers) {
+        StringWriter buffer = new StringWriter();
+        try (PrintWriter w = new PrintWriter(buffer)) {
             w.printf(XML_PREAMBLE);
             w.printf(DOCTYPE_BOOK);
             w.println();
@@ -462,6 +475,7 @@ public class OpenApiToDocBookParser {
             }
             w.printf("</book>%n");
         }
+        return buffer.toString();
     }
 
     private String getTagDescription(String tag) {

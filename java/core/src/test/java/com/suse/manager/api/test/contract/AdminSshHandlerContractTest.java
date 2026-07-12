@@ -14,7 +14,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 
 import org.jmock.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 

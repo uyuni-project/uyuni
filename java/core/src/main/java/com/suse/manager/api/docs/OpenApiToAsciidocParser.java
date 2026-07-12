@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -90,6 +91,18 @@ public class OpenApiToAsciidocParser {
     public void generateDocumentation(String outputDir) throws IOException {
         Path pathDir = Paths.get(outputDir);
         Files.createDirectories(pathDir);
+        for (Map.Entry<String, String> entry : generateDocumentation().entrySet()) {
+            Path filePath = pathDir.resolve(entry.getKey() + ".adoc");
+            Files.writeString(filePath, entry.getValue(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Generates AsciiDoc documentation in memory for all tags present in the OpenAPI specification.
+     *
+     * @return generated documentation mapped by tag
+     */
+    public Map<String, String> generateDocumentation() {
         Map<String, List<DocEntry>> taggedOps = new TreeMap<>();
 
         openAPI.getPaths().forEach((path, pathItem) -> {
@@ -101,9 +114,11 @@ public class OpenApiToAsciidocParser {
             }
         });
 
+        Map<String, String> documents = new TreeMap<>();
         for (Map.Entry<String, List<DocEntry>> entry : taggedOps.entrySet()) {
-            writeAdocFile(entry.getKey(), entry.getValue(), pathDir);
+            documents.put(entry.getKey(), renderAdocFile(entry.getKey(), entry.getValue()));
         }
+        return documents;
     }
 
     private void processOperation(String method, Operation operation, Map<String, List<DocEntry>> operationsByTag) {
@@ -126,9 +141,9 @@ public class OpenApiToAsciidocParser {
         entries.add(DocEntry.create(method, operation, required, securityRequired));
     }
 
-    private void writeAdocFile(String tag, List<DocEntry> entries, Path dir) throws IOException {
-        Path filePath = dir.resolve(tag + ".adoc");
-        try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(filePath, StandardCharsets.UTF_8))) {
+    private String renderAdocFile(String tag, List<DocEntry> entries) {
+        StringWriter buffer = new StringWriter();
+        try (PrintWriter writer = new PrintWriter(buffer)) {
             writer.printf("[#apidoc-%s]%n= %s%n%n== Available methods%n%n", tag, tag);
             for (DocEntry entry : entries) {
                 writer.printf("* <<apidoc-%s-%s,%s>>%n", tag, entry.anchor(),
@@ -139,6 +154,7 @@ public class OpenApiToAsciidocParser {
                 writeMethod(writer, tag, entry);
             }
         }
+        return buffer.toString();
     }
 
     private void writeMethod(PrintWriter writer, String tag, DocEntry entry) {

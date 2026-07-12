@@ -58,6 +58,7 @@
     <path id="managertestjars">
         <path refid="libjars"/>
         <fileset file="${build.dir}/rhn.jar"/>
+        <pathelement location="${build.dir}/classes"/>
     </path>
 
     <!-- Conditions to define the correct deployment parameters -->
