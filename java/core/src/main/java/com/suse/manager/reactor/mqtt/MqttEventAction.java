@@ -62,6 +62,17 @@ public class MqttEventAction implements MessageAction {
             return;
         }
 
+        String suffix = getTopicSuffix(msg);
+        if (suffix == null) {
+            return;
+        }
+
+        String fullTopic = topicPrefix + "/" + suffix;
+        if (!mqttPublisherService.isEventEnabled(fullTopic)) {
+            LOG.debug("Event of type {} is disabled by configuration.", msg.getClass().getName());
+            return;
+        }
+
         LOG.warn("MqttEventAction.execute called for message of type: {}", msg.getClass().getName());
 
         try {
@@ -166,5 +177,24 @@ public class MqttEventAction implements MessageAction {
     @Override
     public boolean canRunConcurrently() {
         return true;
+    }
+
+    private String getTopicSuffix(EventMessage msg) {
+        if (msg instanceof RegisterMinionEventMessage) {
+            return "systems/registered";
+        }
+        else if (msg instanceof JobReturnEventMessage) {
+            return "jobs/returned";
+        }
+        else if (msg instanceof ApplyStatesEventMessage) {
+            return "states/applied";
+        }
+        else if (msg instanceof ImageDeployedEventMessage) {
+            return "images/deployed";
+        }
+        else if (msg instanceof BatchStartedEventMessage) {
+            return "batches/started";
+        }
+        return null;
     }
 }
