@@ -108,6 +108,54 @@ public class MqttEventHelperTest {
         assertNull(testService.lastPayload);
     }
 
+    @Test
+    public void testEventFiltering() {
+        System.setProperty("uyuni.mqtt.events.enabled", "orgs.created,users/created");
+        try {
+            TestMqttPublisherService filterService = new TestMqttPublisherService();
+            MqttPublisherService.setInstance(filterService);
+
+            // This should be published (orgs.created is in filter)
+            MqttEventHelper.publishOrgCreated(123L, "Filtered Org");
+            assertEquals(filterService.getTopicPrefix() + "/orgs/created", filterService.lastTopic);
+
+            // Reset spy state
+            filterService.lastTopic = null;
+            filterService.lastPayload = null;
+
+            // This should be published (users/created is in filter)
+            MqttEventHelper.publishUserCreated("john", "admin", 1L);
+            assertEquals(filterService.getTopicPrefix() + "/users/created", filterService.lastTopic);
+
+            // Reset spy state
+            filterService.lastTopic = null;
+            filterService.lastPayload = null;
+
+            // This should NOT be published (clm/build_started is NOT in filter)
+            MqttEventHelper.publishClmBuildStarted("clm-1", "admin");
+            assertNull(filterService.lastTopic);
+        }
+        finally {
+            System.clearProperty("uyuni.mqtt.events.enabled");
+            MqttPublisherService.setInstance(testService);
+        }
+    }
+
+    @Test
+    public void testBrokerCredentialsParsing() {
+        System.setProperty("uyuni.mqtt.broker.username", "myuser");
+        System.setProperty("uyuni.mqtt.broker.password", "mypass");
+        try {
+            TestMqttPublisherService credsService = new TestMqttPublisherService();
+            assertEquals("myuser", credsService.getUsername());
+            assertEquals("mypass", credsService.getPassword());
+        }
+        finally {
+            System.clearProperty("uyuni.mqtt.broker.username");
+            System.clearProperty("uyuni.mqtt.broker.password");
+        }
+    }
+
     private static class TestMqttPublisherService extends MqttPublisherService {
         private String lastTopic;
         private Object lastPayload;

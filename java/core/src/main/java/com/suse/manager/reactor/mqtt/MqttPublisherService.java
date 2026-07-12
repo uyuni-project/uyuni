@@ -29,7 +29,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,6 +60,9 @@ public class MqttPublisherService {
     private final String brokerUrl;
     private final String clientId;
     private final String topicPrefix;
+    private final String username;
+    private final String password;
+    private final Set<String> enabledEvents;
     private final Gson gson;
     private final ExecutorService executorService;
 
@@ -96,6 +101,20 @@ public class MqttPublisherService {
         this.brokerUrl = brokerUrlIn;
         this.clientId = CLIENT_ID_PREFIX + UUID.randomUUID().toString().substring(0, 8);
         this.topicPrefix = resolveFqdn();
+        this.username = System.getProperty("uyuni.mqtt.broker.username", System.getenv("UYUNI_MQTT_BROKER_USERNAME"));
+        this.password = System.getProperty("uyuni.mqtt.broker.password", System.getenv("UYUNI_MQTT_BROKER_PASSWORD"));
+
+        String enabledEventsProp = System.getProperty("uyuni.mqtt.events.enabled");
+        if (enabledEventsProp != null && !enabledEventsProp.trim().isEmpty()) {
+            this.enabledEvents = new HashSet<>();
+            for (String event : enabledEventsProp.split(",")) {
+                this.enabledEvents.add(event.trim().toLowerCase());
+            }
+        }
+        else {
+            this.enabledEvents = null;
+        }
+
         this.gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
@@ -139,6 +158,43 @@ public class MqttPublisherService {
     }
 
     /**
+     * Returns the MQTT broker username.
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Returns the MQTT broker password.
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Checks if a given topic is enabled for publishing.
+     * @param topic the target topic string
+     * @return true if the event is enabled (or no config filter is set), false otherwise
+     */
+    public boolean isEventEnabled(String topic) {
+        if (enabledEvents == null) {
+            return true;
+        }
+        String suffix = topic;
+        if (topic.startsWith(topicPrefix)) {
+            suffix = topic.substring(topicPrefix.length());
+        }
+        if (suffix.startsWith("/")) {
+            suffix = suffix.substring(1);
+        }
+        String dotFormat = suffix.replace('/', '.').toLowerCase();
+        String slashFormat = suffix.toLowerCase();
+        return enabledEvents.contains(dotFormat) || enabledEvents.contains(slashFormat);
+    }
+
+    /**
      * Establish connection to the MQTT broker asynchronously.
      */
     private synchronized void connectAsync() {
@@ -158,6 +214,13 @@ public class MqttPublisherService {
                 options.setAutomaticReconnect(true);
                 options.setConnectionTimeout(CONNECTION_TIMEOUT_SECONDS);
                 options.setKeepAliveInterval(KEEP_ALIVE_INTERVAL_SECONDS);
+
+                if (username != null && !username.trim().isEmpty()) {
+                    options.setUserName(username);
+                    if (password != null) {
+                        options.setPassword(password.toCharArray());
+                    }
+                }
 
                 IMqttToken token = client.connect(options);
                 token.waitForCompletion(CONNECT_WAIT_MS);
@@ -181,6 +244,10 @@ public class MqttPublisherService {
      * @param payload the structured Java object to serialize and send
      */
     public void publish(final String topic, final Object payload) {
+        if (!isEventEnabled(topic)) {
+            LOG.debug("MQTT event publication skipped because it is not enabled: {}", topic);
+            return;
+        }
         executorService.submit(() -> {
             try {
                 if (client == null || !client.isConnected()) {
