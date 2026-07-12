@@ -52,7 +52,12 @@ public final class MqttEventHelper {
     public static void publish(String topic, Map<String, Object> data) {
         MqttPublisherService service = MqttPublisherService.getInstance();
         if (service != null) {
-            service.publish(topic, data);
+            if (service.isEventEnabled(topic)) {
+                service.publish(topic, data);
+            }
+            else {
+                LOG.debug("MQTT event publication skipped because it is not enabled: {}", topic);
+            }
         }
         else {
             LOG.debug("MqttPublisherService is not initialized. Event skipped on topic: {}", topic);
