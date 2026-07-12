@@ -1,0 +1,51 @@
+<!--
+  Uyuni Config Node — Editor HTML
+  Hidden config node for MQTT broker settings
+-->
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-config', {
+    category: 'config',
+    defaults: {
+      name: { value: '' },
+      broker: { value: 'localhost', required: true },
+      port: { value: 1883, required: true, validate: RED.validators.number() },
+      clientId: { value: '' },
+      topicPrefix: { value: 'uyuni/+' },
+      usetls: { value: false },
+    },
+    credentials: {
+      username: { type: 'text' },
+      password: { type: 'password' },
+    },
+    label: function () {
+      return this.name || `${this.broker}:${this.port}`;
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Uyuni Broker" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-broker"><i class="fa fa-server"></i> Broker</label>
+    <input type="text" id="node-config-input-broker" placeholder="localhost" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-port"><i class="fa fa-hashtag"></i> Port</label>
+    <input type="number" id="node-config-input-port" placeholder="1883" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-topicPrefix"><i class="fa fa-sitemap"></i> Topic Prefix</label>
+    <input type="text" id="node-config-input-topicPrefix" placeholder="uyuni/+" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+    <input type="text" id="node-config-input-username" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+    <input type="password" id="node-config-input-password" />
+  </div>
+</script>
