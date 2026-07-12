@@ -1395,7 +1395,7 @@ class RepoSync(object):
             # Download the repository filelists.xml file.
             plug.get_filelists()
             # Get package metadata from filelist file so we can assign it to apkg later
-            packages_medatata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
+            packages_metadata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
                             plug._retrieve_md_path("filelists"),
                             plug.repo.baseurl[0],
                             CACHE_DIR,
@@ -1503,8 +1503,8 @@ class RepoSync(object):
                     to_link = False
 
                 # TODO: This is for lazy sync only. Not sure of metadata_only impact on other unknown scenario
-                if self.metadata_only:
-                    pack_metadata = packages_medatata[pack.checksum]
+                if self.metadata_only and isinstance(plug.repo, (yum_src.ZypperRepo)):
+                    pack_metadata = packages_metadata[pack.checksum]
                     pack.a_pkg = RPM_Package()
                     pack.a_pkg.header = pack_metadata["header"]
                     pack.a_pkg.payload_size = pack_metadata["package_size"]
