@@ -1,0 +1,35 @@
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-api-config', {
+    category: 'config',
+    defaults: {
+      name: { value: '' },
+      url: { value: 'https://localhost/rpc/api', required: true }
+    },
+    credentials: {
+      username: { type: 'text' },
+      password: { type: 'password' }
+    },
+    label: function () {
+      return this.name || this.url;
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-api-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Uyuni API Server" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-url"><i class="fa fa-globe"></i> API URL</label>
+    <input type="text" id="node-config-input-url" placeholder="https://localhost/rpc/api" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+    <input type="text" id="node-config-input-username" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+    <input type="password" id="node-config-input-password" />
+  </div>
+</script>

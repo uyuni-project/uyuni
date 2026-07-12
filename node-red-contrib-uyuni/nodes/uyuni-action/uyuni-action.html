@@ -1,0 +1,70 @@
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-action', {
+    category: 'Uyuni',
+    color: '#2BD3A0',
+    defaults: {
+      name: { value: '' },
+      server: { value: '', type: 'uyuni-api-config', required: true },
+      actionType: { value: 'applyHighstate' }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'arrow-in.svg',
+    paletteLabel: 'uyuni action',
+    label: function () {
+      const actions = {
+        'applyHighstate': 'apply highstate',
+        'scheduleReboot': 'schedule reboot',
+        'schedulePackageInstall': 'install packages',
+        'listAllChannels': 'list channels'
+      };
+      return this.name || actions[this.actionType] || 'uyuni action';
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-action">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> API Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-actionType"><i class="fa fa-tasks"></i> Action</label>
+    <select id="node-input-actionType">
+      <option value="applyHighstate">Apply Highstate (apply states)</option>
+      <option value="scheduleReboot">Schedule Reboot</option>
+      <option value="schedulePackageInstall">Install Packages (requires packageIds array)</option>
+      <option value="listAllChannels">List All Software Channels</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="uyuni-action">
+  <p>Performs systems management actions on the Uyuni server via XML-RPC API.</p>
+  
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload.systemId <span class="property-type">number</span></dt>
+    <dd>The ID of the target system (e.g. 10001).</dd>
+    <dt>payload.packageIds <span class="property-type">array</span></dt>
+    <dd>Array of package ID integers to install (required only for Install Packages action).</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object | number</span></dt>
+    <dd>The API result (e.g., action ID number for schedule calls, or list array for query calls).</dd>
+  </dl>
+
+  <h3>Actions</h3>
+  <ul>
+    <li><b>Apply Highstate</b> — triggers configuration deployment.</li>
+    <li><b>Schedule Reboot</b> — schedules system reboot.</li>
+    <li><b>Install Packages</b> — schedules installation of package IDs.</li>
+    <li><b>List All Software Channels</b> — queries available software channels.</li>
+  </ul>
+</script>
