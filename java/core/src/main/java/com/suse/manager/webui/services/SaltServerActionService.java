@@ -254,12 +254,13 @@ public class SaltServerActionService {
                 List<Long> succeededServerIds = results.get(true).stream()
                         .map(MinionSummary::getServerId).collect(toList());
                 if (!succeededServerIds.isEmpty()) {
-                    ActionFactory.updateServerActionsPickedUp(actionIn, succeededServerIds);
+                    ServerActionFactory.updateServerActions(actionIn, succeededServerIds,
+                            ActionFactory.STATUS_PICKED_UP);
                 }
                 List<Long> failedServerIds  = results.get(false).stream()
                         .map(MinionSummary::getServerId).collect(toList());
                 if (!failedServerIds.isEmpty()) {
-                    ActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
+                    ServerActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
                 }
             }
         }
