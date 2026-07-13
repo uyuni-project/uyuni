@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -1040,7 +1041,7 @@ public class SaltServerActionService {
             Deque<Long> actionIdsDependencies = new ArrayDeque<>();
             actionIdsDependencies.push(actionId);
             List<ServerAction> serverActions = Optional.ofNullable(action).
-                    map(firstAction -> ActionFactory
+                    map(firstAction -> ServerActionFactory
                         .listServerActionsForServer(minion.get(),
                                 ActionFactory.ALL_STATUSES_BUT_COMPLETED, action.getCreated()))
                     .orElse(new ArrayList<>());

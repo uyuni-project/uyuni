@@ -29,6 +29,7 @@ import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -718,7 +719,8 @@ public class MaintenanceManager {
         Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c));
 
         Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
-            .flatMap(s -> ActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
+            .flatMap(s ->
+                    ServerActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
             .filter(sa -> {
                 Action a = sa.getParentAction();
                 if (a.getPrerequisite() != null) {
