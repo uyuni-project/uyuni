@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-07-13 12:14+0000\n"
+"PO-Revision-Date: 2026-07-13 15:12+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
 "Language: pt\n"
@@ -1979,6 +1979,9 @@ msgid ""
 "\n"
 "{missingChannels}"
 msgstr ""
+"Destino não disponível, os seguintes canais não estão sincronizados:\n"
+"\n"
+"{missingChannels}"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:62
 msgid "Product id"
@@ -2039,7 +2042,7 @@ msgstr "O estado de reinício será colocado por último."
 
 #: ../html/src/components/states-picker.tsx:135
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
+msgstr "Os estados 'Reiniciar sistema' e 'Reiniciar sistema, se necessário' não podem ser utilizados em simultâneo."
 
 #: ../html/src/components/states-picker.tsx:158
 msgid "State assignments have been saved."
@@ -2693,11 +2696,11 @@ msgstr "Detalhes do Hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. "
-msgstr ""
+msgstr "Nenhum hub está atualmente configurado para este servidor. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr ""
+msgstr "Este servidor está atualmente registado como periférico do hub {fqdn}. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2721,7 +2724,7 @@ msgstr "{fqdn} - Detalhes do Periférico"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr ""
+msgstr "O servidor {fqdn} está atualmente registado como periférico deste hub. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2864,7 +2867,7 @@ msgstr "Última Atualização de Estado"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
 msgid "Edit "
-msgstr ""
+msgstr "Editar "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
@@ -3012,15 +3015,15 @@ msgstr "Recomendado"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:800
 msgid " channels sync failed"
-msgstr ""
+msgstr " sincronização de canais falhou"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:808
 msgid " channels sync in progress"
-msgstr ""
+msgstr " sincronização de canais em curso"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid " channels synced"
-msgstr ""
+msgstr " canais sincronizados"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid "To enable this product, the parent product should be selected first"
@@ -3305,7 +3308,7 @@ msgstr "Afetado, patches disponíveis em canais que não estão atribuídos"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
@@ -3346,7 +3349,7 @@ msgstr "Afetado, patch não disponível nos canais relevantes"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
 msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr ""
+msgstr "O cliente é afetado por uma vulnerabilidade para a qual foi lançado um patch,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
@@ -3467,7 +3470,7 @@ msgstr "Ocorreu um erro inesperado."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:91
 msgid "Edit SCAP Content"
-msgstr ""
+msgstr "Editar Conteúdo SCAP"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
@@ -3485,7 +3488,7 @@ msgstr "Carregue um novo ficheiro para substituir o existente"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "Carregar o ficheiro DataStream (*-ds.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
 msgid "XCCDF File"
@@ -3493,7 +3496,7 @@ msgstr "Ficheiro XCCDF"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "Carregar o ficheiro XCCDF (*-xccdf.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
@@ -3547,7 +3550,7 @@ msgstr "Ocorreu um erro ao guardar o ficheiro de personalização."
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
 msgid "Edit Tailoring File"
-msgstr ""
+msgstr "Editar Ficheiro de Personalização"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 msgid "Current File"
@@ -3555,7 +3558,7 @@ msgstr "Ficheiro atual"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "Substituir Ficheiro (opcional)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4783,19 +4786,19 @@ msgstr "A página que solicitou, {currentUrl}, não foi encontrada."
 
 #: ../html/src/manager/errors/not-found.tsx:10
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr ""
+msgstr "Se digitou este endereço no seu navegador, verifique a ortografia e capitalização."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr ""
+msgstr "Se seguiu um link, o link pode estar incorreto ou desatualizado. Clique no botão voltar no seu "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr ""
+msgstr "Se usou um marcador, a página pode ter sido movida para uma localização diferente desde que o marcador foi "
 
 #: ../html/src/manager/errors/not-found.tsx:30
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr ""
+msgstr "Se acha que chegou a esta página por erro, contacte-nos com detalhes de como recebeu "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -4993,7 +4996,7 @@ msgstr "Criar chaves de informação personalizada adicionais"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
 msgid "Edit Image Profile: '"
-msgstr ""
+msgstr "Editar perfil da imagem: '"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
@@ -5064,7 +5067,7 @@ msgstr "Usar credenciais"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Edit Image Store: '"
-msgstr ""
+msgstr "Editar armazenamento de imagens: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5150,7 +5153,7 @@ msgstr "Ir para evento"
 
 #: ../html/src/manager/images/image-view-overview.tsx:56
 msgid " is queued"
-msgstr ""
+msgstr " está em fila"
 
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
@@ -5158,7 +5161,7 @@ msgstr "Em curso"
 
 #: ../html/src/manager/images/image-view-overview.tsx:68
 msgid " in progress"
-msgstr ""
+msgstr " em curso"
 
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
@@ -5166,11 +5169,11 @@ msgstr "Bem-sucedido"
 
 #: ../html/src/manager/images/image-view-overview.tsx:80
 msgid " is successful"
-msgstr ""
+msgstr " foi bem-sucedida"
 
 #: ../html/src/manager/images/image-view-overview.tsx:92
 msgid " has failed"
-msgstr ""
+msgstr " falhou"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5511,7 +5514,7 @@ msgstr "O espaço em disco disponível para a base de dados está criticamente b
 
 #: ../html/src/manager/login/messages.tsx:89
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
-msgstr ""
+msgstr "As instâncias PAYG do SUSE Multi-Linux Manager têm de encaminhar os dados de registo para o SCC quando são fornecidas credenciais. Os dados serão enviados independentemente da definição de configuração. Para ocultar este aviso, por favor defina 'forward_registration = 1' no rhn.conf."
 
 #: ../html/src/manager/login/messages.tsx:99
 msgid "Signing in ..."
@@ -5792,11 +5795,11 @@ msgstr "Isto irá remover o agendamento de todos os sistemas atribuídos a ele."
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:116
 msgid "successfully"
-msgstr ""
+msgstr "com sucesso"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:141
 msgid "Error when deleting the "
-msgstr ""
+msgstr "Erro ao eliminar o "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -6083,7 +6086,7 @@ msgstr "Aplicar Remediação"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
+msgstr "O OpenSCAP não está disponível neste sistema. Instale o pacote '{package}' para ativar a análise SCAP."
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6380,7 +6383,7 @@ msgstr "URL do Registry"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:331
 msgid "e.g., "
-msgstr ""
+msgstr "p. ex., "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
@@ -6470,7 +6473,7 @@ msgstr "Instalar Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr ""
+msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão disponíveis para instalação neste sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6490,7 +6493,7 @@ msgstr "Remover Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr ""
+msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão atualmente instaladas neste sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7199,11 +7202,11 @@ msgstr "Canal Base:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
 msgid "${defaultChannelName}"
-msgstr ""
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
@@ -7293,7 +7296,7 @@ msgstr "Não alterar"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
 msgid " (No system to disable)"
-msgstr ""
+msgstr " (Nenhum sistema para desativar)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -7370,7 +7373,7 @@ msgstr "e.g., host.dominio.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
 msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
+msgstr "O utilizador só será utilizado durante o processo de bootstrap. As ligações posteriores serão efetuadas com o utilizador especificado no ficheiro 'rhn.conf'. O utilizador predefinido para a chave 'ssh_push_sudo_user' é 'root'. Este utilizador é definido depois de a chave SSH do {productName} ser instalada durante o processo de bootstrap."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:538
 msgid "Authentication Method"
@@ -7991,7 +7994,7 @@ msgstr "Recurso não encontrado."
 
 #: ../html/src/utils/network.ts:106
 msgid "HTTP Error code "
-msgstr ""
+msgstr "Código de erro HTTP "
 
 #, fuzzy
 #~ msgid "states"
