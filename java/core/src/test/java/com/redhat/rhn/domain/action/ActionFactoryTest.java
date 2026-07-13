@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,11 +72,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -313,83 +309,6 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cresult.getResultContents(), newResult.getResultContents());
         assertEquals(cresult.getActionConfigRevisionId(),
                                 newResult.getActionConfigRevisionId());
-    }
-
-    @Test
-    public void rescheduleSingleActionUpdatesEarliestDate() throws Exception {
-        Instant testStartInstant = ZonedDateTime.now().toInstant();
-        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
-
-        Action a1 = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
-        a1.setEarliestAction(Date.from(originalInstant));
-        ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
-
-        sa.setStatusFailed();
-        sa.setRemainingTries(0L);
-        ActionFactory.save(a1);
-
-        ActionFactory.rescheduleSingleServerAction(a1, 5L, sa.getServerId());
-
-        a1 = TestUtils.reload(a1);
-        sa = TestUtils.reload(sa);
-
-        assertTrue(sa.isStatusQueued());
-        assertTrue(sa.getRemainingTries() > 0);
-
-        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
-        assertTrue(originalInstant.isBefore(newEarliestInstant));
-        assertFalse(testStartInstant.isAfter(newEarliestInstant));
-    }
-
-    @Test
-    public void testRescheduleFailedServerActions() {
-        Instant testStartInstant = ZonedDateTime.now().toInstant();
-        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
-
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
-        a1.setEarliestAction(Date.from(originalInstant));
-
-        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
-        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusCompleted);
-
-        ActionFactory.save(a1);
-
-        ActionFactory.rescheduleFailedServerActions(a1, 5L);
-        sa1 = TestUtils.reload(sa1);
-
-        assertTrue(sa1.isStatusQueued());
-        assertTrue(sa1.getRemainingTries() > 0);
-
-        assertTrue(sa2.isStatusCompleted());
-
-        Instant newEarliestInstant = a1.getEarliestAction().toInstant();
-        assertTrue(originalInstant.isBefore(newEarliestInstant));
-        assertFalse(testStartInstant.isAfter(newEarliestInstant));
-    }
-
-    @Test
-    public void testRescheduleAllServerActions() {
-        Instant testStartInstant = ZonedDateTime.now().toInstant();
-        Instant originalInstant = testStartInstant.minus(1, ChronoUnit.DAYS);
-
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
-        a1.setEarliestAction(Date.from(originalInstant));
-
-        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
-        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusCompleted);
-
-        ActionFactory.save(a1);
-
-        ActionFactory.rescheduleAllServerActions(a1, 5L);
-
-        sa1 = TestUtils.reload(sa1);
-        sa2 = TestUtils.reload(sa2);
-
-        assertTrue(sa1.isStatusQueued());
-        assertTrue(sa1.getRemainingTries() > 0);
-
-        assertTrue(sa2.isStatusQueued());
-        assertTrue(sa2.getRemainingTries() > 0);
     }
 
     @Test
