@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
@@ -654,10 +655,10 @@ public class ActionManager extends BaseManager {
             throws TaskomaticApiException {
         //5 was hardcoded from perl :/
         if (onlyFailed) {
-            ActionFactory.rescheduleFailedServerActions(action, 5L);
+            ServerActionFactory.rescheduleFailedServerActions(action, 5L);
         }
         else {
-            ActionFactory.rescheduleAllServerActions(action, 5L);
+            ServerActionFactory.rescheduleAllServerActions(action, 5L);
         }
         taskomaticApi.scheduleActionExecution(action);
     }

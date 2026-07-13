@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -128,7 +129,7 @@ public class SystemHistoryEventAction extends RhnAction {
             }
             createMessage(request, "system.event.rescheduled", action.getName(),
                     action.getId().toString());
-            ActionFactory.rescheduleSingleServerAction(action, 5L, server.getId());
+            ServerActionFactory.rescheduleSingleServerAction(action, 5L, server.getId());
             try {
                 TASKOMATIC_API.scheduleActionExecution(action);
             }
