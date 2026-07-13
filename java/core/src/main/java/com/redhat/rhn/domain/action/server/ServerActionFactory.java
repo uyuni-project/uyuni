@@ -41,6 +41,15 @@ public class ServerActionFactory extends HibernateFactory {
         return LOG;
     }
 
+    // history of the following two constants:
+    // REMAINING_TRIES = 10L was extracted from the ActionManager.scheduleAction method, then moved to
+    // ActionFactory.createAddServerAction and then to ServerActionFactory
+    // There was a comment "hmm 10?". Not sure what the hesitation is, but that comment was retained.
+    // REMAINING_TRIES_FROM_PERL = 5L is commonly seen around with a comment like "arbitrary number from perl"
+    // There is a chance both values could be merged into one, but no-one knows
+    public static final Long REMAINING_TRIES = 10L;
+    public static final Long REMAINING_TRIES_FROM_PERL = 5L;
+
     /**
      * Lookup a List of ServerAction objects for a given Server.
      *
@@ -256,6 +265,34 @@ public class ServerActionFactory extends HibernateFactory {
 
         HibernateFactory.udpateByIds(serverIds, queryString.toString(), "server_ids", parameters);
         serverIds.forEach(SystemManager::updateSystemOverview);
+    }
+
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param serverIdIn The server id
+     * @param parentActionIn The parent action
+     */
+    public static void addServerToAction(Long serverIdIn, Action parentActionIn) {
+        ActionFactory.addServerToAction(serverIdIn, parentActionIn);
+    }
+
+    /**
+     * Creates a ServerAction and adds it to an Action
+     * @param serverIn The server
+     * @param parentActionIn The parent action
+     */
+    public static void addServerToAction(Server serverIn, Action parentActionIn) {
+        ActionFactory.addServerToAction(serverIn, parentActionIn);
+    }
+
+    /**
+     * Creates and adds a ServerAction to an Action
+     * @param serverIn the Server associated with the created ServerAction
+     * @param parentActionIn the type of Action we want to create
+     */
+    public static void createAddServerAction(Server serverIn, Action parentActionIn) {
+        ActionFactory.createAddServerAction(serverIn, parentActionIn);
     }
 
 }
