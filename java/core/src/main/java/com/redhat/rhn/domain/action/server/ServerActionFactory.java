@@ -228,17 +228,6 @@ public class ServerActionFactory extends HibernateFactory {
                 .forEach(SystemManager::updateSystemOverview);
     }
 
-
-    /**
-     * Update the {@link ActionStatus} to "PickedUp" of several ServerAction rows identified by server and action IDs.
-     *
-     * @param actionIn  associated action of ServerAction records
-     * @param serverIds server Ids for which action is scheduled
-     */
-    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
-        ActionFactory.updateServerActions(actionIn, serverIds, ActionFactory.STATUS_PICKED_UP);
-    }
-
     /**
      * Update the status of several ServerAction rows identified by server and action IDs.
      *
@@ -247,7 +236,26 @@ public class ServerActionFactory extends HibernateFactory {
      * @param status    {@link ActionStatus} object that needs to be set
      */
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        ActionFactory.updateServerActions(actionIn, serverIds, status);
+        LOG.debug("Action status {} is going to be set for these servers: {}", status.getName(), serverIds);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("action_id", actionIn.getId());
+        parameters.put("status", status.getId());
+        parameters.put("completed", ActionFactory.STATUS_COMPLETED.getId());
+        parameters.put("failed", ActionFactory.STATUS_FAILED.getId());
+
+        StringBuilder queryString = new StringBuilder("UPDATE rhnServerAction SET status = :status ");
+        if (status.isPickedUp()) {
+            queryString.append(", pickup_time = current_timestamp ");
+        }
+        queryString.append("""
+                WHERE  action_id  = :action_id
+                AND    server_id  IN (:server_ids)
+                AND    status NOT IN (:completed, :failed)
+                """);
+
+        HibernateFactory.udpateByIds(serverIds, queryString.toString(), "server_ids", parameters);
+        serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
 }
