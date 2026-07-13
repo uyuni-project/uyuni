@@ -118,7 +118,7 @@ public class SystemOverviewAction extends RhnAction {
 
         // Check if reboot is scheduled
         boolean rebootScheduled = false;
-        Action rebootAction = ActionFactory.isRebootScheduled(sid);
+        Action rebootAction = ServerActionFactory.isRebootScheduled(sid);
         if (rebootAction != null) {
             request.setAttribute("rebootActionId", rebootAction.getId());
             rebootScheduled = true;

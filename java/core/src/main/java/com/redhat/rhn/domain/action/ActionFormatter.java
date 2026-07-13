@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.action;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -186,7 +187,7 @@ public class ActionFormatter {
         retval.append(ls.getMessage("system.event.details.execute",
                 getEarliestDate()));
         retval.append("</br>");
-        ServerAction sa = ActionFactory.getServerActionForServerAndAction(server, action);
+        ServerAction sa = ServerActionFactory.getServerActionForServerAndAction(server, action);
         retval.append(ls.getMessage("system.event.details.status",
             ls.getMessage("system.event.details.status" + sa.getStatus().getName())));
         retval.append("</br>");

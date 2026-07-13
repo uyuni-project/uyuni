@@ -172,7 +172,7 @@ public class ActionManager extends BaseManager {
         if (action == null) {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
-        ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server,
+        ServerAction serverAction = ServerActionFactory.getServerActionForServerAndAction(server,
                 action);
         if (serverAction == null) {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
@@ -401,7 +401,7 @@ public class ActionManager extends BaseManager {
             // Delete ServerActions from the database only if QUEUED
             if (sa.isStatusQueued()) {
                 sa.getParentAction().getServerActions().remove(sa);
-                ActionFactory.delete(sa);
+                ServerActionFactory.delete(sa);
             }
             // Set to FAILED if the state is PICKED_UP
             else if (sa.isStatusPickedUp()) {
@@ -1184,7 +1184,7 @@ public class ActionManager extends BaseManager {
 
         ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_SCRIPT_RUN,
                 scheduler, name, earliest);
-        ActionFactory.scheduleForExecution(sra, sidSet);
+        ServerActionFactory.scheduleForExecution(sra, sidSet);
 
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
@@ -1388,7 +1388,7 @@ public class ActionManager extends BaseManager {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, scheduler,
                 ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST).getName(),
                 earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
         return action;
     }
 
@@ -1498,7 +1498,7 @@ public class ActionManager extends BaseManager {
         String name = actionTypeEnum.getPackageActionName();
 
         Action action = ActionFactory.createAndSaveAction(actionTypeEnum, scheduler, name, earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
 
         ActionFactory.save(action);
 
@@ -1721,7 +1721,7 @@ public class ActionManager extends BaseManager {
                 scheduler,
                 finalActionName,
                 earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
 
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
@@ -1979,7 +1979,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         action = ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2039,7 +2039,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2075,7 +2075,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2191,7 +2191,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, Set.of(sid));
+        ServerActionFactory.scheduleForExecution(action, Set.of(sid));
         return action;
     }
 

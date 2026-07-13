@@ -3614,7 +3614,7 @@ public class SystemHandler extends BaseHandler {
         if (eventDetail.getHistoryType() != null) {
             // This is an action related entry this we can extract additional information
             final Action action = ActionManager.lookupAction(loggedInUser, eventDetail.getId());
-            final ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+            final ServerAction serverAction = ServerActionFactory.getServerActionForServerAndAction(server, action);
 
             eventDetail.setEarliestAction(action.getEarliestAction());
             eventDetail.setResultMsg(serverAction.getResultMsg());

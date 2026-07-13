@@ -137,7 +137,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         Date earliest = Date.from(LocalDateTime.now().minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
         a.setEarliestAction(earliest);
 
-        List<ServerAction> sa = ActionFactory.listPendingServerActionsByTypes(
+        List<ServerAction> sa = ServerActionFactory.listPendingServerActionsByTypes(
                 List.of(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH)));
 
         assertEquals(1, sa.size());
@@ -337,7 +337,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         a2 = TestUtils.saveAndReload(a2);
 
         List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).collect(Collectors.toList());
-        ActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
+        ServerActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
 
         sa1 = TestUtils.reload(sa1);
         sa2 = TestUtils.reload(sa2);
