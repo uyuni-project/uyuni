@@ -730,58 +730,6 @@ public class ActionFactory extends HibernateFactory {
 
     }
 
-    private static void updateActionEarliestDate(Action action) {
-        action.setEarliestAction(new Date());
-        HibernateFactory.getSession().persist(action);
-    }
-
-    /**
-     * Update the {@link ActionStatus} to "PickedUp" of several rhnServerAction rows identified
-     * by server and action IDs.
-     *
-     * @param actionIn associated action of rhnServerAction records
-     * @param serverIds server Ids for which action is scheduled
-     */
-    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
-        LOG.debug("Action status {} is going to b set for these servers: {}",
-                ActionFactory.STATUS_PICKED_UP.getName(), serverIds);
-        Map<String, Object>  parameters = new HashMap<>();
-        parameters.put("action_id", actionIn.getId());
-        parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
-        String sql = """
-                UPDATE rhnServerAction
-                SET    status = :status,
-                       pickup_time = current_timestamp
-                WHERE  action_id  = :action_id
-                AND    server_id  IN (:server_ids)
-                AND    status NOT IN(2,3)
-                """;
-        udpateByIds(serverIds, sql, "server_ids", parameters);
-        serverIds.forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
-     * Update the status of several rhnServerAction rows identified by server and action IDs.
-     * @param actionIn associated action of rhnServerAction records
-     * @param serverIds server Ids for which action is scheduled
-     * @param status {@link ActionStatus} object that needs to be set
-     */
-    public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
-        LOG.debug("Action status {} is going to b set for these servers: {}", status.getName(), serverIds);
-        Map<String, Object>  parameters = new HashMap<>();
-        parameters.put("action_id", actionIn.getId());
-        parameters.put("status", status.getId());
-        String sql = """
-                UPDATE rhnServerAction
-                SET    status = :status
-                WHERE  action_id  = :action_id
-                AND    server_id  IN (:server_ids)
-                AND    status NOT IN(2,3)
-                """;
-        udpateByIds(serverIds, sql, "server_ids", parameters);
-        serverIds.forEach(SystemManager::updateSystemOverview);
-    }
-
     /**
      * Mark queue server actions as failed because the execution has been rejected
      * @param actionsId list of ids of the action to reject
