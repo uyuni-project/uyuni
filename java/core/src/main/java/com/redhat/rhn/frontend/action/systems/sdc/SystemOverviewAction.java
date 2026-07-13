@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -275,7 +276,7 @@ public class SystemOverviewAction extends RhnAction {
                     .withSchedulerUser(user)
                     .build();
 
-            ActionFactory.createAddServerAction(s, a);
+            ServerActionFactory.createAddServerAction(s, a);
 
             ActionFactory.save(a);
             createSuccessMessage(rctx.getRequest(),
