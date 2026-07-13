@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -394,7 +395,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     private void scheduleSLES16VerificationIfNeeded(MinionServer minion) {
         // Find the specific migration action that triggered this flow
-        Optional<ServerAction> sles16MigrationAction = ActionFactory
+        Optional<ServerAction> sles16MigrationAction = ServerActionFactory
                 .listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
                 .stream()
                 .filter(sa -> isSles15To16Migration(sa, minion))

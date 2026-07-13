@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -2424,7 +2425,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server, actionType, earliestDate);
+        List<ServerAction> sActions = ServerActionFactory.listServerActionsForServer(server, actionType, earliestDate);
 
         // In order to support bug 501224, this method is being updated to populate
         // the result vs having the serializer do so.  The reason is that in order to
