@@ -11,6 +11,8 @@
 package com.redhat.rhn.domain.action.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
@@ -150,6 +152,39 @@ public class ServerActionFactory extends HibernateFactory {
             query.setParameterList(statusListParam, statusListIn);
         }
         return query.list();
+    }
+
+
+    /**
+     * Reschedule All Failed Server Actions associated with an action
+     *
+     * @param parentActionIn the action whose server actions you are rescheduling
+     * @param tries          the number of tries to set
+     */
+    public static void rescheduleFailedServerActions(Action parentActionIn, Long tries) {
+        ActionFactory.rescheduleFailedServerActions(parentActionIn, tries);
+    }
+
+    /**
+     * Reschedule All Server Actions associated with an action
+     *
+     * @param parentActionIn the action whose server actions you are rescheduling
+     * @param tries          the number of tries to set (should be set to 5)
+     */
+    public static void rescheduleAllServerActions(Action parentActionIn, Long tries) {
+        ActionFactory.rescheduleAllServerActions(parentActionIn, tries);
+    }
+
+    /**
+     * Reschedule Server Action associated with an action and system
+     *
+     * @param parentActionIn the action whose server actions you are rescheduling
+     * @param tries          the number of tries to set (should be set to 5)
+     * @param serverIdIn     system id of action we want reschedule
+     */
+    public static void rescheduleSingleServerAction(Action parentActionIn, Long tries,
+                                                    Long serverIdIn) {
+        ActionFactory.rescheduleSingleServerAction(parentActionIn, tries, serverIdIn);
     }
 
 }
