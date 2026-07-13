@@ -72,7 +72,7 @@ public class SystemHistoryEventAction extends RhnAction {
         ServerAction serverAction;
         try {
             action = ActionManager.lookupAction(requestContext.getCurrentUser(), aid);
-            serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+            serverAction = ServerActionFactory.getServerActionForServerAndAction(server, action);
             if (serverAction == null) {
                 throw new LookupException("Could not find server action with id: " + action.getId());
             }

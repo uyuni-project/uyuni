@@ -18,6 +18,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
@@ -178,7 +179,7 @@ public class MinionActionExecutor extends RhnJavaJob {
             log.warn("Scheduled action {} was scheduled to be executed more than {} hours ago. Skipping it.",
                     action.getId(), MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
 
-            ActionFactory.rejectScheduledActions(List.of(actionId),
+            ServerActionFactory.rejectScheduledActions(List.of(actionId),
                 LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
 
             return;
@@ -186,7 +187,7 @@ public class MinionActionExecutor extends RhnJavaJob {
         if (!cloudPaygManager.isCompliant()) {
             log.error("This action was not executed because SUSE Multi-Linux Manager Server PAYG is unable to send " +
                     "accounting data to the cloud provider.");
-            ActionFactory.rejectScheduledActions(List.of(actionId),
+            ServerActionFactory.rejectScheduledActions(List.of(actionId),
                     LOCALIZATION.getMessage("task.action.rejection.notcompliant"));
             return;
         }

@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
@@ -586,7 +587,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         actionServer1.getServerActions().forEach(sa -> {
             if (sa.getServerId().equals(server1.getId())) {
                 sa.getParentAction().getServerActions().remove(sa);
-                ActionFactory.delete(sa);
+                ServerActionFactory.delete(sa);
             }
         });
         TestUtils.flushSession();
@@ -601,7 +602,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         actionServer2.getServerActions().forEach(sa -> {
             if (sa.getServerId().equals(server2.getId())) {
                 sa.getParentAction().getServerActions().remove(sa);
-                ActionFactory.delete(sa);
+                ServerActionFactory.delete(sa);
             }
         });
 

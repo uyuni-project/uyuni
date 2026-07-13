@@ -19,10 +19,10 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -644,7 +644,7 @@ public class DistUpgradeManager extends BaseManager {
         }
 
         // Check if there is already a migration in the schedule
-        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
+        if (ServerActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
             throw new DistUpgradeException("Another dist upgrade is in the schedule for server: " + sid);
         }
 

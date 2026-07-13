@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
@@ -86,7 +87,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
         if (!cloudPaygManager.isCompliant()) {
             log.error("This action was not executed because SUSE Multi-Linux Manager Server PAYG is unable to send " +
                     "accounting data to the cloud provider.");
-            ActionFactory.rejectScheduledActions(List.of(actionId),
+            ServerActionFactory.rejectScheduledActions(List.of(actionId),
                     LocalizationService.getInstance().getMessage("task.action.rejection.notcompliant"));
             return;
         }

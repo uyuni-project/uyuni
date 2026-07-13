@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
@@ -387,7 +388,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         serverAction.setStatusPickedUp();
 
         ActionFactory.save(action);
-        ActionFactory.save(serverAction);
+        ServerActionFactory.save(serverAction);
 
         UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> handler.cancelActions(admin, List.of(action.getId().intValue())));

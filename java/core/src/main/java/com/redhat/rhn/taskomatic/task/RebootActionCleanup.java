@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.server.Server;
@@ -108,7 +109,7 @@ public class RebootActionCleanup extends RhnJavaJob {
         }
         Server s = ServerFactory.lookupById(serverId);
         Action a = ActionFactory.lookupById(actionId);
-        ServerAction sa = ActionFactory.getServerActionForServerAndAction(s, a);
+        ServerAction sa = ServerActionFactory.getServerActionForServerAndAction(s, a);
         if (!sa.isStatusFailed()) {
             sa.fail(-100L, "Prerequisite failed", sa.getPickupTime());
 

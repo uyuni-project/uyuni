@@ -635,7 +635,7 @@ public class ActionChainManager {
 
         if (actionChain == null) {
             Action action = ActionFactory.createAndSaveAction(actionTypeEnum, user, name, earliest);
-            ActionFactory.scheduleForExecution(action, serverIds);
+            ServerActionFactory.scheduleForExecution(action, serverIds);
             result.add(action);
         }
         else {

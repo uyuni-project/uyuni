@@ -24,6 +24,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -196,7 +197,7 @@ public class ScriptRunAction extends ScriptAction {
                             .orElse(false))
                     .forEach(sa -> {
                         sa.fail("Error scheduling the action: " + errorMsg);
-                        ActionFactory.save(sa);
+                        ServerActionFactory.save(sa);
                     });
         }
         return ret;
