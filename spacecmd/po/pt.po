@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-04-24 17:04+0000\n"
-"Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
+"PO-Revision-Date: 2026-07-13 12:12+0000\n"
+"Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/spacecmd/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -290,12 +290,12 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1041 ../src/spacecmd/kickstart.py:482
 #: ../src/spacecmd/system.py:3155
 msgid "Software Channels"
-msgstr ""
+msgstr "Canais de Software"
 
 #: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:872
 #: ../src/spacecmd/configchannel.py:992 ../src/spacecmd/system.py:3165
 msgid "Configuration Channels"
-msgstr ""
+msgstr "Canais de Configuração"
 
 #: ../src/spacecmd/activationkey.py:1056 ../src/spacecmd/system.py:3170
 msgid "Entitlements"
@@ -311,7 +311,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:1741
 #: ../src/spacecmd/softwarechannel.py:2025
 msgid "Packages"
-msgstr ""
+msgstr "Pacotes"
 
 #: ../src/spacecmd/activationkey.py:1089
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
@@ -866,18 +866,18 @@ msgstr ""
 #: ../src/spacecmd/repo.py:381 ../src/spacecmd/repo.py:505
 #: ../src/spacecmd/softwarechannel.py:881
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 #: ../src/spacecmd/configchannel.py:524
 msgid "Label:"
-msgstr ""
+msgstr "Etiqueta:"
 
 #: ../src/spacecmd/configchannel.py:525 ../src/spacecmd/cryptokey.py:118
 #: ../src/spacecmd/custominfo.py:63 ../src/spacecmd/custominfo.py:217
 #: ../src/spacecmd/group.py:197 ../src/spacecmd/softwarechannel.py:893
 #: ../src/spacecmd/system.py:3895
 msgid "Description:"
-msgstr ""
+msgstr "Descrição:"
 
 #: ../src/spacecmd/configchannel.py:526
 msgid "Type [normal, state]:"
@@ -1523,7 +1523,7 @@ msgstr ""
 
 #: ../src/spacecmd/distribution.py:106
 msgid "Base Channel:"
-msgstr ""
+msgstr "Canal Base:"
 
 #: ../src/spacecmd/distribution.py:109
 msgid "Invalid channel label"
@@ -1769,7 +1769,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:449 ../src/spacecmd/package.py:134
 #: ../src/spacecmd/softwarechannel.py:649
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: ../src/spacecmd/errata.py:455
 msgid "Notes"
@@ -1928,7 +1928,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1609 ../src/spacecmd/system.py:1940
 #: ../src/spacecmd/system.py:4711
 msgid "Systems"
-msgstr ""
+msgstr "Sistemas"
 
 #: ../src/spacecmd/group.py:161
 msgid "Remove these systems [y/N]:"
@@ -2339,7 +2339,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:543
 msgid "Variables"
-msgstr ""
+msgstr "Variáveis"
 
 #: ../src/spacecmd/kickstart.py:551
 msgid "Scripts"
@@ -3448,7 +3448,7 @@ msgstr ""
 
 #: ../src/spacecmd/org.py:354
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: ../src/spacecmd/org.py:356
 msgid "Remove this trust [y/N]:"
@@ -3639,11 +3639,11 @@ msgstr ""
 
 #: ../src/spacecmd/package.py:120
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: ../src/spacecmd/package.py:120
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/package.py:119
@@ -4146,7 +4146,7 @@ msgstr ""
 
 #: ../src/spacecmd/report.py:323
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: ../src/spacecmd/report.py:340
 msgid "report_duplicates: List duplicate system profiles"
@@ -4897,7 +4897,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:643
 msgid "Summary"
-msgstr ""
+msgstr "Resumo"
 
 #: ../src/spacecmd/softwarechannel.py:654
 #, python-format
@@ -4965,7 +4965,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:806
 msgid "Channels"
-msgstr ""
+msgstr "Canais"
 
 #: ../src/spacecmd/softwarechannel.py:836
 msgid "softwarechannel_update: Update a software channel"
@@ -5102,7 +5102,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1024
 msgid "Architecture"
-msgstr ""
+msgstr "Arquitetura"
 
 #: ../src/spacecmd/softwarechannel.py:1031
 msgid "Checksum type"
@@ -5798,7 +5798,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:3141
 msgid "Channel Name"
-msgstr ""
+msgstr "Nome do Canal"
 
 #: ../src/spacecmd/softwarechannel.py:3141
 msgid "Update Schedule"
@@ -5962,7 +5962,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:83 ../src/spacecmd/system.py:4171
 msgid "Package"
-msgstr ""
+msgstr "Pacote"
 
 #: ../src/spacecmd/system.py:84
 msgid "This System"
