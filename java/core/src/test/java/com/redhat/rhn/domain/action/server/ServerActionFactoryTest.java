@@ -12,9 +12,11 @@ package com.redhat.rhn.domain.action.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.util.TimeUtilsTest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
@@ -285,4 +287,21 @@ public class ServerActionFactoryTest extends BaseTestCase {
         assertTrue(serverAction.getPickupTime().after(almostNow));
     }
 
+
+    @Test
+    @DisplayName("addServerToAction correctly creating and adding an ServerAction ")
+    public void testAddServerToAction()  {
+        Server s = ServerFactoryTest.createTestServer(user);
+        Action a = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+
+        ServerActionFactory.addServerToAction(s.getId(), a);
+
+        assertNotNull(a.getServerActions());
+        assertEquals(1, a.getServerActions().size());
+        Object[] array = a.getServerActions().toArray();
+        ServerAction sa = (ServerAction)array[0];
+        assertTrue(TimeUtilsTest.timeEquals(sa.getCreated().getTime(), sa.getModified().getTime()));
+        assertTrue(sa.isStatusQueued());
+        assertEquals(sa.getServer(), s);
+    }
 }
