@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -79,8 +80,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         ServerAction serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         ServerAction serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());
@@ -113,8 +114,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());
@@ -149,8 +150,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());

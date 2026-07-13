@@ -19,7 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.cloud.CloudPaygManager;
@@ -127,7 +127,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                                               .filter(Objects::nonNull)
                                               .collect(Collectors.toList());
 
-            ActionFactory.rejectScheduledActions(actionsId,
+            ServerActionFactory.rejectScheduledActions(actionsId,
                 LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
 
             return;
@@ -140,7 +140,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                     .map(ActionChainEntry::getActionId)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-            ActionFactory.rejectScheduledActions(actionsId,
+            ServerActionFactory.rejectScheduledActions(actionsId,
                     LOCALIZATION.getMessage("task.action.rejection.notcompliant"));
             return;
         }
@@ -167,7 +167,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                             .filter(s -> s.isDeniedOnPayg())
                             .collect(Collectors.toSet());
 
-                    ActionFactory.rejectScheduledActions(actionsId,
+                    ServerActionFactory.rejectScheduledActions(actionsId,
                             LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByosActionChain",
                                     formatByosListToStringErrorMsg(nonCompliantByosMinions)
                                     ));

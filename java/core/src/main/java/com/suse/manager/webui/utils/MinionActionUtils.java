@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
@@ -261,7 +262,7 @@ public class MinionActionUtils {
             serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))
               .ifPresent(r -> {
                   r.consume(error -> LOG.error(error.toString()),
-                  runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
+                  runningInfos -> ServerActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
               })
         );
     }

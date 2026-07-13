@@ -21,7 +21,6 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROO
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -828,7 +827,7 @@ public class SaltUtils {
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);
-                ActionFactory.save(sa);
+                ServerActionFactory.save(sa);
                 actionsChanged += 1;
             }
         }
