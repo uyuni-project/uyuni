@@ -170,8 +170,7 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
 end
 
 Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
-  $current_user = user
-  $current_password = password
+  Credentials.login_as(user, password)
   next if $api_test.user.list_users.to_s.include? user
 
   begin
@@ -340,7 +339,10 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
   raise ScriptError unless details['description'] == description
 end
 
-When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
+When(/^I create an activation key including custom channels for "([^"]*)" via API(?: on (server|server2|server3))?$/) do |client, host|
+  host ||= 'server'
+  api_test = api_client_for(host)
+
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server

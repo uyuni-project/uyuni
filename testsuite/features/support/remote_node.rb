@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 SUSE LLC.
+# Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -33,10 +33,8 @@ class RemoteNode
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
-    if @host == 'server'
-      @has_mgrctl = ssh('which mgrctl', host: @target).last.zero?
-      @has_kubectl = ssh('which kubectl', host: @target).last.zero?
-    end
+    @has_mgrctl = ssh('which mgrctl', host: @target).last.zero?
+    @has_kubectl = ssh('which kubectl', host: @target).last.zero? if @host == 'server'
 
     if @host == 'server' && !@has_kubectl
       # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
