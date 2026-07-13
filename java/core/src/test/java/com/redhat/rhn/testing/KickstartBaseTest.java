@@ -15,9 +15,7 @@ import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.user.User;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(UserForTestCaseExtension.class)
 public class KickstartBaseTest extends BaseTestCase {
 
     @UserForTest
@@ -26,15 +24,5 @@ public class KickstartBaseTest extends BaseTestCase {
     @BeforeEach
     public void setUpKickstartBaseTest() throws Exception {
         KickstartTestUtils.setupTestConfiguration(user);
-    }
-
-    @Override
-    protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
-    }
-
-    @Override
-    protected void afterCleanupDatabaseCommits() {
-        user = null;
     }
 }
