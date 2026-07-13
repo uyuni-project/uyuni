@@ -36,7 +36,7 @@ import java.util.List;
  * @apidoc.namespace preferences.locale
  * @apidoc.doc Provides methods to access and modify user locale information
  */
-public class PreferencesLocaleHandler extends BaseHandler {
+public class PreferencesLocaleHandler extends BaseHandler implements PreferencesLocaleHandlerApi {
 
     /**
      * Set the TimeZone for the given user.
