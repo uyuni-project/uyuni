@@ -699,61 +699,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Reschedule All Failed Server Actions associated with an action
-     * @param action the action who's server actions you are rescheduling
-     * @param tries the number of tries to set (should be set to 5)
-     */
-    public static void rescheduleFailedServerActions(Action action, Long tries) {
-        updateActionEarliestDate(action);
-        HibernateFactory.getSession().createMutationQuery("""
-                        UPDATE ServerAction sa
-                        SET    sa.status = :queued,
-                               sa.remainingTries = :tries,
-                               sa.pickupTime = null,
-                               sa.completionTime = null,
-                               resultCode = null,
-                               resultMsg = null
-                        WHERE  sa.status = :failed
-                        AND    sa.parentAction = :action
-                        """)
-                .setParameter("action", action)
-                .setParameter("tries", tries)
-                .setParameter("failed", ActionFactory.STATUS_FAILED)
-                .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        action.removeInvalidResults();
-        action.getServerActions().stream()
-                .filter(ServerAction::isFailed)
-                .map(ServerAction::getServerId)
-                .forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
-     * Reschedule All Server Actions associated with an action
-     * @param action the action who's server actions you are rescheduling
-     * @param tries the number of tries to set (should be set to 5)
-     */
-    public static void rescheduleAllServerActions(Action action, Long tries) {
-        updateActionEarliestDate(action);
-        HibernateFactory.getSession().createMutationQuery("""
-                        UPDATE  ServerAction sa
-                        SET     sa.status = :queued,
-                                sa.remainingTries = :tries,
-                                sa.pickupTime = null,
-                                sa.completionTime = null,
-                                resultCode = null,
-                                resultMsg = null
-                        WHERE   sa.parentAction = :action
-                        """)
-                .setParameter("action", action)
-                .setParameter("tries", tries)
-                .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
-        action.removeInvalidResults();
-        action.getServerActions().stream()
-                .map(ServerAction::getServerId)
-                .forEach(SystemManager::updateSystemOverview);
-    }
-
-    /**
      * Returns all pending actions that contain minions
      * @return list of pending minions that contain minions
      */
@@ -771,34 +716,6 @@ public class ActionFactory extends HibernateFactory {
                 .addSynchronizedEntityClass(ServerAction.class)
                 .addSynchronizedEntityClass(MinionServer.class)
                 .list();
-    }
-
-    /**
-     * Reschedule Server Action associated with an action and system
-     * @param action the action who's server actions you are rescheduling
-     * @param tries the number of tries to set (should be set to 5)
-     * @param server system id of action we want reschedule
-     */
-    public static void rescheduleSingleServerAction(Action action, Long tries,
-            Long server) {
-        updateActionEarliestDate(action);
-        HibernateFactory.getSession().createMutationQuery("""
-                        UPDATE ServerAction sa
-                        SET    sa.status = :queued,
-                               sa.remainingTries = :tries,
-                               sa.pickupTime = null,
-                               sa.completionTime = null,
-                               resultCode = null,
-                               resultMsg = null
-                        WHERE  sa.parentAction = :action
-                        AND    sa.serverId = :server
-                        """)
-        .setParameter("action", action)
-        .setParameter("tries", tries)
-        .setParameter("queued", ActionFactory.STATUS_QUEUED)
-        .setParameter("server", server).executeUpdate();
-        action.removeInvalidResults();
-        SystemManager.updateSystemOverview(server);
     }
 
     /**

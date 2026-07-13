@@ -16,10 +16,12 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 
 import java.util.Date;
@@ -154,7 +156,6 @@ public class ServerActionFactory extends HibernateFactory {
         return query.list();
     }
 
-
     /**
      * Reschedule All Failed Server Actions associated with an action
      *
@@ -162,7 +163,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @param tries          the number of tries to set
      */
     public static void rescheduleFailedServerActions(Action parentActionIn, Long tries) {
-        ActionFactory.rescheduleFailedServerActions(parentActionIn, tries);
+        rescheduleServerAction(parentActionIn, tries, null, ActionFactory.STATUS_FAILED);
     }
 
     /**
@@ -172,7 +173,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @param tries          the number of tries to set (should be set to 5)
      */
     public static void rescheduleAllServerActions(Action parentActionIn, Long tries) {
-        ActionFactory.rescheduleAllServerActions(parentActionIn, tries);
+        rescheduleServerAction(parentActionIn, tries, null, null);
     }
 
     /**
@@ -184,7 +185,47 @@ public class ServerActionFactory extends HibernateFactory {
      */
     public static void rescheduleSingleServerAction(Action parentActionIn, Long tries,
                                                     Long serverIdIn) {
-        ActionFactory.rescheduleSingleServerAction(parentActionIn, tries, serverIdIn);
+        rescheduleServerAction(parentActionIn, tries, serverIdIn, null);
+    }
+
+    private static void rescheduleServerAction(Action parentActionIn, Long tries, Long serverIdIn,
+                                               ActionStatus actionStatusIn) {
+        parentActionIn.setEarliestAction(new Date());
+        HibernateFactory.getSession().persist(parentActionIn);
+
+        Map<String, Object> parameters = new HashMap<>();
+        StringBuilder queryString = new StringBuilder("""
+                UPDATE ServerAction sa
+                SET    sa.status = :queued,
+                       sa.remainingTries = :tries,
+                       sa.pickupTime = null,
+                       sa.completionTime = null,
+                       resultCode = null,
+                       resultMsg = null
+                WHERE  sa.parentAction = :parentAction
+                """);
+        if (null != serverIdIn) {
+            queryString.append(" AND ").append("sa.serverId = :serverId");
+            parameters.put("serverId", serverIdIn);
+        }
+        if (null != actionStatusIn) {
+            queryString.append(" AND ").append("sa.status = :status");
+            parameters.put("status", actionStatusIn);
+        }
+
+        MutationQuery query = HibernateFactory.getSession().createMutationQuery(queryString.toString());
+        query.setParameter("queued", ActionFactory.STATUS_QUEUED);
+        query.setParameter("tries", tries);
+        query.setParameter("parentAction", parentActionIn);
+        for (Map.Entry<String, Object> param : parameters.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
+        }
+
+        query.executeUpdate();
+        parentActionIn.removeInvalidResults();
+        parentActionIn.getServerActions().stream()
+                .map(ServerAction::getServerId)
+                .forEach(SystemManager::updateSystemOverview);
     }
 
 }
