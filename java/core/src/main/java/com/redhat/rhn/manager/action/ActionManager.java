@@ -496,7 +496,7 @@ public class ActionManager extends BaseManager {
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
-        ActionFactory.addServerToAction(server.getId(), a);
+        ServerActionFactory.addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
         for (Long cfnid : filenames) {
@@ -564,7 +564,7 @@ public class ActionManager extends BaseManager {
 
         for (Server server : servers) {
             checkConfigActionOnServer(typeEnum, server);
-            ActionFactory.addServerToAction(server.getId(), a);
+            ServerActionFactory.addServerToAction(server.getId(), a);
 
             //now that we made a server action, we must make config revision actions
             //which depend on the server as well.
@@ -1049,7 +1049,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(earliest)
                 .build();
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1079,7 +1079,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .build();
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
         action.setEarliestAction(earliest);
 
         if (!SystemManager.clientCapable(server.getId(),
@@ -1262,7 +1262,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(earliestAction)
                 .build();
 
-        ActionFactory.createAddServerAction(srvr, ksaction);
+        ServerActionFactory.createAddServerAction(srvr, ksaction);
 
         KickstartActionDetails kad = new KickstartActionDetails();
         kad.setAppendString(appendString);
@@ -1295,7 +1295,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(pcmd.getScheduleDate())
                 .build();
 
-        ActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
+        ServerActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
 
         KickstartGuestActionDetails kad = new KickstartGuestActionDetails();
         kad.setAppendString(pcmd.getExtraOptions());
@@ -1346,7 +1346,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
         return action;
     }
 
@@ -1366,7 +1366,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
         return action;
     }
 
@@ -1411,7 +1411,7 @@ public class ActionManager extends BaseManager {
                 .withOrg(schedulerOrg)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
 
         ActionFactory.save(action);
 
@@ -1745,7 +1745,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1773,7 +1773,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1832,7 +1832,7 @@ public class ActionManager extends BaseManager {
 
         detailsMap.values().stream()
             .map(details -> details.getServer())
-            .forEach(server -> ActionFactory.createAddServerAction(server, action));
+            .forEach(server -> ServerActionFactory.createAddServerAction(server, action));
 
         // Add the details and save
         action.setDetailsMap(detailsMap);
@@ -2231,7 +2231,7 @@ public class ActionManager extends BaseManager {
         details.setInventoryPath(inventoryPath);
         action.setDetails(details);
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -69,7 +70,7 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                     .build();
 
             // add the server to the action
-            ActionFactory.addServerToAction(server, act);
+            ServerActionFactory.addServerToAction(server, act);
 
             // add file revisions to the action
             for (ConfigFileNameDto cfn : cm.listAllFileNamesForSystem(server)) {

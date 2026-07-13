@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -2184,9 +2185,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         rebootAction.setPrerequisite(applyStateAction);
         runScriptAction.setPrerequisite(rebootAction);
 
-        ActionFactory.addServerToAction(minion.getId(), applyStateAction);
-        ActionFactory.addServerToAction(minion.getId(), rebootAction);
-        ActionFactory.addServerToAction(minion.getId(), runScriptAction);
+        ServerActionFactory.addServerToAction(minion.getId(), applyStateAction);
+        ServerActionFactory.addServerToAction(minion.getId(), rebootAction);
+        ServerActionFactory.addServerToAction(minion.getId(), runScriptAction);
 
         //need to flush to get the correct dates in database
         TestUtils.flushAndClearSession();

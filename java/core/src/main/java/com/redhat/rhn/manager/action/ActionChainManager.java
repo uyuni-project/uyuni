@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -460,7 +461,7 @@ public class ActionChainManager {
 
             for (Server server : servers) {
                 ActionManager.checkConfigActionOnServer(typeEnum, server);
-                ActionFactory.addServerToAction(server.getId(), action);
+                ServerActionFactory.addServerToAction(server.getId(), action);
 
                 ActionManager.addConfigurationRevisionsToAction(user,
                     revisions.get(server.getId()), action, server);

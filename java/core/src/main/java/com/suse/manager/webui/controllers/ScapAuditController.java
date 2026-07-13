@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.ScapPolicy;
@@ -1744,7 +1745,7 @@ public class ScapAuditController {
                 .build();
 
         action.setScriptActionDetails(scriptDetails);
-        ActionFactory.addServerToAction(server.getId(), action);
+        ServerActionFactory.addServerToAction(server.getId(), action);
         ActionFactory.save(action);
         return action;
     }
