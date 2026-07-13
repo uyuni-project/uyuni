@@ -11,17 +11,19 @@
 package com.redhat.rhn.domain.action.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServerActionFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(ServerActionFactory.class);
@@ -42,7 +44,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
-        return ActionFactory.listServerActionsForServer(serverIn);
+        return listServerActionsForServer(serverIn, null, null, null, null);
     }
 
     /**
@@ -56,7 +58,7 @@ public class ServerActionFactory extends HibernateFactory {
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
                                                                 String actionTypeNameIn,
                                                                 Date minimumCreatedDateIn) {
-        return ActionFactory.listServerActionsForServer(serverIn, actionTypeNameIn, minimumCreatedDateIn);
+        return listServerActionsForServer(serverIn, null, minimumCreatedDateIn, actionTypeNameIn, null);
     }
 
     /**
@@ -68,8 +70,7 @@ public class ServerActionFactory extends HibernateFactory {
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
                                                                 ActionTypeEnum actionTypeEnumIn) {
-        List<ActionType> typesIn = List.of(ActionFactory.lookupActionTypeByEnum(actionTypeEnumIn));
-        return ActionFactory.listServerActionsForServerAndTypes(serverIn, typesIn);
+        return listServerActionsForServer(serverIn, actionTypeEnumIn, null, null, null);
     }
 
     /**
@@ -80,7 +81,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, ActionStatus statusIn) {
-        return ActionFactory.listServerActionsForServer(serverIn, List.of(statusIn));
+        return listServerActionsForServer(serverIn, null, null, null, List.of(statusIn));
     }
 
     /**
@@ -92,7 +93,7 @@ public class ServerActionFactory extends HibernateFactory {
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
                                                                 List<ActionStatus> statusListIn) {
-        return ActionFactory.listServerActionsForServer(serverIn, statusListIn);
+        return listServerActionsForServer(serverIn, null, null, null, statusListIn);
     }
 
     /**
@@ -106,7 +107,49 @@ public class ServerActionFactory extends HibernateFactory {
     public static List<ServerAction> listServerActionsForServer(Server serverIn,
                                                                 List<ActionStatus> statusListIn,
                                                                 Date minimumCreatedDateIn) {
-        return ActionFactory.listServerActionsForServer(serverIn, statusListIn, minimumCreatedDateIn);
+        return listServerActionsForServer(serverIn, null, minimumCreatedDateIn, null, statusListIn);
+    }
+
+    private static List<ServerAction> listServerActionsForServer(Server serverIn,
+                                                                 ActionTypeEnum actionTypeEnumIn,
+                                                                 Date minimumCreatedDateIn,
+                                                                 String actionTypeNameIn,
+                                                                 List<ActionStatus> statusListIn) {
+
+        Map<String, Object> parameters = new HashMap<>();
+        StringBuilder queryString = new StringBuilder("FROM ServerAction AS sa WHERE sa.server = :server");
+        parameters.put("server", serverIn);
+
+        if (null != actionTypeEnumIn) {
+            queryString.append(" AND ").append("sa.parentAction.actionType.label = :actionTypeLabel");
+            parameters.put("actionTypeLabel", actionTypeEnumIn.getLabel());
+        }
+
+        if (null != minimumCreatedDateIn) {
+            queryString.append(" AND ").append("sa.created >= :date");
+            parameters.put("date", minimumCreatedDateIn);
+        }
+
+        if (null != actionTypeNameIn) {
+            queryString.append(" AND ").append("sa.parentAction.actionType.name = :actionTypeName");
+            parameters.put("actionTypeName", actionTypeNameIn);
+        }
+
+        String statusListParam = null;
+        if (null != statusListIn) {
+            queryString.append(" AND ").append("sa.status IN (:statusList)");
+            statusListParam = "statusList";
+        }
+
+        Session session = HibernateFactory.getSession();
+        Query<ServerAction> query = session.createQuery(queryString.toString(), ServerAction.class);
+        for (Map.Entry<String, Object> param : parameters.entrySet()) {
+            query.setParameter(param.getKey(), param.getValue());
+        }
+        if (null != statusListIn) {
+            query.setParameterList(statusListParam, statusListIn);
+        }
+        return query.list();
     }
 
 }
