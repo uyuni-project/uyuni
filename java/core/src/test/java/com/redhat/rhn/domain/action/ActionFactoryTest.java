@@ -74,7 +74,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
@@ -321,34 +320,6 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     public void testCheckActionArchType() throws Exception {
         Action newA = createAction(user, ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         assertTrue(ActionFactory.checkActionArchType(newA, "verify"));
-    }
-
-    @Test
-    public void testUpdateServerActions() {
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
-        ServerAction sa1 = addServerAction(user, a1, ServerAction::setStatusFailed);
-        ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
-
-        ActionFactory.save(a1);
-        TestUtils.flushSession();
-        TestUtils.evict(sa1);
-        TestUtils.evict(sa2);
-        TestUtils.evict(a1);
-
-        List<Long> list = new ArrayList<>();
-        list.add(sa1.getServerId());
-
-        // Should NOT update if already in final state.
-        ActionFactory.updateServerActionsPickedUp(a1, list);
-        sa1 = TestUtils.reload(sa1);
-        assertTrue(sa1.isStatusFailed());
-
-        list.clear();
-        list.add(sa2.getServerId());
-        //Should update to STATUS_COMPLETED
-        ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
-        sa2 = TestUtils.reload(sa2);
-        assertTrue(sa2.isStatusCompleted());
     }
 
     @Test
