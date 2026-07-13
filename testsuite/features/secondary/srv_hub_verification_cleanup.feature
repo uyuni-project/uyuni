@@ -1,96 +1,47 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Hub verification and cleanup
-  Verify end-to-end functionality through peripheral
-  Clean up all test data
+@scope_hub
+@hub_server_to_server
+@server2
+Feature: Hub peripheral deregistration and state cleanup
+  In order to restore a clean state after hub testing
+  As an authorized user
+  I want to deregister a peripheral from both sides and verify side effects are correct (plan A-10)
 
-  Scenario: Verify minion can use synced channel on peripheral
-    Given I am authorized
-    When I follow the left menu "Systems > System List > All"
-    And I follow this "sle_minion" link
-    And I follow "Software > Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "clone-fake-rpm-suse-channel"
-    And I wait until I do not see "Loading..." text
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
+  Scenario: Log in as admin user for cleanup
+    Given I am authorized for the "Admin" section
 
-  Scenario: Subscribe minion to synced channel
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+  Scenario: Prerequisite - register server2 and sync a channel for deregistration tests (A-10)
+    When I add "server2" as peripheral using administrator credentials
+    And I wait until I see "is currently registered as peripheral of this hub" text
+    And I configure hub to sync channel "clone-fake-rpm-suse-channel" to "server2"
+    And I trigger channel sync from hub to "server2"
+    And I wait at most 600 seconds until channel "clone-fake-rpm-suse-channel" has been synced on "server2"
+    Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
 
-  Scenario: Install package from synced channel
-    When I follow "Software > Packages > Install"
-    And I enter "andromeda-dummy" as the filtered package name
-    And I click on the filter button
-    And I check "andromeda-dummy" in the list
-    And I click on "Install Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+  Scenario: Log in as admin user on server2 for deregistration test (A-10)
+    Given I am authorized for the "Admin" section on "server2"
 
-  Scenario: Verify package installation succeeded
-    When I follow "Software > Packages > List / Remove"
-    And I enter "andromeda-dummy" as the filtered package name
-    And I click on the filter button
-    Then I should see a "andromeda-dummy" link
+  Scenario: Deregister server2 from hub initiated on the peripheral side (A-10)
+    When I deregister from hub on "server2"
+    Then the Hub Details page on "server2" should be empty
 
-  Scenario: Remove package from minion
-    When I check "andromeda-dummy" in the list
-    And I click on "Remove Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package removal has been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+  Scenario: Verify server2 no longer appears in hub peripherals list after peripheral-side deregistration (A-10)
+    Then I should not see "server2" in peripherals list on hub
 
-  Scenario: Unsubscribe minion from channel
-    When I follow "Software > Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
-    And I wait until I do not see "Loading..." text
-    And I click on "Next"
-    And I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+  Scenario: Verify previously synced channels still exist on server2 after deregistration (A-10)
+    Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
 
-  Scenario: Initiate channel sync from peripheral
-    When I initiate channel sync from peripheral "peripheral_server"
-    And I wait until I see "Synchronization started" text
-    Then I should see a "Background" text
+  Scenario: Re-register server2 to hub successfully after peripheral-side deregistration (A-10)
+    When I add "server2" as peripheral using administrator credentials
+    And I wait until I see "is currently registered as peripheral of this hub" text
+    Then I should see "server2" in peripherals list
 
-  Scenario: Navigate to peripherals configuration on hub
-    Given I am authorized
-    When I follow the left menu "Admin > Hub Configuration"
-    And I follow "Peripherals Configuration"
-    Then I should see the name of "peripheral_server"
+  Scenario: Deregister server2 from hub side to verify hub-initiated path (A-10)
+    When I unregister "server2" from hub
+    Then I should not see the name of "server2"
 
-  Scenario: Remove synced channels from peripheral
-    When I remove synced channels from "peripheral_server"
-    And I wait until I see "Channel configuration updated" text
-    Then I should see a "Updated" text
-
-  Scenario: Unregister peripheral from hub
-    When I unregister "peripheral_server" from hub
-    Then I should not see the name of "peripheral_server"
-
-  Scenario: Delete cloned channel from hub
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake-RPM-SUSE-Channel"
-    And I follow "Delete Channel"
-    And I check "unsubscribeSystems"
-    And I click on "Delete Channel"
-    Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
-
-  Scenario: Delete custom channel from hub
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test Hub Custom Channel"
-    And I follow "Delete Channel"
-    And I check "unsubscribeSystems"
-    And I click on "Delete Channel"
-    Then I should see a "Test Hub Custom Channel" text
-
-  Scenario: Verify cleanup completed
-    When I follow the left menu "Admin > Hub Configuration"
-    And I follow "Peripherals Configuration"
-    Then I should not see the name of "peripheral_server"
+  Scenario: Verify server2 no longer appears in peripherals list after hub-side deregistration (A-10)
+    When I follow the left menu "Admin > Hub Configuration > Peripherals Configuration"
+    Then I should not see the name of "server2"

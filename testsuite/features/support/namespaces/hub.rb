@@ -1,6 +1,8 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+require 'xmlrpc/client'
+
 # Hub namespace
 class NamespaceHub
   # Initializes the Hub XMLRPC client
@@ -54,5 +56,23 @@ class NamespaceHub
     @session_key = nil
   rescue XMLRPC::FaultException => e
     raise SystemCallError, "Hub API logout failed: #{e.message}"
+  end
+
+  # Calls unicast system.list_systems for one specific peripheral server ID
+  #
+  # @param server_id [Integer] The server ID to query
+  # @return [Hash] Response with Successful and Failed keys
+  def unicast_system_list(server_id)
+    @client.call('unicast.system.list_systems', @session_key, [server_id])
+  rescue XMLRPC::FaultException => e
+    raise SystemCallError, "Hub API unicast call failed: #{e.message}"
+  end
+
+  # Returns an XMLRPC client pointed at the hub's own /rpc/api (standard SUMA API, not hub gateway)
+  #
+  # @return [XMLRPC::Client]
+  def direct_api_client
+    protocol = $debug_mode ? 'http://' : 'https://'
+    XMLRPC::Client.new2("#{protocol}#{@hub_host}/rpc/api", nil, DEFAULT_TIMEOUT)
   end
 end

@@ -1,17 +1,23 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Hub channel synchronization
-  Synchronize software channels from hub to peripheral server
-  Test vendor-style, custom, and cloned channel types
+@scope_hub
+@hub_server_to_server
+@server2
+Feature: Hub ISSv3 channel synchronization to peripheral
+  In order to distribute content from a hub to peripheral servers
+  As an authorized user
+  I want to synchronize channels via the hub UI and peripheral UI (plan A-06)
 
-  Scenario: Prerequisites - peripheral is registered
-    Given I am authorized
-    When I follow the left menu "Admin > Hub Configuration"
-    And I follow "Peripherals Configuration"
-    Then I should see the name of "peripheral_server"
+  Scenario: Log in as admin user for channel sync tests
+    Given I am authorized for the "Admin" section
 
-  Scenario: Clone a channel on hub for testing
+  Scenario: Prerequisite - register server2 as peripheral for channel sync tests (A-06)
+    When I add "server2" as peripheral using administrator credentials
+    And I wait until I see "is currently registered as peripheral of this hub" text
+    Then I should see "server2" in peripherals list
+
+  Scenario: Clone a channel on hub for sync testing (A-06)
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
@@ -22,30 +28,30 @@ Feature: Hub channel synchronization
     And I click on "Clone Channel"
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
 
-  Scenario: Verify cloned channel has packages
+  Scenario: Verify cloned channel has packages (A-06)
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     Then I should see a "Package List" text
     And I should see package "andromeda-dummy"
 
-  Scenario: Configure channel sync from hub to peripheral
-    When I configure hub to sync channel "clone-fake-rpm-suse-channel" to "peripheral_server"
+  Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
+    When I configure hub to sync channel "clone-fake-rpm-suse-channel" to "server2"
     Then I should see a "Channel configuration updated" text
 
-  Scenario: Trigger synchronization from hub
-    When I trigger channel sync from hub to "peripheral_server"
+  Scenario: Trigger channel sync from hub to server2 (A-06)
+    When I trigger channel sync from hub to "server2"
     And I wait until I see "Synchronization started" text
     Then I should see a "Background" text
 
-  Scenario: Wait for channel sync to complete
-    When I wait at most 600 seconds until channel "clone-fake-rpm-suse-channel" has been synced on "peripheral_server"
-    Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral_server"
+  Scenario: Wait for cloned channel to appear on server2 (A-06)
+    When I wait at most 600 seconds until channel "clone-fake-rpm-suse-channel" has been synced on "server2"
+    Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
 
-  Scenario: Verify channel on peripheral has packages
-    Then channel "clone-fake-rpm-suse-channel" on "peripheral_server" should have "4" packages
+  Scenario: Verify cloned channel on server2 has expected packages (A-06)
+    Then channel "clone-fake-rpm-suse-channel" on "server2" should have "4" packages
 
-  Scenario: Create custom channel on hub
+  Scenario: Create a custom channel on hub for org-mapping test (A-06)
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "Test Hub Custom Channel" as "Channel Name"
@@ -54,18 +60,65 @@ Feature: Hub channel synchronization
     And I click on "Create Channel"
     Then I should see a "Channel Test Hub Custom Channel created" text
 
-  Scenario: Configure custom channel sync to peripheral
-    When I configure hub to sync channel "test-hub-custom-channel" to "peripheral_server"
-    And I select target organization "Test Default Organization" for channel "test-hub-custom-channel" on "peripheral_server"
+  Scenario: Configure custom channel sync to server2 with organization mapping (A-06)
+    When I configure hub to sync channel "test-hub-custom-channel" to "server2"
+    And I select target organization "Test Default Organization" for channel "test-hub-custom-channel" on "server2"
     Then I should see a "Channel configuration updated" text
 
-  Scenario: Trigger sync for custom channel
-    When I trigger channel sync from hub to "peripheral_server"
+  Scenario: Trigger sync for custom channel and verify it arrives on server2 (A-06)
+    When I trigger channel sync from hub to "server2"
     And I wait until I see "Synchronization started" text
-    And I wait at most 300 seconds until channel "test-hub-custom-channel" has been synced on "peripheral_server"
-    Then channel "test-hub-custom-channel" should exist on "peripheral_server"
+    And I wait at most 300 seconds until channel "test-hub-custom-channel" has been synced on "server2"
+    Then channel "test-hub-custom-channel" should exist on "server2"
 
-  Scenario: Test sync initiated from peripheral
-    When I initiate channel sync from peripheral "peripheral_server"
+  Scenario: Log in as admin user on server2 for peripheral sync (A-06)
+    Given I am authorized for the "Admin" section on "server2"
+
+  Scenario: Initiate channel sync from server2 peripheral - Method B (A-06)
+    Given I am authorized for the "Admin" section on "server2"
+    When I initiate channel sync from peripheral "server2"
     And I wait until I see "Synchronization started" text
     Then I should see a "Background" text
+
+  # Method C — sync.hub.* API endpoints: not available in SUMA/Uyuni 5.2.
+  # Hub channel sync is UI/event-driven under ISS v3. The sync.hub namespace
+  # was not ported. Verify with: spacecmd api -- sync.hub (should return empty).
+  # TODO: If sync.hub.* endpoints are re-added in a future release, implement
+  # API-driven sync scenario here using the XMLRPC::Client pattern in hub_steps.rb.
+
+  # BUG-019 (QE test plan): HTTP 500 during peripheral channel sync when
+  # rhnContentSource.source_url exceeds VARCHAR(2048) in the database schema.
+  # An automated regression requires a repo URL longer than 2048 characters,
+  # which the standard Fake-RPM-SUSE-Channel and its clones cannot produce.
+  # No existing helper creates custom repos with arbitrary URL lengths, so this
+  # check remains MANUAL: sync a peripheral channel whose source URL is ≥2049
+  # characters and assert the response is not HTTP 500.
+  # Re-evaluate if a step I create a repo with a URL of length N characters
+  # is added to api_common.rb or command_steps.rb.
+
+  Scenario: Regenerate mirror credentials for server2 and verify sync still works (A-06)
+    When I regenerate mirror credentials for peripheral "server2"
+    And I trigger channel sync from hub to "server2"
+    And I wait until I see "Synchronization started" text
+    Then I should see a "Background" text
+
+  Scenario: Cleanup - remove synced channels from server2
+    When I remove synced channels from "server2"
+    And I wait until I see "Channel configuration updated" text
+    Then I should see a "Updated" text
+
+  Scenario: Cleanup - delete custom channel from hub
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Test Hub Custom Channel"
+    And I follow "Delete Channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see a "Test Hub Custom Channel" text
+
+  Scenario: Cleanup - delete cloned channel from hub
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Clone of Fake-RPM-SUSE-Channel"
+    And I follow "Delete Channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see a "Clone of Fake-RPM-SUSE-Channel" text

@@ -1,0 +1,34 @@
+# Hub full topology run set (BV-style pipeline).
+# Requires: hub (SERVER), peripheral (SERVER2), proxy (PROXY), and a minion (MINION).
+# Includes all server-to-server features (@hub_server_to_server) plus
+# full-topology-only features (@hub_full_topology). The two tag sets are distinct.
+#
+# Run with:
+#   cucumber -r features features/secondary/srv_hub_*.feature
+
+## Hub full topology features BEGIN ##
+
+# All server-to-server features (A-01 through A-10, C-01)
+- features/secondary/srv_hub_setup_registration.feature
+- features/secondary/srv_hub_token_registration.feature
+- features/secondary/srv_hub_token_lifecycle.feature
+- features/secondary/srv_hub_channel_synchronization.feature
+- features/secondary/srv_hub_xmlrpc_operations.feature
+- features/secondary/srv_hub_issv2_export_import.feature
+- features/secondary/srv_hub_reporting.feature
+# C-02..C-06: Grafana formula setup and hub reporting dashboard validation (requires monitoring node)
+- features/secondary/srv_hub_grafana_setup.feature
+- features/secondary/srv_hub_grafana_dashboards.feature
+- features/secondary/srv_hub_grafana_data_validation.feature
+- features/secondary/srv_hub_verification_cleanup.feature
+
+# Full topology features (B-01..B-04): proxy + minion on peripheral
+- features/secondary/srv_hub_minion_on_peripheral.feature
+
+# B-01: Peripheral host as hub minion (bootstrap ordering)
+- features/secondary/srv_hub_peripheral_as_minion.feature
+
+# B-05: Hub outage resilience (must be last — stops and starts hub services)
+- features/secondary/srv_hub_outage_resilience.feature
+
+## Hub full topology features END ##

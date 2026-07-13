@@ -185,6 +185,13 @@ After do |scenario|
     end
   end
   page.instance_variable_set(:@touched, false) if capybara_session_created?
+  # Always reset the active webUI session back to the hub after each scenario.
+  # Named sessions for other hosts (server2, server3, ...) are intentionally
+  # NOT quit here - Capybara keeps them cached so a later scenario that
+  # switches back reuses the still-logged-in browser instead of re-authenticating.
+  Capybara.session_name = :default
+  Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
+  $current_ui_host = 'server'
 end
 
 # Test if capybara session instance was created
