@@ -228,4 +228,26 @@ public class ServerActionFactory extends HibernateFactory {
                 .forEach(SystemManager::updateSystemOverview);
     }
 
+
+    /**
+     * Update the {@link ActionStatus} to "PickedUp" of several ServerAction rows identified by server and action IDs.
+     *
+     * @param actionIn  associated action of ServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     */
+    public static void updateServerActionsPickedUp(Action actionIn, List<Long> serverIds) {
+        ActionFactory.updateServerActions(actionIn, serverIds, ActionFactory.STATUS_PICKED_UP);
+    }
+
+    /**
+     * Update the status of several ServerAction rows identified by server and action IDs.
+     *
+     * @param actionIn  associated action of ServerAction records
+     * @param serverIds server Ids for which action is scheduled
+     * @param status    {@link ActionStatus} object that needs to be set
+     */
+    public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
+        ActionFactory.updateServerActions(actionIn, serverIds, status);
+    }
+
 }

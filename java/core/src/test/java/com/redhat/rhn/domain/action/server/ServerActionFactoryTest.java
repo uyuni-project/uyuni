@@ -12,6 +12,7 @@ package com.redhat.rhn.domain.action.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
@@ -224,5 +225,62 @@ public class ServerActionFactoryTest extends BaseTestCase {
         assertFalse(testStartInstant.isAfter(newEarliestInstant));
     }
 
+
+    @Test
+    @DisplayName("updateServerActions correctly not picking up if already in failed state")
+    public void testUpdateServerActionsPickedUp() {
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusFailed);
+
+        ActionFactory.save(action);
+        TestUtils.flushSession();
+        TestUtils.evict(serverAction);
+        TestUtils.evict(action);
+
+        // Should NOT update if already in final state.
+        ServerActionFactory.updateServerActionsPickedUp(action, List.of(serverAction.getServerId()));
+        serverAction = TestUtils.reload(serverAction);
+        assertTrue(serverAction.isStatusFailed());
+    }
+
+
+    @Test
+    @DisplayName("updateServerActions correctly updating to completed")
+    public void testUpdateServerActions2() {
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusQueued);
+
+        ActionFactory.save(action);
+        TestUtils.flushSession();
+        TestUtils.evict(serverAction);
+        TestUtils.evict(action);
+
+        //Should update to STATUS_COMPLETED
+        ServerActionFactory.updateServerActions(action, List.of(serverAction.getServerId()),
+                ActionFactory.STATUS_COMPLETED);
+        serverAction = TestUtils.reload(serverAction);
+        assertTrue(serverAction.isStatusCompleted());
+    }
+
+
+    @Test
+    @DisplayName("updateServerActions correctly picking up and setting pickup date")
+    public void testUpdateServerActions3() {
+        Action action = ActionFactoryTest.createEmptyAction(user, ActionTypeEnum.TYPE_REBOOT);
+        ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusQueued);
+
+        ActionFactory.save(action);
+        assertTrue(serverAction.isStatusQueued());
+        assertNull(serverAction.getPickupTime());
+        TestUtils.flushSession();
+        TestUtils.evict(serverAction);
+        TestUtils.evict(action);
+
+        Date almostNow = new Date(System.currentTimeMillis() - 20_000);
+        ServerActionFactory.updateServerActionsPickedUp(action, List.of(serverAction.getServerId()));
+        serverAction = TestUtils.reload(serverAction);
+        assertTrue(serverAction.isStatusPickedUp());
+        assertTrue(serverAction.getPickupTime().after(almostNow));
+    }
 
 }
