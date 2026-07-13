@@ -122,6 +122,7 @@ public interface PreferencesLocaleHandlerApi {
     }
 
     @Schema(name = "Timezone", description = "timezone")
+    @JsonPropertyOrder({"timeZoneId", "olsonName"})
     interface RhnTimeZoneDoc {
 
         /**

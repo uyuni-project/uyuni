@@ -10,11 +10,12 @@
  */
 package com.suse.manager.api.test.contract;
 
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 
 import org.jmock.Expectations;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -66,12 +67,13 @@ public class PreferencesLocaleHandlerContractTest extends BaseOpenApiTest {
 
     @Test
     public void testListTimeZones() throws Exception {
-        // RhnTimeZone is serialized with camelCase bean names while the documented schema uses the
-        // legacy snake_case (time_zone_id/olson_name), so an empty array is returned here, matching
-        // how the merged access handler tests renamed-field structs.
+        RhnTimeZone timezone = new RhnTimeZone();
+        timezone.setTimeZoneId(5);
+        timezone.setOlsonName("Etc/UTC");
+
         context.checking(new Expectations() {{
             oneOf(handler()).listTimeZones();
-            will(returnValue(new Object[]{}));
+            will(returnValue(new Object[]{timezone}));
         }});
 
         validateApiContract("/preferences.locale/listTimeZones", "GET")

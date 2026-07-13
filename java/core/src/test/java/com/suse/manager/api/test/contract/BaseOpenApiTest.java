@@ -13,12 +13,11 @@ package com.suse.manager.api.test.contract;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
 import com.suse.manager.api.RouteFactory;
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 import com.suse.utils.Json;
-
-import com.google.gson.Gson;
 
 import org.everit.json.schema.loader.SchemaLoader;
 import org.jmock.Expectations;
@@ -429,7 +428,7 @@ public abstract class BaseOpenApiTest {
     }
 
     private void initializeRouteFactory() {
-        this.testableRouteFactory = new RouteFactory(null) {
+        this.testableRouteFactory = new RouteFactory(new SerializerFactory()) {
             @Override
             protected String getSessionKeyFromRequest(Request req) {
                 return "fake-session";
@@ -455,11 +454,6 @@ public abstract class BaseOpenApiTest {
 
             @Override
             protected void rollbackTransactionSafe() {
-            }
-
-            @Override
-            protected Gson initGsonWithSerializers() {
-                return Json.GSON;
             }
         };
     }
