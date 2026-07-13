@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -267,14 +268,14 @@ public class ServerActionFactory extends HibernateFactory {
         serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
-
     /**
      * Creates a ServerAction and adds it to an Action
      * @param serverIdIn The server id
      * @param parentActionIn The parent action
      */
     public static void addServerToAction(Long serverIdIn, Action parentActionIn) {
-        ActionFactory.addServerToAction(serverIdIn, parentActionIn);
+        addServerToActionPrivate(ServerFactory.lookupByIdAndOrg(serverIdIn, parentActionIn.getOrg()), parentActionIn,
+                REMAINING_TRIES_FROM_PERL);
     }
 
     /**
@@ -283,7 +284,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @param parentActionIn The parent action
      */
     public static void addServerToAction(Server serverIn, Action parentActionIn) {
-        ActionFactory.addServerToAction(serverIn, parentActionIn);
+        addServerToActionPrivate(serverIn, parentActionIn, REMAINING_TRIES_FROM_PERL);
     }
 
     /**
@@ -292,7 +293,18 @@ public class ServerActionFactory extends HibernateFactory {
      * @param parentActionIn the type of Action we want to create
      */
     public static void createAddServerAction(Server serverIn, Action parentActionIn) {
-        ActionFactory.createAddServerAction(serverIn, parentActionIn);
+        addServerToActionPrivate(serverIn, parentActionIn, REMAINING_TRIES);
+    }
+
+    private static void addServerToActionPrivate(Server serverIn, Action parentActionIn, long tries) {
+        ServerAction sa = new ServerAction();
+        sa.setCreated(new Date());
+        sa.setModified(new Date());
+        sa.setStatusQueued();
+        sa.setServerWithCheck(serverIn);
+        sa.setParentActionWithCheck(parentActionIn);
+        sa.setRemainingTries(tries);
+        parentActionIn.addServerAction(sa);
     }
 
 }
