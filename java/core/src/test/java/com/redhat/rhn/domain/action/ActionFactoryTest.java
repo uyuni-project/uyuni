@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -224,7 +225,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
     public void testAddServerToAction() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user);
         Action a = createAction(user, ActionTypeEnum.TYPE_ERRATA);
-        ActionFactory.addServerToAction(s.getId(), a);
+        ServerActionFactory.addServerToAction(s.getId(), a);
 
         assertNotNull(a.getServerActions());
         assertEquals(a.getServerActions().size(), 1);
