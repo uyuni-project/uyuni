@@ -61,8 +61,6 @@ $custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['C
 $build_sources = ENV.fetch('BUILD_SOURCES', nil) if ENV['BUILD_SOURCES']
 $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
-$current_user = 'admin'
-$current_password = 'admin'
 $use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 
 # maximal wait before giving up
@@ -83,6 +81,11 @@ LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '0').to_i
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
 IMMEDIATE_WAIT = ENV['IMMEDIATE_WAIT'] ? ENV['IMMEDIATE_WAIT'].to_i : 1
+# Where Chromium writes crash minidumps (BUG-024: chrome-headless-shell crashed with an
+# unexplained SIGTRAP/int3 and left no report - --enable-crash-reporter below should capture
+# the next occurrence here instead of us having to infer it from a bare kernel dmesg line).
+CHROME_CRASH_DIR = ENV.fetch('CHROME_CRASH_DIR', 'chrome-crashes')
+FileUtils.mkdir_p(CHROME_CRASH_DIR)
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
@@ -116,10 +119,15 @@ def capybara_register_driver
         --disable-dev-shm-usage
         --ignore-certificate-errors
         --no-sandbox
+        --no-zygote
+        --disable-gpu
         --disable-notifications
         --window-size=2048,2048
         --js-flags=--max-old-space-size=2048
         --log-level=3
+      ] + [
+        '--enable-crash-reporter',
+        "--crash-dumps-dir=#{CHROME_CRASH_DIR}"
       ],
       ignoreHTTPSErrors: true,
       acceptDownloads: true,
@@ -161,9 +169,23 @@ $code_coverage = CodeCoverage.new if $code_coverage_mode
 # Init Quality Intelligence Handler
 $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
-# Define the current feature scope
+# Define the current feature scope. Also resets the active webUI session back to the
+# hub whenever the incoming scenario belongs to a different feature file than the
+# previous one. Scenarios within the same feature may intentionally carry over an
+# active peripheral session (e.g. log in on server2, then later scenarios in the same
+# feature keep acting on server2); crossing into a new feature always starts fresh from
+# the hub. Named sessions for other hosts (server2, server3, ...) are intentionally NOT
+# quit here - Capybara keeps them cached so a later scenario that switches back reuses
+# the still-logged-in browser instead of re-authenticating.
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
+  current_feature_file = scenario.location.file
+  if $feature_scope_file && $feature_scope_file != current_feature_file
+    Capybara.session_name = :default
+    Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
+    $current_ui_host = 'server'
+  end
+  $feature_scope_file = current_feature_file
+  $feature_scope = current_feature_file.split(%r{(\.feature|/)})[-2]
 end
 
 # Embed a screenshot after each failed scenario
@@ -245,7 +267,8 @@ def relog_and_visit_previous_url
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
-      step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+      user, password = Credentials.current
+      step %(I am authorized as "#{user}" with password "#{password}")
       visit previous_url
     end
   rescue Timeout::Error

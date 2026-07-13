@@ -432,20 +432,23 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3))?$/) do |channel, host|
+  host ||= 'server'
   margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
-  wait_for_channels([channel], "channel '#{channel}'", margin: margin)
+  wait_for_channels([channel], "channel '#{channel}'", host: host, margin: margin)
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3))?$/) do |os_product_version, host|
+  host ||= 'server'
   channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
   raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
 
   channels_to_sync = filter_channels(channels_to_sync, ['beta']) unless $beta_enabled
-  wait_for_channels(channels_to_sync, "product '#{os_product_version}'")
+  wait_for_channels(channels_to_sync, "product '#{os_product_version}'", host: host)
 end
 
-When(/^I wait until all synchronized channels have solved their dependencies$/) do
+When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3))?$/) do |host|
+  host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
   accumulated_timeout = get_context('channels_timeout')
@@ -466,7 +469,7 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
     deadline_elapsed = optimized_timeout
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
-      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
+      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel, host: host) }
       break if channels_to_wait_solv_file.empty?
 
       if channels_to_wait_solv_file.count < prev_count
@@ -1134,12 +1137,14 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
-  host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
-  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+# Builds the mgr-create-bootstrap-repo command line for a given client type
+# (e.g. "sle_minion", "proxy", "build_host") -- shared by the hub-target and
+# arbitrary-host bootstrap repo creation steps below.
+def bootstrap_repo_cmd(client, without_flushing)
+  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
-  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
 
   log "base_channel: #{base_channel}"
   log "channel: #{channel}"
@@ -1151,12 +1156,17 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
     else
       "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
     end
-
   cmd += ' --flush' unless without_flushing
+  cmd
+end
 
-  log 'Creating the bootstrap repository on the server:'
+When(/^I create the bootstrap repository for "([^"]*)" on (the server|server\d+)((?: without flushing)?)$/) do |client, host, without_flushing|
+  target = host == 'the server' ? 'server' : host
+  cmd = bootstrap_repo_cmd(client, without_flushing)
+  get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
+  log "Creating the bootstrap repository on #{target}:"
   log "  #{cmd}"
-  get_target('server').run(cmd, exec_option: '-it')
+  get_target(target).run(cmd, exec_option: '-it')
 end
 
 When(/^I create the bootstrap repositories including custom channels$/) do
@@ -1683,7 +1693,7 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled by #{Credentials.current.first}" is completed
     Then I should see a "This action's status is: Completed" text
   )
 end
