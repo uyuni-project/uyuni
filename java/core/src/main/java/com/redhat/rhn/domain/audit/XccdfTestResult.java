@@ -16,9 +16,9 @@ package com.redhat.rhn.domain.audit;
 
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -314,7 +314,7 @@ public class XccdfTestResult implements Serializable {
         if (retentionDays == null) {
             return false;
         }
-        ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(
+        ServerAction serverAction = ServerActionFactory.getServerActionForServerAndAction(
                 getServer(), getScapActionDetails().getParentAction());
         Date completionTime = serverAction.getCompletionTime();
 

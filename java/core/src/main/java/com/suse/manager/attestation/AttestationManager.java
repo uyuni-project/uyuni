@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -148,7 +149,7 @@ public class AttestationManager {
         minionsSet.forEach(minionServer -> initializeAttestation(action, minionServer));
 
         Set<Long> minionIds = minionsSet.stream().map(Server::getId).collect(Collectors.toSet());
-        ActionFactory.scheduleForExecution(action, minionIds);
+        ServerActionFactory.scheduleForExecution(action, minionIds);
 
         CoCoAttestationAction updated = (CoCoAttestationAction) ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(updated);

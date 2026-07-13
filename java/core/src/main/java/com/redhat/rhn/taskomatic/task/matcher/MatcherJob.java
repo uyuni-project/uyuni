@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
 
@@ -63,7 +64,7 @@ public class MatcherJob extends RhnJavaJob {
             List<ActionType> types = List.of(
                     ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH));
 
-            List<ServerAction> pending = ActionFactory.listPendingServerActionsByTypes(types);
+            List<ServerAction> pending = ServerActionFactory.listPendingServerActionsByTypes(types);
             if (pending.isEmpty()) {
                 break;
             }

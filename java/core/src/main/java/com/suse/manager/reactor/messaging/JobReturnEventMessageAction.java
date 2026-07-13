@@ -344,7 +344,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                      dupAction.getId(), minionId);
                             // Delegate the actual result parsing back to the Action class
                             dupAction.handleUpdateServerAction(sa, result, null);
-                            ActionFactory.save(sa);
+                            ServerActionFactory.save(sa);
                             LOG.info("SLES 16: Migration action {} for {} updated to: {}",
                                      dupAction.getId(), minionId, sa.getStatus().getName());
                         },

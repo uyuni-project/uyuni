@@ -15,7 +15,7 @@
 package com.redhat.rhn.manager.kickstart;
 
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -89,7 +89,7 @@ public class SSMCreateRecordCommand {
      */
     private ValidatorError store(SystemOverview systemOverview) {
         Long sid = systemOverview.getId();
-        if (ActionFactory.doesServerHaveKickstartScheduled(sid)) {
+        if (ServerActionFactory.doesServerHaveKickstartScheduled(sid)) {
             return new ValidatorError("kickstart.schedule.already.scheduled.jsp",
                 systemOverview.getName());
         }
