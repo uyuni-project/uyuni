@@ -335,18 +335,18 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             saltApi.updateSystemInfo(minionTarget);
             scheduleCoCoAttestation(registeredMinion);
             schedulePackageListRefresh(registeredMinion);
-            schedulePendingRebootStateIfNeeded(registeredMinion, bootTime);
+            resumePendingRebootActionIfNeeded(registeredMinion, bootTime);
             // Check for pending SLES 16 migration verification
             scheduleSLES16VerificationIfNeeded(registeredMinion);
         }
     }
 
-    private void schedulePendingRebootStateIfNeeded(
+    private void resumePendingRebootActionIfNeeded(
             MinionServer minion, Optional<Long> bootTime) {
-        String pendingState = minion.getPendingRebootState();
+        Long pendingActionId = minion.getPendingRebootActionId();
         Date pendingSetAt = minion.getPendingRebootSetAt();
 
-        if (pendingState == null || pendingSetAt == null || bootTime.isEmpty()) {
+        if (pendingActionId == null || pendingSetAt == null || bootTime.isEmpty()) {
             return;
         }
 
@@ -355,9 +355,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             return;
         }
 
-        MessageQueue.publish(new ApplyStatesEventMessage(
-                minion.getId(), false, pendingState));
-        minion.setPendingRebootState(null);
+        MessageQueue.publish(new ResumeTransactionalActionEventMessage(
+                pendingActionId, minion.getId()));
     }
 
     /**

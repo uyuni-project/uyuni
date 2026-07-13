@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS suseMinionTransactionalInfo
     default_snapshot NUMERIC,
     snapshots        VARCHAR,
     snapshot_details      TEXT,
-    pending_reboot_state  VARCHAR(256),
+    pending_reboot_action_id NUMERIC REFERENCES rhnAction(id) ON DELETE SET NULL,
     pending_reboot_set_at TIMESTAMPTZ,
 
     CONSTRAINT suse_minion_transactional_info_pk PRIMARY KEY (minion_server_id)

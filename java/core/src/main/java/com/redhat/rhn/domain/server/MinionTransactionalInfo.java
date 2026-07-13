@@ -56,8 +56,8 @@ public class MinionTransactionalInfo implements Serializable {
     @Column(name = "snapshot_details")
     private String snapshotDetails;
 
-    @Column(name = "pending_reboot_state")
-    private String pendingRebootState;
+    @Column(name = "pending_reboot_action_id")
+    private Long pendingRebootActionId;
 
     @Column(name = "pending_reboot_set_at")
     private Date pendingRebootSetAt;
@@ -146,18 +146,18 @@ public class MinionTransactionalInfo implements Serializable {
     }
 
     /**
-     * @return the state to apply after the next confirmed reboot, or null
+     * @return the action to resume after the next confirmed reboot, or null
      */
-    public String getPendingRebootState() {
-        return pendingRebootState;
+    public Long getPendingRebootActionId() {
+        return pendingRebootActionId;
     }
 
     /**
-     * @param pendingRebootStateIn state to apply after reboot, or null to clear
+     * @param pendingRebootActionIdIn action to resume after reboot, or null to clear
      */
-    public void setPendingRebootState(String pendingRebootStateIn) {
-        pendingRebootState = pendingRebootStateIn;
-        pendingRebootSetAt = pendingRebootStateIn == null ? null : new Date();
+    public void setPendingRebootActionId(Long pendingRebootActionIdIn) {
+        pendingRebootActionId = pendingRebootActionIdIn;
+        pendingRebootSetAt = pendingRebootActionIdIn == null ? null : new Date();
     }
 
     /**

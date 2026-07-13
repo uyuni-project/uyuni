@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.TransactionalUpdateCalls;
@@ -76,7 +77,7 @@ import jakarta.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("2")
-public class HardwareRefreshAction extends Action {
+public class HardwareRefreshAction extends Action implements ResumableTransactionalAction {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
     private static final SaltApi SALT_API = GlobalInstanceHolder.SALT_API;
 
@@ -124,32 +125,53 @@ public class HardwareRefreshAction extends Action {
      * {@inheritDoc}
      */
     @Override
+    public boolean isFinalResult(ServerAction serverAction, JsonElement jsonResult) {
+        return serverAction.getServer().asMinionServer()
+                .map(minion -> !minion.doesOsSupportsTransactionalUpdate() ||
+                        isHardwareProfileUpdateResult(jsonResult))
+                .orElse(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<LocalCall<?>, List<MinionSummary>> getPostPrerequisiteSaltCalls(
+            List<MinionSummary> minionSummaries) {
+        return Map.of(
+                State.apply(
+                        List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                        Optional.empty()),
+                minionSummaries);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
         serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-            if (minionServer.doesOsSupportsTransactionalUpdate()) {
+            if (minionServer.doesOsSupportsTransactionalUpdate() &&
+                    !isHardwareProfileUpdateResult(jsonResult)) {
                 if (serverAction.isStatusFailed()) {
                     serverAction.setResultMsg("Failed to apply prerequisite states.");
                 }
                 else if (!hasChanges(jsonResult)) {
-                    MessageQueue.publish(new ApplyStatesEventMessage(
-                            minionServer.getId(),
-                            false,
-                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE));
+                    MessageQueue.publish(new ResumeTransactionalActionEventMessage(
+                            getId(), minionServer.getId()));
                     serverAction.setResultMsg(
                             "Prerequisite states already satisfied. Hardware profile update scheduled.");
                 }
                 else {
-                    String pendingState = minionServer.getPendingRebootState();
-                    if (pendingState != null &&
-                            !ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE.equals(pendingState)) {
+                    Long pendingActionId = minionServer.getPendingRebootActionId();
+                    if (pendingActionId != null && !getId().equals(pendingActionId)) {
                         serverAction.setStatusFailed();
                         serverAction.setResultMsg(
-                                "Another transactional follow-up state is already pending: " +
-                                pendingState);
+                                "Another transactional action is already waiting for reboot: " +
+                                pendingActionId);
                     }
                     else {
-                        minionServer.setPendingRebootState(
-                                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
+                        minionServer.setPendingRebootActionId(getId());
                         serverAction.setResultMsg(
                                 "Prerequisite states applied. A system reboot is required " +
                                 "before updating the hardware profile.");
@@ -165,6 +187,13 @@ public class HardwareRefreshAction extends Action {
                     Json.GSON.fromJson(jsonResult, HwProfileUpdateSlsResult.class),
                     serverAction);
         });
+    }
+
+    private boolean isHardwareProfileUpdateResult(JsonElement jsonResult) {
+        return jsonResult != null &&
+                jsonResult.isJsonObject() &&
+                jsonResult.getAsJsonObject().has(
+                        "module_|-grains_|-grains.items_|-run");
     }
 
     private boolean hasChanges(JsonElement jsonResult) {
