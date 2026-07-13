@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { DEPRECATED_Select, Form } from "components/input";
+import { DEPRECATED_Select, DEPRECATED_Check, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -23,7 +23,6 @@ import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
 import { getProductSelectionState } from "./product-check/product-selection.utils";
-import { getSelectionSummary } from "./product-check/product-selection-summary.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
 import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
@@ -486,6 +485,8 @@ class ProductsState {
   popupItem: null | unknown = null;
   archCriteria: any[] = [];
   visibleSubList: any[] = [];
+  showInstalledOnly = false;
+  showSelectedOnly = false;
 }
 
 /**
@@ -500,11 +501,24 @@ class Products extends Component<ProductsProps, ProductsState> {
       .sort();
   };
 
-  filterDataByArch = (data: any[]) => {
+  filterData = (data) => {
+    let filtered = data;
+
     if (this.state.archCriteria.length > 0) {
-      return data.filter((p) => this.state.archCriteria.includes(p.arch));
+      filtered = filtered.filter((p) => this.state.archCriteria.includes(p.arch));
     }
-    return data;
+
+    if (this.state.showInstalledOnly || this.state.showSelectedOnly) {
+      filtered = filtered.filter((p) => {
+        const isInstalled = this.state.showInstalledOnly && p.status === _PRODUCT_STATUS.installed;
+
+        const isSelected =
+          this.state.showSelectedOnly && this.props.selectedItems.some((item) => item.identifier === p.identifier);
+
+        return isInstalled || isSelected;
+      });
+    }
+    return filtered;
   };
 
   handleSelectedItems = (items) => {
@@ -548,6 +562,10 @@ class Products extends Component<ProductsProps, ProductsState> {
     });
   };
 
+  setFilters = (model) => {
+    this.setState(model);
+  };
+
   render() {
     const archFilter = (
       <div className="multiple-select-wrapper table-input-search">
@@ -563,13 +581,34 @@ class Products extends Component<ProductsProps, ProductsState> {
         </Form>
       </div>
     );
+
+    const installedFilter = (
+      <Form
+        model={{
+          showInstalledOnly: this.state.showInstalledOnly,
+          showSelectedOnly: this.state.showSelectedOnly,
+        }}
+        onChange={this.setFilters}
+      >
+        <div className="d-flex align-items-center me-5">
+          <span className="me-3 mb-1">{t("Filter by:")}</span>
+          <span className="me-4">
+            <DEPRECATED_Check name="showInstalledOnly" label={t("Installed")} />
+          </span>
+          <span>
+            <DEPRECATED_Check name="showSelectedOnly" label={t("Selected")} />
+          </span>
+        </div>
+      </Form>
+    );
     return (
       <div>
         <CustomDataHandler
-          data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
+          data={this.buildRows(this.filterData([...this.props.data]).sort(this.compareProducts))}
           identifier={(raw) => raw.identifier}
           loading={this.props.loading}
           additionalFilters={[archFilter]}
+          titleButtons={[installedFilter]}
           searchField={
             <SearchField
               filter={searchCriteriaInExtension}
@@ -876,10 +915,49 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
     }
   };
 
+  hasVisibleCheckbox = (item) => {
+    return item.status === _PRODUCT_STATUS.available || item.status === _PRODUCT_STATUS.installed;
+  };
+
+  getSelectionSummary = (item, selectedItems) => {
+    const selectedIds = new Set(selectedItems.map((i) => i.identifier));
+
+    return this.computeSelectionSummary(item, selectedIds);
+  };
+
+  computeSelectionSummary = (item, selectedIds) => {
+    const children = (item.extensions ?? []).filter(this.hasVisibleCheckbox);
+
+    if (children.length === 0) {
+      const isSelected = item.status === _PRODUCT_STATUS.installed || selectedIds.has(item.identifier);
+
+      return {
+        selected: isSelected ? 1 : 0,
+        total: 1,
+      };
+    }
+
+    return children.reduce(
+      (summary, child) => {
+        const childSummary = this.computeSelectionSummary(child, selectedIds);
+
+        return {
+          selected: summary.selected + childSummary.selected,
+          total: summary.total + childSummary.total,
+        };
+      },
+      {
+        selected: 0,
+        total: 0,
+      }
+    );
+  };
+
   render() {
     const currentItem = this.props.item;
     const selectionState = getProductSelectionState(currentItem, this.props.bypassProps.selectedItems);
-    const selectionSummary = getSelectionSummary(currentItem, this.props.bypassProps.selectedItems);
+    const selectionSummary = this.getSelectionSummary(currentItem, this.props.bypassProps.selectedItems);
+
     /** generate item selector content **/
     let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
