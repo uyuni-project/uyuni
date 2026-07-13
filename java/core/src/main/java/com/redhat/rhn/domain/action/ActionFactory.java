@@ -312,48 +312,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a ServerAction and adds it to an Action
-     * @param sid The server id
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Long sid, Action parent) {
-        addServerToAction(ServerFactory.lookupByIdAndOrg(sid, parent.getOrg()), parent);
-    }
-
-    /**
-     * Creates a ServerAction and adds it to an Action
-     * @param server The server
-     * @param parent The parent action
-     */
-    public static void addServerToAction(Server server, Action parent) {
-        ServerAction sa = new ServerAction();
-        sa.setCreated(new Date());
-        sa.setModified(new Date());
-        sa.setStatusQueued();
-        sa.setServerWithCheck(server);
-        sa.setParentActionWithCheck(parent);
-        sa.setRemainingTries(5L); //arbitrary number from perl
-        parent.addServerAction(sa);
-    }
-
-    /**
-     * Creates and adds a ServerAction to an Action
-     * @param serverIn the Server associated with the created ServerAction
-     * @param actionIn the type of Action we want to create
-     */
-    public static void createAddServerAction(Server serverIn, Action actionIn) {
-
-        ServerAction sa = new ServerAction();
-        sa.setStatusQueued();
-        sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServerWithCheck(serverIn);
-
-        actionIn.addServerAction(sa);
-        //probably not needed, already included in addServerAction?
-        sa.setParentActionWithCheck(actionIn);
-    }
-
-    /**
      * Creates, saves and returns a new Action
      * @param actionTypeEnum the type of Action we want to create
      * @param schedulerUser the user who created this action
