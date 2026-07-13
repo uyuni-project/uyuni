@@ -11,6 +11,7 @@
 package com.redhat.rhn.testing.building;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -23,7 +24,7 @@ public class UserBuilder {
 
     private String userName = null;
     private String orgName = null;
-    private Long orgId = null;
+    private Org organization = null;
     private Address address = null;
     private boolean orgAdmin = false;
     private boolean satAdmin = false;
@@ -39,17 +40,17 @@ public class UserBuilder {
     }
 
     /**
-     * Set the orgId for the User. If set, orgName will be ignored.
-     * @param orgIdIn the org id
+     * Set the organization for the User.
+     * @param orgIn the org
      * @return this builder
      */
-    public UserBuilder withOrganizationId(Long orgIdIn) {
-        this.orgId = orgIdIn;
+    public UserBuilder withOrganization(Org orgIn) {
+        this.organization = orgIn;
         return this;
     }
 
     /**
-     * Set the orgName for the User
+     * Set the name of the organization for the User.
      * @param orgNameIn the org name
      * @return this builder
      */
@@ -99,16 +100,16 @@ public class UserBuilder {
      * @return the created User
      */
     public User build() {
-        if (orgId == null && orgName == null) {
+        if (organization == null && orgName == null) {
             throw new IllegalStateException("Provide either the name or the id of the organization");
         }
 
-        if (orgId != null && orgName != null) {
+        if (organization != null && orgName != null) {
             throw new IllegalStateException("The name and the id of the organization cannot be provided together");
         }
 
-        if (orgId == null) {
-            orgId = new OrgBuilder().withName(orgName).build().getId();
+        if (organization == null) {
+            organization = new OrgBuilder().withName(orgName).build();
         }
 
         User user = new UserImpl();
@@ -119,6 +120,11 @@ public class UserBuilder {
         user.setLastName("userName" + RandomStringUtils.insecure().nextAlphanumeric(13));
         user.setPrefix(LocalizationService.getInstance().availablePrefixes().iterator().next());
         user.setEmail("javaTest@example.com");
+        user.setOrg(organization);
+        user.setAddress1(orgName);
+
+        // We need to save here because addPermanentRole() calls UserGroupFactory.save() and needs the user
+        user = UserFactory.saveNewUser(user, address, organization.getId());
 
         if (orgAdmin) {
             user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -127,10 +133,6 @@ public class UserBuilder {
             user.addPermanentRole(RoleFactory.SAT_ADMIN);
         }
 
-        if (address == null) {
-            address = new AddressBuilder().build();
-        }
-
-        return UserFactory.saveNewUser(user, address, orgId);
+        return user;
     }
 }
