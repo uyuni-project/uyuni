@@ -107,12 +107,12 @@ class report:
                 description = None
                 try:
                     # pylint: disable-next=anomalous-backslash-in-string
-                    (c, description) = re.split("\s+", l, 1)
+                    (c, description) = re.split("\s+", l, maxsplit=1)
                 # pylint: disable-next=bare-except
                 except:
                     c = l
                 try:
-                    (c, t) = re.split(":", c, 1)
+                    (c, t) = re.split(":", c, maxsplit=1)
                 # pylint: disable-next=bare-except
                 except:
                     t = "s"
@@ -128,14 +128,14 @@ class report:
             lines = filter(None, re.split("\s*\n\s*", value))
             for l in lines:
                 # pylint: disable-next=anomalous-backslash-in-string
-                (p, v) = re.split("\s+", l, 1)
+                (p, v) = re.split("\s+", l, maxsplit=1)
                 value = v
                 if p in self.params_values:
                     value = self.params_values[p]
                 else:
                     try:
                         # pylint: disable-next=anomalous-backslash-in-string
-                        (component, option) = re.split("\.", v, 1)
+                        (component, option) = re.split("\.", v, maxsplit=1)
                         cfg = RHNOptions(component)
                         cfg.parse()
                         value = str(cfg.get(option))

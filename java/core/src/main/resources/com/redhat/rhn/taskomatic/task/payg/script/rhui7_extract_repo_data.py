@@ -206,7 +206,7 @@ def _parse_repositories():
                         ident = ident.replace("$basearch", _get_arch())
                 elif state == 1 and ident and ident in repo_dict:
                     if "=" in s:
-                        k, v = re.split(PATTERN_KV, s, 1)
+                        k, v = re.split(PATTERN_KV, s, maxsplit=1)
                         if k in ["sslclientcert", "sslclientkey", "sslcacert"]:
                             repo_dict[ident][k] = v
                             if "sslcacert" not in repo_dict[ident]:
