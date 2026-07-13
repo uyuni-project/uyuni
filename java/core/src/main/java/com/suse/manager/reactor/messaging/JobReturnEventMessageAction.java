@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -331,7 +332,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     return;
                 }
                 // Find the SLES 15.x -> 16.x migration action
-                ActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
+                ServerActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
                     .stream()
                     .filter(sa -> sa.getParentAction() instanceof DistUpgradeAction dup &&
                       dup.getDetails(minion.getId()) != null && dup.getDetails(minion.getId()).isSles15To16Migration())
