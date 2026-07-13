@@ -21,7 +21,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    And I wait at most 180 seconds until I see "has been deleted" but "An error occurred during cleanup" text
     Then "ssh_minion" should not be registered
 
   Scenario: Register this minion for push via SSH tunnel
@@ -35,8 +35,8 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    # workaround for bsc#1222108
-    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108 - The bootstrap page on a Salt SSH Minion takes more than 4 minutes to finish
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." but "already exist" text
     And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: The contact method is SSH tunnel on this minion
