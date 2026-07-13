@@ -238,7 +238,8 @@ public class ServerActionFactoryTest extends BaseTestCase {
         TestUtils.evict(action);
 
         // Should NOT update if already in final state.
-        ServerActionFactory.updateServerActionsPickedUp(action, List.of(serverAction.getServerId()));
+        ServerActionFactory.updateServerActions(action, List.of(serverAction.getServerId()),
+                ActionFactory.STATUS_PICKED_UP);
         serverAction = TestUtils.reload(serverAction);
         assertTrue(serverAction.isStatusFailed());
     }
@@ -277,7 +278,8 @@ public class ServerActionFactoryTest extends BaseTestCase {
         TestUtils.evict(action);
 
         Date almostNow = new Date(System.currentTimeMillis() - 20_000);
-        ServerActionFactory.updateServerActionsPickedUp(action, List.of(serverAction.getServerId()));
+        ServerActionFactory.updateServerActions(action, List.of(serverAction.getServerId()),
+                ActionFactory.STATUS_PICKED_UP);
         serverAction = TestUtils.reload(serverAction);
         assertTrue(serverAction.isStatusPickedUp());
         assertTrue(serverAction.getPickupTime().after(almostNow));
