@@ -33,7 +33,7 @@ import com.suse.manager.api.ReadOnly;
  * @apidoc.namespace channel.access
  * @apidoc.doc Provides methods to retrieve and alter channel access restrictions.
  */
-public class ChannelAccessHandler extends BaseHandler {
+public class ChannelAccessHandler extends BaseHandler implements ChannelAccessHandlerApi {
 
     /**
      * Enable user restrictions for the given channel. If enabled, only
