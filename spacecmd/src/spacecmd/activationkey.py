@@ -71,7 +71,7 @@ def do_activationkey_addpackages(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_addpackages()
         return 1
 
@@ -112,7 +112,7 @@ def do_activationkey_removepackages(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_removepackages()
         return 1
 
@@ -151,7 +151,7 @@ def do_activationkey_addgroups(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_addgroups()
         return 1
 
@@ -200,7 +200,7 @@ def do_activationkey_removegroups(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_removegroups()
         return 1
 
@@ -243,7 +243,7 @@ def do_activationkey_addentitlements(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_addentitlements()
         return 1
 
@@ -287,7 +287,7 @@ def do_activationkey_removeentitlements(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_removeentitlements()
         return 1
 
@@ -344,7 +344,7 @@ def do_activationkey_addchildchannels(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_addchildchannels()
         return 1
 
@@ -387,7 +387,7 @@ def do_activationkey_removechildchannels(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_removechildchannels()
         return 1
 
@@ -719,7 +719,7 @@ def do_activationkey_removeconfigchannels(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_removeconfigchannels()
         return 1
 
@@ -1178,7 +1178,7 @@ def do_activationkey_setbasechannel(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_setbasechannel()
         return 1
 
@@ -1236,7 +1236,7 @@ def do_activationkey_setusagelimit(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_setusagelimit()
         return 1
 
@@ -1880,7 +1880,7 @@ def do_activationkey_disable(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 1:
+    if len(args) < 1:
         self.help_activationkey_disable()
         return 1
 
@@ -1918,7 +1918,7 @@ def do_activationkey_enable(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 1:
+    if len(args) < 1:
         self.help_activationkey_enable()
         return 1
 
@@ -1956,7 +1956,7 @@ def do_activationkey_setdescription(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_activationkey_setdescription()
         return 1
 
@@ -1999,7 +1999,7 @@ def do_activationkey_setcontactmethod(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) == 2:
+    if len(args) != 2:
         self.help_activationkey_setcontactmethod()
         return 1
 

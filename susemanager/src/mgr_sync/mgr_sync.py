@@ -678,7 +678,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             # pylint: disable-next=superfluous-parens
             user = cli_ask(msg=("User to add"))
             pw = cli_ask(msg=("Password to add"), password=True)
-            if not pw == cli_ask(msg=("Confirm password"), password=True):
+            if pw != cli_ask(msg=("Confirm password"), password=True):
                 self.log.error("Passwords do not match")
                 print("Passwords do not match")
                 self.exit_with_error = True

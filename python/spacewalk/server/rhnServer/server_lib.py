@@ -71,7 +71,7 @@ def getServerID(server, fields=[]):
         return reduce(lambda a, b: a and b in "0123456789", s, 1)
 
     log_debug(4, server, fields)
-    if not type(server) in [type(""), type(0)]:
+    if type(server) not in [type(""), type(0)]:
         return None
 
     # pylint: disable-next=unidiomatic-typecheck
