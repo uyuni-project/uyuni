@@ -882,7 +882,7 @@ class GenericPackageImport(Import):
         for type, chksum in list(package["checksums"].items()):
             checksumTuple = (type, chksum)
             # pylint: disable-next=unnecessary-negation
-            if not checksumTuple in self.checksums:
+            if checksumTuple not in self.checksums:
                 self.checksums[checksumTuple] = None
 
     def _postprocessPackageNEVRA(self, package):

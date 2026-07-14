@@ -622,7 +622,7 @@ def test_evr(evr, operator, limit):
     """
     good_operators = ["<", "<=", "==", ">=", ">"]
 
-    if not operator in good_operators:
+    if operator not in good_operators:
         raise rhnFault(err_code=21, err_text="Bad operator passed into test_evr.")
 
     evr_epoch = evr["epoch"]

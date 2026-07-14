@@ -461,7 +461,7 @@ def token_config_channels(server, tokens_obj):
         for c in channels:
             config_channel_id = c["config_channel_id"]
             if (
-                not c["config_channel_id"] in current_channels
+                c["config_channel_id"] not in current_channels
                 and config_channel_id not in config_channels_hash
             ):
                 position = len(current_channels) + len(config_channels) + 1

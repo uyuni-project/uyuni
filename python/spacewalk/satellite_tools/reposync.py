@@ -367,7 +367,7 @@ def getChannelRepo():
         row = h.fetchone_dict()
         if not row:
             break
-        if not row["label"] in items:
+        if row["label"] not in items:
             items[row["label"]] = []
         if row["source_url"]:
             items[row["label"]] += [row["source_url"]]

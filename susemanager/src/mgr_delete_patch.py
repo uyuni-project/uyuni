@@ -85,7 +85,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             print("  -", clone_advisory)
 
         reply = None
-        while not reply in ("y", "n"):
+        while reply not in ("y", "n"):
             reply = input("Do you want to continue? (Y/n) ")
             if not reply:
                 reply = "y"

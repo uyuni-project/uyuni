@@ -353,7 +353,7 @@ class BrokerHandler(SharedHandler):
             # with the given auth token.
             # pylint: disable-next=invalid-name
             checkURL = self.fullRequestURL
-            if not self.authToken in checkURL:
+            if self.authToken not in checkURL:
                 # pylint: disable-next=invalid-name
                 checkURL += "?" + self.authToken
             if not suseLib.accessible(checkURL):
