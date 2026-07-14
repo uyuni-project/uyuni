@@ -294,7 +294,6 @@ def process_package_data():
             # pylint: disable-next=consider-using-f-string
             (" There were %s packages found in the correct location" % len(new_ok_list))
         )
-    return
 
 
 def process_kickstart_trees():
