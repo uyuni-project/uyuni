@@ -219,51 +219,33 @@ class SolveDependenciesTestCase(unittest.TestCase):
 
     def testAllReturn(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2, all=1)
-        if pack is not None:
-            assert 1
-        else:
-            assert 0
+        assert(pack is not None)
 
     def testAllReturn1(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2, all=1)
         exp_ret = ["mozilla", "1.3.1", "0.dag.rhel3", "34", "i386"]
-        if exp_ret in pack[self.filename]:
-            assert 1
-        else:
-            assert 0
+        assert(exp_ret in pack[self.filename])
 
     def testAllReturn2(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2, all=1)
         exp_ret = ["mozilla", "1.7.1", "1.1.el3.dag", "37", "i386"]
-        if exp_ret in pack[self.filename]:
-            assert 1
-        else:
-            assert 0
+        assert(exp_ret in pack[self.filename])
 
     def testAllReturn3(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2, all=1)
         exp_ret = ["mozilla", "1.5", "2.rhfc1.dag", "38", "i386"]
-        if exp_ret in pack[self.filename]:
-            assert 1
-        else:
-            assert 0
+        assert(exp_ret in pack[self.filename])
 
     def testAllReturn4(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2, all=1)
         exp_ret = ["mozilla", "1.6", "0.rhfc1.dag", "38", "i386"]
-        if exp_ret in pack[self.filename]:
-            assert 1
-        else:
-            assert 0
+        assert(exp_ret in pack[self.filename])
 
     def testNotAllReturn(self):
         pack = self.solve_deps_with_limits(self.serv_id, [self.filename], 2)
 
         exp_ret = ["mozilla", "1.6", "0.rhfc1.dag", "38", "i386"]
-        if exp_ret in pack[self.filename]:
-            assert 1
-        else:
-            assert 0
+        assert(exp_ret in pack[self.filename])
 
     def testMakeEvr(self):
         nlimitstr = "38:mozilla-1.5-2.rhfc1.dag"
@@ -377,10 +359,7 @@ class SolveDependenciesTestCase(unittest.TestCase):
         pack = self.up2date.solveDependencies(
             self.myserver.getSystemId(), [self.filename]
         )
-        if pack is not None:
-            assert 1
-        else:
-            assert 0
+        assert(pack is not None)
 
     def testUp2dateObjReturnLength(self):
         pack = self.up2date.solveDependencies_arch(
