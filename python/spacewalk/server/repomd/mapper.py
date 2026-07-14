@@ -18,7 +18,6 @@
 #
 
 import os.path
-import re
 import time
 
 from spacewalk.common import rhnCache
@@ -615,9 +614,9 @@ class CachedErratumMapper:
         erratum_id = str(erratum_id)
 
         last_modified = str(self.mapper.last_modified(erratum_id))
-        last_modified = re.sub(" ", "", last_modified)
-        last_modified = re.sub(":", "", last_modified)
-        last_modified = re.sub("-", "", last_modified)
+        last_modified = last_modified.replace(" ", "")
+        last_modified = last_modified.replace(":", "")
+        last_modified = last_modified.replace("-", "")
 
         cache_key = "repomd-errata/" + erratum_id
         if self.cache.has_key(cache_key, last_modified):

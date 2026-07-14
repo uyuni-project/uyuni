@@ -476,7 +476,7 @@ def build_package_name(package):
     arch_label = package.get("arch_label", "").strip()
     if arch:
         # system.listPackages uses AMD64 instead of x86_64
-        arch = re.sub("amd64", "x86_64", arch.lower())
+        arch = arch.lower().replace("amd64", "x86_64")
         # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch)
     elif arch_label:
