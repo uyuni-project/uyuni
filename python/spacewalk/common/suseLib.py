@@ -536,7 +536,7 @@ def _parse_curl_proxy_credentials(text):
     except AttributeError:
         return (None, None)
 
-    return re.sub('\\\\"', '"', user_pass).split(":")
+    return user_pass.replace('\\\\"', '"').split(":")
 
 
 def _parse_curl_proxy_url(text):
