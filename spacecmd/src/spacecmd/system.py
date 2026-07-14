@@ -3590,7 +3590,7 @@ def do_system_eventdetails(self, args):
             print(_("Result code:     %s") % detail.get("result_code"))
 
             additional_info = detail.get("additional_info")
-            if additional_info and additional_info:
+            if additional_info:
                 print("")
                 print(_("Additional info:"))
 
