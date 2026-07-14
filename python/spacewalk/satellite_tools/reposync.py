@@ -1443,6 +1443,9 @@ class RepoSync(object):
             for p in packs:
                 if p["checksum"] == pack.checksum:
                     if not db_pack:
+                        if "evolution-data-server" in p.get("name", "") or "evolution-data-server" in p.get("path", ""):
+                            log(0, f"[DEBUG] linking {p}")
+                            log(0, f"[DEBUG] to {pack}")
                         db_pack = p
                     else:
                         self.disassociate_package_by_id(p["package_id"])

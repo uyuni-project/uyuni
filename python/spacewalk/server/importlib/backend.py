@@ -2801,10 +2801,14 @@ class Backend:
             if object.ignored:
                 # Skip it
                 continue
+            if parentTable == "rhnPackage" and hasattr(object, "get") and "evolution-data-server" in object.get("name"):
+                syncLib.log(0, f"DEBUG [LOOKUP] Checking if package exists in DB: name={object.get('name')}, version={object.get('version')}, release={object.get('release')}, arch={object.get('arch')}, org_id={object.get('org_id')}, checksum={object.get('checksum')[:16] if object.get('checksum') else 'None'}...")
             h = lookup.query(object)
             row = h.fetchone_dict()
             if not row:
                 # Object does not exist
+                if parentTable == "rhnPackage" and hasattr(object, 'get') and "evolution-data-server" in object.get("name"):
+                    syncLib.log(0, f"DEBUG [INSERT] Package NOT found in DB, inserting")
                 # pylint: disable-next=redefined-builtin
                 id = self.sequences[parentTable].next()
                 object.id = id
@@ -2812,6 +2816,16 @@ class Backend:
                 extObject = {"id": id}
                 _buildExternalValue(extObject, object, parentTableObj)
                 addHash(dml.insert[parentTable], extObject)
+                if parentTable == "rhnPackage" and hasattr(object, 'get') and "evolution-data-server" in object.get("name"):
+                    # Show what's actually in the DML structure now
+                    dml_fields = list(dml.insert[parentTable].keys())
+                    syncLib.log(0, f"DEBUG [DML-INSERT] Fields in dml.insert[{parentTable}]: {dml_fields}")
+                    # Show the actual values for this package (last item in each array)
+                    actual_values = {}
+                    for field in dml_fields:
+                        if dml.insert[parentTable][field]:
+                            actual_values[field] = dml.insert[parentTable][field][-1]  # Last added value
+                    syncLib.log(0, f"DEBUG [DML-INSERT] Actual values in DML structure: {actual_values}")
 
                 # Insert child table information
                 for tname in childTables:
@@ -3037,6 +3051,8 @@ class Backend:
     def __doInsertTable(self, table, hash):
         if not hash:
             return
+        if table == "rhnPackage" and any('evolution-data-server' in path_string for path_string in hash.get('path', [])):
+            log_debug(0, f"[DEBUG] {hash}")
         tab = self.tables[table]
         k = list(hash.keys())[0]
         if not hash[k]:
