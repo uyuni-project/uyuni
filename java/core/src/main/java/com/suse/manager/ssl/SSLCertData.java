@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Data contained in an SSL certificate, also used to generate them
@@ -159,7 +160,10 @@ public class SSLCertData {
             allCnames.add(cn);
         }
         if (cnames != null) {
-            allCnames.addAll(cnames);
+            allCnames.addAll(cnames.stream()
+                // Filter out SANs which are definitely not FQDN - without any .
+                .filter(name -> name != null && name.contains("."))
+                .collect(Collectors.toSet()));
         }
         return allCnames;
     }
