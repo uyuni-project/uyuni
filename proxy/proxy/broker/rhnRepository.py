@@ -585,7 +585,7 @@ def isDebianArch(arch):
     """
     Returns true if the given arch string represents a Debian architecture..
     """
-    return arch[-4:] == "-deb"
+    return arch.endswith("-deb")
 
 
 # pylint: disable-next=invalid-name

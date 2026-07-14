@@ -41,7 +41,7 @@ error = rpm.error
 
 sym, val = None, None
 for sym, val in list(rpm.__dict__.items()):
-    if sym[:3] == "RPM":
+    if sym.startswith("RPM"):
         # A constant, probably - import it into our namespace
         globals()[sym] = val
 del sym, val
