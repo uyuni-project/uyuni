@@ -1759,7 +1759,7 @@ class ExporterMain:
 
                 # If the base channel isn't in channel_dict yet, create
                 # an empty list for it.
-                if not base_label in channel_dict:
+                if base_label not in channel_dict:
                     channel_dict[base_label] = []
 
                 # grab the child channel information for this base channel.
@@ -1832,7 +1832,7 @@ class ExporterMain:
                 if self.actions[action] != 1:
                     continue
 
-                if not action in self.actionmap:
+                if action not in self.actionmap:
                     # If we get here there's a programming error. It means that self.action_order
                     # contains a action that isn't defined in self.actionmap.
                     # pylint: disable-next=consider-using-f-string

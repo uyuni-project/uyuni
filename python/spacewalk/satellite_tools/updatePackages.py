@@ -679,7 +679,7 @@ def process_package_files():
 
                 caps = pkg_caps[f["name"]]
 
-                if not caps["checksum"] == f["checksum"]:
+                if caps["checksum"] != f["checksum"]:
                     # Package file exists, but its checksum in the DB is incorrect
                     update_packagefile_checksum_h.execute(
                         ctype=f["checksum_type"],
