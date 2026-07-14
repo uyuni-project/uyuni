@@ -3276,7 +3276,7 @@ class RepoSync(object):
                 notice["update_id"][:4] in ("res5", "res6")
                 and int(notice["version"]) > 6
             )
-            or (notice["update_id"][:4] == "res4")
+            or (notice["update_id"].startswith("res4"))
         ):
             # old style suse updateinfo starts with version >= 1000 or
             # have the res update_tag

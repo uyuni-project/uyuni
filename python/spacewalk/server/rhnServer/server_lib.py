@@ -77,9 +77,9 @@ def getServerID(server, fields=[]):
     # pylint: disable-next=unidiomatic-typecheck
     if type(server) == type(0):
         search_id = server  # will search by number
-    elif server[:7] == "SERVER-":  # old style certificate
+    elif server.startswith("SERVER-"):  # old style certificate
         search_id = server
-    elif server[:3] == "ID-":  # new style id, extract the numeric id
+    elif server.startswith("ID-"):  # new style id, extract the numeric id
         tmp_id = server[3:]
         if not tmp_id or check_chars(tmp_id) == 0:
             # invalid certificate, after ID- we have non numbers
