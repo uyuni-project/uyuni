@@ -99,12 +99,12 @@ def check_reboot_required(target_sls):
         )
     )
     current_state_info = _read_sls_file(sls_file_on_minion)
-    if not current_state_info or not "schedule_next_chunk" in current_state_info:
+    if not current_state_info or "schedule_next_chunk" not in current_state_info:
         # schedule_next_chunk contains information about how to restart the action chain after a reboot, so it's present
         # only if there's a reboot action or a salt upgrade. If there's no action that perform a reboot, schedule_next_chunk
         # it's not present.
         return False
-    if not "mgrcompat.module_run" in current_state_info["schedule_next_chunk"]:
+    if "mgrcompat.module_run" not in current_state_info["schedule_next_chunk"]:
         log.error(
             'Cannot check if reboot is needed as "schedule_next_chunk" is not containing expected attributes.'
         )

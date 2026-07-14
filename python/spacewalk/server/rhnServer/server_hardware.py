@@ -53,7 +53,7 @@ def kudzu_mapping(dict=None):
     if not dict:
         return mapping
     # pylint: disable-next=unidiomatic-typecheck
-    if not type(dict) == type({}) and not isinstance(dict, UserDictCase):
+    if type(dict) != type({}) and not isinstance(dict, UserDictCase):
         return mapping
     hw_bus = dict.get("bus")
     # we need to have a bus type to be able to continue
@@ -560,10 +560,10 @@ class NetIfaceInformation(Device):
         self._insert(inserts)
         ifaces = self.ifaces.copy()
         for name, info in list(ifaces.items()):
-            if not "ipv6" in info:
+            if "ipv6" not in info:
                 info["ipv6"] = NetIfaceAddress6()
             info["ipv6"].save(self.get_server_id(server_id, name))
-            if not "ipv4" in info:
+            if "ipv4" not in info:
                 info["ipv4"] = NetIfaceAddress4()
             info["ipv4"].save(self.get_server_id(server_id, name))
         # delete address (if any) of deleted interaces

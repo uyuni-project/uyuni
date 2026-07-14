@@ -150,9 +150,9 @@ def __virtual__():
 
 
 def _is_valid_endpoint(response, tag):
-    if not response.get("status", 0) == 200:
+    if response.get("status", 0) != 200:
         return False
-    elif not tag in response.get("body", ""):
+    elif tag not in response.get("body", ""):
         return False
     elif " " in response.get("body", ""):
         return False
