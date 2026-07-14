@@ -103,7 +103,7 @@ class YumSrcTest(unittest.TestCase):
         self.assertTrue(cs.interactive)
         assert isinstance(cs.repo, yum_src.ZypperRepo)
 
-    @unittest.skip
+    @unittest.skip("temporarily disable old failing unit test file")
     def test_list_packages_empty(self):
         cs = self._make_dummy_cs()
 
@@ -210,7 +210,7 @@ class YumSrcTest(unittest.TestCase):
             1,
         )
 
-    @unittest.skip
+    @unittest.skip("temporarily disable old failing unit test file")
     def test_list_packages_with_pack(self):
 
         cs = self._make_dummy_cs()
@@ -274,7 +274,7 @@ class YumSrcTest(unittest.TestCase):
                 else:
                     self.assertEqual(getattr(pack, attr), getattr(mocked_pack, attr))
 
-    @unittest.skip
+    @unittest.skip("temporarily disable old failing unit test file")
     def test_get_updates_suse_patches(self):
         cs = self._make_dummy_cs()
 
