@@ -257,7 +257,7 @@ class YumSrcTest(unittest.TestCase):
         self.assertEqual(len(listed_packages), 2)
         for pack, mocked_pack in zip(listed_packages, mocked_packs):
             # listed_packages should return ContentPackages
-            self.assertTrue(isinstance(pack, ContentPackage))
+            self.assertIsInstance(pack, ContentPackage)
 
             # all the attributes should be rightly imported from yum's
             # returnPackages which we've mocked above
