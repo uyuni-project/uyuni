@@ -309,7 +309,6 @@ class XML_Dumper:
         whole_errata=False,
     ):
         log_debug(2)
-        # channels = self._validate_channels(channel_labels=channel_labels)
 
         self._write_dump(
             ChannelsDumper,
@@ -926,7 +925,6 @@ class ChannelsDumper(exportLib.ChannelsDumper):
 
     def dump_subelement(self, data):
         log_debug(6, data)
-        # return exportLib.ChannelsDumper.dump_subelement(self, data)
         # pylint: disable=W0212
         c = exportLib._ChannelDumper(
             self._writer,
