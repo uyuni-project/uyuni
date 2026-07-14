@@ -35,7 +35,7 @@ def handle(
         "Actualuri": "ActualURI",
     }
     for key in list(environ.keys()):
-        if key[:5] == "HTTP_":
+        if key.startswith("HTTP_"):
             new_key = key[5:].title()
             for k, v in list(replacements.items()):
                 new_key = new_key.replace(k, v)
