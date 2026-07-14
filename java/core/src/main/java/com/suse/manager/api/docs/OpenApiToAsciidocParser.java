@@ -241,7 +241,10 @@ public class OpenApiToAsciidocParser {
         }
         Schema<?> schema = resolveSchemaReference(jsonContent.getSchema());
         String refName = "";
-        Schema<?> docSchema = getDocResponseSchema(successResponse);
+        LegacyDocResponseData legacyDocResponse = getLegacyDocResponse(successResponse);
+        Schema<?> docSchema = legacyDocResponse.schema();
+        String responseDescription = responseDescription(successResponse);
+        String responseLabel = legacyDocResponse.label(responseDescription).orElse(responseDescription);
         if (docSchema != null) {
             refName = docSchema.get$ref() != null ? extractRefName(docSchema.get$ref()) : "";
             schema = resolveSchemaReference(docSchema);
@@ -254,31 +257,44 @@ public class OpenApiToAsciidocParser {
         }
 
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
-            writeArrayReturn(writer, schema, successResponse);
+            writeArrayReturn(writer, schema, responseLabel);
             return;
         }
 
         if (isSimpleType(schema)) {
-            writeSimpleReturn(writer, schema, successResponse, operation);
+            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation);
             return;
         }
 
-        printStruct(writer, schema, 0, refName, responseDescription(successResponse));
+        printStruct(writer, schema, 0, refName, responseLabel);
     }
 
-    private Schema<?> getDocResponseSchema(ApiResponse response) {
-        Object schema = response.getExtensions() == null ? null :
-                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
-        return schema instanceof Schema<?> docSchema ? docSchema : null;
+    private LegacyDocResponseData getLegacyDocResponse(ApiResponse response) {
+        if (response.getExtensions() == null) {
+            return LegacyDocResponseData.EMPTY;
+        }
+        Object schema = response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
+        String type = extensionString(response, UyuniSwaggerReader.DOC_RESPONSE_TYPE_EXTENSION);
+        String name = extensionString(response, UyuniSwaggerReader.DOC_RESPONSE_NAME_EXTENSION);
+        return new LegacyDocResponseData(
+                schema instanceof Schema<?> docSchema ? docSchema : null,
+                type,
+                name
+        );
     }
 
-    private void writeArrayReturn(PrintWriter writer, Schema<?> schema, ApiResponse successResponse) {
+    private String extensionString(ApiResponse response, String extensionName) {
+        Object value = response.getExtensions().get(extensionName);
+        return value instanceof String stringValue ? stringValue : "";
+    }
+
+    private void writeArrayReturn(PrintWriter writer, Schema<?> schema, String responseLabel) {
         Schema<?> itemSchema = schema.getItems();
         Schema<?> resolved = resolveSchemaReference(itemSchema);
         String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
 
         if (resolved != null && isSimpleType(resolved)) {
-            writeSimpleArrayReturn(writer, resolved, successResponse);
+            writeSimpleArrayReturn(writer, resolved, responseLabel);
             return;
         }
 
@@ -288,9 +304,9 @@ public class OpenApiToAsciidocParser {
         writer.println();
     }
 
-    private void writeSimpleArrayReturn(PrintWriter writer, Schema<?> resolved, ApiResponse successResponse) {
+    private void writeSimpleArrayReturn(PrintWriter writer, Schema<?> resolved, String responseLabel) {
         String itemType = displayType(resolved);
-        String label = responseDescription(successResponse);
+        String label = responseLabel;
         if (!label.isEmpty()) {
             writer.printf("* [.array]#%s array#  %s%n", itemType, label);
             return;
@@ -314,9 +330,9 @@ public class OpenApiToAsciidocParser {
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
-                                   ApiResponse successResponse, Operation operation) {
-        String displayType = displayType(schema);
-        String label = Optional.of(responseDescription(successResponse))
+                                   String responseLabel, String legacyType, Operation operation) {
+        String displayType = legacyType.isBlank() ? displayType(schema) : legacyType;
+        String label = Optional.of(responseLabel)
                 .filter(d -> !d.isBlank())
                 .orElseGet(() -> operation.getOperationId()
                         .replace("get", "")
@@ -337,6 +353,20 @@ public class OpenApiToAsciidocParser {
         return Optional.ofNullable(response.getDescription())
                 .filter(d -> !d.isBlank())
                 .orElse("");
+    }
+
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
+        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+
+        Optional<String> label(String description) {
+            if (name.isBlank()) {
+                return Optional.empty();
+            }
+            if (description.isBlank()) {
+                return Optional.of(name);
+            }
+            return Optional.of(name + " - " + description);
+        }
     }
 
     private String displayType(Schema<?> schema) {

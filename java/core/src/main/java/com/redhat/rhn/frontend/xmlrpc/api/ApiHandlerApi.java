@@ -14,6 +14,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import com.suse.manager.api.ApiResponseWrapper;
 import com.suse.manager.api.docs.ApiEndpointDoc;
+import com.suse.manager.api.docs.LegacyDocResponse;
 import com.suse.manager.api.docs.PublicApiEndpoint;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -43,7 +44,8 @@ public interface ApiHandlerApi {
         summary = "Returns the server version.",
         method = HttpMethod.get,
         responseClass = StringResponse.class,
-        responseDescription = "version"
+        responseDescription = "Server version.",
+        legacyDocResponse = @LegacyDocResponse(type = "string", name = "version")
     )
     String systemVersion();
 
@@ -83,8 +85,8 @@ public interface ApiHandlerApi {
         summary = "Lists available API namespaces",
         method = HttpMethod.get,
         responseClass = ApiNamespacesResponse.class,
-        legacyDocResponseClass = ApiNamespaceDoc.class,
-        responseDescription = "namespace"
+        responseDescription = "Available API namespaces.",
+        legacyDocResponse = @LegacyDocResponse(name = "namespace", responseClass = ApiNamespaceDoc.class)
     )
     Map<String, String> getApiNamespaces();
 
@@ -98,8 +100,8 @@ public interface ApiHandlerApi {
         summary = "Lists all available api calls grouped by namespace",
         method = HttpMethod.get,
         responseClass = ApiCallListResponse.class,
-        legacyDocResponseClass = LegacyMethodInfoDoc.class,
-        responseDescription = "method_info"
+        responseDescription = "Available API calls grouped by namespace.",
+        legacyDocResponse = @LegacyDocResponse(name = "method_info", responseClass = LegacyMethodInfoDoc.class)
     )
     Map<String, Object> getApiCallList();
 
@@ -114,8 +116,8 @@ public interface ApiHandlerApi {
         summary = "Lists all available api calls for the specified namespace",
         method = HttpMethod.get,
         responseClass = ApiNamespaceCallListResponse.class,
-        legacyDocResponseClass = LegacyMethodInfoDoc.class,
-        responseDescription = "method_info"
+        responseDescription = "Available API calls for the specified namespace.",
+        legacyDocResponse = @LegacyDocResponse(name = "method_info", responseClass = LegacyMethodInfoDoc.class)
     )
     Map getApiNamespaceCallList(
         @Parameter(

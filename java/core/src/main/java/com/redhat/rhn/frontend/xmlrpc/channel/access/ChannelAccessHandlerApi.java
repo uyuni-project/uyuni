@@ -14,6 +14,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.api.ApiResponseWrapper;
 import com.suse.manager.api.docs.ApiEndpointDoc;
+import com.suse.manager.api.docs.LegacyDocResponse;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -87,7 +88,11 @@ public interface ChannelAccessHandlerApi {
         summary = "Get organization sharing access control.",
         method = HttpMethod.get,
         responseClass = OrgSharingResponse.class,
-        responseDescription = "access - The access value (one of the following: 'public', 'private', or 'protected')"
+        responseDescription = "The access value (one of the following: 'public', 'private', or 'protected')",
+        legacyDocResponse = @LegacyDocResponse(
+            type = "string",
+            name = "access"
+        )
     )
     String getOrgSharing(
         @Parameter(hidden = true) User loggedInUser,

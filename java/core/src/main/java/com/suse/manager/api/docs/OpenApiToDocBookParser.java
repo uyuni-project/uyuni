@@ -243,7 +243,8 @@ public class OpenApiToDocBookParser {
             return "<listitem><para></para></listitem>";
         }
 
-        String responseDescription = resp.getDescription();
+        LegacyDocResponseData legacyDocResponse = getLegacyDocResponse(resp);
+        String responseDescription = Optional.ofNullable(resp.getDescription()).orElse("");
         Schema<?> respSchema = null;
         if (resp.getContent() != null && resp.getContent().get("application/json") != null) {
             respSchema = resp.getContent().get("application/json").getSchema();
@@ -255,40 +256,58 @@ public class OpenApiToDocBookParser {
 
         Schema<?> schema = respSchema.get$ref() != null ?
                 resolveSchema(respSchema.get$ref()) : respSchema;
-        Schema<?> docSchema = getDocResponseSchema(resp);
+        Schema<?> docSchema = legacyDocResponse.schema();
         if (docSchema != null) {
             schema = resolveSchemaReference(docSchema);
         }
 
-        String label = (responseDescription != null && !responseDescription.isBlank()) ?
+        String label = legacyDocResponse.label(responseDescription).orElseGet(() ->
+                !responseDescription.isBlank() ?
                 responseDescription :
                 fallbackLabel
                         .replaceAll("^(get|list|is|set|create|delete|update)", "")
                         .replaceAll("([a-z])([A-Z])", "$1 $2")
-                        .toLowerCase().trim();
+                        .toLowerCase().trim()
+        );
 
-        return renderReturnSchema(schema, label);
+        return renderReturnSchema(schema, label, legacyDocResponse.type());
     }
 
-    private Schema<?> getDocResponseSchema(ApiResponse response) {
-        Object schema = response.getExtensions() == null ? null :
-                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
-        return schema instanceof Schema<?> docSchema ? docSchema : null;
+    private LegacyDocResponseData getLegacyDocResponse(ApiResponse response) {
+        if (response.getExtensions() == null) {
+            return LegacyDocResponseData.EMPTY;
+        }
+        Object schema = response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_SCHEMA_EXTENSION);
+        String type = extensionString(response, UyuniSwaggerReader.DOC_RESPONSE_TYPE_EXTENSION);
+        String name = extensionString(response, UyuniSwaggerReader.DOC_RESPONSE_NAME_EXTENSION);
+        return new LegacyDocResponseData(
+                schema instanceof Schema<?> docSchema ? docSchema : null,
+                type,
+                name
+        );
     }
 
     private String renderReturnSchema(Schema<?> schema, String label) {
+        return renderReturnSchema(schema, label, "");
+    }
+
+    private String renderReturnSchema(Schema<?> schema, String label, String typeOverride) {
         if (schema == null) {
             return "<listitem><para></para></listitem>";
         }
         Schema<?> resultSchema = getResultSchema(schema);
         if (resultSchema != null) {
-            return renderReturnSchema(resolveSchemaReference(resultSchema), getResultLabel(resultSchema, label));
+            return renderReturnSchema(
+                    resolveSchemaReference(resultSchema),
+                    getResultLabel(resultSchema, label),
+                    typeOverride
+            );
         }
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
             return renderArrayReturn(schema, label);
         }
         if (isSimpleType(schema)) {
-            return renderSimpleReturn(schema, label);
+            return renderSimpleReturn(schema, label, typeOverride);
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             return renderAdditionalPropertiesReturn(inner, label);
@@ -328,10 +347,15 @@ public class OpenApiToDocBookParser {
         return sb.toString();
     }
 
-    private String renderSimpleReturn(Schema<?> schema, String label) {
-        String type = formatSimpleType(schema);
+    private String renderSimpleReturn(Schema<?> schema, String label, String typeOverride) {
+        String type = typeOverride.isBlank() ? formatSimpleType(schema) : typeOverride;
         String text = (label == null || label.isBlank()) ? type : type + " - " + label;
         return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+    }
+
+    private String extensionString(ApiResponse response, String extensionName) {
+        Object value = response.getExtensions().get(extensionName);
+        return value instanceof String stringValue ? stringValue : "";
     }
 
     private String renderAdditionalPropertiesReturn(Schema<?> inner, String label) {
@@ -615,6 +639,20 @@ public class OpenApiToDocBookParser {
             }
         }
         return out.toString();
+    }
+
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
+        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+
+        Optional<String> label(String description) {
+            if (name.isBlank()) {
+                return Optional.empty();
+            }
+            if (description.isBlank()) {
+                return Optional.of(name);
+            }
+            return Optional.of(name + " - " + description);
+        }
     }
 
     private static final class HandlerDoc {

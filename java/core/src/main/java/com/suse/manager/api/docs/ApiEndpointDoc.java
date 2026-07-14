@@ -55,9 +55,9 @@ public @interface ApiEndpointDoc {
     Class<?> responseClass() default Void.class;
 
     /**
-     * @return optional response body type to use when rendering legacy API documentation
+     * @return optional legacy documentation response metadata
      */
-    Class<?> legacyDocResponseClass() default Void.class;
+    LegacyDocResponse legacyDocResponse() default @LegacyDocResponse;
 
     /**
      * @return response description

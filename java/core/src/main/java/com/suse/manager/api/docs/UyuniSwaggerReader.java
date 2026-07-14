@@ -52,6 +52,8 @@ public class UyuniSwaggerReader {
     private static final Logger LOG = LogManager.getLogger(UyuniSwaggerReader.class);
 
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
+    public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
+    public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
 
@@ -162,7 +164,7 @@ public class UyuniSwaggerReader {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
-            apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, createIntegerResponse()));
+            apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, createIntegerResponse()));
             operation.setResponses(apiResponses);
             return;
         }
@@ -186,7 +188,7 @@ public class UyuniSwaggerReader {
                 mediaType.setSchema(schema);
                 content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
                 response.setContent(content);
-                apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
+                apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, response));
             }
             else {
                 processApiResponseClass(apiDoc, apiResponses);
@@ -194,7 +196,7 @@ public class UyuniSwaggerReader {
         }
         else {
             ApiResponse response = new ApiResponse().description("Success");
-            apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
+            apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, response));
         }
 
         operation.setResponses(apiResponses);
@@ -214,17 +216,32 @@ public class UyuniSwaggerReader {
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
 
         response.setContent(content);
-        apiResponses.addApiResponse(HTTP_200, addDocResponseSchema(apiDoc, response));
+        apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, response));
     }
 
-    private ApiResponse addDocResponseSchema(ApiEndpointDoc apiDoc, ApiResponse response) {
-        if (apiDoc.legacyDocResponseClass() == Void.class) {
+    private ApiResponse addLegacyDocResponse(ApiEndpointDoc apiDoc, ApiResponse response) {
+        LegacyDocResponse legacyDocResponse = apiDoc.legacyDocResponse();
+        if (isEmptyLegacyDocResponse(legacyDocResponse)) {
             return response;
         }
 
-        resolveAndRegisterSchema(apiDoc.legacyDocResponseClass());
-        response.addExtension(DOC_RESPONSE_SCHEMA_EXTENSION, buildSchemaRef(apiDoc.legacyDocResponseClass()));
+        if (legacyDocResponse.responseClass() != Void.class) {
+            resolveAndRegisterSchema(legacyDocResponse.responseClass());
+            response.addExtension(DOC_RESPONSE_SCHEMA_EXTENSION, buildSchemaRef(legacyDocResponse.responseClass()));
+        }
+        if (!legacyDocResponse.type().isBlank()) {
+            response.addExtension(DOC_RESPONSE_TYPE_EXTENSION, legacyDocResponse.type());
+        }
+        if (!legacyDocResponse.name().isBlank()) {
+            response.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDocResponse.name());
+        }
         return response;
+    }
+
+    private boolean isEmptyLegacyDocResponse(LegacyDocResponse legacyDocResponse) {
+        return legacyDocResponse.responseClass() == Void.class &&
+                legacyDocResponse.type().isBlank() &&
+                legacyDocResponse.name().isBlank();
     }
 
     private void processLiteralParameters(Method method, Operation operation) {
