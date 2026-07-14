@@ -92,14 +92,12 @@ class dbPackage:
                 self.status = UNCHANGED  # real entries remain unchanged
             else:
                 self.status = ADDED  # others are added
-        return
 
     def delete(self):
         if self.real:
             self.status = DELETED
         else:
             self.status = UNCHANGED  # we prefer unchanged for the non-real packages
-        return
 
     def __str__(self):
         return "server.rhnServer.dbPackage instance %s" % {

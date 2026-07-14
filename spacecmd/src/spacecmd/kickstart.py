@@ -2731,7 +2731,6 @@ def import_kickstart_fromdetails(self, ksdetails):
                 _N("failed to add ip range %s-%s, continuing") % iprange["min"],
                 iprange["max"],
             )
-            continue
     # File preservations, only if the list exists
     existing_file_preservations = [
         x["name"]
