@@ -297,9 +297,6 @@ class Database:
         in. see cx_Oracle's Cursor.callproc for more details"""
         return self._procedure_class(name, None)
 
-        # pylint: disable-next=unreachable
-        return self._procedure_class(name, None)
-
     def function(self, name, ret_type):
         """
         Return a pointer to a callable instance for a given stored
