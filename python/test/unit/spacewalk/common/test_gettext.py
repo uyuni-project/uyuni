@@ -44,14 +44,14 @@ class Tests(unittest.TestCase):
         lang = "en"
         self._setup(lang)
         langs = rhnTranslate.cat.getlangs()
-        self.assertTrue(langs[0] == lang)
+        self.assertEqual(langs[0], lang)
 
     def test_setlangs_ro(self):
         "Tests setting the language to ro"
         lang = "ro"
         self._setup(lang)
         langs = rhnTranslate.cat.getlangs()
-        self.assertTrue(langs[0] == lang)
+        self.assertEqual(langs[0], lang)
 
     def test_setlangs_go(self):
         """Tests setting the language to go (does not exist)"""
@@ -62,10 +62,10 @@ class Tests(unittest.TestCase):
             # On python 1.5.2 we don't really get an idea what the language
             # is, so it's ok to check for the first component
             # pylint: disable-next=consider-using-f-string
-            self.assertFalse(langs[0] == lang, "Language is %s" % langs[0])
+            self.assertNotEqual(langs[0], lang, "Language is %s" % langs[0])
         else:
             # pylint: disable-next=consider-using-f-string
-            self.assertTrue(langs[0] == lang, "Language is %s" % langs[0])
+            self.assertEqual(langs[0], lang, "Language is %s" % langs[0])
 
     def test_en_1(self):
         "Tests plain English messages"
