@@ -644,7 +644,6 @@ class ContentSource:
         params["authtoken"] = self.authtoken
         params["urls"] = self.repo.urls
         params["relative_path"] = relative_path
-        params["authtoken"] = self.authtoken
         params["target_file"] = target_file
         params["ssl_ca_cert"] = self.repo.sslcacert
         params["ssl_client_cert"] = self.repo.sslclientcert
