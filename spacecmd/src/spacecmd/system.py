@@ -3294,15 +3294,36 @@ def do_system_applyerrata(self, args):
         return 1
 
     errata_list = []
+
     # For catch-all glob (*, or search:*), return errata only for selected systems
     if re.match(r'(search:)?\.\*$', args[0]):
+        system_ids = []
+        failed_systems = []
         for system in systems:
             system_id = self.get_system_id(system)
             if not system_id:
-                continue
+                failed_systems.append(system)
+            else:
+                system_ids.append(system_id)
 
-            system_errata = self.client.system.getRelevantErrata(self.session, system_id)
-            errata_list += [erratum.get("advisory_name") for erratum in system_errata]
+        if failed_systems:
+            logging.warning(_N("Could not find system IDs for: %s"), ", ".join(failed_systems))
+
+        if system_ids:
+            batch_results = self.client.system.getRelevantErrata(self.session, system_ids)
+            errata_set = set()
+            for result in batch_results:
+                for erratum in result.get("errata", []):
+                    # Populate the errata cache so get_erratum_name() works later
+                    advisory_name = erratum.get("advisory_name")
+                    if advisory_name and advisory_name not in self.all_errata:
+                        self.all_errata[advisory_name] = {
+                            "id": erratum.get("id"),
+                            "advisory_name": advisory_name,
+                            "advisory_type": erratum.get("advisory_type"),
+                        }
+                    errata_set.add(advisory_name)
+            errata_list = list(errata_set)
     else:
         # allow globbing and searching of errata
         errata_list = self.expand_errata(args)
