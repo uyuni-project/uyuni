@@ -25,7 +25,7 @@ except ImportError:
 import socket
 import sys
 
-# global imports
+# these are global imports
 from rhn import connections
 from rhn.SSL import TimeoutException
 from rhn.SmartIO import SmartIO

@@ -2797,8 +2797,6 @@ def do_system_schedulechangechannels(self, args):
     arg_parser.add_argument("-s", "--start-time", action="store")
 
     (args, options) = parse_command_arguments(args, arg_parser)
-    # import pdb;
-    # pdb.set_trace()
     if len(args) < 1:
         self.help_system_schedulechangechannels()
         return 1
