@@ -196,7 +196,6 @@ def Traceback(
         rhnMail.send(headers, outstring)
 
     exc.close()
-    return
 
 
 def fetchTraceback(method=None, req=None, extra=None, with_locals=0):

@@ -266,13 +266,11 @@ def throttle(server):
     # if not os.path.exists(throttlefile):
     #    # We don't throttle anybody
     #    return
-    return
 
 
 # pylint: disable-next=unused-argument
 def join_rhn(org_id):
     """Stub"""
-    return
 
 
 def snapshot_server(server_id, reason):
