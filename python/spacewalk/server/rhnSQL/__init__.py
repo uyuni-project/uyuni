@@ -187,7 +187,6 @@ def closeDB(committing=True, closing=True):
     if closing:
         __DB.close()
     del __DB
-    return
 
 
 # common function for testing the connection state (ie, __DB defined

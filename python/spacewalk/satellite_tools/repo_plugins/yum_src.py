@@ -805,7 +805,6 @@ class ContentSource:
 
                 if s not in ["http", "ftp", "file", "https"]:
                     skipped = url
-                    continue
                 else:
                     goodurls.append(urlunparse((s, b, p, q, f, o)))
             return goodurls
