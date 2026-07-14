@@ -804,7 +804,6 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     # pylint: disable-next=consider-using-f-string
                     print("Channel '{0}' is not available, skipping".format(channel))
                     self.exit_with_error = True
-                    continue
 
         self._schedule_channel_reposync(channels_to_sync)
 

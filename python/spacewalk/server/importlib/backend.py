@@ -998,7 +998,6 @@ class Backend:
             result[label] = row_id
             if row["name"] != name:
                 to_update.append((label, name))
-                continue
             # Entry found in the table - nothing more to do
 
         if to_insert:
@@ -1604,7 +1603,6 @@ class Backend:
         if content_source:
             return content_source["id"]
 
-        return
 
     # pylint: disable-next=invalid-name
     def lookupContentSourceType(self, label):
@@ -1623,7 +1621,6 @@ class Backend:
         if source_type:
             return source_type["id"]
 
-        return
 
     # pylint: disable-next=invalid-name
     def lookupProductNames(self, label):
@@ -1645,7 +1642,6 @@ class Backend:
         if product:
             return product["id"]
 
-        return
 
     # pylint: disable-next=invalid-name
     def processSupportInformation(self, batch):
@@ -2422,7 +2418,6 @@ class Backend:
         if org_id:
             return org_id
 
-        return
 
     # pylint: disable-next=invalid-name
     def lookupChannelProduct(self, channel):
@@ -3046,7 +3041,6 @@ class Backend:
         # pylint: disable-next=invalid-name
         insertObj = TableInsert(tab, self.dbmodule)
         insertObj.query(hash)
-        return
 
     # pylint: disable-next=invalid-name,redefined-builtin
     def __doDelete(self, hash, tables):
@@ -3093,7 +3087,6 @@ class Backend:
         # pylint: disable-next=invalid-name
         updateObj = TableUpdate(tab, self.dbmodule)
         updateObj.query(hash)
-        return
 
     # pylint: disable-next=invalid-name
     def __lookupObjectCollection(self, objColl, tableName, ignore_missing=0):
