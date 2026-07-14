@@ -1,4 +1,5 @@
 {%- if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64', 'aarch64'] %}
+{%- if not grains.get('transactional', False) %}
 mgr_install_dmidecode:
   pkg.installed:
 {%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] %}
@@ -11,6 +12,7 @@ mgr_install_dmidecode:
       - saltutil: sync_states
 {%- else %}
       - module: sync_states
+{%- endif %}
 {%- endif %}
 {%- endif %}
 

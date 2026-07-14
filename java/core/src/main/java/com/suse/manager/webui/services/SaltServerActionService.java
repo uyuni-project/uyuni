@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ResumableTransactionalAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -261,6 +262,37 @@ public class SaltServerActionService {
                 }
             }
         }
+    }
+
+    /**
+     * Continue an existing transactional action after its prerequisite phase.
+     *
+     * @param actionIn action being continued
+     * @param minionSummaries target minions
+     * @return target minions partitioned by whether the Salt job was accepted
+     */
+    public Map<Boolean, List<MinionSummary>> resumeTransactionalAction(
+            ResumableTransactionalAction actionIn,
+            List<MinionSummary> minionSummaries) {
+        if (!(actionIn instanceof Action action)) {
+            throw new IllegalArgumentException(
+                    "Resumable transactional action must also be an Action");
+        }
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                actionIn.getPostPrerequisiteSaltCalls(minionSummaries);
+
+        List<MinionSummary> succeeded = new ArrayList<>();
+        List<MinionSummary> failed = new ArrayList<>();
+
+        calls.forEach((call, targets) -> {
+            Map<Boolean, List<MinionSummary>> result =
+                    execute(action, call, targets, false, false);
+            succeeded.addAll(result.get(true));
+            failed.addAll(result.get(false));
+        });
+
+        return Map.of(true, succeeded, false, failed);
     }
 
     /**

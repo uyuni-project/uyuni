@@ -23,6 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ResumableTransactionalAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -462,7 +463,7 @@ public class SaltUtils {
      */
     public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
                                    JsonElement jsonResult, Optional<Xor<String[], String>> function, Date endTime) {
-        serverAction.setCompletionTime(Optional.ofNullable(endTime).orElse(new Date()));
+        Date completionTime = Optional.ofNullable(endTime).orElse(new Date());
 
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
@@ -470,14 +471,18 @@ public class SaltUtils {
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
         if (jsonResult == null && function.isEmpty()) {
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
             serverAction.setResultMsg("Prerequisite failed");
             return;
         }
 
+        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
-            LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
+            LOG.debug("Status of action {} being set to Failed.", action.getId());
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
@@ -486,14 +491,17 @@ public class SaltUtils {
                 return;
             }
         }
-        else {
+        else if (!(action instanceof ResumableTransactionalAction resumableAction) ||
+                resumableAction.isFinalResult(serverAction, jsonResult)) {
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusCompleted();
+        }
+        else {
+            serverAction.setCompletionTime(null);
         }
 
         Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
                 saltApi, systemQuery);
-
-        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
 
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 

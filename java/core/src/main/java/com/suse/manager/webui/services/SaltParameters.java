@@ -47,4 +47,6 @@ public class SaltParameters {
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
     public static final String ALLOW_VENDOR_CHANGE = "allow_vendor_change";
     public static final String INVENTORY_PATH = "/etc/ansible/hosts";
+
+    public static final String HARDWARE_PREREQ = "hardware.prereq";
 }

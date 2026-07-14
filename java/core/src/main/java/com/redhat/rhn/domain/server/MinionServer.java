@@ -38,6 +38,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -75,6 +76,9 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Column(name = "os_family")
     private String osFamily;
+
+    @OneToOne(mappedBy = "minionServer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    private MinionTransactionalInfo transactionalInfo;
 
 
     /**
@@ -417,6 +421,90 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public void setOsFamilySuse() {
         this.osFamily = ServerConstants.OS_FAMILY_SUSE;
+    }
+
+    /**
+     * @return the number of the currently active (booted) Btrfs snapshot, or null
+     */
+    public Long getActiveSnapshot() {
+        return transactionalInfo != null ? transactionalInfo.getActiveSnapshot() : null;
+    }
+
+    /**
+     * @param activeSnapshotIn the active snapshot number to set
+     */
+    public void setActiveSnapshot(Long activeSnapshotIn) {
+        getOrCreateTransactionalInfo().setActiveSnapshot(activeSnapshotIn);
+    }
+
+    /**
+     * @return the number of the default (next-boot) Btrfs snapshot, or null
+     */
+    public Long getDefaultSnapshot() {
+        return transactionalInfo != null ? transactionalInfo.getDefaultSnapshot() : null;
+    }
+
+    /**
+     * @param defaultSnapshotIn the default snapshot number to set
+     */
+    public void setDefaultSnapshot(Long defaultSnapshotIn) {
+        getOrCreateTransactionalInfo().setDefaultSnapshot(defaultSnapshotIn);
+    }
+
+    /**
+     * @return array of all known Btrfs snapshot numbers, or empty array
+     */
+    public Long[] getSnapshots() {
+        return transactionalInfo != null ? transactionalInfo.getSnapshots() : new Long[0];
+    }
+
+    /**
+     * @param ids array of snapshot numbers to store; null or empty clears the field
+     */
+    public void setSnapshots(Long[] ids) {
+        getOrCreateTransactionalInfo().setSnapshots(ids);
+    }
+
+    /**
+     * @return raw JSON string of snapshot details array, or null when not a transactional system
+     */
+    public String getSnapshotDetails() {
+        return transactionalInfo != null ? transactionalInfo.getSnapshotDetails() : null;
+    }
+
+    /**
+     * @param snapshotDetailsIn JSON array string of snapshot detail objects, or null to clear
+     */
+    public void setSnapshotDetails(String snapshotDetailsIn) {
+        getOrCreateTransactionalInfo().setSnapshotDetails(snapshotDetailsIn);
+    }
+
+    /**
+     * @return the action to resume after the next confirmed reboot, or null
+     */
+    public Long getPendingRebootActionId() {
+        return transactionalInfo != null ? transactionalInfo.getPendingRebootActionId() : null;
+    }
+
+    /**
+     * @param pendingRebootActionIdIn action to resume after reboot, or null to clear
+     */
+    public void setPendingRebootActionId(Long pendingRebootActionIdIn) {
+        getOrCreateTransactionalInfo().setPendingRebootActionId(pendingRebootActionIdIn);
+    }
+
+    /**
+     * @return when the pending reboot state was recorded, or null
+     */
+    public Date getPendingRebootSetAt() {
+        return transactionalInfo != null ? transactionalInfo.getPendingRebootSetAt() : null;
+    }
+
+    private MinionTransactionalInfo getOrCreateTransactionalInfo() {
+        if (transactionalInfo == null) {
+            transactionalInfo = new MinionTransactionalInfo(this);
+        }
+        return transactionalInfo;
     }
 
 }

@@ -42,6 +42,8 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
+import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
@@ -130,6 +132,9 @@ public class SaltReactor {
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
                 JobReturnEventMessage.class);
+        MessageQueue.registerAction(
+                new ResumeTransactionalActionEventMessageAction(saltServerActionService),
+                ResumeTransactionalActionEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
