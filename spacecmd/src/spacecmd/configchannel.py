@@ -1505,7 +1505,6 @@ def import_configchannel_fromdetails(self, ccdetails):
                     _N("Error adding file %s to %s")
                     % (filedetails["path"], ccdetails["label"])
                 )
-                continue
 
     return True
 
