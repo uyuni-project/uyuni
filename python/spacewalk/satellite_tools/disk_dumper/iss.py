@@ -1503,7 +1503,6 @@ def sendMail():
             "Subject": "SUSE Multi-Linux Manager Export report from %s"
             % os.uname()[1],
         }
-        # sndr = CFG.get('traceback_mail', 'rhn-satellite')
         # pylint: disable-next=consider-using-f-string
         sndr = "suse-manager@%s" % os.uname()[1]
         rhnMail.send(headers, body, sender=sndr)
@@ -1871,7 +1870,6 @@ class ExporterMain:
                             compress_file(filepath)
 
             if self.options.make_isos:
-                # iso_output = os.path.join(self.isos_dir, self.dump_dir)
                 iso_output = self.isos_dir
                 if not os.path.exists(iso_output):
                     os.makedirs(iso_output)

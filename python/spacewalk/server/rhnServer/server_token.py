@@ -924,7 +924,7 @@ def fetch_token(token_string):
     # List of re-registration entitlements labels (if found):
     rereg_ents = []
 
-    # 0 = default, 1 = ssh, 2 = ssh-tunnel
+    # values: 0 = default, 1 = ssh, 2 = ssh-tunnel
     server_contact_method = 0
     cm_ranking = {}
 

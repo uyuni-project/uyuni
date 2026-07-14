@@ -282,7 +282,6 @@ def check_entitlement(server_id, want_array=False):
     h = rhnSQL.prepare(
         """select server_id, label, is_base from rhnServerEntitlementView where server_id = :server_id order by is_base DESC"""
     )
-    # h = rhnSQL.prepare("""select server_id, label from rhnServerEntitlementView where server_id = :server_id""")
     h.execute(server_id=server_id)
 
     # if I read the old code correctly, this should do about the same thing.
