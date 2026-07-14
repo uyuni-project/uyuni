@@ -169,8 +169,6 @@ def do_group_removesystems(self, args):
         print(_("No systems found"))
         return 1
 
-    return None
-
 
 ####################
 
