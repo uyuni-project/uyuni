@@ -3094,7 +3094,7 @@ def do_softwarechannel_removesyncschedule(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) == 1:
+    if len(args) != 1:
         self.help_softwarechannel_removesyncschedule()
         return 1
 

@@ -2013,7 +2013,7 @@ def do_kickstart_addpackages(self, args):
     # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_kickstart_addpackages()
         return 1
 

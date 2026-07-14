@@ -266,7 +266,7 @@ class Proxy(rhnProxyHandler):
         # authenticate that this request is initiated from a proxy
         self.auth_system(system_id)
         ret = rhnChannel.getChannelInfoForTinyUrl(tinyurl)
-        if not ret or not "url" in ret or len(ret["url"].split("/")) != 6:
+        if not ret or "url" not in ret or len(ret["url"].split("/")) != 6:
             # pylint: disable-next=consider-using-f-string
             raise rhnFault(40, "could not find any data on tiny url '%s'" % tinyurl)
 

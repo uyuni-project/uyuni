@@ -694,9 +694,9 @@ class Server(ServerWrapper):
         # XXX: Fix me
         if reload_all:
             # pylint: disable-next=unnecessary-negation
-            if not self.reload_packages_byid(self.server["id"]) == 0:
+            if self.reload_packages_byid(self.server["id"]) != 0:
                 return -1
-            if not self.reload_hardware_byid(self.server["id"]) == 0:
+            if self.reload_hardware_byid(self.server["id"]) != 0:
                 return -1
         return 0
 
@@ -750,7 +750,7 @@ class Server(ServerWrapper):
         sid = row["id"]
         # standard reload based on an ID
         ret = self.reload(sid)
-        if not ret == 0:
+        if ret != 0:
             return ret
 
         # the reload() will never be able to fill in the username.  It
