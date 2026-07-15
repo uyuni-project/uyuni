@@ -1,6 +1,8 @@
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
+import { Utils } from "utils/functions";
+
 type Snapshot = {
   number: number;
   active: boolean;
@@ -20,10 +22,17 @@ const Snapshots = ({ snapshots }: Props) => {
         <h4>{t("Btrfs Snapshots")}</h4>
       </div>
       <div className="panel-body">
-        <Table data={snapshots} identifier={(row) => String(row.number)} emptyText={t("No snapshots available.")}>
+        <Table
+          data={snapshots}
+          identifier={(row) => String(row.number)}
+          initialSortColumnKey="number"
+          initialSortDirection={-1}
+          emptyText={t("No snapshots available.")}
+        >
           <Column
             columnKey="number"
             header={t("#")}
+            comparator={Utils.sortByNumber}
             cell={(row: Snapshot) => (
               <span>
                 {row.number}
