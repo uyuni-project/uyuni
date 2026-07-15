@@ -1115,7 +1115,7 @@ end
 # Test if a radio button is checked
 #
 Then(/^radio button "([^"]*)" should be checked$/) do |arg1|
-  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1)
+  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1, disabled: :all)
 end
 
 #
