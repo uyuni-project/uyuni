@@ -18,6 +18,17 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is active on "server"
 
+@containerized_server
+   Scenario: Podman containers are running
+    Then podman container "uyuni-db" should be running on "server"
+    And podman container "uyuni-db" should be healthy on "server"
+    And podman container "uyuni-server" should be running on "server"
+    And podman container "uyuni-server" should be healthy on "server"
+    And podman container "uyuni-saline-0" should be running on "server"
+    And podman container "uyuni-tftpd" should be running on "server"
+    And podman container "uyuni-server-attestation-0" should be running on "server"
+    And podman container "uyuni-hub-xmlrpc-0" should be running on "server"
+
 @proxy
   Scenario: The proxy is healthy
     Then "proxy" should have a FQDN
