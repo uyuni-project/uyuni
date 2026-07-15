@@ -1,19 +1,7 @@
-{%- if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64', 'aarch64'] %}
+{%- from "hardware/profileupdate_prereq.sls" import install_hardware_profile_prerequisites with context %}
+
 {%- if not grains.get('transactional', False) %}
-mgr_install_dmidecode:
-  pkg.installed:
-{%- if grains['os_family'] == 'Suse' and grains['osrelease'] in ['11.3', '11.4'] %}
-    - name: pmtools
-{%- else %}
-    - name: dmidecode
-{%- endif %}
-    - require:
-{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
-      - saltutil: sync_states
-{%- else %}
-      - module: sync_states
-{%- endif %}
-{%- endif %}
+{{ install_hardware_profile_prerequisites(require_sync_states=True) }}
 {%- endif %}
 
 grains:
