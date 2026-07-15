@@ -58,8 +58,8 @@ import java.util.Set;
 public class SyncErrataWithPackagesResponseSerializer extends ApiResponseSerializer<SyncErrataWithPackagesResponse> {
 
     @Override
-    public Class<SyncErrataWithPackagesResponseSerializer> getSupportedClass() {
-        return SyncErrataWithPackagesResponseSerializer.class;
+    public Class<SyncErrataWithPackagesResponse> getSupportedClass() {
+        return SyncErrataWithPackagesResponse.class;
     }
 
     @Override
