@@ -135,9 +135,10 @@ end
 #
 # @param text1 [String] The first text to check for visibility.
 # @param text2 [String, nil] The second text to check for visibility (optional).
+# @param stoppper [String, nil] The stopper that end the loop if matched (optional).
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
-def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+def check_text?(text1, text2: nil, stopper: nil, timeout: Capybara.default_max_wait_time)
   # WORKAROUND: Chrome 134+ raises Capybara::ElementNotFound, StaleElementReferenceError, or
   # NoMethodError (CDP response type mismatch) during page navigation, bypassing Capybara's
   # synchronize() retry mechanism. All three are caught and retried. All other exceptions still
@@ -148,6 +149,7 @@ def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
     begin
       return true if has_text?(text1, wait: 1)
       return true if !text2.nil? && has_text?(text2, wait: 1)
+      return false if !stopper.nil? && has_text?(stopper, wait: 1)
     rescue Capybara::ElementNotFound,
            Selenium::WebDriver::Error::StaleElementReferenceError,
            Selenium::WebDriver::Error::NoSuchElementError,
