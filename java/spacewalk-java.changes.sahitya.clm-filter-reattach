@@ -1,0 +1,2 @@
+- Fixed an issue where previously detached filters could
+  not be re-attached to a CLM project.
