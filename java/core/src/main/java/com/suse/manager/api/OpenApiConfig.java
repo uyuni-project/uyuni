@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
+import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 
@@ -109,6 +110,7 @@ public final class OpenApiConfig {
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
+        handlers.put("subscriptionmatching.pinnedsubscription", PinnedSubscriptionHandler.class);
         return handlers;
     }
 }

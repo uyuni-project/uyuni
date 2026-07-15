@@ -35,7 +35,7 @@ import java.util.List;
  * @apidoc.namespace subscriptionmatching.pinnedsubscription
  * @apidoc.doc Provides the namespace for operations on Pinned Subscriptions
  */
-public class PinnedSubscriptionHandler extends BaseHandler {
+public class PinnedSubscriptionHandler extends BaseHandler implements PinnedSubscriptionHandlerApi {
 
     /**
      * Lists all Pinned Subscriptions
