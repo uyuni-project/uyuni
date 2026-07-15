@@ -1781,6 +1781,7 @@ select event_id as id,
        all_events.history_type,
        all_events.history_type_name,
        all_events.history_status,
+       all_events.pending_reboot_action_id,
        case when action_details.org_id != :oid then 0
          else 1 end as history_visible
   from (select SH.id event_id,
@@ -1790,7 +1791,8 @@ select event_id as id,
                SH.created as completed,  -- view this as the "completed" date for sorting reasons
                NULL as history_status,
                NULL as history_type,
-               NULL as history_type_name
+               NULL as history_type_name,
+               NULL as pending_reboot_action_id
           from rhnServerHistory SH
          where SH.server_id = :sid
          union
@@ -1801,13 +1803,17 @@ select event_id as id,
                SA.completion_time as completed,
                AStat.name as history_status,
                AType.label as history_type,
-               AType.name as history_type_name
+               AType.name as history_type_name,
+               MTI.pending_reboot_action_id as pending_reboot_action_id
           from rhnActionType AType,
                rhnActionStatus AStat,
                rhnAction A
      left join web_contact U
             on U.id = A.scheduler,
                rhnServerAction SA
+     left join suseMinionTransactionalInfo MTI
+            on MTI.minion_server_id = SA.server_id
+           and MTI.pending_reboot_action_id = SA.action_id
          where SA.server_id = :sid
            and SA.action_id = A.id
            and ATYPE.id = A.action_type

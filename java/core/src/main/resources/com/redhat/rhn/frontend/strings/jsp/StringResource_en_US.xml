@@ -13095,6 +13095,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.event.history.waitingForReboot">
+          <source>Waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.event.history.summary">
           <source>Summary</source>
         <context-group name="ctx">

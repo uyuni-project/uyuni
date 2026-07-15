@@ -40,6 +40,7 @@ public class SystemEventDto extends BaseDto implements Serializable {
     protected String historyType;
     protected String historyTypeName;
     private String historyStatus;
+    private Long pendingRebootActionId;
     protected static final Map<String, String> ACTIONTYPES;
     private boolean historyVisible;
 
@@ -191,6 +192,20 @@ public class SystemEventDto extends BaseDto implements Serializable {
      */
     public void setHistoryStatus(String historyStatusIn) {
         this.historyStatus = historyStatusIn;
+    }
+
+    /**
+     * @return true when this action is currently waiting for a transactional reboot
+     */
+    public boolean isPendingRebootAction() {
+        return pendingRebootActionId != null;
+    }
+
+    /**
+     * @param pendingRebootActionIdIn pending reboot action id to set
+     */
+    public void setPendingRebootActionId(Long pendingRebootActionIdIn) {
+        this.pendingRebootActionId = pendingRebootActionIdIn;
     }
 
     /**

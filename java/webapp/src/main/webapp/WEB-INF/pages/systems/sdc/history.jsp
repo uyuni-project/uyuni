@@ -65,6 +65,11 @@
                         </c:when>
                         <c:when test="${current.historyStatus == 'Picked Up'}">
                             <span class="text-info"><rhn:icon type="action-running" /></span>
+                            <c:if test="${current.pendingRebootAction}">
+                                <span class="label label-warning">
+                                    <bean:message key="system.event.history.waitingForReboot" />
+                                </span>
+                            </c:if>
                         </c:when>
                         <c:otherwise>
                             ${current.historyStatus}
