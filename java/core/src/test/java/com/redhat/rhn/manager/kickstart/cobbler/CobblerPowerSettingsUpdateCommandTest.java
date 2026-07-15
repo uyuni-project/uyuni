@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -24,12 +25,18 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests Cobbler command to update power management settings for a system.
  */
 public class CobblerPowerSettingsUpdateCommandTest extends BaseTestCaseWithUser {
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     /**
      * Tests the execution of this Cobbler command.

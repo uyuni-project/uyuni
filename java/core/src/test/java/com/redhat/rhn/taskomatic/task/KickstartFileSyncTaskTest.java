@@ -20,9 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.Profile;
@@ -30,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class KickstartFileSyncTaskTest extends BaseTestCaseWithUser {
+public class KickstartFileSyncTaskTest extends KickstartBaseTest {
 
 
 
@@ -41,7 +42,7 @@ public class KickstartFileSyncTaskTest extends BaseTestCaseWithUser {
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
         ks.setKickstartDefaults(KickstartDataTest.createDefaults(ks, user));
-        KickstartDataTest.createCobblerObjects(ks);
+        KickstartTestUtils.createCobblerObjects(ks);
         KickstartFactory.saveKickstartData(ks);
 
 

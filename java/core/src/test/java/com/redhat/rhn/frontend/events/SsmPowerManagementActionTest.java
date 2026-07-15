@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.events;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.action.ssm.PowerManagementConfigurationActionTest;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -25,6 +26,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateComman
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.MockConnection;
@@ -51,6 +53,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         servers = PowerManagementConfigurationActionTest
             .setUpTestProvisionableSsmServers(user);
@@ -78,7 +81,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
             String cobblerName = CobblerSystemCreateCommand
                 .getCobblerSystemRecordName(server.getName(), server.getOrgId());
             SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
-            assertContains(MockConnection.getPowerCommands(), "power_system on " +
+            TestUtils.assertContains(MockConnection.getPowerCommands(), "power_system on " +
                 systemRecord.getId());
         }
     }

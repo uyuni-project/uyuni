@@ -929,7 +929,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         server  = ServerFactory.unsubscribeFromAllChannels(user, serverIn);
         ServerFactory.commitTransaction();
-        commitHappened();
 
         assertEquals(0, server.getChannels().size());
     }
@@ -966,8 +965,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = ServerFactory.listSnapshots(server2.getOrg(),
                 server2, null, null);
-        assertContains(list, snap);
-        assertContains(snap.getGroups(), grp);
+        TestUtils.assertContains(list, snap);
+        TestUtils.assertContains(snap.getGroups(), grp);
     }
 
     @Test
@@ -1010,10 +1009,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         link.setServer(server2);
         link.setSnapshot(snap);
         link.setTag(tag);
-        link = TestUtils.saveAndFlush(link);
+        TestUtils.saveAndFlush(link); //reassign variable if still needed
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
-        assertContains(tags, tag);
+        TestUtils.assertContains(tags, tag);
     }
 
     @Test
@@ -1199,11 +1198,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);
 
-        e1 = TestUtils.saveAndFlush(e1);
-        e2 = TestUtils.saveAndFlush(e2);
-        e3 = TestUtils.saveAndFlush(e3);
-        e4 = TestUtils.saveAndFlush(e4);
-        e5 = TestUtils.saveAndFlush(e5);
+        //reassign variable(s) if still needed
+        TestUtils.saveAndFlush(e1);
+        TestUtils.saveAndFlush(e2);
+        TestUtils.saveAndFlush(e3);
+        TestUtils.saveAndFlush(e4);
+        TestUtils.saveAndFlush(e5);
 
         Map<Long, Map<String, Tuple2<String, String>>> out =
                 ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
@@ -1240,10 +1240,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false, false));
 
         errataName = out.get(srv.getId()).get(ce.getId());
-        assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false, false));
     }
 
     @Test
@@ -1274,10 +1274,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
         Set<ErrataInfo> errataName = out.get(srv.getId()).get(e.getId());
-        assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
+        TestUtils.assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false, false));
 
         errataName = out.get(srv.getId()).get(ce.getId());
-        assertContains(errataName,
+        TestUtils.assertContains(errataName,
                 new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false, false));
     }
 
@@ -1296,7 +1296,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         minion = TestUtils.reload(minion);
-        proxy = TestUtils.reload(proxy);
+        TestUtils.reload(proxy); //reassign variable if still needed
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),

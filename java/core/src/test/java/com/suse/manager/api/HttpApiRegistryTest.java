@@ -12,7 +12,8 @@ package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.services.OidcAuthHandler;
@@ -21,12 +22,14 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Optional;
 
 import spark.Route;
 
-public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class HttpApiRegistryTest extends MockObjectTestCase {
     /**
      * Stub API handler for testing
      */

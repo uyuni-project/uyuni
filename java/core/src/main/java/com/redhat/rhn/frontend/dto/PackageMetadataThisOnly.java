@@ -1,0 +1,116 @@
+/*
+ * Copyright (c) 2026 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
+package com.redhat.rhn.frontend.dto;
+
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
+
+public class PackageMetadataThisOnly extends PackageMetadata {
+    /**
+     * Constructs a PackageMetadataThisOnly
+     * @param systemIn PackageListItem for the current system
+     * @param otherIn PackageListItem for the profile or other system
+     * @param compareParamIn The parameter to the comparison string.
+     */
+    public PackageMetadataThisOnly(PackageListItem systemIn, PackageListItem otherIn, String compareParamIn) {
+        super(systemIn, otherIn, KEY_THIS_ONLY, compareParamIn);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getComparison() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.thissystemonly");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPackageType() {
+        return system.getPackageType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getEpoch() {
+        return system.getEpoch();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersion() {
+        return system.getVersion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getRelease() {
+        return system.getRelease();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionTargetNevra() {
+        return system.getNevra();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateActionStatus() {
+        actionStatus = ACTION_REMOVE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getActionStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        return ls.getMessage("message.actionremove");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void handlePackageRunTransaction(Long packageDeltaId) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("compare returned [KEY_THIS_ONLY]; deleting package from system");
+        }
+        handlePackageRunTransaction(packageDeltaId, ActionFactory.TXN_OPERATION_DELETE, getSystem());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSkipMissingCheck() {
+        return true;
+    }
+}

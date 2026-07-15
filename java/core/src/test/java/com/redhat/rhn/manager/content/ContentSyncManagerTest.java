@@ -16,8 +16,6 @@ package com.redhat.rhn.manager.content;
 
 
 import static com.redhat.rhn.domain.channel.ChannelFactoryTest.createTestClonedChannel;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,8 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -109,7 +105,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -237,8 +232,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertEquals("EMEA SLES x86/x86_64 Standard Support & Training", dbs.getName());
                 assertEquals(1234, dbs.getSccId());
                 assertEquals("ACTIVE", dbs.getStatus());
-                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1322));
-                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1324));
+                TestUtils.assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1322));
+                TestUtils.assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1324));
                 assertEquals(702, dbs.getSystemLimit().longValue());
                 assertEquals(Date.from(Instant.parse("2017-12-31T00:00:00.000Z")),
                         dbs.getExpiresAt());
@@ -810,7 +805,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
             .collect(Collectors.toList());
-        assertNotEmpty(r);
+        TestUtils.assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 // The PTF repo
@@ -831,7 +826,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
             .collect(Collectors.toList());
-        assertNotEmpty(r);
+        TestUtils.assertNotEmpty(r);
         r.forEach(pr -> {
             assertNotNull(pr.getRepository());
             // The PTF repo
@@ -853,7 +848,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
             .collect(Collectors.toList());
-        assertNotEmpty(r);
+        TestUtils.assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 // The PTF repo
@@ -874,7 +869,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
             .collect(Collectors.toList());
-        assertNotEmpty(r);
+        TestUtils.assertNotEmpty(r);
         r.forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 // The PTF repo
@@ -1344,11 +1339,11 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<String> avChanLanbels = availableChannels
                 .stream().map(ChannelTemplate::getChannelLabel).collect(Collectors.toList());
 
-        assertContains(avChanLanbels, "sles12-pool-x86_64");
-        assertContains(avChanLanbels, "sle-12-cloud-compute5-updates-x86_64");
-        assertContains(avChanLanbels, "sles12-ltss-updates-x86_64");
-        assertContains(avChanLanbels, "sle-ha-geo12-debuginfo-pool-x86_64");
-        assertContains(avChanLanbels, "sle-we12-updates-x86_64");
+        TestUtils.assertContains(avChanLanbels, "sles12-pool-x86_64");
+        TestUtils.assertContains(avChanLanbels, "sle-12-cloud-compute5-updates-x86_64");
+        TestUtils.assertContains(avChanLanbels, "sles12-ltss-updates-x86_64");
+        TestUtils.assertContains(avChanLanbels, "sle-ha-geo12-debuginfo-pool-x86_64");
+        TestUtils.assertContains(avChanLanbels, "sle-we12-updates-x86_64");
         // Installer Updates is optional and not in repositories.json
         assertFalse(avChanLanbels.contains("sles12-installer-updates-x86_64"), "unexpected optional channel found");
         // Storage 2 is not in repositories.json to emulate no subscription
@@ -1577,12 +1572,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         if (SUSEProductFactory.lookupByProductId(10012345) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012345);
-            p = TestUtils.saveAndFlush(p);
+            TestUtils.saveAndFlush(p); //reassign variable if still needed
         }
         if (SUSEProductFactory.lookupByProductId(10012346) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012346);
-            p = TestUtils.saveAndFlush(p);
+            TestUtils.saveAndFlush(p); //reassign variable if still needed
         }
 
         // Update the upgrade paths
@@ -1593,7 +1588,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SUSEProduct p10012345 = SUSEProductFactory.lookupByProductId(10012345);
         SUSEProduct p10012346 = SUSEProductFactory.lookupByProductId(10012346);
 
-        assertContains(p10012345.getUpgrades(), p10012346);
+        TestUtils.assertContains(p10012345.getUpgrades(), p10012346);
     }
 
     /**
@@ -1832,8 +1827,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(csm.isRefreshNeeded("https://mirror.example.com/"));
 
         // if mgr-sync never ran, return true
-        WriteMode clear = ModeFactory.getWriteMode("test_queries", "delete_last_mgr_sync_refresh");
-        clear.executeUpdate(new HashMap<>());
+        TestUtils.deleteLastMgrSyncRefresh();
         assertTrue(csm.isRefreshNeeded(null));
     }
 
@@ -1980,7 +1974,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             fail("adding non-existing-channel should fail");
         }
         catch (ContentSyncException e) {
-            assertContains(e.getMessage(), "No product tree entry found for label:");
+            TestUtils.assertContains(e.getMessage(), "No product tree entry found for label:");
         }
 
         try {
@@ -1988,7 +1982,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             fail("adding sles12-updates-x86_64 should not work here");
         }
         catch (ContentSyncException e) {
-            assertContains(e.getMessage(), "The parent channel is not installed");
+            TestUtils.assertContains(e.getMessage(), "The parent channel is not installed");
         }
         csm.addChannel("sles12-pool-x86_64", null);
         csm.addChannel("sles12-updates-x86_64", null);
@@ -2089,7 +2083,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     ContentSource cs = bestAuth.getContentSource();
                     assertNotNull(cs);
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
-                    assertContains(cs.getSourceUrl(), "file://" + fromdir + "/SUSE/");
+                    TestUtils.assertContains(cs.getSourceUrl(), "file://" + fromdir + "/SUSE/");
                 });
             slewe.getChannelTemplates().stream()
             .filter(ChannelTemplate::isMandatory)
@@ -2100,10 +2094,10 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
                 if (pr.getChannelName().toLowerCase().contains("nvidia")) {
-                    assertContains(cs.getSourceUrl(), "file://" + fromdir + "/repo/RPMMD/");
+                    TestUtils.assertContains(cs.getSourceUrl(), "file://" + fromdir + "/repo/RPMMD/");
                 }
                 else {
-                    assertContains(cs.getSourceUrl(), "file://" + fromdir + "/SUSE/");
+                    TestUtils.assertContains(cs.getSourceUrl(), "file://" + fromdir + "/SUSE/");
                 }
             });
         }
@@ -2195,7 +2189,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     ContentSource cs = bestAuth.getContentSource();
                     assertNotNull(cs);
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
-                    assertContains(cs.getSourceUrl(), "https://updates.suse.com");
+                    TestUtils.assertContains(cs.getSourceUrl(), "https://updates.suse.com");
                 });
             slewe.getChannelTemplates().stream()
             .filter(ChannelTemplate::isMandatory)
@@ -2206,10 +2200,10 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
                 if (pr.getChannelName().toLowerCase().contains("nvidia")) {
-                    assertContains(cs.getSourceUrl(), "http://download.nvidia.com");
+                    TestUtils.assertContains(cs.getSourceUrl(), "http://download.nvidia.com");
                 }
                 else {
-                    assertContains(cs.getSourceUrl(), "https://updates.suse.com");
+                    TestUtils.assertContains(cs.getSourceUrl(), "https://updates.suse.com");
                 }
             });
         }
@@ -2294,12 +2288,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         for (Channel c : ChannelFactory.listVendorChannels()) {
             c.setLabel(TestUtils.randomString());
             c.setName(TestUtils.randomString());
-            c = TestUtils.saveAndFlush(c);
+            TestUtils.saveAndFlush(c); //reassign variable if still needed
         }
         for (ContentSource cs : ChannelFactory.listVendorContentSources()) {
             cs.setLabel(TestUtils.randomString());
             cs.setSourceUrl(TestUtils.randomString());
-            cs = TestUtils.saveAndFlush(cs);
+            TestUtils.saveAndFlush(cs); //reassign variable if still needed
         }
     }
 
@@ -2351,14 +2345,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         String repourl = "http://localhost/pub/myrepo/";
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
 
-        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), repourl + "repodata/repomd.xml");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), repourl + "repodata/repomd.xml");
         assertEquals(1, csm.buildRepoFileUrls(repourl, rpmrepo).size());
 
-        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.xz");
-        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.gz");
-        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages");
-        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Release");
-        assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "InRelease");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.xz");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages.gz");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Packages");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "Release");
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, debrepo), repourl + "InRelease");
         assertEquals(5, csm.buildRepoFileUrls(repourl, debrepo).size());
 
         repourl = "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock";
@@ -2369,8 +2363,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 uri.getQuery(), null).toString();
         String url2 = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), "/",
                 uri.getQuery(), null).toString();
-        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url1);
-        assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url2);
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url1);
+        TestUtils.assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), url2);
         assertEquals(2, csm.buildRepoFileUrls(repourl, rpmrepo).size());
     }
 

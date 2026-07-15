@@ -54,7 +54,7 @@ public class ProxySettingsRenderer {
             log.debug("Saving proxy settings: {}", settings);
         }
 
-        // TODO: Handle errors
+        // OLDTODO: Handle errors
         ValidatorError[] errors =
                 ProxySettingsManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {

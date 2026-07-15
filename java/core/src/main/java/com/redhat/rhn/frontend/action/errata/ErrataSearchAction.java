@@ -326,7 +326,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             LOG.debug("{} records have passed being filtered and will be displayed.", filtered.size());
         }
 
-        // TODO: need to figure out a way to properly sort the
+        // OLDTODO: need to figure out a way to properly sort the
         // errata from a package search. What we get back from the
         // search server is pid, pkg-name in relevant order.
         // What we get back from searchByPackageIds, is an unsorted

@@ -587,7 +587,7 @@ public class SaltServerActionService {
                     // get Salt calls for this action
                     Map<LocalCall<?>, List<MinionSummary>> actionCalls = callsForAction(actionIn, minions);
 
-                    // TODO how to handle staging jobs?
+                    // OLDTODO how to handle staging jobs?
 
                     // Salt calls for each minion
                     Map<MinionSummary, List<LocalCall<?>>> callsPerMinion =
@@ -1210,7 +1210,7 @@ public class SaltServerActionService {
     public void handleActionChainResult(
             String minionId, String jobId,
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
-            Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
+            Predicate<StateApplyResult<Ret<JsonElement>>> skipFunction) {
         int chunk = 1;
         long retActionChainId = 0L;
         boolean actionChainFailed = false;
@@ -1225,7 +1225,7 @@ public class SaltServerActionService {
                 retActionChainId = stateId.get().getActionChainId();
                 chunk = stateId.get().getChunk();
                 long actionId = stateId.get().getActionId();
-                if (Boolean.TRUE.equals(skipFunction.apply(actionStateApply))) {
+                if (skipFunction.test(actionStateApply)) {
                     continue; // skip this state from handling
                 }
 

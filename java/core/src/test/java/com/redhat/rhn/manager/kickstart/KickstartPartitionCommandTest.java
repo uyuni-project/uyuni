@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * KickstartPartitionCommandTest - test for KickstartDetailsCommand
  */
-public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
+public class KickstartPartitionCommandTest extends KickstartBaseTest {
 
 
     @Test
@@ -41,11 +41,13 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
         KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), user);
 
-        String partitions = "partition /boot --fstype=ext3 --size=200\n" +
-            "partition swap --size=2000\n" +
-            "partition pv.01 --size=1000 --grow\n" +
-            "volgroup myvg pv.01\n" +
-            "logvol / --vgname=myvg --name=rootvol --size=1000 --grow\n";
+        String partitions = """
+                partition /boot --fstype=ext3 --size=200
+                partition swap --size=2000
+                partition pv.01 --size=1000 --grow
+                volgroup myvg pv.01
+                logvol / --vgname=myvg --name=rootvol --size=1000 --grow
+                """;
 
         assertNull(cmd.setPartitionData(partitions));
 
@@ -62,12 +64,14 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
         KickstartFactory.saveKickstartData(k);
 
         KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), user);
-        String partitions = "partition swap.01 --size=5150 --ondisk=sda\n" +
-            "partition /boot --fstype=ext3 --size=200\n" +
-            "partition swap.02 --size=8888 --ondisk=sda\n" +
-            "partition pv.01 --size=1000 --grow\n" +
-            "volgroup myvg pv.01\n" +
-            "logvol / --vgname=myvg --name=rootvol --size=2112 --grow\n";
+        String partitions = """
+                            partition swap.01 --size=5150 --ondisk=sda
+                            "partition /boot --fstype=ext3 --size=200
+                            "partition swap.02 --size=8888 --ondisk=sda
+                            "partition pv.01 --size=1000 --grow
+                            "volgroup myvg pv.01
+                            "logvol / --vgname=myvg --name=rootvol --size=2112 --grow
+                            """;
 
         assertNull(cmd.setPartitionData(partitions));
         assertNull(cmd.store());

@@ -17,14 +17,14 @@ package com.redhat.rhn.manager.setup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link MirrorCredentialsDto}.
  */
-public class MirrorCredentialsTest extends RhnBaseTestCase {
+public class MirrorCredentialsTest extends BaseTestCase {
 
     /**
      * Tests MirrorCredentialsDto.equals()

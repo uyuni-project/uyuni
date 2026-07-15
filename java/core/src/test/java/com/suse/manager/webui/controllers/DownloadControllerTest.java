@@ -104,17 +104,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Response response;
     private Package pkg;
     private Package pkg2;
-    private Package debPkg;
-    private Package debPkg2;
-
-    private static String originalMountPoint;
 
     private DownloadController downloadController;
     @BeforeAll
     public static void beforeAll() {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
-        originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     @BeforeEach
@@ -138,13 +133,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         this.uriFile2 = new URI(String.format("%s.rpm", nvra2.replace("^", "%5e"))).toString();
 
         Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1", "0", "all-deb");
-        this.debPkg = dpkg.getA();
         this.debPackageFile = dpkg.getB();
         this.debUriFile = dpkg.getC();
 
         Tuple3<Package, File, String> dpkg2 = createDebPkg(channel, null, "8-20180414",
                 "1ubuntu2", "all-deb");
-        this.debPkg2 = dpkg2.getA();
         this.debPackageFile2 = dpkg2.getB();
         this.debUriFile2 = dpkg2.getC();
 
@@ -173,9 +166,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         @AfterEach
     public void tearDown() throws Exception {
-        if (originalMountPoint != null) {
-            Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
-        }
         Files.deleteIfExists(packageFile.toPath());
         Files.deleteIfExists(debPackageFile.toPath());
         Files.deleteIfExists(debPackageFile2.toPath());
@@ -242,7 +232,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(debChannel);
 
-        debChannel = TestUtils.saveAndFlush(debChannel);
+        TestUtils.saveAndFlush(debChannel); //reassign variable if still needed
 
         final String debNvra = String.format("%s_%s-%s.%s",
                 dpkg.getPackageName().getName(), dpkg.getPackageEvr().getVersion(),

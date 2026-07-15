@@ -108,7 +108,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -207,7 +207,7 @@ public class StatesAPI {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
-        // TODO add org,group support
+        // OLDTODO add org,group support
 
         // Find matches among this server's current packages states
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
@@ -317,8 +317,8 @@ public class StatesAPI {
             return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
                     new TypeToken<>() { });
         }
-        catch (Throwable t) {
-            LOG.error(t.getMessage(), t);
+        catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             response.status(500);
             return "{}";
         }
@@ -406,7 +406,7 @@ public class StatesAPI {
             generateServerPackageState(server);
             return GSON.toJson(convertToJSON(state.getPackageStates()));
         }
-        catch (Throwable t) {
+        catch (Exception e) {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
@@ -550,9 +550,9 @@ public class StatesAPI {
     }
 
     private <R> R handleTarget(StateTargetType targetType, long targetId,
-                                      Function<Long, R> serverHandler,
-                                      Function<Long, R> groupHandler,
-                                      Function<Long, R> orgHandler) {
+                               LongFunction<R> serverHandler,
+                               LongFunction<R> groupHandler,
+                               LongFunction<R> orgHandler) {
         switch (targetType) {
             case SERVER:
                 return serverHandler.apply(targetId);

@@ -26,7 +26,9 @@ public enum CoCoEnvironmentType {
     KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
     KVM_AMD_EPYC_BERGAMO(3, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
     KVM_AMD_EPYC_SIENA(4, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    KVM_AMD_EPYC_TURIN(5, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
+    KVM_AMD_EPYC_TURIN(5, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_IBM_Z16(6, List.of(CoCoResultType.IBM_PVATTEST)),
+    KVM_IBM_Z17(7, List.of(CoCoResultType.IBM_PVATTEST));
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
@@ -53,6 +55,10 @@ public enum CoCoEnvironmentType {
         return LocalizationService.getInstance().getMessage(descriptionKey);
     }
 
+    public static CoCoEnvironmentType getDefault() {
+        return KVM_AMD_EPYC_MILAN;
+    }
+
     /**
      * @return returns the list of supported {@link CoCoResultType} for this environment
      */
@@ -77,12 +83,5 @@ public enum CoCoEnvironmentType {
      */
     public static List<CoCoEnvironmentType> validValues() {
         return Stream.of(CoCoEnvironmentType.values()).filter(e -> e != NONE).toList();
-    }
-
-    /**
-     * @return returns if a nonce value is required
-     */
-    public boolean isNonceRequired() {
-        return (NONE != this);
     }
 }

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,12 +30,11 @@ import java.util.List;
 /**
  *
  */
-public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
+public class KickstartWizardHelperTest extends KickstartBaseTest {
 
     @Test
     public void testVirtTypes() {
         KickstartWizardHelper helper = new KickstartWizardHelper(user);
-        String origConfig = Config.get().getString(ConfigDefaults.PRODUCT_NAME);
         Config.get().setString(ConfigDefaults.PRODUCT_NAME, ConfigDefaults.SPACEWALK.get(0));
         // applies to SUSE Manager too
         List types = helper.getVirtualizationTypes();
@@ -48,8 +47,6 @@ public class KickstartWizardHelperTest extends BaseTestCaseWithUser {
             }
         }
         assertTrue(found);
-
-        Config.get().setString(ConfigDefaults.PRODUCT_NAME, origConfig);
     }
 
 }

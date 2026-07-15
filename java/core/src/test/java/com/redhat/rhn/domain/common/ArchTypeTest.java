@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.common;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ArchTypeTest
  */
-public class ArchTypeTest extends RhnBaseTestCase {
+public class ArchTypeTest extends BaseTestCase {
 
     @Test
     public void testArchType() {

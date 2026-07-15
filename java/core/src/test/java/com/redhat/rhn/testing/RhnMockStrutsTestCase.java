@@ -21,8 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
-import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -33,9 +32,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
 import org.apache.struts.action.DynaActionForm;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -46,20 +45,21 @@ import java.util.TimeZone;
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith(UserForTestCaseExtension.class)
+public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
+    @SaltTestRootPath
     protected Path tmpSaltRoot;
+
+    @UserForTest(userName = TestStatics.TEST_USER, orgName = TestStatics.TEST_ORG)
     protected User user;
-    private boolean committed = false;
 
     /**
      * {@inheritDoc}
      */
     @BeforeEach
     public void setUpRhnMockStrutsTestCase() throws Exception {
-        // Warning: MockStrutsTestCase.setUp() is not automatically called.
-        super.setUp();
-
         RequestContext requestContext = new RequestContext(request);
         Context ctx = Context.getCurrentContext();
         ctx.setLocale(Locale.getDefault());
@@ -67,7 +67,6 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
 
         request.setServerName("localhost");
         request.setMethod("GET");
-        user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         addRequestParameter(RequestContext.USER_ID, user.getId().toString());
         WebSession s = requestContext.getWebSession();
@@ -81,28 +80,17 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
         PxtSessionDelegate pxtDelegate = pxtDelegateFactory.newPxtSessionDelegate();
 
         pxtDelegate.updateWebUserId(request, response, user.getId());
-        KickstartDataTest.setupTestConfiguration(user);
-
-        tmpSaltRoot = setupSaltConfigurationForTests();
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
-    /**
-     * Tears down the fixture, and closes the HibernateSession.
-     */
-    @AfterEach
-    public void tearDownRhnMockStrutsTestCase() throws Exception {
-        TestCaseHelper.tearDownHelper();
-        if (committed) {
-            OrgFactory.deleteOrg(user.getOrg().getId(), user);
-            TestUtils.commitAndCloseSession();
-        }
-        committed = false;
+    @Override
+    protected void cleanupDatabaseCommits() {
+        TestUtils.deleteOrgOfUser(user);
+    }
+
+    @Override
+    protected void afterCleanupDatabaseCommits() {
         user = null;
-
-        cleanupSaltConfiguration(tmpSaltRoot);
-
-        // Warning: MockStrutsTestCase.tearDown() is not automatically called.
-        super.tearDown();
     }
 
     /**
@@ -215,10 +203,5 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
 
     protected void assertException() {
         assertTrue(getActualForward().indexOf("/errors") > 0);
-    }
-
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        committed = true;
     }
 }

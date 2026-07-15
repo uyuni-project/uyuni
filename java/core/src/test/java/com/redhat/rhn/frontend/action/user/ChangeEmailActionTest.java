@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.messaging.MockMail;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ChangeEmailActionTest
  */
-public class ChangeEmailActionTest extends RhnBaseTestCase {
+public class ChangeEmailActionTest extends BaseTestCase {
 
     private MockMail mailer = new MockMail();
 

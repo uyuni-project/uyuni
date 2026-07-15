@@ -101,7 +101,6 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
      * @param form the ActionForm
      * @param request HttpServletRequest containing request vars
      * @return Returns Map of parameters
-     * TODO: was private
      */
     protected Map<String, Object> makeParamMap(ActionForm form,
             HttpServletRequest request) {

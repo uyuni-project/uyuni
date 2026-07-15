@@ -27,7 +27,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * UserEditSetupActionTest
  */
-public class UserEditSetupActionTest extends RhnBaseTestCase {
+public class UserEditSetupActionTest extends BaseTestCase {
 
     @Test
     public void testPerformExecute() throws Exception {

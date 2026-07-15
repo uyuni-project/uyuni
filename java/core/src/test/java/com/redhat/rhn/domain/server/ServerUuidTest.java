@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * ServerUuidTest
  */
-public class ServerUuidTest extends RhnBaseTestCase {
+public class ServerUuidTest extends BaseTestCase {
 
     public static final String UUID = "e280ccb0-1f31-11dc-9c52-00425200ea2f";
 

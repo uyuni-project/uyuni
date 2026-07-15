@@ -17,15 +17,18 @@ package com.redhat.rhn.domain.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.stream.Stream;
 
-public class NetworkInterfaceFactoryTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class NetworkInterfaceFactoryTest extends BaseTestCase {
 
     /**
      * Tests retrieval of network interfaces by their hardware address

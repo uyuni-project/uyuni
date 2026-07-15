@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
  * jMock boilerplate.
  */
 @ExtendWith(JUnit5Mockery.class)
-public class MockObjectTestCase {
+public class MockObjectTestCase extends BaseTestCase {
 
     @RegisterExtension
     protected final JUnit5Mockery context = new JUnit5Mockery();

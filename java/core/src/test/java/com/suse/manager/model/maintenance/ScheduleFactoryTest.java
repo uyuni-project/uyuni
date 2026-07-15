@@ -16,13 +16,13 @@
 package com.suse.manager.model.maintenance;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-public class ScheduleFactoryTest extends RhnBaseTestCase {
+public class ScheduleFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestListByCalendar() {

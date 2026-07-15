@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.org;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * MultiOrgTest
  */
-public class MultiOrgTest extends RhnBaseTestCase {
+public class MultiOrgTest extends BaseTestCase {
 
     @Test
     public void testAddMultiOrg() {

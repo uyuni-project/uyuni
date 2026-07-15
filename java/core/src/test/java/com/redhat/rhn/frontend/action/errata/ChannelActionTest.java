@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ChannelActionTest
  */
-public class ChannelActionTest extends RhnBaseTestCase {
+public class ChannelActionTest extends BaseTestCase {
 
     @Test
     public void testPublish() throws Exception {

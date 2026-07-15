@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * PageSizeDecoratorTest
  */
-public class PageSizeDecoratorTest extends RhnBaseTestCase {
+public class PageSizeDecoratorTest extends BaseTestCase {
     @Test
     public void testDefaultPageSizes() {
         assertFalse(PageSizeDecorator.getPageSizes().isEmpty());

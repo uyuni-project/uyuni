@@ -30,6 +30,7 @@
         <module>attestation-module</module>
         <module>attestation-module-snpguest</module>
         <module>attestation-module-secureboot</module>
+        <module>attestation-module-pvattest</module>
     </modules>
 
     <dependencyManagement>

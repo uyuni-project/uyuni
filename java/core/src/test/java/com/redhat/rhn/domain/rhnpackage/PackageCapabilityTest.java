@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ import java.util.Date;
 /**
  * PackageCapabilityTest
  */
-public class PackageCapabilityTest extends RhnBaseTestCase {
+public class PackageCapabilityTest extends BaseTestCase {
 
     /**
      * Simple test to make sure we can create

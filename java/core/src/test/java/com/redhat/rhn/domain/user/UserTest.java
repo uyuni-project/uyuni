@@ -26,7 +26,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -40,6 +41,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -48,7 +50,8 @@ import java.util.Set;
 /** JUnit test case for the User
  *  class.
  */
-public class UserTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class UserTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -226,38 +229,34 @@ public class UserTest extends RhnJmockBaseTestCase {
         Process process = mock(Process.class);
         ByteArrayOutputStream passwordOutputStream =  new ByteArrayOutputStream();
 
-        String oldValue = Config.get().setString("web.pam_auth_service", "login");
+        Config.get().setString("web.pam_auth_service", "login");
 
-        try {
-            User usr = UserTestUtils.createUser(this);
 
-            context().checking(new Expectations() {{
-                try {
-                    allowing(pamServiceFactory).getInstance(authService);
-                    will(returnValue(new PamServiceWrapper(authService, runtime)));
+        User usr = UserTestUtils.createUser(this);
 
-                    allowing(runtime).exec(ArrayUtils.toArray("/sbin/unix2_chkpwd", authService, usr.getLogin()));
-                    will(returnValue(process));
+        context().checking(new Expectations() {{
+            try {
+                allowing(pamServiceFactory).getInstance(authService);
+                will(returnValue(new PamServiceWrapper(authService, runtime)));
 
-                    allowing(process).getOutputStream();
-                    will(returnValue(passwordOutputStream));
+                allowing(runtime).exec(ArrayUtils.toArray("/sbin/unix2_chkpwd", authService, usr.getLogin()));
+                will(returnValue(process));
 
-                    allowing(process).waitFor();
-                    will(returnValue(0));
-                }
-                catch (Exception ex) {
-                    throw new IllegalStateException("Unable to setup mocks for unit test");
-                }
-            }});
+                allowing(process).getOutputStream();
+                will(returnValue(passwordOutputStream));
 
-            usr.setUsePamAuthentication(true);
-            usr.setPamServiceFactory(pamServiceFactory);
+                allowing(process).waitFor();
+                will(returnValue(0));
+            }
+            catch (Exception ex) {
+                throw new IllegalStateException("Unable to setup mocks for unit test");
+            }
+        }});
 
-            assertTrue(usr.authenticate("password"));
-        }
-        finally {
-            Config.get().setString("web.pam_auth_service", oldValue);
-        }
+        usr.setUsePamAuthentication(true);
+        usr.setPamServiceFactory(pamServiceFactory);
+
+        assertTrue(usr.authenticate("password"));
     }
 
     @Test

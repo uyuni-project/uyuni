@@ -29,9 +29,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +37,6 @@ import org.junit.jupiter.api.Test;
  * Test for {@link com.redhat.rhn.domain.entitlement.PeripheralServerEntitlement}
  */
 public class PeripheralServerEntitlementTest extends BaseEntitlementTestCase {
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)

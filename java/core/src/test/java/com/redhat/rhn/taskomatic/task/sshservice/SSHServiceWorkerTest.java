@@ -208,9 +208,6 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
         assertNull(futureServerAction.getResultCode());
         assertTrue(minion.getLastBoot() > 1L);
-
-        // The worker commits, so mark the session for cleanup
-        commitHappened();
     }
 
     @Test

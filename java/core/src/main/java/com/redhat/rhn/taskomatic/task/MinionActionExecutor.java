@@ -108,27 +108,54 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         Action action = ActionFactory.lookupById(actionId);
+        long queuedServerActionsNumber = countQueuedServerActions(action);
 
         if (log.isDebugEnabled()) {
-            log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
+            log.debug("Number of Queued Server Actions for {}: {}", actionId, queuedServerActionsNumber);
         }
 
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. If it is the case, reschedule the Job.
+        // Also: the Action could not be ready for execution yet. If this is the case, reschedule the Job as well
         int retryCount = (Integer) context.getTrigger().getJobDataMap().getOrDefault("retryCount", 1);
+        boolean failedNoServerActionsYet = (0 == queuedServerActionsNumber);
+        boolean failedNotReadyToRun = ((null != action) && (!action.isReadyToRun()));
 
-        if (retryCount <= MAX_RETRIES && countQueuedServerActions(action) == 0) {
-            log.debug("Couldn't find queued actions for action {}, scheduling retry {} of {}",
-                actionId, retryCount, MAX_RETRIES
-            );
+        if ((retryCount <= MAX_RETRIES) && (failedNoServerActionsYet || failedNotReadyToRun)) {
+            if (failedNoServerActionsYet) {
+                log.debug("Couldn't find queued actions for action {}, scheduling retry {} of {}",
+                        actionId, retryCount, MAX_RETRIES);
+            }
+            else {
+                log.debug("Action {} is not yet ready to run, scheduling retry {} of {}",
+                        actionId, retryCount, MAX_RETRIES);
+            }
             try {
                 // The retry interval gradually increases based on the number of retries.
+                // With 25 max retries, it can be rescheduled at max 1+2+3+...+25 seconds, that is 5 min 25 s
                 TaskoQuartzHelper.rescheduleJob(context, retryCount, retryCount);
                 return;
             }
             catch (SchedulerException e) {
                 log.error("Error scheduling retry job for action {}.", actionId, e);
             }
+        }
+
+        if (failedNotReadyToRun) {
+            log.debug("Action {} is not yet ready to run after {} retries, marking it as failed",
+                    actionId, MAX_RETRIES);
+
+            // although this null check is already included in failedNotReadyToRun,
+            // it's an indirect check, so we leave it as a redundancy safety net
+            if (null != action) {
+                action.getServerActions().forEach(
+                        sa -> {
+                            sa.setStatusFailed();
+                            sa.setResultMsg("Action is not yet ready to run after %d retries".formatted(MAX_RETRIES));
+                            sa.setResultCode(-1L);
+                        });
+            }
+            return;
         }
 
         if (action == null) {

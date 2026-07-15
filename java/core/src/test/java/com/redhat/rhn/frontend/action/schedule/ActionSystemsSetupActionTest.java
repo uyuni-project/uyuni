@@ -28,14 +28,17 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * ActionSystemsSetupActionTest
  */
-public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class ActionSystemsSetupActionTest extends BaseTestCase {
 
     @Test
     public void testPeformExecute() throws Exception {

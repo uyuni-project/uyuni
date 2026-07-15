@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ServerFactoryVirtualizationTest
  */
-public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
+public class ServerFactoryVirtualizationTest extends BaseTestCase {
 
     private VirtualInstanceManufacturer virtualInstanceFactory;
     private User user;

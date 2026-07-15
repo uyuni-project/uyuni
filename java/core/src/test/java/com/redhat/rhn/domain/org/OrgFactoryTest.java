@@ -32,12 +32,14 @@ import com.redhat.rhn.domain.token.ActivationKeyTest;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,7 +50,8 @@ import java.util.Set;
 /**
  * JUnit test case for the Org class.
  */
-public class OrgFactoryTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class OrgFactoryTest extends BaseTestCase {
 
     @Test
     public void testOrgTrust() throws Exception {
@@ -58,8 +61,8 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         OrgFactory.save(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
-        assertContains(org.getTrustedOrgs(), trusted);
-        assertContains(trusted.getTrustedOrgs(), org);
+        assertTrue(org.getTrustedOrgs().contains(trusted));
+        assertTrue(trusted.getTrustedOrgs().contains(org));
         org.getTrustedOrgs().remove(trusted);
         OrgFactory.save(org);
         org = OrgFactory.lookupById(org.getId());

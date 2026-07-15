@@ -28,6 +28,7 @@ import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
  * #struct_begin("coco_attestation_config")
  *   #prop_desc("boolean", "enabled", "true if Confidential Compute Attestation is enabled for this system")
  *   #prop_desc("string", "environment_type", "the configured environment type")
+ *   #prop("struct", "input_data")
  *   #prop_desc("int", "system_id", "the ID of the system")
  * #struct_end()
  */
@@ -44,6 +45,7 @@ public class CoCoAttestationConfigSerializer extends ApiResponseSerializer<Serve
                 .add("enabled", src.isEnabled())
                 .add("environment_type", src.getEnvironmentType().name())
                 .add("system_id", src.getServer().getId())
+                .add("input_data", src.getInData())
                 .add("attest_on_boot", src.isAttestOnBoot())
                 .build();
     }

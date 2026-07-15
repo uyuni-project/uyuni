@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.nav;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * RendererTest tests all Renderable classes.
  */
-public class RendererTest extends RhnBaseTestCase {
+public class RendererTest extends BaseTestCase {
 
     ////////////////////////////////////////////////////////////////
     // TEST: DialognavRenderer

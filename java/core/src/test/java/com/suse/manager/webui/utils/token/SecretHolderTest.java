@@ -11,7 +11,6 @@
 
 package com.suse.manager.webui.utils.token;
 
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,7 +57,7 @@ public class SecretHolderTest {
             fail("secret should be a hex string");
         }
         catch (IllegalArgumentException e) {
-            assertContains(e.getMessage(), "Odd number of characters.");
+            TestUtils.assertContains(e.getMessage(), "Odd number of characters.");
         }
     }
 }

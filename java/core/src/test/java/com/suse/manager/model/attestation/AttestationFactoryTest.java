@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -106,6 +107,42 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void testCreateAttestationConfigurationIBMZWithAdditionalData() {
+        Map<String, Object> additionalDataMap = Map.of(
+            "secure_execution_header", "DUMMY_BINARY_DATA",
+            "host_key_document", "DUMMY_CERTIFICATE_TEXT_DATA"
+        );
+
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_IBM_Z17, true, additionalDataMap, false);
+
+        TestUtils.flushSession();
+
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_IBM_Z17, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertNotNull(cnf.getInData());
+        assertEquals("DUMMY_BINARY_DATA", cnf.getInData().get("secure_execution_header"));
+        assertEquals("DUMMY_CERTIFICATE_TEXT_DATA", cnf.getInData().get("host_key_document"));
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationWithoutAdditionalDataSetsEmptyMap() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, true, false);
+
+        TestUtils.flushSession();
+
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertNotNull(cnf.getInData());
+        assertTrue(cnf.getInData().isEmpty());
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
     public void testAttestationConfigurationLookup() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, true);
@@ -141,7 +178,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         ServerCoCoAttestationReport report = attestationFactory.createReportForServer(server);
         TestUtils.flushSession();
         assertNotNull(report);
-        assertEquals(CoCoAttestationStatus.PENDING, report.getStatus());
+        assertEquals(CoCoReportStatus.PENDING, report.getStatus());
         assertEquals(cnf.getEnvironmentType(), report.getEnvironmentType());
         assertNull(report.getAction());
 
@@ -156,7 +193,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
         assertNotNull(reports);
-        assertNotEmpty(reports);
+        TestUtils.assertNotEmpty(reports);
         reports.forEach(r -> assertEquals(report, r));
     }
 
@@ -170,13 +207,13 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationReport> optReport = attestationFactory.lookupReportById(reportId);
         List<CoCoAttestationResult> results = optReport.orElseThrow().getResults();
-        assertNotEmpty(results);
+        TestUtils.assertNotEmpty(results);
         List<CoCoResultType> rTypeList = results.stream()
                 .map(CoCoAttestationResult::getResultType)
                 .collect(Collectors.toList());
-        assertContains(rTypeList, CoCoResultType.SEV_SNP);
-        assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
-        assertNotContains(rTypeList, CoCoResultType.NONE);
+        TestUtils.assertContains(rTypeList, CoCoResultType.SEV_SNP);
+        TestUtils.assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
+        TestUtils.assertNotContains(rTypeList, CoCoResultType.NONE);
 
         assertTrue(results.stream()
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))

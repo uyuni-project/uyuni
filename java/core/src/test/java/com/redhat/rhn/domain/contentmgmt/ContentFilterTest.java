@@ -35,8 +35,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -54,7 +54,7 @@ import java.util.TimeZone;
 /**
  * Tests for {@link ContentFilter}
  */
-public class ContentFilterTest extends JMockBaseTestCaseWithUser {
+public class ContentFilterTest extends BaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
@@ -305,7 +305,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
 
         pack = TestUtils.saveAndReload(pack);
         String packageName = pack.getPackageName().getName();
@@ -668,7 +668,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
 
         pack = TestUtils.saveAndReload(pack);
 

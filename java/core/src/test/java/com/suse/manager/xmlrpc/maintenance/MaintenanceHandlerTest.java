@@ -131,12 +131,12 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
             String actual = output.toString();
 
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
-                assertContains(actual, "<i4>" + sapServer.getId() + "</i4>");
-                assertContains(actual, "<string>Patch Update</string>");
+                TestUtils.assertContains(actual, "<i4>" + sapServer.getId() + "</i4>");
+                TestUtils.assertContains(actual, "<string>Patch Update</string>");
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
-                assertContains(actual, "<i4>" + coreServer.getId() + "</i4>");
-                assertContains(actual, "<string>Patch Update</string>");
+                TestUtils.assertContains(actual, "<i4>" + coreServer.getId() + "</i4>");
+                TestUtils.assertContains(actual, "<string>Patch Update</string>");
             }
             else {
                 fail("Not expected result set");

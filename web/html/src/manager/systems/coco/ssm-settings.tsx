@@ -1,6 +1,7 @@
-import { type ReactNode, Component } from "react";
+import { useMemo, useState } from "react";
 
-import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
+import { saveSsmCoCoSettings } from "components/coco-attestation/api";
+import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -11,72 +12,60 @@ import Network from "utils/network";
 
 import { CoCoSystemData } from "./types";
 
-type Props = {
+interface Props {
   systemSupport: CoCoSystemData[];
-  availableEnvironmentTypes: object;
-};
-
-type State = {
-  messages: MessageType[];
-};
-
-class CoCoSSMSettings extends Component<Props, State> {
-  private readonly emptySettings: Settings;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      messages: [],
-    };
-
-    this.emptySettings = {
-      enabled: false,
-      environmentType: Object.values(this.props.availableEnvironmentTypes)[0],
-      attestOnBoot: false,
-      attestOnSchedule: false,
-    };
-  }
-
-  onSave = (data: Settings) => {
-    const request = {
-      serverIds: this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      ...data,
-    };
-
-    Network.post(`/rhn/manager/api/systems/coco/settings`, request).then(
-      (response) =>
-        this.setState({
-          messages: response.success
-            ? MessagesUtils.success(response.messages)
-            : MessagesUtils.error(response.messages),
-        }),
-      (err) => this.setState({ messages: Network.responseErrorMessage(err) })
-    );
-  };
-
-  render(): ReactNode {
-    return (
-      <>
-        <TopPanel title="Confidential Computing Settings">
-          <Messages items={this.state.messages} />
-          <CoCoSettingsForm
-            initialData={this.emptySettings}
-            saveHandler={this.onSave}
-            availableEnvironmentTypes={this.props.availableEnvironmentTypes}
-            showOnScheduleOption={false}
-          />
-        </TopPanel>
-        <TargetSystems systemsData={this.props.systemSupport}>
-          <Column
-            columnKey="cocoSupport"
-            header={t("Confidential Computing Capability")}
-            cell={(system: CoCoSystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
-          />
-        </TargetSystems>
-      </>
-    );
-  }
+  availableEnvironmentTypes: Record<string, string>;
 }
 
-export default CoCoSSMSettings;
+export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvironmentTypes }: Props): JSX.Element => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
+  const emptySettings = useMemo<Settings>(
+    () => ({
+      enabled: false,
+      environmentType: Object.keys(availableEnvironmentTypes)[0],
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {},
+    }),
+    [availableEnvironmentTypes]
+  );
+
+  function onSave(settingsPromise: Promise<Settings>): Promise<void> {
+    return settingsPromise
+      .then((data) =>
+        saveSsmCoCoSettings(
+          systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
+          data
+        )
+      )
+      .then(
+        (response) =>
+          setMessages(
+            response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
+          ),
+        (err) => setMessages(Network.responseErrorMessage(err))
+      );
+  }
+
+  return (
+    <>
+      <TopPanel title="Confidential Computing Settings">
+        <Messages items={messages} />
+        <CoCoSettingsForm
+          initialData={emptySettings}
+          saveHandler={onSave}
+          availableEnvironmentTypes={availableEnvironmentTypes}
+          showOnScheduleOption={false}
+        />
+      </TopPanel>
+      <TargetSystems systemsData={systemSupport}>
+        <Column
+          columnKey="cocoSupport"
+          header={t("Confidential Computing Capability")}
+          cell={(system: CoCoSystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
+        />
+      </TargetSystems>
+    </>
+  );
+};

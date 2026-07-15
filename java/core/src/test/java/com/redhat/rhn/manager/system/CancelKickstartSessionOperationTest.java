@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -39,6 +40,8 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
 
     @Test
     public void testOperation() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksession = KickstartSessionTest.createKickstartSession(k, user);
@@ -47,7 +50,7 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
         ksession.setAction(a);
         ActionFactory.save(a);
         KickstartFactory.saveKickstartData(k);
-        ksession = TestUtils.saveAndFlush(ksession);
+        TestUtils.saveAndFlush(ksession); //reassign variable if still needed
 
         CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(user, s.getId());
         dso.store();

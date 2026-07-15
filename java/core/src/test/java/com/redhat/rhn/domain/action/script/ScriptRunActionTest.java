@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -39,7 +39,7 @@ import java.util.GregorianCalendar;
  * ScriptActionTest
  * Test suite for ScriptAction and ScriptResult
  */
-public class ScriptRunActionTest extends RhnBaseTestCase {
+public class ScriptRunActionTest extends BaseTestCase {
 
     @Test
     public void testScriptAction() throws Exception {

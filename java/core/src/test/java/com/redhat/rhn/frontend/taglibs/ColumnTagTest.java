@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockPageContext;
@@ -35,7 +35,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * ColumnTagTest
  */
-public class ColumnTagTest extends RhnBaseTestCase {
+public class ColumnTagTest extends BaseTestCase {
 
     @Test
     public void testConstructor() {
@@ -155,7 +155,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         ct.setPageContext(mpc);
         tth.assertDoStartTag(Tag.SKIP_BODY);
         tth.assertDoEndTag(Tag.EVAL_BODY_INCLUDE);
-        //TODO: verify if this test is needed, followup with bug 458688
+        //OLDTODO: verify if this test is needed, followup with bug 458688
         RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
         String expected = String.format("<th><a class=\"js-spa\" title=\"Sort By This Column\" " +
                         "href=\"?order=desc&sort=sortProp&uid=%d\">**headervalue**</a></th>",

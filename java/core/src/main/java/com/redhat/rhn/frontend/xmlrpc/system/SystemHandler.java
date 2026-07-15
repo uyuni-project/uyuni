@@ -193,6 +193,7 @@ import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.attestation.AttestationDisabledException;
+import com.suse.manager.attestation.AttestationInputDataValidatorFactory;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
@@ -204,6 +205,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -938,7 +940,7 @@ public class SystemHandler extends BaseHandler {
                 SystemManager.subscribableChannels(server.getId(),
                 loggedInUser.getId(), baseChannel.getId());
 
-        //TODO: This should go away once we teach marquee how to deal with nulls in a list.
+        //OLDTODO: This should go away once we teach marquee how to deal with nulls in a list.
         //      Luckily, this list shouldn't be too long.
         for (Map<String, Object> row : dr) {
             Map<String, Object> channel = new HashMap<>();
@@ -5402,12 +5404,53 @@ public class SystemHandler extends BaseHandler {
      *     #item("KVM_AMD_EPYC_BERGAMO")
      *     #item("KVM_AMD_EPYC_SIENA")
      *     #item("KVM_AMD_EPYC_TURIN")
+     *     #item("KVM_IBM_Z16")
+     *     #item("KVM_IBM_Z17")
      *   #options_end()
      * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
      */
     public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
                                             Boolean attestOnBoot) {
+        return setCoCoAttestationConfig(loggedInUser, sid, enabled, environmentType, null, attestOnBoot);
+    }
+
+    /**
+     * Configure Confidential Compute Attestation for the given system
+     * @param loggedInUser the user
+     * @param sid the ID of the system
+     * @param enabled set the enabled state for Confidential Compute Attestation
+     * @param environmentType set the environment type of the system
+     * @param inputData the optional input data for the attestation
+     * @param attestOnBoot set if the attestation should be performed on system boot
+     * @return Returns 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Configure Confidential Compute Attestation for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
+     *   #options()
+     *     #item("KVM_AMD_EPYC_MILAN")
+     *     #item("KVM_AMD_EPYC_GENOA")
+     *     #item("KVM_AMD_EPYC_BERGAMO")
+     *     #item("KVM_AMD_EPYC_SIENA")
+     *     #item("KVM_AMD_EPYC_TURIN")
+     *     #item("KVM_IBM_Z16")
+     *     #item("KVM_IBM_Z17")
+     *   #options_end()
+     * @apidoc.param
+     *   #struct_begin("inputData")
+     *     #prop_desc("string", "secure_execution_header", "The Secure Execution Header file, encoded with Base64 (for
+     *          IBM_Z attestation only)")
+     *     #prop_desc("string", "host_key_document", "The Host Key Document certificate in PEM format (for IBM_Z
+     *          attestation only)")
+     *   #struct_end()
+     * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
+     * @apidoc.returntype #return_int_success()
+     */
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
+                                            Map<String, Object> inputData, Boolean attestOnBoot) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
 
@@ -5415,18 +5458,29 @@ public class SystemHandler extends BaseHandler {
             throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
         }
 
+        CoCoEnvironmentType environment = CoCoEnvironmentType.valueOf(environmentType);
+
+        // Validate the input data, if needed
+        var validator = AttestationInputDataValidatorFactory.forEnvironment(environment);
+        List<String> errors = validator.validate(inputData);
+        if (CollectionUtils.isNotEmpty(errors)) {
+            throw new InvalidParameterException(String.join("\n", errors));
+        }
+
         minionServer.getOptCocoAttestationConfig()
                 .ifPresentOrElse(
                         c -> {
                             c.setEnabled(enabled);
-                            c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                            c.setEnvironmentType(environment);
+                            c.setInData(Objects.requireNonNullElseGet(inputData, HashMap::new));
                             c.setAttestOnBoot(attestOnBoot);
                         },
                         () -> attestationManager.createConfig(
                             loggedInUser,
                             minionServer,
-                            CoCoEnvironmentType.valueOf(environmentType),
+                            environment,
                             enabled,
+                            inputData,
                             attestOnBoot
                         )
                 );
@@ -6819,7 +6873,7 @@ public class SystemHandler extends BaseHandler {
 
         // Set network device information to the server
         for (Map<String, String> map : netDevices) {
-            // FIXME: why do we need this?
+            // OLDTODO: why do we need this?
             CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
             device.setName(map.get("name"));
             device.setIpaddr(map.get("ip"));

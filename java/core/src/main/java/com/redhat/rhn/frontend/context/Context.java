@@ -34,7 +34,7 @@ public class Context {
     private String activeLocaleLabel;
     private TimeZone timezone;
 
-    private static ThreadLocal currentContext = new ThreadLocal();
+    private static final ThreadLocal<Context> CURRENT_CONTEXT = new ThreadLocal<>();
 
     private Context() {
     }
@@ -121,10 +121,10 @@ public class Context {
      */
     public static Context getCurrentContext() {
 
-        Context retval = (Context) currentContext.get();
+        Context retval = CURRENT_CONTEXT.get();
         if (retval == null) {
-            currentContext.set(new Context());
-            retval = (Context) currentContext.get();
+            CURRENT_CONTEXT.set(new Context());
+            retval =  CURRENT_CONTEXT.get();
         }
         return retval;
     }
@@ -134,7 +134,7 @@ public class Context {
      * executing thread
      */
     public static void freeCurrentContext() {
-        currentContext.set(null);
+        CURRENT_CONTEXT.remove();
     }
 
 }

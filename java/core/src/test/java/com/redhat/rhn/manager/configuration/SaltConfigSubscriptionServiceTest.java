@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
@@ -61,7 +62,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
         assertTrue(slsPath.toFile().exists());
-        assertContains(new String(Files.readAllBytes(slsPath)),
+        TestUtils.assertContains(new String(Files.readAllBytes(slsPath)),
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel1));
 
         // Test for server groups

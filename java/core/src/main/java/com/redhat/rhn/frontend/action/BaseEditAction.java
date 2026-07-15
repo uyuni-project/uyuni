@@ -111,7 +111,7 @@ public abstract class BaseEditAction extends RhnAction {
      * @param opr to process setters on.
      * @param form web form containing values
      * @param request the http servlet request
-     * @return TODO
+     * @return
      */
     protected abstract ValidatorError processCommandSetters(PersistOperation opr,
             DynaActionForm form, HttpServletRequest request);

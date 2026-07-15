@@ -219,7 +219,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         cs = TestUtils.saveAndReload(cs);
         c.getSources().add(cs);
         c = TestUtils.saveAndReload(c);
-        assertNotEmpty(c.getSources());
+        TestUtils.assertNotEmpty(c.getSources());
     }
 
     @Test

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ import java.util.Optional;
 /**
  * ApplyStatesActionResultTest
  */
-public class ApplyStatesActionResultTest extends RhnBaseTestCase {
+public class ApplyStatesActionResultTest extends BaseTestCase {
 
     /**
      * Tests getResult Method for invalid Output
@@ -54,21 +54,22 @@ public class ApplyStatesActionResultTest extends RhnBaseTestCase {
     public void testResultIsPresentForValidStateRun() throws AssertionError {
         ApplyStatesActionResult stateResult = new ApplyStatesActionResult();
 
-        String stdout  =
-                "cmd_|-date_|-date_|-run:\n" +
-                "    comment: Command \"date\" run\n" +
-                "    name: date\n" +
-                "    start_time: '08:17:16.063154'\n" +
-                "    result: true\n" +
-                "    duration: 36.353\n" +
-                "    __run_num__: 0.0\n" +
-                "    __sls__: manager_org_1.testchannel\n" +
-                "    changes:\n" +
-                "        pid: 1346.0\n" +
-                "        retcode: 0.0\n" +
-                "        stderr: ''\n" +
-                "        stdout: Wed Nov 28 08:17:16 CET 2018\n" +
-                "    __id__: date\n";
+        String stdout  = """
+                        cmd_|-date_|-date_|-run:
+                            comment: Command \"date\" run
+                            name: date
+                            start_time: '08:17:16.063154'
+                            result: true
+                            duration: 36.353
+                            __run_num__: 0.0
+                            __sls__: manager_org_1.testchannel
+                            changes:
+                                pid: 1346.0
+                                retcode: 0.0
+                                stderr: ''
+                                stdout: Wed Nov 28 08:17:16 CET 2018
+                            __id__: date
+                        """;
 
         stateResult.setOutput(stdout.getBytes(StandardCharsets.UTF_8));
 
