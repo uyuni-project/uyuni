@@ -168,7 +168,7 @@ public class PackageController {
     }
 
     private static Object channelPackages(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
+        PageControlHelper pageHelper = new PageControlHelper(request, "nvrea");
         PageControl pc = pageHelper.getPageControl();
 
         boolean source = request.params(":binary").equals("source");
@@ -186,10 +186,19 @@ public class PackageController {
                         "left join rhnPackage P on SRPM.id = P.source_rpm_id " +
                         "left join rhnChannelPackage CP on CP.package_id = P.id";
 
-                String packageFrom = "rhnPackage P left join rhnChannelPackage CP on CP.package_id = P.id";
+                String filterColumn = pc.getFilterColumn();
+                if ("nvrea".equals(filterColumn)) {
+                    pc.setFilterColumn(source ? "SRPM.name" : "PN.name");
+                }
 
-                DataResult<PackageOverview> packages = new PagedSqlQueryBuilder("id")
-                        .select("id")
+                String packageFrom = "rhnPackage P " +
+                        "inner join rhnPackageName PN on P.name_id = PN.id " +
+                        "left join rhnChannelPackage CP on CP.package_id = P.id";
+
+                String idColumn = source ? "PS.id" : "P.id";
+
+                DataResult<PackageOverview> packages = new PagedSqlQueryBuilder(idColumn)
+                        .select(idColumn + " AS id")
                         .from(source ? packageSourceFrom : packageFrom)
                         .where("org_id = :org_id AND CP.channel_id = :cid")
                         .run(Map.of("org_id", user.getOrg().getId(), "cid", cid), pc,
