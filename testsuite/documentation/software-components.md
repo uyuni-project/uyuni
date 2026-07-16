@@ -57,8 +57,12 @@ In order to enable this feature, you need to set the `QUALITY_INTELLIGENCE` envi
 
 * [`capybara`](https://github.com/teamcapybara/capybara) simulates user interaction with a web interface.
 It can rely on different drivers for different web browsers.
-* [`selenium-webdriver`](https://github.com/SeleniumHQ/selenium) is for automating web applications for testing purposes.
-We use `chromedriver` as driver, which offers access to the `Google Chrome` web browser run in headless mode.
+* [`capybara-playwright-driver`](https://github.com/YusukeIwaki/capybara-playwright-driver) is the Capybara driver we
+use to automate the browser. It wraps [`playwright-ruby-client`](https://github.com/YusukeIwaki/playwright-ruby-client)
+and drives a headless `Chromium` through [Playwright](https://playwright.dev/). One Chromium instance is auto-spawned
+per parallel worker (no Selenium, no chromedriver, no separate browser server).
+Playwright requires the Node.js `playwright` package and a Playwright-managed Chromium on the controller — see the
+controller setup notes in `documentation/playwright-controller-setup.md`.
 
 ### Standard Ruby Library
 

@@ -13,6 +13,18 @@ Apart from Cucumber, the test suite relies on a number of [software components](
 
 You can run the Uyuni test suite with [sumaform](https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#running-the-testsuite).
 
+## Browser automation (Playwright)
+
+The UI scenarios are driven by **Playwright** through the
+[`capybara-playwright-driver`](https://github.com/YusukeIwaki/capybara-playwright-driver) gem (replacing the previous
+Selenium / `chromedriver` backend). The Cucumber features and the Capybara DSL are unchanged — only the driver behind
+Capybara changed. Each parallel worker auto-spawns its own headless Chromium via the Node.js `playwright` package; there
+is no Selenium and no separate browser server.
+
+This means the controller needs the Node.js `playwright` CLI and a Playwright-managed Chromium installed alongside Ruby.
+See [Playwright controller setup](documentation/playwright-controller-setup.md) for the exact dependencies and how they
+are provisioned with Salt.
+
 ## Core features, idempotency and tests order
 
 The tests (features) mentioned in the YAML files inside the [run_sets](https://github.com/uyuni-project/uyuni/tree/master/testsuite/run_sets)

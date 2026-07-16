@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.6@sha256:b084d6e29d975ce9123fd52bd201ac020628797f2772e9171ef76f33cc92d591
+FROM docker.io/opensuse/leap:15.6@sha256:b084d6e29d975ce9123fd52bd201ac020628797f2772e9171ef76f33cc92d591
 # Ruby 3 devel repos
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
@@ -25,7 +25,6 @@ RUN zypper ref -f && \
       mozilla-nss-tools \
       postgresql14-devel \
       chromium \
-      chromedriver \
       libgbm-devel \
       npm \
       openssh-server \
@@ -54,6 +53,15 @@ RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
 RUN ruby -v
 RUN gem env
 
-# TODO: Adjust the URL/branch before merging!
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
+# Playwright CLI + Chromium for the Capybara Playwright driver.
+# NOTE: no --with-deps — Playwright only supports apt/dnf for OS deps, not zypper.
+# The distro `chromium` package (installed above) provides the required shared libraries.
+# Keep PLAYWRIGHT_VERSION aligned with the `playwright-ruby-client` gem pin in testsuite/Gemfile.
+ARG PLAYWRIGHT_VERSION=1.60.0
+RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
+    playwright install chromium
+ENV PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright
+
+ARG GEMFILE_BRANCH=master
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/${GEMFILE_BRANCH}/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
 RUN gem list

@@ -3,6 +3,7 @@ name: Controller Test Image
 on:
   push:
     branches:
+      - master
       - qe-develop
     paths:
       - '.github/workflows/build_controller_test_container.yml'
