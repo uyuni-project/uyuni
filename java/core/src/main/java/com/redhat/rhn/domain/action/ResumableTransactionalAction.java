@@ -13,12 +13,17 @@ package com.redhat.rhn.domain.action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
+import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.JsonElement;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Contract for transactional actions that continue with another Salt call
@@ -27,13 +32,36 @@ import java.util.Map;
 public interface ResumableTransactionalAction {
 
     /**
-     * Determine whether a successful Salt result completes this action.
+     * Determine whether a Salt result is from the prerequisite phase of this action.
+     *
+     * @param function Salt function used for the action
+     * @return true when the result is from the prerequisite phase
+     */
+    default boolean isTransactionalPrerequisiteResult(Optional<Xor<String[], String>> function) {
+        return TransactionalUpdateCalls.isApplyFunction(function);
+    }
+
+    /**
+     * Handle a transactional prerequisite result.
      *
      * @param serverAction server action receiving the result
      * @param jsonResult Salt result
-     * @return true when this is the final result of the action
      */
-    boolean isFinalResult(ServerAction serverAction, JsonElement jsonResult);
+    default void handleTransactionalPrerequisiteResult(ServerAction serverAction, JsonElement jsonResult) {
+        serverAction.getServer().asMinionServer().ifPresent(minionServer ->
+                serverAction.setResultMsg(TransactionalActionManager.handlePrerequisiteResult(
+                        minionServer.getId(),
+                        serverAction.getParentAction().getId(),
+                        jsonResult,
+                        serverAction.isStatusFailed())));
+    }
+
+    /**
+     * Get the state that continues this action after its prerequisite phase.
+     *
+     * @return state name to apply
+     */
+    String getPostPrerequisiteState();
 
     /**
      * Build the Salt calls that continue this action after its prerequisite phase.
@@ -41,6 +69,14 @@ public interface ResumableTransactionalAction {
      * @param minionSummaries minions for which the action is being resumed
      * @return Salt calls grouped by their target minions
      */
-    Map<LocalCall<?>, List<MinionSummary>> getPostPrerequisiteSaltCalls(
-            List<MinionSummary> minionSummaries);
+    default Map<LocalCall<?>, List<MinionSummary>> getPostPrerequisiteSaltCalls(
+            List<MinionSummary> minionSummaries) {
+        return Map.of(
+                State.apply(
+                        List.of(getPostPrerequisiteState()),
+                        Optional.empty(),
+                        Optional.of(true),
+                        Optional.empty()),
+                minionSummaries);
+    }
 }

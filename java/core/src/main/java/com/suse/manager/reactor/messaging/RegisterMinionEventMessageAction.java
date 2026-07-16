@@ -54,6 +54,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -315,10 +316,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
-     * Apply the states needed for regular start of an already registered minion
-     * @param minionId
-     * @param registeredMinion
-     * @param saltbootInitrd
+     * Apply the states needed for regular start of an already registered minion.
+     *
+     * @param minionId minion id
+     * @param registeredMinion registered minion
+     * @param saltbootInitrd true when saltboot initrd grain is set
+     * @param bootTime boot time reported by the minion, in seconds since epoch
      */
     private void applyMinionStartStates(String minionId, MinionServer registeredMinion,
                                         boolean saltbootInitrd, Optional<Long> bootTime) {
@@ -335,28 +338,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             saltApi.updateSystemInfo(minionTarget);
             scheduleCoCoAttestation(registeredMinion);
             schedulePackageListRefresh(registeredMinion);
-            resumePendingRebootActionIfNeeded(registeredMinion, bootTime);
+            TransactionalActionManager.resumePendingRebootActionsIfNeeded(registeredMinion, bootTime);
             // Check for pending SLES 16 migration verification
             scheduleSLES16VerificationIfNeeded(registeredMinion);
         }
-    }
-
-    private void resumePendingRebootActionIfNeeded(
-            MinionServer minion, Optional<Long> bootTime) {
-        Long pendingActionId = minion.getPendingRebootActionId();
-        Date pendingSetAt = minion.getPendingRebootSetAt();
-
-        if (pendingActionId == null || pendingSetAt == null || bootTime.isEmpty()) {
-            return;
-        }
-
-        long bootTimeMillis = bootTime.get() * 1000L;
-        if (bootTimeMillis <= pendingSetAt.getTime()) {
-            return;
-        }
-
-        MessageQueue.publish(new ResumeTransactionalActionEventMessage(
-                pendingActionId, minion.getId()));
     }
 
     /**

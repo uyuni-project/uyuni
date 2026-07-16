@@ -12,9 +12,11 @@ package com.suse.manager.webui.services;
 
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ import java.util.Optional;
  * Provides {@code transactional_update.apply} as a typed {@link LocalCall}.
  */
 public class TransactionalUpdateCalls {
+    private static final String APPLY_FUNCTION = "transactional_update.apply";
 
     private TransactionalUpdateCalls() {
     }
@@ -56,7 +59,19 @@ public class TransactionalUpdateCalls {
         Map<String, Object> kwargs = new LinkedHashMap<>();
         kwargs.put("mods", mods);
         pillar.ifPresent(p -> kwargs.put("pillar", p));
-        return new LocalCall<>("transactional_update.apply", Optional.empty(), Optional.of(kwargs),
+        return new LocalCall<>(APPLY_FUNCTION, Optional.empty(), Optional.of(kwargs),
                 new TypeToken<Map<String, State.ApplyResult>>() { });
+    }
+
+    /**
+     * Check whether the given Salt function is {@code transactional_update.apply}.
+     *
+     * @param function Salt function from a job return
+     * @return true when the job return was produced by transactional-update apply
+     */
+    public static boolean isApplyFunction(Optional<Xor<String[], String>> function) {
+        return function
+                .map(x -> x.fold(Arrays::asList, List::of).contains(APPLY_FUNCTION))
+                .orElse(false);
     }
 }

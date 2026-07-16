@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.ResumableTransactionalAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.logging.log4j.LogManager;
@@ -55,12 +56,14 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         if (action == null) {
             LOG.warn("Unable to resume transactional action {}: action not found",
                     message.getActionId());
+            markResumeFailed(message);
             return;
         }
 
         if (!(action instanceof ResumableTransactionalAction resumableAction)) {
             LOG.warn("Unable to resume action {}: action is not resumable",
                     message.getActionId());
+            markResumeFailed(message);
             return;
         }
 
@@ -74,6 +77,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         if (target.isEmpty()) {
             LOG.warn("Unable to resume transactional action {} for server {}: target not found",
                     message.getActionId(), message.getServerId());
+            markResumeFailed(message);
             return;
         }
 
@@ -81,8 +85,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
                 resumableAction, List.of(target.get()));
 
         if (result.get(true).contains(target.get())) {
-            MinionServerFactory.lookupById(message.getServerId())
-                    .ifPresent(minion -> minion.setPendingRebootActionId(null));
+            markPostScheduled(message);
             return;
         }
 
@@ -92,6 +95,15 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
             serverAction.setResultMsg(
                     "Unable to schedule the post-prerequisite Salt call.");
         }
+        markResumeFailed(message);
+    }
+
+    private void markPostScheduled(ResumeTransactionalActionEventMessage message) {
+        TransactionalActionManager.recordPostScheduled(message.getServerId(), message.getActionId());
+    }
+
+    private void markResumeFailed(ResumeTransactionalActionEventMessage message) {
+        TransactionalActionManager.recordPostFailed(message.getServerId(), message.getActionId());
     }
 
     @Override

@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
@@ -478,12 +479,19 @@ public class SaltUtils {
         }
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+        Optional<ResumableTransactionalAction> resumableAction =
+                TransactionalActionManager.getTransactionalPrerequisiteAction(action, function);
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", action.getId());
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
+            if (resumableAction.isPresent()) {
+                resumableAction.get().handleTransactionalPrerequisiteResult(serverAction, jsonResult);
+                LOG.debug("Finished update server action for action {}", action.getId());
+                return;
+            }
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
             if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
@@ -491,18 +499,19 @@ public class SaltUtils {
                 return;
             }
         }
-        else if (!(action instanceof ResumableTransactionalAction resumableAction) ||
-                resumableAction.isFinalResult(serverAction, jsonResult)) {
+        else if (resumableAction.isPresent()) {
+            serverAction.setCompletionTime(null);
+            resumableAction.get().handleTransactionalPrerequisiteResult(serverAction, jsonResult);
+            LOG.debug("Finished update server action for action {}", action.getId());
+            return;
+        }
+        else {
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusCompleted();
         }
-        else {
-            serverAction.setCompletionTime(null);
-        }
 
         Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
-                saltApi, systemQuery);
-
+                saltApi, systemQuery, function);
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
         LOG.debug("Finished update server action for action {}", action.getId());

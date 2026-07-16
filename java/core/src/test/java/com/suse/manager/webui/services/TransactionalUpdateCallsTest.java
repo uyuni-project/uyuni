@@ -14,9 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.utils.Xor;
 
 import org.junit.jupiter.api.Test;
 
@@ -64,5 +66,16 @@ public class TransactionalUpdateCallsTest {
     @Test
     public void testApplyRejectsEmptyMods() {
         assertThrows(IllegalArgumentException.class, () -> TransactionalUpdateCalls.apply(List.of()));
+    }
+
+    @Test
+    public void testTransactionalUpdateApplyFunctionIsDetected() {
+        assertTrue(TransactionalUpdateCalls.isApplyFunction(
+                Optional.of(Xor.right("transactional_update.apply"))));
+    }
+
+    @Test
+    public void testStateApplyFunctionIsNotDetectedAsTransactionalUpdateApply() {
+        assertFalse(TransactionalUpdateCalls.isApplyFunction(Optional.of(Xor.right("state.apply"))));
     }
 }

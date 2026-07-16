@@ -1804,16 +1804,19 @@ select event_id as id,
                AStat.name as history_status,
                AType.label as history_type,
                AType.name as history_type_name,
-               MTI.pending_reboot_action_id as pending_reboot_action_id
+               TAH.action_id as pending_reboot_action_id
           from rhnActionType AType,
                rhnActionStatus AStat,
                rhnAction A
      left join web_contact U
             on U.id = A.scheduler,
                rhnServerAction SA
-     left join suseMinionTransactionalInfo MTI
-            on MTI.minion_server_id = SA.server_id
-           and MTI.pending_reboot_action_id = SA.action_id
+     left join suseTransactionalActionHistory TAH
+           on TAH.minion_server_id = SA.server_id
+           and TAH.action_id = SA.action_id
+           and TAH.reboot_required = true
+           and TAH.reboot_status = 'PENDING'
+           and TAH.post_status = 'PENDING'
          where SA.server_id = :sid
            and SA.action_id = A.id
            and ATYPE.id = A.action_type

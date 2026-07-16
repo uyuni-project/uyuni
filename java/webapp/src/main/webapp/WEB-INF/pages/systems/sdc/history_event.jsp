@@ -74,6 +74,26 @@
         </div>
       </div>
     </li>
+    <c:if test="${not empty requestScope.transactionalProgressEntries}">
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-sm-2">
+          <strong><bean:message key="system.event.transactional"/></strong>
+        </div>
+        <div class="col-sm-10">
+          <c:forEach var="message" items="${requestScope.transactionalProgressEntries}">
+            <div>
+              <bean:message key="system.event.transactional.${message.step.key}.${message.status.key}"/>
+              <c:if test="${message.timestamped}">
+                <bean:message key="system.event.transactional.at"/>
+                <rhn:formatDate value="${message.date}"/>
+              </c:if>
+            </div>
+          </c:forEach>
+        </div>
+      </div>
+    </li>
+    </c:if>
     <li class="list-group-item">
       <div class="row">
         <div class="col-sm-2">

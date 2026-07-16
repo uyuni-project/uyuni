@@ -479,27 +479,6 @@ public class MinionServer extends Server implements SaltConfigurable {
         getOrCreateTransactionalInfo().setSnapshotDetails(snapshotDetailsIn);
     }
 
-    /**
-     * @return the action to resume after the next confirmed reboot, or null
-     */
-    public Long getPendingRebootActionId() {
-        return transactionalInfo != null ? transactionalInfo.getPendingRebootActionId() : null;
-    }
-
-    /**
-     * @param pendingRebootActionIdIn action to resume after reboot, or null to clear
-     */
-    public void setPendingRebootActionId(Long pendingRebootActionIdIn) {
-        getOrCreateTransactionalInfo().setPendingRebootActionId(pendingRebootActionIdIn);
-    }
-
-    /**
-     * @return when the pending reboot state was recorded, or null
-     */
-    public Date getPendingRebootSetAt() {
-        return transactionalInfo != null ? transactionalInfo.getPendingRebootSetAt() : null;
-    }
-
     private MinionTransactionalInfo getOrCreateTransactionalInfo() {
         if (transactionalInfo == null) {
             transactionalInfo = new MinionTransactionalInfo(this);

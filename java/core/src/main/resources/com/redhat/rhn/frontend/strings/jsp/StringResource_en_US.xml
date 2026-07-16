@@ -13149,6 +13149,84 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.event.transactional">
+          <source>Transactional progress:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisites.completed">
+          <source>Prerequisite states applied</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisites.failed">
+          <source>Prerequisite states failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisites.pending">
+          <source>Prerequisite states are pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.reboot.completed">
+          <source>System reboot detected</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.reboot.pending">
+          <source>Waiting for a system reboot before continuing</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.reboot.notNeeded">
+          <source>Reboot skipped because the prerequisite states made no changes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.execution.completed">
+          <source>Action execution completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.execution.failed">
+          <source>Action execution could not be queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.execution.pending">
+          <source>Action execution is waiting for the previous step</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.execution.notNeeded">
+          <source>Action execution will not run because a previous step failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.execution.scheduled">
+          <source>Action execution queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.at">
+          <source> at </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.event.time">
           <source>Time:</source>
         <context-group name="ctx">

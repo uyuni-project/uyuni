@@ -32,6 +32,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.JsonElement;
 
@@ -51,6 +52,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -494,23 +496,43 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         private final SaltUtils saltUtils;
         private final SaltApi saltApi;
         private final SystemQuery systemQuery;
+        private final Optional<Xor<String[], String>> function;
 
         /**
-         * @param retcodeIn
-         * @param successIn
-         * @param jidIn
-         * @param saltUtilsIn
-         * @param saltApiIn
-         * @param systemQueryIn
+         * Constructor for UpdateAuxArgs.
+         *
+         * @param retcodeIn return code
+         * @param successIn whether the action succeeded
+         * @param jidIn Salt job id
+         * @param saltUtilsIn Salt utilities
+         * @param saltApiIn Salt API
+         * @param systemQueryIn system query helper
          */
         public UpdateAuxArgs(long retcodeIn, boolean successIn, String jidIn, SaltUtils saltUtilsIn, SaltApi saltApiIn,
                              SystemQuery systemQueryIn) {
+            this(retcodeIn, successIn, jidIn, saltUtilsIn, saltApiIn, systemQueryIn, Optional.empty());
+        }
+
+        /**
+         * Constructor for UpdateAuxArgs.
+         *
+         * @param retcodeIn return code
+         * @param successIn whether the action succeeded
+         * @param jidIn Salt job id
+         * @param saltUtilsIn Salt utilities
+         * @param saltApiIn Salt API
+         * @param systemQueryIn system query helper
+         * @param functionIn salt function used for the action
+         */
+        public UpdateAuxArgs(long retcodeIn, boolean successIn, String jidIn, SaltUtils saltUtilsIn, SaltApi saltApiIn,
+                             SystemQuery systemQueryIn, Optional<Xor<String[], String>> functionIn) {
             retcode = retcodeIn;
             success = successIn;
             jid = jidIn;
             saltUtils = saltUtilsIn;
             saltApi = saltApiIn;
             systemQuery = systemQueryIn;
+            function = functionIn;
         }
 
         public long getRetcode() {
@@ -535,6 +557,10 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
 
         public SystemQuery getSystemQuery() {
             return systemQuery;
+        }
+
+        public Optional<Xor<String[], String>> getFunction() {
+            return function;
         }
     }
 
@@ -678,4 +704,3 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
 }
-
