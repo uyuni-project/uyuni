@@ -50,10 +50,9 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
             "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run";
     public static final String PKG_PROFILE_SNAPPER_LIST_SNAPSHOTS =
-            "cmd_|-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run";
+            SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS;
     public static final String PKG_PROFILE_GET_ACTIVE_SNAPSHOT =
-            "cmd_|-get-active-snapshot_|-" +
-            "awk '$5==\"/\" {print $4}' /proc/1/mountinfo | grep -oP '\\.snapshots/\\K\\d+'_|-run";
+            SnapshotRefreshSlsResult.GET_ACTIVE_SNAPSHOT;
 
     @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();

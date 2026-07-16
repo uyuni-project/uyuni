@@ -252,10 +252,10 @@ public class PackageRefreshListAction extends PackageAction {
             }
         }
 
-        ServerFactory.save(server);
-
         // Update Btrfs snapshot information for transactional systems.
-        updateSnapshotInfo(server, result.getSnapperRawStdout(), result.getActiveSnapshotNumber());
+        BtrfsSnapshotUtils.updateSnapshotInfo(server, result.getSnapperRawStdout(), result.getActiveSnapshotNumber());
+
+        ServerFactory.save(server);
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
@@ -264,27 +264,6 @@ public class PackageRefreshListAction extends PackageAction {
 
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
-    }
-
-    /**
-     * Parse Btrfs snapshot information from raw snapper JSON and persist it in the MinionServer entity.
-     *
-     * @param server              the minion server to update
-     * @param rawJson             raw stdout
-     * @param activeSnapshotNum   real active snapshot number
-     */
-    private void updateSnapshotInfo(MinionServer server,
-                                    Optional<String> rawJson,
-                                    Optional<Long> activeSnapshotNum) {
-        BtrfsSnapshotUtils.parse(rawJson, activeSnapshotNum).ifPresent(result -> {
-            server.setActiveSnapshot(result.getActiveSnapshot());
-            server.setDefaultSnapshot(result.getDefaultSnapshot());
-            server.setSnapshots(result.getSnapshotNumbers().toArray(Long[]::new));
-            server.setSnapshotDetails(result.getDetailsJsonString());
-            LOG.debug("Updated snapshot info for minion {}: active={}, default={}, all={}",
-                    server.getMinionId(), result.getActiveSnapshot(),
-                    result.getDefaultSnapshot(), result.getSnapshotNumbers());
-        });
     }
 
     /**

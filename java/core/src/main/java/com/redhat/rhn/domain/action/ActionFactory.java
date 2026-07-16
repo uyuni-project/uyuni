@@ -616,6 +616,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_VIRT_PROFILE_REFRESH)) {
             retval = new VirtualInstanceRefreshAction();
         }
+        else if (typeIn.equals(TYPE_SNAPSHOTS_REFRESH_LIST)) {
+            retval = new SnapshotRefreshAction();
+        }
         else {
             retval = new Action();
         }
@@ -1547,5 +1550,9 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRT_PROFILE_REFRESH = lookupActionTypeByLabel("virt.refresh_list");
 
-}
+    /**
+     * The constant representing "Refresh Snapshots" [ID:528]
+     */
+    public static final ActionType TYPE_SNAPSHOTS_REFRESH_LIST = lookupActionTypeByLabel("snapshots.refresh_list");
 
+}

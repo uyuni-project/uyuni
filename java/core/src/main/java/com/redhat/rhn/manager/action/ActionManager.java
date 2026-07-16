@@ -1407,6 +1407,26 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedule a Btrfs snapshot refresh action against a system.
+     *
+     * @param scheduler      User scheduling the action
+     * @param server         Server for which the action affects
+     * @param earliestAction date to run the action
+     * @return the scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     */
+    public static Action scheduleSnapshotRefreshAction(User scheduler, Server server, Date earliestAction)
+            throws TaskomaticApiException {
+        checkSaltOrManagementEntitlement(server.getId());
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_SNAPSHOTS_REFRESH_LIST, scheduler,
+                earliestAction);
+        ActionFactory.createAddServerAction(server, action);
+        ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
+
+    /**
      * Schedule a scheduleHardwareRefreshAction against a system or systems
      *
      * @param scheduler      User scheduling the action.

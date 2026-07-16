@@ -479,6 +479,20 @@ public class MinionServer extends Server implements SaltConfigurable {
         getOrCreateTransactionalInfo().setSnapshotDetails(snapshotDetailsIn);
     }
 
+    /**
+     * @return when the Btrfs snapshot information was last updated, or null
+     */
+    public Date getSnapshotUpdated() {
+        return transactionalInfo != null ? transactionalInfo.getSnapshotUpdated() : null;
+    }
+
+    /**
+     * @param snapshotUpdatedIn when the Btrfs snapshot information was last updated
+     */
+    public void setSnapshotUpdated(Date snapshotUpdatedIn) {
+        getOrCreateTransactionalInfo().setSnapshotUpdated(snapshotUpdatedIn);
+    }
+
     private MinionTransactionalInfo getOrCreateTransactionalInfo() {
         if (transactionalInfo == null) {
             transactionalInfo = new MinionTransactionalInfo(this);

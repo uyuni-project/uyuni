@@ -12,6 +12,7 @@ package com.redhat.rhn.domain.server;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
@@ -54,6 +55,9 @@ public class MinionTransactionalInfo implements Serializable {
     // Each entry: {"number": N, "active": bool, "default": bool, "description": "...", "date": "..."}
     @Column(name = "snapshot_details")
     private String snapshotDetails;
+
+    @Column(name = "snapshot_updated")
+    private Date snapshotUpdated;
 
     /**
      * Default constructor required by Hibernate.
@@ -136,6 +140,20 @@ public class MinionTransactionalInfo implements Serializable {
      */
     public void setSnapshotDetails(String snapshotDetailsIn) {
         this.snapshotDetails = snapshotDetailsIn;
+    }
+
+    /**
+     * @return when the snapshot information was last updated, or null
+     */
+    public Date getSnapshotUpdated() {
+        return snapshotUpdated;
+    }
+
+    /**
+     * @param snapshotUpdatedIn when the snapshot information was last updated
+     */
+    public void setSnapshotUpdated(Date snapshotUpdatedIn) {
+        this.snapshotUpdated = snapshotUpdatedIn;
     }
 
 }

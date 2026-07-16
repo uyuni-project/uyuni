@@ -10,6 +10,8 @@
  */
 package com.suse.manager.reactor.utils;
 
+import com.redhat.rhn.domain.server.MinionServer;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -19,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -173,5 +176,26 @@ public class BtrfsSnapshotUtils {
         }
 
         return Optional.of(new ParseResult(activeSnapshot, defaultSnapshot, snapshotNumbers, details));
+    }
+
+    /**
+     * Parse and persist Btrfs snapshot information in the minion transactional info.
+     *
+     * @param server            the minion server to update
+     * @param rawJson           raw stdout from {@code snapper --json --no-dbus list}
+     * @param activeSnapshotNum real active snapshot number
+     */
+    public static void updateSnapshotInfo(MinionServer server, Optional<String> rawJson,
+                                          Optional<Long> activeSnapshotNum) {
+        parse(rawJson, activeSnapshotNum).ifPresent(result -> {
+            server.setActiveSnapshot(result.getActiveSnapshot());
+            server.setDefaultSnapshot(result.getDefaultSnapshot());
+            server.setSnapshots(result.getSnapshotNumbers().toArray(Long[]::new));
+            server.setSnapshotDetails(result.getDetailsJsonString());
+            server.setSnapshotUpdated(new Date());
+            LOG.debug("Updated snapshot info for minion {}: active={}, default={}, all={}",
+                    server.getMinionId(), result.getActiveSnapshot(),
+                    result.getDefaultSnapshot(), result.getSnapshotNumbers());
+        });
     }
 }

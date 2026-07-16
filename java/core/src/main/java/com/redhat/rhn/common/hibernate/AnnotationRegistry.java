@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.RollbackAction;
 import com.redhat.rhn.domain.action.RollbackConfigAction;
 import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
+import com.redhat.rhn.domain.action.SnapshotRefreshAction;
 import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
 import com.redhat.rhn.domain.action.Up2DateConfigUpdateAction;
 import com.redhat.rhn.domain.action.VirtualInstanceRefreshAction;
@@ -738,6 +739,7 @@ public class AnnotationRegistry {
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SourceRpm.class,
+            SnapshotRefreshAction.class,
             SslContentSource.class,
             SslCryptoKey.class,
             State.class,
