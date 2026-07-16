@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.impl.channel.software;
+package com.suse.manager.channel.software;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static com.suse.utils.Predicates.allProvided;
@@ -25,7 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.spec.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncRequest;
 
 import java.util.Date;
 

@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.impl.channel.software;
+package com.suse.manager.channel.software;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptyList;
@@ -32,9 +32,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.spec.channel.software.dto.ErrataCriteria;
-import com.suse.spec.channel.software.dto.SyncOperation;
-import com.suse.spec.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.ErrataCriteria;
+import com.suse.manager.channel.software.dto.SyncOperation;
+import com.suse.manager.channel.software.dto.SyncRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

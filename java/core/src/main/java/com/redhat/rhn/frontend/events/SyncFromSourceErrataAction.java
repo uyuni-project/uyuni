@@ -13,8 +13,8 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 
-import com.suse.impl.channel.software.SyncFromSourceServiceImpl;
-import com.suse.spec.channel.software.SyncFromSourceService;
+import com.suse.manager.channel.software.SyncFromSourceService;
+import com.suse.manager.channel.software.SyncFromSourceServiceImpl;
 
 /**
  * CloneErrataAction

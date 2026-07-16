@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.spec.channel.software.dto;
+package com.suse.manager.channel.software.dto;
 
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;

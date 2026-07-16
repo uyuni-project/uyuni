@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.impl.channel.software;
+package com.suse.manager.channel.software;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -33,10 +33,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.MessageQueueSpy;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.spec.channel.software.dto.ErrataCriteria;
-import com.suse.spec.channel.software.dto.SyncOperation;
-import com.suse.spec.channel.software.dto.SyncRequest;
-import com.suse.spec.channel.software.dto.SyncResponse;
+import com.suse.manager.channel.software.dto.ErrataCriteria;
+import com.suse.manager.channel.software.dto.SyncOperation;
+import com.suse.manager.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

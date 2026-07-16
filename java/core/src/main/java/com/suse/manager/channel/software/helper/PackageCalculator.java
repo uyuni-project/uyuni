@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.impl.channel.software.helper;
+package com.suse.manager.channel.software.helper;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 

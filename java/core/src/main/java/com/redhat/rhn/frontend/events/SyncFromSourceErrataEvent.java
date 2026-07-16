@@ -19,7 +19,7 @@ import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
-import com.suse.spec.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncRequest;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

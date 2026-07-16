@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.impl.channel.software;
+package com.suse.manager.channel.software;
 
 import static com.redhat.rhn.common.ErrorReportingStrategies.logReportingStrategy;
 import static com.redhat.rhn.common.ErrorReportingStrategies.rpcValidationReportingStrategy;
@@ -27,9 +27,8 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
-import com.suse.spec.channel.software.SyncFromSourceService;
-import com.suse.spec.channel.software.dto.SyncRequest;
-import com.suse.spec.channel.software.dto.SyncResponse;
+import com.suse.manager.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

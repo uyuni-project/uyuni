@@ -13,8 +13,8 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 
-import com.suse.impl.channel.software.SyncFromOriginalServiceImpl;
-import com.suse.spec.channel.software.SyncFromOriginalService;
+import com.suse.manager.channel.software.SyncFromOriginalService;
+import com.suse.manager.channel.software.SyncFromOriginalServiceImpl;
 
 /**
  * SyncFromOriginalErrataAction - executes async errata cloning from original channel

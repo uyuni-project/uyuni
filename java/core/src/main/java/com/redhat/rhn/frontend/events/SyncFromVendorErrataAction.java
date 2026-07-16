@@ -13,8 +13,8 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 
-import com.suse.impl.channel.software.SyncFromVendorServiceImpl;
-import com.suse.spec.channel.software.SyncFromVendorService;
+import com.suse.manager.channel.software.SyncFromVendorService;
+import com.suse.manager.channel.software.SyncFromVendorServiceImpl;
 
 /**
  * SyncFromVendorErrataAction - executes async vendor errata cloning

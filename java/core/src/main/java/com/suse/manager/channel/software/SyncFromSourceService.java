@@ -8,26 +8,26 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.spec.channel.software;
+package com.suse.manager.channel.software;
 
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.spec.channel.software.dto.SyncRequest;
-import com.suse.spec.channel.software.dto.SyncResponse;
+import com.suse.manager.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncResponse;
 
 /**
- * Facade for syncing erratas/packages from vendor channels.
- * Used when cloning vendor erratas into user channels.
+ * Facade for syncing erratas/packages from an explicit source channel.
  */
-public interface SyncFromVendorService {
+public interface SyncFromSourceService {
 
     /**
-     * Syncs erratas and/or packages from vendor channels to target channel
+     * Syncs erratas and/or packages from source channel to target channel
      *
      * @param user User performing the operation
+     * @param sourceChannelLabel Label of source channel
      * @param targetChannelLabel Label of target channel
      * @param request Sync request with operation type and filters
-     * @return Response containing cloned erratas and packages
+     * @return Response containing merged erratas and packages
      */
-    SyncResponse sync(User user, String targetChannelLabel, SyncRequest request);
+    SyncResponse sync(User user, String sourceChannelLabel, String targetChannelLabel, SyncRequest request);
 }

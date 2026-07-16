@@ -65,18 +65,18 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.impl.channel.software.SyncFromOriginalServiceImpl;
-import com.suse.impl.channel.software.SyncFromVendorServiceImpl;
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.channel.software.SyncFromOriginalService;
+import com.suse.manager.channel.software.SyncFromOriginalServiceImpl;
+import com.suse.manager.channel.software.SyncFromVendorService;
+import com.suse.manager.channel.software.SyncFromVendorServiceImpl;
+import com.suse.manager.channel.software.dto.ErrataCriteria;
+import com.suse.manager.channel.software.dto.SyncOperation;
+import com.suse.manager.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncResponse;
 import com.suse.manager.errata.ErrataParserFactory;
 import com.suse.manager.errata.ErrataParsingException;
 import com.suse.manager.errata.VendorSpecificErrataParser;
-import com.suse.spec.channel.software.SyncFromOriginalService;
-import com.suse.spec.channel.software.SyncFromVendorService;
-import com.suse.spec.channel.software.dto.ErrataCriteria;
-import com.suse.spec.channel.software.dto.SyncOperation;
-import com.suse.spec.channel.software.dto.SyncRequest;
-import com.suse.spec.channel.software.dto.SyncResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
