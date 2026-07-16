@@ -21,22 +21,23 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
-    And I choose "current"
+    And I choose "original"
     And I click on "Clone Channel"
+    And I enter "Fake-Clone-RPM-SLES15SP7-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
-    And I should see a "Current state of the channel" text
+    And I should see a "Original state of the channel" text
     And I click on "Clone Channel"
-    Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
+    Then I should see a "Fake-Clone-RPM-SLES15SP7-Channel" text
 
   Scenario: Verify cloned channel has packages (A-06)
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake-RPM-SUSE-Channel"
-    And I follow "Packages"
-    Then I should see a "Package List" text
-    And I should see package "andromeda-dummy"
+    And I follow "Fake-Clone-RPM-SLES15SP7-Channel"
+    And I follow "Patches" in the content area
+    And I follow "List/Remove Patches"
+    Then I should see a "There are no patches associated with this channel." text
 
   Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
-    When I configure hub to sync channel "clone-fake-rpm-suse-channel" to "server2"
+    When I configure hub to sync channel "clone-fake-base-channel-suse-like" to "server2"
     Then I should see a "Channel configuration updated" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
@@ -45,11 +46,11 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Background" text
 
   Scenario: Wait for cloned channel to appear on server2 (A-06)
-    When I wait at most 600 seconds until channel "clone-fake-rpm-suse-channel" has been synced on "server2"
-    Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
+    When I wait at most 600 seconds until channel "clone-fake-base-channel-suse-like" has been synced on "server2"
+    Then channel "clone-fake-base-channel-suse-like" should exist on "server2"
 
   Scenario: Verify cloned channel on server2 has expected packages (A-06)
-    Then channel "clone-fake-rpm-suse-channel" on "server2" should have "4" packages
+    Then channel "clone-fake-base-channel-suse-like" on "server2" should have "4" packages
 
   Scenario: Create a custom channel on hub for org-mapping test (A-06)
     When I follow the left menu "Software > Manage > Channels"
