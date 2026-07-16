@@ -19,6 +19,9 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
+%global         pvattest_arch x86_64 s390x
+%global         snpguest_arch x86_64
+
 Name:           uyuni-coco-attestation
 Version:        5.2.6
 Release:        0
@@ -52,7 +55,7 @@ BuildArch:      noarch
 %description core
 System daemon used by %{productprettyname} to validate the results of confidential computing attestation.
 
-%ifarch x86_64
+%ifarch %{pvattest_arch}
 %package module-pvattest
 Summary:        Confidential computing Pvattest attestation module for %{productprettyname}
 Requires:       s390-tools
@@ -61,7 +64,7 @@ Requires:       s390-tools
 Module for the %{productprettyname} Confidential Computing Attestation that uses Pvattest.
 %endif
 
-%ifarch x86_64
+%ifarch %{snpguest_arch}
 %package module-snpguest
 Summary:        Confidential computing SNPGuest attestation module for %{productprettyname}
 Requires:       snpguest
@@ -86,13 +89,11 @@ Package containing the Javadoc API documentation for %{name}.
 %prep
 %setup -q
 
-%ifnarch x86_64
-# Disable the module pvattest as it requires x86_64
+%ifnarch %{pvattest_arch}
 %pom_disable_module 'attestation-module-pvattest'
 %endif
 
-%ifnarch x86_64
-# Disable the module snpguest as it requires x86_64
+%ifnarch %{snpguest_arch}
 %pom_disable_module 'attestation-module-snpguest'
 %endif
 
@@ -125,6 +126,7 @@ install -d -m 755 %{buildroot}%{_datadir}/coco-attestation/
 install -d -m 755 %{buildroot}%{_datadir}/coco-attestation/classes
 install -d -m 755 %{buildroot}%{_datadir}/coco-attestation/conf
 install -d -m 755 %{buildroot}%{_datadir}/coco-attestation/lib
+install -d -m 755 %{buildroot}%{_datadir}/coco-attestation/certs
 
 # Required files
 install -p -m 755 attestation-core/src/package/coco-attestation.sh %{buildroot}%{_sbindir}/coco-attestation
@@ -137,7 +139,7 @@ build-jar-repository -s -p %{buildroot}%{_datadir}/coco-attestation/lib uyuni-ja
 # Link all the attestation jars built and installed by maven
 ln -s -f -r %{buildroot}%{_javadir}/uyuni-coco-attestation/*.jar %{buildroot}%{_datadir}/coco-attestation/lib
 
-%ifarch x86_64
+%ifarch %{snpguest_arch}
 # Install snpguest certificates
 cd attestation-module-snpguest/src/package/certs/snpguest
 for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
@@ -147,7 +149,7 @@ done
 cd -
 %endif
 
-%ifarch x86_64
+%ifarch %{pvattest_arch}
 # Install pvattest certificate
 install  -D -p -m 644 attestation-module-pvattest/src/package/certs/pvattest/DigiCertCA.pem  %{buildroot}%{_datadir}/coco-attestation/certs/pvattest/DigiCertCA.pem
 %endif
@@ -167,7 +169,7 @@ install  -D -p -m 644 attestation-module-pvattest/src/package/certs/pvattest/Dig
 # Exclude all modules jars, will be part of their specific packages
 %exclude %{_datadir}/coco-attestation/lib/attestation-module-*
 
-%ifarch x86_64
+%ifarch %{pvattest_arch}
 %files module-pvattest -f .mfiles-module-pvattest
 %dir %{_datadir}/coco-attestation/certs/pvattest/
 %{_datadir}/coco-attestation/lib/attestation-module-pvattest.jar
@@ -175,7 +177,7 @@ install  -D -p -m 644 attestation-module-pvattest/src/package/certs/pvattest/Dig
 %license LICENSE
 %endif
 
-%ifarch x86_64
+%ifarch %{snpguest_arch}
 %files module-snpguest -f .mfiles-module-snpguest
 %dir %{_datadir}/coco-attestation/certs/snpguest/
 %{_datadir}/coco-attestation/lib/attestation-module-snpguest.jar
