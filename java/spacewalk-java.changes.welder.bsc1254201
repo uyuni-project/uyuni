@@ -1,0 +1,2 @@
+- Fix CLM not propagating new AppStream module
+  versions to cloned channels (bsc#1254201)
