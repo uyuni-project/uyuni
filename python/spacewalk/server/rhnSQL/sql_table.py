@@ -302,4 +302,3 @@ class Table:
 
     def printcache(self):
         print(self.__cache)
-        return

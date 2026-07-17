@@ -145,7 +145,7 @@ class SatelliteCert:
     ]
     fields_list = {"channel-families": ChannelFamily}
 
-    # datesFormat_cert = '%a %b %d %H:%M:%S %Y' ## OLD CERT FORMAT
+    # OLD CERT FORMAT: datesFormat_cert = '%a %b %d %H:%M:%S %Y'
     # pylint: disable-next=invalid-name
     datesFormat_cert = "%Y-%m-%d %H:%M:%S"
     # pylint: disable-next=invalid-name

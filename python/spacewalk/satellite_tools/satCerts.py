@@ -69,12 +69,10 @@ def get_all_orgs():
     return rows or []
 
 
-_queryLookupOrgId = rhnSQL.Statement(
-    """
+_queryLookupOrgId = rhnSQL.Statement("""
     SELECT id
       FROM web_customer
-"""
-)
+""")
 
 #
 # SSL CA certificate section
@@ -125,7 +123,6 @@ def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0, verbo
         # print 'found existing certificate - id:', rhn_cryptokey_id
         # NUKE IT!
         if deleteRowYN:
-            # print 'found a cert, nuking it! id:', rhn_cryptokey_id
             h = rhnSQL.prepare("delete from rhnCryptoKey where id=:rhn_cryptokey_id")
             h.execute(rhn_cryptokey_id=rhn_cryptokey_id)
             # rhnSQL.commit()
@@ -145,7 +142,6 @@ def _insertPrep_rhnCryptoKey(rhn_cryptokey_id, description, org_id):
     #       bugzilla: 120297 - and no I don't like it.
     rhn_cryptokey_id_seq = rhnSQL.Sequence("rhn_cryptokey_id_seq")
     rhn_cryptokey_id = rhn_cryptokey_id_seq.next()
-    # print 'no cert found, new one with id:', rhn_cryptokey_id
     h = rhnSQL.prepare(_queryInsertCryptoCertInfo)
     # ...insert
     h.execute(rhn_cryptokey_id=rhn_cryptokey_id, description=description, org_id=org_id)
@@ -230,17 +226,14 @@ def delete_rhnCryptoKey_null_org(description_prefix):
     h.execute(description_prefix=description_prefix)
 
 
-_queryDeleteCryptoCertInfoNullOrg = rhnSQL.Statement(
-    """
+_queryDeleteCryptoCertInfoNullOrg = rhnSQL.Statement("""
     DELETE FROM rhnCryptoKey ck
     WHERE ck.description LIKE :description_prefix || '%%'
       AND ck.crypto_key_type_id = (SELECT id FROM rhnCryptoKeyType WHERE label = 'SSL')
       AND ck.org_id is NULL
-"""
-)
+""")
 
-_querySelectCryptoCertInfo = rhnSQL.Statement(
-    """
+_querySelectCryptoCertInfo = rhnSQL.Statement("""
     SELECT ck.id, ck.description, ckt.label as type_label, ck.key
       FROM rhnCryptoKeyType ckt,
            rhnCryptoKey ck
@@ -248,11 +241,9 @@ _querySelectCryptoCertInfo = rhnSQL.Statement(
        AND ckt.id = ck.crypto_key_type_id
        AND ck.description = :description
        AND ck.org_id = :org_id
-"""
-)
+""")
 
-_querySelectCryptoCertInfoNullOrg = rhnSQL.Statement(
-    """
+_querySelectCryptoCertInfoNullOrg = rhnSQL.Statement("""
     SELECT ck.id, ck.description, ckt.label as type_label, ck.key
       FROM rhnCryptoKeyType ckt,
            rhnCryptoKey ck
@@ -260,18 +251,15 @@ _querySelectCryptoCertInfoNullOrg = rhnSQL.Statement(
        AND ckt.id = ck.crypto_key_type_id
        AND ck.description = :description
        AND ck.org_id is NULL
-"""
-)
+""")
 
-_queryInsertCryptoCertInfo = rhnSQL.Statement(
-    """
+_queryInsertCryptoCertInfo = rhnSQL.Statement("""
     INSERT into rhnCryptoKey
            (id, org_id, description, crypto_key_type_id, key)
     SELECT :rhn_cryptokey_id, :org_id, :description, ckt.id, empty_blob()
       FROM rhnCryptoKeyType ckt
      WHERE ckt.label = 'SSL'
-"""
-)
+""")
 
 
 def _test_store_rhnCryptoKey(caCert):

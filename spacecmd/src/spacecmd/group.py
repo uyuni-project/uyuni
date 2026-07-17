@@ -75,7 +75,7 @@ def do_group_addsystems(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_addsystems()
@@ -132,7 +132,7 @@ def do_group_removesystems(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_removesystems()
@@ -169,8 +169,6 @@ def do_group_removesystems(self, args):
         print(_("No systems found"))
         return 1
 
-    return None
-
 
 ####################
 
@@ -184,7 +182,7 @@ def do_group_create(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if args:
         name = args[0]
@@ -217,7 +215,7 @@ def do_group_delete(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_delete()
@@ -240,16 +238,12 @@ def do_group_delete(self, args):
 
 def help_group_backup(self):
     print(_("group_backup: backup a system group"))
-    print(
-        _(
-            """usage: group_backup <NAME> [OUTDIR])
+    print(_("""usage: group_backup <NAME> [OUTDIR])
                     group_backup ALL
 
 "OUTDIR" defaults to $HOME/spacecmd-backup/group/YYYY-MM-DD/NAME
 "ALL" is a keyword and collects all groups
-"""
-        )
-    )
+"""))
 
 
 def complete_group_backup(self, text, line, beg, end):
@@ -262,7 +256,7 @@ def do_group_backup(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_backup()
@@ -314,9 +308,7 @@ def do_group_backup(self, args):
 
 def help_group_restore(self):
     print(_("group_restore: restore a system group"))
-    print(
-        _(
-            """
+    print(_("""
 usage: group_restore INPUTDIR [NAME] ...
        group_restore INPUTDIR ALL
        group_restore INPUTDIR
@@ -324,9 +316,7 @@ usage: group_restore INPUTDIR [NAME] ...
 
 Specifying only INPUTDIR will default to ALL groups.
 Setting dot (.) instead of full INPUTDIR will imply current directory.
-    """
-        )
-    )
+    """))
 
 
 def complete_group_restore(self, text, line, beg, end):
@@ -516,7 +506,7 @@ def do_group_listsystems(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_group_listsystems()
@@ -555,7 +545,7 @@ def do_group_details(self, args, short=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_details()
@@ -616,7 +606,7 @@ def do_group_listconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_listconfigchannels()
@@ -673,7 +663,7 @@ def do_group_addconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, _) = parse_command_arguments(args, arg_parser)
+    args, _ = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_addconfigchannels()
@@ -711,7 +701,7 @@ def do_group_removeconfigchannels(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, _) = parse_command_arguments(args, arg_parser)
+    args, _ = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_group_removeconfigchannels()

@@ -51,7 +51,6 @@ from spacewalk.common.rhnTranslate import _
 from uyuni.common.rhnLib import parseRPMName
 from uyuni.common.usix import raise_with_tb
 
-
 PKG_LIST_DIR = os.path.join(CFG.PKG_DIR, "list")
 PREFIX = "rhn"
 
@@ -585,7 +584,7 @@ def isDebianArch(arch):
     """
     Returns true if the given arch string represents a Debian architecture..
     """
-    return arch[-4:] == "-deb"
+    return arch.endswith("-deb")
 
 
 # pylint: disable-next=invalid-name

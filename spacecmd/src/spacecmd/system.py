@@ -116,7 +116,7 @@ def print_package_comparison(self, results):
 def manipulate_child_channels(self, args, remove=False):
     arg_parser = get_argument_parser()
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         if remove:
@@ -174,8 +174,6 @@ def manipulate_child_channels(self, args, remove=False):
 
         self.client.system.setChildChannels(self.session, system_id, child_channels)
 
-    return
-
 
 ####################
 
@@ -210,14 +208,10 @@ def do_system_list(self, args, doreturn=False):
 
 def help_system_reboot(self):
     print(_("system_reboot: Reboot a system"))
-    print(
-        _(
-            """usage: system_reboot <SYSTEMS> [options])
+    print(_("""usage: system_reboot <SYSTEMS> [options])
 
 options:
-  -s START_TIME"""
-        )
-    )
+  -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -233,7 +227,7 @@ def do_system_reboot(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_reboot()
@@ -301,7 +295,7 @@ def do_system_search(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_system_search()
@@ -311,7 +305,7 @@ def do_system_search(self, args, doreturn=False):
 
     if re.search(":", query):
         try:
-            (field, value) = query.split(":")
+            field, value = query.split(":")
         except ValueError:
             logging.error(_N("Invalid query"))
             return []
@@ -385,9 +379,7 @@ def do_system_search(self, args, doreturn=False):
 def help_system_runscript(self):
     print(_("system_runscript: Schedule a script to run on the list of"))
     print(_("                  systems provided"))
-    print(
-        _(
-            """usage: system_runscript <SYSTEMS> [options])
+    print(_("""usage: system_runscript <SYSTEMS> [options])
 
 options:
   -u USER
@@ -395,9 +387,7 @@ options:
   -t TIMEOUT
   -s START_TIME
   -l LABEL
-  -f FILE"""
-        )
-    )
+  -f FILE"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
     print("")
@@ -417,7 +407,7 @@ def do_system_runscript(self, args):  # pylint: disable=too-many-return-statemen
     arg_parser.add_argument("-l", "--label")
     arg_parser.add_argument("-f", "--file")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_runscript()
@@ -469,7 +459,7 @@ def do_system_runscript(self, args):  # pylint: disable=too-many-return-statemen
             script_contents = read_file(os.path.abspath(options.file))
         else:
             # have the user write their script
-            (script_contents, options.file) = editor("#!/bin/bash")
+            script_contents, options.file = editor("#!/bin/bash")
             keep_script_file = False
 
         if not script_contents:
@@ -606,7 +596,7 @@ def complete_system_listhardware(self, text, line, beg, end):
 def do_system_listhardware(self, args):
     arg_parser = get_argument_parser()
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listhardware()
@@ -734,14 +724,10 @@ def do_system_listhardware(self, args):
 
 def help_system_installpackage(self):
     print(_("system_installpackage: Install a package on a system"))
-    print(
-        _(
-            """usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])
+    print(_("""usage: system_installpackage <SYSTEMS> <PACKAGE ...> [options])
 
 options:
-    -s START_TIME"""
-        )
-    )
+    -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -764,7 +750,7 @@ def do_system_installpackage(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_installpackage()
@@ -903,14 +889,10 @@ def do_system_installpackage(self, args):
 
 def help_system_removepackage(self):
     print(_("system_removepackage: Remove a package from a system"))
-    print(
-        _(
-            """usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])
+    print(_("""usage: system_removepackage <SYSTEMS> <PACKAGE ...> [options])
 
 options:
-    -s START_TIME"""
-        )
-    )
+    -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -933,7 +915,7 @@ def do_system_removepackage(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_removepackage()
@@ -1042,14 +1024,10 @@ def do_system_removepackage(self, args):
 
 def help_system_upgradepackage(self):
     print(_("system_upgradepackage: Upgrade a package on a system"))
-    print(
-        _(
-            """usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')
+    print(_("""usage: system_upgradepackage <SYSTEMS> <PACKAGE ...>|* [options]')
 
 options:
-    -s START_TIME"""
-        )
-    )
+    -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -1076,7 +1054,7 @@ def do_system_upgradepackage(self, args):
     # self.do_system_installpackage anyway
     orig_args = args
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_upgradepackage()
@@ -1225,7 +1203,7 @@ def do_system_listupgrades(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listupgrades()
@@ -1303,7 +1281,7 @@ def do_system_listinstalledpackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listinstalledpackages()
@@ -1359,7 +1337,7 @@ def do_system_listconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listconfigchannels()
@@ -1439,16 +1417,12 @@ def print_configfiles(self, quiet, filelist):
 
 def help_system_listconfigfiles(self):
     print(_("system_listconfigfiles: List the managed config files of a system"))
-    print(
-        _(
-            """usage: system_listconfigfiles <SYSTEMS>')
+    print(_("""usage: system_listconfigfiles <SYSTEMS>')
 options:
   -s/--sandbox : list only system-sandbox files
   -l/--local   : list only locally managed files
   -c/--central : list only centrally managed files
-  -q/--quiet   : quiet mode (omits the header)"""
-        )
-    )
+  -q/--quiet   : quiet mode (omits the header)"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1464,7 +1438,7 @@ def do_system_listconfigfiles(self, args):
     arg_parser.add_argument("-c", "--central", action="store_true")
     arg_parser.add_argument("-q", "--quiet", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not options.sandbox and not options.local and not options.central:
         logging.debug("No sandbox/local/central option specified, listing ALL")
@@ -1546,9 +1520,7 @@ def help_system_addconfigfile(self):
     print(_("system_addconfigfile: Create a configuration file"))
     print(_("Note this is only for system sandbox or locally-managed files"))
     print(_("Centrally managed files should be created via configchannel_addfile"))
-    print(
-        _(
-            """usage: system_addconfigfile [SYSTEM] [options]
+    print(_("""usage: system_addconfigfile [SYSTEM] [options]
 
 options:
   -S/--sandbox : list only system-sandbox files
@@ -1569,9 +1541,7 @@ options:
   newlines, those containing ASCII escape characters (or other charaters not
   allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-
   detect files which require this, but you may need to explicitly specify.
-"""
-        )
-    )
+"""))
 
 
 def complete_system_addconfigfile(self, text, line, beg, end):
@@ -1594,7 +1564,7 @@ def do_system_addconfigfile(self, args, update_path=""):
     arg_parser.add_argument("-b", "--binary", action="store_true")
     arg_parser.add_argument("-d", "--directory", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     file_info = None
 
@@ -1692,15 +1662,11 @@ def do_system_addconfigfile(self, args, update_path=""):
 
 def help_system_addconfigchannels(self):
     print(_("system_addconfigchannels: Add config channels to a system"))
-    print(
-        _(
-            """usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]
+    print(_("""usage: system_addconfigchannels <SYSTEMS> <CHANNEL ...> [options]
 
 options:
   -t add channels to the top of the list
-  -b add channels to the bottom of the list"""
-        )
-    )
+  -b add channels to the bottom of the list"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1721,7 +1687,7 @@ def do_system_addconfigchannels(self, args):
     arg_parser.add_argument("-t", "--top", action="store_true")
     arg_parser.add_argument("-b", "--bottom", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_addconfigchannels()
@@ -1786,7 +1752,7 @@ def do_system_removeconfigchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_removeconfigchannels()
@@ -1834,7 +1800,7 @@ def do_system_setconfigchannelorder(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_setconfigchannelorder()
@@ -1883,14 +1849,10 @@ def do_system_setconfigchannelorder(self, args):
 
 def help_system_deployconfigfiles(self):
     print(_("system_deployconfigfiles: Deploy all configuration files for a system"))
-    print(
-        _(
-            """usage: system_deployconfigfiles <SYSTEMS> [options]
+    print(_("""usage: system_deployconfigfiles <SYSTEMS> [options]
 
 options:
-    -s START_TIME"""
-        )
-    )
+    -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -1906,7 +1868,7 @@ def do_system_deployconfigfiles(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_deployconfigfiles()
@@ -1959,18 +1921,14 @@ def do_system_deployconfigfiles(self, args):
 
 def help_system_delete(self):
     print(_("system_delete: Delete a system profile"))
-    print(
-        _(
-            """usage: system_delete [options] <SYSTEMS>
+    print(_("""usage: system_delete [options] <SYSTEMS>
 
     options:
           -c TYPE - Possible values:
              *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,
              *  'NO_CLEANUP' - do not cleanup, just delete,
              *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error
-    """
-        )
-    )
+    """))
     print("")
     print(self.HELP_SYSTEM_OPTS)
 
@@ -1988,7 +1946,7 @@ def do_system_delete(self, args):
         choices=["FAIL_ON_CLEANUP_ERR", "NO_CLEANUP", "FORCE_DELETE"],
     )
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_delete()
@@ -2070,7 +2028,7 @@ def do_system_lock(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_lock()
@@ -2114,7 +2072,7 @@ def do_system_unlock(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_unlock()
@@ -2159,13 +2117,13 @@ def do_system_rename(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_system_rename()
         return 1
 
-    (old_name, new_name) = args
+    old_name, new_name = args
 
     system_id = self.get_system_id(old_name)
     if not system_id:
@@ -2207,7 +2165,7 @@ def do_system_refreshpillar(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     sids = []
     # use the systems listed in the SSM
@@ -2252,7 +2210,7 @@ def do_system_listcustomvalues(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listcustomvalues()
@@ -2320,7 +2278,7 @@ def do_system_addcustomvalue(self, args):
         arg_parser = get_argument_parser()
 
         # pylint: disable-next=unused-variable
-        (args, _options) = parse_command_arguments(args, arg_parser)
+        args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_system_addcustomvalue()
@@ -2376,7 +2334,7 @@ def do_system_updatecustomvalue(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_system_updatecustomvalue()
@@ -2410,7 +2368,7 @@ def do_system_removecustomvalues(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_removecustomvalues()
@@ -2446,15 +2404,11 @@ def do_system_removecustomvalues(self, args):
 
 def help_system_addnote(self):
     print(_("system_addnote: Set a note for a system"))
-    print(
-        _(
-            """usage: system_addnote <SYSTEM> [options]
+    print(_("""usage: system_addnote <SYSTEM> [options]
 
 options:
   -s SUBJECT
-  -b BODY"""
-        )
-    )
+  -b BODY"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
 
@@ -2468,7 +2422,7 @@ def do_system_addnote(self, args):
     arg_parser.add_argument("-s", "--subject")
     arg_parser.add_argument("-b", "--body")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_system_addnote()
@@ -2528,7 +2482,7 @@ def do_system_deletenotes(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listnotes()
@@ -2590,7 +2544,7 @@ def do_system_listnotes(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listnotes()
@@ -2651,7 +2605,7 @@ def do_system_listfqdns(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listfqdns()
@@ -2713,7 +2667,7 @@ def do_system_setbasechannel(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_system_setbasechannel()
@@ -2770,16 +2724,12 @@ def help_system_schedulechangechannels(self):
             "system_schedulechangechannels: Schedule changing a system's software channels"
         )
     )
-    print(
-        _(
-            """usage: system_setbasechannel <SYSTEMS> [options]
+    print(_("""usage: system_setbasechannel <SYSTEMS> [options]
 
 options:
   -b BASE_CHANNEL base channel label
   -c CHILD_CHANNEL child channel labels (allowed multiple times)
-  -s START_TIME time defaults to now"""
-        )
-    )
+  -s START_TIME time defaults to now"""))
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2797,9 +2747,7 @@ def do_system_schedulechangechannels(self, args):
     arg_parser.add_argument("-c", "--child", action="append", default=[])
     arg_parser.add_argument("-s", "--start-time", action="store")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
-    # import pdb;
-    # pdb.set_trace()
+    args, options = parse_command_arguments(args, arg_parser)
     if len(args) < 1:
         self.help_system_schedulechangechannels()
         return 1
@@ -2884,7 +2832,7 @@ def do_system_listbasechannel(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listbasechannel()
@@ -2939,7 +2887,7 @@ def do_system_listchildchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listchildchannels()
@@ -3048,7 +2996,7 @@ def do_system_details(self, args, short=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_details()
@@ -3200,7 +3148,7 @@ def do_system_listerrata(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listerrata()
@@ -3243,15 +3191,11 @@ def do_system_listerrata(self, args):
 
 def help_system_applyerrata(self):
     print(_("system_applyerrata: Apply errata to a system"))
-    print(
-        _(
-            """usage: system_applyerrata [options] <SYSTEMS>
+    print(_("""usage: system_applyerrata [options] <SYSTEMS>
 [ERRATA|search:XXX ...]
 
 options:
-  -s START_TIME"""
-        )
-    )
+  -s START_TIME"""))
     print("")
     print(self.HELP_TIME_OPTS)
     print("")
@@ -3276,7 +3220,7 @@ def do_system_applyerrata(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_applyerrata()
@@ -3333,7 +3277,7 @@ def do_system_listevents(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listevents()
@@ -3387,16 +3331,12 @@ def do_system_listevents(self, args):
 
 def help_system_listeventhistory(self):
     print(_("system_listeventhistory: List the event history for a system"))
-    print(
-        _(
-            """usage: system_listeventhistory <SYSTEMS> [options]
+    print(_("""usage: system_listeventhistory <SYSTEMS> [options]
 
 options:
   -s START_TIME list only the events happened after the specified time. [Default: returns all events]
   -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]
-  -l LIMIT limit the results to the specified number of events. [Default: no limit]"""
-        )
-    )
+  -l LIMIT limit the results to the specified number of events. [Default: no limit]"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
 
@@ -3415,7 +3355,7 @@ def do_system_listeventhistory(self, args):
     arg_parser.add_argument("-o", "--offset")
     arg_parser.add_argument("-l", "--limit")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listeventhistory()
@@ -3519,7 +3459,7 @@ def do_system_eventdetails(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_eventdetails()
@@ -3593,7 +3533,7 @@ def do_system_eventdetails(self, args):
             print(_("Result code:     %s") % detail.get("result_code"))
 
             additional_info = detail.get("additional_info")
-            if additional_info and additional_info:
+            if additional_info:
                 print("")
                 print(_("Additional info:"))
 
@@ -3628,7 +3568,7 @@ def do_system_listentitlements(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_listentitlements()
@@ -3688,7 +3628,7 @@ def do_system_addentitlements(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_addentitlements()
@@ -3744,7 +3684,7 @@ def do_system_removeentitlement(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_removeentitlement()
@@ -3823,7 +3763,7 @@ def do_system_deletepackageprofile(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_deletepackageprofile()
@@ -3855,15 +3795,11 @@ def do_system_deletepackageprofile(self, args):
 
 def help_system_createpackageprofile(self):
     print(_("system_createpackageprofile: Create a package profile"))
-    print(
-        _(
-            """usage: system_createpackageprofile SYSTEM [options]
+    print(_("""usage: system_createpackageprofile SYSTEM [options]
 
 options:
   -n NAME
-  -d DESCRIPTION"""
-        )
-    )
+  -d DESCRIPTION"""))
 
 
 def complete_system_createpackageprofile(self, text, line, beg, end):
@@ -3880,7 +3816,7 @@ def do_system_createpackageprofile(self, args):
     arg_parser.add_argument("-n", "--name")
     arg_parser.add_argument("-d", "--description")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_system_createpackageprofile()
@@ -3940,7 +3876,7 @@ def do_system_comparepackageprofile(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_comparepackageprofile()
@@ -3997,7 +3933,7 @@ def do_system_comparepackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_system_comparepackages()
@@ -4020,14 +3956,10 @@ def do_system_comparepackages(self, args):
 
 def help_system_syncpackages(self):
     print(_("system_syncpackages: Sync packages between two systems"))
-    print(
-        _(
-            """usage: system_syncpackages SOURCE TARGET [options]
+    print(_("""usage: system_syncpackages SOURCE TARGET [options]
 
 options:
-    -s START_TIME"""
-        )
-    )
+    -s START_TIME"""))
     print("")
     print(self.HELP_TIME_OPTS)
 
@@ -4040,13 +3972,13 @@ def do_system_syncpackages(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_system_syncpackages()
         return 1
 
-    (source, target) = args
+    source, target = args
 
     source_id = self.get_system_id(source)
     target_id = self.get_system_id(target)
@@ -4264,7 +4196,7 @@ def do_system_comparewithchannel(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-c", "--channel")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_comparewithchannel()
@@ -4392,14 +4324,10 @@ def do_system_comparewithchannel(self, args):
 
 def help_system_schedulehardwarerefresh(self):
     print(_("system_schedulehardwarerefresh: Schedule a hardware refresh for a system"))
-    print(
-        _(
-            """usage: system_schedulehardwarerefresh <SYSTEMS> [options]
+    print(_("""usage: system_schedulehardwarerefresh <SYSTEMS> [options]
 
 options:
-  -s START_TIME"""
-        )
-    )
+  -s START_TIME"""))
 
     print("")
     print(self.HELP_SYSTEM_OPTS)
@@ -4415,7 +4343,7 @@ def do_system_schedulehardwarerefresh(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_schedulehardwarerefresh()
@@ -4464,14 +4392,10 @@ def help_system_schedulepackagerefresh(self):
             "system_schedulepackagerefresh: Schedule a software package refresh for a system"
         )
     )
-    print(
-        _(
-            """usage: system_schedulepackagerefresh <SYSTEMS> [options])
+    print(_("""usage: system_schedulepackagerefresh <SYSTEMS> [options])
 
 options:
-  -s START_TIME"""
-        )
-    )
+  -s START_TIME"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
     print("")
@@ -4486,7 +4410,7 @@ def do_system_schedulepackagerefresh(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_schedulepackagerefresh()
@@ -4553,7 +4477,7 @@ def do_system_show_packageversion(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_system_show_packageversion()
@@ -4619,7 +4543,7 @@ def do_system_setcontactmethod(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_setcontactmethod()
@@ -4658,14 +4582,10 @@ def help_system_scheduleapplyconfigchannels(self):
             "Schedule applying the assigned config channels to the System (Minion only)"
         )
     )
-    print(
-        _(
-            """usage: scheduleapplyconfigchannels <SYSTEMS> [options]
+    print(_("""usage: scheduleapplyconfigchannels <SYSTEMS> [options]
 
     options:
-        -s START_TIME"""
-        )
-    )
+        -s START_TIME"""))
     print("")
     print(self.HELP_SYSTEM_OPTS)
     print("")
@@ -4677,7 +4597,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-s", "--start-time")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_scheduleapplyconfigchannels()
@@ -4744,7 +4664,7 @@ def do_system_listmigrationtargets(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_system_listmigrationtargets()
@@ -4776,8 +4696,6 @@ def do_system_listmigrationtargets(self, args):
             print(_("  Target #") + str(num) + ":")
             print(_("    IDs: ") + tgt["ident"])
             print(_("    Friendly names: ") + tgt["friendly"])
-
-    return
 
 
 ####################
@@ -4858,7 +4776,7 @@ def do_system_scheduleproductmigration(self, args):
         "-r", "--remove-products-without-successor", action="store_true", default=False
     )
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_system_scheduleproductmigration()
@@ -4914,8 +4832,6 @@ def do_system_scheduleproductmigration(self, args):
         except xmlrpclib.Fault as detail:
             logging.error(_N("Failed to schedule %s") % detail)
 
-    return
-
 
 ####################
 
@@ -4926,9 +4842,7 @@ def help_system_bootstrap(self):
             "system_bootstrap: Bootstrap a system for management via either Salt or Salt SSH."
         )
     )
-    print(
-        _(
-            """usage: bootstrap [options]
+    print(_("""usage: bootstrap [options]
 
     options:
         -H HOSTNAME
@@ -4941,9 +4855,7 @@ def help_system_bootstrap(self):
         -r REACTIVATION_KEY
         --proxyid PROXY_SYSID
         --saltssh
-        """
-        )
-    )
+        """))
     print("")
 
 
@@ -4961,7 +4873,7 @@ def do_system_bootstrap(self, args):
     arg_parser.add_argument("--proxyid")
     arg_parser.add_argument("--saltssh", action="store_true", default=False)
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not (options.hostname or options.ssh_password or options.ssh_privatekey_file):
         options.hostname = prompt_user(_("Hostname:"))
@@ -5071,7 +4983,7 @@ def do_system_needrebootafterupdate(self, args, short=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_needrebootafterupdate()

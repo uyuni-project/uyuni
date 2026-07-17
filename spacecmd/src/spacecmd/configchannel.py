@@ -88,7 +88,7 @@ def do_configchannel_listsystems(self, args):
 
     arg_parser = get_argument_parser()
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_configchannel_listsystems()
@@ -125,7 +125,7 @@ def do_configchannel_listgroups(self, args):
 
     arg_parser = get_argument_parser()
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_configchannel_listgroups()
@@ -158,7 +158,7 @@ def do_configchannel_listfiles(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_configchannel_listfiles()
@@ -199,7 +199,7 @@ def do_configchannel_forcedeploy(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args or len(args) > 1:
         self.help_configchannel_forcedeploy()
@@ -256,7 +256,7 @@ def do_configchannel_filedetails(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not 4 > len(args) > 1:
         self.help_configchannel_filedetails()
@@ -328,14 +328,10 @@ def do_configchannel_filedetails(self, args):
 
 def help_configchannel_backup(self):
     print(_("configchannel_backup: backup a config channel"))
-    print(
-        _(
-            """usage: configchannel_backup CHANNEL [OUTDIR])
+    print(_("""usage: configchannel_backup CHANNEL [OUTDIR])
 
 OUTDIR defaults to $HOME/spacecmd-backup/configchannel/YYYY-MM-DD/CHANNEL
-"""
-        )
-    )
+"""))
 
 
 def complete_configchannel_backup(self, text, line, beg, end):
@@ -351,7 +347,7 @@ def do_configchannel_backup(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_configchannel_backup()
@@ -459,7 +455,7 @@ def do_configchannel_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_configchannel_details()
@@ -497,17 +493,13 @@ def do_configchannel_details(self, args):
 
 def help_configchannel_create(self):
     print(_("configchannel_create: Create a configuration channel of specific type"))
-    print(
-        _(
-            """usage: configchannel_create [options])
+    print(_("""usage: configchannel_create [options])
 
 options:
   -n NAME
   -l LABEL
   -d DESCRIPTION
-  -t TYPE('normal,'state')"""
-        )
-    )
+  -t TYPE('normal,'state')"""))
 
 
 def do_configchannel_create(self, args):
@@ -517,7 +509,7 @@ def do_configchannel_create(self, args):
     arg_parser.add_argument("-d", "--description")
     arg_parser.add_argument("-t", "--type")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user(_("Name:"), noblank=True)
@@ -571,7 +563,7 @@ def do_configchannel_delete(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_configchannel_delete()
@@ -705,7 +697,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                         template = ""
 
                     # pylint: disable-next=unused-variable
-                    (contents, _ignore) = editor(template=template, delete=True)
+                    contents, _ignore = editor(template=template, delete=True)
     else:
         if not options.path:
             logging.error(_N("The path is required"))
@@ -856,7 +848,7 @@ def do_configchannel_addfile(self, args, update_path=""):
     arg_parser.add_argument("-d", "--directory", action="store_true")
     arg_parser.add_argument("-y", "--yes", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     file_info = None
 
@@ -959,16 +951,14 @@ def do_configchannel_addfile(self, args, update_path=""):
 def help_configchannel_updateinitsls(self):
     print(_("configchannel_updateinitsls: Update init.sls file"))
     print(
-        _(
-            """usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])
+        _("""usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])
 
 options:
   -c CHANNEL
   -r REVISION
   -f local path to file contents
   -y automatically proceed with file contents
-"""
-        )
+""")
     )
 
 
@@ -978,7 +968,7 @@ def do_configchannel_updateinitsls(self, args, update_path=""):
     arg_parser.add_argument("-f", "--file")
     arg_parser.add_argument("-r", "--revision")
     arg_parser.add_argument("-y", "--yes", action="store_true")
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     file_info = None
     path = "/init.sls"
@@ -1026,7 +1016,7 @@ def do_configchannel_updateinitsls(self, args, update_path=""):
             else:
                 template = ""
             # pylint: disable-next=unused-variable
-            (contents, _ignore) = editor(template=template, delete=True)
+            contents, _ignore = editor(template=template, delete=True)
 
         revision_input = prompt_user(_("Revision [next]:"))
         if revision_input:
@@ -1110,7 +1100,7 @@ def do_configchannel_removefiles(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_configchannel_removefiles()
@@ -1153,7 +1143,7 @@ def do_configchannel_verifyfile(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_configchannel_verifyfile()
@@ -1187,18 +1177,14 @@ def do_configchannel_verifyfile(self, args):
 
 def help_configchannel_export(self):
     print(_("configchannel_export: export config channel(s) to json format file"))
-    print(
-        _(
-            """usage: configchannel_export <CHANNEL>... [options])
+    print(_("""usage: configchannel_export <CHANNEL>... [options])
 options:
     -f outfile.json : specify an output filename, defaults to <CHANNEL>.json
                       if exporting a single channel, ccs.json for multiple
                       channels, or cc_all.json if no CHANNEL specified
                       e.g (export ALL)
 
-Note : CHANNEL list is optional, default is to export ALL"""
-        )
-    )
+Note : CHANNEL list is optional, default is to export ALL"""))
 
 
 def complete_configchannel_export(self, text, line, beg, end):
@@ -1385,7 +1371,7 @@ def do_configchannel_import(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         logging.error(_N("Error, no filename passed"))
@@ -1505,7 +1491,6 @@ def import_configchannel_fromdetails(self, ccdetails):
                     _N("Error adding file %s to %s")
                     % (filedetails["path"], ccdetails["label"])
                 )
-                continue
 
     return True
 
@@ -1515,9 +1500,7 @@ def import_configchannel_fromdetails(self, ccdetails):
 
 def help_configchannel_clone(self):
     print(_("configchannel_clone: Clone config channel(s)"))
-    print(
-        _(
-            """usage examples:
+    print(_("""usage examples:
                  configchannel_clone foo_label -c bar_label
                  configchannel_clone foo_label1 foo_label2 -c prefix
                  configchannel_clone foo_label -x "s/foo/bar"
@@ -1529,9 +1512,7 @@ options:
                    multiple keys are passed
   -x "s/foo/bar" : Optional regex replacement, replaces foo with bar in the
                    clone name, label and description
-  Note : If no -c or -x option is specified, interactive is assumed"""
-        )
-    )
+  Note : If no -c or -x option is specified, interactive is assumed"""))
 
 
 def complete_configchannel_clone(self, text, line, beg, end):
@@ -1543,7 +1524,7 @@ def do_configchannel_clone(self, args):
     arg_parser.add_argument("-c", "--clonelabel")
     arg_parser.add_argument("-x", "--regex")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
     allccs = sorted(filter(None, self.do_configchannel_list("", True)))
 
     if is_interactive(options):
@@ -1699,7 +1680,7 @@ def do_configchannel_diff(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not 1 <= len(args) < 3:
         self.help_configchannel_diff()
@@ -1756,7 +1737,7 @@ def do_configchannel_sync(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not 1 <= len(args) < 3:
         self.help_configchannel_sync()

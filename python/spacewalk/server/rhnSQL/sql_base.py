@@ -62,7 +62,7 @@ class SQLError(Exception):
 class SQLSchemaError(SQLError):
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg) = errmsg.split("\n", 1)
+        self.errmsg, errmsg = errmsg.split("\n", 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
 
 
@@ -295,9 +295,6 @@ class Database:
         procedure.
         The return value is a (possibly modified) copy of the arguments passed
         in. see cx_Oracle's Cursor.callproc for more details"""
-        return self._procedure_class(name, None)
-
-        # pylint: disable-next=unreachable
         return self._procedure_class(name, None)
 
     def function(self, name, ret_type):
