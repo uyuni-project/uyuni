@@ -164,8 +164,6 @@ artifacts:
   - artifact: saslprep
     package: ongres-stringprep
     repository: Leap
-  - artifact: oro
-    repository: Leap
   - artifact: postgresql
     package: postgresql-jdbc
     repository: Leap
