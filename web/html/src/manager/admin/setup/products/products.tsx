@@ -26,7 +26,7 @@ import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
   interface Window {
-    // See java/build/classes/com/suse/manager/webui/templates/products/show.jade
+    // See java/spacewalk-java/build/classes/com/suse/manager/webui/templates/products/show.jade
     issMaster_flag_from_backend?: any;
     refreshNeeded_flag_from_backend?: any;
     refreshRunning_flag_from_backend?: any;

@@ -23,13 +23,13 @@ fi
 cd $WORKSPACE
 
 # Install the parent pom
-mvn -f microservices/uyuni-java-parent --non-recursive install
+mvn -f java/uyuni-java-parent --non-recursive install
 
 # Install branding so we can compile spacewalk-java alone
-mvn -f branding install
+mvn -f java/branding install
 
 # Initialize spacewalk-java so we donwload all the dependencies
-mvn -f java --non-recursive initialize
+mvn -f java/spacewalk-java --non-recursive initialize
 
 # Install frontend dependencies
 npm --prefix web install

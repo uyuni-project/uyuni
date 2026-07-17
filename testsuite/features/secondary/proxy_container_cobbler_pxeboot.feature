@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # We also test 'Bootstrapping using the command line' in this feature with the following script:
-# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+# https://github.com/uyuni-project/uyuni/blob/master/java/spacewalk-java/conf/cobbler/snippets/minion_script
 
 @skip_if_github_validation
 @containerized_server

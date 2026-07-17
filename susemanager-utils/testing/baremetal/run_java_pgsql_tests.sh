@@ -32,6 +32,6 @@ ssh root@$TARGET_HOST << EOF
   cp $DOCKER_PG_DIR/rhn.conf /root/rhn.conf
 
   # run the actual test script
-  cd /manager/java/scripts
+  cd /manager/java/spacewalk-java/scripts
   sh docker-testing-pgsql.sh | tee test_output.txt
 EOF

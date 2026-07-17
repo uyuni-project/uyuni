@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2025 SUSE LLC and contributors
+  ~ Copyright (c) 2026 SUSE LLC and contributors
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,8 +28,8 @@
     <modules>
         <module>../uyuni-java-common</module>
         <module>../coco-attestation</module>
-        <module>../../branding</module>
-        <module>../../java</module>
+        <module>../branding</module>
+        <module>../spacewalk-java</module>
     </modules>
 
     <!-- Global dependencies based on the package version in OBS -->
@@ -38,7 +38,7 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>2.17.2</version>
+                <version>2.20.0</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis</groupId>
@@ -48,12 +48,12 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
-                <version>2.17.2</version>
+                <version>2.20.0</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>42.2.25</version>
+                <version>42.7.7</version>
                 <exclusions>
                     <!-- Not used at runtime -->
                     <exclusion>
@@ -64,33 +64,33 @@
             </dependency>
             <dependency>
                 <groupId>com.ongres.scram</groupId>
-                <artifactId>client</artifactId>
-                <version>2.1</version>
+                <artifactId>scram-client</artifactId>
+                <version>3.1</version>
             </dependency>
             <dependency>
                 <groupId>com.ongres.scram</groupId>
-                <artifactId>common</artifactId>
-                <version>2.1</version>
+                <artifactId>scram-common</artifactId>
+                <version>3.1</version>
             </dependency>
             <dependency>
                 <groupId>com.ongres.stringprep</groupId>
                 <artifactId>stringprep</artifactId>
-                <version>1.1</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>com.ongres.stringprep</groupId>
                 <artifactId>saslprep</artifactId>
-                <version>1.1</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>com.mchange</groupId>
                 <artifactId>c3p0</artifactId>
-                <version>0.9.5.5</version>
+                <version>0.12.0</version>
             </dependency>
             <dependency>
                 <groupId>com.mchange</groupId>
                 <artifactId>mchange-commons-java</artifactId>
-                <version>0.2.20</version>
+                <version>0.4.0</version>
             </dependency>
 
             <!-- Test dependencies -->
@@ -163,9 +163,9 @@
                         <includeResources>false</includeResources>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <includeTestResources>false</includeTestResources>
-                        <headerLocation>../../java/buildconf/LICENSE.txt</headerLocation>
-                        <configLocation>../../java/buildconf/checkstyle.xml</configLocation>
-                        <suppressionsLocation>../../java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>
+                        <headerLocation>../spacewalk-java/buildconf/LICENSE.txt</headerLocation>
+                        <configLocation>../spacewalk-java/buildconf/checkstyle.xml</configLocation>
+                        <suppressionsLocation>../spacewalk-java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>
                         <propertyExpansion>
                             javadoc.method.scope=public
                             javadoc.var.scope=package

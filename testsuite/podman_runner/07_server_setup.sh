@@ -139,7 +139,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v ${src_dir}/containers/server-image/root/usr/lib/entrypoint-lib.sh:/usr/lib/entrypoint-lib.sh \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts.conf:/etc/tomcat/conf.d/tomcat_java_opts.conf \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
-    -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
+    -v ${src_dir}/java/spacewalk-java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
     -v ${src_dir}/spacewalk/setup/bin/spacewalk-setup:/usr/bin/spacewalk-setup \
     -v ${src_dir}/spacewalk/setup/lib/Spacewalk/Setup.pm:${setup_pm_path} \
     -v ${src_dir}/spacewalk/certs-tools/mgr_ssl_cert_setup.py:${python_path}/certs/mgr_ssl_cert_setup.py \

@@ -38,9 +38,9 @@ The `uyuni-dev` container boots **Systemd as PID 1** and includes **Podman**. Th
 Pre-configured with `ant`, `maven`, and `java-17-openjdk`.
 
 **Common Commands:**
-* **Download Dependencies:** `ant -f java/manager-build.xml ivy`
-* **Compile:** `ant -f java/manager-build.xml compile`
-* **Run Unit Tests:** `ant -f java/manager-build.xml test-report`
+* **Download Dependencies:** `ant -f java/spacewalk-java/manager-build.xml ivy`
+* **Compile:** `ant -f java/spacewalk-java/manager-build.xml compile`
+* **Run Unit Tests:** `ant -f java/spacewalk-java/manager-build.xml test-report`
 
 ### 3. Visual Test Reports 📊
 The environment automatically starts a web server to view HTML test results.

@@ -14,7 +14,7 @@ import Network from "utils/network";
 
 import { DisplayHighstate } from "./display-highstate";
 
-// See java/core/src/main/resources/com/suse/manager/webui/templates/groups/highstate.jade
+// See java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/groups/highstate.jade
 declare global {
   interface Window {
     minions?: any[];

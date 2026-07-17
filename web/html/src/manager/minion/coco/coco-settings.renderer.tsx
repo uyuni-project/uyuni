@@ -2,7 +2,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { CoCoSettings } from "./coco-settings";
 
-// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/coco-settings.jade
+// See java/spacewalk-java/core/src/main/resources/com/suse/manager/webui/templates/minion/coco-settings.jade
 export interface CocoSettingsProps {
   serverId: number;
   availableEnvironmentTypes: Record<string, string>;

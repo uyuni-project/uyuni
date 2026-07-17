@@ -21,7 +21,7 @@ fi
 cp /root/rhn.conf /etc/rhn/rhn.conf
 
 # Resolve libs and run tests
-cd /manager/java
+cd /manager/java/spacewalk-java
 ant -f manager-build.xml ivy
 
 cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
