@@ -16,6 +16,7 @@ internal API available from within the instance.
 Author: Pablo Suárez Hernández <psuarezhernandez@suse.com>
 Based on: https://docs.saltstack.com/en/latest/ref/grains/all/salt.grains.metadata.html
 """
+
 from __future__ import absolute_import, print_function, unicode_literals
 
 # Import python libs
