@@ -1,7 +1,7 @@
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.
- * See: web/html/src/build/plugins/generate-stories-plugin.js
+ * See: web/html/src/build/webpack/plugins/generate-stories-plugin.js
  */
 
 /* eslint-disable */

@@ -1,5 +1,4 @@
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import autoprefixer from "autoprefixer";
 import CleanWebpackPlugin from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -9,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
 
 import devServer from "./dev-server.js";
+import { scssProcessingLoaders } from "./scss-loaders.js";
 
 const require = createRequire(import.meta.url);
 
@@ -196,40 +196,7 @@ export default (env, opts) => {
           test: /\.(scss)$/,
           use: [
             MiniCssExtractPlugin.loader,
-            // {
-            //   // Adds CSS to the DOM by injecting a `<style>` tag
-            //   loader: "style-loader",
-            // },
-            {
-              // Interprets `@import` and `url()` like `import/require()` and will resolve them
-              loader: require.resolve("css-loader"),
-              options: {
-                modules: {
-                  auto: true,
-                  localIdentName: isProductionMode
-                    ? "[hash:base64:5]" // This is the default value for CSS modules
-                    : "[path][name]__[local]--[hash:base64:5]",
-                },
-              },
-            },
-            {
-              // Loader for webpack to process CSS with PostCSS
-              loader: require.resolve("postcss-loader"),
-              options: {
-                postcssOptions: {
-                  plugins: [autoprefixer],
-                },
-              },
-            },
-            {
-              // Loads a SASS/SCSS file and compiles it to CSS
-              loader: require.resolve("sass-loader"),
-              options: {
-                sassOptions: {
-                  loadPaths: [webHtmlSrc],
-                },
-              },
-            },
+            ...scssProcessingLoaders(isProductionMode ? { localIdentName: "[hash:base64:5]" } : undefined),
           ],
         },
       ],

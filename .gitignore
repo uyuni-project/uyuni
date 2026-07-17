@@ -68,6 +68,8 @@ backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 node-modules.tar.gz
 node_modules.tar.gz
+web/storybook-static
+web/html/src/storybook/generated
 # This should never be used since we use NPM, but avoid anyone accidentally committing it
 yarn.lock
 yarn-error.log
@@ -112,5 +114,4 @@ schema/reportdb/postgres/documentation.sql
 schema/reportdb/postgres/main.sql
 schema/reportdb/postgres/tables/common/
 schema/reportdb/postgres/views/common/
-
 
