@@ -8,6 +8,7 @@
 SUSE Multi-Linux Manager Action Chains module for Salt
 
 """
+
 from __future__ import absolute_import
 
 import logging

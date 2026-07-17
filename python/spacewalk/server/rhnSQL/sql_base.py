@@ -62,7 +62,7 @@ class SQLError(Exception):
 class SQLSchemaError(SQLError):
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg) = errmsg.split("\n", 1)
+        self.errmsg, errmsg = errmsg.split("\n", 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
 
 

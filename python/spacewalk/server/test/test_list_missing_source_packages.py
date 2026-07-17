@@ -32,7 +32,7 @@ class ListMissingTestCase(unittest.TestCase):
         rhnSQL.rollback()
 
     def testPresence(self):
-        assert(self.packageobj.listMissingSourcePackages)
+        assert self.packageobj.listMissingSourcePackages
 
     # pylint: disable-next=invalid-name
     def testlistMissingSourcePackages(self):
@@ -43,7 +43,7 @@ class ListMissingTestCase(unittest.TestCase):
             self.myserver.getPassword(),
         )
         # pylint: disable-next=unidiomatic-typecheck
-        assert(type(package_list) == type([]))
+        assert type(package_list) == type([])
 
 
 if __name__ == "__main__":

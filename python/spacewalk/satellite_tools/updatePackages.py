@@ -75,7 +75,7 @@ def main():
     global debug, verbose
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     if args:
         for arg in args:
