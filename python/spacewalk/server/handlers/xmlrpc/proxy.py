@@ -53,13 +53,11 @@ class rhnProxyHandler(rhnHandler):
         # entitlement.
         # XXX: this needs to be moved out of the rhnServer module,
         # possibly in here
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select 1
         from rhnProxyInfo pi
         where pi.server_id = :server_id
-        """
-        )
+        """)
         h.execute(server_id=self.server_id)
         row = h.fetchone_dict()
         if not row:

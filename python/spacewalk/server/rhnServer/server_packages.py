@@ -117,14 +117,12 @@ class dbPackage:
 
     __repr__ = __str__
 
-    _query_get_package_type_by_arch = rhnSQL.Statement(
-        """
+    _query_get_package_type_by_arch = rhnSQL.Statement("""
         select at.label
           from rhnArchType at
           join rhnPackageArch pa ON pa.arch_type_id = at.id
          where pa.id = lookup_package_arch(:arch)
-    """
-    )
+    """)
 
     def get_package_type_by_arch(self, arch):
         h = rhnSQL.prepare(self._query_get_package_type_by_arch)
@@ -228,16 +226,14 @@ class Packages:
         ]
         if dlist:
             log_debug(4, sysid, len(dlist), "deleted packages")
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
             delete from rhnServerPackage
             where server_id = :sysid
             and name_id = :name_id
             and evr_id = :evr_id
             and ((:package_arch_id is null and package_arch_id is null)
                 or package_arch_id = :package_arch_id)
-            """
-            )
+            """)
             h.executemany(
                 **{
                     "sysid": [sysid] * len(dlist),
@@ -253,15 +249,13 @@ class Packages:
         alist = [a for a in list(self.__p.values()) if a.status in (ADDED, UPDATED)]
         if alist:
             log_debug(4, sysid, len(alist), "added packages")
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
             insert into rhnServerPackage
             (server_id, name_id, evr_id, package_arch_id, installtime)
             values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR(:e, :v, :r, :t),
                 LOOKUP_PACKAGE_ARCH(:a), TO_TIMESTAMP(:instime, 'YYYY-MM-DD HH24:MI:SS')
             )
-            """
-            )
+            """)
             # some fields are not allowed to contain empty string (varchar)
 
             def lambdaae(a):
@@ -309,12 +303,10 @@ class Packages:
         self.__changed = 0
         return 0
 
-    _query_get_package_arches = rhnSQL.Statement(
-        """
+    _query_get_package_arches = rhnSQL.Statement("""
         select id, label
           from rhnPackageArch
-    """
-    )
+    """)
 
     def get_package_arches(self):
         # None gets automatically converted to empty string
@@ -336,8 +328,7 @@ class Packages:
         # XXX we could achieve the same thing with an outer join but that's
         # more expensive
         # Now load packages
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select
             rpn.name,
             rpe.version,
@@ -355,8 +346,7 @@ class Packages:
         where sp.server_id = :sysid
         and sp.name_id = rpn.id
         and sp.evr_id = rpe.id
-        """
-        )
+        """)
         h.execute(sysid=sysid)
         self.__p = {}
         while 1:
@@ -382,8 +372,7 @@ class Packages:
         self.__changed = 0
         return 0
 
-    _query_product_packages = rhnSQL.Statement(
-        """
+    _query_product_packages = rhnSQL.Statement("""
     select rp.name_id, rp.package_arch_id arch_id, X.name
       from
         (
@@ -433,8 +422,7 @@ class Packages:
         JOIN rhnPackage rp ON rp.name_id = X.name_id
              AND rp.evr_id = X.evr_id
              AND rp.package_arch_id = X.arch_id
-    """
-    )
+    """)
 
     def install_missing_product_packages(self):
         """
@@ -485,58 +473,46 @@ def update_errata_cache(server_id):
 
 # pylint: disable-next=invalid-name
 def processPackageKeyAssociations(header, checksum_type, checksum):
-    provider_sql = rhnSQL.prepare(
-        """
+    provider_sql = rhnSQL.prepare("""
         insert into rhnPackageKeyAssociation
             (package_id, key_id) values
             (:package_id, :key_id)
-    """
-    )
+    """)
 
-    insert_keyid_sql = rhnSQL.prepare(
-        """
+    insert_keyid_sql = rhnSQL.prepare("""
         insert into rhnPackagekey
             (id, key_id, key_type_id) values
             (sequence_nextval('rhn_pkey_id_seq'), :key_id, :key_type_id)
             on conflict do nothing
-    """
-    )
+    """)
 
-    lookup_keyid_sql = rhnSQL.prepare(
-        """
+    lookup_keyid_sql = rhnSQL.prepare("""
        select pk.id
          from rhnPackagekey pk
         where pk.key_id = :key_id
-    """
-    )
+    """)
 
-    lookup_keytype_id = rhnSQL.prepare(
-        """
+    lookup_keytype_id = rhnSQL.prepare("""
        select id
          from rhnPackageKeyType
         where LABEL in ('gpg', 'pgp', 'rsa')
-    """
-    )
+    """)
 
-    lookup_pkgid_sql = rhnSQL.prepare(
-        """
+    lookup_pkgid_sql = rhnSQL.prepare("""
         select p.id
           from rhnPackage p,
                rhnChecksumView c
          where c.checksum = :csum
            and c.checksum_type = :ctype
            and p.checksum_id = c.id
-    """
-    )
+    """)
 
-    lookup_pkgkey_sql = rhnSQL.prepare(
-        """
+    lookup_pkgkey_sql = rhnSQL.prepare("""
         select 1
           from rhnPackageKeyAssociation
          where package_id = :package_id
            and key_id = :key_id
-    """
-    )
+    """)
 
     lookup_pkgid_sql.execute(ctype=checksum_type, csum=checksum)
     pkg_ids = lookup_pkgid_sql.fetchall_dict()

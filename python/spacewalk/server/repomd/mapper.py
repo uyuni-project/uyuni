@@ -29,7 +29,6 @@ from spacewalk.server import rhnSQL
 
 from . import domain
 
-
 CACHE_PREFIX = "/var/cache/rhn/"
 
 
@@ -41,8 +40,7 @@ class ChannelMapper:
         self.erratum_mapper = erratum_mapper
         self.repomd_mapper = repomd_mapper
 
-        self.channel_details_sql = rhnSQL.prepare(
-            """
+        self.channel_details_sql = rhnSQL.prepare("""
         select
             c.label,
             c.name,
@@ -52,32 +50,26 @@ class ChannelMapper:
             rhnChecksumType ct
         where c.id = :channel_id
           and c.checksum_type_id = ct.id
-        """
-        )
+        """)
 
-        self.channel_sql = rhnSQL.prepare(
-            """
+        self.channel_sql = rhnSQL.prepare("""
         select
             package_id
         from
             rhnChannelPackage
         where
             channel_id = :channel_id
-        """
-        )
+        """)
 
-        self.last_modified_sql = rhnSQL.prepare(
-            """
+        self.last_modified_sql = rhnSQL.prepare("""
         select
             TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnChannel
         where id = :channel_id
-        """
-        )
+        """)
 
-        self.errata_id_sql = rhnSQL.prepare(
-            """
+        self.errata_id_sql = rhnSQL.prepare("""
         select
             e.id
         from
@@ -86,11 +78,9 @@ class ChannelMapper:
         where
             ce.channel_id = :channel_id
         and e.id = ce.errata_id
-        """
-        )
+        """)
 
-        self.comps_id_sql = rhnSQL.prepare(
-            """
+        self.comps_id_sql = rhnSQL.prepare("""
         select
             id
         from
@@ -99,11 +89,9 @@ class ChannelMapper:
             channel_id = :channel_id
             and comps_type_id = 1
         order by id desc
-        """
-        )
+        """)
 
-        self.modules_id_sql = rhnSQL.prepare(
-            """
+        self.modules_id_sql = rhnSQL.prepare("""
         select
             id
         from
@@ -112,19 +100,16 @@ class ChannelMapper:
             channel_id = :channel_id
             and comps_type_id = 2
         order by id desc
-        """
-        )
+        """)
 
-        self.cloned_from_id_sql = rhnSQL.prepare(
-            """
+        self.cloned_from_id_sql = rhnSQL.prepare("""
         select
             original_id id
         from
             rhnChannelCloned
         where
             id = :channel_id
-        """
-        )
+        """)
 
     def last_modified(self, channel_id):
         """Get the last_modified field for the provided channel_id."""
@@ -225,8 +210,7 @@ class SqlPackageMapper:
     """Data Mapper for Packages to the RHN db."""
 
     def __init__(self):
-        self.details_sql = rhnSQL.prepare(
-            """
+        self.details_sql = rhnSQL.prepare("""
         select
             pn.name,
             pevr.version,
@@ -266,11 +250,9 @@ class SqlPackageMapper:
         and p.package_group = pg.id
         and p.source_rpm_id = sr.id
         and p.checksum_id = c.id
-        """
-        )
+        """)
 
-        self.filelist_sql = rhnSQL.prepare(
-            """
+        self.filelist_sql = rhnSQL.prepare("""
         select
             pc.name
         from
@@ -279,11 +261,9 @@ class SqlPackageMapper:
         where
             pf.package_id = :package_id
         and pf.capability_id = pc.id
-        """
-        )
+        """)
 
-        self.prco_sql = rhnSQL.prepare(
-            """
+        self.prco_sql = rhnSQL.prepare("""
         select
            'provides',
            pp.sense,
@@ -403,21 +383,17 @@ class SqlPackageMapper:
         where
            pdep.package_id = :package_id
            and pdep.capability_id = pc.id
-        """
-        )
+        """)
 
-        self.last_modified_sql = rhnSQL.prepare(
-            """
+        self.last_modified_sql = rhnSQL.prepare("""
         select
             TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnPackage
         where id = :package_id
-        """
-        )
+        """)
 
-        self.other_sql = rhnSQL.prepare(
-            """
+        self.other_sql = rhnSQL.prepare("""
         select
             name,
             text,
@@ -425,8 +401,7 @@ class SqlPackageMapper:
         from
             rhnPackageChangelog
         where package_id = :package_id
-        """
-        )
+        """)
 
     def last_modified(self, package_id):
         """Get the last_modified date on the package with id package_id."""
@@ -640,18 +615,15 @@ class SqlErratumMapper:
     def __init__(self, package_mapper):
         self.package_mapper = package_mapper
 
-        self.last_modified_sql = rhnSQL.prepare(
-            """
+        self.last_modified_sql = rhnSQL.prepare("""
         select
             TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnErrata
         where id = :erratum_id
-        """
-        )
+        """)
 
-        self.erratum_details_sql = rhnSQL.prepare(
-            """
+        self.erratum_details_sql = rhnSQL.prepare("""
         select
             advisory,
             advisory_name,
@@ -665,11 +637,9 @@ class SqlErratumMapper:
             rhnErrata
         where
             id = :erratum_id
-       """
-        )
+       """)
 
-        self.erratum_cves_sql = rhnSQL.prepare(
-            """
+        self.erratum_cves_sql = rhnSQL.prepare("""
         select
             cve.name as cve_name
         from
@@ -678,11 +648,9 @@ class SqlErratumMapper:
         where
             ec.errata_id = :erratum_id
         and ec.cve_id = cve.id
-        """
-        )
+        """)
 
-        self.erratum_bzs_sql = rhnSQL.prepare(
-            """
+        self.erratum_bzs_sql = rhnSQL.prepare("""
         select
             bug_id,
             summary,
@@ -691,19 +659,16 @@ class SqlErratumMapper:
             rhnErrataBuglist
         where
             errata_id = :erratum_id
-        """
-        )
+        """)
 
-        self.erratum_packages_sql = rhnSQL.prepare(
-            """
+        self.erratum_packages_sql = rhnSQL.prepare("""
         select
             package_id
         from
             rhnErrataPackage
         where
             errata_id = :erratum_id
-        """
-        )
+        """)
 
     def last_modified(self, erratum_id):
         """Get the last_modified field for the provided erratum_id."""
@@ -772,16 +737,14 @@ class SqlErratumMapper:
 # pylint: disable-next=missing-class-docstring
 class SqlRepoMDMapper:
     def __init__(self):
-        self.repomd_sql = rhnSQL.prepare(
-            """
+        self.repomd_sql = rhnSQL.prepare("""
         select
             relative_filename
         from
             rhnChannelComps
         where
             id = :repomd_id
-        """
-        )
+        """)
 
     def get_repomd(self, repomd_id):
         self.repomd_sql.execute(repomd_id=repomd_id)
