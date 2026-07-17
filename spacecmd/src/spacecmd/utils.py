@@ -227,7 +227,7 @@ def filter_results(items, patterns, search=False):
 
 def editor(template="", delete=False):
     # create a temporary file
-    (descriptor, file_name) = mkstemp(prefix="spacecmd.")
+    descriptor, file_name = mkstemp(prefix="spacecmd.")
 
     if template and descriptor:
         try:

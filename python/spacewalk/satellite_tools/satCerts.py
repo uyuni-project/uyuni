@@ -69,12 +69,10 @@ def get_all_orgs():
     return rows or []
 
 
-_queryLookupOrgId = rhnSQL.Statement(
-    """
+_queryLookupOrgId = rhnSQL.Statement("""
     SELECT id
       FROM web_customer
-"""
-)
+""")
 
 #
 # SSL CA certificate section
@@ -228,17 +226,14 @@ def delete_rhnCryptoKey_null_org(description_prefix):
     h.execute(description_prefix=description_prefix)
 
 
-_queryDeleteCryptoCertInfoNullOrg = rhnSQL.Statement(
-    """
+_queryDeleteCryptoCertInfoNullOrg = rhnSQL.Statement("""
     DELETE FROM rhnCryptoKey ck
     WHERE ck.description LIKE :description_prefix || '%%'
       AND ck.crypto_key_type_id = (SELECT id FROM rhnCryptoKeyType WHERE label = 'SSL')
       AND ck.org_id is NULL
-"""
-)
+""")
 
-_querySelectCryptoCertInfo = rhnSQL.Statement(
-    """
+_querySelectCryptoCertInfo = rhnSQL.Statement("""
     SELECT ck.id, ck.description, ckt.label as type_label, ck.key
       FROM rhnCryptoKeyType ckt,
            rhnCryptoKey ck
@@ -246,11 +241,9 @@ _querySelectCryptoCertInfo = rhnSQL.Statement(
        AND ckt.id = ck.crypto_key_type_id
        AND ck.description = :description
        AND ck.org_id = :org_id
-"""
-)
+""")
 
-_querySelectCryptoCertInfoNullOrg = rhnSQL.Statement(
-    """
+_querySelectCryptoCertInfoNullOrg = rhnSQL.Statement("""
     SELECT ck.id, ck.description, ckt.label as type_label, ck.key
       FROM rhnCryptoKeyType ckt,
            rhnCryptoKey ck
@@ -258,18 +251,15 @@ _querySelectCryptoCertInfoNullOrg = rhnSQL.Statement(
        AND ckt.id = ck.crypto_key_type_id
        AND ck.description = :description
        AND ck.org_id is NULL
-"""
-)
+""")
 
-_queryInsertCryptoCertInfo = rhnSQL.Statement(
-    """
+_queryInsertCryptoCertInfo = rhnSQL.Statement("""
     INSERT into rhnCryptoKey
            (id, org_id, description, crypto_key_type_id, key)
     SELECT :rhn_cryptokey_id, :org_id, :description, ckt.id, empty_blob()
       FROM rhnCryptoKeyType ckt
      WHERE ckt.label = 'SSL'
-"""
-)
+""")
 
 
 def _test_store_rhnCryptoKey(caCert):
