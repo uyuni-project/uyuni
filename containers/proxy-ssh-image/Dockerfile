@@ -36,6 +36,7 @@ LABEL org.opencontainers.image.version=5.2.8
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url "https://raw.githubusercontent.com/uyuni-project/uyuni/refs/heads/master/containers/proxy-ssh-image/README.md"
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 # SSH port

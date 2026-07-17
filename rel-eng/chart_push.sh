@@ -59,4 +59,3 @@ if [ -f "${SRPM_PKG_DIR}/Chart.yaml" ]; then
 
     rm ${SRPM_PKG_DIR}/${PKG_NAME}.spec
 fi
-
