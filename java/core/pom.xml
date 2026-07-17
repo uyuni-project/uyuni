@@ -162,8 +162,15 @@
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>opensymphony</groupId>
             <artifactId>sitemesh</artifactId>
+            <version>2.6.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
