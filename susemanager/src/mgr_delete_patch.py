@@ -139,13 +139,11 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         Search the channel using the given label.
         Returns None if the channel is not found, otherwise returns the ID of the channel.
         """
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             SELECT id
               FROM rhnChannel
              WHERE label = :channel
-        """
-        )
+        """)
         h.execute(channel=channel)
         res = h.fetchone_dict() or None
         if res:
