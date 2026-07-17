@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task.payg;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
@@ -39,17 +36,25 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -62,8 +67,10 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     private PaygInstanceInfo paygInstanceInfo;
 
     private static final Gson GSON = new GsonBuilder()
-            .serializeNulls()
-            .create();
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+        .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+        .serializeNulls()
+        .create();
 
     private static final Map<String, Boolean> CHANNEL_SUFFIX = new HashMap<>();
     static {
@@ -76,23 +83,26 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        paygData = createPaygSshData();
-        PaygSshDataFactory.savePaygSshData(paygData);
-        paygInstanceInfo = createPaygInstanceInfo();
-
         populateProducts();
     }
 
     @Test
     public void testFirstExecution() throws URISyntaxException {
-        paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
-        paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
-        assertExpectedData();
 
+        paygData = PaygSshDataFactory.savePaygSshData(createPaygSshData("My special instance"));
+        paygInstanceInfo = createPaygInstanceInfo();
+
+        paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
+        paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
+
+        assertExpectedData();
     }
 
     @Test
     public void testUpdateData() throws URISyntaxException {
+        paygData = PaygSshDataFactory.savePaygSshData(createPaygSshData("My special instance"));
+        paygInstanceInfo = createPaygInstanceInfo();
+
         CloudRMTCredentials cred = CredentialsFactory.createCloudRmtCredentials("user", "password", "//my_url");
         cred.setPaygSshData(paygData);
         CredentialsFactory.storeCredentials(cred);
@@ -113,6 +123,9 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     @Test
     public void testUpdateRepos() throws URISyntaxException {
+        paygData = PaygSshDataFactory.savePaygSshData(createPaygSshData("My special instance"));
+        paygInstanceInfo = createPaygInstanceInfo();
+
         CloudRMTCredentials cred = CredentialsFactory.createCloudRmtCredentials("user", "password", "//my_url");
         cred.setPaygSshData(paygData);
         CredentialsFactory.storeCredentials(cred);
@@ -131,6 +144,36 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
         paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
         assertExpectedData();
+    }
+
+    @Test
+    public void canExtractFromMultiplePaygInstances() throws Exception {
+        // First iteration creates the credential, second one reuses and updates them
+        for (int i = 0; i < 2; i++) {
+            Map.of("MLM PAYG", "server.json", "SLES 15 SP6", "sles.json", "RHEL 10", "rhui.json")
+                .entrySet()
+                .stream()
+                .map(entry -> {
+                    var sshData = PaygSshDataFactory.lookupByHostname(asHostName(entry.getKey())).orElse(null);
+                    if (sshData == null) {
+                        sshData = PaygSshDataFactory.savePaygSshData(createPaygSshData(entry.getKey()));
+                    }
+
+                    var serverInstanceInfo = parseResource(entry.getValue());
+
+                    return Pair.of(sshData, serverInstanceInfo);
+                })
+                .forEach(entry -> {
+                    try {
+                        paygDataProcessor.processPaygInstanceData(entry.getKey(), entry.getValue());
+                    }
+                    catch (Exception ex) {
+                        fail("Unable to process and save payg data", ex);
+                    }
+                });
+
+            TestUtils.flushAndClearSession();
+        }
     }
 
     private void assertExpectedData() {
@@ -212,17 +255,21 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         return TestUtils.saveAndReload(repo);
     }
 
-    private PaygSshData createPaygSshData() {
+    private PaygSshData createPaygSshData(String name) {
         PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
-        paygSshData.setDescription("My special instance");
-        paygSshData.setHost("my-instance");
-        paygSshData.setPort(21);
+        paygSshData.setDescription(name);
+        paygSshData.setHost(asHostName(name));
+        paygSshData.setPort(22);
         paygSshData.setUsername("username");
         paygSshData.setPassword("password");
         paygSshData.setKey("key");
         paygSshData.setKeyPassword("keyPassword");
         paygSshData.setErrorMessage("My status");
         return paygSshData;
+    }
+
+    private String asHostName(String name) {
+        return name.toLowerCase().replace(" ", "-");
     }
 
     private PaygInstanceInfo createPaygInstanceInfo() {
@@ -243,5 +290,15 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         rmtHost.put("server_ca", "-----BEGIN CERTIFICATE-----");
 
         return new PaygInstanceInfo(products, basicAuth, headerAuth, rmtHost);
+    }
+
+    private static PaygInstanceInfo parseResource(String resource) {
+        try (var stream = PaygAuthDataProcessorTest.class.getResourceAsStream(resource);
+             var reader = new InputStreamReader(Objects.requireNonNull(stream), StandardCharsets.UTF_8)) {
+            return GSON.fromJson(reader, PaygInstanceInfo.class);
+        }
+        catch (Exception ex) {
+            return fail("Unable to load PaygInstanceInfo instance from resource " + resource, ex);
+        }
     }
 }

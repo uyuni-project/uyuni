@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.taskomatic.task.payg;
@@ -142,11 +138,19 @@ public class PaygAuthDataProcessor {
                     cryptoKeyMap.containsKey(repodata.get("sslclientkey")) &&
                     repodata.containsKey("sslcacert") &&
                     cryptoKeyMap.containsKey(repodata.get("sslcacert"))) {
-                SslContentSource sslCs = new SslContentSource(contentSource);
-                sslCs.setClientCert(cryptoKeyMap.get(repodata.get("sslclientcert")));
-                sslCs.setClientKey(cryptoKeyMap.get(repodata.get("sslclientkey")));
-                sslCs.setCaCert(cryptoKeyMap.get(repodata.get("sslcacert")));
-                contentSource.setSslSets(Set.of(sslCs));
+                SslCryptoKey clientCert = cryptoKeyMap.get(repodata.get("sslclientcert"));
+                SslCryptoKey clientKey = cryptoKeyMap.get(repodata.get("sslclientkey"));
+                SslCryptoKey caCert = cryptoKeyMap.get(repodata.get("sslcacert"));
+
+                // Reuse an existing instance when present to keep orphanRemoval collection updates stable.
+                SslContentSource sslContentSource = contentSource.getSslSets().stream().findFirst()
+                    .orElseGet(() -> new SslContentSource(contentSource));
+
+                sslContentSource.setClientCert(clientCert);
+                sslContentSource.setClientKey(clientKey);
+                sslContentSource.setCaCert(caCert);
+
+                contentSource.setSslSets(Set.of(sslContentSource));
             }
             else if (repodata.containsKey("sslclientcert") ||
                     repodata.containsKey("sslclientkey")) {

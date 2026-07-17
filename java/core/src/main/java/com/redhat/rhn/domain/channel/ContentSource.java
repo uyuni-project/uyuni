@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
+ * Copyright (c) 2010--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,9 +13,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-/*
- * Copyright (c) 2010 SUSE LLC
- */
 package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
@@ -22,8 +20,11 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 
+import com.suse.utils.persistence.EntityAssociationHelper;
+
 import org.hibernate.type.YesNoConverter;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -86,33 +87,11 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private Set<SCCRepositoryAuth> repositoryAuths = new HashSet<>();
 
     /**
-     * Constructor
-     */
-    public ContentSource() {
-    }
-
-    /**
-     * Copy Constructor
-     * @param cs content source template
-     */
-    public ContentSource(ContentSource cs) {
-        org = cs.getOrg();
-        type = cs.getType();
-        sourceUrl = cs.getSourceUrl();
-        label = cs.getLabel();
-        metadataSigned = cs.getMetadataSigned();
-        channels = new HashSet<>(cs.getChannels());
-        sslSets = new HashSet<>(cs.getSslSets());
-        repositoryAuths = new HashSet<>(cs.getRepositoryAuths());
-    }
-
-    /**
      * @return Returns the label.
      */
     public String getLabel() {
         return label;
     }
-
 
     /**
      * @param labelIn The label to set.
@@ -214,19 +193,44 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     *
+     * Returns an unmodifiable view of SSL mappings for this content source.
+     * Use add/remove/clear helper methods to mutate the association.
      * @return SSL sets for content source
      */
     public Set<SslContentSource> getSslSets() {
-        return sslSets;
+        return Collections.unmodifiableSet(sslSets);
     }
 
     /**
-     *
+     * Reconciles SSL mappings in place to preserve Hibernate collection tracking
+     * with orphanRemoval semantics.
      * @param sslSetsIn SSL sets to assign to repository
      */
     public void setSslSets(Set<SslContentSource> sslSetsIn) {
-        this.sslSets = sslSetsIn;
+        EntityAssociationHelper.reconcile(this, sslSets, sslSetsIn, ContentSource::setSslContentSourceParent);
+    }
+
+    /**
+     * Adds an SSL mapping and keeps the child-to-parent reference in sync.
+     * @param sslContentSource SSL mapping to add
+     */
+    public void addSslSet(SslContentSource sslContentSource) {
+        EntityAssociationHelper.addMember(this, sslSets, sslContentSource, ContentSource::setSslContentSourceParent);
+    }
+
+    /**
+     * Removes an SSL mapping and clears the child-to-parent reference.
+     * @param sslContentSource SSL mapping to remove
+     */
+    public void removeSslSet(SslContentSource sslContentSource) {
+        EntityAssociationHelper.removeMember(sslSets, sslContentSource, ContentSource::setSslContentSourceParent);
+    }
+
+    /**
+     * Removes all SSL mappings and clears child-to-parent references.
+     */
+    public void clearSslSets() {
+        EntityAssociationHelper.clear(sslSets, ContentSource::setSslContentSourceParent);
     }
 
     /**
@@ -252,5 +256,9 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
                 ", label='" + label + '\'' +
                 ", metadataSigned=" + metadataSigned +
                 '}';
+    }
+
+    private static void setSslContentSourceParent(SslContentSource sslContentSource, ContentSource contentSource) {
+        sslContentSource.setContentSource(contentSource);
     }
 }

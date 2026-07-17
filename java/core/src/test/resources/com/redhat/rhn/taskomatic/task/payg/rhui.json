@@ -1,0 +1,116 @@
+{
+  "type": "RHUI",
+  "header_auth": {
+    "X-RHUI-ID": "dummy",
+    "X-RHUI-SIGNATURE": "dummy"
+  },
+  "certs": {
+    "/etc/pki/rhui/cdn.redhat.com-chain.crt": "fake",
+    "/etc/pki/rhui/content-rhel10-debug.key": "fake",
+    "/etc/pki/rhui/content-rhel10-source.key": "fake",
+    "/etc/pki/rhui/content-rhel10.key": "fake",
+    "/etc/pki/rhui/rhui-client-config-server-10.key": "fake",
+    "/etc/pki/rhui/product/content-rhel10-debug.crt": "fake",
+    "/etc/pki/rhui/product/content-rhel10-source.crt": "fake",
+    "/etc/pki/rhui/product/content-rhel10.crt": "fake",
+    "/etc/pki/rhui/product/rhui-client-config-server-10.crt": "fake"
+  },
+  "repositories": {
+    "codeready-builder-for-rhel-10-rhui-debug-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/codeready-builder/debug",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-debug.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-debug.crt"
+    },
+    "codeready-builder-for-rhel-10-rhui-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/codeready-builder/os",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10.crt",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10.key"
+    },
+    "codeready-builder-for-rhel-10-rhui-source-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/codeready-builder/source/SRPMS",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-source.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-source.crt"
+    },
+    "rhel-10-appstream-rhui-debug-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/appstream/debug",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-debug.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-debug.crt"
+    },
+    "rhel-10-appstream-rhui-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/appstream/os",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10.crt"
+    },
+    "rhel-10-appstream-rhui-source-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/appstream/source/SRPMS",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-source.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-source.crt"
+    },
+    "rhel-10-baseos-rhui-debug-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/baseos/debug",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-debug.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-debug.crt"
+    },
+    "rhel-10-baseos-rhui-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/baseos/os",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10.crt"
+    },
+    "rhel-10-baseos-rhui-source-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/baseos/source/SRPMS",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-source.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-source.crt"
+    },
+    "rhel-10-extensions-rhui-debug-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/extensions/debug",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-debug.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-debug.crt"
+    },
+    "rhel-10-extensions-rhui-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/extensions/os",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10.crt"
+    },
+    "rhel-10-extensions-rhui-source-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/extensions/source/SRPMS",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-source.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-source.crt"
+    },
+    "rhel-10-supplementary-rhui-debug-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/supplementary/debug",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-debug.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-debug.crt"
+    },
+    "rhel-10-supplementary-rhui-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/supplementary/os",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10.crt"
+    },
+    "rhel-10-supplementary-rhui-source-rpms": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/content/dist/rhel10/rhui/10/x86_64/supplementary/source/SRPMS",
+      "sslclientkey": "/etc/pki/rhui/content-rhel10-source.key",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/content-rhel10-source.crt"
+    },
+    "rhui-client-config-server-10": {
+      "url": "https://rhui.eu-west-1.aws.ce.redhat.com/pulp/mirror/protected/rhui-client-config/rhel/server/10/x86_64/os",
+      "sslcacert": "/etc/pki/rhui/cdn.redhat.com-chain.crt",
+      "sslclientcert": "/etc/pki/rhui/product/rhui-client-config-server-10.crt",
+      "sslclientkey": "/etc/pki/rhui/rhui-client-config-server-10.key"
+    }
+  }
+}
