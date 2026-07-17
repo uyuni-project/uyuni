@@ -41,8 +41,7 @@ def token_channels(server, server_arch, tokens_obj):
 
     # what channels are associated with this token (filter only those
     # compatible with this server)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select
         rtc.channel_id id, c.name, c.label, c.parent_channel
     from
@@ -53,8 +52,7 @@ def token_channels(server, server_arch, tokens_obj):
         and rtc.channel_id = c.id
         and c.channel_arch_id = scac.channel_arch_id
         and scac.server_arch_id = :server_arch_id
-    """
-    )
+    """)
 
     chash = {}
     base_channel_token = None
@@ -181,14 +179,12 @@ def token_channels(server, server_arch, tokens_obj):
     return ret
 
 
-_query_token_server_groups = rhnSQL.Statement(
-    """
+_query_token_server_groups = rhnSQL.Statement("""
     select rtg.server_group_id, sg.name
       from rhnRegTokenGroups rtg, rhnServerGroup sg
      where rtg.token_id = :token_id
        and sg.id = rtg.server_group_id
-"""
-)
+""")
 
 
 def token_server_groups(server_id, tokens_obj):
@@ -229,22 +225,18 @@ def token_server_groups(server_id, tokens_obj):
     return ret
 
 
-_query_token_packages = rhnSQL.Statement(
-    """
+_query_token_packages = rhnSQL.Statement("""
     select pn.id as name_id, pa.id as arch_id, pn.name
     from rhnPackageName pn, rhnRegTokenPackages rtp
         left outer join rhnPackageArch pa on rtp.arch_id = pa.id
     where rtp.token_id = :token_id
         and rtp.name_id = pn.id
     order by upper(pn.name)
-"""
-)
-_query_token_packages_insert = rhnSQL.Statement(
-    """
+""")
+_query_token_packages_insert = rhnSQL.Statement("""
     insert into rhnActionPackage (id, action_id, name_id, parameter)
     values (sequence_nextval('rhn_act_p_id_seq'), :action_id, :name_id, 'upgrade')
-"""
-)
+""")
 
 
 def token_packages(server_id, tokens_obj):
@@ -297,8 +289,7 @@ def token_packages(server_id, tokens_obj):
 #  id=1,  '/etc/foo.txt',     priority=1
 #  id=27, '/etc/foo.txt',     priority=2
 #  id=53, '/var/tmp/baz.log', priority=2
-_query_token_latest_revisions = rhnSQL.Statement(
-    """
+_query_token_latest_revisions = rhnSQL.Statement("""
     select cf.latest_config_revision_id revision_id,
            cfn.path
       from rhnConfigFileName cfn,
@@ -316,15 +307,12 @@ _query_token_latest_revisions = rhnSQL.Statement(
            -- we should protect ourselves
        and cf.latest_config_revision_id is not null
     order by cfn.path, cct.priority, scc.position
-"""
-)
+""")
 
-_query_add_revision_to_action = rhnSQL.Statement(
-    """
+_query_add_revision_to_action = rhnSQL.Statement("""
     insert into rhnActionConfigRevision (id, action_id, server_id, config_revision_id)
     values (sequence_nextval('rhn_actioncr_id_seq'), :action_id, :server_id, :config_revision_id)
-"""
-)
+""")
 
 
 def deploy_configs_if_needed(server):
@@ -379,8 +367,7 @@ def deploy_configs_if_needed(server):
     return action_id
 
 
-_query_token_config_channels = rhnSQL.Statement(
-    """
+_query_token_config_channels = rhnSQL.Statement("""
     select rtcc.config_channel_id,
            rtcc.position, cc.name
       from rhnConfigChannel cc,
@@ -388,16 +375,13 @@ _query_token_config_channels = rhnSQL.Statement(
      where rtcc.token_id = :token_id
        and rtcc.config_channel_id = cc.id
     order by rtcc.position
-"""
-)
+""")
 
 # XXX Same query exists in config/rhn_config_management.py
-_query_set_server_config_channels = rhnSQL.Statement(
-    """
+_query_set_server_config_channels = rhnSQL.Statement("""
     insert into rhnServerConfigChannel (server_id, config_channel_id, position)
     values (:server_id, :config_channel_id, :position)
-"""
-)
+""")
 
 
 def _get_token_config_channels(token_id):
@@ -407,14 +391,12 @@ def _get_token_config_channels(token_id):
     return h.fetchall_dict() or []
 
 
-_query_current_config_channels = rhnSQL.Statement(
-    """
+_query_current_config_channels = rhnSQL.Statement("""
     select config_channel_id
       from rhnServerConfigChannel
        where server_id = :server_id
            and position is not null
-"""
-)
+""")
 
 
 def _get_current_config_channels(server_id):
@@ -501,20 +483,16 @@ def token_config_channels(server, tokens_obj):
     return ret
 
 
-_query_server_token_used = rhnSQL.Statement(
-    """
+_query_server_token_used = rhnSQL.Statement("""
     insert into rhnServerTokenRegs (server_id, token_id)
     values (:server_id, :token_id)
-"""
-)
+""")
 
-_query_check_server_uses_token = rhnSQL.Statement(
-    """
+_query_check_server_uses_token = rhnSQL.Statement("""
     select 1 from rhnServerTokenRegs
     where server_id = :server_id
     and token_id = :token_id
-"""
-)
+""")
 
 
 def server_used_token(server_id, token_id):
@@ -526,16 +504,14 @@ def server_used_token(server_id, token_id):
         h.execute(server_id=server_id, token_id=token_id)
 
 
-_query_check_token_limits = rhnSQL.Statement(
-    """
+_query_check_token_limits = rhnSQL.Statement("""
     select
        rt.usage_limit max_nr,
        ( select count(server_id) from rhnServerTokenRegs
          where token_id = :token_id ) curr_nr
     from rhnRegToken rt
     where rt.id = :token_id
-"""
-)
+""")
 
 
 def check_token_limits(server_id, tokens_obj):
@@ -870,8 +846,7 @@ def _validate_entitlements(
         )
 
 
-_query_token = rhnSQL.Statement(
-    """
+_query_token = rhnSQL.Statement("""
     select rt.id as token_id,
            sgt.label as token_type,
            sgt.name as token_desc,
@@ -891,15 +866,12 @@ _query_token = rhnSQL.Statement(
       and rt.disabled = 0
       and rt.id = rte.reg_token_id
       and rte.server_group_type_id = sgt.id
-"""
-)
+""")
 
-_query_contact_method_ranking = rhnSQL.Statement(
-    """
+_query_contact_method_ranking = rhnSQL.Statement("""
     select id, rank
       from suseServerContactMethod
-"""
-)
+""")
 
 
 def fetch_token(token_string):
@@ -1052,8 +1024,7 @@ def fetch_token(token_string):
 
 
 # always be sure this query has matching columns as _query_token above...
-_query_org_default_token = rhnSQL.Statement(
-    """
+_query_org_default_token = rhnSQL.Statement("""
     select rt.id as token_id,
            sgt.label as token_type,
            sgt.name as token_desc,
@@ -1078,8 +1049,7 @@ _query_org_default_token = rhnSQL.Statement(
        and rt.disabled = 0
        and rte.server_group_type_id = sgt.id
        and ak.reg_token_id = rtod.reg_token_id
-"""
-)
+""")
 
 
 def fetch_org_token(org_id):
@@ -1109,13 +1079,11 @@ def fetch_org_token(org_id):
     return ActivationTokens(tokens, **kwargs)
 
 
-_query_disable_token = rhnSQL.Statement(
-    """
+_query_disable_token = rhnSQL.Statement("""
     update rhnRegToken
        set disabled = 1
      where id = :token_id
-"""
-)
+""")
 
 
 def disable_token(tokens_obj):

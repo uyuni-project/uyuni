@@ -630,13 +630,11 @@ class NetIfaceInformation(Device):
 
     # pylint: disable-next=arguments-renamed
     def reload(self, server_id):
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select *
             from rhnServerNetInterface
             where server_id = :server_id
-        """
-        )
+        """)
         h.execute(server_id=server_id)
         self.db_ifaces = []
         while 1:
@@ -1076,12 +1074,10 @@ class SystemInformation:
             host.add_hardware(cpu)
             host.save_hardware()
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select host_system_id
               from rhnVirtualInstance
-             where virtual_system_id = :guestid"""
-        )
+             where virtual_system_id = :guestid""")
         h.execute(guestid=guestid)
         row = h.fetchone_dict()
         if not row or not row["host_system_id"]:
@@ -1089,14 +1085,12 @@ class SystemInformation:
             self._insert_virtual_instance(hid, guestid, fakeuuid=True)
         elif row["host_system_id"] != hid:
             log_debug(4, "update_virtual_instance", hid, guestid)
-            q_update = rhnSQL.prepare(
-                """
+            q_update = rhnSQL.prepare("""
                 UPDATE rhnVirtualInstance
                    SET host_system_id = :host_id
                  WHERE virtual_system_id = :guest_id
                    AND host_system_id = :old_host_id
-            """
-            )
+            """)
             q_update.execute(
                 host_id=hid, guest_id=guestid, old_host_id=row["host_system_id"]
             )
@@ -1104,22 +1098,19 @@ class SystemInformation:
     def _insert_virtual_instance(self, hostid, guestid, fakeuuid=True):
         log_debug(4, hostid, guestid, fakeuuid)
         viid = rhnSQL.Sequence("rhn_vi_id_seq")()
-        q_insert = rhnSQL.prepare(
-            """
+        q_insert = rhnSQL.prepare("""
             INSERT INTO rhnVirtualInstance
                 (id, host_system_id, virtual_system_id, uuid, confirmed)
             VALUES
                 (:viid, :host_id, :guest_id, :uuid, 1)
-        """
-        )
+        """)
         fake_uuid = None
         if fakeuuid:
             fake_uuid = str(uuid.uuid4())
             fake_uuid = fake_uuid.replace("-", "").strip()
         q_insert.execute(viid=viid, host_id=hostid, guest_id=guestid, uuid=fake_uuid)
 
-        q_insert = rhnSQL.prepare(
-            """
+        q_insert = rhnSQL.prepare("""
             INSERT INTO rhnVirtualInstanceInfo
                 (instance_id, state, instance_type)
             VALUES
@@ -1134,8 +1125,7 @@ class SystemInformation:
                      FROM rhnVirtualInstanceType rvit
                      WHERE rvit.label = :virt_type
                  ))
-        """
-        )
+        """)
         q_insert.execute(viid=viid, virt_type="fully_virtualized")
 
 
@@ -1148,13 +1138,11 @@ class MachineInformation:
         log_debug(4, "updating machine_id", sysid, name, machine_id)
         existing_srv_id = self.__check_if_machine_id_exists(machine_id)
         if not existing_srv_id or existing_srv_id == sysid:
-            s_update = rhnSQL.prepare(
-                """
+            s_update = rhnSQL.prepare("""
                         UPDATE rhnServer
                            SET machine_id = :machine_id
                         WHERE id = :server_id
-                        """
-            )
+                        """)
             s_update.execute(machine_id=machine_id, server_id=sysid)
         else:
             # this indicate a forced re-registration and we need to remove the old rhnServer
