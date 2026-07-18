@@ -38,7 +38,7 @@ import org.apache.commons.lang3.StringUtils;
  * @apidoc.namespace distchannel
  * @apidoc.doc Provides methods to access and modify distribution channel information
  */
-public class DistChannelHandler extends BaseHandler {
+public class DistChannelHandler extends BaseHandler implements DistChannelHandlerApi {
 
     /**
      * Lists the default distribution channel maps
