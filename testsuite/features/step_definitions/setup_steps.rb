@@ -80,9 +80,36 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
 end
 
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
-  # click on the checkbox to select the product
+  # the product checkbox is a tri-state widget: selecting a parent whose subtree isn't
+  # entirely selected yet legitimately leaves it "indeterminate" rather than fully checked,
+  # so Capybara's #set click-and-verify (which waits for a plain checked=true/false) never
+  # resolves and Playwright raises "Clicking the checkbox did not change its state"; click it
+  # directly and poll until it joins/leaves the selection (checked or indeterminate) instead
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
+  desired_selected = (select == 'select')
+  checkbox = find(:xpath, xpath)
+  indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+  checkbox.click unless (checkbox.checked? || indeterminate) == desired_selected
+  repeat_until_timeout(message: "checkbox for product #{product} did not reach '#{select}' state") do
+    checkbox = find(:xpath, xpath)
+    indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+    break if (checkbox.checked? || indeterminate) == desired_selected
+
+    sleep 1
+  end
+end
+
+Then(/^I should see that the "(.*?)" product is partially selected$/) do |product|
+  # indeterminate is a live DOM property (not an HTML attribute), so it cannot be matched via
+  # xpath or Capybara's checked?; read it straight from the element via JS. It is also set by
+  # an async UI re-render after a selection change, so poll instead of asserting once.
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  repeat_until_timeout(message: "#{product} checkbox did not reach the indeterminate state") do
+    checkbox_id = find(:xpath, xpath)[:id]
+    break if page.evaluate_script("document.getElementById('#{checkbox_id}').indeterminate")
+
+    sleep 1
+  end
 end
 
 When(/^I select or deselect "([^"]*)" beta client tools$/) do |channel|
@@ -139,9 +166,13 @@ Then(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommen
 end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
+  # a parent product counts as selected whether it is fully checked or only indeterminate
+  # (some but not all of its subtree selected) -- both mean it is part of the sync selection
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   within(:xpath, xpath) do
-    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
+    checkbox = find(:xpath, './div/input[@type=\'checkbox\']')
+    indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not selected (neither checked nor indeterminate)" unless checkbox.checked? || indeterminate
   end
 end
 
