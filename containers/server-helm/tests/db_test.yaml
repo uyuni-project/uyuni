@@ -13,7 +13,7 @@ tests:
           value: db
       - equal:
           path: spec.template.spec.containers[0].image
-          value: registry.opensuse.org/uyuni/server-postgresql:latest
+          value: registry.opensuse.org/uyuni/server-postgresql:0.0.0
 
   - it: should override image when values.images is provided
     set:

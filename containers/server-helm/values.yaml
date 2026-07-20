@@ -1,7 +1,8 @@
 # The default repository with the path where to find all the images.
 repository: registry.opensuse.org/uyuni
-# The default tag to use for images, can be overridden for each image.
-tag: latest
+# The default tag to use for images, can be overridden for each image
+# By default the tab will be the appVersion of the Chart.
+tag:
 
 # Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 pullPolicy: "IfNotPresent"
@@ -22,7 +23,7 @@ server:
   # Leave undefined to use the default
   image:
   # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
+  # Leave undefined to use the default (AppVersion set in the Chart.yaml)
   tag:
 
   # Email will be the email used for the notifications sent by the server.

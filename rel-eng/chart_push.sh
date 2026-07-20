@@ -48,7 +48,7 @@ if [ -f "${SRPM_PKG_DIR}/Chart.yaml" ]; then
         NAME="uyuni\/${NAME}"
     fi
 
-    sed "/^version:.\+$/aappVersion: \"${PRODUCT_VERSION}\"" -i ${SRPM_PKG_DIR}/Chart.yaml
+    sed "s/^appVersion:.\+$/appVersion: \"${PRODUCT_VERSION}\"/" -i ${SRPM_PKG_DIR}/Chart.yaml
     # Remove leading zero from Uyuni release and add potentially missing micro part
     # The regexp needs to convert versions like:
     #    2025.02 to 2025.2.0
