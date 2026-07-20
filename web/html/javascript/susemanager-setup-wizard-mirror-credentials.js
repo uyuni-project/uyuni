@@ -9,7 +9,6 @@ var subscriptionsId;
 function initEdit(element) {
   var id = jQuery(element).data('id');
   var user = jQuery(element).data('user');
-  console.log("initEdit(): " + id);
   editId = id;
   jQuery('#edit-user').val(user);
   jQuery('#edit-password').val("");
@@ -21,14 +20,12 @@ function initEdit(element) {
 function initDelete(element) {
   var id = jQuery(element).data('id');
   var user = jQuery(element).data('user');
-  console.log("initDelete(): " + id);
   deleteId = id;
   jQuery('#delete-user').text(user);
 }
 
 // Init the modal to list subscriptions
 function initSubscriptions(id) {
-  console.log("initSubscriptions(): " + id);
   subscriptionsId = id;
   showSpinner("modal-list-subscriptions-body");
   ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
@@ -36,7 +33,6 @@ function initSubscriptions(id) {
 
 // Hide any modal dialogs
 function hideModal() {
-  console.log("hideModal()");
   jQuery("#edit-credentials-spinner").html("");
   jQuery("#modal-edit-credentials").modal('hide');
   jQuery("#delete-credentials-spinner").html("");
@@ -58,7 +54,6 @@ function saveCredentials() {
   });
 
   if (validated) {
-    console.log("Saving credentials: " + editId);
     var user = escapeHtml(jQuery('#edit-user').val());
     var password = jQuery('#edit-password').val();
     showSpinner("edit-credentials-spinner");
