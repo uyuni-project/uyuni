@@ -10,9 +10,8 @@
       "description": "The default repository for images."
     },
     "tag": {
-      "type": "string",
-      "default": "latest",
-      "description": "The default image tag."
+      "type": ["string", "null"],
+      "description": "The default image tag. Will be the chart's AppVersion if unset"
     },
     "pullPolicy": {
       "type": "string",
