@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: MIT
 """Wrapper script for Uyuni proxy tftp container."""
@@ -16,6 +16,8 @@ from fbtftp.base_handler import BaseHandler
 from fbtftp.base_handler import ResponseData
 from fbtftp.base_server import BaseServer
 from fbtftp import constants
+
+DEFAULT_ENTRY_IDENTIFIER: str = "id-saltboot-default"
 
 
 def stats(s):
@@ -176,7 +178,6 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
         cobbler_content = ""
         have_entry = False
         entry = ""
-        entry_name = ""
         in_entry = False
         for line in self._content.decode("utf-8").splitlines():
             if in_entry:
@@ -189,12 +190,25 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
+                        # When entry starts with a number, grub assumes we are pointing to a menuentry position.
+                        # This is incorrect, and so we need to provide custom --id option for the menuentry which will
+                        # always start with a character so grub is doing menuentry name match.
+                        entry_lines = entry.splitlines()
+                        entry_lines[0] = re.sub(
+                            r"\{\s*$",
+                            f"--id {DEFAULT_ENTRY_IDENTIFIER} {{",
+                            entry_lines[0],
+                        )
+                        entry = "\n".join(entry_lines) + "\n"
                         saltboot_content += entry
                         saltboot_content += (
                             'if [ -z "${default}" -o "${default}" == "local" ]; then\n  set default='
-                            + entry_name
+                            + DEFAULT_ENTRY_IDENTIFIER
                             + "\nfi\n"
                         )
+                        # There can be only one matching saltboot entry
+                        # MINION_ID_PREFIX should be unique across deployment
+                        break
                     else:
                         filtered_entry = re.sub(
                             r"\b" + re.escape(self._server_fqdn) + r"\b",
@@ -211,7 +225,6 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                     entry = ""
             else:
                 if line.startswith("menuentry"):
-                    entry_name = line.split(" ", 3)[1]
                     entry = line + "\n"
                     in_entry = True
                 else:
