@@ -23,7 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.ResumableTransactionalAction;
+import com.redhat.rhn.domain.action.TransactionalAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -52,6 +52,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -479,16 +480,16 @@ public class SaltUtils {
         }
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        Optional<ResumableTransactionalAction> resumableAction =
-                TransactionalActionManager.getTransactionalPrerequisiteAction(action, function);
+        Optional<TransactionalAction> transactionalAction =
+                TransactionalActionManager.getTransactionalAction(action, function);
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", action.getId());
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
-            if (resumableAction.isPresent()) {
-                resumableAction.get().handleTransactionalPrerequisiteResult(serverAction, jsonResult);
+            if (transactionalAction.isPresent()) {
+                setTransactionalResultMsg(serverAction, transactionalAction.get(), jsonResult);
                 LOG.debug("Finished update server action for action {}", action.getId());
                 return;
             }
@@ -499,9 +500,19 @@ public class SaltUtils {
                 return;
             }
         }
-        else if (resumableAction.isPresent()) {
-            serverAction.setCompletionTime(null);
-            resumableAction.get().handleTransactionalPrerequisiteResult(serverAction, jsonResult);
+        else if (transactionalAction.isPresent()) {
+            setTransactionalResultMsg(serverAction, transactionalAction.get(), jsonResult);
+            if (TransactionalActionManager.isTransactionalApplyWaitingForReboot(
+                    action, serverAction.getServer().getId())) {
+                serverAction.setCompletionTime(null);
+            }
+            else if (TransactionalActionManager.needsAdditionalStatesAfterReboot(transactionalAction.get())) {
+                serverAction.setCompletionTime(null);
+            }
+            else {
+                serverAction.setCompletionTime(completionTime);
+                serverAction.setStatusCompleted();
+            }
             LOG.debug("Finished update server action for action {}", action.getId());
             return;
         }
@@ -515,6 +526,17 @@ public class SaltUtils {
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
         LOG.debug("Finished update server action for action {}", action.getId());
+    }
+
+    private static void setTransactionalResultMsg(
+            ServerAction serverAction, TransactionalAction transactionalAction, JsonElement jsonResult) {
+        serverAction.getServer().asMinionServer().ifPresent(minionServer ->
+                serverAction.setResultMsg(TransactionalActionManager.handleTransactionalResult(
+                        transactionalAction,
+                        minionServer.getId(),
+                        serverAction.getParentAction().getId(),
+                        jsonResult,
+                        serverAction.isStatusFailed())));
     }
 
     /**
@@ -546,7 +568,9 @@ public class SaltUtils {
     private static boolean actionFailed(Optional<Xor<String[], String>> function, JsonElement rawResult,
             boolean success, long retcode) {
         // For state.apply based actions verify the result of each state
-        if (function.map(x -> x.fold(Arrays::asList, List::of).contains("state.apply")).orElse(false)) {
+        if (function.map(x -> x.fold(Arrays::asList, List::of).stream()
+                .anyMatch(fun -> "state.apply".equals(fun) || TransactionalUpdateCalls.isApplyFunction(fun)))
+                .orElse(false)) {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
                 () -> true,

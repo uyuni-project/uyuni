@@ -71,7 +71,17 @@ public class TransactionalUpdateCalls {
      */
     public static boolean isApplyFunction(Optional<Xor<String[], String>> function) {
         return function
-                .map(x -> x.fold(Arrays::asList, List::of).contains(APPLY_FUNCTION))
+                .map(x -> x.fold(Arrays::asList, List::of).stream().anyMatch(TransactionalUpdateCalls::isApplyFunction))
                 .orElse(false);
+    }
+
+    /**
+     * Check whether the given Salt function is {@code transactional_update.apply}.
+     *
+     * @param function Salt function name
+     * @return true when the function is transactional-update apply
+     */
+    public static boolean isApplyFunction(String function) {
+        return APPLY_FUNCTION.equals(function);
     }
 }

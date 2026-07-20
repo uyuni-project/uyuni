@@ -167,13 +167,17 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
+     * @param transactionalApply true when the entries represent an apply-then-complete flow
      * @return transactional progress entries in execution order
      */
-    public List<ProgressEntry> getProgressEntries() {
+    public List<ProgressEntry> getProgressEntries(boolean transactionalApply) {
         return List.of(
-                new ProgressEntry(ProgressStep.PREREQUISITES, prerequisiteStatus, prerequisiteAt),
-                new ProgressEntry(ProgressStep.REBOOT, rebootStatus, rebootAt),
-                new ProgressEntry(ProgressStep.ACTION_EXECUTION, postStatus, postAt)
+                new ProgressEntry(transactionalApply ? ProgressStep.TRANSACTIONAL_APPLY :
+                        ProgressStep.PREREQUISITES, prerequisiteStatus, prerequisiteAt),
+                new ProgressEntry(transactionalApply ? ProgressStep.TRANSACTIONAL_REBOOT :
+                        ProgressStep.REBOOT, rebootStatus, rebootAt),
+                new ProgressEntry(transactionalApply ? ProgressStep.ACTION_FINALIZATION :
+                        ProgressStep.ACTION_EXECUTION, postStatus, postAt)
         );
     }
 
@@ -234,7 +238,7 @@ public class MinionTransactionalActionHistory implements Serializable {
     /**
      * Record that the action execution step was scheduled.
      */
-    public void recordPostScheduled() {
+    public void recordContinuationScheduled() {
         Date now = new Date();
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
@@ -245,9 +249,51 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
+     * Record that the transactional apply step completed.
+     *
+     * @param rebootRequiredIn whether a reboot is required to complete the action
+     */
+    public void recordTransactionalApplyCompleted(boolean rebootRequiredIn) {
+        prerequisiteStatus = ProgressStatus.COMPLETED;
+        prerequisiteAt = new Date();
+        rebootRequired = rebootRequiredIn;
+        rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
+        rebootAt = rebootRequiredIn ? null : prerequisiteAt;
+        postStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.COMPLETED;
+        postAt = rebootRequiredIn ? null : prerequisiteAt;
+    }
+
+    /**
+     * Record that the transactional apply step failed.
+     */
+    public void recordTransactionalApplyFailed() {
+        Date now = new Date();
+        prerequisiteStatus = ProgressStatus.FAILED;
+        prerequisiteAt = now;
+        rebootRequired = false;
+        rebootStatus = ProgressStatus.NOT_NEEDED;
+        rebootAt = now;
+        postStatus = ProgressStatus.NOT_NEEDED;
+        postAt = now;
+    }
+
+    /**
+     * Record that a pending transactional apply action was completed after reboot.
+     */
+    public void recordTransactionalApplyFinalized() {
+        Date now = new Date();
+        if (isWaitingForReboot()) {
+            rebootStatus = ProgressStatus.COMPLETED;
+            rebootAt = now;
+        }
+        postStatus = ProgressStatus.COMPLETED;
+        postAt = now;
+    }
+
+    /**
      * Record that scheduling the action execution step failed.
      */
-    public void recordPostFailed() {
+    public void recordContinuationFailed() {
         Date now = new Date();
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
@@ -290,7 +336,10 @@ public class MinionTransactionalActionHistory implements Serializable {
     public enum ProgressStep {
         PREREQUISITES("prerequisites"),
         REBOOT("reboot"),
-        ACTION_EXECUTION("execution");
+        ACTION_EXECUTION("execution"),
+        TRANSACTIONAL_APPLY("apply"),
+        TRANSACTIONAL_REBOOT("applyReboot"),
+        ACTION_FINALIZATION("finalization");
 
         private final String key;
 

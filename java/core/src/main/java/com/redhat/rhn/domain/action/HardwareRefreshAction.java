@@ -73,7 +73,7 @@ import jakarta.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("2")
-public class HardwareRefreshAction extends Action implements ResumableTransactionalAction {
+public class HardwareRefreshAction extends Action implements TransactionalAction {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
     private static final SaltApi SALT_API = GlobalInstanceHolder.SALT_API;
 
@@ -122,8 +122,16 @@ public class HardwareRefreshAction extends Action implements ResumableTransactio
      * {@inheritDoc}
      */
     @Override
-    public String getPostPrerequisiteState() {
-        return ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE;
+    public TransactionalFlow getTransactionalFlow() {
+        return TransactionalFlow.PREREQUISITE_THEN_STATE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<String> getAfterRebootState() {
+        return Optional.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
     }
 
     /**

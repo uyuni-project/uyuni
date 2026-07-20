@@ -13221,6 +13221,72 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.event.transactional.apply.completed">
+          <source>Transactional states applied</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.apply.failed">
+          <source>Transactional states failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.apply.pending">
+          <source>Transactional states are pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.applyReboot.completed">
+          <source>System reboot detected</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.applyReboot.pending">
+          <source>Waiting for a system reboot to complete the action</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.applyReboot.notNeeded">
+          <source>Reboot skipped because the transactional states made no changes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.finalization.completed">
+          <source>Action completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.finalization.failed">
+          <source>Action could not be completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.finalization.pending">
+          <source>Action completion is waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.finalization.notNeeded">
+          <source>Action completion is not needed because a previous step failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.finalization.scheduled">
+          <source>Action completion queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.event.transactional.at">
           <source> at </source>
         <context-group name="ctx">

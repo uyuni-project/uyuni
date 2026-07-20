@@ -14,7 +14,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ResumableTransactionalAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 
@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,8 +61,15 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
             return;
         }
 
-        if (!(action instanceof ResumableTransactionalAction resumableAction)) {
-            LOG.warn("Unable to resume action {}: action is not resumable",
+        if (TransactionalActionManager.isTransactionalApplyWaitingForReboot(
+                action, message.getServerId())) {
+            completeTransactionalApplyAction(action, message);
+            return;
+        }
+
+        var transactionalAction = TransactionalActionManager.getAfterRebootAction(action);
+        if (transactionalAction.isEmpty()) {
+            LOG.warn("Unable to resume action {}: action does not have an after reboot state",
                     message.getActionId());
             markResumeFailed(message);
             return;
@@ -82,7 +90,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         }
 
         var result = saltServerActionService.resumeTransactionalAction(
-                resumableAction, List.of(target.get()));
+                transactionalAction.get(), List.of(target.get()));
 
         if (result.get(true).contains(target.get())) {
             markPostScheduled(message);
@@ -93,17 +101,34 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         if (serverAction != null) {
             serverAction.setStatusFailed();
             serverAction.setResultMsg(
-                    "Unable to schedule the post-prerequisite Salt call.");
+                    "Unable to schedule the after reboot Salt call.");
         }
         markResumeFailed(message);
     }
 
+    private void completeTransactionalApplyAction(Action action, ResumeTransactionalActionEventMessage message) {
+        ServerAction serverAction = action.getServerAction(message.getServerId());
+        if (serverAction == null) {
+            LOG.warn("Unable to complete transactional action {} for server {}: server action not found",
+                    message.getActionId(), message.getServerId());
+            markResumeFailed(message);
+            return;
+        }
+
+        serverAction.setStatusCompleted();
+        serverAction.setCompletionTime(new Date());
+        serverAction.setResultCode(0L);
+        serverAction.setResultMsg("System reboot detected. Action completed.");
+        ActionFactory.save(serverAction);
+        TransactionalActionManager.recordTransactionalApplyFinalized(message.getServerId(), message.getActionId());
+    }
+
     private void markPostScheduled(ResumeTransactionalActionEventMessage message) {
-        TransactionalActionManager.recordPostScheduled(message.getServerId(), message.getActionId());
+        TransactionalActionManager.recordContinuationScheduled(message.getServerId(), message.getActionId());
     }
 
     private void markResumeFailed(ResumeTransactionalActionEventMessage message) {
-        TransactionalActionManager.recordPostFailed(message.getServerId(), message.getActionId());
+        TransactionalActionManager.recordContinuationFailed(message.getServerId(), message.getActionId());
     }
 
     @Override

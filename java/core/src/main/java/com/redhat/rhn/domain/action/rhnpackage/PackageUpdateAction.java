@@ -19,8 +19,11 @@ import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.domain.action.TransactionalAction;
+import com.redhat.rhn.domain.action.TransactionalFlow;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -30,6 +33,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.webui.services.SaltParameters;
+import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 
@@ -49,7 +53,15 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Entity
 @DiscriminatorValue("3")
-public class PackageUpdateAction extends PackageAction {
+public class PackageUpdateAction extends PackageAction implements TransactionalAction {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TransactionalFlow getTransactionalFlow() {
+        return TransactionalFlow.APPLY_THEN_COMPLETE;
+    }
 
     /**
      * {@inheritDoc}
@@ -86,15 +98,27 @@ public class PackageUpdateAction extends PackageAction {
                 getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .toList();
-        if (pkgs.isEmpty()) {
-            // Full system package update using update state
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
-        }
-        else {
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs))), filteredMinions);
-        }
+        Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = filteredMinions.stream()
+                .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+
+        List<String> states = pkgs.isEmpty() ?
+                List.of(SaltParameters.PACKAGES_PKGUPDATE) :
+                List.of(SaltParameters.PACKAGES_PKGINSTALL);
+        Optional<Map<String, Object>> pillar = pkgs.isEmpty() ?
+                Optional.empty() :
+                Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs));
+
+        addPackageUpdateCall(ret, State.apply(states, pillar), minionsByTransactionalUpdate.get(false));
+        addPackageUpdateCall(ret,
+                TransactionalUpdateCalls.apply(states, pillar), minionsByTransactionalUpdate.get(true));
         return ret;
+    }
+
+    private static void addPackageUpdateCall(
+            Map<LocalCall<?>, List<MinionSummary>> calls, LocalCall<?> call, List<MinionSummary> minions) {
+        if (!minions.isEmpty()) {
+            calls.put(call, minions);
+        }
     }
 
     /**

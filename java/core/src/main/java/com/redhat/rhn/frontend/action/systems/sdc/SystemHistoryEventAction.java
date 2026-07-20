@@ -108,7 +108,7 @@ public class SystemHistoryEventAction extends RhnAction {
                 serverAction.isStatusCompleted());
         TransactionalActionManager.findTransactionalActionHistory(server.getId(), action.getId())
                 .ifPresent(history -> request.setAttribute("transactionalProgressEntries",
-                        history.getProgressEntries()));
+                        TransactionalActionManager.getProgressEntries(action, history)));
 
         boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
 
