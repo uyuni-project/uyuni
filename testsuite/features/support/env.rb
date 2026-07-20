@@ -78,6 +78,11 @@ LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '0').to_i
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
 IMMEDIATE_WAIT = ENV['IMMEDIATE_WAIT'] ? ENV['IMMEDIATE_WAIT'].to_i : 1
+# Where Chromium writes crash minidumps (BUG-024: chrome-headless-shell crashed with an
+# unexplained SIGTRAP/int3 and left no report - --enable-crash-reporter below should capture
+# the next occurrence here instead of us having to infer it from a bare kernel dmesg line).
+CHROME_CRASH_DIR = ENV.fetch('CHROME_CRASH_DIR', 'chrome-crashes')
+FileUtils.mkdir_p(CHROME_CRASH_DIR)
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
@@ -111,10 +116,15 @@ def capybara_register_driver
         --disable-dev-shm-usage
         --ignore-certificate-errors
         --no-sandbox
+        --no-zygote
+        --disable-gpu
         --disable-notifications
         --window-size=2048,2048
         --js-flags=--max-old-space-size=2048
         --log-level=3
+      ] + [
+        '--enable-crash-reporter',
+        "--crash-dumps-dir=#{CHROME_CRASH_DIR}"
       ],
       ignoreHTTPSErrors: true,
       acceptDownloads: true,

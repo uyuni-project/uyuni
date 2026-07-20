@@ -643,6 +643,15 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
       warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
       sleep 1
       visit Capybara.app_host
+    rescue Playwright::Transport::AlreadyDisconnectedError => e
+      # Unlike Playwright::Error above, this means the Node driver's pipe is
+      # already dead (browser process crashed or was killed, e.g. by the env.rb scenario
+      # watchdog) - retrying visit on the same transport would just raise the same error again.
+      # Rebuild the driver and session before retrying so the next scenario gets a live browser.
+      warn "Browser transport already disconnected (#{e.message}) — rebuilding driver and retrying"
+      capybara_register_driver
+      Capybara.current_session.reset!
+      visit Capybara.app_host
     end
   end
   begin
