@@ -105,6 +105,10 @@ export default class Loggerhead {
 
     xhr.onload = () => {
       if (xhr.status !== 200) {
+        if (xhr.status === 401) {
+          return;
+        }
+
         // Try to parse the xhr response, but catch if it fails to avoid an infinite loop of failure-and-logging
         try {
           this._error(JSON.parse(xhr.response));
