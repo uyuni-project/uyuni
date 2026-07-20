@@ -17,6 +17,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I wait until I see "is currently registered as peripheral of this hub" text
     Then I should see "server2" in peripherals list
 
+  Scenario: Log in as admin user on server2 for peripheral sync (A-06)
+    Given I am authorized for the "Admin" section on "server2"
+
   Scenario: Clone a channel on hub for sync testing (A-06)
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
@@ -38,12 +41,12 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
     When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "server2"
-    Then I should see a "Channel configuration updated" text
+    # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1271703
+    Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
-    When I trigger channel sync from hub to "server2"
-    And I wait until I see "Synchronization started" text
-    Then I should see a "Background" text
+    When I initiate channel sync from peripheral "server2"
+    Then I should see a "Successfully scheduled a channels synchronization." text
 
   Scenario: Wait for cloned channel to appear on server2 (A-06)
     When I wait at most 600 seconds until channel "Fake-Clone-RPM-SLES15SP7-Channel" has been synced on "server2"
@@ -67,19 +70,16 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Channel configuration updated" text
 
   Scenario: Trigger sync for custom channel and verify it arrives on server2 (A-06)
-    When I trigger channel sync from hub to "server2"
-    And I wait until I see "Synchronization started" text
+    When I initiate channel sync from peripheral "server2"
+    And I should see a "Successfully scheduled a channels synchronization." text
     And I wait at most 300 seconds until channel "test-hub-custom-channel" has been synced on "server2"
     Then channel "test-hub-custom-channel" should exist on "server2"
 
-  Scenario: Log in as admin user on server2 for peripheral sync (A-06)
-    Given I am authorized for the "Admin" section on "server2"
-
-  Scenario: Initiate channel sync from server2 peripheral - Method B (A-06)
-    Given I am authorized for the "Admin" section on "server2"
-    When I initiate channel sync from peripheral "server2"
-    And I wait until I see "Synchronization started" text
-    Then I should see a "Background" text
+  # Method B — hub-side trigger via Admin > Hub Configuration > Peripherals Configuration
+  # ("Sync Channels" button next to a registered peripheral) does not exist as a separate
+  # flow: the actual sync-now action only lives on the peripheral's own Hub Details page
+  # (Admin > Hub Configuration > Hub Details), which is what "I initiate channel sync from
+  # peripheral" already covers above. No separate Method B scenario needed.
 
   # Method C — sync.hub.* API endpoints: not available in SUMA/Uyuni 5.2.
   # Hub channel sync is UI/event-driven under ISS v3. The sync.hub namespace
@@ -99,9 +99,8 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Regenerate mirror credentials for server2 and verify sync still works (A-06)
     When I regenerate mirror credentials for peripheral "server2"
-    And I trigger channel sync from hub to "server2"
-    And I wait until I see "Synchronization started" text
-    Then I should see a "Background" text
+    And I initiate channel sync from peripheral "server2"
+    Then I should see a "Successfully scheduled a channels synchronization." text
 
   Scenario: Cleanup - remove synced channels from server2
     When I remove synced channels from "server2"
