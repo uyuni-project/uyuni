@@ -48,7 +48,7 @@ When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, t
   raise ScriptError, "Text '#{text}' not found" unless check_text?(text, timeout: seconds.to_i)
 end
 
-When(/^I wait at most (\d+) seconds until I see "([^"]*)" but "([^"]*)" text$/) do |seconds, text, stopper|
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text but do not see "([^"]*)" text$/) do |seconds, text, stopper|
   raise ScriptError, "Text '#{text}' not found or '#{stopper}' appeared" unless check_text?(text, stopper: stopper, timeout: seconds.to_i)
 end
 
