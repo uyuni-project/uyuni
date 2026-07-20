@@ -6,7 +6,12 @@ type Props = {
 /** Display help icon with a title */
 const HelpIcon = ({ text }: Props) => {
   return text ? (
-    <i className="fa fa-question-circle spacewalk-help-link" data-bs-toggle="tooltip" title={text}></i>
+    <i
+      className="fa fa-question-circle spacewalk-help-link"
+      aria-label={text}
+      title={text}
+      data-bs-toggle="tooltip"
+    ></i>
   ) : null;
 };
 
