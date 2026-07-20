@@ -101,7 +101,7 @@ curl -sk https://mlm-test-hub-hub.mgr.suse.de/hub/rpc/api
 1. Generate token on prh2 (as in A-03).
 2. Hub: **Add peripheral** → `Existing token` → for `Root CA certificate` test both:
    - **Upload a file** (prh2's `RHN-ORG-TRUSTED-SSL-CERT`)
-   - **Paste a PEM certificate**
+   - **Paste the data**
 3. Register.
 
 **Expected:**
