@@ -204,7 +204,7 @@ When(/^I add "([^"]*)" as peripheral using administrator credentials$/) do |host
     step %(I check radio button "Not needed")
   else
     step %(I check radio button "Paste the data")
-    find("textarea[name='pastedRootCA']").set(ca_content)
+    find("textarea[name='rootCA_pastedData']").set(ca_content)
   end
   step %(I click on "Register")
 end
@@ -247,7 +247,7 @@ When(/^I attempt to register "([^"]*)" as peripheral with wrong password$/) do |
     step %(I check radio button "Not needed")
   else
     step %(I check radio button "Paste the data")
-    find("textarea[name='pastedRootCA']").set(ca_content)
+    find("textarea[name='rootCA_pastedData']").set(ca_content)
   end
   step %(I click on "Register")
 end
@@ -288,7 +288,7 @@ When(/^I attempt to register "([^"]*)" as peripheral with username "([^"]*)" and
     step %(I check radio button "Not needed")
   else
     step %(I check radio button "Paste the data")
-    find("textarea[name='pastedRootCA']").set(ca_content)
+    find("textarea[name='rootCA_pastedData']").set(ca_content)
   end
   step %(I click on "Register")
 end
@@ -348,7 +348,7 @@ When(/^I add "([^"]*)" as peripheral using its access token$/) do |host|
     step %(I check radio button "Not needed")
   else
     step %(I check radio button "Paste the data")
-    find("textarea[name='pastedRootCA']").set(ca_content)
+    find("textarea[name='rootCA_pastedData']").set(ca_content)
   end
   step %(I click on "Register")
 end
@@ -455,7 +455,7 @@ When(/^I add "([^"]*)" as peripheral using its access token and pasted root CA$/
   step %(I check radio button "Existing token")
   step %(I enter "#{token}" as "token")
   step %(I check radio button "Paste the data")
-  find("textarea[name='pastedRootCA']").set(ca_content)
+  find("textarea[name='rootCA_pastedData']").set(ca_content)
   step %(I click on "Register")
 end
 
