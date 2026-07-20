@@ -1,4 +1,4 @@
-import { Component, Fragment } from "react";
+import { Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -117,9 +117,11 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
       Component = EditDictionaryGroup;
     }
 
+    const editGroupSubtype = getEditGroupSubtype(element);
+
     const isPrimitiveGroup =
-      getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_LIST ||
-      getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_DICTIONARY;
+      editGroupSubtype === EditGroupSubtype.PRIMITIVE_LIST ||
+      editGroupSubtype === EditGroupSubtype.PRIMITIVE_DICTIONARY;
 
     return this.props.isVisibleByCriteria?.() ? (
       <Panel
@@ -128,6 +130,10 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
         className="formula-content-section"
         collapseId={getSafeCollapseId(this.props.id)}
         collapsClose={!this.state.visible}
+        onCollapsedChange={(collapsed) => {
+          this.setState({ visible: !collapsed });
+          this.props.setSectionsExpanded(SectionState.Mixed);
+        }}
         header={
           <Highlight
             enabled={isFiltered(this.props.criteria)}
@@ -136,7 +142,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
           />
         }
       >
-        <Fragment>
+        <>
           {"$help" in this.props.element && this.props.element.$help !== this.props.element.$name ? (
             <p>{this.props.element.$help}</p>
           ) : null}
@@ -161,14 +167,16 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                 id={this.props.id + "#add_item"}
                 text={t(`Add ${this.props.element.$name}`)}
                 title={
-                  this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : undefined
+                  this.props.element.$maxItems! <= this.props.value.length
+                    ? t("Max number of items reached")
+                    : undefined
                 }
                 disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
                 handler={this.handleAddItem}
               />
             </div>
           </div>
-        </Fragment>
+        </>
       </Panel>
     ) : null;
   }
@@ -190,9 +198,9 @@ type EditPrimitiveGroupProps = {
  */
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simpleWrapper = (name, required, element, i, help = null, isLastItem = false) => {
+  simpleWrapper = (name, required, element, i, help = null) => {
     return (
-      <Fragment>
+      <>
         <div className="col-lg-4 offset-lg-3">{element}</div>
         {required ? (
           <span className="required-form-field" style={{ float: "left", paddingRight: "10px" }}>
@@ -207,7 +215,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
             handleRemoveItem={() => this.props.handleRemoveItem(i)}
           />
         </div>
-      </Fragment>
+      </>
     );
   };
 
@@ -226,7 +234,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       const i = itemIndices[idx];
       const id = this.props.id + "#" + i;
 
-      // Create a wrapper that passes isLastItem information
+      // Bind the current item index into the wrapper so RemoveButton removes the right item
       const wrapperWithContext = (name, required, element, help = null) => {
         return this.simpleWrapper(name, required, element, i, help);
       };
@@ -345,9 +353,6 @@ class RemoveButton extends Component<RemoveButtonProps> {
         className="btn-tertiary"
         icon="fa-times"
         title={this.props.minItems >= this.props.currentLength ? t("Min number of items reached") : t("Remove item")}
-        aria-label={
-          this.props.minItems >= this.props.currentLength ? t("Min number of items reached") : t("Remove item")
-        }
         handler={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
       />
@@ -467,6 +472,9 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
           className="formula-content-section"
           collapseId={getSafeCollapseId(id)}
           collapsClose={!this.isVisible(i)}
+          onCollapsedChange={(collapsed) => {
+            this.setVisible(i, !collapsed);
+          }}
           header={
             <div className="group-heading">
               {this.props.element.$itemName
