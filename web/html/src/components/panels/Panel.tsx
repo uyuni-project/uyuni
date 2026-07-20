@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { useEffect, useRef } from "react";
 
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
@@ -12,6 +12,7 @@ type Props = {
   children: React.ReactNode;
   buttons?: React.ReactNode;
   collapsClose?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
 };
 
 export const Panel = (props: Props) => {
@@ -28,12 +29,40 @@ export const Panel = (props: Props) => {
     ) : null);
 
   const bodyContent = (
-    <Fragment>
+    <>
       <div className="panel-body">{props.children}</div>
 
       {props.footer && <div className="panel-footer">{props.footer}</div>}
-    </Fragment>
+    </>
   );
+
+  const collapseRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!collapseRef.current || !props.onCollapsedChange) {
+      return;
+    }
+
+    const element = collapseRef.current;
+
+    const onShown = (event: Event) => {
+      if (event.target !== element) return;
+      props.onCollapsedChange?.(false);
+    };
+
+    const onHidden = (event: Event) => {
+      if (event.target !== element) return;
+      props.onCollapsedChange?.(true);
+    };
+
+    element.addEventListener("shown.bs.collapse", onShown);
+    element.addEventListener("hidden.bs.collapse", onHidden);
+
+    return () => {
+      element.removeEventListener("shown.bs.collapse", onShown);
+      element.removeEventListener("hidden.bs.collapse", onHidden);
+    };
+  }, [props.onCollapsedChange]);
 
   return (
     <div className={"panel " + (props.className ?? "panel-default")}>
@@ -80,6 +109,7 @@ export const Panel = (props: Props) => {
 
       {props.collapseId ? (
         <div
+          ref={collapseRef}
           id={`${props.collapseId}-panel-closable`}
           className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
         >
