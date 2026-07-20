@@ -1,4 +1,4 @@
-import { type ReactNode, Fragment, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { SectionState } from "components/FormulaForm";
 import { Panel } from "components/panels/Panel";
@@ -19,6 +19,7 @@ type Props = {
 
 const Group = (props: Props) => {
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
+
   useEffect(() => {
     if (props.sectionsExpanded !== SectionState.Mixed) {
       setVisible(props.sectionsExpanded !== SectionState.Collapsed);
@@ -32,6 +33,10 @@ const Group = (props: Props) => {
       className="formula-content-section"
       collapseId={props.id.replace(/[.#\s]/g, "-")}
       collapsClose={!visible}
+      onCollapsedChange={(collapsed) => {
+        setVisible(!collapsed);
+        props.setSectionsExpanded(SectionState.Mixed);
+      }}
       header={
         <div className="group-heading">
           <span id={props.id}>
@@ -48,10 +53,10 @@ const Group = (props: Props) => {
         </div>
       }
     >
-      <Fragment>
+      <>
         {props.help && props.help !== props.header ? <p>{props.help}</p> : null}
         {props.children}
-      </Fragment>
+      </>
     </Panel>
   ) : null;
 };
