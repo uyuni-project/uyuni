@@ -91,7 +91,8 @@ public class HardwareRefreshAction extends Action implements ResumableTransactio
         List<MinionSummary> nonTransactionalMinions = partitionByTransactional.get(false);
 
         if (!transactionalMinions.isEmpty()) {
-            ret.put(TransactionalUpdateCalls.apply(List.of(SaltParameters.HARDWARE_PREREQ)),
+            ret.put(TransactionalUpdateCalls.apply(
+                            List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ)),
                     transactionalMinions);
         }
 

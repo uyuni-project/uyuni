@@ -1,9 +1,3 @@
-{%- from "hardware/profileupdate_prereq.sls" import install_hardware_profile_prerequisites with context %}
-
-{%- if not grains.get('transactional', False) %}
-{{ install_hardware_profile_prerequisites(require_sync_states=True) }}
-{%- endif %}
-
 grains:
   module.run:
     - name: grains.items
@@ -198,3 +192,6 @@ proxy_info:
 include:
   - util.syncstates
   - util.syncmodules
+{%- if not grains.get('transactional', False) %}
+  - hardware.profileupdate_prereq
+{%- endif %}

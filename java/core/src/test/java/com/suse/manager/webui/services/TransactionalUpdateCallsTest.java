@@ -27,28 +27,30 @@ import java.util.Map;
 import java.util.Optional;
 
 public class TransactionalUpdateCallsTest {
+    private static final String TRANSACTIONAL_PREREQ =
+            SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ;
 
     @Test
     public void testApplyUsesCorrectFunctionName() {
         LocalCall<Map<String, State.ApplyResult>> call =
-                TransactionalUpdateCalls.apply(List.of("hardware.prereq"));
+                TransactionalUpdateCalls.apply(List.of(TRANSACTIONAL_PREREQ));
         assertEquals("transactional_update.apply", call.getPayload().get("fun"));
     }
 
     @Test
     public void testApplyIncludesModsInKwargs() {
         LocalCall<Map<String, State.ApplyResult>> call =
-                TransactionalUpdateCalls.apply(List.of("hardware.prereq", "certs"));
+                TransactionalUpdateCalls.apply(List.of(TRANSACTIONAL_PREREQ, "certs"));
         Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
         assertNotNull(kwargs);
-        assertEquals(List.of("hardware.prereq", "certs"), kwargs.get("mods"));
+        assertEquals(List.of(TRANSACTIONAL_PREREQ, "certs"), kwargs.get("mods"));
     }
 
     @Test
     public void testApplyWithPillarIncludesPillarInKwargs() {
         Map<String, Object> pillar = Map.of("key", "value");
         LocalCall<Map<String, State.ApplyResult>> call =
-                TransactionalUpdateCalls.apply(List.of("hardware.prereq"), Optional.of(pillar));
+                TransactionalUpdateCalls.apply(List.of(TRANSACTIONAL_PREREQ), Optional.of(pillar));
         Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
         assertNotNull(kwargs);
         assertEquals(pillar, kwargs.get("pillar"));
@@ -57,7 +59,7 @@ public class TransactionalUpdateCallsTest {
     @Test
     public void testApplyWithoutPillarOmitsPillarFromKwargs() {
         LocalCall<Map<String, State.ApplyResult>> call =
-                TransactionalUpdateCalls.apply(List.of("hardware.prereq"), Optional.empty());
+                TransactionalUpdateCalls.apply(List.of(TRANSACTIONAL_PREREQ), Optional.empty());
         Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
         assertNotNull(kwargs);
         assertFalse(kwargs.containsKey("pillar"), "pillar should be absent when Optional.empty()");
