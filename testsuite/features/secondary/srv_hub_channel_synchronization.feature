@@ -17,9 +17,6 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I wait until I see "is currently registered as peripheral of this hub" text
     Then I should see "server2" in peripherals list
 
-  Scenario: Log in as admin user on server2 for peripheral sync (A-06)
-    Given I am authorized for the "Admin" section on "server2"
-
   Scenario: Clone a channel on hub for sync testing (A-06)
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
@@ -45,6 +42,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
+    Given I am authorized for the "Admin" section on "server2"
     When I initiate channel sync from peripheral "server2"
     Then I should see a "Successfully scheduled a channels synchronization." text
 

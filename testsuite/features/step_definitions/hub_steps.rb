@@ -614,6 +614,8 @@ When(/^I initiate channel sync from peripheral "([^"]*)"$/) do |host|
   add_context("#{host}_taskomatic_check_start_time", start_time.strip)
   using_server(host) do
     visit('/rhn/manager/admin/hub/hub-details')
+    step %(I should see a "Hub Details" text)
+    step %(I should see "server" hostname)
     step %(I click on "Sync Channels")
     step %(I click on "Schedule" in "Confirm channels synchronization" modal)
   end
