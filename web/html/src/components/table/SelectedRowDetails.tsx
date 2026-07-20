@@ -20,9 +20,10 @@ type SelectedRowDetailsProps = {
 /** Panel containing selected row details for a table */
 export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SelectedRowDetailsProps) {
   const isVisible = selectable && selectedCount > 0;
+
   const allSelected = selectedCount === props.itemCount;
   return (
-    <div className={`selected-row-details ${isVisible ? "show-details" : "hide-details"}`}>
+    <div className={`selected-row-details ${isVisible ? "show-details" : "hide-details"}`} aria-hidden={!isVisible}>
       {allSelected ? (
         <>
           {t(

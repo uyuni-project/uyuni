@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "utils/test-utils";
 
 import { SelectedRowDetails } from "./SelectedRowDetails";
 
@@ -17,6 +17,7 @@ describe("SelectedRowDetails", () => {
     const { container } = render(<SelectedRowDetails {...defaultProps} selectable selectedCount={0} />);
 
     expect(container.querySelector(".hide-details")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /clear all/i })).toBeNull();
   });
 
   test("shows selected count and action buttons when some items are selected", () => {
