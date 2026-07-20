@@ -37,7 +37,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "There are no patches associated with this channel." text
 
   Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
-    When I configure hub to sync channel "clone-fake-base-channel-suse-like" to "server2"
+    When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "server2"
     Then I should see a "Channel configuration updated" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
@@ -46,11 +46,11 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Background" text
 
   Scenario: Wait for cloned channel to appear on server2 (A-06)
-    When I wait at most 600 seconds until channel "clone-fake-base-channel-suse-like" has been synced on "server2"
-    Then channel "clone-fake-base-channel-suse-like" should exist on "server2"
+    When I wait at most 600 seconds until channel "Fake-Clone-RPM-SLES15SP7-Channel" has been synced on "server2"
+    Then channel "Fake-Clone-RPM-SLES15SP7-Channel" should exist on "server2"
 
   Scenario: Verify cloned channel on server2 has expected packages (A-06)
-    Then channel "clone-fake-base-channel-suse-like" on "server2" should have "4" packages
+    Then channel "Fake-Clone-RPM-SLES15SP7-Channel" on "server2" should have "4" packages
 
   Scenario: Create a custom channel on hub for org-mapping test (A-06)
     When I follow the left menu "Software > Manage > Channels"

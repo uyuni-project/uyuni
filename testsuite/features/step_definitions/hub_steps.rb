@@ -542,6 +542,7 @@ When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"$/) do |channel, ho
   step %(I follow "#{fqdn}")
   step %(I follow "Edit channels")
   find('input.table-input-search').set(channel)
+  find(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]', wait: DEFAULT_TIMEOUT).click
   find(:xpath, "//tr[contains(., '#{channel}')]//input[@type='checkbox']", wait: DEFAULT_TIMEOUT).check
   click_apply_channels_button
 end
