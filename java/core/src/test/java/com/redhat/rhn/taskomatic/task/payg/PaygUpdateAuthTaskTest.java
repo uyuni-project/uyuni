@@ -258,8 +258,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
                     assertEquals("http://example.domain.top/path/to/repository_1?credentials=mirrcred_" + cid,
                             cs.getSourceUrl());
-                    assertEquals(1, cs.getSslSets().size());
-                    SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
+                    assertEquals(1, cs.getSslContentSources().size());
+                    SslContentSource sslcerts = cs.getSslContentSources().stream().findFirst().orElseThrow();
 
                     assertEquals(dCert, sslcerts.getClientCert().getDescription());
                     assertEquals("CLIENT CERTIFICATE 1", sslcerts.getClientCert().getKeyString());
@@ -276,8 +276,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
                     assertEquals("http://example.domain.top/path/to/repository_2?credentials=mirrcred_" + cid,
                             cs.getSourceUrl());
-                    assertEquals(1, cs.getSslSets().size());
-                    SslContentSource sslcerts = cs.getSslSets().stream().findFirst().orElseThrow();
+                    assertEquals(1, cs.getSslContentSources().size());
+                    SslContentSource sslcerts = cs.getSslContentSources().stream().findFirst().orElseThrow();
 
                     assertEquals(dCert, sslcerts.getClientCert().getDescription());
                     assertEquals("CLIENT CERTIFICATE 2", sslcerts.getClientCert().getKeyString());

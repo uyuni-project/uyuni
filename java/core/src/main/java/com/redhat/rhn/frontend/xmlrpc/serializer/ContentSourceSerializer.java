@@ -52,7 +52,7 @@ public class ContentSourceSerializer extends ApiResponseSerializer<ContentSource
                 .add("sourceUrl", src.getSourceUrl())
                 .add("type", src.getType().getLabel())
                 .add("hasSignedMetadata", src.getMetadataSigned())
-                .add("sslContentSources", src.getSslSets())
+                .add("sslContentSources", src.getSslContentSources())
                 .build();
     }
 }

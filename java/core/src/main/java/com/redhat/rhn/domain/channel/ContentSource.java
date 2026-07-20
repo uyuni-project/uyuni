@@ -197,7 +197,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      * Use add/remove/clear helper methods to mutate the association.
      * @return SSL sets for content source
      */
-    public Set<SslContentSource> getSslSets() {
+    public Set<SslContentSource> getSslContentSources() {
         return Collections.unmodifiableSet(sslSets);
     }
 
@@ -206,7 +206,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      * with orphanRemoval semantics.
      * @param sslSetsIn SSL sets to assign to repository
      */
-    public void setSslSets(Set<SslContentSource> sslSetsIn) {
+    public void setSslContentSources(Set<SslContentSource> sslSetsIn) {
         EntityAssociationHelper.reconcile(this, sslSets, sslSetsIn, ContentSource::setSslContentSourceParent);
     }
 
@@ -214,7 +214,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      * Adds an SSL mapping and keeps the child-to-parent reference in sync.
      * @param sslContentSource SSL mapping to add
      */
-    public void addSslSet(SslContentSource sslContentSource) {
+    public void addSslContentSource(SslContentSource sslContentSource) {
         EntityAssociationHelper.addMember(this, sslSets, sslContentSource, ContentSource::setSslContentSourceParent);
     }
 
@@ -222,14 +222,14 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      * Removes an SSL mapping and clears the child-to-parent reference.
      * @param sslContentSource SSL mapping to remove
      */
-    public void removeSslSet(SslContentSource sslContentSource) {
+    public void removeSslContentSource(SslContentSource sslContentSource) {
         EntityAssociationHelper.removeMember(sslSets, sslContentSource, ContentSource::setSslContentSourceParent);
     }
 
     /**
      * Removes all SSL mappings and clears child-to-parent references.
      */
-    public void clearSslSets() {
+    public void clearSslContentSources() {
         EntityAssociationHelper.clear(sslSets, ContentSource::setSslContentSourceParent);
     }
 

@@ -143,14 +143,14 @@ public class PaygAuthDataProcessor {
                 SslCryptoKey caCert = cryptoKeyMap.get(repodata.get("sslcacert"));
 
                 // Reuse an existing instance when present to keep orphanRemoval collection updates stable.
-                SslContentSource sslContentSource = contentSource.getSslSets().stream().findFirst()
+                SslContentSource sslContentSource = contentSource.getSslContentSources().stream().findFirst()
                     .orElseGet(() -> new SslContentSource(contentSource));
 
                 sslContentSource.setClientCert(clientCert);
                 sslContentSource.setClientKey(clientKey);
                 sslContentSource.setCaCert(caCert);
 
-                contentSource.setSslSets(Set.of(sslContentSource));
+                contentSource.setSslContentSources(Set.of(sslContentSource));
             }
             else if (repodata.containsKey("sslclientcert") ||
                     repodata.containsKey("sslclientkey")) {
