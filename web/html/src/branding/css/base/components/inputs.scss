@@ -111,34 +111,43 @@ div.form-control {
 }
 
 // react-select control dropdown memu
-[class*="__menu"],
-[class*="__option"] {
-  color: $select-dropdown-color;
-  background: $select-dropdown-bg;
-}
+#menu-portal-target {
+  [class*="__menu"],
+  [class*="__option"] {
+    color: $select-dropdown-color;
+    background: $select-dropdown-bg;
+  }
 
-[class*="__option--is-focused"],
-[class*="__option--is-focused"]:active {
-  background: $select-dropdown-focused-bg;
-}
+  [class*="__option--is-focused"],
+  [class*="__option--is-focused"]:active {
+    background: $select-dropdown-focused-bg;
+  }
 
-[class*="__option--is-selected"] {
-  color: $select-dropdown-selected-color;
-  background: $select-dropdown-selected-bg;
-}
-
-.css-1uccc91-singleValue {
-  color: $select-dropdown-color;
+  [class*="__option--is-selected"] {
+    color: $select-dropdown-selected-color;
+    background: $select-dropdown-selected-bg;
+  }
 }
 
 .form-control--react-select {
-  .child__control {
-    &:hover,
-    &--is-focused,
-    &--menu-is-open {
-      border-color: $eos-bc-blue-500 !important;
-      box-shadow: 0 0 0 1px $eos-bc-blue-500 !important;
+  [class*="__control"]:hover,
+  [class*="__control--is-focused"],
+  [class*="__control--menu-is-open"] {
+    border-color: $select-dropdown-selected-bg !important;
+  }
+
+  > svg {
+    color: $body-color;
+  }
+
+  [class*="__multi-value"] {
+    svg {
+      color: $select-dropdown-multi-value-svg;
     }
+  }
+
+  [class*="-singleValue"] {
+    color: $select-dropdown-color;
   }
 }
 

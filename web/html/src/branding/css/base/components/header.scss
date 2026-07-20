@@ -127,8 +127,8 @@
 
   #clear-ssm {
     padding: 4px 6px 4px 4px !important;
-    color: darken($gray-dark, 20%);
-    background: $gray-light;
+    color: $white;
+    background-image: none;
     cursor: pointer;
     border-radius: 2px;
     border-width: 0;
@@ -137,6 +137,10 @@
       background-color: $text-danger-color;
       color: $white;
       background-image: none;
+
+      &::after {
+        border: 0;
+      }
     }
 
     i {

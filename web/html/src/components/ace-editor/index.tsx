@@ -15,7 +15,7 @@ declare global {
   }
 }
 
-const isDark = document.body.classList.contains("theme-suse-dark");
+const isDark = typeof document !== "undefined" && document.body.classList.contains("theme-suse-dark");
 
 type Props = {
   mode?: string;

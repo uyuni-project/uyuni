@@ -121,5 +121,5 @@ tbody tr td .modal-link {
 }
 
 .table-hover > tbody > tr:hover {
-  background-color: rgba($eos-bc-gray-100, 50%) !important;
+  background-color: rgba($table-row-hover-bg, 0.5) !important;
 }
