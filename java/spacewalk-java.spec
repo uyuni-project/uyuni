@@ -92,7 +92,6 @@ BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
 BuildRequires:  antlr4-java >= 4.13.0
-BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io >= 2.11.0
@@ -144,7 +143,6 @@ BuildRequires:  prometheus-metrics-java-exposition-textformats
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0
-BuildRequires:  simple-core
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -182,7 +180,6 @@ Requires:       apache-commons-fileupload2-jakarta-servlet6
 Requires:       jcache
 Requires:       ehcache >= 3.11.1
 Requires:       apache-commons-beanutils
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
 Requires:       apache-commons-io
@@ -231,7 +228,6 @@ Requires:       prometheus-metrics-java-exposition-textformats
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 1.0.0
 Requires:       tomcat11-servlet-6_1-api
-Requires:       simple-core
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -366,7 +362,6 @@ BuildRequires:  systemd-rpm-macros
 %endif
 
 Requires:       jcache
-Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-text
@@ -384,7 +379,6 @@ Requires:       jsch
 Requires:       log4j
 Requires:       log4j-jcl
 Requires:       quartz
-Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}

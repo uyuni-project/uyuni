@@ -31,9 +31,6 @@ artifacts:
   - artifact: commons-beanutils
     package: apache-commons-beanutils
     repository: Leap_sle
-  - artifact: commons-cli
-    package: apache-commons-cli
-    repository: Leap
   - artifact: commons-codec
     package: apache-commons-codec
     repository: Leap
@@ -205,10 +202,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: prometheus-metrics-exposition-textformats
     package: prometheus-metrics-java-exposition-textformats
-    repository: Uyuni_Other
-  - artifact: simple-core
-    # How comes that package is not noarch?
-    arch: x86_64
     repository: Uyuni_Other
   - artifact: sitemesh
     repository: Uyuni
