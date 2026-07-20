@@ -103,7 +103,6 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.18.1
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  classmate
-BuildRequires:  dom4j
 BuildRequires:  jaxb-api
 BuildRequires:  jaxb-core
 BuildRequires:  jakarta-activation
