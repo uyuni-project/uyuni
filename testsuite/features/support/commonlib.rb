@@ -1102,3 +1102,25 @@ def latest_package(packages)
     end
   end
 end
+
+# Retrieves the environment variable name for a given host, with fallback support
+#
+# This function checks if the primary environment variable (from ENV_VAR_BY_HOST)
+# is set. If not, it falls back to an alternative environment variable name.
+# Useful for scenarios where a host may be aliased or mapped to a different
+# environment variable when the primary one is unavailable.
+#
+# @param host_key [String] The key in ENV_VAR_BY_HOST (e.g., 'sle_minion')
+# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set (e.g., 'SLE15SP7_MINION')
+# @return [String] The environment variable name that is set, or the fallback if the primary is not set
+#
+# @example
+#   env_var = get_env_var_with_fallback('sle_minion', 'SLE15SP7_MINION')
+#   # Returns 'MINION' if ENV['MINION'] is set, otherwise 'SLE15SP7_MINION'
+#
+# @raise [KeyError] If host_key does not exist in ENV_VAR_BY_HOST
+#
+def get_env_var_with_fallback(host_key, fallback_var)
+  env_var_name = ENV_VAR_BY_HOST[host_key]
+  ENV.key?(env_var_name) ? env_var_name : fallback_var
+end
