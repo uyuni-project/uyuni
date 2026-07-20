@@ -22,6 +22,22 @@ def click_apply_channels_button
   step %(I wait until I see "Channels synced correctly to peripheral!" text)
 end
 
+# Checks the checkbox at the given xpath, retrying on "not attached to the DOM" errors.
+# The peripheral channel table re-renders on expand/filter, which can detach a
+# checkbox reference between it being found and the click completing.
+def check_checkbox_with_retry(xpath)
+  attempts = 0
+  begin
+    find(:xpath, xpath).check
+  rescue Playwright::Error => e
+    raise unless e.message.include?('not attached to the DOM')
+
+    attempts += 1
+    retry if attempts < 3
+    raise
+  end
+end
+
 # Fetches the PEM-encoded root CA certificate from a peripheral node.
 # Tries the FQDN-named cert (mgradm default), then traditional Uyuni/SUMA paths.
 # Returns the PEM string, or empty string if not found.
@@ -542,8 +558,8 @@ When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"$/) do |channel, ho
   step %(I follow "#{fqdn}")
   step %(I follow "Edit channels")
   find('input.table-input-search').set(channel)
-  find(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]', wait: DEFAULT_TIMEOUT).click
-  find(:xpath, "//tr[contains(., '#{channel}')]//input[@type='checkbox']", wait: DEFAULT_TIMEOUT).check
+  find(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]').click
+  check_checkbox_with_retry("//tr[contains(., '#{channel}')]//input[@type='checkbox']")
   click_apply_channels_button
 end
 
@@ -557,17 +573,7 @@ When(/^I configure hub to sync all "([^"]*)" channels to "([^"]*)"$/) do |search
   channel_names = all(:xpath, '//tbody/tr', wait: DEFAULT_TIMEOUT, minimum: 2).map { |row| row.find(:xpath, 'td[3]').text }
   channel_names.each do |channel_name|
     checkbox_xpath = "//tbody//tr[td[3][normalize-space(.)='#{channel_name}']]//input[@type='checkbox']"
-    attempts = 0
-    begin
-      checkbox = find(:xpath, checkbox_xpath, wait: DEFAULT_TIMEOUT)
-      checkbox.check unless checkbox.checked?
-    rescue Playwright::Error => e
-      raise unless e.message.include?('not attached to the DOM')
-
-      attempts += 1
-      retry if attempts < 3
-      raise
-    end
+    check_checkbox_with_retry(checkbox_xpath)
   end
   click_apply_channels_button
 end
