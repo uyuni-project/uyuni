@@ -1620,6 +1620,11 @@ When(/^I wait until port "([^"]*)" is listening on "([^"]*)" (host|container)$/)
   node.run_until_ok("lsof  -i:#{port}", runs_in_container: location == 'container')
 end
 
+When(/^I check that "([^"]*)" (host|container) is listening on TCP port "([^"]*)"$/) do |host, location, port|
+  node = get_target(host)
+  node.run_until_ok("timeout 2 bash -c 'cat < /dev/null > /dev/tcp/#{host}/#{port}'", runs_in_container: location == 'container')
+end
+
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
   _output, code = get_target('server').run("ss --listening --numeric | grep :#{port}", check_errors: false, verbose: true)
   port_opened = code.zero?
