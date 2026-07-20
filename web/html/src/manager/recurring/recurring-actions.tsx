@@ -57,6 +57,8 @@ type State = {
 };
 
 class RecurringActions extends Component<Props, State> {
+  private isComponentMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -69,13 +71,25 @@ class RecurringActions extends Component<Props, State> {
   }
 
   componentDidMount() {
+    this.isComponentMounted = true;
     this.updateView(getHashAction(), getHashId());
-    window.addEventListener("popstate", () => {
-      this.updateView(getHashAction(), getHashId());
-    });
+    window.addEventListener("popstate", this.onPopState);
   }
 
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+    window.removeEventListener("popstate", this.onPopState);
+  }
+
+  onPopState = () => {
+    this.updateView(getHashAction(), getHashId());
+  };
+
   updateView(action, id) {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     if (id || !action) {
       this.handleForwardAction();
     } else {
@@ -103,6 +117,10 @@ class RecurringActions extends Component<Props, State> {
   };
 
   handleForwardAction = (action?: string) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     const loc = window.location;
     if ((typeof action === "undefined" || action === "back") && this.isFilteredList()) {
       this.setState({
@@ -119,12 +137,20 @@ class RecurringActions extends Component<Props, State> {
   };
 
   setMessages = (messages) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     this.setState({
       messages: messages,
     });
   };
 
   handleResponseError = (jqXHR) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
