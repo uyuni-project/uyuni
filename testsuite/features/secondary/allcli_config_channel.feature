@@ -60,9 +60,9 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-@ssh_minion
+@sshminion
   Scenario: Subscribe a SSH minion to the configuration channel
-    When I am on the Systems overview page of this "ssh_minion"
+    When I am on the Systems overview page of this "sshminion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -95,10 +95,10 @@ Feature: Management of configuration of all types of clients in a single channel
     When I wait until file "/etc/s-mgr/config" exists on "deblike_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "deblike_minion"
 
-@ssh_minion
+@sshminion
   Scenario: Check that file has been created on SSH minion
-    When I wait until file "/etc/s-mgr/config" exists on "ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh_minion"
+    When I wait until file "/etc/s-mgr/config" exists on "sshminion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sshminion"
 
 @sle_minion
   Scenario: Apply highstate to override changed content on SLE minion
@@ -118,11 +118,11 @@ Feature: Management of configuration of all types of clients in a single channel
     And I apply highstate on "deblike_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "deblike_minion"
 
-@ssh_minion
+@sshminion
   Scenario: Apply highstate to override changed content on SSH minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ssh_minion"
-    And I apply highstate on "ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh_minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "sshminion"
+    And I apply highstate on "sshminion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sshminion"
 
 @rhlike_minion
   Scenario: Unsubscribe Red Hat-like minion and delete configuration files
@@ -144,15 +144,15 @@ Feature: Management of configuration of all types of clients in a single channel
     Then I should see a "Successfully unsubscribed 1 system(s)." text
     And I destroy "/etc/s-mgr" directory on "deblike_minion"
 
-@ssh_minion
+@sshminion
   Scenario: Unsubscribe SSH minion and delete configuration files
     When I follow the left menu "Configuration > Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ssh_minion" client
+    And I check the "sshminion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ssh_minion"
+    And I destroy "/etc/s-mgr" directory on "sshminion"
 
 @sle_minion
   Scenario: Change file on Salt minion and compare

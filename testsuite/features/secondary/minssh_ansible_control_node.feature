@@ -3,18 +3,18 @@
 
 @scope_ansible
 @scope_salt_ssh
-@ssh_minion
+@sshminion
 Feature: Operate an Ansible control node in SSH minion
 
   Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
-    When I deploy testing playbooks and inventory files to "ssh_minion"
+    When I deploy testing playbooks and inventory files to "sshminion"
 
   @susemanager
   Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP7-Pool for x86_64
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I check "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
@@ -25,26 +25,26 @@ Feature: Operate an Ansible control node in SSH minion
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
   Scenario: Enable "Ansible control node" system type
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Properties" in the content area
     And I check "ansible_control_node"
     And I click on "Update Properties"
     Then I wait until I see "Ansible Control Node type has been applied." text
 
   Scenario: Apply highstate and check that Ansible is installed
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled" is completed
-    Then "ansible" should be installed on "ssh_minion"
+    Then "ansible" should be installed on "sshminion"
 
   Scenario: The Ansible tab appears in the system overview page
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Ansible" in the content area
     Then I should see a "Ansible Control Node Configuration" text
 
   Scenario: Configure some inventory and playbooks path
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Ansible" in the content area
     Then I should see a "Ansible Control Node Configuration" text
     And I enter "/srv/playbooks/" as "new_playbook_path_input"
@@ -53,7 +53,7 @@ Feature: Operate an Ansible control node in SSH minion
     And I click on "new_inventory_path_save"
 
   Scenario: Display inventories
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Ansible" in the content area
     And I follow "Inventories" in the content area
     And I wait until I see "/srv/playbooks/orion_dummy/hosts" text
@@ -61,7 +61,7 @@ Feature: Operate an Ansible control node in SSH minion
     Then I wait until I see "myself" text
 
   Scenario: Discover playbooks and display them
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
@@ -69,7 +69,7 @@ Feature: Operate an Ansible control node in SSH minion
     Then I wait until I see "/srv/playbooks/orion_dummy/playbook_orion_dummy.yml" text
 
   Scenario: Run a playbook using custom inventory
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Ansible" in the content area
     And I follow "Playbooks" in the content area
     And I wait until I see "/srv/playbooks" text
@@ -81,20 +81,20 @@ Feature: Operate an Ansible control node in SSH minion
     And I click on "Schedule"
     Then I should see a "Playbook execution has been scheduled" text
     And I wait until event "Execute playbook 'playbook_orion_dummy.yml' scheduled" is completed
-    And file "/tmp/file.txt" should exist on "ssh_minion"
+    And file "/tmp/file.txt" should exist on "sshminion"
 
   Scenario: Cleanup: Disable Ansible and remove test playbooks and inventory file
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Properties" in the content area
     And I uncheck "ansible_control_node"
     And I click on "Update Properties"
     Then I should see a "System properties changed" text
-    And I remove package "orion-dummy" from this "ssh_minion" without error control
-    And I remove "/tmp/file.txt" from "ssh_minion"
+    And I remove package "orion-dummy" from this "sshminion" without error control
+    And I remove "/tmp/file.txt" from "sshminion"
 
   @susemanager
   Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP7-Pool for x86_64
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I uncheck "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
@@ -105,13 +105,13 @@ Feature: Operate an Ansible control node in SSH minion
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
   Scenario: Cleanup: Disable "Ansible control node" system type
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Properties" in the content area
     And I uncheck "ansible_control_node"
     And I click on "Update Properties"
 
   Scenario: Cleanup: Apply highstate to disable the minion as an "Ansible control node"
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled" is completed

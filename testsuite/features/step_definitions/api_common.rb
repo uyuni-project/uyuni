@@ -351,8 +351,8 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   $stdout.puts "Activation key #{key} created" unless key.nil?
 
-  is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  is_sshminion = client.include? 'sshminion'
+  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_sshminion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 

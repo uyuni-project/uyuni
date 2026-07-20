@@ -8,7 +8,7 @@
 # Skip if container because the action chain fails
 # This needs to be fixed
 @skip_if_github_validation
-@ssh_minion
+@sshminion
 @scope_action_chains
 @scope_salt_ssh
 Feature: Salt SSH action chain
@@ -17,20 +17,20 @@ Feature: Salt SSH action chain
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
-    When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
-    And I remove package "andromeda-dummy" from this "ssh_minion" without error control
-    And I remove package "virgo-dummy" from this "ssh_minion" without error control
-    And I install package "milkyway-dummy" on this "ssh_minion" without error control
-    And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
-    And I refresh the metadata for "ssh_minion"
+    When I enable repository "test_repo_rpm_pool" on this "sshminion"
+    And I remove package "andromeda-dummy" from this "sshminion" without error control
+    And I remove package "virgo-dummy" from this "sshminion" without error control
+    And I install package "milkyway-dummy" on this "sshminion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sshminion"
+    And I refresh the metadata for "sshminion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on SSH minion
-    When I refresh packages list via spacecmd on "ssh_minion"
-    And I wait until refresh package list on "ssh_minion" is finished
-    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "ssh_minion"
+    When I refresh packages list via spacecmd on "sshminion"
+    And I wait until refresh package list on "sshminion" is finished
+    Then spacecmd should show packages "milkyway-dummy andromeda-dummy-1.0" installed on "sshminion"
 
   Scenario: Pre-requisite: wait until downgrade is finished on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -50,7 +50,7 @@ Feature: Salt SSH action chain
     Then I wait until I see "minssh_action_chain" text
 
   Scenario: Add a patch installation to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I enter "andromeda" as the filtered synopsis
@@ -66,7 +66,7 @@ Feature: Salt SSH action chain
     And I follow "List / Remove" in the content area
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check row with "milkyway-dummy" and arch of "ssh_minion"
+    And I check row with "milkyway-dummy" and arch of "sshminion"
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -103,7 +103,7 @@ Feature: Salt SSH action chain
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to configuration channel for testing action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -117,20 +117,20 @@ Feature: Salt SSH action chain
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
-    And I check the "ssh_minion" client
+    And I check the "sshminion" client
     And I click on "Confirm & Deploy to Selected Systems"
     And I check radio button "schedule-by-action-chain"
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: Add apply highstate to action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "States" in the content area
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
   Scenario: Add a reboot action to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
@@ -173,8 +173,8 @@ Feature: Salt SSH action chain
     And I should see a "Action Chain minssh_action_chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain was executed successfully
-    When I wait for "virgo-dummy" to be installed on "ssh_minion"
-    And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "ssh_minion"
+    When I wait for "virgo-dummy" to be installed on "sshminion"
+    And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sshminion"
 
   # previous, completed, action chain will no longer be available
   Scenario: Create a custom action chain for the SSH minion
@@ -183,7 +183,7 @@ Feature: Salt SSH action chain
     Then I should see a "minssh_action_chain_to_delete" text
 
   Scenario: Add a remote command to the action chain on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Remote Command"
     And I enter as remote command this script in
       """
@@ -201,13 +201,13 @@ Feature: Salt SSH action chain
     Then I click on "Delete"
 
   Scenario: Cleanup: roll back action chain effects on SSH minion
-    Given I am on the Systems overview page of this "ssh_minion"
-    When I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
-    And I enable repository "test_repo_rpm_pool" on this "ssh_minion"
-    And I remove package "andromeda-dummy" from this "ssh_minion" without error control
-    And I remove package "virgo-dummy" from this "ssh_minion" without error control
-    And I install package "milkyway-dummy" on this "ssh_minion" without error control
-    And I install old package "andromeda-dummy-1.0" on this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
+    When I run "rm /tmp/action_chain_done" on "sshminion" without error control
+    And I enable repository "test_repo_rpm_pool" on this "sshminion"
+    And I remove package "andromeda-dummy" from this "sshminion" without error control
+    And I remove package "virgo-dummy" from this "sshminion" without error control
+    And I install package "milkyway-dummy" on this "sshminion" without error control
+    And I install old package "andromeda-dummy-1.0" on this "sshminion"
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
@@ -224,7 +224,7 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for SSH minions
-    Given I want to operate on this "ssh_minion"
+    Given I want to operate on this "sshminion"
     When I create an action chain with label "minssh_api_chain" via API
     And I add a package install to the action chain via API
     And I add a package removal to the action chain via API
@@ -236,7 +236,7 @@ Feature: Salt SSH action chain
     And I delete the action chain via API
 
   Scenario: Run an action chain via API on SSH minion
-    And I want to operate on this "ssh_minion"
+    And I want to operate on this "sshminion"
     When I create an action chain with label "minssh_multiple_scripts" via API
     And I add the script "echo -n 1 >> /tmp/action_chain.log" to the action chain via API
     And I add the script "echo -n 2 >> /tmp/action_chain.log" to the action chain via API
@@ -245,15 +245,15 @@ Feature: Salt SSH action chain
     Then I should be able to see all these actions in the action chain via API
     When I schedule the action chain via API
     Then I wait until there are no more action chains listed via API
-    When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
-    Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
+    When I wait until file "/tmp/action_chain_done" exists on "sshminion"
+    Then file "/tmp/action_chain.log" should contain "123" on "sshminion"
     When I wait until there are no more scheduled actions listed via API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
-    And I check the "ssh_minion" client
+    And I check the "sshminion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
@@ -264,13 +264,13 @@ Feature: Salt SSH action chain
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain for SSH minion
-    When I remove package "andromeda-dummy" from this "ssh_minion" without error control
-    And I remove package "virgo-dummy" from this "ssh_minion" without error control
-    And I remove package "milkyway-dummy" from this "ssh_minion" without error control
-    And I disable repository "test_repo_rpm_pool" on this "ssh_minion" without error control
+    When I remove package "andromeda-dummy" from this "sshminion" without error control
+    And I remove package "virgo-dummy" from this "sshminion" without error control
+    And I remove package "milkyway-dummy" from this "sshminion" without error control
+    And I disable repository "test_repo_rpm_pool" on this "sshminion" without error control
 
   Scenario: Cleanup: remove temporary files for testing action chains on SSH minion
-    When I run "rm -f /tmp/action_chain.log" on "ssh_minion" without error control
-    And I run "rm -f /tmp/action_chain_done" on "ssh_minion" without error control
-    And I run "rm -f /etc/action-chain.cnf" on "ssh_minion" without error control
-    And I run "rm -f /tmp/action_chain_one_system_done" on "ssh_minion" without error control
+    When I run "rm -f /tmp/action_chain.log" on "sshminion" without error control
+    And I run "rm -f /tmp/action_chain_done" on "sshminion" without error control
+    And I run "rm -f /etc/action-chain.cnf" on "sshminion" without error control
+    And I run "rm -f /tmp/action_chain_one_system_done" on "sshminion" without error control

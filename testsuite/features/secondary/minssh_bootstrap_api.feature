@@ -11,7 +11,7 @@
 
 @scope_salt_ssh
 @scope_onboarding
-@ssh_minion
+@sshminion
 @skip_if_github_validation
 Feature: Register a salt-ssh system via API
 
@@ -19,25 +19,25 @@ Feature: Register a salt-ssh system via API
     Given I am authorized
 
   Scenario: Delete SSH minion system profile before API bootstrap test
-    When I delete "ssh_minion" system using the api
-    And I perform a full salt minion cleanup on "ssh_minion"
-    And I wait until Salt client is inactive on "ssh_minion"
-    Then "ssh_minion" should not be registered
+    When I delete "sshminion" system using the api
+    And I perform a full salt minion cleanup on "sshminion"
+    And I wait until Salt client is inactive on "sshminion"
+    Then "sshminion" should not be registered
 
 @proxy
   Scenario: Block direct access from server to sshminion to test proxy as jumphost
-    Given I block connections from "server" on "ssh_minion"
+    Given I block connections from "server" on "sshminion"
 
   Scenario: Bootstrap a SLES SSH minion via API
-    When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
+    When I call system.bootstrap() on host "sshminion" and salt-ssh "enabled"
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
     When I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "ssh_minion", refreshing the page
-    And I wait until onboarding is completed for "ssh_minion"
+    And I wait until I see the name of "sshminion", refreshing the page
+    And I wait until onboarding is completed for "sshminion"
 
   Scenario: Check contact method of this Salt SSH system
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     Then I should see a "Push via SSH" text
 
 @proxy
@@ -45,19 +45,19 @@ Feature: Register a salt-ssh system via API
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ssh_minion" hostname
+    Then I should see "sshminion" hostname
 
   Scenario: Check spacecmd system ID of SSH minion bootstrapped via API
-    Given I am on the Systems overview page of this "ssh_minion"
-    Then I run spacecmd listeventhistory for "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
+    Then I run spacecmd listeventhistory for "sshminion"
 
   Scenario: Check events history for failures on SSH minion after API bootstrap
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     Then I check for failed events on history event page
 
 @susemanager
   Scenario: API bootstrap: subscribe SSH minion to base channel
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -74,7 +74,7 @@ Feature: Register a salt-ssh system via API
 
 @uyuni
   Scenario: API bootstrap: subscribe SSH minion to base channel
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
@@ -90,4 +90,4 @@ Feature: Register a salt-ssh system via API
 
 @proxy
   Scenario: Cleanup and flush the firewall rules
-    When I flush firewall on "ssh_minion"
+    When I flush firewall on "sshminion"

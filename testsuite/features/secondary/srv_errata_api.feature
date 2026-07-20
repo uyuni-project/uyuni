@@ -4,12 +4,12 @@
 @scope_api
 Feature: Systems errata API
 
-  @ssh_minion
+  @sshminion
   Scenario: Check the relevant errata for a system
-    When I retrieve the relevant errata for ssh_minion
+    When I retrieve the relevant errata for sshminion
 
-  @ssh_minion
+  @sshminion
   @rhlike_minion
   @deblike_minion
   Scenario: Check the relevant errata for multiple systems
-    When I retrieve the relevant errata for ssh_minion, rhlike_minion, deblike_minion
+    When I retrieve the relevant errata for sshminion, rhlike_minion, deblike_minion
