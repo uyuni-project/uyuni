@@ -52,12 +52,20 @@ environment.
 To know how to test with or without optional components like a proxy, a Red Hat-like minion or a SSH minion, look at
 the [optional components instructions](documentation/optional.md).
 
+## Development environment
+
+To set up an IDE or editor (RubyMine or VS Code / VSCodium) and to run the RuboCop linter
+locally the same way the CI does, see [IDE and editor setup](documentation/ide-setup.md).
+
 ## Contributing
 
 ### Procedure
 
 1. **Always** create a PR (even for backporting)
 2. Your PR always needs at least one reviewer to approve
+
+For the full upstream-first / backporting workflow between Uyuni and Multi-Linux Manager,
+see the [contribution workflow](documentation/contributing-workflow.md).
 
 ### Guidelines for coding
 
@@ -95,3 +103,6 @@ packages for `Test-Base-Channel-x86_64` and `Fake-Base-Channel-Debian-like` chan
 - Normal dummy packages: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.
 - Wrong encoding of RPM attributes: `blackhole-dummy`. This package should be successfully imported and you will see it
 available as part of the `Test-Base-Channel-x86_64` if reposync handled the encoding correctly.
+
+To build and test modular (AppStream) repositories with dummy packages on Red Hat-like
+systems, see [Setting up and using a modular repository](documentation/modular-repositories.md).
