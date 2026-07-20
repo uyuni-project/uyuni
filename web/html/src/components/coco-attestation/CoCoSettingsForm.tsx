@@ -223,7 +223,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
                   <LinkButton
                     text="secure-extension-header.bin"
                     href={headerDownloadUrl}
-                    className="btn-link pl-0"
+                    className="pl-0"
                     title={t("Download the current Secure execution header")}
                     download="secure-extension-header.bin"
                   />
@@ -252,7 +252,7 @@ export const CoCoSettingsForm: React.FC<Props> = ({
                   <LinkButton
                     text="host-key-document.pem"
                     href={hostKeyDownloadUrl}
-                    className="btn-link pl-0"
+                    className="pl-0"
                     title={t("Download the current Host Key Document certificate")}
                     download="host-key-document.pem"
                   />

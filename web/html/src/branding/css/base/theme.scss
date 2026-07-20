@@ -1238,12 +1238,8 @@ tr.changed > td {
 
 .proxy-brand {
   font-size: 1.6em;
-  color: $gray-dark;
+  color: $body-color;
   > i {
     font-size: 0.4em;
   }
-}
-
-svg {
-  color: $gray-dark;
 }

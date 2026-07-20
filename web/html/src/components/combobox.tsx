@@ -94,7 +94,7 @@ export class Combobox extends Component<ComboboxProps, ComboboxState> {
         value={options.find((option) => option.id === this.props.selectedId)}
         options={options}
         styles={colourStyles}
-        menuPortalTarget={document.body}
+        menuPortalTarget={document.getElementById("menu-portal-target")}
         formatCreateLabel={(label: string) => t("Create {label}", { label })}
         getNewOptionData={this.props.getNewOptionData}
         placeholder={this.props.placeholder}

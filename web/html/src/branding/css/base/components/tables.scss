@@ -34,7 +34,7 @@ thead tr {
   .btn-link {
     padding: 0 !important;
     border-width: 0 !important;
-    color: $eos-bc-gray-1000 !important;
+    color: $tb-orderBy-text !important;
     font-weight: bold !important;
     background: transparent;
   }
@@ -121,5 +121,5 @@ tbody tr td .modal-link {
 }
 
 .table-hover > tbody > tr:hover {
-  background-color: rgba($eos-bc-gray-100, 50%) !important;
+  background-color: rgba($table-row-hover-bg, 0.5) !important;
 }

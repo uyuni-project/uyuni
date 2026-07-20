@@ -218,7 +218,7 @@ export class NotificationList extends Component<Props, State> {
         {stringToReact(data.summary)}
         {data.details && (
           <LinkButton
-            className="btn-link px-2 py-0"
+            className="px-2 py-0"
             handler={() => this.setState({ popupItem: data })}
             text={"[" + t("show details") + "]"}
           />
