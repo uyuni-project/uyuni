@@ -201,8 +201,13 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   current_minute = now.strftime('%H:%M')
   previous_minute = (now - 60).strftime('%H:%M')
   xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]"
-  element = find_and_wait_click(:xpath, xpath_query)
-  element.click
+  # Use a Playwright locator instead of caching a Capybara element: the events table can
+  # re-render between find and click (previous step polls until the event completes), and
+  # capybara-playwright-driver raises StaleReferenceError on a detached cached node.
+  # wait_for_page_transition replaces the Senna-transition wait that the cached element's
+  # CapybaraNodeElementExtension#click used to provide.
+  page.driver.with_playwright_page { |pw_page| pw_page.locator(xpath_query).click }
+  wait_for_page_transition
 end
 
 # spacewalk errors steps

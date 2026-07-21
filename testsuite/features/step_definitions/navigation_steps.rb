@@ -419,8 +419,13 @@ end
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//a[contains(., '#{text}')]"
-  element = find_and_wait_click(:xpath, xpath_query)
-  element.click
+  # Use a Playwright locator instead of caching a Capybara element: the row's table can
+  # re-render between find and click, and capybara-playwright-driver raises
+  # StaleReferenceError on a detached cached node (same root cause as BUG-026).
+  # wait_for_page_transition replaces the Senna-transition wait that the cached element's
+  # CapybaraNodeElementExtension#click used to provide.
+  page.driver.with_playwright_page { |pw_page| pw_page.locator(xpath_query).click }
+  wait_for_page_transition
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
