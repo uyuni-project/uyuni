@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -116,7 +116,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
     private Set<CustomDataKey> customDataKeys = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH},
+            fetch = FetchType.LAZY
+    )
     @JoinTable(
             name = "rhnTrustedOrgs",
             joinColumns = @JoinColumn(name = "org_id"),
@@ -124,7 +127,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     )
     private Set<Org> trustedOrgs = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH},
+            fetch = FetchType.LAZY
+    )
     @JoinTable(
             name = "rhnissslaveorgs",
             joinColumns = @JoinColumn(name = "org_id"),
