@@ -25,14 +25,14 @@ Feature: Reboot systems managed by Uyuni
   Scenario: Log in as org admin user
     Given I am authorized
 
-@ssh_minion
+@sshminion
   Scenario: Reboot the SSH-managed SLES minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     When I click on "Reboot system"
-    Then I wait and check that "ssh_minion" has rebooted
+    Then I wait and check that "sshminion" has rebooted
 
   Scenario: Schedule a reboot on a SLES Salt minion
     Given I am on the Systems overview page of this "sle_minion"

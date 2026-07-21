@@ -968,7 +968,7 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
+  elsif %w[sshminion rhlike_minion deblike_minion].include?(minion)
     cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'

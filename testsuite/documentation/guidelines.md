@@ -88,10 +88,10 @@ things that make a computer program efficient are second class citizens with Cuc
 * `<topic>` must contain "salt" or "docker" for features related to Salt or Docker, and is then specific to the feature.
 * Inside `init_clients` features we'll see the features in charge of the bootstrap process for each client. They will
 follow the format:
-  * Continuous Integration test suite (`features/init_clients`): `<distribution>`_`<client|minion|ssh_minion>`.
-  Example: `sle_ssh_minion.feature`
-  * Build Validation test suite (`features/build_validation/init_clients`): `<distribution><version>`_`<minion|ssh_minion>`.
-  Example: `sle15sp4_ssh_minion.feature`
+  * Continuous Integration test suite (`features/init_clients`): `<distribution>`_`<client|minion|sshminion>`.
+  Example: `sle_sshminion.feature`
+  * Build Validation test suite (`features/build_validation/init_clients`): `<distribution><version>`_`<minion|sshminion>`.
+  Example: `sle15sp4_sshminion.feature`
 * File name examples: `srv_reboot_server.feature`, `srv_salt_ping.feature`, `srv_salt_service.feature`,
 `min_salt_bootstrap.feature`, or `min_ping.feature`
 

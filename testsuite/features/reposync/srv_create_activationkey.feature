@@ -52,12 +52,12 @@ Feature: Create activation keys
     When I create an activation key with id "DEBLIKE-KEY", description "Debian-like Test Key", base channel "fake-base-channel-debian-like", limit of 20 and contact method "default"
     Then I should get the new activation key "1-DEBLIKE-KEY"
 
-@ssh_minion
+@sshminion
   Scenario: Create an activation key with a channel for salt-ssh
     When I create an activation key with id "SUSE-SSH-KEY-x86_64", description "SUSE SSH Test Key x86_64", limit of 20 and contact method "ssh-push"
     Then I should get the new activation key "1-SUSE-SSH-KEY-x86_64"
 
-@ssh_minion
+@sshminion
   Scenario: Create an activation key with a channel for salt-ssh via tunnel
     When I create an activation key with id "SUSE-SSH-TUNNEL-KEY-x86_64", description "SUSE SSH Tunnel Test Key x86_64", limit of 20 and contact method "ssh-push-tunnel"
     Then I should get the new activation key "1-SUSE-SSH-TUNNEL-KEY-x86_64"

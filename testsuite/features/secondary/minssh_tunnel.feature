@@ -7,27 +7,27 @@
 
 @skip_if_github_validation
 @scope_salt_ssh
-@ssh_minion
+@sshminion
 Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Log in as org admin user
     Given I am authorized
 
   Scenario: Pre-requisite: remove package before ssh tunnel test
-    When I remove package "milkyway-dummy" from this "ssh_minion" without error control
+    When I remove package "milkyway-dummy" from this "sshminion" without error control
 
   Scenario: Delete the Salt minion for SSH tunnel bootstrap
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait at most 180 seconds until I see "has been deleted" text but do not see "An error occurred during cleanup" text
-    Then "ssh_minion" should not be registered
+    Then "sshminion" should not be registered
 
   Scenario: Register this minion for push via SSH tunnel
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    And I enter the hostname of "ssh_minion" as "hostname"
+    And I enter the hostname of "sshminion" as "hostname"
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
@@ -37,19 +37,19 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on "Bootstrap"
     # workaround for bsc#1222108 - The bootstrap page on a Salt SSH Minion takes more than 4 minutes to finish
     And I wait at most 480 seconds until I see "Bootstrap process initiated." text but do not see "already exist" text
-    And I wait until onboarding is completed for "ssh_minion"
+    And I wait until onboarding is completed for "sshminion"
 
   Scenario: The contact method is SSH tunnel on this minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     Then I should see a "Push via SSH tunnel" text
 
   Scenario: Install a package from this SSH tunnel minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Install"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button until page does contain "milkyway-dummy" text
-    And I check row with "milkyway-dummy" and arch of "ssh_minion"
+    And I check row with "milkyway-dummy" and arch of "sshminion"
     And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
@@ -57,7 +57,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
 
   @flaky
   Scenario: Remove a package from this SSH tunnel minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name
@@ -72,23 +72,23 @@ Feature: Register a Salt system to be managed via SSH tunnel
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "echo 'My remote command output'"
-    And I enter the hostname of "ssh_minion" as "target"
+    And I enter the hostname of "sshminion" as "target"
     And I click on preview
     Then I should see a "Target systems (1)" text
     When I wait until I do not see "pending" text
     And I click on run
     And I wait until I see "show response" text
-    And I expand the results for "ssh_minion"
-    Then I should see "My remote command output" in the command output for "ssh_minion"
+    And I expand the results for "sshminion"
+    Then I should see "My remote command output" in the command output for "sshminion"
 
   Scenario: Cleanup: delete the SSH tunnel minion
-    When I delete "ssh_minion" system using the api
-    And I perform a full salt minion cleanup on "ssh_minion"
-    And I wait until Salt client is inactive on "ssh_minion"
-    Then "ssh_minion" should not be registered
+    When I delete "sshminion" system using the api
+    And I perform a full salt minion cleanup on "sshminion"
+    And I wait until Salt client is inactive on "sshminion"
+    Then "sshminion" should not be registered
 
   Scenario: Cleanup: register a SSH minion after SSH tunnel tests
-    When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
+    When I call system.bootstrap() on host "sshminion" and salt-ssh "enabled"
     And I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "ssh_minion", refreshing the page
-    And I wait until onboarding is completed for "ssh_minion"
+    And I wait until I see the name of "sshminion", refreshing the page
+    And I wait until onboarding is completed for "sshminion"

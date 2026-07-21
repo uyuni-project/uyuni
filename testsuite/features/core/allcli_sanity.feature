@@ -50,12 +50,12 @@ Feature: Sanity checks
     And "build_host" should communicate with the server using public interface
     And the clock from "build_host" should be exact
 
-@ssh_minion
+@sshminion
   Scenario: The SSH minion is healthy
-    Then "ssh_minion" should have a FQDN
-    And reverse resolution should work for "ssh_minion"
-    And "ssh_minion" should communicate with the server using public interface
-    And the clock from "ssh_minion" should be exact
+    Then "sshminion" should have a FQDN
+    And reverse resolution should work for "sshminion"
+    And "sshminion" should communicate with the server using public interface
+    And the clock from "sshminion" should be exact
 
 @rhlike_minion
   Scenario: The Red Hat-like minion is healthy

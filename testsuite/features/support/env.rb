@@ -450,8 +450,8 @@ Before('@pxeboot_minion') do
   skip_this_scenario unless mac_address
 end
 
-Before('@ssh_minion') do
-  env_var_name = get_env_var_with_fallback('ssh_minion', 'SLE15SP7_MINION')
+Before('@sshminion') do
+  env_var_name = get_env_var_with_fallback('sshminion', 'SLE15SP7_MINION')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -464,216 +464,216 @@ Before('@alma8_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_minion']
 end
 
-Before('@alma8_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_ssh_minion']
+Before('@alma8_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma8_sshminion']
 end
 
 Before('@alma9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_minion']
 end
 
-Before('@alma9_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_ssh_minion']
+Before('@alma9_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_sshminion']
 end
 
 Before('@alma10_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma10_minion']
 end
 
-Before('@alma10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma10_ssh_minion']
+Before('@alma10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma10_sshminion']
 end
 
 Before('@amazon2023_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_minion']
 end
 
-Before('@amazon2023_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_ssh_minion']
+Before('@amazon2023_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_sshminion']
 end
 
 Before('@centos7_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['centos7_minion']
 end
 
-Before('@centos7_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['centos7_ssh_minion']
+Before('@centos7_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['centos7_sshminion']
 end
 
 Before('@liberty9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty9_minion']
 end
 
-Before('@liberty9_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty9_ssh_minion']
+Before('@liberty9_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty9_sshminion']
 end
 
 Before('@oracle9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle9_minion']
 end
 
-Before('@oracle9_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle9_ssh_minion']
+Before('@oracle9_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle9_sshminion']
 end
 
 Before('@oracle10_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_minion']
 end
 
-Before('@oracle10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_ssh_minion']
+Before('@oracle10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_sshminion']
 end
 
 Before('@rhel9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_minion']
 end
 
-Before('@rhel9_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_ssh_minion']
+Before('@rhel9_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_sshminion']
 end
 
 Before('@rocky8_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky8_minion']
 end
 
-Before('@rocky8_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky8_ssh_minion']
+Before('@rocky8_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky8_sshminion']
 end
 
 Before('@rocky9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky9_minion']
 end
 
-Before('@rocky9_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky9_ssh_minion']
+Before('@rocky9_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky9_sshminion']
 end
 
 Before('@rocky10_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky10_minion']
 end
 
-Before('@rocky10_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky10_ssh_minion']
+Before('@rocky10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky10_sshminion']
 end
 
 Before('@ubuntu2204_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_minion']
 end
 
-Before('@ubuntu2204_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
+Before('@ubuntu2204_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_sshminion']
 end
 
 Before('@ubuntu2404_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_minion']
 end
 
-Before('@ubuntu2404_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_ssh_minion']
+Before('@ubuntu2404_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_sshminion']
 end
 
 Before('@ubuntu2604_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2604_minion']
 end
 
-Before('@ubuntu2604_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2604_ssh_minion']
+Before('@ubuntu2604_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2604_sshminion']
 end
 
 Before('@debian12_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_minion']
 end
 
-Before('@debian12_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_ssh_minion']
+Before('@debian12_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_sshminion']
 end
 
 Before('@debian13_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_minion']
 end
 
-Before('@debian13_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_ssh_minion']
+Before('@debian13_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_sshminion']
 end
 
 Before('@sle12sp5_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_minion']
 end
 
-Before('@sle12sp5_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
+Before('@sle12sp5_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_sshminion']
 end
 
 Before('@sle15sp3_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_minion']
 end
 
-Before('@sle15sp3_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_ssh_minion']
+Before('@sle15sp3_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_sshminion']
 end
 
 Before('@sle15sp4_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_minion']
 end
 
-Before('@sle15sp4_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_ssh_minion']
+Before('@sle15sp4_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_sshminion']
 end
 
 Before('@sle15sp5_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_minion']
 end
 
-Before('@sle15sp5_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_ssh_minion']
+Before('@sle15sp5_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_sshminion']
 end
 
 Before('@sle15sp6_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_minion']
 end
 
-Before('@sle15sp6_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
+Before('@sle15sp6_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_sshminion']
 end
 
 Before('@sle15sp7_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_minion']
 end
 
-Before('@sle15sp7_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_ssh_minion']
+Before('@sle15sp7_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_sshminion']
 end
 
 Before('@sle160_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle160_minion']
 end
 
-Before('@sle160_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle160_ssh_minion']
+Before('@sle160_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle160_sshminion']
 end
 
 Before('@opensuse156arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_minion']
 end
 
-Before('@opensuse156arm_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_ssh_minion']
+Before('@opensuse156arm_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_sshminion']
 end
 
 Before('@opensuse160arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_minion']
 end
 
-Before('@opensuse160arm_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_ssh_minion']
+Before('@opensuse160arm_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_sshminion']
 end
 
 Before('@sle15sp5s390_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_minion']
 end
 
-Before('@sle15sp5s390_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_ssh_minion']
+Before('@sle15sp5s390_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_sshminion']
 end
 
 Before('@salt_migration_minion') do
@@ -688,56 +688,56 @@ Before('@slemicro52_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_minion']
 end
 
-Before('@slemicro52_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_ssh_minion']
+Before('@slemicro52_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro52_sshminion']
 end
 
 Before('@slemicro53_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro53_minion']
 end
 
-Before('@slemicro53_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro53_ssh_minion']
+Before('@slemicro53_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro53_sshminion']
 end
 
 Before('@slemicro54_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro54_minion']
 end
 
-Before('@slemicro54_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro54_ssh_minion']
+Before('@slemicro54_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro54_sshminion']
 end
 
 Before('@slemicro55_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_minion']
 end
 
-Before('@slemicro55_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_ssh_minion']
+Before('@slemicro55_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_sshminion']
 end
 
 Before('@slmicro60_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_minion']
 end
 
-Before('@slmicro60_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_ssh_minion']
+Before('@slmicro60_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro60_sshminion']
 end
 
 Before('@slmicro61_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_minion']
 end
 
-Before('@slmicro61_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_ssh_minion']
+Before('@slmicro61_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_sshminion']
 end
 
 Before('@slmicro62_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro62_minion']
 end
 
-Before('@slmicro62_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro62_ssh_minion']
+Before('@slmicro62_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro62_sshminion']
 end
 
 Before('@sle15sp6_buildhost') do
@@ -791,7 +791,7 @@ Before('@skip_for_transactional_minion') do |scenario|
 end
 
 Before('@skip_for_rhel10_like') do |scenario|
-  rhel10_minion_tags = %w[@alma10_minion @alma10_ssh_minion @oracle10_minion @oracle10_ssh_minion @rocky10_minion @rocky10_ssh_minion]
+  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rocky10_minion @rocky10_sshminion]
   skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 
