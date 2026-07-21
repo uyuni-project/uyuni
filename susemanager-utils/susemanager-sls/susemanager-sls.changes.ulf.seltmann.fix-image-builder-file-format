@@ -1,0 +1,2 @@
+- Fix image builder to deliver ova
+  instead of vmdk

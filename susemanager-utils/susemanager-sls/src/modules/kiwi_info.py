@@ -319,8 +319,8 @@ def _disk_format_types():
     return [
         ".gce",
         ".qcow2",
-        ".vmdk",
         ".ova",
+        ".vmdk",
         ".vmx",
         ".vhd",
         ".vhdx",
