@@ -17,7 +17,7 @@
                    styleClass="form-horizontal">
             <rhn:csrf />
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="name">
                     <bean:message key="systemgroup.create.name"/>
                     <span class="required-form-field">*</span>:
@@ -27,7 +27,7 @@
                                maxlength="64" styleClass="form-control" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="description">
                     <bean:message key="systemgroup.create.description" />
                     <span class="required-form-field">*</span>:
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test='${empty param.sgid}'>

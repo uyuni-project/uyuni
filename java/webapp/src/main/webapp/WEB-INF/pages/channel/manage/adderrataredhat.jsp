@@ -18,7 +18,7 @@
         <p><bean:message key="channel.manage.errata.redhatmsg"/></p>
 
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">Package Association:</label>
                 <div class="col-lg-6">
                     <input type="checkbox" name="assoc_checked" ${assoc_checked ? 'checked' : ''}/>
@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.manage.errata.listalreadyincludedlabel"/>
                 </label>
@@ -41,7 +41,7 @@
             </c:if>
 
             <c:if test="${channel_list != null}">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">Channel:</label>
                     <div class="col-lg-6">
                         <select name="selected_channel">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button class="btn btn-default" type="submit" name="dispatch"
                             value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">

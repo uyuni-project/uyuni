@@ -88,7 +88,7 @@
             <html:form method="post" styleId="migrationForm"
                 action="/systems/details/SPMigration.do?sid=${system.id}">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-2 control-label">
                             <bean:message key="spmigration.jsp.setup.installed-products" />
                         </label>
@@ -109,7 +109,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-2 control-label"> <bean:message
                                 key="spmigration.jsp.setup.target-products" />
                         </label>
@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-sm-offset-2 offset-sm-2 col-sm-10">
                             <button type="submit" name="dispatch" class="btn btn-primary" id="submitButton"
                                 value='<bean:message key="spmigration.jsp.target.submit" />'>

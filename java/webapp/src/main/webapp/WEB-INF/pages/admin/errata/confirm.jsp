@@ -27,7 +27,7 @@
                         </html:submit>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-md-offset-3 offset-md-3 col-md-6">
                         <span class="help-block">
                             <bean:message key="applyerrata.disclaimer" />

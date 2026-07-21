@@ -487,7 +487,7 @@ class RuleResultDetail extends Component<object, StateType> {
                   actionType="states.apply"
                 />
               </div>
-              <div className="form-group">
+              <div className="row">
                 <div>
                   <SubmitButton
                     id="apply-btn"

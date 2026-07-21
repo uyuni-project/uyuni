@@ -15,7 +15,7 @@
                 <html:form method="post" action="/systems/details/Edit.do?sid=${system.id}" styleClass="form-horizontal">
                     <rhn:csrf />
                     <html:hidden property="submitted" value="true"/>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="system_name" class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.profilename"/>
                         </label>
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="baseentitlement" class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.baseentitlement"/>
                         </label>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.addonentitlements"/>
                         </label>
@@ -83,7 +83,7 @@
                     </div>
 
                     <rhn:require acl="system_feature(ftr_system_preferences)">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="sdc.details.edit.notifications"/>
                             </label>
@@ -115,7 +115,7 @@
                     </rhn:require>
 
                     <rhn:require acl="system_has_management_entitlement()">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label" for="contact-method">
                                 <bean:message key="server.contact-method.label"/>
                             </label>
@@ -135,7 +135,7 @@
                     </rhn:require>
 
                     <rhn:require acl="system_feature(ftr_auto_errata_updates)">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label" for="autoerrataupdate">
                                 <bean:message key="sdc.details.edit.autoerrataupdate"/>
                             </label>
@@ -157,7 +157,7 @@
                         </div>
                     </rhn:require>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="maintenance-schedule" class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.schedule"/>
                         </label>
@@ -175,7 +175,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="description" class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.description" />
                         </label>
@@ -184,7 +184,7 @@
                         </div>
                     </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="address" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.address"/>
                 </label>
@@ -194,7 +194,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="city" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.city"/>
                 </label>
@@ -203,7 +203,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="state" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.state"/>
                 </label>
@@ -212,7 +212,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="country" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.country"/>
                 </label>
@@ -223,7 +223,7 @@
                 </div>
            </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="building" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.building"/>
                 </label>
@@ -232,7 +232,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="room" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.room"/>
                 </label>
@@ -241,7 +241,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="rack" class="col-lg-3 control-label">
                     <bean:message key="sdc.details.edit.rack"/>
                 </label>
@@ -250,7 +250,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <button type="submit" class="btn btn-primary">
                         <bean:message key="sdc.details.edit.update"/>

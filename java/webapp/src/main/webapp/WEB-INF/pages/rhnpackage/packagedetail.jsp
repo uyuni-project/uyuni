@@ -14,24 +14,24 @@
                 <h2><bean:message key="channel.jsp.details.title"/></h2>
             </div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.description"/>:
                     </label>
                     <div class="col-lg-6">
                         ${description}
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.arch"/>:
                     </label>
                     <div class="col-lg-6">
                         <c:out value="${pack.packageArch.label}" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.availarch"/>:
                     </label>
                     <div class="col-lg-6">
@@ -43,8 +43,8 @@
                         </c:forEach>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.availfrom"/>:
                     </label>
                     <div class="col-lg-6">
@@ -55,8 +55,8 @@
                         </c:forEach>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.vendor"/>:
                     </label>
                     <div class="col-lg-6">
@@ -68,8 +68,8 @@
                     </c:if>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.key"/>:
                     </label>
                     <c:if test="${package_key !=  null}">
@@ -83,24 +83,24 @@
                         </div>
                     </c:if>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <c:out value="${pack.checksum.checksumType.description}"/>:
                     </label>
                     <div class="col-lg-6">
                         <c:out value="${pack.checksum.checksum}" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.path"/>:
                     </label>
                     <div class="col-lg-6">
                         <c:out value="${pack.path}" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.packagesize"/>:
                     </label>
                     <div class="col-lg-6">
@@ -115,8 +115,8 @@
                 <div class="panel-heading"><h3>End-user license agreements (EULAs)</h3></div>
                 <div class="panel-body">
                     <c:forEach items="${eulas}" var="eula">
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">
+                        <div class="row">
+                            <label class="col-lg-3 text-end">
                                 <bean:message key="package.jsp.eula"/>:
                             </label>
                             <div class="col-lg-6">
@@ -133,48 +133,48 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3>RPM package</h3></div>
                 <div class="panel-body">
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.payloadsize"/>:
                         </label>
                         <div class="col-lg-6">
                             <c:out value="${pack.payloadSizeString}" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.buildhost"/>:
                         </label>
                         <div class="col-lg-6">
                             <c:out value="${pack.buildHost}" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.builddate"/>:
                         </label>
                         <div class="col-lg-6">
                             <rhn:formatDate value="${pack.buildTime}" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.license"/>:
                         </label>
                         <div class="col-lg-6">
                             <c:out value="${pack.copyright}" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.group"/>:
                         </label>
                         <div class="col-lg-6">
                             <c:out value="${pack.packageGroup.name}" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
+                    <div class="row">
+                        <label class="col-lg-3 text-end">
                             <bean:message key="package.jsp.rpmversion"/>:
                         </label>
                         <div class="col-lg-6">
@@ -191,8 +191,8 @@
                 <div class="panel-heading"><h3>DEB package</h3></div>
                 <div class="panel-body">
                     <c:forEach var="item" items="${extraTags}">
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">
+                        <div class="row">
+                            <label class="col-lg-3 text-end">
                                 <c:out value="${item.key}"/>:
                             </label>
                             <div class="col-lg-6">
@@ -207,8 +207,8 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h3>Download</h3></div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.download"/>:
                     </label>
                     <div class="col-lg-6">
@@ -231,8 +231,8 @@
                         </c:if>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.source"/>:
                     </label>
                     <div class="col-lg-6">
@@ -257,8 +257,8 @@
                 <rhn:require acl="package_type_capable(rpm)"
                              mixins="com.redhat.rhn.common.security.acl.PackageAclHandler">
                     <c:if test="${not isDebugPackage}" >
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">
+                        <div class="row">
+                            <label class="col-lg-3 text-end">
                                 <bean:message key="debuginfo.header" />:
                             </label>
                             <div class="col-lg-6">
@@ -278,8 +278,8 @@
                             </c:if>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">
+                        <div class="row">
+                            <label class="col-lg-3 text-end">
                                 <bean:message key="debugsource.header" />:
                             </label>
                             <div class="col-lg-6">
@@ -296,8 +296,8 @@
                         </div>
                     </c:if>
                 </rhn:require>
-                <div class="form-group">
-                    <label class="col-lg-3 control-label">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="package.jsp.errata" />:
                     </label>
                     <div class="col-lg-6">

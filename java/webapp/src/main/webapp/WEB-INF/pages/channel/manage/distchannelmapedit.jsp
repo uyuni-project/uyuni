@@ -28,7 +28,7 @@
                    styleClass="form-horizontal">
             <rhn:csrf />
             <rhn:submitted/>
-            <div class="form-group">
+            <div class="row">
                 <label for="os" class="col-lg-3 control-label">
                     <rhn:required-field key = "Operating System"/>
                 </label>
@@ -36,7 +36,7 @@
                     <html:text property="os" styleId="os" styleClass="form-control" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="release" class="col-lg-3 control-label">
                     <rhn:required-field key = "column.release"/>
                 </label>
@@ -54,7 +54,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key = "column.architecture"/>
                 </label>
@@ -75,7 +75,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key = "channel.edit.jsp.label"/>
                 </label>
@@ -86,7 +86,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test="${empty dcm}">

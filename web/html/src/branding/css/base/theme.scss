@@ -289,7 +289,7 @@ nav.navbar-pf {
   }
   /* Search header box */
   form#search-form {
-    .form-group {
+    .row {
       width: 200px;
       padding: 10px;
       display: flex;
@@ -765,7 +765,7 @@ i[class~="fa-right"] {
 
     .spacewalk-list-reflinks {
       display: flex;
-      justify-content: space-between
+      justify-content: space-between;
     }
   }
 }
@@ -1064,7 +1064,7 @@ a time:hover {
   padding-right: 1em;
   margin-top: 0px;
 
-  .form-group {
+  .row {
     margin-bottom: 0;
   }
   .spacewalk-list-pagination {
@@ -1191,7 +1191,7 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled+label,
+input:disabled + label,
 label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;

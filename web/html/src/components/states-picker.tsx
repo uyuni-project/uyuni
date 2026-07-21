@@ -292,7 +292,7 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
             />
           </td>
           <td>
-            <div className="form-group">
+            <div className="row">
               <input
                 id={currentChannel.label + "-cbox"}
                 type="checkbox"

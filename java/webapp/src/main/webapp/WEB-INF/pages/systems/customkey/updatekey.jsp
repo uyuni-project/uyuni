@@ -22,14 +22,14 @@
             <rhn:submitted/>
 
             <div class="form-horizontal">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.keylabel"/>:
                     </label>
                     <div class="col-lg-6">${label}</div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.description"/>:
                     </label>
@@ -41,21 +41,21 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.created"/>:
                     </label>
                     <div class="col-lg-6"><rhn:formatDate value="${created}" /> by ${creator}</div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="system.jsp.customkey.modified"/>:
                     </label>
                     <div class="col-lg-6"><rhn:formatDate value="${modified}" /> by ${modifier}</div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button type="submit" name="dispatch" class="btn btn-primary"
                             value="${rhn:localize('system.jsp.customkey.updatebutton')}">

@@ -15,7 +15,7 @@
         <html:form action="/users/EditAddressSubmit" styleClass="form-horizontal">
             <rhn:csrf />
             <%@ include file="/WEB-INF/pages/common/fragments/user/edit_address_form.jspf" %>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <button type="submit" class="btn btn-primary">
                         <bean:message key="message.Update" />

@@ -14,7 +14,7 @@
 
         <html:form method="post" styleClass="form-horizontal" action="/kickstart/KickstartPartitionEdit.do">
             <rhn:csrf />
-            <div class="form-group">
+            <div class="row">
                 <label class="col-md-3 control-label">
                     <rhn:required-field key="kickstart.partition.jsp.partitiondetails"/>:
                 </label>
@@ -22,7 +22,7 @@
                     <html:textarea styleClass="form-control" rows="6" cols="80" property="partitions"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <html:submit styleClass="btn btn-primary">
                         <bean:message key="kickstart.partition.jsp.update"/>

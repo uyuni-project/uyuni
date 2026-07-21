@@ -130,7 +130,7 @@ const TailoringFile = (): JSX.Element => {
 
         <hr />
 
-        <div className="form-group">
+        <div className="row">
           <div className="col-md-offset-3 col-md-6">
             <SubmitButton
               id="upload-btn"

@@ -18,7 +18,7 @@
         <p><bean:message key="channel.manage.errata.custommsg"/></p>
 
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="col-md-2 col-lg-1 control-label">
                     <strong>Package Association:</strong>
                 </label>
@@ -33,7 +33,7 @@
             </c:if>
 
             <c:if test="${channel_list != null}">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-md-2 col-lg-1 control-label">Channel:</label>
                     <div class="col-md-8 col-lg-5">
                         <select name="selected_channel">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="row">
                   <div class="col-md-offset-2 offset-md-2 col-md-8 col-lg-offset-1 offset-lg-1 col-lg-5">
                         <button class="btn btn-default" type="submit" name="dispatch"
                             value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">

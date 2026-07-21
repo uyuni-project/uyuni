@@ -100,7 +100,7 @@ class ActivationKeyChannels extends Component<ActivationKeyChannelsProps, Activa
         {({ loading, loadingChildren, availableBaseChannels, availableChannels, fetchChildChannels }) => {
           if (loading) {
             return (
-              <div className="form-group">
+              <div className="row">
                 <Loading text={t("Loading...")} />
               </div>
             );
@@ -108,7 +108,7 @@ class ActivationKeyChannels extends Component<ActivationKeyChannelsProps, Activa
 
           return (
             <div>
-              <div className="form-group">
+              <div className="row">
                 <label className="col-lg-3 control-label">{t("Base Channel:")}</label>
                 <div className="col-lg-6">
                   <select
@@ -149,7 +149,7 @@ class ActivationKeyChannels extends Component<ActivationKeyChannelsProps, Activa
                   )}
                 </div>
               </div>
-              <div className="form-group">
+              <div className="row">
                 <label className="col-lg-3 control-label">{t("Child Channels:")}</label>
                 <div className="col-lg-6">
                   {this.renderChildChannels(loadingChildren, availableChannels)}
