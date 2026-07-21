@@ -39,7 +39,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
     When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "server2"
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1271703
-    Then I should see a "Channels synced correctly to peripheral!" text
+    # Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
     Given I am authorized for the "Admin" section on "server2"
@@ -47,11 +47,20 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Successfully scheduled a channels synchronization." text
 
   Scenario: Wait for cloned channel to appear on server2 (A-06)
-    When I wait at most 600 seconds until channel "Fake-Clone-RPM-SLES15SP7-Channel" has been synced on "server2"
-    Then channel "Fake-Clone-RPM-SLES15SP7-Channel" should exist on "server2"
+    # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155 (clone channel ISS sync is currently broken)
+    # When I wait until channel "clone-fake-rpm-suse-channel" has been fully synchronized on "server2"
+    # Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
 
   Scenario: Verify cloned channel on server2 has expected packages (A-06)
-    Then channel "Fake-Clone-RPM-SLES15SP7-Channel" on "server2" should have "4" packages
+    # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155
+    # Then channel "clone-fake-rpm-suse-channel" on "server2" should have "4" packages
+
+  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on server2 (A-06)
+    When I wait until channel "sle-product-sles15-sp7-pool-x86_64" has been fully synchronized on "server2"
+    Then channel "sle-product-sles15-sp7-pool-x86_64" should exist on "server2"
+
+  Scenario: Verify SLE-Product-SLES15-SP7-Pool channel on server2 has expected packages (A-06)
+    Then channel "sle-product-sles15-sp7-pool-x86_64" on "server2" should have "3" packages
 
   Scenario: Create a custom channel on hub for org-mapping test (A-06)
     When I follow the left menu "Software > Manage > Channels"

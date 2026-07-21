@@ -726,6 +726,10 @@ end
 
 # Channel sync waiting
 
+When(/^I wait until channel "([^"]*)" has been fully synchronized on "([^"]*)"$/) do |channel, host|
+  wait_for_channels([channel], "channel '#{channel}' on #{host}", host: host)
+end
+
 When(/^I wait at most (\d+) seconds until channel "([^"]*)" has been synced on "([^"]*)"$/) do |timeout, channel, host|
   node = get_target(host)
   repeat_until_timeout(timeout: timeout.to_i, message: "Channel #{channel} not synced on #{host}") do

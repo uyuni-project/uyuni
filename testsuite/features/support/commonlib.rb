@@ -760,10 +760,12 @@ end
 #
 # @param channels [String, Array<String>] A single channel name or an array of channel names.
 # @param label [String] A descriptive name (e.g., parent channel name) for logging.
+# @param host [String] The target node running the reposync (defaults to the SUMA server; pass a
+#   peripheral role, e.g. 'server2', to verify an ISS-synced channel there instead).
 # @param margin [Integer] The time buffer in seconds to add to the timeout (e.g., 900 for a standard, 0 for custom/PTF).
 #
 # @return [void]
-def wait_for_channels(channels, label, margin: 900)
+def wait_for_channels(channels, label, host: 'server', margin: 900)
   channels = Array(channels).clone
   # --- Context Initialization ---
   add_context('channels_timeout', 0) if get_context('channels_timeout').nil?
@@ -782,7 +784,7 @@ def wait_for_channels(channels, label, margin: 900)
   begin
     repeat_until_timeout(timeout: timeout, message: "Sync failed for #{label}") do
       # Remove channels from the local tracking list as they complete
-      channels.reject! { |c| channel_packages_are_downloaded?(c) }
+      channels.reject! { |c| channel_packages_are_downloaded?(c, host) }
       break if channels.empty?
 
       if ((time_spent += checking_rate) % 60).zero?
@@ -807,8 +809,9 @@ end
 # This method checks if the channel with the given label has been fully synced
 #
 # @param channel_name [String] the label of the channel to check
+# @param host [String] the target node whose reposync log is inspected
 # @return [Boolean] true if the synchronization is completed, false otherwise
-def channel_packages_are_downloaded?(channel_name)
+def channel_packages_are_downloaded?(channel_name, host = 'server')
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
     if client == 'monitoring_server'
@@ -833,8 +836,8 @@ def channel_packages_are_downloaded?(channel_name)
   #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
   # (ScriptError)
   #
-  get_target('server').run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
-  get_target('server').extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
+  get_target(host).run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
+  get_target(host).extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
     return false
