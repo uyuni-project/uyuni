@@ -358,6 +358,7 @@ export class TableDataHandler extends Component<Props, State> {
     if (!searchField && this.props.onSearch) {
       searchField = <SearchField />;
     }
+    const searchPanelChildren = Children.toArray([searchField, ...(this.props.additionalFilters ?? [])]);
     const isTableHeaderEmpty = !this.props.titleButtons && !searchField && !this.props.additionalFilters;
     const stickyHeader = this.props.stickyHeader;
 
@@ -455,8 +456,7 @@ export class TableDataHandler extends Component<Props, State> {
                     selectable={isSelectable}
                     searchPanelInline={this.props.searchPanelInline}
                   >
-                    {searchField}
-                    {this.props.additionalFilters}
+                    {searchPanelChildren}
                   </SearchPanel>
                   <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                     {this.renderTitleButtons()}
