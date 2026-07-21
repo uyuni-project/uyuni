@@ -43,54 +43,24 @@ class BasePackageUpload:
         self.org_id = None
 
     def headerParserHandler(self, req):
-        """This whole function is ugly as hell. The Auth field in the header used to be required, but now
-        it must have either the Auth field or the Auth-Session field.
-        """
         # Initialize the logging
         log_debug(3, "Method", req.method)
 
-        # Header string. This is what the Auth-Session field will look like in the header.
-        # pylint: disable-next=consider-using-f-string
-        session_header = "%s-%s" % (self.header_prefix, "Auth-Session")
-
         # legacy rhnpush sends File-MD5sum; translate it into File-Checksum
-        # pylint: disable-next=consider-using-f-string
-        md5sum_header = "%s-%s" % (self.header_prefix, "File-MD5sum")
+        md5sum_header = f"{self.header_prefix}-File-MD5sum"
         if md5sum_header in req.headers_in:
-            # pylint: disable-next=consider-using-f-string
-            req.headers_in["%s-%s" % (self.header_prefix, "File-Checksum-Type")] = "md5"
-            req.headers_in[
-                # pylint: disable-next=consider-using-f-string
-                "%s-%s"
-                % (self.header_prefix, "File-Checksum")
-            ] = req.headers_in[md5sum_header]
+            req.headers_in[f"{self.header_prefix}-File-Checksum-Type"] = "md5"
+            req.headers_in[f"{self.header_prefix}-File-Checksum"] = req.headers_in[
+                md5sum_header
+            ]
 
         for f in self.required_fields:
-            # pylint: disable-next=consider-using-f-string
-            hf = "%s-%s" % (self.header_prefix, f)
+            hf = f"{self.header_prefix}-{f}"
             if hf not in req.headers_in:
-                # If the current field is Auth and Auth-Session field isn't present, something is wrong.
-                if f == "Auth" and (session_header not in req.headers_in):
-                    # pylint: disable-next=consider-using-f-string
-                    log_debug(4, "Required field %s missing" % f)
-                    raise rhnFault(500, f)
+                log_debug(4, f"Required field {f} missing")
+                raise rhnFault(500, f)
 
-                # The current field is Auth and the Auth-Session field is present, so everything is good.
-                elif f == "Auth" and (session_header in req.headers_in):
-                    self.field_data["Auth-Session"] = req.headers_in[session_header]
-                    continue
-
-                # The current field being looked for isn't the Auth field and it's missing, so something is wrong.
-                else:
-                    # pylint: disable-next=consider-using-f-string
-                    log_debug(4, "Required field %s missing" % f)
-                    raise rhnFault(500, f)
-
-            if not (f == "Auth" and (hf not in req.headers_in)):
-                self.field_data[f] = req.headers_in[hf]
-            else:
-                if session_header in req.headers_in:
-                    self.field_data[f] = req.headers_in[hf]
+            self.field_data[f] = req.headers_in[hf]
 
         self.package_name = self.field_data["Package-Name"]
         self.package_version = self.field_data["Package-Version"]
