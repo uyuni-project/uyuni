@@ -46,9 +46,11 @@
 %global reporoot %{sharedwwwroot}/pub
 
 %global debug_package %{nil}
+%{!?python3_sitelib: %global python3_sitelib %(python3 -c "import sysconfig; print(sysconfig.get_path('purelib'))")}
+%global pythonsmroot %{python3_sitelib}/spacewalk
 
 Name:           susemanager
-Version:        5.2.9
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
@@ -56,6 +58,7 @@ Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
+BuildRequires:  fdupes
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
 
 BuildRequires:  make
@@ -65,48 +68,46 @@ BuildRequires:  python3-devel
 # check section
 BuildRequires:  python3-pycurl
 BuildRequires:  python3-pytest
+BuildRequires:  sed
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
-BuildRequires:  fdupes
-BuildRequires:  sed
+BuildRequires:  uyuni-base-server
+Requires:       cobbler
+Requires:       less
+# yast module dependency
+Requires:       postfix
+Requires:       reprepro >= 5.4
+Requires:       rsync
+Requires:       spacewalk-admin
+Requires:       spacewalk-schema
+Requires:       spacewalk-setup
+Requires:       susemanager-tools
+Requires(post): user(%{apache_user})
 
 Requires(postun): sed
-Requires(pre):  tftp
-Requires(post): user(%{apache_user})
 Requires(pre):  salt
-Requires:       cobbler
-Requires:       spacewalk-admin
-Requires:       spacewalk-setup
+Requires(pre):  tftp
+Requires(pre):  uyuni-base-server
+Recommends:     susemanager-branding
 %ifarch %{ix86} x86_64
 Requires:       syslinux
 %endif
 %ifarch s390x ppc64le
 Requires:       syslinux-x86_64
 %endif
-Requires:       less
-Requires:       rsync
-Requires:       spacewalk-schema
-Requires:       susemanager-tools
-Recommends:     susemanager-branding
-BuildRequires:  uyuni-base-server
-Requires(pre):  uyuni-base-server
-# yast module dependency
-Requires:       postfix
-Requires:       reprepro >= 5.4
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "import sysconfig; print(sysconfig.get_path('purelib'))")}
-%global pythonsmroot %{python3_sitelib}/spacewalk
 
 %description
 A collection of scripts for managing %{productprettyname}'s initial
 setup tasks, re-installation, upgrades and managing.
 
 %package tools
+BuildRequires:  python3-configobj
 Summary:        %{productprettyname} Tools
 License:        GPL-2.0-only AND LGPL-2.1-only
 Group:          Productivity/Other
+BuildRequires:  docbook-utils
 
-BuildRequires:  python3-configobj
 Requires:       %{use_python}
 Requires:       createrepo_c
 Requires:       python3-configobj
@@ -116,15 +117,14 @@ Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
-BuildRequires:  docbook-utils
 
 %description tools
 This package contains %{productprettyname} tools
 
 %package tools-salt
 Summary:        Salt related tools for %{productprettyname}
-Group:          Productivity/Other
 License:        Apache-2.0
+Group:          Productivity/Other
 Supplements:    susemanager-tools
 
 %description tools-salt
@@ -132,6 +132,7 @@ This package contains %{productprettyname} tools related with Salt
 
 %package bash-completion
 Summary:        Bash completion for %{productprettyname} CLI tools
+License:        GPL-2.0-only
 Group:          Productivity/Other
 Supplements:    spacewalk-backend
 Supplements:    spacewalk-utils
@@ -148,9 +149,9 @@ Bash completion for %{productprettyname} CLI tools
 # Fixing shebang for Python 3
 for i in `find . -type f -not -name 'mgr-salt-ssh'`;
 do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+    sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' $i;
 done
-sed -i '1s=^#!/usr/bin/python3=#!/usr/bin/%{use_python_shebang}=' src/mgr-salt-ssh
+sed -i '1s=^#!%{_bindir}/python3=#!%{_bindir}/%{use_python_shebang}=' src/mgr-salt-ssh
 
 # Bash completion
 %make_build -C bash-completion
@@ -184,7 +185,7 @@ make -C po install PREFIX=%{buildroot}
 %make_install -C bash-completion
 
 %fdupes %{buildroot}%{python3_sitelib}
-%fdupes %{buildroot}/usr/share
+%fdupes %{buildroot}%{_datadir}
 
 %check
 # we need to build a fake python dir. python did not work with
@@ -193,20 +194,17 @@ mkdir -p %{_localstatedir}/tmp/fakepython/spacewalk
 cp -a %{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
 cp -a %{buildroot}%{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
 export PYTHONPATH=%{_localstatedir}/tmp/fakepython/:%{_datadir}/rhn
-make -f Makefile.susemanager PYTHON_BIN=%{pythonX} __unittest_rpmbuild
+%make_build -f Makefile.susemanager PYTHON_BIN=%{pythonX} __unittest_rpmbuild
 unset PYTHONPATH
 rm -rf %{_localstatedir}/tmp/fakepython
 
 %post
-
 %posttrans
-
 %postun
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
 %files -f susemanager.lang
-%defattr(-,root,root,-)
 %license COPYING
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
@@ -215,7 +213,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 
 %files tools
-%defattr(-,root,root,-)
 %license COPYING COPYING.LGPL-2.1
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
@@ -248,7 +245,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{pythonsmroot}/susemanager/__pycache__/
 %{pythonsmroot}/susemanager/mgr_sync/__pycache__/
 %{_datadir}/susemanager/__pycache__/
-%{_mandir}/man8/mgr-sync.8*
+%{_mandir}/man8/mgr-sync.8%{?ext_man}
 %{reporoot}/repositories/empty/repodata/*.xml*
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release

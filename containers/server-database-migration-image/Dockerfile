@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-database-migration:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.7
+ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE
 
 # Create stable static UID and GID for postgres, ...
@@ -37,7 +37,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} database migration image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.5
+LABEL org.opencontainers.image.version=5.3.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-database-migration:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

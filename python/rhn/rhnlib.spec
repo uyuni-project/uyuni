@@ -1,7 +1,7 @@
 #
 # spec file for package rhnlib
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -19,18 +19,18 @@
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
-%{!?__python3:%global __python3 /usr/bin/python3}
+%{!?__python3:%global __python3 %{_bindir}/python3}
 
 %if %{undefined python3_sitelib}
-%global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global python3_sitelib %(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 %endif
 
 %if !(0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
 %global build_py2   1
-%{!?__python2:%global __python2 /usr/bin/python2}
+%{!?__python2:%global __python2 %{_bindir}/python2}
 %if %{undefined python2_sitelib}
-%global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global python2_sitelib %(python2 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 %endif
 
@@ -40,14 +40,16 @@
 %endif
 
 Name:           rhnlib
-Version:        5.2.5
+Version:        5.3.0
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
+BuildRequires:  make
 %if "%{_vendor}" == "debbuild"
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          python
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
 %else
@@ -57,7 +59,6 @@ Group:          Development/Libraries
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
-BuildRequires:  make
 %if 0%{?debian} || 0%{?ubuntu} || (!0%{?is_opensuse} && 0%{?suse_version} >= 1600 && 0%{?suse_version} < 1699)
 ExclusiveArch:  do_not_build
 %endif
@@ -67,15 +68,15 @@ rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk
 
 %if 0%{?build_py2}
 %package -n python2-rhnlib
+%if "%{_vendor}" != "debbuild"
 Summary:        Python libraries for the Spacewalk project
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Development/Libraries
 
-%if "%{_vendor}" != "debbuild"
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  python2-devel
-Requires:       python2-pyOpenSSL
 Requires:       python2-defusedxml
+Requires:       python2-pyOpenSSL
 %else
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
@@ -122,11 +123,11 @@ rhnlib is a collection of python modules used by the Spacewalk software.
 
 %if 0%{?build_py3}
 %package -n python3-rhnlib
+%if "%{_vendor}" != "debbuild"
 Summary:        Python libraries for the Spacewalk project
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          python
 
-%if "%{_vendor}" != "debbuild"
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 %if 0%{?suse_version}
@@ -178,37 +179,37 @@ fi
 
 %build
 %if 0%{?build_py2}
-make -f Makefile.rhnlib PYTHON=%{__python2}
+%make_build -f Makefile.rhnlib PYTHON=python2
 %endif
 %if 0%{?build_py3}
-make -f Makefile.rhnlib PYTHON=%{__python3}
+%make_build -f Makefile.rhnlib PYTHON=python3
 %endif
 
 %install
 %if 0%{?build_py2}
-%{__python2} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
+python2 setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
 %endif
 %if 0%{?build_py3}
-%{__python3} setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
+python3 setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build --root %{buildroot} %{?is_deb:--install-layout=deb} --prefix=%{_prefix}
 %endif
 
 %if 0%{?build_py2}
 %files -n python2-rhnlib
-%defattr(-,root,root)
 %license COPYING
 %doc ChangeLog README TODO
-%{python2_sitelib}/*
+%{python2_sitelib}/rhnlib
+%{python2_sitelib}/rhnlib-%{version}*-info
 %endif
 
 %if 0%{?build_py3}
 %files -n python3-rhnlib
 %license COPYING
 %doc ChangeLog README TODO
-%{python3_sitelib}/*
+%{python3_sitelib}/rhnlib
+%{python3_sitelib}/rhnlib-%{version}*-info
 %endif
 
 %if "%{_vendor}" == "debbuild"
-
 %post -n python2-rhnlib
 # Do late-stage bytecompilation, per debian policy
 pycompile -p python2-rhnlib -V -3.0

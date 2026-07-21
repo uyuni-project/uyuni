@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-push
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -35,7 +35,7 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.2.4
+Version:        5.3.0
 Release:        0
 Summary:        Package uploader for %{productprettyname}
 License:        GPL-2.0-only
@@ -128,7 +128,7 @@ make -f Makefile.rhnpush install PREFIX=%{buildroot} ROOT=%{python_sitelib} \
 %endif
 
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhnpush
+sed -i 's|#!%{_bindir}/python|#!%{_bindir}/python3|' rhnpush
 install -d %{buildroot}/%{python3_sitelib}
 make -f Makefile.rhnpush install PREFIX=%{buildroot} ROOT=%{python3_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python3_version}

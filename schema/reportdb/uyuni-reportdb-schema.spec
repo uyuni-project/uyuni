@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-reportdb-schema
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,8 +22,12 @@
 
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
+%define rhnroot %{_datadir}/susemanager/db/
+
+%define postgres %{rhnroot}/reportdb
+
 Name:           uyuni-reportdb-schema
-Version:        5.2.3
+Version:        5.3.0
 Release:        0
 Summary:        Report DB SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
@@ -33,23 +37,19 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/schema/reportdb/%{name}-rpmlintrc
+
+BuildRequires:  make
+BuildRequires:  susemanager-schema-sanity
+
+Requires:       susemanager-schema-utility
 BuildArch:      noarch
 
 %if 0%{?rhel}
 BuildRequires:  perl-File-Find
 %endif
-
-BuildRequires:  make
-BuildRequires:  susemanager-schema-sanity
 %if 0%{?suse_version}
 BuildRequires:  fdupes
 %endif
-
-Requires:       susemanager-schema-utility
-
-%define rhnroot /usr/share/susemanager/db/
-
-%define postgres %{rhnroot}/reportdb
 
 %description
 uyuni-reportdb-schema is the SQL schema for the %{productprettyname} server.
@@ -59,7 +59,7 @@ uyuni-reportdb-schema is the SQL schema for the %{productprettyname} server.
 %setup -q
 
 %build
-make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
+%make_build -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 
 %install
 install -m 0755 -d %{buildroot}%{rhnroot}
@@ -71,7 +71,6 @@ install -m 0755 -d %{buildroot}%{rhnroot}/reportdb-schema-upgrade
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd %{buildroot}%{rhnroot}/reportdb-schema-upgrade && tar xf - ) )
 
 %files
-%defattr(-,root,root)
 %dir %{_datadir}/susemanager
 %dir %{rhnroot}
 %{postgres}

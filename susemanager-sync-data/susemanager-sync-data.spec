@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sync-data
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -18,7 +18,7 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           susemanager-sync-data
-Version:        5.2.5
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only

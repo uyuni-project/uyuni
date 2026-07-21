@@ -2,7 +2,7 @@
 
 #!BuildTag: uyuni/monitoring-grafana:latest uyuni/monitoring-grafana:%%grafana_patch_version%%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.7
+ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE
 
 RUN set -euo pipefail && \
@@ -22,7 +22,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 LABEL org.opencontainers.image.title="${PRODUCT} Grafana"
 LABEL org.opencontainers.image.name=monitoring-grafana-image
 LABEL org.opencontainers.image.description="Grafana container image for ${PRODUCT}"
-LABEL org.opencontainers.image.version=5.2.3
+LABEL org.opencontainers.image.version=5.3.0
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"

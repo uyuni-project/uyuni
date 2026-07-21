@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-html
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -26,7 +26,7 @@
 %endif
 
 Name:           spacewalk-proxy-html
-Version:        5.2.2
+Version:        5.3.0
 Release:        0
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only

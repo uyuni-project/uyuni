@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-storage-setup
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,7 +20,7 @@
 
 %global debug_package %{nil}
 Name:           uyuni-storage-setup
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        Tools for managing storage on %{productprettyname}
 License:        GPL-3.0-only

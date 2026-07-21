@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -31,7 +31,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.2.13
+Version:        5.3.0
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
@@ -43,9 +43,9 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 #!CreateArchive: node_modules
 Source1:        node_modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
+BuildRequires:  (nodejs >= 22 with nodejs < 23)
 BuildRequires:  gettext
 BuildRequires:  make
-BuildRequires:  (nodejs >= 22 with nodejs < 23)
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
@@ -66,7 +66,7 @@ but it does generate a number of sub-packages.
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
 # NB! This is a generated list, any changes you make here manually will be lost!
-License:        (GPL-3.0 OR MIT) AND (MPL-2.0 OR Apache-2.0) AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND CC-BY-4.0 AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0 AND OFL-1.1 AND Python-2.0
+License:        (GPL-3.0-only OR MIT) AND (MPL-2.0 OR Apache-2.0) AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND CC-BY-4.0 AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0 AND OFL-1.1 AND Python-2.0
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
@@ -102,6 +102,8 @@ License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
+Requires:       python3-PyJWT
+Requires:       python3-numpy
 Requires:       sudo
 Requires:       perl(Params::Validate)
 Requires:       perl(XML::LibXML)
@@ -111,8 +113,6 @@ Obsoletes:      spacewalk-grail < %{version}
 Obsoletes:      spacewalk-pxt < %{version}
 Obsoletes:      spacewalk-sniglets < %{version}
 Provides:       rhn-base = 5.3.0
-Requires:       python3-PyJWT
-Requires:       python3-numpy
 
 %description -n spacewalk-base
 This package includes the core RHN:: packages necessary to manipulate the
@@ -148,10 +148,10 @@ Configuration file for spacewalk-base-minimal package.
 
 %prep
 %setup -q
-tar xf %{S:1}
+tar xf %{SOURCE1}
 
 %build
-make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
+%make_build -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor"
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
 NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node html/src/build.js --check-spec=false

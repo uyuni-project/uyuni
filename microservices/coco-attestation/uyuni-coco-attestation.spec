@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-coco-attestation
 #
-# Copyright (c) 2025 SUSE LLC and contributors
+# Copyright (c) 2026 SUSE LLC and contributors
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -23,7 +23,7 @@
 %global         snpguest_arch x86_64
 
 Name:           uyuni-coco-attestation
-Version:        5.2.6
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} utility for Confidential Computing Attestation
 License:        GPL-2.0-only

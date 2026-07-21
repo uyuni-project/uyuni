@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-schema
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -19,8 +19,13 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
+%define rhnroot %{_datadir}/susemanager/db
+%define postgres %{rhnroot}/postgres
+%define spacewalk_folder Spacewalk
+%define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
+
 Name:           susemanager-schema
-Version:        5.2.13
+Version:        5.3.0
 Release:        0
 Summary:        SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
@@ -30,7 +35,7 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/schema/spacewalk/%{name}-rpmlintrc
-BuildRequires:  /usr/bin/pod2man
+BuildRequires:  %{_bindir}/pod2man
 BuildRequires:  fdupes
 BuildRequires:  make
 BuildRequires:  perl-macros
@@ -43,12 +48,6 @@ Requires:       policycoreutils
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 BuildArch:      noarch
-BuildRequires:  fdupes
-
-%define rhnroot %{_datadir}/susemanager/db
-%define postgres %{rhnroot}/postgres
-%define spacewalk_folder Spacewalk
-%define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 %description
 susemanager-schema is the SQL schema for the %{productprettyname} server.
@@ -75,7 +74,7 @@ Provides spacewalk-schema-upgrade and spacewalk-sql.
 %setup -q
 
 %build
-make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
+%make_build -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1
 
@@ -124,7 +123,6 @@ systemctl is-active --quiet uyuni-check-database.service && {
 systemctl try-restart uyuni-check-database.service ||:
 
 %files
-%defattr(-,root,root)
 %dir %{_datadir}/susemanager
 %dir %{rhnroot}
 %{postgres}
@@ -135,7 +133,6 @@ systemctl try-restart uyuni-check-database.service ||:
 %endif
 
 %files utility
-%defattr(-,root,root)
 %dir %{perl_vendorlib}/%{spacewalk_folder}
 %dir %{perl_vendorlib}/%{schema_upgrade_folder}
 %{perl_vendorlib}/%{schema_upgrade_folder}/MainDb.pm
@@ -146,7 +143,6 @@ systemctl try-restart uyuni-check-database.service ||:
 %{_mandir}/man1/spacewalk-sql*
 
 %files sanity
-%defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/schema-source-sanity-check.pl
 %attr(755,root,root) %{_bindir}/blend
 

@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager-client
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -18,18 +18,18 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           supportutils-plugin-susemanager-client
-Version:        5.2.3
+Version:        5.3.0
 Release:        0
 Summary:        Supportconfig Plugin for %{productprettyname} Client
 License:        GPL-2.0-only
 Group:          Documentation/SUSE
+URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
-URL:            https://github.com/uyuni-project/uyuni
 BuildRequires:  supportutils
 Requires:       supportutils
-Supplements:    packageand(salt-minion:supportutils)
-Supplements:    packageand(spacewalk-check:supportutils)
+Supplements:    (salt-minion and supportutils)
+Supplements:    (spacewalk-check and supportutils)
 BuildArch:      noarch
 %if ! 0%{?suse_version}
 ExclusiveArch:  do_not_build
@@ -63,7 +63,6 @@ fi
 install -m 0644 susemanagerclient-plugin.8.gz %{buildroot}%{_mandir}/man8/susemanagerclient-plugin.8.gz
 
 %files
-%defattr(-,root,root)
 %license COPYING.GPLv2
 %{_prefix}/lib/supportconfig
 %{_prefix}/lib/supportconfig/plugins

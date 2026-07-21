@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-utils
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-utils
-Version:        5.2.7
+Version:        5.3.0
 Release:        0
 Summary:        Utilities that may be run against a %{productprettyname} server
 License:        GPL-2.0-only AND GPL-3.0-or-later
@@ -38,6 +38,8 @@ BuildRequires:  uyuni-base-common
 Requires:       (python3-PyYAML or python3-pyyaml)
 # Required by spacewalk-watch-channel-sync.sh
 Requires:       bash
+# Required by taskotop
+Requires:       python3-curses
 # Required by depsolver.py
 Requires:       python3-solv
 # Required by depsolver.py, cloneByDate.py, spacewalk-common-channels
@@ -45,15 +47,12 @@ Requires:       python3-uyuni-common-libs
 # Required by cloneByDate.py, spacewalk-clone-by-date, spacewalk-common-channels
 Requires:       spacewalk-backend
 # Required by cloneByDate.py
+# Required by taskotop
 Requires:       spacewalk-backend-sql
 # Required by cloneByDate.py, depsolver.py
 Requires:       spacewalk-backend-tools >= 2.2.27
 # Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
 Requires(pre):  uyuni-base-common
-# Required by taskotop
-Requires:       python3-curses
-# Required by taskotop
-Requires:       spacewalk-backend-sql
 BuildArch:      noarch
 
 %if 0%{?suse_version}
@@ -69,7 +68,7 @@ Utilities that may be run against a %{productprettyname} server
 %setup -q
 
 %build
-make all
+%make_build all
 
 %install
 make install PREFIX=%{buildroot} ROOT=%{python3_sitelib} \
@@ -79,14 +78,13 @@ pushd %{buildroot}
 %py3_compile -O %{buildroot}%{python3_sitelib}
 %fdupes %{buildroot}%{python3_sitelib}
 %else
-%py_byte_compile %{__python3} %{buildroot}%{python3_sitelib}
+%{py_byte_compile} python3 %{buildroot}%{python3_sitelib}
 %endif
 popd
 
 %check
 
 %files
-%defattr(-,root,root)
 %license COPYING.GPLv2 COPYING.GPLv3
 %attr(755,root,root) %{_bindir}/spacewalk-common-channels
 %attr(755,root,root) %{_bindir}/spacewalk-clone-by-date
@@ -105,6 +103,5 @@ popd
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
 %{_mandir}/man8/taskotop.8%{?ext_man}
-
 
 %changelog
