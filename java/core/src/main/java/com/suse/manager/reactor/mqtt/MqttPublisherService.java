@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Asynchronous MQTT Publisher Service for broadcasting Uyuni events.
@@ -65,6 +67,7 @@ public class MqttPublisherService {
     private final Set<String> enabledEvents;
     private final Gson gson;
     private final ExecutorService executorService;
+    private final int qos;
 
     private MqttAsyncClient client;
     private boolean isConnecting = false;
@@ -118,11 +121,46 @@ public class MqttPublisherService {
         this.gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
-        this.executorService = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r, "mqtt-publisher-thread");
-            t.setDaemon(true);
-            return t;
-        });
+
+        int qosVal = 1;
+        try {
+            qosVal = Integer.parseInt(System.getProperty("uyuni.mqtt.qos", "1"));
+            if (qosVal < 0 || qosVal > 2) {
+                LOG.warn("Invalid QoS value configured: {}. Defaulting to 1.", qosVal);
+                qosVal = 1;
+            }
+        }
+        catch (NumberFormatException e) {
+            LOG.warn("Invalid QoS format. Defaulting to 1.");
+        }
+        this.qos = qosVal;
+
+        int queueLimit = 10000;
+        try {
+            queueLimit = Integer.parseInt(System.getProperty("uyuni.mqtt.queue.limit", "10000"));
+        }
+        catch (NumberFormatException e) {
+            LOG.warn("Invalid queue limit format. Defaulting to 10000.");
+        }
+
+        final int finalQueueLimit = queueLimit;
+        this.executorService = new ThreadPoolExecutor(
+                1, 1, 0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<>(finalQueueLimit),
+                r -> {
+                    Thread t = new Thread(r, "mqtt-publisher-thread");
+                    t.setDaemon(true);
+                    return t;
+                },
+                new ThreadPoolExecutor.DiscardOldestPolicy() {
+                    @Override
+                    public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                        LOG.warn("MQTT publication queue is full (limit: {}). " +
+                                "Dropping oldest publication task.", finalQueueLimit);
+                        super.rejectedExecution(r, e);
+                    }
+                }
+        );
 
         LOG.warn("Initializing MqttPublisherService with broker: {}, " +
                 "client ID: {}, topic prefix: {}",
@@ -267,7 +305,7 @@ public class MqttPublisherService {
                 String jsonPayload = gson.toJson(envelope);
                 MqttMessage message = new MqttMessage(
                         jsonPayload.getBytes("UTF-8"));
-                message.setQos(1); // At least once delivery
+                message.setQos(this.qos);
 
                 client.publish(topic, message);
                 LOG.warn("MQTT message published to {}: {}",
