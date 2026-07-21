@@ -21,13 +21,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.MatchResult;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternCompiler;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -39,6 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Class for handling ACLs.
@@ -177,8 +174,8 @@ public class Acl {
     private static final int HANDLERNAME_GROUP = 2;
     /** constant used to identify param regex group within statement */
     private static final int PARAM_GROUP = 3;
-    /** total number of regex groups expected in statement */
-    private static final int EXPECTED_GROUPS = 4;
+    /** total number of capturing groups expected in statement (excludes group 0) */
+    private static final int EXPECTED_GROUPS = 3;
 
     /** prefix of acl handler method names */
     private static final String ACL_PREFIX = "acl";
@@ -194,11 +191,10 @@ public class Acl {
 
     // initialize the parse pattern
     static {
-        PatternCompiler compiler = new Perl5Compiler();
         try {
-            parsePattern = compiler.compile(STMT_PARSE_REGEX);
+            parsePattern = Pattern.compile(STMT_PARSE_REGEX);
         }
-        catch (MalformedPatternException e) {
+        catch (PatternSyntaxException e) {
             // we assume our regex is sane and tested
             // and that we don't get here
             throw new IllegalRegexException("Invalid when constructing parse " +
@@ -416,10 +412,10 @@ public class Acl {
 
     private boolean evalAclStatement(String statement, Map<String, Object> context) {
         boolean result;
-        PatternMatcher matcher = new Perl5Matcher();
-        boolean itMatches = matcher.matches(statement, parsePattern);
-        MatchResult matchResult = matcher.getMatch();
-        if (!itMatches || matchResult == null || matchResult.groups() < EXPECTED_GROUPS) {
+        Matcher matcher = parsePattern.matcher(statement);
+        boolean itMatches = matcher.matches();
+        MatchResult matchResult = matcher.toMatchResult();
+        if (!itMatches || matchResult == null || matchResult.groupCount() < EXPECTED_GROUPS) {
             throw new IllegalArgumentException(
                     LocalizationService.getInstance().getMessage(
                             "bad-syntax", statement));
@@ -429,7 +425,7 @@ public class Acl {
         String func = matchResult.group(HANDLERNAME_GROUP);
         String params = matchResult.group(PARAM_GROUP);
 
-        log.debug("num groups: {}", matchResult.groups());
+        log.debug("num groups: {}", matchResult.groupCount());
         log.debug("not: {}", negation);
         log.debug("handler: {}", func);
         log.debug("params: {}", params);
