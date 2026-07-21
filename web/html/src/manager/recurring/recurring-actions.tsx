@@ -56,7 +56,7 @@ type State = {
   selected?: any;
 };
 
-class RecurringActions extends Component<Props, State> {
+export class RecurringActions extends Component<Props, State> {
   private isComponentMounted = false;
 
   constructor(props) {
@@ -122,7 +122,7 @@ class RecurringActions extends Component<Props, State> {
     }
 
     const loc = window.location;
-    if ((typeof action === "undefined" || action === "back") && this.isFilteredList()) {
+    if (typeof action === "undefined" || action === "back") {
       this.setState({
         action: undefined,
         selected: undefined,
