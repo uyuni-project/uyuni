@@ -19,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.suse.manager.reactor.mqtt.event.ClmBuildCompletedEvent;
+import com.suse.manager.reactor.mqtt.event.ClmBuildStartedEvent;
+import com.suse.manager.reactor.mqtt.event.OrgCreatedEvent;
+import com.suse.manager.reactor.mqtt.event.UserCreatedEvent;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +50,7 @@ public class MqttEventHelperTest {
 
     @Test
     public void testPublishUserCreated() {
-        MqttEventHelper.publishUserCreated("johndoe", "admin", 123L);
+        MqttEventHelper.publish(new UserCreatedEvent("johndoe", "admin", 123L));
 
         assertEquals(testService.getTopicPrefix() + "/users/created", testService.lastTopic);
         assertNotNull(testService.lastPayload);
@@ -59,7 +64,7 @@ public class MqttEventHelperTest {
 
     @Test
     public void testPublishOrgCreated() {
-        MqttEventHelper.publishOrgCreated(456L, "My Company");
+        MqttEventHelper.publish(new OrgCreatedEvent(456L, "My Company"));
 
         assertEquals(testService.getTopicPrefix() + "/orgs/created", testService.lastTopic);
         assertNotNull(testService.lastPayload);
@@ -72,7 +77,7 @@ public class MqttEventHelperTest {
 
     @Test
     public void testPublishClmBuildStarted() {
-        MqttEventHelper.publishClmBuildStarted("clm-proj-1", "admin");
+        MqttEventHelper.publish(new ClmBuildStartedEvent("clm-proj-1", "admin"));
 
         assertEquals(testService.getTopicPrefix() + "/clm/build_started", testService.lastTopic);
         assertNotNull(testService.lastPayload);
@@ -85,7 +90,7 @@ public class MqttEventHelperTest {
 
     @Test
     public void testPublishClmBuildCompleted() {
-        MqttEventHelper.publishClmBuildCompleted("clm-proj-1", "v2", "admin");
+        MqttEventHelper.publish(new ClmBuildCompletedEvent("clm-proj-1", "v2", "admin"));
 
         assertEquals(testService.getTopicPrefix() + "/clm/build_completed", testService.lastTopic);
         assertNotNull(testService.lastPayload);
@@ -102,7 +107,7 @@ public class MqttEventHelperTest {
         MqttPublisherService.setInstance(null);
 
         // This should not throw exceptions, but simply fail-silent/skip
-        MqttEventHelper.publishOrgCreated(1L, "Test Org");
+        MqttEventHelper.publish(new OrgCreatedEvent(1L, "Test Org"));
 
         assertNull(testService.lastTopic);
         assertNull(testService.lastPayload);
@@ -116,7 +121,7 @@ public class MqttEventHelperTest {
             MqttPublisherService.setInstance(filterService);
 
             // This should be published (orgs.created is in filter)
-            MqttEventHelper.publishOrgCreated(123L, "Filtered Org");
+            MqttEventHelper.publish(new OrgCreatedEvent(123L, "Filtered Org"));
             assertEquals(filterService.getTopicPrefix() + "/orgs/created", filterService.lastTopic);
 
             // Reset spy state
@@ -124,7 +129,7 @@ public class MqttEventHelperTest {
             filterService.lastPayload = null;
 
             // This should be published (users/created is in filter)
-            MqttEventHelper.publishUserCreated("john", "admin", 1L);
+            MqttEventHelper.publish(new UserCreatedEvent("john", "admin", 1L));
             assertEquals(filterService.getTopicPrefix() + "/users/created", filterService.lastTopic);
 
             // Reset spy state
@@ -132,7 +137,7 @@ public class MqttEventHelperTest {
             filterService.lastPayload = null;
 
             // This should NOT be published (clm/build_started is NOT in filter)
-            MqttEventHelper.publishClmBuildStarted("clm-1", "admin");
+            MqttEventHelper.publish(new ClmBuildStartedEvent("clm-1", "admin"));
             assertNull(filterService.lastTopic);
         }
         finally {
