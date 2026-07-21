@@ -757,7 +757,7 @@ Before('@sles15sp6_terminal') do
 end
 
 Before('@sles15sp7_terminal') do
-  skip_this_scenario unless $sles15sp6_terminal_mac
+  skip_this_scenario unless $sles15sp7_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|
