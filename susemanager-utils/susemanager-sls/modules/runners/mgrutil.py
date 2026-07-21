@@ -18,7 +18,6 @@ import tempfile
 import time
 from salt.utils.minions import CkMinions
 
-
 log = logging.getLogger(__name__)
 
 GROUP_OWNER = "susemanager"
@@ -242,7 +241,11 @@ def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
         )
         return {"cert": result.stdout.decode()}
     except subprocess.CalledProcessError as err:
-        return {"error": str(err)}
+        stderr_lines = err.stderr.decode("utf-8", errors="replace").splitlines()
+        for line in reversed(stderr_lines):
+            if line.startswith("ERROR: "):
+                return {"error": line[len("ERROR: ") :]}
+        return {"error": "Certificate validation failed"}
 
 
 def select_minions(target, target_type):

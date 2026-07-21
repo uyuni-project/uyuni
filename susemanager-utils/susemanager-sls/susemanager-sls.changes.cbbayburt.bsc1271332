@@ -1,0 +1,1 @@
+- Propagate cert validation errors to UI (bsc#1271332)
