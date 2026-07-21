@@ -118,6 +118,13 @@ function verifyCredentials(id, refresh) {
 
 // relevant for the mirror credentials page
 jQuery(document).ready(function() {
+  // Move focus out before Bootstrap marks a closing modal as aria-hidden.
+  jQuery('#modal-edit-credentials, #modal-delete-credentials, #modal-list-subscriptions').on('hide.bs.modal', function() {
+    if (this.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+  });
+
   // Clear input fields whenever the edit modal is hidden
   jQuery('#modal-edit-credentials').on('hidden.bs.modal', function() {
     initEdit("", "");
