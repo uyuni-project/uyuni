@@ -1,4 +1,4 @@
 # This file describes the order of features in a Build Validation test suite run.
 
 ## Build Kiwi images
-- features/build_validation/retail/sle15sp6_build_kiwi_image.feature
+- features/build_validation/retail/sles15sp6_build_kiwi_image.feature

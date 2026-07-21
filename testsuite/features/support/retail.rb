@@ -28,9 +28,9 @@ def compute_image(host)
   case host
   when 'pxeboot_minion'
     $pxeboot_image
-  when 'sle15sp6_terminal'
+  when 'sles15sp6_terminal'
     'sles15sp6o'
-  when 'sle15sp7_terminal'
+  when 'sles15sp7_terminal'
     'sles15sp7o'
   else
     raise "Is #{host} a supported terminal?"
@@ -91,10 +91,10 @@ def execute_expect_command_proxy(host, exp_file, context)
   case host
   when 'pxeboot_minion'
     mac = $pxeboot_mac
-  when 'sle15sp6_terminal'
-    mac = $sle15sp6_terminal_mac
-  when 'sle15sp7_terminal'
-    mac = $sle15sp7_terminal_mac
+  when 'sles15sp6_terminal'
+    mac = $sles15sp6_terminal_mac
+  when 'sles15sp7_terminal'
+    mac = $sles15sp7_terminal_mac
   end
   mac = mac.tr(':', '')
   eui64_base = "#{mac[0..5]}fffe#{mac[6..11]}"

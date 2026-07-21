@@ -91,7 +91,7 @@ follow the format:
   * Continuous Integration test suite (`features/init_clients`): `<distribution>`_`<client|minion|sshminion>`.
   Example: `sle_sshminion.feature`
   * Build Validation test suite (`features/build_validation/init_clients`): `<distribution><version>`_`<minion|sshminion>`.
-  Example: `sle15sp4_sshminion.feature`
+  Example: `sles15sp4_sshminion.feature`
 * File name examples: `srv_reboot_server.feature`, `srv_salt_ping.feature`, `srv_salt_service.feature`,
 `min_salt_bootstrap.feature`, or `min_ping.feature`
 

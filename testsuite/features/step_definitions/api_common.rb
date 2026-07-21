@@ -361,12 +361,12 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   # Define which clients trigger which exclusions
   channel_filters = {
-    /sle15sp6|slemicro55/ => %w[
+    /sles15sp6|slemicro55/ => %w[
       suse-manager-proxy
       suse-manager-retail-branch-server
       suse-manager-server
     ],
-    /sle15sp7|slmicro6[12]/ => %w[
+    /sles15sp7|slmicro6[12]/ => %w[
       suse-multi-linux-manager-proxy
       suse-multi-linux-manager-retail-branch-server
       suse-multi-linux-manager-server
