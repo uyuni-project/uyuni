@@ -7838,15 +7838,15 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.power_on" xml:space="preserve">
         <source>Power On</source>
-        <target/>
+        <target state="translated">Ligar</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.power_off" xml:space="preserve">
         <source>Power Off</source>
-        <target/>
+        <target state="translated">Desligar</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.reboot" xml:space="preserve">
         <source>Reboot</source>
-        <target/>
+        <target state="translated">Reiniciar</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.command_failed" xml:space="preserve">
         <source>Cobbler reported a power management error, please check Cobbler logs.</source>
