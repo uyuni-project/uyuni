@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2025 SUSE LLC
+ * Copyright (c) 2016--2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -217,14 +217,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "server", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<CustomDataValue> customDataValues;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(
+        fetch = FetchType.LAZY,
+        cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}
+    )
     @JoinTable(
         name = "rhnServerChannel",
         joinColumns = @JoinColumn(name = "server_id"),
         inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}
+    )
     @OrderColumn(name = "position")
     @SQLJoinTableRestriction(value = "(position > 0)")
     @JoinTable(
@@ -238,7 +244,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     )
     private List<ConfigChannel> configChannels = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}
+    )
     @SQLJoinTableRestriction(value = "(position is null)")
     @JoinTable(
             name = "rhnServerConfigChannel",
@@ -288,7 +297,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "server", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ClientCapability> capabilities = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}
+    )
     @JoinTable(
             name = "suseServerInstalledProduct",
             joinColumns = @JoinColumn(name = "rhn_server_id"),
