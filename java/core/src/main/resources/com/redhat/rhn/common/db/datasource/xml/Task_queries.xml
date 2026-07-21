@@ -357,6 +357,7 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
     LEFT JOIN rhnChannelPackage cp ON p.id = cp.package_id
     WHERE     p.org_id IS NULL
     AND       cp.channel_id IS NULL
+    AND       p.modified &lt; current_timestamp - interval '2' day
   </query>
 </mode>
 
@@ -834,7 +835,8 @@ select sa.action_id, sa.server_id
      WHERE id IN (SELECT p.id
                     FROM rhnPackage p
                LEFT JOIN rhnChannelPackage cp ON p.id = cp.package_id
-                   WHERE p.org_id IS NULL and cp.channel_id IS NULL)
+                   WHERE p.org_id IS NULL and cp.channel_id IS NULL
+                    AND p.modified &lt; current_timestamp - interval '2' day)
   </query>
 </write-mode>
 
