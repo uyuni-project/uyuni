@@ -71,26 +71,21 @@ This function should get called when a form submit action is clicked.
 Behaviour:
 1) Basically joins the values of the rankingWidgetElements into a comma separated string,
 2) Stores the value in the element provided by 'storerName'
-3) Does a form submit if the form can be resolved.
+3) Lets the submit button perform its native form submission.
 This comma separated magic is required for handling cases where the browser
 supports javascript but does not support ajax..
 @param rankingWidgetName the name of the ranking widget list box.
 @param storerName name of the element in whom the CS string will be stored
        ('rankedValues' in the case of SDC channel rankings)
-@param formName name of the form who has to be submitted.
 */
-function handle_ranking_dispatch(rankingWidgetName, storerName, formName) {
+function handle_ranking_dispatch(rankingWidgetName, storerName) {
   const element = document.getElementById(rankingWidgetName);
   const storer = document.getElementById(storerName);
-  const form = document.getElementById(formName) || document.forms[formName];
   if (!element || !storer) {
     return false;
   }
 
   storer.value = make_ranking_csv(rankingWidgetName);
-  if (form) {
-    form.submit();
-  }
   return true;
 }
 
