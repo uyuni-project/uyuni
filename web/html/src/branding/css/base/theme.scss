@@ -765,7 +765,7 @@ i[class~="fa-right"] {
 
     .spacewalk-list-reflinks {
       display: flex;
-      justify-content: space-between
+      justify-content: space-between;
     }
   }
 }
@@ -1191,7 +1191,7 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled+label,
+input:disabled + label,
 label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;
@@ -1287,12 +1287,6 @@ tr.changed > td {
   width: 100%;
   border: none;
   text-align: left;
-}
-
-.badge {
-  font-size: 12px;
-  border-radius: 10px;
-  background: $badge-bg;
 }
 
 .proxy-brand {
