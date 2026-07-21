@@ -3,6 +3,7 @@
 
 require_relative 'namespaces/actionchain'
 require_relative 'namespaces/activationkey'
+require_relative 'namespaces/admin'
 require_relative 'namespaces/api'
 require_relative 'namespaces/audit'
 require_relative 'namespaces/channel'
@@ -25,6 +26,7 @@ class ApiTest
   def initialize(_host)
     @actionchain = NamespaceActionchain.new(self)
     @activationkey = NamespaceActivationkey.new(self)
+    @admin = NamespaceAdmin.new(self)
     @api = NamespaceApi.new(self)
     @audit = NamespaceAudit.new(self)
     @channel = NamespaceChannel.new(self)
@@ -52,6 +54,7 @@ class ApiTest
 
   attr_reader :actionchain
   attr_reader :activationkey
+  attr_reader :admin
   attr_reader :api
   attr_reader :audit
   attr_reader :channel
@@ -90,7 +93,7 @@ class ApiTest
 
   # Handles API lock management
   def manage_api_lock(name)
-    if name.include?('user.')
+    if name.include?('user.') || name.start_with?('admin.')
       repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'We couldn\'t get access to the API') do
         break unless api_lock?
 

@@ -6,6 +6,26 @@ PRODUCTRING="/usr/lib/susemanager/susemanager-build-keys.gpg"
 ALTPRODUCTRING="/usr/lib/uyuni/uyuni-build-keys.gpg"
 CUSTRING="/var/spacewalk/gpg/customer-build-keys.gpg"
 
+export GNUPGHOME="${PUBRINGDIR}"
+
+mkdir -p "${PUBRINGDIR}"
+
+# when run as root, the PUBRINGDIR is owned by tomcat. ensure the files have
+# correct ownership, so gpg calls via the tomcat user can write to it.
+PUBRING_OWNER=""
+if [ -d "${PUBRINGDIR}" ] && [ "$(id -u)" = "0" ]; then
+    PUBRING_OWNER="$(stat -c '%U:%G' "${PUBRINGDIR}")"
+    if [ "${PUBRING_OWNER}" = "root:root" ]; then
+        PUBRING_OWNER=""
+    fi
+fi
+restore_pubring_owner() {
+    if [ -n "${PUBRING_OWNER}" ]; then
+        chown -R "${PUBRING_OWNER}" "${PUBRINGDIR}" 2>/dev/null || true
+    fi
+}
+trap restore_pubring_owner EXIT
+
 if [ ! -f ${PUBRING} ]; then
     touch ${PUBRING}
 fi

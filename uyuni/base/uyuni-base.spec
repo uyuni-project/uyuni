@@ -125,6 +125,7 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %dir %attr(775,%{apache_user}, root) %{_localstatedir}/spacewalk
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/systems
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/packages
+%dir %attr(700,tomcat,susemanager) %{_localstatedir}/spacewalk/gpg
 %dir %attr(755,root,root) %{www_path}/www
 %dir %attr(755,root,root) %{www_path}/www/distributions
 %endif

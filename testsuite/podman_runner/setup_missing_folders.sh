@@ -5,3 +5,7 @@ for folder in systems packages; do
     chmod 0775 /var/spacewalk/${folder}
     chown wwwrun:www /var/spacewalk/${folder}
 done
+
+mkdir -p /var/spacewalk/gpg
+chmod 0700 /var/spacewalk/gpg
+chown tomcat:tomcat /var/spacewalk/gpg
