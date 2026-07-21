@@ -21,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rpm.SourceRpm;
@@ -31,6 +33,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -164,6 +167,45 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testRemovePackageWithKeys() {
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
+        String keyStr = RandomStringUtils.insecure().nextAlphanumeric(5);
+
+        PackageKey key = new PackageKey();
+        key.setKey(keyStr);
+        key.setType(PackageFactory.PACKAGE_KEY_TYPE_GPG);
+
+        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        pkg1.getPackageKeys().add(key);
+
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+        pkg2.getPackageKeys().add(key);
+
+        TestUtils.flushAndClearSession();
+
+        handler.removePackage(admin, pkg1.getId().intValue());
+        TestUtils.flushAndClearSession();
+
+        var packages = PackageFactory.lookupByIdAndOrg(List.of(pkg1.getId(), pkg2.getId()), user.getOrg());
+        assertEquals(1, packages.size());
+        assertEquals(pkg2, packages.get(0));
+
+        key = PackageFactory.lookupPackageKey(keyStr);
+        assertNotNull(key);
+
+        TestUtils.clearSession();
+
+        handler.removePackage(admin, pkg2.getId().intValue());
+        TestUtils.flushAndClearSession();
+
+        packages = PackageFactory.lookupByIdAndOrg(List.of(pkg1.getId(), pkg2.getId()), user.getOrg());
+        assertEquals(0, packages.size());
+
+        key = PackageFactory.lookupPackageKey(keyStr);
+        assertNotNull(key);
+    }
+
+    @Test
     public void testRemovePackageSource() {
         User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
@@ -171,7 +213,6 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         TestUtils.persist(pkg);
         handler.removeSourcePackage(admin, pkg.getId().intValue());
     }
-
 
     @Test
     public void testFindByNevra() {
