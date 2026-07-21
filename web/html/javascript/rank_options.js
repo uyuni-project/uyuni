@@ -23,12 +23,11 @@ to asynchronously post to the channel rankings update page.
 */
 
 function move_selected_up(rankingWidgetName) {
-   return move_selected(rankingWidgetName, true);
+  return move_selected(rankingWidgetName, true);
 }
 function move_selected_down(rankingWidgetName) {
-   return move_selected(rankingWidgetName, false);
+  return move_selected(rankingWidgetName, false);
 }
-
 
 /**
 This function gets called when the 'up'/'down' button/arrow/image is pressed.
@@ -44,25 +43,27 @@ saving to a set etc..)..
                 (up if true, down if false).
 */
 function move_selected(rankingWidgetName, moveUp) {
+  let element = document.getElementById(rankingWidgetName);
+  let index = element.selectedIndex;
+  if (index > -1) {
+    let selected = element.options[index];
+    if ((moveUp && index > 0) || (!moveUp && index < element.options.length - 1)) {
+      let moveToIndex = index - 1;
+      if (!moveUp) {
+        moveToIndex = index + 1;
+      }
 
-    var element = document.getElementById(rankingWidgetName);    
-    var index = element.selectedIndex;
-    if (index > -1) {
-         var selected = element.options[index];
-        if ((moveUp && index > 0) || 
-                    (!moveUp && index < element.options.length - 1)) {
-            moveToIndex = index - 1;
-            if (!moveUp) {
-                moveToIndex = index + 1;
-            }
-
-            element.options[index] = new Option(element.options[moveToIndex].text,
-                                     element.options[moveToIndex].value, false, false);
-            element.options[moveToIndex] = selected;
-        }
-   }
-   // return false so that a form submit doesnot happen
-   return false;
+      element.options[index] = new Option(
+        element.options[moveToIndex].text,
+        element.options[moveToIndex].value,
+        false,
+        false
+      );
+      element.options[moveToIndex] = selected;
+    }
+  }
+  // return false so that a form submit doesnot happen
+  return false;
 }
 
 /**
@@ -70,7 +71,7 @@ This function should get called when a form submit action is clicked.
 Behaviour:
 1) Basically joins the values of the rankingWidgetElements into a comma separated string,
 2) Stores the value in the element provided by 'storerName'
-3) Does a form submit..
+3) Does a form submit if the form can be resolved.
 This comma separated magic is required for handling cases where the browser
 supports javascript but does not support ajax..
 @param rankingWidgetName the name of the ranking widget list box.
@@ -78,31 +79,40 @@ supports javascript but does not support ajax..
        ('rankedValues' in the case of SDC channel rankings)
 @param formName name of the form who has to be submitted.
 */
-function handle_ranking_dispatch (rankingWidgetName, storerName, formName) {
-    element = document.getElementById(rankingWidgetName);
-    storer = document.getElementById(storerName);
-    form = document.getElementById(formName);
-    storer.value = make_ranking_csv(rankingWidgetName);
+function handle_ranking_dispatch(rankingWidgetName, storerName, formName) {
+  const element = document.getElementById(rankingWidgetName);
+  const storer = document.getElementById(storerName);
+  const form = document.getElementById(formName) || document.forms[formName];
+  if (!element || !storer) {
+    return false;
+  }
+
+  storer.value = make_ranking_csv(rankingWidgetName);
+  if (form) {
     form.submit();
-    return true;
+  }
+  return true;
 }
 
 /**
  * This function does the same thing that handle_ranking_dispatch does,
  * but without submitting the form. This is necessary so that you can submit
- * a form with more than one rankingWidget in it. The last rakingWidget should
- * call handle_config_channels_dispatch to submit the form.
+ * a form with more than one rankingWidget in it. The last rankingWidget should
+ * call handle_ranking_dispatch to submit the form.
  * @param rankingWidgetName the name of the ranking widget list box.
  * @param storerName name of the element in whom the CS string will be stored
  *        ('rankedValues' in the case of SDC channel rankings)
- * @param formName name of the form who has to be submitted.
  */
-function handle_ranking (rankingWidgetName, storerName, formName) {
-    element = document.getElementById(rankingWidgetName);
-    storer = document.getElementById(storerName);
-    form = document.getElementById(formName);
-    storer.value = make_ranking_csv(rankingWidgetName);
+function handle_ranking(rankingWidgetName, storerName) {
+  const element = document.getElementById(rankingWidgetName);
+  const storer = document.getElementById(storerName);
+
+  if (!element || !storer) {
     return false;
+  }
+
+  storer.value = make_ranking_csv(rankingWidgetName);
+  return false;
 }
 
 /**
@@ -111,10 +121,14 @@ This function binds the values of each element of a list box  ('listBox') in a c
 @return a comma separated list of list elements...
 */
 function make_ranking_csv(listBoxName) {
-    var values =  new Array();
-    var listBox  = document.getElementById(listBoxName);
-    for (var i = 0; i < listBox.options.length; i++) {
-        values.push(listBox.options[i].value);
-    }
-    return values.join(',');
+  const values = new Array();
+  const listBox = document.getElementById(listBoxName);
+  if (!listBox) {
+    return "";
+  }
+
+  for (let i = 0; i < listBox.options.length; i++) {
+    values.push(listBox.options[i].value);
+  }
+  return values.join(",");
 }
