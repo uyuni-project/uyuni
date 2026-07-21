@@ -1622,7 +1622,7 @@ end
 
 When(/^I check that "([^"]*)" (host|container) is listening on TCP port "([^"]*)"$/) do |host, location, port|
   node = get_target(host)
-  node.run_until_ok("timeout 2 bash -c 'cat < /dev/null > /dev/tcp/#{host}/#{port}'", runs_in_container: location == 'container')
+  node.run_until_ok("timeout 2 bash -c 'cat < /dev/null > /dev/tcp/$(hostname -f)/#{port}'", runs_in_container: location == 'container')
 end
 
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
