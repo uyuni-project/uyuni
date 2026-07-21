@@ -19,6 +19,7 @@
 
     :global(.row) {
       margin: 0;
+      gap: 2em;
 
       > * {
         padding: 0;
