@@ -30,6 +30,8 @@ import com.redhat.rhn.frontend.taglibs.list.row.RowRenderer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class ListTag extends BodyTagSupport {
             "backward", "forward", "allForward" };
     private static final String HIDDEN_TEXT = "<input type=\"hidden\" " +
                                                 "name=\"%s\" value=\"%s\"/>";
+    private static final Logger LOG = LogManager.getLogger(ListTag.class);
 
     private int columnCount;
     private int pageSize = -1;
@@ -293,8 +296,17 @@ public class ListTag extends BodyTagSupport {
      */
     void setColumnFilter(ListFilter f) throws JspException {
         if (filter != null) {
+            // If the incoming filter is identical to the existing filter,
+            // silently return (idempotent). This handles tag reuse and
+            // exception recovery scenarios where the same filter is registered twice.
+            if (filter.equals(f)) {
+                LOG.debug("Column filter {} already set, skipping duplicate registration", f);
+                return;
+            }
+
+            // Different filters indicate a genuine multi-filter conflict
             String msg = "Cannot set the column filter - [%s], " +
-                        "since the table has been has already assigned a filter - [%s]";
+                        "since the table has already been assigned a filter - [%s]";
 
             throw new JspException(String.format(msg, f,
                     filter));
