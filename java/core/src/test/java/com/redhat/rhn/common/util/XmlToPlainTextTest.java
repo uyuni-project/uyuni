@@ -11,7 +11,6 @@
 package com.redhat.rhn.common.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,10 +40,10 @@ class XmlToPlainTextTest {
     }
 
     @Test
-    @DisplayName("Throws when anchor has no href")
-    void throwsWhenAnchorHasNoHref() {
+    @DisplayName("Does not throw when anchor has no href")
+    void doesNotThrowWhenAnchorHasNoHref() {
         XmlToPlainText helper = new XmlToPlainText();
-        assertThrows(NullPointerException.class, () -> helper.convert("<a>text</a>"));
+        assertEquals("text", helper.convert("<a>text</a>"));
     }
 
     @Test
