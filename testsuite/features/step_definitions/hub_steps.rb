@@ -767,10 +767,21 @@ When(/^I transfer ISS v2 export from hub to "([^"]*)"$/) do |host|
   export_path = get_context('iss_export_path')
   raise ScriptError, 'No ISS export path stored' if export_path.nil?
 
-  get_target('server').run(
-    "rsync -avz #{export_path}/ root@#{peripheral_node.full_hostname}:#{export_path}/",
-    verbose: true
-  )
+  hub_node = get_target('server')
+  archive_path = "/tmp/iss-export-#{host}.tar.gz"
+
+  # Hub and peripheral servers have no passwordless SSH between each other, so route
+  # the export directory through the controller instead of rsync-ing node to node.
+  hub_node.run("tar czf #{archive_path} -C #{export_path} .", verbose: true)
+
+  success = file_extract(hub_node, archive_path, archive_path)
+  raise ScriptError, 'Failed to extract ISS v2 export archive from hub' unless success
+
+  success = file_inject(peripheral_node, archive_path, archive_path)
+  raise ScriptError, 'Failed to inject ISS v2 export archive into peripheral' unless success
+
+  peripheral_node.run("mkdir -p #{export_path}", verbose: true)
+  peripheral_node.run("tar xzf #{archive_path} -C #{export_path}", verbose: true)
 end
 
 When(/^I import ISS v2 data from "([^"]*)" on "([^"]*)"$/) do |path, host|
@@ -800,7 +811,7 @@ When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
     end
   else
     using_server(host) do
-      visit('/rhn/admin/TaskSchedules.do')
+      visit('/rhn/admin/SatSchedules.do')
       step %(I follow "update-reporting-default")
       step %(I follow "mgr-update-reporting-bunch")
       step %(I click on "Single Run Schedule")

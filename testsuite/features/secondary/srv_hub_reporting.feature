@@ -20,9 +20,6 @@ Feature: Hub reportdb aggregation from peripheral servers
     When I follow the left menu "Admin > Hub Configuration > Peripherals Configuration"
     Then I should see the name of "server2"
 
-  Scenario: Log in as admin user on server2 for reporting tests (C-01)
-    Given I am authorized for the "Admin" section on "server2"
-
   Scenario: Trigger reporting update on server2 peripheral (C-01)
     Given I am authorized for the "Admin" section on "server2"
     When I schedule the reporting update task on "server2"
