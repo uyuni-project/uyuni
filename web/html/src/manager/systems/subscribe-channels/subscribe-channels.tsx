@@ -451,7 +451,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
     let childChannels;
     const isNoneChecked = -1 === (this.state.selectedBase && this.state.selectedBase.id);
     baseChannels.push(
-      <div className="radio">
+      <div className="radio" key="none">
         <input
           type="radio"
           value="-1"
@@ -470,7 +470,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
 
       if (baseOptions.length > 0) {
         baseChannels.push(
-          <div>
+          <div key="suse">
             <h4>{t("SUSE Channels")}</h4>
             {baseOptions.map((c) => {
               const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
@@ -496,7 +496,7 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
       }
       if (customOptions.length > 0) {
         baseChannels.push(
-          <div>
+          <div key="custom">
             <h4>{t("Custom Channels")}</h4>
             {customOptions.map((c) => {
               const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
