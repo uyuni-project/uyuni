@@ -24,7 +24,7 @@ import Network from "utils/network";
 import { SetupHeader } from "../setup-header";
 import { getProductSelectionState } from "./product-check/product-selection.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
-import { searchCriteriaInExtension } from "./products.utils";
+import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
@@ -318,7 +318,7 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   handleResponseError = (jqXHR: JQueryXHR | Error | undefined, arg = {}) => {
-    if (this.isUnmounted || !jqXHR || (!(jqXHR instanceof Error) && jqXHR.status === 0)) {
+    if (this.isUnmounted || isProductRequestCancellation(jqXHR)) {
       return;
     }
 
