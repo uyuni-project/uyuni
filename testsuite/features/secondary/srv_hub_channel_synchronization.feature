@@ -72,9 +72,16 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I click on "Create Channel"
     Then I should see a "Channel Test Hub Custom Channel created" text
 
+  Scenario: Create a second organization on server2 for org-mapping test (A-06)
+    When I create organization "Test Default Organization" on "server2"
+
+  # The organization must exist on server2 before the channel is synced there for the
+  # first time -- per the Hub Online Synchronization docs, the target-organization
+  # drop-down only offers a real choice for a custom channel that does not yet exist
+  # on the peripheral. Once synced, a channel's organization stays unchanged.
   Scenario: Configure custom channel sync to server2 with organization mapping (A-06)
     When I configure hub to sync channel "Test Hub Custom Channel" to "server2"
-    And I select target organization "Test Default Organization" for channel "test-hub-custom-channel" on "server2"
+    And I select target organization "Test Default Organization" for channel "Test Hub Custom Channel" on "server2"
     Then I should see a "Channel configuration updated" text
 
   Scenario: Trigger sync for custom channel and verify it arrives on server2 (A-06)

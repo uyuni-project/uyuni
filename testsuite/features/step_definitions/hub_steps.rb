@@ -585,7 +585,12 @@ When(/^I configure hub to sync all "([^"]*)" channels to "([^"]*)"$/) do |search
 end
 
 When(/^I select target organization "([^"]*)" for channel "([^"]*)" on "([^"]*)"$/) do |org, channel, _host|
-  step %(I select "#{org}" from "org_#{channel}")
+  # The org select's data-testid is keyed by the channel's internal numeric ID
+  # (e.g. "org-select-125"), which isn't known ahead of time -- scope the lookup
+  # to the table row matching the channel name instead.
+  row_xpath = "//tr[contains(., '#{channel}')]"
+  find(:xpath, "#{row_xpath}//div[contains(@class, 'org-select') and contains(@class, '__control')]").click
+  find(:xpath, "//div[contains(@class, 'org-select') and contains(@class, '__option') and contains(., '#{org}')]", match: :first).click
 end
 
 When(/^I trigger channel sync from hub to "([^"]*)"$/) do |host|
@@ -857,6 +862,18 @@ Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |
     check_errors: false
   )
   raise ScriptError, "synced_date in #{table} is not recent" unless result.strip == 't'
+end
+
+# Hub channel synchronization: organization mapping prerequisite (A-06)
+
+When(/^I create organization "([^"]*)" on "([^"]*)"$/) do |org_name, host|
+  peripheral_fqdn = get_target(host).full_hostname
+  client = peripheral_xmlrpc_client(peripheral_fqdn)
+  session = client.call('auth.login', $current_user, $current_password)
+  client.call('org.create', session, org_name, 'test_org_admin', 'TestPass123!', 'Mr.', 'Test', 'Admin', 'test_org_admin@example.com', false)
+  client.call('auth.logout', session)
+rescue XMLRPC::FaultException => e
+  raise ScriptError, "Failed to create organization #{org_name} on #{host}: #{e.message}"
 end
 
 # Full topology: peripheral-side activation key and minion bootstrap (B-01..B-04)
