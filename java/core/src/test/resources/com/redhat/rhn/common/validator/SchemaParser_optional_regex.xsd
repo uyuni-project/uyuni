@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/1999/XMLSchema">
+    <attribute name="regexField">
+        <simpleType baseType="string">
+            <optional value="true"/>
+            <matchesExpression value="^[A-Z]{3}$"/>
+        </simpleType>
+    </attribute>
+    <attribute name="implicitOptional">
+        <simpleType baseType="string">
+            <optional/>
+            <minLength value="1"/>
+        </simpleType>
+    </attribute>
+</schema>

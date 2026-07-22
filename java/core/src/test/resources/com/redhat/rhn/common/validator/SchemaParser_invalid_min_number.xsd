@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/1999/XMLSchema">
+    <attribute name="invalidMinField">
+        <simpleType baseType="double">
+            <minInclusive value="not-a-number"/>
+            <maxInclusive value="10.0"/>
+        </simpleType>
+    </attribute>
+</schema>
