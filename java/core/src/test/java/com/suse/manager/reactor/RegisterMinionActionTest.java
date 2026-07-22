@@ -746,6 +746,47 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testRegisterMinionWithoutActivationKeyButWithUniversalDefault() throws Exception {
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+
+        ActivationKey ak = ActivationKeyFactory.createNewKey(user, null, "universal-default",
+                "default key", null, baseChannelX8664, true);
+
+        TestUtils.flushSession();
+        executeTest(
+                (key) -> new Expectations() {{
+                    allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+                    will(returnValue(getSystemInfo(null, null)));
+                    List<ProductInfo> pil = new ArrayList<>();
+                    ProductInfo pi = new ProductInfo(
+                                product.getName(),
+                                product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                                true, true, "productline", Optional.of("registerrelease"),
+                                "test", "repo", "shortname", "summary", "vendor",
+                                product.getVersion());
+                    pil.add(pi);
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
+                    will(returnValue(Optional.of(pil)));
+                }},
+                (contactMethod) -> null,
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertEquals(MINION_ID, minion.getName());
+
+                    assertNotNull(minion.getBaseChannel());
+                    assertEquals(baseChannelX8664, minion.getBaseChannel());
+
+                    List<ActivationKey> usedKeys = ActivationKeyFactory.lookupByActivatedServer(minion);
+                    assertEquals(1, usedKeys.size());
+                    assertEquals(ak.getKey(), usedKeys.get(0).getKey());
+
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    @Test
     public void testRegisterMinionWithoutActivationKey() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
