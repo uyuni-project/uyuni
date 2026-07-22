@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <definitions>
+        <definition id="" class="vulnerability"><metadata><title>empty-1</title></metadata></definition>
+        <definition id="" class="vulnerability"><metadata><title>empty-2</title></metadata></definition>
+        <definition id="   " class="vulnerability"><metadata><title>space-1</title></metadata></definition>
+        <definition id="   " class="vulnerability"><metadata><title>space-2</title></metadata></definition>
+    </definitions>
+    <tests/>
+    <objects/>
+    <states/>
+</oval_definitions>

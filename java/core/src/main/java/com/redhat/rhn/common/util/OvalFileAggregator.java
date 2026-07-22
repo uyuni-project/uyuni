@@ -48,7 +48,15 @@ public class OvalFileAggregator {
      * No-arg constructor
      */
     public OvalFileAggregator() {
-        reset();
+        reset(null);
+    }
+
+    /**
+     * Constructor for unit tests
+     * @param timestamp
+     */
+    OvalFileAggregator(Date timestamp) {
+        reset(timestamp);
     }
 
     /**
@@ -165,7 +173,7 @@ public class OvalFileAggregator {
 
 
 
-    private void reset() {
+    private void reset(Date timestampDate) {
         Namespace schema = Namespace.getNamespace(
                 "xsi", "http://www.w3.org/2000/10/XMLSchema-instance");
         Namespace oval = Namespace.getNamespace("oval", "removeme");
@@ -189,7 +197,7 @@ public class OvalFileAggregator {
         schemaVersion.setText("5.0");
         Element timestamp = new Element("timestamp", oval);
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
+        cal.setTime(timestampDate != null ? timestampDate : new Date());
         StringBuilder date = new StringBuilder();
         date.append(cal.get(Calendar.YEAR));
         date.append("-");
