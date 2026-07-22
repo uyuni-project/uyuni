@@ -45,9 +45,15 @@ RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.4.0"' >> ./root/.bashrc
 RUN ln -sf /usr/bin/ruby.ruby3.4 /usr/bin/ruby
 RUN ln -sf /usr/bin/gem.ruby3.4 /usr/bin/gem
 RUN ln -sf /usr/bin/irb.ruby3.4 /usr/bin/irb
-# On Leap 16 the ruby3.4 package already installs the unsuffixed defaults
-# (/usr/bin/{rake,bundle,rdoc,ri}) pointing to 3.4, and registers no
-# update-alternatives group, so no `update-alternatives --set` is needed.
+# On Leap 16 the default /usr/bin/{rake,bundle,rdoc,ri} are ELF wrappers, which
+# `ruby -S <name>` (used by the cucumber rake task, e.g. `ruby -S bundle exec
+# cucumber`) cannot parse as Ruby source. Point them at the actual Ruby scripts
+# (the *.ruby.ruby3.4 variants) so `ruby -S bundle`/`rake` work. ruby3.4 registers
+# no update-alternatives group (single Ruby), so use symlinks instead of --set.
+RUN ln -sf /usr/bin/rake.ruby.ruby3.4 /usr/bin/rake
+RUN ln -sf /usr/bin/bundle.ruby.ruby3.4 /usr/bin/bundle
+RUN ln -sf /usr/bin/rdoc.ruby.ruby3.4 /usr/bin/rdoc
+RUN ln -sf /usr/bin/ri.ruby.ruby3.4 /usr/bin/ri
 
 # debug
 RUN ruby -v
