@@ -757,7 +757,11 @@ end
 # ISSv2 export/transfer/import
 
 When(/^I export channel "([^"]*)" with ISS v2 to "([^"]*)" on hub$/) do |channel, path|
-  get_target('server').run("inter-server-sync export --channels=#{channel} --outputDir=#{path}", verbose: true)
+  hub_node = get_target('server')
+  # inter-server-sync refuses to export into a non-empty directory, so clear out any
+  # leftovers from a previous run of this scenario before exporting.
+  hub_node.run("rm -rf #{path}", verbose: true)
+  hub_node.run("inter-server-sync export --channels=#{channel} --outputDir=#{path}", verbose: true)
   add_context('iss_export_path', path)
   add_context('iss_export_channel', channel)
 end
