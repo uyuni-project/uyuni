@@ -141,7 +141,7 @@ public class ApiCall implements Comparable<ApiCall> {
      * @return the ID
      */
     public String getId() {
-        return name + "-" + String.join("-", paramNames);
+        return name + "-" + String.join("-", paramNames).hashCode();
     }
 
     /**
