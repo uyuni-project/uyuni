@@ -160,3 +160,232 @@ Spacewalk Client Tools provides programs and libraries to allow your
 system to receive software updates from %{productprettyname}.
 
 %if 0%{?build_py2}
+%package -n python2-%{name}
+Summary:        Support programs and libraries for %{productprettyname}
+%if "%{_vendor}" == "debbuild"
+Group:          python
+%else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
+Group:          System Environment/Base
+%endif
+Provides:       python-%{name} = %{version}-%{release}
+Obsoletes:      python-%{name} < %{version}-%{release}
+Provides:       python2-rhn-client-tools = %{version}-%{release}
+Obsoletes:      python2-rhn-client-tools < %{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
+Requires:       rhnlib >= 4.2.2
+
+%if "%{_vendor}" != "debbuild"
+Requires:       python2-uyuni-common-libs
+Requires:       rpm-python
+BuildRequires:  python-devel
+Requires:       logrotate
+
+%if %{with test} && 0%{?rhel} != 6
+# The following BuildRequires are for check only
+BuildRequires:  python-coverage
+BuildRequires:  rpm-python
+%endif
+%endif # if {_vendor} != "debbuild"
+
+%if "%{_vendor}" == "debbuild"
+BuildRequires:  python-coverage
+BuildRequires:  python-dev
+BuildRequires:  python-rpm
+Requires:       python-gi
+Requires:       python-rpm
+Requires(post): python-minimal
+Requires(preun): python-minimal
+%endif
+
+%description -n python2-%{name}
+Python 2 specific files of %{name}.
+%endif
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary:        Support programs and libraries for %{productprettyname}
+%if "%{_vendor}" == "debbuild"
+Group:          python
+%else
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
+Group:          System Environment/Base
+%endif
+Provides:       python3-rhn-client-tools = %{version}-%{release}
+Obsoletes:      python3-rhn-client-tools < %{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
+%if "%{_vendor}" != "debbuild"
+BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
+%endif
+
+Requires:       python3-rhnlib >= 4.2.2
+Requires:       python3-rpm
+Requires:       python3-uyuni-common-libs
+
+%if "%{_vendor}" == "debbuild"
+BuildRequires:  python3-dev
+Requires:       python3-gi
+Requires(post): python3-minimal
+Requires(preun): python3-minimal
+%endif
+
+%if %{with test} && 0%{?rhel} != 6
+# The following BuildRequires are for check only
+BuildRequires:  python3-coverage
+BuildRequires:  python3-rpm
+%endif
+
+%description -n python3-%{name}
+Python 3 specific files of %{name}.
+%endif
+
+%prep
+%setup -q
+
+%build
+make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
+
+%install
+%if 0%{?build_py2}
+make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
+        PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
+        PREFIX=%{buildroot} %{?is_deb:PLATFORM=deb}
+%endif
+%if 0%{?build_py3}
+sed -i 's|#!%{_bindir}/python|#!%{_bindir}/python3|' test/*.py
+make -f Makefile.rhn-client-tools %{?is_deb:PLATFORM=deb}
+make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
+        PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
+        PREFIX=%{buildroot} %{?is_deb:PLATFORM=deb}
+%endif
+
+mkdir -p %{buildroot}%{_localstatedir}/lib/up2date
+mkdir -pm700 %{buildroot}%{_localstatedir}/spool/up2date
+touch %{buildroot}%{_localstatedir}/spool/up2date/loginAuth.pkl
+%if 0%{?fedora} || 0%{?mageia} || 0%{?debian} >= 8 || 0%{?ubuntu} >= 1504 || 0%{?sle_version} >= 120000 || 0%{?rhel} >= 7
+mkdir -p %{buildroot}/%{_presetdir}
+%endif
+
+# remove all unsupported translations
+cd %{buildroot}
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
+
+%if "%{_vendor}" != "debbuild"
+%find_lang rhn-client-tools
+%endif
+
+rm -rf %{buildroot}%{_sysconfdir}/pam.d
+rm -rf %{buildroot}%{_sysconfdir}/security/console.apps
+
+%if 0%{?suse_version}
+%if 0%{?build_py2}
+%py_compile -O %{buildroot}/%{python_sitelib}
+%endif
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
+%endif
+
+%post
+rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
+
+%if %{with test} && 0%{?fedora}
+%check
+
+make -f Makefile.rhn-client-tools test
+%endif
+
+%if "%{_vendor}" == "debbuild"
+%files
+# No find_lang on Debian systems
+%{_datadir}/locale/
+%{_localstatedir}/lib/up2date/
+%else
+%files -f rhn-client-tools.lang
+%endif
+%defattr(-,root,root,-)
+%doc doc/AUTHORS
+%{!?_licensedir:%global license %doc}
+%license doc/LICENSE
+
+%dir %{_sysconfdir}/sysconfig/rhn
+%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
+%config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
+%config(noreplace) %{_sysconfdir}/logrotate.d/up2date
+
+# dirs
+%dir %{_localstatedir}/spool/up2date
+
+%ghost %attr(600,root,root) %{_localstatedir}/spool/up2date/loginAuth.pkl
+
+%if 0%{?build_py2}
+%files -n python2-%{name}
+%defattr(-,root,root,-)
+%dir %{python_sitelib}/up2date_client/
+%{python_sitelib}/up2date_client/__init__.*
+%{python_sitelib}/up2date_client/config.*
+%{python_sitelib}/up2date_client/up2dateUtils.*
+%{python_sitelib}/up2date_client/up2dateLog.*
+%{python_sitelib}/up2date_client/up2dateErrors.*
+%{python_sitelib}/up2date_client/rpcServer.*
+%{python_sitelib}/up2date_client/transaction.*
+%{python_sitelib}/up2date_client/pkgplatform.*
+%endif
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%defattr(-,root,root,-)
+%dir %{python3_sitelib}/up2date_client/
+%{python3_sitelib}/up2date_client/__init__.*
+%{python3_sitelib}/up2date_client/config.*
+%{python3_sitelib}/up2date_client/up2dateUtils.*
+%{python3_sitelib}/up2date_client/up2dateLog.*
+%{python3_sitelib}/up2date_client/up2dateErrors.*
+%{python3_sitelib}/up2date_client/rpcServer.*
+%{python3_sitelib}/up2date_client/transaction.*
+%{python3_sitelib}/up2date_client/pkgplatform.*
+
+%if "%{_vendor}" != "debbuild"
+%dir %{python3_sitelib}/up2date_client/__pycache__/
+%{python3_sitelib}/up2date_client/__pycache__/__init__.*
+%{python3_sitelib}/up2date_client/__pycache__/config.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateUtils.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateLog.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateErrors.*
+%{python3_sitelib}/up2date_client/__pycache__/rpcServer.*
+%{python3_sitelib}/up2date_client/__pycache__/transaction.*
+%{python3_sitelib}/up2date_client/__pycache__/pkgplatform.*
+%endif
+%endif
+
+
+%if "%{_vendor}" == "debbuild"
+
+%if 0%{?build_py2}
+%post -n python2-%{name}
+# Do late-stage bytecompilation, per debian policy
+pycompile -p python2-%{name} -V -3.0
+
+%preun -n python2-%{name}
+# Ensure all *.py[co] files are deleted, per debian policy
+pyclean -p python2-%{name}
+%endif
+
+%if 0%{?build_py3}
+%post -n python3-%{name}
+# Do late-stage bytecompilation, per debian policy
+py3compile -p python3-%{name} -V -4.0
+
+%preun -n python3-%{name}
+# Ensure all *.py[co] files are deleted, per debian policy
+py3clean -p python3-%{name}
+%endif
+%endif
+
+%changelog
