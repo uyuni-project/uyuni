@@ -98,7 +98,9 @@ Spacewalk Proxy components.
 
 %package salt
 Summary:        A ZeroMQ Proxy for Salt Minions
-Requires(pre):  salt
+Requires:       python3-base
+Requires:       python3-PyYAML
+Requires:       python3-pyzmq
 
 %description salt
 A ZeroMQ Proxy for Salt Minions
@@ -175,6 +177,7 @@ fi
 %files salt
 %defattr(-,root,root)
 %{_bindir}/salt-broker
+%dir %{_sysconfdir}/salt
 %config(noreplace) %{_sysconfdir}/salt/broker
 %dir %{_sysconfdir}/salt/broker.d
 
