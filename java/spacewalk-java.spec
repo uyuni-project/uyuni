@@ -120,7 +120,6 @@ BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
-BuildRequires:  jctools
 BuildRequires:  jakarta-mail
 BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
@@ -212,7 +211,6 @@ Requires:       jakarta-mail
 Requires:       angus-mail-core
 Requires:       javapackages-tools
 Requires:       jboss-logging >= 3.6.1
-Requires:       jctools
 Requires:       jdom
 Requires:       jose4j
 Requires:       jakarta-persistence-api

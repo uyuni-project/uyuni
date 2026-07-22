@@ -126,7 +126,7 @@
   <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient prometheus-metrics-java/prometheus-metrics-exporter-common prometheus-metrics-java/prometheus-metrics-core prometheus-metrics-java/prometheus-metrics-config prometheus-metrics-java/prometheus-metrics-model prometheus-metrics-java/prometheus-metrics-exporter-servlet-jakarta prometheus-metrics-java/prometheus-metrics-exporter-httpserver prometheus-metrics-java/prometheus-metrics-exposition-textformats java-saml java-saml-core woodstox-core xmlsec stax2-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb} ${jstl}" />
 
   <!-- SUSE extra dependencies: runtime only -->
-  <property name="suse-runtime-jars" value="${commons-lang} apache-commons-text/commons-text concurrentlinkedhashmap-lru slf4j/api ${product-runtime-jars} jctools/jctools-core" />
+  <property name="suse-runtime-jars" value="${commons-lang} apache-commons-text/commons-text concurrentlinkedhashmap-lru slf4j/api ${product-runtime-jars}" />
 
   <property name="install.build.jar.dependencies"
             value="ant ant/ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${jasper-jars} ${test.build.jar.dependencies}
