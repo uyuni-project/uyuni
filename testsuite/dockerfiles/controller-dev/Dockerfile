@@ -45,10 +45,9 @@ RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.4.0"' >> ./root/.bashrc
 RUN ln -sf /usr/bin/ruby.ruby3.4 /usr/bin/ruby
 RUN ln -sf /usr/bin/gem.ruby3.4 /usr/bin/gem
 RUN ln -sf /usr/bin/irb.ruby3.4 /usr/bin/irb
-RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby3.4
-RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.4
-RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.4
-RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.4
+# On Leap 16 the ruby3.4 package already installs the unsuffixed defaults
+# (/usr/bin/{rake,bundle,rdoc,ri}) pointing to 3.4, and registers no
+# update-alternatives group, so no `update-alternatives --set` is needed.
 
 # debug
 RUN ruby -v
