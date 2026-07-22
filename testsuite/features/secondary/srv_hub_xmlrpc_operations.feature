@@ -37,6 +37,13 @@ Feature: Hub XMLRPC API operations
     When I call hub.listServerIds via XMLRPC
     Then I should see "server2" in the server IDs list
 
+  # unicast.system.list_systems calls server2's own /rpc/api directly from the
+  # uyuni-hub-xmlrpc-0 container (unlike multicast, which routes differently and
+  # doesn't hit this). That container has its own trust store, separate from the
+  # hub host's, and doesn't trust server2's certificate until this runs.
+  Scenario: Trust server2's certificate in the hub xmlrpc container before unicast test (A-08)
+    When I trust the hub CA in the hub xmlrpc container on "server"
+
   Scenario: Execute unicast system list for one peripheral via Hub API (A-08)
     When I call unicast.system.list_systems for "server2" via XMLRPC
     Then unicast response should contain systems from "server2"

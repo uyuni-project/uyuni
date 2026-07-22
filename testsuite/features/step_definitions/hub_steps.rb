@@ -690,10 +690,11 @@ end
 
 When(/^I trust the hub CA in the hub xmlrpc container on "([^"]*)"$/) do |host|
   node = get_target(host)
-  # The hub-xmlrpc container has a separate trust store from the host.
-  # server2's cert is signed by the hub CA; copy that CA into the container so
-  # the registration SSL handshake succeeds without pasting the cert manually.
-  # Copy the peripheral's CA cert into the hub-xmlrpc container trust store and rehash.
+  # The hub-xmlrpc container has a separate trust store from the host it runs on
+  # (the hub). Peripheral certs are self-signed (issuer == subject), not chained to
+  # any shared CA -- whichever peripheral cert the hub already trusts (imported into
+  # its own /etc/pki/trust/anchors/ during peripheral registration) needs to be copied
+  # into the container's trust store too, since it doesn't inherit the host's.
   # The container runs SLES and does not have update-ca-certificates; use openssl rehash.
   node.run(
     'FQDN=$(podman exec uyuni-hub-xmlrpc-0 hostname -f 2>/dev/null || true) && ' \
