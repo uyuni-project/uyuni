@@ -9,20 +9,6 @@ Feature: Hub XMLRPC API operations
   As an authorized user
   I want to use the hub XMLRPC API namespaces (plan A-07/A-08)
 
-  # The hub.multicast.system.list_systems scenarios for A-08 live in
-  # srv_hub_minion_on_peripheral.feature instead of here: verifying multicast returns
-  # real system data needs a minion bootstrapped under server2, which only exists in
-  # that feature's @hub_full_topology window. This feature stays in @hub_server_to_server
-  # and only covers the API calls that just need server2 registered (no minion).
-
-  # This runs first, before any hub XMLRPC session is established: it restarts
-  # uyuni-hub-xmlrpc-0 to pick up server2's certificate in its trust store, and that
-  # container appears to hold sessions in-memory -- restarting it after a session is
-  # already established invalidates that session for subsequent calls (unicast.system.list_systems
-  # hits server2's own /rpc/api directly from this container, unlike multicast).
-  Scenario: Trust server2's certificate in the hub xmlrpc container before unicast test (A-08)
-    When I trust the hub CA in the hub xmlrpc container on "server"
-
   Scenario: Connect to Hub XMLRPC API with auto-connect mode (A-07)
     Given I am connected to the hub XMLRPC API
 

@@ -8,9 +8,7 @@ require 'xmlrpc/client'
 # Returns an XMLRPC client for a peripheral server with SSL verification disabled for self-signed certs.
 def peripheral_xmlrpc_client(fqdn)
   protocol = $debug_mode ? 'http://' : 'https://'
-  client = XMLRPC::Client.new2("#{protocol}#{fqdn}/rpc/api", nil, DEFAULT_TIMEOUT)
-  client.instance_variable_get(:@http).verify_mode = OpenSSL::SSL::VERIFY_NONE
-  client
+  XmlrpcSslHelper.build_client("#{protocol}#{fqdn}/rpc/api", ssl_verify: false)
 end
 
 # Clicks the "Apply Changes" button on the Peripheral Sync Channels page, confirms the
@@ -84,7 +82,7 @@ end
 
 Given(/^I am connected to the hub XMLRPC API$/) do
   hub_host = get_target('server').full_hostname
-  $hub_api = NamespaceHub.new(hub_host)
+  $hub_api = NamespaceHub.new(hub_host, ssl_verify: false)
   response = $hub_api.login_with_autoconnect($current_user, $current_password)
   raise ScriptError, 'Hub login failed' if response['SessionKey'].nil?
 end
@@ -687,47 +685,6 @@ Then(/^the hub\.conf on "([^"]*)" should contain the required configuration keys
 end
 
 # Hub service verification (A-01)
-
-When(/^I trust the hub CA in the hub xmlrpc container on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  peripheral_node = get_target('server2')
-  peripheral_fqdn = peripheral_node.full_hostname
-  # The hub-xmlrpc container has its own trust store, separate from the hub host's.
-  # server2's cert is self-signed (issuer == subject) -- fetch it directly from server2
-  # (the hub's own /etc/pki/trust/anchors/ only ever contains the hub's OWN cert, never
-  # the peripheral's, confirmed via manual investigation) and copy it into the
-  # container's trust anchors. update-ca-certificates DOES exist in this container
-  # (confirmed at /usr/sbin/update-ca-certificates) -- a prior version of this step
-  # assumed otherwise and used openssl rehash instead, which only updates hash-symlinks
-  # in /etc/ssl/certs and never regenerates /etc/ssl/ca-bundle.pem, the separate
-  # concatenated bundle file the Go XMLRPC gateway's TLS client actually reads.
-  ca_content = peripheral_root_ca(peripheral_node)
-  raise ScriptError, 'Could not read root CA certificate from server2' if ca_content.empty?
-
-  node.run("cat > /tmp/peripheral-ca.pem << 'CERT_EOF'\n#{ca_content}\nCERT_EOF", runs_in_container: false)
-  node.run(
-    'podman cp /tmp/peripheral-ca.pem uyuni-hub-xmlrpc-0:/etc/pki/trust/anchors/peripheral-ca.pem && ' \
-    'podman exec uyuni-hub-xmlrpc-0 update-ca-certificates',
-    runs_in_container: false
-  )
-  log 'Restarting uyuni-hub-xmlrpc-0 and waiting for it to trust the peripheral certificate...'
-  node.run('podman restart uyuni-hub-xmlrpc-0', check_errors: false, runs_in_container: false)
-  waited = 0
-  # No -k here on purpose: this must succeed via real certificate verification, not
-  # just reachability, otherwise the wait loop can't tell trust from mere connectivity.
-  repeat_until_timeout(timeout: 300, message: "Hub XMLRPC container did not come to trust #{peripheral_fqdn}'s certificate after restart") do
-    _out, code = node.run(
-      "podman exec uyuni-hub-xmlrpc-0 curl -s -o /dev/null -w '%{http_code}' https://#{peripheral_fqdn}/rpc/api | grep -q 405",
-      check_errors: false,
-      runs_in_container: false
-    )
-    break if code.zero?
-
-    sleep 10
-    waited += 10
-    log "#{waited}s / 300s waiting for hub xmlrpc container to trust #{peripheral_fqdn}"
-  end
-end
 
 When(/^I wait until hub\.conf exists in the hub xmlrpc container on "([^"]*)"$/) do |host|
   node = get_target(host)

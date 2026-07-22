@@ -2,14 +2,17 @@
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
+require_relative '../xmlrpc_ssl_helper'
 
 # Hub namespace
 class NamespaceHub
   # Initializes the Hub XMLRPC client
   #
   # @param hub_host [String] The hostname of the Hub server
-  def initialize(hub_host)
+  # @param ssl_verify [Boolean] Whether to verify SSL certificates (default is true)
+  def initialize(hub_host, ssl_verify: true)
     @hub_host = hub_host
+    @ssl_verify = ssl_verify
     @client = nil
     @session_key = nil
     @server_ids = []
@@ -24,7 +27,7 @@ class NamespaceHub
   # @return [Hash] Login response containing SessionKey
   def login_with_autoconnect(username, password)
     protocol = $debug_mode ? 'http://' : 'https://'
-    @client = XMLRPC::Client.new2("#{protocol}#{@hub_host}/hub/rpc/api", nil, DEFAULT_TIMEOUT)
+    @client = build_xmlrpc_client("#{protocol}#{@hub_host}/hub/rpc/api")
     response = @client.call('hub.loginWithAutoconnectMode', username, password)
     @session_key = response['SessionKey']
     response
@@ -75,6 +78,16 @@ class NamespaceHub
   # @return [XMLRPC::Client]
   def direct_api_client
     protocol = $debug_mode ? 'http://' : 'https://'
-    XMLRPC::Client.new2("#{protocol}#{@hub_host}/rpc/api", nil, DEFAULT_TIMEOUT)
+    build_xmlrpc_client("#{protocol}#{@hub_host}/rpc/api")
+  end
+
+  private
+
+  # Builds an XMLRPC client for the given URL, honoring @ssl_verify.
+  #
+  # @param url [String] The XMLRPC endpoint URL.
+  # @return [XMLRPC::Client]
+  def build_xmlrpc_client(url)
+    XmlrpcSslHelper.build_client(url, ssl_verify: @ssl_verify)
   end
 end
