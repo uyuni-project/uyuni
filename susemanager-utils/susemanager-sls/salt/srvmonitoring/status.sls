@@ -20,6 +20,18 @@ migrate_tomcat_jmx_config:
         fi
     - onlyif: test -f /etc/sysconfig/tomcat/systemd/jmx.conf -a ! -f /etc/tomcat/conf.d/tomcat_jmx.conf
 
+legacy_tomcat_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+    - require:
+      - cmd: migrate_tomcat_jmx_config
+
+legacy_tomcat_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - require:
+      - cmd: migrate_tomcat_jmx_config
+
 migrate_taskomatic_jmx_config:
   cmd.run:
     - name: >-
@@ -28,6 +40,18 @@ migrate_taskomatic_jmx_config:
           cp /usr/share/susemanager/salt/srvmonitoring/taskomatic_jmx.conf /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf;
         fi
     - onlyif: test -f /etc/sysconfig/taskomatic/systemd/jmx.conf -a ! -f /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
+
+legacy_taskomatic_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
+    - require:
+      - cmd: migrate_taskomatic_jmx_config
+
+legacy_taskomatic_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - require:
+      - cmd: migrate_taskomatic_jmx_config
 
 jmx_tomcat_java_config:
   module.run:
