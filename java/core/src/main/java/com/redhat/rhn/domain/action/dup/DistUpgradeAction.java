@@ -274,8 +274,8 @@ public class DistUpgradeAction extends Action {
             List<Channel> unsubscribedChannels = channelTaskMap.get(false);
 
             Set<Channel> currentChannels = serverAction.getServer().getChannels();
-            unsubscribedChannels.forEach(currentChannels::remove);
-            currentChannels.addAll(subscribedChannels);
+            subscribedChannels.forEach(currentChannels::remove);
+            currentChannels.addAll(unsubscribedChannels);
             ServerFactory.save(serverAction.getServer());
 
             var channelsChangedEvent = new ChannelsChangedEventMessage(serverId);
