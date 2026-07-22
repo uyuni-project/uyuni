@@ -22,16 +22,19 @@ import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for AddressImpl
  */
-public class AddressImplTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class AddressImplTest extends BaseTestCase {
 
     @Test
     public void testEqualsAndHashCode() {
