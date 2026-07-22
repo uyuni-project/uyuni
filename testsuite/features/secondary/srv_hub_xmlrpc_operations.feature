@@ -15,6 +15,14 @@ Feature: Hub XMLRPC API operations
   # that feature's @hub_full_topology window. This feature stays in @hub_server_to_server
   # and only covers the API calls that just need server2 registered (no minion).
 
+  # This runs first, before any hub XMLRPC session is established: it restarts
+  # uyuni-hub-xmlrpc-0 to pick up server2's certificate in its trust store, and that
+  # container appears to hold sessions in-memory -- restarting it after a session is
+  # already established invalidates that session for subsequent calls (unicast.system.list_systems
+  # hits server2's own /rpc/api directly from this container, unlike multicast).
+  Scenario: Trust server2's certificate in the hub xmlrpc container before unicast test (A-08)
+    When I trust the hub CA in the hub xmlrpc container on "server"
+
   Scenario: Connect to Hub XMLRPC API with auto-connect mode (A-07)
     Given I am connected to the hub XMLRPC API
 
@@ -36,13 +44,6 @@ Feature: Hub XMLRPC API operations
   Scenario: List server IDs before unicast and pass-through tests (A-08)
     When I call hub.listServerIds via XMLRPC
     Then I should see "server2" in the server IDs list
-
-  # unicast.system.list_systems calls server2's own /rpc/api directly from the
-  # uyuni-hub-xmlrpc-0 container (unlike multicast, which routes differently and
-  # doesn't hit this). That container has its own trust store, separate from the
-  # hub host's, and doesn't trust server2's certificate until this runs.
-  Scenario: Trust server2's certificate in the hub xmlrpc container before unicast test (A-08)
-    When I trust the hub CA in the hub xmlrpc container on "server"
 
   Scenario: Execute unicast system list for one peripheral via Hub API (A-08)
     When I call unicast.system.list_systems for "server2" via XMLRPC
