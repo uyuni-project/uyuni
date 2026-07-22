@@ -193,6 +193,8 @@ path = [
   "java/core/src/main/resources/com/redhat/rhn/frontend/xmlrpc/exception_ranges.txt",
   "java/core/src/test/resources/com/redhat/rhn/common/conf/conf/default/bug154517.conf.rpmsave",
   "java/core/src/test/resources/com/redhat/rhn/common/util/test.file",
+  "java/core/src/test/resources/com/redhat/rhn/common/util/*.xml",
+  "java/core/src/test/resources/com/redhat/rhn/common/validator/*.xsd",
   "java/conf/cobbler/snippets/**",
   "reporting/reports/**",
   "client/rhel/spacewalk-client-tools/doc/AUTHORS",

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <definitions>
+        <definition id="oval:test:def:only-def" class="vulnerability">
+            <metadata><title>definitions-only-input</title></metadata>
+        </definition>
+    </definitions>
+</oval_definitions>
