@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <definitions>
+        <definition class="vulnerability"/>
+        <definition id="oval:test:def:1" class="vulnerability"/>
+    </definitions>
+    <tests>
+        <rpminfo_test/>
+        <rpminfo_test id="oval:test:tst:1"/>
+    </tests>
+    <objects>
+        <rpminfo_object/>
+        <rpminfo_object id="oval:test:obj:1"/>
+    </objects>
+    <states>
+        <rpminfo_state/>
+        <rpminfo_state id="oval:test:ste:1"/>
+    </states>
+</oval_definitions>
