@@ -343,7 +343,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends MockObjectTestCase 
     private Channel createChannelWithPackage(String packageName, Server server) throws Exception {
         Package pkg = PackageTest.createTestPackage(user.getOrg(), packageName);
         Channel childChannel = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
-        childChannel.getPackages().add(pkg);
+        childChannel.addPackage(pkg);
         return childChannel;
     }
 

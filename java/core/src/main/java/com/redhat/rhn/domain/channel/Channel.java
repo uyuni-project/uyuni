@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -36,6 +37,8 @@ import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -599,15 +602,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return Returns the set of erratas for this channel.
      */
     public Set<Errata> getErratas() {
-        return erratas;
-    }
-
-    /**
-     * Sets the erratas set for this channel
-     * @param erratasIn The set of erratas
-     */
-    public void setErratas(Set<Errata> erratasIn) {
-        this.erratas = erratasIn;
+        return Collections.unmodifiableSet(erratas);
     }
 
     /**
@@ -615,7 +610,107 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param errataIn The errata to add
      */
     public void addErrata(Errata errataIn) {
+        if (errataIn == null) {
+            return;
+        }
         erratas.add(errataIn);
+        errataIn.addChannelInternal(this);
+    }
+
+    /**
+     * Adds multiple erratas to the channel
+     * @param erratasIn The collection of erratas to add
+     */
+    public void addErratas(Collection<Errata> erratasIn) {
+        if (CollectionUtils.isEmpty(erratasIn)) {
+            return;
+        }
+        erratasIn.forEach(this::addErrata);
+    }
+
+    /**
+     * Removes a single errata from the channel
+     * @param errataIn The errata to remove
+     */
+    public void removeErrata(Errata errataIn) {
+        if (errataIn == null) {
+            return;
+        }
+        erratas.remove(errataIn);
+        errataIn.removeChannelInternal(this);
+    }
+
+
+    /**
+     * Removes multiple erratas from the channel
+     * @param erratasIn The collection of erratas to remove
+     */
+    public void removeErratas(Collection<Errata> erratasIn) {
+        if (CollectionUtils.isEmpty(erratasIn)) {
+            return;
+        }
+        erratasIn.forEach(this::removeErrata);
+    }
+
+    /**
+     * Clears out the errata associated with this channel.
+     */
+    public void clearErratas() {
+        removeErratas(new ArrayList<>(getErratas()));
+    }
+
+    /**
+     * Adds a single package to the channel
+     * @param packageIn The package to add
+     */
+    public void addPackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
+        packages.add(packageIn);
+        packageIn.addChannelInternal(this);
+    }
+
+    /**
+     * Adds multiple packages to the channel
+     * @param packagesIn The collection of packages to add
+     */
+    public void addPackages(Collection<Package> packagesIn) {
+        if (CollectionUtils.isEmpty(packagesIn)) {
+            return;
+        }
+        packagesIn.forEach(this::addPackage);
+    }
+
+    /**
+     * Removes a package from the packages set.
+     * @param packageIn The package to remove.
+     */
+    public void removePackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
+        packages.remove(packageIn);
+        packageIn.removeChannelInternal(this);
+    }
+
+
+    /**
+     * Removes multiple packages from the channel
+     * @param packagesIn The collection of packages to remove
+     */
+    public void removePackages(Collection<Package> packagesIn) {
+        if (CollectionUtils.isEmpty(packagesIn)) {
+            return;
+        }
+        packagesIn.forEach(this::removePackage);
+    }
+
+    /**
+     * Clears out the packaged associated with this channel.
+     */
+    public void clearPackages() {
+        removePackages(new ArrayList<>(getPackages()));
     }
 
     /**
@@ -624,7 +719,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return Returns the set of packages for this channel.
      */
     public Set<Package> getPackages() {
-        return packages;
+        return Collections.unmodifiableSet(packages);
     }
 
     /**
@@ -645,15 +740,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return ChannelFactory.getErrataCount(this);
     }
 
-
-    /**
-     * Sets the packages set for this channel
-     * @param packagesIn The set of erratas
-     */
-    public void setPackages(Set<Package> packagesIn) {
-        this.packages = packagesIn;
-    }
-
     /**
      *
      * @param sourcesIn The set of yum repo sources
@@ -668,17 +754,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Set<ContentSource> getSources() {
         return sources;
-    }
-
-    /**
-     * Removes a single package from the channel
-     * @param user the user doing the remove
-     * @param packageIn The package to remove
-     */
-    public void removePackage(Package packageIn, User user) {
-            List<Long> list = new ArrayList<>();
-            list.add(packageIn.getId());
-            ChannelManager.removePackages(this, list, user);
     }
 
     /**
