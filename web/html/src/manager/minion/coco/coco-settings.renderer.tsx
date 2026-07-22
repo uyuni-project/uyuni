@@ -8,7 +8,17 @@ export interface CocoSettingsProps {
   availableEnvironmentTypes: Record<string, string>;
 }
 
-export const renderer = (id: string, { serverId, availableEnvironmentTypes }: CocoSettingsProps) => {
+type LegacyCocoSettingsGlobals = Partial<CocoSettingsProps>;
+
+export const renderer = (id: string, props?: CocoSettingsProps) => {
+  const legacyGlobals = window as Window & LegacyCocoSettingsGlobals;
+  const serverId = props?.serverId ?? legacyGlobals.serverId;
+  const availableEnvironmentTypes = props?.availableEnvironmentTypes ?? legacyGlobals.availableEnvironmentTypes;
+
+  if (serverId === undefined || availableEnvironmentTypes === undefined) {
+    return;
+  }
+
   SpaRenderer.renderNavigationReact(
     <CoCoSettings
       serverId={serverId}
