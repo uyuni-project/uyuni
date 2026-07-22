@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="urn:not-w3c-schema">
+    <attribute name="notParsed">
+        <simpleType baseType="string"/>
+    </attribute>
+</schema>
