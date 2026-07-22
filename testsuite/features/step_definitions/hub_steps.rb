@@ -696,15 +696,18 @@ When(/^I trust the hub CA in the hub xmlrpc container on "([^"]*)"$/) do |host|
   # server2's cert is self-signed (issuer == subject) -- fetch it directly from server2
   # (the hub's own /etc/pki/trust/anchors/ only ever contains the hub's OWN cert, never
   # the peripheral's, confirmed via manual investigation) and copy it into the
-  # container's trust store. The container runs SLES and does not have
-  # update-ca-certificates; use openssl rehash.
+  # container's trust anchors. update-ca-certificates DOES exist in this container
+  # (confirmed at /usr/sbin/update-ca-certificates) -- a prior version of this step
+  # assumed otherwise and used openssl rehash instead, which only updates hash-symlinks
+  # in /etc/ssl/certs and never regenerates /etc/ssl/ca-bundle.pem, the separate
+  # concatenated bundle file the Go XMLRPC gateway's TLS client actually reads.
   ca_content = peripheral_root_ca(peripheral_node)
   raise ScriptError, 'Could not read root CA certificate from server2' if ca_content.empty?
 
   node.run("cat > /tmp/peripheral-ca.pem << 'CERT_EOF'\n#{ca_content}\nCERT_EOF", runs_in_container: false)
   node.run(
-    'podman cp /tmp/peripheral-ca.pem uyuni-hub-xmlrpc-0:/etc/ssl/certs/peripheral-ca.pem && ' \
-    'podman exec uyuni-hub-xmlrpc-0 openssl rehash /etc/ssl/certs/',
+    'podman cp /tmp/peripheral-ca.pem uyuni-hub-xmlrpc-0:/etc/pki/trust/anchors/peripheral-ca.pem && ' \
+    'podman exec uyuni-hub-xmlrpc-0 update-ca-certificates',
     runs_in_container: false
   )
   log 'Restarting uyuni-hub-xmlrpc-0 and waiting for it to trust the peripheral certificate...'
