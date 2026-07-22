@@ -43,11 +43,14 @@ end
 # Returns the PEM string, or empty string if not found.
 def peripheral_root_ca(node)
   fqdn = node.full_hostname
+  # The peripheral's self-signed root CA lives in the host's trust store, not inside
+  # its SUMA server container -- always read it from the host.
   ca, = node.run(
     "openssl x509 -in /etc/pki/trust/anchors/#{fqdn}.crt -outform PEM 2>/dev/null || " \
     'cat /etc/uyuni/ca.crt 2>/dev/null || ' \
     'cat /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT 2>/dev/null',
-    check_errors: false
+    check_errors: false,
+    runs_in_container: false
   )
   ca.strip
 end
