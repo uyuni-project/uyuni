@@ -1,1 +1,1 @@
-- Avoid autofocus warnings during PJAX navigation.
+- Guard legacy Ace editor setup when its textarea is absent.
