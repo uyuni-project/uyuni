@@ -4,14 +4,14 @@ RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/deve
 
 RUN zypper ref -f && \
     zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/16.0/ tools && \
-    zypper -n install nmap tar gzip iputils \
+    zypper -n install tar gzip iputils \
       gcc \
       make \
       wget \
       ruby3.4 \
       ruby3.4-devel \
       ruby3.4-devel-extra \
-      python-devel \
+      python313-devel \
       autoconf \
       ca-certificates-mozilla \
       automake \
@@ -26,12 +26,13 @@ RUN zypper ref -f && \
       postgresql16-devel \
       chromium \
       libgbm-devel \
-      npm \
+      nodejs-default \
+      npm-default \
       openssh-server \
       openssh-clients \
       hostname \
       iproute2 \
-      vi \
+      vim \
       libssh4 \
       libssh-devel && \
     zypper -n clean -a
