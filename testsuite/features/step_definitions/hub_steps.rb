@@ -690,31 +690,26 @@ end
 
 When(/^I trust the hub CA in the hub xmlrpc container on "([^"]*)"$/) do |host|
   node = get_target(host)
-  # The hub-xmlrpc container has a separate trust store from the host it runs on
-  # (the hub). Peripheral certs are self-signed (issuer == subject), not chained to
-  # any shared CA -- whichever peripheral cert the hub already trusts (imported into
-  # its own /etc/pki/trust/anchors/ during peripheral registration) needs to be copied
-  # into the container's trust store too, since it doesn't inherit the host's.
-  # The container runs SLES and does not have update-ca-certificates; use openssl rehash.
-  node.run(
-    'FQDN=$(podman exec uyuni-hub-xmlrpc-0 hostname -f 2>/dev/null || true) && ' \
-    'CA=$(ls /etc/pki/trust/anchors/*.crt 2>/dev/null | head -1) && ' \
-    'test -n "$CA" && ' \
-    'podman cp "$CA" uyuni-hub-xmlrpc-0:/etc/ssl/certs/peripheral-ca.pem && ' \
-    'podman exec uyuni-hub-xmlrpc-0 openssl rehash /etc/ssl/certs/ 2>/dev/null || true',
-    check_errors: false,
-    runs_in_container: false
-  )
+  peripheral_fqdn = get_target('server2').full_hostname
+  # Evidence from manual investigation: this is NOT actually a cert-trust problem.
+  # ls /etc/pki/trust/anchors/*.crt on the hub only ever contains the hub's OWN cert,
+  # never the peripheral's -- so the cert this used to copy into the container was
+  # always the wrong one. Restarting the container is still necessary (the failure
+  # doesn't clear without it), but what actually needs time is the container's
+  # outbound connectivity to the peripheral settling after restart -- a plain "is the
+  # container's own port back up" check (curl to localhost) doesn't capture that.
+  # So: restart, then retry an actual outbound call to the peripheral until it
+  # succeeds, rather than copying a cert or guessing a fixed sleep duration.
   node.run('podman restart uyuni-hub-xmlrpc-0', check_errors: false, runs_in_container: false)
-  repeat_until_timeout(timeout: 120, message: 'Hub XMLRPC container did not come back after CA trust update') do
+  repeat_until_timeout(timeout: 300, message: "Hub XMLRPC container could not reach #{peripheral_fqdn} after restart") do
     _out, code = node.run(
-      'curl -sk -o /dev/null -w "%{http_code}" https://localhost/hub/rpc/api | grep -q 405',
+      "podman exec uyuni-hub-xmlrpc-0 curl -sk -o /dev/null -w '%{http_code}' https://#{peripheral_fqdn}/rpc/api | grep -q 405",
       check_errors: false,
       runs_in_container: false
     )
     break if code.zero?
 
-    sleep 5
+    sleep 10
   end
 end
 
