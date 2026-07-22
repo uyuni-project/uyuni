@@ -4,6 +4,7 @@
 @flaky
 @scope_res
 @scope_salt
+@scope_rhlike
 @rhlike_minion
 Feature: Install a patch on the Red Hat-like minion via Salt through the UI
 
