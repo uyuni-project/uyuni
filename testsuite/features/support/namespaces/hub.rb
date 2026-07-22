@@ -58,12 +58,14 @@ class NamespaceHub
     raise SystemCallError, "Hub API logout failed: #{e.message}"
   end
 
-  # Calls unicast system.list_systems for one specific peripheral server ID
+  # Calls unicast system.list_systems for one specific peripheral server ID.
+  # Unlike multicast, unicast takes a single server ID (not a list) and returns
+  # the underlying system.list_systems response as-is, not a Successful/Failed map.
   #
   # @param server_id [Integer] The server ID to query
-  # @return [Hash] Response with Successful and Failed keys
+  # @return [Array<Hash>] The peripheral's system.list_systems response
   def unicast_system_list(server_id)
-    @client.call('unicast.system.list_systems', @session_key, [server_id])
+    @client.call('unicast.system.list_systems', @session_key, server_id)
   rescue XMLRPC::FaultException => e
     raise SystemCallError, "Hub API unicast call failed: #{e.message}"
   end
