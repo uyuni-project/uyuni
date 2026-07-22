@@ -25,6 +25,7 @@ Feature: Hub ISSv2 CLI channel export and import
     And I enter "ISS v2 Test Channel" as "Channel Name"
     And I enter "iss-v2-test-channel" as "Channel Label"
     And I select "x86_64" from "Architecture"
+    And I enter "ISS v2 Test Channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel ISS v2 Test Channel created" text
 
