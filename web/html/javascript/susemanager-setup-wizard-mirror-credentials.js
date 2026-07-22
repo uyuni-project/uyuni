@@ -8,7 +8,6 @@ var subscriptionsId;
 function initEdit(element) {
   var id = jQuery(element).data("id");
   var user = jQuery(element).data("user");
-  console.log("initEdit(): " + id);
   editId = id;
   jQuery("#edit-user").val(user);
   jQuery("#edit-password").val("");
@@ -27,7 +26,6 @@ function initDelete(element) {
 
 // Init the modal to list subscriptions
 function initSubscriptions(id) {
-  console.log("initSubscriptions(): " + id);
   subscriptionsId = id;
   showSpinner("modal-list-subscriptions-body");
   ajax(
@@ -39,7 +37,6 @@ function initSubscriptions(id) {
 
 // Hide any modal dialogs
 function hideModal() {
-  console.log("hideModal()");
   jQuery("#edit-credentials-spinner").html("");
   jQuery("#modal-edit-credentials").modal("hide");
   jQuery("#delete-credentials-spinner").html("");
@@ -61,6 +58,8 @@ function saveCredentials() {
 
   if (validated) {
     console.log("Saving credentials: " + editId);
+    var user = escapeHtml(jQuery("#edit-user").val());
+    var password = jQuery("#edit-password").val();
     var user = escapeHtml(jQuery("#edit-user").val());
     var password = jQuery("#edit-password").val();
     showSpinner("edit-credentials-spinner");
@@ -124,6 +123,16 @@ function verifyCredentials(id, refresh) {
 
 // relevant for the mirror credentials page
 jQuery(document).ready(function () {
+  // Move focus out before Bootstrap marks a closing modal as aria-hidden.
+  jQuery("#modal-edit-credentials, #modal-delete-credentials, #modal-list-subscriptions").on(
+    "hide.bs.modal",
+    function () {
+      if (this.contains(document.activeElement)) {
+        document.activeElement.blur();
+      }
+    }
+  );
+
   // Clear input fields whenever the edit modal is hidden
   jQuery("#modal-edit-credentials").on("hidden.bs.modal", function () {
     initEdit("", "");
