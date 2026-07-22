@@ -73,7 +73,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     Then I should see a "Channel Test Hub Custom Channel created" text
 
   Scenario: Configure custom channel sync to server2 with organization mapping (A-06)
-    When I configure hub to sync channel "test-hub-custom-channel" to "server2"
+    When I configure hub to sync channel "Test Hub Custom Channel" to "server2"
     And I select target organization "Test Default Organization" for channel "test-hub-custom-channel" on "server2"
     Then I should see a "Channel configuration updated" text
 

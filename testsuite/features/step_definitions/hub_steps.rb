@@ -561,7 +561,10 @@ When(/^I configure hub to sync channel "([^"]*)" to "([^"]*)"$/) do |channel, ho
   step %(I follow "#{fqdn}")
   step %(I follow "Edit channels")
   find('input.table-input-search').set(channel)
-  find(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]').click
+  # Channels with no architecture-specific children (e.g. a freshly created single-arch
+  # custom channel) render the expand icon but keep it invisible -- nothing to expand.
+  expand_icon = first(:xpath, '//tr[contains(@class, "parent-row")]//i[contains(@class, "expand-icon")]')
+  expand_icon.click if expand_icon
   check_checkbox_with_retry("//tr[contains(., '#{channel}')]//input[@type='checkbox']")
   click_apply_channels_button
 end
