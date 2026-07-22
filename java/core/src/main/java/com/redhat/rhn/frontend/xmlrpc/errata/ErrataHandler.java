@@ -1171,7 +1171,7 @@ public class ErrataHandler extends BaseHandler {
             newErrata.addKeyword(keyword);
         }
 
-        newErrata.setPackages(new HashSet<>());
+        newErrata.clearPackages();
         for (Integer pid : packageIds) {
             Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
