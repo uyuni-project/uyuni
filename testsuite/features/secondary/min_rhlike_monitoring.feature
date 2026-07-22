@@ -6,6 +6,7 @@
 
 @scope_monitoring
 @scope_res
+@scope_rhlike
 @rhlike_minion
 Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
   In order to monitor Uyuni server

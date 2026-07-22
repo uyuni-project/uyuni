@@ -14,6 +14,7 @@
 
 @skip_if_github_validation
 @scope_res
+@scope_rhlike
 @rhlike_minion
 Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operations on it
 

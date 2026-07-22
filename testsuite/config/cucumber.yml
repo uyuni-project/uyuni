@@ -29,7 +29,7 @@ reportdb: --tags @scope_reportdb
 res: --tags @scope_res
 retail: --tags @scope_retail
 retracted_patches: --tags @scope_retracted_patches
-rhlike: --tags @rhlike_minion
+rhlike: --tags @scope_rhlike
 salt_ssh: --tags @scope_salt_ssh
 salt: --tags @scope_salt
 software_channels_and_repositories: --tags @scope_software_channels_and_repositories

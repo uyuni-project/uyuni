@@ -6,6 +6,7 @@
 
 @scope_monitoring
 @scope_res
+@scope_deblike
 @deblike_minion
 Feature: Monitor MLM environment with Prometheus on a Debian-like Salt minion
   In order to monitor Uyuni server
