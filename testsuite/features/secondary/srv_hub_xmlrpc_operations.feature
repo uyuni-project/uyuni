@@ -9,21 +9,18 @@ Feature: Hub XMLRPC API operations
   As an authorized user
   I want to use the hub XMLRPC API namespaces (plan A-07/A-08)
 
+  # The hub.multicast.system.list_systems scenarios for A-08 live in
+  # srv_hub_minion_on_peripheral.feature instead of here: verifying multicast returns
+  # real system data needs a minion bootstrapped under server2, which only exists in
+  # that feature's @hub_full_topology window. This feature stays in @hub_server_to_server
+  # and only covers the API calls that just need server2 registered (no minion).
+
   Scenario: Connect to Hub XMLRPC API with auto-connect mode (A-07)
     Given I am connected to the hub XMLRPC API
 
   Scenario: List peripheral server IDs via Hub API (A-08)
     When I call hub.listServerIds via XMLRPC
     Then I should see "server2" in the server IDs list
-
-  Scenario: Execute multicast system list across all peripherals (A-08)
-    Given I am connected to the hub XMLRPC API
-    When I call hub.listServerIds via XMLRPC
-    And I call multicast.system.list_systems via XMLRPC
-    Then multicast response should have successful responses
-
-  Scenario: Verify multicast response contains systems from peripheral (A-08)
-    Then multicast response should contain systems from "server2"
 
   Scenario: Login to Hub API with manual mode returns a session key (A-07)
     When I login to hub XMLRPC API with standard mode

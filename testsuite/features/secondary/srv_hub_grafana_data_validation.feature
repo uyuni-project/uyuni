@@ -19,6 +19,12 @@
 # Cleanup: this feature disables the Grafana formula and applies highstate at the end,
 # restoring pre-suite state. Run AFTER srv_hub_grafana_dashboards.feature and BEFORE
 # srv_hub_verification_cleanup.feature.
+#
+# This feature also owns final server2 deregistration for the reporting+Grafana stretch
+# of the run set (moved here from srv_hub_reporting.feature, since srv_hub_grafana_setup.feature
+# needed server2 to stay registered through that stretch). srv_hub_verification_cleanup.feature,
+# which runs next, does its own fresh peripheral registration and would hit a duplicate-
+# registration error if server2 were still registered when it starts.
 
 @scope_hub
 @hub_full_topology
@@ -78,3 +84,7 @@ Feature: Grafana hub reporting data cross-validation and cleanup (C-04, C-05, C-
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled" is completed
     And the "grafana-server" service should be stopped on "monitoring_server"
+
+  Scenario: Cleanup - deregister server2 from hub
+    When I unregister "server2" from hub
+    Then I should not see the name of "server2"

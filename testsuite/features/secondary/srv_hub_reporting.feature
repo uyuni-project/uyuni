@@ -9,6 +9,10 @@ Feature: Hub reportdb aggregation from peripheral servers
   As an authorized user
   I want to verify that peripheral reporting data aggregates into the hub reportdb (plan C-01)
 
+  # server2 stays registered after this feature on purpose: srv_hub_grafana_setup.feature
+  # (runs next) needs it registered plus this feature's reportdb data. Final deregistration
+  # for this stretch of the run set happens in srv_hub_grafana_data_validation.feature instead.
+
   Background:
     Given I am authorized for the "Admin" section
 
@@ -37,7 +41,3 @@ Feature: Hub reportdb aggregation from peripheral servers
   Scenario: Re-run hub reporting task and verify synced_date refreshes (C-01)
     When I schedule the reporting update task on "server"
     Then the hub reportdb "system" table should have a recent synced_date
-
-  Scenario: Cleanup - deregister server2 from hub
-    When I unregister "server2" from hub
-    Then I should not see the name of "server2"

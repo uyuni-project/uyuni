@@ -13,6 +13,10 @@ Feature: Hub outage resilience for peripherals and their minions
 
   # This feature must run LAST in hub_full_topology.yml.
   # An After hook restores hub services if the hub was left stopped mid-scenario.
+  #
+  # sle_minion (referenced below) is bootstrapped by srv_hub_minion_on_peripheral.feature
+  # earlier in the run set. That feature deliberately does not delete it, since this
+  # feature is the last consumer -- final sle_minion cleanup happens here instead.
 
   Background:
     Given I am authorized for the "Admin" section
@@ -100,3 +104,8 @@ Feature: Hub outage resilience for peripherals and their minions
   Scenario: Cleanup - deregister server2 from hub (B-05)
     When I unregister "server2" from hub
     Then I should not see the name of "server2"
+
+  Scenario: Cleanup - delete sle_minion from server2 (B-05)
+    When I delete "sle_minion" system using the api
+    And I perform a full salt minion cleanup on "sle_minion"
+    Then "sle_minion" should not be registered

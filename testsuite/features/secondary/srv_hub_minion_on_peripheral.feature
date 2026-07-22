@@ -10,6 +10,14 @@ Feature: Hub full topology - minion managed via peripheral server
   As an authorized user
   I want to register a peripheral, sync channels, and manage minions through the peripheral (plan B-01..B-04)
 
+  # The two A-08 multicast scenarios below (borrowed from srv_hub_xmlrpc_operations.feature)
+  # run here, not there, because this is the only place in run_sets/hub_full_topology.yml
+  # where server2 is registered AND a real minion (sle_minion) exists at the same time.
+  #
+  # This feature intentionally does NOT delete sle_minion in its own cleanup below --
+  # srv_hub_outage_resilience.feature (runs later, must be last in the run set) reuses
+  # this same minion instance and owns its final cleanup instead.
+
   Background:
     Given I am authorized for the "Admin" section
 
@@ -44,6 +52,15 @@ Feature: Hub full topology - minion managed via peripheral server
     When I bootstrap "sle_minion" to peripheral "server2" using activation key "1-hub-test-key"
     And I wait until onboarding is completed for "sle_minion"
     Then I should see "sle_minion" registered on "server2"
+
+  Scenario: Execute multicast system list across all peripherals (A-08)
+    Given I am connected to the hub XMLRPC API
+    When I call hub.listServerIds via XMLRPC
+    And I call multicast.system.list_systems via XMLRPC
+    Then multicast response should have successful responses
+
+  Scenario: Verify multicast response contains systems from peripheral (A-08)
+    Then multicast response should contain systems from "server2"
 
   Scenario: Verify sle_minion is not listed on the hub directly (B-03)
     Then I should not see "sle_minion" registered on hub
@@ -116,11 +133,6 @@ Feature: Hub full topology - minion managed via peripheral server
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-
-  Scenario: Cleanup - delete sle_minion from server2
-    When I delete "sle_minion" system using the api
-    And I perform a full salt minion cleanup on "sle_minion"
-    Then "sle_minion" should not be registered
 
   Scenario: Cleanup - remove synced channels from server2
     When I remove synced channels from "server2"

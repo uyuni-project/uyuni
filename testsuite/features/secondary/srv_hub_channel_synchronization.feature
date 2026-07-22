@@ -39,7 +39,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
     When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "server2"
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1271703
-    # Then I should see a "Channels synced correctly to peripheral!" text
+    Then I should see a "Channels synced correctly to peripheral!" text
 
   Scenario: Trigger channel sync from hub to server2 (A-06)
     Given I am authorized for the "Admin" section on "server2"
