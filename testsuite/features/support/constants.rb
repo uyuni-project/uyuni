@@ -672,7 +672,6 @@ PKGARCH_BY_CLIENT = {
   'deblike_minion' => 'amd64',
   'sles12sp5_minion' => 'x86_64',
   'sles12sp5_sshminion' => 'x86_64',
-  'sle15_sshminion' => 'x86_64',
   'sles15sp3_minion' => 'x86_64',
   'sles15sp3_sshminion' => 'x86_64',
   'sles15sp4_minion' => 'x86_64',
