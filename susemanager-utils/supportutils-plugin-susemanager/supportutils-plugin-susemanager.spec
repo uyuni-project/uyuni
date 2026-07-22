@@ -29,7 +29,9 @@ Source:         %{name}-%{version}.tar.gz
 Requires:       supportutils
 Requires:       susemanager
 Requires:       perl(XML::Simple)
-Supplements:    (spacewalk-common and supportutils)
+# We need to use packageand() to keep compatibility
+# with old RPM versions, like in SLE12
+Supplements:    packageand(spacewalk-common:supportutils)
 BuildArch:      noarch
 
 %description

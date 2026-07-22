@@ -28,8 +28,10 @@ URL:            https://github.com/uyuni-project/uyuni
 Source:         %{name}-%{version}.tar.gz
 BuildRequires:  supportutils
 Requires:       supportutils
-Supplements:    (salt-minion and supportutils)
-Supplements:    (spacewalk-check and supportutils)
+# We need to use packageand() to keep compatibility
+# with old RPM versions, like in SLE12
+Supplements:    packageand(salt-minion:supportutils)
+Supplements:    packageand(spacewalk-check:supportutils)
 BuildArch:      noarch
 %if ! 0%{?suse_version}
 ExclusiveArch:  do_not_build
