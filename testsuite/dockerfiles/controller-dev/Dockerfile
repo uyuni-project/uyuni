@@ -1,16 +1,16 @@
-FROM docker.io/opensuse/leap:15.6@sha256:b084d6e29d975ce9123fd52bd201ac020628797f2772e9171ef76f33cc92d591
+FROM docker.io/opensuse/leap:16.0@sha256:f239b4819f4dd322d99509f1b5b14f2107bf23857f9ccd3c14333f0928a2bcc6
 # Ruby 3 devel repos
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
+RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/16.0/ ruby_devel
 
 RUN zypper ref -f && \
-    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.6/ tools && \
+    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/16.0/ tools && \
     zypper -n install nmap tar gzip iputils \
       gcc \
       make \
       wget \
-      ruby3.3 \
-      ruby3.3-devel \
+      ruby3.4 \
+      ruby3.4-devel \
+      ruby3.4-devel-extra \
       python-devel \
       autoconf \
       ca-certificates-mozilla \
@@ -23,7 +23,7 @@ RUN zypper ref -f && \
       zlib-devel \
       libxslt-devel \
       mozilla-nss-tools \
-      postgresql14-devel \
+      postgresql16-devel \
       chromium \
       libgbm-devel \
       npm \
@@ -39,15 +39,15 @@ COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
 
 ### Ruby 3 changes ###
-RUN export GEM_PATH="/usr/lib64/ruby/gems/3.3.0"
-RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.3.0"' >> ./root/.bashrc
-RUN ln -sf /usr/bin/ruby.ruby3.3 /usr/bin/ruby
-RUN ln -sf /usr/bin/gem.ruby3.3 /usr/bin/gem
-RUN ln -sf /usr/bin/irb.ruby3.3 /usr/bin/irb
-RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby3.3
-RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.3
-RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.3
-RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
+RUN export GEM_PATH="/usr/lib64/ruby/gems/3.4.0"
+RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.4.0"' >> ./root/.bashrc
+RUN ln -sf /usr/bin/ruby.ruby3.4 /usr/bin/ruby
+RUN ln -sf /usr/bin/gem.ruby3.4 /usr/bin/gem
+RUN ln -sf /usr/bin/irb.ruby3.4 /usr/bin/irb
+RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby3.4
+RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.4
+RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.4
+RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.4
 
 # debug
 RUN ruby -v
@@ -63,5 +63,5 @@ RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
 ENV PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright
 
 ARG GEMFILE_BRANCH=master
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/${GEMFILE_BRANCH}/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/${GEMFILE_BRANCH}/testsuite/Gemfile -o Gemfile && bundle.ruby3.4 install --verbose && rm Gemfile
 RUN gem list
