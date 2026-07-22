@@ -68,6 +68,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I enter "Test Hub Custom Channel" as "Channel Name"
     And I enter "test-hub-custom-channel" as "Channel Label"
     And I select "x86_64" from "Architecture"
+    And I enter "Test Hub Custom Channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Test Hub Custom Channel created" text
 
