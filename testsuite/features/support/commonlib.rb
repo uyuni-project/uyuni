@@ -624,20 +624,20 @@ def get_system_name(host)
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle15sp6_terminal'
+  when 'sles15sp6_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle15sp6terminal-/)
+        word.match?(/example.sles15sp6terminal-/)
       end
-    system_name = 'sle15sp6terminal.example.org' if system_name.nil?
-  when 'sle15sp7_terminal'
+    system_name = 'sles15sp6terminal.example.org' if system_name.nil?
+  when 'sles15sp7_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle15sp7terminal-/)
+        word.match?(/example.sles15sp7terminal-/)
       end
-    system_name = 'sle15sp7terminal.example.org' if system_name.nil?
+    system_name = 'sles15sp7terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)
@@ -1111,12 +1111,12 @@ end
 # environment variable when the primary one is unavailable.
 #
 # @param host_key [String] The key in ENV_VAR_BY_HOST (e.g., 'sle_minion')
-# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set (e.g., 'SLE15SP7_MINION')
+# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set (e.g., 'SLES15SP7_MINION')
 # @return [String] The environment variable name that is set, or the fallback if the primary is not set
 #
 # @example
-#   env_var = get_env_var_with_fallback('sle_minion', 'SLE15SP7_MINION')
-#   # Returns 'MINION' if ENV['MINION'] is set, otherwise 'SLE15SP7_MINION'
+#   env_var = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
+#   # Returns 'MINION' if ENV['MINION'] is set, otherwise 'SLES15SP7_MINION'
 #
 # @raise [KeyError] If host_key does not exist in ENV_VAR_BY_HOST
 #

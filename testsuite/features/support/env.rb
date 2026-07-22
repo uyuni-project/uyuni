@@ -47,8 +47,8 @@ $context = {}
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
-$sle15sp6_terminal_mac = ENV.fetch('SLE15SP6_TERMINAL_MAC', nil)
-$sle15sp7_terminal_mac = ENV.fetch('SLE15SP7_TERMINAL_MAC', nil)
+$sles15sp6_terminal_mac = ENV.fetch('SLES15SP6_TERMINAL_MAC', nil)
+$sles15sp7_terminal_mac = ENV.fetch('SLES15SP7_TERMINAL_MAC', nil)
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -427,11 +427,11 @@ Before('@run_if_proxy_transactional_or_slmicro62_minion') do
 end
 
 Before('@run_if_proxy_not_transactional_or_sles15sp7_minion') do
-  skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sle15sp7_minion'])
+  skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sles15sp7_minion'])
 end
 
 Before('@sle_minion') do
-  env_var_name = get_env_var_with_fallback('sle_minion', 'SLE15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -446,17 +446,17 @@ Before('@deblike_minion') do
 end
 
 Before('@pxeboot_minion') do
-  mac_address = $pxeboot_mac || $sle15sp7_terminal_mac
+  mac_address = $pxeboot_mac || $sles15sp7_terminal_mac
   skip_this_scenario unless mac_address
 end
 
 Before('@sshminion') do
-  env_var_name = get_env_var_with_fallback('sshminion', 'SLE15SP7_MINION')
+  env_var_name = get_env_var_with_fallback('sshminion', 'SLES15SP7_MINION')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
 Before('@build_host') do
-  env_var_name = get_env_var_with_fallback('build_host', 'SLE15SP7_BUILDHOST')
+  env_var_name = get_env_var_with_fallback('build_host', 'SLES15SP7_BUILDHOST')
   skip_this_scenario unless ENV.key?(env_var_name)
 end
 
@@ -596,60 +596,60 @@ Before('@debian13_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_sshminion']
 end
 
-Before('@sle12sp5_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_minion']
+Before('@sles12sp5_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles12sp5_minion']
 end
 
-Before('@sle12sp5_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_sshminion']
+Before('@sles12sp5_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles12sp5_sshminion']
 end
 
-Before('@sle15sp3_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_minion']
+Before('@sles15sp3_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp3_minion']
 end
 
-Before('@sle15sp3_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3_sshminion']
+Before('@sles15sp3_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp3_sshminion']
 end
 
-Before('@sle15sp4_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_minion']
+Before('@sles15sp4_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp4_minion']
 end
 
-Before('@sle15sp4_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_sshminion']
+Before('@sles15sp4_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp4_sshminion']
 end
 
-Before('@sle15sp5_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_minion']
+Before('@sles15sp5_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp5_minion']
 end
 
-Before('@sle15sp5_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_sshminion']
+Before('@sles15sp5_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp5_sshminion']
 end
 
-Before('@sle15sp6_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_minion']
+Before('@sles15sp6_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp6_minion']
 end
 
-Before('@sle15sp6_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_sshminion']
+Before('@sles15sp6_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp6_sshminion']
 end
 
-Before('@sle15sp7_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_minion']
+Before('@sles15sp7_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp7_minion']
 end
 
-Before('@sle15sp7_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_sshminion']
+Before('@sles15sp7_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp7_sshminion']
 end
 
-Before('@sle160_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle160_minion']
+Before('@sles160_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles160_minion']
 end
 
-Before('@sle160_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle160_sshminion']
+Before('@sles160_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles160_sshminion']
 end
 
 Before('@opensuse156arm_minion') do
@@ -668,12 +668,12 @@ Before('@opensuse160arm_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse160arm_sshminion']
 end
 
-Before('@sle15sp5s390_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_minion']
+Before('@sles15sp5s390_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp5s390_minion']
 end
 
-Before('@sle15sp5s390_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_sshminion']
+Before('@sles15sp5s390_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp5s390_sshminion']
 end
 
 Before('@salt_migration_minion') do
@@ -740,24 +740,24 @@ Before('@slmicro62_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro62_sshminion']
 end
 
-Before('@sle15sp6_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_buildhost']
+Before('@sles15sp6_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp6_buildhost']
 end
 
-Before('@sle15sp7_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_buildhost']
+Before('@sles15sp7_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp7_buildhost']
 end
 
 Before('@monitoring_server') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['monitoring_server']
 end
 
-Before('@sle15sp6_terminal') do
-  skip_this_scenario unless $sle15sp6_terminal_mac
+Before('@sles15sp6_terminal') do
+  skip_this_scenario unless $sles15sp6_terminal_mac
 end
 
-Before('@sle15sp7_terminal') do
-  skip_this_scenario unless $sle15sp6_terminal_mac
+Before('@sles15sp7_terminal') do
+  skip_this_scenario unless $sles15sp6_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|

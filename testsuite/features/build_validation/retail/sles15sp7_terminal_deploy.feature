@@ -3,12 +3,12 @@
 #
 # This feature depends on:
 #   features/build_validation/retail/proxy_container_branch_network.feature
-#   features/build_validation/retail/sle15sp7_buildhost_build_kiwi_image.feature
-#   features/build_validation/retail/sle15sp7_terminal_prepare_group_saltboot.feature
+#   features/build_validation/retail/sles15sp7_buildhost_build_kiwi_image.feature
+#   features/build_validation/retail/sles15sp7_terminal_prepare_group_saltboot.feature
 
 @proxy
 @private_net
-@sle15sp7_terminal
+@sles15sp7_terminal
 Feature: PXE boot a SLES 15 SP7 retail terminal
   In order to use SUSE Manager for Retail solution
   As the system administrator
@@ -18,12 +18,12 @@ Feature: PXE boot a SLES 15 SP7 retail terminal
     Given I am authorized for the "Admin" section
 
   Scenario: PXE boot the SLES 15 SP7 retail terminal
-    When I reboot the Retail terminal "sle15sp7_terminal" through the interface "eth1"
-    And I wait at most 180 seconds until Salt master sees "sle15sp7_terminal" as "unaccepted"
-    And I accept "sle15sp7_terminal" key in the Salt master
+    When I reboot the Retail terminal "sles15sp7_terminal" through the interface "eth1"
+    And I wait at most 180 seconds until Salt master sees "sles15sp7_terminal" as "unaccepted"
+    And I accept "sles15sp7_terminal" key in the Salt master
     And I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "sle15sp7_terminal", refreshing the page
-    And I follow this "sle15sp7_terminal" link
+    And I wait until I see the name of "sles15sp7_terminal", refreshing the page
+    And I follow this "sles15sp7_terminal" link
     And I follow "Events"
     And I follow "History"
     And I wait until I see "added system entitlement" text, refreshing the page
@@ -32,11 +32,11 @@ Feature: PXE boot a SLES 15 SP7 retail terminal
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP7-Pool" is checked, refreshing the page
     And I wait until event "Package List Refresh" is completed
-    Then "sle15sp7_terminal" should have been reformatted
+    Then "sles15sp7_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 15 SP7 retail terminal to branch server
     Given I am authorized for the "Admin" section
-    When I navigate to the Systems overview page of this "sle15sp7_terminal"
+    When I navigate to the Systems overview page of this "sles15sp7_terminal"
     And I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "proxy.example.org" text
