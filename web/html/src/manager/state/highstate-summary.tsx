@@ -40,11 +40,25 @@ export default function HighstateSummary({ minionId }) {
   };
 
   useEffect(() => {
+    let isCurrentRequest = true;
+
     setIsLoading(true);
     Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`)
       .then((data) => data.map(toDisplayValues))
-      .then(setSummary)
-      .then(() => setIsLoading(false));
+      .then((data) => {
+        if (isCurrentRequest) {
+          setSummary(data);
+        }
+      })
+      .then(() => {
+        if (isCurrentRequest) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [minionId]);
 
   if (isLoading) {

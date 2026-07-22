@@ -20,6 +20,8 @@ type State = {
 };
 
 class FormulaCatalog extends Component<Props, State> {
+  private isComponentMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,12 +32,21 @@ class FormulaCatalog extends Component<Props, State> {
 
   refreshServerData = () => {
     Network.get("/rhn/manager/api/formula-catalog/data").then((data) => {
+      if (!this.isComponentMounted) {
+        return;
+      }
+
       this.setState({ serverData: data });
     });
   };
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
+    this.isComponentMounted = true;
     this.refreshServerData();
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
   }
 
   sortByText = (aRaw = "", bRaw = "", columnKey, sortDirection) => {
@@ -61,6 +72,7 @@ class FormulaCatalog extends Component<Props, State> {
               {
                 link: (str) => (
                   <a
+                    key="salt-formulas-link"
                     href="https://docs.saltproject.io/en/latest/topics/development/conventions/formulas.html"
                     target="_blank"
                     rel="noopener noreferrer"
