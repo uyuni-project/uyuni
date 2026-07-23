@@ -43,7 +43,7 @@ const renderFilterEntry = (filter, projectId) => {
   } else if (filter.state === statesEnum.enum.DETACHED.key) {
     filterClassName = `text-danger ${styles.dettached}`;
   } else {
-    filterClassName = `${styles.wrapper}`;
+    filterClassName = ``;
   }
 
   return (
