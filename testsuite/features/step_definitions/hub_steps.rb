@@ -800,6 +800,19 @@ end
 
 # Hub reporting (C-01)
 
+# Peripheral admin sessions default to 25 items per page (the "core" phase only raises this
+# to 100 for the primary server's admin/testing users), so a schedule/task link further down
+# an alphabetical list can land on a page Capybara never sees. Reuse on any host/scenario that
+# hits a paginated admin list on a peripheral server.
+When(/^I set the admin page size to "([^"]*)" on "([^"]*)"$/) do |size, host|
+  using_server(host) do
+    step %(I follow the left menu "Home > My Preferences")
+    step %(I select "#{size}" from "pagesize")
+    step %(I click on "Save Preferences")
+    raise ScriptError, "Failed to save page size preference on #{host}" unless page.has_content?('Preferences modified', wait: DEFAULT_TIMEOUT)
+  end
+end
+
 When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
   if host == 'server'
     step %(I follow the left menu "Admin > Task Schedules")

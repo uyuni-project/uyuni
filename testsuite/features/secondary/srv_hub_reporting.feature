@@ -22,6 +22,7 @@ Feature: Hub reportdb aggregation from peripheral servers
 
   Scenario: Trigger reporting update on server2 peripheral (C-01)
     Given I am authorized for the "Admin" section on "server2"
+    And I set the admin page size to "100" on "server2"
     When I schedule the reporting update task on "server2"
     Then I should see a "FINISHED" text
 
