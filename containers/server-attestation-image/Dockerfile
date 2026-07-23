@@ -15,9 +15,17 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         uyuni-coco-attestation-core \
         uyuni-coco-attestation-module-secureboot \
         ${ARCH_SPECIFIC_MODULES} \
-        javassist ognl procps && \
+        javassist ognl procps zip unzip && \
+    #Remove maven and version from jars to prevent scanners from reporting false positives: RPMs is the source of truth
+    for jar in $(find /usr/share/java/ -name "*.jar" -type f ! -type l); do \
+        zip -d "$jar" "META-INF/maven/*" || true; \
+        unzip -p "$jar" META-INF/MANIFEST.MF | \
+            sed -E '/^(Implementation-Version|Bundle-Version|Specification-Version):/d' > /tmp/MANIFEST.MF && \
+        zip -u "$jar" /tmp/MANIFEST.MF && \
+        rm -f /tmp/MANIFEST.MF; \
+    done && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper libzypp container-suseconnect && \
+    rpm -e zypper libzypp container-suseconnect zip unzip && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ARG PRODUCT=Uyuni
