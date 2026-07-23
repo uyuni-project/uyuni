@@ -27,7 +27,6 @@ from spacewalk.server import rhnSQL
 
 from io import BytesIO
 
-
 DEFAULT_LOGFILE = "./taskotop.log"
 
 parser = argparse.ArgumentParser(
@@ -207,7 +206,8 @@ class CursesDisplayBuilder:
             value = value[0:-1]
         log_debug(
             # pylint: disable-next=consider-using-f-string
-            "y=%d x=%d value '%s'  value length %d" % (ypos, addxpos, value, len(value))
+            "y=%d x=%d value '%s'  value length %d"
+            % (ypos, addxpos, value, len(value))
         )
         if len(value) > 0:
             screen.addstr(ypos, addxpos, value)
@@ -305,8 +305,7 @@ class CursesDisplayColumn:
 
 def get_tasko_runs_newer_than_age(maximum_age):
     """Returns data about recent Taskomatic task runs from the database."""
-    task_query = rhnSQL.prepare(
-        """
+    task_query = rhnSQL.prepare("""
         SELECT
             task.name AS name,
             run.id AS id,
@@ -324,8 +323,7 @@ def get_tasko_runs_newer_than_age(maximum_age):
                     AND (run.end_time IS NULL OR run.end_time > :timelimit)
 
             ORDER BY end_time DESC NULLS FIRST, start_time ASC
-    """
-    )
+    """)
     # trim those older than maximum_age
     task_query.execute(
         timelimit=datetime.datetime.now() - datetime.timedelta(seconds=maximum_age)
@@ -344,8 +342,7 @@ def get_tasko_runs_newer_than_age(maximum_age):
 
 def get_tasko_runs_latest_each_task():
     """Returns data about latest of each Taskomatic task runs from the database."""
-    task_query = rhnSQL.prepare(
-        """
+    task_query = rhnSQL.prepare("""
         SELECT
             task.name AS name,
             run.id AS id,
@@ -365,8 +362,7 @@ def get_tasko_runs_latest_each_task():
                 JOIN rhnTaskoTask task ON task.id = template.task_id
 
             ORDER BY end_time DESC NULLS FIRST, start_time ASC
-    """
-    )
+    """)
 
     task_query.execute()
 
@@ -393,9 +389,7 @@ def get_channel_names(ids):
             FROM rhnChannel
             WHERE id IN ({0})
             ORDER BY label
-    """.format(
-            ",".join(ids)
-        )
+    """.format(",".join(ids))
     )
     query.execute()
 
@@ -404,14 +398,12 @@ def get_channel_names(ids):
 
 def get_current_repodata_channel_names():
     """Gets the channel names of currenlty running repodata tasks from the database."""
-    query = rhnSQL.prepare(
-        """
+    query = rhnSQL.prepare("""
         SELECT DISTINCT channel_label
             FROM rhnRepoRegenQueue
             WHERE next_action IS NULL
             ORDER BY channel_label
-    """
-    )
+    """)
     query.execute()
 
     return [row[0] for row in query.fetchall()]
@@ -663,7 +655,7 @@ def format_elapsed_time(rowdata, data_key, width):
     if rowdata["end_time"]:
         end = rowdata["end_time"]
 
-    td = end.replace(tzinfo=None) - rowdata["start_time"].replace(tzinfo=None)
+    td = end.astimezone() - rowdata["start_time"].astimezone()
     seconds = int(
         (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
     )
@@ -676,7 +668,7 @@ def format_elapsed_time(rowdata, data_key, width):
 # pylint: disable-next=unused-argument
 def format_datetime(rowdata, data_key, width):
     if rowdata[data_key]:
-        return rowdata[data_key].strftime("%Y-%m-%d %H:%M:%S")
+        return rowdata[data_key].astimezone().strftime("%Y-%m-%d %H:%M:%S")
     return ""
 
 
@@ -865,7 +857,8 @@ if args.verbose > 0:
     if dirname != "" and not os.path.isdir(os.path.dirname(args.logfile)):
         system_exit(
             # pylint: disable-next=consider-using-f-string
-            1, "ERROR: Directory %s in specified logfile doesn't exist" % dirname
+            1,
+            "ERROR: Directory %s in specified logfile doesn't exist" % dirname,
         )
     try:
         # pylint: disable-next=unspecified-encoding

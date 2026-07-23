@@ -101,6 +101,10 @@ if [ -f $SSL_KEY ] ; then
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
 fi
 
+if test -n "$TZ"; then
+    postgres_reconfig "log_timezone" "$TZ"
+fi
+
 mkdir -p /var/lib/pgsql/data/postgresql.conf.d
 postgres_reconfig "include_dir" "'postgresql.conf.d'"
 
