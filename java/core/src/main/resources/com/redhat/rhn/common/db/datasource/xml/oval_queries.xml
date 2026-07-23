@@ -14,7 +14,7 @@
                 (vulnerablePkg.fix_version).release AS fix_release,
                 (vulnerablePkg.fix_version).type AS fix_type,
                 vulnerablePkg.fix_version IS NULL
-                  OR vulnerablePkg.fix_version > pe.evr AS affected
+                  OR vulnerablePkg.fix_version &gt; pe.evr AS affected
             FROM rhnCVE cve
             JOIN suseovalplatformvulnerable platVulnerable
               ON platVulnerable.cve_id = cve.id
@@ -69,5 +69,82 @@
               AND osProduct.version = :os_product_version;
         </query>
     </write-mode>
+
+    <mode name="list_systems_affected_packages">
+        <query params="cve_name">
+            SELECT DISTINCT ON (s.id, pn.name)
+                   s.id AS system_id,
+                   s.name AS system_name,
+                   pn.name AS package_name,
+                   pe.type AS package_type,
+                   evr_t_as_vre_simple(vulnerablePkg.fix_version) AS patched_version,
+                   pe.epoch AS installed_epoch,
+                   pe.version AS installed_version,
+                   pe.release AS installed_release,
+                   cve.name AS cve,
+                   CASE
+                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr &lt; vulnerablePkg.fix_version THEN 'VULNERABLE'
+                       ELSE 'PATCHED'
+                   END AS patch_status
+            FROM rhnCVE cve
+            JOIN suseOVALPlatformVulnerable platVulnerable
+              ON platVulnerable.cve_id = cve.id
+                AND cve.name = :cve_name
+            JOIN suseOVALPlatform platform
+              ON platform.id = platVulnerable.platform_id
+            JOIN rhnServer s
+              ON s.cpe = platform.cpe
+            JOIN suseOVALVulnerablePackage vulnerablePkg
+              ON vulnerablePkg.plat_vuln_id = platVulnerable.id
+            JOIN rhnPackageName pn
+              ON pn.name = vulnerablePkg.name
+            JOIN rhnServerPackage sp
+              ON sp.server_id = s.id
+                AND sp.name_id = pn.id
+            JOIN rhnPackageEVR pe
+              ON pe.id = sp.evr_id
+            ORDER BY s.id, pn.name, (CASE WHEN vulnerablePkg.fix_version IS NOT NULL AND pe.evr &gt;= vulnerablePkg.fix_version THEN 1 ELSE 2 END);
+        </query>
+    </mode>
+
+    <mode name="list_systems_affected_packages_all_cves">
+        <query>
+            SELECT * FROM (
+                SELECT DISTINCT ON (cve.name, s.id, pn.name)
+                       s.id AS system_id,
+                       s.name AS system_name,
+                       pn.name AS package_name,
+                       pe.type AS package_type,
+                       evr_t_as_vre_simple(vulnerablePkg.fix_version) AS patched_version,
+                       pe.epoch AS installed_epoch,
+                       pe.version AS installed_version,
+                       pe.release AS installed_release,
+                       cve.name AS cve,
+                       CASE
+                           WHEN vulnerablePkg.fix_version IS NULL OR pe.evr &lt; vulnerablePkg.fix_version THEN 'VULNERABLE'
+                           ELSE 'PATCHED'
+                       END AS patch_status
+                FROM rhnCVE cve
+                JOIN suseOVALPlatformVulnerable platVulnerable
+                  ON platVulnerable.cve_id = cve.id
+                JOIN suseOVALPlatform platform
+                  ON platform.id = platVulnerable.platform_id
+                JOIN rhnServer s
+                  ON s.cpe = platform.cpe
+                JOIN suseOVALVulnerablePackage vulnerablePkg
+                  ON vulnerablePkg.plat_vuln_id = platVulnerable.id
+                JOIN rhnPackageName pn
+                  ON pn.name = vulnerablePkg.name
+                JOIN rhnServerPackage sp
+                  ON sp.server_id = s.id
+                    AND sp.name_id = pn.id
+                JOIN rhnPackageEVR pe
+                  ON pe.id = sp.evr_id
+                ORDER BY cve.name, s.id, pn.name, (CASE WHEN vulnerablePkg.fix_version IS NOT NULL AND pe.evr &gt;= vulnerablePkg.fix_version THEN 1 ELSE 2 END)
+            ) AS distinct_packages
+            WHERE patch_status = 'VULNERABLE'
+            ORDER BY cve, system_id;
+        </query>
+    </mode>
 
 </datasource_modes>

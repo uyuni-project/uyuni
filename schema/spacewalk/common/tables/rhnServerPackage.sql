@@ -35,7 +35,10 @@ CREATE TABLE rhnServerPackage
 
 CREATE UNIQUE INDEX rhn_sp_snep_uq
     ON rhnServerPackage (server_id, name_id, evr_id, package_arch_id)
-    
+    ;
+
+CREATE INDEX rhn_sp_nid_sid_idx
+    ON rhnServerPackage (name_id, server_id)
     ;
 
 CREATE SEQUENCE rhn_server_package_id_seq;

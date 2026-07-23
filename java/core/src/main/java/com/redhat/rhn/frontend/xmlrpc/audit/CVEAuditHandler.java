@@ -15,10 +15,12 @@
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
+import com.redhat.rhn.manager.audit.CVEAffectedPackageItem;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
@@ -26,10 +28,14 @@ import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.oval.OVALCachingFactory;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CVESearchHandler
@@ -219,5 +225,94 @@ public class CVEAuditHandler extends BaseHandler {
         catch (UnknownCVEIdentifierException e) {
             throw new UnknownCVEIdentifierFaultException();
         }
+    }
+
+    /**
+     * List visible systems with their corresponding affected packages regarding a given CVE identifier
+     *
+     * @param loggedInUser  The current user
+     * @param cveIdentifier the CVE number to search for
+     *
+     * @apidoc.doc List visible systems with their corresponding affected packages regarding a given CVE identifier
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "cveIdentifier")
+     * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     * @return the list of affected systems
+     */
+    @ReadOnly
+    public List<CVEAffectedServer> listAffectedSystems(User loggedInUser, String cveIdentifier) {
+        List<CVEAffectedPackageItem> affectedPackageItems =
+                OVALCachingFactory.listSystemsAffectedPackages(cveIdentifier);
+
+        return groupAffectedPackagesBySystemAndCollect(affectedPackageItems);
+    }
+
+
+    /**
+     * List known CVEs along the visible systems affected by the CVE with their corresponding vulnerable packages
+     *
+     * @param loggedInUser  The current user
+     *
+     * @apidoc.doc List known CVEs along the visible systems affected by the CVE with their corresponding
+     * vulnerable packages
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     * @return the list of affected systems
+     */
+    @ReadOnly
+    public Map<String, List<CVEAffectedServer>> listAffectedSystemsByCve(User loggedInUser) {
+        List<CVEAffectedPackageItem> affectedPackageItems =
+                OVALCachingFactory.listSystemsAffectedPackages();
+
+        Map<String, List<CVEAffectedServer>> result = new LinkedHashMap<>();
+        String currentCve = null;
+        List<CVEAffectedPackageItem> cveItems = new ArrayList<>();
+
+        for (CVEAffectedPackageItem item : affectedPackageItems) {
+            if (currentCve != null && !currentCve.equals(item.getCve())) {
+                result.put(currentCve, groupAffectedPackagesBySystemAndCollect(cveItems));
+                cveItems = new ArrayList<>();
+            }
+            currentCve = item.getCve();
+            cveItems.add(item);
+        }
+        if (currentCve != null) {
+            result.put(currentCve, groupAffectedPackagesBySystemAndCollect(cveItems));
+        }
+
+        return result;
+    }
+
+    private static List<CVEAffectedServer> groupAffectedPackagesBySystemAndCollect(
+            List<CVEAffectedPackageItem> affectedPackageItems) {
+        List<CVEAffectedServer> result = new ArrayList<>();
+        Long currentSystemId = null;
+        String currentSystemName = null;
+        List<CVEAffectedPackage> packages = new ArrayList<>();
+
+        for (CVEAffectedPackageItem item : affectedPackageItems) {
+            if (currentSystemId != null && !currentSystemId.equals(item.getSystemId())) {
+                result.add(new CVEAffectedServer(currentSystemId, currentSystemName, packages));
+                packages = new ArrayList<>();
+            }
+            currentSystemId = item.getSystemId();
+            currentSystemName = item.getSystemName();
+            packages.add(toAffectedPackage(item));
+        }
+        if (currentSystemId != null) {
+            result.add(new CVEAffectedServer(currentSystemId, currentSystemName, packages));
+        }
+
+        return result;
+    }
+
+    private static CVEAffectedPackage toAffectedPackage(CVEAffectedPackageItem packageItem) {
+        String packageName = packageItem.getPackageName();
+        PackageType packageType = packageItem.getPackageType();
+        String installedVersion = packageItem.getInstalledPackageEvr().toUniversalEvrString();
+        String patchedVersion = packageItem.getPatchedVersion();
+        CVEAffectedPackage.Status status = CVEAffectedPackage.Status.valueOf(packageItem.getPatchStatus());
+
+        return new CVEAffectedPackage(packageName, installedVersion, patchedVersion, packageType, status);
     }
 }
