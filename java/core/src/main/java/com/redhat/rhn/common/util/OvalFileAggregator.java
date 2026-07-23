@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -28,10 +29,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -59,11 +65,26 @@ public final class OvalFileAggregator {
 
     private static final Logger LOGGER = LogManager.getLogger(OvalFileAggregator.class);
 
-    private static final String XMLNS_NS = "http://www.w3.org/2000/xmlns/";
+    private static final String XMLNS = XMLConstants.XMLNS_ATTRIBUTE;
 
-    private static final String XSI_NS = "http://www.w3.org/2000/10/XMLSchema-instance";
+    private static final String XMLNS_NS = XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
 
-    private static final String OVAL_COMMON_NS = "removeme";
+    private static final String XSI_NS = XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
+
+    private static final String OVAL_DEFINITION_NS = "http://oval.mitre.org/XMLSchema/oval-definitions-5";
+
+    private static final String OVAL_COMMON_NS = "http://oval.mitre.org/XMLSchema/oval-common-5";
+
+    private static final Set<LocationMapping> SCHEMA_LOCATION_MAPPING = Set.of(
+        new LocationMapping(
+            "http://oval.mitre.org/XMLSchema/oval-definitions-5#",
+            "-definitions-schema.xsd"
+        ),
+        new LocationMapping(
+            "http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#",
+            "-system-characteristics-schema.xsd"
+        )
+    );
 
     private final DocumentBuilderFactory documentBuilderFactory;
 
@@ -157,7 +178,6 @@ public final class OvalFileAggregator {
             return "";
         }
 
-        String output;
         try (StringWriter writer = new StringWriter()) {
             var transformer = TransformerFactory.newDefaultInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -174,14 +194,11 @@ public final class OvalFileAggregator {
             }
 
             transformer.transform(new DOMSource(aggregate), new StreamResult(writer));
-            output = writer.toString();
+            return writer.toString();
         }
         catch (TransformerException ex) {
             throw new IOException("Unable to convert aggregate document to xml", ex);
         }
-
-        output = output.replace(" xmlns:oval=\"removeme\"", "");
-        return output.replace(" xmlns:redhat=\"removeme\"", "");
     }
 
     private void buildDocument() {
@@ -202,6 +219,9 @@ public final class OvalFileAggregator {
         root.appendChild(testsElement);
         root.appendChild(objectsElement);
         root.appendChild(statesElement);
+
+        // Computing the schemaLocation attribute
+        root.setAttributeNS(XSI_NS, "xsi:schemaLocation", computeSchemaLocation(root));
     }
 
     private boolean isEmpty() {
@@ -244,44 +264,26 @@ public final class OvalFileAggregator {
     }
 
     private void reset(Date timestampDate) {
-        Element root = aggregate.createElement("oval_definitions");
+        Element root = aggregate.createElementNS(OVAL_DEFINITION_NS, "oval_definitions");
+        root.setAttribute(XMLNS, OVAL_DEFINITION_NS);
+        root.setAttributeNS(XMLNS_NS, "xmlns:oval", OVAL_COMMON_NS);
         root.setAttributeNS(XMLNS_NS, "xmlns:xsi", XSI_NS);
-        root.setAttributeNS(XSI_NS, "xsi:schemaLocation",
-            "http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd " +
-                "http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd " +
-                "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd " +
-                "http://oval.mitre.org/XMLSchema/oval-definitions-5#redhat redhat-definitions-schema.xsd");
 
-        Element generator = aggregate.createElement("generator");
+        Element generator = aggregate.createElementNS(OVAL_DEFINITION_NS, "generator");
 
         Element prodName = aggregate.createElementNS(OVAL_COMMON_NS, "oval:product_name");
         prodName.setTextContent("Spacewalk");
 
         Element schemaVersion = aggregate.createElementNS(OVAL_COMMON_NS, "oval:schema_version");
-        schemaVersion.setAttributeNS(XMLNS_NS, "xmlns:oval", OVAL_COMMON_NS);
         schemaVersion.setTextContent("5.0");
 
         Element timestamp = aggregate.createElementNS(OVAL_COMMON_NS, "oval:timestamp");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(timestampDate != null ? timestampDate : new Date());
-        StringBuilder date = new StringBuilder();
-        date.append(cal.get(Calendar.YEAR));
-        date.append("-");
-        int month = cal.get(Calendar.MONTH);
-        if (month < 10) {
-            date.append("0");
-        }
-        date.append(month);
-        date.append("-");
-        int day = cal.get(Calendar.DATE);
-        if (day < 10) {
-            date.append("0");
-        }
-        date.append(day);
-        date.append("T").append(cal.get(Calendar.HOUR_OF_DAY));
-        date.append(":").append(cal.get(Calendar.MINUTE));
-        date.append(":").append(cal.get(Calendar.SECOND));
-        timestamp.setTextContent(date.toString());
+        Instant instant = timestampDate != null ? timestampDate.toInstant() : Instant.now();
+        timestamp.setTextContent(
+            LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+                .withNano(0)
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        );
 
         // Creating the DOM tree
         generator.appendChild(prodName);
@@ -318,6 +320,39 @@ public final class OvalFileAggregator {
         }
     }
 
+    private static String computeSchemaLocation(Element root) {
+        Set<String> activeNamespaces = new HashSet<>();
+        collectNamespaces(root, activeNamespaces);
+
+        StringBuilder schemaLocationBuilder = new StringBuilder();
+        schemaLocationBuilder.append("http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd");
+        schemaLocationBuilder.append(" http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd");
+
+        for (String ns : activeNamespaces) {
+            SCHEMA_LOCATION_MAPPING.stream()
+                .filter(mapping -> mapping.matches(ns))
+                .findFirst()
+                .ifPresent(mapping -> schemaLocationBuilder.append(" " + ns + " " + mapping.schemaLocation(ns)));
+        }
+
+        return schemaLocationBuilder.toString();
+    }
+
+    private static void collectNamespaces(Node node, Set<String> namespaces) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+            String ns = node.getNamespaceURI();
+            if (StringUtils.isNotBlank(ns)) {
+                namespaces.add(ns);
+            }
+        }
+
+        // Recursively check all children
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            collectNamespaces(children.item(i), namespaces);
+        }
+    }
+
     private static DocumentBuilderFactory getDocumentBuilderFactory() {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -351,4 +386,15 @@ public final class OvalFileAggregator {
             .map(Element.class::cast);
     }
 
+    private record LocationMapping(String namespacePrefix, String locationSuffix) {
+
+        public boolean matches(String namespace) {
+            return namespace != null && namespace.startsWith(namespacePrefix);
+        }
+
+        public String schemaLocation(String namespace) {
+            String family = namespace.substring(namespacePrefix.length());
+            return family + locationSuffix;
+        }
+    }
 }
