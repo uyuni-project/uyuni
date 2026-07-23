@@ -555,7 +555,12 @@ public class DownloadController {
         }
         PkgInfo p = new PkgInfo(name, epoch, version, release, arch);
         // path is getPackage/<org>/<checksum>/filename
-        if (parts.size() == 9 && parts.get(5).equals("getPackage")) {
+        // hubsync routes have 10 parts (getPackage at index 6), non-hubsync have 9 (index 5)
+        if (parts.size() == 10 && parts.get(6).equals("getPackage")) {
+            p.setOrgId(parts.get(7));
+            p.setChecksum(parts.get(8));
+        }
+        else if (parts.size() == 9 && parts.get(5).equals("getPackage")) {
             p.setOrgId(parts.get(6));
             p.setChecksum(parts.get(7));
         }
