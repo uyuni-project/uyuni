@@ -35,6 +35,7 @@ const ListFilters = (props: Props) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
   const [filterToDelete, setFilterToDelete] = useState<FilterFormType | undefined>();
+  const [editingFilter, setEditingFilter] = useState<FilterFormType | undefined>();
 
   useEffect(() => {
     if (props.flashMessage) {
@@ -156,6 +157,24 @@ const ListFilters = (props: Props) => {
     </div>,
   ];
 
+  useEffect(() => {
+    if (openFilterId) {
+      const filter = displayedFilters.find((f) => f.id === openFilterId);
+
+      if (filter) {
+        setEditingFilter(filter);
+      }
+    }
+  }, [openFilterId, displayedFilters]);
+
+  const clearOpenFilterUrl = () => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("openFilterId");
+
+    window.history.replaceState({}, "", `${url.pathname}${url.search}`);
+  };
+
   return (
     <TopPanel
       title={t("Content Lifecycle Filters")}
@@ -210,16 +229,11 @@ const ListFilters = (props: Props) => {
           cell={(row) => (
             <div className="btn-group">
               {hasEditingPermissions && (
-                <FilterEdit
-                  id={`edit-filter-button-${row.id}`}
-                  initialFilterForm={row}
-                  icon="fa-pencil"
-                  buttonTitle={t("Edit Filter")}
+                <ModalButton
                   className="btn-default btn-sm"
-                  onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
-                  openFilterId={openFilterId}
-                  projectLabel={projectLabel}
-                  editing
+                  icon="fa-pencil"
+                  title={t("Edit Filter")}
+                  onClick={() => setEditingFilter(row)}
                 />
               )}
 
@@ -263,6 +277,22 @@ const ListFilters = (props: Props) => {
         }
         onConfirm={deleteSelectedRows}
       />
+
+      {editingFilter && (
+        <FilterEdit
+          id="edit-filter-modal"
+          initialFilterForm={editingFilter}
+          editing
+          autoOpen
+          hideButton
+          projectLabel={projectLabel}
+          onClose={() => {
+            setEditingFilter(undefined);
+            clearOpenFilterUrl();
+          }}
+          onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+        />
+      )}
     </TopPanel>
   );
 };

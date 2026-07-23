@@ -56,6 +56,9 @@ type FilterEditProps = {
   openFilterId?: number;
   projectLabel?: string;
   editing?: boolean;
+  autoOpen?: boolean;
+  onClose?: () => void;
+  hideButton?: boolean;
 };
 
 const redirectToProject = (projectLabel: string) => {
@@ -68,13 +71,24 @@ const FilterEdit = (props: FilterEditProps) => {
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
+  // Determine if delete is allowed - disable if filter is in use
+  const isFilterInUse = !!(item.projects && item.projects.length > 0);
 
   const itemId = item.id?.toString() ?? undefined;
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
+    if (props.autoOpen) {
+      showDialog(modalNameId);
+      setOpen(true);
+      setItem(props.initialFilterForm);
+      return;
+    }
+
     const openWithInitial = props.initialFilterForm.id && props.initialFilterForm.id === props.openFilterId;
+
     const openCreateWithParams = props.openFilterId === -1 && !props.editing;
+
     if (openWithInitial || openCreateWithParams) {
       showDialog(modalNameId);
       setOpen(true);
@@ -84,7 +98,7 @@ const FilterEdit = (props: FilterEditProps) => {
 
   const onSave = () => {
     if (!formValidInClient) {
-      showErrorToastr(t("Check the required fields below"), { autoHide: false });
+      showErrorToastr(t("Check the required fields below"), { autoHide: false, containerId: "filter-modal-errors" });
     } else {
       if (props.editing) {
         onAction(mapFilterFormToRequest(item, props.projectLabel), "update", itemId)
@@ -123,18 +137,20 @@ const FilterEdit = (props: FilterEditProps) => {
 
   return (
     <Fragment>
-      <ModalButton
-        id={`${props.id}-modal-link`}
-        icon={props.icon}
-        text={props.buttonText}
-        title={props.buttonTitle}
-        target={modalNameId}
-        className={props.className}
-        onClick={() => {
-          setOpen(true);
-          setItem(props.initialFilterForm);
-        }}
-      />
+      {!props.hideButton && (
+        <ModalButton
+          id={`${props.id}-modal-link`}
+          icon={props.icon}
+          text={props.buttonText}
+          title={props.buttonTitle}
+          target={modalNameId}
+          className={props.className}
+          onClick={() => {
+            setOpen(true);
+            setItem(props.initialFilterForm);
+          }}
+        />
+      )}
       <Dialog
         id={modalNameId}
         title={modalTitle}
@@ -152,7 +168,10 @@ const FilterEdit = (props: FilterEditProps) => {
             editing={props.editing}
           />
         }
-        onClosePopUp={() => setOpen(false)}
+        onClosePopUp={() => {
+          setOpen(false);
+          props.onClose?.();
+        }}
         buttons={
           <div className="w-100">
             {props.editing && (
@@ -160,7 +179,12 @@ const FilterEdit = (props: FilterEditProps) => {
                 id={`${props.id}-modal-delete-button`}
                 className="btn-danger pull-left"
                 text={t("Delete")}
-                disabled={isLoading}
+                disabled={isLoading || isFilterInUse}
+                title={
+                  isFilterInUse
+                    ? t("This filter cannot be deleted because it is currently in use by one or more projects")
+                    : undefined
+                }
                 handler={() => {
                   onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
                     .then((updatedListOfFilters) => {

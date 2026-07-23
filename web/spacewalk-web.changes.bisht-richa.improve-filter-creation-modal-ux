@@ -1,0 +1,3 @@
+- Improved filter creation workflow by moving mode selection
+  before form fields.
+- Implemented a reusable Toggle Button Group UI component.

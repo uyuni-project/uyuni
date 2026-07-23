@@ -52,9 +52,9 @@ export function Radio({ inline = false, openOption = false, required = false, di
 
         const radioClass = inline ? "radio-inline" : "radio";
         return (
-          <span className={styles.radio}>
+          <div className={radioClass}>
             {props.items.map(({ label, value, title, disabled }) => (
-              <label className={radioClass} key={`${props.name}_${value}`} title={title}>
+              <label key={`${props.name}_${value}`} title={title}>
                 <ControlledInput
                   type="radio"
                   name={props.name}
@@ -71,8 +71,8 @@ export function Radio({ inline = false, openOption = false, required = false, di
             ))}
 
             {openOption && (
-              <div className={`radio ${styles["open_option_wrapper"]}`}>
-                <label className={`radio-inline ${styles.open_option_wrapper_align_wrapper}`}>
+              <div className={`${styles["open_option_wrapper"]}`}>
+                <label className={`${styles.open_option_wrapper_align_wrapper}`}>
                   <ControlledInput
                     className={styles.open_option_wrapper_align_content}
                     type="radio"
@@ -92,7 +92,7 @@ export function Radio({ inline = false, openOption = false, required = false, di
                 />
               </div>
             )}
-          </span>
+          </div>
         );
       }}
     </InputBase>
