@@ -1,0 +1,2 @@
+- Wait for the database during before running init scripts
+  (bsc#1263823)
