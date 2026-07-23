@@ -50,8 +50,8 @@ mkdir -p %{buildroot}%{_bindir}
 cp -R scripts/* %{buildroot}%{_bindir}
 
 %files
-%{python3_sitelib}/mgr-libmod
-%{python3_sitelib}/mgr-libmod-%{version}*-info
+%{python3_sitelib}/mgrlibmod
+%{python3_sitelib}/mgrlibmod-%{version}*-info
 %{_bindir}/mgr-libmod
 %license LICENSE
 
