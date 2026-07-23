@@ -26,6 +26,7 @@ License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRequires:  ca-certificates
 BuildRequires:  python3
 BuildRequires:  make
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -98,7 +99,9 @@ Spacewalk Proxy components.
 
 %package salt
 Summary:        A ZeroMQ Proxy for Salt Minions
-Requires(pre):  salt
+Requires:       python3-base
+Requires:       python3-PyYAML
+Requires:       python3-pyzmq
 
 %description salt
 A ZeroMQ Proxy for Salt Minions
@@ -175,6 +178,7 @@ fi
 %files salt
 %defattr(-,root,root)
 %{_bindir}/salt-broker
+%dir %{_sysconfdir}/salt
 %config(noreplace) %{_sysconfdir}/salt/broker
 %dir %{_sysconfdir}/salt/broker.d
 
