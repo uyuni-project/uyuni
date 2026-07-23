@@ -257,10 +257,6 @@
 
         <!-- should be removed -->
         <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-        </dependency>
-        <dependency>
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
         </dependency>
