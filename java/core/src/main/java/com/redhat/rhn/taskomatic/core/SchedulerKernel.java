@@ -42,6 +42,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.utils.Key;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
@@ -108,6 +109,10 @@ public class SchedulerKernel {
         catch (SchedulerException e) {
             log.error("Failed to initialize Quartz scheduler", e);
             throw new InstantiationException("this.scheduler failed");
+        }
+        catch (IOException ex) {
+            log.error("Failed to initialize the TaskoXmlRpcServer", ex);
+            throw new IllegalStateException("Failed to initialize the TaskoXmlRpcServer", ex);
         }
     }
 

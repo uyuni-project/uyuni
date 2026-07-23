@@ -144,7 +144,6 @@ BuildRequires:  prometheus-metrics-java-exposition-textformats
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0
-BuildRequires:  simple-core
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -231,7 +230,6 @@ Requires:       prometheus-metrics-java-exposition-textformats
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 1.0.0
 Requires:       tomcat11-servlet-6_1-api
-Requires:       simple-core
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -384,7 +382,6 @@ Requires:       jsch
 Requires:       log4j
 Requires:       log4j-jcl
 Requires:       quartz
-Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
