@@ -34,6 +34,7 @@ License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRequires:  ca-certificates
 BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  spacewalk-backend >= 1.7.24
