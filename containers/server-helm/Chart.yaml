@@ -7,3 +7,15 @@ type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg
 version: 5.2.9
+keywords:
+  - linux
+  - configuration-management
+  - infrastructure-management
+  - salt
+annotations:
+  artifacthub.io/license: MIT
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/uyuni-project/uyuni
+    - name: support
+      url: https://github.com/uyuni-project/uyuni/issues
