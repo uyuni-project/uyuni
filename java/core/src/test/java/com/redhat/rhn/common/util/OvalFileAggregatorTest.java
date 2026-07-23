@@ -66,28 +66,29 @@ class OvalFileAggregatorTest {
     }
 
     @Test
-    @DisplayName("Remove temporary namespaces while keeping schema namespace")
-    void removeTemporaryNamespacesWhileKeepingSchemaNamespace() throws Exception {
+    @DisplayName("Handle namespaces correctly with proper URI declarations")
+    void handleNamespacesCorrectlyWithProperUriDeclarations() throws Exception {
         OvalFileAggregator aggregator = new OvalFileAggregator();
         aggregator.add(testFile("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
         aggregator.add(testFile("/com/redhat/rhn/common/util/oval-def-redhat-prefix.xml"));
 
         String output = aggregator.finish(false);
 
-        // The 'removeme' placeholder namespaces are an implementation detail and
-        // must not leak into the final XML.
-        assertFalse(output.contains("removeme"));
-        assertFalse(output.contains("xmlns:oval=\"removeme\""));
-        assertFalse(output.contains("xmlns:redhat=\"removeme\""));
+        // The root element should declare proper namespace URIs (not placeholder values).
+        assertTrue(output.contains("xmlns=\"http://oval.mitre.org/XMLSchema/oval-definitions-5\""));
+        assertTrue(output.contains("xmlns:oval=\"http://oval.mitre.org/XMLSchema/oval-common-5\""));
+        assertTrue(output.contains("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""));
 
-        // Prefixed element names are intentionally kept even after temporary
-        // namespace declarations are stripped.
+        // Prefixed elements are correctly serialized with their namespace URIs.
         assertTrue(output.contains("<oval:timestamp>"));
+        assertTrue(output.contains("<oval:product_name>"));
         assertTrue(output.contains("<redhat:reference"));
 
-        // The schema namespace declaration must remain for xsi:schemaLocation.
-        assertTrue(output.contains("xmlns:xsi=\"http://www.w3.org/2000/10/XMLSchema-instance\""));
+        // The schema location attribute must be present and properly computed.
         assertTrue(output.contains("xsi:schemaLocation="));
+        assertTrue(output.contains("oval-common-schema.xsd"));
+        assertTrue(output.contains("oval-definitions-schema.xsd"));
+        assertTrue(output.contains("linux-definitions-schema.xsd"));
     }
 
     @Test
@@ -265,7 +266,6 @@ class OvalFileAggregatorTest {
     @Test
     @DisplayName("Use injected date to build deterministic generator timestamp")
     void useInjectedDateForGeneratorTimestamp() throws Exception {
-        // Calendar month is zero-based; this locks current formatter behavior precisely.
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(2026, Calendar.JULY, 22, 3, 4, 5);
@@ -278,7 +278,7 @@ class OvalFileAggregatorTest {
         Document doc = parseXml(output);
 
         Element timestamp = firstElementByTagName(doc, "oval:timestamp");
-        assertEquals("2026-06-22T3:4:5", timestamp.getTextContent());
+        assertEquals("2026-07-22T03:04:05", timestamp.getTextContent());
     }
 
     @Test
