@@ -36,11 +36,13 @@ class SchemaParserTest {
         Map<String, Constraint> constraints = parser.getConstraints();
 
         assertEquals(12, constraints.size());
-        assertNotNull(parser.getConstraint("longField"));
-        assertNotNull(parser.getConstraint("stringField"));
-        assertNotNull(parser.getConstraint("compoundField"));
+        assertNotNull(parser.getConstraint("longField", LongConstraint.class));
+        assertNotNull(parser.getConstraint("stringField", StringConstraint.class));
+        assertNotNull(parser.getConstraint("compoundField", StringConstraint.class));
         // Non existing constraint
-        assertNull(parser.getConstraint("doesNotExist"));
+        assertNull(parser.getConstraint("doesNotExist", StringConstraint.class));
+        // Constraint existing but of a different type
+        assertNull(parser.getConstraint("thirdLongField", StringConstraint.class));
     }
 
     @Test
@@ -48,23 +50,23 @@ class SchemaParserTest {
     void parseLongAndStringBoundsFromSchema() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("TestObject.xsd"));
 
-        var longField = (LongConstraint) parser.getConstraint("longField");
+        var longField = parser.getConstraint("longField", LongConstraint.class);
         assertNotNull(longField);
         assertEquals(Long.valueOf(0L), longField.getMinInclusive());
         assertEquals(Long.valueOf(20L), longField.getMaxInclusive());
-        assertEquals(Boolean.FALSE, longField.getOptional());
+        assertFalse(longField.isOptional());
         assertEquals(DataConverter.getInstance().getJavaType("long"), longField.getDataType());
 
-        var thirdLongField = (LongConstraint) parser.getConstraint("thirdLongField");
+        var thirdLongField = parser.getConstraint("thirdLongField", LongConstraint.class);
         assertNotNull(thirdLongField);
         assertEquals(Long.valueOf(Long.MIN_VALUE), thirdLongField.getMinInclusive());
         assertEquals(Long.valueOf(Long.MAX_VALUE), thirdLongField.getMaxInclusive());
 
-        var stringField = (StringConstraint) parser.getConstraint("stringField");
+        var stringField = parser.getConstraint("stringField", StringConstraint.class);
         assertNotNull(stringField);
         assertEquals(Double.valueOf(0), stringField.getMinLength());
         assertEquals(Double.valueOf(20), stringField.getMaxLength());
-        assertEquals(Boolean.FALSE, stringField.getOptional());
+        assertFalse(stringField.isOptional());
         assertEquals(DataConverter.getInstance().getJavaType("string"), stringField.getDataType());
     }
 
@@ -73,15 +75,15 @@ class SchemaParserTest {
     void parseAsciiUsernameAndPosixFlags() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("TestObject.xsd"));
 
-        var asciiConstraint = (StringConstraint) parser.getConstraint("asciiString");
+        var asciiConstraint = parser.getConstraint("asciiString", StringConstraint.class);
         assertNotNull(asciiConstraint);
         assertTrue(asciiConstraint.getASCII());
 
-        var usernameConstraint = (StringConstraint) parser.getConstraint("usernameString");
+        var usernameConstraint = parser.getConstraint("usernameString", StringConstraint.class);
         assertNotNull(usernameConstraint);
         assertTrue(usernameConstraint.getUserName());
 
-        var posixConstraint = (StringConstraint) parser.getConstraint("posixString");
+        var posixConstraint = parser.getConstraint("posixString", StringConstraint.class);
         assertNotNull(posixConstraint);
         assertTrue(posixConstraint.getPosix());
     }
@@ -92,7 +94,7 @@ class SchemaParserTest {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("TestObject.xsd"));
         TestObject testObject = new TestObject();
 
-        var compoundField = (RequiredIfConstraint) parser.getConstraint("compoundField");
+        var compoundField = parser.getConstraint("compoundField", RequiredIfConstraint.class);
         testObject.setStringField("ZZZ");
         assertTrue(compoundField.isRequired(null, testObject));
         testObject.setStringField("XXX");
@@ -100,7 +102,7 @@ class SchemaParserTest {
         testObject.setStringField("NO_MATCH");
         assertFalse(compoundField.isRequired(null, testObject));
 
-        var secondStringField = (RequiredIfConstraint) parser.getConstraint("secondStringField");
+        var secondStringField = parser.getConstraint("secondStringField", RequiredIfConstraint.class);
         testObject.setStringField("");
         assertFalse(secondStringField.isRequired(null, testObject));
         testObject.setStringField("foo");
@@ -112,12 +114,12 @@ class SchemaParserTest {
     void parseOptionalAndRegexAttributes() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("SchemaParser_optional_regex.xsd"));
 
-        var regexField = (StringConstraint) parser.getConstraint("regexField");
-        assertEquals(Boolean.TRUE, regexField.getOptional());
+        var regexField = parser.getConstraint("regexField", StringConstraint.class);
+        assertTrue(regexField.isOptional());
         assertEquals("^[A-Z]{3}$", regexField.getRegEx());
 
-        var implicitOptional = (StringConstraint) parser.getConstraint("implicitOptional");
-        assertEquals(Boolean.TRUE, implicitOptional.getOptional());
+        var implicitOptional = parser.getConstraint("implicitOptional", StringConstraint.class);
+        assertTrue(implicitOptional.isOptional());
     }
 
     @Test
@@ -125,14 +127,14 @@ class SchemaParserTest {
     void parseUnsupportedBaseTypeAsParsedConstraint() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("TestObject.xsd"));
 
-        Constraint dateField = parser.getConstraint("dateField");
+        Constraint dateField = parser.getConstraint("dateField", Constraint.class);
         assertNotNull(dateField);
         assertTrue(dateField instanceof ParsedConstraint);
         assertEquals("dateField", dateField.getIdentifier());
         assertEquals(DataConverter.getInstance().getJavaType("date"), dateField.getDataType());
 
         ParsedConstraint parsedDateField = (ParsedConstraint) dateField;
-        assertEquals(Boolean.FALSE, parsedDateField.getOptional());
+        assertFalse(parsedDateField.isOptional());
     }
 
     @Test
@@ -140,22 +142,22 @@ class SchemaParserTest {
     void useDefaultMinAndMaxForLongIntDoubleAndFloatWhenBoundsAreNotDefined() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("SchemaParser_int_float_defaults.xsd"));
 
-        var longConstraint = (LongConstraint) parser.getConstraint("longDefaultsField");
+        var longConstraint = parser.getConstraint("longDefaultsField", LongConstraint.class);
         assertNotNull(longConstraint);
         assertEquals(Long.valueOf(Long.MIN_VALUE), longConstraint.getMinInclusive());
         assertEquals(Long.valueOf(Long.MAX_VALUE), longConstraint.getMaxInclusive());
 
-        var intConstraint = (LongConstraint) parser.getConstraint("intDefaultsField");
+        var intConstraint = parser.getConstraint("intDefaultsField", LongConstraint.class);
         assertNotNull(intConstraint);
         assertEquals(Long.valueOf(Integer.MIN_VALUE), intConstraint.getMinInclusive());
         assertEquals(Long.valueOf(Integer.MAX_VALUE), intConstraint.getMaxInclusive());
 
-        var doubleConstraint = (DoubleConstraint) parser.getConstraint("doubleDefaultsField");
+        var doubleConstraint = parser.getConstraint("doubleDefaultsField", DoubleConstraint.class);
         assertNotNull(doubleConstraint);
         assertEquals(Double.valueOf(Double.MIN_VALUE), doubleConstraint.getMinInclusive());
         assertEquals(Double.valueOf(Double.MAX_VALUE), doubleConstraint.getMaxInclusive());
 
-        var floatConstraint = (DoubleConstraint) parser.getConstraint("floatDefaultsField");
+        var floatConstraint = parser.getConstraint("floatDefaultsField", DoubleConstraint.class);
         assertNotNull(floatConstraint);
         assertEquals(Double.valueOf((double) Float.MIN_VALUE), floatConstraint.getMinInclusive());
         assertEquals(Double.valueOf((double) Float.MAX_VALUE), floatConstraint.getMaxInclusive());
@@ -166,14 +168,14 @@ class SchemaParserTest {
     void ignoreAttributeWithoutSimpleTypeAndParseExplicitFloatingBounds() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("SchemaParser_additional_coverage.xsd"));
 
-        assertNull(parser.getConstraint("ignoredNoSimpleType"));
+        assertNull(parser.getConstraint("ignoredNoSimpleType", Constraint.class));
 
-        var doubleBounds = (DoubleConstraint) parser.getConstraint("doubleExplicitBoundsField");
+        var doubleBounds = parser.getConstraint("doubleExplicitBoundsField", DoubleConstraint.class);
         assertNotNull(doubleBounds);
         assertEquals(Double.valueOf(-1.5), doubleBounds.getMinInclusive());
         assertEquals(Double.valueOf(42.25), doubleBounds.getMaxInclusive());
 
-        var floatBounds = (DoubleConstraint) parser.getConstraint("floatExplicitBoundsField");
+        var floatBounds = parser.getConstraint("floatExplicitBoundsField", DoubleConstraint.class);
         assertNotNull(floatBounds);
         assertEquals(Double.valueOf(1.25), floatBounds.getMinInclusive());
         assertEquals(Double.valueOf(99.5), floatBounds.getMaxInclusive());
@@ -184,13 +186,13 @@ class SchemaParserTest {
     void parseExplicitOptionalFalseAndIllegalOptionalValue() throws Exception {
         SchemaParser parser = new SchemaParser(TestUtils.findTestData("SchemaParser_additional_coverage.xsd"));
 
-        var explicitFalse = (StringConstraint) parser.getConstraint("explicitOptionalFalse");
+        var explicitFalse = parser.getConstraint("explicitOptionalFalse", StringConstraint.class);
         assertNotNull(explicitFalse);
-        assertEquals(Boolean.FALSE, explicitFalse.getOptional());
+        assertFalse(explicitFalse.isOptional());
 
-        var illegalOptionalValue = (StringConstraint) parser.getConstraint("illegalOptionalValue");
+        var illegalOptionalValue = parser.getConstraint("illegalOptionalValue", StringConstraint.class);
         assertNotNull(illegalOptionalValue);
-        assertEquals(Boolean.FALSE, illegalOptionalValue.getOptional());
+        assertFalse(illegalOptionalValue.isOptional());
     }
 
     @Test
