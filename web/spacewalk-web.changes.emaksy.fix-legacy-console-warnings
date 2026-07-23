@@ -1,0 +1,1 @@
+- Guard legacy Ace editor setup when its textarea is absent.
