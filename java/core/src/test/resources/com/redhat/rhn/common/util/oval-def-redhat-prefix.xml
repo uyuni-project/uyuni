@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<oval_definitions xmlns:redhat="removeme">
+<oval_definitions
+        xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+        xmlns:redhat="http://oval.mitre.org/XMLSchema/oval-definitions-5#redhat">
     <definitions>
         <definition id="oval:test:def:redhat-prefix" class="vulnerability">
             <metadata>
