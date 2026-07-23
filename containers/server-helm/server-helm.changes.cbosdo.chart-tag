@@ -1,0 +1,2 @@
+- Use the appVersion of the chart as the default tag for images
+  (bsc#1271902)

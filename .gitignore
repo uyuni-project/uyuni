@@ -113,4 +113,5 @@ schema/reportdb/postgres/main.sql
 schema/reportdb/postgres/tables/common/
 schema/reportdb/postgres/views/common/
 
-
+# Charts
+.debug

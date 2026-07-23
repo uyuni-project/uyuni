@@ -1,6 +1,8 @@
 # The default repository and image version if not defined otherwise
 repository: registry.opensuse.org/uyuni
-tag: latest
+# The default tag to use for images, can be overridden for each image
+# By default the tab will be the appVersion of the Chart.
+tag: 
 
 # Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 #

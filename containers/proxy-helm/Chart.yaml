@@ -7,3 +7,4 @@ type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg
 version: 5.2.9
+appVersion: 0.0.0 # Will be replaced by chart_push.sh script

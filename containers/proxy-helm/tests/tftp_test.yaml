@@ -26,7 +26,7 @@ tests:
           any: true
           content:
             name: tftpd
-            image: registry.opensuse.org/uyuni/proxy-tftpd:latest
+            image: registry.opensuse.org/uyuni/proxy-tftpd:0.0.0
             imagePullPolicy: Always
             command:
             - /usr/bin/tftp_wrapper.py
