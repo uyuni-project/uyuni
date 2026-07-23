@@ -35,7 +35,7 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/schema/spacewalk/%{name}-rpmlintrc
-BuildRequires:  %{_bindir}/pod2man
+BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
 BuildRequires:  make
 BuildRequires:  perl-macros

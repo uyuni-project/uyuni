@@ -29,7 +29,7 @@ Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-BuildRequires:  %{_bindir}/pod2man
+BuildRequires:  /usr/bin/pod2man
 BuildRequires:  make
 BuildRequires:  spacewalk-config
 BuildRequires:  systemd
