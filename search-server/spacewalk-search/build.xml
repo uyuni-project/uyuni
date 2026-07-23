@@ -116,12 +116,13 @@
         <mkdir dir="${java.lib.dir}" />
     </target>
 
-    <target name="clean">
+    <target name="clean" description="clean project">
         <delete dir="${build.dir}" />
         <delete dir="${build.instrument.dir}" />
         <delete dir="${dist.dir}" />
         <delete dir="${java.lib.dir}" />
         <delete dir="${report.dir}" />
+        <delete dir="${basedir}/buildconf/repository/suse" />
         <delete file="coverage.ec" />
         <delete file="rhn_search_daemon.log" />
     </target>
