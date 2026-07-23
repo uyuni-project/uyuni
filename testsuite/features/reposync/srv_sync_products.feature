@@ -60,6 +60,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see the "Basesystem Module 15 SP7 x86_64" selected
     And I should see the "Server Applications Module 15 SP7 x86_64" selected
     And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
+    And I should see that the "SUSE Linux Enterprise Server 15 SP7 x86_64" product is partially selected
+    And I should see that the "Basesystem Module 15 SP7 x86_64" product is partially selected
     When I select "Desktop Applications Module 15 SP7 x86_64" as a product
     And I select "Development Tools Module 15 SP7 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
