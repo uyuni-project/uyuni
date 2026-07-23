@@ -103,6 +103,8 @@ RUN set -euo pipefail; \
     ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
     ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
     ln -sf /dev/null /etc/systemd/system/console-getty.service && \
+# Remove egg-info as they lead trivy to think the package misses security fixes: force it to only use SUSE's data
+    rm -rf /usr/lib/python*/site-packages/*.egg-info && \
     zypper --non-interactive removerepo --all; \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 

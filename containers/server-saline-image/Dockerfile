@@ -34,6 +34,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     rm -f /usr/bin/distro* /usr/bin/pydoc* /usr/bin/salt-call* /usr/bin/salt-support* /usr/bin/spm* && \
     zypper --non-interactive clean --all && \
     rpm -e zypper libzypp container-suseconnect && \
+    rm -rf /usr/lib/python*/site-packages/*.egg-info && \
     find /etc -maxdepth 1 -type f -name '*-' -delete && \
     rm -rf /etc/salt /run/zypp.pid /srv/spm /usr/lib/rpm/macros.d/macros.python3 \
            /usr/share/doc /usr/share/licenses /usr/share/man && \
