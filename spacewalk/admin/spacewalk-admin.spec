@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-admin
-Version:        5.2.4
+Version:        5.3.0
 Release:        0
 Summary:        Various utility scripts and data files for %{productprettyname} installations
 License:        GPL-2.0-only
@@ -29,27 +29,26 @@ Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
+BuildRequires:  %{_bindir}/pod2man
+BuildRequires:  make
+BuildRequires:  spacewalk-config
+BuildRequires:  systemd
+BuildRequires:  uyuni-base-common
+Requires:       bash
+Requires:       cobbler
 Requires:       lsof
-Requires:       procps
-Requires:       python3
-Requires:       spacewalk-base
-Requires:       perl(MIME::Base64)
 # Required by spacewalk-hostname-rename
 Requires:       postfix
-Requires:       cobbler
-Requires:       bash
-Requires:       spacewalk-certs-tools
+Requires:       procps
+Requires:       python3
 Requires:       spacewalk-backend-tools >= 2.2.27
+Requires:       spacewalk-base
+Requires:       spacewalk-certs-tools
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
 Requires:       susemanager-schema-utility
-BuildRequires:  /usr/bin/pod2man
-BuildRequires:  make
-BuildRequires:  systemd
-BuildRequires:  spacewalk-config
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
-Requires:       susemanager-schema-utility
 Requires:       uyuni-setup-reportdb
+Requires:       perl(MIME::Base64)
+Requires(pre):  uyuni-base-common
 BuildArch:      noarch
 
 %description
@@ -96,11 +95,11 @@ fi
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
-%{_mandir}/man8/spacewalk-service.8*
-%{_mandir}/man8/rhn-sat-restart-silent.8*
-%{_mandir}/man8/rhn-config-satellite.pl.8*
-%{_mandir}/man8/rhn-deploy-ca-cert.pl.8*
-%{_mandir}/man8/rhn-install-ssl-cert.pl.8*
+%{_mandir}/man8/spacewalk-service.8%{?ext_man}
+%{_mandir}/man8/rhn-sat-restart-silent.8%{?ext_man}
+%{_mandir}/man8/rhn-config-satellite.pl.8%{?ext_man}
+%{_mandir}/man8/rhn-deploy-ca-cert.pl.8%{?ext_man}
+%{_mandir}/man8/rhn-install-ssl-cert.pl.8%{?ext_man}
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
 %{_unitdir}/spacewalk-wait-for-salt.service

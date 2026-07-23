@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-ssl-cert-check
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        5.2.2
+Version:        5.3.0
 Release:        0
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only
@@ -32,9 +32,12 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-BuildArch:      noarch
+BuildRequires:  pkgconfig
+BuildRequires:  pkgconfig(systemd)
 Obsoletes:      rhn-ssl-cert-check < %{version}
 Provides:       rhn-ssl-cert-check = %{version}
+BuildArch:      noarch
+%{?systemd_requires}
 %if 0%{?build_py3}
 Requires:       python3-cryptography
 Requires:       python3-setuptools
@@ -42,8 +45,6 @@ Requires:       python3-setuptools
 Requires:       python-cryptography
 Requires:       python-setuptools
 %endif
-BuildRequires:  pkgconfig(systemd)
-%{?systemd_requires}
 
 %description
 Runs a check once a day to see if the ssl certificates installed on this
@@ -55,7 +56,7 @@ notification
 
 %build
 %if 0%{?build_py3}
-sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' ssl-cert-check
+sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' ssl-cert-check
 %endif
 
 %install
@@ -97,7 +98,6 @@ install -m644 ssl-cert-check.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %files
-%defattr(-,root,root,-)
 %dir %{_sysconfdir}/sysconfig/rhn
 %{_unitdir}/%{name}.service
 %{_unitdir}/%{name}.timer

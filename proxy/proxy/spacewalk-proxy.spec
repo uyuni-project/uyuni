@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,19 +16,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-
-Name:           spacewalk-proxy
-Version:        5.2.4
-Release:        0
-Summary:        Spacewalk Proxy Server
-License:        GPL-2.0-only
-URL:            https://github.com/uyuni-project/uyuni
-#!CreateArchive: %{name}
-Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRequires:  python3
-BuildRequires:  make
-BuildRequires:  spacewalk-backend >= 1.7.24
+%{!?python3_sitelib: %global python3_sitelib %(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
@@ -37,6 +25,18 @@ BuildRequires:  spacewalk-backend >= 1.7.24
 %define httpdconf %{_sysconfdir}/apache2/conf.d
 %define apache_user wwwrun
 %define apache_group www
+
+Name:           spacewalk-proxy
+Version:        5.3.0
+Release:        0
+Summary:        Spacewalk Proxy Server
+License:        GPL-2.0-only
+URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRequires:  make
+BuildRequires:  python3
+BuildRequires:  spacewalk-backend >= 1.7.24
 BuildArch:      noarch
 
 %description
@@ -78,14 +78,14 @@ between an Spacewalk Proxy Server and parent Spacewalk server.
 
 %package common
 Summary:        Modules shared by Spacewalk Proxy components
-Requires(pre):  uyuni-base-common
-BuildRequires:  uyuni-base-common
 BuildRequires:  apache2
-Requires:       apache2-mod_wsgi
+BuildRequires:  uyuni-base-common
 Requires:       %{name}-broker >= %{version}
+Requires:       apache2-mod_wsgi
 Requires:       curl
 Requires:       spacewalk-backend >= 1.7.24
 Requires(pre):  policycoreutils
+Requires(pre):  uyuni-base-common
 
 %description common
 The Spacewalk Proxy Server allows package caching
@@ -107,12 +107,12 @@ A ZeroMQ Proxy for Salt Minions
 %setup -q
 
 %build
-make -f Makefile.proxy
+%make_build -f Makefile.proxy
 
 # Fixing shebang for Python 3
 for i in $(find . -type f);
 do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+    sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' $i;
 done
 
 %install
@@ -173,13 +173,11 @@ if [ -n "$1" ] ; then # anything but uninstall
 fi
 
 %files salt
-%defattr(-,root,root)
 %{_bindir}/salt-broker
 %config(noreplace) %{_sysconfdir}/salt/broker
 %dir %{_sysconfdir}/salt/broker.d
 
 %files broker
-%defattr(-,root,root)
 %dir %{destdir}
 %{destdir}/broker/__init__.py*
 %{destdir}/broker/rhnBroker.py*
@@ -194,7 +192,6 @@ fi
 %{destdir}/broker/__pycache__/*
 
 %files redirect
-%defattr(-,root,root)
 %dir %{destdir}
 %{destdir}/redirect/__init__.py*
 %{destdir}/redirect/rhnRedirect.py*
@@ -207,7 +204,6 @@ fi
 %{destdir}/redirect/__pycache__/*
 
 %files common
-%defattr(-,root,root)
 %dir %{destdir}
 %{destdir}/__init__.py*
 %{destdir}/apacheServer.py*

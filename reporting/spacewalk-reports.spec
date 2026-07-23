@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-reports
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -17,14 +17,14 @@
 #
 
 
+%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 %if 0%{?suse_version} > 1320 || 0%{?rhel} || 0%{?fedora}
 # SLE15 builds on Python 3
 %global build_py3   1
 %endif
-%define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           spacewalk-reports
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only
@@ -33,9 +33,9 @@ Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRequires:  %{_bindir}/docbook2man
 Requires:       %{pythonX}
 Requires:       spacewalk-branding
-BuildRequires:  /usr/bin/docbook2man
 BuildArch:      noarch
 
 %description
@@ -51,7 +51,7 @@ Script based reporting to retrieve data from Spacewalk server in CSV format.
 %if 0%{?build_py3}
 for i in $(find . -type f);
 do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+    sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' $i;
 done
 %endif
 
@@ -69,12 +69,11 @@ install *.8 %{buildroot}%{_mandir}/man8
 chmod -x %{buildroot}%{_mandir}/man8/spacewalk-report.8*
 
 %files
-%defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/spacewalk-report
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/reports.py*
 %{_datadir}/spacewalk/reports
-%{_mandir}/man8/spacewalk-report.8*
+%{_mandir}/man8/spacewalk-report.8%{?ext_man}
 %license COPYING
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk

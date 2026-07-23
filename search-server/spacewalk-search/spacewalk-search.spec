@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2025 SUSE LLC and contributors
+# Copyright (c) 2026 SUSE LLC and contributors
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,7 +27,7 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
-Version:        5.2.5
+Version:        5.3.0
 Release:        0
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
@@ -42,6 +42,7 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  %{oro}
+BuildRequires:  (java-devel >= %{java_version} or java-%{java_version}-openjdk-devel)
 BuildRequires:  ant
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
@@ -52,7 +53,11 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  javapackages-tools
 BuildRequires:  junit
-BuildRequires:  lucene == 2.4.1
+BuildRequires:  log4j
+BuildRequires:  lucene = 2.4.1
+BuildRequires:  mvn(javassist:javassist)
+BuildRequires:  mvn(ognl:ognl)
+BuildRequires:  mvn(org.mybatis:mybatis)
 BuildRequires:  objectweb-asm
 BuildRequires:  picocontainer
 BuildRequires:  quartz >= 2.0
@@ -60,16 +65,8 @@ BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
-BuildRequires:  (java-devel >= %{java_version} or java-%{java_version}-openjdk-devel)
-BuildRequires:  mvn(javassist:javassist)
-BuildRequires:  mvn(ognl:ognl)
-BuildRequires:  mvn(org.mybatis:mybatis)
-%if 0%{?rhel}
-BuildRequires:  systemd-rpm-macros
-%endif
 BuildRequires:  uyuni-base-common
 BuildRequires:  zip
-Requires(pre):  uyuni-base-common
 Requires:       %{oro}
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -79,30 +76,33 @@ Requires:       apache-commons-text
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       javapackages-tools
-Requires:       lucene == 2.4.1
+Requires:       log4j
+Requires:       lucene = 2.4.1
+Requires:       mvn(javassist:javassist)
+Requires:       mvn(ognl:ognl)
+Requires:       mvn(org.mybatis:mybatis)
 Requires:       objectweb-asm
 Requires:       picocontainer
 Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
-Requires:       mvn(javassist:javassist)
-Requires:       mvn(ognl:ognl)
-Requires:       mvn(org.mybatis:mybatis)
+Requires(pre):  uyuni-base-common
 Obsoletes:      rhn-search < 5.3.0
-Requires:       log4j
-BuildRequires:  log4j
 BuildArch:      noarch
+%if 0%{?rhel}
+BuildRequires:  systemd-rpm-macros
+%endif
 
 %description
 This package contains the code for the Full Text Search Server for
 Spacewalk Server.
 
 %prep
-%setup -n %{name}-%{version}
+%setup -q
 
 %install
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
+export JAVA_HOME=%{_prefix}/lib/jvm/java-%{java_version}-openjdk/
 %endif
 ant -Djar.version=%{version} install
 install -d -m 755 %{buildroot}%{_datadir}/rhn/config-defaults

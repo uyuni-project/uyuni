@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -22,7 +22,7 @@
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8 || 0%{?mageia}
 %global build_py3   1
 %global default_py3 1
-%global __python /usr/bin/python3
+%global __python %{_bindir}/python3
 %endif
 
 %if !(0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
@@ -35,23 +35,22 @@
 %global _buildshell /bin/bash
 %endif
 
-
 %{!?__python2:%global __python2 %{_bindir}/python2}
 %{!?__python3:%global __python3 %{_bindir}/python3}
 %if %{undefined python2_version}
-%global python2_version %(%{__python2} -Esc "import sys; sys.stdout.write('{0.major}.{0.minor}'.format(sys.version_info))")
+%global python2_version %(python2 -Esc "import sys; sys.stdout.write('{0.major}.{0.minor}'.format(sys.version_info))")
 %endif
 
 %if %{undefined python3_version}
-%global python3_version %(%{__python3} -Ic "import sys; sys.stdout.write(sys.version[:3])")
+%global python3_version %(python3 -Ic "import sys; sys.stdout.write(sys.version[:3])")
 %endif
 
 %if %{undefined python2_sitelib}
-%global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global python2_sitelib %(python2 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 
 %if %{undefined python3_sitelib}
-%global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+%global python3_sitelib %(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %endif
 
 %if "%{_vendor}" == "debbuild"
@@ -67,7 +66,7 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.2.6
+Version:        5.3.0
 Release:        0
 Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only
@@ -75,8 +74,23 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
+
+BuildRequires:  desktop-file-utils
+BuildRequires:  gettext
+BuildRequires:  intltool
+BuildRequires:  make
+BuildRequires:  rpm
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
+
+Conflicts:      rhn-kickstart < 5.4.3-1
+Conflicts:      rhncfg < 5.9.23-1
+Conflicts:      up2date < 5.0.0
+Conflicts:      yum-rhn-plugin < 1.6.4-1
+Provides:       rhn-client-tools = %{version}-%{release}
+Obsoletes:      rhn-client-tools < %{version}-%{release}
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          admin
 %else
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
@@ -91,9 +105,6 @@ ExclusiveArch:  do_not_build
 %if 0%{?suse_version}
 BuildRequires:  update-desktop-files
 %endif
-Provides:       rhn-client-tools = %{version}-%{release}
-Obsoletes:      rhn-client-tools < %{version}-%{release}
-Requires:       %{pythonX}-%{name} = %{version}-%{release}
 %if "%{_vendor}" != "debbuild"
 Requires:       coreutils
 Requires:       gnupg
@@ -112,24 +123,13 @@ Requires:       yum
 
 %if "%{_vendor}" == "debbuild"
 Requires:       apt
+Requires:       coreutils
 %if 0%{?ubuntu} >= 1804
 Requires:       gpg
 %else
 Requires:       gnupg
 %endif
-Requires:       coreutils
 %endif
-BuildRequires:  rpm
-
-Conflicts:      rhn-kickstart < 5.4.3-1
-Conflicts:      rhncfg < 5.9.23-1
-Conflicts:      up2date < 5.0.0
-Conflicts:      yum-rhn-plugin < 1.6.4-1
-
-BuildRequires:  desktop-file-utils
-BuildRequires:  gettext
-BuildRequires:  intltool
-BuildRequires:  make
 
 %if 0%{?fedora}
 BuildRequires:  dnf

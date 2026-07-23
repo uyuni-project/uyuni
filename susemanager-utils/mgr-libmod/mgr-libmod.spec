@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-libmod
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,7 +17,7 @@
 
 
 Name:           mgr-libmod
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        Modular dependency resolver for content lifecycle management
 License:        MIT
@@ -42,16 +42,16 @@ mgr-libmod
 %setup -q
 
 %build
-%{__python3} setup.py build
+python3 setup.py build
 
 %install
-%{__python3} setup.py install --skip-build --root %{buildroot}
+python3 setup.py install --skip-build --root %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 cp -R scripts/* %{buildroot}%{_bindir}
 
 %files
-%defattr(-,root,root)
-%{python3_sitelib}/*
+%{python3_sitelib}/mgr-libmod
+%{python3_sitelib}/mgr-libmod-%{version}*-info
 %{_bindir}/mgr-libmod
 %license LICENSE
 

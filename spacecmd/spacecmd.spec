@@ -1,7 +1,7 @@
 #
 # spec file for package spacecmd
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 # Copyright (c) 2011 Aron Parsons <aronparsons@gmail.com>
 #
@@ -21,12 +21,12 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 %if ! (0%{?fedora} || 0%{?rhel})
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %if "%{_vendor}" == "debbuild"
-%global __python /usr/bin/python3
-%global python_sitelib %(%{__python} -c "import sysconfig as s; print(s.get_paths('deb_system').get('purelib'))")
+%global __python %{_bindir}/python3
+%global python_sitelib %(python -c "import sysconfig as s; print(s.get_paths('deb_system').get('purelib'))")
 %endif
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8 || "%{_vendor}" == "debbuild"
@@ -43,15 +43,19 @@
 %endif
 
 Name:           spacecmd
-Version:        5.2.9
+Version:        5.3.0
 Release:        0
 Summary:        Command-line interface to %{productprettyname} servers
 License:        GPL-3.0-or-later
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+
+BuildRequires:  make
+Requires:       file
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <devel@lists.uyuni-project.org>
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          admin
 %else
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
@@ -60,8 +64,6 @@ Group:          Applications/System
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || "%{_vendor}" == "debbuild"
 BuildArch:      noarch
 %endif
-
-BuildRequires:  make
 %if "%{_vendor}" == "debbuild" || 0%{?rhel}
 BuildRequires:  gettext
 %endif
@@ -71,36 +73,35 @@ BuildRequires:  intltool
 
 %if 0%{?build_py3}
 BuildRequires:  python3
+Requires:       python3
+Requires:       python3-dateutil
+Requires:       python3-rpm
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
 %else
 BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 %endif
-Requires:       python3
-Requires:       python3-dateutil
-Requires:       python3-rpm
 %else
 BuildRequires:  %{python2prefix}
+Requires:       %{python2prefix}
+Requires:       %{python2prefix}-dateutil
+Requires:       %{python2prefix}-simplejson
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  %{python2prefix}-dev
 %else
 BuildRequires:  %{python2prefix}-devel
 %endif
-Requires:       %{python2prefix}-dateutil
-Requires:       %{python2prefix}-simplejson
 %if "%{_vendor}" == "debbuild"
 Requires:       python-rpm
 %else
 Requires:       rpm-python
 %endif
-Requires:       %{python2prefix}
 %if 0%{?suse_version}
 BuildRequires:  python-xml
 Requires:       python-xml
 %endif
 %endif
-Requires:       file
 
 %description
 spacecmd is a command-line interface to %{productprettyname} servers
@@ -115,7 +116,7 @@ spacecmd is a command-line interface to %{productprettyname} servers
 mkdir -p %{buildroot}%{_bindir}
 
 %if 0%{?build_py3}
-    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' ./src/bin/spacecmd
+    sed -i 's|#!%{_bindir}/python|#!%{_bindir}/python3|' ./src/bin/spacecmd
 %endif
 install -p -m0755 src/bin/spacecmd %{buildroot}%{_bindir}/
 
@@ -146,7 +147,6 @@ make -C po install PREFIX=%{buildroot}
 %find_lang spacecmd
 
 %files -f spacecmd.lang
-%defattr(-,root,root)
 %{_bindir}/spacecmd
 %{python_sitelib}/spacecmd/
 %ghost %config %{_sysconfdir}/spacecmd.conf

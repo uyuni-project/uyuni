@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -39,34 +39,34 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.2.14
+Version:        5.3.0
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
-URL:            https://github.com/uyuni-project/uyuni
 License:        Apache-2.0 AND LGPL-2.1-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
-Requires(pre):  coreutils
-Requires(posttrans):spacewalk-admin
 Requires:       susemanager-build-keys-web >= 15.4.2
+Requires(posttrans): spacewalk-admin
+Requires(pre):  coreutils
+BuildArch:      noarch
 %if 0%{?build_py3}
 BuildRequires:  %{use_python}-pytest
 BuildRequires:  %{use_python}-salt
 BuildRequires:  python3-spacewalk-certs-tools
-# Different package names for SUSE and RHEL:
-Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
 
 Requires:       %{use_python}-psycopg2
+# Different package names for SUSE and RHEL:
+Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
 %else
 BuildRequires:  python-mock
 BuildRequires:  python-pytest
 BuildRequires:  python-salt
 Requires:       python-PyYAML >= 5.1
 %endif
-BuildArch:      noarch
 
 %description
 Static Salt state files for %{productprettyname}, where generic operations are
@@ -168,7 +168,6 @@ if [[ $? == 0 ]]; then
 fi
 
 %files
-%defattr(-,root,root)
 %dir %{_datadir}/susemanager
 %{_datadir}/susemanager/salt
 %{_datadir}/susemanager/salt-ssh
@@ -188,7 +187,6 @@ fi
 %ghost %{_datadir}/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 %files -n uyuni-config-modules
-%defattr(-,root,root)
 %dir %{_datadir}/susemanager
 %{_datadir}/susemanager/salt/_modules/uyuni_config.py
 %{_datadir}/susemanager/salt/_states/uyuni_config.py

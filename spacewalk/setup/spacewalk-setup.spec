@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -38,7 +38,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        5.2.5
+Version:        5.3.0
 Release:        0
 Summary:        Initial setup tools for %{productprettyname}
 License:        GPL-2.0-only
@@ -47,19 +47,37 @@ Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
+BuildRequires:  tomcat11
+BuildRequires:  perl(ExtUtils::MakeMaker)
+Requires:       curl
+Requires:       perl-Mail-RFC822-Address
+Requires:       perl-Params-Validate
+Requires:       perl-Satcon
+Requires:       spacewalk-admin
+Requires:       spacewalk-backend-tools
+Requires:       spacewalk-base-minimal
+Requires:       spacewalk-base-minimal-config
+Requires:       spacewalk-certs-tools
+Requires:       spacewalk-java-lib >= 2.4.5
+Requires:       spacewalk-schema
+Requires:       uyuni-setup-reportdb
+Requires:       perl(DBD::Pg)
+Requires(post): cobbler
+Requires(post): tomcat11
+Conflicts:      salt-formulas-configuration
+
+Provides:       salt-formulas-configuration
 BuildArch:      noarch
 %if 0%{?fedora}
 BuildRequires:  perl-interpreter
 %else
 BuildRequires:  perl
 %endif
-BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
-BuildRequires:  tomcat11
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -69,9 +87,8 @@ Requires:       perl-interpreter
 %else
 Requires:       perl
 %endif
-Requires:       perl-Params-Validate
-Requires:       spacewalk-schema
 %if 0%{?suse_version}
+BuildRequires:  perl-libwww-perl
 Requires:       curl
 Requires:       patch
 Requires:       perl-XML-LibXML
@@ -86,41 +103,24 @@ Requires:       python3-certifi
 %else
 Requires:       python-certifi
 %endif
-BuildRequires:  perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
 %endif
-Requires(post): cobbler
-Requires:       perl-Satcon
-Requires:       spacewalk-admin
-Requires:       spacewalk-backend-tools
-Requires:       spacewalk-certs-tools
-Requires(post): tomcat11
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
 Requires:       (python-PyYAML or PyYAML)
 %endif
-Requires:       curl
-Requires:       perl(DBD::Pg)
-Requires:       perl-Mail-RFC822-Address
 %if 0%{?rhel}
 Requires:       perl-Net-LibIDN2
 %else
 Requires:       perl-Net-LibIDN
 %endif
-Requires:       spacewalk-base-minimal
-Requires:       spacewalk-base-minimal-config
-Requires:       spacewalk-java-lib >= 2.4.5
-Requires:       uyuni-setup-reportdb
 %if 0%{?rhel}
 Requires(post): libxslt-devel
 %else
 Requires(post): libxslt-tools
 %endif
-
-Provides:       salt-formulas-configuration
-Conflicts:      otherproviders(salt-formulas-configuration)
 
 %description
 A collection of post-installation scripts for managing %{productprettyname}'s initial
@@ -137,7 +137,7 @@ perl Makefile.PL INSTALLDIRS=vendor
 %if 0%{?build_py3}
 for i in $(find . -type f);
 do
-    sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
+    sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' $i;
 done
 # timestamp of Makefile must always be newer than Makefile.PL, else build will fail
 touch Makefile
@@ -190,7 +190,7 @@ install -Dd -m 0755 %{buildroot}%{_datadir}/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_datadir}/salt-formulas/metadata
 
 %post
-if [ ! -f /etc/rhn/rhn.conf -o $(stat -c %%s "/etc/rhn/rhn.conf") -eq 0 ]; then
+if [ ! -f %{_sysconfdir}/rhn/rhn.conf -o $(stat -c %%s "%{_sysconfdir}/rhn/rhn.conf") -eq 0 ]; then
     # rhn.conf does not exists or is empty, this is new installation or update of new installation
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp %{_sysconfdir}/tomcat/server.xml %{_sysconfdir}/tomcat/server.xml.$CURRENT_DATE
@@ -222,7 +222,6 @@ exit 0
 %make_build test
 
 %files
-%defattr(-,root,root,-)
 %doc Changes README answers.txt
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
 %config %{_sysconfdir}/salt/master.d/salt-ssh-logging.conf

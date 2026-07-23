@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,8 +18,6 @@
 
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
-
-#!BuildIgnore:  udev-mini libudev-mini1
 
 %define cobblerdir      %{_localstatedir}/lib/cobbler
 %define cobprofdir      %{cobblerdir}/templates
@@ -66,7 +64,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.19
+Version:        5.3.0
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -76,17 +74,12 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/java/%{name}-rpmlintrc
-BuildArch:      noarch
-ExcludeArch:    ia64
-
-BuildRequires:  javapackages-local
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  apache-commons-fileupload2-core
-BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  jcache
-BuildRequires:  ehcache >= 3.11.1
+BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
+BuildRequires:  angus-activation
+BuildRequires:  angus-mail-core
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
@@ -95,36 +88,41 @@ BuildRequires:  antlr4-java >= 4.13.0
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
 BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
-BuildRequires:  apache-commons-text
 BuildRequires:  apache-commons-logging
-BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+BuildRequires:  apache-commons-text
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  classmate
 BuildRequires:  dom4j
-BuildRequires:  jaxb-api
-BuildRequires:  jaxb-core
-BuildRequires:  jakarta-activation
-BuildRequires:  angus-activation
-BuildRequires:  jakarta-websocket
-BuildRequires:  jakarta-transactions
-BuildRequires:  jakarta-jstl
+BuildRequires:  ehcache >= 3.11.1
 BuildRequires:  hibernate-models
-BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
-BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
+BuildRequires:  jackson-annotations
+BuildRequires:  jackson-core
+BuildRequires:  jackson-databind
 BuildRequires:  jade4j
+BuildRequires:  jakarta-activation
+BuildRequires:  jakarta-jstl
+BuildRequires:  jakarta-mail
+BuildRequires:  jakarta-persistence-api
+BuildRequires:  jakarta-transactions
+BuildRequires:  jakarta-websocket
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
-BuildRequires:  jctools
-BuildRequires:  jakarta-mail
-BuildRequires:  angus-mail-core
+
+BuildRequires:  javapackages-local
 BuildRequires:  javapackages-tools
+BuildRequires:  jaxb-api
+BuildRequires:  jaxb-core
 BuildRequires:  jboss-logging >= 3.6.1
+BuildRequires:  jcache
+BuildRequires:  jctools
 BuildRequires:  jdom
 BuildRequires:  jose4j
 BuildRequires:  jsch
@@ -132,15 +130,21 @@ BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
+BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
+BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
+BuildRequires:  mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+BuildRequires:  mvn(org.hibernate.orm:hibernate-core) >= 7
+BuildRequires:  mvn(org.hibernate.orm:hibernate-jcache) >= 7
 BuildRequires:  perl
 BuildRequires:  postgresql-jdbc
-BuildRequires:  prometheus-metrics-java-core
 BuildRequires:  prometheus-metrics-java-config
-BuildRequires:  prometheus-metrics-java-model
-BuildRequires:  prometheus-metrics-java-exporter-servlet-jakarta
+BuildRequires:  prometheus-metrics-java-core
 BuildRequires:  prometheus-metrics-java-exporter-common
 BuildRequires:  prometheus-metrics-java-exporter-httpserver
+BuildRequires:  prometheus-metrics-java-exporter-servlet-jakarta
 BuildRequires:  prometheus-metrics-java-exposition-textformats
+BuildRequires:  prometheus-metrics-java-model
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0
@@ -149,88 +153,85 @@ BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
+BuildRequires:  stax2-api
 BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat11
 BuildRequires:  tomcat11-lib
+BuildRequires:  tomcat11-servlet-6_1-api
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox-core
-BuildRequires:  stax2-api
 BuildRequires:  xmlsec
-BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
-BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
-BuildRequires:  mvn(org.hibernate.orm:hibernate-c3p0) >= 7
-BuildRequires:  mvn(org.hibernate.orm:hibernate-core) >= 7
-BuildRequires:  mvn(org.hibernate.orm:hibernate-jcache) >= 7
-BuildRequires:  jackson-annotations
-BuildRequires:  jackson-core
-BuildRequires:  jackson-databind
-BuildRequires:  tomcat11-servlet-6_1-api
-%if 0%{?suse_version}
-BuildRequires:  ant-nodeps
-BuildRequires:  libxml2-tools
-%endif
-%if 0%{?rhel}
-BuildRequires:  libxml2-devel
-%endif
+#!BuildIgnore:  libudev-mini1
 
-Requires:       antlr4-java >= 4.13.0
+#!BuildIgnore:  udev-mini
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       apache-commons-fileupload2-core
-Requires:       apache-commons-fileupload2-jakarta-servlet6
-Requires:       jcache
-Requires:       ehcache >= 3.11.1
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
+Requires:       /sbin/unix2_chkpwd
+Requires:       angus-activation
+Requires:       angus-mail-core
+
+Requires:       antlr4-java >= 4.13.0
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-jakarta-servlet6
 Requires:       apache-commons-io
 Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
-Requires:       apache-commons-text
 Requires:       apache-commons-logging
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       apache-commons-text
 Requires:       c3p0 >= 0.9.1
 Requires:       classmate
 Requires:       cobbler
-Requires:       jaxb-api
-Requires:       jaxb-core
-Requires:       jakarta-activation
-Requires:       angus-activation
-Requires:       jakarta-websocket
-Requires:       jakarta-transactions
-Requires:       jakarta-jstl
+Requires:       ehcache >= 3.11.1
 Requires:       hibernate-models
 Requires:       httpcomponents-client
 Requires:       ical4j
-Requires:       mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
+Requires:       jackson-annotations
+Requires:       jackson-core
+Requires:       jackson-databind
 Requires:       jade4j
+Requires:       jakarta-activation
+Requires:       jakarta-jstl
+Requires:       jakarta-mail
+Requires:       jakarta-persistence-api
+Requires:       jakarta-transactions
+Requires:       jakarta-websocket
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
-Requires:       jakarta-mail
-Requires:       angus-mail-core
 Requires:       javapackages-tools
+Requires:       jaxb-api
+Requires:       jaxb-core
 Requires:       jboss-logging >= 3.6.1
+Requires:       jcache
 Requires:       jctools
 Requires:       jdom
 Requires:       jose4j
-Requires:       jakarta-persistence-api
 Requires:       libsolv-tools
 Requires:       log4j
 Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
-Requires:       prometheus-metrics-java-core
+Requires:       mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
+Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
+Requires:       openssl
 Requires:       prometheus-metrics-java-config
-Requires:       prometheus-metrics-java-model
+Requires:       prometheus-metrics-java-core
 Requires:       prometheus-metrics-java-exporter-common
-Requires:       prometheus-metrics-java-exporter-servlet-jakarta
 Requires:       prometheus-metrics-java-exporter-httpserver
+Requires:       prometheus-metrics-java-exporter-servlet-jakarta
 Requires:       prometheus-metrics-java-exposition-textformats
+Requires:       prometheus-metrics-java-model
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 1.0.0
-Requires:       tomcat11-servlet-6_1-api
 Requires:       simple-core
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
@@ -244,26 +245,25 @@ Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
-Requires:       tomcat11-lib
-Requires:       woodstox-core
-Requires:       xmlsec
-Requires:       /sbin/unix2_chkpwd
-Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
-Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
-Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
-Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
-Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
-Requires:       jackson-annotations
-Requires:       jackson-core
-Requires:       jackson-databind
-Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
+Requires:       tomcat11-lib
+Requires:       tomcat11-servlet-6_1-api
+Requires:       uyuni-cobbler-helper
+Requires:       woodstox-core
+Requires:       xmlsec
 Requires(pre):  salt
 Requires(pre):  tomcat11
 Requires(pre):  uyuni-base-server
-Requires:       uyuni-cobbler-helper
+BuildArch:      noarch
+%if 0%{?suse_version}
+BuildRequires:  ant-nodeps
+BuildRequires:  libxml2-tools
+%endif
+%if 0%{?rhel}
+BuildRequires:  libxml2-devel
+%endif
 
 %if 0%{?rhel}
 Recommends:     rng-tools
@@ -295,7 +295,7 @@ application and taskomatic process.
 Summary:        Jar files for Spacewalk Java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Requires:       /usr/bin/sudo
+Requires:       %{_bindir}/sudo
 
 %description lib
 This package contains the jar files for the %{productprettyname} Java web application
@@ -314,11 +314,11 @@ This package contains PostgreSQL database backend files for the %{productprettyn
 
 %if ! 0%{?omit_tests} > 0
 %package tests
+BuildRequires:  jmock < 2.0
 Summary:        Test Classes for testing spacewalk-java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 
-BuildRequires:  jmock < 2.0
 Requires:       ant-junit
 Requires:       jmock < 2.0
 
@@ -336,11 +336,11 @@ This package contains testing files of spacewalk-java.
 %endif
 
 %package apidoc-sources
+BuildRequires:  docbook_4
 Summary:        Autogenerated apidoc sources for spacewalk-java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 
-BuildRequires:  (docbook-dtds or docbook_4)
 
 %description apidoc-sources
 This package contains apidoc sources of spacewalk-java.
@@ -354,24 +354,19 @@ This package contains apidoc sources of spacewalk-java.
 %{_defaultdocdir}/%{name}/asciidoc/
 
 %package -n spacewalk-taskomatic
+BuildRequires:  systemd
+Requires:       jcache
+Conflicts:      quartz < 2.0
 Summary:        Java version of taskomatic
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+Requires:       /sbin/unix2_chkpwd
 
-BuildRequires:  systemd
-%if 0%{?rhel}
-BuildRequires:  systemd-rpm-macros
-%else
-%{?systemd_requires}
-%endif
-
-Requires:       jcache
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
-Requires:       apache-commons-text
 Requires:       apache-commons-logging
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       apache-commons-text
 Requires:       c3p0 >= 0.9.1
 Requires:       classmate
 Requires:       cobbler
@@ -383,17 +378,22 @@ Requires:       jboss-logging >= 3.6.1
 Requires:       jsch
 Requires:       log4j
 Requires:       log4j-jcl
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
 Requires:       quartz
 Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
-Requires:       /sbin/unix2_chkpwd
-Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
-Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
-Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
 
-Conflicts:      quartz < 2.0
+%if 0%{?rhel}
+BuildRequires:  systemd-rpm-macros
+%else
+%{?systemd_requires}
+%endif
+
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -426,7 +426,7 @@ find . -name 'StringResource_*.xml' |      while read i ;
     rm -f $i.xliff
 
     #check duplicate message keys in StringResource_*.xml files
-    CONTENT=$(/usr/bin/xmllint --format "$i" | /usr/bin/perl -lne 'if (/<trans-unit( id=".+?")?/) { print $1 if $X{$1}++ }' )
+    CONTENT=$(%{_bindir}/xmllint --format "$i" | %{_bindir}/perl -lne 'if (/<trans-unit( id=".+?")?/) { print $1 if $X{$1}++ }' )
     if [ -n "$CONTENT" ]; then
         echo ERROR - duplicate message keys: $CONTENT
         exit 1
@@ -441,7 +441,7 @@ sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
 PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
+export JAVA_HOME=%{_prefix}/lib/jvm/java-%{java_version}-openjdk/
 %endif
 
 # compile only java sources (no packing here)
@@ -504,7 +504,7 @@ fi
 PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
+export JAVA_HOME=%{_prefix}/lib/jvm/java-%{java_version}-openjdk/
 %endif
 
 export NO_BRP_STALE_LINK_ERROR=yes
@@ -556,7 +556,7 @@ install -m 644 conf/rhn_java_sso.conf %{buildroot}%{_datadir}/rhn/config-default
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
 %else
 %if 0%{?beta_flag}
-sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' %{buildroot}%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
 %endif
 %endif
 # Adjust languages
@@ -703,7 +703,6 @@ if [ -e /srv/susemanager/salt/salt_ssh/mgr_ssh_id ]; then
 fi
 
 %files
-%defattr(-,root,root)
 %dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)

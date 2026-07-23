@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-salt-broker:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.7
+ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE AS fat
 
 # Main packages
@@ -31,7 +31,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-salt-broker-image
-LABEL org.opencontainers.image.version=5.2.8
+LABEL org.opencontainers.image.version=5.3.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

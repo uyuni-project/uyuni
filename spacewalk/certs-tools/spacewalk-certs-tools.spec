@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-certs-tools
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -32,7 +32,7 @@
 %global __python %{_bindir}/python3
 
 Name:           spacewalk-certs-tools
-Version:        5.2.8
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} SSL Key/Cert Tool
 License:        GPL-2.0-only
@@ -112,7 +112,6 @@ ln -s rhn-sudo-ssl-tool %{buildroot}%{_bindir}/mgr-sudo-ssl-tool
 %endif
 
 %files
-%defattr(-,root,root,-)
 %dir %{rhnroot}/certs
 %if 0%{?suse_version}
 %dir /srv/www
@@ -129,8 +128,8 @@ ln -s rhn-sudo-ssl-tool %{buildroot}%{_bindir}/mgr-sudo-ssl-tool
 %{_bindir}/mgr-ssl-cert-setup
 %{_bindir}/rhn-bootstrap
 %attr(755,root,root) %{_sbindir}/mgr-package-rpm-certificate-osimage
-%doc %{_mandir}/man1/rhn-*.1*
-%doc %{_mandir}/man1/mgr-*.1*
+%{_mandir}/man1/rhn-*.1%{?ext_man}
+%{_mandir}/man1/mgr-*.1%{?ext_man}
 %doc ssl-howto-simple.txt ssl-howto.txt
 %license LICENSE
 %dir %{rhnroot}

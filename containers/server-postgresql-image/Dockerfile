@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-postgresql:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.7
+ARG BASE=registry.suse.com/bci/bci-base:16.0
 ARG PG_BASE=registry.opensuse.org/opensuse/postgres:18-contrib
 
 FROM $BASE AS builder
@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} PostgreSQL container imag
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.12
+LABEL org.opencontainers.image.version=5.3.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

@@ -1,7 +1,7 @@
 #
 # spec file for package perl-Satcon
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -20,18 +20,18 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           perl-Satcon
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-BuildArch:      noarch
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 #!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRequires:  perl(ExtUtils::MakeMaker)
+Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
+BuildArch:      noarch
 %if 0%{?suse_version}
 Requires:       policycoreutils
 %else
@@ -40,6 +40,8 @@ BuildRequires:  findutils
 BuildRequires:  make
 BuildRequires:  perl-generators
 BuildRequires:  perl-interpreter
+# Tests:
+BuildRequires:  perl(Test)
 # Run-time:
 # bytes not used at tests
 # Data::Dumper not used at tests
@@ -47,8 +49,6 @@ BuildRequires:  perl-interpreter
 # File::Path not used at tests
 # Getopt::Long not used at tests
 BuildRequires:  perl(strict)
-# Tests:
-BuildRequires:  perl(Test)
 Requires:       %{sbinpath}/restorecon
 %endif
 
@@ -60,8 +60,8 @@ This package include Satcon perl module and supporting applications.
 %setup -q
 
 %build
-%{__perl} Makefile.PL INSTALLDIRS=vendor
-make %{?_smp_mflags}
+perl Makefile.PL INSTALLDIRS=vendor
+%make_build
 
 %install
 
