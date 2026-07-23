@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
@@ -100,6 +101,11 @@ public class SaltReactor {
     // Indicate that the reactor has been stopped
     private volatile boolean isStopped = false;
 
+    // The thread that initializes the event stream connection asynchronously
+    private Thread initializerThread;
+
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+
     /**
      * Processing salt events
      * @param saltApiIn instance to talk to salt
@@ -148,7 +154,39 @@ public class SaltReactor {
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
-        connectToEventStream();
+        startEventStreamAsynchronously();
+    }
+
+    /**
+     * Set the taskomatic api instance.
+     * @param taskomaticApiIn the taskomatic api
+     */
+    public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+    }
+
+    /**
+     * Start the salt reactor connection asynchronously, waiting for Taskomatic to be responsive first.
+     */
+    private void startEventStreamAsynchronously() {
+        initializerThread = new Thread(() -> {
+            while (!isStopped && !taskomaticApi.isRunning()) {
+                LOG.warn("Waiting for Taskomatic API to become online before connecting to the Salt event bus...");
+                try {
+                    Thread.sleep(5000L);
+                }
+                catch (InterruptedException e) {
+                    LOG.error("Interrupted while waiting for Taskomatic API to start", e);
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+            if (!isStopped) {
+                LOG.warn("Taskomatic API is online. Connecting to the Salt event bus...");
+                connectToEventStream();
+            }
+        }, "salt-event-stream-initializer");
+        initializerThread.start();
     }
 
     /**
@@ -156,6 +194,9 @@ public class SaltReactor {
      */
     public void stop() {
         isStopped = true;
+        if (initializerThread != null) {
+            initializerThread.interrupt();
+        }
         if (eventStream != null) {
             eventStream.removeEventListener(listener);
             try {
