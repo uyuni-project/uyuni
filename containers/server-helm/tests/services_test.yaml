@@ -181,6 +181,21 @@ tests:
         documentSelector:
           path: metadata.name
           value: search
+      
+  - it: should add local external traffic policy for LB reportdb
+    set:
+      global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      services:
+        reportdb:
+          type: LoadBalancer
+    asserts:
+      - equal:
+          path: spec.externalTrafficPolicy
+          value: Local
+        documentSelector:
+          path: metadata.name
+          value: reportdb
 
   - it: should render services types and annotations with overridden values
     set:

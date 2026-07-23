@@ -1,0 +1,1 @@
+- Remove the postgresql TCP route (bsc#1270038)
