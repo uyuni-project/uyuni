@@ -1,17 +1,17 @@
-FROM docker.io/opensuse/leap:15.6@sha256:b084d6e29d975ce9123fd52bd201ac020628797f2772e9171ef76f33cc92d591
+FROM docker.io/opensuse/leap:16.0@sha256:f239b4819f4dd322d99509f1b5b14f2107bf23857f9ccd3c14333f0928a2bcc6
 # Ruby 3 devel repos
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
+RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/16.0/ ruby_devel
 
 RUN zypper ref -f && \
-    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.6/ tools && \
-    zypper -n install nmap tar gzip iputils \
+    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_16.0/ tools && \
+    zypper -n install tar gzip iputils \
       gcc \
       make \
       wget \
-      ruby3.3 \
-      ruby3.3-devel \
-      python-devel \
+      ruby3.4 \
+      ruby3.4-devel \
+      ruby3.4-devel-extra \
+      python313-devel \
       autoconf \
       ca-certificates-mozilla \
       automake \
@@ -23,15 +23,16 @@ RUN zypper ref -f && \
       zlib-devel \
       libxslt-devel \
       mozilla-nss-tools \
-      postgresql14-devel \
+      postgresql18-devel \
       chromium \
       libgbm-devel \
-      npm \
+      nodejs-default \
+      npm-default \
       openssh-server \
       openssh-clients \
       hostname \
       iproute2 \
-      vi \
+      vim \
       libssh4 \
       libssh-devel && \
     zypper -n clean -a
@@ -39,15 +40,20 @@ COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
 
 ### Ruby 3 changes ###
-RUN export GEM_PATH="/usr/lib64/ruby/gems/3.3.0"
-RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.3.0"' >> ./root/.bashrc
-RUN ln -sf /usr/bin/ruby.ruby3.3 /usr/bin/ruby
-RUN ln -sf /usr/bin/gem.ruby3.3 /usr/bin/gem
-RUN ln -sf /usr/bin/irb.ruby3.3 /usr/bin/irb
-RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby3.3
-RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.3
-RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.3
-RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
+RUN export GEM_PATH="/usr/lib64/ruby/gems/3.4.0"
+RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.4.0"' >> ./root/.bashrc
+RUN ln -sf /usr/bin/ruby.ruby3.4 /usr/bin/ruby
+RUN ln -sf /usr/bin/gem.ruby3.4 /usr/bin/gem
+RUN ln -sf /usr/bin/irb.ruby3.4 /usr/bin/irb
+# On Leap 16 the default /usr/bin/{rake,bundle,rdoc,ri} are ELF wrappers, which
+# `ruby -S <name>` (used by the cucumber rake task, e.g. `ruby -S bundle exec
+# cucumber`) cannot parse as Ruby source. Point them at the actual Ruby scripts
+# (the *.ruby.ruby3.4 variants) so `ruby -S bundle`/`rake` work. ruby3.4 registers
+# no update-alternatives group (single Ruby), so use symlinks instead of --set.
+RUN ln -sf /usr/bin/rake.ruby.ruby3.4 /usr/bin/rake
+RUN ln -sf /usr/bin/bundle.ruby.ruby3.4 /usr/bin/bundle
+RUN ln -sf /usr/bin/rdoc.ruby.ruby3.4 /usr/bin/rdoc
+RUN ln -sf /usr/bin/ri.ruby.ruby3.4 /usr/bin/ri
 
 # debug
 RUN ruby -v
@@ -63,5 +69,5 @@ RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
 ENV PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright
 
 ARG GEMFILE_BRANCH=master
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/${GEMFILE_BRANCH}/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/${GEMFILE_BRANCH}/testsuite/Gemfile -o Gemfile && bundle.ruby3.4 install --verbose && rm Gemfile
 RUN gem list
