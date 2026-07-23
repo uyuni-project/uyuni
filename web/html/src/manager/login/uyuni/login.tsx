@@ -121,7 +121,9 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               {t("{productName} release {versionNumber}", {
                 productName,
                 versionNumber: (
-                  <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+                  <a key="version" href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>
+                    {props.webVersion}
+                  </a>
                 ),
               })}
             </div>
