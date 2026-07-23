@@ -23,7 +23,7 @@ RUN zypper ref -f && \
       zlib-devel \
       libxslt-devel \
       mozilla-nss-tools \
-      postgresql16-devel \
+      postgresql18-devel \
       chromium \
       libgbm-devel \
       nodejs-default \
