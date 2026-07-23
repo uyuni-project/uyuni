@@ -362,8 +362,9 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
           </div>
           <div className={`col-sm-1 ${styles.helpIcon}`}>
             <i
-              className="fa fa-info-circle fa-1-5x text-primary"
+              className="fa fa-info-circle fa-1-5x"
               title={t("The action will be executed every hour at the specified minute")}
+              data-bs-toggle="tooltip"
             />
           </div>
         </div>
@@ -460,8 +461,9 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
           </div>
           <div className={`col-sm-1 ${styles.helpIcon}`}>
             <i
-              className="fa fa-info-circle fa-1-5x text-primary"
+              className="fa fa-info-circle fa-1-5x"
               title={t("Days are limited to 28 to have a recurring schedule available for all the months")}
+              data-bs-toggle="tooltip"
             />
           </div>
         </div>

@@ -21,8 +21,8 @@ const TestIdContainer = function ({
 
 export default function withCustomComponents(testId: string | undefined, fallbackName: string | undefined) {
   // The name-based fallback is used to keep compatibility with existing forms that use the `name` prop for binding to tests
-  const testClassName = testId || fallbackName || undefined;
-  const classNamePrefix = testClassName ? `data-testid-${testClassName}-child` : undefined;
+  const testClassName = testId || fallbackName;
+  const classNamePrefix = testClassName ? `data-testid-${testClassName}-child` : "react-select";
 
   return {
     classNamePrefix,

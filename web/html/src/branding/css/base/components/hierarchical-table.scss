@@ -1,6 +1,7 @@
 .hierarchical-table {
   .table-responsive > table > tbody {
-    > .list-row-even, > .list-row-odd {
+    > .list-row-even,
+    > .list-row-odd {
       height: 52px;
     }
   }
@@ -9,7 +10,7 @@
     display: flex;
 
     .product-hover:hover {
-      color: $orange-light;
+      color: $text-warning-color;
     }
   }
 }
