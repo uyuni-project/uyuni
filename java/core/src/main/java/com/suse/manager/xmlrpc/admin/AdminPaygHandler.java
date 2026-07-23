@@ -32,7 +32,7 @@ import java.util.Map;
  * @apidoc.namespace admin.payg
  * @apidoc.doc Provides methods to access and modify PAYG ssh connection data
  */
-public class AdminPaygHandler extends BaseHandler {
+public class AdminPaygHandler extends BaseHandler implements AdminPaygHandlerApi {
 
     private PaygAdminManager paygAdminManager;
 

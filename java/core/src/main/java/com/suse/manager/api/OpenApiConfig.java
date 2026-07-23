@@ -15,6 +15,7 @@
 package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
+import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
@@ -24,6 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
+import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,6 +108,8 @@ public final class OpenApiConfig {
     public static Map<String, Class<?>> getHandlerClasses() {
         Map<String, Class<?>> handlers = new LinkedHashMap<>();
         handlers.put("access", AccessHandler.class);
+        handlers.put("admin.configuration", AdminConfigurationHandler.class);
+        handlers.put("admin.payg", AdminPaygHandler.class);
         handlers.put("admin.ssh", AdminSshHandler.class);
         handlers.put("api", ApiHandler.class);
         handlers.put("channel.access", ChannelAccessHandler.class);

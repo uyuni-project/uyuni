@@ -54,6 +54,7 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
+    public static final String DOC_PARAM_TYPE_EXTENSION = "x-uyuni-doc-param-type";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
 
@@ -154,10 +155,43 @@ public class UyuniSwaggerReader {
         MediaType mediaType = new MediaType();
 
         resolveAndRegisterSchema(apiDoc.requestClass());
+        applyLegacyDocParams(apiDoc.requestClass());
         mediaType.setSchema(buildSchemaRef(apiDoc.requestClass()));
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
         requestBody.setContent(content);
         operation.setRequestBody(requestBody);
+    }
+
+    private void applyLegacyDocParams(Class<?> requestClass) {
+        if (this.components.getSchemas() == null) {
+            return;
+        }
+        Schema<?> requestSchema = this.components.getSchemas().get(schemaRefName(requestClass));
+        if (requestSchema == null || requestSchema.getProperties() == null) {
+            return;
+        }
+        for (Method getter : requestClass.getMethods()) {
+            LegacyDocParam legacyDocParam = getter.getAnnotation(LegacyDocParam.class);
+            if (legacyDocParam == null || legacyDocParam.type().isBlank()) {
+                continue;
+            }
+            Schema<?> property = requestSchema.getProperties().get(resolvePropertyName(getter));
+            if (property != null) {
+                property.addExtension(DOC_PARAM_TYPE_EXTENSION, legacyDocParam.type());
+            }
+        }
+    }
+
+    private String resolvePropertyName(Method getter) {
+        var schemaAnnotation = getter.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (schemaAnnotation != null && !schemaAnnotation.name().isEmpty()) {
+            return schemaAnnotation.name();
+        }
+        String name = getter.getName();
+        if (name.startsWith("get")) {
+            name = name.substring(3);
+        }
+        return name.isEmpty() ? name : Character.toLowerCase(name.charAt(0)) + name.substring(1);
     }
 
     private void configureResponses(ApiEndpointDoc apiDoc, Operation operation) {
@@ -341,12 +375,15 @@ public class UyuniSwaggerReader {
     }
 
     private Schema<?> buildSchemaRef(Class<?> clazz) {
+        return new Schema<>().$ref("#/components/schemas/" + schemaRefName(clazz));
+    }
+
+    private String schemaRefName(Class<?> clazz) {
         var classAnnotation = findClassAnnotation(clazz, io.swagger.v3.oas.annotations.media.Schema.class);
-        String refName = Optional.ofNullable(classAnnotation)
+        return Optional.ofNullable(classAnnotation)
                 .map(io.swagger.v3.oas.annotations.media.Schema::name)
                 .filter(name -> !name.isEmpty())
                 .orElse(clazz.getSimpleName());
-        return new Schema<>().$ref("#/components/schemas/" + refName);
     }
 
     private <A extends Annotation> A findClassAnnotation(Class<?> cls, Class<A> annotationClass) {
