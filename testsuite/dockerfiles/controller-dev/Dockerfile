@@ -3,7 +3,7 @@ FROM docker.io/opensuse/leap:16.0@sha256:f239b4819f4dd322d99509f1b5b14f2107bf238
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/16.0/ ruby_devel
 
 RUN zypper ref -f && \
-    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/16.0/ tools && \
+    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_16.0/ tools && \
     zypper -n install tar gzip iputils \
       gcc \
       make \
