@@ -14,285 +14,309 @@
  */
 package com.redhat.rhn.common.validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * <p>
- *  The <code>SchemaParser</code> class parses an XML Schema and creates
- *    <code>{@link Constraint}</code> objects from it.
- * </p>
+ * The {@code SchemaParser} parses an XML Schema and creates {@link Constraint} objects from it.
  */
 public class SchemaParser {
 
-    private static Logger log = LogManager.getLogger(SchemaParser.class);
+    private static final Logger LOG = LogManager.getLogger(SchemaParser.class);
 
-    /** The URL of the schema to parse */
-    private URL schemaURL;
+    private static final String SCHEMA_NAMESPACE_URI = "http://www.w3.org/1999/XMLSchema";
 
-    /** The constraints from the schema */
-    private Map<String, Constraint> constraints;
+    private final URL schemaURL;
 
-    /** XML Schema Namespace */
-    private Namespace schemaNamespace;
-
-    /** XML Schema Namespace URI */
-    private static final String SCHEMA_NAMESPACE_URI =
-        "http://www.w3.org/1999/XMLSchema";
+    private final Map<String, Constraint> constraints;
 
     /**
-     * <p>
-     *  This will create a new <code>SchemaParser</code>, given
-     *    the URL of the schema to parse.
-     * </p>
+     * Default constructor
      *
      * @param schemaURLIn the <code>URL</code> of the schema to parse.
      * @throws IOException when parsing errors occur.
      */
     public SchemaParser(URL schemaURLIn) throws IOException {
         this.schemaURL = schemaURLIn;
-        constraints = new LinkedHashMap<>();
-        schemaNamespace =
-            Namespace.getNamespace(SCHEMA_NAMESPACE_URI);
+        this.constraints = new LinkedHashMap<>();
 
         // Parse the schema and prepare constraints
         parseSchema();
     }
 
     /**
-     * <p>
-     *  This will return constraints found within the document.
-     * </p>
+     * Retrieves all the constraints found within the document.
      *
-     * @return <code>Map</code> - the schema-defined constraints.
+     * @return the map of schema-defined constraints.
      */
     public Map<String, Constraint> getConstraints() {
         return constraints;
     }
 
     /**
-     * <p>
-     *  This will get the <code>Constraint</code> object for
-     *    a specific constraint name. If none is found, this
-     *    will return <code>null</code>.
-     * </p>
+     * Get the {@link Constraint} object for the specific constraint name.
      *
-     * @param constraintName name of constraint to look up.
-     * @return <code>Constraint</code> - constraints for
-     *         supplied name.
+     * @param constraintName name of the constraint to look up.
+     * @param constraintClazz the type of constraint
+     * @param <T> the type of constraint
+     * @return the {@link Constraint} matching the supplied name, or {@code null} if none is found.
      */
-    public Constraint getConstraint(String constraintName) {
-        Object o = constraints.get(constraintName);
-        if (o != null) {
-            return (Constraint)o;
+    public <T extends Constraint> T getConstraint(String constraintName, Class<T> constraintClazz) {
+        Constraint o = constraints.get(constraintName);
+        if (!constraintClazz.isInstance(o)) {
+            return null;
         }
-        return null;
+
+        return constraintClazz.cast(o);
     }
 
-    /**
-     * <p>
-     *  This will do the work of parsing the schema.
-     * </p>
-     *
-     * @throws IOException - when parsing errors occur.
-     */
-    @SuppressWarnings("unchecked")
     private void parseSchema() throws IOException {
-        /*
-         * Create builder to generate JDOM representation of XML Schema,
-         *   without validation and using Apache Xerces.
-         */
-        // XXX: Allow validation, and allow alternate parsers
-        SAXBuilder builder = new SAXBuilder();
-
-        try {
-            Document schemaDoc = builder.build(schemaURL);
+        try (InputStream inputStream = schemaURL.openStream()) {
+            DocumentBuilder builder = getDocumentBuilderFactory().newDocumentBuilder();
+            Document schemaDoc = builder.parse(inputStream);
 
             // Handle attributes
-            List<Element> attributes = schemaDoc.getRootElement().getChildren("attribute", schemaNamespace);
-            for (Element attribute : attributes) {
-                handleAttribute(attribute);
-            }
-            // Handle attributes nested within complex types
-
+            childrenStream(schemaDoc.getDocumentElement(), SCHEMA_NAMESPACE_URI, "attribute")
+                .map(attribute -> convertAttributeToConstraint(attribute))
+                .flatMap(Optional::stream)
+                .forEach(constraint -> {
+                    // Store this constraint
+                    LOG.debug("Adding: constraint name: {} datatype: {}", constraint.getIdentifier(),
+                        constraint.getDataType());
+                    constraints.put(constraint.getIdentifier(), constraint);
+                });
         }
-        catch (JDOMException e) {
-            throw new IOException(e.getMessage());
+        catch (ParserConfigurationException | SAXException ex) {
+            throw new IOException("Unable to parse schema " + schemaURL, ex);
+        }
+        catch (UncheckedIOException ex) {
+            throw ex.getCause();
         }
     }
 
-    /**
-     * <p>
-     *  This will convert an attribute into constraints.
-     *  OLDTODO: make everyone happy: replace this with Digester
-     * </p>
-     *
-     * @throws IOException - when parsing errors occur.
-     */
-    private void handleAttribute(Element attribute)
-        throws IOException {
-
+    private Optional<Constraint> convertAttributeToConstraint(Element attribute) {
         // Get the attribute name and create a Constraint
-        String name = attribute.getAttributeValue("name");
+        String name = getElementAttribute(attribute, "name");
         if (name == null) {
-            throw new IOException("All schema attributes must have names.");
+            throw wrappedIOException("All schema attributes must have names.");
         }
 
-
-
         // Get the simpleType - if none, we are done with this attribute
-        Element simpleType = attribute.getChild("simpleType", schemaNamespace);
+        Element simpleType = getChildElement(attribute, SCHEMA_NAMESPACE_URI, "simpleType");
         if (simpleType == null) {
-            return;
+            return Optional.empty();
         }
 
         // Handle the data type
-        String schemaType = simpleType.getAttributeValue("baseType");
+        String schemaType = getElementAttribute(simpleType, "baseType");
         if (schemaType == null) {
-            throw new IOException("No data type specified for constraint " + name);
+            throw wrappedIOException("No data type specified for constraint " + name);
         }
 
-        Constraint constraint;
-
-        Element child;
-
-        if (schemaType.equals("long") || schemaType.equals("int")) {
-            LongConstraint lc = new LongConstraint(name);
-            lc.setOptional(parseOptional(simpleType));
-
-            processRequiredIfConstraint(simpleType, lc);
-            // Handle ranges
-            child = simpleType.getChild("minInclusive", schemaNamespace);
-            if (child != null) {
-                Long value = Long.valueOf(child.getAttributeValue("value"));
-                lc.setMinInclusive(value);
-            }
-            else if (schemaType.equals("int")) {
-                    lc.setMinInclusive((long) Integer.MIN_VALUE);
-            }
-            child = simpleType.getChild("maxInclusive", schemaNamespace);
-            if (child != null) {
-                Long value = Long.valueOf(child.getAttributeValue("value"));
-                lc.setMaxInclusive(value);
-            }
-            else if (schemaType.equals("int")) {
-                    lc.setMaxInclusive((long) Integer.MAX_VALUE);
-            }
-            constraint = lc;
-        }
-        else if (schemaType.equals("double") || schemaType.equals("float")) {
-            DoubleConstraint dc = new DoubleConstraint(name);
-            dc.setOptional(parseOptional(simpleType));
-
-            processRequiredIfConstraint(simpleType, dc);
-            // Handle ranges
-            child = simpleType.getChild("minInclusive", schemaNamespace);
-            if (child != null) {
-                Double value = Double.valueOf(child.getAttributeValue("value"));
-                dc.setMinInclusive(value);
-            }
-            else if (schemaType.equals("float")) {
-                Double value = (double) Float.MIN_VALUE;
-                dc.setMinInclusive(value);
-            }
-            child = simpleType.getChild("maxInclusive", schemaNamespace);
-            if (child != null) {
-                Double value = Double.valueOf(child.getAttributeValue("value"));
-                dc.setMaxInclusive(value);
-            }
-            else if (schemaType.equals("float")) {
-                Double value = (double) Float.MAX_VALUE;
-                dc.setMaxInclusive(value);
-            }
-            constraint = dc;
-        }
-        else if (schemaType.equals("string")) {
-            StringConstraint lc = new StringConstraint(name);
-            lc.setOptional(parseOptional(simpleType));
-
-            processRequiredIfConstraint(simpleType, lc);
-
-            child = simpleType.getChild("ascii", schemaNamespace);
-            if (child != null) {
-                lc.setASCII(true);
-            }
-
-            child = simpleType.getChild("username", schemaNamespace);
-            if (child != null) {
-                lc.setUserName(true);
-            }
-
-            child = simpleType.getChild("posix", schemaNamespace);
-            if (child != null) {
-                lc.setPosix(true);
-            }
-
-            child = simpleType.getChild("maxLength", schemaNamespace);
-            if (child != null) {
-                Double value = Double.valueOf(child.getAttributeValue("value"));
-                lc.setMaxLength(value);
-            }
-            child = simpleType.getChild("minLength", schemaNamespace);
-            if (child != null) {
-                Double value = Double.valueOf(child.getAttributeValue("value"));
-                lc.setMinLength(value);
-            }
-
-            child = simpleType.getChild("matchesExpression", schemaNamespace);
-            if (child != null) {
-                String value = child.getAttributeValue("value");
-                lc.setRegEx(value);
-            }
-            constraint = lc;
-        }
-        else {
-            constraint = new ParsedConstraint(name);
-        }
-
-        constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
-
-        // Store this constraint
-        log.debug("Adding: constraint name: {} datatype: {}", name, constraint.getDataType());
-        constraints.put(name, constraint);
+        return Optional.of(switch (schemaType) {
+            case "long", "int" -> buildLongConstraint(name, simpleType, schemaType);
+            case "double", "float" -> buildDoubleConstraint(name, simpleType, schemaType);
+            case "string" -> buildStringConstraint(name, simpleType, schemaType);
+            default -> buildParsedConstraint(name, schemaType);
+        });
     }
 
-    private Boolean parseOptional(Element simpleType) {
-        Element child;
-        Boolean optional = Boolean.FALSE;
-        child = simpleType.getChild("optional", schemaNamespace);
+    private LongConstraint buildLongConstraint(String name, Element simpleType, String schemaType) {
+        LongConstraint constraint = new LongConstraint(name);
+        constraint.setOptional(parseOptional(simpleType));
+        constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
+
+        processRequiredIfConstraint(simpleType, constraint);
+        // Handle ranges
+        Element child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "minInclusive");
         if (child != null) {
-            String value = child.getAttributeValue("value");
+            Long value = Long.valueOf(getElementAttribute(child, "value"));
+            constraint.setMinInclusive(value);
+        }
+        else if (schemaType.equals("int")) {
+            constraint.setMinInclusive((long) Integer.MIN_VALUE);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "maxInclusive");
+        if (child != null) {
+            Long value = Long.valueOf(getElementAttribute(child, "value"));
+            constraint.setMaxInclusive(value);
+        }
+        else if (schemaType.equals("int")) {
+            constraint.setMaxInclusive((long) Integer.MAX_VALUE);
+        }
+
+        return constraint;
+    }
+
+    private DoubleConstraint buildDoubleConstraint(String name, Element simpleType, String schemaType) {
+        DoubleConstraint constraint = new DoubleConstraint(name);
+        constraint.setOptional(parseOptional(simpleType));
+        constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
+
+        processRequiredIfConstraint(simpleType, constraint);
+
+        // Handle ranges
+        Element child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "minInclusive");
+        if (child != null) {
+            Double value = Double.valueOf(getElementAttribute(child, "value"));
+            constraint.setMinInclusive(value);
+        }
+        else if (schemaType.equals("float")) {
+            Double value = (double) Float.MIN_VALUE;
+            constraint.setMinInclusive(value);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "maxInclusive");
+        if (child != null) {
+            Double value = Double.valueOf(getElementAttribute(child, "value"));
+            constraint.setMaxInclusive(value);
+        }
+        else if (schemaType.equals("float")) {
+            Double value = (double) Float.MAX_VALUE;
+            constraint.setMaxInclusive(value);
+        }
+
+        return constraint;
+    }
+
+    private StringConstraint buildStringConstraint(String name, Element simpleType, String schemaType) {
+        StringConstraint constraint = new StringConstraint(name);
+        constraint.setOptional(parseOptional(simpleType));
+        constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
+
+        processRequiredIfConstraint(simpleType, constraint);
+
+        Element child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "ascii");
+        if (child != null) {
+            constraint.setASCII(true);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "username");
+        if (child != null) {
+            constraint.setUserName(true);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "posix");
+        if (child != null) {
+            constraint.setPosix(true);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "maxLength");
+        if (child != null) {
+            Double value = Double.valueOf(getElementAttribute(child, "value"));
+            constraint.setMaxLength(value);
+        }
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "minLength");
+        if (child != null) {
+            Double value = Double.valueOf(getElementAttribute(child, "value"));
+            constraint.setMinLength(value);
+        }
+
+        child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "matchesExpression");
+        if (child != null) {
+            String value = getElementAttribute(child, "value");
+            constraint.setRegEx(value);
+        }
+
+        return constraint;
+    }
+
+    private ParsedConstraint buildParsedConstraint(String name, String schemaType) {
+        ParsedConstraint constraint = new ParsedConstraint(name);
+        constraint.setDataType(DataConverter.getInstance().getJavaType(schemaType));
+
+        return constraint;
+    }
+
+    private boolean parseOptional(Element simpleType) {
+        boolean optional = false;
+        Element child = getChildElement(simpleType, SCHEMA_NAMESPACE_URI, "optional");
+        if (child != null) {
+            String value = getElementAttribute(child, "value");
             if (value == null) {
                 // <optional/> consider as true
-                optional = Boolean.TRUE;
+                return true;
             }
-            else {
-                optional = Boolean.valueOf(value);
-            }
+
+            return Boolean.parseBoolean(value);
         }
+
         return optional;
     }
 
-    @SuppressWarnings("unchecked")
     private void processRequiredIfConstraint(Element simpleType, RequiredIfConstraint lc) {
-        List<Element> requiredIfFields = simpleType.getChildren("requiredIf", schemaNamespace);
-        if (requiredIfFields != null && !requiredIfFields.isEmpty()) {
-            for (Element requiredIf : requiredIfFields) {
-                String fieldName = requiredIf.getAttributeValue("field");
-                String fieldValue = requiredIf.getAttributeValue("value");
+        childrenStream(simpleType, SCHEMA_NAMESPACE_URI, "requiredIf")
+            .forEach(requiredIf -> {
+                String fieldName = getElementAttribute(requiredIf, "field");
+                String fieldValue = getElementAttribute(requiredIf, "value");
                 lc.addField(fieldName, fieldValue);
-            }
-        }
+            });
     }
+
+    private static DocumentBuilderFactory getDocumentBuilderFactory() throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        factory.setNamespaceAware(true);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+        return factory;
+    }
+
+    private static Stream<Element> childrenStream(Element parent, String namespace, String childTagName) {
+        NodeList nodeList = parent.getChildNodes();
+        if (nodeList.getLength() == 0) {
+            return Stream.of();
+        }
+
+        return IntStream.range(0, nodeList.getLength())
+            .mapToObj(nodeList::item)
+            // Extract Element only
+            .filter(Element.class::isInstance)
+            .map(Element.class::cast)
+            // Filter by tagName and namespace
+            .filter(elem -> childTagName.equals(elem.getLocalName()) && namespace.equals(elem.getNamespaceURI()));
+    }
+
+    private static Element getChildElement(Element parent, String namespace, String childTagName) {
+        return childrenStream(parent, namespace, childTagName)
+            .findFirst()
+            .orElse(null);
+    }
+
+    private static String getElementAttribute(Element element, String attributeName) {
+        return StringUtils.trimToNull(element.getAttribute(attributeName));
+    }
+
+    private static UncheckedIOException wrappedIOException(String message) {
+        return new UncheckedIOException(new IOException(message));
+    }
+
 }
