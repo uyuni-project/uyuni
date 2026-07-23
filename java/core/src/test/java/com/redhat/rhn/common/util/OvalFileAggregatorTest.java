@@ -13,14 +13,12 @@ package com.redhat.rhn.common.util;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.TestUtils;
 
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -28,8 +26,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
@@ -174,8 +174,8 @@ class OvalFileAggregatorTest {
     void throwOnMalformedXmlInAddFile() {
         OvalFileAggregator aggregator = new OvalFileAggregator();
 
-        assertThrows(JDOMException.class,
-                () -> aggregator.add(testFile("/com/redhat/rhn/common/util/oval-def-malformed.xml")));
+        assertThrows(IOException.class,
+            () -> aggregator.add(testFile("/com/redhat/rhn/common/util/oval-def-malformed.xml")));
     }
 
     @Test
@@ -250,15 +250,16 @@ class OvalFileAggregatorTest {
 
     @Test
     @DisplayName("Do not resolve external DTD or schema in non-validating add(File)")
-    @Disabled("Currently external object are accepted and this behaviour needs to be disabled")
     void doNotResolveExternalDtdOrSchemaInNonValidatingAddFile() throws Exception {
         OvalFileAggregator aggregator = new OvalFileAggregator();
 
-        assertDoesNotThrow(() ->
-                aggregator.add(testFile("/com/redhat/rhn/common/util/oval-def-external-refs.xml")));
+        var ioException = assertThrows(IOException.class,
+            () -> aggregator.add(testFile("/com/redhat/rhn/common/util/oval-def-external-refs.xml")));
 
-        String output = aggregator.finish(false);
-        assertTrue(output.contains("oval:test:def:external-refs"));
+        assertTrue(ioException.getMessage().startsWith("Unable to parse xml document"));
+        var saxException = assertInstanceOf(SAXParseException.class, ioException.getCause());
+        assertTrue(saxException.getMessage().contains("DOCTYPE is disallowed when the feature " +
+            "\"http://apache.org/xml/features/disallow-doctype-decl\" set to true."));
     }
 
     @Test
@@ -283,16 +284,20 @@ class OvalFileAggregatorTest {
     @Test
     @DisplayName("Clone source nodes so post-add mutations do not leak")
     void cloneSourceNodesSoPostAddMutationsDoNotLeak() throws Exception {
-        SAXBuilder builder = new SAXBuilder();
-        builder.setValidation(false);
-        org.jdom.Document source = builder
-                .build(testFile("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+
+        Document source;
+        try (var fileStream = new FileInputStream(testFile("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"))) {
+            source = factory.newDocumentBuilder().parse(new InputSource(fileStream));
+        }
 
         OvalFileAggregator aggregator = new OvalFileAggregator();
         aggregator.add(source);
 
         // Mutate the source after add(); aggregated output must keep the original id.
-        org.jdom.Element firstDefinition = new XPathLite("definitions").selectChildren(source).get(0);
+        NodeList definitions = source.getDocumentElement().getElementsByTagName("definition");
+        Element firstDefinition = (Element) definitions.item(0);
         firstDefinition.setAttribute("id", "oval:test:def:mutated");
 
         String output = aggregator.finish(false);
