@@ -24,8 +24,8 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -63,7 +63,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * TargetSystemsConfirmAction
  */
-public class TargetSystemsConfirmAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class TargetSystemsConfirmAction extends RhnAction implements Listable {
 
     private static final Logger LOG = LogManager.getLogger(TargetSystemsConfirmAction.class);
 
@@ -94,7 +94,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
         Set<Long> systemIds = TargetSystemsAction.getSetDecl(chan).get(user).getElementValues();
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
         ActionChainHelper.prepopulateActionChains(request);
 
         if (helper.isDispatched()) {
@@ -173,10 +173,5 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable, M
         Long cid = context.getRequiredParam(RequestContext.CID);
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
         return SystemManager.inSet(user, TargetSystemsAction.getSetDecl(chan).getLabel());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS;
     }
 }

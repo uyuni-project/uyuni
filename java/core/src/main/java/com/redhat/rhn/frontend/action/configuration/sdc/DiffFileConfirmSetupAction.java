@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.action.ActionTypeEnum;
 public class DiffFileConfirmSetupAction extends FileListConfirmSetupAction {
 
     @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
+    public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_CONFIGFILES_DIFF;
     }
 }
