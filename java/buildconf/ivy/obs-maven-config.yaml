@@ -140,8 +140,6 @@ artifacts:
   - artifact: jctools-core
     package: jctools
     repository: Leap_sle
-  - artifact: jdom
-    repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j-core

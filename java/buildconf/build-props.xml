@@ -98,7 +98,7 @@
             value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
               commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps}
-              ${commons-compress} ${javamail} smtp jdom ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
+              ${commons-compress} ${javamail} smtp ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
               ${struts-jars} ${tomcat-jars} ${postgresql-jdbc} quartz slf4j-api
               velocity-engine-core simple-core" />
 
@@ -106,7 +106,7 @@
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
-            value="antlr4/antlr4-runtime checkstyle jdom ${jta} junit ${log4j-jars} regexp postgresql-jdbc" />
+            value="antlr4/antlr4-runtime checkstyle ${jta} junit ${log4j-jars} regexp postgresql-jdbc" />
 
   <condition property="ant-contrib.path" value="ant/ant-contrib" else="ant-contrib">
     <available file="${java.lib.dir}/ant/ant-contrib.jar"/>
@@ -139,7 +139,7 @@
             value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
               commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps} ${commons-compress}
-              ${tomcat-jars} ${javamail} jdom jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
+              ${tomcat-jars} ${javamail} jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
               ${struts-jars} ${postgresql-jdbc} quartz ${suse-common-jars} velocity-engine-core simple-core snakeyaml
               ${commons-jexl}" />
 
@@ -147,7 +147,7 @@
             value="antlr4/antlr4-runtime ${c3p0} commons-collections commons-beanutils commons-cli commons-codec
               commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6
               commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
-              ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom
+              ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl}
               ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc oro quartz sitemesh ${struts-jars}
               ${postgresql-jdbc} snakeyaml ${suse-common-jars} ${suse-runtime-jars}
               simple-core ${jcache} ${other-jars}" />
