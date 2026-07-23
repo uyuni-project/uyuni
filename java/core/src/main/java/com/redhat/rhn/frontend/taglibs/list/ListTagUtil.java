@@ -647,7 +647,11 @@ public class ListTagUtil {
         sb.append("<div class=\"input-group\">");
 
         String placeHolder = StringUtils.defaultString(ls.getMessage("message.filterby", fields.get(0)));
-        sb.append(String.format("<input autofocus=\"autofocus\" type=\"text\" " +
+        sb.append("<input ");
+        if (!Boolean.parseBoolean(request.getHeader("x-pjax"))) {
+            sb.append("autofocus=\"autofocus\" ");
+        }
+        sb.append(String.format("type=\"text\" " +
                 "name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\" " +
                 "onkeypress=\"return enterKeyHandler(event, jQuery('button[name=%s]'))\"/>",
                                 filterValueKey,

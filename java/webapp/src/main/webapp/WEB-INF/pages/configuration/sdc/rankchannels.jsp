@@ -40,7 +40,7 @@
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:hidden property="dispatch" value="${rhn:localize('sdc.config.rank.jsp.update')}"/>
                     <button type="submit" name="dispatcher" class="btn btn-primary"
-                        onclick="handle_ranking_dispatch('ranksWidget','rankedValues','channelRanksForm');">
+                        onclick="handle_ranking_dispatch('ranksWidget','rankedValues');">
                         ${rhn:localize('sdc.config.rank.jsp.update')}
                     </button>
                 </div>

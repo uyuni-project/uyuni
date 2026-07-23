@@ -1,0 +1,2 @@
+- Fix frontend console warnings during SPA navigation and legacy UI
+  interactions.
