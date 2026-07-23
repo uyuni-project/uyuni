@@ -197,7 +197,7 @@ python3 setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build
 %files -n python2-rhnlib
 %license COPYING
 %doc ChangeLog README TODO
-%{python2_sitelib}/rhnlib
+%{python2_sitelib}/rhn
 %{python2_sitelib}/rhnlib-%{version}*-info
 %endif
 
@@ -205,7 +205,7 @@ python3 setup.py install %{!?is_deb:-O1}%{?is_deb:--no-compile -O0} --skip-build
 %files -n python3-rhnlib
 %license COPYING
 %doc ChangeLog README TODO
-%{python3_sitelib}/rhnlib
+%{python3_sitelib}/rhn
 %{python3_sitelib}/rhnlib-%{version}*-info
 %endif
 
