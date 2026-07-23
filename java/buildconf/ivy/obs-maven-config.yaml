@@ -88,6 +88,15 @@ artifacts:
     package: google-gson
     jar: gson\.jar
     repository: Leap
+  # TODO(ldap): UnboundID LDAP SDK (com.unboundid:unboundid-ldapsdk) is used by the native LDAP
+  # authentication feature. The Ant/Ivy CI build resolves it from Maven Central (see ivy-suse.xml),
+  # but the OBS product/RPM build is network-isolated and resolves only packaged artifacts. Before
+  # this feature can be released, an OBS package (e.g. in systemsmanagement:Uyuni:Master or :Other)
+  # must be created and the new third-party dependency approved (licensing). Activate this entry
+  # once that package exists.
+  # - artifact: unboundid-ldapsdk
+  #   package: unboundid-ldapsdk
+  #   repository: Uyuni
   - artifact: hibernate-c3p0
     package: hibernate-c3p0
     jar: hibernate-c3p0
