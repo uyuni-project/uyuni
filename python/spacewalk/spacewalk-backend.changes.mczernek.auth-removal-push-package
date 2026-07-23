@@ -1,0 +1,2 @@
+- Remove token based authentication mechanism for package_push
+  (bsc#1230949)
