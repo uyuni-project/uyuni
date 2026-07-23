@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
+ * Copyright (c) 2010--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,9 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-/*
- * Copyright (c) 2010-2019 SUSE LLC
  */
 package com.redhat.rhn.manager.channel.repo;
 
@@ -53,8 +51,8 @@ public abstract class BaseRepoCommand {
     private String label;
     private String url;
     private String type;
-    private Set<SslContentSource> sslSetsToAdd = new HashSet<>();
-    private Set<SslContentSource> sslSetsToDelete = new HashSet<>();
+    private Set<SslContentSource> sslContentSourcesToAdd = new HashSet<>();
+    private Set<SslContentSource> sslContentSourcesToDelete = new HashSet<>();
     private boolean metadataSigned;
 
     /**
@@ -138,7 +136,7 @@ public abstract class BaseRepoCommand {
     }
 
 
-    private SslContentSource createSslSet(Long sslCaCertId, Long sslClientCertId, Long sslClientKeyId)
+    private SslContentSource createSslContentSource(Long sslCaCertId, Long sslClientCertId, Long sslClientKeyId)
             throws InvalidCertificateException {
         SslCryptoKey caCert = lookupSslCryptoKey(sslCaCertId, org);
         if (caCert == null) {
@@ -162,22 +160,22 @@ public abstract class BaseRepoCommand {
      * @throws InvalidCertificateException in case ca cert is missing or client key is set,
      * but client certificate is missing
      */
-    public void addSslSet(Long sslCaCertId, Long sslClientCertId, Long sslClientKeyId)
+    public void addSslContentSource(Long sslCaCertId, Long sslClientCertId, Long sslClientKeyId)
             throws InvalidCertificateException {
-        SslContentSource sslSet = createSslSet(sslCaCertId, sslClientCertId, sslClientKeyId);
+        SslContentSource sslSet = createSslContentSource(sslCaCertId, sslClientCertId, sslClientKeyId);
         if (sslSet != null) {
-            sslSetsToAdd.add(sslSet);
-            sslSetsToDelete.remove(sslSet);
+            sslContentSourcesToAdd.add(sslSet);
+            sslContentSourcesToDelete.remove(sslSet);
         }
     }
 
     /**
      * Marks all assigned SSL sets for deletion
      */
-    public void deleteAllSslSets() {
-        Set<SslContentSource> repoSslSets = repo.getSslSets();
-        sslSetsToDelete.addAll(repoSslSets);
-        sslSetsToAdd.removeAll(repoSslSets);
+    public void deleteAllSslContentSources() {
+        Set<SslContentSource> repoSslSets = repo.getSslContentSources();
+        sslContentSourcesToDelete.addAll(repoSslSets);
+        sslContentSourcesToAdd.removeAll(repoSslSets);
     }
 
     /**
@@ -209,13 +207,8 @@ public abstract class BaseRepoCommand {
     public void store() throws InvalidRepoUrlException, InvalidRepoLabelException,
             InvalidRepoTypeException, InvalidRepoUrlInputException {
 
-        Set<SslContentSource> repoSslSets = repo.getSslSets();
-        for (SslContentSource sslSet : sslSetsToAdd) {
-            repoSslSets.add(sslSet);
-        }
-        for (SslContentSource sslSet : sslSetsToDelete) {
-            repoSslSets.remove(sslSet);
-        }
+        sslContentSourcesToAdd.forEach(repo::addSslContentSource);
+        sslContentSourcesToDelete.forEach(repo::removeSslContentSource);
 
         repo.setOrg(org);
 

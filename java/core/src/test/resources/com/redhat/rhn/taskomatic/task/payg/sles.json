@@ -1,0 +1,56 @@
+{
+  "type": "CLOUDRMT",
+  "products": [
+    { "name": "SLES", "version": "15.6", "arch": "x86_64" },
+    { "name": "sle-module-basesystem", "version": "15.6", "arch": "x86_64" },
+    {
+      "name": "sle-module-confidential-computing",
+      "version": "15.6",
+      "arch": "x86_64"
+    },
+    { "name": "sle-module-containers", "version": "15.6", "arch": "x86_64" },
+    {
+      "name": "sle-module-desktop-applications",
+      "version": "15.6",
+      "arch": "x86_64"
+    },
+    {
+      "name": "sle-module-development-tools",
+      "version": "15.6",
+      "arch": "x86_64"
+    },
+    { "name": "sle-module-public-cloud", "version": "15.6", "arch": "x86_64" },
+    { "name": "sle-module-python3", "version": "15.6", "arch": "x86_64" },
+    {
+      "name": "sle-module-server-applications",
+      "version": "15.6",
+      "arch": "x86_64"
+    },
+    { "name": "sle-module-web-scripting", "version": "15.6", "arch": "x86_64" },
+    {
+      "name": "sle-module-systems-management",
+      "version": "15.6",
+      "arch": "x86_64"
+    },
+    {
+      "name": "Multi-Linux-ManagerTools-SLE",
+      "version": "15",
+      "arch": "x86_64"
+    }
+  ],
+  "basic_auth": {
+    "username": "user",
+    "password": "password"
+  },
+  "header_auth": {
+    "X-Instance-Identifier": "SLES",
+    "X-Instance-Version": "15.6",
+    "X-Instance-Arch": "x86_64",
+    "X-Instance-Data": "dummy"
+  },
+  "rmt_host": {
+    "hostname": "smt-ec2.susecloud.net",
+    "ip": "1.2.3.4",
+    "server_ca": "fake"
+  }
+}

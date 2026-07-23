@@ -150,17 +150,18 @@ public class CreateRepoCommandTest extends BaseTestCaseWithUser {
         repoCommand.setType("yum");
         repoCommand.setUrl("http://localhost");
         repoCommand.setMetadataSigned(false);
-        repoCommand.addSslSet(caCert.getId(), sslClientCert.getId(), sslClientKey.getId());
+        repoCommand.addSslContentSource(caCert.getId(), sslClientCert.getId(), sslClientKey.getId());
         repoCommand.store();
 
         TestUtils.flushAndClearSession();
 
         ContentSource contentSource = ChannelFactory.lookupContentSource(repoCommand.getRepo().getId(), user.getOrg());
         assertNotNull(contentSource);
-        assertNotNull(contentSource.getSslSets());
-        assertEquals(1, contentSource.getSslSets().size(), "One SSL set must be associated with the content source");
+        assertNotNull(contentSource.getSslContentSources());
+        assertEquals(1, contentSource.getSslContentSources().size(),
+            "One SSL set must be associated with the content source");
 
-        SslContentSource sslContentSource = contentSource.getSslSets().iterator().next();
+        SslContentSource sslContentSource = contentSource.getSslContentSources().iterator().next();
         assertEquals(caCert.getId(), sslContentSource.getCaCert().getId(), "CA cert ID should match");
         assertEquals(sslClientCert.getId(), sslContentSource.getClientCert().getId(), "CA cert ID should match");
         assertEquals(sslClientKey.getId(), sslContentSource.getClientKey().getId(), "CA cert ID should match");
