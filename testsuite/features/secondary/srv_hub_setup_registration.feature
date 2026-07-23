@@ -9,6 +9,21 @@ Feature: Hub setup and peripheral registration via administrator credentials
   As an authorized user
   I want to register a peripheral using administrator username and password (plan A-01/A-02)
 
+  Scenario: Generate hub-signed SSL certificates for the peripheral (A-01)
+    When I generate hub-signed SSL certificates for "server2" on "server"
+
+  Scenario: Transfer the hub-signed SSL certificates to the peripheral (A-01)
+    When I copy the hub-signed SSL certificates for "server2" from "server"
+    And I trust the hub CA certificate on "server2"
+
+  Scenario: Install the peripheral server with hub-signed certificates (A-01)
+    When I install the peripheral server on "server2" using the hub-signed certificates
+    And I wait until the server on "server2" is ready
+
+  Scenario: Apply testsuite configuration to the peripheral server (A-01)
+    When I apply the testsuite configuration on the peripheral server "server2"
+    And I wait until the server on "server2" is ready
+
   Scenario: Log in as admin user on hub
     Given I am authorized for the "Admin" section
 

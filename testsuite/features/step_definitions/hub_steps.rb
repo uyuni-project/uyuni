@@ -1126,3 +1126,183 @@ After('@hub_outage') do
     hub_node.run('mgradm start', check_errors: false, timeout: 300, runs_in_container: false)
   end
 end
+
+### Hub-signed SSL certificate provisioning and peripheral installation.
+###
+### Replaces the sumaform hub_peripheral_certs.sls / hub_peripheral.sls mechanism:
+### the hub generates the peripheral's server certificate with rhn-ssl-tool, the
+### testsuite transfers CA + cert + key over SSH (the private key never touches
+### the hub's public /pub directory), and the peripheral server is then installed
+### with mgradm using the hub-signed certificates.
+
+# Directory used on both the hub (inside the container) and the peripheral (host)
+# to store the SSL build artifacts, mirroring the rhn-ssl-tool default.
+HUB_SSL_BUILD_DIR = '/root/ssl-build'.freeze
+
+# Returns the paths of the hub-signed CA, server certificate and server key
+# as laid out on the peripheral host for the given FQDN.
+def hub_signed_cert_paths(fqdn)
+  {
+    ca: "#{HUB_SSL_BUILD_DIR}/RHN-ORG-TRUSTED-SSL-CERT",
+    cert: "#{HUB_SSL_BUILD_DIR}/peripheral-#{fqdn}-server.crt",
+    key: "#{HUB_SSL_BUILD_DIR}/peripheral-#{fqdn}-server.key"
+  }
+end
+
+When(/^I generate hub-signed SSL certificates for "([^"]*)" on "([^"]*)"$/) do |peripheral, hub|
+  hub_node = get_target(hub)
+  fqdn = get_target(peripheral).full_hostname
+  machine_name = fqdn.split('.').first
+  # Idempotency: rhn-ssl-tool refuses to regenerate into an existing directory.
+  _out, code = hub_node.run(
+    "find #{HUB_SSL_BUILD_DIR} -maxdepth 2 -name server.crt -path '*#{machine_name}*' | grep -q .",
+    check_errors: false
+  )
+  if code.zero?
+    log "Hub-signed certificate for #{fqdn} already present on #{hub}, skipping generation"
+  else
+    hub_node.run(
+      "rhn-ssl-tool --gen-server --dir=#{HUB_SSL_BUILD_DIR} --set-hostname=#{fqdn} " \
+      '--set-cname=reportdb --set-cname=db --password=spacewalk'
+    )
+  end
+end
+
+When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do |peripheral, hub|
+  hub_node = get_target(hub)
+  peripheral_node = get_target(peripheral)
+  fqdn = peripheral_node.full_hostname
+  machine_name = fqdn.split('.').first
+  cert_dir, = hub_node.run("find #{HUB_SSL_BUILD_DIR} -maxdepth 1 -type d -name '#{machine_name}*' | head -1")
+  cert_dir = cert_dir.strip
+  raise ScriptError, "No certificate directory for #{fqdn} found on #{hub} - generate the certificates first" if cert_dir.empty?
+
+  paths = hub_signed_cert_paths(fqdn)
+  transfers = {
+    "#{HUB_SSL_BUILD_DIR}/RHN-ORG-TRUSTED-SSL-CERT" => paths[:ca],
+    "#{cert_dir}/server.crt" => paths[:cert],
+    "#{cert_dir}/server.key" => paths[:key]
+  }
+
+  # The peripheral server is not installed yet, so everything must land on the
+  # host (runs_in_container: false, plain scp instead of node.inject which would
+  # attempt an mgrctl cp into a non-existent container).
+  peripheral_node.run("mkdir -p #{HUB_SSL_BUILD_DIR}", runs_in_container: false)
+  transfers.each do |hub_path, peripheral_path|
+    controller_tmp = "/tmp/#{File.basename(peripheral_path)}"
+    raise ScriptError, "Failed to extract #{hub_path} from #{hub}" unless file_extract(hub_node, hub_path, controller_tmp)
+
+    success = get_target('localhost').scp_upload(controller_tmp, peripheral_path, host: peripheral_node.full_hostname)
+    FileUtils.rm_f(controller_tmp)
+    raise ScriptError, "Failed to copy #{peripheral_path} to #{peripheral}" unless success
+  end
+  peripheral_node.run("chmod 600 #{paths[:key]}", runs_in_container: false)
+end
+
+When(/^I trust the hub CA certificate on "([^"]*)"$/) do |peripheral|
+  node = get_target(peripheral)
+  node.run(
+    "cp #{HUB_SSL_BUILD_DIR}/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT.pem && " \
+    'update-ca-certificates',
+    runs_in_container: false
+  )
+end
+
+When(/^I install the peripheral server on "([^"]*)" using the hub-signed certificates$/) do |peripheral|
+  node = get_target(peripheral)
+  fqdn = node.full_hostname
+  _out, code = node.run('podman ps | grep -q uyuni-server', runs_in_container: false, check_errors: false)
+  if code.zero?
+    log "Server container already running on #{peripheral}, skipping installation"
+  else
+    paths = hub_signed_cert_paths(fqdn)
+    node.run(
+      'mgradm install podman --logLevel=debug --config /root/mgradm.yaml ' \
+      "--ssl-ca-root #{paths[:ca]} " \
+      "--ssl-server-cert #{paths[:cert]} " \
+      "--ssl-server-key #{paths[:key]} " \
+      "--ssl-db-ca-root #{paths[:ca]} " \
+      "--ssl-db-cert #{paths[:cert]} " \
+      "--ssl-db-key #{paths[:key]} " \
+      "#{fqdn}",
+      runs_in_container: false,
+      timeout: 1800,
+      verbose: true
+    )
+  end
+end
+
+When(/^I wait until the server on "([^"]*)" is ready$/) do |host|
+  node = get_target(host)
+  repeat_until_timeout(timeout: 600, message: "Web UI on #{host} did not come up") do
+    out, code = node.run(
+      "curl -ks -o /dev/null -w '%{http_code}' https://localhost/rhn/help/Copyright.do",
+      runs_in_container: false,
+      check_errors: false
+    )
+    break if code.zero? && out.strip == '200'
+
+    sleep 5
+  end
+end
+
+### Post-install configuration of a peripheral installed by the testsuite itself.
+###
+### With sumaform's `skip_server_install: true`, the peripheral host is prepared
+### (podman, mgradm binary, /root/mgradm.yaml) but none of sumaform's post-install
+### configuration (rhn.sls / testsuite.sls) is applied, since it never ran `mgradm
+### install`. Once the testsuite installs the server (see above), it must also
+### apply the subset of that configuration the hub secondary features rely on.
+
+RHN_CONF_PATH = '/etc/rhn/rhn.conf'.freeze
+
+# Subset of rhn.sls / testsuite.sls settings the hub secondary features rely on.
+RHN_CONF_TESTSUITE_SETTINGS = {
+  'java.max_changelog_entries' => '3',
+  'java.salt_presence_ping_timeout' => '6',
+  'server.susemanager.forward_registration' => '0',
+  'server.satellite.reposync_download_threads' => '2',
+  'java.salt_content_staging_window' => '0.033',
+  'java.salt_content_staging_advance' => '0.05',
+  'java.kiwi_os_image_building_enabled' => 'true'
+}.freeze
+
+When(/^I apply the testsuite configuration on the peripheral server "([^"]*)"$/) do |peripheral|
+  node = get_target(peripheral)
+
+  # rhn.conf: idempotent key/value upsert, one sed/append per key rather than a blind append,
+  # so re-running this step (or running it against an already-configured server) is a no-op.
+  changed = false
+  RHN_CONF_TESTSUITE_SETTINGS.each do |key, value|
+    # get_variable_from_conf_file returns nil (not "") when the key is absent - String#strip!
+    # returns nil when there is nothing to strip, which is the case for empty sed output.
+    current = get_variable_from_conf_file(peripheral, RHN_CONF_PATH, key)
+    next if current == value
+
+    if current.nil?
+      node.run("echo '#{key} = #{value}' >> #{RHN_CONF_PATH}")
+    else
+      node.run("sed -i 's/^#{key} = .*/#{key} = #{value}/' #{RHN_CONF_PATH}")
+    end
+    changed = true
+  end
+  node.run('systemctl restart tomcat taskomatic') if changed
+
+  # mgr-sync autologin, mirroring the ~/.mgr-sync convention already used against "server"
+  # elsewhere in the testsuite (see command_steps.rb).
+  node.run("echo -e 'mgrsync.user = admin\nmgrsync.password = admin\n' > /root/.mgr-sync")
+
+  # First user: `mgradm install` creates the admin/admin user from /root/mgradm.yaml - the
+  # existing "I am authorized for the "Admin" section on ..." step already logs into server2
+  # with admin/admin (see above), confirming this holds. No satpasswd step needed.
+
+  # salt-events service (testsuite.sls): no hub feature reads Salt event history on the
+  # peripheral (grepped step_definitions/ and features/secondary/srv_hub_*.feature for
+  # get_event_history/event_history/salt-events - no hits), so it is intentionally not
+  # installed here.
+
+  # GPG key import, cobbler permissive mode, minima test repos, salt-bundle pillar: the hub
+  # channel sync features clone and sync channels FROM the hub's own repositories to the
+  # peripheral over ISSv3 (see srv_hub_channel_synchronization.feature) - the peripheral never
+  # syncs its own repos - so none of these sumaform testsuite.sls steps are needed here.
+end
