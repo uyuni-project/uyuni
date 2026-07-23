@@ -1,0 +1,1 @@
+- Remove JDOM dependency in favor of Java W3C DOM

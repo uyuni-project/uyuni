@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <definitions>
+        <definition id="oval:test:def:dup" class="vulnerability">
+            <metadata><title>first-definition</title></metadata>
+        </definition>
+        <definition id="oval:test:def:dup" class="vulnerability">
+            <metadata><title>second-definition</title></metadata>
+        </definition>
+    </definitions>
+    <tests/>
+    <objects/>
+    <states/>
+</oval_definitions>
