@@ -35,6 +35,7 @@ class RegexRules:
     WRONG_SPACING = re.compile(r"([.,;:])[^ \n]")
     VERSION_REGEX = re.compile(r"\b(?:v?(\d+\.\d+(\.\d+)?)(?:[-.][a-zA-Z0-9]+)?)\b")
     TRACKER_LIKE = re.compile(r".{2,5}#\d+")
+    QUOTED = re.compile(r"`[^`\n]*`|\"[^\"\n]*\"|(?<!\w)'[^'\n]*'(?!\w)")
 
     def __init__(self, tracker_filename: str = None):
         trackers = {}
@@ -419,15 +420,21 @@ class ChangelogValidator:
         )
         return self.extract_trackers(title_and_commits)
 
+    def mask_quoted(self, text: str) -> str:
+        return re.sub(self.regex.QUOTED, lambda m: "_" * len(m.group(0)), text)
+
     def validate_chlog_entry(
         self, entry: Entry, entries_in_file: list[Entry]
     ) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
+        # Quoted text is not checked for capitalization and spacing
+        text = self.mask_quoted(entry.entry)
+
         # Test capitalization
-        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(
-            self.regex.WRONG_CAP_AFTER, entry.entry
+        if re.match(self.regex.WRONG_CAP_START, text) or re.search(
+            self.regex.WRONG_CAP_AFTER, text
         ):
             issues.append(
                 Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line)
@@ -440,12 +447,12 @@ class ChangelogValidator:
             lambda ver_str, match: ver_str.start() <= match.start()
             and ver_str.end() >= match.end()
         )
-        for match in re.finditer(self.regex.WRONG_SPACING, entry.entry):
+        for match in re.finditer(self.regex.WRONG_SPACING, text):
             # Ignore if part of a version string
             if not any(
                 overlaps(ver_str, match)
                 for ver_str in re.finditer(
-                    self.regex.VERSION_REGEX, entry.entry[: match.end()]
+                    self.regex.VERSION_REGEX, text[: match.end()]
                 )
             ):
                 issues.append(
