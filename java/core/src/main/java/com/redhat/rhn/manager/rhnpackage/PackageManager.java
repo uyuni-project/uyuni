@@ -79,6 +79,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -804,11 +805,10 @@ public class PackageManager extends BaseManager {
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionCheckFailureException();
         }
-        DataResult<Row> channels = PackageManager.orgPackageChannels(
-                user.getOrg().getId(), pkg.getId());
-        if (pkg.getOrg() == null || user.getOrg() != pkg.getOrg()) {
+        if (pkg.getOrg() == null || !Objects.equals(user.getOrg(), pkg.getOrg())) {
             throw new PermissionCheckFailureException();
         }
+
         Session session = HibernateFactory.getSession();
         cleanupFileEntries(pkg.getId());
         StringBuilder packageFileName = new StringBuilder();
@@ -822,6 +822,7 @@ public class PackageManager extends BaseManager {
 
         // For every channel the package is in, mark the channel as "changed" in case its
         // metadata needs tto be updated (RHEL5+, mostly)
+        DataResult<Row> channels = PackageManager.orgPackageChannels(user.getOrg().getId(), pkg.getId());
         for (Row m : channels) {
             String channelLabel = m.get("label").toString();
             Channel channel = ChannelFactory.lookupByLabel(user.getOrg(), channelLabel);
@@ -829,9 +830,7 @@ public class PackageManager extends BaseManager {
             // otherwise the repodata won't be generated
             channel.setLastModified(new Date());
             ChannelFactory.save(channel);
-            ChannelManager.queueChannelChange(channelLabel,
-                    "java::deletePackage",
-                    pkg.getPackageName().getName());
+            ChannelManager.queueChannelChange(channelLabel, "java::deletePackage", pkg.getPackageName().getName());
         }
         session.remove(pkg);
     }
@@ -848,7 +847,7 @@ public class PackageManager extends BaseManager {
         if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionCheckFailureException();
         }
-        if (pkg.getOrg() == null || user.getOrg() != pkg.getOrg()) {
+        if (pkg.getOrg() == null || !Objects.equals(user.getOrg(), pkg.getOrg())) {
             throw new PermissionCheckFailureException();
         }
         schedulePackageFileForDeletion(pkg.getPath());

@@ -168,7 +168,7 @@ public class Package extends BaseDomainHelper {
     @JoinColumn(name = "package_arch_id")
     private PackageArch packageArch;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "rhnPackageKeyAssociation",
             joinColumns = @JoinColumn(name = "package_id"),
