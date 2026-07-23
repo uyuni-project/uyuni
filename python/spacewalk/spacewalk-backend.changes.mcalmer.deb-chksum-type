@@ -1,0 +1,1 @@
+- Use sha256 as the default checksum type for Debian repositories
