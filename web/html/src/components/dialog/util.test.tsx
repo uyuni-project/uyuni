@@ -1,11 +1,10 @@
+import { render } from "utils/test-utils";
+
+import { Dialog } from "./Dialog";
 import { hideDialog, showDialog } from "./util";
 
 function renderModalTarget(id: string) {
   document.body.innerHTML = `<div id="${id}" class="modal"></div>`;
-}
-
-function renderNonModalTarget(id: string) {
-  document.body.innerHTML = `<div id="${id}"></div>`;
 }
 
 function mockBootstrapModalPlugin() {
@@ -40,7 +39,6 @@ describe("dialog util", () => {
   });
 
   afterEach(() => {
-    document.body.innerHTML = "";
     restoreModalPlugin();
   });
 
@@ -51,8 +49,8 @@ describe("dialog util", () => {
     expect(modalMock).not.toBeCalled();
   });
 
-  test("does not invoke Bootstrap for non-modal targets", () => {
-    renderNonModalTarget("react-modal-dialog");
+  test("does not invoke Bootstrap for ReactModal targets", () => {
+    render(<Dialog id="react-modal-dialog" isOpen onClose={jest.fn()} />);
 
     showDialog("react-modal-dialog");
     hideDialog("react-modal-dialog");
