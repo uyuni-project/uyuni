@@ -56,6 +56,18 @@ Then(/^it should be possible to reach the test packages$/) do
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Given(/^I mirror the RPM test packages locally$/) do
+  server = get_target('server')
+  dest = '/srv/www/htdocs/pub/TestRepoRpmUpdates'
+  server.run("mkdir -p #{dest}")
+  server.run(
+    'wget --recursive --no-parent --no-host-directories --cut-dirs=6 ' \
+    "--reject 'index.html*' --directory-prefix=#{dest} " \
+    'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/'
+  )
+  server.run("ln -sf #{dest} /srv/www/htdocs/pub/AnotherRepo")
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&

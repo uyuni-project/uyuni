@@ -634,11 +634,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   rescue NoMethodError => e
     log "The browser session could not be cleaned because there is no browser available: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    # Reset only the current session's driver. Capybara.reset_sessions! would reset every
+    # named session in the pool, including peripheral servers parked via switch_to_server/
+    # using_server, silently logging them out and defeating session reuse across hosts.
+    Capybara.current_session.reset!
   rescue StandardError => e
     log "The browser session could not be cleaned for unknown issue: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    Capybara.current_session.reset!
   ensure
     begin
       visit Capybara.app_host
@@ -647,6 +650,15 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
       # page navigation. Wait briefly for connections to settle and retry once.
       warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
       sleep 1
+      visit Capybara.app_host
+    rescue Playwright::Transport::AlreadyDisconnectedError => e
+      # BUG-024/BUG-025: unlike Playwright::Error above, this means the Node driver's pipe is
+      # already dead (browser process crashed or was killed, e.g. by the env.rb scenario
+      # watchdog) - retrying visit on the same transport would just raise the same error again.
+      # Rebuild the driver and session before retrying so the next scenario gets a live browser.
+      warn "Browser transport already disconnected (#{e.message}) — rebuilding driver and retrying"
+      capybara_register_driver
+      Capybara.current_session.reset!
       visit Capybara.app_host
     end
   end

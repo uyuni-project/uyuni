@@ -1,6 +1,8 @@
 # Copyright (c) 2019-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+TASKOMATIC_LOG_PATH = '/var/log/rhn/rhn_taskomatic_daemon.log'.freeze
+
 ENV_VAR_BY_HOST = {
   'localhost' => 'HOSTNAME',
   'proxy' => 'PROXY',

@@ -10,20 +10,39 @@ require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
+# Persistently switch the active Capybara session and app_host to a different
+# server. Unlike using_server, this does NOT revert automatically - it stays in
+# effect until the next switch_to_server/using_server call, or until the
+# scenario's After hook resets it back to the hub. Capybara caches named
+# sessions internally, so switching back to a host that was already logged
+# into reuses the same browser session (cookies, login state) for free.
+def switch_to_server(host)
+  effective_host = host.nil? || host == 'server' ? 'server' : host
+  Capybara.session_name = effective_host == 'server' ? :default : effective_host
+  Capybara.app_host = "https://#{get_target(effective_host).full_hostname}"
+  $current_ui_host = effective_host
+end
+
 # Switch the active Capybara session and app_host to a different server for the
-# duration of the block. Each server gets its own isolated browser session
-# (separate cookies, history), so two servers can be logged into simultaneously.
+# duration of the block, then restore the previous session, app_host, and host
+# tracking. Each server gets its own isolated browser session (separate
+# cookies, history), so two servers can be logged into simultaneously.
 #
 # Usage:
 #   using_server('server2') do
 #     visit('/rhn/YourRhn.do')
 #   end
-#   # default session (server) is automatically restored after the block
+#   # previously-active session/app_host is restored after the block
 def using_server(host)
-  Capybara.using_session(host) do
-    Capybara.app_host = "https://#{get_target(host).full_hostname}"
-    yield
-  end
+  previous_session_name = Capybara.session_name
+  previous_app_host = Capybara.app_host
+  previous_ui_host = $current_ui_host
+  switch_to_server(host)
+  yield
+ensure
+  Capybara.session_name = previous_session_name
+  Capybara.app_host = previous_app_host
+  $current_ui_host = previous_ui_host
 end
 
 # Returns the current URL of the driver.
@@ -89,6 +108,16 @@ end
 def get_reverse_net(net)
   a = net.split('.')
   "#{a[2]}.#{a[1]}.#{a[0]}.in-addr.arpa"
+end
+
+# Returns true if a RepoMDError line timestamped at or after start_time (an "HH:MM:SS"
+# string from the target node's own clock) exists in the taskomatic log. Comparing
+# against a recorded start time -- rather than tailing a fixed number of lines or lines
+# after a line-count marker -- avoids both stale matches from earlier in the log and
+# missed matches if the log grows faster than a fixed window can capture.
+def recent_taskomatic_repomd_error?(node, start_time)
+  output, _code = node.run("grep RepoMDError #{TASKOMATIC_LOG_PATH} | tail -5", check_errors: false, exec_option: '--')
+  output.lines.any? { |line| line[0..7] >= start_time }
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -731,10 +760,12 @@ end
 #
 # @param channels [String, Array<String>] A single channel name or an array of channel names.
 # @param label [String] A descriptive name (e.g., parent channel name) for logging.
+# @param host [String] The target node running the reposync (defaults to the SUMA server; pass a
+#   peripheral role, e.g. 'server2', to verify an ISS-synced channel there instead).
 # @param margin [Integer] The time buffer in seconds to add to the timeout (e.g., 900 for a standard, 0 for custom/PTF).
 #
 # @return [void]
-def wait_for_channels(channels, label, margin: 900)
+def wait_for_channels(channels, label, host: 'server', margin: 900)
   channels = Array(channels).clone
   # --- Context Initialization ---
   add_context('channels_timeout', 0) if get_context('channels_timeout').nil?
@@ -753,7 +784,7 @@ def wait_for_channels(channels, label, margin: 900)
   begin
     repeat_until_timeout(timeout: timeout, message: "Sync failed for #{label}") do
       # Remove channels from the local tracking list as they complete
-      channels.reject! { |c| channel_packages_are_downloaded?(c) }
+      channels.reject! { |c| channel_packages_are_downloaded?(c, host) }
       break if channels.empty?
 
       if ((time_spent += checking_rate) % 60).zero?
@@ -778,8 +809,9 @@ end
 # This method checks if the channel with the given label has been fully synced
 #
 # @param channel_name [String] the label of the channel to check
+# @param host [String] the target node whose reposync log is inspected
 # @return [Boolean] true if the synchronization is completed, false otherwise
-def channel_packages_are_downloaded?(channel_name)
+def channel_packages_are_downloaded?(channel_name, host = 'server')
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
     if client == 'monitoring_server'
@@ -804,8 +836,8 @@ def channel_packages_are_downloaded?(channel_name)
   #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
   # (ScriptError)
   #
-  get_target('server').run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
-  get_target('server').extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
+  get_target(host).run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
+  get_target(host).extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
     return false
