@@ -268,6 +268,10 @@ def test_get_entry_obj_with_multiple_trackers(validator_with_trackers):
         "- This is a valid changelog entry\n",
         "- This is a valid\n  multiline changelog entry\n",
         "- This is an entry with a version-1.2.3 string\n",
+        "- This is an entry with an escaped `string.literal`\n",
+        '- This is an entry with an escaped "string.literal"\n',
+        "- This is an entry with an escaped 'string.literal'\n",
+        "- This is a `foo,bar`. It is valid\n",
     ],
 )
 # pylint: disable-next=redefined-outer-name
@@ -357,8 +361,20 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             IssueType.WRONG_CAP,
         ),
         (
+            "- This entry has wrong capitalization. right after a full stop\n",
+            IssueType.WRONG_CAP,
+        ),
+        (
             "- This entry does not have a space.After a full stop\n",
             IssueType.WRONG_SPACING,
+        ),
+        (
+            "- This entry escapes `this.entry, but not`.Right here\n",
+            IssueType.WRONG_SPACING,
+        ),
+        (
+            "- This entry escapes `this.entry` but not. right here\n",
+            IssueType.WRONG_CAP,
         ),
         ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
         (
