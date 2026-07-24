@@ -85,6 +85,9 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "contentSource", fetch = FetchType.LAZY)
     private Set<SCCRepositoryAuth> repositoryAuths = new HashSet<>();
 
+    @Column(name = "download_strategy_id", nullable = false)
+    private int downloadStrategyId = 500;
+
     /**
      * Constructor
      */
@@ -101,6 +104,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         sourceUrl = cs.getSourceUrl();
         label = cs.getLabel();
         metadataSigned = cs.getMetadataSigned();
+        downloadStrategyId = cs.getDownloadStrategyId();
         channels = new HashSet<>(cs.getChannels());
         sslSets = new HashSet<>(cs.getSslSets());
         repositoryAuths = new HashSet<>(cs.getRepositoryAuths());
@@ -196,6 +200,23 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     public void setSourceUrl(String sourceUrlIn) {
         this.sourceUrl = sourceUrlIn;
     }
+
+
+    /**
+     * @return Returns the download strategy id.
+     */
+    public int getDownloadStrategyId() {
+        return downloadStrategyId;
+    }
+
+
+    /**
+     * @param downloadStrategyIdIn The download strategy id to set.
+     */
+    public void setDownloadStrategyId(int downloadStrategyIdIn) {
+        this.downloadStrategyId = downloadStrategyIdIn;
+    }
+
 
     /**
      *

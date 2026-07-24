@@ -8884,6 +8884,9 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="repos.jsp.create.type" xml:space="preserve">
         <source>Repository Type</source>
       </trans-unit>
+      <trans-unit id="repos.jsp.downloadStrategyId">
+          <source>Download Strategy</source>
+      </trans-unit>
       <trans-unit id="repos.jsp.create.submit" xml:space="preserve">
         <source>Create Repository</source>
       </trans-unit>
