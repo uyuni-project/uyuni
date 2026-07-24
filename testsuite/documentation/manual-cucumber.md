@@ -116,8 +116,6 @@ ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate
 --- | --- | --- | --- | ---
 **SLE 12 SP5** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles12sp5_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles12sp5_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
-**SLE 15 SP3** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp3_minion.feature` | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp3_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **SLE 15 SP4** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp4_minion.feature` | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp4_sshminion.feature` | [General client smoke tests](#generalclientsmoke)
 **SLE 15 SP5** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sles15sp5_minion.feature` | [General client smoke tests](#generalclientsmoke)
@@ -334,8 +332,8 @@ Proxy steps are: <a name="proxysteps"/>
 1. Register Image Build Host and create images
 1. Configure the Branch server
 1. Transfer the images from the SUSE Multi-Linux Manager server to the Branch server
-1. Register new SLES12SP5 terminal
-1. Register new SLE15SP1 terminal
+1. Register new SLE15SP6 terminal
+1. Register new SLE15SP7 terminal
 1. Log in to the new terminals
 1. [Execute general client smoke tests on the terminals](#generalclientsmoke)
 
@@ -374,10 +372,10 @@ Proxy steps are: <a name="proxysteps"/>
 **Important note:** Option `secure='no'` doesn't turn off secure boot feature. It is necessary to do it via UEFI menu during VM's boot. To enter UEFI configuration menu, just type `exit` in previous UEFI shell command prompt. Then you can disable secure boot.
 
 #### 4.1.2 Registering retail terminal with EFI HTTP booting
-1. This feature is for SLE15SP1 (JeOS7) terminals only, please build a kiwi image for it first.
+1. This feature is for SLE15SP6 (JeOS7) terminals only, please build a kiwi image for it first.
 1. Follow the same steps from 4.1.1 section, so everything in the VM for retail terminal is ready for EFI booting
 1. Configure DHCP formula as usual and fill `Filename Http:` input field with `http://[branch-server-FQDN-for-private network]/saltboot/boot/shim.efi`
-1. Ensure default initrd is set to SLE15SP1 image (JeOS7). Check this path on branch server: `/srv/saltboot/boot` - both symlinks (initrd.gz and link) should point to files containing JeOS7
+1. Ensure default initrd is set to SLE15SP6 image (JeOS7). Check this path on branch server: `/srv/saltboot/boot` - both symlinks (initrd.gz and link) should point to files containing JeOS7
 1. Change the default boot option via UEFI menu during VM's boot and set it to *UEFI HTTPv4*. To enter UEFI configuration menu, press ESC and then type `exit` in UEFI shell command prompt
 1. Restart and boot the terminal. The rest should follow as usual.
 1. If you jump into the error message `No mapping found` during booting, try to disable secure boot (see instructions above in section 4.1.1)
@@ -396,10 +394,10 @@ Proxy steps are: <a name="proxysteps"/>
 1. It is also suitable to recreate the virtual HDD of the terminal or restore it from the snapshot before terminals are rebooted
 
 #### 4.1.4. USB stick for booting of retail terminal (instead of HTTP or PXE booting) <a name="retailusb"/>
-1. This feature is for SLE15SP1 (JeOS7) terminals only, please build a kiwi image for it first
+1. This feature is for SLE15SP6 (JeOS7) terminals only, please build a kiwi image for it first
 1. Follow the same steps from 4.1.1 section, this feature is available for both: EFI and legacy BIOS based terminals
 1. Modify VM of branch server and add additional storage of size 512 MiB. Make sure it uses **USB bus**
-1. Ensure the default image is set to SLE15SP1 (JeOS7). You can do it by executing `salt-call pillar.item image-synchronize` at branch server, output should contain `POS_Image_Graphical7-7.0.0` or similar name
+1. Ensure the default image is set to SLE15SP6 (JeOS7). You can do it by executing `salt-call pillar.item image-synchronize` at branch server, output should contain `POS_Image_Graphical7-7.0.0` or similar name
 1. If default image is not set to JeOS7, do it in branch server profile at `Image Synchronization` formula. Then apply highstate
 1. Prepare a usb stick by executing `salt-call image_sync_usb.create /dev/sdX` at branch server assuming `/dev/sdX` points to the USB stick you created in step 3
 1. When this is successfully completed, please remove this storage from branch server's VM and add it to the VM for retail terminal
@@ -446,17 +444,17 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Priority: high
 * Could be automated: to be confirmed
 1. Set up SUMA for Retail
-1. Register terminal using the image for older version of SLE 12 (like SLE 12 SP3)
+1. Register terminal using the image for older version of SLE 15 (like SLE 15 SP6)
 1. Apply highstate on build host to clear kiwi created cache. (If not, older cached packages may be used when kiwi image is build.)
-1. Build a new image for deployment, using newer version of SLE 12 SP4
-1. Assign the new image to the terminal by changing field `OS Image to Deploy` to the name of SLE 12 SP4 image at saltboot formula page on HWTYPE system group of this terminal
+1. Build a new image for deployment, using newer version of SLE 15 SP7
+1. Assign the new image to the terminal by changing field `OS Image to Deploy` to the name of SLE 15 SP7 image at saltboot formula page on HWTYPE system group of this terminal
 1. Restart the terminal
 1. Confirm that the new SLE is running on the terminal
 
 ### 4.3 SUMA for Retail - Migration from SLEPOS
 * Priority: high
 * Could be automated: yes (all steps already done except the first two steps)
-1. Get an existing XML files from Retail team. Those are currently [provided](https://gitlab.suse.de/SLEPOS/SUMA_Retail/tree/master/doc/migration/test_data). (Prepare two SLE15SP1 based VMs as a branch servers to be used for import.)
+1. Get an existing XML files from Retail team. Those are currently [provided](https://gitlab.suse.de/SLEPOS/SUMA_Retail/tree/master/doc/migration/test_data). (Prepare two SLE15SP6 based VMs as a branch servers to be used for import.)
 1. Check for duplicates in source XML file and also check for too long names (longer than 56 characters) of HWTYPE groups and correct if necessary. (Both is documented in official docs.)
 1. Convert XML to yaml file with ``retail_migration`` command
 1. Edit yaml file to match kiwi images to be used if it is not possible to use the exported ones
@@ -607,14 +605,14 @@ Note: in automation, we already test some parts of this page, but not all
 * Priority: medium
 * Could be automated: yes (a check of the menus already exists: trad_sp_migration.feature)
 1. Make sure all products and channels are fully synchronized
-1. Bootstrap a SLE 12 SP1 traditional client
+1. Bootstrap a SLE 15 SP6 traditional client
 1. In the system overview page, go to Software => SP Migration
 1. Press "Select Channels" button
 1. On next page, if no warning about missing channels, press "Schedule Migration"
 1. First try a dry run
 1. Check that the dry run completes
 1. Redo for real
-1. Check in the system details that the migrated system is now SLE 12 SP3
+1. Check in the system details that the migrated system is now SLE 15 SP7
 1. Check on the system itself the repositories with ``zypper lr``
 
 ### 6.7 Package and System Locking (salt minions)
