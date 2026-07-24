@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -379,7 +380,7 @@ public class ActionChainFactory extends HibernateFactory {
                 LOG.debug("Scheduling Action {} to server {}", action, server);
                 action.setPrerequisite(latest.get(server));
                 action.setEarliestAction(dateInOrder);
-                ActionFactory.addServerToAction(server.getId(), action);
+                ServerActionFactory.addServerToAction(server.getId(), action);
 
                 // Increment 'earliest' time by a millisecond for each chain action in
                 // order to sort them correctly for display

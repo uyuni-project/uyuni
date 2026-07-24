@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -253,12 +254,13 @@ public class SaltServerActionService {
                 List<Long> succeededServerIds = results.get(true).stream()
                         .map(MinionSummary::getServerId).collect(toList());
                 if (!succeededServerIds.isEmpty()) {
-                    ActionFactory.updateServerActionsPickedUp(actionIn, succeededServerIds);
+                    ServerActionFactory.updateServerActions(actionIn, succeededServerIds,
+                            ActionFactory.STATUS_PICKED_UP);
                 }
                 List<Long> failedServerIds  = results.get(false).stream()
                         .map(MinionSummary::getServerId).collect(toList());
                 if (!failedServerIds.isEmpty()) {
-                    ActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
+                    ServerActionFactory.updateServerActions(actionIn, failedServerIds, ActionFactory.STATUS_FAILED);
                 }
             }
         }
@@ -1040,7 +1042,7 @@ public class SaltServerActionService {
             Deque<Long> actionIdsDependencies = new ArrayDeque<>();
             actionIdsDependencies.push(actionId);
             List<ServerAction> serverActions = Optional.ofNullable(action).
-                    map(firstAction -> ActionFactory
+                    map(firstAction -> ServerActionFactory
                         .listServerActionsForServer(minion.get(),
                                 ActionFactory.ALL_STATUSES_BUT_COMPLETED, action.getCreated()))
                     .orElse(new ArrayList<>());
@@ -1130,7 +1132,7 @@ public class SaltServerActionService {
                                 jsonResult,
                                 function,
                                 endTime);
-                        ActionFactory.save(sa);
+                        ServerActionFactory.save(sa);
                         SystemManager.updateSystemOverview(sa.getServer());
                     }
                     catch (Exception e) {
@@ -1141,7 +1143,7 @@ public class SaltServerActionService {
 
                         sa.fail("An unexpected error has occurred. Please check the server logs.");
 
-                        ActionFactory.save(sa);
+                        ServerActionFactory.save(sa);
                         // When we throw the exception again, the current transaction
                         // will be set to rollback-only, so we explicitly commit the
                         // transaction here

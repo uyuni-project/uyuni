@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -133,7 +134,7 @@ public class GathererJob extends RhnJavaJob {
                     .build();
             ActionFactory.save(act);
 
-            ActionFactory.scheduleForExecution(act, sids);
+            ServerActionFactory.scheduleForExecution(act, sids);
             TaskHelper.scheduleActionExecution(act);
 
             log.info("  schedule Virt profile refresh for {} systems in org {}", sids.size(), org.getName());

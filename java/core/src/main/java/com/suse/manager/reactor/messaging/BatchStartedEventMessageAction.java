@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -95,7 +96,7 @@ public class BatchStartedEventMessageAction implements MessageAction {
             LOG.debug("Marking server action as failed for server: {}", minionId);
         }
         serverAction.fail("Minion is down or could not be contacted.");
-        ActionFactory.save(serverAction);
+        ServerActionFactory.save(serverAction);
     }
 
     /**

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -150,7 +151,7 @@ public class SPMigrationAction extends RhnAction {
         // Check if there is already a migration in the schedule
         Action migration = null;
         if (parHolder.isTradCliUpgradesViaCapabilitySupported()) {
-            migration = ActionFactory.isMigrationScheduledForServer(server.getId());
+            migration = ServerActionFactory.isMigrationScheduledForServer(server.getId());
         }
         request.setAttribute(MIGRATION_SCHEDULED, migration);
 

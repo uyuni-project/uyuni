@@ -99,7 +99,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -874,21 +873,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ea = (ErrataAction) a;
         assertEquals(1, ea.getErrata().size());
         assertEquals(errata, ea.getErrata().iterator().next());
-    }
-
-    @Test
-    public void testAddServerToAction() throws Exception {
-        User usr = UserTestUtils.createUser();
-        Server s = ServerFactoryTest.createTestServer(usr);
-        Action a = ActionFactoryTest.createAction(usr, ActionTypeEnum.TYPE_ERRATA);
-        ActionFactory.addServerToAction(s.getId(), a);
-
-        assertNotNull(a.getServerActions());
-        assertEquals(a.getServerActions().size(), 1);
-        Object[] array = a.getServerActions().toArray();
-        ServerAction sa = (ServerAction)array[0];
-        assertTrue(sa.isStatusQueued());
-        assertEquals(sa.getServer(), s);
     }
 
     @Test
