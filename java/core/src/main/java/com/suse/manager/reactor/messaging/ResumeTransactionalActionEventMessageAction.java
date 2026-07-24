@@ -41,7 +41,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
     /**
      * Standard constructor.
      *
-     * @param saltServerActionServiceIn service used to execute the continuation
+     * @param saltServerActionServiceIn service used to execute the after-reboot state
      */
     public ResumeTransactionalActionEventMessageAction(
             SaltServerActionService saltServerActionServiceIn) {
@@ -93,7 +93,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
                 transactionalAction.get(), List.of(target.get()));
 
         if (result.get(true).contains(target.get())) {
-            markPostScheduled(message);
+            markAfterRebootScheduled(message);
             return;
         }
 
@@ -101,7 +101,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         if (serverAction != null) {
             serverAction.setStatusFailed();
             serverAction.setResultMsg(
-                    "Unable to schedule the after reboot Salt call.");
+                    "Unable to schedule the after-reboot Salt call.");
         }
         markResumeFailed(message);
     }
@@ -123,12 +123,12 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         TransactionalActionManager.recordTransactionalApplyFinalized(message.getServerId(), message.getActionId());
     }
 
-    private void markPostScheduled(ResumeTransactionalActionEventMessage message) {
-        TransactionalActionManager.recordContinuationScheduled(message.getServerId(), message.getActionId());
+    private void markAfterRebootScheduled(ResumeTransactionalActionEventMessage message) {
+        TransactionalActionManager.recordAfterRebootScheduled(message.getServerId(), message.getActionId());
     }
 
     private void markResumeFailed(ResumeTransactionalActionEventMessage message) {
-        TransactionalActionManager.recordContinuationFailed(message.getServerId(), message.getActionId());
+        TransactionalActionManager.recordAfterRebootFailed(message.getServerId(), message.getActionId());
     }
 
     @Override

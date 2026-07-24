@@ -15,7 +15,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Requests the continuation of an existing transactional action.
+ * Requests after-reboot processing for an existing transactional action.
  */
 public class ResumeTransactionalActionEventMessage implements EventMessage {
 

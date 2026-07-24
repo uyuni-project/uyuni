@@ -49,16 +49,16 @@ public class MinionTransactionalActionHistoryTest {
     }
 
     @Test
-    void testPostScheduledClearsRebootWaitState() {
+    void testAfterRebootScheduledClearsRebootWaitState() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         history.recordPrerequisitesApplied(true);
 
-        history.recordContinuationScheduled();
+        history.recordAfterRebootScheduled();
 
         assertFalse(history.isWaitingForReboot());
         assertNull(history.getRebootPendingSince());
         assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
-        assertEquals(ProgressStatus.SCHEDULED, history.getPostStatus());
+        assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
     }
 
     @Test
@@ -80,16 +80,16 @@ public class MinionTransactionalActionHistoryTest {
         assertFalse(history.isWaitingForReboot());
         assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
         assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
-        assertEquals(ProgressStatus.NOT_NEEDED, history.getPostStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getAfterRebootStatus());
         assertEquals(history.getPrerequisiteAt(), history.getRebootAt());
-        assertEquals(history.getPrerequisiteAt(), history.getPostAt());
+        assertEquals(history.getPrerequisiteAt(), history.getAfterRebootStatusAt());
     }
 
     @Test
     void testProgressEntriesAreReturnedInExecutionOrder() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         history.recordPrerequisitesApplied(false);
-        history.recordContinuationScheduled();
+        history.recordAfterRebootScheduled();
 
         List<MinionTransactionalActionHistory.ProgressEntry> entries = history.getProgressEntries(false);
 
@@ -114,7 +114,7 @@ public class MinionTransactionalActionHistoryTest {
         assertTrue(history.isWaitingForReboot());
         assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
         assertEquals(ProgressStatus.PENDING, history.getRebootStatus());
-        assertEquals(ProgressStatus.PENDING, history.getPostStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
     }
 
     @Test
@@ -126,9 +126,9 @@ public class MinionTransactionalActionHistoryTest {
         assertFalse(history.isWaitingForReboot());
         assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
         assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
-        assertEquals(ProgressStatus.COMPLETED, history.getPostStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertEquals(history.getPrerequisiteAt(), history.getRebootAt());
-        assertEquals(history.getPrerequisiteAt(), history.getPostAt());
+        assertEquals(history.getPrerequisiteAt(), history.getAfterRebootStatusAt());
     }
 
     @Test
@@ -140,9 +140,9 @@ public class MinionTransactionalActionHistoryTest {
 
         assertFalse(history.isWaitingForReboot());
         assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
-        assertEquals(ProgressStatus.COMPLETED, history.getPostStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertTrue(history.getRebootAt().getTime() >= history.getPrerequisiteAt().getTime());
-        assertTrue(history.getPostAt().getTime() >= history.getPrerequisiteAt().getTime());
+        assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
     }
 
     @Test

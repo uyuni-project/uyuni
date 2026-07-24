@@ -148,4 +148,5 @@ public class SystemHistoryEventAction extends RhnAction {
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
+
 }

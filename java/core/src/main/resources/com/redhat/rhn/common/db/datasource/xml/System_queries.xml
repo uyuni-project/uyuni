@@ -1816,7 +1816,7 @@ select event_id as id,
            and TAH.action_id = SA.action_id
            and TAH.reboot_required = true
            and TAH.reboot_status = 'PENDING'
-           and TAH.post_status = 'PENDING'
+           and TAH.after_reboot_status = 'PENDING'
          where SA.server_id = :sid
            and SA.action_id = A.id
            and ATYPE.id = A.action_type

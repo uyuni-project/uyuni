@@ -13192,31 +13192,31 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.execution.completed">
-          <source>Action execution completed</source>
+          <source>After-reboot state completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.execution.failed">
-          <source>Action execution could not be queued</source>
+          <source>After-reboot state could not be queued</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.execution.pending">
-          <source>Action execution is waiting for the previous step</source>
+          <source>After-reboot state is waiting for the previous step</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.execution.notNeeded">
-          <source>Action execution will not run because a previous step failed</source>
+          <source>After-reboot state will not run because a previous step failed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.execution.scheduled">
-          <source>Action execution queued</source>
+          <source>After-reboot state queued</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -13282,7 +13282,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.finalization.scheduled">
-          <source>Action completion queued</source>
+          <source>Action completion requested</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>

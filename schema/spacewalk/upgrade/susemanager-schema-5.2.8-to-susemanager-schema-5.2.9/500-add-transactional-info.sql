@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
     reboot_required  BOOLEAN NOT NULL DEFAULT FALSE,
     reboot_status    VARCHAR(32) NOT NULL,
     reboot_at        TIMESTAMPTZ,
-    post_status      VARCHAR(32) NOT NULL,
-    post_at          TIMESTAMPTZ,
+    after_reboot_status    VARCHAR(32) NOT NULL,
+    after_reboot_status_at TIMESTAMPTZ,
 
     CONSTRAINT suse_transactional_action_history_pk PRIMARY KEY (minion_server_id, action_id)
 );

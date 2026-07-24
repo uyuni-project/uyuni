@@ -59,12 +59,12 @@ public class MinionTransactionalActionHistory implements Serializable {
     @Column(name = "reboot_at")
     private Date rebootAt;
 
-    @Column(name = "post_status")
+    @Column(name = "after_reboot_status")
     @Enumerated(EnumType.STRING)
-    private ProgressStatus postStatus;
+    private ProgressStatus afterRebootStatus;
 
-    @Column(name = "post_at")
-    private Date postAt;
+    @Column(name = "after_reboot_status_at")
+    private Date afterRebootStatusAt;
 
     /**
      * Default constructor required by Hibernate.
@@ -82,7 +82,7 @@ public class MinionTransactionalActionHistory implements Serializable {
         created = new Date();
         prerequisiteStatus = ProgressStatus.PENDING;
         rebootStatus = ProgressStatus.PENDING;
-        postStatus = ProgressStatus.PENDING;
+        afterRebootStatus = ProgressStatus.PENDING;
     }
 
     /**
@@ -153,17 +153,17 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
-     * @return action execution step status
+     * @return after-reboot step status
      */
-    public ProgressStatus getPostStatus() {
-        return postStatus;
+    public ProgressStatus getAfterRebootStatus() {
+        return afterRebootStatus;
     }
 
     /**
-     * @return when the action execution step reached the current status
+     * @return when the after-reboot step reached the current status
      */
-    public Date getPostAt() {
-        return postAt;
+    public Date getAfterRebootStatusAt() {
+        return afterRebootStatusAt;
     }
 
     /**
@@ -177,7 +177,7 @@ public class MinionTransactionalActionHistory implements Serializable {
                 new ProgressEntry(transactionalApply ? ProgressStep.TRANSACTIONAL_REBOOT :
                         ProgressStep.REBOOT, rebootStatus, rebootAt),
                 new ProgressEntry(transactionalApply ? ProgressStep.ACTION_FINALIZATION :
-                        ProgressStep.ACTION_EXECUTION, postStatus, postAt)
+                        ProgressStep.ACTION_EXECUTION, afterRebootStatus, afterRebootStatusAt)
         );
     }
 
@@ -194,7 +194,7 @@ public class MinionTransactionalActionHistory implements Serializable {
     public boolean isWaitingForReboot() {
         return rebootRequired &&
                 ProgressStatus.PENDING.equals(rebootStatus) &&
-                ProgressStatus.PENDING.equals(postStatus);
+                ProgressStatus.PENDING.equals(afterRebootStatus);
     }
 
     /**
@@ -217,8 +217,8 @@ public class MinionTransactionalActionHistory implements Serializable {
         rebootRequired = rebootRequiredIn;
         rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
         rebootAt = rebootRequiredIn ? null : prerequisiteAt;
-        postStatus = ProgressStatus.PENDING;
-        postAt = null;
+        afterRebootStatus = ProgressStatus.PENDING;
+        afterRebootStatusAt = null;
     }
 
     /**
@@ -231,21 +231,21 @@ public class MinionTransactionalActionHistory implements Serializable {
         rebootRequired = false;
         rebootStatus = ProgressStatus.NOT_NEEDED;
         rebootAt = now;
-        postStatus = ProgressStatus.NOT_NEEDED;
-        postAt = now;
+        afterRebootStatus = ProgressStatus.NOT_NEEDED;
+        afterRebootStatusAt = now;
     }
 
     /**
-     * Record that the action execution step was scheduled.
+     * Record that the after-reboot state was scheduled.
      */
-    public void recordContinuationScheduled() {
+    public void recordAfterRebootScheduled() {
         Date now = new Date();
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
             rebootAt = now;
         }
-        postStatus = ProgressStatus.SCHEDULED;
-        postAt = now;
+        afterRebootStatus = ProgressStatus.SCHEDULED;
+        afterRebootStatusAt = now;
     }
 
     /**
@@ -259,8 +259,8 @@ public class MinionTransactionalActionHistory implements Serializable {
         rebootRequired = rebootRequiredIn;
         rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
         rebootAt = rebootRequiredIn ? null : prerequisiteAt;
-        postStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.COMPLETED;
-        postAt = rebootRequiredIn ? null : prerequisiteAt;
+        afterRebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.COMPLETED;
+        afterRebootStatusAt = rebootRequiredIn ? null : prerequisiteAt;
     }
 
     /**
@@ -273,8 +273,8 @@ public class MinionTransactionalActionHistory implements Serializable {
         rebootRequired = false;
         rebootStatus = ProgressStatus.NOT_NEEDED;
         rebootAt = now;
-        postStatus = ProgressStatus.NOT_NEEDED;
-        postAt = now;
+        afterRebootStatus = ProgressStatus.NOT_NEEDED;
+        afterRebootStatusAt = now;
     }
 
     /**
@@ -286,21 +286,21 @@ public class MinionTransactionalActionHistory implements Serializable {
             rebootStatus = ProgressStatus.COMPLETED;
             rebootAt = now;
         }
-        postStatus = ProgressStatus.COMPLETED;
-        postAt = now;
+        afterRebootStatus = ProgressStatus.COMPLETED;
+        afterRebootStatusAt = now;
     }
 
     /**
-     * Record that scheduling the action execution step failed.
+     * Record that scheduling the after-reboot state failed.
      */
-    public void recordContinuationFailed() {
+    public void recordAfterRebootFailed() {
         Date now = new Date();
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
             rebootAt = now;
         }
-        postStatus = ProgressStatus.FAILED;
-        postAt = now;
+        afterRebootStatus = ProgressStatus.FAILED;
+        afterRebootStatusAt = now;
     }
 
     /**

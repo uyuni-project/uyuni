@@ -60,7 +60,7 @@ public class TransactionalActionManager {
                  WHERE history.minionServerId = :minionServerId
                    AND history.rebootRequired = true
                    AND history.rebootStatus = :pendingStatus
-                   AND history.postStatus = :pendingStatus
+                   AND history.afterRebootStatus = :pendingStatus
                  ORDER BY history.created ASC, history.actionId ASC
                 """, MinionTransactionalActionHistory.class)
                 .setParameter("minionServerId", minionServerId)
@@ -219,11 +219,11 @@ public class TransactionalActionManager {
         else if (!hasChanges(jsonResult)) {
             recordPrerequisitesApplied(minionServerId, actionId, false);
             MessageQueue.publish(new ResumeTransactionalActionEventMessage(actionId, minionServerId));
-            return "Prerequisite states already satisfied. Action continuation scheduled.";
+            return "Prerequisite states already satisfied. After-reboot state scheduling requested.";
         }
         else {
             recordPrerequisitesApplied(minionServerId, actionId, true);
-            return "Prerequisite states applied. A system reboot is required before continuing the action.";
+            return "Prerequisite states applied. A system reboot is required before applying the after-reboot state.";
         }
     }
 
@@ -274,23 +274,23 @@ public class TransactionalActionManager {
     }
 
     /**
-     * Record that the continuation step was scheduled.
+     * Record that the after-reboot state was scheduled.
      *
      * @param minionServerId minion server id
      * @param actionId action id
      */
-    public static void recordContinuationScheduled(Long minionServerId, Long actionId) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordContinuationScheduled();
+    public static void recordAfterRebootScheduled(Long minionServerId, Long actionId) {
+        lookupOrCreateActionHistory(minionServerId, actionId).recordAfterRebootScheduled();
     }
 
     /**
-     * Record that scheduling the continuation step failed.
+     * Record that scheduling the after-reboot state failed.
      *
      * @param minionServerId minion server id
      * @param actionId action id
      */
-    public static void recordContinuationFailed(Long minionServerId, Long actionId) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordContinuationFailed();
+    public static void recordAfterRebootFailed(Long minionServerId, Long actionId) {
+        lookupOrCreateActionHistory(minionServerId, actionId).recordAfterRebootFailed();
     }
 
     /**
