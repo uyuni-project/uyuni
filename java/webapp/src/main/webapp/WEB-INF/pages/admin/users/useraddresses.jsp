@@ -6,6 +6,6 @@
         <%@ include file="/WEB-INF/pages/common/fragments/user/user-header.jspf" %>
         <h2><bean:message key="address.jsp.addresses"/></h2>
         <p><bean:message key="address.jsp.associated" /></p>
-        <rhn:address type="M" action="user" user="${requestScope.targetuser}" address="${requestScope.addressMarketing}"/>
+        <rhn:address action="user" user="${requestScope.targetuser}" address="${requestScope.address}"/>
     </body>
 </html>

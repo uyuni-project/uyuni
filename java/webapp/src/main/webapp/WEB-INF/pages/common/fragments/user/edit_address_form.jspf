@@ -3,7 +3,7 @@
         <rhn:required-field key="edit_address.jsp.phone"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="14" property="phone" styleClass="form-control"/>
+        <html:text size="14" maxlength="32" property="phone" styleClass="form-control"/>
     </div>
 </div>
 
@@ -12,7 +12,7 @@
         <bean:message key="edit_address.jsp.fax"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="14" property="fax" styleClass="form-control"/>
+        <html:text size="14" maxlength="32" property="fax" styleClass="form-control"/>
     </div>
 </div>
 
@@ -21,8 +21,8 @@
         <rhn:required-field key="edit_address.jsp.address"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="30" property="address1" styleClass="form-control"/><br />
-        <html:text size="30" property="address2" styleClass="form-control"/>
+        <html:text size="30" maxlength="128" property="address1" styleClass="form-control"/><br />
+        <html:text size="30" maxlength="128" property="address2" styleClass="form-control"/>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
         <rhn:required-field key="edit_address.jsp.city"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="20" property="city" styleClass="form-control"/>
+        <html:text size="20" maxlength="128" property="city" styleClass="form-control"/>
     </div>
 </div>
 
@@ -40,7 +40,7 @@
         <rhn:required-field key="edit_address.jsp.state"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="20" property="state" styleClass="form-control"/><br/>
+        <html:text size="20" maxlength="64" property="state" styleClass="form-control"/><br/>
         <bean:message key="edit_address.jsp.staterequired"/>
     </div>
 </div>
@@ -50,7 +50,7 @@
         <rhn:required-field key="edit_address.jsp.zipcode"/>:
     </label>
     <div class="col-sm-6">
-        <html:text size="14" property="zip" styleClass="form-control"/>
+        <html:text size="14" maxlength="64" property="zip" styleClass="form-control"/>
     </div>
 </div>
 
@@ -60,6 +60,7 @@
     </label>
     <div class="col-sm-6">
         <html:select property="country" styleClass="form-control">
+            <html:option value=""><bean:message key="edit_address.jsp.country.select"/></html:option>
             <html:options collection="availableCountries"
                           property="value"
                           labelProperty="label" />
