@@ -74,6 +74,8 @@ Provides spacewalk-schema-upgrade and spacewalk-sql.
 %setup -q
 
 %build
+# disable parallel build
+%define _smp_mflags -j1
 %make_build -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1
