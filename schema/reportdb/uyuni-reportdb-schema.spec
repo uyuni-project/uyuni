@@ -59,6 +59,8 @@ uyuni-reportdb-schema is the SQL schema for the %{productprettyname} server.
 %setup -q
 
 %build
+# disable parallel build
+%define _smp_mflags -j1
 %make_build -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 
 %install
