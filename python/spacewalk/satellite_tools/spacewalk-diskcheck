@@ -8,15 +8,19 @@ usage: $0 options
 
 OPTIONS:
     -h              Show this message
+    -f              Skip checking if spacewalk services are running
 EOF
 }
 
 function parseArguments {
-    while getopts "h?" opt; do
+    while getopts "h?f" opt; do
         case "$opt" in
             h|\?)
                 usage
                 exit 0
+                ;;
+            f)
+                SKIP_SERVICES_CHECK=1
                 ;;
         esac
     done
@@ -43,6 +47,9 @@ function parseConfiguration {
 }
 
 function ensureSpacewalkRunning {
+    if [ "$SKIP_SERVICES_CHECK" = "1" ]; then
+        return
+    fi
     systemctl status spacewalk.target > /dev/null 2>&1
     if [ $? != 0 ]; then
         echo  "DISKCHECK: spacewalk services are not running - skipping disk check."
@@ -59,10 +66,10 @@ function updateSeverity {
 # Main script
 
 CHECKSEVERITY=0
-
-ensureSpacewalkRunning
+SKIP_TARGET_CHECK=0
 
 parseArguments "$@"
+ensureSpacewalkRunning
 parseConfiguration /etc/rhn/rhn.conf
 
 for DIR in $DISKCHECKDIRS

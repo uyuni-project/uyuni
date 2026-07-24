@@ -39,4 +39,4 @@ RUN echo "${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%" > 
 ENTRYPOINT ["/uyuni-entrypoint.sh"]
 
 CMD ["postgres"]
-HEALTHCHECK --interval=10s --start-period=10s --timeout=5s --retries=3 CMD ["/usr/bin/healthcheck.sh"]
+HEALTHCHECK --interval=10s --start-period=600s --timeout=120s --retries=3 CMD ["/usr/bin/healthcheck.sh"]
