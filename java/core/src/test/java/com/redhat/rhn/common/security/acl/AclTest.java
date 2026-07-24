@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2013 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,10 +16,10 @@
 
 package com.redhat.rhn.common.security.acl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
@@ -240,8 +241,13 @@ public class AclTest {
      */
     @Test
     void testBadHandler() {
-        assertThrows(IllegalArgumentException.class,
-                () -> acl.evalAcl(null, "handler_does_not_exist(true)"));
+        var ex = assertThrows(IllegalArgumentException.class,
+            () -> acl.evalAcl(null, "handler_does_not_exist(true)"));
+        assertEquals(
+            "Could not find ACL handler handler_does_not_exist in statement: " +
+                "\"handler_does_not_exist(true)\". Available ACL handlers: []",
+            ex.getMessage()
+        );
     }
 
     /* Test bad syntax.
@@ -249,16 +255,22 @@ public class AclTest {
     @Test
     void testBadSyntax() {
         // Assuming "and" is invalid per original test
-        assertThrows(IllegalArgumentException.class,
-                () -> acl.evalAcl(null, "handler_zero(true) and handler_zero(true)"));
+        var ex = assertThrows(IllegalArgumentException.class,
+            () -> acl.evalAcl(null, "handler_zero(true) and handler_zero(true)"));
+        assertEquals(
+            "Could not find ACL handler handler_zero(true) and handler_zero in statement: " +
+                "\"handler_zero(true) and handler_zero(true)\". Available ACL handlers: []",
+            ex.getMessage()
+        );
     }
 
     /* Test bad syntax.
      */
     @Test
     void testNullExpression() {
-        assertThrows(IllegalArgumentException.class,
-                () -> acl.evalAcl(null, null));
+        var ex = assertThrows(IllegalArgumentException.class,
+            () -> acl.evalAcl(null, null));
+        assertEquals("Could not parse ACL statement: \"null\"", ex.getMessage());
     }
 
     /** Makes sure that method names are properly converted to acl handler
@@ -312,13 +324,8 @@ public class AclTest {
 
     @Test
     public void testBadRegisterByString() {
-        try {
-            acl.registerHandler("Bubba");
-            fail("Expected call to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good.
-        }
+        var ex = assertThrows(IllegalArgumentException.class, () -> acl.registerHandler("Bubba"));
+        assertEquals("class not found: Bubba", ex.getMessage());
     }
 
     @Test
