@@ -100,7 +100,7 @@
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps}
               ${commons-compress} ${javamail} smtp jdom ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
               ${struts-jars} ${tomcat-jars} ${postgresql-jdbc} quartz slf4j-api
-              velocity-engine-core simple-core" />
+              velocity-engine-core" />
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp postgresql-jdbc" />
@@ -140,7 +140,7 @@
               commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps} ${commons-compress}
               ${tomcat-jars} ${javamail} jdom jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
-              ${struts-jars} ${postgresql-jdbc} quartz ${suse-common-jars} velocity-engine-core simple-core snakeyaml
+              ${struts-jars} ${postgresql-jdbc} quartz ${suse-common-jars} velocity-engine-core snakeyaml
               ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
@@ -150,7 +150,7 @@
               ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom
               ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc oro quartz sitemesh ${struts-jars}
               ${postgresql-jdbc} snakeyaml ${suse-common-jars} ${suse-runtime-jars}
-              simple-core ${jcache} ${other-jars}" />
+              ${jcache} ${other-jars}" />
 
   <property name="taskomatic.jar.dependencies" value="${dist.jar.dependencies} jsch" />
 

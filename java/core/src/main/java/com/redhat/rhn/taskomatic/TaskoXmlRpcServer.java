@@ -16,18 +16,17 @@ package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.common.conf.Config;
 
+import com.sun.net.httpserver.HttpServer;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
 
 import redstone.xmlrpc.XmlRpcCustomSerializer;
 import redstone.xmlrpc.XmlRpcServer;
-import simple.http.connect.Connection;
-import simple.http.connect.ConnectionFactory;
 
 
 /**
@@ -35,80 +34,64 @@ import simple.http.connect.ConnectionFactory;
  */
 public class TaskoXmlRpcServer {
 
-    private int listenPort;
-    private InetAddress listenAddress;
-    private XmlRpcServer xmlrpcServer;
-    private ServerSocket socket;
+    private static final Logger LOG = LogManager.getLogger(TaskoXmlRpcServer.class);
+
+    private final XmlRpcServer xmlrpcServer;
+
+    private final HttpServer httpServer;
 
     /**
-     * Constructor
+     * Create a server instance from the given configuration
      *
-     * @param config
-     *            dependency
-     * @throws UnknownHostException
-     *             if config contains bad rpc_address
+     * @param config the configuration, which may contain the entries {@code tasko_server.host} and
+     * {@code tasko_server.port}
+     * @throws IOException when the server cannot be created
      */
-    public TaskoXmlRpcServer(Config config) throws UnknownHostException {
-        listenPort = config.getInt("tasko_server.port", 2829);
-        String addr = config.getString("tasko_server.host", "localhost");
-        if (addr != null) {
-            listenAddress = InetAddress.getByName(addr);
-        }
+    public TaskoXmlRpcServer(Config config) throws IOException {
+        this(
+            InetAddress.getByName(config.getString("tasko_server.host", "localhost")),
+            config.getInt("tasko_server.port", 2829)
+        );
     }
 
     /**
-     * Starts the server
-     * @throws RuntimeException something bad happened
+     * Create a server instance on the given address and port
+     *
+     * @param address the address where the server accepts connections
+     * @param port the port where the server accepts connections
+     * @throws IOException when the server cannot be created
      */
-    public void start() {
+    public TaskoXmlRpcServer(InetAddress address, int port) throws IOException {
         xmlrpcServer = new XmlRpcServer();
         xmlrpcServer.addInvocationHandler("tasko", new TaskoXmlRpcHandler());
         xmlrpcServer.addInvocationInterceptor(new TaskoXmlRpcInvocationInterceptor());
         addTaskoSerializers();
 
-        TaskoXmlRpcInvoker invoker = new TaskoXmlRpcInvoker(xmlrpcServer);
-        Connection connection = ConnectionFactory.getConnection(invoker);
-        try {
-            socket = new ServerSocket();
-            SocketAddress sockAddr = null;
-            if (listenAddress != null) {
-                sockAddr = new InetSocketAddress(listenAddress, listenPort);
-            }
-            else {
-                sockAddr = new InetSocketAddress(listenPort);
-            }
-            socket.bind(sockAddr);
-            connection.connect(socket);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        httpServer = HttpServer.create(new InetSocketAddress(address, port), 0);
+        httpServer.createContext("/RPC2", new TaskoXmlRpcHttpHandler(xmlrpcServer));
     }
 
     /**
-     * Stops the server
-     *
-     * @throws RuntimeException when it catches IOException
+     * Starts accepting XML-RPC requests on the configured endpoint.
+     */
+    public void start() {
+        httpServer.start();
+    }
+
+    /**
+     * Stops the server immediately and closes all active connections.
      */
     public void stop() {
-        try {
-            socket.close();
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        httpServer.stop(0);
     }
 
     private void addTaskoSerializers() {
-        for (Class clazz : TaskoSerializerRegistry.getSerializationClasses()) {
+        for (Class<? extends XmlRpcCustomSerializer> clazz : TaskoSerializerRegistry.getSerializationClasses()) {
             try {
-                xmlrpcServer.getSerializer().addCustomSerializer(
-                        (XmlRpcCustomSerializer)clazz.getDeclaredConstructor().newInstance());
+                xmlrpcServer.getSerializer().addCustomSerializer(clazz.getDeclaredConstructor().newInstance());
             }
-            catch (InstantiationException | IllegalAccessException |
-                   InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace(System.out);
+            catch (ReflectiveOperationException ex) {
+                LOG.error("Unable to create serializer for class {}", clazz, ex);
             }
         }
     }

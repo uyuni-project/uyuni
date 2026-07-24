@@ -22,6 +22,8 @@ import com.redhat.rhn.taskomatic.serializer.TaskoTemplateSerializer;
 import java.util.LinkedList;
 import java.util.List;
 
+import redstone.xmlrpc.XmlRpcCustomSerializer;
+
 
 /**
  * TaskoSerializerFactory
@@ -30,7 +32,7 @@ import java.util.List;
 // it's not possible to override static methods / attributes
 public class TaskoSerializerRegistry {
 
-    private static final List<Class> TASKO_SERIALIZER_CLASSES;
+    private static final List<Class<? extends XmlRpcCustomSerializer>> TASKO_SERIALIZER_CLASSES;
     static {
         TASKO_SERIALIZER_CLASSES = new LinkedList<>();
         TASKO_SERIALIZER_CLASSES.add(TaskoScheduleSerializer.class);
@@ -47,7 +49,7 @@ public class TaskoSerializerRegistry {
      * Returns the list of all available custom XMLRPC serializers.
      * @return List of serializer classes.
      */
-    public static List<Class> getSerializationClasses() {
+    public static List<Class<? extends XmlRpcCustomSerializer>> getSerializationClasses() {
         return TASKO_SERIALIZER_CLASSES;
     }
 }
