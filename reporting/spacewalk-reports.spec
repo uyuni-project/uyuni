@@ -33,7 +33,7 @@ Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRequires:  %{_bindir}/docbook2man
+BuildRequires:  /usr/bin/docbook2man
 Requires:       %{pythonX}
 Requires:       spacewalk-branding
 BuildArch:      noarch

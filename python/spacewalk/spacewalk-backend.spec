@@ -45,8 +45,8 @@ Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
-BuildRequires:  %{_bindir}/docbook2man
-BuildRequires:  %{_bindir}/msgfmt
+BuildRequires:  /usr/bin/docbook2man
+BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  %{m2crypto}
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
