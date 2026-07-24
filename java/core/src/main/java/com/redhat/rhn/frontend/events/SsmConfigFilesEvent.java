@@ -17,7 +17,9 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 
 import org.hibernate.Transaction;
 
@@ -45,16 +47,16 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
      * @param userIdIn             user making the request; cannot be <code>null</code>
      * @param revisionMappingsIn   files revisions to work with
      * @param systemsIn            target systems
-     * @param typeIn               type of scheduled action
+     * @param typeEnumIn           type of scheduled action
      * @param earliestIn           used for scheduling the verification in the future;
      *                             may be <code>null</code>
      * @param actionChainIn        the selected Action Chain or null
      *                             cannot be <code>null</code>
      */
     public SsmConfigFilesEvent(Long userIdIn,
-            Map<Long, Collection<Long>> revisionMappingsIn,
-            Collection<Long> systemsIn, ActionType typeIn, Date earliestIn,
-            ActionChain actionChainIn) {
+                               Map<Long, Collection<Long>> revisionMappingsIn,
+                               Collection<Long> systemsIn, ActionTypeEnum typeEnumIn, Date earliestIn,
+                               ActionChain actionChainIn) {
 
         if (userIdIn == null) {
             throw new IllegalArgumentException("userIdIn cannot be null");
@@ -63,7 +65,7 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
         this.userId = userIdIn;
         this.systemIds = systemsIn;
         this.revisionMappings = revisionMappingsIn;
-        this.type = typeIn;
+        this.type = ActionFactory.lookupActionTypeByEnum(typeEnumIn);
         this.earliest = earliestIn;
         if (actionChainIn != null) {
             this.actionChainId = actionChainIn.getId();

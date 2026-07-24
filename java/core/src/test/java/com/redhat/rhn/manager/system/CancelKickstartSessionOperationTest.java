@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -46,7 +47,7 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksession = KickstartSessionTest.createKickstartSession(k, user);
         Server s = ksession.getOldServer();
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_KICKSTART_INITIATE);
         ksession.setAction(a);
         ActionFactory.save(a);
         KickstartFactory.saveKickstartData(k);

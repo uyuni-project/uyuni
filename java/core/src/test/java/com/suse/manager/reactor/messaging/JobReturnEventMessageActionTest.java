@@ -30,6 +30,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
@@ -187,7 +188,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -341,7 +342,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.allversions.json", action.getId()))
@@ -410,7 +411,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
                 .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
@@ -484,7 +485,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setLastBoot(0L);
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -550,7 +551,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -616,7 +617,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         minion.setMinionId("minion.ubuntu.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -675,7 +676,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         minion.setMinionId("minion.debian.local");
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
         // Setup an event message from file contents
@@ -1019,7 +1020,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
@@ -1068,7 +1069,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
@@ -1086,7 +1087,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         ServerAction sa = ActionFactoryTest.createServerAction(server, action);
         action.addServerAction(sa);
 
@@ -1195,7 +1196,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
 
         Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+                user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(server, action));
 
         // Setup an event message from file contents
@@ -2176,9 +2177,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testFailDependentServerActions() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        Action applyStateAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
-        Action rebootAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
-        Action runScriptAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action applyStateAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_APPLY_STATES);
+        Action rebootAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
+        Action runScriptAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_SCRIPT_RUN);
         //Add dependency
         rebootAction.setPrerequisite(applyStateAction);
         runScriptAction.setPrerequisite(rebootAction);
@@ -2386,7 +2387,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
 
-        Action actionDiff = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DIFF);
+        Action actionDiff = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
         ServerAction saDiff = ActionFactoryTest.createServerAction(server, actionDiff);
         actionDiff.addServerAction(saDiff);
 
@@ -2446,7 +2447,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SUSEProduct sles16 = createSlesProduct("16.0", 2000000L, "SLES 16.0");
         // Create DistUpgradeAction
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_DIST_UPGRADE);
+                ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
         details.setServer(minion);
@@ -2465,7 +2466,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      */
     private ApplyStatesAction createSles16VerificationAction(MinionServer minion) throws Exception {
         ApplyStatesAction applyStatesAction = (ApplyStatesAction) ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_APPLY_STATES);
+                ActionTypeEnum.TYPE_APPLY_STATES);
         ApplyStatesActionDetails asDetails = new ApplyStatesActionDetails();
         asDetails.setMods(List.of("distupgrade.sles16_verify"));
         asDetails.setTest(false);

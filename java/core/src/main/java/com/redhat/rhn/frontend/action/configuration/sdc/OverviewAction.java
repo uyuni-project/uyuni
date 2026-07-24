@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.sdc;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigChannelType;
@@ -191,8 +191,8 @@ public class OverviewAction extends RhnAction {
          */
 
         Action sysCompare = ActionManager.lookupLastCompletedAction(user,
-                                             ActionFactory.TYPE_CONFIGFILES_DIFF,
-                                                                server);
+                ActionTypeEnum.TYPE_CONFIGFILES_DIFF,
+                server);
         if (sysCompare == null) {
             request.setAttribute(DIFF_TIME_MESSAGE, "");
 
@@ -228,9 +228,9 @@ public class OverviewAction extends RhnAction {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
 
-        ConfigAction ca = (ConfigAction)ActionManager.lookupLastCompletedAction(user,
-                                               ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                                                         server);
+        ConfigAction ca = (ConfigAction) ActionManager.lookupLastCompletedAction(user,
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY,
+                server);
 
         if (ca == null) {
             request.setAttribute(DEPLOYMENT_TIME_MESSAGE, "");

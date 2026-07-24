@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -46,8 +46,7 @@ public class InProgressSystemsActionTest extends BaseTestCase {
         User user = ah.getUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Action a = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
 
         for (int i = 0; i < 4;  i++) {
             Server server = ServerFactoryTest.createTestServer(user, true);

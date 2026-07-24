@@ -14,11 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc;
 
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-
-import java.util.Set;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -32,7 +29,8 @@ public class ImportFileConfirmAction extends FileListConfirmSetupAction {
     }
 
     @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
         // no-op
+        return null;
     }
 }

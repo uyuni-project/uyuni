@@ -16,8 +16,8 @@ package com.redhat.rhn.domain.action.config;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -37,7 +37,7 @@ public class ConfigActionFormatterTest extends BaseTestCaseWithUser {
     @Test
     public void testGetRelatedObjectDescription() throws Exception {
         ConfigAction action = (ConfigAction) ActionFactoryTest.createAction(user,
-            ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ConfigActionFormatter formatter = new ConfigActionFormatter(action);
 
         ConfigRevision revision = action.getConfigRevisionActions().iterator().next()

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
@@ -112,7 +113,7 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
         for (SSHPushAction a : queuedActions) {
             Action action = ActionFactory.lookupById(a.getActionId());
 
-            if (SaltUtils.prerequisiteIsCompleted(action, Optional.of(ActionFactory.TYPE_REBOOT), a.getSystemId())) {
+            if (SaltUtils.prerequisiteIsCompleted(action, Optional.of(ActionTypeEnum.TYPE_REBOOT), a.getSystemId())) {
                 SystemSummary s = new SystemSummary(a.getSystemId(), a.getSystemName(), a.getMinionId(), true);
                 if (!candidates.contains(s)) {
                     candidates.add(s);

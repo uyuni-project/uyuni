@@ -19,10 +19,12 @@ import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
@@ -106,7 +108,7 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
-                null, ActionFactory.TYPE_PACKAGES_UPDATE);
+                null, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
     }
 
     /**
@@ -124,7 +126,7 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
-                null, ActionFactory.TYPE_PACKAGES_REMOVE);
+                null, ActionTypeEnum.TYPE_PACKAGES_REMOVE);
     }
 
     /**
@@ -152,7 +154,7 @@ public class ActionChainManager {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
                 actions.add(schedulePackageActionByOs(user, server, entry.getValue(),
                         earliestAction, actionChain, sortOrder,
-                        ActionFactory.TYPE_PACKAGES_UPDATE));
+                        ActionTypeEnum.TYPE_PACKAGES_UPDATE));
             }
             return actions;
         }
@@ -170,7 +172,7 @@ public class ActionChainManager {
                 List<Map<String, Long>> packages = entry.getKey();
                 actions.addAll(
                         schedulePackageActionsByOs(user, servers, packages,
-                        earliestAction, null, ActionFactory.TYPE_PACKAGES_UPDATE)
+                        earliestAction, null, ActionTypeEnum.TYPE_PACKAGES_UPDATE)
                 );
             }
             return actions;
@@ -211,14 +213,14 @@ public class ActionChainManager {
             List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
         throws TaskomaticApiException {
         return (PackageAction) schedulePackageActions(user, packages,
-            ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
+                ActionTypeEnum.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, Set.of(server.getId()));
     }
 
     /**
      * Schedules generic package actions on multiple servers.
      * @param user the user scheduling actions
      * @param packages a list of "package maps"
-     * @param type the type
+     * @param actionTypeEnum the type
      * @param earliestAction the earliest execution date
      * @param actionChain the action chain or null
      * @param sortOrder the sort order or null
@@ -230,13 +232,13 @@ public class ActionChainManager {
      * @see ActionManager#addPackageActionDetails(Collection, List) for "package map"
      */
     private static Set<Action> schedulePackageActions(User user,
-            List<Map<String, Long>> packages, ActionType type, Date earliestAction,
+            List<Map<String, Long>> packages, ActionTypeEnum actionTypeEnum, Date earliestAction,
             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
         throws TaskomaticApiException {
 
-        String name = type.getPackageActionName();
+        String name = actionTypeEnum.getPackageActionName();
 
-        Set<Action> result = createActions(user, type, name, earliestAction,
+        Set<Action> result = createActions(user, actionTypeEnum, name, earliestAction,
             actionChain, sortOrder, serverIds);
 
         ActionManager.addPackageActionDetails(result, packages);
@@ -265,7 +267,7 @@ public class ActionChainManager {
         Set<Long> serverIds
     ) throws TaskomaticApiException {
         var actions = createActions(
-            user, ActionFactory.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, serverIds
+            user, ActionTypeEnum.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, serverIds
         );
         AppStreamAction action = (AppStreamAction) actions.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
@@ -301,7 +303,7 @@ public class ActionChainManager {
 
         Set<Long> sidSet = new HashSet<>(sids);
 
-        Set<Action> result = createActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_SCRIPT_RUN, name,
             earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ScriptActionDetails actionScript = ActionFactory.createScriptActionDetails(
@@ -337,7 +339,7 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<>(sids);
 
         String summary = "Apply highstate" + (test.orElse(false) ? " in test-mode" : "");
-        Set<Action> result = createActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_APPLY_STATES, summary,
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
@@ -355,7 +357,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions a set of revision IDs
      * @param serverIds a set of server IDs
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -363,11 +365,11 @@ public class ActionChainManager {
      * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActions(User user, Collection<Long> revisions,
-        Collection<Long> serverIds, ActionType type, Date earliest,
+        Collection<Long> serverIds, ActionTypeEnum typeEnum, Date earliest,
         ActionChain actionChain) throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-        return createConfigActionForServers(user, revisions, servers, type, earliest,
+        return createConfigActionForServers(user, revisions, servers, typeEnum, earliest,
             actionChain);
     }
 
@@ -376,7 +378,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions a set of revision IDs
      * @param servers a set of servers
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -384,20 +386,24 @@ public class ActionChainManager {
      * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActionForServers(User user,
-        Collection<Long> revisions, Collection<Server> servers, ActionType type,
+        Collection<Long> revisions, Collection<Server> servers, ActionTypeEnum typeEnum,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
             Action action = ActionManager.createConfigActionForServers(user, revisions,
-                servers, type, earliest);
+                servers, typeEnum, earliest);
             if (action != null) {
                 result.add(action);
             }
         }
         else {
             for (Server server : servers) {
-                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
-                ActionManager.checkConfigActionOnServer(type, server);
+                ConfigAction action = (ConfigAction) new ActionBuilder()
+                        .ofType(typeEnum)
+                        .withSchedulerUser(user)
+                        .withEarliest(earliest)
+                        .build();
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions, action,
                     server);
@@ -413,7 +419,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions maps servers to multiple revision IDs
      * @param serverIds a set of server IDs
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -421,10 +427,10 @@ public class ActionChainManager {
      */
     public static Set<Action> createConfigActions(User user,
             Map<Long, Collection<Long>> revisions, Collection<Long> serverIds,
-            ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+            ActionTypeEnum typeEnum, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
             List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-            return createConfigActionForServers(user, revisions, servers, type, earliest,
+            return createConfigActionForServers(user, revisions, servers, typeEnum, earliest,
                 actionChain);
     }
 
@@ -433,7 +439,7 @@ public class ActionChainManager {
      * @param user the user scheduling actions
      * @param revisions maps servers to multiple revision IDs
      * @param servers a set of server objects
-     * @param type the type of configuration action
+     * @param typeEnum the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
@@ -441,14 +447,19 @@ public class ActionChainManager {
      */
     public static Set<Action> createConfigActionForServers(User user,
         Map<Long, Collection<Long>> revisions, Collection<Server> servers,
-        ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+        ActionTypeEnum typeEnum, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<>();
         if (actionChain == null) {
-            ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+            ConfigAction action = (ConfigAction) new ActionBuilder()
+                    .ofType(typeEnum)
+                    .withSchedulerUser(user)
+                    .withEarliest(earliest)
+                    .build();
+
             ActionFactory.save(action);
 
             for (Server server : servers) {
-                ActionManager.checkConfigActionOnServer(type, server);
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionFactory.addServerToAction(server.getId(), action);
 
                 ActionManager.addConfigurationRevisionsToAction(user,
@@ -461,10 +472,14 @@ public class ActionChainManager {
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Server server : servers) {
-                ConfigAction action = (ConfigAction) ActionFactory.createAction(type, user, earliest);
+                ConfigAction action = (ConfigAction) new ActionBuilder()
+                        .ofType(typeEnum)
+                        .withSchedulerUser(user)
+                        .withEarliest(earliest)
+                        .build();
                 ActionFactory.save(action);
                 result.add(action);
-                ActionManager.checkConfigActionOnServer(type, server);
+                ActionManager.checkConfigActionOnServer(typeEnum, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server,
                     sortOrder);
                 ActionManager.addConfigurationRevisionsToAction(user,
@@ -506,8 +521,9 @@ public class ActionChainManager {
      */
     public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        Set<Action> result = createActions(user, ActionFactory.TYPE_REBOOT,
-            ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, null, serverIds);
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_REBOOT,
+                ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_REBOOT).getName(),
+                earliest, actionChain, null, serverIds);
         taskoScheduleActions(result, user, actionChain);
         return result;
     }
@@ -579,7 +595,7 @@ public class ActionChainManager {
         ActionChain actionChain) throws TaskomaticApiException {
 
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
     }
 
     /**
@@ -598,13 +614,13 @@ public class ActionChainManager {
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) throws TaskomaticApiException {
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
-                ActionFactory.TYPE_PACKAGES_REMOVE);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE);
     }
 
     /**
      * Creates generic actions on multiple servers.
      * @param user the user scheduling actions
-     * @param type the type
+     * @param actionTypeEnum the type
      * @param name the name
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
@@ -612,12 +628,12 @@ public class ActionChainManager {
      * @param serverIds the affected servers' IDs
      * @return created actions
      */
-    private static Set<Action> createActions(User user, ActionType type, String name,
-            Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
+    private static Set<Action> createActions(User user, ActionTypeEnum actionTypeEnum, String name, Date earliest,
+                                             ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
-            Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
+            Action action = ActionFactory.createAndSaveAction(actionTypeEnum, user, name, earliest);
             ActionFactory.scheduleForExecution(action, serverIds);
             result.add(action);
         }
@@ -627,7 +643,7 @@ public class ActionChainManager {
                 nextSortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             }
             for (Long serverId : serverIds) {
-                Action action = ActionFactory.createAndSaveAction(type, user, name, earliest);
+                Action action = ActionFactory.createAndSaveAction(actionTypeEnum, user, name, earliest);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
@@ -649,7 +665,7 @@ public class ActionChainManager {
         try {
             for (Action action : actions) {
                 if (actionChain == null) {
-                    if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
+                    if (ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS.equalsType(action.getActionType())) {
                         // Subscribing to channels is handled by the MinionActionExecutor even
                         // for traditional clients. Also the user must be passed for traditional
                         // clients.
@@ -659,7 +675,7 @@ public class ActionChainManager {
                         taskomaticApi.scheduleActionExecution(action);
                     }
                 }
-                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
+                if (ActionTypeEnum.TYPE_PACKAGES_UPDATE.equalsType(action.getActionType())) {
                     MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
                 }
             }
@@ -692,7 +708,7 @@ public class ActionChainManager {
      */
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
-            Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
+            Integer sortOrder, ActionTypeEnum linuxActionType) throws TaskomaticApiException {
         Set<Action> actions = schedulePackageActions(user, packages, linuxActionType,
                 earliest, actionChain, sortOrder, Set.of(server.getId()));
         return (PackageAction) actions.iterator().next();
@@ -712,7 +728,7 @@ public class ActionChainManager {
      */
     private static List<Action> schedulePackageActionsByOs(User user,
             Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
-            ActionChain actionChain, ActionType linuxActionType)
+            ActionChain actionChain, ActionTypeEnum linuxActionType)
         throws TaskomaticApiException {
 
         List<Action> result = new LinkedList<>();
@@ -745,7 +761,7 @@ public class ActionChainManager {
                                                               Date earliest,
                                                               ActionChain actionChain)
             throws TaskomaticApiException {
-        Set<Action> result = createActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
                 earliest, actionChain, null, serverIds);
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -776,7 +792,7 @@ public class ActionChainManager {
 
         ImageInfo info = ImageInfoFactory.createImageInfo(buildHostId, version, profile);
 
-        Set<Action> result = createActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
+        Set<Action> result = createActions(user, ActionTypeEnum.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
                 earliest, actionChain, null, Collections.singleton(buildHostId));
 
         ImageBuildAction action = (ImageBuildAction)result.stream().findFirst()
@@ -822,7 +838,7 @@ public class ActionChainManager {
             throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
-        Set<Action> result = createActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
+        Set<Action> result = createActions(scheduler, ActionTypeEnum.TYPE_PLAYBOOK,
                 String.format("Execute playbook '%s'", playbookName), earliest, actionChain, null,
                 singleton(controlNodeId));
         PlaybookAction action = (PlaybookAction) result.stream().findFirst()

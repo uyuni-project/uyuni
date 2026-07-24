@@ -18,7 +18,9 @@ package com.redhat.rhn.taskomatic.task.gatherer;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -125,10 +127,10 @@ public class GathererJob extends RhnJavaJob {
                 continue;
             }
 
-            Action act = ActionFactory.createAction(ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
-            // set up needed fields for the action
-            act.setName(act.getActionTypeName());
-            act.setOrg(org);
+            Action act = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH)
+                    .withOrg(org)
+                    .build();
             ActionFactory.save(act);
 
             ActionFactory.scheduleForExecution(act, sids);

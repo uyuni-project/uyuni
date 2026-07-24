@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.schedule;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -33,12 +34,12 @@ public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase
 
     @Test
     public void testConfirmDeleteActions() throws Exception {
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         Server server = ServerFactoryTest.createTestServer(user, true);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusQueued();
 
-        Action b = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action b = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction saction2 = ServerActionTest.createServerAction(server, b);
         saction2.setStatusQueued();
 

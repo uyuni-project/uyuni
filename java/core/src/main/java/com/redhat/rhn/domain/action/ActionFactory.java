@@ -24,49 +24,15 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
-import com.redhat.rhn.domain.action.ansible.InventoryAction;
-import com.redhat.rhn.domain.action.ansible.PlaybookAction;
-import com.redhat.rhn.domain.action.appstream.AppStreamAction;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
-import com.redhat.rhn.domain.action.config.ConfigDeployAction;
-import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
-import com.redhat.rhn.domain.action.config.ConfigUploadAction;
-import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
-import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
-import com.redhat.rhn.domain.action.config.DaemonConfigAction;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
-import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
-import com.redhat.rhn.domain.action.image.DeployImageAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartGuestToolsChannelSubscriptionAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartHostToolsChannelSubscriptionAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
-import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
-import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
-import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -389,13 +355,13 @@ public class ActionFactory extends HibernateFactory {
 
     /**
      * Creates, saves and returns a new Action
-     * @param typeIn the type of Action we want to create
+     * @param actionTypeEnum the type of Action we want to create
      * @param schedulerUser the user who created this action
      * @param actionName the action name
      * @param earliestAction the earliest execution date
      * @return a saved Action
      */
-    public static Action createAndSaveAction(ActionType typeIn, User schedulerUser, String actionName,
+    public static Action createAndSaveAction(ActionTypeEnum actionTypeEnum, User schedulerUser, String actionName,
                                              Date earliestAction) {
         /*
             We have to re-lookup the type here, because most likely a static final variable
@@ -404,233 +370,16 @@ public class ActionFactory extends HibernateFactory {
             will be different from the final static variable
             sometimes hibernate is no fun
         */
-        ActionType lookedUpType = lookupActionTypeByLabel(typeIn.getLabel());
-        Action action = createAction(lookedUpType, schedulerUser, actionName, earliestAction);
+        ActionType lookedUpType = lookupActionTypeByLabel(actionTypeEnum.getLabel());
+        Action action = new ActionBuilder()
+                .ofType(lookedUpType)
+                .withSchedulerUser(schedulerUser)
+                .withName(actionName)
+                .withEarliest(earliestAction)
+                .build();
         save(action);
         HibernateFactory.getSession().flush();
         return action;
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn,
-                                      Date earliestIn) {
-        return createAction(typeIn, schedulerUserIn, typeIn.getName(), schedulerUserIn.getOrg(), earliestIn);
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param actionName the action name
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionName,
-                                      Date earliestIn) {
-        return createAction(typeIn, schedulerUserIn, actionName, schedulerUserIn.getOrg(), earliestIn);
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param orgIn the Org of this action
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn, Org orgIn,
-                                      Date earliestIn) {
-        return createAction(typeIn, schedulerUserIn, typeIn.getName(), orgIn, earliestIn);
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @param schedulerUserIn the user who created this action
-     * @param actionNameIn the action name
-     * @param orgIn the Org of this action
-     * @param earliestIn the earliest execution date
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, User schedulerUserIn, String actionNameIn, Org orgIn,
-                                      Date earliestIn) {
-        Action pa = createAction(typeIn, earliestIn);
-        pa.setName(actionNameIn);
-        pa.setOrg(orgIn);
-        pa.setSchedulerUser(schedulerUserIn);
-        return pa;
-    }
-
-    /**
-     * Create a new Action from scratch.
-     * @param typeIn the type of Action we want to create
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn) {
-        return createAction(typeIn, new Date());
-    }
-
-    /**
-     * Create a new Action from scratch with the given earliestIn execution time.
-     * @param typeIn the type of Action we want to create
-     * @param earliestIn The earliest time that this action can occur.
-     * @return the Action created
-     */
-    public static Action createAction(ActionType typeIn, Date earliestIn) {
-        Action retval;
-
-        if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
-            retval = new PackageRefreshListAction();
-        }
-        else if (typeIn.equals(TYPE_HARDWARE_REFRESH_LIST)) {
-            retval = new HardwareRefreshAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_UPDATE)) {
-            retval = new PackageUpdateAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_REMOVE)) {
-            retval = new PackageRemoveAction();
-        }
-        else if (typeIn.equals(TYPE_ERRATA)) {
-            ErrataAction ea = new ErrataAction();
-            ea.setDetails(new ActionPackageDetails(ea, false));
-            retval = ea;
-        }
-        else if (typeIn.equals(TYPE_UP2DATE_CONFIG_GET)) {
-            retval = new Up2DateConfigGetAction();
-        }
-        else if (typeIn.equals(TYPE_UP2DATE_CONFIG_UPDATE)) {
-            retval = new Up2DateConfigUpdateAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_DELTA)) {
-            retval = new PackageDeltaAction();
-        }
-        else if (typeIn.equals(TYPE_REBOOT)) {
-            retval = new RebootAction();
-        }
-        else if (typeIn.equals(TYPE_ROLLBACK_CONFIG)) {
-            retval = new RollbackConfigAction();
-        }
-        else if (typeIn.equals(TYPE_ROLLBACK_LISTTRANSACTIONS)) {
-            retval = new RollbackListTransactionsAction();
-        }
-        else if (typeIn.equals(TYPE_ROLLBACK_ROLLBACK)) {
-            retval = new RollbackAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_AUTOUPDATE)) {
-            retval = new PackageAutoUpdateAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION)) {
-            retval = new PackageRunTransactionAction();
-        }
-        else if (typeIn.equals(TYPE_CONFIGFILES_UPLOAD)) {
-            retval = new ConfigUploadAction();
-        }
-        else if (typeIn.equals(TYPE_CONFIGFILES_DEPLOY)) {
-            retval = new ConfigDeployAction();
-        }
-        else if (typeIn.equals(TYPE_CONFIGFILES_VERIFY)) {
-            retval = new ConfigVerifyAction();
-        }
-        else if (typeIn.equals(TYPE_CONFIGFILES_DIFF)) {
-            retval = new ConfigDiffAction();
-        }
-        else if (typeIn.equals(TYPE_KICKSTART_INITIATE)) {
-            retval = new KickstartInitiateAction();
-        }
-        else if (typeIn.equals(TYPE_KICKSTART_SCHEDULE_SYNC)) {
-            retval = new KickstartScheduleSyncAction();
-        }
-        else if (typeIn.equals(TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-            retval = new ConfigUploadMtimeAction();
-        }
-        else if (typeIn.equals(TYPE_SCRIPT_RUN)) {
-            retval = new ScriptRunAction();
-        }
-        else if (typeIn.equals(TYPE_DAEMON_CONFIG)) {
-            retval = new DaemonConfigAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_VERIFY)) {
-            retval = new PackageVerifyAction();
-        }
-        else if (typeIn.equals(TYPE_RHN_APPLET_USE_SATELLITE)) {
-            retval = new AppletUseSatelliteAction();
-        }
-        else if (typeIn.equals(TYPE_KICKSTART_INITIATE_GUEST)) {
-            retval = new KickstartInitiateGuestAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
-            retval = new KickstartHostToolsChannelSubscriptionAction();
-        }
-        else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
-            retval = new KickstartGuestToolsChannelSubscriptionAction();
-        }
-        else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
-            retval = new ScapAction();
-        }
-        else if (typeIn.equals(TYPE_CLIENTCERT_UPDATE_CLIENT_CERT)) {
-            retval = new CertificateUpdateAction();
-        }
-        else if (typeIn.equals(TYPE_DEPLOY_IMAGE)) {
-            retval = new DeployImageAction();
-        }
-        else if (typeIn.equals(TYPE_DIST_UPGRADE)) {
-            retval = new DistUpgradeAction();
-        }
-        else if (typeIn.equals(TYPE_PACKAGES_LOCK)) {
-            retval = new PackageLockAction();
-        }
-        else if (typeIn.equals(TYPE_APPLY_STATES)) {
-            retval = new ApplyStatesAction();
-        }
-        else if (typeIn.equals(TYPE_IMAGE_BUILD)) {
-            retval = new ImageBuildAction();
-        }
-        else if (typeIn.equals(TYPE_IMAGE_INSPECT)) {
-            retval = new ImageInspectAction();
-        }
-        else if (typeIn.equals(TYPE_SUBSCRIBE_CHANNELS)) {
-            retval = new SubscribeChannelsAction();
-        }
-        else if (typeIn.equals(TYPE_PLAYBOOK)) {
-            retval = new PlaybookAction();
-        }
-        else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
-            retval = new CoCoAttestationAction();
-        }
-        else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
-            retval = new AppStreamAction();
-        }
-        else if (typeIn.equals(TYPE_INVENTORY)) {
-            retval = new InventoryAction();
-        }
-        else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
-            retval = new SupportDataAction();
-        }
-        else if (typeIn.equals(TYPE_VIRT_PROFILE_REFRESH)) {
-            retval = new VirtualInstanceRefreshAction();
-        }
-        else {
-            retval = new Action();
-        }
-        retval.setActionType(typeIn);
-        retval.setCreated(new Date());
-        retval.setModified(new Date());
-        if (earliestIn == null) {
-            earliestIn = new Date();
-        }
-        retval.setEarliestAction(earliestIn);
-        //in perl(modules/rhn/RHN/DB/Scheduler.pm) version is given a 2.
-        //So that's what I did.
-        retval.setVersion(2L);
-        retval.setArchived(0L); //not archived
-        return retval;
     }
 
     /**
@@ -674,11 +423,12 @@ public class ActionFactory extends HibernateFactory {
      * find the last deployed config action ...
      *
      * @param user the user doing the search (needed for permssion checking)
-     * @param type the action type of the action to be queried.
-     * @param server the server who's latest completed action is desired.
+     * @param typeEnum the action type of the action to be queried.
+     * @param server the server whose latest completed action is desired.
      * @return the Action found or null if none exists
      */
-    public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
+    public static Action lookupLastCompletedAction(User user, ActionTypeEnum typeEnum, Server server) {
+        ActionType type = ActionFactory.lookupActionTypeByEnum(typeEnum);
         return getSession().createNativeQuery("""
                 SELECT *
                 FROM   rhnAction a
@@ -716,13 +466,43 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method to get a ActionType by ActionTypeEnum object
+     * @param actionTypeEnumIn the ActionTypeEnum to lookup
+     * @return Returns the ActionType corresponding to actionTypeEnumIn
+     */
+    public static ActionType lookupActionTypeByEnum(ActionTypeEnum actionTypeEnumIn) {
+        if (actionTypeEnumIn == null) {
+            throw new IllegalArgumentException("ActionFactory.lookupActionTypeByEnum invoked with null ActionTypeEnum");
+        }
+        return lookupActionTypeByLabel(actionTypeEnumIn.getLabel());
+    }
+
+    /**
+     * Checks if the action type is in maintenance mode only
+     * @param actionTypeEnumIn
+     * @return true if the action type exists and is in maintenance mode only
+     */
+    public static boolean isMaintenanceModeOnly(ActionTypeEnum actionTypeEnumIn) {
+        if (null == actionTypeEnumIn) {
+            return false;
+        }
+
+        ActionType actionType = lookupActionTypeByEnum(actionTypeEnumIn);
+
+        if (null != actionType) {
+            return actionType.isMaintenanceModeOnly();
+        }
+        return false;
+    }
+
+    /**
      * Helper method to get a ActionType by label
      * @param label the Action to lookup
      * @return Returns the ActionType corresponding to label
      */
     public static ActionType lookupActionTypeByLabel(String label) {
         if (label == null) {
-            return null;
+            throw new IllegalArgumentException("ActionFactory.lookupActionTypeByLabel invoked with null label");
         }
         return singleton.lookupObjectByParam(ActionType.class, "label", label, true);
     }
@@ -1264,288 +1044,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final List<ActionStatus> ALL_PENDING_STATUSES = List.of(STATUS_QUEUED, STATUS_PICKED_UP);
 
-    /**
-     * The constant representing Package Refresh List action.  [ID:1]
-     */
-    public static final ActionType TYPE_PACKAGES_REFRESH_LIST =
-            lookupActionTypeByLabel("packages.refresh_list");
-
-    /**
-     * The constant representing Hardware Refreshlist action.  [ID:2]
-     */
-    public static final ActionType TYPE_HARDWARE_REFRESH_LIST =
-            lookupActionTypeByLabel("hardware.refresh_list");
-
-    /**
-     * The constant representing Package Update action.  [ID:3]
-     */
-    public static final ActionType TYPE_PACKAGES_UPDATE =
-            lookupActionTypeByLabel("packages.update");
-
-    /**
-     * The constant representing Package Remove action.  [ID:4]
-     */
-    public static final ActionType TYPE_PACKAGES_REMOVE =
-            lookupActionTypeByLabel("packages.remove");
-
-    /**
-     * The constant representing Errata action.  [ID:5]
-     */
-    public static final ActionType TYPE_ERRATA =
-            lookupActionTypeByLabel("errata.update");
-
-    /**
-     * The constant representing RHN Get server up2date config action. [ID:6]
-     */
-    public static final ActionType TYPE_UP2DATE_CONFIG_GET =
-            lookupActionTypeByLabel("up2date_config.get");
-
-    /**
-     * The constant representing RHN Update server up2date config action.  [ID:7]
-     */
-    public static final ActionType TYPE_UP2DATE_CONFIG_UPDATE =
-            lookupActionTypeByLabel("up2date_config.update");
-
-    /**
-     * The constant representing Package Delta action.  [ID:8]
-     */
-    public static final ActionType TYPE_PACKAGES_DELTA =
-            lookupActionTypeByLabel("packages.delta");
-
-    /**
-     * The constant representing Reboot action.  [ID:9]
-     */
-    public static final ActionType TYPE_REBOOT =
-            lookupActionTypeByLabel("reboot.reboot");
-
-    /**
-     * The constant representing Rollback Config action.  [ID:10]
-     */
-    public static final ActionType TYPE_ROLLBACK_CONFIG =
-            lookupActionTypeByLabel("rollback.config");
-
-    /**
-     * The constant representing "Refresh server-side transaction list"  [ID:11]
-     */
-    public static final ActionType TYPE_ROLLBACK_LISTTRANSACTIONS =
-            lookupActionTypeByLabel("rollback.listTransactions");
-
-    /**
-     * The constant representing "Automatic package installation".  [ID:13]
-     */
-    public static final ActionType TYPE_PACKAGES_AUTOUPDATE =
-            lookupActionTypeByLabel("packages.autoupdate");
-
-    /**
-     * The constant representing "Package Synchronization".  [ID:14]
-     */
-    public static final ActionType TYPE_PACKAGES_RUNTRANSACTION =
-            lookupActionTypeByLabel("packages.runTransaction");
-
-
-    /**
-     * The constant representing "Import config file data from system".  [ID:15]
-     */
-    public static final ActionType TYPE_CONFIGFILES_UPLOAD =
-            lookupActionTypeByLabel("configfiles.upload");
-
-    /**
-     * The constant representing "Deploy config files to system".  [ID:16]
-     */
-    public static final ActionType TYPE_CONFIGFILES_DEPLOY =
-            lookupActionTypeByLabel("configfiles.deploy");
-
-    /**
-     * The constant representing "Verify deployed config files" [ID:17]
-     */
-    public static final ActionType TYPE_CONFIGFILES_VERIFY =
-            lookupActionTypeByLabel("configfiles.verify");
-
-    /**
-     * The constant representing
-     * "Show differences between profiled config files and deployed config files"  [ID:18]
-     */
-    public static final ActionType TYPE_CONFIGFILES_DIFF =
-            lookupActionTypeByLabel("configfiles.diff");
-
-    /**
-     * The constant representing "Initiate a kickstart".  [ID:19]
-     */
-    public static final ActionType TYPE_KICKSTART_INITIATE =
-            lookupActionTypeByLabel("kickstart.initiate");
-
-
-    /**
-     * The constant representing "Initiate a kickstart for a guest".
-     */
-    public static final ActionType TYPE_KICKSTART_INITIATE_GUEST =
-            lookupActionTypeByLabel("kickstart_guest.initiate");
-
-    /**
-     * The constant representing "Schedule a package sync for kickstarts".  [ID:20]
-     */
-    public static final ActionType TYPE_KICKSTART_SCHEDULE_SYNC =
-            lookupActionTypeByLabel("kickstart.schedule_sync");
-
-    /**
-     * The constant representing "Schedule a package install for activation key".  [ID:21]
-     */
-    public static final ActionType TYPE_ACTIVATION_SCHEDULE_PKG_INSTALL =
-            lookupActionTypeByLabel("activation.schedule_pkg_install");
-
-    /**
-     * The constant representing "Schedule a config deploy for activation key"  [ID:22]
-     */
-    public static final ActionType TYPE_ACTIVATION_SCHEDULE_DEPLOY =
-            lookupActionTypeByLabel("activation.schedule_deploy");
-
-    /**
-     * The constant representing
-     * "Upload config file data based upon mtime to server" [ID:23]
-     */
-    public static final ActionType TYPE_CONFIGFILES_MTIME_UPLOAD =
-            lookupActionTypeByLabel("configfiles.mtime_upload");
-
-    /**
-     * The constant representing "Run an arbitrary script".  [ID:30]
-     */
-    public static final ActionType TYPE_SCRIPT_RUN =
-            lookupActionTypeByLabel("script.run");
-
-    /**
-     * The constant representing "RHN Daemon Configuration".  [ID:32]
-     */
-    public static final ActionType TYPE_DAEMON_CONFIG =
-            lookupActionTypeByLabel("rhnsd.configure");
-
-    /**
-     * The constant representing "Verify deployed packages"  [ID:33]
-     */
-    public static final ActionType TYPE_PACKAGES_VERIFY =
-            lookupActionTypeByLabel("packages.verify");
-
-    /**
-     * The constant representing "Lock packages"  [ID:502]
-     */
-    public static final ActionType TYPE_PACKAGES_LOCK =
-            lookupActionTypeByLabel("packages.setLocks");
-
-    /**
-     * The constant representing "Allows for rhn-applet use with an PRODUCTNAME"  [ID:34]
-     */
-    public static final ActionType TYPE_RHN_APPLET_USE_SATELLITE =
-            lookupActionTypeByLabel("rhn_applet.use_satellite");
-
-    /**
-     * The constant representing "Rollback a transaction".  [ID:197542]
-     */
-    public static final ActionType TYPE_ROLLBACK_ROLLBACK =
-            lookupActionTypeByLabel("rollback.rollback");
-
-    /**
-     * The constant representing "Schedule a package install of host specific
-     * functionality."  [ID:44]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_HOST_PACKAGE_INSTALL =
-            lookupActionTypeByLabel("kickstart_host.schedule_virt_host_pkg_install");
-
-    /**
-     * The constant representing "Schedule a package install of guest specific
-     * functionality."  [ID:45]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_GUEST_PACKAGE_INSTALL =
-            lookupActionTypeByLabel("kickstart_guest.schedule_virt_guest_pkg_install");
-
-    /**
-     * The constant representing "Subscribes a server to the RHN Tools channel
-     * associated with its base channel." [ID:46]
-     */
-    public static final ActionType TYPE_VIRTIZATION_HOST_SUBSCRIBE_TO_TOOLS_CHANNEL =
-            lookupActionTypeByLabel("kickstart_host.add_tools_channel");
-
-    /**
-     * The constant represting "Subscribes a virtualization guest to the RHN Tools channel
-     * associated with its base channel." [ID: 47]
-     */
-    public static final ActionType TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL =
-            lookupActionTypeByLabel("kickstart_guest.add_tools_channel");
-
-    public static final ActionType TYPE_SCAP_XCCDF_EVAL =
-            lookupActionTypeByLabel("scap.xccdf_eval");
-
-    public static final ActionType TYPE_CLIENTCERT_UPDATE_CLIENT_CERT =
-            lookupActionTypeByLabel("clientcert.update_client_cert");
-
     public static final String TXN_OPERATION_INSERT = "insert";
     public static final String TXN_OPERATION_DELETE = "delete";
-
-    /**
-     * The constant representing Image deploy action.  [ID:500]
-     */
-    public static final ActionType TYPE_DEPLOY_IMAGE =
-            lookupActionTypeByLabel("image.deploy");
-
-    /**
-     * The constant representing distribution upgrade action.  [ID:501]
-     */
-    public static final ActionType TYPE_DIST_UPGRADE =
-            lookupActionTypeByLabel("distupgrade.upgrade");
-
-    /**
-     * The constant representing application of salt states.  [ID:503]
-     */
-    public static final ActionType TYPE_APPLY_STATES =
-            lookupActionTypeByLabel("states.apply");
-
-    /**
-     * The constant representing application of image build.  [ID:504]
-     */
-    public static final ActionType TYPE_IMAGE_BUILD =
-            lookupActionTypeByLabel("image.build");
-
-    /**
-     * The constant representing application of image inspect.  [ID:505]
-     */
-    public static final ActionType TYPE_IMAGE_INSPECT =
-            lookupActionTypeByLabel("image.inspect");
-
-    /**
-     * The constant representing setting of channels.  [ID:506]
-     */
-    public static final ActionType TYPE_SUBSCRIBE_CHANNELS =
-            lookupActionTypeByLabel("channels.subscribe");
-
-    /**
-     * The constant representing "Execute an Ansible playbook" [ID:521]
-     */
-    public static final ActionType TYPE_PLAYBOOK = lookupActionTypeByLabel("ansible.playbook");
-
-    /**
-     * The constant representing "Confidential Compute Attestation" [ID:523]
-     */
-    public static final ActionType TYPE_COCO_ATTESTATION =
-            lookupActionTypeByLabel("coco.attestation");
-
-    /**
-     * The constant representing appstreams changes action. [ID:524]
-     */
-    public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
-
-    /**
-     * The constant representing "Refresh Ansible inventories" [ID:525]
-     */
-    public static final ActionType TYPE_INVENTORY = lookupActionTypeByLabel("ansible.inventory");
-
-    /**
-     * The constant representing "Support Data Get" [ID:526]
-     */
-    public static final ActionType TYPE_SUPPORTDATA_GET =
-            lookupActionTypeByLabel("supportdata.get");
-
-    /**
-     * The constant representing "Refresh Virtual Machine list" [ID:527]
-     */
-    public static final ActionType TYPE_VIRT_PROFILE_REFRESH = lookupActionTypeByLabel("virt.refresh_list");
-
 }
 
