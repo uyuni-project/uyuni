@@ -12,6 +12,7 @@ Feature: Create fake repositories for each fake child channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+    And I mirror the RPM test packages locally
 
   Scenario: Create a fake repository for distributions using RPM
     When I follow the left menu "Software > Manage > Repositories"
@@ -35,7 +36,7 @@ Feature: Create fake repositories for each fake child channel
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "fake-appstream-repo" as "label"
-    And I enter "http://localhost/pub/TestRepoAppStream/" as "url"
+    And I enter "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Appstream/rhlike/" as "url"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
     And I should see "metadataSigned" as checked

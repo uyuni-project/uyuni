@@ -20,6 +20,7 @@ Feature: Add a repository to a channel
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
     And I enable source package syncing
+    And I mirror the RPM test packages locally
 
   Scenario: Add a test repository for x86_64
     When I follow the left menu "Software > Manage > Repositories"
