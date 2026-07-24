@@ -70,10 +70,9 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
 
     private InMemoryDirectoryServer directory;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
+        // Parent @BeforeEach (setUpBaseTestCaseWithUser) already created `user`.
         InMemoryDirectoryServerConfig dsConfig = new InMemoryDirectoryServerConfig(BASE_DN);
         dsConfig.addAdditionalBindCredentials(ADMIN_DN, ADMIN_PASSWORD);
         directory = new InMemoryDirectoryServer(dsConfig);
