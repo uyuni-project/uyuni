@@ -99,6 +99,18 @@ public interface User extends Serializable {
     void setUsePamAuthentication(boolean usePamAuthenticationIn);
 
     /**
+     * Gets the authentication backend that validates this user's password.
+     * @return the {@link AuthType}, never {@code null}
+     */
+    AuthType getAuthType();
+
+    /**
+     * Sets the authentication backend that validates this user's password.
+     * @param authTypeIn the new {@link AuthType}
+     */
+    void setAuthType(AuthType authTypeIn);
+
+    /**
      * Gets the factory to create the {@link PamService}
      * @return an instance of {@link PamServiceFactory}
      */

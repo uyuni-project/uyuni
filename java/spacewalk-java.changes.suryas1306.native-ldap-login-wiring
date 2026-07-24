@@ -1,0 +1,2 @@
+- Route logins by per-user authentication type and add native LDAP
+  authentication to the login layer
