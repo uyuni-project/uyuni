@@ -9,7 +9,7 @@ describe("Dialog", () => {
     ReactModal.setAppElement(document.body);
   });
 
-  test("closes ReactModal without Bootstrap dismiss handling", async () => {
+  test("requests closure once without Bootstrap dismiss handling", async () => {
     const onClose = jest.fn();
 
     render(<Dialog id="test-dialog" isOpen title="Title" content={<p>Content</p>} onClose={onClose} />);
