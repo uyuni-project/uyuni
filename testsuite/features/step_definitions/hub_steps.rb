@@ -1236,7 +1236,7 @@ When(/^I wait until the server on "([^"]*)" is ready$/) do |host|
   node = get_target(host)
   repeat_until_timeout(timeout: 600, message: "Web UI on #{host} did not come up") do
     out, code = node.run(
-      "curl -ks -o /dev/null -w '%{http_code}' https://localhost/rhn/help/Copyright.do",
+      "curl -ks -o /dev/null -w '%{http_code}' https://localhost/docs/en/release-notes/release-notes-server.html",
       runs_in_container: false,
       check_errors: false
     )
