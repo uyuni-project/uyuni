@@ -14,8 +14,14 @@
  */
 package com.suse.manager.utils;
 
+import static com.redhat.rhn.domain.action.ActionFactoryTest.addServerAction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -30,13 +36,17 @@ import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class SaltUtilsTest extends BaseTestCaseWithUser {
 
@@ -121,5 +131,105 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
         // Live patch packages must trigger refresh
         outcome = SaltUtils.applyChangesFromStateModule(installLivePatch, minion);
         assertEquals(SaltUtils.PackageChangeOutcome.NEEDS_REFRESHING, outcome);
+    }
+
+    /**
+     * Test getFailedStateErrors extracts errors correctly from state.apply results
+     * Also cover against {@code SaltUtils#updateServerAction}, but you'll need to
+     * check to actual test logs
+     */
+    @Test
+    public void testGetFailedStateErrors() {
+        String stateSuccess = "module_|-grains_|-grains.items_|-run";
+        String stateFail1 = "module_|-pkg_|-pkg.info_installed_|-run";
+        String stateFail2 = "module_|-hw_|-hardware.udevdb_|-run";
+        String stateFail3 = "module_|-grains_|-grains.items_something_else|-run";
+
+        String stateJson = """
+                {
+                    "module_|-grains_|-grains.items_|-run": {
+                        "result": true,
+                        "comment": "Module function grains.items executed",
+                        "__run_num__": 1
+                    },
+                    "module_|-pkg_|-pkg.info_installed_|-run": {
+                        "result": false,
+                        "comment": "pkg.info_installed threw exception: name 'datetime' is ...",
+                        "__run_num__": 2
+                    },
+                    "module_|-hw_|-hardware.udevdb_|-run": {
+                        "result": false,
+                        "comment": "",
+                        "__run_num__": 3
+                    },
+                    "module_|-grains_|-grains.items_something_else|-run": {
+                        "result": false,
+                        "__run_num__": 4
+                    }
+                }
+                """;
+
+        JsonElement jsonResult = JsonParser.parseString(stateJson);
+        Map<String, String> errors = SaltUtils.getFailedStateErrors(jsonResult);
+
+        // Expects 3 errors (as success state are ignored)
+        assertEquals(3, errors.size());
+
+        assertFalse(errors.containsKey(stateSuccess));
+
+        assertTrue(errors.containsKey(stateFail1));
+        assertTrue(errors.containsKey(stateFail2));
+        assertTrue(errors.containsKey(stateFail3));
+
+        assertEquals(
+                "pkg.info_installed threw exception: name 'datetime' is ...",
+                errors.get(stateFail1)
+        );
+
+
+        String stateFailedWithoutErrorMessage = "State failed without error message";
+        assertEquals(stateFailedWithoutErrorMessage, errors.get(stateFail2));
+        assertEquals(stateFailedWithoutErrorMessage, errors.get(stateFail3));
+
+        // setup and call updateServerAction. No really useful assertions out of it but messages should be logged
+        SaltUtils saltUtils = new SaltUtils(null, null);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+        ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusFailed);
+
+        saltUtils.updateServerAction(serverAction, 1L, false, "test-jid-123", jsonResult,
+                Optional.of(Xor.right("state.apply")), new Date());
+
+        assertTrue(serverAction.isStatusFailed());
+        assertTrue(serverAction.getResultMsg().contains("Failed to apply state"));
+    }
+
+    /**
+     * Test that when we cannot extract detailed errors from Salt results
+     * (eg JSON doesn't match state.apply format), action still fails gracefully
+     * expect {@code SaltUtils.getFailedStateErrors} to detect no states
+     */
+    @Test
+    public void testGetFailedStateErrorsWhenNonStateApplyJson() {
+        String unparsableJson = """
+            {
+                "error": "Something went wrong",
+                "stderr": "Command execution failed"
+            }
+            """;
+
+        assertTrue(SaltUtils.getFailedStateErrors(JsonParser.parseString(unparsableJson)).isEmpty());
+
+        // setup and call updateServerAction. No really useful assertions out of it but messages should be logged
+        SaltUtils saltUtils = new SaltUtils(null, null);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+        ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusFailed);
+
+        JsonElement jsonResult = JsonParser.parseString(unparsableJson);
+
+        saltUtils.updateServerAction(serverAction, 1L, false, "test-jid-failed",
+                jsonResult, Optional.of(Xor.right("state.apply")), new Date());
+
+        assertTrue(serverAction.isStatusFailed());
+        assertTrue(serverAction.getResultMsg().contains("Failed to apply state"));
     }
 }
