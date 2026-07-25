@@ -330,14 +330,18 @@ public class LoginHelper {
         LocalizationService ls = LocalizationService.getInstance();
         if (servers.isEmpty()) {
             // The user is bound to LDAP but LDAP is unavailable: reject, never try another backend.
-            log.error("LDAP user {} cannot be authenticated: native LDAP is disabled or unconfigured.",
-                    StringUtil.sanitizeLogInput(login));
+            if (log.isErrorEnabled()) {
+                log.error("LDAP user {} cannot be authenticated: native LDAP is disabled or unconfigured.",
+                        StringUtil.sanitizeLogInput(login));
+            }
             errors.add(ls.getMessage("error.invalid_login"));
             return null;
         }
         Optional<LdapUser> authenticated = authenticateAgainstServers(servers, login, password);
         if (authenticated.isEmpty()) {
-            log.warn("LDAP AUTH FAILURE: [{}]", StringUtil.sanitizeLogInput(login));
+            if (log.isWarnEnabled()) {
+                log.warn("LDAP AUTH FAILURE: [{}]", StringUtil.sanitizeLogInput(login));
+            }
             errors.add(ls.getMessage("error.invalid_login"));
             return null;
         }
@@ -369,8 +373,10 @@ public class LoginHelper {
                 continue;
             }
             if (!server.allowsJit()) {
-                log.info("LDAP user {} authenticated but just-in-time provisioning is disabled.",
-                        StringUtil.sanitizeLogInput(login));
+                if (log.isInfoEnabled()) {
+                    log.info("LDAP user {} authenticated but just-in-time provisioning is disabled.",
+                            StringUtil.sanitizeLogInput(login));
+                }
                 continue;
             }
             Org org = resolveLdapOrg(server);
@@ -447,8 +453,10 @@ public class LoginHelper {
             return ldapServiceFactory.getInstance(server.connectionConfig()).authenticate(login, password);
         }
         catch (LdapException e) {
-            log.error("LDAP directory could not be consulted for login {}: {}",
-                    StringUtil.sanitizeLogInput(login), e.getMessage());
+            if (log.isErrorEnabled()) {
+                log.error("LDAP directory could not be consulted for login {}: {}",
+                        StringUtil.sanitizeLogInput(login), e.getMessage());
+            }
             return Optional.empty();
         }
     }
