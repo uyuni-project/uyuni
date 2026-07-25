@@ -9,7 +9,7 @@ RUN echo "TARGETPLATFORM=${TARGETPLATFORM}; TARGETARCH=${TARGETARCH}"
 RUN if [ "${TARGETARCH}" = "amd64" ]; then \
         export ARCH_PATH="x86_64"; \
         export TUMBLEWEED_PATH="tumbleweed"; \
-        export NODE_REPO_PATH="15.6"; \
+        export NODE_REPO_PATH="16.0"; \
     elif [ "${TARGETARCH}" = "arm64" ]; then \
         export ARCH_PATH="aarch64"; \
         export TUMBLEWEED_PATH="ports/aarch64/tumbleweed"; \
@@ -19,9 +19,8 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
     fi && \
     export TUMBLEWEED_REPO="http://download.opensuse.org/${TUMBLEWEED_PATH}/repo/oss/" && \
     zypper -n rr -a && \
-    zypper addrepo --no-gpgcheck --refresh https://installer-updates.suse.com/SUSE/Products/SLE-BCI/15-SP6/${ARCH_PATH}/product/ SLE_BCI && \
-    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/distribution/leap/15.6/repo/oss/ openSUSE_Leap_15.6_OSS && \
-    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/update/leap/15.6/oss/ openSUSE_Leap_15.6_Updates && \
+    zypper addrepo --no-gpgcheck --refresh https://installer-updates.suse.com/SUSE/Products/SLE-BCI/16.0/${ARCH_PATH}/product/ SLE_BCI && \
+    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/distribution/leap/16.0/repo/oss/ openSUSE_Leap_16.0_OSS && \
     zypper -n install --allow-downgrade --allow-vendor-change \
       git \
       hostname \
@@ -32,18 +31,18 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
     zypper -n install --allow-downgrade --allow-vendor-change java-17-openjdk-devel && \
     zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/repositories/devel:/languages:/nodejs/${NODE_REPO_PATH}/ nodejs && \
     zypper -n install --allow-downgrade --allow-vendor-change nodejs22 npm && \
-    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/SLE_15_SP6/ uyuni_utils && \
-    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/SLE15-Uyuni-Client-Tools/SLE_15/ SLE15-Uyuni-Client-Tools && \
+    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Leap_16.0/ uyuni_utils && \
+    zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/SLE16-Uyuni-Client-Tools/SLE_16/ SLE16-Uyuni-Client-Tools && \
     zypper -n install obs-to-maven prometheus && \
     zypper clean -a
 
 COPY minima.yaml /etc/minima.yaml
 
 RUN mkdir /tmp/minima && \
-    curl -L -o /tmp/minima/minima-linux-${TARGETARCH}.tar.gz https://github.com/uyuni-project/minima/releases/download/v0.25/minima_0.25_linux_${TARGETARCH}.tar.gz && \
+    curl -L -o /tmp/minima/minima-linux-${TARGETARCH}.tar.gz https://github.com/uyuni-project/minima/releases/download/v0.27/minima_0.27_linux_${TARGETARCH}.tar.gz && \
     case "${TARGETARCH}" in \
-      amd64) echo "c263ab0a4212e8b25f7ad70ca817c501042b05b9eb8e8870dcc63654826055ee  /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
-      arm64) echo "132b9e87b6e6abe7db82e4a85aa6dd52b679550e671f3dacc4e5d27b1678d169  /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
+      amd64) echo "0e66d850742229b36cf22ff3a05ec040537bbd7933d75abccf910254e1a61cb4 /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
+      arm64) echo "b4c1ea1552d011c2ed1877acd515ea7be24783c22fdc94192048a5f14fcc574a  /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
       *) echo "Unsupported TARGETARCH: ${TARGETARCH}" && exit 1 ;; \
     esac && \
     tar -zxvf /tmp/minima/minima-linux-${TARGETARCH}.tar.gz -C /tmp/minima && \
