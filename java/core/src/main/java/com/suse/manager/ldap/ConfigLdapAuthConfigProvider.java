@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Interim {@link LdapAuthConfigProvider} that reads a single directory server from the product
@@ -53,7 +54,7 @@ public class ConfigLdapAuthConfigProvider implements LdapAuthConfigProvider {
     private static final Logger LOG = LogManager.getLogger(ConfigLdapAuthConfigProvider.class);
     private static final long DEFAULT_ORG_ID = 1L;
 
-    private final Function<String, String> stringReader;
+    private final UnaryOperator<String> stringReader;
     private final Function<String, Boolean> booleanReader;
     private final Function<String, Integer> intReader;
 
@@ -74,7 +75,7 @@ public class ConfigLdapAuthConfigProvider implements LdapAuthConfigProvider {
      * @param booleanReaderIn reads a boolean value for a key
      * @param intReaderIn reads an int value for a key, returning {@code 0} if unset
      */
-    public ConfigLdapAuthConfigProvider(Function<String, String> stringReaderIn,
+    public ConfigLdapAuthConfigProvider(UnaryOperator<String> stringReaderIn,
                                         Function<String, Boolean> booleanReaderIn,
                                         Function<String, Integer> intReaderIn) {
         this.stringReader = stringReaderIn;
