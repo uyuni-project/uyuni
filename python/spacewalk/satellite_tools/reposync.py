@@ -1809,6 +1809,10 @@ class RepoSync(object):
                     # Remove any pending scheduled file deletion for this package
                     h_delete_package_queue.execute(path=rel_package_path)
 
+                # Treat epoch 0 as non-existent.
+                if pack.a_pkg.header["epoch"] == "0":
+                    pack.a_pkg.header["epoch"] = None
+
                 pkg = mpmSource.create_package(
                     pack.a_pkg.header,
                     size=pack.a_pkg.payload_size,
@@ -2042,6 +2046,9 @@ class RepoSync(object):
             package["checksum"] = pack.checksum
             package["checksum_type"] = pack.checksum_type
             package["epoch"] = pack.epoch
+        # Treat 0 epoch as non-existent.
+        if package["epoch"] == 0:
+            package["epoch"] == Null
         package["channels"] = [{"label": self.channel_label, "id": self.channel["id"]}]
         package["org_id"] = self.org_id
 
