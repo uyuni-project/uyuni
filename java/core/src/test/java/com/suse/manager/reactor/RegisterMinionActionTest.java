@@ -755,6 +755,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey ak = ActivationKeyFactory.createNewKey(user, null, "universal-default",
                 "default key", null, baseChannelX8664, true);
 
+        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
