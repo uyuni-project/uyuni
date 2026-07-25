@@ -94,8 +94,8 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
         sah.executeAction();
 
         assertEquals(errata, sah.getRequest().getAttribute("errata"));
-        assertEquals("10/13/21", sah.getRequest().getAttribute("issued"));
-        assertEquals("10/13/21", sah.getRequest().getAttribute("updated"));
+        assertEquals("2021-10-13", sah.getRequest().getAttribute("issued"));
+        assertEquals("2021-10-13", sah.getRequest().getAttribute("updated"));
         assertEquals("This update for suse-module-tools fixes bugs.", sah.getRequest().getAttribute("description"));
         assertEquals("Stable", sah.getRequest().getAttribute("advisoryStatus"));
 
