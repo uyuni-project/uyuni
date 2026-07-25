@@ -31,7 +31,7 @@ If you bump the gem, bump the npm package to the matching version.
 
 ## Dependencies to install on the controller
 
-1. **Ruby 3.3 + build deps** — already provisioned for the suite (`ruby3.3`, `ruby3.3-devel`, `gcc`, `make`, …).
+1. **Ruby 3.4 + build deps** — already provisioned for the suite (`ruby3.4`, `ruby3.4-devel`, `gcc`, `make`, …).
 2. **The gems** — `bundle install` against `testsuite/Gemfile` installs `capybara-playwright-driver` (and drops
    `selenium-webdriver`). No change to how gems are installed.
 3. **Node.js + npm** — package `npm-default` (already used by the suite for the HTML reporter).
