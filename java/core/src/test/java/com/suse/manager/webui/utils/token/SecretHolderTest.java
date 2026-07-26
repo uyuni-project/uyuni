@@ -57,7 +57,7 @@ public class SecretHolderTest {
             fail("secret should be a hex string");
         }
         catch (IllegalArgumentException e) {
-            TestUtils.assertContains(e.getMessage(), "Odd number of characters.");
+            TestUtils.assertContains(e.getMessage(), "Odd number of characters");
         }
     }
 }
