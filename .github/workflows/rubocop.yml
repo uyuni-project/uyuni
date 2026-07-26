@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/rubocop.yml'
       - 'testsuite/features/**.rb'
+      - 'testsuite/test/**.rb'
       - 'testsuite/.rubocop.yml'
       - 'testsuite/.rubocop_todo.yml'
       - 'testsuite/Gemfile'
@@ -24,10 +25,11 @@ jobs:
       with:
         ruby-version: '3.3'
 
-    - name: Install and Run RuboCop
+    - name: Install and run Ruby checks
       run: |
         cd testsuite
         gem install bundler
         bundle install
         bundle exec rubocop --version
-        bundle exec rubocop features/*
+        bundle exec rubocop features/* test/*
+        bundle exec rake test

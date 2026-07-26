@@ -7,11 +7,17 @@ require 'yaml'
 require 'json'
 require 'cucumber/rake/task'
 require 'rake/task'
+require 'rake/testtask'
 require 'parallel'
 
 junit_results = '-f junit -o results_junit'
 build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
+
+desc 'Run unit tests'
+Rake::TestTask.new(:test) do |task|
+  task.pattern = 'test/**/*_test.rb'
+end
 
 namespace :cucumber do
   # Define the timestamp before the loop starts.

@@ -1,6 +1,7 @@
 # Copyright (c) 2024-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'ipaddr'
 require 'timeout'
 require_relative 'network_utils'
 
@@ -375,7 +376,34 @@ class RemoteNode
         return output.split[1].split('/').first
       end
     end
+
+    route, code = run_local('ip -4 route get 1.1.1.1', check_errors: false)
+    if code.zero?
+      fields = route.split
+      source_index = fields.index('src')
+      device_index = fields.index('dev')
+      source = fields[source_index + 1] unless source_index.nil?
+      device = fields[device_index + 1] unless device_index.nil?
+      if canonical_ipv4_address?(source) && linux_interface_name?(device)
+        @public_interface = device
+        return source
+      end
+    end
+
     raise ArgumentError, "Cannot resolve public ip of #{host}"
+  end
+
+  def canonical_ipv4_address?(address)
+    return false if address.nil?
+
+    parsed_address = IPAddr.new(address)
+    parsed_address.ipv4? && parsed_address.to_s == address
+  rescue IPAddr::InvalidAddressError
+    false
+  end
+
+  def linux_interface_name?(name)
+    name&.match?(/\A[A-Za-z0-9][A-Za-z0-9_.:-]{0,14}\z/)
   end
 
   # Extract the OS version and OS family
