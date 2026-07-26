@@ -269,52 +269,65 @@ def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
     return exitcode, child_out, child_err
 
 
-def makedirs(path, mode=int("0755", 8), user=None, group=None):
+def _split_dirs(path):
+    """Split the given directory into a list of directories.
+
+    Args:
+      path: Path (absolute or relative) to a directory.
+
+    Returns:
+      List of all directories in the path. The output directories do not end with
+      a slash "/".
+    """
+    if not path.endswith("/"):
+        path += "/"
+
+    def _split(path, paths):
+        """Recursivly split path and add it to paths.
+
+        Base case: reached "/" for an absolute path or "" for a relative path.
+        """
+        dname = os.path.dirname(path)
+        if dname:
+            paths.append(dname)
+
+        if not dname or dname == "/":
+            return paths
+        else:
+            return _split(dname, paths)
+
+    return list(reversed(_split(path, [])))
+
+
+def makedirs(path, mode=0o0755, user=None, group=None):
     """Creates all required directories on a path and changes its owner and group
 
-    :param path: path to create
-    :type path: str
-    :param mode: mode for the created directories
-    :type mode: int
-    :param user: desired owner
-    :type user: str
-    :param group: desired group
-    :type group:str
-    :returns: None
+    Args:
+      path(str): Path to a directory to create.
+
+      mode(int): Mode for the created directories. Defaults to 0o0755.
+      user(str): Name of desired owner, optional.
+      group(str): Name of derired owning group, optional.
+
+    Raises:
+      OSError when either the user or group does not exist.
     """
-
-    dirs_to_create = []
-    dirname = path
-
     uid, gid = getUidGid(user, group)
-
     if uid is None:
-        # pylint: disable-next=consider-using-f-string
-        raise OSError("*** ERROR: user %s doesn't exist. Cannot create path." % user)
+        raise OSError(f"*** ERROR: user {user} doesn't exist. Cannot create path.")
 
     if gid is None:
-        # pylint: disable-next=consider-using-f-string
-        raise OSError("*** ERROR: group %s doesn't exist. Cannot create path." % group)
+        raise OSError(f"*** ERROR: group {group} doesn't exist. Cannot create path.")
 
-    while 1:
+    dirs_to_create = _split_dirs(path)
+    for dirname in dirs_to_create:
         if os.path.isdir(dirname):
-            # We're done with this step
-            break
-        # We have to create this directory
-        dirs_to_create.append(dirname)
-        dirname, last = os.path.split(dirname)
-        if not last:
-            # We reached the top directory
-            break
+            continue
 
-    # Now create the directories
-    while dirs_to_create:
-        dirname = dirs_to_create.pop()
         try:
             os.mkdir(dirname, mode)
             os.chmod(dirname, mode)
-        except OSError:
-            e = sys.exc_info()[1]
+        except OSError as e:
             if e.errno != 17:  # File exists
                 raise
             # Ignore the error

@@ -83,6 +83,7 @@ public class RepoDetailsAction extends RhnAction {
     public static final String SOURCEID = "sourceid";
     public static final String FILTERS = "filters";
     public static final String METADATA_SIGNED = "metadataSigned";
+    public static final String DOWNLOAD_STRATEGY_ID = "downloadStrategyId";
 
     private static final String VALIDATION_XSD =
                 "/com/redhat/rhn/frontend/action/channel/" +
@@ -119,6 +120,7 @@ public class RepoDetailsAction extends RhnAction {
                     if (!errors.isEmpty()) {
                         addErrors(request, errors);
                         setupContentTypes(ctx);
+                        setupDownloadStrategies(ctx);
                         setupCryptoKeys(ctx);
                         bindRepo(request, repo);
                         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
@@ -184,6 +186,7 @@ public class RepoDetailsAction extends RhnAction {
             boolean createMode) {
         RequestContext context = new RequestContext(request);
         setupContentTypes(context);
+        setupDownloadStrategies(context);
         setupCryptoKeys(context);
         if (!createMode) {
             request.setAttribute("id", context.getParamAsLong("id"));
@@ -209,6 +212,13 @@ public class RepoDetailsAction extends RhnAction {
         context.getRequest().setAttribute("contenttypes", contentTypes);
     }
 
+    private void setupDownloadStrategies(RequestContext context) {
+        List<LabelValueBean> downloadStrategies = new ArrayList<>();
+        downloadStrategies.add(lv("Download all packages", "500"));
+        downloadStrategies.add(lv("Client downloads packages from source repository", "800"));
+        context.getRequest().setAttribute("downloadStrategies", downloadStrategies);
+    }
+
     private void setupCryptoKeys(RequestContext context) {
         List<LabelValueBean> sslCrytpoKeyOptions = new ArrayList<>();
         sslCrytpoKeyOptions.add(lv(LocalizationService.getInstance().
@@ -227,6 +237,10 @@ public class RepoDetailsAction extends RhnAction {
         form.set(URL, repo.getSourceUrl());
         form.set(SOURCEID, repo.getId());
         form.set(TYPE, repo.getType().getLabel());
+        form.set(DOWNLOAD_STRATEGY_ID, repo.getDownloadStrategyId());
+
+        List<Map<String, String>> downloadStrategies = new ArrayList<>();
+
         Set<SslContentSource> repoSslSets = repo.getSslSets();
         if (!repoSslSets.isEmpty()) {
             SslContentSource sslRepo = repoSslSets.iterator().next();
@@ -320,6 +334,8 @@ public class RepoDetailsAction extends RhnAction {
         String url = form.getString(URL);
         String label = form.getString(LABEL);
         String type = form.getString(TYPE);
+        int downloadStrategyId = (int) form.get(DOWNLOAD_STRATEGY_ID);
+
         String sfilters = form.getString(FILTERS);
         Boolean metadataSigned = (Boolean) form.get(METADATA_SIGNED);
         if (metadataSigned == null) {
@@ -341,6 +357,7 @@ public class RepoDetailsAction extends RhnAction {
         repoCmd.setUrl(url);
         repoCmd.setType(type);
         repoCmd.setMetadataSigned(metadataSigned);
+        repoCmd.setDownloadStrategyId(downloadStrategyId);
 
         try {
             // Add SSL
