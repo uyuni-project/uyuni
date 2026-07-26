@@ -22,6 +22,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
     zypper addrepo --no-gpgcheck --refresh https://installer-updates.suse.com/SUSE/Products/SLE-BCI/16.0/${ARCH_PATH}/product/ SLE_BCI && \
     zypper addrepo --no-gpgcheck --refresh http://download.opensuse.org/distribution/leap/16.0/repo/oss/ openSUSE_Leap_16.0_OSS && \
     zypper -n install --allow-downgrade --allow-vendor-change \
+      openssh-server \
       git \
       hostname \
       apache-ivy \
