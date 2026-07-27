@@ -97,7 +97,6 @@ BuildRequires:  apache-commons-logging
 BuildRequires:  apache-commons-text
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  classmate
-BuildRequires:  dom4j
 BuildRequires:  ehcache >= 3.11.1
 BuildRequires:  hibernate-models
 BuildRequires:  httpcomponents-asyncclient
