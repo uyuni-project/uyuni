@@ -14,10 +14,13 @@
  */
 package com.suse.manager.reactor.mqtt;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+
 import com.suse.manager.reactor.mqtt.event.MqttEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  * Utility helper class for publishing Java-native events to the MQTT broker.
@@ -48,5 +51,31 @@ public final class MqttEventHelper {
         else {
             LOG.debug("MqttPublisherService is not initialized. Event skipped.");
         }
+    }
+
+    /**
+     * Publish an event once the transaction that produced it has committed.
+     *
+     * <p>Publishing is asynchronous and cannot be undone, so an event emitted while the
+     * transaction is still open would announce a change that a later rollback discards.
+     * When no transaction is pending the event is published immediately.</p>
+     *
+     * @param event the event to publish
+     */
+    public static void publishAfterCommit(MqttEvent event) {
+        if (!HibernateFactory.inTransaction()) {
+            publish(event);
+            return;
+        }
+
+        HibernateFactory.getSession().getTransaction().runAfterCompletion(status -> {
+            if (status == TransactionStatus.COMMITTED) {
+                publish(event);
+            }
+            else {
+                LOG.debug("Skipping MQTT event {}: transaction completed with status {}.",
+                        event.getTopicSuffix(), status);
+            }
+        });
     }
 }

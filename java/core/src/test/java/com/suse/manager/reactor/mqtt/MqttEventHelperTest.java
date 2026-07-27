@@ -50,7 +50,7 @@ public class MqttEventHelperTest {
 
     @Test
     public void testPublishUserCreated() {
-        MqttEventHelper.publish(new UserCreatedEvent("johndoe", "admin", 123L));
+        MqttEventHelper.publish(new UserCreatedEvent("johndoe", 42L, 123L));
 
         assertEquals(testService.getTopicPrefix() + "/users/created", testService.lastTopic);
         assertNotNull(testService.lastPayload);
@@ -58,7 +58,7 @@ public class MqttEventHelperTest {
 
         Map<?, ?> data = (Map<?, ?>) testService.lastPayload;
         assertEquals("johndoe", data.get("username"));
-        assertEquals("admin", data.get("creator"));
+        assertEquals(42L, data.get("userId"));
         assertEquals(123L, data.get("orgId"));
     }
 
@@ -129,7 +129,7 @@ public class MqttEventHelperTest {
             filterService.lastPayload = null;
 
             // This should be published (users/created is in filter)
-            MqttEventHelper.publish(new UserCreatedEvent("john", "admin", 1L));
+            MqttEventHelper.publish(new UserCreatedEvent("john", 7L, 1L));
             assertEquals(filterService.getTopicPrefix() + "/users/created", filterService.lastTopic);
 
             // Reset spy state
