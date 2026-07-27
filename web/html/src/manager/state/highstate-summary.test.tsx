@@ -1,5 +1,6 @@
-import HighstateSummary from "manager/state/highstate-summary";
+import HighstateSummary, { StateSource } from "manager/state/highstate-summary";
 
+import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 import { act, click, render, screen, server, waitForElementToBeRemoved, within } from "utils/test-utils";
 
@@ -82,13 +83,15 @@ describe("Highstate summary", () => {
   });
 
   test("ignores a stale response after the requested minion changes", async () => {
-    let resolveFirstRequest: (data: any[]) => void = () => undefined;
-    const firstRequest = new Promise<any[]>((resolve) => {
+    type RawStateSource = Omit<StateSource, "typeName">;
+
+    let resolveFirstRequest: (data: RawStateSource[]) => void = () => undefined;
+    const firstRequest = new Promise<RawStateSource[]>((resolve) => {
       resolveFirstRequest = resolve;
     });
     jest.spyOn(Network, "get").mockImplementation((url) => {
       if (url.includes("sid=1000")) {
-        return firstRequest as any;
+        return firstRequest as unknown as Cancelable<StateSource[]>;
       }
       return Promise.resolve([
         {
@@ -99,7 +102,7 @@ describe("Highstate summary", () => {
           sourceName: "Current system",
           sourceType: "SYSTEM",
         },
-      ]) as any;
+      ] as RawStateSource[]) as unknown as Cancelable<StateSource[]>;
     });
 
     const { rerender } = render(<HighstateSummary minionId={1000} />);
