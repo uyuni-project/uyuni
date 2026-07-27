@@ -1,4 +1,4 @@
-import { searchCriteriaInExtension } from "./products.utils";
+import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 
 const extension = {
   label: "suse base 1 2 asd",
@@ -82,5 +82,17 @@ describe("Testing searchCriteriaInExtension", () => {
     expect(searchCriteriaInExtension(extension, criteriaChannel1)).toBeTruthy();
     expect(searchCriteriaInExtension(extension, criteriaChannel2)).toBeTruthy();
     expect(searchCriteriaInExtension(extension, criteriaWrong)).toBeFalsy();
+  });
+});
+
+describe("product request error handling", () => {
+  test("ignores cancellation without an error", () => {
+    expect(isProductRequestCancellation(undefined)).toBe(true);
+  });
+
+  test("does not ignore a real request error with status zero", () => {
+    const connectionError = { status: 0 } as JQueryXHR;
+
+    expect(isProductRequestCancellation(connectionError)).toBe(false);
   });
 });
