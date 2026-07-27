@@ -213,6 +213,10 @@ const MonitoringAdmin = () => {
     }
     changeStatus(enable)
       .then((result: any) => {
+        if (!result) {
+          return;
+        }
+
         if (result.success) {
           setMessages(MessagesUtils.success(messageMap[result.message]));
         } else {
