@@ -24,5 +24,5 @@ export function searchCriteriaInExtension(baseExtension: any, criteria?: string)
 }
 
 export function isProductRequestCancellation(error: JQueryXHR | Error | undefined): error is undefined {
-  return !error;
+  return error === undefined;
 }
