@@ -18,8 +18,6 @@ ENV_VAR_BY_HOST = {
   # Build Validation environment
   'sles12sp5_minion' => 'SLES12SP5_MINION',
   'sles12sp5_sshminion' => 'SLES12SP5_SSHMINION',
-  'sles15sp3_minion' => 'SLES15SP3_MINION',
-  'sles15sp3_sshminion' => 'SLES15SP3_SSHMINION',
   'sles15sp4_minion' => 'SLES15SP4_MINION',
   'sles15sp4_sshminion' => 'SLES15SP4_SSHMINION',
   'monitoring_server' => 'MONITORING_SERVER',
@@ -179,8 +177,6 @@ PACKAGE_BY_CLIENT = {
   'deblike_minion' => 'bison',
   'sles12sp5_minion' => 'bison',
   'sles12sp5_sshminion' => 'bison',
-  'sles15sp3_minion' => 'bison',
-  'sles15sp3_sshminion' => 'bison',
   'sles15sp4_minion' => 'bison',
   'sles15sp4_sshminion' => 'bison',
   'sles15sp5_minion' => 'bison',
@@ -266,8 +262,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sles12sp5_sshminion' => 'SLES12-SP5-Pool for x86_64',
-    'sles15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
-    'sles15sp3_sshminion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sles15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sles15sp4_sshminion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'monitoring_server' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
@@ -351,8 +345,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sles12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sles12sp5_sshminion' => 'SLES12-SP5-Pool for x86_64',
-    'sles15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
-    'sles15sp3_sshminion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sles15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sles15sp4_sshminion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'monitoring_server' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
@@ -434,7 +426,6 @@ LABEL_BY_BASE_CHANNEL = {
   'SUSE Manager' => {
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
     'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'sle-product-sles15-sp3-pool-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'sle-product-sles15-sp4-pool-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'sle-product-sles15-sp5-pool-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
@@ -476,7 +467,6 @@ LABEL_BY_BASE_CHANNEL = {
     'openSUSE Leap 15.6 (x86_64)' => 'opensuse_leap15_6-x86_64',
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
     'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'sle-product-sles15-sp3-pool-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'sle-product-sles15-sp4-pool-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'sle-product-sles15-sp5-pool-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
@@ -515,7 +505,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'SUSE Manager' => {
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'SUMA-43-PROXY-x86_64',
     'SLES12-SP5-Pool for x86_64' => 'SLE-12-SP5-x86_64',
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'SLE-15-SP3-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'SLE-15-SP4-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'SLE-15-SP5-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
@@ -554,7 +543,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'openSUSE Leap Micro 5.5 (x86_64)' => 'openSUSE-Leap-Micro-5.5-x86_64-uyuni',
     'openSUSE Tumbleweed (x86_64)' => 'openSUSE-Tumbleweed-x86_64-uyuni',
     'SLES12-SP5-Pool for x86_64' => 'SLE-12-SP5-x86_64',
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'SLE-15-SP3-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'SLE-15-SP4-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'SLE-15-SP5-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'SLE-15-SP6-x86_64',
@@ -595,7 +583,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'SUSE Manager' => {
     'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
     'SLES12-SP5-Pool for x86_64' => nil,
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'sle-product-sles15-sp3-pool-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'sle-product-sles15-sp4-pool-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'sle-product-sles15-sp5-pool-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
@@ -634,7 +621,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
     'openSUSE Tumbleweed (x86_64)' => nil,
     'SLES12-SP5-Pool for x86_64' => nil,
-    'SLE-Product-SLES15-SP3-Pool for x86_64' => 'sle-product-sles15-sp3-pool-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'sle-product-sles15-sp4-pool-x86_64',
     'SLE-Product-SLES15-SP5-Pool for x86_64' => 'sle-product-sles15-sp5-pool-x86_64',
     'SLE-Product-SLES15-SP6-Pool for x86_64' => 'sle-product-sles15-sp6-pool-x86_64',
@@ -672,8 +658,6 @@ PKGARCH_BY_CLIENT = {
   'deblike_minion' => 'amd64',
   'sles12sp5_minion' => 'x86_64',
   'sles12sp5_sshminion' => 'x86_64',
-  'sles15sp3_minion' => 'x86_64',
-  'sles15sp3_sshminion' => 'x86_64',
   'sles15sp4_minion' => 'x86_64',
   'sles15sp4_sshminion' => 'x86_64',
   'sles15sp5_minion' => 'x86_64',
@@ -887,23 +871,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-sle12-updates-x86_64-sp5
         sles12-sp5-installer-updates-x86_64
         sles12-sp5-ltss-updates-x86_64
-      ],
-    'sles15-sp3' => # CHECKED
-      %w[
-        sle-product-sles15-sp3-pool-x86_64
-        sle-product-sles15-sp3-updates-x86_64
-        sle15-sp3-installer-updates-x86_64
-        sle-module-basesystem15-sp3-updates-x86_64
-        sle-module-basesystem15-sp3-pool-x86_64
-        managertools-sle15-pool-x86_64-sp3
-        managertools-sle15-updates-x86_64-sp3
-        sle-module-server-applications15-sp3-updates-x86_64
-        sle-module-server-applications15-sp3-pool-x86_64
-        sle-product-sles15-sp3-ltss-updates-x86_64
-        sle-module-desktop-applications15-sp3-updates-x86_64
-        sle-module-desktop-applications15-sp3-pool-x86_64
-        sle-module-devtools15-sp3-pool-x86_64
-        sle-module-devtools15-sp3-updates-x86_64
       ],
     'sles15-sp4' => # CHECKED
       %w[
@@ -1277,22 +1244,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sles12-sp5-ltss-updates-x86_64
         sles12-sp5-uyuni-client-devel-x86_64
       ],
-    'sles15-sp3' => # CHECKED
-      %w[
-        sle-product-sles15-sp3-ltss-updates-x86_64
-        sle-product-sles15-sp3-pool-x86_64
-        sle-product-sles15-sp3-updates-x86_64
-        sle-module-basesystem15-sp3-pool-x86_64
-        sle-module-basesystem15-sp3-updates-x86_64
-        sle-module-desktop-applications15-sp3-pool-x86_64
-        sle-module-desktop-applications15-sp3-updates-x86_64
-        sle-module-devtools15-sp3-pool-x86_64
-        sle-module-devtools15-sp3-updates-x86_64
-        sle-module-server-applications15-sp3-pool-x86_64
-        sle-module-server-applications15-sp3-updates-x86_64
-        sle15-sp3-installer-updates-x86_64
-        sles15-sp3-devel-uyuni-client-x86_64
-      ],
     'sles15-sp4' => # CHECKED
       %w[
         sle-product-sles15-sp4-pool-x86_64
@@ -1655,7 +1606,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sle15-pool-aarch64-opensuse-15.6' => 60,
   'managertools-sle15-pool-s390x-sp5' => 60,
   'managertools-sle15-pool-x86_64-sap-sp5' => 60,
-  'managertools-sle15-pool-x86_64-sp3' => 60,
   'managertools-sle15-pool-x86_64-sp4' => 60,
   'managertools-sle15-pool-x86_64-sp5' => 60,
   'managertools-sle15-pool-x86_64-sp6' => 60,
@@ -1663,7 +1613,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sle15-updates-aarch64-opensuse-15.6' => 60,
   'managertools-sle15-updates-s390x-sp5' => 60,
   'managertools-sle15-updates-x86_64-sap-sp5' => 60,
-  'managertools-sle15-updates-x86_64-sp3' => 60,
   'managertools-sle15-updates-x86_64-sp4' => 60,
   'managertools-sle15-updates-x86_64-sp5' => 60,
   'managertools-sle15-updates-x86_64-sp6' => 60,
@@ -1727,7 +1676,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'rockylinux-9-x86_64' => 240,
   'rockylinux-10-appstream-x86_64' => 720,
   'rockylinux-10-x86_64' => 240,
-  'sle15-sp3-installer-updates-x86_64' => 60,
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle15-sp7-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
@@ -1739,8 +1687,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.5-pool-x86_64' => 120,
   'sle-micro-5.5-updates-x86_64' => 840,
-  'sle-module-basesystem15-sp3-pool-x86_64' => 240,
-  'sle-module-basesystem15-sp3-updates-x86_64' => 960,
   'sle-module-basesystem15-sp4-pool-x86_64' => 240,
   'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1763,8 +1709,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-containers15-sp4-updates-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-containers15-sp7-updates-x86_64' => 60,
-  'sle-module-desktop-applications15-sp3-pool-x86_64' => 300,
-  'sle-module-desktop-applications15-sp3-updates-x86_64' => 120,
   'sle-module-desktop-applications15-sp4-pool-x86_64' => 180,
   'sle-module-desktop-applications15-sp4-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp5-pool-x86_64' => 120,
@@ -1773,8 +1717,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-desktop-applications15-sp6-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp7-pool-x86_64' => 180,
   'sle-module-desktop-applications15-sp7-updates-x86_64' => 60,
-  'sle-module-devtools15-sp3-pool-x86_64' => 120,
-  'sle-module-devtools15-sp3-updates-x86_64' => 540,
   'sle-module-devtools15-sp4-pool-x86_64' => 120,
   'sle-module-devtools15-sp4-updates-x86_64' => 480,
   'sle-module-devtools15-sp5-pool-x86_64' => 180,
@@ -1801,8 +1743,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-python3-15-sp7-updates-x86_64' => 60,
   'sle-module-systems-management-15-sp7-pool-x86_64' => 60,
   'sle-module-systems-management-15-sp7-updates-x86_64' => 60,
-  'sle-module-server-applications15-sp3-pool-x86_64' => 60,
-  'sle-module-server-applications15-sp3-updates-x86_64' => 120,
   'sle-module-server-applications15-sp4-pool-x86_64' => 60,
   'sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3' => 60,
   'sle-module-server-applications15-sp4-updates-x86_64' => 180,
@@ -1817,9 +1757,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp7-pool-x86_64' => 60,
   'sle-module-server-applications15-sp7-updates-x86_64' => 60,
   'sles12-sp5-ltss-updates-x86_64' => 420,
-  'sle-product-sles15-sp3-ltss-updates-x86_64' => 2460,
-  'sle-product-sles15-sp3-pool-x86_64' => 60,
-  'sle-product-sles15-sp3-updates-x86_64' => 60,
   'sle-product-sles15-sp4-ltss-updates-x86_64' => 1560,
   'sle-product-sles15-sp4-pool-x86_64' => 60,
   'sle-product-sles15-sp4-updates-x86_64' => 60,
@@ -1838,7 +1775,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles12-sp5-pool-x86_64' => 120,
   'sles12-sp5-updates-x86_64' => 1920,
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
-  'sles15-sp3-devel-uyuni-client-x86_64' => 120,
   'sles15-sp4-devel-uyuni-client-x86_64' => 120,
   'sles15-sp5-devel-uyuni-client-x86_64' => 120,
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
@@ -1945,7 +1881,6 @@ UYUNI_MAIN_REPO_URL_BYPASS = {
   'sle-micro-5.4-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles12-sp5-uyuni-client-devel-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_12/',
-  'sles15-sp3-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp4-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp5-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
   'sles15-sp6-devel-uyuni-client-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/SLE_15/',
