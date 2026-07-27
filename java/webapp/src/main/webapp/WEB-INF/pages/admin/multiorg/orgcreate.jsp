@@ -72,7 +72,6 @@
                         <html:password property="desiredpassword"
                                        size="15"
                                        styleClass="form-control"
-                                       maxlength="32"
                                        onkeyup="updateTickIcon()"
                                        styleId="desiredpass" />
                         <span class="input-group-addon input-group-text">
@@ -92,7 +91,7 @@
                         <html:password property="desiredpasswordConfirm" size="15"
                                        styleClass="form-control"
                                        onkeyup="updateTickIcon()"
-                                       maxlength="32" styleId="confirmpass"/>
+                                       styleId="confirmpass"/>
                         <span class="input-group-addon input-group-text">
                           <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="confirmtick"></i>
                         </span>
