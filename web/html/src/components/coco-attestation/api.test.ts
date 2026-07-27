@@ -18,10 +18,17 @@ describe("normalizeSingleCoCoSettingsResponse", () => {
     });
   });
 
-  test("supports the legacy flat response format", () => {
-    expect(normalizeSingleCoCoSettingsResponse({ supported: true, ...settings })).toEqual({
+  test("supports the legacy flat response format without newer settings fields", () => {
+    expect(
+      normalizeSingleCoCoSettingsResponse({
+        supported: true,
+        enabled: settings.enabled,
+        environmentType: settings.environmentType,
+        attestOnBoot: settings.attestOnBoot,
+      })
+    ).toEqual({
       supported: true,
-      settings,
+      settings: { ...settings, attestOnSchedule: undefined, inputData: {} },
     });
   });
 });
