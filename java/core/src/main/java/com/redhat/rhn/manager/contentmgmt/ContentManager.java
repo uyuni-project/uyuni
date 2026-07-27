@@ -694,12 +694,16 @@ public class ContentManager {
             throw new ContentManagementException("Build/Promote already in progress");
         }
 
-        MqttEventHelper.publish(new ClmBuildStartedEvent(project.getLabel(), user.getLogin()));
+        MqttEventHelper.publishAfterCommit(new ClmBuildStartedEvent(project.getLabel(), user.getLogin()));
         buildSoftwareSources(firstEnv, async, user);
         ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
         firstEnv.setVersion(entry.getVersion());
-        MqttEventHelper.publish(new ClmBuildCompletedEvent(project.getLabel(),
-                String.valueOf(entry.getVersion()), user.getLogin()));
+        if (!async) {
+            // An asynchronous build only schedules the channel alignment here, so completion
+            // cannot be reported at this point.
+            MqttEventHelper.publishAfterCommit(new ClmBuildCompletedEvent(project.getLabel(),
+                    String.valueOf(entry.getVersion()), user.getLogin()));
+        }
     }
 
     /**

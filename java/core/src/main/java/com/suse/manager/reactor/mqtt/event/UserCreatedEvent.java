@@ -23,18 +23,18 @@ import java.util.Map;
 public class UserCreatedEvent implements MqttEvent {
 
     private final String username;
-    private final String creator;
+    private final Long userId;
     private final Long orgId;
 
     /**
      * Constructor.
-     * @param usernameIn username of the created user
-     * @param creatorIn username of the creating user
+     * @param usernameIn login of the created user
+     * @param userIdIn ID of the created user
      * @param orgIdIn organization ID
      */
-    public UserCreatedEvent(String usernameIn, String creatorIn, Long orgIdIn) {
+    public UserCreatedEvent(String usernameIn, Long userIdIn, Long orgIdIn) {
         this.username = usernameIn;
-        this.creator = creatorIn;
+        this.userId = userIdIn;
         this.orgId = orgIdIn;
     }
 
@@ -47,7 +47,7 @@ public class UserCreatedEvent implements MqttEvent {
     public Map<String, Object> getPayload() {
         Map<String, Object> payload = new HashMap<>();
         payload.put("username", username);
-        payload.put("creator", creator);
+        payload.put("userId", userId);
         payload.put("orgId", orgId);
         return payload;
     }

@@ -131,14 +131,10 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
-        LOG.warn("SaltReactor started - MQTT publisher hook point ready [GSoC-2026]");
-
-        // Retrieve the global MQTT Event Publisher instance if active
         MqttPublisherService mqttPublisherService = MqttPublisherService.getInstance();
         if (mqttPublisherService != null) {
             MqttEventAction mqttEventAction = new MqttEventAction(mqttPublisherService);
 
-            // Register MQTT event actions for the 5 target event classes
             MessageQueue.registerAction(mqttEventAction, RegisterMinionEventMessage.class);
             MessageQueue.registerAction(mqttEventAction, ApplyStatesEventMessage.class);
             MessageQueue.registerAction(mqttEventAction, JobReturnEventMessage.class);

@@ -222,7 +222,7 @@ public class OrgFactory extends HibernateFactory {
         if (org.getId() == null) {
             // New org, gotta use the stored procedure.
             Org savedOrg = saveNewOrg(org);
-            MqttEventHelper.publish(new OrgCreatedEvent(savedOrg.getId(), savedOrg.getName()));
+            MqttEventHelper.publishAfterCommit(new OrgCreatedEvent(savedOrg.getId(), savedOrg.getName()));
             return savedOrg;
         }
         return saveObject(org);
