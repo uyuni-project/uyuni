@@ -10,8 +10,10 @@ type CurrentSingleCoCoSettingsResponse = {
   settings: Settings;
 };
 
-type LegacySingleCoCoSettingsResponse = Settings & {
+type LegacySingleCoCoSettingsResponse = Pick<Settings, "enabled" | "environmentType" | "attestOnBoot"> & {
   supported: boolean;
+  attestOnSchedule?: Settings["attestOnSchedule"];
+  inputData?: Settings["inputData"];
 };
 
 export type SingleCoCoSettingsResponse = CurrentSingleCoCoSettingsResponse | LegacySingleCoCoSettingsResponse;
@@ -23,8 +25,8 @@ export function normalizeSingleCoCoSettingsResponse(
     return response;
   }
 
-  const { supported, ...settings } = response;
-  return { supported, settings };
+  const { supported, attestOnSchedule, inputData = {}, ...settings } = response;
+  return { supported, settings: { ...settings, attestOnSchedule, inputData } };
 }
 
 export type CoCoScheduleRequest = {
