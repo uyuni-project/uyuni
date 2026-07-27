@@ -308,7 +308,8 @@ public class MqttPublisherService {
                 message.setQos(this.qos);
 
                 client.publish(topic, message);
-                LOG.warn("MQTT message published to {}: {}",
+                // Payloads can carry minion IDs and management keys, so they stay at debug.
+                LOG.debug("MQTT message published to {}: {}",
                         topic, jsonPayload);
             }
             catch (Exception e) {

@@ -391,7 +391,8 @@ public class UserFactory extends HibernateFactory {
         // User object has an Id and that the User has an org_id.
         User retval = lookupById(userId);
         saveObject(retval);
-        MqttEventHelper.publish(new UserCreatedEvent(retval.getLogin(), null, retval.getOrg().getId()));
+        MqttEventHelper.publishAfterCommit(
+                new UserCreatedEvent(retval.getLogin(), retval.getId(), retval.getOrg().getId()));
         return retval;
     }
 

@@ -22,20 +22,23 @@ import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
-import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
+import com.suse.manager.reactor.mqtt.event.BatchStartedEvent;
+import com.suse.manager.reactor.mqtt.event.ImageDeployedEvent;
+import com.suse.manager.reactor.mqtt.event.JobReturnedEvent;
+import com.suse.manager.reactor.mqtt.event.MinionRegisteredEvent;
+import com.suse.manager.reactor.mqtt.event.MqttEvent;
+import com.suse.manager.reactor.mqtt.event.StatesAppliedEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Custom {@link MessageAction} for publishing Uyuni reactor events to an MQTT broker.
  *
  * <p>This action is registered alongside existing handlers in
- * {@link com.suse.manager.reactor.SaltReactor} and intercepts five key event types,
- * mapping each to a structured MQTT topic and JSON payload.</p>
+ * {@link com.suse.manager.reactor.SaltReactor}. Each supported reactor message is
+ * translated into an {@link MqttEvent}, which owns both its topic suffix and its
+ * payload, so adding a new topic means adding a class rather than extending this one.</p>
  */
 public class MqttEventAction implements MessageAction {
 
@@ -62,112 +65,24 @@ public class MqttEventAction implements MessageAction {
             return;
         }
 
-        String suffix = getTopicSuffix(msg);
-        if (suffix == null) {
-            return;
-        }
-
-        String fullTopic = topicPrefix + "/" + suffix;
-        if (!mqttPublisherService.isEventEnabled(fullTopic)) {
-            LOG.debug("Event of type {} is disabled by configuration.", msg.getClass().getName());
-            return;
-        }
-
-        LOG.warn("MqttEventAction.execute called for message of type: {}", msg.getClass().getName());
-
         try {
-            if (msg instanceof RegisterMinionEventMessage registerMsg) {
-                handleRegisterMinion(registerMsg);
+            MqttEvent event = toMqttEvent(msg);
+            if (event == null) {
+                LOG.debug("Unhandled or empty event type in MqttEventAction: {}", msg.getClass().getName());
+                return;
             }
-            else if (msg instanceof JobReturnEventMessage jobMsg) {
-                handleJobReturn(jobMsg);
+
+            String topic = topicPrefix + "/" + event.getTopicSuffix();
+            if (!mqttPublisherService.isEventEnabled(topic)) {
+                LOG.debug("Event of type {} is disabled by configuration.", msg.getClass().getName());
+                return;
             }
-            else if (msg instanceof ApplyStatesEventMessage applyMsg) {
-                handleApplyStates(applyMsg);
-            }
-            else if (msg instanceof ImageDeployedEventMessage imageMsg) {
-                handleImageDeployed(imageMsg);
-            }
-            else if (msg instanceof BatchStartedEventMessage batchMsg) {
-                handleBatchStarted(batchMsg);
-            }
-            else {
-                LOG.debug("Unhandled event type in MqttEventAction: {}",
-                        msg.getClass().getName());
-            }
+
+            LOG.debug("MqttEventAction.execute called for message of type: {}", msg.getClass().getName());
+            mqttPublisherService.publish(topic, event.getPayload());
         }
         catch (Exception e) {
-            LOG.error("Failed to process event in MqttEventAction: {}",
-                    e.getMessage(), e);
-        }
-    }
-
-    private void handleRegisterMinion(RegisterMinionEventMessage registerMsg) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("minionId", registerMsg.getMinionId());
-        registerMsg.getMinionStartupGrains().ifPresent(grains -> {
-            grains.getMachineId().ifPresent(id -> data.put("machineId", id));
-            data.put("saltbootInitrd", grains.getSaltbootInitrd());
-            grains.getSuseManagerGrain()
-                    .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey)
-                    .ifPresent(key -> data.put("managementKey", key));
-        });
-        mqttPublisherService.publish(topicPrefix + "/systems/registered", data);
-    }
-
-    private void handleJobReturn(JobReturnEventMessage jobMsg) {
-        var event = jobMsg.getJobReturnEvent();
-        if (event != null) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("minionId", event.getMinionId());
-            data.put("jid", event.getJobId());
-            if (event.getData() != null) {
-                data.put("fun", event.getData().getFun());
-                data.put("success", event.getData().isSuccess());
-                data.put("retcode", event.getData().getRetcode());
-                data.put("timestamp", event.getData().getTimestamp());
-            }
-            mqttPublisherService.publish(topicPrefix + "/jobs/returned", data);
-        }
-    }
-
-    private void handleApplyStates(ApplyStatesEventMessage applyMsg) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("serverId", applyMsg.getServerId());
-        data.put("userId", applyMsg.getUserId());
-        data.put("stateNames", applyMsg.getStateNames());
-        data.put("forcePackageListRefresh",
-                applyMsg.isForcePackageListRefresh());
-        data.put("directCall", applyMsg.isDirectCall());
-        mqttPublisherService.publish(topicPrefix + "/states/applied", data);
-    }
-
-    private void handleImageDeployed(ImageDeployedEventMessage imageMsg) {
-        var event = imageMsg.getImageDeployedEvent();
-        if (event != null) {
-            Map<String, Object> data = new HashMap<>();
-            event.getMachineId().ifPresent(
-                    id -> data.put("machineId", id));
-            data.put("grains", event.getGrains());
-            mqttPublisherService.publish(topicPrefix + "/images/deployed", data);
-        }
-    }
-
-    private void handleBatchStarted(BatchStartedEventMessage batchMsg) {
-        var event = batchMsg.getBatchStartedEvent();
-        if (event != null) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("jid", event.getJobId());
-            if (event.getData() != null) {
-                data.put("availableMinions",
-                        event.getData().getAvailableMinions());
-                data.put("downMinions",
-                        event.getData().getDownMinions());
-                data.put("timestamp",
-                        event.getData().getTimestamp());
-            }
-            mqttPublisherService.publish(
-                    topicPrefix + "/batches/started", data);
+            LOG.error("Failed to process event in MqttEventAction: {}", e.getMessage(), e);
         }
     }
 
@@ -179,21 +94,21 @@ public class MqttEventAction implements MessageAction {
         return true;
     }
 
-    private String getTopicSuffix(EventMessage msg) {
-        if (msg instanceof RegisterMinionEventMessage) {
-            return "systems/registered";
+    private MqttEvent toMqttEvent(EventMessage msg) {
+        if (msg instanceof RegisterMinionEventMessage registerMsg) {
+            return MinionRegisteredEvent.from(registerMsg);
         }
-        else if (msg instanceof JobReturnEventMessage) {
-            return "jobs/returned";
+        else if (msg instanceof JobReturnEventMessage jobMsg) {
+            return JobReturnedEvent.from(jobMsg);
         }
-        else if (msg instanceof ApplyStatesEventMessage) {
-            return "states/applied";
+        else if (msg instanceof ApplyStatesEventMessage applyMsg) {
+            return StatesAppliedEvent.from(applyMsg);
         }
-        else if (msg instanceof ImageDeployedEventMessage) {
-            return "images/deployed";
+        else if (msg instanceof ImageDeployedEventMessage imageMsg) {
+            return ImageDeployedEvent.from(imageMsg);
         }
-        else if (msg instanceof BatchStartedEventMessage) {
-            return "batches/started";
+        else if (msg instanceof BatchStartedEventMessage batchMsg) {
+            return BatchStartedEvent.from(batchMsg);
         }
         return null;
     }
