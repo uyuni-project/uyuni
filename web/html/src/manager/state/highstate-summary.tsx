@@ -9,7 +9,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-type StateSource = {
+export type StateSource = {
   id?: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
