@@ -32,7 +32,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
     const appInstance = new App();
     appInstance.setFormSelector("form.js-spa");
 
-    appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"]);
+    appInstance.addSurfaces(["left-menu-data", "page-body"]);
     appInstance.addRoutes([
       {
         path: /.*/,
