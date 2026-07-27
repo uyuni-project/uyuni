@@ -1,58 +1,3 @@
-// Setup the password strength meter
-function setupPasswordStrengthMeter() {
-  "use strict";
-  var options = {};
-  options.common = {
-    minChar: 7,
-    usernameField: "#loginname",
-    onKeyUp: function (evt) {
-      jQuery('input[name="desiredpassword"]').popover("show");
-      //when there are no errors the popover disappears
-      if (jQuery("ul.error-list").is(":empty")) {
-        jQuery('input[name="desiredpassword"]').popover("destroy");
-      }
-    },
-  };
-  options.rules = {
-    activated: {
-      wordTwoCharacterClasses: true,
-      wordRepetitions: true,
-    },
-    scores: {
-      wordRepetitions: -20,
-      wordSequences: -20,
-    },
-  };
-  options.ui = {
-    showPopover: true,
-    showErrors: true,
-    spanError: function (options, key) {
-      var text = options.ui.errorMessages[key];
-      return text;
-    },
-    errorMessages: {
-      password_too_short:
-        '<dl><dt><i class="fa fa-exclamation-circle fa-1-5x text-danger"></i>The Password is too short.</dt><dd>must be at least 5 characters</dd></dl>',
-      same_as_username:
-        '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Password contains username</dt></dl>',
-      email_as_password:
-        '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Password contains email address</dt></dl>',
-      repeated_character:
-        '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Try to avoid repetitions</dt></dl>',
-      sequence_found:
-        '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Your Password contains sequences</dt></dl>',
-      two_character_classes:
-        '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Use different character classes</dt></dl>',
-    },
-    showVerdicts: false,
-    container: "#pwstrenghtfield",
-    viewports: {
-      progress: "#pwstrenghtfield",
-    },
-  };
-  jQuery('input[name="desiredpassword"]').pwstrength(options);
-}
-
 //  Password Validation with Configured Password Policy
 let passwordPolicy = {
   consecutiveCharsFlag: false,
@@ -68,6 +13,10 @@ let passwordPolicy = {
 };
 
 function validatePassword(password) {
+  if (/\s/.test(password)) {
+     return false;
+   }
+
   if (password.length < passwordPolicy.minLength) {
     return false;
   }
@@ -91,15 +40,9 @@ function validatePassword(password) {
   if (passwordPolicy.specialCharFlag) {
     const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-    // Must contain at least one allowed special character
+    // Must contain at least one configured special character
     const allowedRegex = new RegExp("[" + escaped + "]");
     if (!allowedRegex.test(password)) {
-      return false;
-    }
-
-    // Reject any special character not in the allowed list
-    const invalidRegex = new RegExp("[^a-zA-Z0-9" + escaped + "]");
-    if (invalidRegex.test(password)) {
       return false;
     }
   }
@@ -132,8 +75,8 @@ function validatePassword(password) {
 // check if confirm password input field matches with password input field
 // swap icons in the input-group-addon
 function updateTickIcon() {
-  var desiredpassVal = jQuery.trim(jQuery('input[name="desiredpassword"]').val());
-  var desiredpassConfirmVal = jQuery.trim(jQuery("#confirmpass").val());
+  var desiredpassVal = jQuery('input[name="desiredpassword"]').val() || "";
+  var desiredpassConfirmVal = jQuery("#confirmpass").val() || "";
   var placeholderAttr = jQuery('input[name="desiredpassword"]').attr("placeholder");
 
   function neutral(element) {
@@ -153,6 +96,9 @@ function updateTickIcon() {
 
   function getPasswordValidationMessage(password) {
     const items = [];
+
+    // Whitespace
+    items.push(`${!/\s/.test(password) ? "✓" : "-"} No spaces, tabs, or newlines`);
 
     // Minimum length
     items.push(`${password.length >= passwordPolicy.minLength ? "✓" : "-"} Minimum length ${passwordPolicy.minLength}`);
@@ -179,9 +125,12 @@ function updateTickIcon() {
     if (passwordPolicy.specialCharFlag) {
       const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-      const regex = new RegExp("[" + escaped + "]");
+      // Must contain at least one configured special character
+      const allowedRegex = new RegExp("[" + escaped + "]");
 
-      items.push(`${regex.test(password) ? "✓" : "-"} Special character: ${passwordPolicy.specialChars}`);
+      items.push(
+        `${allowedRegex.test(password) ? "✓" : "-"} Special character: ${passwordPolicy.specialChars}`
+      );
     }
 
     // Restrict character occurrences
@@ -210,7 +159,13 @@ function updateTickIcon() {
 
     return items.join("\n");
   }
-
+  
+  function updateTooltip(selector, message) {
+    jQuery(selector)
+      .attr("title", message)
+      .attr("data-bs-original-title", message);
+  }
+  
   // on the edit user page
   if (typeof placeholderAttr !== "undefined" && placeholderAttr !== false) {
     // No password entered yet
@@ -218,21 +173,21 @@ function updateTickIcon() {
       neutral(jQuery("#desiredtick"));
       neutral(jQuery("#confirmtick"));
 
-      jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
-      jQuery("#confirmtick").attr("title", "Confirm the password");
+       updateTooltip("#desiredtick", "Leave blank to keep your current password.");
+       updateTooltip("#confirmtick", "Confirm the password");
     }
     // Password entered
     else {
       if (validatePassword(desiredpassVal)) {
         success(jQuery("#desiredtick"));
-        jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
       } else {
         danger(jQuery("#desiredtick"));
-        jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
       }
+      updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
 
       if (!desiredpassConfirmVal) {
         neutral(jQuery("#confirmtick"));
+        updateTooltip("#confirmtick", "Confirm the password");
       } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
         success(jQuery("#confirmtick"));
       } else {
@@ -245,21 +200,19 @@ function updateTickIcon() {
     // Empty state
     if (!desiredpassVal) {
       neutral(jQuery("#desiredtick"));
-      jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
+      updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
     } else if (validatePassword(desiredpassVal)) {
       success(jQuery("#desiredtick"));
-      jQuery("#desiredtick").attr("title", "Password meets all requirements");
+      updateTooltip("#desiredtick", "Password meets all requirements");
     } else {
       danger(jQuery("#desiredtick"));
-      jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
+      updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
     }
-
-    jQuery("#desiredtick").attr("title", getPasswordValidationMessage(desiredpassVal));
 
     // Confirm password icon
     if (!desiredpassConfirmVal) {
       neutral(jQuery("#confirmtick"));
-      jQuery("#confirmtick").attr("title", "Confirm the password");
+      updateTooltip("#confirmtick", "Confirm the password");
     } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
       success(jQuery("#confirmtick"));
     } else {
@@ -270,8 +223,18 @@ function updateTickIcon() {
 
 // document ready handler
 jQuery(document).ready(function () {
-  jQuery.getJSON("/rhn/manager/api/admin/config/password-policy", function (response) {
-    passwordPolicy = JSON.parse(response.data);
-    updateTickIcon();
+  jQuery
+    .getJSON("/rhn/manager/api/admin/config/password-policy")
+    .done(function (response) {
+      try {
+        passwordPolicy = JSON.parse(response.data);
+      } catch (e) {
+        // Keep defaults if backend response is unexpected
+      }
+      updateTickIcon();
+  })
+    .fail(function () {
+      // Keep defaults if policy fetch fails
+      updateTickIcon();
   });
 });
