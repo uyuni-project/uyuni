@@ -10,7 +10,7 @@ export interface CocoSettingsProps {
 
 type LegacyCocoSettingsGlobals = Partial<CocoSettingsProps>;
 
-export const renderer = (id: string, props?: CocoSettingsProps) => {
+export const renderer = (id: string, props?: Partial<CocoSettingsProps>) => {
   const legacyGlobals = window as Window & LegacyCocoSettingsGlobals;
   const serverId = props?.serverId ?? legacyGlobals.serverId;
   const availableEnvironmentTypes = props?.availableEnvironmentTypes ?? legacyGlobals.availableEnvironmentTypes;

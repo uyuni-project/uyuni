@@ -52,6 +52,18 @@ describe("CoCo settings renderer", () => {
     });
   });
 
+  test("uses legacy globals for renderer properties that are not supplied", () => {
+    legacyWindow.availableEnvironmentTypes = { amdsev: "AMD SEV" };
+
+    renderer("coco-settings", { serverId: 789 });
+
+    const [element] = renderNavigationReact.mock.calls[0];
+    expect(element.props).toMatchObject({
+      serverId: 789,
+      availableEnvironmentTypes: { amdsev: "AMD SEV" },
+    });
+  });
+
   test("does not render without settings data", () => {
     renderer("coco-settings");
 
