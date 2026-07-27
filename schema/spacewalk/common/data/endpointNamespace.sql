@@ -2678,18 +2678,33 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/details/packages/profiles/ShowProfiles.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/details/packages/profiles/ShowProfiles.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'R'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/details/packages/profiles/CompareProfiles.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/systems/details/packages/profiles/CompareProfiles.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/systems/details/packages/profiles/CompareSystems.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/systems/details/packages/profiles/CompareSystems.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -2853,22 +2868,22 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/packages/profiles/Create.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/packages/profiles/Create.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/packages/profiles/DeleteProfile.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.packages' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.profiles' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/packages/profiles/DeleteProfile.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
