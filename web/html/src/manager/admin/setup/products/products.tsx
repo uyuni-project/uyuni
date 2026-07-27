@@ -162,7 +162,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           });
         }
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.metadataRequest === metadataRequest) {
+          this.handleResponseError(error);
+        }
+      });
 
     const productsRequest = reloadData();
     this.productsRequest = productsRequest;
@@ -179,7 +183,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           scheduledItems: [],
         });
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.productsRequest === productsRequest) {
+          this.handleResponseError(error);
+        }
+      });
   };
 
   handleSelectedItems = (items) => {
@@ -205,6 +213,10 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   updateSccSyncRunning = (sccSyncStatus) => {
+    if (this.isUnmounted) {
+      return;
+    }
+
     // if it was running and now it's finished
     if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
