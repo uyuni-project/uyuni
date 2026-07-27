@@ -11,6 +11,7 @@ RUN useradd -r -s /usr/bin/bash -g postgres -d /var/lib/pgsql --uid 999 postgres
 
 # Main packages
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+      util-linux \
       postgresql18-server \
       postgresql18-contrib \
       postgresql16-server \
