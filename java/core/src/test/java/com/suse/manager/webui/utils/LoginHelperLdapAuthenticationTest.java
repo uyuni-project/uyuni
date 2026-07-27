@@ -227,9 +227,11 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
 
         assertNotNull(result);
         assertTrue(errors.isEmpty());
-        assertTrue(result.hasRole(RoleFactory.CHANNEL_ADMIN),
+        // LDAP-derived roles are temporary. BaseTestCaseWithUser permanently grants the implied
+        // admin roles (including CONFIG_ADMIN), so hasRole() would always be true for those.
+        assertTrue(result.hasTemporaryRole(RoleFactory.CHANNEL_ADMIN),
                 "uyuni_-prefixed group should map through the stripped label");
-        assertFalse(result.hasRole(RoleFactory.CONFIG_ADMIN),
+        assertFalse(result.hasTemporaryRole(RoleFactory.CONFIG_ADMIN),
                 "group without the uyuni_ prefix must be ignored");
     }
 
