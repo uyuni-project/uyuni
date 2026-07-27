@@ -59,7 +59,7 @@
 
     <hr />
 
-    <rhn:require acl="authorized_for(systems.software.packages.profiles, W);">
+    <rhn:require acl="authorized_for(systems.profiles, W);">
         <div class="form-horizontal">
             <div class="row">
                 <div class="col-md-12">
