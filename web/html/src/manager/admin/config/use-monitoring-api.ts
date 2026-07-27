@@ -40,13 +40,12 @@ const useMonitoringApi = () => {
     setAction("checking");
     return Network.get("/rhn/manager/api/admin/config/monitoring")
       .then((data: JsonResult<ExportersResultType>) => {
-        if (!isMounted.current) {
-          return;
+        if (isMounted.current) {
+          setExportersStatus(data.data.exporters);
+          setExportersMessages(data.data.messages);
+          setRestartNeeded(isRestartNeeded(data.data));
         }
 
-        setExportersStatus(data.data.exporters);
-        setExportersMessages(data.data.messages);
-        setRestartNeeded(isRestartNeeded(data.data));
         return data.data.exporters;
       })
       .catch(handleResponseError)
