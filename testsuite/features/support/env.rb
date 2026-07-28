@@ -604,14 +604,6 @@ Before('@sles12sp5_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles12sp5_sshminion']
 end
 
-Before('@sles15sp3_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp3_minion']
-end
-
-Before('@sles15sp3_sshminion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp3_sshminion']
-end
-
 Before('@sles15sp4_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sles15sp4_minion']
 end
