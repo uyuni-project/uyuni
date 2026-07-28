@@ -12,8 +12,11 @@ tests:
           path: metadata.name
           value: db
       - equal:
-          path: spec.template.spec.containers[0].image
+          path: spec.template.spec.containers[?(@.name=="db")].image
           value: registry.opensuse.org/uyuni/server-postgresql:latest
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="db")].env[?(@.name=="POD_NETWORK")].value
+          value: 10.42.0.0/16
 
   - it: should override image when values.images is provided
     set:
@@ -23,8 +26,18 @@ tests:
         tag: 5.0.0
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].image
+          path: spec.template.spec.containers[?(@.name=="db")].image
           value: my-custom-registry/db:5.0.0
+      
+  - it: should set pod network if db podsCIDR is provided
+    set:
+      global.fqdn: uyuni.example.com
+      db:
+        podsCIDR: 192.168.15.0/24
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="db")].env[?(@.name=="POD_NETWORK")].value
+          value: 192.168.15.0/24
 
   - it: should not render db deployment if disabled
     set:
