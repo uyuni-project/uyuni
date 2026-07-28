@@ -8,20 +8,21 @@ export function useWebSocket(
 ) {
   const callbackRef = useRef(callback);
   const errorsRef = useRef(errors);
-  const pageUnloadingRef = useRef(false);
-  const webSocketErrRef = useRef(false);
 
   callbackRef.current = callback;
   errorsRef.current = errors;
 
   useEffect(() => {
     let closedByCleanup = false;
+    let pageUnloading = false;
+    let webSocketErr = false;
+
     const { port } = window.location;
     const url = `wss://${window.location.hostname}${port ? `:${port}` : ""}/rhn/websocket/notifications`;
     const ws = new WebSocket(url);
 
     const onBeforeUnload = () => {
-      pageUnloadingRef.current = true;
+      pageUnloading = true;
     };
 
     ws.onopen = () => {
@@ -30,7 +31,7 @@ export function useWebSocket(
     };
 
     ws.onclose = () => {
-      if (!closedByCleanup && !pageUnloadingRef.current && !webSocketErrRef.current) {
+      if (!closedByCleanup && !pageUnloading && !webSocketErr) {
         setErrors((currentErrors) =>
           (currentErrors || errorsRef.current || []).concat(
             t("Websocket connection closed. Refresh the page to try again.")
@@ -41,7 +42,7 @@ export function useWebSocket(
 
     ws.onerror = () => {
       if (!closedByCleanup) {
-        webSocketErrRef.current = true;
+        webSocketErr = true;
         setErrors([t("Error connecting to server. Refresh the page to try again.")]);
       }
     };
@@ -58,6 +59,7 @@ export function useWebSocket(
     return () => {
       closedByCleanup = true;
       window.removeEventListener("beforeunload", onBeforeUnload);
+      // Detach handlers before closing to prevent events from updating state after unmount.
       ws.onopen = null;
       ws.onclose = null;
       ws.onerror = null;
