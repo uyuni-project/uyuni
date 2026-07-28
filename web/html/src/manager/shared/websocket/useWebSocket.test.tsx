@@ -22,12 +22,15 @@ class MockWebSocket {
 }
 
 type TestComponentProps = {
-  callback: (value: number) => void;
+  callback?: (value: number) => void;
+  property?: string;
   setErrors: Dispatch<SetStateAction<string[]>>;
 };
 
-function TestComponent({ callback, setErrors }: TestComponentProps) {
-  useWebSocket([], setErrors, "ssm-count", callback);
+const noop = () => undefined;
+
+function TestComponent({ callback = noop, property = "ssm-count", setErrors }: TestComponentProps) {
+  useWebSocket([], setErrors, property, callback);
   return null;
 }
 
@@ -54,7 +57,7 @@ describe("useWebSocket", () => {
 
   test("subscribes to the requested property when connected", () => {
     const setErrors = jest.fn();
-    render(<TestComponent callback={jest.fn()} setErrors={setErrors} />);
+    render(<TestComponent setErrors={setErrors} />);
 
     const socket = getSocket();
     socket.onopen?.(new Event("open"));
@@ -65,10 +68,12 @@ describe("useWebSocket", () => {
   test("closes and detaches the socket without reporting an error on unmount", () => {
     const setErrors = jest.fn();
     const removeEventListener = jest.spyOn(window, "removeEventListener");
-    const { unmount } = render(<TestComponent callback={jest.fn()} setErrors={setErrors} />);
+    const { unmount } = render(<TestComponent setErrors={setErrors} />);
     const socket = getSocket();
+    const pendingCloseHandler = socket.onclose;
 
     unmount();
+    pendingCloseHandler?.(new CloseEvent("close"));
 
     expect(removeEventListener).toHaveBeenCalledWith("beforeunload", expect.any(Function));
     expect(socket.close).toHaveBeenCalledTimes(1);
@@ -81,7 +86,7 @@ describe("useWebSocket", () => {
 
   test("reports an unexpected connection close", () => {
     const setErrors = jest.fn();
-    render(<TestComponent callback={jest.fn()} setErrors={setErrors} />);
+    render(<TestComponent setErrors={setErrors} />);
 
     getSocket().onclose?.(new CloseEvent("close"));
 
@@ -90,6 +95,52 @@ describe("useWebSocket", () => {
     const updatedErrors = updateErrors(["Existing error"]);
     expect(updatedErrors[0]).toBe("Existing error");
     expect(updatedErrors[1]).toContain("Websocket connection closed");
+  });
+
+  test("does not report a second error when an errored connection closes", () => {
+    const setErrors = jest.fn();
+    render(<TestComponent setErrors={setErrors} />);
+    const socket = getSocket();
+
+    socket.onerror?.(new Event("error"));
+    socket.onclose?.(new CloseEvent("close"));
+
+    expect(setErrors).toHaveBeenCalledTimes(1);
+    expect(setErrors).toHaveBeenCalledWith([expect.stringContaining("Error connecting to server")]);
+  });
+
+  test("does not report a close while the page is unloading", () => {
+    const setErrors = jest.fn();
+    render(<TestComponent setErrors={setErrors} />);
+
+    window.dispatchEvent(new Event("beforeunload"));
+    getSocket().onclose?.(new CloseEvent("close"));
+
+    expect(setErrors).not.toHaveBeenCalled();
+  });
+
+  test("reports a close for a new subscription after the previous connection errored", () => {
+    const setErrors = jest.fn();
+    const { rerender } = render(<TestComponent property="ssm-count" setErrors={setErrors} />);
+
+    MockWebSocket.instances[0].onerror?.(new Event("error"));
+    rerender(<TestComponent property="other-property" setErrors={setErrors} />);
+
+    expect(MockWebSocket.instances).toHaveLength(2);
+    MockWebSocket.instances[1].onclose?.(new CloseEvent("close"));
+    expect(setErrors).toHaveBeenCalledTimes(2);
+  });
+
+  test("reports a close for a new subscription after the previous page started unloading", () => {
+    const setErrors = jest.fn();
+    const { rerender } = render(<TestComponent property="ssm-count" setErrors={setErrors} />);
+
+    window.dispatchEvent(new Event("beforeunload"));
+    rerender(<TestComponent property="other-property" setErrors={setErrors} />);
+
+    expect(MockWebSocket.instances).toHaveLength(2);
+    MockWebSocket.instances[1].onclose?.(new CloseEvent("close"));
+    expect(setErrors).toHaveBeenCalledTimes(1);
   });
 
   test("uses the latest callback without reconnecting", () => {
