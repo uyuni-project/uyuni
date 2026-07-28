@@ -1,451 +1,1017 @@
 {
-  "$schema": "https://json-schema.org/draft-07/schema#",
-  "title": "Values",
-  "type": "object",
-  "required": [
-    "global",
-    "repository"
-  ],
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "dbConnectionConfig": {
+      "properties": {
+        "host": {
+          "description": "FQDN to use to connect to the database",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "Postgresql database name to connect to",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "port": {
+          "default": 5432,
+          "description": "port to use to connect to the database",
+          "required": [],
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "imageConfig": {
+      "properties": {
+        "image": {
+          "description": "The image full URL without tag",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tag": {
+          "description": "The image tag",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "listener": {
+      "properties": {
+        "name": {
+          "description": "the name of the listener",
+          "type": "string"
+        },
+        "port": {
+          "description": "the port of the listener",
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "nodeSelectorConfig": {
+      "properties": {
+        "affinity": {
+          "description": "Advanced scheduling rules.",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "description": "Specific node assignment.",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "description": "Node label matching rules.",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "description": "Node taint tolerations.",
+          "required": [],
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "serviceConfig": {
+      "properties": {
+        "annotations": {
+          "description": "annotations to set to the service. This can be helpful to configure a load balancer",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "ports": {
+          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service",
+          "required": [],
+          "type": "object"
+        },
+        "type": {
+          "default": "",
+          "description": "Type of service to define",
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer",
+            ""
+          ],
+          "type": "string"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "volumeConfig": {
+      "properties": {
+        "annotations": {
+          "description": "annotations to set to the volume claim",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "extraLabels": {
+          "description": "labels to add to the volume claim",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "selector": {
+          "description": "selector to set on the volume claim",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "size": {
+          "description": "Requested volume size",
+          "type": "string"
+        },
+        "storageClass": {
+          "description": "storage class to use for the volume claim",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "volumeName": {
+          "description": "volume to force binding to if set",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "type": "object"
+    }
+  },
   "properties": {
-    "repository": {
-      "type": "string",
-      "description": "The default repository for images",
-      "default": "registry.opensuse.org/uyuni"
+    "coco": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
+        }
+      ],
+      "description": "Confidential computing attestation component configuration",
+      "properties": {
+        "image": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "replicas": {
+          "default": "0",
+          "description": " minimum: 0 @schema",
+          "minimum": 0,
+          "required": [],
+          "title": "replicas"
+        },
+        "tag": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "title": "coco",
+      "type": [
+        "object",
+        "null"
+      ]
     },
-    "tag": {
-      "type": "string",
-      "description": "The default tag to use for images",
-      "default": "latest"
+    "db": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
+        }
+      ],
+      "description": "PostgreSQL database configuration",
+      "properties": {
+        "enable": {
+          "default": true,
+          "title": "enable",
+          "type": "boolean"
+        },
+        "image": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "internal": {
+          "$ref": "#/definitions/dbConnectionConfig",
+          "description": "Configuration of the internal database connection",
+          "required": []
+        },
+        "report": {
+          "$ref": "#/definitions/dbConnectionConfig",
+          "description": "Configuration of the report database connection",
+          "required": []
+        },
+        "tag": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "title": "db",
+      "type": [
+        "object",
+        "null"
+      ]
     },
-    "pullPolicy": {
-      "type": "string",
-      "enum": ["Always", "IfNotPresent", "Never"],
-      "default": "IfNotPresent"
+    "enableMonitoring": {
+      "default": "true",
+      "description": "enableMonitoring will create the ingress or gateway routes for Prometheus exporters.",
+      "required": [],
+      "title": "enableMonitoring"
     },
-    "registrySecret": {
-      "type": "string",
-      "description": "Name of the secret which contains the credentials for the registry",
-      "default": ""
+    "exposeJavaDebug": {
+      "default": "false",
+      "description": "exposeJavaDebug will expose ports 8001, 8002, and 8003 for Java debugging.",
+      "required": [],
+      "title": "exposeJavaDebug"
     },
-    "timezone": {
-      "type": "string",
-      "description": "The time zone to set in the containers",
-      "default": "Etc/UTC"
-    },
-    "placement": {
-      "$ref": "#/definitions/nodeSelectorConfig",
-      "description": "Default node placement rules for all pods"
+    "gateway": {
+      "additionalProperties": false,
+      "description": "Gateway configures the Gateway API.",
+      "properties": {
+        "class": {
+          "default": "",
+          "title": "class",
+          "type": "string"
+        },
+        "enable": {
+          "default": false,
+          "title": "enable",
+          "type": "boolean"
+        },
+        "listeners": {
+          "additionalProperties": false,
+          "properties": {
+            "http": {
+              "$ref": "#/definitions/listener",
+              "description": "Configuration of the HTTP listener.",
+              "required": []
+            },
+            "https": {
+              "$ref": "#/definitions/listener",
+              "description": "Configuration of the HTTPS listener.",
+              "required": []
+            }
+          },
+          "required": [],
+          "title": "listeners",
+          "type": "object"
+        },
+        "name": {
+          "default": "",
+          "title": "name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "enable",
+        "class",
+        "name",
+        "listeners"
+      ],
+      "title": "gateway"
     },
     "global": {
-      "type": "object",
+      "additionalProperties": false,
+      "description": " required: true @schema",
+      "properties": {
+        "fqdn": {
+          "default": "null",
+          "description": "fqdn is the fully qualified name the server will answer as.",
+          "required": [],
+          "title": "fqdn"
+        }
+      },
       "required": [
         "fqdn"
       ],
-      "properties": {
-        "fqdn": {
-          "type": "string",
-          "description": "The fully qualified domain name the server will answer to"
+      "title": "global"
+    },
+    "hubAPI": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
         }
-      }
+      ],
+      "description": "hub API component configuration",
+      "properties": {
+        "enable": {
+          "default": false,
+          "title": "enable",
+          "type": "boolean"
+        },
+        "image": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tag": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "title": "hubAPI",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ingress": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "description": "Custom annotations for ingress rules.",
+          "properties": {
+            "exporters": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "exporters",
+              "type": "object"
+            },
+            "hub": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "hub",
+              "type": "object"
+            },
+            "nossl": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "nossl",
+              "type": "object"
+            },
+            "saline": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "saline",
+              "type": "object"
+            },
+            "ssl": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "ssl",
+              "type": "object"
+            },
+            "sslRedirect": {
+              "additionalProperties": false,
+              "required": [],
+              "title": "sslRedirect",
+              "type": "object"
+            }
+          },
+          "required": [
+            "ssl",
+            "sslRedirect",
+            "nossl",
+            "saline",
+            "hub",
+            "exporters"
+          ],
+          "title": "annotations"
+        },
+        "class": {
+          "default": "traefik",
+          "description": "Specify the ingress class name to use.",
+          "required": [],
+          "title": "class"
+        },
+        "type": {
+          "default": "traefik",
+          "description": "ingress.type defines the ingress that is used in the cluster.",
+          "enum": [
+            "traefik",
+            ""
+          ],
+          "required": [],
+          "title": "type"
+        }
+      },
+      "required": [],
+      "title": "ingress",
+      "type": "object"
+    },
+    "placement": {
+      "$ref": "#/definitions/nodeSelectorConfig",
+      "description": "Default node placement rules for all pods",
+      "required": []
+    },
+    "pullPolicy": {
+      "default": "IfNotPresent",
+      "description": "Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy",
+      "enum": [
+        "Always",
+        "IfNotPresent",
+        "Never"
+      ],
+      "required": [],
+      "title": "pullPolicy"
+    },
+    "registrySecret": {
+      "default": "",
+      "description": "registrySecret defines the name of secret to use to pull the images from the registry with authentication. Leave empty for no authentication.",
+      "required": [],
+      "title": "registrySecret"
+    },
+    "repository": {
+      "$schema": "https://json-schema.org/draft-07/schema#",
+      "default": "registry.opensuse.org/uyuni",
+      "description": "The default repository with the path where to find all the images.",
+      "required": [],
+      "title": "Values"
+    },
+    "saline": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
+        }
+      ],
+      "description": "Saline component configuration",
+      "properties": {
+        "enable": {
+          "default": false,
+          "title": "enable",
+          "type": "boolean"
+        },
+        "image": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tag": {
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "title": "saline",
+      "type": [
+        "object",
+        "null"
+      ]
     },
     "server": {
-      "type": ["object", "null"],
-      "description": "configuration of the server component",
+      "additionalProperties": false,
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
+        }
       ],
+      "description": "Server component configuration",
       "properties": {
-        "email": {
-          "type": "string",
-          "description": "Email address for notifications sent by the server",
-          "default": "admin@uyuni.lab.org"
-        },
-        "superPrivileged": {
-          "type": "boolean",
-          "description": "Run the server container with super privileges, bypassing a lot of selinux or AppArmor checks. This is dangerous!",
-          "default": false
-        },
         "apparmorProfile": {
-          "type": "string",
-          "description": "appArmor profile is the name of an AppArmor profile to use for the server pod."
+          "default": "",
+          "description": "appArmor profile is the name of an AppArmor profile to use for the server pod.",
+          "required": [],
+          "title": "apparmorProfile"
         },
-        "selinuxType": {
-          "type": "string",
-          "description": "SELinux type is the name of the SELinux type to use for the server pod."
-        },
-        "systemdLogLevel": {
-          "type": "string",
-          "enum": ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg", ""],
-          "description": "Value passed to systemd's --log-level parameter, can be useful for debugging"
-        },
-        "mirror": {
-          "type": "object",
-          "description": "Defines a volume or host path to mount as server.susemanager.fromdir",
-          "properties": {
-            "claimName": {
-              "type": "string"
-            },
-            "hostPath": {
-              "type": "string"
-            }
-          }
-        },
-        "extraVolumes": {
-          "type": ["array", "null"],
-          "description": "Additional Kubernetes volumes for the server pod",
-          "items": {
-            "type": "object"
-          }
+        "email": {
+          "default": "admin@uyuni.lab.org",
+          "description": "Email will be the email used for the notifications sent by the server.",
+          "required": [],
+          "title": "email"
         },
         "extraVolumeMounts": {
-          "type": ["array", "null"],
-          "description": "Additional volume mounts for the server container",
+          "description": "extraVolumeMounts defines additional mounts for the server container.",
           "items": {
+            "required": [],
             "type": "object"
-          }
+          },
+          "required": [],
+          "title": "extraVolumeMounts",
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "extraVolumes": {
+          "description": "extraVolumes defines additional Kubernetes volumes for the server pod.",
+          "items": {
+            "required": [],
+            "type": "object"
+          },
+          "required": [],
+          "title": "extraVolumes",
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "image": {
+          "default": "null",
+          "description": "image overrides the default image computed using the repository property. Leave undefined to use the default",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mirror": {
+          "additionalProperties": false,
+          "description": "mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.",
+          "properties": {
+            "claimName": {
+              "default": "",
+              "description": "claimName is the name of the PVC to use for the mirror volume.",
+              "required": [],
+              "title": "claimName"
+            },
+            "hostPath": {
+              "default": "",
+              "description": "hostPath is the path on the node to mount as mirror.",
+              "required": [],
+              "title": "hostPath"
+            }
+          },
+          "required": [],
+          "title": "mirror"
         },
         "sccSecret": {
-            "type": "string",
-            "description": "the name of a basic-auth secret with the organization mirroring credentials to set up on the server.",
-            "default": ""
-        }
-      }
-    },
-    "tftp": {
-      "type": ["object", "null"],
-      "description": "configuration of the tftp server component",
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "hostNetwork": {
-          "type": "boolean",
-          "description": "Use the host network instead of Kubernetes network infrastructure",
-          "default": false
+          "default": "",
+          "description": "sccSecret is the name of a basic-auth secret with the organization mirroring credentials to set up on the server.",
+          "required": [],
+          "title": "sccSecret"
         },
-        "enable": {
-          "type": "boolean",
-          "description": "Deploy the TFTP server to PXE boot systems",
-          "default": true
-        }
-      }
-    },
-    "volumes": {
-      "type": "object",
-      "description": "Defines the volume claims for the server components",
-      "properties": {
-        "storageClass": {
-          "type": ["string", "null"],
-          "description": "default storage class to use for the volume claims"
+        "selinuxType": {
+          "default": "",
+          "description": "SELinux type is the name of the SELinux type to use for the server pod.",
+          "required": [],
+          "title": "selinuxType"
         },
-        "var-pgsql": { "$ref": "#/definitions/volumeConfig" },
-        "var-spacewalk": { "$ref": "#/definitions/volumeConfig" },
-        "var-cache": { "$ref": "#/definitions/volumeConfig" },
-        "var-log": { "$ref": "#/definitions/volumeConfig" },
-        "srv-www": { "$ref": "#/definitions/volumeConfig" },
-        "srv-tftpboot": { "$ref": "#/definitions/volumeConfig" },
-        "ca-certs": { "$ref": "#/definitions/volumeConfig" },
-        "etc-apache2": { "$ref": "#/definitions/volumeConfig" },
-        "etc-cobbler": { "$ref": "#/definitions/volumeConfig" },
-        "etc-postfix": { "$ref": "#/definitions/volumeConfig" },
-        "etc-rhn": { "$ref": "#/definitions/volumeConfig" },
-        "etc-salt": { "$ref": "#/definitions/volumeConfig" },
-        "etc-sssd": { "$ref": "#/definitions/volumeConfig" },
-        "etc-sysconfig": { "$ref": "#/definitions/volumeConfig" },
-        "etc-systemd-multi": { "$ref": "#/definitions/volumeConfig" },
-        "etc-systemd-sockets": { "$ref": "#/definitions/volumeConfig" },
-        "etc-tomcat": { "$ref": "#/definitions/volumeConfig" },
-        "run-salt-master": { "$ref": "#/definitions/volumeConfig" },
-        "srv-formulametadata": { "$ref": "#/definitions/volumeConfig" },
-        "srv-pillar": { "$ref": "#/definitions/volumeConfig" },
-        "srv-salt": { "$ref": "#/definitions/volumeConfig" },
-        "srv-spacewalk": { "$ref": "#/definitions/volumeConfig" },
-        "srv-susemanager": { "$ref": "#/definitions/volumeConfig" },
-        "var-cobbler": { "$ref": "#/definitions/volumeConfig" },
-        "var-salt": { "$ref": "#/definitions/volumeConfig" },
-        "var-search": { "$ref": "#/definitions/volumeConfig" }
-      }
+        "superPrivileged": {
+          "default": "false",
+          "description": "superPrivileged may need to be set to true to run on a cluster with selinux or AppArmor enforced.",
+          "required": [],
+          "title": "superPrivileged"
+        },
+        "systemdLogLevel": {
+          "default": "",
+          "description": "log-level parameter.",
+          "enum": [
+            "debug",
+            "info",
+            "notice",
+            "warning",
+            "err",
+            "crit",
+            "alert",
+            "emerg",
+            ""
+          ],
+          "required": [],
+          "title": "systemdLogLevel"
+        },
+        "tag": {
+          "default": "null",
+          "description": "tag overrides the default tag in the tag property. Leave undefined to use the default",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "title": "server",
+      "type": [
+        "object",
+        "null"
+      ]
     },
     "services": {
-      "type": ["object"],
-      "description": "Services tuning properties",
+      "additionalProperties": false,
+      "description": "Services tuning properties.",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "type of all the externally-facing services. Can be overridden on each service",
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
-          "default": "ClusterIP"
-        },
         "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to all the services. Merged with the service ones."
+          "default": "null",
+          "description": "annotations to set to all the services. Merged with the service ones.",
+          "required": [],
+          "title": "annotations",
+          "type": [
+            "object",
+            "null"
+          ]
         },
         "reportdb": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the reportdb service. The ports keys can only be pgsql (5432)"
+          "description": "Values setting up the reportdb service.",
+          "required": []
         },
         "salt": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the salt master service. The ports keys can be one of 'publish' (4505) or 'request' (4506)"
+          "description": "Values setting up the salt service.",
+          "required": []
         },
         "search": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the search server service. The ports keys can only be debug (8002)"
+          "description": "Values setting up the search server service.",
+          "required": []
         },
         "taskomatic": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the taskomatic service. The ports keys can only be debug (8001)"
+          "description": "Values setting up the taskomatic service.",
+          "required": []
+        },
+        "tftp": {
+          "additionalProperties": false,
+          "description": "Values setting up the tftp service.",
+          "properties": {
+            "annotations": {
+              "default": "null",
+              "description": " @schema type: [\"object\", \"null\"] @schema",
+              "required": [],
+              "title": "annotations",
+              "type": [
+                "object",
+                "null"
+              ]
+            }
+          },
+          "required": [],
+          "title": "tftp",
+          "type": [
+            "object",
+            "null"
+          ]
         },
         "tomcat": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the tomcat service. The ports keys can only be debug (8003)"
+          "description": "Values setting up the tomcat service.",
+          "required": []
         },
-        "tftp": {
-          "type": ["object", "null"],
-          "description": "values for the tomcat service. Changing the service type doesn't make sense for TFTP",
-          "properties": {
-            "annotations": {
-              "type": ["object", "null"],
-              "description": "annotations to set to the service. This can be helpful to configure a load balancer"
-            }
-          }
-        }
-      }
-    },
-    "exposeJavaDebug": {
-      "type": "boolean",
-      "description": "Expose ports 8001, 8002, and 8003 for Java debugging",
-      "default": false
-    },
-    "enableMonitoring": {
-      "type": "boolean",
-      "description": "Expose metrics ports for Prometheus scraping",
-      "default": true
-    },
-    "ingress": {
-      "type": "object",
-      "properties": {
         "type": {
-          "type": "string",
-          "description": "Type of ingress used (supported values: traefik, '')",
-          "enum": ["traefik", ""],
-          "default": "traefik"
-        },
-        "class": {
-          "type": "string",
-          "description": "Name of the ingress class to use. This value will be used in traefik routes annotations.",
-          "default": "traefik"
-        },
-        "annotations": {
-          "type": "object",
-          "description": "Custom annotations for ingress rules",
-          "properties": {
-            "ssl": { "type": "object" },
-            "sslRedirect": { "type": "object" },
-            "nossl": { "type": "object" },
-            "saline": { "type": "object" },
-            "hub": { "type": "object" },
-            "exporters": { "type": "object" }
-          }
+          "default": "ClusterIP",
+          "description": "type of all the externally-facing services. Can be overridden on each service.",
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer"
+          ],
+          "required": [],
+          "title": "type"
         }
-      }
+      },
+      "required": [],
+      "title": "services"
     },
-    "gateway": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Name of the gateway to use. An empty string value means that a gateway will be deployed and named uyuni-gateway.",
-          "default": ""
-        },
-        "class": {
-          "type": "string",
-          "description": "Name of the gateway class to use. For rke2 with traefik, it is likely to be 'traefik'.",
-          "default": ""
-        },
-        "listeners": {
-            "type": "object",
-            "description": "Gateway listeners configuration",
-            "properties": {
-                "http": {
-                    "$ref": "#/definitions/listener",
-                    "description": "Configuration of the HTTP listener. Defaults are adjusted to traefik on rke2"
-                },
-                "https": {
-                    "$ref": "#/definitions/listener",
-                    "description": "Configuration of the HTTPS listener. Defaults are adjusted to traefik on rke2"
-                }
-            }
-        }
-      }
+    "tag": {
+      "default": "latest",
+      "description": "The default tag to use for images, can be overridden for each image.",
+      "required": [],
+      "title": "tag"
     },
-    "hubAPI": {
-      "type": ["object", "null"],
-      "description": "configuration of the hub API component",
+    "tftp": {
+      "additionalProperties": false,
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
+        {
+          "$ref": "#/definitions/imageConfig",
+          "required": []
+        },
+        {
+          "$ref": "#/definitions/nodeSelectorConfig",
+          "required": []
+        }
       ],
+      "description": "TFTP server configuration",
       "properties": {
         "enable": {
-          "type": "boolean",
-          "description": "Enable or disable the Hub XML-RPC API deployment",
-          "default": false
-        }
-      }
-    },
-    "coco": {
-      "type": ["object", "null"],
-      "description": "configuration of the confidential computing attestation component",
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "replicas": {
-          "type": "integer",
-          "description": "Number of replicas for confidential computing attestation",
-          "minimum": 0,
-          "default": 0
-        }
-      }
-    },
-    "saline": {
-      "type": ["object", "null"],
-      "description": "configuration of the saline component",
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "enable": {
-          "type": "boolean",
-          "description": "Deploy Saline for salt master monitoring",
-          "default": false
-        }
-      }
-    },
-    "db": {
-      "type": ["object", "null"],
-      "description": "configuration of the PostgreSQL database",
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "enable": {
-          "type": "boolean",
-          "description": "Deploy a PostgreSQL instance.",
-          "default": true
+          "default": false,
+          "title": "enable",
+          "type": "boolean"
         },
-        "internal": { "ref": "#/definitions/dbConnectionConfig" },
-        "report": { "ref": "#/definitions/dbConnectionConfig" }
-      }
-    }
-  },
-  "definitions": {
-    "nodeSelectorConfig": {
-      "type": ["object", "null"],
-      "properties": {
-        "nodeSelector": { "type": ["object", "null"], "description": "Node label matching rules." },
-        "affinity": { "type": ["object", "null"], "description": "Advanced scheduling rules." },
-        "tolerations": { "type": ["array", "null"], "description": "Node taint tolerations." },
-        "nodeName": { "type": ["string", "null"], "description": "Specific node assignment." }
-      }
-    },
-    "imageConfig": {
-      "type": ["object", "null"],
-      "properties": {
+        "hostNetwork": {
+          "default": false,
+          "title": "hostNetwork",
+          "type": "boolean"
+        },
         "image": {
-          "type": ["string", "null"],
-          "description": "The image full URL without tag"
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "tag": {
-          "type": ["string", "null"],
-          "description": "The image tag"
+          "default": "null",
+          "description": " @schema type: [\"string\", \"null\"] @schema",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
         }
-      }
+      },
+      "required": [
+        "enable",
+        "hostNetwork"
+      ],
+      "title": "tftp",
+      "type": [
+        "object",
+        "null"
+      ]
     },
-    "dbConnectionConfig": {
-        "type": ["object", "null"],
-        "properties": {
-            "host": {
-                "type": ["string", "null"],
-                "description": "FQDN to use to connect to the database"
-            },
-            "port": {
-                "type": ["integer", "null"],
-                "description": "port to use to connect to the database",
-                "default": 5432
-            },
-            "name": {
-                "type": ["string", "null"],
-                "description": "Postgresql database name to connect to"
-            }
-        }
+    "timezone": {
+      "default": "Etc/UTC",
+      "description": "The time zone to set in the containers",
+      "required": [],
+      "title": "timezone"
     },
-    "volumeConfig": {
-      "type": "object",
+    "volumes": {
+      "additionalProperties": false,
+      "description": "Configuration of persistent volume claims.",
       "properties": {
-        "size": {
-          "type": "string",
-          "description": "Requested volume size"
+        "ca-certs": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-apache2": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-cobbler": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-postfix": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-rhn": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-salt": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-sssd": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-sysconfig": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-systemd-multi": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-systemd-sockets": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "etc-tomcat": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "run-salt-master": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-formulametadata": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-pillar": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-salt": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-spacewalk": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-susemanager": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-tftpboot": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "srv-www": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": "srv-www volume configuration",
+          "required": []
         },
         "storageClass": {
-          "type": ["string", "null"],
-          "description": "storage class to use for the volume claim"
+          "default": "null",
+          "description": "Default storage class name to use for all claims.",
+          "required": [],
+          "title": "storageClass",
+          "type": [
+            "string",
+            "null"
+          ]
         },
-        "extraLabels": {
-          "type": ["object", "null"],
-          "description": "labels to add to the volume claim"
+        "var-cache": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": "var-cache volume configuration",
+          "required": []
         },
-        "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to the volume claim"
+        "var-cobbler": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
         },
-        "volumeName": {
-          "type": ["string", "null"],
-          "description": "volume to force binding to if set"
+        "var-log": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": "var-log volume configuration",
+          "required": []
         },
-        "selector": {
-          "type": ["object", "null"],
-          "description": "selector to set on the volume claim"
+        "var-pgsql": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": "var-pgsql volume configuration",
+          "required": []
+        },
+        "var-salt": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "var-search": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": " $ref: \"#/definitions/volumeConfig\" @schema",
+          "required": []
+        },
+        "var-spacewalk": {
+          "$ref": "#/definitions/volumeConfig",
+          "description": "var-spacewalk volume configuration",
+          "required": []
         }
-      }
-    },
-    "serviceConfig": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "description": "Type of service to define",
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer", ""],
-          "default": ""
-        },
-        "ports": {
-          "type": "object",
-          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service"
-        },
-        "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to the service. This can be helpful to configure a load balancer"
-        }
-      }
-    },
-    "listener": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "type": "string",
-                "description": "the name of the listener"
-            },
-            "port": {
-                "type": "integer",
-                "description": "the port of the listener"
-            }
-        }
+      },
+      "required": [],
+      "title": "volumes"
     }
-  }
+  },
+  "required": [
+    "global",
+    "ingress"
+  ],
+  "type": "object"
 }

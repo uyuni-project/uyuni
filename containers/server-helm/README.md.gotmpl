@@ -33,32 +33,15 @@ The Root CA certificate of `db-cert` and `uyuni-cert` are expected in ConfigMaps
 
 The following persistent volume claims will be created and will need to be bound to persistent volumes.
 
-- `ca-certs`: (default size: 10Mi)
-- `etc-apache2`: (default size: 1Mi)
-- `etc-cobbler`: (default size: 1Mi)
-- `etc-postfix`: (default size: 1Mi)
-- `etc-rhn`: (default size: 1Mi)
-- `etc-salt`: (default size: 1Mi)
-- `etc-sssd`: (default size: 1Mi)
-- `etc-sysconfig`: (default size: 20Mi)
-- `etc-systemd-multi`: (default size: 1Mi)
-- `etc-systemd-sockets`: (default size: 1Mi)
-- `etc-tomcat`: (default size: 1Mi)
-- `run-salt-master`: (default size: 10Mi)
-- `srv-formulametadata`: (default size: 10Mi)
-- `srv-pillar`: (default size: 10Mi)
-- `srv-salt`: (default size: 10Mi)
-- `srv-spacewalk`: (default size: 10Mi)
-- `srv-susemanager`: (default size: 1Mi)
-- `srv-tftpboot`: (default size: 300Mi)
-- `srv-www`: (default size: 100Gi)
-- `var-cache`: (default size: 10Gi)
-- `var-cobbler`: (default size: 10Mi)
-- `var-log`: (default size: 2Gi)
-- `var-pgsql18`: (default size: 50Gi)
-- `var-salt`: (default size: 10Mi)
-- `var-search`: (default size: 10Gi)
-- `var-spacewalk`: (default size: 100Gi)
+| Volume Key | Default Size |
+| ---------- | ------------ |
+{{- range .Values }}
+  {{- if hasPrefix "volumes." .Key }}
+    {{- if hasSuffix ".size" .Key }}
+| `{{ .Key | trimPrefix "volumes." | trimSuffix ".size" }}` | {{ .Default }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 They all are using the `ReadWriteOnce` access mode and can be configured in the values.
 
@@ -70,6 +53,9 @@ This would be overridden by each claim's `volumes.<claim>.storageClass` value.
 
 The storage class supports a special `"-"` value to force the storage class to the empty string.
 This is different from the `""` value representing the default storage class by not setting any storage class at all.
+
+Each of the volume claims can have the `extraLabels`, `annotations` properties to add metadata to the claims.
+They can also have the `volumeName` and `selector` properties to precisely associate the claim to a volume.
 
 Additional volumes can be attached to the server pod with `server.extraVolumes` and mounted into the server container with `server.extraVolumeMounts`.
 This is useful for optional content volumes like `inter-server-sync` data without changing the chart templates.
@@ -149,6 +135,32 @@ Here is a list of the ports to map:
 Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
 Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
+
+Services can be configured with the following values:
+
+| Key | Type | Default | Description |
+| --- | ---- | ------- | ----------- |
+{{- range .Values }}
+  {{- if hasPrefix "services." .Key }}
+    {{- $subKey := .Key | trimPrefix "services." }}
+    {{- if and (not (contains "." $subKey)) (ne "object" .Type) }}
+| `{{ $subKey }}` | {{ .Type}} | {{ .Default }} | {{ .Description }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+Each of the services can be configured with an overriding `type` and `annotations`.
+The list of services supporting this is:
+
+| Service | Comment |
+{{- range .Values }}
+  {{- if hasPrefix "services." .Key }}
+    {{- $subKey := .Key | trimPrefix "services." }}
+    {{- if and (not (contains "." $subKey)) (eq "object" .Type) }}
+| `{{ $subKey }}` | {{ if eq $subKey "tftp" }}Cannot override the `type`{{ end }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 ### Ingress vs Gateway API
 
@@ -299,6 +311,16 @@ checkmodule -M -m -o /root/systemdcontainerpolicy.mod /root/systemdcontainerpoli
 semodule_package -o /root/systemdcontainerpolicy.pp -m /root/systemdcontainerpolicy.mod
 semodule -i /root/systemdcontainerpolicy.pp
 ```
+
+## Chart values
+
+| Key | Type | Default | Description |
+| --- | ---- | ------- | ----------- |
+{{- range .Values }}
+  {{- if and (not (hasPrefix "volumes" .Key)) (not (hasPrefix "services" .Key)) }}
+| `{{ .Key }}` | {{ .Type }} | {{ .Default }} | {{ .Description }} |
+  {{- end }}
+{{- end }}
 
 ## Usage
 
