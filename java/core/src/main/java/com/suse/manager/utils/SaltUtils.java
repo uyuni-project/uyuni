@@ -23,7 +23,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.TransactionalAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -465,6 +464,24 @@ public class SaltUtils {
      */
     public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
                                    JsonElement jsonResult, Optional<Xor<String[], String>> function, Date endTime) {
+        updateServerAction(serverAction, retcode, success, jid, jsonResult, function, Optional.empty(), endTime);
+    }
+
+    /**
+     * Update a given server action based on data from the corresponding job return event.
+     *
+     * @param serverAction the server action to update
+     * @param retcode return code
+     * @param success if the action was successful
+     * @param jid salt job id for the action
+     * @param jsonResult the result of the action as json
+     * @param function salt function used for the action
+     * @param states Salt states applied for the action
+     * @param endTime the time when the action was finished. If null, "now" is used
+     */
+    public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
+                                   JsonElement jsonResult, Optional<Xor<String[], String>> function,
+                                   Optional<List<String>> states, Date endTime) {
         Date completionTime = Optional.ofNullable(endTime).orElse(new Date());
 
         // Set the result code defaulting to 0
@@ -480,16 +497,16 @@ public class SaltUtils {
         }
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        Optional<TransactionalAction> transactionalAction =
-                TransactionalActionManager.getTransactionalAction(action, function);
+        boolean transactionalResult =
+                TransactionalActionManager.isTransactionalResult(action, function, states);
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", action.getId());
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
-            if (transactionalAction.isPresent()) {
-                setTransactionalResultMsg(serverAction, transactionalAction.get(), jsonResult);
+            if (transactionalResult) {
+                setTransactionalResultMsg(serverAction, action, function, states, jsonResult);
                 LOG.debug("Finished update server action for action {}", action.getId());
                 return;
             }
@@ -500,13 +517,13 @@ public class SaltUtils {
                 return;
             }
         }
-        else if (transactionalAction.isPresent()) {
-            setTransactionalResultMsg(serverAction, transactionalAction.get(), jsonResult);
+        else if (transactionalResult) {
+            setTransactionalResultMsg(serverAction, action, function, states, jsonResult);
             if (TransactionalActionManager.isTransactionalApplyWaitingForReboot(
                     action, serverAction.getServer().getId())) {
                 serverAction.setCompletionTime(null);
             }
-            else if (TransactionalActionManager.needsAdditionalStatesAfterReboot(transactionalAction.get())) {
+            else if (TransactionalActionManager.needsAdditionalStatesAfterReboot(action, function, states)) {
                 serverAction.setCompletionTime(null);
             }
             else {
@@ -529,14 +546,21 @@ public class SaltUtils {
     }
 
     private static void setTransactionalResultMsg(
-            ServerAction serverAction, TransactionalAction transactionalAction, JsonElement jsonResult) {
+            ServerAction serverAction,
+            Action action,
+            Optional<Xor<String[], String>> function,
+            Optional<List<String>> states,
+            JsonElement jsonResult) {
         serverAction.getServer().asMinionServer().ifPresent(minionServer ->
-                serverAction.setResultMsg(TransactionalActionManager.handleTransactionalResult(
-                        transactionalAction,
+                TransactionalActionManager.handleTransactionalResult(
+                        action,
+                        function,
+                        states,
                         minionServer.getId(),
                         serverAction.getParentAction().getId(),
                         jsonResult,
-                        serverAction.isStatusFailed())));
+                        serverAction.isStatusFailed())
+                        .ifPresent(serverAction::setResultMsg));
     }
 
     /**

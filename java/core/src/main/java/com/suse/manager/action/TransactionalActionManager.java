@@ -11,19 +11,27 @@
 package com.suse.manager.action;
 
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.partitioningBy;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.TransactionalAction;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.TransactionalFlow;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressEntry;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistoryId;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
+import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.TransactionalUpdateCalls;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
@@ -31,10 +39,13 @@ import com.suse.utils.Json;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Manager for multi-step transactional actions.
@@ -94,12 +105,9 @@ public class TransactionalActionManager {
      * @return true when the action applied transactional states and is waiting for reboot
      */
     public static boolean isTransactionalApplyWaitingForReboot(Action action, Long minionServerId) {
-        if (!(action instanceof TransactionalAction transactionalAction) ||
-                !TransactionalFlow.APPLY_THEN_COMPLETE.equals(transactionalAction.getTransactionalFlow())) {
-            return false;
-        }
-
-        return findTransactionalActionHistory(minionServerId, action.getId())
+        return findDefinitionByAction(action)
+                .filter(definition -> TransactionalFlow.APPLY_THEN_COMPLETE.equals(definition.flow()))
+                .flatMap(definition -> findTransactionalActionHistory(minionServerId, action.getId()))
                 .map(MinionTransactionalActionHistory::isWaitingForReboot)
                 .orElse(false);
     }
@@ -112,8 +120,9 @@ public class TransactionalActionManager {
      * @return progress entries in execution order
      */
     public static List<ProgressEntry> getProgressEntries(Action action, MinionTransactionalActionHistory history) {
-        boolean transactionalApply = action instanceof TransactionalAction transactionalAction &&
-                TransactionalFlow.APPLY_THEN_COMPLETE.equals(transactionalAction.getTransactionalFlow());
+        boolean transactionalApply = findDefinitionByAction(action)
+                .map(definition -> TransactionalFlow.APPLY_THEN_COMPLETE.equals(definition.flow()))
+                .orElse(false);
         return history.getProgressEntries(transactionalApply);
     }
 
@@ -140,62 +149,192 @@ public class TransactionalActionManager {
     }
 
     /**
-     * Return the transactional action when the given action result is from transactional-update apply.
+     * Build the Salt call for a state on transactional systems.
      *
-     * @param action action receiving the result
-     * @param function Salt function used for the action
-     * @return transactional action when the result is from a transactional phase
+     * @param state state to apply
+     * @param pillar Salt pillar parameters
+     * @return Salt call
      */
-    public static Optional<TransactionalAction> getTransactionalAction(
-            Action action, Optional<Xor<String[], String>> function) {
-        if (action instanceof TransactionalAction transactionalAction &&
-                TransactionalUpdateCalls.isApplyFunction(function)) {
-            return Optional.of(transactionalAction);
+    public static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
+            String state, Optional<Map<String, Object>> pillar) {
+        Optional<TransactionalStateDefinition> definition = findDefinitionByState(state);
+        return definition.isPresent() ?
+                getTransactionalSaltCall(definition.get(), pillar) :
+                State.apply(List.of(state), pillar);
+    }
+
+    /**
+     * Add Salt calls for minions, using transactional-update apply for registered transactional states.
+     *
+     * @param calls destination map
+     * @param states states to apply
+     * @param pillar Salt pillar parameters
+     * @param minionSummaries target minions
+     */
+    public static void addApplyCalls(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            List<String> states,
+            Optional<Map<String, Object>> pillar,
+            List<MinionSummary> minionSummaries) {
+        Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minionSummaries.stream()
+                .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+
+        addCall(calls, State.apply(states, pillar), minionsByTransactionalUpdate.get(false));
+
+        Optional<TransactionalStateDefinition> definition = findDefinitionByStates(states);
+        LocalCall<Map<String, State.ApplyResult>> transactionalCall = definition.isPresent() ?
+                getTransactionalSaltCall(definition.get(), pillar) :
+                State.apply(states, pillar);
+        addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
+    }
+
+    /**
+     * Extract applied states from Salt function arguments.
+     *
+     * @param functionArgs Salt function arguments
+     * @return applied states
+     */
+    public static Optional<List<String>> getStatesFromFunctionArgs(Object functionArgs) {
+        if (!(functionArgs instanceof List<?> args)) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        return args.stream()
+                .map(TransactionalActionManager::getStatesFromFunctionArg)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
+
+    /**
+     * Extract applied states from a Salt local call payload.
+     *
+     * @param call Salt local call
+     * @return applied states
+     */
+    public static Optional<List<String>> getStatesFromCall(LocalCall<?> call) {
+        return getStatesFromFunctionArg(call.getPayload().get("kwarg"))
+                .or(() -> getStatesFromFunctionArg(call.getPayload().get("arg")));
     }
 
     /**
      * Check whether a transactional action needs additional Salt states after reboot.
      *
-     * @param action action to check
+     * @param action action receiving the result
+     * @param function Salt function used for the action
+     * @param states states applied by Salt
      * @return true when the action needs another Salt state after reboot
      */
-    public static boolean needsAdditionalStatesAfterReboot(TransactionalAction action) {
-        return action.getAfterRebootState().isPresent();
+    public static boolean needsAdditionalStatesAfterReboot(
+            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
+        return getTransactionalDefinition(action, function, states)
+                .map(TransactionalActionManager::needsAdditionalStatesAfterReboot)
+                .orElse(false);
     }
 
     /**
-     * Return the transactional action when it needs additional Salt states after reboot.
+     * Build Salt calls that continue this action after reboot.
+     *
+     * @param action action to continue
+     * @param minionSummaries target minions
+     * @return after-reboot Salt calls
+     */
+    public static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
+            Action action, List<MinionSummary> minionSummaries) {
+        return getAfterRebootDefinition(action)
+                .map(definition -> Map.of(
+                        State.apply(
+                                List.of(definition.afterRebootState().orElseThrow()),
+                                Optional.empty(),
+                                Optional.of(true),
+                                Optional.empty()),
+                        minionSummaries));
+    }
+
+    /**
+     * Check whether an action has an after-reboot Salt state.
      *
      * @param action action to check
-     * @return transactional action with after-reboot state
+     * @return true when an after-reboot state exists
      */
-    public static Optional<TransactionalAction> getAfterRebootAction(Action action) {
-        if (action instanceof TransactionalAction transactionalAction &&
-                needsAdditionalStatesAfterReboot(transactionalAction)) {
-            return Optional.of(transactionalAction);
-        }
-        return Optional.empty();
+    public static boolean hasAfterRebootState(Action action) {
+        return getAfterRebootDefinition(action).isPresent();
     }
 
     /**
      * Handle a transactional Salt result according to the action flow.
      *
-     * @param transactionalAction transactional action receiving the result
+     * @param action action receiving the result
+     * @param function Salt function used for the action
+     * @param states states applied by Salt
      * @param minionServerId minion server id
      * @param actionId action id
      * @param jsonResult Salt state result
      * @param failed whether the transactional step failed
      * @return result message for the action
      */
-    public static String handleTransactionalResult(
-            TransactionalAction transactionalAction,
+    public static Optional<String> handleTransactionalResult(
+            Action action,
+            Optional<Xor<String[], String>> function,
+            Optional<List<String>> states,
             Long minionServerId,
             Long actionId,
             JsonElement jsonResult,
             boolean failed) {
-        return switch (transactionalAction.getTransactionalFlow()) {
+        return getTransactionalDefinition(action, function, states)
+                .map(definition -> handleTransactionalResult(
+                        definition, minionServerId, actionId, jsonResult, failed));
+    }
+
+    /**
+     * Check whether the given result belongs to a transactional action.
+     *
+     * @param action action receiving the result
+     * @param function Salt function used for the action
+     * @param states states applied by Salt
+     * @return true when the result is from a transactional phase
+     */
+    public static boolean isTransactionalResult(
+            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
+        return getTransactionalDefinition(action, function, states).isPresent();
+    }
+
+    private static Optional<TransactionalStateDefinition> getTransactionalDefinition(
+            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
+        if (!TransactionalUpdateCalls.isApplyFunction(function)) {
+            return Optional.empty();
+        }
+
+        return states.flatMap(TransactionalActionManager::findDefinitionByStates)
+                .or(() -> findDefinitionByAction(action));
+    }
+
+    private static boolean needsAdditionalStatesAfterReboot(TransactionalStateDefinition definition) {
+        return definition.afterRebootState().isPresent();
+    }
+
+    private static Optional<TransactionalStateDefinition> getAfterRebootDefinition(Action action) {
+        return findDefinitionByAction(action)
+                .filter(TransactionalActionManager::needsAdditionalStatesAfterReboot);
+    }
+
+    /**
+     * Handle a transactional Salt result according to the state definition.
+     *
+     * @param definition transactional state definition receiving the result
+     * @param minionServerId minion server id
+     * @param actionId action id
+     * @param jsonResult Salt state result
+     * @param failed whether the transactional step failed
+     * @return result message for the action
+     */
+    private static String handleTransactionalResult(
+            TransactionalStateDefinition definition,
+            Long minionServerId,
+            Long actionId,
+            JsonElement jsonResult,
+            boolean failed) {
+        return switch (definition.flow()) {
             case PREREQUISITE_THEN_STATE -> handlePrerequisiteResult(minionServerId, actionId, jsonResult, failed);
             case APPLY_THEN_COMPLETE -> handleApplyResult(minionServerId, actionId, jsonResult, failed);
         };
@@ -349,5 +488,130 @@ public class TransactionalActionManager {
                 .filter(Objects::nonNull)
                 .anyMatch(changes -> !changes.isJsonObject() ||
                         changes.getAsJsonObject().size() > 0);
+    }
+
+    private static Optional<TransactionalStateDefinition> findDefinitionByState(String state) {
+        return TransactionalState.getByState(state)
+                .map(TransactionalState::getDefinition);
+    }
+
+    private static Optional<TransactionalStateDefinition> findDefinitionByStates(List<String> states) {
+        return states.stream()
+                .map(TransactionalActionManager::findDefinitionByState)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
+
+    private static Optional<TransactionalStateDefinition> findDefinitionByAction(Action action) {
+        if (action instanceof HardwareRefreshAction) {
+            return Optional.of(TransactionalState.HARDWARE_PROFILE_UPDATE.getDefinition());
+        }
+        else if (action instanceof PackageRemoveAction) {
+            return Optional.of(TransactionalState.PACKAGES_PKGREMOVE.getDefinition());
+        }
+        else if (action instanceof ErrataAction) {
+            return Optional.of(TransactionalState.PACKAGES_PATCHINSTALL.getDefinition());
+        }
+        else if (action instanceof PackageUpdateAction packageUpdateAction) {
+            return Optional.of(packageUpdateAction.getDetails().isEmpty() ?
+                    TransactionalState.PACKAGES_PKGUPDATE.getDefinition() :
+                    TransactionalState.PACKAGES_PKGINSTALL.getDefinition());
+        }
+
+        return Optional.empty();
+    }
+
+    private static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
+            TransactionalStateDefinition definition, Optional<Map<String, Object>> pillar) {
+        return TransactionalUpdateCalls.apply(List.of(definition.transactionalState()), pillar);
+    }
+
+    private static Optional<List<String>> getStatesFromFunctionArg(Object arg) {
+        if (arg instanceof Map<?, ?> argMap) {
+            return getStatesFromFunctionArg(argMap.get("mods"));
+        }
+        else if (arg instanceof String state) {
+            return Optional.of(List.of(state));
+        }
+        else if (arg instanceof Collection<?> states && states.stream().allMatch(String.class::isInstance)) {
+            return Optional.of(states.stream()
+                    .map(String.class::cast)
+                    .toList());
+        }
+        else if (arg instanceof Object[] args) {
+            return getStatesFromFunctionArgs(List.of(args));
+        }
+
+        return Optional.empty();
+    }
+
+    private static void addCall(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            LocalCall<Map<String, State.ApplyResult>> call,
+            List<MinionSummary> minions) {
+        if (!minions.isEmpty()) {
+            calls.put(call, minions);
+        }
+    }
+
+    private static TransactionalStateDefinition prerequisiteThenState(
+            String prerequisiteState, String afterRebootState) {
+        return new TransactionalStateDefinition(
+                TransactionalFlow.PREREQUISITE_THEN_STATE,
+                prerequisiteState,
+                Optional.of(afterRebootState));
+    }
+
+    private static TransactionalStateDefinition applyThenComplete(String state) {
+        return new TransactionalStateDefinition(
+                TransactionalFlow.APPLY_THEN_COMPLETE,
+                state,
+                Optional.empty());
+    }
+
+    private record TransactionalStateDefinition(
+            TransactionalFlow flow,
+            String transactionalState,
+            Optional<String> afterRebootState) {
+    }
+
+    private enum TransactionalState {
+        HARDWARE_PROFILE_UPDATE(
+                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE,
+                prerequisiteThenState(
+                        SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
+                        ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ),
+        PACKAGES_PKGINSTALL(
+                SaltParameters.PACKAGES_PKGINSTALL,
+                applyThenComplete(SaltParameters.PACKAGES_PKGINSTALL)),
+        PACKAGES_PKGUPDATE(
+                SaltParameters.PACKAGES_PKGUPDATE,
+                applyThenComplete(SaltParameters.PACKAGES_PKGUPDATE)),
+        PACKAGES_PKGREMOVE(
+                SaltParameters.PACKAGES_PKGREMOVE,
+                applyThenComplete(SaltParameters.PACKAGES_PKGREMOVE)),
+        PACKAGES_PATCHINSTALL(
+                SaltParameters.PACKAGES_PATCHINSTALL,
+                applyThenComplete(SaltParameters.PACKAGES_PATCHINSTALL));
+
+        private final List<String> states;
+        private final TransactionalStateDefinition definition;
+
+        TransactionalState(String state, TransactionalStateDefinition definitionIn, String... aliases) {
+            states = Stream.concat(Stream.of(state), Arrays.stream(aliases)).toList();
+            definition = definitionIn;
+        }
+
+        private TransactionalStateDefinition getDefinition() {
+            return definition;
+        }
+
+        private static Optional<TransactionalState> getByState(String state) {
+            return Arrays.stream(values())
+                    .filter(transactionalState -> transactionalState.states.contains(state))
+                    .findFirst();
+        }
     }
 }

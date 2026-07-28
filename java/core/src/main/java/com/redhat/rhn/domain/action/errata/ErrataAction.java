@@ -19,7 +19,6 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -36,6 +35,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -180,34 +180,33 @@ public class ErrataAction extends Action {
                         .collect(Collectors.toSet())
                 ));
 
-        // Convert errata names to LocalCall objects of type State.apply
-        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = collect.entrySet().stream()
-                .collect(Collectors.toMap(entry -> {
-                            Map<String, Object> params = new HashMap<>();
-                            params.put(SaltParameters.PARAM_REGULAR_PATCHES,
-                                    entry.getKey().stream()
-                                            .filter(e -> !e.isUpdateStack())
-                                            .map(ErrataInfo::getName)
-                                            .sorted()
-                                            .collect(toList())
-                            );
-                            params.put(SaltParameters.ALLOW_VENDOR_CHANGE, allowVendorChange);
-                            params.put(SaltParameters.PARAM_UPDATE_STACK_PATCHES,
-                                    entry.getKey().stream()
-                                            .filter(ErrataInfo::isUpdateStack)
-                                            .map(ErrataInfo::getName)
-                                            .sorted()
-                                            .collect(toList())
-                            );
-                            if (entry.getKey().stream().anyMatch(ErrataInfo::includeSalt)) {
-                                params.put("include_salt_upgrade", true);
-                            }
-                            return State.apply(
-                                    List.of(SaltParameters.PACKAGES_PATCHINSTALL),
-                                    Optional.of(params)
-                            );
-                        },
-                        Map.Entry::getValue));
+        Map<LocalCall<?>, List<MinionSummary>> patchableCalls = new HashMap<>();
+        collect.forEach((errataInfo, minions) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put(SaltParameters.PARAM_REGULAR_PATCHES,
+                    errataInfo.stream()
+                            .filter(e -> !e.isUpdateStack())
+                            .map(ErrataInfo::getName)
+                            .sorted()
+                            .collect(toList())
+            );
+            params.put(SaltParameters.ALLOW_VENDOR_CHANGE, allowVendorChange);
+            params.put(SaltParameters.PARAM_UPDATE_STACK_PATCHES,
+                    errataInfo.stream()
+                            .filter(ErrataInfo::isUpdateStack)
+                            .map(ErrataInfo::getName)
+                            .sorted()
+                            .collect(toList())
+            );
+            if (errataInfo.stream().anyMatch(ErrataInfo::includeSalt)) {
+                params.put("include_salt_upgrade", true);
+            }
+            TransactionalActionManager.addApplyCalls(
+                    patchableCalls,
+                    List.of(SaltParameters.PACKAGES_PATCHINSTALL),
+                    Optional.of(params),
+                    minions);
+        });
         patchableCalls.putAll(ubuntuErrataInstallCalls);
         return patchableCalls;
     }
@@ -226,23 +225,24 @@ public class ErrataAction extends Action {
                         Collectors.groupingBy(minion -> longMapMap.get(minion.getServerId()))
                 );
 
-        return nameArchVersionToMinions.entrySet().stream().collect(toMap(
-                entry -> State.apply(
+        Map<LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls = new HashMap<>();
+        nameArchVersionToMinions.forEach((packages, targetMinions) ->
+                TransactionalActionManager.addApplyCalls(
+                        calls,
                         singletonList(SaltParameters.PACKAGES_PKGINSTALL),
                         Optional.of(singletonMap(SaltParameters.PARAM_PKGS,
-                                entry.getKey().entrySet()
-                                        .stream()
-                                        .map(e -> List.of(
-                                                e.getKey(),
-                                                e.getValue().getA().replaceAll("-deb$", ""),
-                                                e.getValue().getB().endsWith("-X") ?
-                                                        e.getValue().getB()
-                                                                .substring(0, e.getValue().getB().length() - 2) :
-                                                        e.getValue().getB()))
-                                        .collect(Collectors.toList())))
-                ),
-                Map.Entry::getValue
-        ));
+                                packages.entrySet()
+                                    .stream()
+                                    .map(e -> List.of(
+                                            e.getKey(),
+                                            e.getValue().getA().replaceAll("-deb$", ""),
+                                            e.getValue().getB().endsWith("-X") ?
+                                                    e.getValue().getB()
+                                                            .substring(0, e.getValue().getB().length() - 2) :
+                                                    e.getValue().getB()))
+                                    .collect(Collectors.toList()))),
+                        targetMinions));
+        return calls;
     }
 
     /**

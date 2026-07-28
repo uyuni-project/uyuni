@@ -15,17 +15,12 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage;
 
-import static java.util.stream.Collectors.partitioningBy;
-
-import com.redhat.rhn.domain.action.TransactionalAction;
-import com.redhat.rhn.domain.action.TransactionalFlow;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,15 +39,7 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Entity
 @DiscriminatorValue("4")
-public class PackageRemoveAction extends PackageAction implements TransactionalAction {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TransactionalFlow getTransactionalFlow() {
-        return TransactionalFlow.APPLY_THEN_COMPLETE;
-    }
+public class PackageRemoveAction extends PackageAction {
 
     /**
      * {@inheritDoc}
@@ -80,20 +67,12 @@ public class PackageRemoveAction extends PackageAction implements TransactionalA
         params.put(SaltParameters.PARAM_PKGS, uniquePkgs);
         params.put("param_pkgs_duplicates", duplicatedPkgs);
 
-        Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minionSummaries.stream()
-                .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
-        addPackageRemoveCall(ret, State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionsByTransactionalUpdate.get(false));
-        addPackageRemoveCall(ret, TransactionalUpdateCalls.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionsByTransactionalUpdate.get(true));
+        TransactionalActionManager.addApplyCalls(
+                ret,
+                List.of(SaltParameters.PACKAGES_PKGREMOVE),
+                Optional.of(params),
+                minionSummaries);
         return ret;
-    }
-
-    private static void addPackageRemoveCall(
-            Map<LocalCall<?>, List<MinionSummary>> calls, LocalCall<?> call, List<MinionSummary> minions) {
-        if (!minions.isEmpty()) {
-            calls.put(call, minions);
-        }
     }
 
     /**

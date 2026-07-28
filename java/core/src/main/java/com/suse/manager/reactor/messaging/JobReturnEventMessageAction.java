@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
@@ -140,7 +141,9 @@ public class JobReturnEventMessageAction implements MessageAction {
                     jobReturnEvent.getData().isSuccess(),
                     jobReturnEvent.getJobId(),
                     jobResult.get(),
-                    Optional.ofNullable(jobReturnEvent.getData().getFun()).map(Xor::right), null)));
+                    Optional.ofNullable(jobReturnEvent.getData().getFun()).map(Xor::right),
+                    TransactionalActionManager.getStatesFromFunctionArgs(jobReturnEvent.getData().getFunArgs()),
+                    null)));
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);

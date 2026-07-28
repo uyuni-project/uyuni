@@ -67,8 +67,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
             return;
         }
 
-        var transactionalAction = TransactionalActionManager.getAfterRebootAction(action);
-        if (transactionalAction.isEmpty()) {
+        if (!TransactionalActionManager.hasAfterRebootState(action)) {
             LOG.warn("Unable to resume action {}: action does not have an after reboot state",
                     message.getActionId());
             markResumeFailed(message);
@@ -90,7 +89,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         }
 
         var result = saltServerActionService.resumeTransactionalAction(
-                transactionalAction.get(), List.of(target.get()));
+                action, List.of(target.get()));
 
         if (result.get(true).contains(target.get())) {
             markAfterRebootScheduled(message);

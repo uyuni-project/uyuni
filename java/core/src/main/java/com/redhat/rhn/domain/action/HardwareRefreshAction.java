@@ -31,12 +31,11 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
@@ -73,7 +72,7 @@ import jakarta.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("2")
-public class HardwareRefreshAction extends Action implements TransactionalAction {
+public class HardwareRefreshAction extends Action {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
     private static final SaltApi SALT_API = GlobalInstanceHolder.SALT_API;
 
@@ -91,12 +90,13 @@ public class HardwareRefreshAction extends Action implements TransactionalAction
         List<MinionSummary> nonTransactionalMinions = partitionByTransactional.get(false);
 
         if (!transactionalMinions.isEmpty()) {
-            ret.put(TransactionalUpdateCalls.apply(
-                            List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ)),
+            ret.put(TransactionalActionManager.getTransactionalSaltCall(
+                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, Optional.empty()),
                     transactionalMinions);
         }
 
-        // Non-transactional: ssh-push gets profile-update only; regular gets sync-all first.
+        // salt-ssh minions in the 'true' partition
+        // regular minions in the 'false' partition
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = nonTransactionalMinions.stream()
                 .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
 
@@ -116,22 +116,6 @@ public class HardwareRefreshAction extends Action implements TransactionalAction
         }
 
         return ret;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TransactionalFlow getTransactionalFlow() {
-        return TransactionalFlow.PREREQUISITE_THEN_STATE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<String> getAfterRebootState() {
-        return Optional.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
     }
 
     /**

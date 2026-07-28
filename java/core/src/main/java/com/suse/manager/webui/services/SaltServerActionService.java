@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.TransactionalAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -37,6 +36,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -272,22 +272,17 @@ public class SaltServerActionService {
      * @return target minions partitioned by whether the Salt job was accepted
      */
     public Map<Boolean, List<MinionSummary>> resumeTransactionalAction(
-            TransactionalAction actionIn,
+            Action actionIn,
             List<MinionSummary> minionSummaries) {
-        if (!(actionIn instanceof Action action)) {
-            throw new IllegalArgumentException(
-                    "Transactional action must also be an Action");
-        }
-
         Map<LocalCall<?>, List<MinionSummary>> calls =
-                actionIn.getAfterRebootSaltCalls(minionSummaries);
+                TransactionalActionManager.getAfterRebootSaltCalls(actionIn, minionSummaries).orElseThrow();
 
         List<MinionSummary> succeeded = new ArrayList<>();
         List<MinionSummary> failed = new ArrayList<>();
 
         calls.forEach((call, targets) -> {
             Map<Boolean, List<MinionSummary>> result =
-                    execute(action, call, targets, false, false);
+                    execute(actionIn, call, targets, false, false);
             succeeded.addAll(result.get(true));
             failed.addAll(result.get(false));
         });
@@ -999,7 +994,9 @@ public class SaltServerActionService {
          */
         if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
-                    Optional.of(Xor.right(function)), null);
+                    Optional.of(Xor.right(function)),
+                    TransactionalActionManager.getStatesFromCall(call),
+                    null);
         }
 
         else if (sa.isStatusQueued()) {
@@ -1116,6 +1113,27 @@ public class SaltServerActionService {
                              String jobId, JsonElement jsonResult,
                              Optional<Xor<String[], String>> function,
                              Date endTime) {
+        handleAction(actionId, minionId, retcode, success, jobId, jsonResult, function, Optional.empty(), endTime);
+    }
+
+    /**
+     * Handle an action-related Salt job result.
+     *
+     * @param actionId the ID of the corresponding action.
+     * @param minionId the ID of the minion.
+     * @param retcode the return code of the Salt job.
+     * @param success whether the Salt job succeeded.
+     * @param jobId the ID of the Salt job.
+     * @param jsonResult the json results from the Salt job.
+     * @param function the Salt function executed.
+     * @param states the Salt states applied by the action.
+     * @param endTime end time when the action finished. If null, "now" is used
+     */
+    public void handleAction(long actionId, String minionId, int retcode, boolean success,
+                             String jobId, JsonElement jsonResult,
+                             Optional<Xor<String[], String>> function,
+                             Optional<List<String>> states,
+                             Date endTime) {
         // Lookup the corresponding action
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
         if (action.isPresent()) {
@@ -1160,6 +1178,7 @@ public class SaltServerActionService {
                                 jobId,
                                 jsonResult,
                                 function,
+                                states,
                                 endTime);
                         ActionFactory.save(sa);
                         SystemManager.updateSystemOverview(sa.getServer());
