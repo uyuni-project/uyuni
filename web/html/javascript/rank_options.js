@@ -66,7 +66,7 @@ function move_selected(rankingWidgetName, moveUp) {
       element.options[moveToIndex] = selected;
     }
   }
-  // return false so that a form submit doesnot happen
+  // Return false to prevent the move controls from submitting the form.
   return false;
 }
 
@@ -94,10 +94,9 @@ function handle_ranking_dispatch(rankingWidgetName, storerName) {
 }
 
 /**
- * This function does the same thing that handle_ranking_dispatch does,
- * but without submitting the form. This is necessary so that you can submit
- * a form with more than one rankingWidget in it. The last rankingWidget should
- * call handle_ranking_dispatch to submit the form.
+ * Populates an additional ranking value in forms containing multiple widgets.
+ * Combine the handlers in the button's onclick expression so the native
+ * submission proceeds only when all handlers return true.
  * @param rankingWidgetName the name of the ranking widget list box.
  * @param storerName name of the element in whom the CS string will be stored
  *        ('rankedValues' in the case of SDC channel rankings)
