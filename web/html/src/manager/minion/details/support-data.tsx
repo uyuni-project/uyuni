@@ -52,11 +52,15 @@ export const SupportData: FC<Props> = ({ serverId, availableRegions, supportProg
   );
 
   function getFormattedProgramName(programName: string): ReactNode {
-    return <code>{programName}</code>;
+    return <code key="program-name">{programName}</code>;
   }
 
   function getActionLink(text: string, actionId: number): ReactNode {
-    return <ActionLink id={actionId}>{text}</ActionLink>;
+    return (
+      <ActionLink key="scheduled-action-link" id={actionId}>
+        {text}
+      </ActionLink>
+    );
   }
 
   function onSubmit(): void {

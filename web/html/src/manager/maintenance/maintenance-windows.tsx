@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -36,6 +36,7 @@ function getHashAction() {
 }
 
 const MaintenanceWindows = () => {
+  const isMounted = useRef(true);
   const [messages, setMessages] = useState<any[]>([]);
   const [items, setItems] = useState<any[]>([]);
   const [action, setAction] = useState<string | undefined>();
@@ -47,12 +48,23 @@ const MaintenanceWindows = () => {
     if (window.type === "schedule") {
       getCalendarNames();
     }
-    window.addEventListener("popstate", () => {
+
+    const onPopState = () => {
       updateView(getHashAction(), getHashId());
-    });
+    };
+    window.addEventListener("popstate", onPopState);
+
+    return () => {
+      isMounted.current = false;
+      window.removeEventListener("popstate", onPopState);
+    };
   }, []);
 
   const updateView = (newAction, id) => {
+    if (!isMounted.current) {
+      return;
+    }
+
     if (newAction === "details" && id) {
       getDetails(id, "details");
     } else if (id || !newAction) {
@@ -67,6 +79,10 @@ const MaintenanceWindows = () => {
     /* Returns a list of maintenance schedules or calendars depending on the type provided */
     return MaintenanceWindowsApi.list(window.type)
       .then((newItems) => {
+        if (!isMounted.current) {
+          return;
+        }
+
         setAction(undefined);
         setSelected(undefined);
         setItems(newItems);
@@ -77,6 +93,10 @@ const MaintenanceWindows = () => {
   const getCalendarNames = () => {
     return MaintenanceWindowsApi.calendarNames()
       .then((newCalendarNames) => {
+        if (!isMounted.current) {
+          return;
+        }
+
         /* Convert list of calendar names into ComboboxItem
       Add "<None>" as first element to allow unassigning of calendars */
         const names = Array.from(new Array(newCalendarNames.length + 1).keys()).map((id) =>
@@ -91,6 +111,10 @@ const MaintenanceWindows = () => {
     /* Returns the details of given schedule or calendar depending on the type provided */
     return MaintenanceWindowsApi.details(row, window.type)
       .then((newItem) => {
+        if (!isMounted.current) {
+          return;
+        }
+
         setSelected(newItem);
         setAction(newAction);
         window.history.pushState(null, "", "#/" + newAction + "/" + newItem.id);
@@ -109,6 +133,10 @@ const MaintenanceWindows = () => {
   const update = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", itemIn)
       .then(() => {
+        if (!isMounted.current) {
+          return;
+        }
+
         const successMsg = (
           <span>
             {t(
@@ -130,6 +158,10 @@ const MaintenanceWindows = () => {
   const deleteItem = (itemIn) => {
     return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", itemIn)
       .then(() => {
+        if (!isMounted.current) {
+          return;
+        }
+
         setMessages(
           MessagesUtils.info(
             (window.type === "schedule" ? "Schedule " : "Calendar ") + "'" + itemIn.name + "' has been deleted."
@@ -138,6 +170,10 @@ const MaintenanceWindows = () => {
         handleForwardAction();
       })
       .catch((data) => {
+        if (!isMounted.current) {
+          return;
+        }
+
         const errorMsg = MessagesUtils.error(t("Error when deleting the " + window.type));
         const msgs = data && data.status === 400 ? errorMsg : Network.responseErrorMessage(data);
         setMessages(msgs);
@@ -147,6 +183,10 @@ const MaintenanceWindows = () => {
   const refreshCalendar = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/calendar/refresh", itemIn)
       .then(() => {
+        if (!isMounted.current) {
+          return;
+        }
+
         const msgs = messages.concat(MessagesUtils.info(t("Calendar successfully refreshed")));
         setAction(undefined);
         setMessages(msgs.slice(-messagesCounterLimit));
@@ -157,9 +197,17 @@ const MaintenanceWindows = () => {
   };
 
   const handleForwardAction = (newAction?: string) => {
+    if (!isMounted.current) {
+      return;
+    }
+
     const loc = window.location;
     if (newAction === undefined || newAction === "back") {
       listMaintenanceWindowItems().then(() => {
+        if (!isMounted.current) {
+          return;
+        }
+
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {
@@ -169,10 +217,18 @@ const MaintenanceWindows = () => {
   };
 
   const clearMessages = () => {
+    if (!isMounted.current) {
+      return;
+    }
+
     setMessages([]);
   };
 
   const handleResponseError = (jqXHR) => {
+    if (!isMounted.current) {
+      return;
+    }
+
     setMessages(Network.responseErrorMessage(jqXHR));
   };
 
