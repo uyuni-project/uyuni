@@ -14,10 +14,6 @@ const loadRankingFunctions = new Function(
 ) as () => RankingFunctions;
 
 const { handle_ranking, handle_ranking_dispatch, move_selected } = loadRankingFunctions();
-const rankingHandlers = [
-  { name: "handle_ranking", handler: handle_ranking },
-  { name: "handle_ranking_dispatch", handler: handle_ranking_dispatch },
-];
 
 afterEach(() => {
   document.body.innerHTML = "";
@@ -42,7 +38,7 @@ describe("rank options form submission", () => {
     const programmaticSubmit = jest.spyOn(HTMLFormElement.prototype, "submit").mockImplementation(() => undefined);
     let nativeSubmits = 0;
 
-    button.addEventListener("click", () => handle_ranking_dispatch("ranksWidget", "rankedValues"));
+    button.onclick = () => handle_ranking_dispatch("ranksWidget", "rankedValues");
     form.addEventListener("submit", (event) => {
       nativeSubmits += 1;
       event.preventDefault();
@@ -77,10 +73,9 @@ describe("rank options form submission", () => {
     const programmaticSubmit = jest.spyOn(HTMLFormElement.prototype, "submit").mockImplementation(() => undefined);
     let nativeSubmits = 0;
 
-    button.addEventListener("click", () => {
-      handle_ranking("preRanksWidget", "rankedPreValues");
+    button.onclick = () =>
+      handle_ranking("preRanksWidget", "rankedPreValues") &&
       handle_ranking_dispatch("postRanksWidget", "rankedPostValues");
-    });
     form.addEventListener("submit", (event) => {
       nativeSubmits += 1;
       event.preventDefault();
@@ -94,22 +89,60 @@ describe("rank options form submission", () => {
     expect((document.getElementById("rankedPostValues") as HTMLInputElement).value).toBe("post-first,post-second");
   });
 
-  test.each(rankingHandlers)("$name does not throw when a ranking widget is missing", ({ handler }) => {
-    document.body.innerHTML = '<input id="rankedValues">';
-
-    expect(handler("missingRanksWidget", "rankedValues")).toBe(false);
-    expect((document.getElementById("rankedValues") as HTMLInputElement).value).toBe("");
-  });
-
-  test.each(rankingHandlers)("$name does not throw when a ranking value field is missing", ({ handler }) => {
+  test.each([
+    { missingElement: "ranksWidget", markup: '<input id="rankedValues">' },
+    {
+      missingElement: "rankedValues",
+      markup: '<select id="ranksWidget"><option value="first">First</option></select>',
+    },
+  ])("cancels submission when $missingElement is missing", ({ markup }) => {
     document.body.innerHTML = `
-      <select id="ranksWidget">
-        <option value="first">First</option>
-      </select>
+      <form>
+        ${markup}
+        <button type="submit">Submit</button>
+      </form>
     `;
 
-    expect(handler("ranksWidget", "missingRankedValues")).toBe(false);
+    const form = document.querySelector("form") as HTMLFormElement;
+    const button = document.querySelector("button") as HTMLButtonElement;
+    const submitHandler = jest.fn((event: SubmitEvent) => event.preventDefault());
+
+    button.onclick = () => handle_ranking_dispatch("ranksWidget", "rankedValues");
+    form.addEventListener("submit", submitHandler);
+
+    button.click();
+
+    expect(submitHandler).not.toHaveBeenCalled();
   });
+
+  test.each(["preRanksWidget", "rankedPreValues", "postRanksWidget", "rankedPostValues"])(
+    "cancels kickstart submission when %s is missing",
+    (missingElement) => {
+      document.body.innerHTML = `
+        <form>
+          <select id="preRanksWidget"><option value="pre-first">Pre first</option></select>
+          <input id="rankedPreValues">
+          <select id="postRanksWidget"><option value="post-first">Post first</option></select>
+          <input id="rankedPostValues">
+          <button type="submit">Submit</button>
+        </form>
+      `;
+
+      const form = document.querySelector("form") as HTMLFormElement;
+      const button = document.querySelector("button") as HTMLButtonElement;
+      const submitHandler = jest.fn((event: SubmitEvent) => event.preventDefault());
+
+      document.getElementById(missingElement)?.remove();
+      button.onclick = () =>
+        handle_ranking("preRanksWidget", "rankedPreValues") &&
+        handle_ranking_dispatch("postRanksWidget", "rankedPostValues");
+      form.addEventListener("submit", submitHandler);
+
+      button.click();
+
+      expect(submitHandler).not.toHaveBeenCalled();
+    }
+  );
 
   test("does not throw when moving a missing ranking widget", () => {
     expect(move_selected("missingRanksWidget", true)).toBe(false);

@@ -111,7 +111,7 @@ function handle_ranking(rankingWidgetName, storerName) {
   }
 
   storer.value = make_ranking_csv(rankingWidgetName);
-  return false;
+  return true;
 }
 
 /**
