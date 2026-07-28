@@ -43,10 +43,14 @@ saving to a set etc..)..
                 (up if true, down if false).
 */
 function move_selected(rankingWidgetName, moveUp) {
-  let element = document.getElementById(rankingWidgetName);
-  let index = element.selectedIndex;
+  const element = document.getElementById(rankingWidgetName);
+  if (!element) {
+    return false;
+  }
+
+  const index = element.selectedIndex;
   if (index > -1) {
-    let selected = element.options[index];
+    const selected = element.options[index];
     if ((moveUp && index > 0) || (!moveUp && index < element.options.length - 1)) {
       let moveToIndex = index - 1;
       if (!moveUp) {

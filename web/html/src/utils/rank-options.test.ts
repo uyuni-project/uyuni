@@ -5,14 +5,19 @@ import { resolve } from "path";
 type RankingFunctions = {
   handle_ranking: (rankingWidgetName: string, storerName: string) => boolean;
   handle_ranking_dispatch: (rankingWidgetName: string, storerName: string) => boolean;
+  move_selected: (rankingWidgetName: string, moveUp: boolean) => boolean;
 };
 
 const rankingSource = readFileSync(resolve(__dirname, "../../javascript/rank_options.js"), "utf8");
 const loadRankingFunctions = new Function(
-  `${rankingSource}\nreturn { handle_ranking, handle_ranking_dispatch };`
+  `${rankingSource}\nreturn { handle_ranking, handle_ranking_dispatch, move_selected };`
 ) as () => RankingFunctions;
 
-const { handle_ranking, handle_ranking_dispatch } = loadRankingFunctions();
+const { handle_ranking, handle_ranking_dispatch, move_selected } = loadRankingFunctions();
+const rankingHandlers = [
+  { name: "handle_ranking", handler: handle_ranking },
+  { name: "handle_ranking_dispatch", handler: handle_ranking_dispatch },
+];
 
 afterEach(() => {
   document.body.innerHTML = "";
@@ -87,5 +92,26 @@ describe("rank options form submission", () => {
     expect(nativeSubmits).toBe(1);
     expect((document.getElementById("rankedPreValues") as HTMLInputElement).value).toBe("pre-first,pre-second");
     expect((document.getElementById("rankedPostValues") as HTMLInputElement).value).toBe("post-first,post-second");
+  });
+
+  test.each(rankingHandlers)("$name does not throw when a ranking widget is missing", ({ handler }) => {
+    document.body.innerHTML = '<input id="rankedValues">';
+
+    expect(handler("missingRanksWidget", "rankedValues")).toBe(false);
+    expect((document.getElementById("rankedValues") as HTMLInputElement).value).toBe("");
+  });
+
+  test.each(rankingHandlers)("$name does not throw when a ranking value field is missing", ({ handler }) => {
+    document.body.innerHTML = `
+      <select id="ranksWidget">
+        <option value="first">First</option>
+      </select>
+    `;
+
+    expect(handler("ranksWidget", "missingRankedValues")).toBe(false);
+  });
+
+  test("does not throw when moving a missing ranking widget", () => {
+    expect(move_selected("missingRanksWidget", true)).toBe(false);
   });
 });
