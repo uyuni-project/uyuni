@@ -213,6 +213,12 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
         // RFC v1: only directory groups starting with "uyuni_" take part in role mapping, and the
         // prefix is stripped before the external-group lookup. A directory group without the prefix
         // must be ignored even when an external group of that exact name exists.
+        //
+        // UserTestUtils permanently grants IMPLIEDROLES (CHANNEL_ADMIN, CONFIG_ADMIN, ...).
+        // UserManager.resetTemporaryRoles skips any role the user already has, so those permanent
+        // grants would hide LDAP temporary-role updates. Strip them first so the temporary-role
+        // assertions below actually observe the mapping result.
+        UserFactory.IMPLIEDROLES.forEach(user::removePermanentRole);
         user.setAuthType(AuthType.LDAP);
         UserManager.storeUser(user);
         addGroup("uyuni_" + PREFIXED_EXT_GROUP, user.getLogin());
@@ -227,8 +233,6 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
 
         assertNotNull(result);
         assertTrue(errors.isEmpty());
-        // LDAP-derived roles are temporary. BaseTestCaseWithUser permanently grants the implied
-        // admin roles (including CONFIG_ADMIN), so hasRole() would always be true for those.
         assertTrue(result.getTemporaryRoles().contains(RoleFactory.CHANNEL_ADMIN),
                 "uyuni_-prefixed group should map through the stripped label");
         assertFalse(result.getTemporaryRoles().contains(RoleFactory.CONFIG_ADMIN),

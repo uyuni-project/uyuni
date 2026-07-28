@@ -9,10 +9,12 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
+-- Idempotent: safe if re-applied (ADD COLUMN IF NOT EXISTS + guarded constraint).
 ALTER TABLE rhnUserInfo
     ADD COLUMN IF NOT EXISTS auth_type VARCHAR(16) DEFAULT ('LOCAL') NOT NULL;
 
 -- Migrate existing users: those flagged for PAM become PAM, everyone else stays LOCAL.
+-- Guarded with auth_type = 'LOCAL' so a second run does not overwrite LDAP/PAM already set.
 UPDATE rhnUserInfo
     SET auth_type = 'PAM'
     WHERE use_pam_authentication = 'Y' AND auth_type = 'LOCAL';
