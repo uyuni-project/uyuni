@@ -1,290 +1,801 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Uyuni Proxy Helm Chart Values",
-  "type": "object",
-  "required": ["global", "repository"],
+  "additionalProperties": false,
+  "definitions": {
+    "affinityConfig": {
+      "additionalProperties": true,
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "listener": {
+      "properties": {
+        "name": {
+          "description": "the name of the listener",
+          "type": "string"
+        },
+        "port": {
+          "description": "the port of the listener",
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "nodeSelectorConfig": {
+      "properties": {
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "required": []
+        },
+        "nodeName": {
+          "description": "Specific node assignment.",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "required": []
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "required": []
+        }
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "nodeSelectorMap": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "podDNSConfig": {
+      "description": "Pod DNS configuration (Kubernetes PodDNSConfig)",
+      "properties": {
+        "nameservers": {
+          "description": "List of DNS name server IP addresses",
+          "items": {
+            "type": "string"
+          },
+          "required": [],
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "options": {
+          "description": "List of DNS options",
+          "items": {
+            "$ref": "#/definitions/podDNSConfigOption",
+            "required": []
+          },
+          "required": [],
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "searches": {
+          "description": "List of DNS search domains for host-name lookup",
+          "items": {
+            "type": "string"
+          },
+          "required": [],
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "podDNSConfigOption": {
+      "properties": {
+        "name": {
+          "description": "Option name (e.g. ndots, timeout)",
+          "type": "string"
+        },
+        "value": {
+          "description": "Option value",
+          "required": [],
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "serviceConfig": {
+      "properties": {
+        "annotations": {
+          "description": "annotations to set to the service. This can be helpful to configure a load balancer",
+          "required": [],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "ports": {
+          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service",
+          "required": [],
+          "type": "object"
+        },
+        "type": {
+          "default": "",
+          "description": "Type of service to define",
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer",
+            ""
+          ],
+          "type": "string"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "tolerationsList": {
+      "items": {
+        "additionalProperties": true,
+        "required": [],
+        "type": "object"
+      },
+      "required": [],
+      "type": [
+        "array",
+        "null"
+      ]
+    }
+  },
   "properties": {
-    "repository": {
-      "type": "string",
-      "default": "registry.opensuse.org/uyuni",
-      "description": "The default repository for images."
+    "cert": {
+      "additionalProperties": false,
+      "description": "controls how the chart handles the proxy-cert TLS secret and the uyuni-ca ConfigMap.",
+      "properties": {
+        "takeOwnership": {
+          "default": "false",
+          "description": "opts in to rendering proxy-cert and uyuni-ca even when objects with those names already exist in the namespace and were NOT created by helm. The default (false) leaves pre-existing objects alone so install/upgrade does not fail and the chart never silently overwrites something it did not create.  Set to true together with `helm install --take-ownership` (helm 3.14+) to let helm adopt the existing objects. Once adopted, value changes are applied on upgrade and the objects are removed on helm uninstall.",
+          "required": [],
+          "title": "takeOwnership"
+        }
+      },
+      "required": [],
+      "title": "cert"
     },
-    "tag": {
-      "type": ["string", "null"],
-      "description": "The default image tag. Will be the chart's AppVersion if unset"
+    "dnsConfig": {
+      "$ref": "#/definitions/podDNSConfig",
+      "description": "Pod DNS configuration (Kubernetes PodDNSConfig). Omitted by default so the pod uses the cluster's normal DNS behavior. Tip: if external FQDN lookups from the proxy time out (10s urlopen), the cluster's default ndots:5 is likely the cause — override with:   dnsConfig:     options:       - name: ndots         value: \"1\"",
+      "required": []
     },
-    "pullPolicy": {
-      "type": "string",
-      "enum": ["Always", "Never", "IfNotPresent"],
-      "default": "Always",
-      "description": "Kubernetes image pull policy."
+    "gateway": {
+      "additionalProperties": false,
+      "description": "Configures the Gateway API.",
+      "properties": {
+        "class": {
+          "default": "",
+          "description": "Name of the gateway class to use. For rke2 with traefik, it is likely to be \"traefik\".",
+          "required": [],
+          "title": "class"
+        },
+        "enable": {
+          "default": "false",
+          "description": "If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones. Note that TCPRoute is used and is still in alpha2 stage.",
+          "title": "enable",
+          "type": "boolean"
+        },
+        "listeners": {
+          "additionalProperties": false,
+          "description": "Gateway listeners configuration",
+          "properties": {
+            "http": {
+              "$ref": "#/definitions/listener",
+              "description": "Configuration of the HTTP listener. The default is adjusted for traefik on rke2",
+              "required": []
+            },
+            "https": {
+              "$ref": "#/definitions/listener",
+              "description": "Configuration of the HTTPS listener. The default is adjusted for traefik on rke2",
+              "required": []
+            }
+          },
+          "required": [],
+          "title": "listeners"
+        },
+        "name": {
+          "default": "",
+          "description": "Name of the Gateway to use. If left empty an uyuni-gateway will be created.",
+          "required": [],
+          "title": "name"
+        }
+      },
+      "required": [],
+      "title": "gateway"
     },
-    "registrySecret": {
-      "type": "string",
-      "default": "",
-      "description": "Name of the secret containing credentials for the registry"
+    "global": {
+      "additionalProperties": false,
+      "description": "Variables that can be shared with a parent chart",
+      "properties": {
+        "config": {
+          "default": "",
+          "description": "Content of the config.yaml file generated by the server. See the Systems \u003e Proxy Configuration page on the server  or the proxy.containerConfig API documentation.",
+          "required": [],
+          "title": "config"
+        },
+        "httpd": {
+          "default": "",
+          "description": "Content of the httpd.yaml file generated by the server. See the Systems \u003e Proxy Configuration page on the server  or the proxy.containerConfig API documentation.",
+          "required": [],
+          "title": "httpd"
+        },
+        "ssh": {
+          "default": "",
+          "description": "Content of the ssh.yaml file generated by the server. See the Systems \u003e Proxy Configuration page on the server  or the proxy.containerConfig API documentation.",
+          "required": [],
+          "title": "ssh"
+        }
+      },
+      "required": [
+        "config",
+        "httpd",
+        "ssh"
+      ],
+      "title": "global"
+    },
+    "httpd": {
+      "additionalProperties": false,
+      "description": "Apache server configuration",
+      "properties": {
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "description": "Advanced scheduling rules.",
+          "required": []
+        },
+        "image": {
+          "default": "",
+          "description": "Image for the Apache server container, overwriting the one computed with the `repository` value",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "default": "",
+          "description": "Specific node assignment.",
+          "required": [],
+          "title": "nodeName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "description": "Node label matching rules.",
+          "required": []
+        },
+        "tag": {
+          "default": "",
+          "description": "Tag for the Apache server container, overwriting the global one",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "description": "Node taint tolerations.",
+          "required": []
+        },
+        "tuning": {
+          "default": "",
+          "description": "Custom configuration for the apache server",
+          "required": [],
+          "title": "tuning",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "title": "httpd"
+    },
+    "ingress": {
+      "additionalProperties": false,
+      "description": "Configuration of the ingress rules. Won't be used if gateway is enabled.",
+      "properties": {
+        "annotations": {
+          "additionalProperties": false,
+          "description": "Custom annotations on the created ingress rules. This can be used to configure another ingress than the ones already wired with the ingress.type.",
+          "properties": {
+            "ssl": {
+              "default": "",
+              "description": "annotations for the uyuni-proxy-ssl ingress definition.",
+              "required": [],
+              "title": "ssl"
+            }
+          },
+          "required": [],
+          "title": "annotations"
+        },
+        "class": {
+          "default": "traefik",
+          "description": "providers.kubernetescrd.ingressclass parameter's value. On rke2 this is likely to be \"traefik\". On K3S it is likely to be \"\" ",
+          "required": [],
+          "title": "class"
+        },
+        "entryPoints": {
+          "additionalProperties": false,
+          "description": "Traefik entryPoint names the IngressRouteTCPs are bound to. Must match the entryPoints configured in the Traefik installation. Override when the surrounding Traefik uses custom names (e.g. mgrpxy-managed k3s installs use \"uyuni-ssh\", \"uyuni-publish\", \"uyuni-request\").",
+          "properties": {
+            "saltPublish": {
+              "default": "salt-publish",
+              "description": "entrypoint name for salt's publish port",
+              "required": [],
+              "title": "saltPublish"
+            },
+            "saltRequest": {
+              "default": "salt-request",
+              "description": "entrypoint name for salt's request port",
+              "required": [],
+              "title": "saltRequest"
+            },
+            "ssh": {
+              "default": "ssh",
+              "description": "entrypoint name for ssh port",
+              "required": [],
+              "title": "ssh"
+            }
+          },
+          "required": [],
+          "title": "entryPoints"
+        },
+        "type": {
+          "default": "traefik",
+          "description": "Ingress that is used in the cluster. Set to the empty string to use a custom ingress.",
+          "enum": [
+            "traefik",
+            ""
+          ],
+          "required": [],
+          "title": "type"
+        }
+      },
+      "required": [],
+      "title": "ingress"
     },
     "placement": {
       "$ref": "#/definitions/nodeSelectorConfig",
-      "description": "Default node placement rules for all pods"
+      "description": "Global placement configuration for all the proxy pods",
+      "required": []
     },
-    "dnsConfig": {
-      "type": ["object", "null"],
-      "description": "Pod DNS configuration. See Kubernetes PodDNSConfig.",
+    "proxy": {
+      "$ref": "#/definitions/nodeSelectorConfig",
+      "description": "Proxy pod placement configuration",
+      "required": []
+    },
+    "pullPolicy": {
+      "default": "Always",
+      "description": "Images pull policy. See: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy",
+      "enum": [
+        "Always",
+        "IfNotPresent",
+        "Never"
+      ],
+      "required": [],
+      "title": "pullPolicy"
+    },
+    "registrySecret": {
+      "default": "",
+      "description": "name of secret to use to pull the images from the registry with authentication. Leave empty for no authentication. To create the secret, see: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
+      "required": [],
+      "title": "registrySecret"
+    },
+    "repository": {
+      "$schema": "https://json-schema.org/draft-07/schema#",
+      "default": "registry.opensuse.org/uyuni",
+      "description": "The default repository with the path where to find all the images.",
+      "required": [],
+      "title": "Proxy values"
+    },
+    "salt": {
+      "additionalProperties": false,
+      "description": "Salt broker configuration",
       "properties": {
-        "nameservers": { "type": ["array", "null"], "items": { "type": "string" } },
-        "searches":    { "type": ["array", "null"], "items": { "type": "string" } },
-        "options": {
-          "type": ["array", "null"],
-          "items": {
-            "type": "object",
-            "properties": {
-              "name":  { "type": "string" },
-              "value": { "type": "string" }
-            },
-            "required": ["name"]
-          }
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "description": "Advanced scheduling rules.",
+          "required": []
+        },
+        "image": {
+          "default": "",
+          "description": "Image for the Salt broker container, overwriting the one computed with the `repository` value",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "default": "",
+          "description": "Specific node assignment.",
+          "required": [],
+          "title": "nodeName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "description": "Node label matching rules.",
+          "required": []
+        },
+        "tag": {
+          "default": "",
+          "description": "Tag for the Salt broker container, overwriting the global one",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "description": "Node taint tolerations.",
+          "required": []
+        },
+        "tuning": {
+          "default": "",
+          "description": "Custom configuration for the salt broker",
+          "required": [],
+          "title": "tuning",
+          "type": [
+            "string",
+            "null"
+          ]
         }
-      }
-    },
-    "cert": {
-      "type": ["object", "null"],
-      "description": "Controls handling of the proxy-cert TLS secret and uyuni-ca ConfigMap.",
-      "properties": {
-        "takeOwnership": {
-          "type": "boolean",
-          "default": false,
-          "description": "Render proxy-cert and uyuni-ca even when objects with those names already exist in the namespace and were not created by helm. Use together with `helm install --take-ownership` (helm 3.14+) to let helm adopt them."
-        }
-      }
-    },
-    "global": {
-      "type": "object",
-      "required": ["config", "httpd", "ssh"],
-      "properties": {
-        "config": {
-          "type": "string",
-          "description": "YAML content of config.yaml generated by the server"
-        },
-        "httpd": {
-          "type": "string",
-          "description": "YAML content of httpd.yaml generated by the server"
-        },
-        "ssh": {
-          "type": "string",
-          "description": "YAML content of ssh.yaml generated by the server"
-        }
-      }
-    },
-    "ingress": {
-      "type": ["object", "null"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "default": "traefik",
-          "description": "The ingress controller type being used."
-        },
-        "class": {
-          "type": "string",
-          "default": "traefik",
-          "description": "The ingress class name."
-        },
-        "annotations": {
-          "type": "object",
-          "properties": {
-            "ssl": {
-              "type": ["object", "null"],
-              "description": "Custom annotations for SSL ingress rules."
-            }
-          }
-        },
-        "entryPoints": {
-          "type": ["object", "null"],
-          "description": "Traefik entryPoint names the IngressRouteTCPs are bound to. Must match the entryPoints configured in the Traefik installation.",
-          "properties": {
-            "ssh": {
-              "type": "string",
-              "default": "ssh",
-              "description": "Name of the Traefik entryPoint for the SSH IngressRouteTCP."
-            },
-            "saltPublish": {
-              "type": "string",
-              "default": "salt-publish",
-              "description": "Name of the Traefik entryPoint for the Salt publish IngressRouteTCP."
-            },
-            "saltRequest": {
-              "type": "string",
-              "default": "salt-request",
-              "description": "Name of the Traefik entryPoint for the Salt request IngressRouteTCP."
-            }
-          }
-        }
-      }
-    },
-    "gateway": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Name of the gateway to use. An empty string value means that a gateway will be deployed and named uyuni-gateway.",
-          "default": ""
-        },
-        "class": {
-          "type": "string",
-          "description": "Name of the gateway class to use. For rke2 with traefik, it is likely to be 'traefik'.",
-          "default": ""
-        },
-        "listeners": {
-            "type": "object",
-            "description": "Gateway listeners configuration",
-            "properties": {
-                "http": {
-                    "$ref": "#/definitions/listener",
-                    "description": "Configuration of the HTTP listener. Defaults are adjusted to traefik on rke2"
-                },
-                "https": {
-                    "$ref": "#/definitions/listener",
-                    "description": "Configuration of the HTTPS listener. Defaults are adjusted to traefik on rke2"
-                }
-            }
-        }
-      }
-    },
-    "volumes": {
-      "type": ["object", "null"],
-      "properties": {
-        "squid": { "$ref": "#/definitions/volumeConfig" }
-      }
+      },
+      "required": [],
+      "title": "salt"
     },
     "services": {
-      "type": "object",
-      "description": "Services tuning properties",
+      "additionalProperties": false,
+      "description": "Services tuning properties.",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "type of all the externally-facing services. Can be overridden on each service",
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
-          "default": "ClusterIP"
-        },
         "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to all the services. Merged with the service config"
-        },
-        "ssh": {
-          "$ref": "#/definitions/serviceConfig",
-          "description": "values for the ssh service. The ports keys can only be ssh (22)"
+          "default": "null",
+          "description": "annotations to set to all the services. Merged with the service ones.",
+          "required": [],
+          "title": "annotations",
+          "type": [
+            "object",
+            "null"
+          ]
         },
         "salt": {
           "$ref": "#/definitions/serviceConfig",
-          "description": "values for the salt master service. The ports keys can be one of 'publish' (4505) or 'request' (4506)"
-        }
-      }
-    },
-    "httpd": { "$ref": "#/definitions/componentConfig" },
-    "squid": { "$ref": "#/definitions/componentConfig" },
-    "ssh": { "$ref": "#/definitions/componentConfig" },
-    "tftp": {
-      "type": ["object", "null"],
-      "description": "configuration of the tftp server component",
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "hostNetwork": {
-          "type": "boolean",
-          "description": "Use the host network instead of Kubernetes network infrastructure",
-          "default": false
-        }
-      }
-    },
-    "salt": { "$ref": "#/definitions/componentConfig" }
-  },
-  "definitions": {
-    "nodeSelectorConfig": {
-      "type": ["object", "null"],
-      "properties": {
-        "nodeSelector": { "type": ["object", "null"], "description": "Node label matching rules." },
-        "affinity": { "type": ["object", "null"], "description": "Advanced scheduling rules." },
-        "tolerations": { "type": ["array", "null"], "description": "Node taint tolerations." },
-        "nodeName": { "type": ["string", "null"], "description": "Specific node assignment." }
-      }
-    },
-    "imageConfig": {
-      "type": ["object", "null"],
-      "properties": {
-        "image": { "type": ["string", "null"], "description": "Override default image name" },
-        "tag": { "type": ["string", "null"], "description": "Override default tag" }
-      }
-    },
-    "componentConfig": {
-      "type": ["object", "null"],
-      "allOf": [
-        { "$ref": "#/definitions/imageConfig" },
-        { "$ref": "#/definitions/nodeSelectorConfig" }
-      ],
-      "properties": {
-        "image": { "type": ["string", "null"], "description": "Override default image name" },
-        "tag": { "type": ["string", "null"], "description": "Override default tag" },
-        "tuning": { "type": ["string", "null"], "description": "Configuration tuning parameters" }
-      }
-    },
-    "volumeConfig": {
-      "type": "object",
-      "properties": {
-        "storageClass": {
-          "type": ["string", "null"],
-          "description": "storage class to use for the volume claim"
+          "description": "Values setting up the salt service.",
+          "required": []
         },
-        "extraLabels": {
-          "type": ["object", "null"],
-          "description": "labels to add to the volume claim"
+        "ssh": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "Values setting up the ssh service",
+          "required": []
         },
-        "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to the volume claim"
+        "tftp": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "Values setting up the tftp service.",
+          "required": []
         },
-        "volumeName": {
-          "type": ["string", "null"],
-          "description": "volume to force binding to if set"
-        },
-        "selector": {
-          "type": ["object", "null"],
-          "description": "selector to set on the volume claim"
-        }
-      }
-    },
-    "serviceConfig": {
-      "type": "object",
-      "properties": {
         "type": {
-          "type": "string",
-          "description": "Type of service to define",
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer", ""],
-          "default": ""
-        },
-        "ports": {
-          "type": "object",
-          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service"
-        },
-        "annotations": {
-          "type": ["object", "null"],
-          "description": "annotations to set to the service. This can be helpful to configure a load balancer"
+          "default": "ClusterIP",
+          "description": "type of all the externally-facing services. Can be overridden on each service.",
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer"
+          ],
+          "required": [],
+          "title": "type"
         }
-      }
+      },
+      "required": [],
+      "title": "services"
     },
-    "listener": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "type": "string",
-                "description": "the name of the listener"
-            },
-            "port": {
-                "type": "integer",
-                "description": "the port of the listener"
-            }
+    "squid": {
+      "additionalProperties": false,
+      "description": "Squid server configuration",
+      "properties": {
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "description": "Advanced scheduling rules.",
+          "required": []
+        },
+        "image": {
+          "default": "",
+          "description": "Image for the Squid server container, overwriting the one computed with the `repository` value",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "default": "",
+          "description": "Specific node assignment.",
+          "required": [],
+          "title": "nodeName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "description": "Node label matching rules.",
+          "required": []
+        },
+        "tag": {
+          "default": "",
+          "description": "Tag for the Squid server container, overwriting the global one",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "description": "Node taint tolerations.",
+          "required": []
+        },
+        "tuning": {
+          "default": "",
+          "description": "Custom configuration for the squid server",
+          "required": [],
+          "title": "tuning",
+          "type": [
+            "string",
+            "null"
+          ]
         }
+      },
+      "required": [],
+      "title": "squid"
+    },
+    "ssh": {
+      "additionalProperties": false,
+      "description": "SSH server configuration",
+      "properties": {
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "description": "Advanced scheduling rules.",
+          "required": []
+        },
+        "image": {
+          "default": "",
+          "description": "Image for the SSH server container, overwriting the one computed with the `repository` value",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "default": "",
+          "description": "Specific node assignment.",
+          "required": [],
+          "title": "nodeName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "description": "Node label matching rules.",
+          "required": []
+        },
+        "tag": {
+          "default": "",
+          "description": "Tag for the SSH server container, overwriting the global one",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "description": "Node taint tolerations.",
+          "required": []
+        },
+        "tuning": {
+          "default": "",
+          "description": "Custom configuration for the ssh server",
+          "required": [],
+          "title": "tuning",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "title": "ssh"
+    },
+    "tag": {
+      "default": "",
+      "description": "The default tag to use for all the images, can be overridden By default the tag will be the appVersion of the Chart.",
+      "required": [],
+      "title": "tag"
+    },
+    "tftp": {
+      "additionalProperties": false,
+      "description": "TFTP server configuration",
+      "properties": {
+        "affinity": {
+          "$ref": "#/definitions/affinityConfig",
+          "description": "Advanced scheduling rules.",
+          "required": []
+        },
+        "hostNetwork": {
+          "default": "false",
+          "description": "Use the host network to bypass the Kubernetes network layers. This may be needed if not using a LoadBalancer for the TFTP server. Note that this may be more complex to manage on multi-node clusters.",
+          "title": "hostNetwork",
+          "type": "boolean"
+        },
+        "image": {
+          "default": "",
+          "description": "Image for the TFTP server container, overwriting the one computed with the `repository` value",
+          "required": [],
+          "title": "image",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeName": {
+          "default": "",
+          "description": "Specific node assignment.",
+          "required": [],
+          "title": "nodeName",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nodeSelector": {
+          "$ref": "#/definitions/nodeSelectorMap",
+          "description": "Node label matching rules.",
+          "required": []
+        },
+        "tag": {
+          "default": "",
+          "description": "Tag for the TFTP server container, overwriting the global one",
+          "required": [],
+          "title": "tag",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tolerations": {
+          "$ref": "#/definitions/tolerationsList",
+          "description": "Node taint tolerations.",
+          "required": []
+        }
+      },
+      "required": [],
+      "title": "tftp"
+    },
+    "volumes": {
+      "additionalProperties": false,
+      "description": "Configuration of persistent volume claims.",
+      "properties": {
+        "squid": {
+          "additionalProperties": false,
+          "description": "Squid proxy's cache volume. The size of the squid cache is set when creating the configuration file on the server side.",
+          "properties": {
+            "annotations": {
+              "default": "",
+              "description": "annotations to set to the volume claim",
+              "required": [],
+              "title": "annotations",
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "extraLabels": {
+              "default": "",
+              "description": "labels to add to the volume claim",
+              "required": [],
+              "title": "extraLabels",
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "selector": {
+              "default": "",
+              "description": "selector to set to the volume claim to bind to a volume",
+              "required": [],
+              "title": "selector",
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "storageClass": {
+              "default": "",
+              "description": "storage class to use for the volume claim. The storage class supports a special \"-\" value to force the storage class to the empty string. This is different from the \"\" value representing the default storage class by not setting any storage class at all.",
+              "required": [],
+              "title": "storageClass",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "volumeName": {
+              "default": "",
+              "description": "name of the volume to force binding the claim to",
+              "required": [],
+              "title": "volumeName",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [],
+          "title": "squid",
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [],
+      "title": "volumes"
     }
-  }
+  },
+  "required": [
+    "global"
+  ],
+  "type": "object"
 }

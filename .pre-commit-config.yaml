@@ -1,0 +1,22 @@
+repos:
+  - repo: local
+    hooks:
+      - id: server-helm-tests
+        name: "Server helm tests"
+        language: system
+        files: "containers/server-helm/.*"
+        pass_filenames: false
+        entry: /bin/sh
+        args:
+          - -c
+          - cd containers/server-helm && ./test.sh
+      
+      - id: proxy-helm-tests
+        name: "Proxy helm tests"
+        language: system
+        files: "containers/proxy-helm/.*"
+        pass_filenames: false
+        entry: /bin/sh
+        args:
+          - -c
+          - cd containers/proxy-helm && ./test.sh

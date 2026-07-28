@@ -1,957 +1,1173 @@
-# The default repository with the path where to find all the images.
+# yaml-language-server: $schema=values.schema.json
+# @schema
+# $schema: "https://json-schema.org/draft-07/schema#"
+# title: "Server values"
+# definitions:
+#   annotationsMap:
+#     type: ["object", "null"]
+#     additionalProperties:
+#       type: "string"
+#   nodeSelectorMap:
+#     type: ["object", "null"]
+#     additionalProperties:
+#       type: "string"
+#   affinityConfig:
+#     type: ["object", "null"]
+#     additionalProperties: true
+#   tolerationsList:
+#     type: ["array", "null"]
+#     items:
+#       type: "object"
+#       additionalProperties: true
+#   nodeSelectorConfig:
+#     type: ["object", "null"]
+#     properties:
+#       nodeSelector:
+#         $ref: "#/definitions/nodeSelectorMap"
+#       affinity:
+#         $ref: "#/definitions/affinityConfig"
+#       tolerations:
+#         $ref: "#/definitions/tolerationsList"
+#       nodeName:
+#         type: ["string", "null"]
+#         description: "Specific node assignment."
+#   dbConnectionConfig:
+#     type: ["object", "null"]
+#     properties:
+#       host:
+#         type: ["string", "null"]
+#         description: "FQDN to use to connect to the database"
+#       port:
+#         type: ["integer", "null"]
+#         description: "port to use to connect to the database"
+#         default: 5432
+#       name:
+#         type: ["string", "null"]
+#         description: "Postgresql database name to connect to"
+#   volumeConfig:
+#     type: "object"
+#     properties:
+#       size:
+#         type: "string"
+#         description: "Requested volume size"
+#       storageClass:
+#         type: ["string", "null"]
+#         description: "storage class to use for the volume claim"
+#       extraLabels:
+#         type: ["object", "null"]
+#         description: "labels to add to the volume claim"
+#       annotations:
+#         type: ["object", "null"]
+#         description: "annotations to set to the volume claim"
+#       volumeName:
+#         type: ["string", "null"]
+#         description: "volume to force binding to if set"
+#       selector:
+#         type: ["object", "null"]
+#         description: "selector to set on the volume claim"
+#   serviceConfig:
+#     type: "object"
+#     properties:
+#       type:
+#         type: "string"
+#         description: "Type of service to define"
+#         enum: ["ClusterIP", "NodePort", "LoadBalancer", ""]
+#         default: ""
+#       ports:
+#         type: "object"
+#         description: "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service"
+#       annotations:
+#         type: ["object", "null"]
+#         description: "annotations to set to the service. This can be helpful to configure a load balancer"
+#   listener:
+#     type: "object"
+#     properties:
+#       name:
+#         type: "string"
+#         description: "the name of the listener"
+#       port:
+#         type: "integer"
+#         description: "the port of the listener"
+# @schema
+# repository -- The default repository with the path where to find all the images.
 repository: registry.opensuse.org/uyuni
-# The default tag to use for images, can be overridden for each image
-# By default the tab will be the appVersion of the Chart.
+
+# tag -- The default tag to use for all the images, can be overridden
+# By default the tag will be the appVersion of the Chart.
 tag:
 
-# Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+# @schema
+# enum: ["Always", "IfNotPresent", "Never"]
+# @schema
+# pullPolicy -- Images pull policy. See: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 pullPolicy: "IfNotPresent"
 
-# registrySecret defines the name of secret to use to pull the images from the
+# registrySecret -- name of secret to use to pull the images from the
 # registry with authentication. Leave empty for no authentication.
-#
 # To create the secret, see:
 # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 registrySecret: ""
 
-# The time zone to set in the containers
+# @schema
+# required: true
+# @schema
+# global -- Variables that can be shared with a parent chart
+global:
+  # @default `nil`
+  # @schema
+  # required: true
+  # @schema
+  # global.fqdn -- Fully qualified name the server will answer as.
+  fqdn: null
+
+# timezone -- The time zone to set in the containers
 timezone: "Etc/UTC"
 
-# Server component configuration
-server:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default (AppVersion set in the Chart.yaml)
-  tag:
+# @default `{}`
+# @schema
+# $ref: "#/definitions/nodeSelectorConfig"
+# @schema
+# placement -- Default node placement rules for all pods
+placement: {}
 
-  # Email will be the email used for the notifications sent by the server.
+# server -- Server component configuration
+server:
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # server.image -- Overrides the default image computed using the repository property. Leave undefined to use the default
+  image: null
+
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # server.tag -- Overrides the default tag in the tag property. Leave undefined to use the default
+  tag: null
+
+  # server.email -- Email used for the notifications sent by the server.
   email: "admin@uyuni.lab.org"
 
-  # sccSecret is the name of a basic-auth secret with the organization mirroring credentials to set up on the server.
+  # server.sccSecret -- Name of a basic-auth secret with the organization mirroring credentials to set up on the server.
   sccSecret: ""
 
-  # mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
-  # Use either claimName or hostPath to reference the volume source.
-  #
-  # If the value is set before the first run of the server, the rhn.conf file will be adjusted during the setup.
+  # server.mirror -- Volume or host path to mount in the container as server.susemanager.fromdir value.
   mirror:
-    # claimName is the name of the PVC to use for the mirror volume.
-    # When using set, both the claim and the PV need to be defined before running the chart.
+    # server.mirror.claimName -- Name of the PVC to use for the mirror volume.
     claimName: ""
-    # hostPath is the path on the node to mount as mirror.
-    # Using this is strongly discouraged as it is tied to where the server runs.
+    # server.mirror.hostPath -- Path on the node to mount as mirror.
     hostPath: ""
 
-  # extraVolumes defines additional Kubernetes volumes for the server pod.
-  # This can be used to mount operator-managed volumes without modifying the chart templates.
+  # @schema
+  # type: ["array", "null"]
+  # items: {type: "object"}
+  # @schema
+  # server.extraVolumes -- Additional Kubernetes volumes for the server pod.
   extraVolumes: []
 
-  # extraVolumeMounts defines additional mounts for the server container.
-  # Every entry must reference a volume from server.extraVolumes or another
-  # volume already defined in the pod.
+  # @schema
+  # type: ["array", "null"]
+  # items: {type: "object"}
+  # @schema
+  # server.extraVolumeMounts -- Additional mounts for the server container.
   extraVolumeMounts: []
 
-  # superPrivileged may need to be set to true to run on a cluster with selinux or AppArmor enforced.
-  # This is only for the server pod, since it runs systemd.
-  # Setting this to true opens a big security can of worms.
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # server.superPrivileged -- Set to true to run on a cluster with selinux or AppArmor enforced.
   superPrivileged: false
 
-  # systemdLogLevel will be passed to systemd's --log-level parameter.
-  # Note, that this will add a tty to the container.
-  # The possible values are debug, info, notice, warning, err, crit, alert, emerg or "" to keep the default.
+  # @schema
+  # enum: ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg", ""]
+  # @schema
+  # server.systemdLogLevel -- Systemd log level to use for debugging
   systemdLogLevel: ""
 
-  # appArmor profile is the name of an AppArmor profile to use for the server pod.
-  # The profile need to be showing up in the aa-status command output.
+  # server.apparmorProfile -- Name of an AppArmor profile to use for the server pod.
   apparmorProfile: ""
 
-  # SELinux type is the name of the SELinux type to use for the server pod.
-  # By default, it's not set so the container runtime's default (typically container_t) is used,
-  # or spc_t if superPrivileged is enabled.
+  # server.selinuxType -- Name of the SELinux type to use for the server pod.
   selinuxType: ""
 
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # server.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
 
-global:
-  # fqdn is the fully qualified name the server will answer as.
-  # Changing this value renames the server and changes the server FQDN in the database, handle with care.
-  # This value is required.
-  fqdn:
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # server.affinity -- Advanced scheduling rules.
+  affinity: {}
 
-# Services tuning properties.
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # server.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # server.nodeName -- Specific node assignment.
+  nodeName:
+
+
+#services -- Services tuning properties.
 services:
 
-  # type of all the externally-facing services. Can be overridden on each service.
-  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/
+  # @schema
+  # enum: ["ClusterIP", "NodePort", "LoadBalancer"]
+  # @schema
+  # services.type -- type of all the externally-facing services. Can be overridden on each service.
   type: ClusterIP
 
-  # annotations to set to all the services. Merged with the service ones.
-  annotations:
+  # @default `nil`
+  # @schema
+  # type: ["object", "null"]
+  # @schema
+  # services.annotations -- annotations to set to all the services. Merged with the service ones.
+  annotations: null
 
-  # Values setting up the reportdb service.
+  # @schema
+  # $ref: "#/definitions/serviceConfig"
+  # @schema
+  # services.reportdb -- Values setting up the reportdb service.
   reportdb:
-    # Type of service to define, overriding the global setting
     type: ""
-    # Ports to expose by the service when using the NodePort type.
     ports:
-      # postgresql port to expose, usually known as port 5432.
+      # -- Port to use as a NodePort service
       pgsql: 30032
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    annotations: null
 
-  # Values setting up the salt service.
+  # @schema
+  # $ref: "#/definitions/serviceConfig"
+  # @schema
+  # services.salt -- Values setting up the salt service.
   salt:
-    # Type of service to define, overriding the global setting
     type: ""
-    # Ports to expose by the service when using the NodePort type.
     ports:
-      # Salt publish port, usually known as port 4505
+      # -- Port to use as a NodePort service
       publish: 30005
-      # Salt request port, usually known as port 4506
+      # -- Port to use as a NodePort service
       request: 30006
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    annotations: null
 
-  # Values setting up the search server service.
-  # This is only for debugging purpose.
+  # @schema
+  # $ref: "#/definitions/serviceConfig"
+  # @schema
+  # services.search -- Values setting up the search server service.
   search:
-    # Type of service to define, overriding the global setting
     type: ""
-    # Ports to expose by the service when using the NodePort type.
     ports:
-      # Java debug port, usually known as port 8002
+      # -- Port to use as a NodePort service
       debug: 30002
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    annotations: null
 
-  # Values setting up the taskomatic service.
-  # This is only for debugging purpose.
+  # @schema
+  # $ref: "#/definitions/serviceConfig"
+  # @schema
+  # services.taskomatic -- Values setting up the taskomatic service.
   taskomatic:
-    # Type of service to define, overriding the global setting
     type: ""
-    # Ports to expose by the service when using the NodePort type.
     ports:
-      # Java debug port, usually known as port 8001
+      # -- Port to use as a NodePort service
       debug: 30001
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    annotations: null
 
-  # Values setting up the tomcat service.
-  # This is only for debugging purpose.
+  # @schema
+  # $ref: "#/definitions/serviceConfig"
+  # @schema
+  # services.tomcat -- Values setting up the tomcat service.
   tomcat:
-    # Type of service to define, overriding the global setting
     type: ""
-    # Ports to expose by the service when using the NodePort type.
     ports:
-      # Java debug port, usually known as port 8003
+      # -- Port to use as a NodePort service
       debug: 30003
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    annotations: null
 
-  # Values setting up the tftp service.
-  # This service can only set annotations: changing the type doesn't make sense.
+  # @schema
+  # type: ["object", "null"]
+  # @schema
+  # services.tftp -- Values setting up the tftp service.
   tftp:
-    # Annotations to set on the service.
-    # This can be useful to configure a load balancer for example.
-    annotations:
+    # @default `nil`
+    # @schema
+    # type: ["object", "null"]
+    # @schema
+    annotations: null
 
-# exposeJavaDebug will expose the 8001, 8002 and 8003 ports to connect a Java debugger
-# to taskomatic, search server and tomcat respectively
+# @schema
+# type: "boolean"
+# default: "false"
+# @schema
+# exposeJavaDebug -- Expose ports 8001, 8002, and 8003 for Java debugging if true
 exposeJavaDebug: false
 
-# enableMonitoring will create the ingress or gateway routes for the prometheus exporters.
+# @schema
+# type: "boolean"
+# default: "true"
+# @schema
+# enableMonitoring -- Create the ingress or gateway routes for Prometheus exporters if true.
 enableMonitoring: true
 
+# ingress -- Configuration of the ingress rules. Won't be used if gateway is enabled.
 ingress:
-  # ingress.type defines the ingress that is used in the cluster.
-  # It can be "traefik" or any other value.
+  # @schema
+  # enum: ["traefik", ""]
+  # @schema
+  # ingress.type -- Ingress that is used in the cluster.
+  # Set to the empty string to use a custom ingress.
   type: "traefik"
-  # Specify the ingress class name to use. Empty, means that the default one will be used.
-  # If using the traefik end points and TCP routers, this value needs to match Traefik's
-  # --providers.kubernetescrd.ingressclass parameter's value.
-  # On rke2 this is likely to be "traefik". On K3S it is likely to be ""
+
+  # ingress.class -- Specify the ingress class name to use.
   class: "traefik"
-  # annotations can be used to set custom annotations on the created ingress rules.
-  # This can be used to configure another ingress than the ones already wired with the ingress.type.
-  # The ssl annotations can also be used to set a cert-manager issuer like:
-  # ingress:
-  #   annotations:
-  #     ssl:
-  #       cert-manager.io/cluster-issuer: uyuniIssuer
+
+  # ingress.annotations -- Custom annotations for ingress rules.
   annotations:
-    # ssl holds the annotations for the main ssl ingress.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.ssl -- annotations for the uyuni-ingress-ssl ingress definition.
     ssl: {}
-    # sslRedirect holds the annotations for the ssl redirect ingress.
-    # This ingress is only created if the ingress type is set to 'traefik'.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.sslRedirect -- annotations for the uyuni-ingress-ssl-redirect ingress definition.
     sslRedirect: {}
-    # nossl holds the annotations for the HTTP ingress.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.nossl -- annotations for the uyuni-ingress-nossl ingress definition.
     nossl: {}
-    # saline holds the annotations for the saline ssl ingress.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.saline -- annotations for the saline-ingress-ssl ingress definition.
     saline: {}
-    # hub holds the annotations for the hub API ssl ingress.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.hub -- annotations for the hubapi-ingress-ssl ingress definition.
     hub: {}
-    # exporters holds the annotations for the prometheus exporters SSL ingress.
+    # @schema
+    # $ref: "#/definitions/annotationsMap"
+    # @schema
+    # ingress.annotations.exporters -- annotations for the exporters-ingress-ssl ingress definition.
     exporters: {}
 
-# Gateway configures the Gateway API.
+# gateway -- Configures the Gateway API.
 gateway:
-  # If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones.
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # gateway.enable -- If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones.
   # Note that TCPRoute is used and is still in alpha2 stage.
   enable: false
-
-  # Name of the gateway class to use. For rke2 with traefik, it is likely to be "traefik".
+  # gateway.class -- Name of the gateway class to use. For rke2 with traefik, it is likely to be "traefik".
   class: ""
-
-  # Name of the gateway to use. An empty string value means that a gateway will be deployed and named uyuni-gateway.
+  # gateway.name -- Name of the Gateway to use. If left empty an uyuni-gateway will be created.
   name: ""
 
+  # gateway.listeners -- Gateway listeners configuration
   listeners:
+    # @schema
+    # $ref: "#/definitions/listener"
+    # @schema
+    # gateway.listeners.http -- Configuration of the HTTP listener.
+    # The default is adjusted for traefik on rke2
     http:
-      # Name to set for the gateway http listener. The default is adjusted for traefik on rke2
+      # gateway.listeners.http.name -- Name of the HTTP listener in the Gateway.
       name: "web"
-      # Port to set for the gateway http listener. The default is adjusted for traefik on rke2
+      # gateway.listeners.http.port -- Port of the HTTP listener to set in the Gateway.
       port: 8000
+
+    # @schema
+    # $ref: "#/definitions/listener"
+    # @schema
+    # gateway.listeners.https -- Configuration of the HTTPS listener.
+    # The default is adjusted for traefik on rke2
     https:
-      # Name to set for the gateway https listener. The default is adjusted for traefik on rke2
+      # gateway.listeners.https.name -- Name of the HTTPS listener in the Gateway.
       name: "websecure"
-      # Port to set for the gateway https listener. The default is adjusted for traefik on rke2
+      # gateway.listeners.https.port -- Port of the HTTPS listener to set in the Gateway.
       port: 8443
 
-# TFTP server configuration
+# tftp -- TFTP server configuration
 tftp:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
-  tag:
-  # enable or disable the TFTP server.
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # tftp.image -- Image for the TFTP server container, overwriting the one computed with the `repository` value
+  image: null
+
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # tftp.tag -- Tag for the TFTP server container, overwriting the global one
+  tag: null
+
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # tftp.enable -- Define a TFTP server deployment with one replica if set to true
   enable: false
 
-  # Use the host network to bypass the Kubernetes network layers.
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # tftp.hostNetwork -- Use the host network to bypass the Kubernetes network layers.
   # This may be needed if not using a LoadBalancer for the TFTP server.
   # Note that this may be more complex to manage on multi-node clusters.
   hostNetwork: false
+  
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # tftp.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
 
-# hub API component configuration
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # tftp.affinity -- Advanced scheduling rules.
+  affinity: {}
+
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # tftp.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # tftp.nodeName -- Specific node assignment.
+  nodeName:
+
+# hubAPI -- hub API component configuration
 hubAPI:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
-  tag:
-  # enable or disable the Hub XML-RPC API deployment.
-  enable: false
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # hubAPI.image -- Image for the hub API container, overwriting the one computed with the `repository` value
+  image: null
 
-# Confidential computing attestation component configuration
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # hubAPI.tag -- Image tag for the hub API container, overwriting the global one
+  tag: null
+
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # hubAPI.enable -- Define a hub API deployment with one replica if set to true.
+  enable: false
+  
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # hubAPI.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
+
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # hubAPI.affinity -- Advanced scheduling rules.
+  affinity: {}
+
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # hubAPI.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # hubAPI.nodeName -- Specific node assignment.
+  nodeName:
+
+# coco -- Confidential computing attestation component configuration
 coco:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
-  tag:
-  # number of replicas for the confidential computing attestation deployment.
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # coco.image -- Image for the confidential computing containers, overwriting the one computed with the `repository` value
+  image: null
+
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # coco.tag -- Image tag for the confidential computing containers, overwriting the global one
+  tag: null
+
+  # @schema
+  # minimum: 0
+  # @schema
+  # coco.replicas -- Number the confidential computing pods replicas
   replicas: 0
+  
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # coco.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
 
-# Saline component configuration
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # coco.affinity -- Advanced scheduling rules.
+  affinity: {}
+
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # coco.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # coco.nodeName -- Specific node assignment.
+  nodeName:
+
+# saline -- Saline component configuration
 saline:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
-  tag:
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # saline.image -- Image for the Saline container, overwriting the one computed with the `repository` value
+  image: null
 
-  # set to true to deploy saline and provide salt master metrics
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # saline.tag -- Image tag for the Saline container, overwriting the global one
+  tag: null
+
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # saline.enable -- Define a saline deployment with one replica if set to true.
   enable: false
+  
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # saline.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
 
-# PostgreSQL database configuration
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # saline.affinity -- Advanced scheduling rules.
+  affinity: {}
+
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # saline.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # saline.nodeName -- Specific node assignment.
+  nodeName:
+
+# db -- PostgreSQL database configuration
 db:
-  # image overrides the default image computed using the repository property
-  # Leave undefined to use the default
-  image:
-  # tag overrides the default tag in the tag property
-  # Leave undefined to use the default
-  tag:
-  # enable to deploy a PostgreSQL instance.
-  # WARNING: using a third party database is not tested and supported for now.
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # db.image -- Image for the database container, overwriting the one computed with the `repository` value
+  image: null
+
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # db.tag -- Image tag for the database container, overwriting the global one
+  tag: null
+
+  # @schema
+  # type: "boolean"
+  # default: "false"
+  # @schema
+  # db.enable -- Deploys the internal dababase if set to true. Setting to false is not supported yet.
   enable: true
 
-  # Network IP range to allow plain text connections from, usually the cluster pods CIDR
+  # db.podsCIDR -- Network IP range to allow plain text connections from, usually the cluster pods CIDR
   # The default has been adjusted with rke2's pods CIDR default.
   podsCIDR: 10.42.0.0/16
 
-  # Configuration of the internal database connection
-  # WARNING: Only taken into account if db is disabled
+  # @schema
+  # $ref: "#/definitions/dbConnectionConfig"
+  # @schema
+  # db.internal -- Configuration of the internal database connection
   internal:
-    # Host name to use for the internal database.
-    # It should be added to the SANs of the database TLS certificate
-    host:
-    # Port to use to connect to the internal database
-    port: 5432
-    # Name of the postgresql database to connect to
-    name:
+    # @default `nil`
+    # @schema
+    # type: ["string", "null"]
+    # @schema
+    # db.internal.host -- FQDN or IP where to find the internal database (unused for now)
+    host: null
 
-  # Configuration of the report database connection
-  # WARNING: Only taken into account if db is disabled
+    # db.internal.port -- Port where to find the internal database (unused for now)
+    port: 5432
+
+    # @default `nil`
+    # @schema
+    # type: ["string", "null"]
+    # @schema
+    # db.internal.name -- Name of the internal database (unused for now)
+    name: null
+
+  # @schema
+  # $ref: "#/definitions/dbConnectionConfig"
+  # @schema
+  # db.report -- Configuration of the report database connection
   report:
-    # Host name to use for the report database.
-    # It should be added to the SANs of the database TLS certificate
-    host:
-    # Port to use to connect to the internal database
+    # @default `nil`
+    # @schema
+    # type: ["string", "null"]
+    # @schema
+    # db.report.host -- FQDN or IP where to find the report database (unused for now)
+    host: null
+
+    # db.report.port -- Port where to find the report database (unused for now)
     port: 5432
-    # Name of the postgresql database to connect to
-    name:
 
-# Configuration of the persistent volume claims.
+    # @default `nil`
+    # @schema
+    # type: ["string", "null"]
+    # @schema
+    # db.report.name -- Name of the report database (unused for now)
+    name: null
+  
+  # @schema
+  # $ref: "#/definitions/nodeSelectorMap"
+  # @schema
+  # db.nodeSelector -- Node label matching rules.
+  nodeSelector: {}
+
+  # @schema
+  # $ref: "#/definitions/affinityConfig"
+  # @schema
+  # db.affinity -- Advanced scheduling rules.
+  affinity: {}
+
+  # @schema
+  # $ref: "#/definitions/tolerationsList"
+  # @schema
+  # db.tolerations -- Node taint tolerations.
+  tolerations: []
+
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # db.nodeName -- Specific node assignment.
+  nodeName:
+
+
+# volumes -- Configuration of persistent volume claims.
 volumes:
-  # Default storage class name to use for all the claims
-  storageClass:
+  # @default `nil`
+  # @schema
+  # type: ["string", "null"]
+  # @schema
+  # volumes.storageClass -- Default storage class name to use for all claims.
+  storageClass: null
 
-  # var-pgsql is the volume for the database,
-  # a fast and big enough persistent volume will be needed.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-pgsql -- var-pgsql volume configuration
   var-pgsql:
-    # size is the requested volume size.
-    # The size of the postgresql data volume needs to be at least 50Gi.
-    # This value is required.
+    # -- Requested size
     size: 50Gi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # var-spacewalk contains the synchronized packages and needs to be sized depending on the distributions to manage.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-spacewalk -- var-spacewalk volume configuration
   var-spacewalk:
-    # size is the requested volume size.
-    # See https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html
-    # how to estimate the size depending on the distributions.
-    # This value is required.
+    # -- Requested size
     size: 100Gi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # var-cache is the volume holding the cache for the server.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-cache -- var-cache volume configuration
   var-cache:
-    # size is the requested volume size.
-    # See https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html
-    # how to estimate the size.
-    # This value is required.
+    # -- Requested size
     size: 10Gi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # var-log is the volume holding the log files for the server pod.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-log -- var-log volume configuration
   var-log:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 2Gi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # srv-www is the volume containing the files published over HTTP.
-  # This also includes the unpacked auto-installation distribution ISOs.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-www -- srv-www volume configuration
   srv-www:
-    # size is the requested volume size.
-    # Take into account the number and size of the distributions unpacked ISO images to use for auto-installation.
-    # This value is required.
+    # -- Requested size
     size: 100Gi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-tftpboot -- srv-tftpboot volume configuration
   srv-tftpboot:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 300Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.ca-certs -- ca-certs volume configuration
   ca-certs:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-apache2 -- etc-apache2 volume configuration
   etc-apache2:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-cobbler -- etc-cobbler volume configuration
   etc-cobbler:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-postfix -- etc-postfix volume configuration
   etc-postfix:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-rhn -- etc-rhn volume configuration
   etc-rhn:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-salt -- etc-salt volume configuration
   etc-salt:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-sssd -- etc-sssd volume configuration
   etc-sssd:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-sysconfig -- etc-sysconfig volume configuration
   etc-sysconfig:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 20Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-systemd-multi -- etc-systemd-multi volume configuration
   etc-systemd-multi:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-systemd-sockets -- etc-systemd-sockets volume configuration
   etc-systemd-sockets:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.etc-tomcat -- etc-tomcat volume configuration
   etc-tomcat:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.run-salt-master -- run-salt-master volume configuration
   run-salt-master:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # srv-formulametadata contains the custom Salt Formulas metadata.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-formulametadata -- srv-formulametadata volume configuration
   srv-formulametadata:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # srv-pillar contains the custom Salt pillar.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-pillar -- srv-pillar volume configuration
   srv-pillar:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  # srv-salt contains the custom Salt states.
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-salt -- srv-salt volume configuration
   srv-salt:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-spacewalk -- srv-spacewalk volume configuration
   srv-spacewalk:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.srv-susemanager -- srv-susemanager volume configuration
   srv-susemanager:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 1Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-cobbler -- var-cobbler volume configuration
   var-cobbler:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-salt -- var-salt volume configuration
   var-salt:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Mi
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null
 
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
+  # @schema
+  # $ref: "#/definitions/volumeConfig"
+  # @schema
+  # volumes.var-search -- var-search volume configuration
   var-search:
-    # size is the requested volume size.
-    # This value is required.
+    # -- Requested size
     size: 10Gi
-
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
+    # @default `nil`
+    storageClass: null
+    # @default `nil`
+    extraLabels: null
+    # @default `nil`
+    annotations: null
+    # @default `nil`
+    volumeName: null
+    # @default `nil`
+    selector: null

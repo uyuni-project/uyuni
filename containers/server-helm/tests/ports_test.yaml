@@ -6,7 +6,6 @@ tests:
   - it: should include monitoring and base ports by default
     set:
       global.fqdn: uyuni.example.com
-      enableMonitoring: true
     asserts:
       - contains:
           path: spec.template.spec.containers[0].ports
@@ -44,6 +43,15 @@ tests:
         documentSelector:
           path: metadata.name
           value: reportdb
+      # Test that debug ports are not there by default
+      - notContains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            containerPort: 8001
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
 
   - it: should remove monitoring ports when disabled
     set:

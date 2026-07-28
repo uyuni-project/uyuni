@@ -1,0 +1,34 @@
+name: Helm Chart CI
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'containers/proxy-helm/**'
+      - 'containers/server-helm/**'
+
+permissions:
+  contents: read
+
+jobs:
+  helm-charts-tests:
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/home/cbosdonnat/branches/systemsmanagement/uyuni/master/docker/containers/uyuni-helm:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Mark workspace as safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Proxy helm chart tests
+        run: |
+          pushd containers/proxy-helm
+          ./test.sh
+          popd
+      
+      - name: Server helm chart tests
+        run: |
+          pushd containers/server-helm
+          ./test.sh
+          popd
