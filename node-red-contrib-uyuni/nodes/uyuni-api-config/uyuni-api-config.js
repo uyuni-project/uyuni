@@ -9,6 +9,14 @@ module.exports = function (RED) {
     node.username = node.credentials?.username || '';
     node.password = node.credentials?.password || '';
 
+    // Certificates are verified unless the user opts out for a self-signed
+    // development server.
+    node.allowSelfSigned = config.allowSelfSigned === true;
+
+    // A session fault is retried once. Retrying without a limit would spin
+    // forever whenever the server keeps returning the same fault.
+    const MAX_LOGIN_RETRIES = 1;
+
     // Cache the session key
     node.sessionKey = null;
 
@@ -27,7 +35,7 @@ module.exports = function (RED) {
         host: host,
         port: port,
         path: path,
-        rejectUnauthorized: false // Allow self-signed certs typical in Uyuni dev setups
+        rejectUnauthorized: !node.allowSelfSigned
       };
 
       if (secure) {
@@ -57,20 +65,21 @@ module.exports = function (RED) {
       return new Promise((resolve, reject) => {
         const client = node.getClient();
 
-        const executeCall = (session) => {
+        const executeCall = (session, attempt) => {
           // Prepend session key to parameters
           const fullParams = [session, ...params];
           client.methodCall(method, fullParams, (error, value) => {
             if (error) {
-              // Check if it's a session expiration error
-              const isSessionError = error.message && 
-                (error.message.includes('Session') || error.message.includes('session') || error.message.includes('expired') || error.message.includes('invalid'));
-              
-              if (isSessionError) {
+              // Only a fault that actually mentions the session is worth
+              // retrying. Matching loosely on words like "invalid" would treat
+              // an ordinary bad-argument fault as an expired session.
+              const isSessionError = error.message && /session/i.test(error.message);
+
+              if (isSessionError && attempt < MAX_LOGIN_RETRIES) {
                 // Clear cache and try to login again
                 node.sessionKey = null;
                 node.login().then((newSession) => {
-                  executeCall(newSession);
+                  executeCall(newSession, attempt + 1);
                 }).catch((loginErr) => {
                   reject(loginErr);
                 });
@@ -84,10 +93,10 @@ module.exports = function (RED) {
         };
 
         if (node.sessionKey) {
-          executeCall(node.sessionKey);
+          executeCall(node.sessionKey, 0);
         } else {
           node.login().then((session) => {
-            executeCall(session);
+            executeCall(session, 0);
           }).catch((loginErr) => {
             reject(loginErr);
           });

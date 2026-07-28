@@ -1,0 +1,49 @@
+# Automation stack for Uyuni: an MQTT broker and Node-RED with the Uyuni nodes
+# pre-installed.
+#
+# Copy .env.example to .env and set the two broker passwords first, then:
+#
+#     podman-compose up -d      (or: docker compose up -d)
+#
+# Node-RED is then at http://localhost:1880 and the broker at localhost:1883.
+
+# Note: the broker image is pulled from the registry and is published by the
+# Open Build Service. Until it has been built there, this file cannot start the
+# broker; build it from containers/mqtt-broker-image and tag it locally as
+# uyuni/mqtt-broker:latest if you need to run the stack before then.
+
+services:
+  mqtt-broker:
+    image: registry.opensuse.org/uyuni/mqtt-broker:latest
+    container_name: uyuni-mqtt-broker
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    environment:
+      # Both are required. The broker refuses to start without them rather
+      # than falling back to anonymous access.
+      MQTT_PUBLISHER_PASSWORD: ${MQTT_PUBLISHER_PASSWORD:?set MQTT_PUBLISHER_PASSWORD in .env}
+      MQTT_SUBSCRIBER_PASSWORD: ${MQTT_SUBSCRIBER_PASSWORD:?set MQTT_SUBSCRIBER_PASSWORD in .env}
+    volumes:
+      - mqtt-data:/mosquitto/data
+
+  node-red:
+    build:
+      # The build context is the repository root so the Dockerfile can copy
+      # the node-red-contrib-uyuni package source, which lives outside this
+      # directory.
+      context: ../..
+      dockerfile: containers/node-red-image/Dockerfile
+    image: uyuni/node-red:latest
+    container_name: uyuni-node-red
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    volumes:
+      - node-red-data:/data
+    depends_on:
+      - mqtt-broker
+
+volumes:
+  mqtt-data:
+  node-red-data:
