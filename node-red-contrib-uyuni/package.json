@@ -14,10 +14,19 @@
   ],
   "author": "Geetansh Goyal <geetxnshgoyal@gmail.com>",
   "license": "GPL-2.0",
+  "files": [
+    "nodes/",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/geetxnshgoyal/uyuni.git"
+    "url": "git+https://github.com/uyuni-project/uyuni.git",
+    "directory": "node-red-contrib-uyuni"
   },
+  "bugs": {
+    "url": "https://github.com/uyuni-project/uyuni/issues"
+  },
+  "homepage": "https://github.com/uyuni-project/uyuni/tree/master/node-red-contrib-uyuni",
   "node-red": {
     "version": ">=3.0.0",
     "nodes": {
