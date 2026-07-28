@@ -48,4 +48,37 @@
     <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
     <input type="password" id="node-config-input-password" />
   </div>
+  <div class="form-row">
+    <label for="node-config-input-usetls"><i class="fa fa-shield"></i> Use TLS</label>
+    <input type="checkbox" id="node-config-input-usetls" style="width:auto; vertical-align:top;" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="uyuni-config">
+  <p>Connection details for the MQTT broker that carries Uyuni events. Every
+  <b>Uyuni Events</b> node on the canvas shares one of these, so credentials are
+  entered once.</p>
+
+  <h3>Settings</h3>
+  <dl class="message-properties">
+    <dt>Broker <span class="property-type">string</span></dt>
+    <dd>Hostname or address of the broker, for example <code>mosquitto</code> or <code>uyuni.example.com</code>.</dd>
+    <dt>Port <span class="property-type">number</span></dt>
+    <dd>Broker port. <code>1883</code> for plain connections, usually <code>8883</code> with TLS.</dd>
+    <dt>Topic Prefix <span class="property-type">string</span></dt>
+    <dd>Which server to listen to. <code>uyuni/+</code> matches every Uyuni instance on the
+    broker; <code>uyuni/server.example.com</code> narrows it to one.</dd>
+    <dt>Username / Password <span class="property-type">credentials</span></dt>
+    <dd>Required — the broker does not accept anonymous clients. Use the
+    <code>uyuni-subscriber</code> account, which can read events but not publish them.</dd>
+    <dt>Use TLS <span class="property-type">boolean</span></dt>
+    <dd>Connect with <code>mqtts</code> instead of <code>mqtt</code>.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Credentials are held in Node-RED's encrypted credential store and are not
+  included when a flow is exported.</p>
+  <p>If the node shows <i>disconnected</i>, check the username and password first:
+  a broker that rejects the login refuses the connection outright rather than
+  failing later.</p>
 </script>

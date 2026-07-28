@@ -1,0 +1,36 @@
+module.exports = {
+    flowFile: "flows.json",
+    flowFilePretty: true,
+
+    userDir: "/data",
+
+    credentialSecret: "@@CREDENTIAL_SECRET@@",
+
+    functionGlobalContext: {
+        mqttBrokerHost: "@@MQTT_BROKER_HOST@@",
+        mqttBrokerPort: @@MQTT_BROKER_PORT@@,
+        uyuniServerUrl: "@@UYUNI_SERVER_URL@@"
+    },
+
+    logging: {
+        console: {
+            level: "info",
+            metrics: false,
+            audit: false
+        }
+    },
+
+    exportGlobalContextKeys: false,
+
+    editorTheme: {
+        page: {
+            title: "Uyuni Automation — Node-RED"
+        },
+        header: {
+            title: "Uyuni Automation"
+        },
+        projects: {
+            enabled: false
+        }
+    }
+};
