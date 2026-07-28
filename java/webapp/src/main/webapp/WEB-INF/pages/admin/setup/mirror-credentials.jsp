@@ -13,7 +13,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close" aria-hidden="true"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -57,7 +57,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close" aria-hidden="true"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-delete.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -88,7 +88,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-close" aria-hidden="true"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-subscriptions.title" /></h4>
                     </div>
                     <div id="modal-list-subscriptions-body" class="modal-body">
