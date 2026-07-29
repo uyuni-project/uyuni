@@ -416,16 +416,26 @@ end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   url = "https://#{get_target('server').full_hostname}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
+  log "Download URL: #{url}"
+  log "Token present: #{!@token.nil?}"
   url = "#{url}?#{@token}" if @token
   @download_path = nil
   @download_error = nil
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
+      log "Opening URI: #{url}"
       URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+        log "Connection successful, reading response..."
         tmpfile.write(urlfile.read)
       end
+      log "Download completed successfully"
     rescue OpenURI::HTTPError => e
+      log "HTTPError caught: #{e.message}"
+      log "HTTP Status Code: #{e.io.status[0]}" if e.respond_to?(:io) && e.io.respond_to?(:status)
+      @download_error = e
+    rescue StandardError => e
+      log "Unexpected error: #{e.class.name}: #{e.message}"
       @download_error = e
     end
   end
@@ -433,10 +443,19 @@ end
 
 Then(/^the download should get a (\d+) response$/) do |code|
   refute_nil(@download_error)
-  assert_equal(code.to_i, @download_error.io.status[0].to_i)
+  actual_code = @download_error.io.status[0].to_i
+  log "Expected HTTP #{code}, got #{actual_code}"
+  log "Error details: #{@download_error.inspect}"
+  assert_equal(code.to_i, actual_code)
 end
 
 Then(/^the download should get no error$/) do
+  if @download_error
+    log "Expected success but got error: #{@download_error.inspect}"
+    if @download_error.respond_to?(:io) && @download_error.io.respond_to?(:status)
+      log "HTTP Status: #{@download_error.io.status[0]}"
+    end
+  end
   assert_nil(@download_error)
 end
 
