@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -110,6 +111,7 @@ public final class OpenApiConfig {
         handlers.put("api", ApiHandler.class);
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("distchannel", DistChannelHandler.class);
+        handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
         handlers.put("subscriptionmatching.pinnedsubscription", PinnedSubscriptionHandler.class);

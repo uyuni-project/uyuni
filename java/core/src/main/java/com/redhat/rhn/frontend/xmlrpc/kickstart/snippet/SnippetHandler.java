@@ -30,7 +30,7 @@ import java.util.List;
  * @apidoc.namespace kickstart.snippet
  * @apidoc.doc Provides methods to create kickstart files
  */
-public class SnippetHandler extends BaseHandler {
+public class SnippetHandler extends BaseHandler implements SnippetHandlerApi {
 
     /**
      * list all cobbler snippets for a user.  Includes default and custom snippets
