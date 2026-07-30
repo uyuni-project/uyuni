@@ -19,7 +19,6 @@
 #
 
 import os
-import base64
 import sys
 from rhn import rpclib
 
@@ -37,15 +36,13 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         basePackageUpload.BasePackageUpload.__init__(self, req)
         self.required_fields.extend(
             [
-                "Auth",
+                "Auth-Session",
                 "Force",
             ]
         )
         self.null_org = None
         # Default packaging is rpm
         self.packaging = "rpm"
-        self.username = None
-        self.password = None
         self.force = None
         self.rel_package_path = None
         self.org_id = None
@@ -56,8 +53,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         # Optional headers
         maps = [["Null-Org", "null_org"], ["Packaging", "packaging"]]
         for hn, sn in maps:
-            # pylint: disable-next=consider-using-f-string
-            header_name = "%s-%s" % (self.header_prefix, hn)
+            header_name = f"{self.header_prefix}-{hn}"
             if header_name in req.headers_in:
                 setattr(self, sn, req.headers_in[header_name])
 
@@ -79,39 +75,17 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
         # Init the database connection
         rhnSQL.initDB()
-        use_session = 0
-        if self.field_data.has_key("Auth-Session"):
-            session_token = self.field_data["Auth-Session"]
-            use_session = 1
-        else:
-            encoded_auth_token = self.field_data["Auth"]
-
-        if not use_session:
-            # pylint: disable-next=possibly-used-before-assignment
-            auth_token = self.get_auth_token(encoded_auth_token)
-
-            if len(auth_token) < 2:
-                log_debug(3, auth_token)
-                raise rhnFault(105, "Unable to autenticate")
-
-            self.username, self.password = auth_token[:2]
+        session_token = self.field_data["Auth-Session"]
 
         force = self.field_data["Force"]
         force = int(force)
-        log_debug(1, "Username", self.username, "Force", force)
+        log_debug(1, "Force", force)
 
-        if use_session:
-            self.org_id, self.force = rhnPackageUpload.authenticate_session(
-                # pylint: disable-next=possibly-used-before-assignment
-                session_token,
-                force=force,
-                null_org=self.null_org,
-            )
-        else:
-            # We don't push to any channels
-            self.org_id, self.force = rhnPackageUpload.authenticate(
-                self.username, self.password, force=force, null_org=self.null_org
-            )
+        self.org_id, self.force = rhnPackageUpload.authenticate_session(
+            session_token,
+            force=force,
+            null_org=self.null_org,
+        )
 
         return apache.OK
 
@@ -186,9 +160,3 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         req.send_http_header()
         req.write(reply)
         return apache.OK
-
-    @staticmethod
-    def get_auth_token(value):
-        s = "".join([x.strip() for x in value.split(",")])
-        arr = list(map(base64.b64decode, s.split(":")))
-        return arr
