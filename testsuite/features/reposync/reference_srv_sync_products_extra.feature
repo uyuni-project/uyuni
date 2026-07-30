@@ -17,20 +17,20 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
-  Scenario: Add Rocky 8 product with recommended sub-products
+  Scenario: Add Rocky 10 product with recommended sub-products
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "Rocky" as the filtered product description
-    And I wait until I see "Rocky Linux 8 x86_64" text
-    And I select "Rocky Linux 8 x86_64" as a product
-    Then I should see the "Rocky Linux 8 x86_64" selected
+    And I enter "Rocky Linux 10" as the filtered product description
+    And I wait until I see "Rocky Linux 10 x86_64" text
+    And I select "Rocky Linux 10 x86_64" as a product
+    Then I should see the "Rocky Linux 10 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "Rocky Linux 8 x86_64" product has been added
+    And I wait until I see "Rocky Linux 10 x86_64" product has been added
 
 @uyuni
-  Scenario: Enable Rocky 8 Uyuni client tools for creating bootstrap repositories
-    When I use spacewalk-common-channel to add channel "rockylinux8 rockylinux8-appstream rockylinux8-uyuni-client" with arch "x86_64"
+  Scenario: Enable Rocky 10 Uyuni client tools for creating bootstrap repositories
+    When I use spacewalk-common-channel to add channel "rockylinux10 rockylinux10-appstream rockylinux10-uyuni-client" with arch "x86_64"
 
 @scc_credentials
 @susemanager
