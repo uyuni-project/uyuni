@@ -285,11 +285,7 @@ class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
           </td>
           <td>{currentChannel.label}</td>
           <td>
-            <i
-              data-bs-toggle="tooltip"
-              className="fa fa-info-circle fa-1-5x text-primary"
-              title={currentChannel.description}
-            />
+            <i data-bs-toggle="tooltip" className="fa fa-info-circle fa-1-5x" title={currentChannel.description} />
           </td>
           <td>
             <div className="form-group">
