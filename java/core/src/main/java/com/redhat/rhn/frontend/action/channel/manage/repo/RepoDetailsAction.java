@@ -227,9 +227,9 @@ public class RepoDetailsAction extends RhnAction {
         form.set(URL, repo.getSourceUrl());
         form.set(SOURCEID, repo.getId());
         form.set(TYPE, repo.getType().getLabel());
-        Set<SslContentSource> repoSslSets = repo.getSslSets();
-        if (!repoSslSets.isEmpty()) {
-            SslContentSource sslRepo = repoSslSets.iterator().next();
+        Set<SslContentSource> sslContentSources = repo.getSslContentSources();
+        if (!sslContentSources.isEmpty()) {
+            SslContentSource sslRepo = sslContentSources.iterator().next();
             form.set(SSL_CA_CERT, getStringId(sslRepo.getCaCert()));
             form.set(SSL_CLIENT_CERT, getStringId(sslRepo.getClientCert()));
             form.set(SSL_CLIENT_KEY, getStringId(sslRepo.getClientKey()));
@@ -345,8 +345,8 @@ public class RepoDetailsAction extends RhnAction {
         try {
             // Add SSL
             // OLDTODO: Allow to set multiple SSL sets per custom repo - new page?
-            repoCmd.deleteAllSslSets();
-            repoCmd.addSslSet(parseIdFromForm(form, SSL_CA_CERT),
+            repoCmd.deleteAllSslContentSources();
+            repoCmd.addSslContentSource(parseIdFromForm(form, SSL_CA_CERT),
                     parseIdFromForm(form, SSL_CLIENT_CERT),
                     parseIdFromForm(form, SSL_CLIENT_KEY));
             // Process filters

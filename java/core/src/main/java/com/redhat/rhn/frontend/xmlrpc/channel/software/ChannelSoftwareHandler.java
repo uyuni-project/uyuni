@@ -2198,7 +2198,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
          if (!StringUtils.isEmpty(sslCaCert)) {
              try {
                  // OLDTODO: Allow to set multiple SSL sets per custom repo - new API calls?
-                 repoCmd.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                 repoCmd.addSslContentSource(getKeyId(loggedInUser, sslCaCert),
                          getKeyId(loggedInUser, sslCliCert),
                          getKeyId(loggedInUser, sslCliKey));
              }
@@ -2406,8 +2406,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
         if (!StringUtils.isEmpty(sslCaCert)) {
             try {
                 // OLDTODO: Allow to set multiple SSL sets per custom repo - new API calls?
-                repoEditor.deleteAllSslSets();
-                repoEditor.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                repoEditor.deleteAllSslContentSources();
+                repoEditor.addSslContentSource(getKeyId(loggedInUser, sslCaCert),
                         getKeyId(loggedInUser, sslCliCert),
                         getKeyId(loggedInUser, sslCliKey));
             }
