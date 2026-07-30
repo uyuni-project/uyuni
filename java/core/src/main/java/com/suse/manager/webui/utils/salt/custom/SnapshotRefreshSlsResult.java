@@ -24,33 +24,9 @@ public class SnapshotRefreshSlsResult {
 
     public static final String SNAPPER_LIST_SNAPSHOTS =
             "cmd_|-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run";
-    public static final String GET_ACTIVE_SNAPSHOT =
-            "cmd_|-get-active-snapshot_|-" +
-            "awk '$5==\"/\" {print $4}' /proc/1/mountinfo | grep -oP '\\.snapshots/\\K\\d+'_|-run";
 
     @SerializedName(SNAPPER_LIST_SNAPSHOTS)
     private Optional<StateApplyResult<CmdResult>> snapperSnapshots = Optional.empty();
-
-    @SerializedName(GET_ACTIVE_SNAPSHOT)
-    private Optional<StateApplyResult<CmdResult>> activeSnapshotResult = Optional.empty();
-
-    /**
-     * Get the active snapshot number from /proc/1/mountinfo.
-     * @return optional active snapshot number
-     */
-    public Optional<Long> getActiveSnapshotNumber() {
-        return activeSnapshotResult
-                .map(r -> r.getChanges().getStdout())
-                .filter(out -> out != null && !out.isBlank())
-                .map(out -> {
-                    try {
-                        return Long.parseLong(out.trim());
-                    }
-                    catch (NumberFormatException e) {
-                        return null;
-                    }
-                });
-    }
 
     /**
      * Get the raw stdout from {@code snapper --json --no-dbus list}.

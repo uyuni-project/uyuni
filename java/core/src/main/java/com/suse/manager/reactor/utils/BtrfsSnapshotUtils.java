@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods for processing Btrfs snapshot information on
@@ -95,15 +96,10 @@ public class BtrfsSnapshotUtils {
      * transaction overlays that mask the real active snapshot and will be discarded on rollback.
      * Snapshot 0 (the "current running subvolume" meta-entry) is also excluded.
      *
-     * The real active snapshot is determined from {@code activeSnapshotNum} (read from
-     * field 4 of {@code /proc/1/mountinfo} for the root mount) rather than from snapper's
-     * own {@code "active"} flag, which is unreliable inside the chroot context Salt uses.
-     *
      * @param rawJson          raw stdout from {@code snapper --json --no-dbus list}
-     * @param activeSnapshotNum real active snapshot number from /proc/1/mountinfo, or empty
      * @return parsed result, or empty if the JSON is absent / contains no valid snapshots
      */
-    public static Optional<ParseResult> parse(Optional<String> rawJson, Optional<Long> activeSnapshotNum) {
+    public static Optional<ParseResult> parse(Optional<String> rawJson) {
         String json = rawJson.orElse(null);
         if (json == null || json.isBlank()) {
             return Optional.empty();
@@ -115,7 +111,7 @@ public class BtrfsSnapshotUtils {
             return Optional.empty();
         }
 
-        Long activeSnapshot = activeSnapshotNum.orElse(null);
+        Long activeSnapshot = null;
         Long defaultSnapshot = null;
         List<Long> snapshotNumbers = new ArrayList<>();
         JsonArray details = new JsonArray();
@@ -126,7 +122,7 @@ public class BtrfsSnapshotUtils {
             }
             JsonObject snap = element.getAsJsonObject();
 
-            // Exclude in-progress transactional update overlay that is also flagged active —
+            // Exclude in-progress transactional update overlay that is also flagged active:
             // a temporary chroot mount that will be discarded and should not appear in the list.
             JsonElement userdata = snap.get("userdata");
             boolean inProgress = false;
@@ -156,6 +152,9 @@ public class BtrfsSnapshotUtils {
             if (isDefault) {
                 defaultSnapshot = num;
             }
+            if (activeSnapshot == null && isActiveInSnapper) {
+                activeSnapshot = num;
+            }
 
             JsonElement descEl = snap.get("description");
             JsonElement dateEl = snap.get("date");
@@ -163,10 +162,16 @@ public class BtrfsSnapshotUtils {
             entry.addProperty("number", num);
             entry.addProperty("active", activeSnapshot != null && activeSnapshot == num);
             entry.addProperty("default", isDefault);
+            addStringProperty(entry, snap, "type");
+            addLongProperty(entry, snap, "pre-number", "preNumber");
+            addStringProperty(entry, snap, "user");
+            addLongProperty(entry, snap, "used-space", "usedSpace");
+            addStringProperty(entry, snap, "cleanup");
             entry.addProperty("description",
                     descEl != null && descEl.isJsonPrimitive() ? descEl.getAsString() : "");
             entry.addProperty("date",
                     dateEl != null && dateEl.isJsonPrimitive() ? dateEl.getAsString() : "");
+            entry.addProperty("userdata", formatUserdata(userdata));
             details.add(entry);
         }
 
@@ -183,11 +188,9 @@ public class BtrfsSnapshotUtils {
      *
      * @param server            the minion server to update
      * @param rawJson           raw stdout from {@code snapper --json --no-dbus list}
-     * @param activeSnapshotNum real active snapshot number
      */
-    public static void updateSnapshotInfo(MinionServer server, Optional<String> rawJson,
-                                          Optional<Long> activeSnapshotNum) {
-        parse(rawJson, activeSnapshotNum).ifPresent(result -> {
+    public static void updateSnapshotInfo(MinionServer server, Optional<String> rawJson) {
+        parse(rawJson).ifPresent(result -> {
             server.setActiveSnapshot(result.getActiveSnapshot());
             server.setDefaultSnapshot(result.getDefaultSnapshot());
             server.setSnapshots(result.getSnapshotNumbers().toArray(Long[]::new));
@@ -197,5 +200,40 @@ public class BtrfsSnapshotUtils {
                     server.getMinionId(), result.getActiveSnapshot(),
                     result.getDefaultSnapshot(), result.getSnapshotNumbers());
         });
+    }
+
+    private static void addStringProperty(JsonObject target, JsonObject source, String property) {
+        JsonElement element = source.get(property);
+        target.addProperty(property, element != null && element.isJsonPrimitive() ? element.getAsString() : "");
+    }
+
+    private static void addLongProperty(JsonObject target, JsonObject source, String sourceProperty,
+                                        String targetProperty) {
+        JsonElement element = source.get(sourceProperty);
+        if (element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber()) {
+            target.addProperty(targetProperty, element.getAsLong());
+        }
+        else {
+            target.add(targetProperty, null);
+        }
+    }
+
+    private static String formatUserdata(JsonElement userdata) {
+        if (userdata == null || userdata.isJsonNull()) {
+            return "";
+        }
+        if (!userdata.isJsonObject()) {
+            return userdata.isJsonPrimitive() ? userdata.getAsString() : userdata.toString();
+        }
+        return userdata.getAsJsonObject().entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + formatUserdataValue(entry.getValue()))
+                .collect(Collectors.joining(", "));
+    }
+
+    private static String formatUserdataValue(JsonElement value) {
+        if (value == null || value.isJsonNull()) {
+            return "";
+        }
+        return value.isJsonPrimitive() ? value.getAsString() : value.toString();
     }
 }

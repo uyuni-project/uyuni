@@ -47,11 +47,23 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-SELECT '', '/manager/api/systems/:sid/details/snapshots/refresh', 'POST', 'W', TRUE
-WHERE NOT EXISTS (
-    SELECT 1 FROM access.endpoint
-    WHERE endpoint = '/manager/api/systems/:sid/details/snapshots/refresh' AND http_method = 'POST'
-);
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSnapshotInfo',
+            '/manager/api/system/getSnapshotInfo', 'GET', 'A', TRUE)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSnapshotRefresh',
+            '/manager/api/system/scheduleSnapshotRefresh', 'POST', 'A', TRUE)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.get_snapshot_info', 'R', 'Returns Btrfs snapshot information for a system.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.schedule_snapshot_refresh', 'W',
+            'Schedule a Btrfs snapshot information refresh for a system.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -61,6 +73,18 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.snapshots' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/manager/api/systems/:sid/details/snapshots/refresh' AND ep.http_method = 'POST'
+    WHERE ns.namespace = 'api.system.get_snapshot_info' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/system/getSnapshotInfo' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_snapshot_refresh' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleSnapshotRefresh' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace IN ('api.system.get_snapshot_info', 'api.system.schedule_snapshot_refresh')
+    ON CONFLICT (group_id, namespace_id) DO NOTHING;

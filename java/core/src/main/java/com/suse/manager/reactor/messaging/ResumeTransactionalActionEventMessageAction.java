@@ -68,7 +68,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
         }
 
         if (!TransactionalActionManager.hasAfterRebootState(action)) {
-            LOG.warn("Unable to resume action {}: action does not have an after reboot state",
+            LOG.warn("Unable to resume action {}: action does not have an after-reboot state",
                     message.getActionId());
             markResumeFailed(message);
             return;

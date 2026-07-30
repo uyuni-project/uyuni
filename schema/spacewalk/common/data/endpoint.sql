@@ -2469,9 +2469,6 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/manager/systems/details/snapshots', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/manager/api/systems/:sid/details/snapshots/refresh', 'POST', 'W', True)
-    ON CONFLICT (endpoint, http_method) DO NOTHING;
-INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/WorkWithGroup.do', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5552,6 +5549,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getScriptResults', '/manager/api/system/getScriptResults', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSnapshotInfo', '/manager/api/system/getSnapshotInfo', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSubscribedBaseChannel', '/manager/api/system/getSubscribedBaseChannel', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5775,6 +5775,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRun', '/manager/api/system/scheduleScriptRun', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSnapshotRefresh', '/manager/api/system/scheduleSnapshotRefresh', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSupportDataUpload', '/manager/api/system/scheduleSupportDataUpload', 'POST', 'A', True)

@@ -51,8 +51,6 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run";
     public static final String PKG_PROFILE_SNAPPER_LIST_SNAPSHOTS =
             SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS;
-    public static final String PKG_PROFILE_GET_ACTIVE_SNAPSHOT =
-            SnapshotRefreshSlsResult.GET_ACTIVE_SNAPSHOT;
 
     @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();
@@ -104,9 +102,6 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_SNAPPER_LIST_SNAPSHOTS)
     private Optional<StateApplyResult<CmdResult>> snapperSnapshots = Optional.empty();
-
-    @SerializedName(PKG_PROFILE_GET_ACTIVE_SNAPSHOT)
-    private Optional<StateApplyResult<CmdResult>> activeSnapshotResult = Optional.empty();
 
     /**
      * Gets the system uptime
@@ -226,24 +221,6 @@ public class PkgProfileUpdateSlsResult {
      */
     public StateApplyResult<CmdResult> getWhatProvidesSLLReleasePkg() {
         return whatProvidesSLLReleasePkg;
-    }
-
-    /**
-     * Get the active snapshot number from /proc/1/mountinfo, or empty if not a transactional system.
-     * @return optional active snapshot number
-     */
-    public Optional<Long> getActiveSnapshotNumber() {
-        return activeSnapshotResult
-                .map(r -> r.getChanges().getStdout())
-                .filter(out -> out != null && !out.isBlank())
-                .map(out -> {
-                    try {
-                        return Long.parseLong(out.trim());
-                    }
-                    catch (NumberFormatException e) {
-                        return null;
-                    }
-                });
     }
 
     /**

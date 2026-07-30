@@ -12,7 +12,6 @@ package com.suse.manager.reactor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.suse.manager.reactor.utils.BtrfsSnapshotUtils;
@@ -50,13 +49,20 @@ public class BtrfsSnapshotUtilsTest {
                   "number": 2,
                   "active": false,
                   "default": true,
+                  "type": "single",
+                  "pre-number": null,
                   "description": "after update",
                   "date": "2024-06-01 12:00:00",
-                  "userdata": {}
+                  "user": "root",
+                  "used-space": 12345678,
+                  "cleanup": "number",
+                  "userdata": {
+                    "important": "yes"
+                  }
                 },
                 {
                   "number": 3,
-                  "active": false,
+                  "active": true,
                   "default": false,
                   "description": "post-update",
                   "date": "2024-09-01 08:00:00",
@@ -71,7 +77,7 @@ public class BtrfsSnapshotUtilsTest {
               "root": [
                 {
                   "number": 1,
-                  "active": false,
+                  "active": true,
                   "default": true,
                   "description": "stable",
                   "date": "2024-01-01 10:00:00",
@@ -93,15 +99,14 @@ public class BtrfsSnapshotUtilsTest {
 
     @Test
     public void testParseEmptyRawJson() {
-        assertFalse(BtrfsSnapshotUtils.parse(Optional.empty(), Optional.empty()).isPresent());
-        assertFalse(BtrfsSnapshotUtils.parse(Optional.of(""), Optional.empty()).isPresent());
-        assertFalse(BtrfsSnapshotUtils.parse(Optional.of("  "), Optional.empty()).isPresent());
+        assertFalse(BtrfsSnapshotUtils.parse(Optional.empty()).isPresent());
+        assertFalse(BtrfsSnapshotUtils.parse(Optional.of("")).isPresent());
+        assertFalse(BtrfsSnapshotUtils.parse(Optional.of("  ")).isPresent());
     }
 
     @Test
     public void testParseTypicalOutput() {
-        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(
-                Optional.of(SNAPPER_JSON_TYPICAL), Optional.of(3L));
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_TYPICAL));
 
         assertTrue(result.isPresent());
         ParseResult r = result.get();
@@ -112,7 +117,7 @@ public class BtrfsSnapshotUtilsTest {
         assertTrue(r.getSnapshotNumbers().contains(2L));
         assertTrue(r.getSnapshotNumbers().contains(3L));
 
-        // Active is determined from /proc/1/mountinfo (passed in), not from snapper's flag.
+        // Active snapshot comes from snapper's "active": true flag.
         assertEquals(Long.valueOf(3), r.getActiveSnapshot());
 
         // Default snapshot comes from snapper's "default": true flag.
@@ -121,8 +126,7 @@ public class BtrfsSnapshotUtilsTest {
 
     @Test
     public void testParseSnapshotZeroExcluded() {
-        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(
-                Optional.of(SNAPPER_JSON_TYPICAL), Optional.empty());
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_TYPICAL));
 
         assertTrue(result.isPresent());
         assertFalse(result.get().getSnapshotNumbers().contains(0L),
@@ -133,8 +137,7 @@ public class BtrfsSnapshotUtilsTest {
     public void testParseInProgressOverlayExcluded() {
         // JSON has snapshots 1 and 2; snapshot 2 is the in-progress overlay (active=true +
         // transactional-update-in-progress=yes) and must be excluded.
-        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(
-                Optional.of(SNAPPER_JSON_WITH_IN_PROGRESS), Optional.of(1L));
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_WITH_IN_PROGRESS));
 
         assertTrue(result.isPresent());
         ParseResult r = result.get();
@@ -146,29 +149,25 @@ public class BtrfsSnapshotUtilsTest {
     }
 
     @Test
-    public void testParseNoActiveSnapshotNum() {
-        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(
-                Optional.of(SNAPPER_JSON_TYPICAL), Optional.empty());
-
-        assertTrue(result.isPresent());
-        // Active should be null when /proc/1/mountinfo did not yield a number.
-        assertNull(result.get().getActiveSnapshot());
-    }
-
-    @Test
     public void testDetailsJsonContainsExpectedFields() {
-        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(
-                Optional.of(SNAPPER_JSON_TYPICAL), Optional.of(2L));
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_TYPICAL));
 
         assertTrue(result.isPresent());
         String detailsJson = result.get().getDetailsJsonString();
 
-        // The active snapshot (2) should be flagged active in the JSON details.
         assertTrue(detailsJson.contains("\"number\":2"));
-        assertTrue(detailsJson.contains("\"active\":true"));
+        assertTrue(detailsJson.contains("\"active\":false"));
         assertTrue(detailsJson.contains("\"default\":true"));
+        assertTrue(detailsJson.contains("\"type\":\"single\""));
+        assertTrue(detailsJson.contains("\"preNumber\":null"));
+        assertTrue(detailsJson.contains("\"user\":\"root\""));
+        assertTrue(detailsJson.contains("\"usedSpace\":12345678"));
+        assertTrue(detailsJson.contains("\"cleanup\":\"number\""));
         assertTrue(detailsJson.contains("\"description\":\"after update\""));
         assertTrue(detailsJson.contains("\"date\":\"2024-06-01 12:00:00\""));
+        assertTrue(detailsJson.contains("\"userdata\":\"important=yes\""));
+        assertTrue(detailsJson.contains("\"number\":3"));
+        assertTrue(detailsJson.contains("\"active\":true"));
 
         // Snapshot 0 must not appear in details.
         assertFalse(detailsJson.contains("\"number\":0"));

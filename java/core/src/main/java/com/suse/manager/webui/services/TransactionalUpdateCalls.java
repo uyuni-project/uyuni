@@ -53,12 +53,28 @@ public class TransactionalUpdateCalls {
      */
     public static LocalCall<Map<String, State.ApplyResult>> apply(
             List<String> mods, Optional<Map<String, Object>> pillar) {
+        return apply(mods, pillar, Optional.empty(), Optional.empty());
+    }
+
+    /**
+     * Apply states using {@code transactional_update.apply}, optionally passing pillar data and execution flags.
+     *
+     * @param mods   list of SLS state names to apply (must not be null or empty)
+     * @param pillar optional pillar override map; use {@link Optional#empty()} to omit
+     * @param queue  optional queue flag
+     * @param test   optional test mode flag
+     * @return a {@link LocalCall} ready to be dispatched via the Salt API
+     */
+    public static LocalCall<Map<String, State.ApplyResult>> apply(
+            List<String> mods, Optional<Map<String, Object>> pillar, Optional<Boolean> queue, Optional<Boolean> test) {
         if (mods == null || mods.isEmpty()) {
             throw new IllegalArgumentException("At least one state must be specified");
         }
         Map<String, Object> kwargs = new LinkedHashMap<>();
         kwargs.put("mods", mods);
         pillar.ifPresent(p -> kwargs.put("pillar", p));
+        queue.ifPresent(q -> kwargs.put("queue", q));
+        test.ifPresent(t -> kwargs.put("test", t));
         return new LocalCall<>(APPLY_FUNCTION, Optional.empty(), Optional.of(kwargs),
                 new TypeToken<Map<String, State.ApplyResult>>() { });
     }

@@ -3943,11 +3943,6 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.snapshots' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/manager/api/systems/:sid/details/snapshots/refresh' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.groups.details' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/WorkWithGroup.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -8851,6 +8846,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.get_snapshot_info' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/system/getSnapshotInfo' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.get_subscribed_base_channel' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/system/getSubscribedBaseChannel' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -9223,6 +9223,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.schedule_script_run' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/scheduleScriptRun' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_snapshot_refresh' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleSnapshotRefresh' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

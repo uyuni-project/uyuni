@@ -152,7 +152,7 @@ public class SaltServerActionService {
             return Collections.emptyMap();
         }
 
-        return actionIn.getSaltCalls(minions);
+        return TransactionalActionManager.prepareSaltCallsForTransactionalMinions(actionIn.getSaltCalls(minions));
     }
 
     /**
@@ -235,6 +235,7 @@ public class SaltServerActionService {
                 stagingJobMinionServerId.flatMap(MinionServerFactory::lookupById)
                         .ifPresent(server -> targetMinions.add(new MinionSummary(server)));
                 call = actionIn.prepareStagingTargets(targetMinions);
+                call = TransactionalActionManager.prepareSaltCallForTransactionalMinions(call, targetMinions);
             }
             else {
                 targetMinions = entry.getValue();

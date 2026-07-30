@@ -60,8 +60,7 @@ public class SnapshotRefreshAction extends Action {
 
         serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
             SnapshotRefreshSlsResult result = Json.GSON.fromJson(jsonResult, SnapshotRefreshSlsResult.class);
-            BtrfsSnapshotUtils.updateSnapshotInfo(minionServer, result.getSnapperRawStdout(),
-                    result.getActiveSnapshotNumber());
+            BtrfsSnapshotUtils.updateSnapshotInfo(minionServer, result.getSnapperRawStdout());
             ServerFactory.save(minionServer);
         });
     }

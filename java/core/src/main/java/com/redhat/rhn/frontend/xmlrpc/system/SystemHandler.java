@@ -9328,29 +9328,33 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * Get Btrfs snapshot information for a transactional system.
-     * Returns the active (currently booted) snapshot number, the default (next-boot)
-     * snapshot number, and the full list of known snapshots with their details.
      *
      * @param loggedInUser the authenticated user
      * @param sid          the system ID
      * @return map with snapshot information
-     * @throws UnsupportedOperationException if the system is not a Salt minion or not a
-     *                                       transactional system
+     * @throws UnsupportedOperationException if the system is not a Salt minion or not a transactional system
      *
      * @apidoc.doc Get Btrfs snapshot information for a transactional system.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.returntype
      *   #struct_begin("snapshot info")
-     *     #prop_desc("int", "activeSnapshot", "Currently active (booted) snapshot number")
-     *     #prop_desc("int", "defaultSnapshot", "Default (next-boot) snapshot number")
+     *     #prop_desc("int", "activeSnapshot", "Currently active snapshot number")
+     *     #prop_desc("int", "defaultSnapshot", "Default next-boot snapshot number")
+     *     #prop_desc("date", "updated", "When snapshot information was last updated")
      *     #prop_desc("array", "snapshots", "All known snapshots")
      *       #struct_begin("snapshot")
      *         #prop_desc("int", "number", "Snapshot number")
-     *         #prop_desc("boolean", "active", "True if this is the currently booted snapshot")
-     *         #prop_desc("boolean", "default", "True if this is the next-boot snapshot")
-     *         #prop_desc("string", "description", "Snapshot description")
+     *         #prop_desc("boolean", "active", "True if this is the currently active snapshot")
+     *         #prop_desc("boolean", "default", "True if this is the default next-boot snapshot")
+     *         #prop_desc("string", "type", "Snapshot type")
+     *         #prop_desc("int", "preNumber", "Pre snapshot number")
      *         #prop_desc("string", "date", "Creation date")
+     *         #prop_desc("string", "user", "User that created the snapshot")
+     *         #prop_desc("int", "usedSpace", "Used space in bytes")
+     *         #prop_desc("string", "cleanup", "Cleanup algorithm")
+     *         #prop_desc("string", "description", "Snapshot description")
+     *         #prop_desc("string", "userdata", "Snapshot userdata")
      *       #struct_end()
      *     #prop_end()
      *   #struct_end()
@@ -9369,15 +9373,21 @@ public class SystemHandler extends BaseHandler {
         List<Map<String, Object>> snapshotList = new ArrayList<>();
         String detailsJson = minion.getSnapshotDetails();
         if (detailsJson != null && !detailsJson.isBlank()) {
-            JsonArray arr = JsonParser.parseString(detailsJson).getAsJsonArray();
-            for (JsonElement el : arr) {
-                JsonObject snap = el.getAsJsonObject();
+            JsonArray snapshots = JsonParser.parseString(detailsJson).getAsJsonArray();
+            for (JsonElement element : snapshots) {
+                JsonObject snapshot = element.getAsJsonObject();
                 Map<String, Object> entry = new LinkedHashMap<>();
-                entry.put("number", snap.get("number").getAsLong());
-                entry.put("active", snap.get("active").getAsBoolean());
-                entry.put("default", snap.get("default").getAsBoolean());
-                entry.put("description", snap.get("description").getAsString());
-                entry.put("date", snap.get("date").getAsString());
+                entry.put("number", getLong(snapshot, "number"));
+                entry.put("active", getBoolean(snapshot, "active"));
+                entry.put("default", getBoolean(snapshot, "default"));
+                entry.put("type", getString(snapshot, "type"));
+                entry.put("preNumber", getLong(snapshot, "preNumber"));
+                entry.put("date", getString(snapshot, "date"));
+                entry.put("user", getString(snapshot, "user"));
+                entry.put("usedSpace", getLong(snapshot, "usedSpace"));
+                entry.put("cleanup", getString(snapshot, "cleanup"));
+                entry.put("description", getString(snapshot, "description"));
+                entry.put("userdata", getString(snapshot, "userdata"));
                 snapshotList.add(entry);
             }
         }
@@ -9385,8 +9395,57 @@ public class SystemHandler extends BaseHandler {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("activeSnapshot", minion.getActiveSnapshot());
         result.put("defaultSnapshot", minion.getDefaultSnapshot());
+        result.put("updated", minion.getSnapshotUpdated());
         result.put("snapshots", snapshotList);
         return result;
+    }
+
+    /**
+     * Schedule a Btrfs snapshot refresh action for a transactional system.
+     *
+     * @param loggedInUser the authenticated user
+     * @param sid          the system ID
+     * @return scheduled action ID
+     * @throws UnsupportedOperationException if the system is not a Salt minion or not a transactional system
+     *
+     * @apidoc.doc Schedule a Btrfs snapshot refresh action for a transactional system.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled")
+     */
+    public Integer scheduleSnapshotRefresh(User loggedInUser, Integer sid) {
+        MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
+                .asMinionServer()
+                .orElseThrow(() -> new UnsupportedOperationException(
+                        "System " + sid + " is not a Salt minion"));
+        if (!minion.doesOsSupportsTransactionalUpdate()) {
+            throw new UnsupportedOperationException(
+                    "System " + sid + " is not a transactional system");
+        }
+
+        try {
+            Action action = ActionManager.scheduleSnapshotRefreshAction(loggedInUser, minion, new Date());
+            return action.getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    private static String getString(JsonObject object, String property) {
+        JsonElement element = object.get(property);
+        return element != null && element.isJsonPrimitive() ? element.getAsString() : "";
+    }
+
+    private static Long getLong(JsonObject object, String property) {
+        JsonElement element = object.get(property);
+        return element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber() ?
+                element.getAsLong() : null;
+    }
+
+    private static boolean getBoolean(JsonObject object, String property) {
+        JsonElement element = object.get(property);
+        return element != null && element.isJsonPrimitive() && element.getAsBoolean();
     }
 
 }

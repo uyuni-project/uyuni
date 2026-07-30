@@ -37,24 +37,11 @@ public class SnapshotRefreshSlsResultTest {
                       "stderr": ""
                     },
                     "comment": ""
-                  },
-                  "%s": {
-                    "name": "awk",
-                    "result": true,
-                    "changes": {
-                      "pid": 124,
-                      "retcode": 0,
-                      "stdout": "42\\n",
-                      "stderr": ""
-                    },
-                    "comment": ""
                   }
                 }
-                """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS,
-                SnapshotRefreshSlsResult.GET_ACTIVE_SNAPSHOT), SnapshotRefreshSlsResult.class);
+        """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS), SnapshotRefreshSlsResult.class);
 
         assertEquals("{\"root\":[{\"number\":7}]}", result.getSnapperRawStdout().orElseThrow());
-        assertEquals(42L, result.getActiveSnapshotNumber().orElseThrow());
     }
 
     @Test
@@ -66,18 +53,10 @@ public class SnapshotRefreshSlsResultTest {
                     "changes": {
                       "stdout": "   "
                     }
-                  },
-                  "%s": {
-                    "result": true,
-                    "changes": {
-                      "stdout": "not-a-number"
-                    }
                   }
                 }
-                """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS,
-                SnapshotRefreshSlsResult.GET_ACTIVE_SNAPSHOT), SnapshotRefreshSlsResult.class);
+                """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS), SnapshotRefreshSlsResult.class);
 
         assertFalse(result.getSnapperRawStdout().isPresent());
-        assertFalse(result.getActiveSnapshotNumber().isPresent());
     }
 }

@@ -2607,6 +2607,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.get_script_results', 'W', 'Fetch results from a script execution. Returns an empty array if no')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.get_snapshot_info', 'R', 'Returns Btrfs snapshot information for a system.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.get_subscribed_base_channel', 'R', 'Provides the base channel of a given system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -2833,6 +2836,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_script_run', 'W', 'Schedule a script to run.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.schedule_snapshot_refresh', 'W', 'Schedule a Btrfs snapshot information refresh for a system.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_support_data_upload', 'W', 'Schedule fetch and upload support data from a system to SCC')

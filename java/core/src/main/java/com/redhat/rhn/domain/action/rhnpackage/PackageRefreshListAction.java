@@ -253,7 +253,7 @@ public class PackageRefreshListAction extends PackageAction {
         }
 
         // Update Btrfs snapshot information for transactional systems.
-        BtrfsSnapshotUtils.updateSnapshotInfo(server, result.getSnapperRawStdout(), result.getActiveSnapshotNumber());
+        BtrfsSnapshotUtils.updateSnapshotInfo(server, result.getSnapperRawStdout());
 
         ServerFactory.save(server);
 

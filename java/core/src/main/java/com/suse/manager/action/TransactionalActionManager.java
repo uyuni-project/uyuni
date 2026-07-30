@@ -13,6 +13,7 @@ package com.suse.manager.action;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.partitioningBy;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
@@ -31,6 +32,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.TransactionalUpdateCalls;
+import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.utils.Xor;
@@ -41,16 +43,27 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
  * Manager for multi-step transactional actions.
  */
 public class TransactionalActionManager {
+
+    private static final List<String> DIRECT_CALL_EXECUTOR = List.of("direct_call");
+
+    private static final Set<String> CONFIGURABLE_CUSTOM_STATES = Set.of(
+            "custom",
+            "custom_groups",
+            "custom_org",
+            "recurring",
+            SaltParameters.REMOTE_COMMANDS);
 
     private TransactionalActionManager() {
     }
@@ -160,7 +173,7 @@ public class TransactionalActionManager {
         Optional<TransactionalStateDefinition> definition = findDefinitionByState(state);
         return definition.isPresent() ?
                 getTransactionalSaltCall(definition.get(), pillar) :
-                State.apply(List.of(state), pillar);
+                withDirectCallExecutor(State.apply(List.of(state), pillar));
     }
 
     /**
@@ -184,8 +197,87 @@ public class TransactionalActionManager {
         Optional<TransactionalStateDefinition> definition = findDefinitionByStates(states);
         LocalCall<Map<String, State.ApplyResult>> transactionalCall = definition.isPresent() ?
                 getTransactionalSaltCall(definition.get(), pillar) :
-                State.apply(states, pillar);
+                withDirectCallExecutor(State.apply(states, pillar));
         addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
+    }
+
+    /**
+     * Prepare Salt calls for transactional minions.
+     *
+     * <p>Transactional states are applied explicitly through {@code transactional_update.*}. Other calls targeting
+     * transactional minions use the direct executor so they run against the live system.</p>
+     *
+     * @param calls Salt calls mapped to target minions
+     * @return Salt calls with transactional minions split into direct-call targets when needed
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> prepareSaltCallsForTransactionalMinions(
+            Map<LocalCall<?>, List<MinionSummary>> calls) {
+        Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
+
+        calls.forEach((call, minions) -> {
+            Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minions.stream()
+                    .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+
+            addAnyCall(result, call, minionsByTransactionalUpdate.get(false));
+
+            LocalCall<?> transactionalCall = prepareSaltCallForTransactionalMinions(
+                    call, minionsByTransactionalUpdate.get(true));
+            addAnyCall(result, transactionalCall, minionsByTransactionalUpdate.get(true));
+        });
+
+        return result;
+    }
+
+    /**
+     * Prepare a Salt call for a transactional target.
+     *
+     * @param call Salt call
+     * @param minions target minions
+     * @return call using direct executor when at least one target is transactional and the call is not explicit
+     * transactional-update
+     */
+    public static LocalCall<?> prepareSaltCallForTransactionalMinions(
+            LocalCall<?> call, List<MinionSummary> minions) {
+        if (minions.stream().anyMatch(MinionSummary::isTransactionalUpdate) &&
+                shouldExecuteWithDirectCall(call)) {
+            return withDirectCallExecutor(call);
+        }
+        return call;
+    }
+
+    /**
+     * Add Salt calls for configurable custom states.
+     *
+     * <p>When {@code java.salt_custom_states_use_transactional_update} is enabled, transactional systems use
+     * {@code transactional_update.apply}. Otherwise they use {@code state.apply} through the direct executor.</p>
+     *
+     * @param calls destination map
+     * @param states states to apply
+     * @param pillar Salt pillar parameters
+     * @param queue optional queue flag
+     * @param test optional test flag
+     * @param minionSummaries target minions
+     */
+    public static void addCustomStateApplyCalls(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            List<String> states,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test,
+            List<MinionSummary> minionSummaries) {
+        Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minionSummaries.stream()
+                .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+        LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
+
+        if (!shouldUseTransactionalUpdateForCustomStates(states)) {
+            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+            addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
+            return;
+        }
+
+        addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+        addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
+                minionsByTransactionalUpdate.get(true));
     }
 
     /**
@@ -243,11 +335,11 @@ public class TransactionalActionManager {
             Action action, List<MinionSummary> minionSummaries) {
         return getAfterRebootDefinition(action)
                 .map(definition -> Map.of(
-                        State.apply(
+                        withDirectCallExecutor(State.apply(
                                 List.of(definition.afterRebootState().orElseThrow()),
                                 Optional.empty(),
                                 Optional.of(true),
-                                Optional.empty()),
+                                Optional.empty())),
                         minionSummaries));
     }
 
@@ -358,7 +450,7 @@ public class TransactionalActionManager {
         else if (!hasChanges(jsonResult)) {
             recordPrerequisitesApplied(minionServerId, actionId, false);
             MessageQueue.publish(new ResumeTransactionalActionEventMessage(actionId, minionServerId));
-            return "Prerequisite states already satisfied. After-reboot state scheduling requested.";
+            return "Prerequisite states already satisfied. After-reboot state requested.";
         }
         else {
             recordPrerequisitesApplied(minionServerId, actionId, true);
@@ -503,6 +595,12 @@ public class TransactionalActionManager {
                 .findFirst();
     }
 
+    private static boolean shouldUseTransactionalUpdateForCustomStates(List<String> states) {
+        return ConfigDefaults.get().isSaltCustomStatesUseTransactionalUpdate() &&
+                !states.isEmpty() &&
+                CONFIGURABLE_CUSTOM_STATES.containsAll(states);
+    }
+
     private static Optional<TransactionalStateDefinition> findDefinitionByAction(Action action) {
         if (action instanceof HardwareRefreshAction) {
             return Optional.of(TransactionalState.HARDWARE_PROFILE_UPDATE.getDefinition());
@@ -553,6 +651,27 @@ public class TransactionalActionManager {
         if (!minions.isEmpty()) {
             calls.put(call, minions);
         }
+    }
+
+    private static void addAnyCall(
+            Map<LocalCall<?>, List<MinionSummary>> calls,
+            LocalCall<?> call,
+            List<MinionSummary> minions) {
+        if (!minions.isEmpty()) {
+            calls.put(call, minions);
+        }
+    }
+
+    private static boolean shouldExecuteWithDirectCall(LocalCall<?> call) {
+        Map<String, Object> payload = call.getPayload();
+        String function = (String) payload.get("fun");
+        return function != null &&
+                !function.startsWith("transactional_update.") &&
+                !payload.containsKey("module_executors");
+    }
+
+    private static <T> LocalCall<T> withDirectCallExecutor(LocalCall<T> call) {
+        return new LocalCallWithExecutors<>(call, DIRECT_CALL_EXECUTOR, Map.of());
     }
 
     private static TransactionalStateDefinition prerequisiteThenState(
