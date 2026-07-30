@@ -76,7 +76,6 @@ from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
 
-
 # namespace prefix to parse patches.xml file
 PATCHES_XML = "{http://novell.com/package/metadata/suse/patches}"
 REPO_XML = "{http://linux.duke.edu/metadata/repo}"
@@ -613,7 +612,7 @@ class ContentSource:
 
         # keep authtokens for mirroring
         # pylint: disable-next=invalid-name,unused-variable
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        _scheme, _netloc, _path, query, _fragid = urlsplit(url)
         if query:
             self.authtoken = query
 
@@ -796,7 +795,7 @@ class ContentSource:
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
-                    (s, b, p, q, f, o) = urlparse(url)
+                    s, b, p, q, f, o = urlparse(url)
                     if p[-1] != "/":
                         p = p + "/"
                 # pylint: disable-next=unused-variable
@@ -881,6 +880,20 @@ class ContentSource:
             repo.baseurl = mirrorlist
         repo.urls = repo.baseurl
 
+        # If the repository provides a PQC (Post-Quantum Cryptography) signature
+        # for its metadata (a 'repomd.xml.p7s' file), instruct Zypper to validate
+        # the repository metadata using the PQC verification plugin.
+        pqc_sigcheck = ""
+        if self._has_pqc_signature():
+            pqc_sigcheck = "repo_sigcheck_plugin=pqcverification\n"
+            log(
+                0,
+                # pylint: disable-next=consider-using-f-string
+                "PQC signature (repomd.xml.p7s) found for repository '{}'. "
+                "Enabling 'repo_sigcheck_plugin=pqcverification' for metadata "
+                "validation.".format(self.channel_label or self.reponame),
+            )
+
         # Manually call Zypper
         repo_cfg = """[{reponame}]
 enabled=1
@@ -889,7 +902,7 @@ autorefresh=0
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
-"""
+{pqc_sigcheck}"""
         if uln_repo:
             # pylint: disable-next=invalid-name,consider-using-f-string
             _url = "plugin:spacewalk-uln-resolver?url={}".format(zypp_repo_url)
@@ -940,6 +953,7 @@ type=rpm-md
                     repo_url=_repo_url,
                     url=_url,
                     gpgcheck="0" if self.insecure else "1",
+                    pqc_sigcheck=pqc_sigcheck,
                 )
             )
         zypper_cmd = "zypper"
@@ -977,6 +991,29 @@ type=rpm-md
             )
 
         repo.is_configured = True
+
+    def _has_pqc_signature(self):
+        """
+        Check whether the repository provides a PQC (Post-Quantum Cryptography)
+        signature for its metadata.
+
+        This is determined by the presence of a 'repodata/repomd.xml.p7s' file
+        in the repository.
+
+        :returns: bool
+        """
+        try:
+            return self.get_file("repodata/repomd.xml.p7s") is not None
+        # pylint: disable-next=broad-exception-caught
+        except Exception as exc:
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "Could not check for PQC signature on repository {}: {}".format(
+                    self.name, exc
+                ),
+            )
+            return False
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
