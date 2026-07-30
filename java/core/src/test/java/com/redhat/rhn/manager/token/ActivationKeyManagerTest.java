@@ -60,7 +60,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDelete() {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.getActivationKeyAdmin());
         ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp = manager.lookupByKey(key.getKey(), user);
         assertNotNull(temp);
@@ -76,7 +76,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testDeployConfig() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getActivationKeyAdmin());
 
         //need a tools channel for config deploy
         Channel base = ChannelTestUtils.createBaseChannel(user);
@@ -94,7 +94,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testConfigPermissions() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getActivationKeyAdmin());
         ActivationKey key = createActivationKey();
 
         //need a tools channel for config deploy
@@ -115,7 +115,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testLookup() {
         //first lets just check on permissions...
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.getActivationKeyAdmin());
         final ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp;
         //we make newuser
@@ -185,7 +185,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreate() throws Exception {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.getActivationKeyAdmin());
         String note = "Test";
         final ActivationKey key = manager.createNewActivationKey(user, note);
         assertEquals(user.getOrg(), key.getOrg());
@@ -281,7 +281,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     public ActivationKey createActivationKey() {
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.getActivationKeyAdmin());
         return  manager.createNewActivationKey(user, TestUtils.randomString());
     }
 

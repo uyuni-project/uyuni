@@ -40,7 +40,7 @@ public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //give the user config admin status
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //create a global channel
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());

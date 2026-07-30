@@ -105,7 +105,7 @@ public class ImageStoreController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("is_admin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
+        data.put("is_admin", user.isMemberOf(AccessGroupFactory.getImageAdmin()));
         return new ModelAndView(data, "templates/content_management/list-stores.jade");
     }
 

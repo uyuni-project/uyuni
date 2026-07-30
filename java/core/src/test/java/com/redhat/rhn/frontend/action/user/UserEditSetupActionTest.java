@@ -51,7 +51,7 @@ public class UserEditSetupActionTest extends BaseTestCase {
         user.setTitle("Test title");
         // Lets add some roles
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        user.getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
+        user.getAccessGroups().addAll(AccessGroupFactory.getDefaultGroups());
 
         // Below we test to make sure that some of
         // the strings in the form are localized

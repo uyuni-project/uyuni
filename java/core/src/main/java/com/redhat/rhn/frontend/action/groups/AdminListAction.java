@@ -129,7 +129,7 @@ public class AdminListAction extends BaseListAction<UserOverview> {
             if (UserManager.hasRole(uo.getId(), RoleFactory.ORG_ADMIN)) {
                 uo.setDisabled(true);
             }
-            else if (UserManager.isMemberOf(uo.getId(), AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+            else if (UserManager.isMemberOf(uo.getId(), AccessGroupFactory.getSystemGroupAdmin())) {
                 uo.setLogin(uo.getLogin() + "*");
             }
         }

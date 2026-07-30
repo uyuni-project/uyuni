@@ -82,7 +82,7 @@ public class ConfigAclHandler extends BaseHandler {
         }
 
         if (cc.isGlobalChannel()) {
-            return user.isMemberOf(AccessGroupFactory.CONFIG_ADMIN);
+            return user.isMemberOf(AccessGroupFactory.getConfigAdmin());
         }
 
         //You have only gotton this far if you have access to the channel

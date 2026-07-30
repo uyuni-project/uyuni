@@ -26,8 +26,10 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import jakarta.persistence.Tuple;
 
@@ -38,15 +40,42 @@ public class AccessGroupFactory extends HibernateFactory {
 
     private static final AccessGroupFactory INSTANCE = new AccessGroupFactory();
     private static final Logger LOG = LogManager.getLogger(AccessGroupFactory.class);
+    private static final Map<String, Long> LABEL_TO_ID = new ConcurrentHashMap<>();
 
-    public static final AccessGroup CHANNEL_ADMIN = lookupDefault("channel_admin");
-    public static final AccessGroup CONFIG_ADMIN = lookupDefault("config_admin");
-    public static final AccessGroup SYSTEM_GROUP_ADMIN = lookupDefault("system_group_admin");
-    public static final AccessGroup ACTIVATION_KEY_ADMIN = lookupDefault("activation_key_admin");
-    public static final AccessGroup IMAGE_ADMIN = lookupDefault("image_admin");
-    public static final AccessGroup REGULAR_USER = lookupDefault("regular_user");
-    public static final Set<AccessGroup> DEFAULT_GROUPS =
-            Set.of(CHANNEL_ADMIN, CONFIG_ADMIN, SYSTEM_GROUP_ADMIN, ACTIVATION_KEY_ADMIN, IMAGE_ADMIN, REGULAR_USER);
+    public static AccessGroup getChannelAdmin() {
+        return lookupDefault("channel_admin");
+    }
+
+    public static AccessGroup getConfigAdmin() {
+        return lookupDefault("config_admin");
+    }
+
+    public static AccessGroup getSystemGroupAdmin() {
+        return lookupDefault("system_group_admin");
+    }
+
+    public static AccessGroup getActivationKeyAdmin() {
+        return lookupDefault("activation_key_admin");
+    }
+
+    public static AccessGroup getImageAdmin() {
+        return lookupDefault("image_admin");
+    }
+
+    public static AccessGroup getRegularUser() {
+        return lookupDefault("regular_user");
+    }
+
+    public static Set<AccessGroup> getDefaultGroups() {
+        return Set.of(
+            getChannelAdmin(),
+            getConfigAdmin(),
+            getSystemGroupAdmin(),
+            getActivationKeyAdmin(),
+            getImageAdmin(),
+            getRegularUser()
+        );
+    }
 
     private AccessGroupFactory() {
         super();
@@ -210,10 +239,23 @@ public class AccessGroupFactory extends HibernateFactory {
      * @return the access group
      */
     public static AccessGroup lookupDefault(String label) {
-        return getSession()
-                .createQuery("SELECT a FROM AccessGroup a WHERE a.label = :label AND a.org IS NULL",
-                        AccessGroup.class)
-                .setParameter("label", label)
-                .uniqueResult();
+        // Cache IDs to use Hibernate's L1 cache and avoid multiple queries in loops.
+        // L2 Cache (@Cacheable) is not used here because AccessGroup has an eager @ManyToMany
+        // relationship with Namespace, which would require cascading cache annotations.
+        // Also, since the DB can be modified by independent processes L2 cache could become outdated,
+        // causing "ghost" permissions in Tomcat.
+        Long id = LABEL_TO_ID.computeIfAbsent(label, l ->
+            Optional.ofNullable(getSession()
+                    .createQuery("SELECT a FROM AccessGroup a WHERE a.label = :label AND a.org IS NULL",
+                            AccessGroup.class)
+                    .setParameter("label", l)
+                    .uniqueResult())
+                    .map(AccessGroup::getId)
+                    .orElse(null)
+        );
+
+        return Optional.ofNullable(id)
+                       .map(i -> getSession().find(AccessGroup.class, i))
+                       .orElse(null);
     }
 }

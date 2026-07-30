@@ -188,7 +188,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new PaygAuthenticationUpdateFailed(instance.getHost(), instance.getId()));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Set.of(AccessGroupFactory.CHANNEL_ADMIN), Optional.empty());
+                    Set.of(AccessGroupFactory.getChannelAdmin()), Optional.empty());
             // was in error state before. At least second time failed to get the data
             // invalidate existing credentials
             paygDataProcessor.invalidateCredentials(instance);

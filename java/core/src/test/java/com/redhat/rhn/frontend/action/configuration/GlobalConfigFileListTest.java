@@ -32,7 +32,7 @@ public class GlobalConfigFileListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //Make a file to appear in the list.
         ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());

@@ -41,7 +41,7 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testList() {
-        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
+        user.addToGroup(AccessGroupFactory.getConfigAdmin());
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
         List<CobblerSnippet> snips =
             CobblerSnippetLister.getInstance().list(user);

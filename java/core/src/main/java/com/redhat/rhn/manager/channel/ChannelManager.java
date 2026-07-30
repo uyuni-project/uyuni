@@ -2422,7 +2422,7 @@ public class ChannelManager extends BaseManager {
      */
     public static void removeErrata(Channel chan, Set<Long> errataIds, User user) {
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         List<Long> ids = new ArrayList<>(errataIds);
@@ -2486,8 +2486,8 @@ public class ChannelManager extends BaseManager {
      * @return list of errataOverview objects that need to be resynced
      */
     public static List<ErrataOverview> listErrataNeedingResync(Channel c, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         if (c.isCloned()) {
@@ -2508,8 +2508,8 @@ public class ChannelManager extends BaseManager {
      * @return the list of PackageOverview objects
      */
     public static List<PackageOverview> listErrataPackagesForResync(Channel c, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         if (c.isCloned()) {
@@ -2532,8 +2532,8 @@ public class ChannelManager extends BaseManager {
      */
     public static List<PackageOverview> listErrataPackagesForResync(Channel c, User user,
             String setLabel) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         if (c.isCloned()) {

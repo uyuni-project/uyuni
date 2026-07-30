@@ -117,7 +117,7 @@ public class ImageProfileController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("isAdmin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
+        data.put("isAdmin", user.isMemberOf(AccessGroupFactory.getImageAdmin()));
         return new ModelAndView(data, "templates/content_management/list-profiles.jade");
     }
 

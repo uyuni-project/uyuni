@@ -331,11 +331,11 @@ public class UserTestUtils {
 
             if (orgAdmin) {
                 user.getAccessGroups().addAll(List.of(
-                        AccessGroupFactory.CHANNEL_ADMIN,
-                        AccessGroupFactory.SYSTEM_GROUP_ADMIN,
-                        AccessGroupFactory.IMAGE_ADMIN,
-                        AccessGroupFactory.ACTIVATION_KEY_ADMIN,
-                        AccessGroupFactory.CONFIG_ADMIN)
+                        AccessGroupFactory.getChannelAdmin(),
+                        AccessGroupFactory.getSystemGroupAdmin(),
+                        AccessGroupFactory.getImageAdmin(),
+                        AccessGroupFactory.getActivationKeyAdmin(),
+                        AccessGroupFactory.getConfigAdmin())
                 );
                 user.addPermanentRole(RoleFactory.ORG_ADMIN);
             }

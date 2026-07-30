@@ -107,7 +107,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         assertNotNull(result);
         assertEquals(0, result.length);
 
-        regular.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        regular.addToGroup(AccessGroupFactory.getChannelAdmin());
 
         result = handler.listManageableChannels(regular);
         assertNotNull(result);
@@ -125,7 +125,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         }
         assertTrue(foundChannel);
 
-        regular.removeFromGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.getChannelAdmin());
     }
 
     @Test

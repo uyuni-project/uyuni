@@ -170,7 +170,7 @@ public class CreateUserCommand {
         }
 
         // Add default RBAC role
-        user.addToGroup(AccessGroupFactory.REGULAR_USER);
+        user.addToGroup(AccessGroupFactory.getRegularUser());
         UserManager.storeUser(user); //save the user via hibernate
     }
 

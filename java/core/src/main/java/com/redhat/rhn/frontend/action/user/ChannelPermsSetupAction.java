@@ -71,7 +71,7 @@ public class ChannelPermsSetupAction extends RhnListAction {
         request.setAttribute("user", user);
         request.setAttribute("role", "subscribe");
         request.setAttribute("userIsChannelAdmin",
-                user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN));
+                user.isMemberOf(AccessGroupFactory.getChannelAdmin()));
         form.set("selectedChannels", dr.stream()
                 .filter(ChannelPerms::isHasPerm)
                 .map(p -> String.valueOf(p.getId())).toArray(String[]::new));

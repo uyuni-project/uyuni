@@ -424,7 +424,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkApilistAllPeripheralChannels() throws Exception {
         String apiUnderTest = "/hub/listAllPeripheralChannels";
 
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        user.addToGroup(AccessGroupFactory.getChannelAdmin());
         Channel testBaseChannel = ChannelTestUtils.createBaseChannel(user);
         Channel testChildChannel = ChannelTestUtils.createChildChannel(user, testBaseChannel);
 

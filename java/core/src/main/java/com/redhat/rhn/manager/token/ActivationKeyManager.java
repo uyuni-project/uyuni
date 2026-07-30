@@ -197,7 +197,7 @@ public class ActivationKeyManager {
     public ActivationKey createNewActivationKey(User user,
             String key, String note, Long usageLimit, Channel baseChannel,
             boolean universalDefault) {
-        if (user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN)) {
+        if (user.isMemberOf(AccessGroupFactory.getActivationKeyAdmin())) {
             return ActivationKeyFactory.createNewKey(user, null, key,
                     note, usageLimit, baseChannel, universalDefault);
         }
@@ -361,7 +361,7 @@ public class ActivationKeyManager {
     private boolean canAdministerKeys(User user, ActivationKey key) {
         return user != null && key != null &&
                  user.getOrg().equals(key.getOrg()) &&
-                    user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+                    user.isMemberOf(AccessGroupFactory.getActivationKeyAdmin());
     }
 
     /**

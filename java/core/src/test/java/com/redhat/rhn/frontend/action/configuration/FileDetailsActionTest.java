@@ -31,7 +31,7 @@ public class FileDetailsActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
 

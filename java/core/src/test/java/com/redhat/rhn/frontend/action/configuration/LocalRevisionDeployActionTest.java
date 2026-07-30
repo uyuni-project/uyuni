@@ -35,7 +35,7 @@ public class LocalRevisionDeployActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         cc.setConfigChannelType(ConfigChannelType.local());

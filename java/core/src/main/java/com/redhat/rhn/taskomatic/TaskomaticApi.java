@@ -320,8 +320,8 @@ public class TaskomaticApi {
      * @throws PermissionException if there was an error
      */
     private void ensureChannelAdminRole(User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
     }
 

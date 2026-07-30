@@ -72,7 +72,7 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-              throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+              throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
         if (chan.getOrg() == null) {
             throw new PermissionCheckFailureException();

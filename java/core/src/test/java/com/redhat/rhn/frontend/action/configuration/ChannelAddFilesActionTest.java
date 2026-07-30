@@ -31,7 +31,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testUpload() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
@@ -44,7 +44,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testImport() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 
@@ -57,7 +57,7 @@ public class ChannelAddFilesActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testCreate() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
 

@@ -109,7 +109,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.CHANNEL_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.getChannelAdmin()));
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -154,7 +154,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create a notification
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.CHANNEL_ADMIN));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.getChannelAdmin()));
 
         msg = TestUtils.reload(msg);
 
