@@ -39,7 +39,8 @@
         "sonarsource.sonarlint-vscode",
         "ian-h-chamberlain.rpm-specfile",
         "lslezak.rpm-changes",
-        "CucumberOpen.cucumber-official"
+        "CucumberOpen.cucumber-official",
+        "shopify.ruby-lsp"
       ]
     }
   },
