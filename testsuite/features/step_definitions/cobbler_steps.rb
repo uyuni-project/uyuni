@@ -2,8 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning Cobbler.
-
-$cobbler_test = CobblerTest.new
+$cobbler_test = CobblerTest.new unless get_target('server').run_local('[[ "${UYUNI_NOT_INSTALLED:-}" == "true" ]]', check_errors: false).last.zero?
 
 # cobbler daemon
 Given(/^cobblerd is running$/) do

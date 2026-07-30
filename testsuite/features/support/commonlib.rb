@@ -49,6 +49,7 @@ end
 # @return [String] The product name.
 def product
   return $product unless $product.nil?
+  return if get_target('server').run_local('[[ "${UYUNI_NOT_INSTALLED:-}" == "true" ]]', check_errors: false).last.zero?
 
   patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
   server = get_target('server')
