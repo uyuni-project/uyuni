@@ -65,7 +65,7 @@
     <hr />
     <rhn:hidden name="schedule_type" value="date" />
     <div class="form-horizontal">
-      <div class="form-group">
+      <div class="row">
         <label class="col-sm-3 control-label"><bean:message key="confirm.jsp.than"/></label>
         <div class="col-sm-9 col-lg-4">
           <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">

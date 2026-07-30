@@ -46,7 +46,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
         <>
           <p>{this.props.error.message}</p>
           {this.props.error.standardOutput && (
-            <div className="form-group">
+            <div className="row">
               <label className="control-label" htmlFor="stdout">
                 {t("Standard Output:")}
               </label>
@@ -62,7 +62,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
             </div>
           )}
           {this.props.error.standardError && (
-            <div className="form-group">
+            <div className="row">
               <label className="control-label" htmlFor="stderr">
                 {t("Standard Error:")}
               </label>
@@ -78,7 +78,7 @@ class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
             </div>
           )}
           {this.props.error.result && (
-            <div className="form-group">
+            <div className="row">
               <label className="control-label" htmlFor="result">
                 {t("Result:")}
               </label>
@@ -423,7 +423,7 @@ class BootstrapMinions extends Component<Props, State> {
     const authenticationData = (
       <>
         {this.state.authMethod === AuthMethod.Password && (
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Password")}:</label>
             <div className="col-md-6">
               <input
@@ -440,7 +440,7 @@ class BootstrapMinions extends Component<Props, State> {
         )}
         {this.state.authMethod === AuthMethod.SshKey && (
           <div>
-            <div className="form-group">
+            <div className="row">
               <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
               <div className="col-md-6">
                 <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged} />
@@ -452,7 +452,7 @@ class BootstrapMinions extends Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className="form-group">
+            <div className="row">
               <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
               <div className="col-md-6">
                 <input
@@ -482,7 +482,7 @@ class BootstrapMinions extends Component<Props, State> {
         <Messages items={alertMessages} />
         <ErrorDetailsDialog error={this.state.errorDetails} onDialogClose={this.closeErrorDetailsDialog} />
         <div className="form-horizontal">
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Host")}:</label>
             <div className="col-md-6">
               <input
@@ -495,7 +495,7 @@ class BootstrapMinions extends Component<Props, State> {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("SSH Port")}:</label>
             <div className="col-md-6">
               <input
@@ -511,7 +511,7 @@ class BootstrapMinions extends Component<Props, State> {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("User")}:</label>
             <div className="col-md-6">
               <input
@@ -534,7 +534,7 @@ class BootstrapMinions extends Component<Props, State> {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Authentication Method")}:</label>
 
             <div className="col-md-6">
@@ -580,7 +580,7 @@ class BootstrapMinions extends Component<Props, State> {
           </div>
           {authenticationData}
 
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Activation Key")}:</label>
             <div className="col-md-6">
               <select
@@ -602,7 +602,7 @@ class BootstrapMinions extends Component<Props, State> {
               </select>
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Reactivation Key")}:</label>
             <div className="col-md-6">
               <input
@@ -615,7 +615,7 @@ class BootstrapMinions extends Component<Props, State> {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label">{t("Proxy")}:</label>
             <div className="col-md-6">
               <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
@@ -644,7 +644,7 @@ class BootstrapMinions extends Component<Props, State> {
               </div>
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <div className="col-md-3"></div>
             <div className="col-md-6">
               <div className="checkbox">
@@ -660,7 +660,7 @@ class BootstrapMinions extends Component<Props, State> {
               </div>
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <div className="col-md-3"></div>
             <div className="col-md-6">
               <div className="checkbox">
@@ -676,7 +676,7 @@ class BootstrapMinions extends Component<Props, State> {
               </div>
             </div>
           </div>
-          <div className="form-group">
+          <div className="row">
             <div className="col-md-offset-3 offset-md-3 col-md-6">{buttons}</div>
           </div>
         </div>

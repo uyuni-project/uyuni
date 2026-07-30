@@ -24,7 +24,7 @@
 <bean:message key="kickstart.session_status.jsp.summary2"/>
 </p>
 
-<div class="row-0">
+<div class="row">
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">

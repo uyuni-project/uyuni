@@ -21,7 +21,7 @@
         <h2><bean:message key="extgroup.jsp.header"/></h2>
       </div>
       <div class="panel-body">
-        <div class="form-group">
+        <div class="row">
           <label class="col-lg-3 control-label">
             <bean:message key="extgrouplist.jsp.name"/>
           </label>
@@ -29,7 +29,7 @@
             <c:out value="${group.label}" />
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <label class="col-lg-3 control-label">
             <bean:message key="userdetails.jsp.roles"/>
           </label>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="row">
       <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
         <html:submit styleClass="btn btn-default"><bean:message key="extgroup.jsp.delete"/></html:submit>
         <html:hidden property="gid" value="${gid}" />

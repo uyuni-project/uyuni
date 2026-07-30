@@ -353,7 +353,7 @@ class VirtualHostManagerEdit extends Component<Props, State> {
         <input type="hidden" name="module" value={this.props.type.toLowerCase()} />
         {this.state.model.id ? <input type="hidden" name="id" value={this.state.model.id} /> : null}
         {this.props.type ? this.renderForm() : null}
-        <div className="form-group">
+        <div className="row">
           <div className="col-md-offset-3 offset-md-3 col-md-6">{this.renderButtons()}</div>
         </div>
       </Form>

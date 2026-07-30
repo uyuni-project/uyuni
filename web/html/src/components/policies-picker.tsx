@@ -128,7 +128,7 @@ export const PoliciesPicker = ({
               />
             </td>
             <td>
-              <div className="form-group">
+              <div className="row">
                 <input
                   id={`${policy.id}-radio`}
                   type="radio"

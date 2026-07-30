@@ -31,7 +31,7 @@
         </div>
     </div>
 
-  <div class="row-0">
+  <div class="row">
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -39,28 +39,28 @@
         </div>
         <div class="panel-body">
           <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
               <label class="col-md-6">
                 <rhn:icon type="errata-bugfix"/>
                 <bean:message key="erratalist.jsp.bugadvisory"/>:
               </label>
               <div class="col-md-3">${bug_count}</div>
             </div>
-            <div class="form-group">
+            <div class="row">
               <label class="col-md-6">
                 <rhn:icon type="errata-enhance"/>
                 <bean:message key="erratalist.jsp.productenhancementadvisory"/>:
               </label>
               <div class="col-md-3">${enhance_count}</div>
             </div>
-            <div class="form-group">
+            <div class="row">
               <label class="col-md-6">
                 <rhn:icon type="errata-security"/>
                 <bean:message key="erratalist.jsp.securityadvisory"/>:
               </label>
               <div class="col-md-3">${secure_count}</div>
             </div>
-            <div class="form-group">
+            <div class="row">
               <label class="col-md-6"><bean:message key="channel.manage.errata.confirm.totalerrata"/>:</label>
               <div class="col-md-3">${bug_count + enhance_count + secure_count}</div>
             </div>
@@ -77,12 +77,12 @@
         <div class="panel-body">
           <div class="form-horizontal">
             <c:forEach var="option" items="${arch_count}">
-              <div class="form-group">
+              <div class="row">
                 <label class="col-md-6">${option.name}</label>
                 <div class="col-md-3">${option.size}</div>
               </div>
             </c:forEach>
-            <div class="form-group">
+            <div class="row">
               <label class="col-md-6">
                 <bean:message key="channel.manage.errata.confirm.totalpackages"/>:
               </label>

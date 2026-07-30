@@ -35,13 +35,13 @@
             <html:form method="post" action="/users/ExtAuthSgDetails.do?gid=${gid}" styleClass="form-horizontal">
                 <rhn:submitted/>
                 <rhn:csrf />
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label"><bean:message key="extgrouplist.jsp.name"/>:</label>
                        <div class="col-lg-6">
                           <input type="text" class="form-control" name="extGroupLabel" value="${group.label}" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label"><bean:message key="System Groups"/>:</label>
                        <div class="col-lg-6">
                             <c:forEach items="${extOrgGroupForm.map.sgs}" var="sg">
@@ -54,7 +54,7 @@
                             </c:forEach>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button type="submit" class="btn btn-primary">
                             <c:choose>

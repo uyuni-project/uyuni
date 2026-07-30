@@ -29,7 +29,7 @@
         </jsp:include>
 
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.jsp.package.synclabel"/>
                 </label>

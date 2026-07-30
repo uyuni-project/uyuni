@@ -403,7 +403,7 @@ When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of zone with local n
 end
 
 When(/^I press "Remove Item" in (.*) CNAME of (.*) zone section$/) do |alias_name, zone|
-  cname_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//input[@name='Alias' and @value='#{alias_name}']/ancestor::div[@class='form-group']"
+  cname_xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//input[@name='Alias' and @value='#{alias_name}']/ancestor::div[@class='row']"
   find(:xpath, "#{cname_xpath}/button").click
 end
 

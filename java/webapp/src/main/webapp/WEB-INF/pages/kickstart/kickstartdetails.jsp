@@ -20,7 +20,7 @@
                     <rhn:csrf />
                     <html:hidden property="ksid" value="${ksdata.id}"/>
                     <html:hidden property="submitted" value="true"/>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <rhn:required-field key="kickstartdetails.jsp.label"/>:
                             </label>
@@ -31,7 +31,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="kickstartdetails.jsp.install_type" />
                             </label>
@@ -45,7 +45,7 @@
                         
                         <%@ include file="/WEB-INF/pages/common/fragments/kickstart/virtoptions.jspf" %>
                         
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
@@ -58,7 +58,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
@@ -71,7 +71,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <div class="checkbox">
                                     <label class="control-label">
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="kickstartdetails.jsp.kernel_options"/>
                             </label>
@@ -118,7 +118,7 @@
                                 <html:text property="kernel_options" maxlength="2048" size="32" styleClass="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="kickstartdetails.jsp.post_kernel_options"/>
                             </label>
@@ -126,7 +126,7 @@
                                 <html:text property="post_kernel_options" maxlength="2048" size="32" styleClass="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="kickstartdetails.jsp.comments"/>
                             </label>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="row">
                              <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                                 <html:submit styleClass="btn btn-primary">
                                     <bean:message key="kickstartdetails.jsp.updatekickstart"/>

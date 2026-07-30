@@ -23,7 +23,7 @@
 
             <%-- When maintenance windows are present, we display the maintenance windows picker --%>
             <c:when test="${maintenanceWindows != null}">
-                <div class="form-group">
+                <div class="row">
                     <div class="col-sm-3 control-label">
                         <input type="radio" checked name="schedule_type" value="maintenance_window" />
                         <label for="schedule-by-maintenance-window"><bean:message key="schedule.jsp.maint-window"/></label>
@@ -34,7 +34,7 @@
 
             <%-- Otherwise, we display the date picker --%>
             <c:otherwise>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-sm-3 control-label">
                         <input type="radio" name="schedule_type" value="date" id="schedule-by-date"
                                ${maintenanceWindows == null ? "checked" : "disabled"} />
@@ -48,7 +48,7 @@
                 </div>
             </c:otherwise>
         </c:choose>
-        <div class="form-group">
+        <div class="row">
             <div class="col-sm-3 control-label">
                 <input type="radio" name="schedule_type" value="action_chain" id="schedule-by-action-chain"
                     ${maintenanceWindowsMultiSchedules or maintenanceWindowsEmpty ? "checked" : ""}

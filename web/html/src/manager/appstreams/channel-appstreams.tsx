@@ -49,7 +49,7 @@ export const ChannelAppStreams = ({
               </Button>
             </td>
             <td>
-              <div className="form-group">
+              <div className="row">
                 <input
                   id={stream + "-cbox"}
                   type="checkbox"

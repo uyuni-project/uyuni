@@ -13,13 +13,13 @@
             <rhn:csrf />
             <p><bean:message key="activation-key.packages.jsp.summary"/></p>
             <h3><bean:message key="activation-key.packages.jsp.enter-names"/></h3>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-sm-6">
                     <html:textarea styleClass="form-control"
                                    property="packages" rows="8" cols="64" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-sm-6 text-right">
                     <rhn:submitted/>
                     <button class="btn btn-primary" type="submit" name ="dispatch">

@@ -81,7 +81,7 @@
                 <bean:message key="channel.edit.jsp.introparagraph"/>
             </div>
             <c:if test="${not empty clone_type}">
-                <div class="form-group">
+                <div class="row">
                     <label for="original_name" class="col-lg-3 control-label">
                         <bean:message key="channel.clone.clonefrom"/>:
                     </label>
@@ -89,7 +89,7 @@
                         <c:out value="${original_name}"/>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label for="clone_type" class="col-lg-3 control-label">
                         <bean:message key="channel.clone.clonetype"/>:
                     </label>
@@ -111,7 +111,7 @@
                 <html:hidden property="original_id" value="${original_id}" />
                 <html:hidden property="clone_type" value="${clone_type}" />
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <label for="name" class="col-lg-3 control-label">
                     <rhn:required-field key="channel.edit.jsp.name"/>:
                 </label>
@@ -121,7 +121,7 @@
                                size="48" styleId="name"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="label" class="col-lg-3 control-label">
                     <rhn:required-field key="channel.edit.jsp.label"/>:
                 </label>
@@ -141,7 +141,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="parent" class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.parent"/>:
                 </label>
@@ -165,7 +165,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="parentarch" class="col-lg-3 control-label">
                     <bean:message key="packagelist.jsp.packagearch"/>:
                 </label>
@@ -191,7 +191,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="checksum">
                     <bean:message key="channel.edit.jsp.checksum"/>:
                 </label>
@@ -208,7 +208,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="summary" class="col-lg-3 control-label">
                     <rhn:required-field key="channel.edit.jsp.summary"/>:
                 </label>
@@ -219,7 +219,7 @@
                                styleId="summary" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="description" class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.description"/>:
                 </label>
@@ -230,7 +230,7 @@
                 </div>
             </div>
             <c:if test='${not empty param.cid}'>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="channel.edit.jsp.lastsynced"/>:
                     </label>
@@ -247,7 +247,7 @@
                 </div>
             </c:if>
             <h2><bean:message key="channel.edit.jsp.contactsupportinfo"/></h2>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="maintainer_name">
                     <bean:message key="channel.edit.jsp.maintainername"/>:
                 </label>
@@ -258,7 +258,7 @@
                                styleId="maintainer_name"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.maintainercontactinfo"/>:
                 </label>
@@ -271,7 +271,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="input-group">
                         <span class="input-group-addon input-group-text"><bean:message key="channel.edit.jsp.phonenumber"/>:</span>
@@ -281,7 +281,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="support_policy">
                     <bean:message key="channel.edit.jsp.supportpolicy"/>:
                 </label>
@@ -293,7 +293,7 @@
                 </div>
             </div>
             <h2><bean:message key="channel.edit.jsp.channelaccesscontrol"/></h2>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.perusersub"/>:
                 </label>
@@ -306,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
@@ -316,7 +316,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.orgsharing"/>:
                 </label>
@@ -330,7 +330,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
@@ -341,7 +341,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <div class="radio">
                         <label>
@@ -353,7 +353,7 @@
                 </div>
             </div>
             <h2><bean:message key="channel.edit.jsp.security.gpg"/></h2>
-            <div class="form-group">
+            <div class="row">
                 <label for="gpgkeyurl" class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.gpgkeyurl"/>:
                 </label>
@@ -363,7 +363,7 @@
                                styleId="gpgkeyurl"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="gpgkeyid" class="col-lg-3 control-label">
                     <bean:message key="channel.edit.jsp.gpgkeyid"/>:
                 </label>
@@ -375,7 +375,7 @@
                     <span class="help-block">Example: DB42A60E</span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="gpgkeyfingerprint">
                     <bean:message key="channel.edit.jsp.gpgkeyfingerprint"/>:
                 </label>
@@ -387,7 +387,7 @@
                     <span class="help-block">Example: CA20 8686 2BD6 9DFC 65F6  ECC4 2191 80CD DB42 A60E</span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="channel.jsp.gpgcheck"/>
                 </label>
@@ -402,7 +402,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test="${not empty clone_type}">

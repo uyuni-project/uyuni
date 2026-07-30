@@ -74,7 +74,7 @@ const DictionaryEditor = (props: FieldInputProps<PlainObject> & { edit?: boolean
             <div className="col-md-4 control-label">
               <label>{t("Name")}</label>
             </div>
-            <div className="col-md-8 form-group">
+            <div className="col-md-8 row">
               <input
                 className="form-control"
                 placeholder="Name"
@@ -92,7 +92,7 @@ const DictionaryEditor = (props: FieldInputProps<PlainObject> & { edit?: boolean
         <div className="col-md-4 control-label">
           <label>{t("Key-Value Pairs")}</label>
         </div>
-        <div className="col-md-8 form-group">
+        <div className="col-md-8 row">
           {entries.map((entry, idx) => (
             <div className="d-flex gap-3 p-0 m-0 mb-3" key={`entries-${idx}`}>
               <div className="w-50">

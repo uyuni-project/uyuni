@@ -30,7 +30,7 @@
         <html:form action="/channels/manage/Clone" styleClass="form-horizontal">
             <rhn:csrf />
             <rhn:submitted />
-            <div class="form-group">
+            <div class="row">
                 <label for="original_id" class="col-lg-3 control-label">
                     <bean:message key="channel.clone.clonefrom"/>:
                 </label>
@@ -44,7 +44,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="clone_type" class="col-lg-3 control-label">
                     <bean:message key="channel.clone.clone"/>:
                 </label>

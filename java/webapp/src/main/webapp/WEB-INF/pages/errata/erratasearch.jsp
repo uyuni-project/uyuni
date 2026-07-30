@@ -49,7 +49,7 @@
               </label>
             </td>
              <td>
-              <div class="row-0">
+              <div class="row">
                 <div class="col-md-5">
                   <html:text property="search_string" styleClass="form-control input-sm" name="search_string"
                      value="${search_string}" maxlength="36" accesskey="4"/>
@@ -67,7 +67,7 @@
               </label>
             </td>
              <td>
-                <div class="row-0">
+                <div class="row">
                   <div class="col-md-5">
                     <html:select property="view_mode" styleClass="form-control input-sm">
                         <html:options collection="searchOptions"

@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.path" />
                 </label>
@@ -15,7 +15,7 @@
             </div>
             <c:choose>
             <c:when test="${revision.symlink}">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.targetpath" />
                 </label>
@@ -25,13 +25,13 @@
             </div>
             </c:when>
             <c:otherwise>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.ownership" />
                 </label>
                 <div class="col-md-9">
                     <div class="form-horizontal">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-md-3"><bean:message key="filedetails.properties.jspf.uid" /></label>
                             <div class="col-md-9 col-lg-6">
                                 <rhn:require acl="config_channel_editable(${channel.id})"
@@ -44,7 +44,7 @@
                                 </rhn:require>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-md-3">
                                 <bean:message key="filedetails.properties.jspf.gid" />
                             </label>
@@ -63,7 +63,7 @@
                     <span class="help-block"><bean:message key="filedetails.jsp.tip.ownership" /></span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.permissions" />
                 </label>
@@ -78,14 +78,14 @@
                     </rhn:require>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-md-offset-3 offset-md-3 col-md-9">
                     <span class="help-block"><bean:message key="filedetails.jsp.tip.permissions" /></span>
                 </div>
             </div>
             </c:otherwise>
             </c:choose>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     SELinux context
                 </label>

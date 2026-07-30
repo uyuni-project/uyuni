@@ -20,7 +20,7 @@
                            styleClass="form-horizontal"
                            method="post">
                     <rhn:csrf />
-                    <div class="form-group">
+                    <div class="row">
                         <label for="admin_email" class="col-lg-3 control-label">
                             <rhn:required-field key="general.jsp.admin_email"/>
                         </label>
@@ -30,7 +30,7 @@
                                        size="32" styleId="admin_email" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="hostname" class="col-lg-3 control-label">
                             <rhn:required-field key="general.jsp.hostname"/>
                         </label>
@@ -40,7 +40,7 @@
                                        size="32" styleId="hostname" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="proxy" class="col-lg-3 control-label">
                             <bean:message key="general.jsp.proxy"/>
                         </label>
@@ -50,7 +50,7 @@
                                        size="32" styleId="proxy" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="proxy_user" class="col-lg-3 control-label">
                             <bean:message key="general.jsp.proxy_username"/>
                         </label>
@@ -60,7 +60,7 @@
                                        size="32" styleId="proxy_user" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="proxy_password" class="col-lg-3 control-label">
                             <bean:message key="general.jsp.proxy_password"/>
                         </label>
@@ -70,7 +70,7 @@
                                            size="32" styleId="proxy_password" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="proxy_password_confirm" class="col-lg-3 control-label">
                             <bean:message key="general.jsp.proxy_password_confirm"/>
                         </label>
@@ -80,7 +80,7 @@
                                                    size="32" styleId="proxy_password_confirm" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="mount_point" class="col-lg-3 control-label">
                             <bean:message key="general.jsp.mount_point"/>
                         </label>
@@ -90,7 +90,7 @@
                                        styleId="mount_point" />
                         </div>
                     </div>
-                    <div class="form-group hidden">
+                    <div class="row hidden">
                         <label class="col-lg-3 control-label" for="disconnected">
                             <bean:message key="general.jsp.disconnected"/>
                         </label>
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-primary">
                                 <bean:message key="config.update"/>

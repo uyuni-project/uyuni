@@ -206,7 +206,7 @@ export default function SchedulePlaybook({
           )}
           <div className="panel_body">
             <Form model={playbookArgs} onChange={setPlaybookArgs} formDirection="form-horizontal">
-              <div className="form-group">
+              <div className="row">
                 <div className="col-sm-3 control-label">
                   <label>{t("Inventory Path")}:</label>
                 </div>
