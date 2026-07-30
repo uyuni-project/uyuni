@@ -110,8 +110,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -119,7 +124,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -135,6 +139,36 @@ import jakarta.persistence.NoResultException;
 public class ChannelSoftwareHandler extends BaseHandler {
 
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
+
+    /**
+     * Date formats accepted by the deprecated {@code mergeErrata} overload for filtering errata by date.
+     *
+     * The original API accepted the date as a {@code String} without documenting its expected format.
+     * In practice, parsing was delegated to PostgreSQL via {@code to_timestamp(value, 'YYYY-MM-DD HH24:MI:SS')}.
+     *
+     * To standardize the API and avoid ambiguous inputs, we agreed to support a subset of date/time formats
+     * that we know are accepted by that {@code to_timestamp} and can consider standard:
+     * - u-M-d
+     * - u-M-d H:m
+     * - u-M-d H:m:s
+     * - u-M-d H:m:s.SSSSSSSSS (up tp 9 fractional second digits)
+     */
+    private static final DateTimeFormatter LEGACY_MERGE_DATE_FORMAT =
+            new DateTimeFormatterBuilder()
+                    .appendPattern("u-M-d")
+                    .optionalStart()
+                        .appendLiteral(' ')
+                        .appendPattern("H:m")
+                        .optionalStart()
+                            .appendLiteral(':')
+                            .appendPattern("s")
+                            .optionalStart()
+                                .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true)
+                            .optionalEnd()
+                        .optionalEnd()
+                    .optionalEnd()
+                .toFormatter();
+
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SyncFromSourceService syncFromSourceService;
@@ -1776,21 +1810,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @Deprecated(since = "2026.06")
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel, String startDateStr, String endDateStr) {
-        Date startDate = Optional.ofNullable(startDateStr)
-                .map(d -> Date.from(
-                        LocalDate.parse(d).atStartOfDay(ZoneId.systemDefault()).toInstant()
-                ))
-                .orElse(null);
-
-        Date endDate = Optional.ofNullable(endDateStr)
-                .map(d -> Date.from(
-                        LocalDate.parse(d).atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant()
-                ))
-                .orElse(null);
-
         Map<String, Object> errataFilter = Map.of(
-                START_DATE, startDate,
-                END_DATE, endDate
+                START_DATE, parseLegacyMergeDate(startDateStr),
+                END_DATE, parseLegacyMergeDate(endDateStr)
         );
 
         SyncErrataWithPackagesResponse response = syncErrataWithPackagesFromSource(
@@ -1798,6 +1820,33 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 errataFilter, Collections.emptyMap()
         );
         return response.erratas().toArray();
+    }
+
+    /**
+     * Parses a date boundary of the deprecated "generic" date strings.
+     * A value without a time part is resolved to midnight. This mimics the behaviour the previous implementation
+     * when delegating the parsing to PostgreSQL using {@code to_timestamp(value, 'YYYY-MM-DD HH24:MI:SS')}.
+     *
+     * @param dateStr the date to parse
+     * @return the parsed date
+     * @throws InvalidParameterException if the value is missing or cannot be parsed
+     */
+    private static Date parseLegacyMergeDate(String dateStr) {
+        if (StringUtils.isBlank(dateStr)) {
+            throw new InvalidParameterException("startDate and endDate might not be empty");
+        }
+
+        String trimmed = dateStr.trim();
+        try {
+            TemporalAccessor parsed = LEGACY_MERGE_DATE_FORMAT.parseBest(trimmed, LocalDateTime::from, LocalDate::from);
+            LocalDateTime dateTime = parsed instanceof LocalDateTime local ?
+                    local : LocalDate.from(parsed).atStartOfDay();
+            return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        }
+        catch (DateTimeParseException e) {
+            log.debug("Unable to parse '{}' as a merge date boundary", trimmed, e);
+            throw new InvalidParameterException("Unable to parse '" + trimmed + "' as a merge date boundary");
+        }
     }
 
     /**
