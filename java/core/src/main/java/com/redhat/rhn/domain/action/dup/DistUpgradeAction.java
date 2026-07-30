@@ -53,6 +53,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.collection.spi.PersistentMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,6 +108,9 @@ public class DistUpgradeAction extends Action {
      * @param detailsIn details
      */
     public void setDetails(DistUpgradeActionDetails detailsIn) {
+        if (detailsMap == null) {
+            detailsMap = new HashMap<>();
+        }
         detailsIn.setParentAction(this);
         detailsMap.put(detailsIn.getServer().getId(), detailsIn);
     }
@@ -124,8 +128,16 @@ public class DistUpgradeAction extends Action {
      * @param detailsMapIn a map where the key is the server id and the value is a {@link  DistUpgradeActionDetails}
      */
     public void setDetailsMap(Map<Long, DistUpgradeActionDetails> detailsMapIn) {
+        if (detailsMapIn == null) {
+            return;
+        }
         detailsMapIn.values().forEach(details -> details.setParentAction(this));
-        this.detailsMap = detailsMapIn;
+        if (detailsMap instanceof PersistentMap<Long, DistUpgradeActionDetails>) {
+            detailsMap.putAll(detailsMapIn);
+        }
+        else {
+            detailsMap = detailsMapIn;
+        }
     }
 
     /**
@@ -274,8 +286,8 @@ public class DistUpgradeAction extends Action {
             List<Channel> unsubscribedChannels = channelTaskMap.get(false);
 
             Set<Channel> currentChannels = serverAction.getServer().getChannels();
-            unsubscribedChannels.forEach(currentChannels::remove);
-            currentChannels.addAll(subscribedChannels);
+            subscribedChannels.forEach(currentChannels::remove);
+            currentChannels.addAll(unsubscribedChannels);
             ServerFactory.save(serverAction.getServer());
 
             var channelsChangedEvent = new ChannelsChangedEventMessage(serverId);

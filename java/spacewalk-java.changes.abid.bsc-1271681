@@ -1,0 +1,2 @@
+- Restored the original reset behavior in isDryRun() by swapping
+  subscribedChannels and unsubscribedChannels back (bsc#1271681)

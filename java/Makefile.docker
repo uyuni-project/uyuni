@@ -2,7 +2,7 @@
 #
 
 # Docker tests variables
-EXECUTOR              = docker
+EXECUTOR              = podman
 DOCKER_CONTAINER_BASE = systemsmanagement/uyuni/master/docker/containers/uyuni-master
 DOCKER_REGISTRY       = registry.opensuse.org
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
