@@ -232,7 +232,7 @@ end
 
 ### TFTP container sanity check steps
 
-Then(/^the "(.*)" service on "(.*)" should have at least one active endpoint$/) do |svc, target|
+Then(/^the "(.*)" service on "(.*)" in the namespace "(.*)" should have at least one active endpoint$/) do |svc, target|
   out, code = get_target(target).run_local(
     "kubectl get endpoints #{svc} -n uyuni -o jsonpath='{.subsets[0].addresses[0].ip}'"
   )
