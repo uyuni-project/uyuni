@@ -20,6 +20,7 @@ import static spark.Spark.put;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -30,6 +31,8 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 
 import com.suse.manager.hub.RouteWithSCCAuth;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -159,6 +162,7 @@ public class SCCEndpoints {
         get("/hub/scc/connect/organizations/subscriptions", asJson(withSCCAuth(this::subscriptions)));
         get("/hub/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
         get("/hub/scc/suma/product_tree.json", asJson(this::productTree));
+        get("/hub/scc/suma/hub_channels", asJson(withSCCAuth(this::hubChannels)));
         put("/hub/scc/connect/organizations/systems", asJson(withSCCAuth(this::createOrUpdateSystems)));
         delete("/hub/scc/connect/organizations/systems/:id", asJson(withSCCAuth(this::deleteSystem)));
         put("/hub/scc/connect/organizations/virtualization_hosts", asJson(withSCCAuth(this::setVirtualizationHosts)));
@@ -281,6 +285,27 @@ public class SCCEndpoints {
                     });
         }).toList();
         return gson.toJson(jsonRepos);
+    }
+
+    /**
+     * Endpoint serving ISS hub channel information to peripherals
+     *
+     * @param requestIn
+     * @param responseIn
+     * @param credentials
+     * @return return the channels
+     */
+    public String hubChannels(Request requestIn, Response responseIn, HubSCCCredentials credentials) {
+        HubFactory hubFactory = new HubFactory();
+
+        var peripheral = credentials.getIssPeripheral();
+        List<ChannelInfoDetailsJson> infoDetailsJsons = hubFactory.listIssPeripheralChannels(peripheral).stream()
+                .map(pc -> ChannelFactory.toChannelInfo(
+                        pc.getChannel(),
+                        pc.getPeripheralOrgId(),
+                        Optional.empty()))
+                .toList();
+        return gson.toJson(infoDetailsJsons);
     }
 
     /**

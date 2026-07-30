@@ -16,6 +16,7 @@ package com.suse.scc.client;
 
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
@@ -79,6 +80,14 @@ public interface SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     List<ProductTreeEntry> productTree() throws SCCClientException;
+
+    /**
+     * Gets and return the list of channels provided by a Hub Server
+     * This method can only be called when the server is a peripheral server
+     * @return list of channel info entries
+     * @throws SCCClientException if anything goes wrong
+     */
+    List<ChannelInfoDetailsJson> listHubChannels() throws SCCClientException;
 
 
     /**

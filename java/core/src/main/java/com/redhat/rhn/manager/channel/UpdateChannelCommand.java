@@ -143,6 +143,11 @@ public class UpdateChannelCommand extends CreateChannelCommand {
             c.setMaintainerEmail(maintainerEmail);
             c.setMaintainerPhone(maintainerPhone);
             c.setSupportPolicy(supportPolicy);
+
+            // If we are a clone, check the update tag of the original channel and align it
+            if (c.isCloned()) {
+                c.setUpdateTag(c.getOriginal().getUpdateTag());
+            }
         }
 
         c.setGPGCheck(gpgCheck);
