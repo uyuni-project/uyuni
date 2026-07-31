@@ -201,13 +201,23 @@ const FilterForm = (props: Props) => {
             )}
 
             {clmFilterOptions.ISSUE_DATE.key === filterType && (
-              <DateTime
-                name={clmFilterOptions.ISSUE_DATE.key}
-                label={t("Issued")}
-                labelClass="col-md-3"
-                divClass="col-md-8"
-                required
-              />
+              <>
+                {filter.issueDateFormatError && (
+                  <div className="col-md-8 col-md-offset-3 offset-md-3">
+                    <div className="alert alert-warning">
+                       {t("The stored issue date has an invalid format. Please select the correct date and save the filter.")}
+                    </div>
+                  </div>
+                )}
+
+                <DateTime
+                  name={clmFilterOptions.ISSUE_DATE.key}
+                  label={t("Issued")}
+                  labelClass="col-md-3"
+                  divClass="col-md-8"
+                  required
+                />
+              </>
             )}
 
             {clmFilterOptions.PACKAGE_BUILD_DATE.key === filterType && (
