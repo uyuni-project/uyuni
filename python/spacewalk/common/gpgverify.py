@@ -188,7 +188,9 @@ def verify_file(
 
     if detached_signature_file:
         # check for file object
-        if hasattr(detached_signature_file, "name"):
+        if hasattr(detached_signature_file, "name") and not isinstance(
+            detached_signature_file, (os.PathLike, str)
+        ):
             detached_signature_fname = typing.cast(str, detached_signature_file.name)
         else:
             detached_signature_fname = detached_signature_file

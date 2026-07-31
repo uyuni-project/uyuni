@@ -1,0 +1,1 @@
+- Fix gpgverify signature file check for file object (bsc#1273131)
