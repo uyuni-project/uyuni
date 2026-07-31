@@ -330,7 +330,8 @@ public class FilterApiController {
         try {
             OffsetDateTime.parse(criteriaValue, DateTimeFormatter.ISO_DATE_TIME);
             return true;
-        } catch (DateTimeParseException e) {
+        }
+        catch (DateTimeParseException e) {
             return false;
         }
     }

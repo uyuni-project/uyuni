@@ -69,7 +69,8 @@ public class FilterResponse {
                 OffsetDateTime offsetDateTime = OffsetDateTime.parse(criteriaValueIn, timeFormatter);
                 Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
                 criteriaValueIn = ViewHelper.getInstance().renderDate(criteriaValueDate);
-            } catch (DateTimeParseException ignored) {
+            }
+            catch (DateTimeParseException ignored) {
                 // Keep the raw value if it cannot be parsed.
             }
         }

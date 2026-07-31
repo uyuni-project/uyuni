@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import { localizedMoment } from "utils";
 import produce from "utils/produce";
@@ -69,9 +70,12 @@ const FilterForm = (props: Props) => {
     >
       <Fragment>
         {props.editing && (
-          <div className="alert alert-info" style={{ marginTop: "0px" }}>
-            {t("Bear in mind that all the associated projects need to be rebuilt after a filter update")}
-          </div>
+          <Messages
+            key="filter-editing-messages"
+            items={MessagesUtils.info(
+              t("Bear in mind that all the associated projects need to be rebuilt after a filter update")
+            )}
+          />
         )}
         {filterBy === FilterBy.Type ? (
           <Text
@@ -204,9 +208,14 @@ const FilterForm = (props: Props) => {
               <>
                 {filter.issueDateFormatError && (
                   <div className="col-md-8 col-md-offset-3 offset-md-3">
-                    <div className="alert alert-warning">
-                       {t("The stored issue date has an invalid format. Please select the correct date and save the filter.")}
-                    </div>
+                    <Messages
+                      key="filter-issue-date-messages"
+                      items={MessagesUtils.warning(
+                        t(
+                          "The stored issue date is in an invalid format. Please select a valid date and save the filter."
+                        )
+                      )}
+                    />
                   </div>
                 )}
 
