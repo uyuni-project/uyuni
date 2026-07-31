@@ -117,7 +117,10 @@ public class GathererJob extends RhnJavaJob {
             Set<Long> sids = TimeUtils.logTime(log, "Find physical systems",
                     () -> ServerFactory.listOrgSystems(org.getId()).stream()
                             .filter(s -> !s.isInactive())
-                            .filter(s -> (s.hasEntitlement(EntitlementManager.SALT)))
+                            .filter(s -> (
+                                    s.hasEntitlement(EntitlementManager.SALT) &&
+                                    s.hasEntitlement(EntitlementManager.VIRTUALIZATION))
+                            )
                             .filter(s -> !s.isVirtualGuest())
                             .map(Server::getId)
                             .collect(Collectors.toSet()));
