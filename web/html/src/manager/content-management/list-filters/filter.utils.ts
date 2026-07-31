@@ -65,6 +65,25 @@ export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, proj
   return requestForm;
 }
 
+function parseIssueDateValue(criteriaValue?: string) {
+  if (!_isEmpty(criteriaValue)) {
+    try {
+      return localizedMoment(criteriaValue);
+    } catch (error) {
+      const normalizedValue = (criteriaValue ?? "").replace(/:(\d{3})(Z|[+-]\d{2}:\d{2})$/, ".$1$2");
+      if (normalizedValue !== criteriaValue) {
+        try {
+          return localizedMoment(normalizedValue);
+        } catch (error2) {
+          return undefined;
+        }
+      }
+    }
+  }
+
+  return undefined;
+}
+
 export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []): FilterFormType[] {
   return filtersResponse.map((filterResponse) => {
     const filterForm: any = {};
@@ -86,7 +105,7 @@ export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []
     // Custom filters mappers for complex filter forms
     // If this starts growing we could define mapper functions in the enum itself, for now it's enough. (ex: mapCriteriaValueToRequest())
     if (filterResponse.criteriaKey === clmFilterOptions.ISSUE_DATE.key) {
-      filterForm[clmFilterOptions.ISSUE_DATE.key] = localizedMoment(filterResponse.criteriaValue);
+      filterForm[clmFilterOptions.ISSUE_DATE.key] = parseIssueDateValue(filterResponse.criteriaValue);
     } else if (filterResponse.criteriaKey === "nevr") {
       // NEVR filter is mapped into NEVRA in the UI
       filterForm.type = clmFilterOptions.NEVRA.key;

@@ -85,6 +85,22 @@ public class ContentManagementHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
+    public void testCreateFilterWithInvalidIssueDateFails() {
+        Map<String, Object> filterCriteria = new HashMap<>();
+        filterCriteria.put("matcher", "greater");
+        filterCriteria.put("field", "issue_date");
+        filterCriteria.put("value", "2026-06-04T22:00:00:000Z");
+
+        try {
+            handler.createFilter(admin, "my-filter-invalid-date", "deny", "erratum", filterCriteria);
+            fail("Filter creation should fail for malformed issue_date format.");
+        }
+        catch (InvalidArgsException e) {
+            assertTrue(e.getMessage().contains("Invalid issue_date format."));
+        }
+    }
+
     /**
      * Test if the project is built successfully with valid module filters
      */

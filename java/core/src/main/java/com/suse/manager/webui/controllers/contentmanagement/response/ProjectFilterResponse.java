@@ -58,7 +58,7 @@ public class ProjectFilterResponse {
      */
     public void setCriteriaValue(String criteriaValueIn) {
         // If we have a date as a criteria value we need to format it with the current user timezone
-        if (this.criteriaKey.equals("issue_date")) {
+        if (this.criteriaKey.equals("issue_date ")) {
             DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
             OffsetDateTime offsetDateTime = OffsetDateTime.parse(
                     criteriaValueIn, timeFormatter);
