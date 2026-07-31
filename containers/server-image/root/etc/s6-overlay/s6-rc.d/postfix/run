@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+set -a
+[ -f /etc/sysconfig/postfix ] && . /etc/sysconfig/postfix
+set +a
+
+# Initialization Tasks (Replaces ExecStartPre)
+echo "Starting mail service (Postfix)"
+touch /var/spool/postfix/pid/master.pid
+/usr/lib/postfix/systemd/config_postfix
+/usr/lib/postfix/systemd/update_chroot
+/usr/lib/postfix/systemd/update_postmaps
+
+# ExecStartPost Scripts
+(
+    /usr/lib/postfix/systemd/wait_qmgr 60
+    /usr/lib/postfix/systemd/cond_slp register
+) &
+
+exec /usr/sbin/postfix start-fg

@@ -1,0 +1,5 @@
+#!/usr/bin/execlineb -P
+
+s6-softlimit -o 100000 -p =
+
+/usr/bin/salt-master
