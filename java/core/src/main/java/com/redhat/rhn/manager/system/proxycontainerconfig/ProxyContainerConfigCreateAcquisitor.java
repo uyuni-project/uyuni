@@ -76,7 +76,8 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         //config.yaml
         SSLCertPair proxyPair = context.getProxyCertKey();
         String rootCaCert = context.getRootCA();
-        if (ConfigDefaults.get().isSsl() && (proxyPair == null || !proxyPair.isComplete())) {
+        if (ConfigDefaults.get().isSsl() && (proxyPair == null || !proxyPair.isComplete()) &&
+                context.getCaPair() != null) {
             proxyPair = context.getCertManager().generateCertificate(
                     context.getCaPair(),
                     context.getCaPassword(),
@@ -105,6 +106,10 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             catch (IllegalArgumentException err) {
                 throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
             }
+        }
+
+        if (context.getAdditionalFqdns() != null) {
+            fqdns.addAll(context.getAdditionalFqdns());
         }
 
         Server proxySystem = getOrCreateProxySystem(

@@ -2017,6 +2017,54 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testCreateProxyContainerConfigWithAdditionalFqdns() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "pxy-fqdn.mgr.lab";
+        String serverName = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        long maxCache = 4096;
+        String email = "admin@mgr.lab";
+        String rootCA = "Dummy Root CA";
+        List<String> otherCAs = List.of("CA 1", "CA 2");
+        String cert = "Dummy cert";
+        String key = "Dummy key";
+        String apacheCert = "Dummy cert for apache";
+        String sshKey = "DummySshKey";
+        String sshPubKey = "DummySshPubKey";
+        String sshPushKey = "DummySshPushKey";
+        String sshPushPubKey = "DummySshPushPubKey";
+
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
+            allowing(saltServiceMock)
+                    .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
+            will(returnValue(apacheCert));
+        }});
+
+        List<String> additionalFqdns = List.of("additional.fqdn.com", "additional2.fqdn.com");
+
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
+                rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager, additionalFqdns);
+        Map<String, String> content = readTarData(actual);
+
+        Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
+        assertEquals(proxyName, configYaml.get("proxy_fqdn"));
+
+        Optional<Server> proxyServerOpt = ServerFactory.findByFqdn(proxyName);
+        assertTrue(proxyServerOpt.isPresent());
+        Server proxyServer = proxyServerOpt.get();
+        Set<String> fqdnNames = proxyServer.getFqdns().stream().map(ServerFQDN::getName).collect(Collectors.toSet());
+        assertTrue(fqdnNames.contains("additional.fqdn.com"));
+        assertTrue(fqdnNames.contains("additional2.fqdn.com"));
+    }
+
+    @Test
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
         // For some reason duplicating the ORG_ADMIN role setting is required
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
