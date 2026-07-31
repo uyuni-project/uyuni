@@ -78,6 +78,7 @@ public class ProxyContainerConfigCreateFacadeImpl implements ProxyContainerConfi
      * @param certData                 the data needed to generate the new proxy SSL certificate.
      *                                 Can be omitted if proxyCertKey is not provided
      * @param certManager              the SSLCertManager to use
+     * @param additionalFqdns          the additional FQDNs for the proxy
      * @return the tarball configuration file as a byte array
      */
     @Override
@@ -85,11 +86,13 @@ public class ProxyContainerConfigCreateFacadeImpl implements ProxyContainerConfi
             SaltApi saltApi, SystemEntitlementManager systemEntitlementManager, User user,
             String serverFqdn, String proxyFqdn, Integer proxyPort, Long maxCache, String email,
             String rootCA, List<String> intermediateCAs, SSLCertPair proxyCertKey,
-            SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager
+            SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager,
+            List<String> additionalFqdns
     ) {
         ProxyContainerConfigCreateContext context = new ProxyContainerConfigCreateContext(
                 saltApi, user, systemEntitlementManager, serverFqdn, proxyFqdn, proxyPort, maxCache, email, rootCA,
-                intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, null, null, null
+                intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, null, null, null,
+                additionalFqdns
         );
         for (ProxyContainerConfigCreateContextHandler handler : contextHandlerChain) {
             handler.handle(context);
@@ -121,6 +124,7 @@ public class ProxyContainerConfigCreateFacadeImpl implements ProxyContainerConfi
      * @param sshPub                   the proxy SSH public key if known
      * @param sshPriv                  the proxy SSH private key if known
      * @param sshParent                the parent SSH public key if known
+     * @param additionalFqdns          the additional FQDNs for the proxy
      * @return the configuration files as a map
      */
     @Override
@@ -129,11 +133,12 @@ public class ProxyContainerConfigCreateFacadeImpl implements ProxyContainerConfi
             String serverFqdn, String proxyFqdn, Integer proxyPort, Long maxCache, String email,
             String rootCA, List<String> intermediateCAs, SSLCertPair proxyCertKey,
             SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager,
-            String sshPub, String sshPriv, String sshParent
+            String sshPub, String sshPriv, String sshParent, List<String> additionalFqdns
     ) {
         ProxyContainerConfigCreateContext context = new ProxyContainerConfigCreateContext(
                 saltApi, user, systemEntitlementManager, serverFqdn, proxyFqdn, proxyPort, maxCache, email, rootCA,
-                intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, sshPub, sshPriv, sshParent
+                intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, sshPub, sshPriv, sshParent,
+                additionalFqdns
         );
 
         for (ProxyContainerConfigCreateContextHandler handler : contextHandlerChain) {
