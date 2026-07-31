@@ -101,6 +101,10 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
         }
 
+        if (context.getAdditionalFqdns() != null) {
+            fqdns.addAll(context.getAdditionalFqdns());
+        }
+
         Server proxySystem = getOrCreateProxySystem(
                 context.getSystemEntitlementManager(),
                 context.getUser(), context.getProxyFqdn(), fqdns, context.getProxyPort(),
