@@ -38,10 +38,8 @@ public class PackageCalculatorTest extends BaseTestCaseWithUser {
 
     private Channel targetChannel;
 
-    @Override
     @BeforeEach
-    public void setUpBaseTestCaseWithUser() throws Exception {
-        super.setUpBaseTestCaseWithUser();
+    public void setUpBaseTestCaseWithUser() {
         targetChannel = ChannelFactoryTest.createTestChannel(user);
     }
 

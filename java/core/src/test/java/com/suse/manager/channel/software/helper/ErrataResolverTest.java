@@ -43,10 +43,8 @@ public class ErrataResolverTest extends BaseTestCaseWithUser {
     private Channel originalChannel;
     private Org userOrg;
 
-    @Override
     @BeforeEach
-    public void setUpBaseTestCaseWithUser() throws Exception {
-        super.setUpBaseTestCaseWithUser();
+    public void setUpBaseTestCaseWithUser() {
         originalChannel = ChannelFactoryTest.createTestChannel(user);
         userOrg = user.getOrg();
     }
