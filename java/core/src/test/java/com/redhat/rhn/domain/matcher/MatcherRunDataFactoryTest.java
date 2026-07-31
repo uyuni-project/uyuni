@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.matcher;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the MatcherRunDataFactory.
  */
-public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
+public class MatcherRunDataFactoryTest extends BaseTestCase {
 
     /**
      * Tests updating the MatcherRunData and fetching it back from the db.

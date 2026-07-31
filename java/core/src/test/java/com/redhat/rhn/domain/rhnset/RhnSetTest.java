@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * RhnSetTest
  */
-public class RhnSetTest extends RhnBaseTestCase {
+public class RhnSetTest extends BaseTestCase {
     private static final String[] TEST_ELEMS = {"100", "150", "300", "175", "35"};
     private RhnSetImpl set;
 

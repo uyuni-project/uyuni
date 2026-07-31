@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.CustomDataKeyTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * CustomDataValueTest
  */
-public class CustomDataValueTest extends RhnBaseTestCase {
+public class CustomDataValueTest extends BaseTestCase {
 
     @Test
     public void testCustomDataValue() throws Exception {

@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -42,7 +40,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "rhnCPU")
 public class CPU extends BaseDomainHelper {
-    private static final Logger LOG = LogManager.getLogger(CPU.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")

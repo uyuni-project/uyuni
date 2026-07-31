@@ -25,7 +25,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class AttestationFactory extends HibernateFactory {
@@ -147,9 +150,25 @@ public class AttestationFactory extends HibernateFactory {
      */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn, boolean attestOnBootIn) {
+        return createConfigForServer(serverIn, typeIn, enabledIn, null, attestOnBootIn);
+    }
+
+    /**
+     * Create a Confidential Compute Attestation Config for a given Server ID
+     * @param serverIn the server
+     * @param typeIn the environment type
+     * @param enabledIn enabled status
+     * @param inputDataIn the additional input data
+     * @param attestOnBootIn perform attestation on boot
+     * @return returns the Confidential Compute Attestation Config
+     */
+    public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
+                                                             boolean enabledIn, Map<String, Object> inputDataIn,
+                                                             boolean attestOnBootIn) {
         ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig(enabledIn, serverIn);
         cnf.setEnvironmentType(typeIn);
         cnf.setAttestOnBoot(attestOnBootIn);
+        cnf.setInData(Objects.requireNonNullElseGet(inputDataIn, HashMap::new));
         save(cnf);
         serverIn.setCocoAttestationConfig(cnf);
         return cnf;
@@ -169,7 +188,8 @@ public class AttestationFactory extends HibernateFactory {
             ServerCoCoAttestationReport rpt = new ServerCoCoAttestationReport();
             rpt.setServer(serverIn);
             rpt.setEnvironmentType(cnf.get().getEnvironmentType());
-            rpt.setStatus(CoCoAttestationStatus.PENDING);
+            rpt.setStatus(CoCoReportStatus.PENDING);
+            rpt.setConfigData(cnf.get().getInData());
             save(rpt);
             serverIn.addCocoAttestationReports(rpt);
             return rpt;
@@ -187,9 +207,10 @@ public class AttestationFactory extends HibernateFactory {
         CoCoEnvironmentType envType = report.getEnvironmentType();
         for (CoCoResultType t : envType.getSupportedResultTypes()) {
             CoCoAttestationResult result = new CoCoAttestationResult();
+            result.setEnvironmentType(envType);
             result.setResultType(t);
             result.setReport(report);
-            result.setStatus(CoCoAttestationStatus.PENDING);
+            result.setStatus(CoCoResultStatus.REQUESTED);
             result.setDescription(t.getTypeDescription());
             save(result);
             report.addResults(result);
@@ -288,5 +309,17 @@ public class AttestationFactory extends HibernateFactory {
             .setMaxResults(limitIn)
             .setFirstResult(offsetIn)
             .list();
+    }
+
+    /**
+     * @param actionIn the action
+     * @return returns the attestation report for this action if available
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForAction(Action actionIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport WHERE action = :action",
+                        ServerCoCoAttestationReport.class)
+                .setParameter("action", actionIn)
+                .list();
     }
 }

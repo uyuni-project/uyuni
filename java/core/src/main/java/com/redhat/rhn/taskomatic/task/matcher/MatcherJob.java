@@ -78,8 +78,8 @@ public class MatcherJob extends RhnJavaJob {
             String sep = Config.get().getString(CSV_SEPARATOR, ",");
             new MatcherRunner().run(sep);
         }
-        catch (Throwable t) {
-            log.error(t.getMessage(), t);
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
             HibernateFactory.rollbackTransaction();
         }
         finally {

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class RamTest extends RhnBaseTestCase {
+public class RamTest extends BaseTestCase {
 
     @Test
     public void testRam() {

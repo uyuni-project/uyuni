@@ -66,12 +66,12 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         StringWriter buffer = new StringWriter();
         UpdateInfoWriter metadataWriter = new UpdateInfoWriter(buffer);
         metadataWriter.getUpdateInfo(baseChannel);
-        assertContains(buffer.toString(), "<id>SUSE-SLE-SERVER-2016-1234</id>");
+        TestUtils.assertContains(buffer.toString(), "<id>SUSE-SLE-SERVER-2016-1234</id>");
 
         buffer = new StringWriter();
         metadataWriter = new UpdateInfoWriter(buffer);
         metadataWriter.getUpdateInfo(clonedChannel);
-        assertContains(buffer.toString(), "<id>CL-SUSE-SLE-SERVER-2016-1234</id>");
+        TestUtils.assertContains(buffer.toString(), "<id>CL-SUSE-SLE-SERVER-2016-1234</id>");
     }
 
     @Test
@@ -99,13 +99,13 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
         final String xml = buffer.toString();
 
-        assertContains(xml, "<id>SUSE-SLE-SERVER-2016-1234</id>");
-        assertContains(xml, "<title>" + errata.getSynopsis() + "</title>");
-        assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel() + "</severity>");
-        assertContains(xml, "<issued date=\"" + df.format(errata.getIssueDate()) + "\"/>");
-        assertContains(xml, "<updated date=\"" + df.format(errata.getUpdateDate()) + "\"/>");
-        assertContains(xml, "<rights>" + errata.getRights() + "</rights>");
-        assertContains(xml, "<description>" + errata.getDescription() + "</description>");
+        TestUtils.assertContains(xml, "<id>SUSE-SLE-SERVER-2016-1234</id>");
+        TestUtils.assertContains(xml, "<title>" + errata.getSynopsis() + "</title>");
+        TestUtils.assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel() + "</severity>");
+        TestUtils.assertContains(xml, "<issued date=\"" + df.format(errata.getIssueDate()) + "\"/>");
+        TestUtils.assertContains(xml, "<updated date=\"" + df.format(errata.getUpdateDate()) + "\"/>");
+        TestUtils.assertContains(xml, "<rights>" + errata.getRights() + "</rights>");
+        TestUtils.assertContains(xml, "<description>" + errata.getDescription() + "</description>");
 
         ErrataOverview o = new ErrataOverview();
         o.setIssueDate("2021-11-22");

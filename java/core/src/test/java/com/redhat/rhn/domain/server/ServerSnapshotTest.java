@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ public class ServerSnapshotTest extends BaseTestCaseWithUser {
     public void testRollbackGroups() throws Exception {
         Server server = ServerTestUtils.createTestSystem(user);
 
-        assertNotEmpty(server.getGroups());
+        TestUtils.assertNotEmpty(server.getGroups());
 
         ServerSnapshot snapshot = new ServerSnapshot();
         snapshot.setServer(server);

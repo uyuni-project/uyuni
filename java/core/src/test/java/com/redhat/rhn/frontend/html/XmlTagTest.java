@@ -16,11 +16,11 @@ package com.redhat.rhn.frontend.html;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class XmlTagTest extends RhnBaseTestCase {
+public class XmlTagTest extends BaseTestCase {
 
     @Test
     public void testSpaceBefore() {

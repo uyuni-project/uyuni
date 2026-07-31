@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * RhnManagerTest
  */
-public class RhnSetManagerTest extends RhnBaseTestCase {
+public class RhnSetManagerTest extends BaseTestCase {
 
     /** user id to be used when creating RhnSet tests */
     private Long userId = null;

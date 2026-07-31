@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * ProfileFactoryTest
  */
-public class ProfileFactoryTest  extends RhnBaseTestCase {
+public class ProfileFactoryTest  extends BaseTestCase {
 
     @Test
     public void testCreateProfile() {

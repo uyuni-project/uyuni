@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.taglibs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 
@@ -32,7 +32,7 @@ import jakarta.servlet.jsp.tagext.Tag;
  * RhnHiddenTagTest
  */
 
-public class RhnHiddenTagTest extends RhnBaseTestCase {
+public class RhnHiddenTagTest extends BaseTestCase {
 
     private TagTestHelper tth;
     private RhnHiddenTag ht;

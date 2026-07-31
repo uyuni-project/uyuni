@@ -16,7 +16,7 @@
             <c:when test="${affectedSystemsCount > 0}">
                 <html:form styleClass="form-horizontal" action="/systems/ssm/provisioning/RemoteCommand" method="post">
                     <rhn:csrf />
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-md-3 control-label"><bean:message key="ssm.operations.provisioning.remotecommand.form.uid.label"/><span class="required-form-field">*</span>:</label>
                                 <div class="col-md-6">
                                     <input type="text" name="uid" maxlength="32"
@@ -25,7 +25,7 @@
                                            class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-md-3 control-label"><bean:message key="ssm.operations.provisioning.remotecommand.form.gid.label"/><span class="required-form-field">*</span>:</label>
                                 <div class="col-md-6">
                                     <input type="text" name="gid" maxlength="32"
@@ -34,7 +34,7 @@
                                            class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-md-3 control-label"><bean:message key="ssm.operations.provisioning.remotecommand.form.timeout.label"/>:</label>
                                 <div class="col-md-6">
                                     <input type="text" name="timeout" maxlength=""
@@ -43,7 +43,7 @@
                                            class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-md-3 control-label"><bean:message key="ssm.operations.provisioning.remotecommand.form.lbl.label"/>:</label>
                                 <div class="col-md-6">
                                     <input type="text" id="lbl" name="lbl"
@@ -52,7 +52,7 @@
                                            class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-md-3 control-label"><bean:message key="ssm.operations.provisioning.remotecommand.form.script_body.label"/><span class="required-form-field">*</span>:</label>
                                 <div class="col-md-6">
                                     <textarea id="script_body" name="script_body" rows="8" wrap="off" style="width: 100%;" class="form-control"><c:choose><c:when test="${fv.script == null}">#!/bin/sh</c:when><c:otherwise>${fv.script}</c:otherwise></c:choose>

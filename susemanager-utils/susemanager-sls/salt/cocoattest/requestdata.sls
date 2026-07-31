@@ -1,66 +1,18 @@
 include:
-  - channels
 
-mgr_create_attestdir:
-  file.directory:
-    - name: /tmp/cocoattest
-    - dir_mode: 700
+{% for result_type in salt['pillar.get']('attestation_data:result_types', []) %}
 
-{% if salt['pillar.get']('attestation_data:environment_type', 'NONE') not in ['NONE'] %}
+{%- if result_type  == 'SECURE_BOOT' %}
+ - .coco_secure_boot
+{%- endif %}
 
-mgr_inst_snpguest:
-  pkg.latest:
-    - pkgs:
-      - snpguest
-      - mokutil
-    - require:
-      - sls: channels
+{%- if result_type  == 'SEV_SNP' %}
+ - .coco_sev_snp
+{%- endif %}
 
-mgr_write_request_data:
-  cmd.run:
-    - name: /usr/bin/echo "{{ salt['pillar.get']('attestation_data:nonce') }}" | /usr/bin/base64 -d > /tmp/cocoattest/request-data.txt
-    - onlyif: /usr/bin/test -x /usr/bin/base64
-    - require:
-      - file: mgr_create_attestdir
+{%- if result_type  == 'IBM_PVATTEST' %}
+ - .coco_ibm_pvattest
+{%- endif %}
 
-mgr_create_snpguest_report:
-  cmd.run:
-    - name: /usr/bin/snpguest report /tmp/cocoattest/report.bin /tmp/cocoattest/request-data.txt
-    - require:
-      - cmd: mgr_write_request_data
-      - file: mgr_create_attestdir
 
-mgr_snpguest_report:
-  cmd.run:
-    - name: /usr/bin/cat /tmp/cocoattest/report.bin | /usr/bin/base64
-    - require:
-      - cmd: mgr_create_snpguest_report
-      - file: mgr_create_attestdir
-
-mgr_create_vlek_certificate:
-  cmd.run:
-    - name: /usr/bin/snpguest certificates PEM /tmp/cocoattest
-    - require:
-      - file: mgr_create_attestdir
-
-mgr_vlek_certificate:
-  cmd.run:
-    - name: /usr/bin/cat /tmp/cocoattest/vlek.pem
-    - require:
-      - cmd: mgr_create_vlek_certificate
-      - file: mgr_create_attestdir
-
-mgr_secureboot_enabled:
-  cmd.run:
-    - name: /usr/bin/mokutil --sb-state
-    - success_retcodes:
-      - 255
-      - 0
-
-{% endif %}
-
-mgr_cleanup_attest:
-  file.absent:
-    - name: /tmp/cocoattest
-    - require:
-      - file: mgr_create_attestdir
+{% endfor %}

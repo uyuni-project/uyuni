@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * CPUArchTest
  */
-public class CPUArchTest extends RhnBaseTestCase {
+public class CPUArchTest extends BaseTestCase {
 
     /**
      * Simple test to make sure we can lookup CPUArchs from

@@ -502,7 +502,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         // First just sort all the items in ascending order
         resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 10, "fqdn"));
-        assertNotEmpty(resultList);
+        TestUtils.assertNotEmpty(resultList);
         assertEquals(
             List.of("alpha", "beta", "delta", "epsilon", "gamma"),
             resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
@@ -510,7 +510,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         // Sort descending and limit
         resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 2, "fqdn", true));
-        assertNotEmpty(resultList);
+        TestUtils.assertNotEmpty(resultList);
         assertEquals(
             List.of("gamma", "epsilon"),
             resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
@@ -518,7 +518,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         // Filter, sort ascending and limit
         resultList = hubFactory.listPaginatedPeripherals(new PageControl(1, 2, "fqdn", false, "fqdn", "local"));
-        assertNotEmpty(resultList);
+        TestUtils.assertNotEmpty(resultList);
         assertEquals(
             List.of("alpha", "beta"),
             resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()
@@ -526,7 +526,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         // Filter, sort descending and limit, getting second page
         resultList = hubFactory.listPaginatedPeripherals(new PageControl(2, 1, "fqdn", true, "fqdn", "03"));
-        assertNotEmpty(resultList);
+        TestUtils.assertNotEmpty(resultList);
         assertEquals(
             List.of("epsilon"),
             resultList.stream().map(ph -> ph.getFqdn().split("-")[0]).toList()

@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -22,7 +22,7 @@
 %global wwwroot %{susemanager_shared_path}/www
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           susemanager-branding-oss
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} branding oss specific files
 License:        GPL-2.0-only

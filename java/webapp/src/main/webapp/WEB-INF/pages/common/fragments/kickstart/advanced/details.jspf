@@ -13,7 +13,7 @@
             <rhn:csrf />
             <h2><bean:message key="${param.title_key}"/></h2>
             <p><bean:message key="${param.summary_key}"/></p>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key="kickstart.jsp.create.wizard.kickstart.profile.label"/>:
                 </label>
@@ -21,7 +21,7 @@
                     <html:text property="kickstartLabel" styleClass="form-control" size="40" maxlength="80" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key="kickstart.jsp.create.wizard.kstree.label"/>:
                 </label>
@@ -33,7 +33,7 @@
                             </html:select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <div class="checkbox">
                                 <label>
@@ -57,7 +57,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/kickstart/virtoptions.jspf" %>
 
     <c:if test="${empty requestScope.create}">
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label>
@@ -68,7 +68,7 @@
                 <span class="help-block"><bean:message key="kickstartdetails.jsp.activeDescription"/></span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstartdetails.jsp.kernel_options"/>
             </label>
@@ -76,7 +76,7 @@
                 <html:text property="kernel_options" styleClass="form-control" maxlength="2048" size="32" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstartdetails.jsp.post_kernel_options"/>
             </label>
@@ -84,7 +84,7 @@
                 <html:text property="post_kernel_options" styleClass="form-control" maxlength="2048" size="32" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label>
@@ -98,7 +98,7 @@
             </div>
         </div>
     </c:if>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="addfiles.create.jspf.content-name" />
         </label>
@@ -115,7 +115,7 @@
             </span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="kickstart.advanced.jsp.uploadtab"/>
         </label>
@@ -123,7 +123,7 @@
             <html:file property="fileUpload" size="30" styleClass="form-control"/>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <html:submit property="dispatch" styleClass="btn btn-primary">
                 <bean:message key="${param.action_key}"/>
@@ -150,7 +150,7 @@
     <html:form method="post" action="${param.url}"
                styleClass="form-horizontal">
         <rhn:csrf />
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key="kickstart.jsp.create.wizard.kstree.label"/>:
                 </label>
@@ -170,7 +170,7 @@
                 </div>
             </div>
         <c:if test="${empty notrees}">
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit property="dispatch" styleClass="btn btn-primary">
                         <bean:message key="${param.action_key}"/>

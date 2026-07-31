@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 . /usr/lib/entrypoint-lib.sh
 
@@ -133,10 +133,6 @@ setup_spacewalk() {
         /usr/bin/spacewalk-setup-httpd
     fi
     /usr/sbin/update-ca-certificates
-
-    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-        /usr/sbin/mgr-package-rpm-certificate-osimage
-    fi
 
     echo "admin-email = ${MANAGER_ADMIN_EMAIL}
 ssl-config-sslvhost = Y

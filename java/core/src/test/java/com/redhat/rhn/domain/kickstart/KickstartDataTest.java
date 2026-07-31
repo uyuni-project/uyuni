@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.SHA256Crypt;
@@ -30,7 +29,6 @@ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.FileListTest;
-import com.redhat.rhn.domain.kickstart.cobbler.CobblerSnippet;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoTest;
 import com.redhat.rhn.domain.org.Org;
@@ -47,20 +45,16 @@ import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.profile.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.KickstartBaseTest;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.cobbler.CobblerConnection;
-import org.cobbler.Distro;
-import org.cobbler.MockConnection;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.util.Collection;
@@ -73,49 +67,10 @@ import java.util.TreeSet;
 /**
  * KickstartDataTest
  */
-public class KickstartDataTest extends BaseTestCaseWithUser {
+@ExtendWith(SaltTestCaseExtension.class)
+public class KickstartDataTest extends KickstartBaseTest {
 
     private static final String KERNEL_PARAMS = "ide0=ata66";
-
-    public static void setupTestConfiguration(User u) throws Exception {
-        Config.get().setString(CobblerXMLRPCHelper.class.getName(),
-                MockXMLRPCInvoker.class.getName());
-        Config.get().setString(ConfigDefaults.KICKSTART_COBBLER_DIR,
-                "/tmp/kickstart/");
-        Config.get().setString(ConfigDefaults.COBBLER_SNIPPETS_DIR,
-                "/tmp/kickstart/snippets");
-        Config.get().setString(ConfigDefaults.MOUNT_POINT,
-                "/tmp/kickstart/mount_point");
-        createDirIfNotExists(new File("/tmp/kickstart/mount_point"));
-
-        Config.get().setString(ConfigDefaults.KICKSTART_MOUNT_POINT,
-                "/tmp/kickstart/kickstart_mount_point");
-        createDirIfNotExists(new File("/tmp/kickstart/kickstart_mount_point"));
-
-        Config.get().setString(CobblerConnection.class.getName(),
-                MockConnection.class.getName());
-
-        createDirIfNotExists(new File(ConfigDefaults.get()
-                .getKickstartConfigDir() + File.separator + KickstartData.WIZARD_DIR));
-        createDirIfNotExists(new File(ConfigDefaults.get()
-                .getKickstartConfigDir() + File.separator + KickstartData.RAW_DIR));
-        createDirIfNotExists(CobblerSnippet.getSpacewalkSnippetsDir());
-
-        KickstartableTreeTest.createKickstartTreeItems(u);
-
-        MockConnection.clear();
-    }
-
-   public static void createCobblerObjects(KickstartData k) {
-        Distro d = Distro.lookupById(CobblerXMLRPCHelper.getConnection("test"),
-                k.getKickstartDefaults().getKstree().getCobblerId());
-        org.cobbler.Profile p = org.cobbler.Profile.create(
-                CobblerXMLRPCHelper.getConnection("test"),
-                CobblerCommand.makeCobblerName(k), d);
-        p.setKickstart(k.buildCobblerFileName());
-        k.setCobblerId(p.getUid());
-
-    }
 
     @Test
     public void testKickstartDataTest() throws Exception {
@@ -132,7 +87,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         kf.setKsdata(k);
 
         kf.setFileList(TestUtils.saveAndReload(kf.getFileList()));
-        kf = TestUtils.saveAndFlush(kf);
+        TestUtils.saveAndFlush(kf); //reassign variable if still needed
 
         KickstartDefaults d = createDefaults(k, user);
         assertNotNull(d);
@@ -141,7 +96,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaultRegToken t = new KickstartDefaultRegToken();
         t.setKsdata(k);
         t.setToken(TokenTest.createTestToken());
-        t = TestUtils.saveAndFlush(t);
+        TestUtils.saveAndFlush(t); //reassign variable if still needed
     }
 
     @Test
@@ -210,7 +165,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         SortedSet<KickstartCommand> optionsSet = new TreeSet<>();
         k.setCustomOptions(optionsSet);
 
-        createCobblerObjects(k);
+        KickstartTestUtils.createCobblerObjects(k);
 
         Profile p = ProfileManagerTest.createProfileWithServer(user);
         d1.setProfile(p);
@@ -405,7 +360,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         d.setCfgManagementFlag(Boolean.FALSE);
         d.setRemoteCommandFlag(Boolean.FALSE);
         KickstartDefaults kickstartDefaults = TestUtils.saveAndFlush(d);
-        t = TestUtils.saveAndFlush(t);
+        TestUtils.saveAndFlush(t); //reassign variable if still needed
         return kickstartDefaults;
     }
 
@@ -464,7 +419,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 UserTestUtils.ensureOrgAdminExists(orgIn)));
 
 
-        createCobblerObjects(k);
+        KickstartTestUtils.createCobblerObjects(k);
         KickstartCommandName optionName = lookupByLabel("url");
         assertNotNull(optionName);
         KickstartCommandName rootName = lookupByLabel("rootpw");
@@ -521,7 +476,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaults d1 = KickstartDataTest.createDefaults(ksdata,
                 UserTestUtils.ensureOrgAdminExists(orgIn));
         ksdata.setKickstartDefaults(d1);
-        createCobblerObjects(ksdata);
+        KickstartTestUtils.createCobblerObjects(ksdata);
 
         return ksdata;
     }

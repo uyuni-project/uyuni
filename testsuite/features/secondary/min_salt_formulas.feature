@@ -51,11 +51,11 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "French (Canada)" on "sle_minion"
      And the pillar data for "keyboard_and_language:language" should be "French" on "sle_minion"
 
-@ssh_minion
+@sshminion
   Scenario: No other minion is affected by the formula
-     Then the pillar data for "formulas" should be empty on "ssh_minion"
-     And the pillar data for "timezone" should be empty on "ssh_minion"
-     And the pillar data for "keyboard_and_language" should be empty on "ssh_minion"
+     Then the pillar data for "formulas" should be empty on "sshminion"
+     And the pillar data for "timezone" should be empty on "sshminion"
+     And the pillar data for "keyboard_and_language" should be empty on "sshminion"
 
   Scenario: Use the parametrized formula in test mode
      Given I am on the Systems overview page of this "sle_minion"
@@ -142,11 +142,11 @@ Feature: Use salt formulas
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "English (US)" on "sle_minion"
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle_minion"
 
-@ssh_minion
+@sshminion
   Scenario: No other minion is affected by the group formula
-     Then the pillar data for "formulas" should be empty on "ssh_minion"
-     And the pillar data for "timezone" should be empty on "ssh_minion"
-     And the pillar data for "keyboard_and_language" should be empty on "ssh_minion"
+     Then the pillar data for "formulas" should be empty on "sshminion"
+     And the pillar data for "timezone" should be empty on "sshminion"
+     And the pillar data for "keyboard_and_language" should be empty on "sshminion"
 
   Scenario: Cleanup: remove "locale-formula-group" system group
      When I follow the left menu "Systems > System Groups"

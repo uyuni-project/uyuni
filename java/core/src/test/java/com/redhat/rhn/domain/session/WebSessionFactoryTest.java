@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /** JUnit test case for the Session class.
  */
 
-public class WebSessionFactoryTest extends RhnBaseTestCase {
+public class WebSessionFactoryTest extends BaseTestCase {
 
     // This is the number of milliseconds that
     // we use in this test to determine timeouts

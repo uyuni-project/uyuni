@@ -18,6 +18,17 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is active on "server"
 
+@containerized_server
+   Scenario: Podman containers are running
+    Then podman container "uyuni-db" should be running on "server"
+    And podman container "uyuni-db" should be healthy on "server"
+    And podman container "uyuni-server" should be running on "server"
+    And podman container "uyuni-server" should be healthy on "server"
+    And podman container "uyuni-saline-0" should be running on "server"
+    And podman container "uyuni-tftpd" should be running on "server"
+    And podman container "uyuni-server-attestation-0" should be running on "server"
+    And podman container "uyuni-hub-xmlrpc-0" should be running on "server"
+
 @proxy
   Scenario: The proxy is healthy
     Then "proxy" should have a FQDN
@@ -39,12 +50,12 @@ Feature: Sanity checks
     And "build_host" should communicate with the server using public interface
     And the clock from "build_host" should be exact
 
-@ssh_minion
+@sshminion
   Scenario: The SSH minion is healthy
-    Then "ssh_minion" should have a FQDN
-    And reverse resolution should work for "ssh_minion"
-    And "ssh_minion" should communicate with the server using public interface
-    And the clock from "ssh_minion" should be exact
+    Then "sshminion" should have a FQDN
+    And reverse resolution should work for "sshminion"
+    And "sshminion" should communicate with the server using public interface
+    And the clock from "sshminion" should be exact
 
 @rhlike_minion
   Scenario: The Red Hat-like minion is healthy

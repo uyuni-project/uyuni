@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -36,6 +37,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +46,8 @@ import java.util.Set;
 /**
  * VirtualInstanceFactoryTest
  */
-public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class VirtualInstanceFactoryTest extends BaseTestCase {
 
     private VirtualInstanceFactory virtualInstanceDAO;
     private User user;

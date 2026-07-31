@@ -49,7 +49,7 @@
     </h2>
     <p><bean:message key="ssm.kickstartable-systems.jsp.systems.summary"/></p>
     <hr/>
-    <div class="form-group">
+    <div class="row">
         <div class="control-label">
             <bean:message key="ssm.kickstartable-systems.jsp.type"/>:
         </div>
@@ -71,7 +71,7 @@
             </div>
         <p class="help-block">* <bean:message key="ssm.kickstartable-systems.jsp.ip-tooltip"/></p>
     </div>
-    <div class="form-group text-right">
+    <div class="row text-right">
         <button class="btn btn-default" type="submit" name="dispatch"
             value="${rhn:localize('ssm.config.subscribe.jsp.continue')}"
             <c:if test="${not empty disableProfiles}">disabled="true"</c:if>>

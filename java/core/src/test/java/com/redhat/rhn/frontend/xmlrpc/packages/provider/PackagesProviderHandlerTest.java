@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.domain.rhnpackage.PackageProvider;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,7 @@ public class PackagesProviderHandlerTest extends BaseHandlerTestCase {
         PackageFactory.save(prov);
 
         List list = handler.list(admin);
-        assertContains(list, prov);
+        TestUtils.assertContains(list, prov);
 
     }
 

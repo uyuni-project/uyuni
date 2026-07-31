@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.image.OSImageStoreUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.reflect.TypeToken;
@@ -34,6 +35,7 @@ import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +55,16 @@ import spark.Spark;
 public class ImageUploadController {
 
     private static final Logger LOG = LogManager.getLogger(ImageUploadController.class);
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private static String tempPath = SALT_FILE_GENERATION_TEMP_PATH;
+
+    static void setSaltApi(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
+    }
+
+    static void setTempPath(String tempPathIn) {
+        tempPath = tempPathIn;
+    }
 
     private ImageUploadController() { }
 
@@ -78,7 +90,7 @@ public class ImageUploadController {
         try {
             DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
                     .setBufferSize(0)
-                    .setPath(SALT_FILE_GENERATION_TEMP_PATH)
+                    .setPath(Paths.get(tempPath))
                     .get();
 
             List<? extends FileItem> items =
@@ -86,8 +98,19 @@ public class ImageUploadController {
 
             try {
                 items.stream().forEach(item -> {
-                    if (ImageInfoFactory.lookupDeltaImageFile(user.getOrg(), item.getName()).isPresent() ||
-                        ImageInfoFactory.lookupImageFile(user.getOrg(), item.getName()).isPresent()) {
+                    String submittedName = item.getName();
+                    String safeName = FilenameUtils.getName(submittedName);
+                    if (safeName == null || safeName.trim().isBlank() || !safeName.equals(submittedName)) {
+                        throw new IllegalArgumentException("Invalid filename");
+                    }
+                    Path baseDir = Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()))
+                            .toAbsolutePath().normalize();
+                    Path destination = baseDir.resolve(safeName).normalize();
+                    if (!destination.startsWith(baseDir)) {
+                        throw new IllegalArgumentException("Invalid image destination");
+                    }
+                    if (ImageInfoFactory.lookupDeltaImageFile(user.getOrg(), safeName).isPresent() ||
+                        ImageInfoFactory.lookupImageFile(user.getOrg(), safeName).isPresent()) {
                         throw new EntityExistsException("Image file already exists");
                     }
                     DiskFileItem diskFileItem = (DiskFileItem) item;
@@ -97,7 +120,10 @@ public class ImageUploadController {
 
                     Path tempFile = null;
                     try {
-                        tempFile = Files.createTempFile("upload-", ".img");
+                        tempFile = Files.createTempFile(Paths.get(tempPath), "upload-", ".img");
+                        if (!tempFile.toFile().setReadable(true, false)) {
+                            throw new IOException("Cannot set temp file as readable");
+                        }
                         diskFileItem.write(tempFile);
 
                     }
@@ -105,9 +131,11 @@ public class ImageUploadController {
                         throw new RuntimeException("cannot create tmp file", eIn);
                     }
 
+                    // Ensure the base directory exists
+                    saltApi.mkDir(baseDir, "0755");
+
                     // copy file to final location using salt
-                    GlobalInstanceHolder.SALT_API.copyFile(tempFile,
-                        Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName()))
+                    saltApi.copyFile(tempFile, destination)
                         .orElseThrow(() -> new RuntimeException("Can't move the image file"));
                 });
             }

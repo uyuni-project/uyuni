@@ -17,14 +17,14 @@ package com.redhat.rhn.domain.action;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * ActionTypeTest
  */
-public class ActionTypeTest extends RhnBaseTestCase {
+public class ActionTypeTest extends BaseTestCase {
 
     /**
      * Test Equals

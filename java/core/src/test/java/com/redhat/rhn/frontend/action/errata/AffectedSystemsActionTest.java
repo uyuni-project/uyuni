@@ -31,7 +31,8 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.SaltTestCaseUtils;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
+import com.redhat.rhn.testing.SaltTestRootPath;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -39,9 +40,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -49,19 +50,15 @@ import java.nio.file.Path;
 /**
  * AffectedSystemsActionTest
  */
-public class AffectedSystemsActionTest extends MockObjectTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+public class AffectedSystemsActionTest extends MockObjectTestCase {
+
+    @SaltTestRootPath
     protected Path tmpSaltRoot;
 
     @BeforeEach
     public void setUp() throws IOException {
-        tmpSaltRoot = setupSaltConfigurationForTests();
-
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     @Test

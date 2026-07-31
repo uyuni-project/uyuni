@@ -80,9 +80,36 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
 end
 
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
-  # click on the checkbox to select the product
+  # the product checkbox is a tri-state widget: selecting a parent whose subtree isn't
+  # entirely selected yet legitimately leaves it "indeterminate" rather than fully checked,
+  # so Capybara's #set click-and-verify (which waits for a plain checked=true/false) never
+  # resolves and Playwright raises "Clicking the checkbox did not change its state"; click it
+  # directly and poll until it joins/leaves the selection (checked or indeterminate) instead
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
+  desired_selected = (select == 'select')
+  checkbox = find(:xpath, xpath)
+  indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+  checkbox.click unless (checkbox.checked? || indeterminate) == desired_selected
+  repeat_until_timeout(message: "checkbox for product #{product} did not reach '#{select}' state") do
+    checkbox = find(:xpath, xpath)
+    indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+    break if (checkbox.checked? || indeterminate) == desired_selected
+
+    sleep 1
+  end
+end
+
+Then(/^I should see that the "(.*?)" product is partially selected$/) do |product|
+  # indeterminate is a live DOM property (not an HTML attribute), so it cannot be matched via
+  # xpath or Capybara's checked?; read it straight from the element via JS. It is also set by
+  # an async UI re-render after a selection change, so poll instead of asserting once.
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  repeat_until_timeout(message: "#{product} checkbox did not reach the indeterminate state") do
+    checkbox_id = find(:xpath, xpath)[:id]
+    break if page.evaluate_script("document.getElementById('#{checkbox_id}').indeterminate")
+
+    sleep 1
+  end
 end
 
 When(/^I select or deselect "([^"]*)" beta client tools$/) do |channel|
@@ -139,9 +166,13 @@ Then(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommen
 end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
+  # a parent product counts as selected whether it is fully checked or only indeterminate
+  # (some but not all of its subtree selected) -- both mean it is part of the sync selection
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   within(:xpath, xpath) do
-    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
+    checkbox = find(:xpath, './div/input[@type=\'checkbox\']')
+    indeterminate = page.evaluate_script("document.getElementById('#{checkbox[:id]}').indeterminate")
+    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not selected (neither checked nor indeterminate)" unless checkbox.checked? || indeterminate
   end
 end
 
@@ -162,7 +193,7 @@ When(/^I click the Add Product button$/) do
   raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
-Then(/^the SLE15 (SP3|SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
+Then(/^the SLE15 (SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
@@ -371,28 +402,26 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
 end
 
 Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
-  xpath = "//a[contains(text(), '#{target_channel}')]"
-  channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
+  channel_link = find(:xpath, "//a[contains(text(), '#{target_channel}')]")
+  channel_id = channel_link['href'].split('?')[1].split('=')[1]
 
-  case target_radio
-  when 'No change'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='NO_CHANGE']"
-  when 'Subscribe'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
-  when 'Unsubscribe'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
-  else
-    log "Target Radio #{target_radio} not supported"
-  end
+  radio_value =
+    case target_radio
+    when 'No change' then 'NO_CHANGE'
+    when 'Subscribe' then 'SUBSCRIBE'
+    when 'Unsubscribe' then 'UNSUBSCRIBE'
+    else raise ScriptError, "Target Radio '#{target_radio}' not supported"
+    end
 
-  case target_status
-  when 'selected'
-    raise ScriptError, "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
-  when 'unselected'
-    raise ScriptError, "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
-  else
-    log "Target status #{target_status} not supported"
-  end
+  checked =
+    case target_status
+    when 'selected' then true
+    when 'unselected' then false
+    else raise ScriptError, "Target status '#{target_status}' not supported"
+    end
+
+  raise ScriptError, "Radio '#{target_radio}' for channel '#{target_channel}' is not #{target_status}" unless
+    has_field?(type: 'radio', name: "ch_action_#{channel_id}", with: radio_value, checked: checked)
 end
 
 Then(/^the notification badge and the table should count the same amount of messages$/) do
@@ -485,8 +514,19 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
   repo_list = $custom_repositories[client]
   next if repo_list.nil?
 
-  repo_list.each do |_repo_name, repo_url|
+  repo_list.each do |repo_name, repo_url|
+    # Skip if repository URL is blank
+    if repo_url.nil? || repo_url.strip.empty?
+      log "Skipping repository '#{repo_name}' with empty URL"
+      next
+    end
+
     unique_repo_name = generate_repository_name(repo_url)
+    if unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
@@ -524,8 +564,19 @@ When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
   repo_list = $custom_repositories[client]
   next if repo_list.nil?
 
-  repo_list.each do |_repo_name, repo_url|
+  repo_list.each do |repo_name, repo_url|
+    # Skip if repository URL is blank
+    if repo_url.nil? || repo_url.strip.empty?
+      log "Skipping repository '#{repo_name}' with empty URL"
+      next
+    end
+
     unique_repo_name = generate_repository_name(repo_url)
+    if unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     step %(I check "#{unique_repo_name}" in the list)
   end
 end
@@ -534,7 +585,11 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
   target = get_target(host)
   repo_urls = if deb_host?(host)
                 out, = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-                out.split("\n").map { |line| line.split[1].strip }
+                out.split("\n").map do |line|
+                  # Extract URL after 'deb' (or 'deb-src') and optional bracket options
+                  # Format: deb [options] url distribution components
+                  line[/^deb(?:-src)?\s+(?:\[.*?\]\s+)?(\S+)/, 1]
+                end
               elsif rh_host?(host)
                 out, = target.run('grep -rh "^\s*baseurl" /etc/yum.repos.d/')
                 out.split("\n").map { |line| line.split('=', 2).last.strip }
@@ -546,10 +601,17 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
               end.compact.uniq
 
   repo_urls.each do |repo_url|
-    next if repo_url.empty?
+    next if repo_url.nil? || repo_url.empty?
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
+
+    # Skip if repository name is empty (e.g., when running with empty repository configuration)
+    if unique_repo_name.nil? || unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     unless repository_exist?(unique_repo_name)
       content_type = deb_host?(host) ? 'deb' : 'yum'
       $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)

@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.struts;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
  * LocalizationService so we can utilize XML based MessageResources.
  *
  */
-public class XmlMessageResourcesTest extends RhnBaseTestCase {
+public class XmlMessageResourcesTest extends BaseTestCase {
 
     @Test
     public void testGetFactory() {

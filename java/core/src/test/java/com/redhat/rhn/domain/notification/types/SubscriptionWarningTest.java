@@ -18,11 +18,11 @@ package com.redhat.rhn.domain.notification.types;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-class SubscriptionWarningTest extends RhnBaseTestCase {
+class SubscriptionWarningTest extends BaseTestCase {
 
     @Test
     public void testSubscriptionWarning() {

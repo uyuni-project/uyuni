@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ import redstone.xmlrpc.XmlRpcInvocation;
 /**
  * LoggingInvocationProcessorTest
  */
-public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
+public class XmlRpcLoggingInvocationProcessorTest extends BaseTestCase {
 
     private XmlRpcLoggingInvocationProcessor lip;
     private Writer writer;

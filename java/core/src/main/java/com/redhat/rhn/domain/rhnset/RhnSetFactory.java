@@ -59,7 +59,7 @@ public class RhnSetFactory extends HibernateFactory {
      * Returns null if no matches found.
      * @param uid Userid of RhnSet
      * @param label Label of RhnSet
-     * @param cleanup TODO
+     * @param cleanup
      * @return the RhnSet which matched the given uid and label.
      */
     public static RhnSet lookupByLabel(Long uid, String label, SetCleanup cleanup) {

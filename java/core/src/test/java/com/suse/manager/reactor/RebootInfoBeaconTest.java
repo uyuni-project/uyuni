@@ -17,8 +17,10 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.TestCloudPaygManagerBuilder;
@@ -42,20 +44,22 @@ import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Optional;
 
-public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith(UserForTestCaseExtension.class)
+public class RebootInfoBeaconTest extends BaseTestCase {
 
     private SaltReactor reactor;
-    private User user;
     private JsonParser<Event> eventParser;
+
+    @UserForTest(useClassNameForOrg = true)
+    private User user;
 
     @BeforeEach
     public void setUp() throws Exception {
-
-
-        user = UserTestUtils.createUser(this);
         this.eventParser = new JsonParser<>(new TypeToken<>() {
         });
         SaltService saltService = createSaltService();

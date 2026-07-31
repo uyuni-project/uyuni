@@ -52,6 +52,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -229,7 +230,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceAddonProduct, sourceBaseChannel, user);
         SUSEProductExtension e = new SUSEProductExtension(
                 sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
-        e = TestUtils.saveAndReload(e);
+        TestUtils.saveAndReload(e); //reassign variable if still needed
 
         sourceAddons.add(sourceAddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
@@ -253,8 +254,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(
                 targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
-        e2 = TestUtils.saveAndReload(e2);
-        e3 = TestUtils.saveAndReload(e3);
+        TestUtils.saveAndReload(e2); //reassign variable if still needed
+        TestUtils.saveAndReload(e3); //reassign variable if still needed
 
         SCCRepository base = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, base);
@@ -317,7 +318,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceAddonProduct, sourceBaseChannel, user);
         SUSEProductExtension e = new SUSEProductExtension(
                 sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
-        e = TestUtils.saveAndReload(e);
+        TestUtils.saveAndReload(e); //reassign variable if still needed
 
         sourceAddons.add(sourceAddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
@@ -341,8 +342,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(
                 targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
-        e2 = TestUtils.saveAndReload(e2);
-        e3 = TestUtils.saveAndReload(e3);
+        TestUtils.saveAndReload(e2); //reassign variable if still needed
+        TestUtils.saveAndReload(e3); //reassign variable if still needed
 
         SUSEProductTestUtils.populateRepository(targetBaseProduct, targetBaseChannel, targetBaseProduct,
                 targetBaseChannel, user);
@@ -394,7 +395,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         sourceChildChannel.setLabel("sourceChildChannel");
         SUSEProductExtension e = new SUSEProductExtension(
                 sourceBaseProduct, sourceAddonProduct, sourceBaseProduct, false);
-        e = TestUtils.saveAndReload(e);
+        TestUtils.saveAndReload(e); //reassign variable if still needed
 
         sourceAddons.add(sourceAddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
@@ -420,8 +421,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
         SUSEProductExtension e3 = new SUSEProductExtension(
                 targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
-        e2 = TestUtils.saveAndReload(e2);
-        e3 = TestUtils.saveAndReload(e3);
+        TestUtils.saveAndReload(e2); //reassign variable if still needed
+        TestUtils.saveAndReload(e3); //reassign variable if still needed
 
         SUSEProductTestUtils.populateRepository(targetBaseProduct, targetBaseChannel, targetBaseProduct,
                 targetBaseChannel, user);
@@ -437,7 +438,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         template.setParentChannelLabel(targetBaseChannel.getLabel());
         template.setChannelName(targetBaseChannel.getLabel());
         template.setMandatory(true);
-        template = TestUtils.saveAndReload(template);
+        TestUtils.saveAndReload(template); //reassign variable if still needed
 
         // Verify that target products are returned correctly
 
@@ -523,7 +524,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         if (name == null) {
             name = zyppPlugin.getPackageName();
             name.setName("zypp-plugin-spacewalk");
-            name = TestUtils.saveAndFlush(name);
+            TestUtils.saveAndFlush(name); //reassign variable if still needed
         }
         else {
             // Handle the case that the package name exists in the DB
@@ -536,7 +537,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Action action = ActionFactoryTest.createAction(user,
                 ActionFactory.TYPE_DIST_UPGRADE);
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
-        serverAction = TestUtils.saveAndFlush(serverAction);
+        TestUtils.saveAndFlush(serverAction); //reassign variable if still needed
 
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
@@ -728,7 +729,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 ltssSP1AddonProduct, slesSP1BaseChannel, user);
         SUSEProductExtension e = new SUSEProductExtension(
                 slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
-        e = TestUtils.saveAndReload(e);
+        TestUtils.saveAndReload(e); //reassign variable if still needed
 
         slesSP1Addons.add(ltssSP1AddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(slesSP1BaseProduct, slesSP1Addons);
@@ -766,7 +767,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ltssSP1AddonProduct.setUpgrades(Collections.singleton(ltssSP2AddonProduct));
         SUSEProductExtension e3 = new SUSEProductExtension(
                 slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);
-        e3 = TestUtils.saveAndReload(e3);
+        TestUtils.saveAndReload(e3); //reassign variable if still needed
         SUSEProductTestUtils.populateRepository(slesSP2BaseProduct, slesSP2BaseChannel, ltssSP2AddonProduct,
                 ltssSP2AddonChannel, user);
         targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
@@ -857,7 +858,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         sourceAddonManagerTools.setFriendlyName("Test SUSE Manager Client Tools for RHEL, Liberty and Clones 9 x86_64");
         SUSEProductExtension eManagerTools = new SUSEProductExtension(
                 sourceBaseProductRocky9, sourceAddonManagerTools, sourceBaseProductRocky9, false);
-        eManagerTools = TestUtils.saveAndReload(eManagerTools);
+        TestUtils.saveAndReload(eManagerTools); //reassign variable if still needed
         Channel sourceChildChannelManagerTools = SUSEProductTestUtils.createChildChannelsForProduct(
                 sourceAddonManagerTools, sourceBaseChannelRocky9, user);
         SUSEProductTestUtils.populateRepository(sourceBaseProductRocky9, sourceBaseChannelRocky9,
@@ -876,7 +877,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         SUSEProductExtension eTargetRhelManagerTools = new SUSEProductExtension(
                 targetBaseProductRhel9, sourceAddonManagerTools, targetBaseProductRhel9, false);
-        eTargetRhelManagerTools = TestUtils.saveAndReload(eTargetRhelManagerTools);
+        TestUtils.saveAndReload(eTargetRhelManagerTools); //reassign variable if still needed
 
         SUSEProduct targetAddonLiberty9 = SUSEProductTestUtils.createTestSUSEProduct(family);
         targetAddonLiberty9.setName("sll");
@@ -884,7 +885,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         targetAddonLiberty9.setFriendlyName("Test SUSE Liberty Linux 9 x86_64");
         SUSEProductExtension eLiberty9 = new SUSEProductExtension(
                 targetBaseProductRhel9, targetAddonLiberty9, targetBaseProductRhel9, false);
-        eLiberty9 = TestUtils.saveAndReload(eLiberty9);
+        TestUtils.saveAndReload(eLiberty9); //reassign variable if still needed
         Channel targeChildChannelLiberty9 = SUSEProductTestUtils.createChildChannelsForProduct(
                 targetAddonLiberty9, targetBaseChannelRhel9, user);
         SUSEProductTestUtils.populateRepository(targetBaseProductRhel9, targetBaseChannelRhel9,
@@ -970,7 +971,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         sourceAddonManagerTools.setFriendlyName("Test SUSE Manager Client Tools for RHEL, Liberty and Clones 9 x86_64");
         SUSEProductExtension eManagerTools = new SUSEProductExtension(
                 sourceBaseProductRhel9, sourceAddonManagerTools, sourceBaseProductRhel9, false);
-        eManagerTools = TestUtils.saveAndReload(eManagerTools);
+        TestUtils.saveAndReload(eManagerTools); //reassign variable if still needed
         Channel sourceChildChannelManagerTools = SUSEProductTestUtils.createChildChannelsForProduct(
                 sourceAddonManagerTools, sourceBaseChannelRhel9, user);
         SUSEProductTestUtils.populateRepository(sourceBaseProductRhel9, sourceBaseChannelRhel9,
@@ -983,7 +984,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         sourceAddonLiberty9.setFriendlyName("Test SUSE Liberty Linux 9 x86_64");
         SUSEProductExtension eLiberty9 = new SUSEProductExtension(
                 sourceBaseProductRhel9, sourceAddonLiberty9, sourceBaseProductRhel9, false);
-        eLiberty9 = TestUtils.saveAndReload(eLiberty9);
+        TestUtils.saveAndReload(eLiberty9); //reassign variable if still needed
         Channel sourceChildChannelLiberty9 = SUSEProductTestUtils.createChildChannelsForProduct(
                 sourceAddonLiberty9, sourceBaseChannelRhel9, user);
         SUSEProductTestUtils.populateRepository(sourceBaseProductRhel9, sourceBaseChannelRhel9,
@@ -1163,6 +1164,57 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(sa.isStatusPickedUp(),
                 "Action must be reset to In Progress while minion is offline after migration start");
+    }
+
+    @Test
+    public void testDryrunRestoreChannels() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Channel sles156Channel = ChannelFactoryTest.createTestChannel(user);
+        sles156Channel.setLabel("sles-15.6-channel");
+        Channel sles157Channel = ChannelFactoryTest.createTestChannel(user);
+        sles157Channel.setLabel("sles-15.7-channel");
+        minion.addChannel(sles157Channel);
+        ServerFactory.save(minion);
+
+        DistUpgradeActionDetails det = new DistUpgradeActionDetails();
+
+        DistUpgradeChannelTask subscribeTask = new DistUpgradeChannelTask();
+        subscribeTask.setChannel(sles157Channel);
+        subscribeTask.setTask(DistUpgradeChannelTask.SUBSCRIBE);
+        det.addChannelTask(subscribeTask);
+
+        DistUpgradeChannelTask unsubscribeTask = new DistUpgradeChannelTask();
+        unsubscribeTask.setChannel(sles156Channel);
+        unsubscribeTask.setTask(DistUpgradeChannelTask.UNSUBSCRIBE);
+        det.addChannelTask(unsubscribeTask);
+
+        det.setServer(minion);
+        det.setDryRun(true);
+
+        Map<Long, DistUpgradeActionDetails> detailsMap = new HashMap<>();
+        detailsMap.put(det.getServer().getId(), det);
+
+        var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_DIST_UPGRADE);
+        detailsMap.values().stream()
+                .map(DistUpgradeActionDetails::getServer)
+                .forEach(server -> ActionFactory.createAddServerAction(server, action));
+
+        // Add the details and save
+        action.setDetailsMap(detailsMap);
+        ActionFactory.save(action);
+
+        // Simulate SaltUtils prematurely marking the action complete
+        ServerAction sa = action.getServerActions().stream().findFirst().orElseThrow();
+        sa.setStatusCompleted();
+        ActionFactory.save(sa);
+
+        assertEquals(sles157Channel, minion.getBaseChannel());
+
+        // A non-verify result (e.g. the initial sles16.sls state completing)
+        action.handleUpdateServerAction(sa, buildUnrelatedStateResult(), null);
+
+        assertEquals(sles156Channel, minion.getBaseChannel());
     }
 
     /**

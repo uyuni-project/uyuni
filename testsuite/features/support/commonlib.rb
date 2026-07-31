@@ -10,6 +10,22 @@ require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
+# Switch the active Capybara session and app_host to a different server for the
+# duration of the block. Each server gets its own isolated browser session
+# (separate cookies, history), so two servers can be logged into simultaneously.
+#
+# Usage:
+#   using_server('server2') do
+#     visit('/rhn/YourRhn.do')
+#   end
+#   # default session (server) is automatically restored after the block
+def using_server(host)
+  Capybara.using_session(host) do
+    Capybara.app_host = "https://#{get_target(host).full_hostname}"
+    yield
+  end
+end
+
 # Returns the current URL of the driver.
 #
 # @return [String] The current URL.
@@ -122,25 +138,16 @@ end
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
 def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  # WORKAROUND: Chrome 134+ raises Capybara::ElementNotFound, StaleElementReferenceError, or
-  # NoMethodError (CDP response type mismatch) during page navigation, bypassing Capybara's
-  # synchronize() retry mechanism. All three are caught and retried. All other exceptions still
-  # propagate. Uses a plain Time.now loop instead of repeat_until_timeout / Timeout.timeout to
-  # avoid interrupting WebDriver mid-call, which corrupts the Selenium session.
-  deadline = Time.now + timeout
-  while Time.now < deadline
-    begin
-      return true if has_text?(text1, wait: 1)
-      return true if !text2.nil? && has_text?(text2, wait: 1)
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
-      # page mid-navigation, let it settle and retry
-      sleep 2
-    end
-  end
+  # Rely on Capybara's (Playwright-backed) native auto-waiting instead of a hand-rolled
+  # polling loop: has_text? already polls the page until the text appears or `wait` elapses.
+  # When two candidates are given, OR them into a single Regexp so the whole `timeout` budget
+  # is shared across both instead of being spent sequentially on each one (the old loop waited
+  # 1s on text1 before ever looking at text2). Capybara.default_normalize_ws collapses
+  # whitespace for us. Regexp.union escapes both strings, so regex metacharacters stay literal.
+  pattern = text2.nil? ? text1 : Regexp.union(text1, text2)
+  has_text?(pattern, wait: timeout)
+rescue Capybara::ElementNotFound, NoMethodError
+  # Page was mid-navigation / driver transiently unusable: treat as "not found".
   false
 end
 
@@ -158,12 +165,34 @@ end
 
 # This Ruby function refreshes the current page and handles any modal not found errors.
 def refresh_page
+  # A bare reload usually fires no JS prompt, so bound the wait: the Playwright driver passes
+  # this straight to the modal future and value!(nil) would otherwise block forever.
+  accept_prompt(wait: Capybara.default_max_wait_time) do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  # no beforeunload dialog appeared - page reloaded normally
+end
+
+#
+# Waits for any page transition triggered by a preceding click to complete.
+# Handles both Senna SPA transitions (.senna-loading) and hard navigations.
+#
+def wait_for_page_transition
+  # Grace period: both the Senna loading class and a hard navigation are set up
+  # asynchronously after the click (e.g. React fires an API call before bouncing
+  # window.location). Without this, both checks below pass vacuously against the
+  # old, already-loaded page.
+  sleep 0.3
   begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
+    warn 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
+    $stdout.puts e.message # context may be destroyed mid-check by a hard navigation
+  end
+  begin
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'load', timeout: 30_000) }
+  rescue Playwright::Error
+    # No navigation occurred, or the page is already loaded -- acceptable
   end
 end
 
@@ -173,26 +202,33 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, **options)
   begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    $stdout.puts e.message # Skip errors related to .senna-loading element
+    click_button(locator, **options)
+  rescue Playwright::Error => e
+    raise unless e.message.include?('Timeout') && locator
+
+    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- waiting for page load to complete"
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'load', timeout: 60_000) }
   end
+  wait_for_page_transition
 end
 
 #
 # Clicks on a link and waits for any AJAX transition to complete.
 #
 # @param locator [String, nil] The locator for the link to click.
+# @param force [Boolean] When true, uses Playwright force-click (bypasses overlay/actionability
+#   checks). Useful for <a> elements styled as buttons where the standard click is intercepted.
 # @param options [Hash] Additional options for the click action.
-def click_link_and_wait(locator = nil, **options)
-  click_link(locator, **options)
-  begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    $stdout.puts e.message # Skip errors related to .senna-loading element
+def click_link_and_wait(locator = nil, force: false, **options)
+  if force && locator
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.get_by_role('link', name: locator, exact: false).first.click(force: true)
+    end
+  else
+    click_link(locator, **options)
   end
+  wait_for_page_transition
 end
 
 #
@@ -209,14 +245,19 @@ def click_link_or_button_and_wait(locator = nil, **options)
   end
 end
 
-# Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
+# Capybara Node Element extension to override click method,
+# clicking and then waiting for the Senna SPA transition to complete
 module CapybaraNodeElementExtension
   def click
     super
+    # Senna adds .senna-loading asynchronously after the click.
+    # Wait a short moment for it to appear (it may legitimately never
+    # appear for non-navigating clicks), then wait for it to be gone.
+    has_css?('.senna-loading', wait: 1)
     begin
       warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
     rescue StandardError => e
-      $stdout.puts e.message # Skip errors related to .senna-loading element
+      $stdout.puts e.message
     end
   end
 end
@@ -583,20 +624,20 @@ def get_system_name(host)
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle15sp6_terminal'
+  when 'sles15sp6_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle15sp6terminal-/)
+        word.match?(/example.sles15sp6terminal-/)
       end
-    system_name = 'sle15sp6terminal.example.org' if system_name.nil?
-  when 'sle15sp7_terminal'
+    system_name = 'sles15sp6terminal.example.org' if system_name.nil?
+  when 'sles15sp7_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle15sp7terminal-/)
+        word.match?(/example.sles15sp7terminal-/)
       end
-    system_name = 'sle15sp7terminal.example.org' if system_name.nil?
+    system_name = 'sles15sp7terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)
@@ -927,7 +968,7 @@ def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
-  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
+  elsif %w[sshminion rhlike_minion deblike_minion].include?(minion)
     cmd = 'mgr-salt-ssh'
   else
     raise 'Invalid target'
@@ -1060,4 +1101,26 @@ def latest_package(packages)
       [Gem::Version.new('0.0.0'), Gem::Version.new('0')]
     end
   end
+end
+
+# Retrieves the environment variable name for a given host, with fallback support
+#
+# This function checks if the primary environment variable (from ENV_VAR_BY_HOST)
+# is set. If not, it falls back to an alternative environment variable name.
+# Useful for scenarios where a host may be aliased or mapped to a different
+# environment variable when the primary one is unavailable.
+#
+# @param host_key [String] The key in ENV_VAR_BY_HOST (e.g., 'sle_minion')
+# @param fallback_var [String] The fallback environment variable name to use if the primary variable is not set (e.g., 'SLES15SP7_MINION')
+# @return [String] The environment variable name that is set, or the fallback if the primary is not set
+#
+# @example
+#   env_var = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
+#   # Returns 'MINION' if ENV['MINION'] is set, otherwise 'SLES15SP7_MINION'
+#
+# @raise [KeyError] If host_key does not exist in ENV_VAR_BY_HOST
+#
+def get_env_var_with_fallback(host_key, fallback_var)
+  env_var_name = ENV_VAR_BY_HOST[host_key]
+  ENV.key?(env_var_name) ? env_var_name : fallback_var
 end

@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
@@ -48,6 +49,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
         Long version = 1L;
         SystemManagerTest.giveCapability(srvr.getId(),
                 SystemManager.CAP_CONFIGFILES_BASE64_ENC, version);
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
     @Test

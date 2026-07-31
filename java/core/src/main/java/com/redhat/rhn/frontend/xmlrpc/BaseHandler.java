@@ -299,7 +299,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      * @throws XmlRpcFault Thrown if we can't find the method asked for
      */
     /*
-     * TODO: Make this method even smarterer.
+     * OLDTODO: Make this method even smarterer.
      *      Currently this finds methods that match the number of parameters and returns
      *          those.
      */

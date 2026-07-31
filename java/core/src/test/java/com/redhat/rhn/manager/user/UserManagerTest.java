@@ -54,7 +54,8 @@ import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -65,6 +66,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -79,7 +81,8 @@ import java.util.stream.Collectors;
 /** JUnit test case for the User
  *  class.
  */
-public class UserManagerTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class UserManagerTest extends BaseTestCase {
 
     private SystemManager systemManager;
     private Set<User> users;
@@ -608,7 +611,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
        usp.setValue("0");
 
-       usp = TestUtils.saveAndFlush(usp);
+       TestUtils.saveAndFlush(usp); //reassign variable if still needed
 
        assertFalse(UserManager.lookupUserServerPreferenceValue(user,
                                                                s,

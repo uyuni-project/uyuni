@@ -13,26 +13,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="AttestationResult">
 
-    <select id="listPendingForResultType" parameterType="map" resultType="long">
-          SELECT id
-            FROM suseCoCoAttestationResult
-           WHERE status = 'PENDING'
-                        AND result_type IN <foreach item="resultType" collection="supportedTypes" open="(" close=")" separator=",">#{resultType}</foreach>
+    <select id="listForResultType" parameterType="map" resultType="long">
+        SELECT id
+        FROM suseCoCoAttestationResult
+        WHERE status IN <foreach item="statusToListen" collection="statusToListenList" open="(" close=")" separator=",">#{statusToListen}</foreach>
+        AND result_type IN <foreach item="resultType" collection="supportedTypes" open="(" close=")" separator=",">#{resultType}</foreach>
         ORDER BY id
-           LIMIT #{batchSize}
+        LIMIT #{batchSize}
     </select>
 
-    <select id="selectForUpdate" parameterType="long" resultType="com.suse.coco.model.AttestationResult">
+    <select id="selectForUpdate" parameterType="map" resultType="com.suse.coco.model.AttestationResult">
           SELECT id
                     , report_id
                     , result_type
+                    , env_type
                     , status
+                    , in_data
                     , description
                     , details
                     , attested
             FROM suseCoCoAttestationResult
            WHERE id = #{id}
-                    AND status = 'PENDING'
+           AND status IN <foreach item="statusToListen" collection="statusToListenList" open="(" close=")" separator=",">#{statusToListen}</foreach>
         FOR NO KEY UPDATE NOWAIT
     </select>
 
@@ -40,6 +42,7 @@
           UPDATE suseCoCoAttestationResult
              SET status = #{status}
                     , details = #{details}
+                    , in_data = #{inData}::jsonb
                     , process_output = #{processOutput}
                 <if test="status.name() == 'SUCCEEDED'">
                     , attested = #{attested}

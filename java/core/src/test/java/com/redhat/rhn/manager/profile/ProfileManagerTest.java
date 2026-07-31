@@ -42,6 +42,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.PackageMetadataOtherNewer;
+import com.redhat.rhn.frontend.dto.PackageMetadataOtherOnly;
+import com.redhat.rhn.frontend.dto.PackageMetadataThisNewer;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -107,7 +110,6 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         PackageAction action = ProfileManager.syncToSystem(
                 user, s1.getId(), s2.getId(), idCombos,
@@ -122,11 +124,9 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         try {
-            ProfileManager.createProfile(user, server,
-                    "Profile test name" + TestUtils.randomString(),
+            ProfileManager.createProfile(user, server, "Profile test name" + TestUtils.randomString(),
                     "Profile test description");
-            fail("Should not be able to create a profile for a server which " +
-                 "has no basechannel");
+            fail("Should not be able to create a profile for a server which has no basechannel");
         }
         catch (NoBaseChannelFoundException nbcfe) {
             assertTrue(true);
@@ -140,8 +140,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
 
-        Profile p = ProfileManager.createProfile(user, server,
-                "Profile test name" + TestUtils.randomString(),
+        Profile p = ProfileManager.createProfile(user, server, "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
         assertNotNull(p.getId(), "Profile has no id");
@@ -154,8 +153,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
 
-        Profile p = ProfileManager.createProfile(user, server,
-                "Profile test name" + TestUtils.randomString(),
+        Profile p = ProfileManager.createProfile(user, server, "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
         assertNotNull(p.getId(), "Profile has no id");
@@ -169,8 +167,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         server.addChannel(channel);
         server = TestUtils.saveAndFlush(server);
-        Profile p = ProfileManager.createProfile(user, server,
-                "Profile test name" + TestUtils.randomString(),
+        Profile p = ProfileManager.createProfile(user, server, "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
         assertNotNull(p, "Profile is null");
         assertNotNull(p.getId(), "Profile has no id");
@@ -259,12 +256,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
                 new DataResult<>(b), "foo");
 
         assertEquals(1, diff.size());
-        PackageMetadata pm = (PackageMetadata) diff.get(0);
+        PackageMetadata pm = diff.get(0);
         assertNotNull(pm);
-        // assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt())
-        // Changed this to KEY_OTHER_ONLY because for systems with multiple revs of
-        // same package we are now
-        assertEquals(PackageMetadata.KEY_OTHER_ONLY, pm.getComparisonAsInt());
+        // Changed this to KEY_OTHER_ONLY because for systems with multiple revs of same package we are now
+        assertEquals(PackageMetadataOtherOnly.class, pm.getClass());
         assertEquals("kernel-2.4.22-27.EL-bretm", pm.getOther().getEvr());
     }
 
@@ -301,7 +296,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, diff.size());
         PackageMetadata pm = (PackageMetadata) diff.get(0);
         assertNotNull(pm);
-        assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt());
+        assertEquals(PackageMetadataOtherNewer.class, pm.getClass());
+
         assertEquals("kernel-2.4.22-27.EL-bretm", pm.getOther().getEvr());
         assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
     }
@@ -337,9 +333,10 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         List<PackageMetadata> diff = ProfileManager.comparePackageLists(new DataResult<>(a),
                 new DataResult<>(b), "foo");
         assertEquals(1, diff.size());
-        PackageMetadata pm = (PackageMetadata) diff.get(0);
+        PackageMetadata pm = diff.get(0);
         assertNotNull(pm);
-        assertEquals(PackageMetadata.KEY_THIS_NEWER, pm.getComparisonAsInt());
+        assertEquals(PackageMetadataThisNewer.class, pm.getClass());
+
         assertEquals("kernel-2.4.22-27.EL-bretm", pm.getSystem().getEvr());
         assertEquals("kernel-2.4.21-27.EL", pm.getOther().getEvr());
     }
@@ -388,7 +385,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, diff.size());
             PackageMetadata pm = (PackageMetadata) diff.get(0);
             assertNotNull(pm);
-            assertEquals(PackageMetadata.KEY_OTHER_NEWER, pm.getComparisonAsInt());
+            assertEquals(PackageMetadataOtherNewer.class, pm.getClass());
+
             assertEquals("kernel-2.4.22-27.EL-bretm", pm.getOther().getEvr());
             assertEquals(pkg1Epochs[i], pm.getOther().getEpoch());
             assertEquals("kernel-2.4.21-27.EL", pm.getSystem().getEvr());
@@ -662,7 +660,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         PackageMetadata pm = (PackageMetadata) diff.get(0);
         assertNotNull(pm);
         assertEquals("kernel-2.6.9-22.EL", pm.getOther().getEvr());
-        assertEquals(PackageMetadata.KEY_OTHER_ONLY, pm.getComparisonAsInt());
+        //assertEquals(PackageMetadata.KEY_OTHER_ONLY, pm.getComparisonAsInt());
+        assertEquals(PackageMetadataOtherOnly.class, pm.getClass());
     }
 
     @Test
@@ -701,7 +700,5 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         channels = ProfileManager.getChildChannelsNeededForProfile(server.getCreator(),
                 server.getBaseChannel(), p2);
         assertEquals(0, channels.size());
-
-
     }
 }

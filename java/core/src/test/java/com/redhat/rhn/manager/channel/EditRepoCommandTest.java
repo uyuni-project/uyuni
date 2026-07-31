@@ -54,30 +54,31 @@ public class EditRepoCommandTest extends BaseTestCaseWithUser {
         SslCryptoKey sslClientCert = KickstartFactoryTest.createTestSslKey(user.getOrg());
         SslCryptoKey sslClientKey = KickstartFactoryTest.createTestSslKey(user.getOrg());
 
-        repoCommand.addSslSet(caCert.getId(), sslClientCert.getId(), sslClientKey.getId());
+        repoCommand.addSslContentSource(caCert.getId(), sslClientCert.getId(), sslClientKey.getId());
         repoCommand.store();
 
         TestUtils.flushAndClearSession();
 
         ContentSource contentSource = ChannelFactory.lookupContentSource(contentSourceId, user.getOrg());
         assertNotNull(contentSource);
-        assertNotNull(contentSource.getSslSets());
-        assertEquals(1, contentSource.getSslSets().size(), "One SSL set must be associated with the content source");
+        assertNotNull(contentSource.getSslContentSources());
+        assertEquals(1, contentSource.getSslContentSources().size(),
+            "One SSL set must be associated with the content source");
 
-        SslContentSource sslContentSource = contentSource.getSslSets().iterator().next();
+        SslContentSource sslContentSource = contentSource.getSslContentSources().iterator().next();
         assertEquals(caCert.getId(), sslContentSource.getCaCert().getId(), "CA cert ID should match");
         assertEquals(sslClientCert.getId(), sslContentSource.getClientCert().getId(), "CA cert ID should match");
         assertEquals(sslClientKey.getId(), sslContentSource.getClientKey().getId(), "CA cert ID should match");
 
         // Ensure we can also remove the ssl settings
-        repoCommand.deleteAllSslSets();
+        repoCommand.deleteAllSslContentSources();
         repoCommand.store();
 
         TestUtils.flushAndClearSession();
 
         contentSource = ChannelFactory.lookupContentSource(contentSourceId, user.getOrg());
         assertNotNull(contentSource);
-        assertTrue(CollectionUtils.isEmpty(contentSource.getSslSets()),
+        assertTrue(CollectionUtils.isEmpty(contentSource.getSslContentSources()),
                 "No SSL data should be associated with the content source after deletion");
     }
 

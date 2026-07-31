@@ -1,2 +1,0 @@
-- Do not attempt to delete a certificate that does not exist
-  (bsc#1268151)

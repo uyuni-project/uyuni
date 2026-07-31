@@ -36,7 +36,6 @@ import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.util.Util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,21 +62,12 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
     private LoginController loginController;
 
-    private boolean ssoEnabled;
     private Saml2Settings saml2Settings;
 
     @BeforeEach
     public void setUp() throws Exception {
-
-        ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
         saml2Settings = SSOTestUtils.getSaml2Settings();
         loginController = new LoginController(new OidcAuthHandler(), Optional.of(saml2Settings));
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        // Restore the original SSO Enabled value
-        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, Boolean.toString(ssoEnabled));
     }
 
     @Test

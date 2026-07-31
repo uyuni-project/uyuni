@@ -47,9 +47,17 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
         int version = 1;
         String baseStr = "Test10.";
         String files = "";
-        String fileList = "Test10.1\nTest10.2\nTest10.3\nTest10.4" +
-                        "\nTest10.5\nTest10.6\nTest10.7" +
-                        "\nTest10.8\nTest10.9\nTest10.10";
+        String fileList = """
+                        Test10.1
+                        Test10.2
+                        Test10.3
+                        Test10.4
+                        Test10.5
+                        Test10.6
+                        Test10.7
+                        Test10.8
+                        Test10.9
+                        Test10.10""";
 
         files =  cmd.getFileListString() + baseStr + version++;
         cmd.updateFiles(files);

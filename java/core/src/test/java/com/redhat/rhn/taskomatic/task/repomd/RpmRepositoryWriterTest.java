@@ -102,15 +102,12 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         PackageManager.createRepoEntrys(channel.getId());
         TestUtils.flushAndClearSession();
 
-        boolean cfgDefaultSignMetadata = Config.get().getBoolean(ConfigDefaults.SIGN_METADATA);
         Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, "true");
 
         writer.writeRepomdFiles(channel);
 
         assertTrue(metadataPath.resolve("repomd.xml.asc").toFile().exists());
         assertTrue(metadataPath.resolve("repomd.xml.key").toFile().exists());
-
-        Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, Boolean.toString(cfgDefaultSignMetadata));
     }
 
     @Test

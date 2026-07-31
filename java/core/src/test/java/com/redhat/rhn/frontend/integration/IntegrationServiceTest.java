@@ -18,9 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -30,6 +32,11 @@ import java.util.Map;
  *
  */
 public class IntegrationServiceTest extends BaseTestCaseWithUser {
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+    }
 
     @Test
     public void testAuth() {

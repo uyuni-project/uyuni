@@ -21,12 +21,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-public class MgrServerTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class MgrServerTest extends BaseTestCase {
 
     @Test
     public void testSatServer() throws Exception {

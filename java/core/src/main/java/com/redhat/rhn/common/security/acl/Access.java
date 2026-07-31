@@ -159,14 +159,14 @@ public class Access extends BaseHandler {
      */
     public boolean aclIs(Map<String, Object> ctx, String[] params) {
         if (params == null || params.length < 1) {
-            // FIXME: need to localize exception text
+            // OLDTODO: need to localize exception text
             throw new IllegalArgumentException("Invalid number of parameters.");
         }
         return Config.get().getBoolean(params[0]);
     }
 
     /**
-     * TODO: Right now this method calls a small little query
+     * OLDTODO: Right now this method calls a small little query
      * very similar to how the perl code decides this acl.
      * IMO, there is a better way, and we should fix this when
      * we migrate the channels tab.

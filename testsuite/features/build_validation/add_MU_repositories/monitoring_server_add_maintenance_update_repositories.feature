@@ -12,7 +12,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I follow "Create Channel"
     And I enter "Custom Channel for monitoring_server" as "Channel Name"
     And I enter "custom_channel_monitoring_server" as "Channel Label"
-    And I select the parent channel for the "sle15sp7_minion" from "Parent Channel"
+    And I select the parent channel for the "sles15sp7_minion" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
     Then I should see a "Channel Custom Channel for monitoring_server created" text
@@ -21,8 +21,8 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
   Scenario: Create development custom repositories to the custom channel for monitoring_server
     When I prepare the development repositories of "monitoring_server" as part of "custom_channel_monitoring_server" channel
 
-  Scenario: Add the Maintenance update repositories for sle15sp7_minion
-    When I create the MU repositories for "sle15sp7_minion"
+  Scenario: Add the Maintenance update repositories for sles15sp7_minion
+    When I create the MU repositories for "sles15sp7_minion"
 
   Scenario: Add the custom repositories to the custom channel for monitoring_server
     When I follow the left menu "Software > Manage > Channels"
@@ -30,7 +30,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I click on the filter button
     And I follow "Custom Channel for monitoring_server"
     And I follow "Repositories" in the content area
-    And I select the MU repositories for "sle15sp7_minion" from the list
+    And I select the MU repositories for "sles15sp7_minion" from the list
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 

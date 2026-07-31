@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.Optional;
 
-public class FileDiffResultTest extends JMockBaseTestCaseWithUser  {
+public class FileDiffResultTest extends BaseTestCaseWithUser {
     static final String JSON_FILE_DIFF_RESPONSE = "dummy_files_diff_res.json";
     @Test
     public void testFileDiffResult() throws Exception {

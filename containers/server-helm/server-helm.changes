@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jun 30 11:05:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Error out if the repository is not set (bsc#1269667)
+
+-------------------------------------------------------------------
+Wed Jun 17 14:51:36 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Allow custom volume and mount settings in the server Helm chart.
+  * Allow use of dedicated SELinux type
+
+-------------------------------------------------------------------
 Fri May 29 18:48:51 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7

@@ -29,7 +29,7 @@
       <div class="panel-body">
         <rhn:csrf />
         <html:hidden property="submitted" value="true"/>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-3 control-label">
             <bean:message key="extauth.org.useou"/>
           </div>
@@ -39,7 +39,7 @@
            </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-3 control-label">
             <bean:message key="extauth.org.default"/>
           </div>
@@ -53,7 +53,7 @@
             </span>
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-3 control-label">
             <bean:message key="extauth.roles.keep"/>
           </div>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <hr/>
-    <div class="form-group">
+    <div class="row">
       <div class="col-lg-offset-3 offset-lg-3 col-md-4">
         <html:submit styleClass="btn btn-primary">
           <bean:message key="config.update"/>

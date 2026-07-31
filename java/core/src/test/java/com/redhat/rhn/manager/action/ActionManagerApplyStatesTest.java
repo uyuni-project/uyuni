@@ -77,7 +77,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         assertEquals(ApplyStatesEventMessage.CHANNELS, details.getMods().get(0));
         assertEquals(ApplyStatesEventMessage.PACKAGES, details.getMods().get(1));
 
-        // FIXME: Verifying server actions is a problem because plain SQL is used
+        // OLDTODO: Verifying server actions is a problem because plain SQL is used
         // assertEquals(1, savedAction.getServerActions().size());
     }
 

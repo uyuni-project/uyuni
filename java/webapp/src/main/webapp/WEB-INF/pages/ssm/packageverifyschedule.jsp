@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="form-horizontal">
-        <div class="form-group">
+        <div class="row">
             <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
         </div>
     </div>

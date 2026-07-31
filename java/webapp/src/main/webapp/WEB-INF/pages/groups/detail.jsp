@@ -10,7 +10,7 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
 
-<div class="row-0">
+<div class="row">
 <div class="col-md-6">
 <div class="panel panel-default">
 

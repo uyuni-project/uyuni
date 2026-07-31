@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * Service to manage server monitoring.
@@ -134,9 +134,9 @@ public class MonitoringService {
         }
     };
 
-    private static Supplier<Boolean> tomcatJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
+    private static BooleanSupplier tomcatJmxStatusSupplier = TaskoXmlRpcHandler::isJmxEnabled;
 
-    private static Supplier<Boolean> taskomaticJmxStatusSupplier = () -> {
+    private static BooleanSupplier taskomaticJmxStatusSupplier = () -> {
         TaskomaticApi taskomatic = new TaskomaticApi();
         try {
             return taskomatic.isJmxEnabled();
@@ -147,7 +147,7 @@ public class MonitoringService {
         }
     };
 
-    private static Supplier<Boolean> selfMonitoringStatusSupplier =
+    private static BooleanSupplier selfMonitoringStatusSupplier =
             () -> ConfigDefaults.get().isPrometheusMonitoringEnabled();
 
     /**
@@ -162,7 +162,7 @@ public class MonitoringService {
      * Used only for unit tests
      * @param tomcatJmxEnabledIn to set
      */
-    public static void setTomcatJmxStatusSupplier(Supplier<Boolean> tomcatJmxEnabledIn) {
+    public static void setTomcatJmxStatusSupplier(BooleanSupplier tomcatJmxEnabledIn) {
         MonitoringService.tomcatJmxStatusSupplier = tomcatJmxEnabledIn;
     }
 
@@ -170,7 +170,7 @@ public class MonitoringService {
      * Used only for unit tests
      * @param taskomaticJmxEnabledIn to set
      */
-    public static void setTaskomaticJmxStatusSupplier(Supplier<Boolean> taskomaticJmxEnabledIn) {
+    public static void setTaskomaticJmxStatusSupplier(BooleanSupplier taskomaticJmxEnabledIn) {
         MonitoringService.taskomaticJmxStatusSupplier = taskomaticJmxEnabledIn;
     }
 
@@ -178,7 +178,7 @@ public class MonitoringService {
      * Used only for unit tests
      * @param selfMonitoringStatusSupplierIn to set
      */
-    public static void setSelfMonitoringStatusSupplier(Supplier<Boolean> selfMonitoringStatusSupplierIn) {
+    public static void setSelfMonitoringStatusSupplier(BooleanSupplier selfMonitoringStatusSupplierIn) {
         MonitoringService.selfMonitoringStatusSupplier = selfMonitoringStatusSupplierIn;
     }
 
@@ -253,15 +253,15 @@ public class MonitoringService {
     }
 
     private static boolean getTaskomaticRuntimeJmxStatus() {
-        return taskomaticJmxStatusSupplier.get();
+        return taskomaticJmxStatusSupplier.getAsBoolean();
     }
 
     private static boolean getTomcatRuntimeJmxStatus() {
-        return tomcatJmxStatusSupplier.get();
+        return tomcatJmxStatusSupplier.getAsBoolean();
     }
 
     private static boolean getSelfMonitoringStatus() {
-        return selfMonitoringStatusSupplier.get();
+        return selfMonitoringStatusSupplier.getAsBoolean();
     }
 
     /**

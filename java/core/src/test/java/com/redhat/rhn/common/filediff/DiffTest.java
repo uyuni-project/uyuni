@@ -17,14 +17,14 @@ package com.redhat.rhn.common.filediff;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class DiffTest extends RhnBaseTestCase {
+public class DiffTest extends BaseTestCase {
 
     @Test
     public void testDiff() {

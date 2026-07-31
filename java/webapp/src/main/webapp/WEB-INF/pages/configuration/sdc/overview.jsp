@@ -11,7 +11,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<div class="row-0">
+<div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -19,18 +19,18 @@
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-md-5"><bean:message key="sdc.config.centrally-managed"/>:</label>
                         <div class="col-md-6">
                             <div class="form-horizontal">
-                                <div class="form-group">
+                                <div class="row">
                                     <label class="col-md-3"><bean:message key="sdc.config.files.total"/>:</label>
                                     <div class="col-md-9">
                                         ${requestScope.centralFiles}
                                     </div>
                                 </div>
                                 <rhn:require mixins="com.redhat.rhn.common.security.acl.SystemAclHandler" acl="client_capable(configfiles.deploy)">
-                                <div class="form-group">
+                                <div class="row">
                                     <label class="col-md-3 auto-width"><bean:message key="sdc.config.files.deployable"/>:</label>
                                     <div class="col-md-9 auto-width">
                                         ${requestScope.deployableFiles}
@@ -41,11 +41,11 @@
                         </div>
                     </div>
                     <rhn:require acl="system_has_management_entitlement()">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-md-5"><bean:message key="sdc.config.locally-managed"/>:</label>
                             <div class="col-md-6">
                                 <div class="form-horizontal">
-                                    <div class="form-group">
+                                    <div class="row">
                                         <label class="col-md-3"><bean:message key="sdc.config.files.total"/>:</label>
                                         <div class="col-md-9">
                                             ${requestScope.localFiles}
@@ -54,14 +54,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-md-5"><bean:message key="sdc.config.sandbox.files" />:</label>
                             <div class="col-md-6">
                                 ${requestScope.sandboxFiles}
                             </div>
                         </div>
                     </rhn:require>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-md-5"><bean:message key="sdc.config.central-channel.subscriptions"/>:</label>
                         <div class="col-md-6">
                             ${requestScope.globalConfigChannels}.&nbsp;[<a href="/rhn/systems/details/configuration/SubscriptionsSetup.do?sid=${param.sid}"><bean:message key="sdc.config.subscribe_to_channels"/></a>]
@@ -77,18 +77,18 @@
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-md-5"><bean:message key="sdc.config.last-config.deployment"/>:</label>
                         <div class="col-md-6">
                             <div class="form-horizontal">
                                 <c:if test="${requestScope.deploymentTimeMessage}">
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-9">
                                         ${requestScope.deploymentTimeMessage}
                                     </div>
                                 </div>
                                 </c:if>
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-9">
                                         ${requestScope.deploymentDetailsMessage}
                                     </div>
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-md-5"><bean:message key="sdc.config.last-rhn.comparison"/>:</label>
                         <div class="col-md-6">
                             ${requestScope.diffTimeMessage}

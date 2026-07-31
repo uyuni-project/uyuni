@@ -757,7 +757,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         if (name == null) {
             name = zypperPkg.getPackageName();
             name.setName("zypper");
-            name = TestUtils.saveAndFlush(name);
+            TestUtils.saveAndFlush(name); //reassign variable if still needed
         }
         else {
             // Handle the case that the package name exists in the DB
@@ -1295,7 +1295,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         if (name == null) {
             name = zypperPkg.getPackageName();
             name.setName("zypper");
-            name = TestUtils.saveAndFlush(name);
+            TestUtils.saveAndFlush(name); //reassign variable if still needed
         }
         else {
             // Handle the case that the package name exists in the DB
@@ -1563,7 +1563,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         k.setErrata(errata3);
         kw.add(k);
         errata3.setKeywords(kw);
-        errata3 = TestUtils.saveAndFlush(errata3);
+        TestUtils.saveAndFlush(errata3); //reassign variable if still needed
 
         assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
     }

@@ -285,7 +285,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsInChannel() {
-        // TODO make this work on sate
+        // OLDTODO make this work on sate
     }
 
     @Test

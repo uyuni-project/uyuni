@@ -37,7 +37,7 @@ import com.redhat.rhn.frontend.dto.kickstart.CobblerProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -54,7 +54,7 @@ import java.util.Optional;
  * JUnit test case for the KickstartLister class.
  */
 
-public class KickstartListerTest extends BaseTestCaseWithUser {
+public class KickstartListerTest extends KickstartBaseTest {
 
     @Test
    public void testKickstartsInOrg() throws Exception {

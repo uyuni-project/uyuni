@@ -21,14 +21,17 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * UserPrefSetupActionTest
  */
-public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class ActionDetailsSetupActionTest extends BaseTestCase {
 
     @Test
     public void testPerformExecute() throws Exception {

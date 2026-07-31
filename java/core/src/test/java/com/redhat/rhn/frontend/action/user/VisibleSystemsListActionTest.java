@@ -22,15 +22,18 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.apache.struts.action.Action;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * VisibleSystemsListActionTest
  */
-public class VisibleSystemsListActionTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class VisibleSystemsListActionTest extends BaseTestCase {
 
     @Test
     public void testSelectAll() throws Exception {

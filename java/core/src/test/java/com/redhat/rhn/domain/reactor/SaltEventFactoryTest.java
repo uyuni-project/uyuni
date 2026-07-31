@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ import java.util.stream.IntStream;
 /**
  * Test for {@link SaltEventFactory} class.
  */
-public class SaltEventFactoryTest extends RhnBaseTestCase {
+public class SaltEventFactoryTest extends BaseTestCase {
 
     @Test
     public void testCountSaltEvents() {

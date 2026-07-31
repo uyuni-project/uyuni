@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults;
@@ -47,7 +48,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -73,9 +73,9 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        setConfigDefaultsInstance(configDefaults);
+       TestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
             will(returnValue("2025.10"));
         }});
 
-        setConfigDefaultsInstance(mockConfigDefaults);
+        TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
         //
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
@@ -130,7 +130,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
             will(returnValue(expectedRegistryBaseTag));
         }});
 
-        setConfigDefaultsInstance(mockConfigDefaults);
+        TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
 
         //
@@ -148,19 +148,5 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         assertEquals(MLM_REGISTRY_URL_EXAMPLE, proxyConfigGetFormDataContext.getRegistryUrlExample());
         assertEquals(expectedRegistryBaseTag, proxyConfigGetFormDataContext.getRegistryTagExample());
 
-    }
-
-    /**
-     * Overrides the ConfigDefaults instance
-     * @param configDefaultsIn the ConfigDefaults instance
-     * @throws NoSuchFieldException if a field with the specified name is not found.
-     * @throws IllegalAccessException if the field is not accessible.
-     */
-    @SuppressWarnings("java:S3011")
-    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaultsIn);
     }
 }

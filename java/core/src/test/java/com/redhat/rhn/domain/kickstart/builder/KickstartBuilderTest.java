@@ -36,7 +36,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidVirtualizationTypeException;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -47,7 +47,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KickstartBuilderTest extends BaseTestCaseWithUser {
+public class KickstartBuilderTest extends KickstartBaseTest {
 
 
     @BeforeEach

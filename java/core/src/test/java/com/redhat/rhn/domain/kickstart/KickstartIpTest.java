@@ -18,7 +18,7 @@ package com.redhat.rhn.domain.kickstart;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import java.util.Date;
 /**
  * KickstartSessionTest
  */
-public class KickstartIpTest extends BaseTestCaseWithUser {
+public class KickstartIpTest extends KickstartBaseTest {
 
     @Test
     public void testKickstartDataTest() throws Exception {

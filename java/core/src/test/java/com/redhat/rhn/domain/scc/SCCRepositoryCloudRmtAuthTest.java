@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,11 +35,6 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
     }
 
     @Test
@@ -77,6 +71,7 @@ public class SCCRepositoryCloudRmtAuthTest extends MockObjectTestCase {
 
     @Test
     public void doesNotDuplicateFolderWhenPathIsRepeated() {
+        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
 
         SCCRepositoryCloudRmtAuth repoAuth = createAuthFor(
                 "https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/",

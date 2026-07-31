@@ -24,17 +24,20 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class AddonProductRuleTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class AddonProductRuleTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setup() {

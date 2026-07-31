@@ -14,7 +14,7 @@
 <html:form method="post" action="/systems/ssm/audit/ScheduleXccdfConfirm.do" styleClass="form-horizontal">
 
   <%@ include file="/WEB-INF/pages/common/fragments/audit/schedule-xccdf.jspf" %>
-  <div class="form-group">
+  <div class="row">
     <div class="col-md-offset-3 offset-md-3 col-md-6">
       <html:submit styleClass="btn btn-primary" property="schedule_button">
         <bean:message key="system.audit.confirmschedulexccdf.jsp.button"/>

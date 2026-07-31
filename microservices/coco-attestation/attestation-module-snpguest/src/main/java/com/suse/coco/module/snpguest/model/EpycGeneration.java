@@ -11,15 +11,38 @@
 
 package com.suse.coco.module.snpguest.model;
 
+import java.util.Arrays;
+
 /**
  * EPYC CPU Model, used by SNPGuest to identify what certificates to use during verification.
  */
 public enum EpycGeneration {
-    UNKNOWN,
-    MILAN,
-    GENOA,
-    BERGAMO,
-    SIENA,
-    TURIN
-}
+    UNKNOWN(0),
+    MILAN(1),
+    GENOA(2),
+    BERGAMO(3),
+    SIENA(4),
+    TURIN(5);
 
+    private final int value;
+
+    EpycGeneration(int valueIn) {
+        value = valueIn;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    /**
+     * @param valueIn the value
+     * @return returns the enum type for the given value
+     */
+    public static EpycGeneration fromValue(int valueIn) {
+        return Arrays.stream(EpycGeneration.values())
+                .filter(e -> e.getValue() == valueIn)
+                .findFirst()
+                .orElse(UNKNOWN);
+    }
+
+}

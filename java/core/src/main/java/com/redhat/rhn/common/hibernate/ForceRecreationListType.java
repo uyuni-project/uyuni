@@ -164,7 +164,7 @@ public class ForceRecreationListType implements UserCollectionType {
 
     /**
      * Returns an ArrayList. Not sure what the heck this is here for.
-     * TODO: WHAT IS THIS FOR? 2007-11-8 jesusr
+     * OLDTODO: WHAT IS THIS FOR? 2007-11-8 jesusr
      * @return ArrayList as an Object.
      */
     public Object instantiate() {

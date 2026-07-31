@@ -81,8 +81,7 @@ public class SingleShotListener implements TriggerListener {
      */
     @Override
     public void triggerMisfired(Trigger trigger) {
-        // TODO Auto-generated method stub
-
+        //empty
     }
 
     /**

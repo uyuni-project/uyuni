@@ -15,12 +15,12 @@
 
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 import org.quartz.JobExecutionContext;
 
-public class ModularDataCleanupTest extends RhnBaseTestCase {
+public class ModularDataCleanupTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestExecute() {

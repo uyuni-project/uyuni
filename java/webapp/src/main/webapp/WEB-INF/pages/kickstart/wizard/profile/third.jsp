@@ -47,7 +47,7 @@
     <p><bean:message key="kickstart.jsp.create.wizard.third.heading1" /></p>
     <div class="panel panel-default">
       <div class="panel-body">
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-2">
             <rhn:required-field key="kickstart.root.password.jsp.label"/>:
           </div>
@@ -55,7 +55,7 @@
             <html:password property="rootPassword" styleClass="form-control" />
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-2">
             <rhn:required-field key="kickstart.root.password.verify.jsp.label"/>:
           </div>

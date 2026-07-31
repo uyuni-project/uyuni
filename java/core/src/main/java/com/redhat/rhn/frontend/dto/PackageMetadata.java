@@ -14,13 +14,19 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PackageMetadata represents some information about a Package
@@ -28,45 +34,44 @@ import java.util.List;
  * similar to the hash, array, map or whatever it is on the perl
  * side.
  */
-public class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
-    public static final int KEY_NO_DIFF = 0;
-    public static final int KEY_THIS_ONLY = 1;
-    public static final int KEY_THIS_NEWER = 2;
-    public static final int KEY_OTHER_ONLY = 3;
-    public static final int KEY_OTHER_NEWER = 4;
+public abstract class PackageMetadata extends BaseDto implements Comparable<PackageMetadata> {
+    protected static final int KEY_NO_DIFF = 0;
+    protected static final int KEY_THIS_ONLY = 1;
+    protected static final int KEY_THIS_NEWER = 2;
+    protected static final int KEY_OTHER_ONLY = 3;
+    protected static final int KEY_OTHER_NEWER = 4;
 
-    public static final int ACTION_NONE = -1;
-    public static final int ACTION_INSTALL = 0;
-    public static final int ACTION_REMOVE = 1;
-    public static final int ACTION_UPGRADE = 2;
-    public static final int ACTION_DOWNGRADE = 3;
+    protected static final int ACTION_NONE = -1;
+    protected static final int ACTION_INSTALL = 0;
+    protected static final int ACTION_REMOVE = 1;
+    protected static final int ACTION_UPGRADE = 2;
+    protected static final int ACTION_DOWNGRADE = 3;
 
-    private PackageListItem system;
-    private PackageListItem other; // could be another system or a profile
+    protected PackageListItem system;
+    protected PackageListItem other; // could be another system or a profile
     private int comparison;
-    private String compareParam;
-    private int actionStatus;
-    private List<Channel> channels;
+    protected String compareParam;
+    protected int actionStatus;
+    protected List<Channel> channels;
+
+    protected static final Logger LOGGER = LogManager.getLogger(PackageMetadata.class);
 
     /**
      * Constructs a PackageMetadata
-     * @param sys PackageListItem for the current system
-     * @param victim PackageListItem for the profile or other system
+     * @param systemIn PackageListItem for the current system
+     * @param otherIn PackageListItem for the profile or other system
+     * @param comparisonIn The comparison to set.
+     * @param compareParamIn The parameter to the comparison string.
      */
-    public PackageMetadata(PackageListItem sys, PackageListItem victim) {
-        system = sys;
-        other = victim;
-        comparison = KEY_NO_DIFF;
-        compareParam = null;
+    protected PackageMetadata(PackageListItem systemIn, PackageListItem otherIn, int comparisonIn,
+                              String compareParamIn) {
+        system = systemIn;
+        other = otherIn;
+        comparison = comparisonIn;
+        compareParam = compareParamIn;
         actionStatus = ACTION_NONE;
         channels = new ArrayList<>();
-    }
-
-    /**
-     * Default ctor
-     */
-    public PackageMetadata() {
-        this(new PackageListItem(), new PackageListItem());
+        updateActionStatus();
     }
 
     /**
@@ -81,22 +86,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * Return the localized action status string.
      * @return the localized action status string.
      */
-    public String getActionStatus() {
-        LocalizationService ls = LocalizationService.getInstance();
-
-        switch(actionStatus) {
-            case ACTION_INSTALL:
-                return ls.getMessage("message.install");
-            case ACTION_REMOVE:
-                return ls.getMessage("message.actionremove");
-            case ACTION_DOWNGRADE:
-                return ls.getMessage("message.actiondowngrade", other.getEvr());
-            case ACTION_UPGRADE:
-                return ls.getMessage("message.actionupgrade", other.getEvr());
-            default:
-                return "";
-        }
-    }
+    public abstract String getActionStatus();
 
     /**
      * Returns the comparison key.
@@ -108,43 +98,7 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * @return Returns the comparison.
      */
-    public String getComparison() {
-        LocalizationService ls = LocalizationService.getInstance();
-
-        switch(comparison) {
-            case KEY_THIS_ONLY:
-                return ls.getMessage("message.thissystemonly");
-            case KEY_THIS_NEWER:
-                return ls.getMessage("message.thissystemnewer");
-            case KEY_OTHER_ONLY:
-                if (compareParam != null) {
-                    return ls.getMessage("message.otheronly", compareParam);
-                }
-                return ls.getMessage("message.profileonly");
-            case KEY_OTHER_NEWER:
-                if (compareParam != null) {
-                    return ls.getMessage("message.othernewer", compareParam);
-                }
-                return ls.getMessage("message.profilenewer");
-            default:
-                return "";
-        }
-    }
-
-    /**
-     * Sets the comparison to given value.
-     * @param comparisonIn The comparison to set.
-     */
-    public void setComparison(int comparisonIn) {
-        comparison = comparisonIn;
-    }
-
-    /**
-     * @param aCompareParam The parameter to the comparison string.
-     */
-    public void setCompareParam(String aCompareParam) {
-        compareParam = aCompareParam;
-    }
+    public abstract String getComparison();
 
     /**
      * Returns the System's PackageListItem
@@ -264,9 +218,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * @return The package type.
      */
     public String getPackageType() {
-        if (comparison == KEY_THIS_ONLY) {
-            return system.getPackageType();
-        }
         return other.getPackageType();
     }
 
@@ -277,9 +228,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * other PackageListItem are null, returns null.
      */
     public String getEpoch() {
-        if (comparison == KEY_THIS_ONLY) {
-            return system.getEpoch();
-        }
         return other.getEpoch();
     }
 
@@ -290,9 +238,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * other PackageListItem are null, returns null.
      */
     public String getVersion() {
-        if (comparison == KEY_THIS_ONLY) {
-            return system.getVersion();
-        }
         return other.getVersion();
     }
 
@@ -303,9 +248,6 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
      * other PackageListItem are null, returns null.
      */
     public String getRelease() {
-        if (comparison == KEY_THIS_ONLY) {
-            return system.getRelease();
-        }
         return other.getRelease();
     }
 
@@ -320,32 +262,12 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     /**
      * Updates the action status.
      */
-    public void updateActionStatus() {
-        switch(comparison) {
-            case KEY_THIS_ONLY:
-                actionStatus = ACTION_REMOVE;
-                break;
-            case KEY_THIS_NEWER:
-                actionStatus = ACTION_DOWNGRADE;
-                break;
-            case KEY_OTHER_ONLY:
-                actionStatus = ACTION_INSTALL;
-                break;
-            case KEY_OTHER_NEWER:
-                actionStatus = ACTION_UPGRADE;
-                break;
-            default:
-                actionStatus = ACTION_NONE;
-        }
-    }
+    public abstract void updateActionStatus();
 
     /**
      * @return Returns target Nevra to be displayed on webui
      */
     public String getActionTargetNevra() {
-        if (comparison == KEY_THIS_ONLY) {
-            return system.getNevra();
-        }
         return other.getNevra();
     }
 
@@ -436,5 +358,51 @@ public class PackageMetadata extends BaseDto implements Comparable<PackageMetada
     @Override
     public String getSelectionKey() {
         return getIdCombo();
+    }
+
+    /**
+     * handles a package runTransaction action.
+     * @param packageDeltaId the package delta id
+     */
+    public abstract void handlePackageRunTransaction(Long packageDeltaId);
+
+    protected void handlePackageRunTransaction(Long packageDeltaId, String actionFactoryTxnOperation,
+                                               PackageListItem packageListItem) {
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_package_delta_element");
+        Map<String, Object> params = new HashMap<>();
+        params.put("delta_id", packageDeltaId);
+
+        params.put("operation", actionFactoryTxnOperation);
+        params.put("n", getName());
+        params.put("v", packageListItem.getVersion());
+        params.put("r", packageListItem.getRelease());
+        String epoch = packageListItem.getEpoch();
+        params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+        params.put("a", packageListItem.getArch() != null ? packageListItem.getArch() : "");
+        m.executeUpdate(params);
+    }
+
+    /**
+     * checks if it can be removed from missing packages
+     * @return true if it can be removed from missing packages
+     */
+    public boolean isRemovableFromMissingPackages() {
+        return false;
+    }
+
+    /**
+     * checks if it makes sense to skip the check whether it's missing
+     * @return true to skip the check, false to do the check
+     */
+    public boolean isSkipMissingCheck() {
+        return false;
+    }
+
+    /**
+     * checks if the package exists on one but not the other
+     * @return true if the package exists on one but not the other
+     */
+    public boolean existsOnOneSideOnly() {
+        return true;
     }
 }

@@ -53,7 +53,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         Channel child2 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
         child2.setOrg(null);
 
-        child1 = TestUtils.saveAndFlush(child1);
+        TestUtils.saveAndFlush(child1); //reassign variable if still needed
         child2 = TestUtils.saveAndFlush(child2);
 
         server.addChannel(child2);

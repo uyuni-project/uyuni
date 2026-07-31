@@ -44,15 +44,13 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class ProxyClientsAction extends BaseSystemsAction {
 
-    private Server server;
-
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) {
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
-        server = requestContext.lookupAndBindServer();
+        Server server = requestContext.lookupAndBindServer();
 
         if (server.isProxy()) {
             // Try to extract the Proxy InstalledProduct on the client and
@@ -71,7 +69,7 @@ public class ProxyClientsAction extends BaseSystemsAction {
                 request.setAttribute("version", null);
             }
 
-            DataResult<SystemOverview> result = getDataResult(user, null, formIn);
+            DataResult<SystemOverview> result = getDataResultImpl(user, server);
             if (result.isEmpty()) {
                 request.setAttribute(SHOW_NO_SYSTEMS, Boolean.TRUE);
             }
@@ -95,23 +93,26 @@ public class ProxyClientsAction extends BaseSystemsAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    @Override
-    protected DataResult<SystemOverview> getDataResult(User user, PageControl pc,
-            ActionForm formIn) {
-        DataResult<SystemOverview> clients = SystemManager.listClientsThroughProxy(
-                server.getId());
+    protected DataResult<SystemOverview> getDataResultImpl(User user, Server server) {
+        DataResult<SystemOverview> clients = SystemManager.listClientsThroughProxy(server.getId());
         if (clients != null && !clients.isEmpty()) {
             HashSet<Long> clientIdSet = new HashSet<>();
             for (SystemOverview client: clients) {
                 clientIdSet.add(client.getId());
             }
             clients.clear();
-            for (SystemOverview client: SystemManager.systemList(user, pc)) {
+            for (SystemOverview client: SystemManager.systemList(user, null)) {
                 if (clientIdSet.contains(client.getId())) {
                     clients.add(client);
                 }
             }
         }
         return clients;
+    }
+
+    @Override
+    protected DataResult<?> getDataResult(User user, PageControl pc, ActionForm formIn) {
+        //dummy implementation, never used since execute() is overridden and calls getDataResultImpl
+        return null;
     }
 }

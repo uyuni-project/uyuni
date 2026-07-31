@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * RhnSetFactoryTest
  */
-public class RhnSetFactoryTest extends RhnBaseTestCase {
+public class RhnSetFactoryTest extends BaseTestCase {
 
     @Test
     public void testConstructor() {

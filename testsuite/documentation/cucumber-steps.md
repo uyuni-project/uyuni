@@ -36,7 +36,7 @@ Possible values are currently:
 | SLES Salt minion                | ```$minion```            | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
 | SLES Docker and Kiwi build host | ```$build_host```        | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
 | Monitoring Server               | ```$monitoring_server``` | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
-| SLES Salt SSH minion            | ```$ssh_minion```        | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
+| SLES Salt SSH minion            | ```$sshminion```        | ```$SSHMINION```                                        | ```"sshminion"```       | ```"minion"```             |
 | Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
 | Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
 | PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
@@ -491,8 +491,8 @@ Note that the text area variant handles the new lines characters while the other
 * Test registration (with API)
 
 ```gherkin
-  Then "ssh_minion" should not be registered
-  Then "ssh_minion" should be registered
+  Then "sshminion" should not be registered
+  Then "sshminion" should be registered
 ```
 
 * Check for base channel (with User Interface)
@@ -579,7 +579,7 @@ Note that the text area variant handles the new lines characters while the other
 ```gherkin
   When I refresh the pillar data
   Then the pillar data for "timezone:name" should be "Etc/GMT-5" on "sle_minion"
-  Then the pillar data for "timezone" should be empty on "ssh_minion"
+  Then the pillar data for "timezone" should be empty on "sshminion"
 ```
 
 * Apply the Salt highstate

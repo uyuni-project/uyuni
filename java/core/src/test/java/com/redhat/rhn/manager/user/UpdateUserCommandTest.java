@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.user;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +26,7 @@ import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -36,7 +37,7 @@ import org.junit.jupiter.api.Test;
 /**
  * UpdateUserCommandTest
  */
-public class UpdateUserCommandTest extends RhnBaseTestCase {
+public class UpdateUserCommandTest extends BaseTestCase {
 
     private UpdateUserCommand command;
 

@@ -34,3 +34,6 @@ COMMENT ON COLUMN CLMEnvironmentDifference.entry_description
   IS 'The description of the entry';
 COMMENT ON COLUMN CLMEnvironmentDifference.synced_date
   IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE CLMEnvironmentDifference
+  ADD CONSTRAINT CLMEnvironmentDifference_channel_fkey FOREIGN KEY (mgm_id, channel_id) REFERENCES Channel(mgm_id, channel_id);

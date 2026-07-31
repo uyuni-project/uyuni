@@ -61,7 +61,7 @@
 
     <rhn:require acl="authorized_for(systems.software.packages.profiles, W);">
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <div class="col-md-12">
                     <html:submit property="createBtn" styleClass="btn btn-default">
                         <bean:message key="profile.jsp.createsystemprofile"/>

@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -39,7 +39,7 @@ import java.util.Set;
 /**
  * PackageActionTest
  */
-public class PackageActionTest extends RhnBaseTestCase {
+public class PackageActionTest extends BaseTestCase {
     private static Logger log = LogManager.getLogger(PackageActionTest.class);
 
 

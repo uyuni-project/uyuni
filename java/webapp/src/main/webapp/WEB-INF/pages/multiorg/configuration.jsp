@@ -32,7 +32,7 @@
             <rhn:submitted/>
             <rhn:hidden name="oid" value="${param.oid}"/>
 	    <%@ include file="/WEB-INF/pages/common/fragments/org-config.jspf" %>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <button type="submit" class="btn btn-primary"
                       <c:if test = "${edit_disabled}">

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:52:50 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Fix CERTIFICATE_VERIFY_FAILED error when running
+    uyuni-configure.py on openSUSE Leap 16.0
+
+-------------------------------------------------------------------
 Fri May 22 13:56:27 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8

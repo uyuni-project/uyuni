@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:17:47 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Update OSs supported with OVAL
+
+-------------------------------------------------------------------
 Fri May 22 08:39:15 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

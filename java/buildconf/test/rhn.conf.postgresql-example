@@ -62,6 +62,9 @@ web.restrict_mail_domains =
 traceback_mail = galaxy-noise@suse.de
 web.traceback_mail = galaxy-noise@suse.de
 web.default_mail_from = SUSE Manager JUnit testsuite <junit-susemanager@suse.de>
+# this mailer class sends no mail while testing
+web.mailer_class = com.redhat.rhn.testing.NoOpMail
+
 
 # Password settings
 web.encrypted_passwords = 1

@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ErrataCacheDto;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -53,7 +53,7 @@ import java.util.Map;
 /**
  * ErrataFactoryTest
  */
-public class ErrataCacheManagerTest extends RhnBaseTestCase {
+public class ErrataCacheManagerTest extends BaseTestCase {
 
     @Test
     public void testCount() {

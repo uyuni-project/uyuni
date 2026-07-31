@@ -24,14 +24,17 @@ import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetActionTest;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * InProgressSystemsActionTest
  */
-public class InProgressSystemsActionTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class InProgressSystemsActionTest extends BaseTestCase {
 
     @Test
     public void testSelectAll() throws Exception {

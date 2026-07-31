@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.FileUtils;
@@ -133,7 +134,7 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
         assertTrue(initSlsFile.isFile());
         String initSlsContents = FileUtils.readFileToString(initSlsFile);
         for (String contentChunk : contentChunks) {
-            assertContains(initSlsContents, contentChunk);
+            TestUtils.assertContains(initSlsContents, contentChunk);
         }
     }
 }

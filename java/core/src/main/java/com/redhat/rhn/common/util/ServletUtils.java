@@ -131,7 +131,7 @@ public class ServletUtils {
      */
     public static String requestParamsToQueryString(ServletRequest request) {
 
-        StringBuffer queryString = new StringBuffer();
+        StringBuilder queryString = new StringBuilder();
 
         String paramName;
         String paramValue;
@@ -164,7 +164,7 @@ public class ServletUtils {
         return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 
-    private static boolean endsWith(StringBuffer buffer, char c) {
+    private static boolean endsWith(StringBuilder buffer, char c) {
         if (buffer.length() == 0) {
             return false;
         }

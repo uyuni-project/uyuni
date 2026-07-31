@@ -702,23 +702,23 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         group2.subscribeConfigChannels(Arrays.asList(cc2, cc1), admin);
 
         List<ManagedServerGroup> systemGroups = handler.listAssignedSystemGroups(admin, ccLabel1);
-        assertContains(systemGroups, group1);
-        assertContains(systemGroups, group2);
+        TestUtils.assertContains(systemGroups, group1);
+        TestUtils.assertContains(systemGroups, group2);
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
         assertFalse(systemGroups.contains(group1), "Unexpected group found");
-        assertContains(systemGroups, group2);
+        TestUtils.assertContains(systemGroups, group2);
 
         group1.subscribeConfigChannels(Arrays.asList(cc2), admin);
         group2.unsubscribeConfigChannels(Arrays.asList(cc1), admin);
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel1);
-        assertContains(systemGroups, group1);
+        TestUtils.assertContains(systemGroups, group1);
         assertFalse(systemGroups.contains(group2), "Unexpected group found");
 
         systemGroups = handler.listAssignedSystemGroups(admin, ccLabel2);
-        assertContains(systemGroups, group1);
-        assertContains(systemGroups, group2);
+        TestUtils.assertContains(systemGroups, group1);
+        TestUtils.assertContains(systemGroups, group2);
     }
 
     private void store(Map<Long, Set<ConfigRevision>> revisions, Long ccid,

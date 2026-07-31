@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy-docs
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-proxy-docs
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        Spacewalk Proxy Server Documentation
 License:        OPL-1.0

@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.utils.salt.custom.GuestProperties;
@@ -33,6 +34,7 @@ import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,7 +44,8 @@ import java.util.Map;
 /**
  * VirtualInstanceManagerTest
  */
-public class VirtualInstanceManagerTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class VirtualInstanceManagerTest extends BaseTestCase {
 
     private static final String EVENT_TYPE_FULLREPORT = "fullreport";
     private static final String EVENT_TYPE_EXISTS = "exists";

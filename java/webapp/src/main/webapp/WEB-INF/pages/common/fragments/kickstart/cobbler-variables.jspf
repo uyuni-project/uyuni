@@ -14,7 +14,7 @@
 <html:form method="post" action="${param.post_url}" styleClass="form-horizontal">
     <rhn:csrf />
     <c:if test= "${not empty param.show_netboot}">
-        <div class="form-group">
+        <div class="row">
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstart.variable.jsp.netboot-enabled"/>:
             </label>
@@ -23,7 +23,7 @@
             </div>
         </div>
     </c:if>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="kickstart.variable.jsp.variabledetails"/>:
         </label>
@@ -33,7 +33,7 @@
                            property="variables"/>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-9">
             <html:submit styleClass="btn btn-primary">
                 <bean:message key="kickstart.variable.jsp.update"/>

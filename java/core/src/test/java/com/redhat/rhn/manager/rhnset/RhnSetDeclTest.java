@@ -23,11 +23,13 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * RhnSetDeclTest - Simple set of Unit tests that exercise
@@ -37,14 +39,12 @@ import org.junit.jupiter.api.Test;
  * out bad IDs placed in the set.
  *
  */
-public class RhnSetDeclTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith(UserForTestCaseExtension.class)
+public class RhnSetDeclTest extends BaseTestCase {
 
-    private User user;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        user = UserTestUtils.createUser(this);
-    }
+    @UserForTest(useClassNameForOrg = true)
+    protected User user;
 
     @Test
     public void testGetUnownedSystems() throws Exception {

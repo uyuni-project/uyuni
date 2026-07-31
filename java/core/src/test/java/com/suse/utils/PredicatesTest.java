@@ -14,6 +14,8 @@ package com.suse.utils;
 import static java.util.Objects.nonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.testing.BaseTestCase;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,7 +27,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class PredicatesTest {
+public class PredicatesTest extends BaseTestCase {
 
     private static Stream<Arguments> expressionPredicates() {
         return Stream.of(

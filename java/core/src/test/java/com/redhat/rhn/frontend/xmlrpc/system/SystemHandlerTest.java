@@ -63,6 +63,7 @@ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.CustomDataKeyTest;
 import com.redhat.rhn.domain.org.Org;
@@ -250,12 +251,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "true");
 
         assertThrows(UnsupportedOperationException.class, () -> handler.scheduleSupportDataUpload(
-                admin, server.getId().intValue(), "012345", "-i LVM", "EU", getNow()));
+                admin, server.getId().intValue(), "012345", "-i LVM", "EU", TestUtils.getNow()));
 
         Config.get().setBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD, "false");
 
         Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
-                "012345", "-i LVM", "EU", getNow());
+                "012345", "-i LVM", "EU", TestUtils.getNow());
         assertNotNull(aid);
 
         Action action = ActionFactory.lookupById(Long.valueOf(aid));
@@ -471,8 +472,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
-
-        commitHappened();
     }
 
     @Test
@@ -594,8 +593,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
-
-        commitHappened();
     }
 
     @Test
@@ -660,7 +657,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Try setting base channel to child
         try {
-            result = handler.setBaseChannel(admin, sid, child1.getLabel());
+            handler.setBaseChannel(admin, sid, child1.getLabel());
             fail("SystemHandler.setBaseChannel allowed invalid base channel to be set.");
         }
         catch (InvalidChannelException e) {
@@ -677,14 +674,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             ServerFactory.save(server);
 
 
-            result = handler.setBaseChannel(admin, sid, base1.getLabel());
+            handler.setBaseChannel(admin, sid, base1.getLabel());
             fail("allowed channel with incompatible arch to be set");
         }
         catch (InvalidChannelException e) {
             // success
         }
-
-        commitHappened();
     }
 
     @Test
@@ -765,8 +760,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setBaseChannel(admin, sid, base1.getLabel());
         }, "allowed channel with incompatible arch to be set");
-
-        commitHappened();
     }
 
     @Test
@@ -1078,7 +1071,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Long sid = server.getId();
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
-        KickstartDataTest.setupTestConfiguration(admin);
+        KickstartTestUtils.setupTestConfiguration(admin);
         assertEquals(1, handler.deleteSystem(cert.toString()));
         assertNull(ServerFactory.lookupById(sid));
     }
@@ -1116,7 +1109,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
         server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
-        KickstartDataTest.setupTestConfiguration(admin);
+        KickstartTestUtils.setupTestConfiguration(admin);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
         KickstartDataTest.addCommand(admin, k, "url", "--url http://cascade.sfbay.redhat." +
         "com/rhn/kickstart/ks-rhel-i386-server-5");
@@ -1202,7 +1195,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Commit in this test is mandatory as creation date keeps updating while the object is not actually stored
         // in the database
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         Thread.sleep(2_000);
         final Date earliestDate = new Date();
@@ -1214,7 +1206,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         action = ActionManager.schedulePackageRefresh(admin, server, new Date());
         ActionFactory.save(action);
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(3, results.size());
@@ -1376,7 +1367,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNull(val);
 
         try {
-            pillar = readCustomInfoPillar(server);
+            readCustomInfoPillar(server);
             fail("Custom info pillar was not deleted.");
         }
         catch (java.util.NoSuchElementException e) {
@@ -2410,7 +2401,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
         TestUtils.commitAndCloseSession();
-        commitHappened();
         handler.scheduleSyncPackagesWithSystem(admin, s1.getId().
                         intValue(), s2.getId().intValue(), packagesToSync,
                 new Date());
@@ -2648,7 +2638,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, keys.size());
 
         key.getToken().getActivatedServers().add(server);
-        key = TestUtils.saveAndFlush(key);
+        TestUtils.saveAndFlush(key); //reassign variable if still needed
 
         keys = handler.listActivationKeys(admin, server.getId().intValue());
         assertEquals(1, keys.size());
@@ -2770,12 +2760,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
 
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        TestUtils.assertContains(result.get(1).get("friendly").toString(),
                 "SUSE Linux Enterprise High Performance Computing 12 SP2");
-        assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(2).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
 
     @Test
@@ -2827,13 +2817,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
 
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
-        assertContains(result.get(0).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        TestUtils.assertContains(result.get(0).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP2");
-        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(1).get("friendly").toString(),
+        TestUtils.assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(1).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
@@ -2891,10 +2881,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
 
-        assertNotEmpty("no target found", result);
+        TestUtils.assertNotEmpty("no target found", result);
         assertEquals(1, result.size());
-        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
-        assertContains(result.get(0).get("friendly").toString(),
+        TestUtils.assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        TestUtils.assertContains(result.get(0).get("friendly").toString(),
                 "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
 
@@ -2992,14 +2982,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
 
         //Case #2 Include targets even missing successor.
 
         List<Map<String, Object>> targets  = handler.listMigrationTargets(admin, server.getId().intValue(), false);
         assertEquals(1, targets.size());
-        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
+        TestUtils.assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
         String ident = targets.get(0).get("ident").toString();
 
         //Case #2-1 ident is provided but removeProductsWithNoSuccessorAfterMigration was passed as false so we expect
@@ -3011,7 +3001,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
         //Case #2-2 ident is not provided but removeProductsWithNoSuccessorAfterMigration was passed as true
         // so we expect no target to be found
@@ -3022,7 +3012,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw FaultException");
         }
         catch (FaultException e) {
-            assertContains(e.getMessage(), "No target found for Product migration");
+            TestUtils.assertContains(e.getMessage(), "No target found for Product migration");
         }
 
         //Case #2-3 ident is provided and als removeProductsWithNoSuccessorAfterMigration was passed
@@ -3095,7 +3085,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // case#2 all targets returned even with missing successors ones
         targets = handler.listMigrationTargets(admin, server.getId().intValue(), false);
         assertEquals(1, targets.size());
-        assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
+        TestUtils.assertContains(targets.get(0).get("ident").toString(), String.valueOf(sp2BaseProduct.getId()));
     }
 
     @Test
@@ -3437,7 +3427,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Should throw UnsupportedOperationException");
         }
         catch (IllegalArgumentException e) {
-            assertContains(e.getMessage(), "not available in assigned channels");
+            TestUtils.assertContains(e.getMessage(), "not available in assigned channels");
         }
 
         // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be
@@ -3531,7 +3521,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
         assertEquals(1, result);
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
-        assertNotEmpty(packageStates);
+        TestUtils.assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());
         assertEquals(PackageStates.REMOVED.getId(), packageStates.iterator().next().getPackageStateTypeId());
         assertEquals(VersionConstraints.LATEST.getId(), packageStates.iterator().next().getVersionConstraintId());

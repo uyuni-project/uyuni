@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * ConfigurationValidationTest
  */
-public class ConfigurationValidationTest extends RhnBaseTestCase {
+public class ConfigurationValidationTest extends BaseTestCase {
 
     @Test
     public void testValidatePath() {

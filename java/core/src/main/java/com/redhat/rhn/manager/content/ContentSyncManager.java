@@ -1962,7 +1962,7 @@ public class ContentSyncManager {
                 Tuple3<Long, Long, Long> ids = new Tuple3<>(rootJson.getId(), productJson.getId(), repoJson.getSCCId());
                 SUSEProduct product = productMap.get(productJson.getId());
                 SUSEProduct root = productMap.get(rootJson.getId());
-                //FIXME: this is not pretty and should be changed if somebody has the time
+                //OLDTODO: this is not pretty and should be changed if somebody has the time
                 Optional<SUSEProduct> parent = parentJson.flatMap(Function.identity())
                         .map(p -> productMap.get(p.getId()));
 

@@ -6,6 +6,7 @@
 
 @skip_if_github_validation
 @scope_res
+@scope_rhlike
 @rhlike_minion
 Feature: Remote command on the Red Hat-like Salt minion
   In order to manage a Red Hat-like Salt minion

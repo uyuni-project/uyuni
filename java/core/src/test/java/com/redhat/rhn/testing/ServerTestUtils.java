@@ -276,7 +276,7 @@ public class ServerTestUtils {
         Package upgradedPackage = PackageTest.createTestPackage(org);
         upgradedPackage.setPackageName(installedPackage.getPackageName());
         upgradedPackage.setPackageEvr(upgradedPackageEvr);
-        upgradedPackage = TestUtils.saveAndFlush(upgradedPackage);
+        TestUtils.saveAndFlush(upgradedPackage); //reassign variable if still needed
 
         ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), errata.getId(), installedPackage.getId());

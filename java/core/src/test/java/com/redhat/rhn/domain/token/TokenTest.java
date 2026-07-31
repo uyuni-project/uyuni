@@ -33,8 +33,8 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * TokenTest
  */
-public class TokenTest extends RhnBaseTestCase {
+public class TokenTest extends BaseTestCase {
 
     /**
      * Simple test to check Token creation and the equals method.

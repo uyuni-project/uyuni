@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-common-libs
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,11 +20,11 @@
 %define __python %{_bindir}/python2
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
-%if (0%{?suse_version} && 0%{?suse_version} < 1600 )
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%endif
 %global python3root %{python3_sitelib}/uyuni
 %global build_py3 1
+%if (0%{?suse_version} && 0%{?suse_version} < 1600 )
+%{!?python3_sitelib: %global python3_sitelib %(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%endif
 %endif
 
 %if ( 0%{?rhel} && 0%{?rhel} < 8 ) || ( 0%{?suse_version} && 0%{?suse_version} < 1600 )
@@ -42,12 +42,12 @@
 %endif
 
 %if ! ( 0%{?suse_version} >= 1600 )
-%{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python2root %{python2_sitelib}/uyuni
 %endif
 
 Name:           uyuni-common-libs
-Version:        5.2.5
+Version:        5.3.0
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
@@ -86,11 +86,14 @@ Python 2 libraries required by both Uyuni server and client tools.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
+Obsoletes:      python3-spacewalk-backend-libs
 Summary:        Uyuni server and client tools libraries for python3
 Group:          Development/Languages/Python
 BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 Conflicts:      %{name} < 1.7.0
+
+Obsoletes:      python3-spacewalk-usix
 %if 0%{?suse_version}
 Requires:       python3-base
 %else
@@ -100,9 +103,6 @@ Requires:       python3-libs
 Recommends:     zchunk
 Recommends:     zstd
 %endif
-
-Obsoletes:      python3-spacewalk-backend-libs
-Obsoletes:      python3-spacewalk-usix
 
 %description -n python3-%{name}
 Python 3 libraries required by both Uyuni server and client tools.
@@ -151,7 +151,6 @@ rm -Rf %{buildroot}%{python2root}
 
 %if 0%{?build_py2}
 %files -n python2-%{name}
-%defattr(-,root,root)
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %{python2root}
@@ -159,7 +158,6 @@ rm -Rf %{buildroot}%{python2root}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
-%defattr(-,root,root)
 %license LICENSE
 %{python3root}
 %endif

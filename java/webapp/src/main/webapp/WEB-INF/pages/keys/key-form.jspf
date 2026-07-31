@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         <rhn:required-field key="keycreate.jsp.description"/>
     </label>
@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label" for="type">
         <bean:message key="keycreate.jsp.type"/>
     </label>
@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         <c:choose>
             <c:when test="${cryptoKey.id != null}">
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label" for="filecontents">
         <bean:message key="keycreate.jsp.filecontents"/>
     </label>

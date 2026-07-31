@@ -90,14 +90,14 @@ are executed only if the Docker and Kiwi build host is available.
 
 Using a SSH minion with the test suite is not mandatory.
 
-If you do not want a SSH minion, do not define `SSH_MINION` environment
+If you do not want a SSH minion, do not define `SSHMINION` environment
 variable before you run the test suite. That's all.
 
 If you want a SSH minion, make this variable point to the machine that
 will be the SSH minion:
 
 ```bash
-export SSH_MINION=myssh.example.com
+export SSHMINION=myssh.example.com
 ```
 
 and then run the test suite.
@@ -105,7 +105,7 @@ and then run the test suite.
 Inside of the test suite, the scenarios that are tagged with
 
 ```
-@ssh_minion
+@sshminion
 ```
 
 ### Testing with a Red Hat-like minion

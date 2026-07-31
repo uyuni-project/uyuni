@@ -14,14 +14,14 @@ package com.suse.manager.errata.advisorymap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ErrataAdvisoryMapManagerTest extends RhnBaseTestCase {
+public class ErrataAdvisoryMapManagerTest extends BaseTestCase {
     private static final String TEST_ADVISORY_MAP_CSV_FILE_NAME =
             "/com/suse/manager/errata/advisorymap/advisory-map.csv";
     private static final long TEST_ADVISORY_MAP_RECORDS_NUM = 140938L;

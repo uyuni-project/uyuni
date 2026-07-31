@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -44,10 +45,11 @@ import java.util.Set;
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
         Config.get().setString("ssh_push_port_https", "1233");
-        Config.get().setString("ssh_push_sudo_user", "mgruser");
+        Config.get().setString(ConfigDefaults.CONFIG_KEY_SUDO_USER, "mgruser");
     }
 
     @Test

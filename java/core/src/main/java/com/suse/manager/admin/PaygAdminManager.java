@@ -406,7 +406,7 @@ public class PaygAdminManager {
         else { // RHUI - some clouds have no credentials
             List<ContentSource> csUrls = PaygSshDataFactory.listRhuiRepositoriesCreatedByInstance(paygSshData);
             Set<SslCryptoKey> sslCryptoKeys = csUrls.stream()
-                    .flatMap(cs -> cs.getSslSets().stream())
+                    .flatMap(cs -> cs.getSslContentSources().stream())
                     .flatMap(scs -> Stream.of(scs.getCaCert(), scs.getClientCert(), scs.getClientKey()))
                     .collect(Collectors.toSet());
             if (LOG.isDebugEnabled()) {

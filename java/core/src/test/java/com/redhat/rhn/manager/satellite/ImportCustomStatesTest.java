@@ -245,7 +245,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
             assertEquals(Long.valueOf(1L), configFile.getLatestConfigRevision().getRevision());
             assertTrue(configFile.getLatestConfigRevision().getConfigContent()
                     .getContentsString().isEmpty());
-            assertNotEmpty(TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_CUSTOM_STATES));
+            TestUtils.assertNotEmpty(TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_CUSTOM_STATES));
         }
     }
 
@@ -291,8 +291,8 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         assertTrue(backedUpDir1.exists());
         List<String> backedUpStateNames1 = Arrays.asList(backedUpDir1.list());
         assertEquals(2, backedUpStateNames1.size());
-        assertContains(backedUpStateNames1, "customstate1.sls");
-        assertContains(backedUpStateNames1, "customstate2.sls");
+        TestUtils.assertContains(backedUpStateNames1, "customstate1.sls");
+        TestUtils.assertContains(backedUpStateNames1, "customstate2.sls");
 
         assertTrue(dir2.exists());
         assertTrue(legacyStatesBackupDirectory.resolve(dir2.getName()).toFile().exists());

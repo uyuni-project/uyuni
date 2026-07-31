@@ -188,7 +188,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
         }
         /*
          * Everything is not ok.
-         * TODO: Error page or some other shout-to-user-venue
+         * OLDTODO: Error page or some other shout-to-user-venue
          * What happens if a few ServerActions fail to be scheduled?
          */
         Map<String, Object> params = makeParamMap(request);

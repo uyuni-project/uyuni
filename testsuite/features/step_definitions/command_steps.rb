@@ -1507,17 +1507,29 @@ Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$
   node = get_target('server')
 
   # connection from the controller to the reportdb in the server
-  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
-  raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
+  reportdb_admin_conn = nil
+  begin
+    reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+    raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
+  ensure
+    # Close the communication
+    reportdb_admin_conn&.close if reportdb_admin_conn && !reportdb_admin_conn.finished?
+  end
 end
 
 Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
   node = get_target('server')
 
   dbname = 'susemanager'
-  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
-  assert_raises PG::InsufficientPrivilege do
-    reportdb_admin_conn.exec('select * from rhnserver;')
+  reportdb_admin_conn = nil
+  begin
+    assert_raises(PG::ConnectionBad, PG::InsufficientPrivilege, PG::InvalidAuthorizationSpecification) do
+      reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+      reportdb_admin_conn.exec('select * from rhnserver;')
+    end
+  ensure
+    # Close the communication even when assert_raises itself fails.
+    reportdb_admin_conn&.close if reportdb_admin_conn && !reportdb_admin_conn.finished?
   end
 end
 
@@ -1606,6 +1618,11 @@ end
 When(/^I wait until port "([^"]*)" is listening on "([^"]*)" (host|container)$/) do |port, host, location|
   node = get_target(host)
   node.run_until_ok("lsof  -i:#{port}", runs_in_container: location == 'container')
+end
+
+When(/^I check that "([^"]*)" (host|container) is listening on TCP port "([^"]*)"$/) do |host, location, port|
+  node = get_target(host)
+  node.run_until_ok("timeout 2 bash -c 'cat < /dev/null > /dev/tcp/$(hostname -f)/#{port}'", runs_in_container: location == 'container')
 end
 
 Then(/^port "([^"]*)" should be (open|closed)$/) do |port, selection|
@@ -1732,7 +1749,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise SystemCallError, 'Error getting server certificate serial!' unless result_code.zero?
 
-  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host]
+  targets = %w[proxy sle_minion sshminion rhlike_minion deblike_minion build_host]
   targets.each do |target|
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
@@ -1931,6 +1948,18 @@ end
 Then(/^the health check tool (should be|should not be) running on "([^"]*)"$/) do |action, host|
   node = get_target(host)
   node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'should be' ? '4' : '0'}", check_errors: true, verbose: true)
+end
+
+Then(/^podman container "([^"]*)" should be (running|healthy) on "([^"]*)"$/) do |container, state, host|
+  node = get_target(host)
+  case state
+  when 'running'
+    node.run("podman inspect --format '{{.State.Running}}' #{container} | grep -x true", check_errors: true, verbose: true, runs_in_container: false)
+  when 'healthy'
+    node.run("podman inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' #{container} | grep -x healthy", check_errors: true, verbose: true, runs_in_container: false)
+  else
+    raise "Unsupported container state '#{state}'"
+  end
 end
 
 When(/^I remove test supportconfig on "([^"]*)"$/) do |host|

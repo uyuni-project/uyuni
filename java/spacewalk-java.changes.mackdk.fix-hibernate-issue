@@ -1,0 +1,2 @@
+- Fixed Hibernate issue when updating the SSL content sources
+  during a pay-as-you-go connection data refresh (bsc#1271382)

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public class ConfigTest extends RhnBaseTestCase {
+public class ConfigTest extends BaseTestCase {
     static final String TEST_KEY = "user";
     static final String TEST_VALUE = "newval";
     static final String TEST_CONF_LOCATION = "/usr/share/rhn/unit-tests/";

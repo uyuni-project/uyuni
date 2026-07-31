@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 /**
  * EditActionTest
  */
-public class EditActionTest extends RhnBaseTestCase {
+public class EditActionTest extends BaseTestCase {
 
     @Test
     public void testUpdateErrata() throws Exception {

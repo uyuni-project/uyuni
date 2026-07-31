@@ -133,7 +133,7 @@ public class Validator {
             log.error(errorMessage, e);
             throw new ValidatorException(errorMessage, e);
         }
-        // TODO: Get rid of the toString and determine the type
+        // OLDTODO: Get rid of the toString and determine the type
         String data = (value == null) ? null : value.toString();
 
         ValidatorError validationMessage;

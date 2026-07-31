@@ -62,30 +62,32 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     private VirtualHostManagerFactory factory;
     private final String baseUri = "http://localhost:8080/rhn";
     private static final Gson GSON = new GsonBuilder().create();
-    private static final String VIRT_HOST_GATHERER_MODULES = "{\n" +
-        "    \"Kubernetes\": {\n" +
-        "        \"module\": \"Kubernetes\",\n" +
-        "        \"url\": \"\",\n" +
-        "        \"username\": \"\",\n" +
-        "        \"password\": \"\",\n" +
-        "        \"client-cert\": \"\",\n" +
-        "        \"client-key\": \"\",\n" +
-        "        \"ca-cert\": \"\",\n" +
-        "        \"kubeconfig\": \"\",\n" +
-        "        \"context\": \"\"\n" +
-        "    },\n" +
-        "    \"File\": {\n" +
-        "        \"module\": \"File\",\n" +
-        "        \"url\": \"\"\n" +
-        "    },\n" +
-        "    \"VMware\": {\n" +
-        "        \"module\": \"VMware\",\n" +
-        "        \"hostname\": \"\",\n" +
-        "        \"port\": 443,\n" +
-        "        \"username\": \"\",\n" +
-        "        \"password\": \"\"\n" +
-        "    }\n" +
-        "}\n";
+    private static final String VIRT_HOST_GATHERER_MODULES = """
+                        {
+                            "Kubernetes": {
+                                "module": "Kubernetes",
+                                "url": "",
+                                "username": "",
+                                "password": "",
+                                "client-cert": "",
+                                "client-key": "",
+                                "ca-cert": "",
+                                "kubeconfig": "",
+                                "context": ""
+                            },
+                            "File": {
+                                "module": "File",
+                                "url": ""
+                            },
+                            "VMware": {
+                                "module": "VMware",
+                                "hostname": "",
+                                "port": 443,
+                                "username": "",
+                                "password": ""
+                            }
+                        }
+                        """;
 
     /**
      * {@inheritDoc}

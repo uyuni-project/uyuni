@@ -94,7 +94,7 @@ public class OrgFactory extends HibernateFactory {
      * @param oid Org Id to delete
      * @param user User who initiated this action
      */
-    // TODO this be probably somewhere else
+    // OLDTODO this be probably somewhere else
     public static void deleteOrgAndDependencies(Long oid, User user) {
         Org org = OrgFactory.lookupById(oid);
         SaltStateGeneratorService.INSTANCE.removeOrg(org);

@@ -129,7 +129,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = dr.size();
 
         long ret = handler.importContainerImage(admin, "my-external-image", "1.0",
-                server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
+                server.getId().intValue(), store.getLabel(), ak.getKey(), TestUtils.getNow());
         assertTrue(ret > 0);
 
         Optional<ImageInfo> info = ImageInfoFactory
@@ -142,7 +142,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         try {
             handler.importContainerImage(admin, "my-external-image", "1.0",
-                    server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
+                    server.getId().intValue(), store.getLabel(), ak.getKey(), TestUtils.getNow());
             fail("Overwriting image.");
         }
         catch (IllegalArgumentException e) {
@@ -151,7 +151,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         ImageInfoFactory.delete(info.get(), saltServiceMock);
         ret = handler.importContainerImage(admin, "my-external-image", "1.0",
-                server.getId().intValue(), store.getLabel(), "", getNow());
+                server.getId().intValue(), store.getLabel(), "", TestUtils.getNow());
         assertTrue(ret > 0);
     }
 
@@ -169,7 +169,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = dr.size();
 
         long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
-                server.getId().intValue(), getNow());
+                server.getId().intValue(), TestUtils.getNow());
         assertTrue(ret > 0);
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -198,7 +198,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = dr.size();
 
         long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
-                server.getId().intValue(), getNow());
+                server.getId().intValue(), TestUtils.getNow());
         assertTrue(ret > 0);
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);

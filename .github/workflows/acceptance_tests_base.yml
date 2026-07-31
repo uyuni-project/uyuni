@@ -39,6 +39,7 @@ jobs:
       java: ${{ steps.filter.outputs.java }}
       web: ${{ steps.filter.outputs.web }}
       testsuite: ${{ steps.filter.outputs.testsuite }}
+      controller_dockerfile: ${{ steps.filter.outputs.controller_dockerfile }}
       not_bv_validation: ${{ steps.bv_filter.outputs.not_build_validation }}
       require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || ( steps.filter.outputs.testsuite == 'true' && steps.bv_filter.outputs.not_build_validation == 'true' ) }}
     steps:
@@ -57,6 +58,8 @@ jobs:
               - 'web/html/src/**'
             testsuite:
               - 'testsuite/**'
+            controller_dockerfile:
+              - 'testsuite/dockerfiles/controller-dev/**'
       - uses: dorny/paths-filter@9d7afb8d214ad99e78fbd4247752c4caed2b6e4c # v4.0.0
         id: bv_filter
         with:
@@ -150,6 +153,13 @@ jobs:
       - name: Create Podman network
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/02_setup_network.sh
+
+      - name: Build controller image from current branch
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && needs.filters.outputs.controller_dockerfile == 'true' }}
+        run: |
+          sudo podman build \
+            -t ghcr.io/${{ env.UYUNI_PROJECT }}/uyuni/ci-test-controller-dev:${{ env.UYUNI_VERSION }} \
+            ./testsuite/dockerfiles/controller-dev/
 
       - name: Start controller, registry and build host
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}

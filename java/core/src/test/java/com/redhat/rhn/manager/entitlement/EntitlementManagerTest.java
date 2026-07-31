@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * EntitlementManagerTest
  */
-public class EntitlementManagerTest extends RhnBaseTestCase {
+public class EntitlementManagerTest extends BaseTestCase {
 
     @Test
     public void testGetEntitlementByName() {

@@ -423,7 +423,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     @ReadOnly
     public int isGloballySubscribable(User loggedInUser, String channelLabel) {
-        // TODO: this should return a boolean NOT an int
+        // OLDTODO: this should return a boolean NOT an int
 
         // Make sure the channel exists:
         lookupChannelByLabel(loggedInUser, channelLabel);
@@ -2197,8 +2197,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
          // check SSL-certificates parameters
          if (!StringUtils.isEmpty(sslCaCert)) {
              try {
-                 // FIXME: Allow to set multiple SSL sets per custom repo - new API calls?
-                 repoCmd.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                 // OLDTODO: Allow to set multiple SSL sets per custom repo - new API calls?
+                 repoCmd.addSslContentSource(getKeyId(loggedInUser, sslCaCert),
                          getKeyId(loggedInUser, sslCliCert),
                          getKeyId(loggedInUser, sslCliKey));
              }
@@ -2405,9 +2405,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
         // set new SSL Certificates for the repository
         if (!StringUtils.isEmpty(sslCaCert)) {
             try {
-                // FIXME: Allow to set multiple SSL sets per custom repo - new API calls?
-                repoEditor.deleteAllSslSets();
-                repoEditor.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                // OLDTODO: Allow to set multiple SSL sets per custom repo - new API calls?
+                repoEditor.deleteAllSslContentSources();
+                repoEditor.addSslContentSource(getKeyId(loggedInUser, sslCaCert),
                         getKeyId(loggedInUser, sslCliCert),
                         getKeyId(loggedInUser, sslCliKey));
             }
@@ -2825,7 +2825,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             throw new PermissionCheckFailureException("Only Org Admins can remove repo filters.");
         }
 
-        //TODO is this necessary?
+        //OLDTODO is this necessary?
         lookupContentSourceByLabel(label, loggedInUser.getOrg());
 
         String flag = filterProps.get("flag");

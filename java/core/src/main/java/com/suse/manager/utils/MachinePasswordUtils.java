@@ -36,8 +36,8 @@ public class MachinePasswordUtils {
     * @param minionServer minion
     * @return machine password as hash bytes
     */
-   //TODO: move this to a more appropriate place and finalize how the password is generated
-   //TODO: evaluate if plain SHA-256 is appropriate for password hashing
+   //OLDTODO: move this to a more appropriate place and finalize how the password is generated
+   //OLDTODO: evaluate if plain SHA-256 is appropriate for password hashing
    public static byte[] machinePasswordBytes(MinionServer minionServer) {
       try {
          MessageDigest instance = MessageDigest.getInstance("SHA-256");

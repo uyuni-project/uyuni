@@ -30,18 +30,21 @@ import com.redhat.rhn.frontend.dto.OperationDetailsDto;
 import com.redhat.rhn.frontend.dto.ServerOperationDataDto;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
  */
-public class SsmOperationManagerTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class SsmOperationManagerTest extends BaseTestCase {
 
     private static final String EXPECTED_NOTE = "Test note";
 

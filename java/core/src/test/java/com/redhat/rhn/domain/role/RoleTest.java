@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ import java.util.Set;
 /** JUnit test case for the User
  *  class.
  */
-public class RoleTest extends RhnBaseTestCase {
+public class RoleTest extends BaseTestCase {
 
     /**
     * Test to see if we can modify the collection of roles.

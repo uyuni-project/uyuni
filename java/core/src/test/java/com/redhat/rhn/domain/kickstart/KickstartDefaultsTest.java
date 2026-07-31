@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.kickstart;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.frontend.action.kickstart.KickstartTestHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * @author mmccune
  *
  */
-public class KickstartDefaultsTest extends BaseTestCaseWithUser {
+public class KickstartDefaultsTest extends KickstartBaseTest {
 
     @Test
     public void testVirtFields() throws Exception {

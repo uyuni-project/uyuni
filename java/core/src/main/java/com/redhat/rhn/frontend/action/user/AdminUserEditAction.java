@@ -18,6 +18,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -183,7 +184,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         try {
-            processRBACGroupAssignments(request, targetUser);
+            processRBACGroupAssignments(request, targetUser, disabledRoles);
             processAdminRoleAssignments(request, rolesToAdd, rolesToRemove, targetUser, loggedInUser);
         }
         catch (PermissionException pe) {
@@ -220,27 +221,38 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
     }
 
-    private void processRBACGroupAssignments(HttpServletRequest request, User target) {
+    private void processRBACGroupAssignments(HttpServletRequest request, User target, Set<String> disabledRoles) {
         var userGroups = target.getAccessGroups();
         var currentGroupLabels = userGroups.stream()
                 .map(AccessGroup::getLabel)
                 .collect(Collectors.toUnmodifiableSet());
 
+        log.debug("Current groups: {}", currentGroupLabels);
         Iterator<AccessGroup> iterator = userGroups.iterator();
         while (iterator.hasNext()) {
             AccessGroup group = iterator.next();
+            if (disabledRoles.contains(group.getLabel())) {
+                continue;
+            }
             String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + group.getLabel());
-
             if (groupSetting == null) {
+                log.debug("Remove group: {}", group.getLabel());
                 iterator.remove();
             }
         }
 
-        for (AccessGroup group : ACCESS_GROUP_MANAGER.list(target.getOrg())) {
+        List<AccessGroup> orgGroups = ACCESS_GROUP_MANAGER.list(target.getOrg());
+        log.debug("AccessGroups: {}", () -> orgGroups.stream().map(AccessGroup::getLabel).toList());
+        for (AccessGroup group : orgGroups) {
             String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + group.getLabel());
             if (groupSetting != null && !currentGroupLabels.contains(group.getLabel())) {
+                log.debug("Add group: {}", group.getLabel());
                 userGroups.add(group);
             }
+        }
+
+        if (target.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
+            userGroups.addAll(AccessGroupFactory.DEFAULT_GROUPS);
         }
     }
 

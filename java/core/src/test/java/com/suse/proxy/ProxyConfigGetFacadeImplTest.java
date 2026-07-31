@@ -47,7 +47,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,9 +69,9 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        setConfigDefaultsInstance(configDefaults);
+        TestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -138,7 +137,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     /**
      * Tests getFormData when provided server is not associated with any ProxyConfig
      */
-    @SuppressWarnings({"java:S3599", "java:S1171"})
     @Test
     public void getFormDataWithWhenNewProxyConfiguration() throws Exception {
         final String expectedCurrentConfig = "{\"sourceMode\":\"rpm\",\"registryMode\":\"simple\"," +
@@ -161,7 +159,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
             allowing(mockConfigDefaults).getProductVersion();
             will(returnValue("99.98.97"));
         }});
-        setConfigDefaultsInstance(mockConfigDefaults);
+        TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
         //
         Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, server,
@@ -171,19 +169,4 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         assertEquals(expectedParents, formData.get("parents"));
         assertEquals("[]", formData.get("validationErrors"));
     }
-
-    /**
-     * Overrides the ConfigDefaults instance
-     * @param configDefaultsIn the ConfigDefaults instance
-     * @throws NoSuchFieldException if a field with the specified name is not found.
-     * @throws IllegalAccessException if the field is not accessible.
-     */
-    @SuppressWarnings("java:S3011")
-    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaultsIn);
-    }
-
 }

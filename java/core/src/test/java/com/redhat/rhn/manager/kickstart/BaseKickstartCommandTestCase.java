@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.kickstart;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,9 +30,9 @@ public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUpBaseKickstartCommandTestCase() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         this.ksdata = KickstartDataTest.
             createKickstartWithChannel(user.getOrg());
-
     }
 
 

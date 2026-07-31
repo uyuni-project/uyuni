@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.PackageMetadataFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -531,21 +532,9 @@ public class ServerSnapshot extends BaseDomainHelper {
             snapshotPkg.setVersion((String) pkgDiff.get("snapshot_version"));
             snapshotPkg.setRelease((String) pkgDiff.get("snapshot_release"));
 
-            PackageMetadata pm = new PackageMetadata(systemPkg, snapshotPkg);
-            int comparison;
-            switch (((Number) pkgDiff.get("comparison")).intValue()) {
-            case -2: comparison = PackageMetadata.KEY_OTHER_ONLY;
-                     break;
-            case -1: comparison = PackageMetadata.KEY_OTHER_NEWER;
-                     break;
-            case 1:  comparison = PackageMetadata.KEY_THIS_NEWER;
-                     break;
-            case 2:  comparison = PackageMetadata.KEY_THIS_ONLY;
-                     break;
-            default: comparison = PackageMetadata.KEY_NO_DIFF;
-            }
-            pm.setComparison(comparison);
-            pm.updateActionStatus();
+            PackageMetadata pm = PackageMetadataFactory.createFromPackageDiffComparison(
+                    ((Number) pkgDiff.get("comparison")).intValue(), systemPkg, snapshotPkg);
+
             pkgsMeta.add(pm);
         }
         return new DataResult<>(pkgsMeta);

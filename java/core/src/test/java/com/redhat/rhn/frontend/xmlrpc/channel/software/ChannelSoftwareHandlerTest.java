@@ -40,9 +40,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -59,9 +57,6 @@ import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -117,11 +112,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
-    );
-    private SystemManager systemManager =
-            new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
 
@@ -145,7 +135,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     public void ignoredtestAddRemovePackages() throws Exception {
 
-        // TODO : GET THIS WORKING
+        // OLDTODO : GET THIS WORKING
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         Package pkg1 = PackageTest.createTestPackage(admin.getOrg());
         Package pkg2 = PackageTest.createTestPackage(admin.getOrg());
@@ -433,7 +423,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
         catch (ValidationException exc) {
             assertEquals(exc.getErrorCode(), 2800);
-            assertContains(
+            TestUtils.assertContains(
                     exc.getMessage(),
                     "Unable to delete channel. The channel you have tried to delete has been cloned. " +
                     "You must delete the clones before you can delete this channel.");

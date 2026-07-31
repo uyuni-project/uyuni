@@ -2,58 +2,14 @@
   "sources": {
     "LEAP": {
       "content": {
-        "15.2": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.2-affected.xml.gz",
-          "patch": ""
-        },
-        "15.3": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.3-affected.xml.gz",
-          "patch": ""
-        },
-        "15.4": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.4-affected.xml.gz",
-          "patch": ""
-        },
-        "15.5": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.5-affected.xml.gz",
-          "patch": ""
-        },
-        "15.6": {
-          "vulnerability": "",
-          "patch": ""
-        }
-      }
-    },
-    "LEAP_MICRO": {
-      "content": {
-        "5.2": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.2-affected.xml.gz",
-          "patch": ""
-        },
-        "5.3": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.3-affected.xml.gz",
-          "patch": ""
-        },
-        "5.4": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.4-affected.xml.gz",
-          "patch": ""
-        },
-        "5.5": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.micro.5.5-affected.xml.gz",
-          "patch": ""
-        },
-        "6.0": {
-          "vulnerability": "",
+        "16.0": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.16.0-affected.xml",
           "patch": ""
         }
       }
     },
     "SUSE_LINUX_ENTERPRISE_SERVER": {
       "content": {
-        "11": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.11-affected.xml.gz",
-          "patch": ""
-        },
         "12": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.12-affected.xml.gz",
           "patch": ""
@@ -61,23 +17,15 @@
         "15": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.15-affected.xml.gz",
           "patch": ""
+        },
+        "16": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.16-affected.xml",
+          "patch": ""
         }
       }
     },
     "SUSE_LINUX_ENTERPRISE_DESKTOP": {
       "content": {
-        "10": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.10.xml.gz",
-          "patch": ""
-        },
-        "11": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.11.xml.gz",
-          "patch": ""
-        },
-        "12": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.12-affected.xml.gz",
-          "patch": ""
-        },
         "15": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.15-affected.xml.gz",
           "patch": ""
@@ -86,14 +34,6 @@
     },
     "SUSE_LINUX_ENTERPRISE_MICRO": {
       "content": {
-        "5.0": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.0-affected.xml.gz",
-          "patch": ""
-        },
-        "5.1": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.1-affected.xml.gz",
-          "patch": ""
-        },
         "5.2": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.2-affected.xml.gz",
           "patch": ""
@@ -111,7 +51,71 @@
           "patch": ""
         },
         "6.0": {
-          "vulnerability": "",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.0-affected.xml.gz",
+          "patch": ""
+        },
+        "6.1": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.1-affected.xml.gz",
+          "patch": ""
+        },
+        "6.2": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.2-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
+    "SUSE_LIBERTY_LINUX": {
+      "content": {
+        "7": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.7-affected.xml.gz",
+          "patch": ""
+        },
+        "8": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.8-affected.xml.gz",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.9-affected.xml.gz",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.10-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
+    "ALMA_LINUX": {
+      "content": {
+        "8": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-8.xml.bz2",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-9.xml.bz2",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-10.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
+    "ORACLE_LINUX": {
+      "content": {
+        "7": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol7.xml.bz2",
+          "patch": ""
+        },
+        "8": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol8.xml.bz2",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol9.xml.bz2",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol10.xml.bz2",
           "patch": ""
         }
       }
@@ -160,6 +164,10 @@
         },
         "12": {
           "vulnerability": "https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2",
+          "patch": ""
+        },
+        "13": {
+          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-trixie.xml.bz2",
           "patch": ""
         }
       }

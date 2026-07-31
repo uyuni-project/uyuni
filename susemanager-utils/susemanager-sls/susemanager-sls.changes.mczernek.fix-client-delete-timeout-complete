@@ -1,0 +1,1 @@
+- Fix cleanup timeout when deleting minions (bsc#1258567)

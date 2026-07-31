@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * LocationTest
  */
-public class LocationTest extends RhnBaseTestCase {
+public class LocationTest extends BaseTestCase {
 
     public static final String MACHINE = "Skyrunner";
     public static final String RACK = "Test Rack";

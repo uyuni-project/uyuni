@@ -3,7 +3,8 @@
   "title": "Values",
   "type": "object",
   "required": [
-    "global"
+    "global",
+    "repository"
   ],
   "properties": {
     "repository": {
@@ -69,6 +70,10 @@
           "type": "string",
           "description": "appArmor profile is the name of an AppArmor profile to use for the server pod."
         },
+        "selinuxType": {
+          "type": "string",
+          "description": "SELinux type is the name of the SELinux type to use for the server pod."
+        },
         "systemdLogLevel": {
           "type": "string",
           "enum": ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg", ""],
@@ -84,6 +89,20 @@
             "hostPath": {
               "type": "string"
             }
+          }
+        },
+        "extraVolumes": {
+          "type": ["array", "null"],
+          "description": "Additional Kubernetes volumes for the server pod",
+          "items": {
+            "type": "object"
+          }
+        },
+        "extraVolumeMounts": {
+          "type": ["array", "null"],
+          "description": "Additional volume mounts for the server container",
+          "items": {
+            "type": "object"
           }
         },
         "sccSecret": {

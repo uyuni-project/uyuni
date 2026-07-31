@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-cobbler-helper
 #
-# Copyright (c) 2025 SUSE LLC and contributors
+# Copyright (c) 2026 SUSE LLC and contributors
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,7 +20,7 @@
 
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:           uyuni-cobbler-helper
-Version:        5.2.2
+Version:        5.3.0
 Release:        0
 Summary:        Python helper functions for %{productprettyname} Cobbler snippets
 License:        Apache-2.0
@@ -28,13 +28,12 @@ Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildArch:      noarch
-BuildRequires:  python-rpm-macros
 BuildRequires:  %{python_module base}
+BuildRequires:  python-rpm-macros
 Requires:       python
 Requires:       python-psycopg2 >= 2.8.4
 Provides:       uyuni-cobbler-helper
+BuildArch:      noarch
 %python_subpackages
 
 %description

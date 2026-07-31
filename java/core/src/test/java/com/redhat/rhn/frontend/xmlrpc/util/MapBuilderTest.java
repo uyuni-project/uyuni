@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * MapBuilderTest
  */
-public class MapBuilderTest extends RhnBaseTestCase {
+public class MapBuilderTest extends BaseTestCase {
     private MapBuilder builder;
     private TestBean bean;
 

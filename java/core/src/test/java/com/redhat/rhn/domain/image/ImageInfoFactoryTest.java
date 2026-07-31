@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.CustomDataKeyTest;
 import com.redhat.rhn.domain.org.Org;
@@ -55,9 +56,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -94,7 +93,6 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     private static TaskomaticApi taskomaticApi;
     private static SaltApi saltApiMock;
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
@@ -104,6 +102,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltApiMock = context.mock(TestSaltApi.class);
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
     @Test
@@ -354,8 +353,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         prd.setBaseproduct(true);
         prd = TestUtils.saveAndReload(prd);
         info.setInstalledProducts(Collections.singleton(prd));
-        ImageInfoFactory.save(info);
-        info = TestUtils.saveAndFlush(info);
+        info = ImageInfoFactory.save(info);
 
         // Update values
         CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);

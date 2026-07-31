@@ -55,7 +55,10 @@ public class OsReleasePair {
             String serverOsRelease = getOsRelease();
             if (serverOsFamily == OsFamily.REDHAT_ENTERPRISE_LINUX ||
                     serverOsFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
-                    serverOsFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP) {
+                    serverOsFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP ||
+                    serverOsFamily == OsFamily.ALMA_LINUX ||
+                    serverOsFamily == OsFamily.ORACLE_LINUX ||
+                    serverOsFamily == OsFamily.SUSE_LIBERTY_LINUX) {
                 // Removing the minor version part: 15.6 --> 15
                 serverOsRelease = serverOsRelease.replaceFirst("\\..*$", "");
             }

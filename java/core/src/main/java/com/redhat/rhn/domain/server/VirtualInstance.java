@@ -202,7 +202,7 @@ public class VirtualInstance extends BaseDomainHelper {
      * set the info
      * @param instanceInfo the info
      */
-    // TODO Determine if we need to handle deletion of the info.
+    // OLDTODO Determine if we need to handle deletion of the info.
     // If there are use cases for deleting the VirtualInstanceInfo from a
     // VirtualInstance
     // object, then this method will need to be refactored to handle deletion.

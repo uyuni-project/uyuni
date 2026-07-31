@@ -11,7 +11,7 @@
 
         <html:form styleClass="form-horizontal" action="/systems/details/packages/profiles/Create">
             <rhn:csrf />
-            <div class="form-group">
+            <div class="row">
                 <label class="col-md-3 control-label">
                     <bean:message key="create.jsp.profilename" />:
                 </label>
@@ -19,7 +19,7 @@
                     <html:text property="name" maxlength="128" size="48" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-md-3 control-label">
                     <bean:message key="create.jsp.profiledescription" />:
                 </label>
@@ -28,7 +28,7 @@
                 </div>
             </div>
           
-            <div class="form-group">
+            <div class="row">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <html:hidden property="sid" value="${param.sid}" />
                     <html:hidden property="submitted" value="true" />

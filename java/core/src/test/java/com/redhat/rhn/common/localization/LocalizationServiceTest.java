@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -40,7 +40,7 @@ import java.util.TimeZone;
  * Test for {@link LocalizationService}.
  */
 
-public class LocalizationServiceTest extends RhnBaseTestCase {
+public class LocalizationServiceTest extends BaseTestCase {
 
     private LocalizationService ls;
 
@@ -162,7 +162,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         assertFalse(isMessageValid(ls.getMessage("no message with this key")),
                       "Didn't fetch an invalid message (we want to, in this test)");
         // java.l10n_missingmessage_exceptions
-        boolean orig = Config.get().getBoolean("java.l10n_missingmessage_exceptions");
         Config.get().setBoolean("java.l10n_missingmessage_exceptions", "true");
 
         boolean caught = false;
@@ -173,9 +172,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
             caught = true;
         }
         assertTrue(caught);
-        Config.get().setBoolean("java.l10n_missingmessage_exceptions",
-                Boolean.toString(orig));
-
     }
 
 

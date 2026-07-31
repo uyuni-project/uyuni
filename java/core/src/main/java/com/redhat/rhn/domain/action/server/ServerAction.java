@@ -412,8 +412,10 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     public void fail(long resultCodeIn, String message, Date completionTimeIn) {
         this.setCompletionTime(completionTimeIn);
         this.setResultCode(resultCodeIn);
-        this.setStatusFailed();
+        // please do keep the result message set BEFORE setting the status,
+        // so that it is accessible in any derived implementation of ServerAction.onFailAction
         this.setResultMsg(message);
+        this.setStatusFailed();
     }
 
     /**

@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+sha512sum kubectl-mlm_supportconfig >kubectl-mlm_supportconfig.sha512

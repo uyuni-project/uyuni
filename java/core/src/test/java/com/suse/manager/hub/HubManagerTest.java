@@ -75,7 +75,6 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jose4j.jwt.consumer.ErrorCodes;
 import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -106,14 +105,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     private HubManager hubManager;
 
     private HubClientFactory clientFactoryMock;
-
-    private String originalServerSecret;
-
-    private String originalFqdn;
-
-    private String originalReportDb;
-
-    private String originalProductVersion;
 
     static class MockTaskomaticApi extends TaskomaticApi {
         private int invoked;
@@ -218,11 +209,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         // Setting a fake hostname for the token validation
-        originalFqdn = ConfigDefaults.get().getHostname();
-        originalServerSecret = Config.get().getString("server.secret_key");
-        originalReportDb =  Config.get().getString(ConfigDefaults.REPORT_DB_NAME);
-        originalProductVersion = Config.get().getString(ConfigDefaults.PRODUCT_VERSION_MGR);
-
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, LOCAL_SERVER_FQDN);
         Config.get().setString("server.secret_key", // my-super-secret-key-for-testing
             "6D792D73757065722D7365637265742D6B65792D666F722D74657374696E670D0A");
@@ -242,15 +228,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
                 systemEntitlementManager, systemManagerMock);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-
-        Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
-        Config.get().setString("server.secret_key", originalServerSecret);
-        Config.get().setString(ConfigDefaults.REPORT_DB_NAME, originalReportDb);
-        Config.get().setString(ConfigDefaults.PRODUCT_VERSION_MGR, originalProductVersion);
     }
 
     /**

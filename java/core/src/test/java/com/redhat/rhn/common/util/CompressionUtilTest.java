@@ -16,11 +16,11 @@ package com.redhat.rhn.common.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class CompressionUtilTest extends RhnBaseTestCase {
+public class CompressionUtilTest extends BaseTestCase {
 
     @Test
     public void testCompress() {

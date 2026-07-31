@@ -17,14 +17,14 @@ package com.redhat.rhn.domain.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * ServerArchTest
  */
-public class ServerArchTest extends RhnBaseTestCase {
+public class ServerArchTest extends BaseTestCase {
 
     /**
      * Simple test to make sure we can lookup ServerArchs from

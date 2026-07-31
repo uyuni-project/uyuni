@@ -146,6 +146,10 @@ spec:
             level: "s0"
   {{- if .Values.server.superPrivileged }}
             type: "spc_t"
+  {{- else if .Values.server.selinuxType }}
+            type: {{ .Values.server.selinuxType | quote }}
+  {{- end }}
+  {{- if .Values.server.superPrivileged }}
           appArmorProfile:
             type: Unconfined
   {{- else if .Values.server.apparmorProfile }}
@@ -268,6 +272,9 @@ spec:
 {{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
         - name: mirror
           mountPath: /mirror
+{{- end }}
+{{- if .Values.server.extraVolumeMounts }}
+{{ toYaml .Values.server.extraVolumeMounts | nindent 8 }}
 {{- end }}
 {{- if .Values.registrySecret }}
       imagePullSecrets:
@@ -539,4 +546,7 @@ spec:
         hostPath:
           path: {{ .Values.server.mirror.hostPath }}
   {{- end }}
+{{- end }}
+{{- if .Values.server.extraVolumes }}
+{{ toYaml .Values.server.extraVolumes | nindent 6 }}
 {{- end }}

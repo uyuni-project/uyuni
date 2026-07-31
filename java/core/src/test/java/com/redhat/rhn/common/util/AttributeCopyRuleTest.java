@@ -18,7 +18,7 @@ package com.redhat.rhn.common.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.digester.Digester;
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import java.net.URL;
 import java.util.Map;
 
-public class AttributeCopyRuleTest extends RhnBaseTestCase {
+public class AttributeCopyRuleTest extends BaseTestCase {
     @Test
     public void testCopy() throws Exception {
         Digester digester = new Digester();

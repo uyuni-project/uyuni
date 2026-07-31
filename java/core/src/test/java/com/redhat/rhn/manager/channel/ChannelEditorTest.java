@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * ChannelEditorTest
  */
-public class ChannelEditorTest extends RhnBaseTestCase {
+public class ChannelEditorTest extends BaseTestCase {
 
     @Test
     public void testAddRemovePackages() throws Exception {

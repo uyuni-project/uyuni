@@ -160,7 +160,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
                  }
              }
 
-            // TODO: Set up combined-form validator
+            // OLDTODO: Set up combined-form validator
 //              errs.add(RhnValidationHelper.validateDynaActionForm(this, daForm))
         addErrors(request, errs);
 

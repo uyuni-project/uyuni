@@ -1,4 +1,49 @@
 -------------------------------------------------------------------
+Mon Jul 06 11:48:26 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.19-0
+  * CVE-2026-63007: Check access rights on two formula API calls (bsc#1269253)
+  * CVE-2026-63009: Sanitize uploaded image name (bsc#1269534)
+
+-------------------------------------------------------------------
+Fri Jul 03 15:44:02 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.18-0
+  * Ensure SCAP bash remediation run under bash, not sh (bsc#1270049)
+
+-------------------------------------------------------------------
+Fri Jun 26 16:20:01 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.17-0
+  * Fix user role selection when org admin
+    role is enabled (bsc#1259254)
+  * Do not serialize null root CA in listPeripheralServers
+    (bsc#1262720)
+  * Fix Stopwatch is not running errors in API logs (bsc#1262720)
+  * Fix reposync crashing when syncing specific
+    products (bsc#1269088)
+  * Prevent inventory refresh before ansible package
+    is installed (bsc#1244141)
+  * Fix oval sync not triggering for RHEL and
+    derivatives (bsc#1269261)
+  * Fix inventory refresh triggering from unrelated
+    inotify events (bsc#1268309)
+  * Support parsing of uname_test and dynamic fallback CPE
+    derivation in OVAL sync (bsc#1269038)
+
+-------------------------------------------------------------------
+Wed Jun 17 14:42:26 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.16-0
+  * Handle the 'unknown' arch as no arch
+  * Fix queries to list servers in an Ansible control node server
+    (bsc#1267964)
+  * Update OSs supported with OVAL
+  * Do not attempt to delete a certificate that does not exist
+    (bsc#1268151)
+  * Remote Report DB connection should always use SSL (bsc#1268229).
+
+-------------------------------------------------------------------
 Fri May 29 18:45:15 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.15-0

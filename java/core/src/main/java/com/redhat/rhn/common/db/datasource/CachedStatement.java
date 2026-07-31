@@ -654,7 +654,7 @@ public class CachedStatement implements Serializable {
                     else {
                         Integer pos = pointers.get(getObject(rs, getColumn()));
                         /*
-                         * TODO: there is a possible bug here. If the elaborator
+                         * OLDTODO: there is a possible bug here. If the elaborator
                          * does not restrict itself to only the current results
                          * (%s thing), then the pos here is null, because the
                          * object might not exist in the map. Decide if this is
@@ -699,7 +699,7 @@ public class CachedStatement implements Serializable {
                     }
                 }
             }
-            // TODO: this is the only place that we care that we are
+            // OLDTODO: this is the only place that we care that we are
             // returning a DataResult object rather than simply a List.
             // Furthermore, this is entirely because of paging in the
             // user interface which should clearly not be done in the

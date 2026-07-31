@@ -56,9 +56,9 @@ $PODMAN_CMD exec server bash -c "rctomcat restart"
 $PODMAN_CMD exec server bash -c "rctaskomatic restart"
 
 # mgr-push
-$PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.6/site-packages/rhnpush/"
+$PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.13/site-packages/rhnpush/"
 $PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sysconfig/rhn/rhnpushrc"
 
 $PODMAN_CMD exec server bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R src/modules/* /usr/share/susemanager/salt/_modules; cp -R src/grains/* /usr/share/susemanager/salt/_grains; cp -R src/states/* /usr/share/susemanager/salt/_states; cp -R src/beacons/* /usr/share/susemanager/salt/_beacons; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
 $PODMAN_CMD exec server bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"
-$PODMAN_CMD exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"
+$PODMAN_CMD exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.13/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.13/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.13/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"

@@ -67,7 +67,7 @@ public abstract class BaseEvent {
      * @return return the Users locale or default if not set
      */
     public Locale getUserLocale() {
-        //TODO: when we support translated emails, remove this stub
+        //OLDTODO: when we support translated emails, remove this stub
         //String loc = (getUser() == null) ? null : getUser().getPreferredLocale();
         //return (loc == null) ? LocalizationService.DEFAULT_LOCALE : new Locale(loc);
         return LocalizationService.DEFAULT_LOCALE;

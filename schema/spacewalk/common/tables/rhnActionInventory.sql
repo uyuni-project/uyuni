@@ -17,7 +17,7 @@ CREATE TABLE rhnActionInventory
                             CONSTRAINT rhn_action_inventory_aid_fk
                                 REFERENCES rhnAction (id)
                                 ON DELETE CASCADE,
-    inventory_path      VARCHAR(1024),
+    inventory_path      VARCHAR(1024) NOT NULL,
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ

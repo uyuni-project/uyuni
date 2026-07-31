@@ -15,9 +15,14 @@
 
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -25,7 +30,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
@@ -56,8 +64,11 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * TestUtils, a simple package for utility functions helpful when
@@ -453,6 +464,146 @@ public class TestUtils {
                 "/" + object.getClass().getPackage().getName()
                         .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
+    }
+
+    /**
+     * Overrides the ConfigDefaults instance
+     * @param configDefaultsIn the ConfigDefaults instance
+     * @throws NoSuchFieldException if a field with the specified name is not found.
+     * @throws IllegalAccessException if the field is not accessible.
+     */
+    public static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field field = ConfigDefaults.class.getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, configDefaultsIn);
+    }
+
+    /**
+     * Deletes all the AccessTokens
+     */
+    public static void deleteAllAccessTokens() {
+        List<AccessToken> allAccessTokens = AccessTokenFactory.all();
+        allAccessTokens.forEach(AccessTokenFactory::delete);
+    }
+
+    /**
+     * delete last mgr-sync refresh entry in suseManagerInfo: used only in testing
+     */
+    public static void deleteLastMgrSyncRefresh() {
+        HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseManagerInfo").executeUpdate();
+    }
+
+    /**
+     * Deletes the org of a user, looking up the org id to check if it's committed in the database
+     * @param userIn the given user
+     */
+    public static void deleteOrgOfUser(User userIn) {
+        Optional.ofNullable(userIn)
+                .map(u -> u.getOrg().getId())
+                .map(OrgFactory::lookupById)
+                .ifPresent(org -> OrgFactory.deleteOrg(org.getId(), userIn));
+    }
+
+    /**
+     * Get a date representing "now" and wait for one second to
+     * ensure that future attempts to get a date will use a date
+     * that is definitely later.
+     *
+     * @return a date representing now
+     */
+    public static Date getNow() {
+        Date now = new Date();
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            throw new RhnRuntimeException("Sleep interrupted", e);
+        }
+        return now;
+    }
+
+    //
+    // Utility methods for assertions
+    //
+
+    /**
+     * Assert that <code>coll</code> contains <code>elem</code>
+     * @param <A> element type
+     * @param coll a collection
+     * @param elem the element that should be in the collection
+     */
+    public static <A> void assertContains(Collection<A> coll, A elem) {
+        assertTrue(coll.contains(elem));
+    }
+
+    /**
+     * Assert that <code>coll</code> does not contain <code>elem</code>
+     * @param <A> element type
+     * @param coll a collection
+     * @param elem the element that should not be in the collection
+     */
+    public static <A> void assertNotContains(Collection<A> coll, A elem) {
+        assertFalse(coll.contains(elem));
+    }
+
+    /**
+     * Assert that <code>coll</code> is not empty
+     * @param coll the collection
+     */
+    public static void assertNotEmpty(Collection<?> coll) {
+        assertNotEmpty(null, coll);
+    }
+
+    /**
+     * Assert that <code>coll</code> is not empty
+     * @param msg the message to print if the assertion fails
+     * @param coll the collection
+     */
+    public static void assertNotEmpty(String msg, Collection<?> coll) {
+        assertNotNull(coll);
+        if (coll.isEmpty()) {
+            fail(msg);
+        }
+    }
+
+    /**
+     * Assert that <code>fragment</code> is a substring of <code>body</code>
+     * @param body the larger string in which to search
+     * @param fragment the substring that must be contained in <code>body</code>
+     */
+    public static void assertContains(String body, String fragment) {
+        if (!body.contains(fragment)) {
+            fail("The string '" + body + "' must contain '" + fragment + "'");
+        }
+    }
+
+    /**
+     * Assert that <code>fragment</code> is a substring of <code>body</code>
+     * @param msg the message to print if the assertion fails
+     * @param body the larger string in which to search
+     * @param fragment the substring that must be contained in <code>body</code>
+     */
+    public static void assertContains(String msg, String body, String fragment) {
+        if (!body.contains(fragment)) {
+            fail(msg);
+        }
+    }
+
+    public static void createDirIfNotExists(File dir) {
+        String error =
+                "Could not create the following directory:[" + dir.getPath() +
+                        "] . Please create that directory before proceeding with the tests";
+        if (dir.exists() && !dir.isDirectory()) {
+            if (!dir.renameTo(new File(dir.getPath() + ".bak")) &&
+                    !dir.delete()) {
+                throw new RhnRuntimeException(error);
+            }
+        }
+
+        if (!dir.exists() && !dir.mkdirs()) {
+            throw new RhnRuntimeException(error);
+        }
     }
 
     //=========================================================================

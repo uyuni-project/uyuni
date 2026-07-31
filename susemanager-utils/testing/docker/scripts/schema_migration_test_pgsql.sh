@@ -63,12 +63,6 @@ if [ -d /etc/sysconfig/rhn/postgres -a ! -e /usr/share/susemanager/db/postgres ]
     ln -s /etc/sysconfig/rhn/postgres /usr/share/susemanager/db/postgres
 fi
 
-# We need SUPERUSER role to install the old schema as they add extensions.
-# evr_t also didn't exist when installing those packages.
-# This basically reproduces the upgrade from an existing DB setup.
-su - postgres -c "echo 'ALTER ROLE spacewalk WITH SUPERUSER;
-DROP TYPE IF EXISTS evr_t CASCADE;' | psql -d susemanager"
-
 spacewalk-sql /usr/share/susemanager/db/postgres/main.sql
 
 # this copy the latest schema from the git into the system

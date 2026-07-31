@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2020 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -79,7 +80,9 @@ public class Errata extends BaseDomainHelper {
     @OrderBy("id ASC")
     private Set<Package> packages;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(
+                cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH},
+                fetch = FetchType.LAZY)
     @JoinTable(
                 name = "rhnChannelErrata",
                 joinColumns = @JoinColumn(name = "errata_id"),

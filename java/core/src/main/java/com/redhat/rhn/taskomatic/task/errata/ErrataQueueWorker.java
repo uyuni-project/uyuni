@@ -32,7 +32,7 @@ import java.util.Map;
  * have been moved out to the AutoErrataTask, so it just is basically a gatekeeper
  * that ensures that the yum metadata has been regenerated and that the errata cache
  * has already been updated before scheduling the errata notifications.
- * TODO: consolidate this job with Errata Mailer.
+ * OLDTODO: consolidate this job with Errata Mailer.
  * ErrataQueueWorker
  */
 class ErrataQueueWorker implements QueueWorker {

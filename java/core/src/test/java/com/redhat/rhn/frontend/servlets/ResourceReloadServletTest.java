@@ -55,13 +55,10 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     @Test
     public void testDoGet() {
         ResourceReloadServlet servlet = new ResourceReloadServlet();
-        boolean orig = Config.get().getBoolean("java.development_environment");
         Config.get().setBoolean("java.development_environment", "true");
         servlet.doGet(request, response);
         MockServletOutputStream ms = (MockServletOutputStream) output;
         assertEquals("Reloaded resource files: [true]", ms.getContents());
-        Config.get().setBoolean("java.development_environment",
-                Boolean.valueOf(orig).toString());
     }
 
     @AfterEach

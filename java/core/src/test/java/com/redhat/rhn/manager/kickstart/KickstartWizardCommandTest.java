@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * KickstartWizardCommandTest
  */
-public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
+public class KickstartWizardCommandTest extends KickstartBaseTest {
 
     @Test
     public void testWizTrees() throws Exception {
@@ -50,7 +50,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         KickstartableTree tree  = KickstartableTreeTest.createTestKickstartableTree(c);
         tree.setChannel(c);
         tree = TestUtils.saveAndFlush(tree);
-        c = TestUtils.saveAndFlush(c);
+        TestUtils.saveAndFlush(c); //reassign variable if still needed
 
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         List trees = cmd.getKickstartableTrees();

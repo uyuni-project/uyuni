@@ -45,7 +45,7 @@ import java.util.Set;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
- * todo consider caching immediate lookup values to maps to improve performance
+ * OLDTODO consider caching immediate lookup values to maps to improve performance
  */
 public class SubscriptionMatchProcessor {
 

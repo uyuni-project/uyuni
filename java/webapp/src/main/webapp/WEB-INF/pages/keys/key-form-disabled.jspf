@@ -1,4 +1,4 @@
-    <div class="form-group">
+    <div class="row">
         <label class="col-md-2 control-label">
             <bean:message key="keycreate.jsp.description"/>
         </label>
@@ -6,7 +6,7 @@
             <html:text styleClass="form-control" property="description" maxlength="40" size="20" disabled="true"/>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-md-2 control-label">
             <bean:message key="keycreate.jsp.type"/>
         </label>
@@ -18,7 +18,7 @@
             </html:select>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-md-2 control-label">
             <bean:message key="keycreate.jsp.filecontents"/>
         </label>
@@ -32,7 +32,7 @@
     <html:hidden property="key_id" value="${cryptoKey.id}"/>
     <html:hidden property="description" />
     <html:hidden property="type" />
-    <div class="form-group">
+    <div class="row">
         <div class="col-md-8 text-right">
             <html:submit styleClass="btn btn-danger"><bean:message key="keydelete.jsp.deletekey"/></html:submit>
         </div>

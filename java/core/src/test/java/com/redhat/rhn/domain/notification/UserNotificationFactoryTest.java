@@ -17,12 +17,12 @@ package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-public class UserNotificationFactoryTest extends RhnBaseTestCase {
+public class UserNotificationFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestGetLastNotificationMessageByType() {

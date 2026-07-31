@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ import java.util.List;
  *
  */
 
-public class ManifestFactoryTest extends RhnBaseTestCase {
+public class ManifestFactoryTest extends BaseTestCase {
 
     private boolean threadsFail = false;
 

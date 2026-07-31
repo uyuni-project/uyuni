@@ -5,5 +5,5 @@ salt-netapi-client=1.0.0
 salt-netapi-client=1.0.0
 
 [conf/rhn_java.conf]
-java.min_schema_version=5.2.9
-java.min_report_schema_version=5.2.1
+java.min_schema_version=5.2.13
+java.min_report_schema_version=5.2.3

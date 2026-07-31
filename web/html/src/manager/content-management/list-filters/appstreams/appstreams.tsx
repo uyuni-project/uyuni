@@ -29,7 +29,7 @@ export default function AppStreams({ matcher }) {
   } else if (matcher === "equals") {
     return (
       <>
-        <div className="form-group">
+        <div className="row">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <Button
               className="btn-tertiary"

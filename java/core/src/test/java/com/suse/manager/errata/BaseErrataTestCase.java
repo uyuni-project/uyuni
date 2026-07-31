@@ -16,7 +16,7 @@ package com.suse.manager.errata;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ import java.time.ZoneOffset;
 /**
  * Base class for testing implementations of {@link com.suse.manager.errata.VendorSpecificErrataParser}
  */
-abstract class BaseErrataTestCase extends RhnBaseTestCase {
+abstract class BaseErrataTestCase extends BaseTestCase {
 
     /**
      * Builds a test errata object

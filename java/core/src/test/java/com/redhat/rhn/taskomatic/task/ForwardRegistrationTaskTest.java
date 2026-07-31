@@ -434,7 +434,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             HttpEntity entity = ((HttpPut) request).getEntity(); // example
             String requestBody = EntityUtils.toString(entity);
 
-            assertContains(request.getURI().getPath(), "connect/organizations/systems");
+            TestUtils.assertContains(request.getURI().getPath(), "connect/organizations/systems");
 
             TypeToken<Map<String, List<SCCRegisterSystemItem>>> typeToken = new TypeToken<>() { };
             Map<String, List<SCCRegisterSystemItem>> payload = gson.fromJson(requestBody, typeToken.getType());

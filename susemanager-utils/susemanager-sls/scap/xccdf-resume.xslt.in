@@ -82,9 +82,21 @@ Authors:
     <!-- Fix element template -->
     <xsl:template match="cdf1:fix | cdf2:fix">
         <remediation>
-            <xsl:value-of select="text()"/>
+            <xsl:apply-templates mode="fix-content"/>
         </remediation>
-    </xsl:template>    
+    </xsl:template>
+
+    <xsl:template match="text()" mode="fix-content">
+        <xsl:value-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="cdf1:sub | cdf2:sub" mode="fix-content">
+        <xsl:variable name="subId" select="@idref"/>
+        <xsl:value-of select="//*[local-name()='Value' and @id=$subId]/*[local-name()='value' and not(@selector)]"/>
+    </xsl:template>
+
+    <xsl:template match="*" mode="fix-content"/>
+
     <xsl:template match="cdf1:TestResult | cdf2:TestResult">
         <TestResult>
             <xsl:copy-of select="@id"/>

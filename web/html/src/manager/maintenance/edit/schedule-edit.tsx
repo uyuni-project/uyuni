@@ -117,7 +117,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
           divClass="col-md-6 col-md-offset-3 offset-md-3"
         />
       )}
-      <div className="form-group">
+      <div className="row">
         <div className="col-md-6 col-md-offset-3 offset-md-3">
           {!calendarAdded ? (
             <Button
@@ -137,7 +137,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
               </div>
               <div className="panel-body">
                 <div className="form-horizontal">
-                  <div className="form-group">
+                  <div className="row">
                     <label className="col-md-3 control-label">{t("Calendar")}:</label>
                     <div className="col-md-7">
                       <Combobox

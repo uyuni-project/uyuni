@@ -1,6 +1,7 @@
 # Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_rhlike
 @rhlike_minion
 Feature: Native AppStreams support for Red Hat-like Salt minion
   

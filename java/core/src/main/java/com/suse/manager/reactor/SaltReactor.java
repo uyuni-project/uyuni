@@ -19,6 +19,7 @@ import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -66,6 +67,7 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -307,15 +309,28 @@ public class SaltReactor {
             );
         }
         else if (beaconEvent.getBeacon().equals("inotify")) {
+            String path = beaconEvent.getAdditional();
+            if (StringUtils.isBlank(path)) {
+                LOG.debug("Received inotify beacon event with empty path string for minion '{}'",
+                    beaconEvent.getMinionId());
+                return empty();
+            }
+
             Optional<MinionServer> minion = MinionServerFactory.findByMinionId(beaconEvent.getMinionId());
             minion.ifPresent(m -> {
-                // Schedule retrieval of minions from changed inventory
-                try {
-                    ActionManager.scheduleInventoryRefresh(m, beaconEvent.getAdditional());
+                if (AnsibleFactory.lookupAnsibleInventoryPath(m.getId(), path).isPresent()) {
+                    // Schedule retrieval of minions from changed inventory
+                    try {
+                        ActionManager.scheduleInventoryRefresh(m, path);
+                    }
+                    catch (TaskomaticApiException e) {
+                        LOG.error("Could not schedule Ansible inventory refresh for minion: {}",
+                                m.getMinionId(), e);
+                    }
                 }
-                catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule Ansible inventory refresh for minion: {}",
-                            m.getMinionId(), e);
+                else {
+                    LOG.warn("Inventory path '{}' is not configured in suseAnsiblePath for minion '{}'",
+                            path, m.getMinionId());
                 }
             });
         }

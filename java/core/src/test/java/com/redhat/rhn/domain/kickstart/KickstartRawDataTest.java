@@ -25,7 +25,7 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.Distro;
@@ -37,7 +37,7 @@ import java.util.TreeSet;
 
 /**
  */
-public class KickstartRawDataTest extends BaseTestCaseWithUser {
+public class KickstartRawDataTest extends KickstartBaseTest {
 
     private KickstartableTree tree;
     private KickstartRawData ksdata;

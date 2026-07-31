@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:37:07 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Guard legacy RPM function that was deprecated and removed in
+    newer versions
+  * Fix wsgiHandler errors on openSUSE Leap 16.0
+  * Redact 'default_password_crypted' broke coppler yaml syntax
+    uyuni supportconfig spacewalk-debug. Fixes #10414
+
+-------------------------------------------------------------------
 Fri May 29 15:52:51 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8-0
@@ -119,7 +129,7 @@ Tue Jun 17 19:29:59 CEST 2025 - marina.latini@suse.com
     GPG keys during reposync execution
   * Make reposync to allow commas as part of HTTP Proxy password
     (bsc#1243460)
-  * Use cryptographically secure random generation for secrets
+  * Use cryptographically secure random generation for secrets (bsc#1230568)
   * Fix zstd-compressed comps file reposync use case (bsc#1243821)
   * Fix fetching the mirrorlist with a ca bundle which include only
     the intermediate CAs. This is the case for RHUI CA bundles

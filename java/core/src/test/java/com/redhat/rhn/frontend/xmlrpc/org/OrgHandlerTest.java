@@ -22,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -65,8 +63,6 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     private static final String EMAIL = "fakeadmin@example.com";
     private static final String PREFIX = "Mr.";
     private String[] orgName = {"Test Org 1", "Test Org 2"};
-    private ChannelFamily channelFamily = null;
-
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -75,8 +71,6 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
             orgName[i] = "Test Org " + TestUtils.randomString();
         }
         admin = TestUtils.saveAndFlush(admin);
-
-        channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }
 
     @Test

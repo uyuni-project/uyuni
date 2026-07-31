@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * SystemMigrationFactoryTest
  */
-public class SystemMigrationFactoryTest extends RhnBaseTestCase {
+public class SystemMigrationFactoryTest extends BaseTestCase {
 
     @Test
     public void testSystemMigrationFactory() throws Exception {

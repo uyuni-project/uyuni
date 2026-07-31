@@ -1,2 +1,0 @@
-- Fix queries to list servers in an Ansible control node server
-  (bsc#1267964)

@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * Test the compare() method in PackageEvr
  */
-public class PackageEvrComparableTest extends RhnBaseTestCase {
+public class PackageEvrComparableTest extends BaseTestCase {
 
     @Test
     public void testEquality() {

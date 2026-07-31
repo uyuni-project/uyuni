@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -43,7 +43,7 @@ import spark.routematch.RouteMatch;
 /**
  * RequestContextTest
  */
-public class RequestContextTest extends MockObjectTestCase {
+public class RequestContextTest extends BaseTestCase {
 
     /**
      */

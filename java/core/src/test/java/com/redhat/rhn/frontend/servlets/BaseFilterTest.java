@@ -17,18 +17,21 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import jakarta.servlet.FilterChain;
 
 /**
  * BaseFilterTest
  */
-public abstract class BaseFilterTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public abstract class BaseFilterTest extends MockObjectTestCase {
 
     protected RhnMockHttpServletRequest request;
     protected RhnMockHttpServletResponse response;

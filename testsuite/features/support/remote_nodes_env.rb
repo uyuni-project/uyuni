@@ -16,7 +16,7 @@ unless File.exist?(custom_repos_path)
   warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
   warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
   warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
-  warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
+  warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
   warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 end
 

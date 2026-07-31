@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2026 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PvattestModule">
+
+
+    <select id="retrieveReport" parameterType="Long" resultType="com.suse.coco.module.pvattest.model.AttestationReport">
+        SELECT id
+        , env_type
+        , config_data->>'host_key_document' AS host_key_document
+        , decode(config_data->>'secure_execution_header', 'base64') AS secure_execution_header
+        , decode(in_data->>'attestation_protection_key', 'base64') AS attestation_protection_key
+        , decode(out_data->>'attestation_response', 'base64') AS attestation_response
+        FROM suseServerCoCoAttestationReport
+        WHERE id = #{reportId}
+    </select>
+
+</mapper>
+

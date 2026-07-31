@@ -33,8 +33,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ImageTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -56,7 +56,7 @@ import java.util.Map;
 /**
  * Test for {@link SaltbootUtils}.
  */
-public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
+public class SaltbootUtilsTest extends BaseTestCaseWithUser {
 
     private CobblerConnection client;
 

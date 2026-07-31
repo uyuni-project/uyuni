@@ -13,6 +13,18 @@ Apart from Cucumber, the test suite relies on a number of [software components](
 
 You can run the Uyuni test suite with [sumaform](https://github.com/uyuni-project/sumaform/blob/master/README_TESTING.md#running-the-testsuite).
 
+## Browser automation (Playwright)
+
+The UI scenarios are driven by **Playwright** through the
+[`capybara-playwright-driver`](https://github.com/YusukeIwaki/capybara-playwright-driver) gem (replacing the previous
+Selenium / `chromedriver` backend). The Cucumber features and the Capybara DSL are unchanged — only the driver behind
+Capybara changed. Each parallel worker auto-spawns its own headless Chromium via the Node.js `playwright` package; there
+is no Selenium and no separate browser server.
+
+This means the controller needs the Node.js `playwright` CLI and a Playwright-managed Chromium installed alongside Ruby.
+See [Playwright controller setup](documentation/playwright-controller-setup.md) for the exact dependencies and how they
+are provisioned with Salt.
+
 ## Core features, idempotency and tests order
 
 The tests (features) mentioned in the YAML files inside the [run_sets](https://github.com/uyuni-project/uyuni/tree/master/testsuite/run_sets)
@@ -40,12 +52,20 @@ environment.
 To know how to test with or without optional components like a proxy, a Red Hat-like minion or a SSH minion, look at
 the [optional components instructions](documentation/optional.md).
 
+## Development environment
+
+To set up an IDE or editor (RubyMine or VS Code / VSCodium) and to run the RuboCop linter
+locally the same way the CI does, see [IDE and editor setup](documentation/ide-setup.md).
+
 ## Contributing
 
 ### Procedure
 
 1. **Always** create a PR (even for backporting)
 2. Your PR always needs at least one reviewer to approve
+
+For the full upstream-first / backporting workflow between Uyuni and Multi-Linux Manager,
+see the [contribution workflow](documentation/contributing-workflow.md).
 
 ### Guidelines for coding
 
@@ -83,3 +103,6 @@ packages for `Test-Base-Channel-x86_64` and `Fake-Base-Channel-Debian-like` chan
 - Normal dummy packages: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.
 - Wrong encoding of RPM attributes: `blackhole-dummy`. This package should be successfully imported and you will see it
 available as part of the `Test-Base-Channel-x86_64` if reposync handled the encoding correctly.
+
+To build and test modular (AppStream) repositories with dummy packages on Red Hat-like
+systems, see [Setting up and using a modular repository](documentation/modular-repositories.md).

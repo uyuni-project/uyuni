@@ -38,9 +38,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.struts.util.LabelValueBean;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +55,6 @@ import java.util.Set;
 public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
     protected Server s;
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)

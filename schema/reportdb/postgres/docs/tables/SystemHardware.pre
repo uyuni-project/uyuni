@@ -68,3 +68,6 @@ COMMENT ON COLUMN SystemHardware.board
   IS 'The board information of the system';
 COMMENT ON COLUMN SystemHardware.synced_date
   IS 'The timestamp of when this data was last refreshed.';
+
+ALTER TABLE SystemHardware
+  ADD CONSTRAINT SystemHardware_system_fkey FOREIGN KEY (mgm_id, system_id) REFERENCES System(mgm_id, system_id);

@@ -26,14 +26,14 @@ import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 
-public class KickstartManagerTest extends BaseTestCaseWithUser {
+public class KickstartManagerTest extends KickstartBaseTest {
 
 
 

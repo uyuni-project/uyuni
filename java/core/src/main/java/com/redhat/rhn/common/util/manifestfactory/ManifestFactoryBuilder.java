@@ -30,8 +30,8 @@ public interface ManifestFactoryBuilder {
     Object createObject(Map<String, Object> param);
 
     /** get the filename associated with this builder
-     *   TODO: probably should be a URL instead
-     *   TODO: probably going to need to generalize this a bit more, so that
+     *   OLDTODO: probably should be a URL instead
+     *   OLDTODO: probably going to need to generalize this a bit more, so that
      *         we can have different webapps with different manifest files
      * @return String filename used by manifest
     */

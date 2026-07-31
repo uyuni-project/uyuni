@@ -29,8 +29,9 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.KickstartBaseTest;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -38,6 +39,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.cobbler.Distro;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.util.Arrays;
@@ -51,7 +53,8 @@ import java.util.Optional;
 /**
  * KickstartableTreeTest
  */
-public class KickstartableTreeTest extends BaseTestCaseWithUser {
+@ExtendWith(SaltTestCaseExtension.class)
+public class KickstartableTreeTest extends KickstartBaseTest {
 
     public static final String TEST_BOOT_PATH = "test-boot-image-i186";
     public static final File KICKSTART_TREE_PATH = new File("/tmp/kickstart/images");
@@ -62,7 +65,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
     public static void createKickstartTreeItems(File basePath, User u) throws Exception {
         //Alright setup things we need for trees
-        createDirIfNotExists(basePath);
+        TestUtils.createDirIfNotExists(basePath);
         KickstartableTree tree = new KickstartableTree();
         tree.setChannel(ChannelTestUtils.createBaseChannel(u));
         tree.setInstallType(KickstartFactory.
@@ -73,15 +76,15 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     }
 
     public static void createKickstartTreeItems(KickstartableTree tree) {
-        createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
-        createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
 
         FileUtils.writeStringToFile("kernel", tree.getDefaultKernelPaths()[0]);
         FileUtils.writeStringToFile("kernel-xen", tree.getKernelXenPath());
 
 
-        createDirIfNotExists(new File(tree.getDefaultInitrdPaths()[0]).getParentFile());
-        createDirIfNotExists(new File(tree.getInitrdXenPath()).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getDefaultInitrdPaths()[0]).getParentFile());
+        TestUtils.createDirIfNotExists(new File(tree.getInitrdXenPath()).getParentFile());
 
         FileUtils.writeStringToFile("initrd-xen", tree.getInitrdXenPath());
         FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPaths()[0]);
@@ -302,9 +305,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
         for (Map.Entry<Long, String[]> entry : archMap.entrySet()) {
             KickstartableTree tree = this.createSUSEKsTreeByArch(entry.getKey(), ksRoot);
-            assertContains(Arrays.asList(tree.getDefaultKernelPaths()),
+            TestUtils.assertContains(Arrays.asList(tree.getDefaultKernelPaths()),
                            String.format(entry.getValue()[1], entry.getValue()[0]));
-            assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
+            TestUtils.assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
                            String.format(entry.getValue()[2], entry.getValue()[0]));
         }
     }

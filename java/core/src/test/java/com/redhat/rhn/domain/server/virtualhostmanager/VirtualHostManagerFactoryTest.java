@@ -174,7 +174,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         String myLabel = "myLabel";
         VirtualHostManager vhm = createAndSaveVirtualHostManager(myLabel, user.getOrg(),
                 SUSE_CLOUD, config);
-        assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
+        TestUtils.assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
         assertNotNull(factory.lookupByLabel(myLabel));
 
         factory.delete(vhm);
@@ -221,8 +221,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
 
         assertEquals(2, managers.size());
-        assertContains(managers, manager1);
-        assertContains(managers, manager2);
+        TestUtils.assertContains(managers, manager1);
+        TestUtils.assertContains(managers, manager2);
     }
 
     /**

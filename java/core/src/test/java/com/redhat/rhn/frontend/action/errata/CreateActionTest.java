@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
 /**
  * CreateActionTest
  */
-public class CreateActionTest extends RhnBaseTestCase {
+public class CreateActionTest extends BaseTestCase {
 
     @Test
     public void testCreateErrata() throws Exception {

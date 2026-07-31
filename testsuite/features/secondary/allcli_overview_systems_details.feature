@@ -101,25 +101,25 @@ Feature: The system details of each minion and client provides an overview of th
     And I should see a "Description" text
     And I should see a "Location" text
 
-  @ssh_minion
+  @sshminion
   Scenario: SSH-managed minion hardware refresh
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled" is completed
 
-  @ssh_minion
+  @sshminion
   Scenario: SSH-managed minion grains are displayed correctly on the details page
-    Given I am on the Systems overview page of this "ssh_minion"
-    Then the hostname for "ssh_minion" should be correct
-    And the kernel for "ssh_minion" should be correct
-    And the OS version for "ssh_minion" should be correct
-    And the IPv4 address for "ssh_minion" should be correct
-    And the IPv6 address for "ssh_minion" should be correct
-    And the system ID for "ssh_minion" should be correct
-    And the system name for "ssh_minion" should be correct
-    And the uptime for "ssh_minion" should be correct
+    Given I am on the Systems overview page of this "sshminion"
+    Then the hostname for "sshminion" should be correct
+    And the kernel for "sshminion" should be correct
+    And the OS version for "sshminion" should be correct
+    And the IPv4 address for "sshminion" should be correct
+    And the IPv6 address for "sshminion" should be correct
+    And the system ID for "sshminion" should be correct
+    And the system name for "sshminion" should be correct
+    And the uptime for "sshminion" should be correct
     And I should see a "UUID" text
     And I should see a "Virtualization" text
     And I should see a "Installed Products" text

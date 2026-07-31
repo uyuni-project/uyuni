@@ -22,17 +22,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.domain.product.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashSet;
 import java.util.Set;
 
-
-public class InstalledProductTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class InstalledProductTest extends BaseTestCase {
 
     @Test
     public void testInstalledProduct() {

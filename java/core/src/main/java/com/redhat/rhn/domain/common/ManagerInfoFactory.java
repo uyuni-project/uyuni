@@ -83,4 +83,5 @@ public class ManagerInfoFactory extends HibernateFactory {
                 getLastMgrSyncRefresh().isEmpty() ? "set_last_mgr_sync_refresh" : "update_last_mgr_sync_refresh");
         m.executeUpdate(params);
     }
+
 }

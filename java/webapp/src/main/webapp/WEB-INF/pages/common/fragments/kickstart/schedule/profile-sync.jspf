@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 
 <c:if test="${not empty regularKS}">
-    <div class="form-group">
+    <div class="row">
         <label for="targetProfileType" class="col-sm-3 control-label"><bean:message key="kickstart.schedule.sync.pkg.profile.jsp" /></label>
         <div class="col-sm-9">
             <div class="radio">
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="row">
         <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
             <div class="radio">
                 <label>
@@ -45,7 +45,7 @@
 </c:if>
 
 <c:if test="${empty regularKS}">
-    <div class="form-group">
+    <div class="row">
         <label for="targetProfileType" class="col-sm-3 control-label"><bean:message key="kickstart.schedule.sync.pkg.profile.jsp" /></label>
         <div class="col-sm-9">
             <div class="radio">
@@ -71,7 +71,7 @@
     </div>
 </c:if>
 
-<div class="form-group">
+<div class="row">
     <c:if test="${empty noSystemProfile}">
         <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
             <div class="radio">
@@ -98,7 +98,7 @@
     </c:if>
 </div>
 
-<div class="form-group">
+<div class="row">
     <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>

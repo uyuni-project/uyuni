@@ -95,7 +95,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 createKickstartSession(ksdata, user);
         ksession.setNewServer(server);
         ksession.setOldServer(server);
-        ksession = TestUtils.saveAndFlush(ksession);
+        TestUtils.saveAndFlush(ksession); //reassign variable if still needed
     }
 
     private static void assertCmdSuccess(KickstartScheduleCommand cmd) {
@@ -135,7 +135,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartVirtualizationType.none());
         x86ks.getChannel().setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
         TestUtils.saveAndFlush(x86ks.getChannel());
-        x86ks = TestUtils.saveAndFlush(x86ks);
+        TestUtils.saveAndFlush(x86ks); //reassign variable if still needed
 
 
         server.setServerArch(ServerConstants.getArchI686());
@@ -252,7 +252,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.SLES_PREFIX));
 
-        assertContains(ksdata.getKickstartPackageNames(), "salt");
+        TestUtils.assertContains(ksdata.getKickstartPackageNames(), "salt");
     }
 
     @Test
@@ -291,7 +291,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartScheduleCommand.UP2DATE_VERSION, "0",
                 c.getChannelArch().getArchType().getPackageType());
         p.setPackageEvr(pevr);
-        p = TestUtils.saveAndFlush(p);
+        TestUtils.saveAndFlush(p); //reassign variable if still needed
     }
 
     // Like the number of params on this one?  Nice eh?  At least its private and

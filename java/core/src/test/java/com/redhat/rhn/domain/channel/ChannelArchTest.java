@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * ChannelArchTest
  */
-public class ChannelArchTest extends RhnBaseTestCase {
+public class ChannelArchTest extends BaseTestCase {
 
     @Test
     public void testChannelArch() {

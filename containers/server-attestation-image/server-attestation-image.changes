@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Fri Jul 03 15:44:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Add mozilla-nss-sysinit package to ensure proper PKCS#11
+    initialization in Java (bsc#1270104)
+
+-------------------------------------------------------------------
+Fri Jun 26 14:44:22 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Add org.uyuni.version LABEL to the image
+
+-------------------------------------------------------------------
+Wed Jun 17 14:54:12 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2.0
+
+-------------------------------------------------------------------
 Fri May 22 13:55:55 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7

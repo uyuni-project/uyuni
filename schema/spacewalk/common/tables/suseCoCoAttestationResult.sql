@@ -18,9 +18,11 @@ CREATE TABLE suseCoCoAttestationResult
                             REFERENCES suseServerCoCoAttestationReport (id)
                             ON DELETE CASCADE,
         result_type     NUMERIC     NOT NULL,
+        env_type        NUMERIC NOT NULL default 0,
         status          VARCHAR(32) NOT NULL
                           CONSTRAINT suse_cocoatt_res_st_ck
-                            CHECK(status IN ('PENDING', 'SUCCEEDED', 'FAILED')),
+                            CHECK(status IN ('PENDING', 'SUCCEEDED', 'FAILED', 'REQUESTED', 'QUEUED', 'SUBMITTED')),
+        in_data         JSONB NOT NULL default '{}',
         description     VARCHAR(256) NOT NULL,
         details         TEXT NULL,
         process_output  TEXT NULL,

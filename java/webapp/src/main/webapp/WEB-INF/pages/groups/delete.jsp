@@ -29,7 +29,7 @@
         <rhn:csrf />
         <rhn:submitted/>
         <html:hidden property="sgid" value="${param.sgid}" />
-        <div class="form-group">
+        <div class="row">
             <div class="col-md-12">
                 <html:submit property="delete_button" styleClass="btn btn-danger">
                     <bean:message key="systemgroup.delete.confirm"/>

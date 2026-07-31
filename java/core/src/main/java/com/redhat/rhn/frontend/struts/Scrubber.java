@@ -78,11 +78,11 @@ public class Scrubber {
         return getInstance(prohibitedInput).doScrub(value);
     }
     private Object doScrub(Object value) {
-        if (!canScrub(value)) {
-            return value;
-        }
         if (value == null) {
             return null;
+        }
+        if (!canScrub(value)) {
+            return value;
         }
 
         if (value instanceof String str) {

@@ -34,7 +34,8 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.oval.OVALCachingFactory;
@@ -44,6 +45,7 @@ import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.parser.OvalTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -54,7 +56,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // TODO: Test for when patch status is unknown
-public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class CVEAuditManagerOVALTest extends BaseTestCase {
     public static final String CPE_OPENSUSE_LEAP_15_4 = "cpe:/o:opensuse:leap:15.4";
 
     @Test
@@ -557,8 +560,8 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
                 EnumSet.allOf(PatchStatus.class));
         CVEAuditServer auditServer = auditServers.stream().findAny().get();
 
-        assertNotEmpty(auditServer.getChannels());
-        assertNotEmpty(auditServer.getErratas());
+        TestUtils.assertNotEmpty(auditServer.getChannels());
+        TestUtils.assertNotEmpty(auditServer.getErratas());
         assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, auditServer.getPatchStatus());
     }
 

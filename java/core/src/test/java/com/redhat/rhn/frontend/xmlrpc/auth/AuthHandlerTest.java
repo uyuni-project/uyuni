@@ -25,13 +25,13 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.UserLoginException;
 import com.redhat.rhn.manager.session.SessionManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-public class AuthHandlerTest extends RhnBaseTestCase {
+public class AuthHandlerTest extends BaseTestCase {
 
     @Test
     public void testLogoutWithInvalidKey() {

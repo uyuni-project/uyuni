@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -100,9 +101,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -144,7 +143,6 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = LogManager.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi() {
         @Override
         public void deleteKey(String minionId) {
@@ -163,6 +161,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
+        KickstartTestUtils.setupTestConfiguration(user);
     }
 
 
@@ -720,7 +719,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             .getServer();
         ActionFactory.save(parentAction);
 
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
         ksSession = TestUtils.saveAndFlush(ksSession);
@@ -973,7 +972,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void testScheduleKickstart() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData testKickstartData
             = KickstartDataTest.createKickstartWithChannel(user.getOrg());
 
@@ -1002,7 +1001,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
         KickstartData testKickstartData
             = KickstartDataTest.createKickstartWithChannel(user.getOrg());
 

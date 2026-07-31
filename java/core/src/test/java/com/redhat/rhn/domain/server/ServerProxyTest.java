@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -35,7 +36,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
 /**
@@ -60,7 +60,7 @@ public class ServerProxyTest extends MockObjectTestCase {
      */
     @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        setConfigDefaultsInstance(configDefaults);
+        TestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -157,7 +157,6 @@ public class ServerProxyTest extends MockObjectTestCase {
     }
 
 
-    @SuppressWarnings({"java:S1171", "java:S3599", "java:S112"})
     private void mockConfigDefaults(boolean isUyuni) {
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
         context.checking(new Expectations() {{
@@ -165,19 +164,11 @@ public class ServerProxyTest extends MockObjectTestCase {
             will(returnValue(isUyuni));
         }});
         try {
-            setConfigDefaultsInstance(mockConfigDefaults);
+            TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Failed to mock ConfigDefaults", e);
         }
-    }
-
-    @SuppressWarnings("java:S3011")
-    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaultsIn);
     }
 
     /**

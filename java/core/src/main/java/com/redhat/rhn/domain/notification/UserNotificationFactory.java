@@ -11,11 +11,9 @@
 
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
@@ -65,19 +63,7 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     private static void configureMailer() {
-        String clazz = Config.get().getString("web.mailer_class");
-        if (clazz == null) {
-            mailer = new SmtpMail();
-            return;
-        }
-        try {
-            Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
-            mailer = cobj.getDeclaredConstructor().newInstance();
-        }
-        catch (Exception | LinkageError e) {
-            log.error("An exception was thrown while initializing custom mailer class", e);
-            mailer = new SmtpMail();
-        }
+        mailer = MailHelper.createMailFromConfig();
     }
 
     /**

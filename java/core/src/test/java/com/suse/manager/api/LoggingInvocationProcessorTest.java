@@ -43,7 +43,7 @@ public class LoggingInvocationProcessorTest {
                 Optional.of(Map.of(param, value)),
                 "127.0.0.1",
                 Optional.empty(),
-                Duration.ofMillis(1234)
+                Optional.of(Duration.ofMillis(1234))
         ).toString(), shouldRedact ? not(containsString(value)) : containsString(value));
     }
 
@@ -87,7 +87,7 @@ public class LoggingInvocationProcessorTest {
         String withExplicitOverride = p.logMessage("test", "method", Optional.of(Map.of(
                 "explicitlyRedacted", "shouldBeRedacted",
                 "explicitlyLoggedPassword", "passwordInLogMessage"
-        )), "127.0.0.1", Optional.empty(), Duration.ZERO).toString();
+        )), "127.0.0.1", Optional.empty(), Optional.of(Duration.ZERO)).toString();
         MatcherAssert.assertThat(withExplicitOverride, containsString("passwordInLogMessage"));
         MatcherAssert.assertThat(withExplicitOverride, not(containsString("shouldBeRedacted")));
 
@@ -99,7 +99,7 @@ public class LoggingInvocationProcessorTest {
         String withoutExplicitOverride = p.logMessage("test", "method", Optional.of(Map.of(
                         "explicitlyRedacted", "shouldBeRedacted",
                         "explicitlyLoggedPassword", "passwordInLogMessage"
-        )), "127.0.0.1", Optional.empty(), Duration.ZERO).toString();
+        )), "127.0.0.1", Optional.empty(), Optional.of(Duration.ZERO)).toString();
         MatcherAssert.assertThat(withoutExplicitOverride, not(containsString("passwordInLogMessage")));
         MatcherAssert.assertThat(withoutExplicitOverride, containsString("shouldBeRedacted"));
     }

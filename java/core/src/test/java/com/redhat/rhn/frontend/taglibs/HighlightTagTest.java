@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.taglibs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.MockBodyContent;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -33,7 +33,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * HighlightTagTest
  */
-public class HighlightTagTest extends RhnBaseTestCase {
+public class HighlightTagTest extends BaseTestCase {
 
     private HighlightTag ht;
     private TagTestHelper tth;

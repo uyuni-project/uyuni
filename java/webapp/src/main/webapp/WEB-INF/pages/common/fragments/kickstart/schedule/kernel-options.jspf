@@ -13,7 +13,7 @@
     </c:otherwise>
 </c:choose>
 
-<div class="form-group">
+<div class="row">
     <label for="kernelParamsType" class="col-sm-3 control-label"><bean:message key="kickstartdetails.jsp.kernel_options" /></label>
     <div class="col-sm-9">
         <div class="radio">
@@ -76,7 +76,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="postKernelParamsType" class="col-sm-3 control-label"><bean:message key="kickstartdetails.jsp.post_kernel_options" /></label>
     <div class="col-sm-9">
         <div class="radio">

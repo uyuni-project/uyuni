@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -161,11 +162,11 @@ class AnsibleHandlerTest extends BaseHandlerTestCase {
                         "path", "/etc/playbooks"
                 ));
 
-        assertContains(
+        TestUtils.assertContains(
                 handler.listAnsiblePaths(admin, controlNode.getId().intValue()),
                 inventoryPath
         );
-        assertContains(
+        TestUtils.assertContains(
                 handler.listAnsiblePaths(admin, controlNode.getId().intValue()),
                 playbookPath
         );

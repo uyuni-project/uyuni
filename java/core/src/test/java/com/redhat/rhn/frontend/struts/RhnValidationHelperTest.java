@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * RhnHelperTest - test our RhnHelper class
  */
-public class RhnValidationHelperTest extends RhnBaseTestCase {
+public class RhnValidationHelperTest extends BaseTestCase {
 
     /**
      * Test StringsToActionErrors

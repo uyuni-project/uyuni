@@ -55,10 +55,11 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCleanSubmit() {
+        String data = """
+                        part swap --size=1000 --grow --maxsize=3000
+                        logvol swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048
+                        volgroup myvg --fstype swap --level 0 --device 1 raid.05 raid.06 raid.07 raid.08""";
 
-        String data = "part swap --size=1000 --grow --maxsize=3000\n" +
-        "logvol swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +
-        "volgroup myvg --fstype swap --level 0 --device 1 raid.05 raid.06 raid.07 raid.08";
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(KickstartPartitionEditAction.SUBMITTED,
                 Boolean.TRUE.toString());
@@ -79,9 +80,11 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testMultipleSwapsSubmit() {
 
-        String data = "part swap --size=1000 --grow --maxsize=3000\n" +
-        "partition swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048\n" +
-        "raid swap --fstype swap --level 0 --device 1 raid.05 raid.06 raid.07 raid.08";
+        String data = """
+                    part swap --size=1000 --grow --maxsize=3000
+                    partition swap --fstype swap --name=lvswap --vgname=Volume00 --size=2048
+                    raid swap --fstype swap --level 0 --device 1 raid.05 raid.06 raid.07 raid.08""";
+
         setRequestPathInfo("/kickstart/KickstartPartitionEdit");
         addRequestParameter(KickstartPartitionEditAction.SUBMITTED,
                 Boolean.TRUE.toString());

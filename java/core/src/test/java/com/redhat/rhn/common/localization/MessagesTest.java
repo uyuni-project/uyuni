@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import java.util.Locale;
 /**
  * Test for {@link XmlMessages}.
  */
-public class MessagesTest extends RhnBaseTestCase {
+public class MessagesTest extends BaseTestCase {
     private String getMessage;
     private String germanMessage;
     private String oneArg;

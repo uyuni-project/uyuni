@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.server.Server;
@@ -137,7 +138,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 Package testPackage = PackageTest.createTestPackage(admin.getOrg(), "salt-minion");
                 PackageManagerTest.associateSystemToPackage(server, testPackage);
 
-                KickstartDataTest.setupTestConfiguration(admin);
+                KickstartTestUtils.setupTestConfiguration(admin);
                 KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
                 KickstartDataTest.addCommand(admin, k,
                         "custom", "echo test-command");
@@ -196,7 +197,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 proxy = TestUtils.saveAndFlush(proxy);
                 proxy = TestUtils.reload(proxy);
 
-                KickstartDataTest.setupTestConfiguration(admin);
+                KickstartTestUtils.setupTestConfiguration(admin);
                 KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
                 KickstartDataTest.addCommand(admin, k,
                         "custom", "echo test-command 2");
@@ -245,7 +246,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 proxy = TestUtils.saveAndFlush(proxy);
                 proxy = TestUtils.reload(proxy);
 
-                KickstartDataTest.setupTestConfiguration(admin);
+                KickstartTestUtils.setupTestConfiguration(admin);
                 KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
                 KickstartDataTest.addCommand(admin, k,
                         "custom", "echo test-command 3");

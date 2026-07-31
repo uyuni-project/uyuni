@@ -32,6 +32,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -80,7 +81,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                     List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
-                assertNotEmpty(systems);
+                TestUtils.assertNotEmpty(systems);
                 assertAll(systems.stream().map(system -> () -> assertEquals(new Date(0), system.getLastSeenAt())));
 
                 return new SCCOrganizationSystemsUpdateResponse(
@@ -199,7 +200,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                     List<SCCRegisterSystemItem> systems, String username, String password) {
                 assertEquals("username", username);
                 assertEquals("password", password);
-                assertNotEmpty(systems);
+                TestUtils.assertNotEmpty(systems);
                 assertAll(systems.stream().map(system -> () -> assertEquals(new Date(0), system.getLastSeenAt())));
 
                 return new SCCOrganizationSystemsUpdateResponse(

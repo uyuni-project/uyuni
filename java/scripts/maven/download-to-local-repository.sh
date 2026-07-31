@@ -87,6 +87,7 @@ CONFIG_MODIFICATION_TIME=$(stat -c %Y "$CONFIG_FILE")
 
 if (( CONFIG_MODIFICATION_TIME > LAST_RUN_TIME )) || $FORCE_OBS_TO_MAVEN; then
     obs-to-maven -p -d -c "$CACHE_DIR" "$CONFIG_FILE" "$REPOSITORY_DIR"
+    date +"Dependencies were last updated on %Y-%m-%d %H:%M:%S" > "$EXECUTION_FILE"
 else
     echo "Skipping obs-to-maven since configuration hasn't changed since last run"
 fi

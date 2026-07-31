@@ -24,12 +24,14 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +41,8 @@ import java.util.Set;
 /**
  * ServerGroupTest
  */
-public class ServerGroupTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class ServerGroupTest extends BaseTestCase {
 
     @Test
     public void testEquals() {

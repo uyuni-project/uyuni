@@ -17,6 +17,8 @@ package com.suse.manager.ssl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.testing.BaseTestCase;
+
 import com.suse.manager.webui.utils.gson.ProxyContainerConfigJson;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class SSLCertDataTest {
+public class SSLCertDataTest extends BaseTestCase {
     private SSLCertData sslCertData;
 
     @BeforeEach

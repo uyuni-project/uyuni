@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ImageTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -45,7 +45,7 @@ import java.util.Optional;
 /**
  * Test for {@link ImageDeployedEvent}
  */
-public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser {
+public class ImageSyncedEventMessageActionTest extends BaseTestCaseWithUser {
     // Fixed test parameters
     private MinionServer testMinion;
     private ManagedServerGroup testGroup1, testGroup2;

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -46,11 +47,9 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
-        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         FileUtils.deleteDirectory(fromdir.toFile());
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
     }
 
     @Test
@@ -62,7 +61,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
 
         Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
@@ -70,7 +69,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         opath = MgrSyncUtils.urlToFSPath(url, name);
         expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
 
     }
 
@@ -83,7 +82,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
 
         Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".ranchergovernment.com");
         url = "https://updates.scc-proxy.rgscc-dev.ranchergovernment.com/SUSE/Updates/SLE-Module-Basesystem/" +
@@ -92,7 +91,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         opath = MgrSyncUtils.urlToFSPath(url, name);
         expected = new URI(
                 String.format("file://%s/SUSE/Updates/SLE-Module-Basesystem/15-SP3/x86_64/update", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
     }
 
     @Test
@@ -104,7 +103,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(
                 String.format("file://%s/archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
     }
 
     @Test
@@ -116,7 +115,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format(
                 "file://%s/mirrorlist.centos.org/arch/x86_64/infra/stock/release/8/repo/AppStream", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
     }
 
     @Test
@@ -127,7 +126,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
         assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 
@@ -140,7 +139,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
     }
 
     @Test
@@ -152,7 +151,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
     }
 
     @Test
@@ -164,7 +163,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s/download.nvidia.com/suse/sle12sp4", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
         assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 
@@ -179,7 +178,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
         URI opath = MgrSyncUtils.urlToFSPath(url, name);
         URI expected = new URI(String.format("file://%s", fromdir));
-        assertContains(opath.toString(), expected.toString());
+        TestUtils.assertContains(opath.toString(), expected.toString());
         assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
     }
 

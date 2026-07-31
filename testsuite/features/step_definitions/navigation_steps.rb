@@ -48,6 +48,10 @@ When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, t
   raise ScriptError, "Text '#{text}' not found" unless check_text?(text, timeout: seconds.to_i)
 end
 
+When(/^I wait at most (\d+) seconds until I see "([^"]*)" text but do not see "([^"]*)" text$/) do |seconds, text, stopper|
+  raise ScriptError, "Text '#{text}' not found or '#{stopper}' appeared" unless check_text?(text, stopper: stopper, timeout: seconds.to_i)
+end
+
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the page))?$/) do |text1, text2, refresh_option|
   if refresh_option
     # refreshing the page
@@ -163,12 +167,19 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 end
 
 When(/^I switch to last opened window$/) do
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+  # Playwright registers new tab handles asynchronously after a target="_blank" click.
+  # Poll briefly so windows.last is the new tab, not the current one.
+  repeat_until_timeout(message: 'No new window was opened', timeout: 10) do
+    break if windows.count > 1
+
+    sleep 0.3
+  end
+  switch_to_window(windows.last)
 end
 
 When(/^I close the last opened window$/) do
-  page.driver.browser.close
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+  current_window.close
+  switch_to_window(windows.first)
 end
 
 #
@@ -305,14 +316,18 @@ end
 
 # Go back in the browser history
 When(/^I go back$/) do
-  page.driver.go_back
+  page.go_back
 end
 
 #
-# Click on a button
+# Click on a button or a link styled as a button (e.g. <a class="btn">)
 #
 When(/^I click on "([^"]*)"$/) do |text|
-  click_button_and_wait(text, match: :first)
+  begin
+    click_button_and_wait(text, match: :first)
+  rescue Capybara::ElementNotFound
+    click_link_and_wait(text, match: :first, force: true)
+  end
 end
 
 #
@@ -331,8 +346,8 @@ end
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
-  within(:xpath, "//div[@id=\"#{element_id}\"]") do
-    click_button_and_wait(text, match: :first)
+  page.driver.with_playwright_page do |pw_page|
+    pw_page.locator("##{element_id} button:visible", hasText: text).first.click(force: true)
   end
 end
 
@@ -340,7 +355,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
   begin
-    accept_alert do
+    accept_alert(wait: Capybara.default_max_wait_time) do
       step %(I click on "#{text}")
     end
   rescue Capybara::ModalNotFound
@@ -351,7 +366,7 @@ end
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
   begin
-    accept_confirm do
+    accept_confirm(wait: Capybara.default_max_wait_time) do
       click_button(text)
     end
   rescue Capybara::ModalNotFound
@@ -404,8 +419,13 @@ end
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//a[contains(., '#{text}')]"
-  element = find_and_wait_click(:xpath, xpath_query)
-  element.click
+  # Use a Playwright locator instead of caching a Capybara element: the row's table can
+  # re-render between find and click, and capybara-playwright-driver raises
+  # StaleReferenceError on a detached cached node (same root cause as BUG-026).
+  # wait_for_page_transition replaces the Senna-transition wait that the cached element's
+  # CapybaraNodeElementExtension#click used to provide.
+  page.driver.with_playwright_page { |pw_page| pw_page.locator(xpath_query).click }
+  wait_for_page_transition
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
@@ -620,10 +640,18 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     capybara_register_driver
     Capybara.reset_sessions!
   ensure
-    visit Capybara.app_host
+    begin
+      visit Capybara.app_host
+    rescue Playwright::Error => e
+      # net::ERR_ABORTED can fire when SUMA's SSE/streaming connection collides with a new
+      # page navigation. Wait briefly for connections to settle and retry once.
+      warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
+      sleep 1
+      visit Capybara.app_host
+    end
   end
   begin
-    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: 0).any?
+    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: IMMEDIATE_WAIT).any?
   rescue NoMethodError, Capybara::NotSupportedByDriverError
     # driver is not ready yet after session reset, proceed to full login
   end
@@ -936,24 +964,18 @@ When(/^I click on the clear SSM button$/) do
 end
 
 When(/^I click on the filter button$/) do
-  find_and_wait_click('button.spacewalk-button-filter').click
+  page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   raise ScriptError, "Filter was not applied: 'filtered' text did not appear" unless check_text?('filtered', timeout: 20)
 end
 
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
+  # Use a Playwright locator instead of Capybara's find() so the button is re-resolved from the
+  # DOM on every click iteration. After the list re-renders the old DOM node is detached, but a
+  # locator picks up the new one automatically -- no StaleElementReference or DOM-detachment errors.
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless check_text?(text)
 
-    begin
-      find('button.spacewalk-button-filter').click
-      check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
-      # page mid-navigation, retry
-    end
+    page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   end
 end
 
@@ -961,16 +983,7 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if check_text?(text)
 
-    begin
-      find('button.spacewalk-button-filter').click
-      check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
-
-      # page mid-navigation, retry
-    end
+    page.driver.with_playwright_page { |pw_page| pw_page.locator('button.spacewalk-button-filter').click }
   end
 end
 
@@ -1011,6 +1024,11 @@ end
 
 When(/^I enter "([^"]*)" as the filtered formula name$/) do |input|
   find('input[placeholder=\'Filter by formula name\']').set(input)
+end
+
+When(/^I filter "([^"]*)" username$/) do |input|
+  find('input[placeholder=\'Filter by Username: \']').set(input)
+  step 'I click on the filter button'
 end
 
 When(/^I enter the package for "([^"]*)" as the filtered package name$/) do |host|
@@ -1102,21 +1120,21 @@ end
 # Test if a radio button is checked
 #
 Then(/^radio button "([^"]*)" should be checked$/) do |arg1|
-  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1)
+  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1, disabled: :all)
 end
 
 #
 # Test if a checkbox is checked
 #
 Then(/^I should see "([^"]*)" as checked$/) do |arg1|
-  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1)
+  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1, disabled: :all)
 end
 
 #
 # Test if a checkbox is unchecked
 #
 Then(/^I should see "([^"]*)" as unchecked$/) do |arg1|
-  raise ScriptError, "#{arg1} is checked" unless has_unchecked_field?(arg1)
+  raise ScriptError, "#{arg1} is checked" unless has_unchecked_field?(arg1, disabled: :all)
 end
 
 #
@@ -1176,12 +1194,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    begin
-      break if has_no_xpath?(path, wait: 1)
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      # We need to consider the case that after obtaining the element it is detached from the page document
-      break
-    end
+    break if has_no_xpath?(path, wait: 1)
   end
 end
 
@@ -1242,7 +1255,21 @@ When(/^I enter the controller hostname as the redfish server address$/) do
 end
 
 When(/^I clear browser cookies$/) do
-  page.driver.browser.manage.delete_all_cookies
+  page.driver.with_playwright_page { |pw_page| pw_page.context.clear_cookies }
+end
+
+# Click a link that triggers a browser download and persist it to /tmp/downloads.
+# Playwright has no "default download directory" (unlike the old Selenium Chrome preference).
+# Best practice: drop to the native Playwright page and trigger the click inside expect_download
+# with a native locator. Mixing Capybara DSL inside the download wait is a known flakiness source.
+When(/^I download the file by following "([^"]*)"$/) do |link|
+  # capybara-playwright-driver's built-in on('download') handler auto-saves every download to
+  # Capybara.save_path (set to /tmp/downloads in env.rb). Just trigger it; the following
+  # "wait until file ... exists" step confirms completion. Manually waiting/saving here as well
+  # double-handles the same Download object and is a known flakiness/hang source.
+  page.driver.with_playwright_page do |pw_page|
+    pw_page.get_by_role('link', name: link).click
+  end
 end
 
 When(/^I close the modal dialog$/) do
@@ -1250,13 +1277,7 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
-  end
+  refresh_page
 end
 
 When(/^I make a list of the existing systems$/) do
@@ -1302,12 +1323,12 @@ end
 When(/^I click on the search button$/) do
   click_button_and_wait('Search', match: :first)
   # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
-  if has_text?('Could not connect to search server.', wait: 0)
+  if has_text?('Could not connect to search server.', wait: IMMEDIATE_WAIT)
     repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
-      break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
+      break unless has_text?('Could not connect to search server.', wait: IMMEDIATE_WAIT) || has_text?('No matches found', wait: IMMEDIATE_WAIT)
 
       sleep 1
-      click_button('Search', match: :first, wait: false)
+      click_button('Search', match: :first, wait: IMMEDIATE_WAIT)
     end
   end
 end

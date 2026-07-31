@@ -359,9 +359,7 @@ public class PackagesHandler extends BaseHandler {
             throw new PermissionCheckFailureException();
         }
         Package pkg = lookupPackage(loggedInUser, pid);
-        if (pkg == null) {
-            throw new NoSuchPackageException();
-        }
+
         try {
             PackageManager.schedulePackageRemoval(loggedInUser, pkg);
         }

@@ -46,7 +46,6 @@ public class DepthAwareBean implements DepthAware {
      */
     @Override
     public long depth() {
-        // TODO Auto-generated method stub
         return depth;
     }
 
@@ -54,7 +53,6 @@ public class DepthAwareBean implements DepthAware {
      * @return the content value
      */
     public String getContent() {
-        // TODO Auto-generated method stub
         return content;
     }
 

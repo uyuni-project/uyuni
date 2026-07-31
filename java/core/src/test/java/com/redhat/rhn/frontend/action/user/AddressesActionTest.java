@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * AddressesActionTest
  */
-public class AddressesActionTest extends RhnBaseTestCase {
+public class AddressesActionTest extends BaseTestCase {
 
     @Test
     public void testPerformExecute() throws Exception {

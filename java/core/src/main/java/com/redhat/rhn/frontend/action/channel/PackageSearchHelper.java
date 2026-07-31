@@ -159,7 +159,7 @@ public class PackageSearchHelper {
                                           String mode,
                                           List<String> arches) {
 
-        if (!BaseSearchAction.OPT_FREE_FORM.equals(mode) && searchstring.indexOf(':') > 0) {
+        if (!BaseSearchAction.OPT_FREE_FORM.equals(mode) && searchstring.indexOf(':') >= 1) {
             throw new ValidatorException("Can't use free form and field search.");
         }
 

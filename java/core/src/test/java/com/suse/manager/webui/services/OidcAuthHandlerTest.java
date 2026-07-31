@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -63,7 +63,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
+public class OidcAuthHandlerTest extends BaseTestCaseWithUser {
 
     private static final String ISSUER = "https://auth.localhost";
     private static final String TEST_KID = "test-key-id";

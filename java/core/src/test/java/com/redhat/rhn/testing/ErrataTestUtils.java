@@ -137,7 +137,7 @@ public class ErrataTestUtils {
         Channel channel = createTestChannel(user);
         channel.setParentChannel(parent);
         Channel managed = TestUtils.saveAndFlush(channel);
-        parent = TestUtils.saveAndFlush(parent);
+        TestUtils.saveAndFlush(parent); //reassign variable if still needed
 
         return managed;
     }
@@ -333,7 +333,7 @@ public class ErrataTestUtils {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(channel);
 
-        channel = TestUtils.saveAndFlush(channel);
+        TestUtils.saveAndFlush(channel); //reassign variable if still needed
 
         if (errata != null) {
             errata.addPackage(result);

@@ -119,10 +119,10 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
                 "sles", "12", "x86_64").collect(Collectors.toSet());
         List<String> repoNames = repos.stream().map(SCCRepository::getName).collect(Collectors.toList());
-        assertContains(repoNames, "SUSE-PackageHub-12-Pool");
-        assertContains(repoNames, "SLE-Module-Web-Scripting12-Pool");
-        assertContains(repoNames, "SLES12-Updates");
-        assertContains(repoNames, "SLE-Manager-Tools12-Pool");
+        TestUtils.assertContains(repoNames, "SUSE-PackageHub-12-Pool");
+        TestUtils.assertContains(repoNames, "SLE-Module-Web-Scripting12-Pool");
+        TestUtils.assertContains(repoNames, "SLES12-Updates");
+        TestUtils.assertContains(repoNames, "SLE-Manager-Tools12-Pool");
     }
     /**
      * Repo for testing setting random strings and a given ID.

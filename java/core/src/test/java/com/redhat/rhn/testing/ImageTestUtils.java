@@ -178,7 +178,7 @@ public class ImageTestUtils {
         }
 
         profile.getCustomDataValues().add(val);
-        profile = TestUtils.saveAndFlush(profile);
+        TestUtils.saveAndFlush(profile); //reassign variable if still needed
 
         return val;
     }
@@ -207,7 +207,7 @@ public class ImageTestUtils {
         }
 
         info.getCustomDataValues().add(val);
-        info = TestUtils.saveAndFlush(info);
+        TestUtils.saveAndFlush(info); //reassign variable if still needed
 
         return val;
     }

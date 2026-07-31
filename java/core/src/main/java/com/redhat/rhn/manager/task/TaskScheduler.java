@@ -99,7 +99,7 @@ public class TaskScheduler {
         List tasks = TaskFactory.getTaskListByChannel(org);
         Date now = new Date();
         /*
-         * TODO: Hopefully when we get to hib3, we can make one update statement to hit
+         * OLDTODO: Hopefully when we get to hib3, we can make one update statement to hit
          * all of the Task objects. As of now, this isn't a big deal since we will
          * realistically only have a few channels per org.
          */

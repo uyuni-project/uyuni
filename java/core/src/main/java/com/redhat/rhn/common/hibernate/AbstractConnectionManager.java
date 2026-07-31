@@ -43,6 +43,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
+    private static List<HibernateCommitListener> commitListeners = new ArrayList<>();
 
     /**
      * Set up the connection manager.
@@ -63,6 +64,32 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         // startup, when we really shouldn't have multiple threads running,
         // so it isn't a real race condition.
         configurators.add(configurator);
+    }
+
+    /**
+     * add a listener
+     * @param l the listener to be added
+     */
+    @Override
+    public void addCommitListener(HibernateCommitListener l) {
+        commitListeners.add(l);
+    }
+
+    /**
+     * removes a particular listener
+     * @param l the listener to be removed
+     */
+    @Override
+    public void removeCommitListener(HibernateCommitListener l) {
+        commitListeners.remove(l);
+    }
+
+    /**
+     * removes all listeners
+     */
+    @Override
+    public void removeAllCommitListeners() {
+        commitListeners.clear();
     }
 
     /**
@@ -180,6 +207,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         final Transaction txn = info.getTransaction();
         if (txn != null) {
             txn.commit();
+            commitListeners.forEach(HibernateCommitListener::onCommitTransaction);
             info.setTransaction(null);
         }
     }
@@ -256,6 +284,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         if (txn != null && txn.getStatus().isNotOneOf(COMMITTED, ROLLED_BACK)) {
             try {
                 txn.commit();
+                commitListeners.forEach(HibernateCommitListener::onCommitTransaction);
             }
             catch (RuntimeException commitException) {
                 log.warn("Unable to commit transaction", commitException);

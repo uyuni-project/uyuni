@@ -19,19 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.Sequence;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 
 /**
  * VirtualInstanceTest
  */
-public class VirtualInstanceTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class VirtualInstanceTest extends BaseTestCase {
 
     private class GuestStub extends VirtualInstance {
         GuestStub(Long id) {

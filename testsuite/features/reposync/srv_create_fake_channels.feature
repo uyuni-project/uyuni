@@ -5,7 +5,7 @@
 # - features/reposync/srv_create_activationkey.feature
 # - features/reposync/srv_create_fake_repositories.feature
 # - features/init_client/sle_minion.feature
-# - features/init_client/sle_ssh_minion.feature
+# - features/init_client/sle_sshminion.feature
 # - features/init_client/min_rhlike.feature
 # - features/secondary/allcli_software_channels.feature
 # - features/secondary/min_deblike_ssh.feature

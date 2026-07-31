@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
  */
-public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
+public class KickstartOptionsCommandTest extends KickstartBaseTest {
 
     @Test
     public void testKickstartOptionsCommand() throws Exception {

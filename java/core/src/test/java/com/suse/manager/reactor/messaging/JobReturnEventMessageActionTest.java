@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductTestUtils;
@@ -1131,8 +1132,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
             assertNotNull(server.getVirtualInstance());
             assertNotNull(server.getVirtualInstance().getHostSystem());
-            assertEquals("z/OS", server.getVirtualInstance().getHostSystem().getOs());
-            assertEquals("IBM Mainframe 2827 0000000000069A27", server.getVirtualInstance().getHostSystem().getName());
+            assertEquals("z/VM", server.getVirtualInstance().getHostSystem().getOs());
+
+            assertEquals("IBM Mainframe z12 2827 0000000000069A27",
+                    server.getVirtualInstance().getHostSystem().getName());
+
             assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
             assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
 
@@ -1657,7 +1661,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Long actionId = ImageInfoFactory.scheduleImport(
                 server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
         Action action = ActionFactory.lookupById(actionId);
-        action = TestUtils.reload(action);
+        action = TestUtils.reload(action); //reassign variable if still needed
 
         // Process the image inspect return event
         Map<String, String> placeholders = new HashMap<>();
@@ -1685,6 +1689,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageBuild() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1764,6 +1769,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageBuildWithBundle() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1812,6 +1818,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testKiwiImageInspect() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
@@ -1993,7 +2000,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // schedule an inspect action
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
-        inspectAction = TestUtils.reload(inspectAction);
+        TestUtils.reload(inspectAction); //reassign variable if still needed
         // Process the image inspect return event
         Optional<JobReturnEvent> event = JobReturnEvent
                 .parse(getJobReturnEvent(returnEventJson, actionId));
@@ -2109,8 +2116,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion, base);
         assertTokenChannel(minion, ch1);
         assertTokenChannel(minion, ch2);
-
-        commitHappened();
     }
 
     @Test
@@ -2160,8 +2165,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer reloaded = TestUtils.reload(minion);
         // check that tokens are really gone
         assertEquals(0, reloaded.getAccessTokens().size());
-
-        commitHappened();
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {

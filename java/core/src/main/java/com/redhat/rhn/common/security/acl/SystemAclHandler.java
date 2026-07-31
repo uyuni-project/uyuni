@@ -70,7 +70,7 @@ public class SystemAclHandler extends BaseHandler {
     }
 
     /**
-     * TODO: Right now this method calls a small little query
+     * OLDTODO: Right now this method calls a small little query
      * very similar to how the perl code decides this acl.
      * IMO, there is a better way, and we should fix this when
      * we migrate the channels tab.

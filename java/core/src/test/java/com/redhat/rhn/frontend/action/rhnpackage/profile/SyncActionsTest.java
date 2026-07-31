@@ -82,7 +82,6 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         // which can cause deadlocks.  We are forced commit the transaction
         // and close the session.
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         SyncSystemsProfilesAction action = new SyncSystemsProfilesAction();
         Set<String> sessionSet = SessionSetHelper.lookupAndBind(getRequest(),

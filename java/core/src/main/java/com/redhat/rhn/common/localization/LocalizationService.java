@@ -358,7 +358,7 @@ public class LocalizationService {
     /**
      * Get localized text for log messages as well as error emails. Determines
      * Locale of running JVM vs using the current Thread or any other User
-     * related Locale information. TODO mmccune Get Locale out of Config or from
+     * related Locale information. OLDTODO mmccune Get Locale out of Config or from
      * the JVM
      * @param messageId The key of the message we are fetching
      * @return String debug message.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 sed -i 's/cobbler\.host.*/cobbler\.host = localhost/' /etc/rhn/rhn.conf
 if [ -f /etc/cobbler/settings.d/zz-uyuni.settings ] &&

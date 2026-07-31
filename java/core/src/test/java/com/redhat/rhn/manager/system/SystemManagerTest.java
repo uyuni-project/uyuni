@@ -188,7 +188,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final int HOST_SWAP_MB = 1024;
 
     private SaltService saltServiceMock;
-    protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
     private SystemEntitlementManager systemEntitlementManager;
     private SystemManager systemManager;
@@ -202,7 +201,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
-        tmpSaltRoot = Files.createTempDirectory("salt");
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
         context().checking(new Expectations() {
@@ -224,7 +222,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @AfterEach
     public void tearDown() throws Exception {
         try {
-            FileUtils.deleteDirectory(tmpSaltRoot.toFile());
             FileUtils.deleteDirectory(metadataDirOfficial.toFile());
         }
         catch (IOException e) {
@@ -1307,8 +1304,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, server.getChildChannels().size());
         assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch21.getId())));
         assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch22.getId())));
-
-        commitHappened();
     }
 
     @Test
@@ -1345,8 +1340,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(1, server.getChildChannels().size());
         assertEquals(ch21, server.getChildChannels().iterator().next());
-
-        commitHappened();
     }
 
     @Test
@@ -1376,8 +1369,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
-
-        commitHappened();
     }
 
     /**
@@ -2135,7 +2126,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
-        proxy = TestUtils.saveAndFlush(proxy);
+        TestUtils.saveAndFlush(proxy); //reassign variable if still needed
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {

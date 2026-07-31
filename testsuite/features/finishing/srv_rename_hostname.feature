@@ -40,9 +40,9 @@ Feature: Reconfigure the server's hostname
   Scenario: Apply high state on the SUSE Minion to populate new server CA
     When I apply highstate on "sle_minion"
 
-@ssh_minion
+@sshminion
   Scenario: Apply high state on the SUSE SSH Minion to populate new server CA
-    When I apply highstate on "ssh_minion"
+    When I apply highstate on "sshminion"
 
 @rhlike_minion
   Scenario: Apply high state on the Red Hat-like Minion to populate new server CA
@@ -97,9 +97,9 @@ Feature: Reconfigure the server's hostname
   Scenario: Apply high state on the SUSE Minion to populate new server CA
     When I apply highstate on "sle_minion"
 
-@ssh_minion
+@sshminion
   Scenario: Apply high state on the SUSE SSH Minion to populate new server CA
-    When I apply highstate on "ssh_minion"
+    When I apply highstate on "sshminion"
 
 @rhlike_minion
   Scenario: Apply high state on the Red Hat-like Minion to populate new server CA

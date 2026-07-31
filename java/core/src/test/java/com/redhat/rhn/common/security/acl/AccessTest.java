@@ -287,7 +287,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         // Check with a minion system with bootstrap entitlement
         SystemManager.addMinionInfoToServer(s.getId(), "testMid");
-        s = TestUtils.saveAndReload(s);
+        TestUtils.saveAndReload(s); //reassign variable if still needed
 
         assertTrue(acl.evalAcl(context, "system_is_bootstrap_minion_server()"));
 

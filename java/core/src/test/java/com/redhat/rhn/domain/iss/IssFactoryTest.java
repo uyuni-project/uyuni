@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.domain.iss;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class IssFactoryTest extends RhnBaseTestCase {
+public class IssFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestListAllMasters() {

@@ -72,6 +72,10 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
 
         <!-- Runtime -->
         <dependency>
@@ -111,6 +115,13 @@
         <dependency>
             <groupId>org.uyuni-project.coco-attestation.module</groupId>
             <artifactId>attestation-module-secureboot</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.uyuni-project.coco-attestation.module</groupId>
+            <artifactId>attestation-module-pvattest</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
             <optional>true</optional>

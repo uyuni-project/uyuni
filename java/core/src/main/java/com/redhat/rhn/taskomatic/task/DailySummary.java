@@ -42,8 +42,6 @@ import com.suse.manager.utils.MailHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 import java.time.DayOfWeek;
@@ -65,8 +63,6 @@ import java.util.TreeMap;
  * queues org emails, mails queued emails, then dequeues the emails.
  */
 public class DailySummary extends RhnJavaJob {
-
-    private static final Logger LOGGER = LogManager.getLogger(DailySummary.class);
 
     private static final int HEADER_SPACER = 10;
     private static final int ERRATA_SPACER = 4;

@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import com.suse.manager.errata.advisorymap.ErrataAdvisoryMapManager;
 
@@ -42,7 +42,7 @@ import java.util.Locale;
 /**
  * ErrataDetailsSetupActionTest
  */
-public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
+public class ErrataDetailsSetupActionTest extends BaseTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {

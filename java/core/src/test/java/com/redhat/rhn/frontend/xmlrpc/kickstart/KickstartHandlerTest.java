@@ -283,7 +283,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         String label = ks.getLabel();
         KickstartFactory.saveKickstartData(ks);
-        ks = TestUtils.reload(ks);
+        TestUtils.reload(ks); //reassign variable if still needed
 
         List<KickstartDto> list = handler.listKickstarts(admin);
         boolean foundKs = false;
@@ -336,7 +336,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     public void testListAllIpRanges() throws Exception {
         KickstartData ks1 = setupIpRanges();
         List list = handler.listAllIpRanges(admin);
-        assertContains(list, ks1.getIps().iterator().next());
+        TestUtils.assertContains(list, ks1.getIps().iterator().next());
     }
 
     @Test

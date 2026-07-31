@@ -37,9 +37,7 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.Assertions;
@@ -53,12 +51,6 @@ import java.util.Optional;
  */
 public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCase {
 
-    private static final String MANAGEMENT =
-                                   "system_entitlements.setToManagementEntitled";
-    private static final String UNENTITLED =
-                                    "system_entitlements.unentitle";
-
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi() {
         @Override
         public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {

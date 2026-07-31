@@ -16,7 +16,6 @@ package com.suse.manager.reactor;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -543,8 +542,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     null, DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
-            assertContains(e.getMessage(), "Systems with conflicting minion ID and machine ID were found");
-            assertContains(e.getMessage(), "Please remove conflicting systems first (" +
+            TestUtils.assertContains(e.getMessage(), "Systems with conflicting minion ID and machine ID were found");
+            TestUtils.assertContains(e.getMessage(), "Please remove conflicting systems first (" +
                     server1.getId() + ", " + server2.getId() + ")");
             return;
         }
@@ -944,7 +943,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // State assignment file check
                     Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
-                    assertContains(new String(Files.readAllBytes(slsPath)),
+                    TestUtils.assertContains(new String(Files.readAllBytes(slsPath)),
                             ConfigChannelSaltManager.getInstance().getChannelStateName(cfgChannel));
                 }, DEFAULT_CONTACT_METHOD, Optional.empty());
     }
@@ -1861,8 +1860,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
-            assertContains(e.getMessage(), MINION_ID);
-            assertContains(e.getMessage(), "To manage BYOS (Bring-your-own-Subscription) clients " +
+            TestUtils.assertContains(e.getMessage(), MINION_ID);
+            TestUtils.assertContains(e.getMessage(), "To manage BYOS (Bring-your-own-Subscription) clients " +
                     "you have to configure SCC Credentials");
             return;
         }
@@ -1905,8 +1904,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
-            assertContains(e.getMessage(), MINION_ID);
-            assertContains(e.getMessage(), "To manage Datacenter clients you have to configure SCC Credentials");
+            TestUtils.assertContains(e.getMessage(), MINION_ID);
+            TestUtils.assertContains(e.getMessage(),
+                    "To manage Datacenter clients you have to configure SCC Credentials");
             return;
         }
         finally {

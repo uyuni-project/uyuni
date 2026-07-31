@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025 SUSE LLC
+# Copyright (c) 2015-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -30,8 +30,8 @@ Feature: List available channels and enable them
   Scenario: List all products for SUSE Multi-Linux Manager
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I should get "  [ ] SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64"
-    And I should get "  [ ] SUSE Multi-Linux Manager Proxy Extension for SLE 5.1 x86_64"
+    And I should get "  [ ] SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64"
+    And I should get "  [ ] SUSE Multi-Linux Manager Proxy Extension for SLE 5.2 x86_64"
     And I should get "  [ ] (R) SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 7, RHEL and clones 7 x86_64"
     And I should get "  [ ] (R) SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64"
 

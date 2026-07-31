@@ -26,7 +26,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.frontend.dto.VisibleSystems;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class DataSourceParserTest extends RhnBaseTestCase {
+public class DataSourceParserTest extends BaseTestCase {
 
     private static final String TEST_QUERIES = "test_queries";
     private String dbUser;

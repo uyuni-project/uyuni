@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -59,6 +60,8 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUpCobblerCommandTestBase() throws Exception {
+        KickstartTestUtils.setupTestConfiguration(user);
+
         // Make the default user admin
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
@@ -70,7 +73,6 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
             Config.get().setString(CobblerXMLRPCHelper.class.getName(), CobblerXMLRPCHelper.class.getName());
             Config.get().setString(CobblerConnection.class.getName(), CobblerConnection.class.getName());
             TestUtils.commitAndCloseSession();
-            commitHappened();
         }
 
         KickstartableTreeTest.createKickstartTreeItems(this.ksdata.getTree());

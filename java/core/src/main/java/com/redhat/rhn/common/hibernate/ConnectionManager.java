@@ -35,6 +35,23 @@ public interface ConnectionManager {
     void addConfigurator(Configurator configurator);
 
     /**
+     * add a listener
+     * @param l the listener to be added
+     */
+    void addCommitListener(HibernateCommitListener l);
+
+    /**
+     * removes a particular listener
+     * @param l the listener to be removed
+     */
+    void removeCommitListener(HibernateCommitListener l);
+
+    /**
+     * removes all listeners
+     */
+    void removeAllCommitListeners();
+
+    /**
      * Closes the session factory.
      */
     void close();

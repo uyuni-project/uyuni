@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -51,8 +52,8 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
                 lookupKickstartInstallTypeByLabel(distroLabel));
         cmd.setKernelOptions("");
         cmd.store();
-        assertContains(cmd.getKernelOptions(), "install=");
-        assertContains(cmd.getKernelOptions(), "self_update=0");
+        TestUtils.assertContains(cmd.getKernelOptions(), "install=");
+        TestUtils.assertContains(cmd.getKernelOptions(), "self_update=0");
     }
 
     @Test
@@ -82,7 +83,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_8));
         cmd.setKernelOptions("");
         cmd.store();
-        assertContains(cmd.getKernelOptions(), "inst.repo=");
+        TestUtils.assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
 }

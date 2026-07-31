@@ -29,7 +29,6 @@ import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyAvailable;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.assertErrors;
-import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.setConfigDefaultsInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,6 +50,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils;
@@ -64,6 +64,7 @@ import org.jmock.Expectations;
 import org.jmock.api.Invocation;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.lib.action.CustomAction;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -78,6 +79,12 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
     public static final String UNKNOWN = "unknown";
     private static final String JAVA_TEST = "java::test";
+    private final ConfigDefaults configDefaults = ConfigDefaults.get();
+
+    @AfterEach
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.setConfigDefaultsInstance(configDefaults);
+    }
 
     /**
      * Test a scenario where ProxyConfigUpdateJson is resolved as being empty
@@ -382,7 +389,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
@@ -437,7 +443,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         );
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            TestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -458,7 +464,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
@@ -485,7 +490,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertTrue(proxyConfigUpdateContext.getSubscribableChannels().isEmpty());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            TestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -506,7 +511,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
@@ -533,7 +537,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertEquals(channelWithMgrpxy, subscribableChannels.iterator().next());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            TestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -552,7 +556,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
@@ -579,7 +582,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            TestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);

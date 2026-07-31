@@ -150,13 +150,13 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         List<ActionChain> list1 = ActionChainFactory.getActionChainsByServer(server1);
         assertEquals(2, list1.size());
-        assertContains(list1, actionChain1);
-        assertContains(list1, actionChain2);
+        TestUtils.assertContains(list1, actionChain1);
+        TestUtils.assertContains(list1, actionChain2);
 
 
         List<ActionChain> list2 = ActionChainFactory.getActionChainsByServer(server2);
         assertEquals(1, list2.size());
-        assertContains(list2, actionChain3);
+        TestUtils.assertContains(list2, actionChain3);
     }
 
     /**
@@ -433,7 +433,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         // check ServerAction objects have been created
         for (ActionChainEntry entry : actionChain.getEntries()) {
-            assertNotEmpty(entry.getAction().getServerActions());
+            TestUtils.assertNotEmpty(entry.getAction().getServerActions());
         }
     }
 
@@ -453,7 +453,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                     String bunchName = (String) args[0];
                     String jobLabel = (String) args[1];
                     assertEquals(TaskomaticApi.MINION_ACTIONCHAIN_BUNCH_LABEL, bunchName);
-                    assertContains(jobLabel, TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
+                    TestUtils.assertContains(jobLabel, TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
                     TaskoBunch bunch = TaskoFactory.lookupSatBunchByName(bunchName);
                     TaskoSchedule schedule = new TaskoSchedule(null, bunch, jobLabel, (Map) args[2],
                             (Date) args[3], null, null);
@@ -465,7 +465,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                     }
                     List<String> jobLabels = (List<String>) args[0];
                     assertEquals(1, jobLabels.size());
-                    assertContains(jobLabels.get(0), TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
+                    TestUtils.assertContains(jobLabels.get(0), TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX);
 
                     // Fake unschedule by removing TaskoSchedule
                     List<TaskoSchedule> scheduleList = TaskoFactory.listScheduleByLabel(jobLabels.get(0));
@@ -522,7 +522,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         // check ServerAction objects have been created
         for (ActionChainEntry entry : actionChain.getEntries()) {
-            assertNotEmpty(entry.getAction().getServerActions());
+            TestUtils.assertNotEmpty(entry.getAction().getServerActions());
         }
         String jobLabel = TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX + actionChain.getId();
         List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);

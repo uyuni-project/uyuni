@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
 import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -33,22 +34,26 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.model.hub.ChannelInfoDTO;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ChannelFactoryTest
  */
-public class ChannelFactoryTest extends RhnBaseTestCase {
+public class ChannelFactoryTest extends BaseTestCase {
 
     @Test
     public void testChannelFactory() {
@@ -316,7 +321,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.createUser(this);
         // Setup test config since kickstartable trees are required
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartTestUtils.setupTestConfiguration(user);
 
         List<Channel> channels = ChannelFactory.getKickstartableChannels(user.getOrg());
         assertNotNull(channels);
@@ -439,7 +444,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
         List<String> labels = ChannelFactory.findChannelArchLabelsSyncdChannels();
         assertNotNull(labels);
-        assertNotEmpty(labels);
+        assertFalse(labels.isEmpty());
     }
 
     @Test
@@ -455,6 +460,45 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         channels = ChannelFactory.listAllBaseChannels(user);
         assertNotNull(channels);
         assertEquals(size + 1, channels.size());
+    }
+
+    @Test
+    public void testGetAccessibleChannels() throws Exception {
+        User user1 = UserTestUtils.createUser(this);
+        Channel one = createTestChannel(user1);
+        Channel two = createTestClonedChannel(one, user1);
+        Channel three = createTestChannel(user1);
+        Channel four = ChannelTestUtils.createChildChannel(user1, three);
+
+        User user2 = UserTestUtils.createUser(this);
+        createTestChannel(user2);
+
+        List<Channel> expected = Arrays.asList(one, two, three, four);
+        List<ChannelInfoDTO> accessibleChannels = ChannelFactory.getAccessibleChannels(user1);
+        assertNotNull(accessibleChannels);
+        assertEquals(expected.size(), accessibleChannels.size());
+        assertAll(
+            // Ensure that all the  ids match
+            () -> assertEquals(
+                    expected.stream().map(Channel::getId).collect(Collectors.toSet()),
+                    accessibleChannels.stream().map(ChannelInfoDTO::id).collect(Collectors.toSet())
+            ),
+            // Ensure that all the labels match
+            () -> assertEquals(
+                    expected.stream().map(Channel::getLabel).collect(Collectors.toSet()),
+                    accessibleChannels.stream().map(ChannelInfoDTO::label).collect(Collectors.toSet())
+            ),
+            // Ensure the child is correctly identified
+            () -> assertEquals(
+                    List.of(four.getId()),
+                    accessibleChannels.stream().filter(dto -> dto.parentId() != null).map(ChannelInfoDTO::id).toList()
+            ),
+            // Ensure the clone is correctly identified
+            () -> assertEquals(
+                    List.of(two.getId()),
+                    accessibleChannels.stream().filter(dto -> dto.originalId() != null).map(ChannelInfoDTO::id).toList()
+            )
+        );
     }
 
     @Test
@@ -481,7 +525,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         cp.setPath("redhat/1/c7d/some-package-child/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileNameChild);
-        child = TestUtils.saveAndFlush(child);
+        TestUtils.saveAndFlush(child); //reassign variable if still needed
 
         Package lookedUpChild = ChannelFactory.lookupPackageByFilename(channel,
                 fileNameChild);

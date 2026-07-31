@@ -21,6 +21,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -31,7 +32,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
 @SuppressWarnings("java:S1192")
@@ -50,7 +50,7 @@ public class UpdateAvailableTest extends MockObjectTestCase {
 
     @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        setConfigDefaultsInstance(configDefaults);
+        TestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -286,7 +286,6 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
 
-    @SuppressWarnings({"java:S1171", "java:S3599"})
     private void mockConfigDefaults(boolean expectedIsUyuni, String expectedProductVersion) {
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
 
@@ -302,25 +301,10 @@ public class UpdateAvailableTest extends MockObjectTestCase {
         }});
 
         try {
-            setConfigDefaultsInstance(mockConfigDefaults);
+            TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Overrides the ConfigDefaults instance
-     * @param configDefaultsIn the ConfigDefaults instance
-     * @throws NoSuchFieldException if a field with the specified name is not found.
-     * @throws IllegalAccessException if the field is not accessible.
-     */
-    @SuppressWarnings("java:S3011")
-    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaultsIn);
-    }
-
 }

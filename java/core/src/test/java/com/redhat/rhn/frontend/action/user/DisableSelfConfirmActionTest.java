@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * DisableSelfConfirmActionTest
  */
-public class DisableSelfConfirmActionTest extends RhnBaseTestCase {
+public class DisableSelfConfirmActionTest extends BaseTestCase {
 
     @Test
     public void testExecute() throws Exception {

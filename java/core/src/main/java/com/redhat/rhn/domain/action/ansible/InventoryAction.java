@@ -10,6 +10,7 @@
  */
 package com.redhat.rhn.domain.action.ansible;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -32,6 +33,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -104,11 +106,18 @@ public class InventoryAction extends Action {
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        String inventoryPath = details.getInventoryPath();
+        if (StringUtils.isBlank(inventoryPath)) {
+            return emptyMap();
+        }
         return singletonMap(executeInventoryActionCall(), minionSummaries);
     }
 
     private LocalCall<?> executeInventoryActionCall() {
         String inventoryPath = details.getInventoryPath();
+        if (StringUtils.isBlank(inventoryPath)) {
+            return null;
+        }
 
         return new LocalCall<>(SaltParameters.ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
                 new TypeToken<>() { });
@@ -126,6 +135,11 @@ public class InventoryAction extends Action {
             return;
         }
         String inventoryPath = details.getInventoryPath();
+        if (StringUtils.isBlank(inventoryPath)) {
+            serverAction.setStatusFailed();
+            serverAction.setResultMsg("Inventory path is null or empty");
+            return;
+        }
         if (serverAction.isStatusCompleted()) {
             try {
                 Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(

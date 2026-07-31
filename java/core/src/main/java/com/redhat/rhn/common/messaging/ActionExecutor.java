@@ -68,8 +68,8 @@ class ActionExecutor implements Runnable {
                     action.execute(msg);
                 }
             }
-            catch (Throwable t) {
-                LOG.error(t);
+            catch (Exception e) {
+                LOG.error(e);
             }
         }
     }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.KickstartBaseTest;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * KickstartCommandNameTest
  */
-public class KickstartCommandNameTest extends BaseTestCaseWithUser {
+public class KickstartCommandNameTest extends KickstartBaseTest {
 
     @Test
     public void testCommandName() {

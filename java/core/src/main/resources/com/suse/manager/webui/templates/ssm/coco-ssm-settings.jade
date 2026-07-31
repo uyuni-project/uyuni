@@ -10,9 +10,12 @@ proxy.jade.spacewalk-toolbar-h1
 
 script(type="text/javascript").
     window.csrfToken = "#{csrf_token}";
-    window.systemSupport = !{systemSupport};
-    window.availableEnvironmentTypes = !{availableEnvironmentTypes};
 
 script(type='text/javascript').
     spaImportReactPage('systems/coco-settings')
-        .then(function(module) { module.renderer('coco-settings') });
+        .then(function(module) {
+            module.renderer('coco-settings', {
+                systemSupport: !{systemSupport},
+                availableEnvironmentTypes: !{availableEnvironmentTypes}
+            })
+        });

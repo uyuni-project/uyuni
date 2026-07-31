@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk
-Version:        5.2.1
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} Systems Management Application
 License:        GPL-2.0-only
@@ -36,26 +36,22 @@ BuildArch:      noarch
 inventory, provision, update and control your Linux machines.
 
 %package common
+# Java
+# Perl
+# Python
+# Misc
+Requires:       virtual-host-gatherer
+Requires:       cobbler
+# weakremover used on SUSE to get rid of orphan packages which are
 Summary:        %{productprettyname} Systems Management Application with postgresql database backend
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 BuildRequires:  python3
 BuildRequires:  spacewalk-backend
 BuildRequires:  spacewalk-base-minimal-config
-Requires:       python3
-Requires:       spacewalk-setup
 
-# Java
-Requires:       spacewalk-java
-Requires:       spacewalk-search
-Requires:       spacewalk-taskomatic
-
-# Perl
-Requires:       spacewalk-base
-Requires:       spacewalk-html
-
-# Python
 Requires:       mgr-push
+Requires:       python3
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-app
 Requires:       spacewalk-backend-package-push-server
@@ -64,24 +60,24 @@ Requires:       spacewalk-backend-sql
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-backend-xml-export-libs
 Requires:       spacewalk-backend-xmlrpc
+
+Requires:       spacewalk-base
 Requires:       spacewalk-certs-tools
-
-# Misc
-%if 0%{?opensuse}
-Requires:       pxe-default-image
-%endif
 Requires:       spacewalk-config
-Requires:       spacewalk-schema
+Requires:       spacewalk-html
 
-Requires:       virtual-host-gatherer
-Recommends:     virtual-host-gatherer-VMware
+Requires:       spacewalk-java
+Requires:       spacewalk-schema
+Requires:       spacewalk-search
+Requires:       spacewalk-setup
+Requires:       spacewalk-taskomatic
 Requires:       subscription-matcher
+
+Requires:       susemanager-jsp_en
 Requires:       susemanager-sls
 
-Requires:       cobbler
-Requires:       susemanager-jsp_en
+Recommends:     virtual-host-gatherer-VMware
 
-# weakremover used on SUSE to get rid of orphan packages which are
 # unsupported and do not have a dependency anymore
 Provides:       weakremover(jabberd)
 Provides:       weakremover(jabberd-db)
@@ -91,6 +87,10 @@ Provides:       weakremover(python3-jabberpy)
 Provides:       weakremover(python3-mgr-osa-common)
 Provides:       weakremover(python3-mgr-osa-dispatcher)
 Provides:       weakremover(spacewalk-setup-jabberd)
+
+%if 0%{?opensuse}
+Requires:       pxe-default-image
+%endif
 
 %description common
 %{productprettyname} is a systems management application that will

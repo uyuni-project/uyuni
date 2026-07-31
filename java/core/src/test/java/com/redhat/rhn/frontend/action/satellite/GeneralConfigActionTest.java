@@ -27,9 +27,6 @@ import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * GeneralConfigActionTest
  */
@@ -47,11 +44,9 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
-        Map<String, String> originalConfigValues = new HashMap<>();
         for (String config : GeneralConfigAction.getAllowedConfigs()) {
             String value = Config.get().getString(config);
             if (value != null) {
-                originalConfigValues.put(config, value);
                 Config.get().setString(config, "1");
             }
         }
@@ -63,7 +58,6 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
             Object formValue = af.get(config);
             if (configValue != null) {
                 assertNotNull(formValue);
-                Config.get().setString(config, originalConfigValues.get(config));
             }
         }
     }
@@ -102,9 +96,6 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         assertEquals("testbox", Config.get().getString("java.hostname"));
 
         testActionHasMessages(new String[] {"config.restartrequired"});
-
-
-        Config.get().setBoolean(TEST_CONFIG_BOOLEAN, Boolean.toString(origValue));
     }
 
 }

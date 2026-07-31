@@ -63,7 +63,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
 
         assertTrue(map.containsKey("group_ids"));
         List<Long> groups = Arrays.asList((Long[]) map.get("group_ids"));
-        assertContains(groups, group.getId());
+        TestUtils.assertContains(groups, group.getId());
 
         assertTrue(map.containsKey("addon_group_types"));
         List<String> addonGroupTypes = Arrays.asList((String[]) map.get("addon_group_types"));
@@ -72,7 +72,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
                 minion.getAddOnEntitlements().stream().map(Entitlement::getLabel).toList();
 
         assertTrue(addonGroupTypes.containsAll(minionAddonEntitlements));
-        assertContains(addonGroupTypes, minion.getBaseEntitlement().getLabel());
+        TestUtils.assertContains(addonGroupTypes, minion.getBaseEntitlement().getLabel());
     }
 
 }

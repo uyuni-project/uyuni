@@ -10,7 +10,7 @@
 # If the current feature fails on bootstrapping,
 # these features won't be able to perform actions on it.
 
-@ssh_minion
+@sshminion
 @scope_salt_ssh
 @proxy
 Feature: Move a SSH minion from a proxy to direct connection
@@ -19,16 +19,16 @@ Feature: Move a SSH minion from a proxy to direct connection
     Given I am authorized
 
   Scenario: Delete minion system profile before bootstrap
-    When I delete "ssh_minion" system using the api
-    And I perform a full salt minion cleanup on "ssh_minion"
-    And I wait until Salt client is inactive on "ssh_minion"
-    Then "ssh_minion" should not be registered
+    When I delete "sshminion" system using the api
+    And I perform a full salt minion cleanup on "sshminion"
+    And I wait until Salt client is inactive on "sshminion"
+    Then "sshminion" should not be registered
 
   Scenario: Bootstrap a minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
-    And I enter the hostname of "ssh_minion" as "hostname"
+    And I enter the hostname of "sshminion" as "hostname"
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select "1-SUSE-SSH-KEY-x86_64" from "activationKeys"
@@ -36,10 +36,10 @@ Feature: Move a SSH minion from a proxy to direct connection
     And I click on "Bootstrap"
     # workaround for bsc#1222108
     And I wait at most 480 seconds until I see "Bootstrap process initiated." text
-    And I wait until onboarding is completed for "ssh_minion"
+    And I wait until onboarding is completed for "sshminion"
 
   Scenario: Check initial connection from minion to proxy
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
@@ -48,10 +48,10 @@ Feature: Move a SSH minion from a proxy to direct connection
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ssh_minion" hostname
+    Then I should see "sshminion" hostname
 
   Scenario: Change from proxy to direct connection
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
@@ -63,7 +63,7 @@ Feature: Move a SSH minion from a proxy to direct connection
     And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check direct connection
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see a "This system connects directly and not through a Proxy" text
@@ -71,7 +71,7 @@ Feature: Move a SSH minion from a proxy to direct connection
   Scenario: Change connection to a proxy
     # be sure that the old events are older than 1 minute
     Given I wait for "120" seconds
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     And I follow "Change" in the content area
@@ -86,14 +86,14 @@ Feature: Move a SSH minion from a proxy to direct connection
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "ssh_minion" hostname
+    Then I should see "sshminion" hostname
 
   Scenario: Check connection from minion to proxy
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
   Scenario: Check events history for failures on the minion
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given I am on the Systems overview page of this "sshminion"
     Then I check for failed events on history event page

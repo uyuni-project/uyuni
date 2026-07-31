@@ -91,11 +91,8 @@ public class PrimaryXmlWriter extends RepomdWriter {
         try {
             String xml = pkgDto.getPrimaryXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
-
-                if (xml != null) {
-                    handler.addCharacters(xml);
-                    return;
-                }
+                handler.addCharacters(xml);
+                return;
             }
 
             ByteArrayOutputStream st = new ByteArrayOutputStream();

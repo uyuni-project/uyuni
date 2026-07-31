@@ -28,7 +28,7 @@
                     <rhn:csrf />
                     <rhn:submitted />
 
-                    <div class="form-group">
+                    <div class="row">
                         <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-danger">

@@ -30,12 +30,20 @@ class Toggler extends Component<Props> {
       classes += " " + this.props.className;
     }
     return (
-      <span {...DEPRECATED_onClick(() => this.props.handler(!this.props.value))} className={classes}>
+      <span {...DEPRECATED_onClick(() => this.handleClick())} className={classes}>
         <i className={"v-middle fa " + (this.props.value ? "fa-toggle-on text-success" : "fa-toggle-off")} />
         &nbsp;
         <span className="v-middle">{this.props.text}</span>
       </span>
     );
+  }
+
+  handleClick() {
+    if (this.props.disabled) {
+      return;
+    }
+
+    this.props.handler(!this.props.value);
   }
 }
 

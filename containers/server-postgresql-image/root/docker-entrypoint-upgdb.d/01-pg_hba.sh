@@ -26,7 +26,7 @@ if [ -f "$NAMESPACE_FILE" ] ; then
 host all all .kube-system.svc.cluster.local reject"
 else
     # podman
-    INTERNAL_ACCESS=uyuni-server
+    INTERNAL_ACCESS="uyuni-server uyuni-server-attestation-0 uyuni-server-attestation-1 uyuni-server-attestation-2 uyuni-server-attestation-3"
     EXTERNAL_RULES=""
 fi
 

@@ -16,11 +16,11 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class TaskHelperTest extends RhnBaseTestCase {
+public class TaskHelperTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestScheduleActionExecution() {

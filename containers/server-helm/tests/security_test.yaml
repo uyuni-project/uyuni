@@ -61,3 +61,24 @@ tests:
             seLinuxOptions:
               level: s0
               type: "spc_t"
+
+  - it: should render the SELinux type
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        selinuxType: uyuni_container_t
+    asserts:
+      - isSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            capabilities:
+              add:
+              - SYS_ADMIN
+            seLinuxOptions:
+              level: s0
+              type: uyuni_container_t
+      - isNotSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            seLinuxOptions:
+              type: "spc_t"

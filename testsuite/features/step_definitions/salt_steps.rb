@@ -646,7 +646,7 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if host.include? 'ssh_minion'
+  if host.include? 'sshminion'
     cmd = 'mgr-salt-ssh'
   elsif host.include?('minion') || host.include?('build') || host.include?('proxy')
     cmd = 'salt'

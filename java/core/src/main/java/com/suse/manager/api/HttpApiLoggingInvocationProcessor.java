@@ -73,6 +73,8 @@ public class HttpApiLoggingInvocationProcessor extends LoggingInvocationProcesso
                 Optional.ofNullable(caller.get()),
                 request.ip()
             );
+
+            caller.remove();
         });
     }
 

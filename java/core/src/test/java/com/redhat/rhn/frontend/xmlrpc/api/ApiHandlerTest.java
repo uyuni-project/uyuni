@@ -20,11 +20,11 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class ApiHandlerTest extends RhnBaseTestCase {
+public class ApiHandlerTest extends BaseTestCase {
 
     @Test
     public void testSystemVersion() {

@@ -12,6 +12,8 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
+-- Consider converting it to a MATERIALIZED VIEW with an index on
+-- (sid, pid). see bsc#1267912
 CREATE OR REPLACE VIEW suseServerAppStreamHiddenPackagesView AS
 
 -- If a package is part of any appstream,

@@ -56,7 +56,7 @@ Feature: Edit Cobbler profiles
     And I enter "ise_ui_test=ISE_UI_TEST" as "variables"
     And I click on "Update Variables"
     And I refresh the page
-    Then I should see a "ISE_UI_TEST" text
+    Then I should see "ise_ui_test=ISE_UI_TEST" in field identified by "variables"
 
   ## XML-RPC API tests
   Scenario: Create a Cobbler distribution via the UI in the XML-RPC context

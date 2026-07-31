@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-config
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -29,8 +29,10 @@
 %define apache_group apache
 %endif
 
+%global prepdir %{_var}/lib/rhn/rhn-satellite-prep
+
 Name:           spacewalk-config
-Version:        5.2.4
+Version:        5.3.0
 Release:        0
 Summary:        %{productprettyname} Configuration
 License:        GPL-2.0-only
@@ -39,6 +41,13 @@ Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
+BuildRequires:  uyuni-base-common
+Requires:       (apache2-mod_xsendfile or mod_xsendfile)
+Requires:       diffutils
+Requires:       openssl
+# We need package httpd to be able to assign group apache in files section
+Requires(pre):  %{apachepkg}
+Requires(pre):  uyuni-base-common
 BuildArch:      noarch
 %if 0%{?rhel} || 0%{?fedora}
 Requires(post): chkconfig
@@ -46,19 +55,10 @@ Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 %endif
-# We need package httpd to be able to assign group apache in files section
-Requires(pre):  %{apachepkg}
-Requires:       openssl
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
-
-%global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
 %if 0%{?suse_version}
 BuildRequires:  sudo
 %endif
-Requires:       diffutils
-Requires:       (apache2-mod_xsendfile or mod_xsendfile)
 
 %description
 Common %{productprettyname} configuration files and templates.
@@ -82,7 +82,7 @@ export NO_BRP_STALE_LINK_ERROR=yes
 mv %{buildroot}%{_sysconfdir}/httpd %{buildroot}%{apacheconfdir}
 %else
 sed -i 's|srv/www/htdocs|var/www/html|g' %{buildroot}%{apacheconfdir}/conf.d/z-public.conf
-sed -i 's|/usr/share/apache2/|/usr/share/httpd/|g' %{buildroot}%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+sed -i 's|%{_datadir}/apache2/|%{_datadir}/httpd/|g' %{buildroot}%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 
 %endif
 
@@ -92,7 +92,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/certs/
 mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/private/
 
 %files
-%defattr(-,root,root,-)
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
@@ -107,11 +106,11 @@ mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/private/
 %config(noreplace) %{_sysconfdir}/satname
 %dir %{_var}/lib/rhn
 %dir %{_var}/lib/rhn/rhn-satellite-prep
-%attr(0750,root,root) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc
-%attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
-%attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
+%attr(0750,root,root) %dir %{_var}/lib/rhn/rhn-satellite-prep%{_sysconfdir}
+%attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep%{_sysconfdir}/rhn
+%attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep%{_sysconfdir}/rhn/rhn.conf
 %license LICENSE
-%{_mandir}/man5/rhn.conf.5*
+%{_mandir}/man5/rhn.conf.5%{?ext_man}
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/pki
 %dir %{_sysconfdir}/pki/tls

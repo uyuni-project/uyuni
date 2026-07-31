@@ -148,7 +148,8 @@ public class UserEditSetupAction extends RhnAction {
             // and disable the item in the UI.
             if (UserFactory.IMPLIEDROLES.contains(currRole) &&
                     targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
-                uilabel = uilabel + (" - [ " + LocalizationService.getInstance().getMessage("Admin Access") + " ]");
+                uilabel = uilabel + (" - [ " + LocalizationService.getInstance()
+                        .getMessage("user.admin.access") + " ]");
 
                 disabled = true;
                 log.debug("2");
@@ -177,15 +178,22 @@ public class UserEditSetupAction extends RhnAction {
         }
 
         LocalizationService loc = LocalizationService.getInstance();
-        var rbacRoles = rbacGroups.stream()
-                .sorted(Comparator.comparing(AccessGroup::getDescription))
-                .map(ag -> new UserRoleStatusBean(
-                                loc.hasMessage(ag.getLabel()) ? loc.getMessage(ag.getLabel()) : ag.getDescription(),
-                                ag.getLabel(),
-                                targetUser.isMemberOf(ag),
-                                false
-                        )
-                ).toList();
+        List<UserRoleStatusBean> rbacRoles = new LinkedList<>();
+        for (AccessGroup ag : rbacGroups.stream()
+                .sorted(Comparator.comparing(AccessGroup::getDescription)).toList()) {
+            boolean disabled = false;
+            String label = loc.hasMessage(ag.getLabel()) ? loc.getMessage(ag.getLabel()) : ag.getDescription();
+            if (ag.getOrg() == null && targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN) &&
+                    UserFactory.IMPLIEDROLES.stream().anyMatch(r -> r.getLabel().equals(ag.getLabel()))) {
+                disabled = true;
+                label = label + (" - [ " + loc.getMessage("user.admin.access") + " ]");
+                if (disabledRoles.length() > 0) {
+                    disabledRoles.append("|");
+                }
+                disabledRoles.append(ag.getLabel());
+            }
+            rbacRoles.add(new UserRoleStatusBean(label, ag.getLabel(), targetUser.isMemberOf(ag), disabled));
+        }
 
         request.setAttribute("adminRoles", adminRoles);
         request.setAttribute("rbacRoles", rbacRoles);

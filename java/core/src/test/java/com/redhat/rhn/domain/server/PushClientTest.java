@@ -17,17 +17,20 @@ package com.redhat.rhn.domain.server;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Date;
 
 /**
  * PushClientTest
  */
-public class PushClientTest extends RhnBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class PushClientTest extends BaseTestCase {
 
     public static final String JABBER_ID = "Test Jabber Id";
     public static final String CLIENT_NAME = "Test Client Name";

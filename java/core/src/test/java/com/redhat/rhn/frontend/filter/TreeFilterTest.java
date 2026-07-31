@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * TreeFilterTest
  */
-public class TreeFilterTest extends RhnBaseTestCase {
+public class TreeFilterTest extends BaseTestCase {
 
     private DataResult main;
     private TreeFilter filter;

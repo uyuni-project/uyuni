@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-java-common
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-java-common
-Version:        5.2.6
+Version:        5.3.0
 Release:        0
 Summary:        Common Java library for %{productprettyname} Java components
 License:        GPL-2.0-only

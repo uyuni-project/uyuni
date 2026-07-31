@@ -106,7 +106,7 @@ public class ColumnTag extends TagSupport {
     /** header colspan attribute **/
     private String headerStyle;
     /**
-     *  TODO: Eliminate this attribute. This is a dirty dirty
+     *  OLDTODO: Eliminate this attribute. This is a dirty dirty
      *  hack to allow the ColumnTag to know whether to use
      *  UnpagedListDisplayTag as its parent or ListDisplayTag
      *  as its parent. When ListDisplayTag is refactored

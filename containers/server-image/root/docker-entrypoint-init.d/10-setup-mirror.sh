@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 # In the container case, we have the MIRROR_PATH environment variable at setup
 if [ "${MIRROR_PATH}" = "disable" ]; then

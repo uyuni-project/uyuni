@@ -269,9 +269,10 @@ public class ImageInfoFactory extends HibernateFactory {
          * Save a {@link ImageInfo}.
          *
          * @param imageInfo the image info to save
+         * @return the saved ImageInfo
          */
-    public static void save(ImageInfo imageInfo) {
-        instance.saveObject(imageInfo);
+    public static ImageInfo save(ImageInfo imageInfo) {
+        return instance.saveObject(imageInfo);
     }
 
     private static void removeImageFile(String path, SaltApi saltApi) {
@@ -486,7 +487,7 @@ public class ImageInfoFactory extends HibernateFactory {
                                     FROM ImageInfo WHERE name = :name
                                     AND version IS NULL
                                     AND store = :imageStore
-                                    ORDER BY revisionNumber""", ImageInfo.class)
+                                    ORDER BY revisionNumber, id""", ImageInfo.class)
                     .setParameter("name", name)
                     .setParameter("imageStore", imageStore)
                     .setMaxResults(1)
@@ -497,7 +498,7 @@ public class ImageInfoFactory extends HibernateFactory {
                     .createQuery("""
                                     FROM ImageInfo WHERE name = :name
                                     AND version = :version
-                                    AND store = :imageStore ORDER BY revisionNumber""", ImageInfo.class)
+                                    AND store = :imageStore ORDER BY revisionNumber, id""", ImageInfo.class)
                     .setParameter("name", name)
                     .setParameter("version", version)
                     .setParameter("imageStore", imageStore)

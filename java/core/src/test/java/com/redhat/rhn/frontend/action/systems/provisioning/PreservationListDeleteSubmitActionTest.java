@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.FileListTest;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * PreservationListDeleteSubmitActionTest
  */
-public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
+public class PreservationListDeleteSubmitActionTest extends BaseTestCase {
     private Action action = null;
 
     @BeforeEach
