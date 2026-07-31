@@ -50,6 +50,7 @@ public class ProxyContainerConfigCreateContext {
     private final String caPassword;
     private final SSLCertData certData;
     private final SSLCertManager certManager;
+    private final List<String> additionalFqdns;
 
     // computed
     private MgrUtilRunner.SshKeygenResult proxySshKey;
@@ -69,7 +70,8 @@ public class ProxyContainerConfigCreateContext {
             SaltApi saltApiIn, User userIn, SystemEntitlementManager systemEntitlementManagerIn, String serverFqdnIn,
             String proxyFqdnIn, Integer proxyPortIn, Long maxCacheIn, String emailIn, String rootCAIn,
             List<String> intermediateCAsIn, SSLCertPair proxyCertKeyIn, SSLCertPair caPairIn, String caPasswordIn,
-            SSLCertData certDataIn, SSLCertManager certManagerIn, String sshPubIn, String sshPrivIn, String sshParentIn
+            SSLCertData certDataIn, SSLCertManager certManagerIn, String sshPubIn, String sshPrivIn, String sshParentIn,
+            List<String> additionalFqdnsIn
     ) {
         saltApi = saltApiIn;
         user = userIn;
@@ -87,9 +89,14 @@ public class ProxyContainerConfigCreateContext {
         certData = certDataIn;
         certManager = certManagerIn;
         serverSshPublicKey = sshParentIn;
+        additionalFqdns = additionalFqdnsIn != null ? additionalFqdnsIn : List.of();
         if (sshPubIn != null && sshPrivIn != null) {
             proxySshKey = new MgrUtilRunner.SshKeygenResult(sshPrivIn, sshPubIn);
         }
+    }
+
+    public List<String> getAdditionalFqdns() {
+        return additionalFqdns;
     }
 
     public SaltApi getSaltApi() {

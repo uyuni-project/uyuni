@@ -121,7 +121,8 @@ public class ProxyController {
             byte[] config = systemManager.createProxyContainerConfig(user, data.getProxyFqdn(),
                     data.getProxyPort(), data.getServerFqdn(), data.getMaxCache(), data.getEmail(),
                     data.getRootCA(), data.getIntermediateCAs(), data.getProxyCertPair(),
-                    data.getCaPair(), data.getCaPassword(), data.getCertData(), new SSLCertManager());
+                    data.getCaPair(), data.getCaPassword(), data.getCertData(), new SSLCertManager(),
+                    data.getAdditionalFqdns());
             String filename = data.getProxyFqdn().split("\\.")[0];
             request.session().attribute(filename + "-config.tar.gz", config);
 
