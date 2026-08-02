@@ -28,6 +28,7 @@ public class CreateChannelCommandRegexTest {
 
         assertTrue(channelNamePattern.matcher("Uppercase Channel Name").matches());
         assertTrue(channelNamePattern.matcher("0Starts With Digit").matches());
+        assertTrue(channelNamePattern.matcher("O'Reilly Channel").matches());
     }
 
     @Test
