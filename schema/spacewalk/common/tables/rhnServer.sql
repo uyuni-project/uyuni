@@ -90,7 +90,11 @@ CREATE INDEX rhn_server_creator_idx
 
 CREATE INDEX rhn_server_hostname_idx
     ON rhnServer (hostname)
-    
+    ;
+
+CREATE INDEX rhn_server_cpe_idx
+    ON rhnServer (cpe)
     ;
 
 CREATE SEQUENCE rhn_server_id_seq START WITH 1000010000;
+
