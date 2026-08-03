@@ -597,6 +597,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                             .orElseGet(() -> creator.map(User::getOrg)
                             .orElseGet(() -> getProxyOrg(master, isSaltSSH, saltSSHProxyId)
                             .orElseGet(OrgFactory::getSatelliteOrg)));
+
+            if (activationKey.isEmpty() && org.getToken() != null) {
+                activationKey = Optional.ofNullable(ActivationKeyFactory.lookupByToken(org.getToken()));
+                LOG.info("Using universal default activation key for minion {}", minionId);
+            }
+
             if (minion.getOrg() == null) {
                 minion.setOrg(org);
             }
