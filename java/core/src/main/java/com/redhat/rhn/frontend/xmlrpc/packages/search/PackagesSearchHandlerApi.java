@@ -110,11 +110,12 @@ public interface PackagesSearchHandlerApi {
     @ApiEndpointDoc(
         summary = "Advanced method to search lucene indexes with a passed in query written " +
                   "in Lucene Query Parser syntax.",
-        description = "Lucene Query Parser syntax is defined at lucene.apache.org " +
-                      "(http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).\n" +
-                      "Fields searchable for Packages: name, epoch, version, release, arch, " +
-                      "description, summary.\n" +
-                      "Lucene Query Example: \"name:kernel AND version:2.6.18 AND -description:devel\"",
+        description = """
+            Lucene Query Parser syntax is defined at lucene.apache.org \
+            (http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).
+            Fields searchable for Packages: name, epoch, version, release, arch, description, summary.
+            Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"\
+            """,
         method = HttpMethod.get,
         responseClass = PackageOverviewListResponse.class
     )
@@ -140,11 +141,12 @@ public interface PackagesSearchHandlerApi {
         summary = "Advanced method to search lucene indexes with a passed in query written " +
                   "in Lucene Query Parser syntax, additionally this method will limit results " +
                   "to those which are in the passed in channel label.",
-        description = "Lucene Query Parser syntax is defined at lucene.apache.org " +
-                      "(http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).\n" +
-                      "Fields searchable for Packages: name, epoch, version, release, arch, " +
-                      "description, summary.\n" +
-                      "Lucene Query Example: \"name:kernel AND version:2.6.18 AND -description:devel\"",
+        description = """
+            Lucene Query Parser syntax is defined at lucene.apache.org \
+            (http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).
+            Fields searchable for Packages: name, epoch, version, release, arch, description, summary.
+            Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"\
+            """,
         method = HttpMethod.get,
         responseClass = PackageOverviewListResponse.class
     )
@@ -176,11 +178,12 @@ public interface PackagesSearchHandlerApi {
         summary = "Advanced method to search lucene indexes with a passed in query written " +
                   "in Lucene Query Parser syntax, additionally this method will limit results " +
                   "to those which are associated with a given activation key.",
-        description = "Lucene Query Parser syntax is defined at lucene.apache.org " +
-                      "(http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).\n" +
-                      "Fields searchable for Packages: name, epoch, version, release, arch, " +
-                      "description, summary.\n" +
-                      "Lucene Query Example: \"name:kernel AND version:2.6.18 AND -description:devel\"",
+        description = """
+            Lucene Query Parser syntax is defined at lucene.apache.org \
+            (http://lucene.apache.org/java/3_5_0/queryparsersyntax.html).
+            Fields searchable for Packages: name, epoch, version, release, arch, description, summary.
+            Lucene Query Example: "name:kernel AND version:2.6.18 AND -description:devel"\
+            """,
         method = HttpMethod.get,
         responseClass = PackageOverviewListResponse.class
     )
