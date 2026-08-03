@@ -28,8 +28,8 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
     puts "SSH operation timed out after #{timeout} seconds."
   rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET
     puts "Unable to reach the SSH server at #{host}:#{port}"
-  rescue Net::SSH::AuthenticationFailed
-    puts "Authentication failed for user #{user} on #{host}"
+  rescue Net::SSH::AuthenticationFailed => e
+    puts "Authentication failed on #{host}: #{e.message}"
   end
 
   [stdout, stderr, exit_code]
@@ -48,8 +48,8 @@ def scp_upload_command(local_path, remote_path, host, port: 22, timeout: DEFAULT
     Net::SSH.start(host, nil, port: port, verify_host_key: :never, keepalive: true, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
       ssh.scp.upload! local_path, remote_path
     end
-  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
-    # The connection times out or is refused
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED => e
+    puts "SCP upload failed (#{local_path} -> #{host}:#{remote_path}): #{e.message}"
   end
 end
 
@@ -66,8 +66,8 @@ def scp_download_command(remote_path, local_path, host, port: 22, timeout: DEFAU
     Net::SSH.start(host, nil, port: port, verify_host_key: :never, keepalive: true, timeout: timeout, max_pkt_size: buffer_size, config: true) do |ssh|
       ssh.scp.download! remote_path, local_path
     end
-  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED
-    # The connection times out or is refused
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED => e
+    puts "SCP download failed (#{host}:#{remote_path} -> #{local_path}): #{e.message}"
   end
 end
 
@@ -85,7 +85,7 @@ def ssh_exec!(ssh, command, timeout: 10)
 
   ssh.open_channel do |channel|
     channel.exec(command) do |_ch, success|
-      raise SystemCallError, 'FAILED: could not execute command (ssh.channel.exec)' unless success
+      raise SystemCallError, "FAILED: could not execute command '#{command}' (ssh.channel.exec)" unless success
 
       channel.on_data do |_ch, data|
         stdout += data
