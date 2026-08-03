@@ -298,12 +298,18 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
 end
 
 When(/^I attach the remote file "([^"]*)" on "([^"]*)" to "([^"]*)"$/) do |remote_file, host, field|
-  attach_dir = Dir.mktmpdir('attach')
-  (@attach_dirs ||= []) << attach_dir
-  local_file = File.join(attach_dir, File.basename(remote_file))
-  raise ScriptError, "Extraction of #{remote_file} from #{host} failed" unless file_extract(get_target(host), remote_file, local_file)
+  attach_remote_file(remote_file, host, field)
+end
 
-  attach_file(field, local_file)
+When(/^I attach the SSG content of "([^"]*)" to the SCAP content upload form$/) do |host|
+  base = "/usr/share/xml/scap/ssg/content/ssg-rhel#{os_major_version(host)}"
+  attach_remote_file("#{base}-ds.xml", host, 'scapFile')
+  attach_remote_file("#{base}-xccdf.xml", host, 'xccdfFile')
+end
+
+Then(/^I should see the RHEL version of "([^"]*)" in the scan results$/) do |host|
+  text = "RHEL-#{os_major_version(host)}"
+  raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
 end
 
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|

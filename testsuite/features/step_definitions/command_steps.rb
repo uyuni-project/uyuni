@@ -1060,9 +1060,9 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
       cmd = "#{cmd} && " unless cmd.empty?
       cmd =
         if action == 'enable'
-          "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+          "#{cmd}grep -q '^\\[#{repo}\\]' /etc/yum.repos.d/*.repo && sed -i '/^\\[#{repo}\\]/,/^\\[/ s/enabled=.*/enabled=1/g' /etc/yum.repos.d/*.repo"
         else
-          "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+          "#{cmd}grep -q '^\\[#{repo}\\]' /etc/yum.repos.d/*.repo && sed -i '/^\\[#{repo}\\]/,/^\\[/ s/enabled=.*/enabled=0/g' /etc/yum.repos.d/*.repo"
         end
     end
   when /^ubuntu/, /^debian/
