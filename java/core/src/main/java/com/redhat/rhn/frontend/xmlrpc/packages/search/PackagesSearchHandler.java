@@ -54,7 +54,7 @@ import redstone.xmlrpc.XmlRpcFault;
  * @apidoc.namespace packages.search
  * @apidoc.doc Methods to interface to package search capabilities in search server..
  */
-public class PackagesSearchHandler extends BaseHandler {
+public class PackagesSearchHandler extends BaseHandler implements PackagesSearchHandlerApi {
 
     private static Logger log = LogManager.getLogger(PackagesSearchHandler.class);
 
