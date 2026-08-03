@@ -6,6 +6,7 @@ FROM $BASE AS base
 
 # Main packages
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
+        python3 \
         python3-PyYAML \
         python3-fbtftp \
         python3-requests && \
