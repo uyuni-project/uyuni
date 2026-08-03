@@ -94,6 +94,10 @@ REPOSYNC_EXTRA_HTTP_HEADERS_CONF = "/etc/rhn/spacewalk-repo-sync/extra_headers.c
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r"^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)")
 
+ZYPP_PLUGINS_PATH = "usr/lib/zypp/plugins"
+HOST_ZYPP_PLUGINS_PATH = os.path.join("/", ZYPP_PLUGINS_PATH)
+REPOSYNC_ZYPPER_PLUGINS_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, ZYPP_PLUGINS_PATH)
+
 # possible urlgrabber errno
 NO_MORE_MIRRORS_TO_TRY = 256
 
@@ -129,6 +133,19 @@ class ZyppoSync:
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
             raise
+
+        try:
+            # Plugins installed in the host are made available in the
+            # chrooted environment
+            self.__link_host_plugins()
+        except Exception as exc:
+            # pylint: disable-next=consider-using-f-string
+            msg = "Unable to link the host Zypper plugins into {}: {}".format(
+                REPOSYNC_ZYPPER_PLUGINS_PATH, exc
+            )
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
+
         try:
             # Synchronize new GPG keys that come from the Spacewalk GPG keyring
             self.__synchronize_gpg_keys()
@@ -138,6 +155,40 @@ class ZyppoSync:
             msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
+
+    def __link_host_plugins(self):
+        """
+        Make the Zypper plugins installed in the host system available inside the
+        reposync Zypper root
+
+        """
+        if not os.path.isdir(HOST_ZYPP_PLUGINS_PATH):
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "No Zypper plugins to link from {}".format(HOST_ZYPP_PLUGINS_PATH),
+            )
+            return
+        self.__link_missing_entries(
+            HOST_ZYPP_PLUGINS_PATH, REPOSYNC_ZYPPER_PLUGINS_PATH
+        )
+
+    def __link_missing_entries(self, src_dir, dst_dir):
+        """
+        Symlink every entry of 'src_dir' that is missing in 'dst_dir'
+
+        """
+        if not os.path.isdir(dst_dir):
+            os.makedirs(dst_dir)
+        for entry in os.listdir(src_dir):
+            src = os.path.join(src_dir, entry)
+            dst = os.path.join(dst_dir, entry)
+            if not os.path.lexists(dst):
+                os.symlink(src, dst)
+                # pylint: disable-next=consider-using-f-string
+                log(3, "Linked Zypper plugin {} to {}".format(src, dst))
+            elif os.path.isdir(src) and os.path.isdir(dst) and not os.path.islink(dst):
+                self.__link_missing_entries(src, dst)
 
     def __synchronize_gpg_keys(self):
         """
