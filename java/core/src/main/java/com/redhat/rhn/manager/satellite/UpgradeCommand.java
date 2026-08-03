@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -37,8 +39,12 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.saltboot.SaltbootMigrationException;
 import com.suse.manager.saltboot.SaltbootMigrationUtils;
@@ -60,8 +66,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,6 +103,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "all_systems_sync_all";
     public static final String MIGRATE_COBBLER =
             UPGRADE_TASK_NAME + "migrate_cobbler";
+    public static final String MGR_SYNC_ALL =
+            UPGRADE_TASK_NAME + "mgr_sync_all";
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
@@ -171,6 +182,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     case ALL_SYSTEMS_SYNC_ALL:
                         allSystemsSyncAll();
                         break;
+                    case MGR_SYNC_ALL:
+                        mgrSyncAll();
+                        break;
                     case MIGRATE_COBBLER:
                         migrateCobbler(t);
                         return; // do not remove the task here, migrateCobbler handles it
@@ -181,6 +195,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             }
         }
     }
+
 
     private void processKickstartProfiles() {
         // Use WARN here because we want this operation logged.
@@ -439,6 +454,31 @@ public class UpgradeCommand extends BaseTransactionCommand {
         }
         catch (Exception e) {
             log.error("Error running sync_all. Ignoring.", e);
+        }
+    }
+
+    private void mgrSyncAll() {
+        TaskomaticApi taskomaticApi = new TaskomaticApi();
+        int cnt = 0;
+        try {
+            while (!taskomaticApi.isRunning() && cnt < 24) {
+                TimeUnit.SECONDS.sleep(5);
+                cnt++;
+                log.warn("Waiting for taskomatic api to start");
+            }
+        }
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        User satAdmin = UserFactory.findResponsibleUser(OrgFactory.getSatelliteOrg().getId(), RoleFactory.SAT_ADMIN);
+        Map<String, String> params = new HashMap<>();
+        params.put("noRepoSync", "false");
+        try {
+            taskomaticApi.scheduleSingleSatBunch(satAdmin, "mgr-sync-refresh-bunch", params);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Failed to schedule mgr-sync-refresh job: ", e);
         }
     }
 
