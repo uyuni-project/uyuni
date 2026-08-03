@@ -445,6 +445,37 @@ def deb_host?(name)
   %w[debian ubuntu].include? os_family
 end
 
+# Extracts a file from a host and attaches it to a file upload field of the current page.
+# The temporary directory is removed in the After hook.
+#
+# @param remote_file [String] the path of the file on the host
+# @param host [String] the host name
+# @param field [String] the locator of the file upload field
+def attach_remote_file(remote_file, host, field)
+  attach_dir = Dir.mktmpdir('attach')
+  (@attach_dirs ||= []) << attach_dir
+  local_file = File.join(attach_dir, File.basename(remote_file))
+  raise ScriptError, "Extraction of #{remote_file} from #{host} failed" unless file_extract(get_target(host), remote_file, local_file)
+
+  attach_file(field, local_file)
+end
+
+# Determines the major version of the operating system of a given host name.
+#
+# @param name [String] the host name to check
+# @return [Integer] the major version, for example 10 for Rocky Linux 10.0
+def os_major_version(name)
+  get_target(name).os_version.to_s.split('.').first.to_i
+end
+
+# Determines if the Red Hat-like minion is deployed and runs the given major version or a newer one.
+#
+# @param ver [Integer] the minimum major version, for example 10 for Rocky Linux 10
+# @return [Boolean] true if the Red Hat-like minion runs that major version or a newer one
+def rhlike_minion_version_equals_or_higher?(ver = 10)
+  ENV.key?(get_env_var_with_fallback('rhlike_minion')) && os_major_version('rhlike_minion') >= ver.to_i
+end
+
 # Checks if a repository exists.
 #
 # @param repo [String] The name of the repository to check.
