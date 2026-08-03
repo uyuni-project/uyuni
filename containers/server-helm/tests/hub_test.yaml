@@ -23,7 +23,7 @@ tests:
           value: hub-xmlrpc
       - equal:
           path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].image
-          value: registry.opensuse.org/uyuni/server-hub-xmlrpc-api:latest
+          value: registry.opensuse.org/uyuni/server-hub-xmlrpc-api:0.0.0
       - contains:
           path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].env
           content:

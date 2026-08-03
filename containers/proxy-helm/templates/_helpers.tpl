@@ -3,7 +3,10 @@
 {{/*   "global", the root object */}}
 {{/*   "local", the configuration object containing the image and tag to override with */}}
 {{- define "uyuni.image" -}}
-{{- $tag := .global.Values.tag -}}
+{{- $tag := .global.Chart.AppVersion -}}
+{{- if .global.Values.tag -}}
+{{- $tag = .global.Values.tag -}}
+{{- end -}}
 {{- if .local.tag -}}
 {{- $tag = .local.tag -}}
 {{- end -}}

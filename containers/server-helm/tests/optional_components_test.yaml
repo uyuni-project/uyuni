@@ -41,7 +41,7 @@ tests:
           value: hub-xmlrpc
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "registry.opensuse.org/uyuni/server-hub-xmlrpc-api:latest"
+          value: "registry.opensuse.org/uyuni/server-hub-xmlrpc-api:0.0.0"
         template: hub.yaml
         documentSelector:
           path: metadata.name
@@ -70,7 +70,7 @@ tests:
           value: coco-attestation
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "registry.opensuse.org/uyuni/server-attestation:latest"
+          value: "registry.opensuse.org/uyuni/server-attestation:0.0.0"
         template: coco.yaml
         documentSelector:
           path: metadata.name
@@ -99,7 +99,7 @@ tests:
           value: saline
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "registry.opensuse.org/uyuni/server-saline:latest"
+          value: "registry.opensuse.org/uyuni/server-saline:0.0.0"
         template: saline.yaml
         documentSelector:
           path: metadata.name
@@ -120,21 +120,21 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "example.org/test/saline:latest"
+          value: "example.org/test/saline:0.0.0"
         template: saline.yaml
         documentSelector:
           path: metadata.name
           value: saline
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "example.org/test/coco:latest"
+          value: "example.org/test/coco:0.0.0"
         template: coco.yaml
         documentSelector:
           path: metadata.name
           value: coco-attestation
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "example.org/test/hub:latest"
+          value: "example.org/test/hub:0.0.0"
         template: hub.yaml
         documentSelector:
           path: metadata.name
