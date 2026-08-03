@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -115,7 +116,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         Server proxySystem = getOrCreateProxySystem(
                 context.getSystemEntitlementManager(),
                 context.getUser(), context.getProxyFqdn(), fqdns, context.getProxyPort(),
-                context.getProxySshKey().getPublicKey()
+                context.getProxySshKey().getPublicKey(), context.getServerFqdn()
         );
         SystemManager.updateSystemOverview(proxySystem);
         try {
@@ -139,12 +140,24 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
      * @param proxyName                the FQDN of the proxy system
      * @param port                     the SSH port of the proxy system
      * @param sshPublicKey             the SSH public key of the proxy system
+     * @param parentFqdn               the parent FQDN of the proxy system
      * @return the proxy system
      */
     private Server getOrCreateProxySystem(
             SystemEntitlementManager systemEntitlementManager,
-            User creator, String proxyName, Set<String> fqdns, Integer port, String sshPublicKey
+            User creator, String proxyName, Set<String> fqdns, Integer port, String sshPublicKey,
+            String parentFqdn
     ) {
+        Optional<Server> parentProxy = Optional.empty();
+        boolean isMainServer = parentFqdn.equals(ConfigDefaults.get().getJavaHostname()) ||
+                parentFqdn.equals(Config.get().getString(ConfigDefaults.SERVER_HOSTNAME));
+        if (!isMainServer) {
+            parentProxy = ServerFactory.lookupProxyServer(parentFqdn);
+            if (parentProxy.isEmpty()) {
+                throw new RhnRuntimeException("Parent proxy " + parentFqdn + " does not exist.");
+            }
+        }
+
         Optional<Server> existing = ServerFactory.findByAnyFqdn(fqdns);
         if (existing.isPresent()) {
             Server server = existing.get();
@@ -152,6 +165,19 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                     server.hasEntitlement(EntitlementManager.SALT))) {
                 throw new SystemsExistException(List.of(server.getId()));
             }
+
+            Optional<ServerPath> currentParentPath = server.getFirstServerPath();
+            if (currentParentPath.isPresent()) {
+                Server currentParentProxy = currentParentPath.get().getId().getProxyServer();
+                boolean isMatch = currentParentProxy.getHostname().equals(parentFqdn) ||
+                        currentParentProxy.lookupFqdn(parentFqdn).isPresent();
+                if (!isMatch) {
+                    throw new RhnRuntimeException("The proxy " + proxyName +
+                            " is already registered and connected via " +
+                            currentParentProxy.getHostname() + ", but the requested parent is " + parentFqdn + ".");
+                }
+            }
+
             // The SSH key is going to change remove it from the known hosts
             SystemManagerUtils.removeSaltSSHKnownHosts(saltApi, server);
             ProxyInfo info = server.getProxyInfo();
@@ -170,6 +196,15 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
                     .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
 
             systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
+
+            if (parentProxy.isPresent()) {
+                Set<ServerPath> paths = ServerFactory.createServerPaths(server, parentProxy.get(), parentFqdn);
+                server.getServerPaths().clear();
+                server.getServerPaths().addAll(paths);
+            }
+            else {
+                server.getServerPaths().clear();
+            }
 
             ServerFactory.save(server);
             return server;
@@ -195,6 +230,16 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         server.setLastBoot(System.currentTimeMillis() / 1000);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         server.updateServerInfo();
+
+        if (parentProxy.isPresent()) {
+            Set<ServerPath> paths = ServerFactory.createServerPaths(server, parentProxy.get(), parentFqdn);
+            server.getServerPaths().clear();
+            server.getServerPaths().addAll(paths);
+        }
+        else {
+            server.getServerPaths().clear();
+        }
+
         ServerFactory.save(server);
 
         ProxyInfo info = new ProxyInfo();

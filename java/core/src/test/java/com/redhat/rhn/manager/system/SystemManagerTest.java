@@ -92,6 +92,7 @@ import com.redhat.rhn.domain.server.ServerGroupTest;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyTest;
@@ -2252,6 +2253,116 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         SystemsOverviewUpdateWorker.doUpdate(sid);
 
         assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
+    }
+
+    @Test
+    public void testCreateProxyContainerConfigParentNotExists() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "pxy.mgr.lab";
+        String invalidServerName = "invalid-parent.mgr.lab";
+        long maxCache = 4096;
+        String email = "admin@mgr.lab";
+        String rootCA = "Dummy Root CA";
+        List<String> otherCAs = List.of("CA 1", "CA 2");
+        String cert = "Dummy cert";
+        String key = "Dummy key";
+        String apacheCert = "Dummy cert for apache";
+        String sshKey = "DummySshKey";
+        String sshPubKey = "DummySshPubKey";
+        String sshPushKey = "DummySshPushKey";
+        String sshPushPubKey = "DummySshPushPubKey";
+
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
+            allowing(saltServiceMock)
+                    .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
+            will(returnValue(apacheCert));
+            allowing(certManager).getNamesFromSslCert("Dummy cert");
+            will(returnValue(Set.of("pxy.mgr.lab")));
+        }});
+
+        try {
+            systemManager.createProxyContainerConfig(user, proxyName, 8022, invalidServerName, maxCache, email,
+                    rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+            fail("Should throw RhnRuntimeException when parent proxy does not exist");
+        }
+        catch (com.redhat.rhn.common.RhnRuntimeException e) {
+            assertEquals("Parent proxy invalid-parent.mgr.lab does not exist.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCreateProxyContainerConfigParentMismatch() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "existing-proxy.mgr.lab";
+        String requestedParentName = "pxy1.mgr.lab";
+        long maxCache = 4096;
+        String email = "admin@mgr.lab";
+        String rootCA = "Dummy Root CA";
+        List<String> otherCAs = List.of("CA 1", "CA 2");
+        String cert = "Dummy cert";
+        String key = "Dummy key";
+        String apacheCert = "Dummy cert for apache";
+        String sshKey = "DummySshKey";
+        String sshPubKey = "DummySshPubKey";
+        String sshPushKey = "DummySshPushKey";
+        String sshPushPubKey = "DummySshPushPubKey";
+
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        createTestProxy("pxy0.mgr.lab");
+        createTestProxy("pxy1.mgr.lab");
+
+        Server existingProxy = ServerFactoryTest.createUnentitledTestServer(
+                user, true, ServerFactoryTest.TYPE_SERVER_PROXY, new Date());
+        existingProxy.setName(proxyName);
+        existingProxy.setHostname(proxyName);
+        existingProxy.getFqdns().add(new ServerFQDN(existingProxy, proxyName));
+        existingProxy.getProxyInfo().setVersion(null);
+        existingProxy.getProxyInfo().setSshPort(8022);
+        existingProxy.getProxyInfo().setSshPublicKey(("SshPublicKey " + proxyName).getBytes());
+        systemEntitlementManager.setBaseEntitlement(existingProxy, EntitlementManager.FOREIGN);
+
+        Server pxy0 = ServerFactory.lookupProxyServer("pxy0.mgr.lab").get();
+        Set<ServerPath> paths = ServerFactory.createServerPaths(existingProxy, pxy0, "pxy0.mgr.lab");
+        existingProxy.getServerPaths().addAll(paths);
+
+        ServerFactory.save(existingProxy);
+        TestUtils.saveAndFlush(existingProxy);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
+            allowing(saltServiceMock)
+                    .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
+            will(returnValue(apacheCert));
+            allowing(certManager).getNamesFromSslCert("Dummy cert");
+            will(returnValue(Set.of("existing-proxy.mgr.lab")));
+            allowing(saltServiceMock).removeSaltSSHKnownHost(with(proxyName), with(8022));
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
+        }});
+
+        try {
+            systemManager.createProxyContainerConfig(user, proxyName, 8022, requestedParentName, maxCache, email,
+                    rootCA, otherCAs, new SSLCertPair(cert, key), null, null, null, certManager);
+            fail("Should throw RhnRuntimeException when parent proxy does not match");
+        }
+        catch (com.redhat.rhn.common.RhnRuntimeException e) {
+            assertEquals("The proxy existing-proxy.mgr.lab is already registered " +
+                    "and connected via pxy0.mgr.lab, but the requested parent is pxy1.mgr.lab.",
+                    e.getMessage());
+        }
     }
 
     private void deleteAllMinionServers() {
