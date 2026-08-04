@@ -27,6 +27,11 @@ spec:
       sectionName: {{ $http.name | default "web" }}
   hostnames:
     - {{ $config.proxy_fqdn | quote }}
+    {{- if hasKey $config "additional_fqdns" }}
+    {{- range $config.additional_fqdns }}
+    - {{ . | quote }}
+    {{- end }}
+    {{- end }}
   rules:
     - matches:
         - path: { type: PathPrefix, value: / }
