@@ -1,0 +1,3 @@
+- Renumber config channel positions to close gaps left by deleting
+  an assigned config channel (ON DELETE CASCADE did not compact
+  the survivors), preventing multiple failures (bsc#1272988)
