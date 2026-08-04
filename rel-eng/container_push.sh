@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -30,10 +30,10 @@ fi
 PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
 
 # Possible values: beta, sle-eula
-EULA=sle-eula
+EULA=beta
 
 # Possible values: alpha, beta, released
-RELEASE_STAGE=released
+RELEASE_STAGE=alpha
 
 for DOCKERFILE in $(ls ${SRPM_PKG_DIR}/Dockerfile* 2>/dev/null); do
   NAME="${PKG_NAME%%-image}"
