@@ -44,15 +44,15 @@ Feature: Setup containerized proxy
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Upgrade mgrpxy tool
-    When I upgrade "mgrpxy" on "proxy" using the API
+    When I upgrade "mgrpxy" on "proxy" using the API from server2
 
 @transactional_server
   Scenario: Reboot after mgrpxy upgrade
     When I reboot the "proxy" minion through the web UI
 
   Scenario: Generate containerized proxy configuration
-    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
-    And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
+    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server2
+    And I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server2 to the proxy
 
   Scenario: Set up the containerized proxy service to support Avahi
     When I add avahi hosts in containerized proxy configuration

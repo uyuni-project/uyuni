@@ -642,27 +642,28 @@ end
 # TODO: don't hardcode anymore the names in the private network once we have them in .bashrc
 #
 # @param host [String] The name of the host.
+# @param mgr_server [String] The SUSE Manager server managing this host ('server', 'server2', 'server3'). Defaults to 'server'.
 # @return [String] The system name.
-def get_system_name(host)
+def get_system_name(host, mgr_server: 'server')
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a RemoteNode
+  # therefore, they are not represented by a RemoteNode
   when 'pxeboot_minion'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sles15sp6_terminal'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.sles15sp6terminal-/)
       end
     system_name = 'sles15sp6terminal.example.org' if system_name.nil?
   when 'sles15sp7_terminal'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.sles15sp7terminal-/)
@@ -1037,16 +1038,17 @@ end
 #
 # @param actionid [String] The ID of the action to wait for.
 # @param timeout [Integer] The maximum time to wait for the action to complete, in seconds. Defaults to `DEFAULT_TIMEOUT`.
-def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
+# @param mgr_server [String] The SUSE Manager server whose API to query for action status ('server', 'server2', 'server3'). Defaults to 'server'.
+def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT, mgr_server: 'server')
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
-    failed = $api_test.schedule.list_failed_actions
+    failed = api_client_for(mgr_server).schedule.list_failed_actions
     if failed.any? { |a| a['id'] == actionid }
-      failed_systems = $api_test.schedule.list_failed_systems(actionid)
+      failed_systems = api_client_for(mgr_server).schedule.list_failed_systems(actionid)
       details = failed_systems.map { |s| "#{s['server_name']}: #{s['message']}" }.join('; ')
       raise "Action #{actionid} failed: #{details}"
     end
 
-    list = $api_test.schedule.list_completed_actions
+    list = api_client_for(mgr_server).schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
 
     sleep 2
@@ -1087,29 +1089,32 @@ end
 #
 # @param host [String] The hostname of the requested system
 # @param count [Integer] The number of recent events to return (default: 1)
+# @param mgr_server [String] The SUSE Manager server to query for events ('server', 'server2', 'server3'). Defaults to 'server'.
 # @return [Array<Hash>] The most recent events, newest first
-def get_last_events(host, count = 1)
+def get_last_events(host, count = 1, mgr_server: 'server')
   node = get_target(host)
   system_id = get_system_id(node)
-  $api_test.system.get_event_history(system_id, 0, count)
+  api_client_for(mgr_server).system.get_event_history(system_id, 0, count)
 end
 
 # Function to trigger the upgrade command
 #
-# @param hostname String The hostname of the requested system
-# @param package String The package name where it will trigger an upgrade
-def trigger_upgrade(hostname, package)
-  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
-  get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+# @param hostname [String] The hostname of the requested system
+# @param package [String] The package name where it will trigger an upgrade
+# @param mgr_server [String] The SUSE Manager server to run spacecmd against ('server', 'server2', 'server3'). Defaults to 'server'.
+def trigger_upgrade(hostname, package, mgr_server: 'server')
+  get_target(mgr_server).run('spacecmd -u admin -p admin clear_caches', check_errors: false)
+  get_target(mgr_server).run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
 
-# Function to trigger the install command
+# Function to trigger the installation command
 #
-# @param hostname String The hostname of the requested system
-# @param package String The package name to install
-def trigger_install(hostname, package)
-  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
-  get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
+# @param hostname [String] The hostname of the requested system
+# @param package [String] The package name to install
+# @param mgr_server [String] The SUSE Manager server to run spacecmd against ('server', 'server2', 'server3'). Defaults to 'server'.
+def trigger_install(hostname, package, mgr_server: 'server')
+  get_target(mgr_server).run('spacecmd -u admin -p admin clear_caches', check_errors: false)
+  get_target(mgr_server).run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
 end
 
 # Function to trigger the remove command
