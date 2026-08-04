@@ -739,7 +739,7 @@ public class FormulaFactory {
     }
 
     /**
-     * Check wether Grafana formula has reporting datasource enabled.
+     * Check whether Grafana formula has reporting datasource enabled.
      * @param formData data of the Grafana formula
      * @return true if datasource is enabled, otherwise false
      */
