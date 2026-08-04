@@ -42,38 +42,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
 @susemanager
   Scenario: Synchronize SLES 15 SP7 product with recommended sub-products, including MLM Client Tools
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
-    And I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
-    Then I should see that the "Basesystem Module 15 SP7 x86_64" product is "recommended"
-    And I should see that the "Server Applications Module 15 SP7 x86_64" product is "recommended"
-    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" product is "recommended"
-    When I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
-    And I should see the "Basesystem Module 15 SP7 x86_64" selected
-    And I should see the "Server Applications Module 15 SP7 x86_64" selected
-    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
-    And I should see that the "SUSE Linux Enterprise Server 15 SP7 x86_64" product is partially selected
-    And I should see that the "Basesystem Module 15 SP7 x86_64" product is partially selected
-    When I select "Desktop Applications Module 15 SP7 x86_64" as a product
-    And I select "Development Tools Module 15 SP7 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
-    And I should see the "Development Tools Module 15 SP7 x86_64" selected
-    When I select "Python 3 Module 15 SP7 x86_64" as a product
-    Then I should see the "Python 3 Module 15 SP7 x86_64" selected
-    When I select "Containers Module 15 SP7 x86_64" as a product
-    Then I should see the "Containers Module 15 SP7 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
-    Then the SLE15 SP7 product should be added
-    When I wait until all synchronized channels for "sles15-sp7" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "sles15-sp7"
 
 @uyuni
   Scenario: Partially add openSUSE Tumbleweed product, only including the required packages to generate the bootstrap repository
@@ -121,106 +90,37 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @transactional_server
   Scenario: Add SL Micro 6.2 as base OS for proxy
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Micro 6.2" as the filtered product description
-    And I select "SUSE Linux Micro 6.2 x86_64" as a product
-    Then I should see the "SUSE Linux Micro 6.2 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64" as a product
-    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64" selected
-    And I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Micro 6.2 x86_64" product has been added
-    And I wait until all synchronized channels for "sl-micro-6.2" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "sl-micro-6.2"
 
 @proxy
 @susemanager
 @skip_if_transactional_server
   Scenario: Add SLES 15 SP7 as base OS for proxy
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP7" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP7" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP7" product has been added
-    And I wait until all synchronized channels for "sles15-sp7" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "sles15-sp7" without sub-products
 
 @proxy
 @susemanager
 @transactional_server
   Scenario: Add SUSE MLM Proxy Extension 5.2 with SL Micro 6.2 as base OS
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Micro 6.2" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
-    And I select "SUSE Linux Micro 6.2 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "suse-multi-linux-manager-proxy-52"
 
 @proxy
 @susemanager
 @skip_if_transactional_server
   Scenario: Add SUSE MLM Proxy Extension 5.2 with SLES 15 SP7 as base OS
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52-sp7" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "suse-multi-linux-manager-proxy-52"
 
 @proxy
 @susemanager
 @transactional_server
   Scenario: Add SUSE MLM Retail Branch Server Extension 5.2 with SL Micro 6.2 as base OS
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Micro 6.2" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
-    And I select "SUSE Linux Micro 6.2 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "suse-multi-linux-manager-retail-branch-server-52"
 
 @proxy
 @susemanager
 @skip_if_transactional_server
   Scenario: Add SUSE MLM Retail Branch Server Extension 5.2 with SLES 15 SP7 as base OS
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64" product has been added
-    And I wait until all synchronized channels for "suma-retail-branch-server-extension-52-sp7" have finished
+    Given I sync products from JSON file "products-susemanager.json" restricted to id "suse-multi-linux-manager-retail-branch-server-52"
 
 @scc_credentials
 @susemanager
