@@ -30,13 +30,13 @@ import jakarta.servlet.jsp.tagext.TagSupport;
  * <strong>AddressTag</strong><br>
  * Displays a User's address information.
  * <pre>
- *     &lt;rhn:address type=MAILING&gt;
+ *     &lt;rhn:address action="my" user="${user}" address="${address}" /&gt;
  * </pre>
  * <p>
- * This outputs a table row tag containing a Header column, address info
- * and a link to edit the address.
+ * This outputs address info and a link to edit the address.
  * <pre>
- *      Mailing:   444 Castro
+ *      Mailing Address:
+ *                 444 Castro
  *                 Mountain View, CA 94043
  *
  *                 Phone: 650-555-1212
@@ -53,8 +53,6 @@ public class AddressTag extends TagSupport {
     /** public string representing the forward action type */
     public static final String ACTION_USER = "user";
 
-    /** Type of address */
-    private String type;
     private String action;
     private User user;
     private Address address;
@@ -64,31 +62,8 @@ public class AddressTag extends TagSupport {
      */
     public AddressTag() {
         super();
-        type = null;
         action = null;
     }
-
-    /**
-     * Set the type of this address: MAILING, BILLING, SHIPPING
-     * @param typeIn the type of this address: MAILING, BILLING, SHIPPING
-     */
-    public void setType(String typeIn) {
-        if (!typeIn.equals(Address.TYPE_MARKETING)) {
-            throw new IllegalArgumentException("The type attribute must be  of the " +
-                "static TYPE fields in com.redhat.rhn.domain.user.Address (M)");
-        }
-        type = typeIn;
-    }
-
-    /**
-     * Get the type of this address: MAILING, BILLING, SHIPPING
-     *
-     * @return The type of this address
-     */
-    public String getType() {
-        return type;
-    }
-
 
     /**
     * Set the User associated with this Address
@@ -160,7 +135,7 @@ public class AddressTag extends TagSupport {
 
             StringBuilder result = new StringBuilder();
             result.append("<strong>");
-            result.append(ls.getMessage("address type " + type));
+            result.append(ls.getMessage("address type M"));
             result.append("</strong>");
             if (user == null) {
                 throw new IllegalArgumentException("User is null");
@@ -208,9 +183,7 @@ public class AddressTag extends TagSupport {
                       .append("class=\"btn btn-default\"")
                       .append(" href=\"")
                       .append(getActionUrl())
-                      .append("/EditAddress.do?type=")
-                      .append(type)
-                      .append("&amp;uid=")
+                      .append("/EditAddress.do?uid=")
                       .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Edit"))
@@ -224,9 +197,7 @@ public class AddressTag extends TagSupport {
                       .append("class=\"btn btn-default\"")
                       .append(" href=\"")
                       .append(getActionUrl())
-                      .append("/EditAddress.do?type=")
-                      .append(type)
-                      .append("&amp;uid=")
+                      .append("/EditAddress.do?uid=")
                       .append(user.getId())
                       .append("\">")
                       .append(ls.getMessage("Add address"))
@@ -260,7 +231,6 @@ public class AddressTag extends TagSupport {
      */
     @Override
     public void release() {
-        type = null;
         action = null;
         user = null;
         address = null;
