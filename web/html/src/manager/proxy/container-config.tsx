@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -21,7 +22,7 @@ enum SSLMode {
   CreateSSL = "create-ssl",
 }
 
-export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
+export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: string[] }) {
   const initialModel = {
     caCertificate: "",
     caKey: "",
@@ -202,7 +203,7 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
           validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
           invalidHint={t("Has to be a valid FQDN address")}
         />
-        <Text
+        <DEPRECATED_Select
           name="serverFQDN"
           label={t("Parent FQDN")}
           required
@@ -210,8 +211,8 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
           hint={t("The FQDN of the parent (server or proxy) to connect to.")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
-          invalidHint={t("Has to be a valid FQDN address")}
+          options={parents}
+          isClearable={false}
         />
         <Text
           name="proxyPort"
