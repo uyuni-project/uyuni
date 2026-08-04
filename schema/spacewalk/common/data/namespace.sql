@@ -885,6 +885,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.admin.configuration.configure', 'W', 'Configure server.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.admin.distro.upload_distro', 'W', 'Upload a distro ISO to the server distribution storage.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.admin.monitoring.disable', 'W', 'Disable monitoring.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
