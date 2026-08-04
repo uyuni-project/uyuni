@@ -1,0 +1,200 @@
+{
+  "document": {
+    "category": "csaf_vex",
+    "csaf_version": "2.0",
+    "distribution": {
+      "tlp": {
+        "label": "WHITE",
+        "url": "https://www.first.org/tlp/"
+      }
+    },
+    "lang": "en-US",
+    "notes": [
+      {
+        "category": "summary",
+        "text": "A VEX document stating that Secvisogram is not affected by Log4Shell.",
+        "title": "Summary"
+      }
+    ],
+    "publisher": {
+      "category": "vendor",
+      "name": "Secvisogram",
+      "namespace": "https://github.com/secvisogram"
+    },
+    "references": [
+      {
+        "category": "external",
+        "summary": "Apache Log4j Security Vulnerabilities",
+        "url": "https://logging.apache.org/log4j/2.x/security.html"
+      }
+    ],
+    "title": "Secvisogram not affected by Log4Shell",
+    "tracking": {
+      "current_release_date": "2022-05-27T10:00:00.000Z",
+      "generator": {
+        "date": "2022-05-27T10:24:35.760Z",
+        "engine": {
+          "name": "Secvisogram",
+          "version": "1.14.0"
+        }
+      },
+      "id": "SEC-VEX-2022-0001",
+      "initial_release_date": "2022-05-27T10:00:00.000Z",
+      "revision_history": [
+        {
+          "date": "2022-05-27T10:00:00.000Z",
+          "number": "1",
+          "summary": "Initial version."
+        }
+      ],
+      "status": "final",
+      "version": "1"
+    }
+  },
+  "product_tree": {
+    "branches": [
+      {
+        "branches": [
+          {
+            "branches": [
+              {
+                "category": "product_version_range",
+                "name": "<=1.14.0",
+                "product": {
+                  "name": "Secvisogram <=1.14.0",
+                  "product_id": "CSAFPID-0001"
+                }
+              }
+            ],
+            "category": "product_name",
+            "name": "Secvisogram"
+          }
+        ],
+        "category": "vendor",
+        "name": "Secvisogram"
+      }
+    ]
+  },
+  "vulnerabilities": [
+    {
+      "cve": "CVE-2021-44228",
+      "flags": [
+        {
+          "date": "2022-05-27T10:00:00.000Z",
+          "label": "component_not_present",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "category": "description",
+          "text": "Apache Log4j2 2.0-beta9 through 2.15.0 (excluding security releases 2.12.2, 2.12.3, and 2.3.1) JNDI features used in configuration, log messages, and parameters do not protect against attacker controlled LDAP and other JNDI related endpoints. An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled. From log4j 2.15.0, this behavior has been disabled by default. From version 2.16.0 (along with 2.12.2, 2.12.3, and 2.3.1), this functionality has been completely removed. Note that this vulnerability is specific to log4j-core and does not affect log4net, log4cxx, or other Apache Logging Services projects.",
+          "title": "CVE description"
+        }
+      ],
+      "product_status": {
+        "known_not_affected": [
+          "CSAFPID-0001"
+        ]
+      },
+      "references": [
+        {
+          "category": "external",
+          "summary": "NVD - CVE-2021-44228",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-44228"
+        }
+      ],
+      "threats": [
+        {
+          "category": "impact",
+          "details": "Secvisogram is written in JavaScript. No Java is included.",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ]
+    },
+    {
+      "cve": "CVE-2021-45046",
+      "flags": [
+        {
+          "date": "2022-05-27T10:00:00.000Z",
+          "label": "component_not_present",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "category": "description",
+          "text": "It was found that the fix to address CVE-2021-44228 in Apache Log4j 2.15.0 was incomplete in certain non-default configurations. This could allows attackers with control over Thread Context Map (MDC) input data when the logging configuration uses a non-default Pattern Layout with either a Context Lookup (for example, $${ctx:loginId}) or a Thread Context Map pattern (%X, %mdc, or %MDC) to craft malicious input data using a JNDI Lookup pattern resulting in an information leak and remote code execution in some environments and local code execution in all environments. Log4j 2.16.0 (Java 8) and 2.12.2 (Java 7) fix this issue by removing support for message lookup patterns and disabling JNDI functionality by default.",
+          "title": "CVE description"
+        }
+      ],
+      "product_status": {
+        "known_not_affected": [
+          "CSAFPID-0001"
+        ]
+      },
+      "references": [
+        {
+          "category": "external",
+          "summary": "NVD - CVE-2021-45046",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-45046"
+        }
+      ],
+      "threats": [
+        {
+          "category": "impact",
+          "details": "Secvisogram is written in JavaScript. No Java is included.",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ]
+    },
+    {
+      "cve": "CVE-2021-45105",
+      "flags": [
+        {
+          "date": "2022-05-27T10:00:00.000Z",
+          "label": "component_not_present",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "category": "description",
+          "text": "Apache Log4j2 versions 2.0-alpha1 through 2.16.0 (excluding 2.12.3 and 2.3.1) did not protect from uncontrolled recursion from self-referential lookups. This allows an attacker with control over Thread Context Map data to cause a denial of service when a crafted string is interpreted. This issue was fixed in Log4j 2.17.0, 2.12.3, and 2.3.1.",
+          "title": "CVE description"
+        }
+      ],
+      "product_status": {
+        "known_not_affected": [
+          "CSAFPID-0001"
+        ]
+      },
+      "references": [
+        {
+          "category": "external",
+          "summary": "NVD - CVE-2021-45105",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-45105"
+        }
+      ],
+      "threats": [
+        {
+          "category": "impact",
+          "details": "Secvisogram is written in JavaScript. No Java is included.",
+          "product_ids": [
+            "CSAFPID-0001"
+          ]
+        }
+      ]
+    }
+  ]
+}
