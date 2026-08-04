@@ -9648,16 +9648,16 @@ Please note that some manual configuration of these scripts may still be require
         <source>Default Distribution Channel Mappings cannot be deleted.</source>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>

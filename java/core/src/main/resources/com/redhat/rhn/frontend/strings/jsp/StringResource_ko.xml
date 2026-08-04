@@ -10175,11 +10175,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>기본 배포판 채널 맵핑을 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
         <target>배포판 채널 맵핑은 서버가 OS 및 아키텍처의 등록에 따라 위치하는 디폴트 기본 채널을 정의합니다. 디폴트 배포판 채널 맵핑은 덮어쓰기할 수 있지만 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
         <target>조직의 특정 배포판 채널 맵핑은 여기서 편집할 수 있습니다. 디폴트 배포판 채널 맵핑은 편집할 수 없습니다. 이는 모든 조직 내에서만 덮어쓰기할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -10187,7 +10187,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>조직의 특정 배포판 채널 맵핑은 삭제됩니다. 디폴트 채널 맵핑을 덮어쓰기하는 경우에만 디폴트 맵핑을 사용할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
         <target>디폴트 배포판 채널 맵핑을 삭제할 수 없습니다. 이는 모든 조직 내에서만 덮어쓰기할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">

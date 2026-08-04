@@ -10178,11 +10178,11 @@ Please note that some manual configuration of these scripts may still be require
         <target state="translated">无法删除默认分发通道映射。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
         <target state="translated">分发通道映射定义为客户端根据注册的操作系统和体系结构所应用的默认基础通道。这些映射可以被覆盖，但无法删除。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
         <target state="translated">在此处可以编辑组织特定的分发通道映射。默认分发通道映射无法编辑，只能在各个组织中将其覆盖。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -10190,7 +10190,7 @@ Please note that some manual configuration of these scripts may still be require
         <target state="translated">组织特定的分发通道映射将被删除。如果它当前正在覆盖某个默认通道映射，则该默认映射将生效。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
         <target state="translated">无法删除默认分发通道映射。只能在各个组织中将其覆盖。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">

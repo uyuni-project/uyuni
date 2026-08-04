@@ -7838,7 +7838,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <target state="translated">Aquesta funcionalitat només està disponible en servidors .PRODUCTNAME. que tenen instal·lats els «agents de tanca», que possiblement estan disponibles com a «agents de tanca», «agents de tanca-tots» o «agents de tanca-ipmilan» depenent del vostre sistema operatiu i de la infraestructura de gestió d'energia desitjada. Instal·leu els agents de tanca. Si els agents de tanca no estan disponibles per al vostre sistema operatiu, la funcionalitat de gestió d'energia no és compatible.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -10613,7 +10613,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
         <target state="translated">El calendari amb l'identificador «{0}» no existeix</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
         <target state="translated">S'ha produït un error en intentar cancel·lar les accions afectades per a la planificació «{0}»</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">

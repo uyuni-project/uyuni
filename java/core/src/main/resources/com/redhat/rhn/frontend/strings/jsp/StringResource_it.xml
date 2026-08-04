@@ -10118,11 +10118,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>Le mappature del canale di distribuzione predefinite non possono essere cancellate.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
         <target>Le mappature del canale di ditribuzione definiscono i canali di base dove i server vengono assegnati in base al sistema operativo e architettura per mezzo di una registrazione. È possibile sovrascrivere le mappature del canale di distribuzione predefinite, ma non sarà possibile cancellarle.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
         <target>Qui è possibile modificare le mappature del canale di distribuzione specifiche dell'organizzazione. Le mappature del canale di distribuzione predefinite non possono essere modificate. Esse possono solo essere sovrascritte all'interno dell'organizzazione.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -10130,7 +10130,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>La mappatura del canale di distribuzione specifica dell'organizzazione verrà cancellata. Se sovrascrive una mappatura del canale predefinita, la mappatura predefinita diviene effettiva.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
         <target>Le mappature del canale di distribuzione predefinite non possono essere cancellate. Esse possono solo essere sovrascritte all'interno dell'organizzazione.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
