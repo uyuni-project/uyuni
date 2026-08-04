@@ -589,6 +589,18 @@ public class Token implements Identifiable {
     }
 
     /**
+     * Returns all config channels associated to this token, purging any
+     * entries that could not be resolved to an actual config channel
+     * (e.g. left behind by a corrupted position ordering in the underlying
+     * @return the list of all config channels, never containing null entries
+     */
+    public List<ConfigChannel> getAllConfigChannels() {
+        List<ConfigChannel> cfgChannels = getConfigChannels();
+        cfgChannels.removeIf(Objects::isNull);
+        return cfgChannels;
+    }
+
+    /**
      * Returns the config channels associated to this activation key
      * It requires User info for credential checking..
      * This method raises a Lookup Exception if the passed in user
@@ -597,9 +609,10 @@ public class Token implements Identifiable {
      * @return the list of config channels assign to this user
      */
     public List<ConfigChannel> getConfigChannelsFor(User user) {
+        List<ConfigChannel> validChannels = getAllConfigChannels();
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        proc.validateUserAccess(user, getConfigChannels());
-        return getConfigChannels();
+        proc.validateUserAccess(user, validChannels);
+        return validChannels;
     }
 
     /**

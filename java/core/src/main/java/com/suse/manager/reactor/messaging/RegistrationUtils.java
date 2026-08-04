@@ -117,7 +117,7 @@ public class RegistrationUtils {
                     creator.orElse(null));
         }
         catch (RuntimeException e) {
-            LOG.error("Error generating Salt files for minion '{}':{}", minionId, e.getMessage());
+            LOG.error("Error generating Salt files for minion '{}': {}", minionId, e.getMessage(), e);
         }
 
         LOG.info("Finished minion registration: {}", minionId);

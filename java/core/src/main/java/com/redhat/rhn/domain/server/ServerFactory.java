@@ -1275,6 +1275,25 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * List all servers whose ordered config-channel list references the given channel.
+     * @param channel the config channel
+     * @return list of servers subscribed to the channel
+     */
+    public static List<Server> listByConfigChannel(ConfigChannel channel) {
+        if (channel == null) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("""
+                select distinct s
+                from   com.redhat.rhn.domain.server.Server as s
+                join   s.configChannelsHibernate as cc
+                where  cc = :channel
+                """, Server.class)
+                .setParameter("channel", channel)
+                .list();
+    }
+
+    /**
      * Lookup a Server by their FQDN
      * @param name of the FQDN to search for
      * @return the Server found
