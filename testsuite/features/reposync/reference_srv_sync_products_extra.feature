@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 SUSE LLC
+# Copyright (c) 2023-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize extra products in the products page of the Setup Wizard
@@ -27,6 +27,7 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
     Then I should see the "Rocky Linux 10 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Rocky Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "rockylinux10" have finished
 
 @uyuni
   Scenario: Enable Rocky 10 Uyuni client tools for creating bootstrap repositories
@@ -45,6 +46,7 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
     Then I should see the "Ubuntu 24.04" selected
     When I click the Add Product button
     And I wait until I see "Ubuntu 24.04" product has been added
+    And I wait until all synchronized channels for "ubuntu-2404" have finished
 
 @uyuni
   Scenario: Enable Ubuntu 24.04 Uyuni client tools for creating bootstrap repositories
