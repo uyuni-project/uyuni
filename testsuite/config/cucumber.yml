@@ -35,6 +35,7 @@ salt: --tags @scope_salt
 software_channels_and_repositories: --tags @scope_software_channels_and_repositories
 spacecmd: --tags @scope_spacecmd
 spacewalk_utils: --tags @scope_spacewalk_utils
+storage_benchmark: --tags @scope_storage_benchmark
 sp_migration: --tags @scope_sp_migration
 subscription_matching: --tags @scope_subscription_matching
 sumatoolbox: --tags @scope_sumatoolbox
