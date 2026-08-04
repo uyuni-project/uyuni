@@ -160,3 +160,30 @@ tests:
           namespace: myns
           any: true
         template: tcp-routes.yaml
+
+  - it: should render multiple hostnames in HTTPRoute
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+        additional_fqdns:
+          - alt1.example.org
+          - alt2.example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      gateway:
+        enable: true
+    asserts:
+      - equal:
+          path: spec.hostnames
+          value:
+            - proxy.example.org
+            - alt1.example.org
+            - alt2.example.org
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-routes
