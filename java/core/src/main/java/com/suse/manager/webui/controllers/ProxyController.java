@@ -24,7 +24,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
@@ -44,7 +48,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -99,6 +106,24 @@ public class ProxyController {
     public ModelAndView containerConfig(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
         data.put("noSSL", !ConfigDefaults.get().isSsl());
+
+        String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        List<Server> proxies = ServerFactory.lookupProxiesByOrg(userIn);
+        Set<String> electableParents = proxies.stream()
+                .flatMap(s -> s.getFqdns().stream())
+                .map(ServerFQDN::getName)
+                .collect(Collectors.toSet());
+
+        if (localManagerFqdn != null && !localManagerFqdn.isEmpty()) {
+            electableParents.add(localManagerFqdn);
+        }
+        else {
+            LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
+        }
+
+        List<String> sortedParents = electableParents.stream().sorted().toList();
+        data.put("parents", GSON.toJson(sortedParents));
+
         return new ModelAndView(data, "templates/proxy/container-config.jade");
     }
 
