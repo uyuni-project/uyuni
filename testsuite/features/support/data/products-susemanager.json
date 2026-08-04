@@ -6,6 +6,7 @@
       "select": "SUSE Linux Enterprise Server 12 SP5 x86_64",
       "minion_tags": ["sles12sp5_minion"],
       "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 12 x86_64", "open_path": [] },
         { "select": "SUSE Linux Enterprise Server LTSS 12 SP5 x86_64", "open_path": [] }
       ]
     },
@@ -15,6 +16,8 @@
       "select": "SUSE Linux Enterprise Server 15 SP4 x86_64",
       "minion_tags": ["sles15sp4_minion"],
       "sub_products": [
+        { "select": "Basesystem Module 15 SP4 x86_64", "open_path": [] },
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64", "open_path": [] },
         { "select": "Desktop Applications Module 15 SP4 x86_64", "open_path": ["Basesystem Module 15 SP4 x86_64"] },
         { "select": "Development Tools Module 15 SP4 x86_64", "open_path": ["Basesystem Module 15 SP4 x86_64", "Desktop Applications Module 15 SP4 x86_64"] },
         { "select": "Containers Module 15 SP4 x86_64", "open_path": ["Basesystem Module 15 SP4 x86_64"] },
@@ -32,6 +35,9 @@
       "select": "SUSE Linux Enterprise Server 15 SP5 x86_64",
       "minion_tags": ["sles15sp5_minion"],
       "sub_products": [
+        { "select": "Basesystem Module 15 SP5 x86_64", "open_path": [] },
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64", "open_path": [] },
+        { "select": "Python 3 Module 15 SP5 x86_64", "open_path": [] },
         { "select": "Desktop Applications Module 15 SP5 x86_64", "open_path": ["Basesystem Module 15 SP5 x86_64"] },
         { "select": "Development Tools Module 15 SP5 x86_64", "open_path": ["Basesystem Module 15 SP5 x86_64", "Desktop Applications Module 15 SP5 x86_64"] },
         { "select": "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64", "open_path": [] }
@@ -47,6 +53,9 @@
       "select": "SUSE Linux Enterprise Server 15 SP6 x86_64",
       "minion_tags": ["sles15sp6_minion"],
       "sub_products": [
+        { "select": "Basesystem Module 15 SP6 x86_64", "open_path": [] },
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64", "open_path": [] },
+        { "select": "Systems Management Module 15 SP6 x86_64", "open_path": [] },
         { "select": "Desktop Applications Module 15 SP6 x86_64", "open_path": ["Basesystem Module 15 SP6 x86_64"] },
         { "select": "Development Tools Module 15 SP6 x86_64", "open_path": ["Basesystem Module 15 SP6 x86_64", "Desktop Applications Module 15 SP6 x86_64"] },
         { "select": "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64", "open_path": [] }
@@ -60,7 +69,10 @@
       "id": "sles16",
       "search_text": "SUSE Linux Enterprise Server 16.0",
       "select": "SUSE Linux Enterprise Server 16.0 x86_64",
-      "minion_tags": ["sles160_minion"]
+      "minion_tags": ["sles160_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "suse-microos-5.2",
@@ -132,37 +144,57 @@
       "id": "leap16.0-aarch64",
       "search_text": "openSUSE Leap 16.0 aarch64",
       "select": "openSUSE Leap 16.0 aarch64",
-      "minion_tags": ["opensuse160arm_minion"]
+      "minion_tags": ["opensuse160arm_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 16 aarch64", "open_path": [] }
+      ]
     },
     {
       "id": "sles15-sp5-s390x",
       "search_text": "SUSE Linux Enterprise Server 15 SP5",
       "select": "SUSE Linux Enterprise Server 15 SP5 s390x",
-      "minion_tags": ["sles15sp5s390_minion"]
+      "minion_tags": ["sles15sp5s390_minion"],
+      "sub_products": [
+        { "select": "Basesystem Module 15 SP5 s390x", "open_path": [] },
+        { "select": "Server Applications Module 15 SP5 s390x", "open_path": [] },
+        { "select": "SUSE Multi-Linux Manager Client Tools for SLE 15 s390x", "open_path": [] }
+      ]
     },
     {
       "id": "almalinux8",
       "search_text": "AlmaLinux 8",
       "select": "AlmaLinux 8 x86_64",
-      "minion_tags": ["alma8_minion"]
+      "minion_tags": ["alma8_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 8, RHEL and clones 8 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "almalinux9",
       "search_text": "AlmaLinux 9",
       "select": "AlmaLinux 9 x86_64",
-      "minion_tags": ["alma9_minion"]
+      "minion_tags": ["alma9_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 9, RHEL and clones 9 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "almalinux10",
       "search_text": "AlmaLinux 10",
       "select": "AlmaLinux 10 x86_64",
-      "minion_tags": ["alma10_minion"]
+      "minion_tags": ["alma10_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 10, RHEL and clones 10 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "amazonlinux2023",
       "search_text": "Amazon Linux 2023",
       "select": "Amazon Linux 2023 x86_64",
-      "minion_tags": ["amazon2023_minion"]
+      "minion_tags": ["amazon2023_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 9, RHEL and clones 9 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "sll-7-ltss",
@@ -197,49 +229,73 @@
       "id": "oraclelinux10",
       "search_text": "Oracle Linux 10",
       "select": "Oracle Linux 10 x86_64",
-      "minion_tags": ["oracle10_minion"]
+      "minion_tags": ["oracle10_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 10, RHEL and clones 10 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "rockylinux8",
       "search_text": "Rocky Linux 8",
       "select": "Rocky Linux 8 x86_64",
-      "minion_tags": ["rocky8_minion"]
+      "minion_tags": ["rocky8_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 8, RHEL and clones 8 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "rockylinux9",
       "search_text": "Rocky Linux 9",
       "select": "Rocky Linux 9 x86_64",
-      "minion_tags": ["rocky9_minion"]
+      "minion_tags": ["rocky9_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 9, RHEL and clones 9 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "rockylinux10",
       "search_text": "Rocky Linux 10",
       "select": "Rocky Linux 10 x86_64",
-      "minion_tags": ["rocky10_minion"]
+      "minion_tags": ["rocky10_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 10, RHEL and clones 10 x86_64", "open_path": [] }
+      ]
     },
     {
       "id": "ubuntu-2204",
       "search_text": "Ubuntu 22.04",
       "select": "Ubuntu 22.04",
-      "minion_tags": ["ubuntu2204_minion"]
+      "minion_tags": ["ubuntu2204_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for Ubuntu 2204 amd64", "open_path": [] }
+      ]
     },
     {
       "id": "ubuntu-2404",
       "search_text": "Ubuntu 24.04",
       "select": "Ubuntu 24.04",
-      "minion_tags": ["ubuntu2404_minion"]
+      "minion_tags": ["ubuntu2404_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for Ubuntu 2404 amd64", "open_path": [] }
+      ]
     },
     {
       "id": "debian-12",
       "search_text": "Debian 12",
       "select": "Debian 12",
-      "minion_tags": ["debian12_minion"]
+      "minion_tags": ["debian12_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for Debian 12 amd64", "open_path": [] }
+      ]
     },
     {
       "id": "debian-13",
       "search_text": "Debian 13 amd64",
       "select": "Debian 13",
-      "minion_tags": ["debian13_minion"]
+      "minion_tags": ["debian13_minion"],
+      "sub_products": [
+        { "select": "SUSE Multi-Linux Manager Client Tools for Debian 13 amd64", "open_path": [] }
+      ]
     },
     {
       "id": "sl-micro-6.2",
@@ -262,7 +318,8 @@
         { "select": "Desktop Applications Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64"] },
         { "select": "Development Tools Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64", "Desktop Applications Module 15 SP7 x86_64"] },
         { "select": "Python 3 Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64"] },
-        { "select": "Containers Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64"] }
+        { "select": "Containers Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64"] },
+        { "select": "Systems Management Module 15 SP7 x86_64", "open_path": ["Basesystem Module 15 SP7 x86_64"] }
       ],
       "extra_channels": [
         { "channel": "sle-module-public-cloud15-sp7-pool-x86_64", "minion_tags": ["cloud"] },
