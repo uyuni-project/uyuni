@@ -198,6 +198,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
 
             ServerFactory.save(server);
+            server.setPrimaryFQDNWithName(proxyName);
             return server;
         }
         Server server = ServerFactory.createServer();
@@ -243,6 +244,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
+        server.setPrimaryFQDNWithName(proxyName);
         return server;
     }
 
