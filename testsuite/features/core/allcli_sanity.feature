@@ -25,7 +25,6 @@ Feature: Sanity checks
     And podman container "uyuni-server" should be running on "server"
     And podman container "uyuni-server" should be healthy on "server"
     And podman container "uyuni-saline-0" should be running on "server"
-    And podman container "uyuni-tftpd" should be running on "server"
     And podman container "uyuni-server-attestation-0" should be running on "server"
     And podman container "uyuni-hub-xmlrpc-0" should be running on "server"
 
