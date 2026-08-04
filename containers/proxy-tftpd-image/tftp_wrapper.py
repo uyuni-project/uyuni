@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import sys
 import errno
 import re
 import requests
@@ -55,17 +56,19 @@ class HttpResponseData(ResponseData):
         self._size = int(self._request.headers["content-length"])
 
     def read(self, requested):
-        data = self._content
+        chunks = [self._content]
         read = len(self._content)
         while read < requested:
             if self._stream is None:
                 break
             try:
                 d = next(self._stream)
-                data += d
+                chunks.append(d)
                 read += len(d)
             except StopIteration:
+                self._stream = None
                 break
+        data = b"".join(chunks)
         if read > requested:
             self._content = data[requested:]
             data = data[:requested]
@@ -130,7 +133,7 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
                     in_entry = False
                     # detect Saltboot entries
                     if (
-                        " MASTER=" + self._proxy_fqdn in entry
+                        f" MASTER={self._proxy_fqdn}" in entry
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
@@ -186,7 +189,7 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                     in_entry = False
                     # detect Saltboot entries
                     if (
-                        " MASTER=" + self._proxy_fqdn in entry
+                        f" MASTER={self._proxy_fqdn}" in entry
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
@@ -477,11 +480,11 @@ def main():
         logging.warning("Configuration file reading error %s, ignoring", str(err))
     except KeyError as err:
         logging.error("Invalid configuration file passed, missing %s", str(err))
-        exit(1)
+        sys.exit(1)
 
     if not isinstance(args.replace_fqdns, list):
         logging.error("Invalid configuration file passed, replace_fqdns is not a list")
-        exit(1)
+        sys.exit(1)
 
     logging.info("Starting TFTP proxy:")
     logging.info("HTTP endpoint: %s", args.http_host)
