@@ -1,0 +1,1 @@
+- Quiet Trivy false positives for python and Java packages
