@@ -23,6 +23,9 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 /**
@@ -146,5 +149,27 @@ public class ContentPropertiesValidator {
     public static boolean isLabelValid(String label) {
         return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
                 Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
+    }
+
+    /**
+     * Validate an issue_date and build_date filter value.
+     *
+     * @param field the filter field
+     * @param value the filter value
+     */
+    public static void validateIssueDate(String field, String value) throws ValidatorException {
+
+        if ((!"issue_date".equals(field) && !"build_date".equals(field)) || StringUtils.isEmpty(value)) {
+            return;
+        }
+
+        try {
+            OffsetDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
+        }
+        catch (DateTimeParseException e) {
+            ValidatorResult result = new ValidatorResult();
+            result.addFieldError(field, "contentmanagement.invalid_issue_date");
+            throw new ValidatorException(result);
+        }
     }
 }

@@ -19,6 +19,7 @@ import com.suse.manager.webui.utils.ViewHelper;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 /**
@@ -58,12 +59,18 @@ public class ProjectFilterResponse {
      */
     public void setCriteriaValue(String criteriaValueIn) {
         // If we have a date as a criteria value we need to format it with the current user timezone
-        if (this.criteriaKey.equals("issue_date")) {
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-            OffsetDateTime offsetDateTime = OffsetDateTime.parse(
-                    criteriaValueIn, timeFormatter);
-            Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
-            criteriaValueIn = ViewHelper.getInstance().renderDate(criteriaValueDate);
+        if (("issue_date".equals(this.criteriaKey) || "build_date".equals(this.criteriaKey)) &&
+            criteriaValueIn != null &&
+            !criteriaValueIn.isEmpty()) {
+            try {
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+                OffsetDateTime offsetDateTime = OffsetDateTime.parse(criteriaValueIn, timeFormatter);
+                Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
+                criteriaValueIn = ViewHelper.getInstance().renderDate(criteriaValueDate);
+            }
+            catch (DateTimeParseException ignored) {
+                // Keep the raw value if it cannot be parsed.
+            }
         }
         this.criteriaValue = criteriaValueIn;
     }

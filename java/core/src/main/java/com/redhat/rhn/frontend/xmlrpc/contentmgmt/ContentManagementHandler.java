@@ -53,9 +53,6 @@ import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -751,25 +748,11 @@ public class ContentManagementHandler extends BaseHandler {
 
         String field = (String) criteria.get("field");
         String value = StringUtils.trimToNull((String) criteria.get("value"));
-        validateCriteriaValue(field, value);
 
         return of(new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel((String) criteria.get("matcher")),
                 field,
                 value));
-    }
-
-    private void validateCriteriaValue(String field, String value) {
-        if (!"issue_date".equals(field) || value == null || value.isEmpty()) {
-            return;
-        }
-
-        try {
-            OffsetDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
-        }
-        catch (DateTimeParseException e) {
-            throw new InvalidArgsException("Invalid issue_date format.");
-        }
     }
 
     /**
