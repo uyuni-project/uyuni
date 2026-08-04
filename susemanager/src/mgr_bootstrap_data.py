@@ -93,6 +93,8 @@ PKGLISTUBUNTU2204 = ["venv-salt-minion", "logrotate"]
 
 PKGLISTUBUNTU2404 = ["venv-salt-minion", "logrotate"]
 
+PKGLISTUBUNTU2604 = ["venv-salt-minion", "logrotate"]
+
 PKGLISTDEBIAN11 = [
     # gnupg dependencies
     "dirmngr",
@@ -1676,6 +1678,13 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
+    "ubuntu-26.04-amd64": {
+        "PDID": [-63, 3458],
+        "BETAPDID": [3459],
+        "PKGLIST": PKGLISTUBUNTU2604,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/26/4/bootstrap/",
+        "TYPE": "deb",
+    },
     "ubuntu-22.04-amd64-uyuni": {
         "BASECHANNEL": "ubuntu-22.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU2204,
@@ -1686,6 +1695,12 @@ DATA = {
         "BASECHANNEL": "ubuntu-24.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU2404,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
+        "TYPE": "deb",
+    },
+    "ubuntu-26.04-amd64-uyuni": {
+        "BASECHANNEL": "ubuntu-26.04-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTUBUNTU2604,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/26/4/bootstrap/",
         "TYPE": "deb",
     },
     "debian12-amd64": {
