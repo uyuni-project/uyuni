@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 05 16:53:44 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * updated tables for CoCo attestation restructuring
+  * Use temp table for hidden packages (bsc#1267912)
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Fri Jun 26 16:17:08 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.13-0
