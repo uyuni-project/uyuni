@@ -5,7 +5,7 @@ import debounce from "lodash/debounce";
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
-import { DEPRECATED_Check, Form } from "components/input";
+import { Check, DEPRECATED_Check, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -32,7 +32,6 @@ type NamespaceItem = {
 
 const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
-  const checkboxRefs = useRef({});
   const [apiNamespace, setApiNamespace] = useState(false);
   const [webNamespace, setWebNamespace] = useState(false);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
@@ -170,22 +169,6 @@ const AccessGroupPermissions = (props: Props) => {
   useEffect(() => {
     debouncedGetNamespaces(searchValue);
   }, [searchValue, debouncedGetNamespaces]);
-
-  useEffect(() => {
-    namespaces.forEach((item) => {
-      const updateRefsRecursively = (node) => {
-        const state = getCheckState(node, "modify");
-        const ref = checkboxRefs.current[node.namespace];
-        if (ref) {
-          ref.indeterminate = state === "partially";
-        }
-        if (node.children) {
-          node.children.forEach(updateRefsRecursively);
-        }
-      };
-      updateRefsRecursively(item);
-    });
-  }, [namespaces, props.state.permissions, getCheckState]);
 
   const setNamespacesCheck = (model) => {
     setApiNamespace(!!model.apiNamespace);
@@ -383,14 +366,11 @@ const AccessGroupPermissions = (props: Props) => {
           cell={(item) => {
             const state = getCheckState(item, "view");
             return (
-              <input
+              <Check
                 key={item.namespace}
                 name="view"
-                type="checkbox"
                 checked={state === "checked"}
-                ref={(el) => {
-                  if (el) el.indeterminate = state === "partially";
-                }}
+                indeterminate={state === "partially"}
                 disabled={isItemDisabled(item, "view")}
                 onChange={() => handleChange(item, "view")}
               />
@@ -404,17 +384,11 @@ const AccessGroupPermissions = (props: Props) => {
           cell={(item) => {
             const state = getCheckState(item, "modify");
             return (
-              <input
+              <Check
                 key={item.namespace}
                 name="modify"
-                type="checkbox"
                 checked={state === "checked"}
-                ref={(el) => {
-                  if (el) {
-                    checkboxRefs.current[item.namespace] = el;
-                    el.indeterminate = state === "partially";
-                  }
-                }}
+                indeterminate={state === "partially"}
                 disabled={isItemDisabled(item, "modify")}
                 onChange={() => handleChange(item, "modify")}
               />
