@@ -1,0 +1,2 @@
+- Detect an existing cgroup2 mount by filesystem type,
+  not mountpoint.
