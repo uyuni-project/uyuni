@@ -9620,11 +9620,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>Исходные соответствия не могут быть удалены.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
         <target>Соответствия определяют базовые каналы для сервера в зависимости от архитектуры и операционной системы.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
         <target>Здесь можно изменить соответствия каналов для выбранной организации. Исходные соответствия нельзя удалить, но можно переопределить в пределах организации.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -9632,7 +9632,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>Соответствие для выбранной организации будет удалено. Если оно переопределяло стандартное соответствие, исходные настройки будут восстановлены после удаления.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
         <target>Стандартные соответствия не могут быть удалены. Их можно переопределить отдельно в пределах организации.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">

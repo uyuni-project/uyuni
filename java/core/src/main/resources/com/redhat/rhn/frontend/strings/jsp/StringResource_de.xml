@@ -10044,11 +10044,11 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <target>Standard Distribution Channel Zuordnung kann nicht gelöscht werden.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
         <target>Distribution Channel Zuordnungen definieren die Standard-Basis-Channels, in denen Server je nach ihrem OS und ihrer Architektur durch Registrierung landen. Standard Distribution Channel Zuordnungen können überschrieben, aber nicht gelöscht werden.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
         <target>Organisationsspezifische Distribution Channel Zuordnungen können hier bearbeitet werden. Standard Distribution Channel Zuordnungen können nicht bearbeitet werden. Sie können nur innerhalb jeder Organisation überschrieben werden.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -10056,7 +10056,7 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         <target>Organisationsspezifische Distribution Channel Zuordnung wird gelöscht. Wenn es derzeit eine Standard-Channel Zuordnung Überschreibt, wird die Standard Zuordnung wieder effektiv.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
         <target>Standard Distribution Channel Zuordnungen können nicht gelöscht werden. Sie können nur innerhalb jeder Organisation überschrieben werden.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">

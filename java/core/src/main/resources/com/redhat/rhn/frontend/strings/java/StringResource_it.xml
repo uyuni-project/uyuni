@@ -7837,7 +7837,7 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         <target>Impossibile eseguire la gestione dell'alimentazione su un sistema sul quale non è stata salvata la configurazione.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -10602,7 +10602,7 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <target state="translated">Il calendario con id '{0}' non esiste</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
         <target state="translated">Si è verificato un errore nel tentativo di annullare le azioni interessate per la pianificazione '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">

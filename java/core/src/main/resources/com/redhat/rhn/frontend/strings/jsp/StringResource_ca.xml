@@ -10176,11 +10176,11 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
         <target state="translated">No es poden suprimir les assignacions predeterminades dels canals de distribució.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
         <target state="translated">Les assignacions de canals de distribució es defineixen com a canals base per defecte que els clients recullen segons el seu SO i arquitectura en el moment del registre. Aquestes assignacions poden ser anul·lades, però no eliminades.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
         <target state="translated">Els mapes de canals de distribució específics de l'organització es poden editar aquí. No es poden editar els mapes de canals de distribució per defecte. Només es poden anul·lar dins de cada organització.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
@@ -10188,7 +10188,7 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
         <target state="translated">Se suprimirà el mapatge específic del canal de distribució de l'organització. Si actualment està anul·lant un mapatge per defecte del canal, el mapatge per defecte es farà efectiu.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
         <target state="translated">No es poden suprimir les assignacions predeterminades dels canals de distribució. Només es poden anul·lar dins de cada organització.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">

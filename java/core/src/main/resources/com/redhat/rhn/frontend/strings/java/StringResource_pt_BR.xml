@@ -7838,7 +7838,7 @@ Follow this url to see the full list of inactive systems:
         <target>Não foi possível fazer o gerenciamento de energia em um sistema que não possui configuração salva.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -10613,7 +10613,7 @@ Como alternativa, você desejará fazer o download &lt;strong&gt;ISOs de conteú
         <target state="translated">O calendário com id '{0}' não existe</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
         <target state="translated">Ocorreu um erro ao tentar cancelar as ações afetadas para a programação '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
