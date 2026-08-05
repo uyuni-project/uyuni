@@ -1,7 +1,7 @@
-# Copyright (c) 2018-2024 SUSE LLC
+# Copyright (c) 2018-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@scope_visualization
+@scope_notification_message
 Feature: Test the notification/notification-messages feature
 
   Scenario: Log in as org admin user
