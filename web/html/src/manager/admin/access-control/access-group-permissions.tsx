@@ -190,7 +190,7 @@ const AccessGroupPermissions = (props: Props) => {
   });
 
   const namespacesFilter = (
-    <div className="d-flex">
+    <div key="namespace-filter" className="d-flex">
       <div className="ms-4">
         <Form model={{ apiNamespace, webNamespace, showOnlySelected }} onChange={setNamespacesCheck}>
           <div className="d-flex">
