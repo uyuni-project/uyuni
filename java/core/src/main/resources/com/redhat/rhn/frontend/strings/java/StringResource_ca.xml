@@ -12155,93 +12155,93 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="translated">La migració de SLES 16 ha fallat o no s'ha trobat el resultat.{0}</target>
       </trans-unit>
-    <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Accés d'administració</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM a la sèrie IBM z16</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM a la sèrie IBM z16</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM a la sèrie IBM z17</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM a la sèrie IBM z17</target>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve">
         <source>IBM Secure Execution (IBM SEL)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Execució segura d'IBM (IBM SEL)</target>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve">
         <source>IBM SEL PVATTEST</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">IBM SEL PVATTEST</target>
+      </trans-unit>
       <trans-unit id="coco.status.requested.description" xml:space="preserve">
         <source>Requested</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Demanat</target>
+      </trans-unit>
       <trans-unit id="coco.status.queued.description" xml:space="preserve">
         <source>Queued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">A la cua</target>
+      </trans-unit>
       <trans-unit id="coco.status.submitted.description" xml:space="preserve">
         <source>Submitted</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Enviat</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
         <source>The mandatory input data is missing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Falten les dades d'entrada obligatòries</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
         <source>The secure execution header is missing.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Falta la capçalera d'execució segura.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
         <source>The secure execution header is not a valid Base64 string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La capçalera d'execució segura no és una cadena de Base64 vàlida.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
         <source>The secure execution header is empty.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La capçalera d'execució segura està buida.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve">
         <source>The secure execution header is too short.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La capçalera d'execució segura és massa curta.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve">
         <source>The secure execution header does not start with the expected byte sequence.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La capçalera d'execució segura no comença amb la seqüència de bytes esperada.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve">
         <source>The secure execution header size does not match the expected value.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La mida de la capçalera d'execució segura no coincideix amb el valor esperat.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve">
         <source>The host key document is not a valid string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El document de la clau de l'amfitrió no és una cadena de caràcters vàlida.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve">
         <source>The host key document is not valid yet.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El document de la clau de l'amfitrió encara no és vàlid.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve">
         <source>The host key document has expired.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El document de la clau de l'amfitrió ha caducat.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">El document de la clau de l'amfitrió no és un certificat PEM vàlid.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
