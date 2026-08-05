@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 05 13:36:02 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Add a README file for artifacthub to display
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Fri Jun 26 14:42:06 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.10
