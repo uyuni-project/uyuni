@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 05 16:54:25 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * Propagate cert validation errors to UI (bsc#1271332)
+  * Fix cleanup timeout when deleting minions (bsc#1258567)
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Fri Jul 03 15:43:34 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.14-0
