@@ -18,10 +18,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
-import com.redhat.rhn.domain.action.TransactionalFlow;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
@@ -118,9 +114,7 @@ public class TransactionalActionManager {
      * @return true when the action applied transactional states and is waiting for reboot
      */
     public static boolean isTransactionalApplyWaitingForReboot(Action action, Long minionServerId) {
-        return findDefinitionByAction(action)
-                .filter(definition -> TransactionalFlow.APPLY_THEN_COMPLETE.equals(definition.flow()))
-                .flatMap(definition -> findTransactionalActionHistory(minionServerId, action.getId()))
+        return !hasAfterRebootState(action) && findTransactionalActionHistory(minionServerId, action.getId())
                 .map(MinionTransactionalActionHistory::isWaitingForReboot)
                 .orElse(false);
     }
@@ -133,9 +127,7 @@ public class TransactionalActionManager {
      * @return progress entries in execution order
      */
     public static List<ProgressEntry> getProgressEntries(Action action, MinionTransactionalActionHistory history) {
-        boolean transactionalApply = findDefinitionByAction(action)
-                .map(definition -> TransactionalFlow.APPLY_THEN_COMPLETE.equals(definition.flow()))
-                .orElse(false);
+        boolean transactionalApply = !hasAfterRebootState(action);
         return history.getProgressEntries(transactionalApply);
     }
 
@@ -170,9 +162,9 @@ public class TransactionalActionManager {
      */
     public static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
             String state, Optional<Map<String, Object>> pillar) {
-        Optional<TransactionalStateDefinition> definition = findDefinitionByState(state);
-        return definition.isPresent() ?
-                getTransactionalSaltCall(definition.get(), pillar) :
+        Optional<TransactionalState> transactionalState = TransactionalState.getByState(state);
+        return transactionalState.isPresent() ?
+                getTransactionalSaltCall(transactionalState.get(), pillar) :
                 withDirectCallExecutor(State.apply(List.of(state), pillar));
     }
 
@@ -194,9 +186,9 @@ public class TransactionalActionManager {
 
         addCall(calls, State.apply(states, pillar), minionsByTransactionalUpdate.get(false));
 
-        Optional<TransactionalStateDefinition> definition = findDefinitionByStates(states);
-        LocalCall<Map<String, State.ApplyResult>> transactionalCall = definition.isPresent() ?
-                getTransactionalSaltCall(definition.get(), pillar) :
+        Optional<TransactionalState> transactionalState = findSingleTransactionalState(states);
+        LocalCall<Map<String, State.ApplyResult>> transactionalCall = transactionalState.isPresent() ?
+                getTransactionalSaltCall(transactionalState.get(), pillar, Optional.empty(), Optional.empty()) :
                 withDirectCallExecutor(State.apply(states, pillar));
         addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
     }
@@ -240,6 +232,14 @@ public class TransactionalActionManager {
             LocalCall<?> call, List<MinionSummary> minions) {
         if (minions.stream().anyMatch(MinionSummary::isTransactionalUpdate) &&
                 shouldExecuteWithDirectCall(call)) {
+            Optional<TransactionalState> transactionalState = getTransactionalApplyState(call);
+            if (transactionalState.isPresent()) {
+                return getTransactionalSaltCall(
+                        transactionalState.get(),
+                        getPillarFromCall(call),
+                        getBooleanFromCall(call, "queue"),
+                        getBooleanFromCall(call, "test"));
+            }
             return withDirectCallExecutor(call);
         }
         return call;
@@ -270,6 +270,14 @@ public class TransactionalActionManager {
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
         if (!shouldUseTransactionalUpdateForCustomStates(states)) {
+            Optional<TransactionalState> transactionalState = findSingleTransactionalState(states);
+            if (transactionalState.isPresent()) {
+                addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+                addCall(calls, getTransactionalSaltCall(transactionalState.get(), pillar, queue, test),
+                        minionsByTransactionalUpdate.get(true));
+                return;
+            }
+
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
             return;
@@ -320,7 +328,7 @@ public class TransactionalActionManager {
     public static boolean needsAdditionalStatesAfterReboot(
             Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
         return getTransactionalDefinition(action, function, states)
-                .map(TransactionalActionManager::needsAdditionalStatesAfterReboot)
+                .map(TransactionalState::hasAfterRebootState)
                 .orElse(false);
     }
 
@@ -334,9 +342,9 @@ public class TransactionalActionManager {
     public static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
             Action action, List<MinionSummary> minionSummaries) {
         return getAfterRebootDefinition(action)
-                .map(definition -> Map.of(
+                .map(transactionalState -> Map.of(
                         withDirectCallExecutor(State.apply(
-                                List.of(definition.afterRebootState().orElseThrow()),
+                                List.of(transactionalState.afterRebootState().orElseThrow()),
                                 Optional.empty(),
                                 Optional.of(true),
                                 Optional.empty())),
@@ -381,39 +389,35 @@ public class TransactionalActionManager {
     /**
      * Check whether the given result belongs to a transactional action.
      *
-     * @param action action receiving the result
      * @param function Salt function used for the action
-     * @param states states applied by Salt
      * @return true when the result is from a transactional phase
      */
-    public static boolean isTransactionalResult(
-            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
-        return getTransactionalDefinition(action, function, states).isPresent();
+    public static boolean isTransactionalResult(Optional<Xor<String[], String>> function) {
+        return TransactionalUpdateCalls.isApplyFunction(function);
     }
 
-    private static Optional<TransactionalStateDefinition> getTransactionalDefinition(
+    private static Optional<TransactionalState> getTransactionalDefinition(
             Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
         if (!TransactionalUpdateCalls.isApplyFunction(function)) {
             return Optional.empty();
         }
 
-        return states.flatMap(TransactionalActionManager::findDefinitionByStates)
-                .or(() -> findDefinitionByAction(action));
+        return states.flatMap(TransactionalActionManager::findAfterRebootState)
+                .or(() -> getAfterRebootDefinition(action))
+                .or(() -> Optional.of(TransactionalState.GENERIC_APPLY));
     }
 
-    private static boolean needsAdditionalStatesAfterReboot(TransactionalStateDefinition definition) {
-        return definition.afterRebootState().isPresent();
-    }
-
-    private static Optional<TransactionalStateDefinition> getAfterRebootDefinition(Action action) {
-        return findDefinitionByAction(action)
-                .filter(TransactionalActionManager::needsAdditionalStatesAfterReboot);
+    private static Optional<TransactionalState> getAfterRebootDefinition(Action action) {
+        if (action instanceof HardwareRefreshAction) {
+            return Optional.of(TransactionalState.HARDWARE_PROFILE_UPDATE);
+        }
+        return Optional.empty();
     }
 
     /**
      * Handle a transactional Salt result according to the state definition.
      *
-     * @param definition transactional state definition receiving the result
+     * @param transactionalState transactional state receiving the result
      * @param minionServerId minion server id
      * @param actionId action id
      * @param jsonResult Salt state result
@@ -421,15 +425,14 @@ public class TransactionalActionManager {
      * @return result message for the action
      */
     private static String handleTransactionalResult(
-            TransactionalStateDefinition definition,
+            TransactionalState transactionalState,
             Long minionServerId,
             Long actionId,
             JsonElement jsonResult,
             boolean failed) {
-        return switch (definition.flow()) {
-            case PREREQUISITE_THEN_STATE -> handlePrerequisiteResult(minionServerId, actionId, jsonResult, failed);
-            case APPLY_THEN_COMPLETE -> handleApplyResult(minionServerId, actionId, jsonResult, failed);
-        };
+        return transactionalState.hasAfterRebootState() ?
+                handlePrerequisiteResult(minionServerId, actionId, jsonResult, failed) :
+                handleApplyResult(minionServerId, actionId, jsonResult, failed);
     }
 
     /**
@@ -582,47 +585,40 @@ public class TransactionalActionManager {
                         changes.getAsJsonObject().size() > 0);
     }
 
-    private static Optional<TransactionalStateDefinition> findDefinitionByState(String state) {
-        return TransactionalState.getByState(state)
-                .map(TransactionalState::getDefinition);
-    }
-
-    private static Optional<TransactionalStateDefinition> findDefinitionByStates(List<String> states) {
+    private static Optional<TransactionalState> findAfterRebootState(List<String> states) {
         return states.stream()
-                .map(TransactionalActionManager::findDefinitionByState)
+                .map(TransactionalState::getByState)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .filter(TransactionalState::hasAfterRebootState)
                 .findFirst();
+    }
+
+    private static Optional<TransactionalState> findSingleTransactionalState(List<String> states) {
+        return states.size() == 1 ? TransactionalState.getByState(states.get(0)) : Optional.empty();
     }
 
     private static boolean shouldUseTransactionalUpdateForCustomStates(List<String> states) {
         return ConfigDefaults.get().isSaltCustomStatesUseTransactionalUpdate() &&
-                !states.isEmpty() &&
+                isConfigurableCustomState(states);
+    }
+
+    private static boolean isConfigurableCustomState(List<String> states) {
+        return !states.isEmpty() &&
                 CONFIGURABLE_CUSTOM_STATES.containsAll(states);
     }
 
-    private static Optional<TransactionalStateDefinition> findDefinitionByAction(Action action) {
-        if (action instanceof HardwareRefreshAction) {
-            return Optional.of(TransactionalState.HARDWARE_PROFILE_UPDATE.getDefinition());
-        }
-        else if (action instanceof PackageRemoveAction) {
-            return Optional.of(TransactionalState.PACKAGES_PKGREMOVE.getDefinition());
-        }
-        else if (action instanceof ErrataAction) {
-            return Optional.of(TransactionalState.PACKAGES_PATCHINSTALL.getDefinition());
-        }
-        else if (action instanceof PackageUpdateAction packageUpdateAction) {
-            return Optional.of(packageUpdateAction.getDetails().isEmpty() ?
-                    TransactionalState.PACKAGES_PKGUPDATE.getDefinition() :
-                    TransactionalState.PACKAGES_PKGINSTALL.getDefinition());
-        }
-
-        return Optional.empty();
+    private static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
+            TransactionalState transactionalState, Optional<Map<String, Object>> pillar) {
+        return getTransactionalSaltCall(transactionalState, pillar, Optional.empty(), Optional.empty());
     }
 
     private static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
-            TransactionalStateDefinition definition, Optional<Map<String, Object>> pillar) {
-        return TransactionalUpdateCalls.apply(List.of(definition.transactionalState()), pillar);
+            TransactionalState transactionalState,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test) {
+        return TransactionalUpdateCalls.apply(List.of(transactionalState.getStateToApply()), pillar, queue, test);
     }
 
     private static Optional<List<String>> getStatesFromFunctionArg(Object arg) {
@@ -670,61 +666,107 @@ public class TransactionalActionManager {
                 !payload.containsKey("module_executors");
     }
 
+    private static Optional<TransactionalState> getTransactionalApplyState(LocalCall<?> call) {
+        if (!"state.apply".equals(call.getPayload().get("fun"))) {
+            return Optional.empty();
+        }
+
+        return getStatesFromCall(call).flatMap(TransactionalActionManager::findSingleTransactionalState);
+    }
+
+    private static Optional<Map<String, Object>> getPillarFromCall(LocalCall<?> call) {
+        Object kwarg = call.getPayload().get("kwarg");
+        if (kwarg instanceof Map<?, ?> kwargs && kwargs.get("pillar") instanceof Map<?, ?> pillar) {
+            Map<String, Object> result = new HashMap<>();
+            pillar.forEach((key, value) -> {
+                if (key instanceof String stringKey) {
+                    result.put(stringKey, value);
+                }
+            });
+            return Optional.of(result);
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<Boolean> getBooleanFromCall(LocalCall<?> call, String key) {
+        Object kwarg = call.getPayload().get("kwarg");
+        if (kwarg instanceof Map<?, ?> kwargs && kwargs.get(key) instanceof Boolean value) {
+            return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
     private static <T> LocalCall<T> withDirectCallExecutor(LocalCall<T> call) {
         return new LocalCallWithExecutors<>(call, DIRECT_CALL_EXECUTOR, Map.of());
     }
 
-    private static TransactionalStateDefinition prerequisiteThenState(
-            String prerequisiteState, String afterRebootState) {
-        return new TransactionalStateDefinition(
-                TransactionalFlow.PREREQUISITE_THEN_STATE,
-                prerequisiteState,
-                Optional.of(afterRebootState));
-    }
-
-    private static TransactionalStateDefinition applyThenComplete(String state) {
-        return new TransactionalStateDefinition(
-                TransactionalFlow.APPLY_THEN_COMPLETE,
-                state,
-                Optional.empty());
-    }
-
-    private record TransactionalStateDefinition(
-            TransactionalFlow flow,
-            String transactionalState,
-            Optional<String> afterRebootState) {
-    }
-
     private enum TransactionalState {
+        GENERIC_APPLY("transactional_update.apply"),
         HARDWARE_PROFILE_UPDATE(
                 ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE,
-                prerequisiteThenState(
-                        SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
-                        ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
+                Optional.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
                 SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ),
+        CERTIFICATE(
+                ApplyStatesEventMessage.CERTIFICATE),
+        CHANNELS(
+                ApplyStatesEventMessage.CHANNELS),
+        DISTUPGRADE(
+                ApplyStatesEventMessage.DISTUPGRADE),
+        DISTUPGRADE_SLES16(
+                ApplyStatesEventMessage.DISTUPGRADE_SLES16),
         PACKAGES_PKGINSTALL(
-                SaltParameters.PACKAGES_PKGINSTALL,
-                applyThenComplete(SaltParameters.PACKAGES_PKGINSTALL)),
+                SaltParameters.PACKAGES_PKGINSTALL),
+        PACKAGES_PKGDOWNLOAD(
+                SaltParameters.PACKAGES_PKGDOWNLOAD),
+        PACKAGES_PKGLOCK(
+                SaltParameters.PACKAGES_PKGLOCK),
+        PACKAGES_PREREQ(
+                ApplyStatesEventMessage.PACKAGES),
         PACKAGES_PKGUPDATE(
-                SaltParameters.PACKAGES_PKGUPDATE,
-                applyThenComplete(SaltParameters.PACKAGES_PKGUPDATE)),
+                SaltParameters.PACKAGES_PKGUPDATE),
         PACKAGES_PKGREMOVE(
-                SaltParameters.PACKAGES_PKGREMOVE,
-                applyThenComplete(SaltParameters.PACKAGES_PKGREMOVE)),
+                SaltParameters.PACKAGES_PKGREMOVE),
+        PACKAGES_PATCHDOWNLOAD(
+                SaltParameters.PACKAGES_PATCHDOWNLOAD),
         PACKAGES_PATCHINSTALL(
-                SaltParameters.PACKAGES_PATCHINSTALL,
-                applyThenComplete(SaltParameters.PACKAGES_PATCHINSTALL));
+                SaltParameters.PACKAGES_PATCHINSTALL),
+        SALT_MINION_SERVICE(
+                ApplyStatesEventMessage.SALT_MINION_SERVICE),
+        REPORTDB_USER(
+                ApplyStatesEventMessage.REPORTDB_USER),
+        UPDATE_SALT(
+                "update-salt"),
+        UPTODATE(
+                "uptodate"),
+        SWITCH_TO_BUNDLE(
+                "util.mgr_switch_to_venv_minion");
 
         private final List<String> states;
-        private final TransactionalStateDefinition definition;
+        private final String stateToApply;
+        private final Optional<String> afterRebootState;
 
-        TransactionalState(String state, TransactionalStateDefinition definitionIn, String... aliases) {
-            states = Stream.concat(Stream.of(state), Arrays.stream(aliases)).toList();
-            definition = definitionIn;
+        TransactionalState(String state, String... aliases) {
+            this(state, state, Optional.empty(), aliases);
         }
 
-        private TransactionalStateDefinition getDefinition() {
-            return definition;
+        TransactionalState(String state, String stateToApplyIn, Optional<String> afterRebootStateIn,
+                           String... aliases) {
+            states = Stream.concat(Stream.of(state), Arrays.stream(aliases)).toList();
+            stateToApply = stateToApplyIn;
+            afterRebootState = afterRebootStateIn;
+        }
+
+        private String getStateToApply() {
+            return stateToApply;
+        }
+
+        private Optional<String> afterRebootState() {
+            return afterRebootState;
+        }
+
+        private boolean hasAfterRebootState() {
+            return afterRebootState.isPresent();
         }
 
         private static Optional<TransactionalState> getByState(String state) {

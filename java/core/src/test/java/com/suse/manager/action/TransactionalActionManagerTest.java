@@ -11,11 +11,11 @@
 package com.suse.manager.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -62,11 +62,15 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testErrataActionIsRecognizedAsTransactionalApply() {
+    public void testTransactionalUpdateApplyResultIsRecognizedAsTransactional() {
         assertTrue(TransactionalActionManager.isTransactionalResult(
-                new ErrataAction(),
-                Optional.of(Xor.right("transactional_update.apply")),
-                Optional.empty()));
+                Optional.of(Xor.right("transactional_update.apply"))));
+    }
+
+    @Test
+    public void testStateApplyResultIsNotRecognizedAsTransactional() {
+        assertFalse(TransactionalActionManager.isTransactionalResult(
+                Optional.of(Xor.right("state.apply"))));
     }
 
     @Test
@@ -148,13 +152,68 @@ public class TransactionalActionManagerTest {
     public void testPrepareSaltCallExecutesWithDirectCallForTransactionalMinion() {
         MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
         LocalCall<?> call = com.suse.salt.netapi.calls.modules.State.apply(
-                List.of(SaltParameters.PACKAGES_PKGDOWNLOAD), Optional.empty());
+                List.of(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty());
 
         LocalCall<?> preparedCall = TransactionalActionManager.prepareSaltCallForTransactionalMinions(
                 call, List.of(transactionalMinion));
 
         assertEquals("state.apply", preparedCall.getPayload().get("fun"));
         assertEquals(List.of("direct_call"), preparedCall.getPayload().get("module_executors"));
+    }
+
+    @Test
+    public void testPrepareSaltCallUsesTransactionalUpdateForMappedState() {
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+        LocalCall<?> call = com.suse.salt.netapi.calls.modules.State.apply(
+                List.of(ApplyStatesEventMessage.CHANNELS),
+                Optional.of(Map.of("key", "value")),
+                Optional.of(true),
+                Optional.empty());
+
+        LocalCall<?> preparedCall = TransactionalActionManager.prepareSaltCallForTransactionalMinions(
+                call, List.of(transactionalMinion));
+
+        assertEquals("transactional_update.apply", preparedCall.getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) preparedCall.getPayload().get("kwarg");
+        assertEquals(List.of(ApplyStatesEventMessage.CHANNELS), kwargs.get("mods"));
+        assertEquals(Map.of("key", "value"), kwargs.get("pillar"));
+        assertEquals(true, kwargs.get("queue"));
+    }
+
+    @Test
+    public void testPrepareSaltCallExecutesMixedStatesWithDirectCall() {
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+        LocalCall<?> call = com.suse.salt.netapi.calls.modules.State.apply(
+                List.of(ApplyStatesEventMessage.CHANNELS, ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty());
+
+        LocalCall<?> preparedCall = TransactionalActionManager.prepareSaltCallForTransactionalMinions(
+                call, List.of(transactionalMinion));
+
+        assertEquals("state.apply", preparedCall.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), preparedCall.getPayload().get("module_executors"));
+    }
+
+    @Test
+    public void testApplyStatesActionUsesTransactionalUpdateForMappedState() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+
+        TransactionalActionManager.addCustomStateApplyCalls(
+                calls,
+                List.of(SaltParameters.PACKAGES_PKGLOCK),
+                Optional.empty(),
+                Optional.of(true),
+                Optional.empty(),
+                List.of(regularMinion, transactionalMinion));
+
+        assertEquals(2, calls.size());
+        assertTrue(calls.entrySet().stream()
+                .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                        entry.getValue().equals(List.of(regularMinion))));
+        assertTrue(calls.entrySet().stream()
+                .anyMatch(entry -> "transactional_update.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                        entry.getValue().equals(List.of(transactionalMinion))));
     }
 
     @Test

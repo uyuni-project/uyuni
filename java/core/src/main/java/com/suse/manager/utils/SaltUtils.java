@@ -497,8 +497,7 @@ public class SaltUtils {
         }
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        boolean transactionalResult =
-                TransactionalActionManager.isTransactionalResult(action, function, states);
+        boolean transactionalResult = TransactionalActionManager.isTransactionalResult(function);
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {

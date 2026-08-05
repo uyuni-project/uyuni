@@ -18,7 +18,7 @@ import static spark.Spark.get;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -53,6 +53,6 @@ public class SnapshotsController {
      * @return the ModelAndView to render
      */
     public static ModelAndView snapshots(Request request, Response response, User user, Server server) {
-        return new ModelAndView(Map.of(), "templates/minion/snapshots.jade");
+        return new ModelAndView(new HashMap<>(), "templates/minion/snapshots.jade");
     }
 }
