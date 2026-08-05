@@ -13,6 +13,7 @@ package com.suse.manager.api.docs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -199,7 +200,10 @@ public class UyuniSwaggerReader {
         if (name.startsWith("get")) {
             name = name.substring(3);
         }
-        return name.isEmpty() ? name : Character.toLowerCase(name.charAt(0)) + name.substring(1);
+        else if (name.startsWith("is")) {
+            name = name.substring(2);
+        }
+        return Introspector.decapitalize(name);
     }
 
     private void configureResponses(ApiEndpointDoc apiDoc, Operation operation) {
