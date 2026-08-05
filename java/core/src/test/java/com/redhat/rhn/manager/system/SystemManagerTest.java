@@ -2046,6 +2046,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock)
                     .checkSSLCert(with(equal(rootCA)), with(equal(new SSLCertPair(cert, key))), with(equal(otherCAs)));
             will(returnValue(apacheCert));
+            allowing(certManager).getNamesFromSslCert("Dummy cert");
+            will(returnValue(Set.of("pxy-fqdn.mgr.lab")));
         }});
 
         List<String> additionalFqdns = List.of("additional.fqdn.com", "additional2.fqdn.com");
