@@ -1286,7 +1286,7 @@ public class ServerFactory extends HibernateFactory {
         return getSession().createQuery("""
                 select distinct s
                 from   com.redhat.rhn.domain.server.Server as s
-                join   s.configChannelsHibernate as cc
+                join   s.configChannels as cc
                 where  cc = :channel
                 """, Server.class)
                 .setParameter("channel", channel)
