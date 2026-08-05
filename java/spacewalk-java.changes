@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Wed Aug 05 15:47:23 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * Restored the original reset behavior in isDryRun() by swapping
+    subscribedChannels and unsubscribedChannels back (bsc#1271681)
+  * Bump version to 5.3.0
+  * Use the standard Bootstrap 5 row class in place of
+    legacy layout classes.
+  * Fix mainframe foreign systems showing wrong OS (bsc#1260342)
+  * Fix hubsync package download checksum lookup (bsc#1270040)
+  * Fixed Hibernate issue when updating the SSL content sources
+    during a pay-as-you-go connection data refresh (bsc#1271382)
+  * Many to many relationships should not cascade deletion
+    (gh#uyuni-project/uyuni#12266, bsc#1272392)
+  * Optimized channel model generation logic to improve page load
+    performance during peripheral channel selection (bsc#1259225)
+  * Allow diskcheck env vars into containers (bsc#1270033)
+  * Query only systems for virtual machines which are flagged as
+    virtualization hosts (bsc#1273073)
+
+-------------------------------------------------------------------
 Mon Jul 06 11:48:26 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.19-0

@@ -1,2 +1,0 @@
-- Query only systems for virtual machines which are flagged as
-  virtualization hosts (bsc#1273073)

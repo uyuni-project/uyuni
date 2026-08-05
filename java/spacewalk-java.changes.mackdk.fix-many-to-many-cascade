@@ -1,2 +1,0 @@
-- Many to many relationships should not cascade deletion
-  (gh#uyuni-project/uyuni#12266, bsc#1272392)
