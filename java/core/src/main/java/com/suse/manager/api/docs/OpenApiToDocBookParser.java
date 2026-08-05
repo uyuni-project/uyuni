@@ -290,7 +290,7 @@ public class OpenApiToDocBookParser {
                         .toLowerCase().trim()
         );
 
-        return renderReturnSchema(schema, label, legacyDocResponse.type());
+        return renderReturnSchema(schema, label, legacyDocResponse.type(), legacyDocResponse.name());
     }
 
     private LegacyDocResponseData getLegacyDocResponse(ApiResponse response) {
@@ -308,10 +308,11 @@ public class OpenApiToDocBookParser {
     }
 
     private String renderReturnSchema(Schema<?> schema, String label) {
-        return renderReturnSchema(schema, label, "");
+        return renderReturnSchema(schema, label, "", "");
     }
 
-    private String renderReturnSchema(Schema<?> schema, String label, String typeOverride) {
+    private String renderReturnSchema(Schema<?> schema, String label, String typeOverride,
+                                      String legacyStructLabel) {
         if (schema == null) {
             return "<listitem><para></para></listitem>";
         }
@@ -320,11 +321,12 @@ public class OpenApiToDocBookParser {
             return renderReturnSchema(
                     resolveSchemaReference(resultSchema),
                     getResultLabel(resultSchema, label),
-                    typeOverride
+                    typeOverride,
+                    legacyStructLabel
             );
         }
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
-            return renderArrayReturn(schema, label);
+            return renderArrayReturn(schema, label, legacyStructLabel);
         }
         if (isSimpleType(schema)) {
             return renderSimpleReturn(schema, label, typeOverride);
@@ -332,7 +334,7 @@ public class OpenApiToDocBookParser {
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             return renderAdditionalPropertiesReturn(inner, label);
         }
-        return renderStructList(schema, label);
+        return renderStructList(schema, label, legacyStructLabel);
     }
 
     private Schema<?> getResultSchema(Schema<?> schema) {
@@ -347,7 +349,7 @@ public class OpenApiToDocBookParser {
         return resultSchema.get$ref() != null ? extractRefName(resultSchema.get$ref()) : label;
     }
 
-    private String renderArrayReturn(Schema<?> schema, String label) {
+    private String renderArrayReturn(Schema<?> schema, String label, String legacyStructLabel) {
         Schema<?> item = schema.getItems();
         Schema<?> resolvedItem = resolveSchemaReference(item);
         if (resolvedItem != null && isSimpleType(resolvedItem) && label != null && !label.isBlank()) {
@@ -361,7 +363,7 @@ public class OpenApiToDocBookParser {
         sb.append("<listitem>\n");
         sb.append("  <para>array</para>\n");
         sb.append("  <itemizedlist spacing=\"compact\">\n");
-        sb.append(indentLines(renderReturnSchema(resolvedItem, itemLabel), 4));
+        sb.append(indentLines(renderReturnSchema(resolvedItem, itemLabel, "", legacyStructLabel), 4));
         sb.append("\n  </itemizedlist>\n");
         sb.append("</listitem>");
         return sb.toString();
@@ -402,16 +404,17 @@ public class OpenApiToDocBookParser {
         return "integer".equals(schema.getType()) ? "int" : schema.getType();
     }
 
-    private String renderStructList(Schema<?> schema, String label) {
+    private String renderStructList(Schema<?> schema, String label, String legacyStructLabel) {
+        String structLabel = legacyStructLabel.isBlank() ? label : legacyStructLabel;
         if (schema == null) {
-            return String.format("<listitem><para>struct %s</para></listitem>", escapeXml(label));
+            return String.format("<listitem><para>struct %s</para></listitem>", escapeXml(structLabel));
         }
         if (schema.getProperties() == null || schema.getProperties().isEmpty()) {
-            return String.format("<listitem><para>struct %s</para></listitem>", escapeXml(label));
+            return String.format("<listitem><para>struct %s</para></listitem>", escapeXml(structLabel));
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<listitem>\n");
-        sb.append("  <para>struct ").append(escapeXml(label)).append("</para>\n");
+        sb.append("  <para>struct ").append(escapeXml(structLabel)).append("</para>\n");
         sb.append("  <itemizedlist spacing=\"compact\">\n");
         schema.getProperties().forEach((name, prop) -> {
             Schema<?> propSchema = prop;

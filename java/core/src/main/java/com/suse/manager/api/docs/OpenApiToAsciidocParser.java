@@ -284,7 +284,7 @@ public class OpenApiToAsciidocParser {
         }
 
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
-            writeArrayReturn(writer, schema, responseLabel);
+            writeArrayReturn(writer, schema, responseLabel, legacyDocResponse.name());
             return;
         }
 
@@ -315,7 +315,8 @@ public class OpenApiToAsciidocParser {
         return value instanceof String stringValue ? stringValue : "";
     }
 
-    private void writeArrayReturn(PrintWriter writer, Schema<?> schema, String responseLabel) {
+    private void writeArrayReturn(PrintWriter writer, Schema<?> schema, String responseLabel,
+                                  String legacyStructLabel) {
         Schema<?> itemSchema = schema.getItems();
         Schema<?> resolved = resolveSchemaReference(itemSchema);
         String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
@@ -326,7 +327,8 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.println("* [.array]#array# :");
-        writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
+        writer.printf("    * [.struct]#struct#  %s%n",
+                legacyStructLabel.isEmpty() ? itemRefName : legacyStructLabel);
         printStructProperties(writer, resolved);
         writer.println();
     }
