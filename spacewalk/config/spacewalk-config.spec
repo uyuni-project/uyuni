@@ -32,7 +32,7 @@
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
 Name:           spacewalk-config
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        %{productprettyname} Configuration
 License:        GPL-2.0-only
