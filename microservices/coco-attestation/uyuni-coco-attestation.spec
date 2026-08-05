@@ -23,7 +23,7 @@
 %global         snpguest_arch x86_64
 
 Name:           uyuni-coco-attestation
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        %{productprettyname} utility for Confidential Computing Attestation
 License:        GPL-2.0-only

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 05 13:50:44 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * Ensure the certs directory is always created
+  * Allow pvattest module to be built on s390x
+  * Bump to version 5.3.0
+
+-------------------------------------------------------------------
 Fri May 22 11:46:48 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0
