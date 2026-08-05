@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.packages;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -164,6 +165,28 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         handler.removePackage(admin, pkg.getId().intValue());
+    }
+
+    @Test
+    public void testRemoveOneOfMultiplePackageCopies() {
+        User user1 = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
+        User user2 = UserTestUtils.createUser("user2", "anotherOrg");
+
+        Package pkg1 = PackageTest.createTestPackage(user1.getOrg());
+        PackageFactory.save(pkg1);
+
+        Package pkg2 = PackageTest.createTestPackage(user2.getOrg());
+        pkg2.setChecksum(pkg1.getChecksum());
+        PackageFactory.save(pkg2);
+        TestUtils.flushAndClearSession();
+
+        handler.removePackage(admin, pkg1.getId().intValue());
+        TestUtils.flushAndClearSession();
+
+        var pkg = PackageFactory.lookupByIdAndUser(pkg1.getId(), user1);
+        assertNull(pkg);
+        pkg = PackageFactory.lookupByIdAndUser(pkg2.getId(), user2);
+        assertEquals(pkg2, pkg);
     }
 
     @Test
