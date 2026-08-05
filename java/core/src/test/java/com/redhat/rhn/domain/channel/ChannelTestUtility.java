@@ -29,6 +29,6 @@ public class ChannelTestUtility {
             throw new IncompatibleArchException(packageIn.getPackageArch(),
                     ch.getChannelArch());
         }
-        ch.getPackages().add(packageIn);
+        ch.addPackage(packageIn);
     }
 }

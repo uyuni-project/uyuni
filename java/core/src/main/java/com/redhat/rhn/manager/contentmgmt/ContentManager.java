@@ -1187,7 +1187,11 @@ public class ContentManager {
         // prune these items from the list so the cache calculation reflects the actual reality of the channel.
         HibernateFactory.getSession().flush();
         List<Long> realIds = ChannelFactory.getPackageIds(tgt.getId());
-        tgt.getPackages().removeIf(p -> !realIds.contains(p.getId()));
+        tgt.removePackages(
+                tgt.getPackages().stream()
+                .filter(p -> !realIds.contains(p.getId()))
+                .collect(Collectors.toSet())
+        );
 
         // align the package cache
         // this must be done after aligning errata since some packages may belong to a retracted erratum and we don't
@@ -1236,10 +1240,10 @@ public class ContentManager {
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
-        tgtChannel.getPackages().clear();
+        tgtChannel.clearPackages();
         LOG.debug("Filtering {} entities through {} filter(s)", srcChannel.getPackages().size(), filters.size());
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
-        tgtChannel.getPackages().addAll(newPackages);
+        tgtChannel.addPackages(newPackages);
         ChannelFactory.save(tgtChannel);
     }
 

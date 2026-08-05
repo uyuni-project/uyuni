@@ -88,7 +88,7 @@ public class PackageListSetupTest extends RhnMockStrutsTestCase {
         zypperPackage.setPackageEvr(zyppEvr);
         zypperPackage = TestUtils.saveAndReload(zypperPackage);
 
-        channel.getPackages().addAll(List.of(standard, ptfMaster, ptfPackage, zypperPackage));
+        channel.addPackages(List.of(standard, ptfMaster, ptfPackage, zypperPackage));
         channel = TestUtils.saveAndReload(channel);
 
         SystemManager.subscribeServerToChannel(user, server, channel);

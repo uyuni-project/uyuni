@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -78,7 +79,7 @@ public class ErrataActionTest extends RhnPostMockStrutsTestCase {
         // Create a set of Errata IDs
         for (int i = 0; i < 5; i++) {
             Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-            e.addChannel(channel);
+            channel.addErrata(e);
             ErrataFactory.save(e);
             errata.addElement(e.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
