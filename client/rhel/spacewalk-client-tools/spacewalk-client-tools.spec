@@ -66,7 +66,7 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only
