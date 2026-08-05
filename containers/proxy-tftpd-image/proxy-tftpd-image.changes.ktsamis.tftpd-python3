@@ -1,3 +1,0 @@
-- Install python3 to provide /usr/bin/python3 required by the
-  container entry point scripts on BCI 16.0
-  (gh#uyuni-project/uyuni#12368, bsc#1273343)
