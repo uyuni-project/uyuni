@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 05 16:16:28 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * Fix issue setting the right package version
+  * Migrate to singlespec to fix issues building on 16.0
+
+-------------------------------------------------------------------
 Mon Oct 27 15:04:39 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

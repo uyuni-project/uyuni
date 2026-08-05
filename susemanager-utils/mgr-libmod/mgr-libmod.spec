@@ -18,7 +18,7 @@
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 
 Name:           mgr-libmod
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        Modular dependency resolver for content lifecycle management
 License:        MIT
