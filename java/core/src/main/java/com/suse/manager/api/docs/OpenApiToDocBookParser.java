@@ -204,11 +204,31 @@ public class OpenApiToDocBookParser {
             if (schema == null) {
                 continue;
             }
-            String type = formatType(schema);
             String desc = findDescription(schema);
-            params.add(new ParamDoc(type, name, desc));
+            Schema<?> resolved = resolveSchemaReference(schema);
+            if (hasProperties(resolved)) {
+                String legacyType = getLegacyDocType(schema);
+                params.add(new ParamDoc(legacyType.isEmpty() ? "struct" : legacyType, name, desc));
+                resolved.getProperties().forEach((propName, propSchema) ->
+                        params.add(new ParamDoc(formatType(propSchema), "\"" + propName + "\"",
+                                findDescription(propSchema))));
+                continue;
+            }
+            params.add(new ParamDoc(formatType(schema), name, desc));
         }
         return params;
+    }
+
+    private boolean hasProperties(Schema<?> schema) {
+        return schema != null && schema.getProperties() != null && !schema.getProperties().isEmpty();
+    }
+
+    private String getLegacyDocType(Schema<?> schema) {
+        if (schema.getExtensions() == null) {
+            return "";
+        }
+        Object value = schema.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_TYPE_EXTENSION);
+        return value == null ? "" : value.toString();
     }
 
     private Map<String, Schema<?>> getAllPossibleProperties(Operation op) {
@@ -586,6 +606,10 @@ public class OpenApiToDocBookParser {
     private String formatType(Schema<?> s) {
         if (s == null) {
             return "string";
+        }
+        String legacyType = getLegacyDocType(s);
+        if (!legacyType.isEmpty()) {
+            return legacyType;
         }
         String type = s.getType();
         if ("array".equals(type)) {
