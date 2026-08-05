@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 05 16:51:54 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * Bump version to 5.3.0
+  * Add Ubuntu 26.04 LTS
+
+-------------------------------------------------------------------
 Wed Jun 17 14:16:18 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0
