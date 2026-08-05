@@ -112,13 +112,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         private List<String> invokeBunches;
         private String invokeRootCaFilename;
         private String invokeRootCaContent;
-        private String invokeGpgKeyContent;
         private int expectedInvocations;
         private List<String> expectedInvocationNames;
         private List<String> expectedInvocationBunches;
         private String expectedRootCaFilename;
         private String expectedRootCaContent;
-        private String expectedGpgKeyContent;
 
         MockTaskomaticApi() {
             resetTaskomaticCall();
@@ -130,21 +128,18 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             invokeBunches = new ArrayList<>();
             invokeRootCaFilename = null;
             invokeRootCaContent = null;
-            invokeGpgKeyContent = null;
         }
 
         public void setExpectations(int expectedInvocationsIn,
                                     List<String> expectedInvocationNamesIn,
                                     List<String> expectedInvocationBunchesIn,
                                     String expectedRootCaFilenameIn,
-                                    String expectedRootCaContentIn,
-                                    String expectedGpgKeyContentIn) {
+                                    String expectedRootCaContentIn) {
             expectedInvocations = expectedInvocationsIn;
             expectedInvocationNames = expectedInvocationNamesIn;
             expectedInvocationBunches = expectedInvocationBunchesIn;
             expectedRootCaFilename = expectedRootCaFilenameIn;
             expectedRootCaContent = expectedRootCaContentIn;
-            expectedGpgKeyContent = expectedGpgKeyContentIn;
         }
 
         public void verifyTaskoCall() {
@@ -155,9 +150,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 if (bunch.equals("root-ca-cert-update-bunch")) {
                     assertEquals(expectedRootCaFilename, invokeRootCaFilename);
                     assertEquals(expectedRootCaContent, invokeRootCaContent);
-                }
-                else if (bunch.equals("custom-gpg-key-import-bunch")) {
-                    assertEquals(expectedGpgKeyContent, invokeGpgKeyContent);
                 }
                 else {
                     fail("Unexpected bunch called: " + bunch);
@@ -184,9 +176,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                     invokeRootCaFilename = null;
                     invokeRootCaContent = null;
                 }
-            }
-            else if (bunch.equals("custom-gpg-key-import-bunch")) {
-                invokeGpgKeyContent = (String) paramList.get("gpg-key");
             }
             return null;
         }
@@ -426,12 +415,12 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canSaveHubAndPeripheralServers() throws TaskomaticApiException {
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data",
-                "dummy-gpg-key");
+                null);
 
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
         assertTrue(issHub.isPresent());
         assertEquals("dummy-certificate-data", issHub.get().getRootCa());
-        assertEquals("dummy-gpg-key", issHub.get().getGpgKey());
+        assertNull(issHub.get().getGpgKey());
 
         hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null, null);
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn("dummy.peripheral.fqdn");
@@ -482,20 +471,19 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canSaveRootCaAndGpg() throws TaskomaticApiException {
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(2,
-                List.of("tasko.scheduleSingleSatBunchRun", "tasko.scheduleSingleSatBunchRun"),
-                List.of("root-ca-cert-update-bunch", "custom-gpg-key-import-bunch"),
-                "hub_dummy.hub.fqdn_root_ca.pem", "dummy-hub-certificate-data",
-                "dummy-gpg-key");
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "hub_dummy.hub.fqdn_root_ca.pem", "dummy-hub-certificate-data");
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data",
-                "dummy-gpg-key");
+                "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
         mockTaskomaticApi.setExpectations(0,
                 List.of(),
                 List.of(),
-                "hub_dummy2.hub.fqdn_root_ca.pem", "", "");
+                "hub_dummy2.hub.fqdn_root_ca.pem", "");
         hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
@@ -503,7 +491,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.setExpectations(0,
                 List.of(),
                 List.of(),
-                "hub_dummy3.hub.fqdn_root_ca.pem", "", "");
+                "hub_dummy3.hub.fqdn_root_ca.pem", "");
         hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
         mockTaskomaticApi.verifyTaskoCall();
 
@@ -512,7 +500,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 List.of("tasko.scheduleSingleSatBunchRun"),
                 List.of("root-ca-cert-update-bunch"),
                 "peripheral_dummy.periph.fqdn_root_ca.pem",
-                "dummy-periph-certificate-data", null);
+                "dummy-periph-certificate-data");
         hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
                 "dummy-periph-certificate-data", null);
         mockTaskomaticApi.verifyTaskoCall();
@@ -521,7 +509,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.setExpectations(0,
                 List.of(),
                 List.of(),
-                "peripheral_dummy2.periph.fqdn_root_ca.pem", "", "");
+                "peripheral_dummy2.periph.fqdn_root_ca.pem", "");
         hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
@@ -529,7 +517,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         mockTaskomaticApi.setExpectations(0,
                 List.of(),
                 List.of(),
-                "peripheral_dummy3.periph.fqdn_root_ca.pem", "", "");
+                "peripheral_dummy3.periph.fqdn_root_ca.pem", "");
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
         mockTaskomaticApi.verifyTaskoCall();
     }
@@ -662,7 +650,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null, null);
+        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null);
 
         hubManager.deregister(satAdmin, fqdn, IssRole.HUB, false);
 
@@ -693,8 +681,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             List.of("tasko.scheduleSingleSatBunchRun"),
             List.of("root-ca-cert-update-bunch"),
             "hub_local-server.unit-test.local_root_ca.pem",
-            "",
-            null
+            ""
         );
 
         hubManager.deregister(satAdmin, fqdn, IssRole.HUB, false);
@@ -732,7 +719,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         mockTaskomaticApi.resetTaskomaticCall();
-        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null, null);
+        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null);
 
         hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, false);
 
@@ -763,8 +750,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             List.of("tasko.scheduleSingleSatBunchRun"),
             List.of("root-ca-cert-update-bunch"),
             "peripheral_local-server.unit-test.local_root_ca.pem",
-            "",
-            null
+            ""
         );
 
         hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, false);
@@ -964,10 +950,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canUpdateServerDetails() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
-        createHubRegistration("hub.domain.com", "---- BEGIN ROOT CA ----", "---- BEGIN GPG PUB KEY -----");
+        createHubRegistration("hub.domain.com", "---- BEGIN ROOT CA ----", null);
         IssHub hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
         assertEquals("---- BEGIN ROOT CA ----", hub.getRootCa());
-        assertEquals("---- BEGIN GPG PUB KEY -----", hub.getGpgKey());
+        assertNull(hub.getGpgKey());
 
         UpdatableServerData data = new UpdatableServerData(Map.of(
             "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
