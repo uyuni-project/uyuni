@@ -11,26 +11,23 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
-import static org.jmock.AbstractExpectations.returnValue;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockAddonProduct;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockBaseProduct;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockChannel;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockServer;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 
 class SUSEManagerToolsRuleTest extends MockObjectTestCase {
@@ -43,26 +40,26 @@ class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     @Test
     void canIncludeWhenProductHasToolsExtensionOrChannelIsSubscribed() {
         Set<InstalledProduct> productSetWithSUMATools = Set.of(
-            mockProduct("sles", "15", true, "7261"),
-            mockProduct("sle-module-basesystem", "15.4", false, "MODULE"),
-            mockProduct("sle-module-server-applications", "15.4", false, "MODULE"),
-            mockProduct("sle-manager-tools", "15.4", false, "SLE-M-T")
+            mockBaseProduct(context, "sles", "15", "7261"),
+            mockAddonProduct(context, "sle-module-basesystem", "15.4", "MODULE"),
+            mockAddonProduct(context, "sle-module-server-applications", "15.4", "MODULE"),
+            mockAddonProduct(context, "sle-manager-tools", "15.4", "SLE-M-T")
         );
 
         Set<Channel> channelSetWithSUMATools = Set.of(
-            mockChannel("sle-product-sles15-sp4-pool-x86_64", "7261"),
-            mockChannel("sle-product-sles15-sp4-updates-x86_64", "7261"),
-            mockChannel("sle-module-basesystem15-sp4-pool-x86_64", "MODULE"),
-            mockChannel("sle-module-basesystem15-sp4-updates-x86_64", "MODULE"),
-            mockChannel("sle-module-server-applications15-sp4-pool-x86_64", "MODULE"),
-            mockChannel("sle-module-server-applications15-sp4-updates-x86_64", "MODULE"),
-            mockChannel("sle-manager-tools15-pool-x86_64-sp4", "SLE-M-T"),
-            mockChannel("sle-manager-tools15-updates-x86_64-sp4", "SLE-M-T")
+            mockChannel(context, "sle-product-sles15-sp4-pool-x86_64", "7261"),
+            mockChannel(context, "sle-product-sles15-sp4-updates-x86_64", "7261"),
+            mockChannel(context, "sle-module-basesystem15-sp4-pool-x86_64", "MODULE"),
+            mockChannel(context, "sle-module-basesystem15-sp4-updates-x86_64", "MODULE"),
+            mockChannel(context, "sle-module-server-applications15-sp4-pool-x86_64", "MODULE"),
+            mockChannel(context, "sle-module-server-applications15-sp4-updates-x86_64", "MODULE"),
+            mockChannel(context, "sle-manager-tools15-pool-x86_64-sp4", "SLE-M-T"),
+            mockChannel(context, "sle-manager-tools15-updates-x86_64-sp4", "SLE-M-T")
         );
 
-        Server serverBoth = mockServer(productSetWithSUMATools, channelSetWithSUMATools);
-        Server serverOnlyProduct = mockServer(productSetWithSUMATools, Collections.emptySet());
-        Server serverOnlyChannel = mockServer(Collections.emptySet(), channelSetWithSUMATools);
+        var serverBoth = mockServer(context, productSetWithSUMATools, channelSetWithSUMATools);
+        var serverOnlyProduct = mockServer(context, productSetWithSUMATools, Set.of());
+        var serverOnlyChannel = mockServer(context, Set.of(), channelSetWithSUMATools);
 
         DimensionRule managerToolsRule = new SUSEManagerToolsRule();
 
@@ -79,11 +76,11 @@ class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     @Test
     void canExcludeWhenNoToolsArePresent() {
         Set<Channel> channelSetWithoutSUMATools = Set.of(
-            mockChannel("custom-channel-x86_64", null),
-            mockChannel("custom-channel-updates-x86_64", null)
+            mockChannel(context, "custom-channel-x86_64", null),
+            mockChannel(context, "custom-channel-updates-x86_64", null)
         );
 
-        Server server = mockServer(Collections.emptySet(), channelSetWithoutSUMATools);
+        Server server = mockServer(context, Set.of(), channelSetWithoutSUMATools);
 
         DimensionRule managerToolsRule = new SUSEManagerToolsRule();
 
@@ -94,85 +91,21 @@ class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     @Test
     void canIncludeSLES12Server() {
         Set<InstalledProduct> sle12ProductSet = Set.of(
-            mockProduct("sles", "12.3", true, "7261")
+            mockBaseProduct(context, "sles", "12.3", "7261")
         );
 
         Set<Channel> sles12ChannelSet = Set.of(
-            mockChannel("sles12-sp3-pool-x86_64", "7261"),
-            mockChannel("sles12-sp3-updates-x86_64", "7261"),
-            mockChannel("sle-manager-tools12-pool-x86_64-sp3", "7261"),
-            mockChannel("sle-manager-tools12-updates-x86_64-sp3", "7261")
+            mockChannel(context, "sles12-sp3-pool-x86_64", "7261"),
+            mockChannel(context, "sles12-sp3-updates-x86_64", "7261"),
+            mockChannel(context, "sle-manager-tools12-pool-x86_64-sp3", "7261"),
+            mockChannel(context, "sle-manager-tools12-updates-x86_64-sp3", "7261")
         );
 
-        Server server = mockServer(sle12ProductSet, sles12ChannelSet);
+        Server server = mockServer(context, sle12ProductSet, sles12ChannelSet);
 
         DimensionRule managerToolsRule = new SUSEManagerToolsRule();
 
         assertTrue(managerToolsRule.includes(server));
         assertFalse(managerToolsRule.excludes(server));
     }
-
-    private Channel mockChannel(String channelLabel, String channelFamily) {
-        Channel channel = mock(Channel.class, channelLabel);
-
-        checking(expectations -> {
-            expectations.allowing(channel).getLabel();
-            expectations.will(returnValue(channelLabel));
-
-            expectations.allowing(channel).getChannelFamilies();
-            expectations.will(returnValue(
-                channelFamily != null ? Set.of(new ChannelFamily(channelFamily)) : Collections.emptySet()
-            ));
-        });
-
-        return channel;
-    }
-
-    private Server mockServer(Set<InstalledProduct> installedProductsSet, Set<Channel> channelsSet) {
-        Server server = mock(Server.class, RandomStringUtils.insecure().nextNumeric(10));
-
-        checking(expectations -> {
-            expectations.allowing(server).getInstalledProducts();
-            expectations.will(returnValue(installedProductsSet));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(new SUSEProductSet(installedProductsSet))));
-
-            expectations.allowing(server).getChannels();
-            expectations.will(returnValue(channelsSet));
-        });
-
-        return server;
-    }
-
-    private InstalledProduct mockProduct(String productName, String version, boolean isBase, String channelFamily) {
-        InstalledProduct installedProduct = mock(InstalledProduct.class, "installed_" + productName);
-        SUSEProduct suseProduct = mock(SUSEProduct.class, productName);
-
-        checking(expectations -> {
-            expectations.allowing(suseProduct).isBase();
-            expectations.will(returnValue(isBase));
-
-            expectations.allowing(suseProduct).getName();
-            expectations.will(returnValue(productName));
-
-            expectations.allowing(suseProduct).getVersion();
-            expectations.will(returnValue(version));
-
-            expectations.allowing(suseProduct).getFriendlyName();
-            expectations.will(returnValue("Mock for " + productName + " " + version));
-
-            expectations.allowing(suseProduct).getChannelFamily();
-            expectations.will(returnValue(new ChannelFamily(channelFamily)));
-
-            expectations.allowing(installedProduct).isBaseproduct();
-            expectations.will(returnValue(isBase));
-
-            expectations.allowing(installedProduct).getSUSEProduct();
-            expectations.will(returnValue(suseProduct));
-        });
-
-        return installedProduct;
-    }
-
 }
