@@ -13,7 +13,7 @@ import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-import { type AccessModeValue, AccessMode } from "./access-mode";
+import { type AccessModeValue, type PermissionType, AccessMode, AccessModeByPermissionType } from "./access-mode";
 import styles from "./AccessGroup.module.scss";
 
 type Props = {
@@ -31,8 +31,6 @@ export type NamespaceItem = {
   accessMode: AccessModeValue;
 };
 
-type PermissionType = "view" | "modify";
-
 const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
   const [apiNamespace, setApiNamespace] = useState(false);
@@ -44,8 +42,8 @@ const AccessGroupPermissions = (props: Props) => {
   const [expandCollapseAll, setExpandCollapseAll] = useState(false);
   const agAppliedRef = useRef(false);
 
-  const isItemDisabled = useCallback((item, type) => {
-    const requiredAccessMode = type === "view" ? AccessMode.READ : AccessMode.WRITE;
+  const isItemDisabled = useCallback((item, type: PermissionType) => {
+    const requiredAccessMode = AccessModeByPermissionType[type];
 
     if (!item.children || item.children.length === 0) {
       return !item.accessMode.includes(requiredAccessMode);

@@ -4,10 +4,10 @@ import { click, render, screen, within } from "utils/test-utils";
 
 import type { AccessGroupState } from "./access-group";
 import AccessGroupPermissions, { type NamespaceItem } from "./access-group-permissions";
-import { AccessMode } from "./access-mode";
+import { type PermissionType, AccessMode } from "./access-mode";
 
 type Permission = AccessGroupState["permissions"][string];
-type PermissionType = "view" | "modify";
+const permissionTypes: PermissionType[] = ["view", "modify"];
 
 const buildNamespace = (overrides: Partial<NamespaceItem> = {}): NamespaceItem => ({
   namespace: "test.namespace",
@@ -93,7 +93,7 @@ describe("AccessGroupPermissions", () => {
     expect(checkboxes.modify.className).toContain("form-check-input");
   });
 
-  test.each<PermissionType>(["view", "modify"])(
+  test.each<PermissionType>(permissionTypes)(
     "renders the parent %s permission as indeterminate when only one child is selected",
     async (type) => {
       const checkboxes = await renderPermissions({
@@ -105,7 +105,7 @@ describe("AccessGroupPermissions", () => {
     }
   );
 
-  test.each<PermissionType>(["view", "modify"])(
+  test.each<PermissionType>(permissionTypes)(
     "renders the parent %s permission as checked when all children are selected",
     async (type) => {
       const checkboxes = await renderPermissions({
