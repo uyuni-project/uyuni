@@ -47,6 +47,22 @@ namespace :cucumber do
       # Cucumber is now configured to use the consistent path/timestamp
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
+    # Cucumber::Rake::Task's own action raises as soon as any scenario fails (fail_on_error
+    # defaults to true), which would skip the html-export `enhance` action below entirely —
+    # Rake::Task#execute runs a task's actions in sequence with no rescue between them, so
+    # _html_path.txt never gets written on a failing run. Swap in a wrapped action that stashes
+    # the failure and re-raises it after the export below runs, mirroring the `cucumber_error`
+    # capture/cleanup/re-raise shape the `parallel` namespace already uses further down.
+    cucumber_task = Rake::Task[task_name]
+    run_action = cucumber_task.actions.pop
+    cucumber_error = nil
+    cucumber_task.enhance do |t, args|
+      begin
+        run_action.call(t, args)
+      rescue RuntimeError => e
+        cucumber_error = e
+      end
+    end
     if filename == :reference_reposync
       # The SLES 15 SP7 product-sync scenario in this run set waits on ~19 channels sequentially;
       # individual channel syncs have been observed taking up to 1110s, so the default 2400s
@@ -79,6 +95,7 @@ namespace :cucumber do
       end
 
       sh "echo '#{html_results}' > #{path_export_file}", verbose: false
+      raise cucumber_error if cucumber_error
     end
   end
 end
