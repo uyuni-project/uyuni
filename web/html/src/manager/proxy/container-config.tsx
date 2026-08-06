@@ -105,6 +105,9 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
       };
 
       const cnamesData = Object.fromEntries(Object.entries(model).filter(([key]) => key.startsWith("cnames")));
+      const additionalFQDNsData = Object.fromEntries(
+        Object.entries(model).filter(([key]) => key.startsWith("additionalFQDNs"))
+      );
       const extraData =
         model.sslMode === SSLMode.CreateSSL
           ? Object.assign(
@@ -121,7 +124,7 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
               cnamesData
             )
           : {};
-      const formData = unflattenModel(Object.assign({}, commonData, extraData, ...values));
+      const formData = unflattenModel(Object.assign({}, commonData, extraData, additionalFQDNsData, ...values));
       Network.post("/rhn/manager/api/proxy/container-config", formData).then(
         (data) => {
           setSuccess(data.success);
@@ -250,6 +253,28 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
           labelClass="col-md-3"
           divClass="col-md-6"
         />
+        <FormMultiInput
+          id="additionalFQDNs"
+          title={t("Additional FQDNs")}
+          prefix="additionalFQDNs"
+          onAdd={onAddField("additionalFQDNs")}
+          onRemove={onRemoveField("additionalFQDNs")}
+          panelClassName="panel-default col-md-6 col-md-offset-3 offset-md-3 no-padding"
+          panelHeading="label"
+        >
+          {(index) => (
+            <Text
+              name={`additionalFQDNs${index}`}
+              label={t("Additional FQDN")}
+              className="col-md-11"
+              labelClass="col-md-3"
+              divClass="col-md-8"
+              placeholder={t("e.g., additional.domain.com")}
+              validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+              invalidHint={t("Has to be a valid FQDN address")}
+            />
+          )}
+        </FormMultiInput>
         <Radio
           name="sslMode"
           label={t("SSL certificate")}
