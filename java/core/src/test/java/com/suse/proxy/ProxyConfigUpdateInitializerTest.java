@@ -269,7 +269,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         Server server = ServerTestUtils.createTestSystem(user);
         Package pkg = PackageTest.createTestPackage(user.getOrg(), MGRPXY);
         Channel channelWithMgrpxy = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
-        channelWithMgrpxy.getPackages().add(pkg);
+        channelWithMgrpxy.addPackage(pkg);
 
         context().checking(new Expectations() {{
             oneOf(mockMinionServer).getProxyInfo();

@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -34,7 +33,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -266,16 +264,21 @@ public class ErrataCacheManager extends HibernateFactory {
     /**
      * Adds specified errata to a set of channels, inserting appropriate cache entries and replacing channel
      * notifications.
-     * @param channelIdsToUpdate - channel IDs (Long) that need their errata
+     * @param channelsToUpdate - channel that need their errata
      * caches updated
-     * @param errataId ID of the errata to update the cache for. Assumes the errata is published
+     * @param errata the errata to update the cache for. Assumes the errata is published
      */
-    public static void addErrataRefreshing(Collection<Long> channelIdsToUpdate, Long errataId) {
-        for (Long cid : channelIdsToUpdate) {
-            ChannelFactory.addErrataToChannel(Set.of(errataId), cid);
-            List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
-            ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
-            ErrataManager.replaceChannelNotifications(errataId, cid, new Date());
+    public static void addErrataRefreshing(Set<Channel> channelsToUpdate, Errata errata) {
+        for (Channel channel : channelsToUpdate) {
+            channel.addErrata(errata);
+            // Need to flush to persist the channel.addErrata(errata) change to the db.
+            // Without it, the underlying xml based query that listErrataChannelPackages
+            // will execute might not get the changes, and potentially result in missing or empty
+            // cache insertions and notifications.
+            HibernateFactory.getSession().flush();
+            List<Long> pids = ErrataFactory.listErrataChannelPackages(channel.getId(), errata.getId());
+            ErrataCacheManager.insertCacheForChannelPackages(channel.getId(), errata.getId(), pids);
+            ErrataManager.replaceChannelNotifications(errata.getId(), channel.getId(), new Date());
         }
     }
 
