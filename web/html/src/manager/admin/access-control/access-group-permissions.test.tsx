@@ -1,6 +1,6 @@
 import { Utils } from "utils/functions";
 import Network from "utils/network";
-import { render, screen, within } from "utils/test-utils";
+import { click, render, screen, within } from "utils/test-utils";
 
 import type { AccessGroupState } from "./access-group";
 import AccessGroupPermissions, { type NamespaceItem } from "./access-group-permissions";
@@ -52,7 +52,7 @@ const namespaces = [
 const buildSelectedPermission = (namespace: string, type: PermissionType): Permission =>
   buildPermission({ namespace, [type]: true });
 
-const renderPermissions = async (permissions: AccessGroupState["permissions"]) => {
+const renderPermissions = async (permissions: AccessGroupState["permissions"], onChange = jest.fn()) => {
   jest.spyOn(Network, "get").mockReturnValue(Utils.cancelable(Promise.resolve({ namespaces })));
 
   render(
@@ -69,7 +69,7 @@ const renderPermissions = async (permissions: AccessGroupState["permissions"]) =
         errors: {},
         permissionsModified: false,
       }}
-      onChange={jest.fn()}
+      onChange={onChange}
       errors={{}}
     />
   );
@@ -117,4 +117,17 @@ describe("AccessGroupPermissions", () => {
       expect(checkboxes[type].indeterminate).toBe(false);
     }
   );
+
+  test("selecting a parent permission applies the change to all children", async () => {
+    const onChange = jest.fn();
+    const checkboxes = await renderPermissions({}, onChange);
+
+    await click(checkboxes.view);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({
+      "systems.details": expect.objectContaining({ namespace: "systems.details", view: true }),
+      "systems.history": expect.objectContaining({ namespace: "systems.history", view: true }),
+    });
+  });
 });
