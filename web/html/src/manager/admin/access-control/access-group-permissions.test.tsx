@@ -3,55 +3,54 @@ import Network from "utils/network";
 import { render, screen, within } from "utils/test-utils";
 
 import type { AccessGroupState } from "./access-group";
-import AccessGroupPermissions from "./access-group-permissions";
+import AccessGroupPermissions, { type NamespaceItem } from "./access-group-permissions";
+import { AccessMode } from "./access-mode";
+
+type Permission = AccessGroupState["permissions"][string];
+type PermissionType = "view" | "modify";
+
+const buildNamespace = (overrides: Partial<NamespaceItem> = {}): NamespaceItem => ({
+  namespace: "test.namespace",
+  name: "Test namespace",
+  description: "Test permission",
+  isAPI: false,
+  accessMode: AccessMode.READ_WRITE,
+  children: [],
+  ...overrides,
+});
+
+const buildPermission = (overrides: Partial<Permission> = {}): Permission => ({
+  id: 1,
+  namespace: "test.namespace",
+  description: "Test permission",
+  accessMode: AccessMode.READ_WRITE,
+  view: false,
+  modify: false,
+  ...overrides,
+});
 
 const namespaces = [
-  {
+  buildNamespace({
     namespace: "systems",
     name: "Systems",
     description: "System permissions",
-    isAPI: false,
-    accessMode: "RW",
     children: [
-      {
-        id: 1,
+      buildNamespace({
         namespace: "systems.details",
         name: "System details",
         description: "View system details",
-        isAPI: false,
-        accessMode: "RW",
-        children: [],
-      },
-      {
-        id: 2,
+      }),
+      buildNamespace({
         namespace: "systems.history",
         name: "System history",
         description: "View system history",
-        isAPI: false,
-        accessMode: "RW",
-        children: [],
-      },
+      }),
     ],
-  },
+  }),
 ];
 
-const detailsPermission = {
-  id: 1,
-  namespace: "systems.details",
-  description: "View system details",
-  accessMode: "RW",
-  view: true,
-  modify: false,
-};
-
-const historyPermission = {
-  id: 2,
-  namespace: "systems.history",
-  description: "View system history",
-  accessMode: "RW",
-  view: true,
-  modify: false,
-};
+const buildSelectedPermission = (namespace: string, type: PermissionType): Permission =>
+  buildPermission({ namespace, [type]: true });
 
 const renderPermissions = async (permissions: AccessGroupState["permissions"]) => {
   jest.spyOn(Network, "get").mockReturnValue(Utils.cancelable(Promise.resolve({ namespaces })));
@@ -78,8 +77,8 @@ const renderPermissions = async (permissions: AccessGroupState["permissions"]) =
   const parentRow = (await screen.findByText("Systems")).closest("tr");
   expect(parentRow).not.toBeNull();
 
-  const [viewCheckbox] = within(parentRow!).getAllByRole("checkbox") as HTMLInputElement[];
-  return viewCheckbox;
+  const [view, modify] = within(parentRow!).getAllByRole("checkbox") as HTMLInputElement[];
+  return { view, modify };
 };
 
 describe("AccessGroupPermissions", () => {
@@ -87,19 +86,35 @@ describe("AccessGroupPermissions", () => {
     jest.restoreAllMocks();
   });
 
-  test("renders a parent permission as indeterminate when only one child is selected", async () => {
-    const viewCheckbox = await renderPermissions({ "systems.details": detailsPermission });
+  test("renders permission checkboxes using the reusable Check component", async () => {
+    const checkboxes = await renderPermissions({});
 
-    expect(viewCheckbox.indeterminate).toBe(true);
+    expect(checkboxes.view.className).toContain("form-check-input");
+    expect(checkboxes.modify.className).toContain("form-check-input");
   });
 
-  test("renders a parent permission as checked when all children are selected", async () => {
-    const viewCheckbox = await renderPermissions({
-      "systems.details": detailsPermission,
-      "systems.history": historyPermission,
-    });
+  test.each<PermissionType>(["view", "modify"])(
+    "renders the parent %s permission as indeterminate when only one child is selected",
+    async (type) => {
+      const checkboxes = await renderPermissions({
+        "systems.details": buildSelectedPermission("systems.details", type),
+      });
 
-    expect(viewCheckbox.checked).toBe(true);
-    expect(viewCheckbox.indeterminate).toBe(false);
-  });
+      expect(checkboxes[type].checked).toBe(false);
+      expect(checkboxes[type].indeterminate).toBe(true);
+    }
+  );
+
+  test.each<PermissionType>(["view", "modify"])(
+    "renders the parent %s permission as checked when all children are selected",
+    async (type) => {
+      const checkboxes = await renderPermissions({
+        "systems.details": buildSelectedPermission("systems.details", type),
+        "systems.history": buildSelectedPermission("systems.history", type),
+      });
+
+      expect(checkboxes[type].checked).toBe(true);
+      expect(checkboxes[type].indeterminate).toBe(false);
+    }
+  );
 });
