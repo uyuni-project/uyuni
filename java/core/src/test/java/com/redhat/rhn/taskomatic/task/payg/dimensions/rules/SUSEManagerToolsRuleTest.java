@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
@@ -27,28 +23,25 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-@ExtendWith(SaltTestCaseExtension.class)
-public class SUSEManagerToolsRuleTest extends MockObjectTestCase {
+class SUSEManagerToolsRuleTest extends MockObjectTestCase {
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Test
-    public void canIncludeWhenProductHasToolsExtensionOrChannelIsSubscribed() {
+    void canIncludeWhenProductHasToolsExtensionOrChannelIsSubscribed() {
         Set<InstalledProduct> productSetWithSUMATools = Set.of(
             mockProduct("sles", "15", true, "7261"),
             mockProduct("sle-module-basesystem", "15.4", false, "MODULE"),
@@ -84,7 +77,7 @@ public class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canExcludeWhenNoToolsArePresent() {
+    void canExcludeWhenNoToolsArePresent() {
         Set<Channel> channelSetWithoutSUMATools = Set.of(
             mockChannel("custom-channel-x86_64", null),
             mockChannel("custom-channel-updates-x86_64", null)
@@ -99,7 +92,7 @@ public class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canIncludeSLES12Server() {
+    void canIncludeSLES12Server() {
         Set<InstalledProduct> sle12ProductSet = Set.of(
             mockProduct("sles", "12.3", true, "7261")
         );
@@ -136,7 +129,7 @@ public class SUSEManagerToolsRuleTest extends MockObjectTestCase {
     }
 
     private Server mockServer(Set<InstalledProduct> installedProductsSet, Set<Channel> channelsSet) {
-        Server server = mock(Server.class, RandomStringUtils.randomNumeric(10));
+        Server server = mock(Server.class, RandomStringUtils.insecure().nextNumeric(10));
 
         checking(expectations -> {
             expectations.allowing(server).getInstalledProducts();
