@@ -11,11 +11,12 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
-import static org.jmock.AbstractExpectations.returnValue;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockBaseProduct;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockPaygServer;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockServer;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
@@ -25,8 +26,6 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 
 class BaseProductRuleTest extends MockObjectTestCase {
@@ -38,16 +37,11 @@ class BaseProductRuleTest extends MockObjectTestCase {
 
     @Test
     void canExcludePaygServerWithSlesForSap() {
-        SUSEProduct slesSAP = new SUSEProduct("sles_sap");
-        Server server = mock(Server.class);
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles_sap")
+        );
 
-        checking(expectations -> {
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(new SUSEProductSet(slesSAP, Collections.emptyList()))));
-        });
+        Server server = mockPaygServer(context, productSet);
 
         DimensionRule rule = new BaseProductRule(RuleType.EXCLUDE, Set.of("sles_sap"), true);
 
@@ -56,16 +50,11 @@ class BaseProductRuleTest extends MockObjectTestCase {
 
     @Test
     void canIncludeIfServerIsNotPayg() {
-        SUSEProduct slesSAP = new SUSEProduct("sles_sap");
-        Server server = mock(Server.class);
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles_sap")
+        );
 
-        checking(expectations -> {
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(false));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(new SUSEProductSet(slesSAP, Collections.emptyList()))));
-        });
+        Server server = mockServer(context, productSet);
 
         DimensionRule rule = new BaseProductRule(RuleType.EXCLUDE, Set.of("sles_sap"), true);
 
@@ -74,16 +63,11 @@ class BaseProductRuleTest extends MockObjectTestCase {
 
     @Test
     void canTestCorrectlyWithMultipleValue() {
-        SUSEProduct slesSAP = new SUSEProduct("suse-manager-server");
-        Server server = mock(Server.class);
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "suse-manager-server")
+        );
 
-        checking(expectations -> {
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(new SUSEProductSet(slesSAP, Collections.emptyList()))));
-        });
+        Server server = mockPaygServer(context, productSet);
 
         DimensionRule rule = new BaseProductRule(RuleType.INCLUDE, Set.of("sles", "sles_sap", "sles_bcl"), true);
 
