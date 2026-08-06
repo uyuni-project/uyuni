@@ -282,8 +282,14 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             return serverSshKey.getPublicKey();
         }
 
-        Server serverServer = ServerFactory.lookupProxiesByOrg(user).stream()
-                .filter(proxy -> serverFqdn.equals(proxy.getName())).findFirst()
+        Server serverServer = ServerFactory.findByFqdn(serverFqdn)
+                .map(s -> {
+                    if (!s.getOrg().getId().equals(user.getOrg().getId())) {
+                        throw raiseAndLog(this, "Could not find specified server named " + serverFqdn +
+                                " in the organization (server is registered in organization " + s.getOrg().getName() + " [ID " + s.getOrg().getId() + "]).").get();
+                    }
+                    return s;
+                })
                 .orElseThrow(raiseAndLog(this, "Could not find specified server named " + serverFqdn +
                         " in the organization."));
 
