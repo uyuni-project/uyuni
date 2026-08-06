@@ -49,6 +49,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String SALTBOOT = "saltboot";
     public static final String SYSTEM_INFO = "util.systeminfo";
     public static final String SYSTEM_INFO_FULL = "util.systeminfo_full";
+    public static final String TRANSACTIONAL_PENDING_TRANSACTION = "util.transactional_pending_transaction";
     public static final String SET_PROXY = "bootstrap.set_proxy";
     private final long serverId;
     private final Long userId;

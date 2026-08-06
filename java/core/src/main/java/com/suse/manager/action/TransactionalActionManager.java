@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
@@ -25,12 +26,15 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressEnt
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistoryId;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.CheckTransactionalPendingTransactionEventMessage;
 import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
@@ -39,6 +43,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +171,17 @@ public class TransactionalActionManager {
         return transactionalState.isPresent() ?
                 getTransactionalSaltCall(transactionalState.get(), pillar) :
                 withDirectCallExecutor(State.apply(List.of(state), pillar));
+    }
+
+    /**
+     * Build the Salt call used to check if a transactional system still has a pending transaction.
+     *
+     * @return Salt call
+     */
+    public static LocalCall<Map<String, State.ApplyResult>> getPendingTransactionCheckSaltCall() {
+        return withDirectCallExecutor(State.apply(
+                List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION),
+                Optional.empty()));
     }
 
     /**
@@ -396,10 +412,47 @@ public class TransactionalActionManager {
         return TransactionalUpdateCalls.isApplyFunction(function);
     }
 
+    /**
+     * Check whether the given states are used to detect pending transactions.
+     *
+     * @param states applied Salt states
+     * @return true when this is a pending transaction check
+     */
+    public static boolean isPendingTransactionCheck(Optional<List<String>> states) {
+        return states
+                .map(list -> list.equals(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION)))
+                .orElse(false);
+    }
+
+    /**
+     * Complete transactional actions waiting for reboot when the minion reports there is no pending transaction.
+     *
+     * @param minionServerId minion server id
+     * @param jsonResult Salt state result
+     * @param checkTime time when the check completed
+     * @param failed whether the check failed
+     */
+    public static void handlePendingTransactionCheckResult(
+            Long minionServerId, JsonElement jsonResult, Date checkTime, boolean failed) {
+        if (failed || hasPendingTransaction(jsonResult)) {
+            return;
+        }
+
+        findPendingRebootActions(minionServerId).stream()
+                .filter(history -> Optional.ofNullable(history.getRebootPendingSince())
+                        .map(pendingSince -> !pendingSince.after(checkTime))
+                        .orElse(false))
+                .forEach(history -> completeTransactionalApplyAction(minionServerId, history.getActionId(), checkTime));
+    }
+
     private static Optional<TransactionalState> getTransactionalDefinition(
             Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
         if (!TransactionalUpdateCalls.isApplyFunction(function)) {
             return Optional.empty();
+        }
+
+        if (states.filter(TransactionalActionManager::isConfigurableCustomState).isPresent()) {
+            return Optional.of(TransactionalState.CONFIGURABLE_CUSTOM_STATE);
         }
 
         return states.flatMap(TransactionalActionManager::findAfterRebootState)
@@ -432,7 +485,7 @@ public class TransactionalActionManager {
             boolean failed) {
         return transactionalState.hasAfterRebootState() ?
                 handlePrerequisiteResult(minionServerId, actionId, jsonResult, failed) :
-                handleApplyResult(minionServerId, actionId, jsonResult, failed);
+                handleApplyResult(transactionalState, minionServerId, actionId, jsonResult, failed);
     }
 
     /**
@@ -470,8 +523,9 @@ public class TransactionalActionManager {
      * @param failed whether the transactional apply step failed
      * @return result message for the action
      */
-    public static String handleApplyResult(
-            Long minionServerId, Long actionId, JsonElement jsonResult, boolean failed) {
+    private static String handleApplyResult(
+            TransactionalState transactionalState, Long minionServerId, Long actionId, JsonElement jsonResult,
+            boolean failed) {
         if (failed) {
             recordTransactionalApplyFailed(minionServerId, actionId);
             return "Failed to apply transactional states.";
@@ -482,6 +536,9 @@ public class TransactionalActionManager {
         }
         else {
             recordTransactionalApplyCompleted(minionServerId, actionId, true);
+            if (transactionalState.isConfigurableCustomState()) {
+                MessageQueue.publish(new CheckTransactionalPendingTransactionEventMessage(minionServerId));
+            }
             return "Transactional states applied. A system reboot is required to complete the action.";
         }
     }
@@ -583,6 +640,47 @@ public class TransactionalActionManager {
                 .filter(Objects::nonNull)
                 .anyMatch(changes -> !changes.isJsonObject() ||
                         changes.getAsJsonObject().size() > 0);
+    }
+
+    private static boolean hasPendingTransaction(JsonElement jsonResult) {
+        if (jsonResult == null || !jsonResult.isJsonObject()) {
+            return true;
+        }
+
+        Map<String, StateApplyResult<Ret<Map<String, Object>>>> results = Json.GSON.fromJson(
+                jsonResult,
+                new TypeToken<Map<String, StateApplyResult<Ret<Map<String, Object>>>>>() { }.getType());
+
+        return results == null || results.values().stream()
+                .map(StateApplyResult::getChanges)
+                .filter(Objects::nonNull)
+                .map(Ret::getRet)
+                .filter(Objects::nonNull)
+                .map(ret -> ret.get("reboot_required"))
+                .filter(Boolean.class::isInstance)
+                .map(Boolean.class::cast)
+                .findFirst()
+                .orElse(true);
+    }
+
+    private static void completeTransactionalApplyAction(Long minionServerId, Long actionId, Date completionTime) {
+        ServerAction serverAction = HibernateFactory.getSession().createQuery("""
+                FROM ServerAction serverAction
+                 WHERE serverAction.server.id = :serverId
+                   AND serverAction.parentAction.id = :actionId
+                """, ServerAction.class)
+                .setParameter("serverId", minionServerId)
+                .setParameter("actionId", actionId)
+                .uniqueResult();
+
+        if (serverAction != null && serverAction.isStatusPickedUp() &&
+                !hasAfterRebootState(serverAction.getParentAction())) {
+            lookupOrCreateActionHistory(minionServerId, actionId)
+                    .recordTransactionalApplyNoRebootNeeded(completionTime);
+            serverAction.setCompletionTime(completionTime);
+            serverAction.setStatusCompleted();
+            serverAction.setResultMsg("Transactional states applied. No pending transaction was found.");
+        }
     }
 
     private static Optional<TransactionalState> findAfterRebootState(List<String> states) {
@@ -702,6 +800,7 @@ public class TransactionalActionManager {
 
     private enum TransactionalState {
         GENERIC_APPLY("transactional_update.apply"),
+        CONFIGURABLE_CUSTOM_STATE,
         HARDWARE_PROFILE_UPDATE(
                 ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE,
                 SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
@@ -746,6 +845,12 @@ public class TransactionalActionManager {
         private final String stateToApply;
         private final Optional<String> afterRebootState;
 
+        TransactionalState() {
+            states = List.of();
+            stateToApply = "transactional_update.apply";
+            afterRebootState = Optional.empty();
+        }
+
         TransactionalState(String state, String... aliases) {
             this(state, state, Optional.empty(), aliases);
         }
@@ -767,6 +872,10 @@ public class TransactionalActionManager {
 
         private boolean hasAfterRebootState() {
             return afterRebootState.isPresent();
+        }
+
+        private boolean isConfigurableCustomState() {
+            return CONFIGURABLE_CUSTOM_STATE.equals(this);
         }
 
         private static Optional<TransactionalState> getByState(String state) {

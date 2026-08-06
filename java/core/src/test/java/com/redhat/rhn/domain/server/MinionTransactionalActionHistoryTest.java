@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressSte
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -129,6 +130,23 @@ public class MinionTransactionalActionHistoryTest {
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertEquals(history.getPrerequisiteAt(), history.getRebootAt());
         assertEquals(history.getPrerequisiteAt(), history.getAfterRebootStatusAt());
+    }
+
+    @Test
+    void testTransactionalApplyNoRebootNeededPreservesApplyTime() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalApplyCompleted(true);
+        Date appliedAt = history.getPrerequisiteAt();
+        Date checkedAt = new Date(appliedAt.getTime() + 1000);
+
+        history.recordTransactionalApplyNoRebootNeeded(checkedAt);
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(appliedAt, history.getPrerequisiteAt());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertEquals(checkedAt, history.getRebootAt());
+        assertEquals(checkedAt, history.getAfterRebootStatusAt());
     }
 
     @Test

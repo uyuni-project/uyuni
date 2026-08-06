@@ -74,6 +74,12 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testPendingTransactionCheckStateIsRecognized() {
+        assertTrue(TransactionalActionManager.isPendingTransactionCheck(
+                Optional.of(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION))));
+    }
+
+    @Test
     public void testExtractStatesFromFunctionArgs() {
         Map<String, Object> kwargs = Map.of("mods",
                 List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ));
@@ -288,6 +294,16 @@ public class TransactionalActionManagerTest {
             assertEquals("state.apply", payload.get("fun"));
             assertEquals(List.of("direct_call"), payload.get("module_executors"));
         });
+    }
+
+    @Test
+    public void testPendingTransactionCheckUsesDirectCall() {
+        Map<String, Object> payload = TransactionalActionManager.getPendingTransactionCheckSaltCall().getPayload();
+
+        assertEquals("state.apply", payload.get("fun"));
+        assertEquals(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION),
+                ((Map<?, ?>) payload.get("kwarg")).get("mods"));
+        assertEquals(List.of("direct_call"), payload.get("module_executors"));
     }
 
     private void withCustomStatesTransactionalUpdateConfig(String value, Runnable test) {

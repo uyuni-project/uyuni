@@ -264,6 +264,19 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
+     * Record that a pending transactional apply action does not require a reboot anymore.
+     *
+     * @param completionTime when the pending transaction check completed
+     */
+    public void recordTransactionalApplyNoRebootNeeded(Date completionTime) {
+        rebootRequired = false;
+        rebootStatus = ProgressStatus.NOT_NEEDED;
+        rebootAt = completionTime;
+        afterRebootStatus = ProgressStatus.COMPLETED;
+        afterRebootStatusAt = completionTime;
+    }
+
+    /**
      * Record that the transactional apply step failed.
      */
     public void recordTransactionalApplyFailed() {
