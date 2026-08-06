@@ -1,3 +1,0 @@
-- Tolerate an already mounted /sys/fs/cgroup in the entrypoint, so
-  the server container starts on hosts where the container runtime
-  premounts the cgroup filesystem
