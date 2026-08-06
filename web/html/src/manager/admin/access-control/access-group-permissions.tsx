@@ -30,6 +30,8 @@ type NamespaceItem = {
   accessMode?: string[];
 };
 
+type PermissionType = "view" | "modify";
+
 const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
   const [apiNamespace, setApiNamespace] = useState(false);
@@ -294,6 +296,20 @@ const AccessGroupPermissions = (props: Props) => {
     }
   }, [searchValue, isLoading]);
 
+  const renderPermissionCheck = (item: NamespaceItem, type: PermissionType) => {
+    const state = getCheckState(item, type);
+
+    return (
+      <Check
+        name={type}
+        checked={state === "checked"}
+        indeterminate={state === "partially"}
+        disabled={isItemDisabled(item, type)}
+        onChange={() => handleChange(item, type)}
+      />
+    );
+  };
+
   return (
     <div>
       <MessagesContainer />
@@ -360,40 +376,11 @@ const AccessGroupPermissions = (props: Props) => {
           }}
           width="50%"
         />
-        <Column
-          columnKey="view"
-          header={t("View")}
-          cell={(item) => {
-            const state = getCheckState(item, "view");
-            return (
-              <Check
-                key={item.namespace}
-                name="view"
-                checked={state === "checked"}
-                indeterminate={state === "partially"}
-                disabled={isItemDisabled(item, "view")}
-                onChange={() => handleChange(item, "view")}
-              />
-            );
-          }}
-          width="10%"
-        />
+        <Column columnKey="view" header={t("View")} cell={(item) => renderPermissionCheck(item, "view")} width="10%" />
         <Column
           columnKey="modify"
           header={t("Modify")}
-          cell={(item) => {
-            const state = getCheckState(item, "modify");
-            return (
-              <Check
-                key={item.namespace}
-                name="modify"
-                checked={state === "checked"}
-                indeterminate={state === "partially"}
-                disabled={isItemDisabled(item, "modify")}
-                onChange={() => handleChange(item, "modify")}
-              />
-            );
-          }}
+          cell={(item) => renderPermissionCheck(item, "modify")}
           width="10%"
         />
       </Table>
