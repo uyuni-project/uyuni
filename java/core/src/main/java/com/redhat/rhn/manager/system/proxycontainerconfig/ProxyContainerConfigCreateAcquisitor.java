@@ -149,9 +149,15 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
         }
 
-        Optional<Server> existing = ServerFactory.findByAnyFqdn(fqdns);
-        if (existing.isPresent()) {
-            Server server = existing.get();
+        List<Server> matchingServers = ServerFactory.listByAnyFqdn(fqdns);
+        if (matchingServers.size() > 1) {
+            throw raiseAndLog(this, "One or more of the requested FQDNs is already " +
+                    "registered on another system. Conflicting Server IDs: " +
+                    matchingServers.stream().map(Server::getId).toList()).get();
+        }
+
+        if (!matchingServers.isEmpty()) {
+            Server server = matchingServers.get(0);
             if (!(server.hasEntitlement(EntitlementManager.FOREIGN) ||
                     server.hasEntitlement(EntitlementManager.SALT))) {
                 throw new SystemsExistException(List.of(server.getId()));
@@ -276,8 +282,10 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         Server serverServer = ServerFactory.findByFqdn(serverFqdn)
                 .map(s -> {
                     if (!s.getOrg().getId().equals(user.getOrg().getId())) {
-                        throw raiseAndLog(this, "Could not find specified server named " + serverFqdn +
-                                " in the organization (server is registered in organization " + s.getOrg().getName() + " [ID " + s.getOrg().getId() + "]).").get();
+                        throw raiseAndLog(this, "Could not find specified server named " +
+                                serverFqdn + " in the organization (server is registered in " +
+                                "organization " + s.getOrg().getName() + " [ID " +
+                                s.getOrg().getId() + "]).").get();
                     }
                     return s;
                 })
