@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import debounce from "lodash/debounce";
 
-import { AccessGroupState } from "manager/admin/access-control/access-group";
+import type { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
 import { Check, DEPRECATED_Check, Form } from "components/input";
@@ -13,6 +13,7 @@ import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import Network from "utils/network";
 
+import { type AccessModeValue, AccessMode } from "./access-mode";
 import styles from "./AccessGroup.module.scss";
 
 type Props = {
@@ -21,13 +22,13 @@ type Props = {
   errors: any;
 };
 
-type NamespaceItem = {
+export type NamespaceItem = {
   namespace: string;
   name: string;
   description?: string;
   isAPI: boolean;
   children?: NamespaceItem[];
-  accessMode?: string[];
+  accessMode: AccessModeValue;
 };
 
 type PermissionType = "view" | "modify";
@@ -44,7 +45,7 @@ const AccessGroupPermissions = (props: Props) => {
   const agAppliedRef = useRef(false);
 
   const isItemDisabled = useCallback((item, type) => {
-    const requiredAccessMode = type === "view" ? "R" : "W";
+    const requiredAccessMode = type === "view" ? AccessMode.READ : AccessMode.WRITE;
 
     if (!item.children || item.children.length === 0) {
       return !item.accessMode.includes(requiredAccessMode);
@@ -140,8 +141,8 @@ const AccessGroupPermissions = (props: Props) => {
           response["toCopy"].forEach((item) => {
             changes[item.namespace] = {
               ...item,
-              view: item.accessMode.includes("R"),
-              modify: item.accessMode.includes("W"),
+              view: item.accessMode.includes(AccessMode.READ),
+              modify: item.accessMode.includes(AccessMode.WRITE),
             };
           });
 

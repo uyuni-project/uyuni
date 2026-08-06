@@ -7,6 +7,8 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import { AccessMode } from "./access-mode";
+
 type Props = {
   state: any;
   onChange?: () => void;
@@ -19,7 +21,7 @@ const AccessGroupReview = (props: Props) => {
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const isItemDisabled = useCallback((item, type) => {
-    const requiredAccessMode = type === "view" ? "R" : "W";
+    const requiredAccessMode = type === "view" ? AccessMode.READ : AccessMode.WRITE;
 
     if (!item.children || item.children.length === 0) {
       return !item.accessMode.includes(requiredAccessMode);
