@@ -149,4 +149,23 @@ describe("AccessGroupPermissions", () => {
       [historyNamespace.namespace]: expect.objectContaining({ namespace: historyNamespace.namespace, view: true }),
     });
   });
+
+  test("clearing a parent permission removes the permission from all children", async () => {
+    const onChange = jest.fn();
+    const checkboxes = await renderPermissions(
+      {
+        [detailsNamespace.namespace]: buildSelectedPermission(detailsNamespace, "view"),
+        [historyNamespace.namespace]: buildSelectedPermission(historyNamespace, "view"),
+      },
+      onChange
+    );
+
+    await click(checkboxes.view);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({
+      [detailsNamespace.namespace]: undefined,
+      [historyNamespace.namespace]: undefined,
+    });
+  });
 });
