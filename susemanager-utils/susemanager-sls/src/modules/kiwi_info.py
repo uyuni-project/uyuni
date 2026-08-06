@@ -332,7 +332,7 @@ def _disk_format_types():
 
 
 def _compressed_format_types():
-    return [".gz", ".bz", ".xz", ".tar.xz"]
+    return [".gz", ".tar.gz", ".bz", ".xz", ".tar.xz"]
 
 
 def _iso_format_types():
