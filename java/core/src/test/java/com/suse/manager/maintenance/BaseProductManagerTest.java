@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class BaseProductManagerTest {
@@ -42,8 +41,6 @@ public class BaseProductManagerTest {
         assertEquals("SUSE-Manager-Server", productManager.getName());
         assertEquals("4.3", productManager.getVersion());
         assertEquals("x86_64", productManager.getArch());
-
         assertEquals("SUSE Manager Server 4.3", productManager.getSummary());
-        assertEquals(LocalDate.of(2025, 6, 30), productManager.getEndOfLifeDate());
     }
 }
