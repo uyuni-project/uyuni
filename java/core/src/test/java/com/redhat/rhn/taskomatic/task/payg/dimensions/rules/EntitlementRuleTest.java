@@ -13,7 +13,6 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
-import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,6 +25,7 @@ import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
+import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,14 +43,14 @@ class EntitlementRuleTest extends MockObjectTestCase {
     void canExcludeWithAnAllRequirement() {
        Server server = mock(Server.class);
 
-        checking(expectations -> {
+        checking(new Expectations() {{
             // mock a server with the following entitlements
-            expectations.allowing(server).getEntitlements();
-            expectations.will(returnValue(Set.of(
+            allowing(server).getEntitlements();
+            will(returnValue(Set.of(
                 new SaltEntitlement(),
                 new MonitoringEntitlement())
             ));
-        });
+        }});
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new EntitlementRule(RuleType.INCLUDE, RequirementType.ALL, Set.of(
@@ -67,14 +67,14 @@ class EntitlementRuleTest extends MockObjectTestCase {
     void canIncludeWithAnAllRequirement() {
         Server server = mock(Server.class);
 
-        checking(expectations -> {
+        checking(new Expectations() {{
             // mock a server with the following entitlements
-            expectations.allowing(server).getEntitlements();
-            expectations.will(returnValue(Set.of(
+            allowing(server).getEntitlements();
+            will(returnValue(Set.of(
                 new SaltEntitlement(),
                 new VirtualizationEntitlement())
             ));
-        });
+        }});
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new EntitlementRule(RuleType.INCLUDE, RequirementType.ALL, Set.of(
@@ -91,14 +91,14 @@ class EntitlementRuleTest extends MockObjectTestCase {
     void canIncludeWithAnAnyRequirement() {
         Server server = mock(Server.class);
 
-        checking(expectations -> {
+        checking(new Expectations() {{
             // mock a server with the following entitlements
-            expectations.allowing(server).getEntitlements();
-            expectations.will(returnValue(Set.of(
+            allowing(server).getEntitlements();
+            will(returnValue(Set.of(
                 new SaltEntitlement(),
                 new MonitoringEntitlement())
             ));
-        });
+        }});
 
         // Create a rule that requires ANY of the following addons
         DimensionRule rule = new EntitlementRule(RuleType.INCLUDE, RequirementType.ANY, Set.of(
@@ -115,14 +115,14 @@ class EntitlementRuleTest extends MockObjectTestCase {
     void canExcludeWithAnAnyRequirement() {
         Server server = mock(Server.class);
 
-        checking(expectations -> {
+        checking(new Expectations() {{
             // mock a server with the following entitlements
-            expectations.allowing(server).getEntitlements();
-            expectations.will(returnValue(Set.of(
+            allowing(server).getEntitlements();
+            will(returnValue(Set.of(
                 new ManagementEntitlement(),
                 new MonitoringEntitlement())
             ));
-        });
+        }});
 
 
         // Create a rule that requires ANY of the following addons
