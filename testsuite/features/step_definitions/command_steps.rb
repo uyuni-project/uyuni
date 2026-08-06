@@ -1628,14 +1628,14 @@ When(/^I copy the configuration "([^"]*)" of containerized proxy from (?:the )?(
   get_target(proxy_target).inject(file_path, file_path)
 end
 
-When(/^I add avahi hosts in containerized proxy configuration$/) do
+When(/^I add avahi hosts in containerized (proxy|proxy2|proxy3) configuration$/) do |host|
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
     hosts_list = escape_regex(hosts_list)
-    get_target('proxy').run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
+    get_target(host).run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
     log "Avahi hosts added: #{hosts_list}"
     log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
