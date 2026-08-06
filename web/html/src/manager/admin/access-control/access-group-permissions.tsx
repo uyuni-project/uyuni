@@ -23,11 +23,12 @@ type Props = {
 };
 
 export type NamespaceItem = {
+  id?: number;
   namespace: string;
   name: string;
-  description?: string;
+  description: string;
   isAPI: boolean;
-  children?: NamespaceItem[];
+  children: NamespaceItem[];
   accessMode: AccessModeValue;
 };
 

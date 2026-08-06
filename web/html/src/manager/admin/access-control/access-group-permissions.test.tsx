@@ -7,11 +7,23 @@ import AccessGroupPermissions, { type NamespaceItem } from "./access-group-permi
 import { type PermissionType, AccessMode } from "./access-mode";
 
 type Permission = AccessGroupState["permissions"][string];
+type NamespaceLeaf = Omit<NamespaceItem, "id"> & { id: number };
 const permissionTypes: PermissionType[] = ["view", "modify"];
 
-const buildNamespace = (overrides: Partial<NamespaceItem> = {}): NamespaceItem => ({
+const buildNamespaceBranch = (overrides: Partial<NamespaceItem> = {}): NamespaceItem => ({
+  namespace: "test",
+  name: "test",
+  description: "",
+  isAPI: false,
+  accessMode: AccessMode.NONE,
+  children: [],
+  ...overrides,
+});
+
+const buildNamespaceLeaf = (overrides: Partial<NamespaceLeaf> = {}): NamespaceLeaf => ({
+  id: 1,
   namespace: "test.namespace",
-  name: "Test namespace",
+  name: "namespace",
   description: "Test permission",
   isAPI: false,
   accessMode: AccessMode.READ_WRITE,
@@ -29,28 +41,36 @@ const buildPermission = (overrides: Partial<Permission> = {}): Permission => ({
   ...overrides,
 });
 
+const detailsNamespace = buildNamespaceLeaf({
+  id: 1,
+  namespace: "systems.details",
+  name: "details",
+  description: "View system details",
+});
+
+const historyNamespace = buildNamespaceLeaf({
+  id: 2,
+  namespace: "systems.history",
+  name: "history",
+  description: "View system history",
+});
+
 const namespaces = [
-  buildNamespace({
+  buildNamespaceBranch({
     namespace: "systems",
-    name: "Systems",
-    description: "System permissions",
-    children: [
-      buildNamespace({
-        namespace: "systems.details",
-        name: "System details",
-        description: "View system details",
-      }),
-      buildNamespace({
-        namespace: "systems.history",
-        name: "System history",
-        description: "View system history",
-      }),
-    ],
+    name: "systems",
+    children: [detailsNamespace, historyNamespace],
   }),
 ];
 
-const buildSelectedPermission = (namespace: string, type: PermissionType): Permission =>
-  buildPermission({ namespace, [type]: true });
+const buildSelectedPermission = (namespace: NamespaceLeaf, type: PermissionType): Permission =>
+  buildPermission({
+    id: namespace.id,
+    namespace: namespace.namespace,
+    description: namespace.description,
+    accessMode: namespace.accessMode,
+    [type]: true,
+  });
 
 const renderPermissions = async (permissions: AccessGroupState["permissions"], onChange = jest.fn()) => {
   jest.spyOn(Network, "get").mockReturnValue(Utils.cancelable(Promise.resolve({ namespaces })));
@@ -74,7 +94,7 @@ const renderPermissions = async (permissions: AccessGroupState["permissions"], o
     />
   );
 
-  const parentRow = (await screen.findByText("Systems")).closest("tr");
+  const parentRow = (await screen.findByText("systems")).closest("tr");
   expect(parentRow).not.toBeNull();
 
   const [view, modify] = within(parentRow!).getAllByRole("checkbox") as HTMLInputElement[];
@@ -97,7 +117,7 @@ describe("AccessGroupPermissions", () => {
     "renders the parent %s permission as indeterminate when only one child is selected",
     async (type) => {
       const checkboxes = await renderPermissions({
-        "systems.details": buildSelectedPermission("systems.details", type),
+        [detailsNamespace.namespace]: buildSelectedPermission(detailsNamespace, type),
       });
 
       expect(checkboxes[type].checked).toBe(false);
@@ -109,8 +129,8 @@ describe("AccessGroupPermissions", () => {
     "renders the parent %s permission as checked when all children are selected",
     async (type) => {
       const checkboxes = await renderPermissions({
-        "systems.details": buildSelectedPermission("systems.details", type),
-        "systems.history": buildSelectedPermission("systems.history", type),
+        [detailsNamespace.namespace]: buildSelectedPermission(detailsNamespace, type),
+        [historyNamespace.namespace]: buildSelectedPermission(historyNamespace, type),
       });
 
       expect(checkboxes[type].checked).toBe(true);
@@ -126,8 +146,8 @@ describe("AccessGroupPermissions", () => {
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith({
-      "systems.details": expect.objectContaining({ namespace: "systems.details", view: true }),
-      "systems.history": expect.objectContaining({ namespace: "systems.history", view: true }),
+      [detailsNamespace.namespace]: expect.objectContaining({ namespace: detailsNamespace.namespace, view: true }),
+      [historyNamespace.namespace]: expect.objectContaining({ namespace: historyNamespace.namespace, view: true }),
     });
   });
 });
