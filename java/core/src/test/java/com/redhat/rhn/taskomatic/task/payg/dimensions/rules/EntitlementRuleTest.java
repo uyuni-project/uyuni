@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -9,10 +9,6 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
  * SPDX-License-Identifier: GPL-2.0-only
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
@@ -29,25 +25,22 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Set;
 
-@ExtendWith(SaltTestCaseExtension.class)
-public class EntitlementRuleTest extends MockObjectTestCase {
+class EntitlementRuleTest extends MockObjectTestCase {
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Test
-    public void canExcludeWithAnAllRequirement() {
+    void canExcludeWithAnAllRequirement() {
        Server server = mock(Server.class);
 
         checking(expectations -> {
@@ -71,7 +64,7 @@ public class EntitlementRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canIncludeWithAnAllRequirement() {
+    void canIncludeWithAnAllRequirement() {
         Server server = mock(Server.class);
 
         checking(expectations -> {
@@ -95,7 +88,7 @@ public class EntitlementRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canIncludeWithAnAnyRequirement() {
+    void canIncludeWithAnAnyRequirement() {
         Server server = mock(Server.class);
 
         checking(expectations -> {
@@ -119,7 +112,7 @@ public class EntitlementRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canExcludeWithAnAnyRequirement() {
+    void canExcludeWithAnAnyRequirement() {
         Server server = mock(Server.class);
 
         checking(expectations -> {
