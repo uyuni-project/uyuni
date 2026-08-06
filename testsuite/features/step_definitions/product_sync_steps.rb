@@ -40,13 +40,13 @@ def product_sync_tags_match?(entry)
     (profile_tags.empty? || profile_tags.all? { |t| product_sync_tag_active?(t) })
 end
 
-def product_sync_normalize_path_entry(raw)
+def product_sync_normalize_parent_product_entry(raw)
   raw.is_a?(String) ? { 'name' => raw } : raw
 end
 
 # Opens a single tree node's sub-list, tracking what's already open so a node referenced
-# from multiple sub_products' open_path (e.g. a shared parent module) is only opened once —
-# opening an already-open sub-list raises, since the underlying step looks for the
+# from multiple sub_products' parent_products (e.g. a shared parent module) is only opened
+# once — opening an already-open sub-list raises, since the underlying step looks for the
 # "collapsed" (fa-angle-right) icon specifically.
 def product_sync_open_once!(name, opened, if_present: false)
   return if opened.include?(name)
@@ -59,8 +59,8 @@ end
 def product_sync_reveal_tree!(product, sub_products, opened)
   product_sync_open_once!(product['select'], opened)
   sub_products.each do |sub_product|
-    (sub_product['open_path'] || []).each do |raw|
-      entry = product_sync_normalize_path_entry(raw)
+    (sub_product['parent_products'] || []).each do |raw|
+      entry = product_sync_normalize_parent_product_entry(raw)
       step(%(I select "#{entry['name']}" as a product)) if entry['select_first']
       product_sync_open_once!(entry['name'], opened, if_present: entry['if_present'])
     end
@@ -126,8 +126,8 @@ def product_sync_sync_extension!(product, all_products)
   step(%(I should see the "#{base_product['select']}" selected))
 
   opened = []
-  (base['open_path'] || [base_product['select']]).each do |raw|
-    entry = product_sync_normalize_path_entry(raw)
+  (base['parent_products'] || [base_product['select']]).each do |raw|
+    entry = product_sync_normalize_parent_product_entry(raw)
     step(%(I select "#{entry['name']}" as a product)) if entry['select_first']
     product_sync_open_once!(entry['name'], opened, if_present: entry['if_present'])
   end
