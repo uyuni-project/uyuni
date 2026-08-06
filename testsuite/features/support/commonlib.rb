@@ -838,7 +838,13 @@ def channel_packages_are_downloaded?(channel_name, host = 'server')
   #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
   # (ScriptError)
   #
-  get_target(host).run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
+  # check_errors: false because reposync.log may not exist yet early in a sync;
+  # that's a "not downloaded yet" poll result, not a fatal error worth aborting the wait for.
+  _out, code = get_target(host).run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log', check_errors: false)
+  unless code.zero?
+    log "DEBUG: reposync.log not yet available on #{host} (cp exit code #{code})."
+    return false
+  end
   get_target(host).extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
