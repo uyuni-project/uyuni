@@ -41,6 +41,20 @@ const buildPermission = (overrides: Partial<Permission> = {}): Permission => ({
   ...overrides,
 });
 
+const buildAccessGroupState = (overrides: Partial<AccessGroupState> = {}): AccessGroupState => ({
+  id: 1,
+  name: "Test group",
+  description: "",
+  orgId: 1,
+  orgName: "Test organization",
+  accessGroups: [],
+  permissions: {},
+  users: [],
+  errors: {},
+  permissionsModified: false,
+  ...overrides,
+});
+
 const detailsNamespace = buildNamespaceLeaf({
   id: 1,
   namespace: "systems.details",
@@ -74,25 +88,9 @@ const buildSelectedPermission = (namespace: NamespaceLeaf, type: PermissionType)
 
 const renderPermissions = async (permissions: AccessGroupState["permissions"], onChange = jest.fn()) => {
   jest.spyOn(Network, "get").mockReturnValue(Utils.cancelable(Promise.resolve({ namespaces })));
+  const state = buildAccessGroupState({ permissions });
 
-  render(
-    <AccessGroupPermissions
-      state={{
-        id: 1,
-        name: "Test group",
-        description: "",
-        orgId: 1,
-        orgName: "Test organization",
-        accessGroups: [],
-        permissions,
-        users: [],
-        errors: {},
-        permissionsModified: false,
-      }}
-      onChange={onChange}
-      errors={{}}
-    />
-  );
+  render(<AccessGroupPermissions state={state} onChange={onChange} errors={state.errors} />);
 
   const parentRow = (await screen.findByText("systems")).closest("tr");
   expect(parentRow).not.toBeNull();
@@ -109,8 +107,9 @@ describe("AccessGroupPermissions", () => {
   test("renders permission checkboxes using the reusable Check component", async () => {
     const checkboxes = await renderPermissions({});
 
-    expect(checkboxes.view.className).toContain("form-check-input");
-    expect(checkboxes.modify.className).toContain("form-check-input");
+    Object.values(checkboxes).forEach((checkbox) => {
+      expect(checkbox.className).toContain("form-check-input");
+    });
   });
 
   test.each<PermissionType>(permissionTypes)(
