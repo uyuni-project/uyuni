@@ -225,6 +225,9 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  # ponytail: same $is_transactional_server bug as api_common.rb/command_steps.rb (fixed with
+  # host_transactional?(client)), left as-is because no caller passes client == 'proxy' today.
+  # Apply the same fix here if/when this branch becomes reachable.
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end

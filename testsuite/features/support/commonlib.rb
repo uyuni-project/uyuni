@@ -357,11 +357,20 @@ def transactional_system?(name, runs_in_container: true)
   slemicro_host?(name, runs_in_container: runs_in_container) || leapmicro_host?(name, runs_in_container: runs_in_container)
 end
 
+# Checks if the given host is a transactional system, guarding for hosts that
+# may not be configured in the current topology.
+#
+# @param host [String] host role to check (e.g. 'server', 'server2', 'proxy2')
+# @return [Boolean] Returns true if the host is transactional
+def host_transactional?(host)
+  ENV.key?(ENV_VAR_BY_HOST[host]) && transactional_system?(host, runs_in_container: false)
+end
+
 # Checks if the 'proxy' host is a transactional system
 #
 # @return [Boolean] Returns true if the proxy is transactional
 def suse_proxy_transactional?
-  ENV.key?(ENV_VAR_BY_HOST['proxy']) && transactional_system?('proxy', runs_in_container: false)
+  host_transactional?('proxy')
 end
 
 # Checks if the 'proxy' host is a is non-transactional

@@ -1141,7 +1141,7 @@ end
 # (e.g. "sle_minion", "proxy", "build_host") -- shared by the hub-target and
 # arbitrary-host bootstrap repo creation steps below.
 def bootstrap_repo_cmd(client, without_flushing)
-  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  client = host_transactional?(client) ? 'proxy' : 'proxy_nontransactional' if client.match?(/^proxy\d*$/)
   base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
