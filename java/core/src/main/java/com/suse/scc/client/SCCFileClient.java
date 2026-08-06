@@ -16,6 +16,7 @@ package com.suse.scc.client;
 
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
@@ -97,6 +98,16 @@ public class SCCFileClient implements SCCClient {
         catch (SCCClientException ex) {
             return getList("product_tree.json",
                     ProductTreeEntry.class);
+        }
+    }
+
+    @Override
+    public List<ChannelInfoDetailsJson> listHubChannels() throws SCCClientException {
+        try {
+            return getList("suma/hub_channels", ChannelInfoDetailsJson.class);
+        }
+        catch (SCCClientException ex) {
+            return getList("hub_channels", ChannelInfoDetailsJson.class);
         }
     }
 

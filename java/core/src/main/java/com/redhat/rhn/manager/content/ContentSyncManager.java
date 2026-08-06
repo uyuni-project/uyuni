@@ -66,6 +66,7 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -570,6 +571,39 @@ public class ContentSyncManager {
      */
     private void refreshRepositoriesAuthentication(String mirrorUrl, boolean excludeSCC) throws ContentSyncException {
 
+        if (hubFactory.isISSPeripheral()) {
+            // Call extra endpoint to get info about channels from the hub incl. custom channels
+            filterCredentials().stream()
+                    .filter(source -> !excludeSCC || !(source instanceof SCCContentSyncSource))
+                    .forEach(source -> {
+                                LOG.debug("Getting custom channels for: {}", source);
+                                List<ChannelInfoDetailsJson> channelInfo = source.match(
+                                        scc -> {
+                                            try {
+                                                SCCClient client = getSCCClient(source);
+                                                return client.listHubChannels();
+                                            }
+                                            catch (SCCClientException e) {
+                                                return Collections.emptyList();
+                                            }
+                                        },
+                                        rmt -> {
+                                            LOG.warn("Custom Channel info cannot be provided from RMT server");
+                                            return Collections.emptyList();
+                                        },
+                                        local -> {
+                                            try {
+                                                SCCClient client = getSCCClient(source);
+                                                return client.listHubChannels();
+                                            }
+                                            catch (SCCClientException e) {
+                                                return Collections.emptyList();
+                                            }
+                                        });
+                                updateChannelInfo(channelInfo);
+                    });
+        }
+
         ChannelFactory.cleanupOrphanVendorContentSource();
 
         try {
@@ -904,6 +938,23 @@ public class ContentSyncManager {
                 return Optional.empty();
             }
 
+        }
+    }
+
+    /**
+     * Update Custom Channel details according to the provided channelInfo
+     * @param channelInfo the information about custom channels
+     */
+    public void updateChannelInfo(List<ChannelInfoDetailsJson> channelInfo) {
+        Set<String> syncFinished = new HashSet<>();
+        Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
+                .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
+        for (ChannelInfoDetailsJson info : channelInfo) {
+            if (info.getPeripheralOrgId() == null) {
+                LOG.warn("updateCustomChannelInfo called with a vendor channel {}", info.getLabel());
+                continue;
+            }
+            ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
     }
 
