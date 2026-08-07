@@ -19,6 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.LdapCredentials;
 import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -28,8 +31,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.ldap.ConfigLdapAuthConfigProvider;
+import com.suse.manager.ldap.DbLdapAuthConfigProvider;
+import com.suse.manager.ldap.DefaultLdapAuthConfigProvider;
 import com.suse.manager.ldap.DefaultLdapServiceFactory;
 import com.suse.manager.ldap.LdapAuthConfigProvider;
 import com.suse.manager.ldap.LdapAuthServerSettings;
@@ -37,6 +42,8 @@ import com.suse.manager.ldap.LdapProvisioningMode;
 import com.suse.manager.ldap.LdapServerConfig;
 import com.suse.manager.ldap.LdapServerType;
 import com.suse.manager.ldap.LdapTransport;
+import com.suse.manager.model.ldap.LdapAuthServer;
+import com.suse.manager.model.ldap.LdapAuthServerFactory;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
@@ -92,7 +99,7 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
             directory.shutDown(true);
         }
         // Restore the defaults so we do not leak configuration into other tests.
-        LoginHelper.setLdapConfigProvider(new ConfigLdapAuthConfigProvider());
+        LoginHelper.setLdapConfigProvider(new DefaultLdapAuthConfigProvider());
         LoginHelper.setLdapServiceFactory(new DefaultLdapServiceFactory());
     }
 
@@ -138,10 +145,44 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
                 .bind(ADMIN_DN, ADMIN_PASSWORD)
                 .groupBaseDn(GROUPS_DN)
                 .build();
+        // No persisted record backs these settings, so no directory id is recorded on the user.
         LdapAuthServerSettings settings =
-                new LdapAuthServerSettings(config, mode, user.getOrg().getId(), 0);
+                new LdapAuthServerSettings(null, config, mode, user.getOrg().getId(), true, 0);
         LoginHelper.setLdapConfigProvider(new StubProvider(true, List.of(settings)));
         LoginHelper.setLdapServiceFactory(new DefaultLdapServiceFactory());
+    }
+
+    /**
+     * Points the login layer at a persisted directory record aimed at the embedded server, which is
+     * how a real installation is configured.
+     *
+     * @param mode the provisioning mode of the directory
+     * @param autoJoinRegularUser whether provisioned users join the {@code regular_user} group
+     * @return the persisted directory record
+     */
+    private LdapAuthServer enableLdapFromDatabase(LdapProvisioningMode mode, boolean autoJoinRegularUser) {
+        LdapCredentials credentials = CredentialsFactory.createLdapCredentials(ADMIN_PASSWORD);
+        CredentialsFactory.storeCredentials(credentials);
+
+        LdapAuthServer server = new LdapAuthServer();
+        server.setLabel("embedded-" + TestUtils.randomString());
+        server.setServerType(LdapServerType.OPEN_LDAP);
+        server.setHost("127.0.0.1");
+        server.setPort(directory.getListenPort());
+        server.setTransport(LdapTransport.PLAIN);
+        server.setBindDn(ADMIN_DN);
+        server.setCredentials(credentials);
+        server.setUserBaseDn(USERS_DN);
+        server.setGroupBaseDn(GROUPS_DN);
+        server.setProvisioningMode(mode);
+        server.setDefaultOrg(user.getOrg());
+        server.setAutoJoinRegularUser(autoJoinRegularUser);
+        LdapAuthServerFactory.save(server);
+        TestUtils.flushSession();
+
+        LoginHelper.setLdapConfigProvider(new DbLdapAuthConfigProvider(() -> List.of(server)));
+        LoginHelper.setLdapServiceFactory(new DefaultLdapServiceFactory());
+        return server;
     }
 
     @Test
@@ -251,6 +292,48 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
         assertEquals(JIT_LOGIN, result.getLogin());
         assertEquals(AuthType.LDAP, result.getAuthType());
         assertNotNull(UserFactory.lookupByLogin(JIT_LOGIN));
+    }
+
+    @Test
+    public void knownUserRecordsTheDirectoryThatAuthenticatedThem() {
+        user.setAuthType(AuthType.LDAP);
+        UserManager.storeUser(user);
+        LdapAuthServer server = enableLdapFromDatabase(LdapProvisioningMode.JIT, true);
+
+        List<String> errors = new ArrayList<>();
+        User result = LoginHelper.checkLdapAuthentication(user.getLogin(), "existing-secret",
+                true, true, new ArrayList<>(), errors);
+
+        assertNotNull(result);
+        assertTrue(errors.isEmpty());
+        assertEquals(server.getId(), result.getLdapServerId());
+    }
+
+    @Test
+    public void provisionedUserRecordsTheDirectoryAndHonoursTheRegularUserOption() {
+        // With auto-join turned off, access is meant to come entirely from LDAP group mapping, so
+        // the account must not keep the regular_user group every locally created user gets.
+        LdapAuthServer server = enableLdapFromDatabase(LdapProvisioningMode.JIT, false);
+
+        List<String> messages = new ArrayList<>();
+        User result = LoginHelper.checkLdapAuthentication(JIT_LOGIN, JIT_PASSWORD, true,
+                true, messages, new ArrayList<>());
+
+        assertNotNull(result);
+        assertEquals(AuthType.LDAP, result.getAuthType());
+        assertEquals(server.getId(), result.getLdapServerId());
+        assertFalse(result.isMemberOf(AccessGroupFactory.REGULAR_USER));
+    }
+
+    @Test
+    public void provisionedUserKeepsTheRegularUserGroupByDefault() {
+        enableLdapFromDatabase(LdapProvisioningMode.JIT, true);
+
+        User result = LoginHelper.checkLdapAuthentication(JIT_LOGIN, JIT_PASSWORD, true,
+                true, new ArrayList<>(), new ArrayList<>());
+
+        assertNotNull(result);
+        assertTrue(result.isMemberOf(AccessGroupFactory.REGULAR_USER));
     }
 
     @Test

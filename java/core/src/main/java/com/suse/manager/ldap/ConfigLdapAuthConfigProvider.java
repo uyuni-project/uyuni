@@ -25,8 +25,9 @@ import java.util.function.UnaryOperator;
 
 /**
  * Interim {@link LdapAuthConfigProvider} that reads a single directory server from the product
- * configuration file ({@code rhn.conf}). It exists so the login layer can be wired end-to-end
- * before the persisted server records and admin UI land in a later phase.
+ * configuration file ({@code rhn.conf}). Persisted directory records are the source of truth; this
+ * provider is only consulted through {@link DefaultLdapAuthConfigProvider} while none exists, so
+ * that native LDAP can still be set up before the LDAP administration UI lands.
  *
  * <p>LDAP is disabled unless {@code ldap.auth_enabled = 1} is set, so on a default installation
  * this provider returns no servers and login behaves exactly as it did before. A misconfigured
@@ -135,7 +136,8 @@ public class ConfigLdapAuthConfigProvider implements LdapAuthConfigProvider {
         int orgId = intReader.apply(PREFIX + "default_org_id");
         Long defaultOrgId = orgId > 0 ? (long) orgId : DEFAULT_ORG_ID;
 
-        return new LdapAuthServerSettings(builder.build(), mode, defaultOrgId, 0);
+        // No persisted record backs these settings, hence the null server id.
+        return new LdapAuthServerSettings(null, builder.build(), mode, defaultOrgId, true, 0);
     }
 
     private void applyIfSet(String key, Function<String, LdapServerConfig.Builder> setter) {

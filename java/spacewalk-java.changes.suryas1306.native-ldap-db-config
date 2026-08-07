@@ -1,0 +1,2 @@
+- Persist native LDAP directory configuration in the database and load it
+  at login time, recording which directory authenticated each user

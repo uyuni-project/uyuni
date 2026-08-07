@@ -654,6 +654,18 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     /** {@inheritDoc} */
     @Override
+    public Long getLdapServerId() {
+        return this.userInfo.getLdapServerId();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setLdapServerId(Long ldapServerIdIn) {
+        this.userInfo.setLdapServerId(ldapServerIdIn);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public String getShowSystemGroupList() {
         return this.userInfo.getShowSystemGroupList();
     }

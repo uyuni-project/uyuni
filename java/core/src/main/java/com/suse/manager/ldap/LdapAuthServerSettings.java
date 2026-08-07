@@ -20,19 +20,23 @@ import java.util.Objects;
  * in ({@link #defaultOrgId()}), and the order in which servers are probed for unknown users
  * ({@link #priority()}, lower first).
  *
- * <p>This is the login layer's view of an LDAP server. Phase 2 builds these from configuration; a
- * later phase will build them from persisted {@code suseLdapAuthServer} records without changing
- * this contract.</p>
+ * <p>This is the login layer's view of an LDAP server, decoupled from how it is stored. Records
+ * built from persisted {@code suseLdapAuthServer} rows carry the row id in {@link #serverId()} so
+ * the login layer can record which directory authenticated a user.</p>
  *
+ * @param serverId the id of the persisted directory record, {@code null} if not persisted
  * @param connectionConfig the connection and search configuration for the directory
  * @param provisioningMode whether unknown users may be created just-in-time
  * @param defaultOrgId the organization id JIT users are created in
+ * @param autoJoinRegularUser whether provisioned users join the {@code regular_user} access group
  * @param priority the probe order for unknown users; lower values are tried first
  */
 public record LdapAuthServerSettings(
+        Long serverId,
         LdapServerConfig connectionConfig,
         LdapProvisioningMode provisioningMode,
         Long defaultOrgId,
+        boolean autoJoinRegularUser,
         int priority) {
 
     /**

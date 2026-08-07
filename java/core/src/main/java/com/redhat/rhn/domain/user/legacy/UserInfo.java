@@ -68,6 +68,9 @@ public class UserInfo extends AbstractUserChild implements Serializable {
     @Column(name = "auth_type", nullable = false)
     private AuthType authType = AuthType.LOCAL;
 
+    @Column(name = "ldap_server_id")
+    private Long ldapServerId;
+
     @Column(name = "show_system_group_list")
     private String showSystemGroupList;
 
@@ -159,6 +162,22 @@ public class UserInfo extends AbstractUserChild implements Serializable {
      */
     public void setAuthType(AuthType authTypeIn) {
         this.authType = authTypeIn == null ? AuthType.LOCAL : authTypeIn;
+    }
+
+    /**
+     * Getter for ldapServerId
+     * @return the directory that authenticated this user, {@code null} for non-LDAP users
+     */
+    public Long getLdapServerId() {
+        return ldapServerId;
+    }
+
+    /**
+     * Setter for ldapServerId
+     * @param ldapServerIdIn New value for ldapServerId
+     */
+    public void setLdapServerId(Long ldapServerIdIn) {
+        this.ldapServerId = ldapServerIdIn;
     }
 
     /**
