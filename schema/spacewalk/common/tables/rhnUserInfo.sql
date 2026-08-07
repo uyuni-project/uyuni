@@ -60,6 +60,10 @@ CREATE TABLE rhnUserInfo
                                 DEFAULT ('LOCAL') NOT NULL
                                 CONSTRAINT rhn_user_info_auth_type_ck
                                     CHECK (auth_type in ('LOCAL','PAM','LDAP')),
+    ldap_server_id          NUMERIC
+                                CONSTRAINT rhn_user_info_ldap_srv_fk
+                                    REFERENCES suseLdapAuthServer (id)
+                                    ON DELETE SET NULL,
     last_logged_in          TIMESTAMPTZ,
     agreed_to_ws_terms      CHAR(1)
                                 CONSTRAINT rhn_user_info_ws_ck

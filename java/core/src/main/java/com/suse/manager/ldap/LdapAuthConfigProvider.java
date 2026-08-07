@@ -16,10 +16,11 @@ import java.util.List;
 /**
  * Supplies the LDAP servers the login layer should consult, in priority order.
  *
- * <p>This is the seam between login orchestration and the source of directory configuration. The
- * Phase 2 implementation reads server settings from the product configuration file; a later phase
- * will provide an implementation backed by persisted {@code suseLdapAuthServer} records and the
- * admin UI, without any change to the callers in the login layer.</p>
+ * <p>This is the seam between login orchestration and the source of directory configuration.
+ * {@link DbLdapAuthConfigProvider} reads the persisted {@code suseLdapAuthServer} records an
+ * administrator maintains and is the source of truth; {@link ConfigLdapAuthConfigProvider} reads
+ * the product configuration file and remains as a fallback until directories can be created from
+ * the UI.</p>
  */
 public interface LdapAuthConfigProvider {
 

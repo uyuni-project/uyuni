@@ -24,6 +24,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -43,7 +44,7 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.manager.ldap.ConfigLdapAuthConfigProvider;
+import com.suse.manager.ldap.DefaultLdapAuthConfigProvider;
 import com.suse.manager.ldap.DefaultLdapServiceFactory;
 import com.suse.manager.ldap.LdapAuthConfigProvider;
 import com.suse.manager.ldap.LdapAuthServerSettings;
@@ -86,7 +87,7 @@ public class LoginHelper {
      */
     private static final String LDAP_GROUP_PREFIX = "uyuni_";
 
-    private static LdapAuthConfigProvider ldapConfigProvider = new ConfigLdapAuthConfigProvider();
+    private static LdapAuthConfigProvider ldapConfigProvider = new DefaultLdapAuthConfigProvider();
     private static LdapServiceFactory ldapServiceFactory = new DefaultLdapServiceFactory();
     private static final Long MIN_PG_DB_VERSION = 160001L;
     private static final Long MAX_PG_DB_VERSION = 189999L;
@@ -337,7 +338,7 @@ public class LoginHelper {
             errors.add(ls.getMessage("error.invalid_login"));
             return null;
         }
-        Optional<LdapUser> authenticated = authenticateAgainstServers(servers, login, password);
+        Optional<AuthenticatedLdapUser> authenticated = authenticateAgainstServers(servers, login, password);
         if (authenticated.isEmpty()) {
             if (log.isWarnEnabled()) {
                 log.warn("LDAP AUTH FAILURE: [{}]", StringUtil.sanitizeLogInput(login));
@@ -355,10 +356,25 @@ public class LoginHelper {
             errors.add(ls.getMessage("error.user_readonly"));
             return null;
         }
-        LdapUser ldapUser = authenticated.get();
-        Set<Role> roles = getRolesFromExtGroups(toExtGroupLabels(ldapUser.groupLabels()));
+        AuthenticatedLdapUser result = authenticated.get();
+        LdapUser ldapUser = result.user();
+        Set<Role> roles = getRolesFromExtGroups(toExtGroupLabels(ldapUser.groupLabels()),
+                result.server().serverId());
         updateRemoteUser(existing, ldapUser.firstName(), ldapUser.lastName(), ldapUser.email(), roles);
+        recordLdapServer(existing, result.server());
         return existing;
+    }
+
+    /**
+     * Records which directory authenticated the user, so an administrator can tell where an account
+     * comes from. Only written when it actually changes, to avoid a pointless update on every login.
+     */
+    private static void recordLdapServer(User user, LdapAuthServerSettings server) {
+        Long serverId = server.serverId();
+        if (serverId != null && !serverId.equals(user.getLdapServerId())) {
+            user.setLdapServerId(serverId);
+            UserManager.storeUser(user);
+        }
     }
 
     private static User provisionUnknownLdapUser(String login, String password,
@@ -384,15 +400,31 @@ public class LoginHelper {
                 continue;
             }
             LdapUser ldapUser = authenticated.get();
-            Set<Role> roles = getRolesFromExtGroups(toExtGroupLabels(ldapUser.groupLabels()));
+            Set<Role> roles = getRolesFromExtGroups(toExtGroupLabels(ldapUser.groupLabels()),
+                    server.serverId());
             User created = createProvisionedUser(ldapUser.login(), ldapUser.firstName(), ldapUser.lastName(),
                     ldapUser.email(), roles, new HashSet<>(), org, AuthType.LDAP);
             if (created != null) {
+                applyLdapProvisioningOptions(created, server);
                 messages.add("You have logged in as an LDAP-authenticated user.");
                 return created;
             }
         }
         return null;
+    }
+
+    /**
+     * Applies the per-directory provisioning options to a freshly created account: records the
+     * directory it came from and, when the directory opts out of the default membership, drops the
+     * {@code regular_user} access group that {@code CreateUserCommand} gives every new user, so that
+     * access is driven entirely by LDAP group mapping.
+     */
+    private static void applyLdapProvisioningOptions(User created, LdapAuthServerSettings server) {
+        created.setLdapServerId(server.serverId());
+        if (!server.autoJoinRegularUser()) {
+            created.removeFromGroup(AccessGroupFactory.REGULAR_USER);
+        }
+        UserManager.storeUser(created);
     }
 
     private static Org resolveLdapOrg(LdapAuthServerSettings server) {
@@ -404,16 +436,25 @@ public class LoginHelper {
         return org;
     }
 
-    private static Optional<LdapUser> authenticateAgainstServers(List<LdapAuthServerSettings> servers,
-            String login, String password) {
+    private static Optional<AuthenticatedLdapUser> authenticateAgainstServers(
+            List<LdapAuthServerSettings> servers, String login, String password) {
         for (LdapAuthServerSettings server : servers) {
             Optional<LdapUser> authenticated = tryAuthenticate(server, login, password);
             if (authenticated.isPresent()) {
-                return authenticated;
+                return authenticated.map(user -> new AuthenticatedLdapUser(server, user));
             }
         }
         return Optional.empty();
     }
+
+    /**
+     * A directory entry together with the server that authenticated it, so the login layer can
+     * record which directory a user came from.
+     *
+     * @param server the directory that accepted the credentials
+     * @param user the directory entry of the authenticated user
+     */
+    private record AuthenticatedLdapUser(LdapAuthServerSettings server, LdapUser user) { }
 
     /**
      * Selects the directory groups that participate in role mapping and converts them to
@@ -488,9 +529,17 @@ public class LoginHelper {
     }
 
     private static Set<Role> getRolesFromExtGroups(Set<String> groupNames) {
+        return getRolesFromExtGroups(groupNames, null);
+    }
+
+    /**
+     * Resolves Uyuni roles from external-group labels. When {@code ldapServerId} is set, a mapping
+     * scoped to that directory wins over a server-agnostic mapping of the same label.
+     */
+    private static Set<Role> getRolesFromExtGroups(Set<String> groupNames, Long ldapServerId) {
         Set<Role> roles = new HashSet<>();
         for (String extGroupName : groupNames) {
-            UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
+            UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName, ldapServerId);
             if (extGroup == null) {
                 log.info("No role mapping defined for external group '{}'.", extGroupName);
                 continue;

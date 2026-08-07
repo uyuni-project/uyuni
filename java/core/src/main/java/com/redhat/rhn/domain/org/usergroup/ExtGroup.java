@@ -59,6 +59,13 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
     private Org org;
 
     /**
+     * Optional directory this mapping is scoped to. {@code null} means server-agnostic (shared by
+     * REMOTE_USER and every LDAP directory).
+     */
+    @Column(name = "ldap_server_id")
+    private Long ldapServerId;
+
+    /**
      * @return Returns the id.
      */
     public Long getId() {
@@ -101,6 +108,20 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
     }
 
     /**
+     * @return the LDAP directory id this mapping is scoped to, or {@code null} if server-agnostic
+     */
+    public Long getLdapServerId() {
+        return ldapServerId;
+    }
+
+    /**
+     * @param ldapServerIdIn the LDAP directory id, or {@code null} for a server-agnostic mapping
+     */
+    public void setLdapServerId(Long ldapServerIdIn) {
+        this.ldapServerId = ldapServerIdIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -113,7 +134,8 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(label).append(org).toHashCode();
+        return new HashCodeBuilder(17, 37).append(id).append(label).append(org)
+                .append(ldapServerId).toHashCode();
     }
 
     @Override
@@ -126,6 +148,7 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
             return false;
         }
         return new EqualsBuilder().append(id, extGroup.id)
-                .append(label, extGroup.label).append(org, extGroup.org).isEquals();
+                .append(label, extGroup.label).append(org, extGroup.org)
+                .append(ldapServerId, extGroup.ldapServerId).isEquals();
     }
 }
