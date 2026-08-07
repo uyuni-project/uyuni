@@ -88,8 +88,9 @@ def split_host(hoststring):
     if hostport[0] == "[":
         # IPv6 with port
         # pylint: disable-next=anomalous-backslash-in-string
-        host, port = re.split("(?<=\]):", hostport, 1)
-        host = host.lstrip("[").rstrip("]")
+        if "]" in hostport:
+            host, port = re.split("(?<=\\]):", hostport, maxsplit=1)
+            host = host.lstrip("[").rstrip("]")
     elif check_ipv6(hostport):
         # just IPv6
         host = hostport
