@@ -49,17 +49,17 @@ public class LdapFiltersTest {
 
     @Test
     public void rejectsTemplateWithoutPlaceholder() {
-        assertThrows(LdapException.class, () -> LdapFilters.userFilter("(uid=fixed)", "alice"));
+        assertThrows(LdapServiceException.class, () -> LdapFilters.userFilter("(uid=fixed)", "alice"));
     }
 
     @Test
     public void rejectsEmptyValue() {
-        assertThrows(LdapException.class, () -> LdapFilters.userFilter("(uid={login})", ""));
-        assertThrows(LdapException.class, () -> LdapFilters.groupFilter("(member={userDn})", null));
+        assertThrows(LdapServiceException.class, () -> LdapFilters.userFilter("(uid={login})", ""));
+        assertThrows(LdapServiceException.class, () -> LdapFilters.groupFilter("(member={userDn})", null));
     }
 
     @Test
     public void rejectsMalformedTemplate() {
-        assertThrows(LdapException.class, () -> LdapFilters.userFilter("(&(uid={login})", "alice"));
+        assertThrows(LdapServiceException.class, () -> LdapFilters.userFilter("(&(uid={login})", "alice"));
     }
 }

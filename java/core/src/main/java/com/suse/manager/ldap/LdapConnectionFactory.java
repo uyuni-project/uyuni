@@ -58,21 +58,21 @@ public class LdapConnectionFactory {
      *
      * @param config the server configuration
      * @return a socket factory for secure transports, or {@code null} for {@link LdapTransport#PLAIN}
-     * @throws LdapException if a TLS socket factory cannot be created
+     * @throws LdapServiceException if a TLS socket factory cannot be created
      */
-    protected SocketFactory socketFactory(LdapServerConfig config) throws LdapException {
+    protected SocketFactory socketFactory(LdapServerConfig config) throws LdapServiceException {
         if (config.getTransport() == LdapTransport.PLAIN) {
             return null;
         }
         if (config.getTransport() == LdapTransport.STARTTLS) {
-            throw new LdapException("StartTLS is not supported yet; use LDAPS or PLAIN");
+            throw new LdapServiceException("StartTLS is not supported yet; use LDAPS or PLAIN");
         }
         try {
             // Until custom CA trust is wired in, rely on the JVM default trust store.
             return new SSLUtil().createSSLSocketFactory();
         }
         catch (GeneralSecurityException e) {
-            throw new LdapException("Unable to initialize TLS for LDAPS connection", e);
+            throw new LdapServiceException("Unable to initialize TLS for LDAPS connection", e);
         }
     }
 
@@ -82,9 +82,9 @@ public class LdapConnectionFactory {
      *
      * @param config the server configuration
      * @return a new open connection
-     * @throws LdapException if the connection cannot be established
+     * @throws LdapServiceException if the connection cannot be established
      */
-    public LDAPConnection openConnection(LdapServerConfig config) throws LdapException {
+    public LDAPConnection openConnection(LdapServerConfig config) throws LdapServiceException {
         try {
             SocketFactory factory = socketFactory(config);
             LDAPConnectionOptions options = connectionOptions(config);
@@ -94,7 +94,7 @@ public class LdapConnectionFactory {
             return new LDAPConnection(factory, options, config.getHost(), config.getPort());
         }
         catch (LDAPException e) {
-            throw new LdapException("Unable to connect to LDAP server " + config.getHost(), e);
+            throw new LdapServiceException("Unable to connect to LDAP server " + config.getHost(), e);
         }
     }
 
@@ -104,9 +104,9 @@ public class LdapConnectionFactory {
      *
      * @param config the server configuration
      * @return a ready connection pool the caller must close
-     * @throws LdapException if the connection or service bind fails
+     * @throws LdapServiceException if the connection or service bind fails
      */
-    public LDAPConnectionPool createServicePool(LdapServerConfig config) throws LdapException {
+    public LDAPConnectionPool createServicePool(LdapServerConfig config) throws LdapServiceException {
         LDAPConnection connection = openConnection(config);
         try {
             var bindDn = config.getBindDn();
@@ -118,7 +118,7 @@ public class LdapConnectionFactory {
         }
         catch (LDAPException e) {
             connection.close();
-            throw new LdapException("Service-account bind failed for LDAP server " + config.getHost(), e);
+            throw new LdapServiceException("Service-account bind failed for LDAP server " + config.getHost(), e);
         }
     }
 }

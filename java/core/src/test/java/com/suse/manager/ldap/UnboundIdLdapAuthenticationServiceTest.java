@@ -153,9 +153,9 @@ public class UnboundIdLdapAuthenticationServiceTest {
     }
 
     @Test
-    public void failedServiceBindRaisesLdapException() {
+    public void failedServiceBindRaisesLdapServiceException() {
         LdapAuthenticationService service = service(ADMIN_DN, "wrong-service-password");
-        assertThrows(LdapException.class, () -> service.authenticate("alice", "alice123"));
+        assertThrows(LdapServiceException.class, () -> service.authenticate("alice", "alice123"));
     }
 
     @Test

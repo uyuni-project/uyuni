@@ -63,7 +63,7 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
     }
 
     @Override
-    public Optional<LdapUser> authenticate(String login, String password) throws LdapException {
+    public Optional<LdapUser> authenticate(String login, String password) throws LdapServiceException {
         if (login == null || login.isBlank()) {
             LOG.debug("Rejecting LDAP authentication with an empty login");
             return Optional.empty();
@@ -94,7 +94,7 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
         }
     }
 
-    private SearchResultEntry findUser(LDAPConnectionPool pool, String login) throws LdapException {
+    private SearchResultEntry findUser(LDAPConnectionPool pool, String login) throws LdapServiceException {
         Filter filter = LdapFilters.userFilter(config.getUserFilter(), login);
         try {
             SearchResult result = pool.search(config.getUserBaseDn(), SearchScope.SUB, filter,
@@ -109,11 +109,11 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
             return count == 1 ? result.getSearchEntries().get(0) : null;
         }
         catch (LDAPException e) {
-            throw new LdapException("User search failed for [" + login + "]", e);
+            throw new LdapServiceException("User search failed for [" + login + "]", e);
         }
     }
 
-    private boolean credentialBindSucceeds(String userDn, String password) throws LdapException {
+    private boolean credentialBindSucceeds(String userDn, String password) throws LdapServiceException {
         LDAPConnection connection = null;
         try {
             connection = connectionFactory.openConnection(config);
@@ -127,8 +127,8 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
             }
             // Any other result code (server unreachable, timeout, TLS failure, etc.) is an
             // infrastructure problem the caller must be able to tell apart from a wrong password,
-            // so it is surfaced as an LdapException rather than silently reported as a failed login.
-            throw new LdapException("Credential bind failed for [" + userDn + "]", e);
+            // so it is surfaced as an LdapServiceException rather than silently reported as a failed login.
+            throw new LdapServiceException("Credential bind failed for [" + userDn + "]", e);
         }
         finally {
             if (connection != null) {
@@ -142,7 +142,7 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
         try {
             filter = LdapFilters.groupFilter(config.getGroupFilter(), userDn);
         }
-        catch (LdapException e) {
+        catch (LdapServiceException e) {
             LOG.warn("LDAP group lookup skipped for [{}]: invalid group filter (user DN={})", login, userDn, e);
             return List.of();
         }
