@@ -673,7 +673,7 @@ public class TransactionalActionManager {
                 .setParameter("actionId", actionId)
                 .uniqueResult();
 
-        if (serverAction != null && serverAction.isStatusPickedUp() &&
+        if (serverAction != null && (serverAction.isStatusPickedUp() || serverAction.isStatusCompleted()) &&
                 !hasAfterRebootState(serverAction.getParentAction())) {
             lookupOrCreateActionHistory(minionServerId, actionId)
                     .recordTransactionalApplyNoRebootNeeded(completionTime);

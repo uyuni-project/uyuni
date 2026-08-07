@@ -518,11 +518,7 @@ public class SaltUtils {
         }
         else if (transactionalResult) {
             setTransactionalResultMsg(serverAction, action, function, states, jsonResult);
-            if (TransactionalActionManager.isTransactionalApplyWaitingForReboot(
-                    action, serverAction.getServer().getId())) {
-                serverAction.setCompletionTime(null);
-            }
-            else if (TransactionalActionManager.needsAdditionalStatesAfterReboot(action, function, states)) {
+            if (TransactionalActionManager.needsAdditionalStatesAfterReboot(action, function, states)) {
                 serverAction.setCompletionTime(null);
             }
             else {

@@ -1375,6 +1375,43 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testTransactionalApplyWithChangesCompletesAction() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("transactional-minion");
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Collections.singletonList(minion.getId()),
+                List.of(ApplyStatesEventMessage.CHANNELS),
+                new Date());
+
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        action.addServerAction(serverAction);
+
+        JsonObject stateResult = new JsonObject();
+        JsonObject change = new JsonObject();
+        change.addProperty("new", "value");
+        stateResult.add("changes", change);
+        stateResult.addProperty("result", true);
+        stateResult.addProperty("comment", "State applied");
+        JsonObject result = new JsonObject();
+        result.add("state_|-test_|-test_|-run", stateResult);
+
+        saltUtils.updateServerAction(
+                serverAction,
+                0L,
+                true,
+                "n/a",
+                result,
+                Optional.of(Xor.right("transactional_update.apply")),
+                Optional.of(List.of(ApplyStatesEventMessage.CHANNELS)),
+                null);
+
+        assertTrue(serverAction.isStatusCompleted());
+        assertNotNull(serverAction.getCompletionTime());
+    }
+
+    @Test
     public void testOpenscap() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
