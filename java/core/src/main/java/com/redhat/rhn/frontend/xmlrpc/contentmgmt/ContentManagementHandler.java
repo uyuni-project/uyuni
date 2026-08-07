@@ -745,10 +745,14 @@ public class ContentManagementHandler extends BaseHandler {
         if (!criteria.containsKey("matcher") || !criteria.containsKey("field")) {
             throw new InvalidArgsException("Incomplete filter criteria");
         }
+
+        String field = (String) criteria.get("field");
+        String value = StringUtils.trimToNull((String) criteria.get("value"));
+
         return of(new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel((String) criteria.get("matcher")),
-                (String) criteria.get("field"),
-                StringUtils.trimToNull((String) criteria.get("value"))));
+                field,
+                value));
     }
 
     /**
