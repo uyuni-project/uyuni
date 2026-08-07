@@ -10,20 +10,40 @@ require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
+# Persistently switch the active Capybara session and app_host to a different
+# server. Unlike using_server, this does NOT revert automatically - it stays in
+# effect until the next switch_to_server/using_server call, or until a new feature
+# file begins (see the feature-scope Before hook in env.rb, which resets it back to
+# the hub). Capybara caches named sessions internally, so switching back to a host
+# that was already logged into reuses the same browser session (cookies, login
+# state) for free.
+def switch_to_server(host)
+  effective_host = host.nil? || host == 'server' ? 'server' : host
+  Capybara.session_name = effective_host == 'server' ? :default : effective_host
+  Capybara.app_host = "https://#{get_target(effective_host).full_hostname}"
+  $current_ui_host = effective_host
+end
+
 # Switch the active Capybara session and app_host to a different server for the
-# duration of the block. Each server gets its own isolated browser session
-# (separate cookies, history), so two servers can be logged into simultaneously.
+# duration of the block, then restore the previous session, app_host, and host
+# tracking. Each server gets its own isolated browser session (separate
+# cookies, history), so two servers can be logged into simultaneously.
 #
 # Usage:
 #   using_server('server2') do
 #     visit('/rhn/YourRhn.do')
 #   end
-#   # default session (server) is automatically restored after the block
+#   # previously-active session/app_host is restored after the block
 def using_server(host)
-  Capybara.using_session(host) do
-    Capybara.app_host = "https://#{get_target(host).full_hostname}"
-    yield
-  end
+  previous_session_name = Capybara.session_name
+  previous_app_host = Capybara.app_host
+  previous_ui_host = $current_ui_host
+  switch_to_server(host)
+  yield
+ensure
+  Capybara.session_name = previous_session_name
+  Capybara.app_host = previous_app_host
+  $current_ui_host = previous_ui_host
 end
 
 # Returns the current URL of the driver.
@@ -89,6 +109,16 @@ end
 def get_reverse_net(net)
   a = net.split('.')
   "#{a[2]}.#{a[1]}.#{a[0]}.in-addr.arpa"
+end
+
+# Returns true if a RepoMDError line timestamped at or after start_time (an "HH:MM:SS"
+# string from the target node's own clock) exists in the taskomatic log. Comparing
+# against a recorded start time -- rather than tailing a fixed number of lines or lines
+# after a line-count marker -- avoids both stale matches from earlier in the log and
+# missed matches if the log grows faster than a fixed window can capture.
+def recent_taskomatic_repomd_error?(node, start_time)
+  output, _code = node.run("grep RepoMDError #{TASKOMATIC_LOG_PATH} | tail -5", check_errors: false, exec_option: '--')
+  output.lines.any? { |line| line[0..7] >= start_time }
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -327,11 +357,20 @@ def transactional_system?(name, runs_in_container: true)
   slemicro_host?(name, runs_in_container: runs_in_container) || leapmicro_host?(name, runs_in_container: runs_in_container)
 end
 
+# Checks if the given host is a transactional system, guarding for hosts that
+# may not be configured in the current topology.
+#
+# @param host [String] host role to check (e.g. 'server', 'server2', 'proxy2')
+# @return [Boolean] Returns true if the host is transactional
+def host_transactional?(host)
+  ENV.key?(ENV_VAR_BY_HOST[host]) && transactional_system?(host, runs_in_container: false)
+end
+
 # Checks if the 'proxy' host is a transactional system
 #
 # @return [Boolean] Returns true if the proxy is transactional
 def suse_proxy_transactional?
-  ENV.key?(ENV_VAR_BY_HOST['proxy']) && transactional_system?('proxy', runs_in_container: false)
+  host_transactional?('proxy')
 end
 
 # Checks if the 'proxy' host is a is non-transactional
@@ -612,27 +651,28 @@ end
 # TODO: don't hardcode anymore the names in the private network once we have them in .bashrc
 #
 # @param host [String] The name of the host.
+# @param mgr_server [String] The SUSE Manager server managing this host ('server', 'server2', 'server3'). Defaults to 'server'.
 # @return [String] The system name.
-def get_system_name(host)
+def get_system_name(host, mgr_server: 'server')
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a RemoteNode
+  # therefore, they are not represented by a RemoteNode
   when 'pxeboot_minion'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sles15sp6_terminal'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.sles15sp6terminal-/)
       end
     system_name = 'sles15sp6terminal.example.org' if system_name.nil?
   when 'sles15sp7_terminal'
-    output, _code = get_target('server').run('salt-key')
+    output, _code = get_target(mgr_server).run('salt-key')
     system_name =
       output.split.find do |word|
         word.match?(/example.sles15sp7terminal-/)
@@ -731,10 +771,12 @@ end
 #
 # @param channels [String, Array<String>] A single channel name or an array of channel names.
 # @param label [String] A descriptive name (e.g., parent channel name) for logging.
+# @param host [String] The target node running the reposync (defaults to the SUMA server; pass a
+#   peripheral role, e.g. 'server2', to verify an ISS-synced channel there instead).
 # @param margin [Integer] The time buffer in seconds to add to the timeout (e.g., 900 for a standard, 0 for custom/PTF).
 #
 # @return [void]
-def wait_for_channels(channels, label, margin: 900)
+def wait_for_channels(channels, label, host: 'server', margin: 900)
   channels = Array(channels).clone
   # --- Context Initialization ---
   add_context('channels_timeout', 0) if get_context('channels_timeout').nil?
@@ -753,7 +795,7 @@ def wait_for_channels(channels, label, margin: 900)
   begin
     repeat_until_timeout(timeout: timeout, message: "Sync failed for #{label}") do
       # Remove channels from the local tracking list as they complete
-      channels.reject! { |c| channel_packages_are_downloaded?(c) }
+      channels.reject! { |c| channel_packages_are_downloaded?(c, host) }
       break if channels.empty?
 
       if ((time_spent += checking_rate) % 60).zero?
@@ -778,8 +820,9 @@ end
 # This method checks if the channel with the given label has been fully synced
 #
 # @param channel_name [String] the label of the channel to check
+# @param host [String] the target node whose reposync log is inspected
 # @return [Boolean] true if the synchronization is completed, false otherwise
-def channel_packages_are_downloaded?(channel_name)
+def channel_packages_are_downloaded?(channel_name, host = 'server')
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
     if client == 'monitoring_server'
@@ -804,8 +847,14 @@ def channel_packages_are_downloaded?(channel_name)
   #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
   # (ScriptError)
   #
-  get_target('server').run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
-  get_target('server').extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
+  # check_errors: false because reposync.log may not exist yet early in a sync;
+  # that's a "not downloaded yet" poll result, not a fatal error worth aborting the wait for.
+  _out, code = get_target(host).run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log', check_errors: false)
+  unless code.zero?
+    log "DEBUG: reposync.log not yet available on #{host} (cp exit code #{code})."
+    return false
+  end
+  get_target(host).extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
     return false
@@ -837,11 +886,12 @@ end
 # Determines whether a channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
+# @param host [String] The target host to check ('server', 'server2', 'server3').
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
-def channel_is_synced?(channel)
+def channel_is_synced?(channel, host: 'server')
   sync_status = false
   repo_path = "/var/cache/rhn/repodata/#{channel}"
-  server = get_target('server')
+  server = get_target(host)
   # Using a temporary dump file to avoid timeout with huge dumpsolv output
   tmp_file = "/tmp/#{channel}_solv_dump"
 
@@ -895,27 +945,40 @@ end
 # This function initializes the API client
 #
 # The API client is determined based on the `$debug_mode` and `product` variables.
-# If `$debug_mode` is true or the `product` is 'SUSE Manager', an `ApiTestXmlrpc` client is created.
+# If `$debug_mode` is true or the `product` is 'SUSE Manager', an `ApiTestXmlrpc` client is created,
+# with SSL verification disabled for any host other than the hub itself (peripherals use
+# hub-signed certificates that aren't in the default trust store).
 # Otherwise, an `ApiTestHttp` client is created with the `ssl_verify` parameter set to the negation of `$is_gh_validation`.
 #
+# @param host [String] The target host to build the API client for ('server', 'server2', 'server3').
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
-def new_api_client
-  hostname = get_target('server').full_hostname
+def new_api_client(host: 'server')
   ssl_verify = !$is_gh_validation
 
   case $api_protocol
   when 'xmlrpc'
-    ApiTestXmlrpc.new(hostname)
+    ApiTestXmlrpc.new(host)
   when 'http'
     # We use API_PROTOCOL env. variable only for debugging purposes from our local machine, so we can skip the SSL verification
-    ApiTestHttp.new(hostname, false)
+    ApiTestHttp.new(host, false)
   else
     if product == 'SUSE Manager'
-      ApiTestXmlrpc.new(hostname)
+      # Peripherals (server2, server3, ...) serve a hub-signed certificate that isn't in the
+      # default trust store, same reasoning as peripheral_xmlrpc_client in hub_steps.rb.
+      ApiTestXmlrpc.new(host, host == 'server')
     else
-      ApiTestHttp.new(hostname, ssl_verify)
+      ApiTestHttp.new(host, ssl_verify)
     end
   end
+end
+
+# Returns a memoized API client for the given host, creating it on first use.
+#
+# @param host [String] The target host ('server', 'server2', 'server3').
+# @return [ApiTestXmlrpc, ApiTestHttp] The cached (or newly created) API client for that host.
+def api_client_for(host = 'server')
+  $api_test_by_host ||= {}
+  $api_test_by_host[host] ||= new_api_client(host: host)
 end
 
 # Get a time in the future, adding the minutes passed as parameter
@@ -990,16 +1053,17 @@ end
 #
 # @param actionid [String] The ID of the action to wait for.
 # @param timeout [Integer] The maximum time to wait for the action to complete, in seconds. Defaults to `DEFAULT_TIMEOUT`.
-def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
+# @param mgr_server [String] The SUSE Manager server whose API to query for action status ('server', 'server2', 'server3'). Defaults to 'server'.
+def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT, mgr_server: 'server')
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
-    failed = $api_test.schedule.list_failed_actions
+    failed = api_client_for(mgr_server).schedule.list_failed_actions
     if failed.any? { |a| a['id'] == actionid }
-      failed_systems = $api_test.schedule.list_failed_systems(actionid)
+      failed_systems = api_client_for(mgr_server).schedule.list_failed_systems(actionid)
       details = failed_systems.map { |s| "#{s['server_name']}: #{s['message']}" }.join('; ')
       raise "Action #{actionid} failed: #{details}"
     end
 
-    list = $api_test.schedule.list_completed_actions
+    list = api_client_for(mgr_server).schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
 
     sleep 2
@@ -1040,29 +1104,32 @@ end
 #
 # @param host [String] The hostname of the requested system
 # @param count [Integer] The number of recent events to return (default: 1)
+# @param mgr_server [String] The SUSE Manager server to query for events ('server', 'server2', 'server3'). Defaults to 'server'.
 # @return [Array<Hash>] The most recent events, newest first
-def get_last_events(host, count = 1)
+def get_last_events(host, count = 1, mgr_server: 'server')
   node = get_target(host)
   system_id = get_system_id(node)
-  $api_test.system.get_event_history(system_id, 0, count)
+  api_client_for(mgr_server).system.get_event_history(system_id, 0, count)
 end
 
 # Function to trigger the upgrade command
 #
-# @param hostname String The hostname of the requested system
-# @param package String The package name where it will trigger an upgrade
-def trigger_upgrade(hostname, package)
-  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
-  get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+# @param hostname [String] The hostname of the requested system
+# @param package [String] The package name where it will trigger an upgrade
+# @param mgr_server [String] The SUSE Manager server to run spacecmd against ('server', 'server2', 'server3'). Defaults to 'server'.
+def trigger_upgrade(hostname, package, mgr_server: 'server')
+  get_target(mgr_server).run('spacecmd -u admin -p admin clear_caches', check_errors: false)
+  get_target(mgr_server).run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
 
-# Function to trigger the install command
+# Function to trigger the installation command
 #
-# @param hostname String The hostname of the requested system
-# @param package String The package name to install
-def trigger_install(hostname, package)
-  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
-  get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
+# @param hostname [String] The hostname of the requested system
+# @param package [String] The package name to install
+# @param mgr_server [String] The SUSE Manager server to run spacecmd against ('server', 'server2', 'server3'). Defaults to 'server'.
+def trigger_install(hostname, package, mgr_server: 'server')
+  get_target(mgr_server).run('spacecmd -u admin -p admin clear_caches', check_errors: false)
+  get_target(mgr_server).run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
 end
 
 # Function to trigger the remove command

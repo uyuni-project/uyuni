@@ -56,6 +56,18 @@ Then(/^it should be possible to reach the test packages$/) do
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
+Given(/^I mirror the RPM test packages locally$/) do
+  server = get_target('server')
+  dest = '/srv/www/htdocs/pub/TestRepoRpmUpdates'
+  server.run("mkdir -p #{dest}")
+  server.run(
+    'wget --recursive --no-parent --no-host-directories --cut-dirs=6 ' \
+    "--reject 'index.html*' --directory-prefix=#{dest} " \
+    'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/'
+  )
+  server.run("ln -sf #{dest} /srv/www/htdocs/pub/AnotherRepo")
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&
@@ -420,20 +432,23 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3))?$/) do |channel, host|
+  host ||= 'server'
   margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
-  wait_for_channels([channel], "channel '#{channel}'", margin: margin)
+  wait_for_channels([channel], "channel '#{channel}'", host: host, margin: margin)
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3))?$/) do |os_product_version, host|
+  host ||= 'server'
   channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
   raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
 
   channels_to_sync = filter_channels(channels_to_sync, ['beta']) unless $beta_enabled
-  wait_for_channels(channels_to_sync, "product '#{os_product_version}'")
+  wait_for_channels(channels_to_sync, "product '#{os_product_version}'", host: host)
 end
 
-When(/^I wait until all synchronized channels have solved their dependencies$/) do
+When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3))?$/) do |host|
+  host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
   accumulated_timeout = get_context('channels_timeout')
@@ -454,7 +469,7 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
     deadline_elapsed = optimized_timeout
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
-      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
+      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel, host: host) }
       break if channels_to_wait_solv_file.empty?
 
       if channels_to_wait_solv_file.count < prev_count
@@ -1122,12 +1137,14 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
-  host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
-  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+# Builds the mgr-create-bootstrap-repo command line for a given client type
+# (e.g. "sle_minion", "proxy", "build_host") -- shared by the hub-target and
+# arbitrary-host bootstrap repo creation steps below.
+def bootstrap_repo_cmd(client, without_flushing)
+  client = host_transactional?(client) ? 'proxy' : 'proxy_nontransactional' if client.match?(/^proxy\d*$/)
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
-  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
 
   log "base_channel: #{base_channel}"
   log "channel: #{channel}"
@@ -1139,12 +1156,17 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
     else
       "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels"
     end
-
   cmd += ' --flush' unless without_flushing
+  cmd
+end
 
-  log 'Creating the bootstrap repository on the server:'
+When(/^I create the bootstrap repository for "([^"]*)" on (the server|server\d+)((?: without flushing)?)$/) do |client, host, without_flushing|
+  target = host == 'the server' ? 'server' : host
+  cmd = bootstrap_repo_cmd(client, without_flushing)
+  get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
+  log "Creating the bootstrap repository on #{target}:"
   log "  #{cmd}"
-  get_target('server').run(cmd, exec_option: '-it')
+  get_target(target).run(cmd, exec_option: '-it')
 end
 
 When(/^I create the bootstrap repositories including custom channels$/) do
@@ -1563,45 +1585,57 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node.run('iptables -F INPUT')
 end
 
-When(/^I generate the configuration "([^"]*)" of containerized proxy on the server$/) do |file_path|
+# Generates the containerized proxy configuration tarball on the given SUSE Manager server,
+# for the given proxy target.
+#
+# Usage:
+#   I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
+#   I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy2 on server2
+When(/^I generate the configuration "([^"]*)" of containerized (proxy|proxy2|proxy3) on (?:the )?(server|server2|server3)$/) do |file_path, proxy_target, host|
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
-    generate_certificate('proxy', get_target('proxy').full_hostname)
+    generate_certificate(proxy_target, get_target(proxy_target).full_hostname)
 
     # Copy the cert files in the container to use them with spacecmd
     %w[proxy.crt proxy.key ca.crt].each do |file|
-      get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
+      get_target(host).inject("/tmp/#{file}", "/tmp/#{file}")
     end
 
     command = 'spacecmd -u admin -p admin ' \
-              "proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
-              '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
+      "proxy_container_config -- -o #{file_path} -p 8022 " \
+      "#{get_target(proxy_target).full_hostname} #{get_target(host).full_hostname} 2048 galaxy-noise@suse.de " \
+      '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     command = 'echo spacewalk > ca_pass && ' \
-              'spacecmd --nossl -u admin -p admin ' \
-              "proxy_container_config_generate_cert -- -o #{file_path} " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
-              '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
-              'rm ca_pass'
+      'spacecmd --nossl -u admin -p admin ' \
+      "proxy_container_config_generate_cert -- -o #{file_path} " \
+      "#{get_target(proxy_target).full_hostname} #{get_target(host).full_hostname} 2048 galaxy-noise@suse.de " \
+      '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
+      'rm ca_pass'
   end
-  get_target('server').run(command)
+  get_target(host).run(command)
 end
 
-When(/^I copy the configuration "([^"]*)" of containerized proxy from the server to the proxy$/) do |file_path|
-  get_target('server').extract(file_path, file_path)
-  get_target('proxy').inject(file_path, file_path)
+# Copies the containerized proxy configuration tarball from the given SUSE Manager server
+# to its matching proxy (server -> proxy, server2 -> proxy2, server3 -> proxy3).
+#
+# Usage:
+#   I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
+#   I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from server2 to proxy2
+When(/^I copy the configuration "([^"]*)" of containerized proxy from (?:the )?(server|server2|server3) to (?:the )?(proxy|proxy2|proxy3)$/) do |file_path, host, proxy_target|
+  get_target(host).extract(file_path, file_path)
+  get_target(proxy_target).inject(file_path, file_path)
 end
 
-When(/^I add avahi hosts in containerized proxy configuration$/) do
+When(/^I add avahi hosts in containerized (proxy|proxy2|proxy3) configuration$/) do |host|
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
     hosts_list = escape_regex(hosts_list)
-    get_target('proxy').run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
+    get_target(host).run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
     log "Avahi hosts added: #{hosts_list}"
     log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
@@ -1671,7 +1705,7 @@ When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled by #{Credentials.current.first}" is completed
     Then I should see a "This action's status is: Completed" text
   )
 end
@@ -1890,21 +1924,22 @@ When(/^I wait until a new "([^"]*)" event is completed for "([^"]*)"$/) do |even
   wait_action_complete(target_event['id'])
 end
 
-When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, package, host|
-  system_name = get_system_name(host)
-  last_event_before_action = get_last_events(host).first
+When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|server2|server3))?$/) do |action, package, host, mgr_server|
+  mgr_server ||= 'server'
+  system_name = get_system_name(host, mgr_server: mgr_server)
+  last_event_before_action = get_last_events(host, mgr_server: mgr_server).first
   last_event = last_event_before_action
   case action
   when 'upgrade'
-    trigger_upgrade(system_name, package)
+    trigger_upgrade(system_name, package, mgr_server: mgr_server)
   when 'install'
-    trigger_install(system_name, package)
+    trigger_install(system_name, package, mgr_server: mgr_server)
   end
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
-    last_event = get_last_events(host).first
+    last_event = get_last_events(host, mgr_server: mgr_server).first
     break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
-  wait_action_complete(last_event['id'])
+  wait_action_complete(last_event['id'], mgr_server: mgr_server)
 end
 
 When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|

@@ -170,8 +170,7 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
 end
 
 Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
-  $current_user = user
-  $current_password = password
+  Credentials.login_as(user, password)
   next if $api_test.user.list_users.to_s.include? user
 
   begin
@@ -340,24 +339,27 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
   raise ScriptError unless details['description'] == description
 end
 
-When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
+When(/^I create an activation key including custom channels for "([^"]*)" via API(?: on (server|server2|server3))?$/) do |client, host|
+  host ||= 'server'
+  api_test = api_client_for(host)
+
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  client = host_transactional?(client) ? 'proxy' : 'proxy_nontransactional' if client.match?(/^proxy\d*$/)
   base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
-  key = $api_test.activationkey.create(id, description, base_channel_label, 100)
+  key = api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
 
   $stdout.puts "Activation key #{key} created" unless key.nil?
 
   is_sshminion = client.include? 'sshminion'
-  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_sshminion ? 'ssh-push' : 'default')
+  api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_sshminion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
-  $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
+  api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
-  child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
+  child_channels = api_test.channel.software.list_child_channels(base_channel_label)
 
   # Define which clients trigger which exclusions
   channel_filters = {
@@ -398,7 +400,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
-  $api_test.activationkey.add_child_channels(key, child_channels)
+  api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 # actionchain namespace
