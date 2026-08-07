@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -182,7 +183,17 @@ public class UserEditSetupAction extends RhnAction {
         for (AccessGroup ag : rbacGroups.stream()
                 .sorted(Comparator.comparing(AccessGroup::getDescription)).toList()) {
             boolean disabled = false;
-            String label = loc.hasMessage(ag.getLabel()) ? loc.getMessage(ag.getLabel()) : ag.getDescription();
+
+            String label = ag.getLabel();
+            boolean isDefaultGroup = AccessGroupFactory.DEFAULT_GROUPS.stream()
+                    .anyMatch(group -> group.getLabel().equals(ag.getLabel()));
+
+            if (isDefaultGroup) {
+                label = loc.hasMessage(ag.getLabel()) ?
+                    loc.getMessage(ag.getLabel()) :
+                    ag.getDescription();
+            }
+
             if (ag.getOrg() == null && targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN) &&
                     UserFactory.IMPLIEDROLES.stream().anyMatch(r -> r.getLabel().equals(ag.getLabel()))) {
                 disabled = true;
