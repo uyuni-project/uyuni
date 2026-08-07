@@ -12,4 +12,4 @@ Feature: Create an activation key for sles15sp7
     When I create an activation key including custom channels for "sles15sp7_minion" via API on server2
 
   Scenario: Create an activation key with the channel and child channels for proxy
-    When I create an activation key including custom channels for "proxy" via API on server2
+    When I create an activation key including custom channels for "proxy2" via API on server2
