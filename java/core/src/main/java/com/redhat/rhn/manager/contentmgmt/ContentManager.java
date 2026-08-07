@@ -77,6 +77,9 @@ import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
+import com.suse.manager.reactor.mqtt.MqttEventHelper;
+import com.suse.manager.reactor.mqtt.event.ClmBuildCompletedEvent;
+import com.suse.manager.reactor.mqtt.event.ClmBuildStartedEvent;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -683,9 +686,16 @@ public class ContentManager {
             throw new ContentManagementException("Build/Promote already in progress");
         }
 
+        MqttEventHelper.publishAfterCommit(new ClmBuildStartedEvent(project.getLabel(), user.getLogin()));
         buildSoftwareSources(firstEnv, async, user);
         ContentProjectHistoryEntry entry = addHistoryEntry(message, user, project);
         firstEnv.setVersion(entry.getVersion());
+        if (!async) {
+            // An asynchronous build only schedules the channel alignment here, so completion
+            // cannot be reported at this point.
+            MqttEventHelper.publishAfterCommit(new ClmBuildCompletedEvent(project.getLabel(),
+                    String.valueOf(entry.getVersion()), user.getLogin()));
+        }
     }
 
     /**

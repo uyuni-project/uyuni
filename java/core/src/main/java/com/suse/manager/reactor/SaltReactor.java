@@ -46,6 +46,8 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
+import com.suse.manager.reactor.mqtt.MqttEventAction;
+import com.suse.manager.reactor.mqtt.MqttPublisherService;
 import com.suse.manager.saltboot.PXEEvent;
 import com.suse.manager.saltboot.PXEEventMessage;
 import com.suse.manager.saltboot.PXEEventMessageAction;
@@ -123,6 +125,17 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
+        MqttPublisherService mqttPublisherService = MqttPublisherService.getInstance();
+        if (mqttPublisherService != null) {
+            MqttEventAction mqttEventAction = new MqttEventAction(mqttPublisherService);
+
+            MessageQueue.registerAction(mqttEventAction, RegisterMinionEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, ApplyStatesEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, JobReturnEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, ImageDeployedEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, BatchStartedEventMessage.class);
+        }
+
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr, attestationMgr),
                 RegisterMinionEventMessage.class);
