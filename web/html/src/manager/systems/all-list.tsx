@@ -32,6 +32,7 @@ const DownloadCSVButton = ({ search }) => {
     <LinkButton
       text={t("Download CSV")}
       href={url}
+      download="systems.csv"
       className="btn btn-default"
       icon="spacewalk-icon-download-csv"
       data-senna-off="true"
