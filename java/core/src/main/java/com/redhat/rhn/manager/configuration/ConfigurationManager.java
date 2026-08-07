@@ -47,6 +47,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
@@ -1368,6 +1369,11 @@ public class ConfigurationManager extends BaseManager {
         StateFactory.StateRevisionsUsage usage = StateFactory.latestStateRevisionsByConfigChannel(channel);
         removeChannelFromRevision(usage, channel);
         removeChannelFromRecurringActions(actions, channel);
+        removeChannelFromActivationKeys(channel);
+        removeChannelFromServers(channel, user);
+        // Flush the collection changes so the ordered lists are recreated (compacted) before
+        // the stored procedure below deletes the join rows via ON DELETE CASCADE.
+        HibernateFactory.getSession().flush();
         ConfigurationFactory.removeConfigChannel(channel);
         SaltStateGeneratorService.INSTANCE.regenerateConfigStates(usage);
         SaltStateGeneratorService.INSTANCE.regenerateRecurringStates(actions);
@@ -1385,6 +1391,30 @@ public class ConfigurationManager extends BaseManager {
         usage.getServerStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getServerGroupStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
         usage.getOrgStateRevisions().forEach(rev->rev.getConfigChannels().remove(channel));
+    }
+
+    /**
+     * Remove the config channel from every activation key that references it, so the Hibernate
+     * ordered list is recreated (compacted) before the ON DELETE CASCADE removes the join row.
+     * Otherwise a channel deleted from a low position would leave the survivors at gapped
+     * positions, producing a null hole in the reconstructed list.
+     * @param channel channel to be removed
+     */
+    private void removeChannelFromActivationKeys(ConfigChannel channel) {
+        TokenFactory.listByConfigChannel(channel)
+                .forEach(token -> token.getAllConfigChannels().remove(channel));
+    }
+
+    /**
+     * Remove the config channel from every server's ordered config-channel list, so the Hibernate
+     * ordered list is recreated (compacted) before the ON DELETE CASCADE removes the join row
+     *.
+     * @param channel channel to be removed
+     * @param user the user performing the deletion
+     */
+    private void removeChannelFromServers(ConfigChannel channel, User user) {
+        ServerFactory.listByConfigChannel(channel)
+                .forEach(server -> server.unsubscribeConfigChannel(channel, user));
     }
 
     private void removeChannelFromRecurringActions(List<RecurringAction> actions, ConfigChannel channel) {

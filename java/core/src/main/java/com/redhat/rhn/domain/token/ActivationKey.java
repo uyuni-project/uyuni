@@ -405,7 +405,7 @@ public class ActivationKey extends BaseDomainHelper {
      * @return the list of all config channels
      */
     public List<ConfigChannel> getAllConfigChannels() {
-        return getToken().getConfigChannels();
+        return getToken().getAllConfigChannels();
     }
 
     /**
