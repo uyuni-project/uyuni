@@ -303,8 +303,8 @@ public class HardwareMapper {
         server.getDevices().clear();
 
         if (udevdb == null || udevdb.isEmpty()) {
-            errors.add("Devices: Salt module 'udevdb.exportdb' returned an empty list");
-            LOG.error("Salt module 'udevdb.exportdb' returned an empty list for minion: {}", server.getMinionId());
+            errors.add("Devices: Salt module 'udev.exportdb' returned an empty list");
+            LOG.error("Salt module 'udev.exportdb' returned an empty list for minion: {}", server.getMinionId());
             return;
         }
 
