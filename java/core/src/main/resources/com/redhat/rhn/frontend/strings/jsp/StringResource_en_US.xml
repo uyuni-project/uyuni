@@ -13186,7 +13186,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.reboot.notNeeded">
-          <source>Reboot skipped because the prerequisite states made no changes</source>
+          <source>No reboot is required before continuing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -13252,7 +13252,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="system.event.transactional.applyReboot.notNeeded">
-          <source>Reboot skipped because the transactional states made no changes</source>
+          <source>No reboot is required for this action</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>

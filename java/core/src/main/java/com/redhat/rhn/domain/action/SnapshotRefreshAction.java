@@ -14,6 +14,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ServerFactory;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.BtrfsSnapshotUtils;
 import com.suse.manager.webui.utils.salt.custom.SnapshotRefreshSlsResult;
@@ -60,7 +61,11 @@ public class SnapshotRefreshAction extends Action {
 
         serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
             SnapshotRefreshSlsResult result = Json.GSON.fromJson(jsonResult, SnapshotRefreshSlsResult.class);
-            BtrfsSnapshotUtils.updateSnapshotInfo(minionServer, result.getSnapperRawStdout());
+            BtrfsSnapshotUtils.updateSnapshotInfo(minionServer, result.getSnapperRawStdout())
+                    .ifPresent(snapshotInfo -> TransactionalActionManager.reconcileSnapshotRefreshAction(
+                            minionServer.getId(),
+                            serverAction.getParentAction().getId(),
+                            BtrfsSnapshotUtils.hasPendingTransactionalReboot(snapshotInfo)));
             ServerFactory.save(minionServer);
         });
     }

@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.utils.Xor;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,24 +58,6 @@ public class TransactionalActionManagerTest {
         assertEquals("transactional_update.apply", call.getPayload().get("fun"));
         assertEquals(List.of(SaltParameters.PACKAGES_PATCHINSTALL),
                 ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
-    }
-
-    @Test
-    public void testTransactionalUpdateApplyResultIsRecognizedAsTransactional() {
-        assertTrue(TransactionalActionManager.isTransactionalResult(
-                Optional.of(Xor.right("transactional_update.apply"))));
-    }
-
-    @Test
-    public void testStateApplyResultIsNotRecognizedAsTransactional() {
-        assertFalse(TransactionalActionManager.isTransactionalResult(
-                Optional.of(Xor.right("state.apply"))));
-    }
-
-    @Test
-    public void testPendingTransactionCheckStateIsRecognized() {
-        assertTrue(TransactionalActionManager.isPendingTransactionCheck(
-                Optional.of(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION))));
     }
 
     @Test
@@ -276,9 +257,10 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testHighstateDoesNotUseCustomStateTransactionalConfig() {
+    public void testHighstateUsesTransactionalUpdateForTransactionalMinions() {
         withCustomStatesTransactionalUpdateConfig("true", () -> {
             Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+            MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
             MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
 
             TransactionalActionManager.addCustomStateApplyCalls(
@@ -287,23 +269,21 @@ public class TransactionalActionManagerTest {
                     Optional.empty(),
                     Optional.empty(),
                     Optional.empty(),
-                    List.of(transactionalMinion));
+                    List.of(regularMinion, transactionalMinion));
 
-            assertEquals(1, calls.size());
-            Map<String, Object> payload = calls.keySet().iterator().next().getPayload();
-            assertEquals("state.apply", payload.get("fun"));
-            assertEquals(List.of("direct_call"), payload.get("module_executors"));
+            assertEquals(2, calls.size());
+            assertTrue(calls.entrySet().stream()
+                    .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                            entry.getValue().equals(List.of(regularMinion))));
+            Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+                    .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
+                    .map(Map.Entry::getKey)
+                    .findFirst();
+            assertTrue(transactionalCall.isPresent());
+            assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
+            Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
+            assertFalse(kwargs.containsKey("mods"));
         });
-    }
-
-    @Test
-    public void testPendingTransactionCheckUsesDirectCall() {
-        Map<String, Object> payload = TransactionalActionManager.getPendingTransactionCheckSaltCall().getPayload();
-
-        assertEquals("state.apply", payload.get("fun"));
-        assertEquals(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION),
-                ((Map<?, ?>) payload.get("kwarg")).get("mods"));
-        assertEquals(List.of("direct_call"), payload.get("module_executors"));
     }
 
     private void withCustomStatesTransactionalUpdateConfig(String value, Runnable test) {

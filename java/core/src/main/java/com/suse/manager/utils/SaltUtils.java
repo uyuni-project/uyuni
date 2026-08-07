@@ -497,7 +497,7 @@ public class SaltUtils {
         }
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-        boolean transactionalResult = TransactionalActionManager.isTransactionalResult(function);
+        boolean transactionalResult = TransactionalUpdateCalls.isApplyFunction(function);
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
@@ -505,7 +505,7 @@ public class SaltUtils {
             serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
             if (transactionalResult) {
-                setTransactionalResultMsg(serverAction, action, function, states, jsonResult);
+                setTransactionalResultMsg(serverAction);
                 LOG.debug("Finished update server action for action {}", action.getId());
                 return;
             }
@@ -517,8 +517,8 @@ public class SaltUtils {
             }
         }
         else if (transactionalResult) {
-            setTransactionalResultMsg(serverAction, action, function, states, jsonResult);
-            if (TransactionalActionManager.needsAdditionalStatesAfterReboot(action, function, states)) {
+            setTransactionalResultMsg(serverAction);
+            if (TransactionalActionManager.needsAdditionalStatesAfterReboot(action, function)) {
                 serverAction.setCompletionTime(null);
             }
             else {
@@ -540,22 +540,12 @@ public class SaltUtils {
         LOG.debug("Finished update server action for action {}", action.getId());
     }
 
-    private static void setTransactionalResultMsg(
-            ServerAction serverAction,
-            Action action,
-            Optional<Xor<String[], String>> function,
-            Optional<List<String>> states,
-            JsonElement jsonResult) {
+    private static void setTransactionalResultMsg(ServerAction serverAction) {
         serverAction.getServer().asMinionServer().ifPresent(minionServer ->
-                TransactionalActionManager.handleTransactionalResult(
-                        action,
-                        function,
-                        states,
+                serverAction.setResultMsg(TransactionalActionManager.handleTransactionalResult(
                         minionServer.getId(),
                         serverAction.getParentAction().getId(),
-                        jsonResult,
-                        serverAction.isStatusFailed())
-                        .ifPresent(serverAction::setResultMsg));
+                        serverAction.isStatusFailed())));
     }
 
     /**

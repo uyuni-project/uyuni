@@ -26,7 +26,7 @@ import java.util.Optional;
  * Provides {@code transactional_update.apply} as a typed {@link LocalCall}.
  */
 public class TransactionalUpdateCalls {
-    private static final String APPLY_FUNCTION = "transactional_update.apply";
+    public static final String APPLY_FUNCTION = "transactional_update.apply";
 
     private TransactionalUpdateCalls() {
     }
@@ -37,7 +37,7 @@ public class TransactionalUpdateCalls {
      * <p>Equivalent to {@code state.apply} but stages OS-level changes in a new
      * Btrfs snapshot that becomes active only after the next reboot.</p>
      *
-     * @param mods list of SLS state names to apply (must not be null or empty)
+     * @param mods list of SLS state names to apply. Salt applies the highstate when an empty list is given
      * @return a {@link LocalCall} ready to be dispatched via the Salt API
      */
     public static LocalCall<Map<String, State.ApplyResult>> apply(List<String> mods) {
@@ -47,7 +47,7 @@ public class TransactionalUpdateCalls {
     /**
      * Apply states using {@code transactional_update.apply}, optionally passing pillar data.
      *
-     * @param mods   list of SLS state names to apply (must not be null or empty)
+     * @param mods   list of SLS state names to apply. Salt applies the highstate when an empty list is given
      * @param pillar optional pillar override map; use {@link Optional#empty()} to omit
      * @return a {@link LocalCall} ready to be dispatched via the Salt API
      */
@@ -59,7 +59,7 @@ public class TransactionalUpdateCalls {
     /**
      * Apply states using {@code transactional_update.apply}, optionally passing pillar data and execution flags.
      *
-     * @param mods   list of SLS state names to apply (must not be null or empty)
+     * @param mods   list of SLS state names to apply. Salt applies the highstate when an empty list is given
      * @param pillar optional pillar override map; use {@link Optional#empty()} to omit
      * @param queue  optional queue flag
      * @param test   optional test mode flag
@@ -67,11 +67,13 @@ public class TransactionalUpdateCalls {
      */
     public static LocalCall<Map<String, State.ApplyResult>> apply(
             List<String> mods, Optional<Map<String, Object>> pillar, Optional<Boolean> queue, Optional<Boolean> test) {
-        if (mods == null || mods.isEmpty()) {
-            throw new IllegalArgumentException("At least one state must be specified");
+        if (mods == null) {
+            throw new IllegalArgumentException("State list must not be null");
         }
         Map<String, Object> kwargs = new LinkedHashMap<>();
-        kwargs.put("mods", mods);
+        if (!mods.isEmpty()) {
+            kwargs.put("mods", mods);
+        }
         pillar.ifPresent(p -> kwargs.put("pillar", p));
         queue.ifPresent(q -> kwargs.put("queue", q));
         test.ifPresent(t -> kwargs.put("test", t));

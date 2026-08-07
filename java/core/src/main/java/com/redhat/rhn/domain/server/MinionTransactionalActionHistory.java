@@ -39,6 +39,9 @@ public class MinionTransactionalActionHistory implements Serializable {
     @Column(name = "action_id")
     private Long actionId;
 
+    @Column(name = "snapshot_refresh_action_id")
+    private Long snapshotRefreshActionId;
+
     @Column(name = "created")
     private Date created;
 
@@ -108,6 +111,13 @@ public class MinionTransactionalActionHistory implements Serializable {
      */
     public Long getActionId() {
         return actionId;
+    }
+
+    /**
+     * @return snapshot refresh action scheduled to reconcile this transactional action
+     */
+    public Long getSnapshotRefreshActionId() {
+        return snapshotRefreshActionId;
     }
 
     /**
@@ -207,24 +217,46 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
-     * Record that prerequisites were applied.
-     *
-     * @param rebootRequiredIn whether a reboot is required before continuing
+     * Record that the transactional state was applied successfully.
      */
-    public void recordPrerequisitesApplied(boolean rebootRequiredIn) {
+    public void recordTransactionalStateApplied() {
         prerequisiteStatus = ProgressStatus.COMPLETED;
         prerequisiteAt = new Date();
-        rebootRequired = rebootRequiredIn;
-        rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
-        rebootAt = rebootRequiredIn ? null : prerequisiteAt;
+        rebootRequired = false;
+        rebootStatus = ProgressStatus.PENDING;
+        rebootAt = null;
         afterRebootStatus = ProgressStatus.PENDING;
         afterRebootStatusAt = null;
     }
 
     /**
-     * Record that prerequisites failed.
+     * Record the snapshot refresh action scheduled to reconcile this transactional action.
+     *
+     * @param snapshotRefreshActionIdIn snapshot refresh action id
      */
-    public void recordPrerequisitesFailed() {
+    public void recordSnapshotRefreshAction(Long snapshotRefreshActionIdIn) {
+        snapshotRefreshActionId = snapshotRefreshActionIdIn;
+    }
+
+    /**
+     * Record the action-specific reboot state determined from refreshed snapshot information.
+     *
+     * @param rebootRequiredIn whether this action needs a reboot
+     * @param hasAfterRebootState whether this action has an after-reboot state to execute
+     */
+    public void recordSnapshotReconciliation(boolean rebootRequiredIn, boolean hasAfterRebootState) {
+        Date now = new Date();
+        rebootRequired = rebootRequiredIn;
+        rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
+        rebootAt = rebootRequiredIn ? null : now;
+        afterRebootStatus = rebootRequiredIn || hasAfterRebootState ? ProgressStatus.PENDING : ProgressStatus.COMPLETED;
+        afterRebootStatusAt = rebootRequiredIn || hasAfterRebootState ? null : now;
+    }
+
+    /**
+     * Record that applying the transactional state failed.
+     */
+    public void recordTransactionalApplyFailed() {
         Date now = new Date();
         prerequisiteStatus = ProgressStatus.FAILED;
         prerequisiteAt = now;
@@ -245,48 +277,6 @@ public class MinionTransactionalActionHistory implements Serializable {
             rebootAt = now;
         }
         afterRebootStatus = ProgressStatus.SCHEDULED;
-        afterRebootStatusAt = now;
-    }
-
-    /**
-     * Record that the transactional apply step completed.
-     *
-     * @param rebootRequiredIn whether a reboot is required to complete the action
-     */
-    public void recordTransactionalApplyCompleted(boolean rebootRequiredIn) {
-        prerequisiteStatus = ProgressStatus.COMPLETED;
-        prerequisiteAt = new Date();
-        rebootRequired = rebootRequiredIn;
-        rebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.NOT_NEEDED;
-        rebootAt = rebootRequiredIn ? null : prerequisiteAt;
-        afterRebootStatus = rebootRequiredIn ? ProgressStatus.PENDING : ProgressStatus.COMPLETED;
-        afterRebootStatusAt = rebootRequiredIn ? null : prerequisiteAt;
-    }
-
-    /**
-     * Record that a pending transactional apply action does not require a reboot anymore.
-     *
-     * @param completionTime when the pending transaction check completed
-     */
-    public void recordTransactionalApplyNoRebootNeeded(Date completionTime) {
-        rebootRequired = false;
-        rebootStatus = ProgressStatus.NOT_NEEDED;
-        rebootAt = completionTime;
-        afterRebootStatus = ProgressStatus.COMPLETED;
-        afterRebootStatusAt = completionTime;
-    }
-
-    /**
-     * Record that the transactional apply step failed.
-     */
-    public void recordTransactionalApplyFailed() {
-        Date now = new Date();
-        prerequisiteStatus = ProgressStatus.FAILED;
-        prerequisiteAt = now;
-        rebootRequired = false;
-        rebootStatus = ProgressStatus.NOT_NEEDED;
-        rebootAt = now;
-        afterRebootStatus = ProgressStatus.NOT_NEEDED;
         afterRebootStatusAt = now;
     }
 

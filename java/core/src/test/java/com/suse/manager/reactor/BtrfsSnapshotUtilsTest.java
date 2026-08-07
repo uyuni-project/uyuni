@@ -149,6 +149,22 @@ public class BtrfsSnapshotUtilsTest {
     }
 
     @Test
+    public void testPendingTransactionalRebootIsDetectedFromActiveAndDefaultSnapshots() {
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_TYPICAL));
+
+        assertTrue(result.isPresent());
+        assertTrue(BtrfsSnapshotUtils.hasPendingTransactionalReboot(result.get()));
+    }
+
+    @Test
+    public void testPendingTransactionalRebootIsFalseWhenActiveAndDefaultMatch() {
+        Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_WITH_IN_PROGRESS));
+
+        assertTrue(result.isPresent());
+        assertFalse(BtrfsSnapshotUtils.hasPendingTransactionalReboot(result.get()));
+    }
+
+    @Test
     public void testDetailsJsonContainsExpectedFields() {
         Optional<ParseResult> result = BtrfsSnapshotUtils.parse(Optional.of(SNAPPER_JSON_TYPICAL));
 

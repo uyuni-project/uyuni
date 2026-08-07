@@ -763,6 +763,14 @@ public class SaltServerActionService {
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
                             createStateApplyKwargs(kwargs));
+                case TransactionalUpdateCalls.APPLY_FUNCTION:
+                    List<String> transactionalMods = (List<String>)kwargs.get("mods");
+                    return new SaltModuleRun(stateId,
+                            TransactionalUpdateCalls.APPLY_FUNCTION,
+                            serverAction.getParentAction().getId(),
+                            !CollectionUtils.isEmpty(transactionalMods) ?
+                                    singletonMap("mods", transactionalMods) : emptyMap(),
+                            createStateApplyKwargs(kwargs));
                 case SaltParameters.SYSTEM_REBOOT:
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,

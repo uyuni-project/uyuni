@@ -66,8 +66,16 @@ public class TransactionalUpdateCallsTest {
     }
 
     @Test
-    public void testApplyRejectsEmptyMods() {
-        assertThrows(IllegalArgumentException.class, () -> TransactionalUpdateCalls.apply(List.of()));
+    public void testApplyWithEmptyModsOmitsModsForHighstate() {
+        LocalCall<Map<String, State.ApplyResult>> call = TransactionalUpdateCalls.apply(List.of());
+        Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
+        assertNotNull(kwargs);
+        assertFalse(kwargs.containsKey("mods"), "mods should be absent when applying highstate");
+    }
+
+    @Test
+    public void testApplyRejectsNullMods() {
+        assertThrows(IllegalArgumentException.class, () -> TransactionalUpdateCalls.apply(null));
     }
 
     @Test

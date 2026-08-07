@@ -32,8 +32,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
-import com.suse.manager.reactor.messaging.CheckTransactionalPendingTransactionEventMessage;
-import com.suse.manager.reactor.messaging.CheckTransactionalPendingTransactionEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessage;
@@ -134,9 +132,6 @@ public class SaltReactor {
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
                 JobReturnEventMessage.class);
-        MessageQueue.registerAction(
-                new CheckTransactionalPendingTransactionEventMessageAction(saltApi),
-                CheckTransactionalPendingTransactionEventMessage.class);
         MessageQueue.registerAction(
                 new ResumeTransactionalActionEventMessageAction(saltServerActionService),
                 ResumeTransactionalActionEventMessage.class);

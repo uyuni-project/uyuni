@@ -23,6 +23,10 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
                          CONSTRAINT suse_transactional_action_history_aid_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
+    snapshot_refresh_action_id NUMERIC
+                         CONSTRAINT suse_transactional_action_history_refresh_aid_fk
+                             REFERENCES rhnAction (id)
+                             ON DELETE SET NULL,
     created          TIMESTAMPTZ NOT NULL,
     prereq_status    VARCHAR(32) NOT NULL,
     prereq_at        TIMESTAMPTZ,
@@ -32,7 +36,8 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
     after_reboot_status    VARCHAR(32) NOT NULL,
     after_reboot_status_at TIMESTAMPTZ,
 
-    CONSTRAINT suse_transactional_action_history_pk PRIMARY KEY (minion_server_id, action_id)
+    CONSTRAINT suse_transactional_action_history_pk PRIMARY KEY (minion_server_id, action_id),
+    CONSTRAINT suse_transactional_action_history_refresh_uq UNIQUE (snapshot_refresh_action_id)
 );
 
 INSERT INTO rhnActionType (id, label, name, trigger_snapshot, unlocked_only, maintenance_mode_only)

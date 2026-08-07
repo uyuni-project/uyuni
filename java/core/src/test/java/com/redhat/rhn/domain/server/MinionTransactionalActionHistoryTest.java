@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressSte
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,10 +28,11 @@ import java.util.List;
 public class MinionTransactionalActionHistoryTest {
 
     @Test
-    void testPrerequisitesWithChangesWaitForReboot() {
+    void testSnapshotReconciliationWithRebootWaitsForReboot() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordPrerequisitesApplied(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, true);
 
         assertEquals(1L, history.getMinionServerId());
         assertEquals(10L, history.getActionId());
@@ -40,10 +40,11 @@ public class MinionTransactionalActionHistoryTest {
     }
 
     @Test
-    void testPrerequisitesWithoutChangesDoNotWaitForReboot() {
+    void testSnapshotReconciliationWithoutRebootDoesNotWaitForReboot() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordPrerequisitesApplied(false);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, false);
 
         assertFalse(history.isWaitingForReboot());
         assertNull(history.getRebootPendingSince());
@@ -52,7 +53,8 @@ public class MinionTransactionalActionHistoryTest {
     @Test
     void testAfterRebootScheduledClearsRebootWaitState() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        history.recordPrerequisitesApplied(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, true);
 
         history.recordAfterRebootScheduled();
 
@@ -66,17 +68,18 @@ public class MinionTransactionalActionHistoryTest {
     void testPendingRebootActionCanContinueOnlyAfterRecordedTime() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordPrerequisitesApplied(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, true);
 
         assertFalse(history.canContinueAfter(history.getRebootPendingSince().getTime()));
         assertTrue(history.canContinueAfter(history.getRebootPendingSince().getTime() + 1));
     }
 
     @Test
-    void testPrerequisitesFailureClosesRemainingSteps() {
+    void testTransactionalApplyFailureClosesRemainingSteps() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordPrerequisitesFailed();
+        history.recordTransactionalApplyFailed();
 
         assertFalse(history.isWaitingForReboot());
         assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
@@ -89,7 +92,8 @@ public class MinionTransactionalActionHistoryTest {
     @Test
     void testProgressEntriesAreReturnedInExecutionOrder() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        history.recordPrerequisitesApplied(false);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
         history.recordAfterRebootScheduled();
 
         List<MinionTransactionalActionHistory.ProgressEntry> entries = history.getProgressEntries(false);
@@ -107,10 +111,11 @@ public class MinionTransactionalActionHistoryTest {
     }
 
     @Test
-    void testTransactionalApplyWithChangesWaitsForReboot() {
+    void testSnapshotReconciliationWithPendingSnapshotWaitsForReboot() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordTransactionalApplyCompleted(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, false);
 
         assertTrue(history.isWaitingForReboot());
         assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
@@ -119,40 +124,34 @@ public class MinionTransactionalActionHistoryTest {
     }
 
     @Test
-    void testTransactionalApplyWithoutChangesCompletesAction() {
+    void testSnapshotReconciliationWithoutPendingSnapshotCompletesAction() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
-        history.recordTransactionalApplyCompleted(false);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, false);
 
         assertFalse(history.isWaitingForReboot());
         assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
         assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
-        assertEquals(history.getPrerequisiteAt(), history.getRebootAt());
-        assertEquals(history.getPrerequisiteAt(), history.getAfterRebootStatusAt());
+        assertTrue(history.getRebootAt().getTime() >= history.getPrerequisiteAt().getTime());
+        assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
     }
 
     @Test
-    void testTransactionalApplyNoRebootNeededPreservesApplyTime() {
+    void testSnapshotRefreshActionIdIsStored() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        history.recordTransactionalApplyCompleted(true);
-        Date appliedAt = history.getPrerequisiteAt();
-        Date checkedAt = new Date(appliedAt.getTime() + 1000);
 
-        history.recordTransactionalApplyNoRebootNeeded(checkedAt);
+        history.recordSnapshotRefreshAction(20L);
 
-        assertFalse(history.isWaitingForReboot());
-        assertEquals(appliedAt, history.getPrerequisiteAt());
-        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
-        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
-        assertEquals(checkedAt, history.getRebootAt());
-        assertEquals(checkedAt, history.getAfterRebootStatusAt());
+        assertEquals(20L, history.getSnapshotRefreshActionId());
     }
 
     @Test
     void testTransactionalApplyFinalizedClearsRebootWaitState() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        history.recordTransactionalApplyCompleted(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, false);
 
         history.recordTransactionalApplyFinalized();
 
@@ -166,7 +165,8 @@ public class MinionTransactionalActionHistoryTest {
     @Test
     void testTransactionalApplyProgressEntriesUseApplyFlowSteps() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        history.recordTransactionalApplyCompleted(true);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, false);
 
         List<MinionTransactionalActionHistory.ProgressEntry> entries = history.getProgressEntries(true);
 

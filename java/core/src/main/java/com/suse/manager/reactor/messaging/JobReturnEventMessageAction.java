@@ -132,7 +132,6 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<JsonElement> jobResult = eventToJson(jobReturnEvent);
         Optional<List<String>> states = TransactionalActionManager.getStatesFromFunctionArgs(
                 jobReturnEvent.getData().getFunArgs());
-        boolean isPendingTransactionCheck = TransactionalActionManager.isPendingTransactionCheck(states);
 
         // Check first if the received event was triggered by a single action execution
         Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class)
@@ -154,12 +153,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             handleEventInActionChain(jobResult, jobReturnEvent, isFunctionTestMode);
         });
 
-        //For all jobs except when action chains are involved or the action was in test mode
-        if (isPendingTransactionCheck) {
-            handlePendingTransactionCheck(jobReturnEvent, jobResult);
-        }
-
-        boolean isStandaloneAction = !isActionChainInvolved && !isFunctionTestMode && !isPendingTransactionCheck;
+        boolean isStandaloneAction = !isActionChainInvolved && !isFunctionTestMode;
         if (isStandaloneAction) {
             handleStandaloneAction(jobResult, jobReturnEvent, function, actionId);
 
@@ -360,16 +354,6 @@ public class JobReturnEventMessageAction implements MessageAction {
                     );
             })
         );
-    }
-
-    private void handlePendingTransactionCheck(JobReturnEvent jobReturnEvent, Optional<JsonElement> jobResult) {
-        MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
-                .ifPresent(minion -> jobResult.ifPresent(result ->
-                        TransactionalActionManager.handlePendingTransactionCheckResult(
-                                minion.getId(),
-                                result,
-                                new Date(),
-                                !jobReturnEvent.getData().isSuccess() || jobReturnEvent.getData().getRetcode() != 0)));
     }
 
     private void handleStandaloneAction(Optional<JsonElement> jobResult, JobReturnEvent jobReturnEvent,

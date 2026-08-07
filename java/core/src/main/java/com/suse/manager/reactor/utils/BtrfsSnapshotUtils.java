@@ -188,9 +188,11 @@ public class BtrfsSnapshotUtils {
      *
      * @param server            the minion server to update
      * @param rawJson           raw stdout from {@code snapper --json --no-dbus list}
+     * @return parsed snapshot information, if present
      */
-    public static void updateSnapshotInfo(MinionServer server, Optional<String> rawJson) {
-        parse(rawJson).ifPresent(result -> {
+    public static Optional<ParseResult> updateSnapshotInfo(MinionServer server, Optional<String> rawJson) {
+        Optional<ParseResult> parseResult = parse(rawJson);
+        parseResult.ifPresent(result -> {
             server.setActiveSnapshot(result.getActiveSnapshot());
             server.setDefaultSnapshot(result.getDefaultSnapshot());
             server.setSnapshots(result.getSnapshotNumbers().toArray(Long[]::new));
@@ -200,6 +202,19 @@ public class BtrfsSnapshotUtils {
                     server.getMinionId(), result.getActiveSnapshot(),
                     result.getDefaultSnapshot(), result.getSnapshotNumbers());
         });
+        return parseResult;
+    }
+
+    /**
+     * Check whether snapshot information shows an unactivated transactional snapshot.
+     *
+     * @param result parsed snapshot information
+     * @return true when the default snapshot differs from the active snapshot
+     */
+    public static boolean hasPendingTransactionalReboot(ParseResult result) {
+        return result.getActiveSnapshot() != null &&
+                result.getDefaultSnapshot() != null &&
+                !result.getActiveSnapshot().equals(result.getDefaultSnapshot());
     }
 
     private static void addStringProperty(JsonObject target, JsonObject source, String property) {

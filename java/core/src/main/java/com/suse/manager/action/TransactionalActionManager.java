@@ -17,40 +17,32 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressEntry;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistoryId;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.CheckTransactionalPendingTransactionEventMessage;
 import com.suse.manager.reactor.messaging.ResumeTransactionalActionEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.results.Ret;
-import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
-import com.suse.utils.Json;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Manager for multi-step transactional actions.
@@ -65,6 +57,30 @@ public class TransactionalActionManager {
             "custom_org",
             "recurring",
             SaltParameters.REMOTE_COMMANDS);
+
+    private static final Map<String, String> PREREQUISITE_STATE_BY_STATE = Map.of(
+            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ);
+
+    private static final Set<String> TRANSACTIONAL_STATES = Set.of(
+            ApplyStatesEventMessage.CERTIFICATE,
+            ApplyStatesEventMessage.CHANNELS,
+            ApplyStatesEventMessage.DISTUPGRADE,
+            ApplyStatesEventMessage.DISTUPGRADE_SLES16,
+            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE,
+            ApplyStatesEventMessage.PACKAGES,
+            ApplyStatesEventMessage.REPORTDB_USER,
+            ApplyStatesEventMessage.SALT_MINION_SERVICE,
+            SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
+            SaltParameters.PACKAGES_PATCHDOWNLOAD,
+            SaltParameters.PACKAGES_PATCHINSTALL,
+            SaltParameters.PACKAGES_PKGDOWNLOAD,
+            SaltParameters.PACKAGES_PKGINSTALL,
+            SaltParameters.PACKAGES_PKGLOCK,
+            SaltParameters.PACKAGES_PKGREMOVE,
+            SaltParameters.PACKAGES_PKGUPDATE,
+            "update-salt",
+            "uptodate",
+            "util.mgr_switch_to_venv_minion");
 
     private TransactionalActionManager() {
     }
@@ -167,21 +183,9 @@ public class TransactionalActionManager {
      */
     public static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
             String state, Optional<Map<String, Object>> pillar) {
-        Optional<TransactionalState> transactionalState = TransactionalState.getByState(state);
-        return transactionalState.isPresent() ?
-                getTransactionalSaltCall(transactionalState.get(), pillar) :
-                withDirectCallExecutor(State.apply(List.of(state), pillar));
-    }
-
-    /**
-     * Build the Salt call used to check if a transactional system still has a pending transaction.
-     *
-     * @return Salt call
-     */
-    public static LocalCall<Map<String, State.ApplyResult>> getPendingTransactionCheckSaltCall() {
-        return withDirectCallExecutor(State.apply(
-                List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION),
-                Optional.empty()));
+        return getTransactionalStateToApply(state)
+                .map(stateToApply -> TransactionalUpdateCalls.apply(List.of(stateToApply), pillar))
+                .orElseGet(() -> withDirectCallExecutor(State.apply(List.of(state), pillar)));
     }
 
     /**
@@ -202,10 +206,9 @@ public class TransactionalActionManager {
 
         addCall(calls, State.apply(states, pillar), minionsByTransactionalUpdate.get(false));
 
-        Optional<TransactionalState> transactionalState = findSingleTransactionalState(states);
-        LocalCall<Map<String, State.ApplyResult>> transactionalCall = transactionalState.isPresent() ?
-                getTransactionalSaltCall(transactionalState.get(), pillar, Optional.empty(), Optional.empty()) :
-                withDirectCallExecutor(State.apply(states, pillar));
+        LocalCall<Map<String, State.ApplyResult>> transactionalCall = findSingleTransactionalStateToApply(states)
+                .map(stateToApply -> TransactionalUpdateCalls.apply(List.of(stateToApply), pillar))
+                .orElseGet(() -> withDirectCallExecutor(State.apply(states, pillar)));
         addCall(calls, transactionalCall, minionsByTransactionalUpdate.get(true));
     }
 
@@ -248,10 +251,9 @@ public class TransactionalActionManager {
             LocalCall<?> call, List<MinionSummary> minions) {
         if (minions.stream().anyMatch(MinionSummary::isTransactionalUpdate) &&
                 shouldExecuteWithDirectCall(call)) {
-            Optional<TransactionalState> transactionalState = getTransactionalApplyState(call);
-            if (transactionalState.isPresent()) {
-                return getTransactionalSaltCall(
-                        transactionalState.get(),
+            Optional<String> stateToApply = getTransactionalStateToApply(call);
+            if (stateToApply.isPresent()) {
+                return TransactionalUpdateCalls.apply(List.of(stateToApply.get()),
                         getPillarFromCall(call),
                         getBooleanFromCall(call, "queue"),
                         getBooleanFromCall(call, "test"));
@@ -285,11 +287,18 @@ public class TransactionalActionManager {
                 .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
+        if (states.isEmpty()) {
+            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+            addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
+                    minionsByTransactionalUpdate.get(true));
+            return;
+        }
+
         if (!shouldUseTransactionalUpdateForCustomStates(states)) {
-            Optional<TransactionalState> transactionalState = findSingleTransactionalState(states);
-            if (transactionalState.isPresent()) {
+            Optional<String> stateToApply = findSingleTransactionalStateToApply(states);
+            if (stateToApply.isPresent()) {
                 addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-                addCall(calls, getTransactionalSaltCall(transactionalState.get(), pillar, queue, test),
+                addCall(calls, TransactionalUpdateCalls.apply(List.of(stateToApply.get()), pillar, queue, test),
                         minionsByTransactionalUpdate.get(true));
                 return;
             }
@@ -338,14 +347,11 @@ public class TransactionalActionManager {
      *
      * @param action action receiving the result
      * @param function Salt function used for the action
-     * @param states states applied by Salt
      * @return true when the action needs another Salt state after reboot
      */
     public static boolean needsAdditionalStatesAfterReboot(
-            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
-        return getTransactionalDefinition(action, function, states)
-                .map(TransactionalState::hasAfterRebootState)
-                .orElse(false);
+            Action action, Optional<Xor<String[], String>> function) {
+        return TransactionalUpdateCalls.isApplyFunction(function) && hasAfterRebootState(action);
     }
 
     /**
@@ -357,10 +363,10 @@ public class TransactionalActionManager {
      */
     public static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
             Action action, List<MinionSummary> minionSummaries) {
-        return getAfterRebootDefinition(action)
-                .map(transactionalState -> Map.of(
+        return getAfterRebootState(action)
+                .map(afterRebootState -> Map.of(
                         withDirectCallExecutor(State.apply(
-                                List.of(transactionalState.afterRebootState().orElseThrow()),
+                                List.of(afterRebootState),
                                 Optional.empty(),
                                 Optional.of(true),
                                 Optional.empty())),
@@ -374,194 +380,81 @@ public class TransactionalActionManager {
      * @return true when an after-reboot state exists
      */
     public static boolean hasAfterRebootState(Action action) {
-        return getAfterRebootDefinition(action).isPresent();
+        return getAfterRebootState(action).isPresent();
     }
 
     /**
-     * Handle a transactional Salt result according to the action flow.
+     * Handle a transactional Salt result.
      *
-     * @param action action receiving the result
-     * @param function Salt function used for the action
-     * @param states states applied by Salt
      * @param minionServerId minion server id
      * @param actionId action id
-     * @param jsonResult Salt state result
      * @param failed whether the transactional step failed
      * @return result message for the action
      */
-    public static Optional<String> handleTransactionalResult(
-            Action action,
-            Optional<Xor<String[], String>> function,
-            Optional<List<String>> states,
-            Long minionServerId,
-            Long actionId,
-            JsonElement jsonResult,
-            boolean failed) {
-        return getTransactionalDefinition(action, function, states)
-                .map(definition -> handleTransactionalResult(
-                        definition, minionServerId, actionId, jsonResult, failed));
-    }
-
-    /**
-     * Check whether the given result belongs to a transactional action.
-     *
-     * @param function Salt function used for the action
-     * @return true when the result is from a transactional phase
-     */
-    public static boolean isTransactionalResult(Optional<Xor<String[], String>> function) {
-        return TransactionalUpdateCalls.isApplyFunction(function);
-    }
-
-    /**
-     * Check whether the given states are used to detect pending transactions.
-     *
-     * @param states applied Salt states
-     * @return true when this is a pending transaction check
-     */
-    public static boolean isPendingTransactionCheck(Optional<List<String>> states) {
-        return states
-                .map(list -> list.equals(List.of(ApplyStatesEventMessage.TRANSACTIONAL_PENDING_TRANSACTION)))
-                .orElse(false);
-    }
-
-    /**
-     * Complete transactional actions waiting for reboot when the minion reports there is no pending transaction.
-     *
-     * @param minionServerId minion server id
-     * @param jsonResult Salt state result
-     * @param checkTime time when the check completed
-     * @param failed whether the check failed
-     */
-    public static void handlePendingTransactionCheckResult(
-            Long minionServerId, JsonElement jsonResult, Date checkTime, boolean failed) {
-        if (failed || hasPendingTransaction(jsonResult)) {
-            return;
+    public static String handleTransactionalResult(Long minionServerId, Long actionId, boolean failed) {
+        if (failed) {
+            recordTransactionalApplyFailed(minionServerId, actionId);
+            return "Failed to apply transactional states.";
         }
 
-        findPendingRebootActions(minionServerId).stream()
-                .filter(history -> Optional.ofNullable(history.getRebootPendingSince())
-                        .map(pendingSince -> !pendingSince.after(checkTime))
-                        .orElse(false))
-                .forEach(history -> completeTransactionalApplyAction(minionServerId, history.getActionId(), checkTime));
+        lookupOrCreateActionHistory(minionServerId, actionId).recordTransactionalStateApplied();
+        Optional<Action> refreshAction = scheduleSnapshotRefresh(actionId, minionServerId);
+        if (refreshAction.isEmpty()) {
+            return "Transactional states applied. Unable to schedule snapshot refresh.";
+        }
+        lookupOrCreateActionHistory(minionServerId, actionId).recordSnapshotRefreshAction(refreshAction.get().getId());
+        return "Transactional states applied. Snapshot refresh requested.";
     }
 
-    private static Optional<TransactionalState> getTransactionalDefinition(
-            Action action, Optional<Xor<String[], String>> function, Optional<List<String>> states) {
-        if (!TransactionalUpdateCalls.isApplyFunction(function)) {
-            return Optional.empty();
-        }
-
-        if (states.filter(TransactionalActionManager::isConfigurableCustomState).isPresent()) {
-            return Optional.of(TransactionalState.CONFIGURABLE_CUSTOM_STATE);
-        }
-
-        return states.flatMap(TransactionalActionManager::findAfterRebootState)
-                .or(() -> getAfterRebootDefinition(action))
-                .or(() -> Optional.of(TransactionalState.GENERIC_APPLY));
-    }
-
-    private static Optional<TransactionalState> getAfterRebootDefinition(Action action) {
+    private static Optional<String> getAfterRebootState(Action action) {
         if (action instanceof HardwareRefreshAction) {
-            return Optional.of(TransactionalState.HARDWARE_PROFILE_UPDATE);
+            return Optional.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
         }
         return Optional.empty();
     }
 
     /**
-     * Handle a transactional Salt result according to the state definition.
+     * Reconcile the transactional action associated with a completed snapshot refresh.
      *
-     * @param transactionalState transactional state receiving the result
      * @param minionServerId minion server id
-     * @param actionId action id
-     * @param jsonResult Salt state result
-     * @param failed whether the transactional step failed
-     * @return result message for the action
+     * @param snapshotRefreshActionId completed snapshot refresh action id
+     * @param rebootRequired whether snapshot information indicates that reboot is required
      */
-    private static String handleTransactionalResult(
-            TransactionalState transactionalState,
-            Long minionServerId,
-            Long actionId,
-            JsonElement jsonResult,
-            boolean failed) {
-        return transactionalState.hasAfterRebootState() ?
-                handlePrerequisiteResult(minionServerId, actionId, jsonResult, failed) :
-                handleApplyResult(transactionalState, minionServerId, actionId, jsonResult, failed);
+    public static void reconcileSnapshotRefreshAction(
+            Long minionServerId, Long snapshotRefreshActionId, boolean rebootRequired) {
+        findTransactionalActionHistoryBySnapshotRefreshAction(minionServerId, snapshotRefreshActionId)
+                .ifPresent(history -> {
+                    Action action = ActionFactory.lookupById(history.getActionId());
+                    boolean hasAfterRebootState = action != null && hasAfterRebootState(action);
+                    history.recordSnapshotReconciliation(rebootRequired, hasAfterRebootState);
+                    if (!rebootRequired && hasAfterRebootState) {
+                        MessageQueue.publish(new ResumeTransactionalActionEventMessage(
+                                history.getActionId(), minionServerId));
+                    }
+                });
     }
 
     /**
-     * Handle the result of a transactional prerequisite step.
+     * Find transactional action history associated with a snapshot refresh action.
      *
      * @param minionServerId minion server id
-     * @param actionId action id
-     * @param jsonResult Salt state result
-     * @param failed whether the prerequisite step failed
-     * @return result message for the action
+     * @param snapshotRefreshActionId snapshot refresh action id
+     * @return transactional action history, if one is associated
      */
-    public static String handlePrerequisiteResult(
-            Long minionServerId, Long actionId, JsonElement jsonResult, boolean failed) {
-        if (failed) {
-            recordPrerequisitesFailed(minionServerId, actionId);
-            return "Failed to apply prerequisite states.";
+    public static Optional<MinionTransactionalActionHistory> findTransactionalActionHistoryBySnapshotRefreshAction(
+            Long minionServerId, Long snapshotRefreshActionId) {
+        if (minionServerId == null || snapshotRefreshActionId == null) {
+            return Optional.empty();
         }
-        else if (!hasChanges(jsonResult)) {
-            recordPrerequisitesApplied(minionServerId, actionId, false);
-            MessageQueue.publish(new ResumeTransactionalActionEventMessage(actionId, minionServerId));
-            return "Prerequisite states already satisfied. After-reboot state requested.";
-        }
-        else {
-            recordPrerequisitesApplied(minionServerId, actionId, true);
-            return "Prerequisite states applied. A system reboot is required before applying the after-reboot state.";
-        }
-    }
 
-    /**
-     * Handle the result of a transactional apply step.
-     *
-     * @param minionServerId minion server id
-     * @param actionId action id
-     * @param jsonResult Salt state result
-     * @param failed whether the transactional apply step failed
-     * @return result message for the action
-     */
-    private static String handleApplyResult(
-            TransactionalState transactionalState, Long minionServerId, Long actionId, JsonElement jsonResult,
-            boolean failed) {
-        if (failed) {
-            recordTransactionalApplyFailed(minionServerId, actionId);
-            return "Failed to apply transactional states.";
-        }
-        else if (!hasChanges(jsonResult)) {
-            recordTransactionalApplyCompleted(minionServerId, actionId, false);
-            return "Transactional states already satisfied. No reboot is required.";
-        }
-        else {
-            recordTransactionalApplyCompleted(minionServerId, actionId, true);
-            if (transactionalState.isConfigurableCustomState()) {
-                MessageQueue.publish(new CheckTransactionalPendingTransactionEventMessage(minionServerId));
-            }
-            return "Transactional states applied. A system reboot is required to complete the action.";
-        }
-    }
-
-    /**
-     * Record that transactional prerequisites were applied for an action.
-     *
-     * @param minionServerId minion server id
-     * @param actionId action id
-     * @param rebootRequired whether reboot is required before continuing
-     */
-    public static void recordPrerequisitesApplied(Long minionServerId, Long actionId, boolean rebootRequired) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordPrerequisitesApplied(rebootRequired);
-    }
-
-    /**
-     * Record that transactional prerequisites failed for an action.
-     *
-     * @param minionServerId minion server id
-     * @param actionId action id
-     */
-    public static void recordPrerequisitesFailed(Long minionServerId, Long actionId) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordPrerequisitesFailed();
+        return HibernateFactory.getSession().createQuery("""
+                FROM MinionTransactionalActionHistory history
+                 WHERE history.minionServerId = :minionServerId
+                   AND history.snapshotRefreshActionId = :snapshotRefreshActionId
+                """, MinionTransactionalActionHistory.class)
+                .setParameter("minionServerId", minionServerId)
+                .setParameter("snapshotRefreshActionId", snapshotRefreshActionId)
+                .uniqueResultOptional();
     }
 
     /**
@@ -582,17 +475,6 @@ public class TransactionalActionManager {
      */
     public static void recordAfterRebootFailed(Long minionServerId, Long actionId) {
         lookupOrCreateActionHistory(minionServerId, actionId).recordAfterRebootFailed();
-    }
-
-    /**
-     * Record that transactional states were applied for an action.
-     *
-     * @param minionServerId minion server id
-     * @param actionId action id
-     * @param rebootRequired whether reboot is required to complete the action
-     */
-    public static void recordTransactionalApplyCompleted(Long minionServerId, Long actionId, boolean rebootRequired) {
-        lookupOrCreateActionHistory(minionServerId, actionId).recordTransactionalApplyCompleted(rebootRequired);
     }
 
     /**
@@ -630,70 +512,24 @@ public class TransactionalActionManager {
         return history;
     }
 
-    private static boolean hasChanges(JsonElement jsonResult) {
-        Map<String, State.ApplyResult> results = Json.GSON.fromJson(
-                jsonResult,
-                new TypeToken<Map<String, State.ApplyResult>>() { }.getType());
-
-        return results != null && results.values().stream()
-                .map(State.ApplyResult::getChanges)
-                .filter(Objects::nonNull)
-                .anyMatch(changes -> !changes.isJsonObject() ||
-                        changes.getAsJsonObject().size() > 0);
-    }
-
-    private static boolean hasPendingTransaction(JsonElement jsonResult) {
-        if (jsonResult == null || !jsonResult.isJsonObject()) {
-            return true;
+    private static Optional<Action> scheduleSnapshotRefresh(Long actionId, Long minionServerId) {
+        Action action = ActionFactory.lookupById(actionId);
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(minionServerId);
+        if (action == null || minion.isEmpty()) {
+            return Optional.empty();
         }
 
-        Map<String, StateApplyResult<Ret<Map<String, Object>>>> results = Json.GSON.fromJson(
-                jsonResult,
-                new TypeToken<Map<String, StateApplyResult<Ret<Map<String, Object>>>>>() { }.getType());
-
-        return results == null || results.values().stream()
-                .map(StateApplyResult::getChanges)
-                .filter(Objects::nonNull)
-                .map(Ret::getRet)
-                .filter(Objects::nonNull)
-                .map(ret -> ret.get("reboot_required"))
-                .filter(Boolean.class::isInstance)
-                .map(Boolean.class::cast)
-                .findFirst()
-                .orElse(true);
-    }
-
-    private static void completeTransactionalApplyAction(Long minionServerId, Long actionId, Date completionTime) {
-        ServerAction serverAction = HibernateFactory.getSession().createQuery("""
-                FROM ServerAction serverAction
-                 WHERE serverAction.server.id = :serverId
-                   AND serverAction.parentAction.id = :actionId
-                """, ServerAction.class)
-                .setParameter("serverId", minionServerId)
-                .setParameter("actionId", actionId)
-                .uniqueResult();
-
-        if (serverAction != null && (serverAction.isStatusPickedUp() || serverAction.isStatusCompleted()) &&
-                !hasAfterRebootState(serverAction.getParentAction())) {
-            lookupOrCreateActionHistory(minionServerId, actionId)
-                    .recordTransactionalApplyNoRebootNeeded(completionTime);
-            serverAction.setCompletionTime(completionTime);
-            serverAction.setStatusCompleted();
-            serverAction.setResultMsg("Transactional states applied. No pending transaction was found.");
+        try {
+            return Optional.of(ActionManager.scheduleSnapshotRefreshAction(
+                    action.getSchedulerUser(), minion.get(), new java.util.Date()));
+        }
+        catch (TaskomaticApiException e) {
+            return Optional.empty();
         }
     }
 
-    private static Optional<TransactionalState> findAfterRebootState(List<String> states) {
-        return states.stream()
-                .map(TransactionalState::getByState)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(TransactionalState::hasAfterRebootState)
-                .findFirst();
-    }
-
-    private static Optional<TransactionalState> findSingleTransactionalState(List<String> states) {
-        return states.size() == 1 ? TransactionalState.getByState(states.get(0)) : Optional.empty();
+    private static Optional<String> findSingleTransactionalStateToApply(List<String> states) {
+        return states.size() == 1 ? getTransactionalStateToApply(states.get(0)) : Optional.empty();
     }
 
     private static boolean shouldUseTransactionalUpdateForCustomStates(List<String> states) {
@@ -704,19 +540,6 @@ public class TransactionalActionManager {
     private static boolean isConfigurableCustomState(List<String> states) {
         return !states.isEmpty() &&
                 CONFIGURABLE_CUSTOM_STATES.containsAll(states);
-    }
-
-    private static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
-            TransactionalState transactionalState, Optional<Map<String, Object>> pillar) {
-        return getTransactionalSaltCall(transactionalState, pillar, Optional.empty(), Optional.empty());
-    }
-
-    private static LocalCall<Map<String, State.ApplyResult>> getTransactionalSaltCall(
-            TransactionalState transactionalState,
-            Optional<Map<String, Object>> pillar,
-            Optional<Boolean> queue,
-            Optional<Boolean> test) {
-        return TransactionalUpdateCalls.apply(List.of(transactionalState.getStateToApply()), pillar, queue, test);
     }
 
     private static Optional<List<String>> getStatesFromFunctionArg(Object arg) {
@@ -764,12 +587,19 @@ public class TransactionalActionManager {
                 !payload.containsKey("module_executors");
     }
 
-    private static Optional<TransactionalState> getTransactionalApplyState(LocalCall<?> call) {
+    private static Optional<String> getTransactionalStateToApply(LocalCall<?> call) {
         if (!"state.apply".equals(call.getPayload().get("fun"))) {
             return Optional.empty();
         }
 
-        return getStatesFromCall(call).flatMap(TransactionalActionManager::findSingleTransactionalState);
+        return getStatesFromCall(call).flatMap(TransactionalActionManager::findSingleTransactionalStateToApply);
+    }
+
+    private static Optional<String> getTransactionalStateToApply(String state) {
+        if (!TRANSACTIONAL_STATES.contains(state)) {
+            return Optional.empty();
+        }
+        return Optional.of(PREREQUISITE_STATE_BY_STATE.getOrDefault(state, state));
     }
 
     private static Optional<Map<String, Object>> getPillarFromCall(LocalCall<?> call) {
@@ -798,90 +628,4 @@ public class TransactionalActionManager {
         return new LocalCallWithExecutors<>(call, DIRECT_CALL_EXECUTOR, Map.of());
     }
 
-    private enum TransactionalState {
-        GENERIC_APPLY("transactional_update.apply"),
-        CONFIGURABLE_CUSTOM_STATE,
-        HARDWARE_PROFILE_UPDATE(
-                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE,
-                SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
-                Optional.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ),
-        CERTIFICATE(
-                ApplyStatesEventMessage.CERTIFICATE),
-        CHANNELS(
-                ApplyStatesEventMessage.CHANNELS),
-        DISTUPGRADE(
-                ApplyStatesEventMessage.DISTUPGRADE),
-        DISTUPGRADE_SLES16(
-                ApplyStatesEventMessage.DISTUPGRADE_SLES16),
-        PACKAGES_PKGINSTALL(
-                SaltParameters.PACKAGES_PKGINSTALL),
-        PACKAGES_PKGDOWNLOAD(
-                SaltParameters.PACKAGES_PKGDOWNLOAD),
-        PACKAGES_PKGLOCK(
-                SaltParameters.PACKAGES_PKGLOCK),
-        PACKAGES_PREREQ(
-                ApplyStatesEventMessage.PACKAGES),
-        PACKAGES_PKGUPDATE(
-                SaltParameters.PACKAGES_PKGUPDATE),
-        PACKAGES_PKGREMOVE(
-                SaltParameters.PACKAGES_PKGREMOVE),
-        PACKAGES_PATCHDOWNLOAD(
-                SaltParameters.PACKAGES_PATCHDOWNLOAD),
-        PACKAGES_PATCHINSTALL(
-                SaltParameters.PACKAGES_PATCHINSTALL),
-        SALT_MINION_SERVICE(
-                ApplyStatesEventMessage.SALT_MINION_SERVICE),
-        REPORTDB_USER(
-                ApplyStatesEventMessage.REPORTDB_USER),
-        UPDATE_SALT(
-                "update-salt"),
-        UPTODATE(
-                "uptodate"),
-        SWITCH_TO_BUNDLE(
-                "util.mgr_switch_to_venv_minion");
-
-        private final List<String> states;
-        private final String stateToApply;
-        private final Optional<String> afterRebootState;
-
-        TransactionalState() {
-            states = List.of();
-            stateToApply = "transactional_update.apply";
-            afterRebootState = Optional.empty();
-        }
-
-        TransactionalState(String state, String... aliases) {
-            this(state, state, Optional.empty(), aliases);
-        }
-
-        TransactionalState(String state, String stateToApplyIn, Optional<String> afterRebootStateIn,
-                           String... aliases) {
-            states = Stream.concat(Stream.of(state), Arrays.stream(aliases)).toList();
-            stateToApply = stateToApplyIn;
-            afterRebootState = afterRebootStateIn;
-        }
-
-        private String getStateToApply() {
-            return stateToApply;
-        }
-
-        private Optional<String> afterRebootState() {
-            return afterRebootState;
-        }
-
-        private boolean hasAfterRebootState() {
-            return afterRebootState.isPresent();
-        }
-
-        private boolean isConfigurableCustomState() {
-            return CONFIGURABLE_CUSTOM_STATE.equals(this);
-        }
-
-        private static Optional<TransactionalState> getByState(String state) {
-            return Arrays.stream(values())
-                    .filter(transactionalState -> transactionalState.states.contains(state))
-                    .findFirst();
-        }
-    }
 }

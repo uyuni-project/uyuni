@@ -1419,7 +1419,7 @@ public class ActionManager extends BaseManager {
             throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
         Action action = ActionFactory.createAction(ActionFactory.TYPE_SNAPSHOTS_REFRESH_LIST, scheduler,
-                earliestAction);
+                scheduler != null ? scheduler.getOrg() : OrgFactory.getSatelliteOrg(), earliestAction);
         ActionFactory.createAddServerAction(server, action);
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
