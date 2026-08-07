@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import debounce from "lodash/debounce";
 
-import { AccessGroupState } from "manager/admin/access-control/access-group";
+import type { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
-import { DEPRECATED_Check, Form } from "components/input";
+import { Check, DEPRECATED_Check, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -13,6 +13,7 @@ import { MessagesContainer, showErrorToastr } from "components/toastr";
 
 import Network from "utils/network";
 
+import { type AccessModeValue, type PermissionType, AccessMode, AccessModeByPermissionType } from "./access-mode";
 import styles from "./AccessGroup.module.scss";
 
 type Props = {
@@ -21,18 +22,18 @@ type Props = {
   errors: any;
 };
 
-type NamespaceItem = {
+export type NamespaceItem = {
+  id?: number;
   namespace: string;
   name: string;
-  description?: string;
+  description: string;
   isAPI: boolean;
-  children?: NamespaceItem[];
-  accessMode?: string[];
+  children: NamespaceItem[];
+  accessMode: AccessModeValue;
 };
 
 const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
-  const checkboxRefs = useRef({});
   const [apiNamespace, setApiNamespace] = useState(false);
   const [webNamespace, setWebNamespace] = useState(false);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
@@ -42,8 +43,8 @@ const AccessGroupPermissions = (props: Props) => {
   const [expandCollapseAll, setExpandCollapseAll] = useState(false);
   const agAppliedRef = useRef(false);
 
-  const isItemDisabled = useCallback((item, type) => {
-    const requiredAccessMode = type === "view" ? "R" : "W";
+  const isItemDisabled = useCallback((item, type: PermissionType) => {
+    const requiredAccessMode = AccessModeByPermissionType[type];
 
     if (!item.children || item.children.length === 0) {
       return !item.accessMode.includes(requiredAccessMode);
@@ -139,8 +140,8 @@ const AccessGroupPermissions = (props: Props) => {
           response["toCopy"].forEach((item) => {
             changes[item.namespace] = {
               ...item,
-              view: item.accessMode.includes("R"),
-              modify: item.accessMode.includes("W"),
+              view: item.accessMode.includes(AccessMode.READ),
+              modify: item.accessMode.includes(AccessMode.WRITE),
             };
           });
 
@@ -171,22 +172,6 @@ const AccessGroupPermissions = (props: Props) => {
     debouncedGetNamespaces(searchValue);
   }, [searchValue, debouncedGetNamespaces]);
 
-  useEffect(() => {
-    namespaces.forEach((item) => {
-      const updateRefsRecursively = (node) => {
-        const state = getCheckState(node, "modify");
-        const ref = checkboxRefs.current[node.namespace];
-        if (ref) {
-          ref.indeterminate = state === "partially";
-        }
-        if (node.children) {
-          node.children.forEach(updateRefsRecursively);
-        }
-      };
-      updateRefsRecursively(item);
-    });
-  }, [namespaces, props.state.permissions, getCheckState]);
-
   const setNamespacesCheck = (model) => {
     setApiNamespace(!!model.apiNamespace);
     setWebNamespace(!!model.webNamespace);
@@ -207,7 +192,7 @@ const AccessGroupPermissions = (props: Props) => {
   });
 
   const namespacesFilter = (
-    <div className="d-flex">
+    <div key="namespace-filter" className="d-flex">
       <div className="ms-4">
         <Form model={{ apiNamespace, webNamespace, showOnlySelected }} onChange={setNamespacesCheck}>
           <div className="d-flex">
@@ -311,6 +296,20 @@ const AccessGroupPermissions = (props: Props) => {
     }
   }, [searchValue, isLoading]);
 
+  const renderPermissionCheck = (item: NamespaceItem, type: PermissionType) => {
+    const state = getCheckState(item, type);
+
+    return (
+      <Check
+        name={type}
+        checked={state === "checked"}
+        indeterminate={state === "partially"}
+        disabled={isItemDisabled(item, type)}
+        onChange={() => handleChange(item, type)}
+      />
+    );
+  };
+
   return (
     <div>
       <MessagesContainer />
@@ -377,49 +376,11 @@ const AccessGroupPermissions = (props: Props) => {
           }}
           width="50%"
         />
-        <Column
-          columnKey="view"
-          header={t("View")}
-          cell={(item) => {
-            const state = getCheckState(item, "view");
-            return (
-              <input
-                key={item.namespace}
-                name="view"
-                type="checkbox"
-                checked={state === "checked"}
-                ref={(el) => {
-                  if (el) el.indeterminate = state === "partially";
-                }}
-                disabled={isItemDisabled(item, "view")}
-                onChange={() => handleChange(item, "view")}
-              />
-            );
-          }}
-          width="10%"
-        />
+        <Column columnKey="view" header={t("View")} cell={(item) => renderPermissionCheck(item, "view")} width="10%" />
         <Column
           columnKey="modify"
           header={t("Modify")}
-          cell={(item) => {
-            const state = getCheckState(item, "modify");
-            return (
-              <input
-                key={item.namespace}
-                name="modify"
-                type="checkbox"
-                checked={state === "checked"}
-                ref={(el) => {
-                  if (el) {
-                    checkboxRefs.current[item.namespace] = el;
-                    el.indeterminate = state === "partially";
-                  }
-                }}
-                disabled={isItemDisabled(item, "modify")}
-                onChange={() => handleChange(item, "modify")}
-              />
-            );
-          }}
+          cell={(item) => renderPermissionCheck(item, "modify")}
           width="10%"
         />
       </Table>

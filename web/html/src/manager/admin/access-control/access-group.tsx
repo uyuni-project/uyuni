@@ -13,12 +13,13 @@ import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-det
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupReview from "./access-group-review";
 import AccessGroupUsers from "./access-group-user";
+import type { AccessModeValue } from "./access-mode";
 
 type Permission = {
   id: number;
   namespace: string;
   description: string;
-  accessMode: string;
+  accessMode: AccessModeValue;
   view: boolean;
   modify: boolean;
 };
