@@ -26,7 +26,7 @@ public interface LdapAuthenticationService {
      * Attempts to authenticate the given credentials using the bind/search/bind sequence.
      *
      * <p>An empty result means the credentials were rejected (unknown user, ambiguous match,
-     * empty or wrong password). An {@link LdapException} means the directory could not be
+     * empty or wrong password). An {@link LdapServiceException} means the directory could not be
      * consulted (unreachable host, failed service bind, malformed filter). Callers should treat
      * both as a failed login for the user while logging the exception details for the
      * administrator.</p>
@@ -34,8 +34,8 @@ public interface LdapAuthenticationService {
      * @param login the user-supplied login name
      * @param password the user-supplied password
      * @return the authenticated user on success, or empty if the credentials were rejected
-     * @throws LdapException if the directory cannot be consulted because of an infrastructure
+     * @throws LdapServiceException if the directory cannot be consulted because of an infrastructure
      *                       or configuration problem
      */
-    Optional<LdapUser> authenticate(String login, String password) throws LdapException;
+    Optional<LdapUser> authenticate(String login, String password) throws LdapServiceException;
 }

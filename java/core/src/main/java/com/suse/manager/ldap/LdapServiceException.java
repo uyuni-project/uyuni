@@ -16,13 +16,17 @@ package com.suse.manager.ldap;
  * configuration problem, for example the directory is unreachable, the service account
  * bind fails, or a configured filter is malformed.
  *
+ * <p>Named {@code LdapServiceException} (not {@code LdapException}) to avoid confusion with
+ * UnboundID's {@code com.unboundid.ldap.sdk.LDAPException}, which is used internally as the
+ * SDK-level cause.</p>
+ *
  * <p>This is deliberately distinct from an authentication <em>decision</em>: a user who
  * simply supplied the wrong password, or who does not exist in the directory, is reported
  * as an empty result by {@link LdapAuthenticationService#authenticate(String, String)}
  * rather than by throwing. Callers should log the details of this exception for the
  * administrator while presenting only a generic message to the end user.</p>
  */
-public class LdapException extends Exception {
+public class LdapServiceException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +35,7 @@ public class LdapException extends Exception {
      *
      * @param messageIn human readable description of the failure
      */
-    public LdapException(String messageIn) {
+    public LdapServiceException(String messageIn) {
         super(messageIn);
     }
 
@@ -41,7 +45,7 @@ public class LdapException extends Exception {
      * @param messageIn human readable description of the failure
      * @param causeIn the underlying cause
      */
-    public LdapException(String messageIn, Exception causeIn) {
+    public LdapServiceException(String messageIn, Exception causeIn) {
         super(messageIn, causeIn);
     }
 }

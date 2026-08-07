@@ -39,9 +39,9 @@ public final class LdapFilters {
      * @param template the filter template, must contain {@value #LOGIN_PLACEHOLDER}
      * @param login the user-supplied login name
      * @return a parsed, injection-safe {@link Filter}
-     * @throws LdapException if the template is missing the placeholder or is not a valid filter
+     * @throws LdapServiceException if the template is missing the placeholder or is not a valid filter
      */
-    public static Filter userFilter(String template, String login) throws LdapException {
+    public static Filter userFilter(String template, String login) throws LdapServiceException {
         return buildFilter(template, LOGIN_PLACEHOLDER, login, "user");
     }
 
@@ -51,20 +51,20 @@ public final class LdapFilters {
      * @param template the filter template, must contain {@value #USER_DN_PLACEHOLDER}
      * @param userDn the DN of the resolved user entry
      * @return a parsed, injection-safe {@link Filter}
-     * @throws LdapException if the template is missing the placeholder or is not a valid filter
+     * @throws LdapServiceException if the template is missing the placeholder or is not a valid filter
      */
-    public static Filter groupFilter(String template, String userDn) throws LdapException {
+    public static Filter groupFilter(String template, String userDn) throws LdapServiceException {
         return buildFilter(template, USER_DN_PLACEHOLDER, userDn, "group");
     }
 
     private static Filter buildFilter(String template, String placeholder, String rawValue, String kind)
-            throws LdapException {
+            throws LdapServiceException {
         if (template == null || !template.contains(placeholder)) {
-            throw new LdapException(
+            throw new LdapServiceException(
                     "The " + kind + " filter template must contain the " + placeholder + " placeholder");
         }
         if (rawValue == null || rawValue.isEmpty()) {
-            throw new LdapException("Refusing to build a " + kind + " filter from an empty value");
+            throw new LdapServiceException("Refusing to build a " + kind + " filter from an empty value");
         }
         String escaped = Filter.encodeValue(rawValue);
         String filterString = template.replace(placeholder, escaped);
@@ -72,7 +72,7 @@ public final class LdapFilters {
             return Filter.create(filterString);
         }
         catch (LDAPException e) {
-            throw new LdapException("Configured " + kind + " filter is not a valid LDAP filter", e);
+            throw new LdapServiceException("Configured " + kind + " filter is not a valid LDAP filter", e);
         }
     }
 }
