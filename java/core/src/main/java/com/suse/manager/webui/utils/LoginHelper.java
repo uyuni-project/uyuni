@@ -47,7 +47,7 @@ import com.suse.manager.ldap.ConfigLdapAuthConfigProvider;
 import com.suse.manager.ldap.DefaultLdapServiceFactory;
 import com.suse.manager.ldap.LdapAuthConfigProvider;
 import com.suse.manager.ldap.LdapAuthServerSettings;
-import com.suse.manager.ldap.LdapException;
+import com.suse.manager.ldap.LdapServiceException;
 import com.suse.manager.ldap.LdapServiceFactory;
 import com.suse.manager.ldap.LdapUser;
 import com.suse.manager.utils.DBDiskCheckHelper;
@@ -452,7 +452,7 @@ public class LoginHelper {
         try {
             return ldapServiceFactory.getInstance(server.connectionConfig()).authenticate(login, password);
         }
-        catch (LdapException e) {
+        catch (LdapServiceException e) {
             if (log.isErrorEnabled()) {
                 log.error("LDAP directory could not be consulted for login {}: {}",
                         StringUtil.sanitizeLogInput(login), e.getMessage());
