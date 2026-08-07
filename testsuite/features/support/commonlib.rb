@@ -135,17 +135,26 @@ end
 #
 # @param text1 [String] The first text to check for visibility.
 # @param text2 [String, nil] The second text to check for visibility (optional).
+# @param stopper [String, nil] Text that aborts the wait and makes the check fail if it shows up first (optional).
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
-def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+def check_text?(text1, text2: nil, stopper: nil, timeout: Capybara.default_max_wait_time)
   # Rely on Capybara's (Playwright-backed) native auto-waiting instead of a hand-rolled
   # polling loop: has_text? already polls the page until the text appears or `wait` elapses.
   # When two candidates are given, OR them into a single Regexp so the whole `timeout` budget
   # is shared across both instead of being spent sequentially on each one (the old loop waited
   # 1s on text1 before ever looking at text2). Capybara.default_normalize_ws collapses
   # whitespace for us. Regexp.union escapes both strings, so regex metacharacters stay literal.
-  pattern = text2.nil? ? text1 : Regexp.union(text1, text2)
-  has_text?(pattern, wait: timeout)
+  wanted = text2.nil? ? text1 : Regexp.union(text1, text2)
+  return has_text?(wanted, wait: timeout) if stopper.nil?
+
+  # A stopper is the opposite of text2: it must NOT appear. Race it against the wanted text in a
+  # single Regexp so the timeout stays a shared budget and we give up as soon as the stopper shows
+  # up, instead of burning the whole timeout waiting for a text that will never come.
+  return false unless has_text?(Regexp.union(wanted, stopper), wait: timeout)
+
+  # Both may be on the page by now; the wanted text wins, as in the pre-Playwright loop.
+  has_text?(wanted, wait: 0)
 rescue Capybara::ElementNotFound, NoMethodError
   # Page was mid-navigation / driver transiently unusable: treat as "not found".
   false
