@@ -8,10 +8,13 @@ if [ "${container:=unknown}" != "oci" ]; then
 fi
 
 # Prepare the cgroup mount for systemd.
-# Skip it when the runtime already provides one (e.g. Kubernetes with
+# Skip it when cgroup2 is already mounted there (e.g. Kubernetes with
 # private cgroup namespaces): mounting cgroup2 on top of an existing
-# mount fails with EBUSY, which would abort the whole container startup
-# even though systemd can use the existing mount just fine.
-if ! mountpoint -q /sys/fs/cgroup; then
+# cgroup2 mount fails with EBUSY, which would abort the whole container
+# startup even though systemd can use the existing mount just fine.
+# Test the filesystem type rather than mountpoint-ness: the Helm chart
+# mounts an emptyDir at /sys/fs/cgroup, which is a mountpoint but not a
+# cgroup filesystem, and systemd cannot start without cgroup2 there.
+if [ "$(stat -f -c %T /sys/fs/cgroup)" != "cgroup2fs" ]; then
     mount -t cgroup2 none /sys/fs/cgroup
 fi

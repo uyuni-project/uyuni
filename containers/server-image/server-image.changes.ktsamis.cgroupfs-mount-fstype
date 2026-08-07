@@ -1,0 +1,3 @@
+- Mount cgroup2 in the entrypoint whenever /sys/fs/cgroup is not
+  already a cgroup2 filesystem, so the server container starts on
+  Kubernetes where the Helm chart mounts an emptyDir there
