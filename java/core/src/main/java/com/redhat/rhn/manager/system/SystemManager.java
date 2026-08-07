@@ -2153,9 +2153,26 @@ public class SystemManager extends BaseManager {
      */
     public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
                                              Long maxCache, String email) {
+        return createProxyContainerConfig(user, proxyName, proxyPort, server, maxCache, email, List.of());
+    }
+
+    /**
+     * Create and provide proxy container configuration with additional FQDNs without SSL.
+     *
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @param additionalFqdns the additional FQDNs for the proxy
+     * @return the tarball configuration file as a byte array
+     */
+    public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
+                                             Long maxCache, String email, List<String> additionalFqdns) {
         return proxyContainerConfigCreateFacade.create(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, new SSLCertManager(), additionalFqdns);
     }
 
 
@@ -2187,10 +2204,44 @@ public class SystemManager extends BaseManager {
                                              SSLCertPair caPair, String caPassword, SSLCertData certData,
                                              SSLCertManager certManager)
             throws SSLCertGenerationException {
+        return createProxyContainerConfig(user, proxyName, proxyPort, server, maxCache, email,
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, List.of());
+    }
+
+    /**
+     * Create and provide proxy container configuration with additional FQDNs.
+     *
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @param rootCA          root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey    proxy CRT and key pair
+     * @param caPair          the CA certificate and key used to sign the certificate to generate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param caPassword      the CA private key password.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certData        the data needed to generate the new proxy SSL certificate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certManager     the SSLCertManager to use
+     * @param additionalFqdns the additional FQDNs for the proxy
+     * @return the tarball configuration file as a byte array
+     */
+    public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
+                                             Long maxCache, String email,
+                                             String rootCA, List<String> intermediateCAs,
+                                             SSLCertPair proxyCertKey,
+                                             SSLCertPair caPair, String caPassword, SSLCertData certData,
+                                             SSLCertManager certManager,
+                                             List<String> additionalFqdns)
+            throws SSLCertGenerationException {
 
         return proxyContainerConfigCreateFacade.create(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
-                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager);
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager, additionalFqdns);
     }
 
 
@@ -2227,10 +2278,50 @@ public class SystemManager extends BaseManager {
             SSLCertManager certManager,
             String sshPub, String sshPriv, String sshParent
     ) throws SSLCertGenerationException {
+        return createProxyContainerConfigFiles(user, proxyName, proxyPort, server, maxCache, email,
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager,
+                sshPub, sshPriv, sshParent, List.of());
+    }
+
+    /**
+     * Create and provide proxy container configuration files with additional FQDNs.
+     *
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @param rootCA          root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey    proxy CRT and key pair
+     * @param caPair          the CA certificate and key used to sign the certificate to generate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param caPassword      the CA private key password.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certData        the data needed to generate the new proxy SSL certificate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certManager     the SSLCertManager to use
+     * @param sshPub          the proxy SSH public key if known
+     * @param sshPriv         the proxy SSH private key if known
+     * @param sshParent       the parent SSH public key if known
+     * @param additionalFqdns the additional FQDNs for the proxy
+     * @return the configuration files as a map
+     */
+    public Map<String, Object> createProxyContainerConfigFiles(
+            User user, String proxyName, Integer proxyPort, String server,
+            Long maxCache, String email,
+            String rootCA, List<String> intermediateCAs,
+            SSLCertPair proxyCertKey,
+            SSLCertPair caPair, String caPassword, SSLCertData certData,
+            SSLCertManager certManager,
+            String sshPub, String sshPriv, String sshParent,
+            List<String> additionalFqdns
+    ) throws SSLCertGenerationException {
         return this.proxyContainerConfigCreateFacade.createFiles(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
                 rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager,
-                sshPub, sshPriv, sshParent
+                sshPub, sshPriv, sshParent, additionalFqdns
         );
     }
 

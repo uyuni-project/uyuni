@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
+import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -21,7 +22,7 @@ enum SSLMode {
   CreateSSL = "create-ssl",
 }
 
-export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
+export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: string[] }) {
   const initialModel = {
     caCertificate: "",
     caKey: "",
@@ -98,6 +99,9 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
       };
 
       const cnamesData = Object.fromEntries(Object.entries(model).filter(([key]) => key.startsWith("cnames")));
+      const additionalFQDNsData = Object.fromEntries(
+        Object.entries(model).filter(([key]) => key.startsWith("additionalFQDNs"))
+      );
       const extraData =
         model.sslMode === SSLMode.CreateSSL
           ? Object.assign(
@@ -114,7 +118,7 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
               cnamesData
             )
           : {};
-      const formData = unflattenModel(Object.assign({}, commonData, extraData, ...values));
+      const formData = unflattenModel(Object.assign({}, commonData, extraData, additionalFQDNsData, ...values));
       Network.post("/rhn/manager/api/proxy/container-config", formData).then(
         (data) => {
           setSuccess(data.success);
@@ -202,7 +206,7 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
           validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
           invalidHint={t("Has to be a valid FQDN address")}
         />
-        <Text
+        <DEPRECATED_Select
           name="serverFQDN"
           label={t("Parent FQDN")}
           required
@@ -210,8 +214,8 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
           hint={t("The FQDN of the parent (server or proxy) to connect to.")}
           labelClass="col-md-3"
           divClass="col-md-6"
-          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
-          invalidHint={t("Has to be a valid FQDN address")}
+          options={parents}
+          isClearable={false}
         />
         <Text
           name="proxyPort"
@@ -243,6 +247,28 @@ export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
           labelClass="col-md-3"
           divClass="col-md-6"
         />
+        <FormMultiInput
+          id="additionalFQDNs"
+          title={t("Additional FQDNs")}
+          prefix="additionalFQDNs"
+          onAdd={onAddField("additionalFQDNs")}
+          onRemove={onRemoveField("additionalFQDNs")}
+          panelClassName="panel-default col-md-6 col-md-offset-3 offset-md-3 no-padding"
+          panelHeading="label"
+        >
+          {(index) => (
+            <Text
+              name={`additionalFQDNs${index}`}
+              label={t("Additional FQDN")}
+              className="col-md-11"
+              labelClass="col-md-3"
+              divClass="col-md-8"
+              placeholder={t("e.g., additional.domain.com")}
+              validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+              invalidHint={t("Has to be a valid FQDN address")}
+            />
+          )}
+        </FormMultiInput>
         <Radio
           name="sslMode"
           label={t("SSL certificate")}
