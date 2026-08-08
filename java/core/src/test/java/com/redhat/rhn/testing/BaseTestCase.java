@@ -12,58 +12,51 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.MinionActionManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import org.cobbler.MockConnection;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * root class for all test cases
  */
-public class BaseTestCase {
-
-    private boolean isCommitted = false;
-
-    @BeforeEach
-    void setUpBeforeAllTests() {
-        isCommitted = false;
-        HibernateFactory.addCommitListener(() -> isCommitted = true);
-    }
+@ExtendWith(UserForTestCaseExtension.class)
+public abstract class BaseTestCase {
 
     @AfterEach
     void tearDownAfterAllTests() {
-        HibernateFactory.removeAllCommitListeners();
+        // Clear the mock MockConnection
+        MockConnection.clear();
 
-        TestCaseHelper.tearDownHelper();
+        // In case someone disabled it and forgot to re-enable it.
+        TestUtils.enableLocalizationLogging();
 
-        if (isCommitted) {
-            cleanupDatabaseCommits();
-            TestUtils.commitAndCloseSession();
-        }
-        isCommitted = false;
-        afterCleanupDatabaseCommits();
+        // Restore taskomatic API default implementations, in case test mocked it
+        restoreTaskomaticApi();
 
-        cleanupConfiguration();
-    }
-
-    /**
-     * override in the child classes to clean up committed database items, before closing the session
-     */
-    protected void cleanupDatabaseCommits() {
-        // default does nothing
-    }
-
-    /**
-     * override in the child classes to add any needed operations after the database cleanup
-     */
-    protected void afterCleanupDatabaseCommits() {
-        // default does nothing
-    }
-
-    /**
-     * cleans up all configuration items set during the test in the form of Config.get().setString(...)
-     */
-    private void cleanupConfiguration() {
+        // Restore the default configuration
         Config.clear();
+    }
+
+    private static void restoreTaskomaticApi() {
+        TaskomaticApi taskomaticApi = new TaskomaticApi();
+
+        ActionChainManager.setTaskomaticApi(taskomaticApi);
+        ActionChainFactory.setTaskomaticApi(taskomaticApi);
+        ActionManager.setTaskomaticApi(taskomaticApi);
+        MinionActionManager.setTaskomaticApi(taskomaticApi);
+        ChannelManager.setTaskomaticApi(taskomaticApi);
+        ErrataManager.setTaskomaticApi(taskomaticApi);
+        RecurringActionManager.setTaskomaticApi(taskomaticApi);
+        ImageInfoFactory.setTaskomaticApi(taskomaticApi);
     }
 }
