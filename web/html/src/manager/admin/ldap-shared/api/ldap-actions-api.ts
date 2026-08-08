@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 
-type NetworkActionKey = "get" | "create" | "update" | "delete" | "test";
+type NetworkActionKey = "get" | "create" | "update" | "delete" | "test" | "testUserLookup" | "testGroupResolution";
 
 type ReturnUseLdapActionsApi = {
   onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: string | number | null) => Promise<any>;
@@ -17,6 +17,12 @@ const getApiUrl = (id?: string | number | null, action?: NetworkActionKey) => {
   }
   if (action === "test") {
     return `/rhn/manager/api/admin/config/ldap/${id}/test-connection`;
+  }
+  if (action === "testUserLookup") {
+    return `/rhn/manager/api/admin/config/ldap/${id}/test-user-lookup`;
+  }
+  if (action === "testGroupResolution") {
+    return `/rhn/manager/api/admin/config/ldap/${id}/test-group-resolution`;
   }
   return `/rhn/manager/api/admin/config/ldap/${id}`;
 };
@@ -40,7 +46,12 @@ const useLdapActionsApi = (): ReturnUseLdapActionsApi => {
     let networkRequest: Cancelable;
     if (action === "get") {
       networkRequest = Network.get(apiUrl);
-    } else if (action === "create" || action === "test") {
+    } else if (
+      action === "create" ||
+      action === "test" ||
+      action === "testUserLookup" ||
+      action === "testGroupResolution"
+    ) {
       networkRequest = Network.post(apiUrl, actionBodyRequest);
     } else if (action === "update") {
       networkRequest = Network.put(apiUrl, actionBodyRequest);
@@ -57,7 +68,11 @@ const useLdapActionsApi = (): ReturnUseLdapActionsApi => {
         if (!response.success) {
           throw getErrorMessage(response);
         }
-          return response.data != null ? response.data : response.messages;
+        // Prefer data when present (lookup results); otherwise surface success messages
+        if (response.data != null) {
+          return response.data;
+        }
+        return response.messages;
       })
       .catch((xhr) => {
         let errMessages;

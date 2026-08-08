@@ -8980,6 +8980,15 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="extgroup.jsp.header" xml:space="preserve">
         <source>External Group to Roles Mapping</source>
       </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source" xml:space="preserve">
+        <source>Auth source</source>
+      </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source.any" xml:space="preserve">
+        <source>Any (server-agnostic)</source>
+      </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source.hint" xml:space="preserve">
+        <source>Optionally scope this mapping to one LDAP directory. Server-agnostic mappings apply to REMOTE_USER and any directory.</source>
+      </trans-unit>
       <trans-unit id="extgroups.jsp.header" xml:space="preserve">
         <source>External Groups</source>
       </trans-unit>

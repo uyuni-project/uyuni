@@ -174,4 +174,13 @@ public class LdapAdminManagerTest extends BaseTestCaseWithUser {
         assertNull(updated.getCredentials());
         assertFalse(updated.isUseMemberOf());
     }
+
+    @Test
+    public void testUserLookupRejectsBlankLogin() {
+        String label = "ldap-" + TestUtils.randomString();
+        LdapAuthServer created = manager.create(validProperties(label));
+
+        assertThrows(ValidatorException.class, () -> manager.testUserLookup(created.getId(), ""));
+        assertThrows(ValidatorException.class, () -> manager.testGroupResolution(created.getId(), "   "));
+    }
 }

@@ -32,6 +32,7 @@ import java.util.List;
  *  #struct_begin("external group")
  *      #prop("string", "name")
  *      #prop_array("roles", "string", "role")
+ *      #prop_desc("int", "ldap_server_id", "LDAP directory id, or null when server-agnostic")
  *  #struct_end()
  *
  */
@@ -52,6 +53,7 @@ public class UserExtGroupSerializer extends ApiResponseSerializer<UserExtGroup> 
         return new SerializationBuilder()
                 .add("name", src.getLabel())
                 .add("roles", roleList)
+                .add("ldap_server_id", src.getLdapServerId())
                 .build();
     }
 }

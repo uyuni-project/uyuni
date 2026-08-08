@@ -9217,6 +9217,21 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="ldap.connection_test_failed" xml:space="preserve">
         <source>LDAP connection test failed</source>
       </trans-unit>
+      <trans-unit id="ldap.user_lookup_success" xml:space="preserve">
+        <source>LDAP user lookup succeeded</source>
+      </trans-unit>
+      <trans-unit id="ldap.user_lookup_failed" xml:space="preserve">
+        <source>LDAP user lookup failed</source>
+      </trans-unit>
+      <trans-unit id="ldap.group_resolution_success" xml:space="preserve">
+        <source>LDAP group resolution succeeded</source>
+      </trans-unit>
+      <trans-unit id="ldap.group_resolution_failed" xml:space="preserve">
+        <source>LDAP group resolution failed</source>
+      </trans-unit>
+      <trans-unit id="ldap.login_required" xml:space="preserve">
+        <source>Login is required</source>
+      </trans-unit>
       <trans-unit id="ldap.properties_required" xml:space="preserve">
         <source>LDAP server properties are required</source>
       </trans-unit>

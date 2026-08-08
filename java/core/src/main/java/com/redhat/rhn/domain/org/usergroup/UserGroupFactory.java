@@ -195,6 +195,32 @@ public class UserGroupFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up an external group by label and exact LDAP server scope.
+     * When {@code ldapServerIdIn} is {@code null}, matches only server-agnostic rows
+     * ({@code ldap_server_id IS NULL}) — no fallback to other scopes.
+     *
+     * @param labelIn external group label
+     * @param ldapServerIdIn directory id, or {@code null} for server-agnostic only
+     * @return external group object, or {@code null} if none matches exactly
+     */
+    public static UserExtGroup lookupExtGroupByLabelAndServer(String labelIn, Long ldapServerIdIn) {
+        Session session = HibernateFactory.getSession();
+        if (ldapServerIdIn == null) {
+            return session.createQuery(
+                            "FROM UserExtGroup WHERE label = :label AND ldapServerId IS NULL",
+                            UserExtGroup.class)
+                    .setParameter("label", labelIn)
+                    .uniqueResult();
+        }
+        return session.createQuery(
+                        "FROM UserExtGroup WHERE label = :label AND ldapServerId = :serverId",
+                        UserExtGroup.class)
+                .setParameter("label", labelIn)
+                .setParameter("serverId", ldapServerIdIn)
+                .uniqueResult();
+    }
+
+    /**
      * lookup function to search for organization external groups
      * @param labelIn external group label
      * @param orgIn organization

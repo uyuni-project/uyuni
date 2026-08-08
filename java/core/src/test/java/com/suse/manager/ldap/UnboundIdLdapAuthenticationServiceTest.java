@@ -190,4 +190,31 @@ public class UnboundIdLdapAuthenticationServiceTest {
         assertEquals("alice", result.get().login());
         assertTrue(result.get().groupLabels().isEmpty());
     }
+
+    @Test
+    public void lookupUserReturnsProfileWithoutGroupsOrPasswordBind() throws Exception {
+        Optional<LdapUser> result = service().lookupUser("alice");
+
+        assertTrue(result.isPresent());
+        LdapUser user = result.get();
+        assertEquals("alice", user.login());
+        assertEquals("uid=alice," + USERS_DN, user.distinguishedName());
+        assertEquals("Alice", user.firstName());
+        assertTrue(user.groupLabels().isEmpty());
+    }
+
+    @Test
+    public void lookupUserWithGroupsResolvesMembership() throws Exception {
+        Optional<LdapUser> result = service().lookupUserWithGroups("alice");
+
+        assertTrue(result.isPresent());
+        assertEquals(List.of("uyuni-admins", "uyuni-users"), result.get().groupLabels());
+    }
+
+    @Test
+    public void lookupUserReturnsEmptyForUnknownLogin() throws Exception {
+        assertTrue(service().lookupUser("carol").isEmpty());
+        assertTrue(service().lookupUserWithGroups("carol").isEmpty());
+        assertTrue(service().lookupUser("").isEmpty());
+    }
 }

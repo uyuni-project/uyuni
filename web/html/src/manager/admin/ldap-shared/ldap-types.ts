@@ -51,6 +51,72 @@ export type LdapServerFull = LdapServerProperties & {
   modified?: string;
 };
 
+export type LdapLookupResult = {
+  login: string;
+  dn: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  groupLabels: string[];
+};
+
+/** Mirrors {@code LdapServerType} Java defaults for attribute / filter prefill. */
+export type ServerTypeDefaults = {
+  userFilter: string;
+  loginAttribute: string;
+  firstNameAttribute: string;
+  lastNameAttribute: string;
+  emailAttribute: string;
+  groupFilter: string;
+  groupNameAttribute: string;
+};
+
+export const SERVER_TYPE_DEFAULTS: Record<string, ServerTypeDefaults> = {
+  ACTIVE_DIRECTORY: {
+    userFilter: "(&(objectClass=user)(sAMAccountName={login}))",
+    loginAttribute: "sAMAccountName",
+    firstNameAttribute: "givenName",
+    lastNameAttribute: "sn",
+    emailAttribute: "mail",
+    groupFilter: "(&(objectClass=group)(member={userDn}))",
+    groupNameAttribute: "cn",
+  },
+  FREE_IPA: {
+    userFilter: "(&(objectClass=person)(uid={login}))",
+    loginAttribute: "uid",
+    firstNameAttribute: "givenName",
+    lastNameAttribute: "sn",
+    emailAttribute: "mail",
+    groupFilter: "(&(objectClass=groupOfNames)(member={userDn}))",
+    groupNameAttribute: "cn",
+  },
+  OPEN_LDAP: {
+    userFilter: "(&(objectClass=inetOrgPerson)(uid={login}))",
+    loginAttribute: "uid",
+    firstNameAttribute: "givenName",
+    lastNameAttribute: "sn",
+    emailAttribute: "mail",
+    groupFilter: "(&(objectClass=groupOfNames)(member={userDn}))",
+    groupNameAttribute: "cn",
+  },
+};
+
+export const TRANSPORT_DEFAULT_PORTS: Record<string, number> = {
+  LDAPS: 636,
+  STARTTLS: 389,
+  PLAIN: 389,
+};
+
+export const SERVER_TYPE_ATTR_FIELDS: (keyof ServerTypeDefaults)[] = [
+  "userFilter",
+  "loginAttribute",
+  "firstNameAttribute",
+  "lastNameAttribute",
+  "emailAttribute",
+  "groupFilter",
+  "groupNameAttribute",
+];
+
 export const emptyLdapProperties = (): LdapServerProperties => ({
   label: "",
   enabled: true,

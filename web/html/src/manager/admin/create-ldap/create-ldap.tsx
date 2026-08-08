@@ -20,6 +20,7 @@ const toRequestBody = (model) => ({
   connectTimeout: model.connectTimeout === "" ? null : Number(model.connectTimeout),
   responseTimeout: model.responseTimeout === "" ? null : Number(model.responseTimeout),
   defaultOrgId: model.defaultOrgId === "" || model.defaultOrgId == null ? null : Number(model.defaultOrgId),
+  useMemberOf: false,
 });
 
 const CreateLdap = (props: Props) => {

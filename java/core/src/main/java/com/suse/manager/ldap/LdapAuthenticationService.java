@@ -38,4 +38,23 @@ public interface LdapAuthenticationService {
      *                       or configuration problem
      */
     Optional<LdapUser> authenticate(String login, String password) throws LdapServiceException;
+
+    /**
+     * Searches for a directory user by login without performing a password bind.
+     * Group membership is not resolved; {@link LdapUser#groupLabels()} is empty.
+     *
+     * @param login the login name to search for
+     * @return the matching user with empty groups, or empty if none / ambiguous
+     * @throws LdapServiceException if the directory cannot be consulted
+     */
+    Optional<LdapUser> lookupUser(String login) throws LdapServiceException;
+
+    /**
+     * Searches for a directory user by login and resolves group membership, without a password bind.
+     *
+     * @param login the login name to search for
+     * @return the matching user with group labels, or empty if none / ambiguous
+     * @throws LdapServiceException if the directory cannot be consulted
+     */
+    Optional<LdapUser> lookupUserWithGroups(String login) throws LdapServiceException;
 }

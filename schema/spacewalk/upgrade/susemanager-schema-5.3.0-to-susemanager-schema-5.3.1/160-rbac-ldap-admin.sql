@@ -38,6 +38,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     SELECT '', '/manager/api/admin/config/ldap/:id/test-connection', 'POST', 'W', True
     WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/admin/config/ldap/:id/test-connection' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/api/admin/config/ldap/:id/test-user-lookup', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/admin/config/ldap/:id/test-user-lookup' AND http_method = 'POST');
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    SELECT '', '/manager/api/admin/config/ldap/:id/test-group-resolution', 'POST', 'W', True
+    WHERE NOT EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/admin/config/ldap/:id/test-group-resolution' AND http_method = 'POST');
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -83,4 +89,14 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'admin.config' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/admin/config/ldap/:id/test-connection' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.config' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/config/ldap/:id/test-user-lookup' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'admin.config' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/config/ldap/:id/test-group-resolution' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;

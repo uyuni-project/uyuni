@@ -22,12 +22,14 @@ import com.redhat.rhn.manager.EntityExistsException;
 
 import com.suse.manager.ldap.DbLdapAuthConfigProvider;
 import com.suse.manager.ldap.DefaultLdapServiceFactory;
+import com.suse.manager.ldap.LdapAuthenticationService;
 import com.suse.manager.ldap.LdapConnectionFactory;
 import com.suse.manager.ldap.LdapProvisioningMode;
 import com.suse.manager.ldap.LdapServerConfig;
 import com.suse.manager.ldap.LdapServerType;
 import com.suse.manager.ldap.LdapServiceException;
 import com.suse.manager.ldap.LdapTransport;
+import com.suse.manager.ldap.LdapUser;
 import com.suse.manager.model.ldap.LdapAuthServer;
 import com.suse.manager.model.ldap.LdapAuthServerFactory;
 import com.suse.manager.webui.controllers.admin.beans.LdapProperties;
@@ -40,8 +42,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.cert.CertificateException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Creates, updates, deletes and lists LDAP directory server records for the Setup Wizard admin UI.
@@ -170,6 +174,65 @@ public class LdapAdminManager {
         catch (com.unboundid.ldap.sdk.LDAPException e) {
             throw new LdapServiceException("LDAP connection test failed for server " + config.getHost(), e);
         }
+    }
+
+    /**
+     * Looks up a directory user by login (no password bind) for admin troubleshooting.
+     *
+     * @param id the server id
+     * @param login the login to search for
+     * @return a JSON-safe map with login, dn, profile attributes, and empty groupLabels
+     * @throws ValidatorException if login is blank
+     * @throws IllegalArgumentException if no matching user is found
+     * @throws LdapServiceException if the directory cannot be consulted
+     */
+    public Map<String, Object> testUserLookup(long id, String login) throws LdapServiceException {
+        requireLogin(login);
+        LdapUser user = ldapService(id).lookupUser(login.trim())
+                .orElseThrow(() -> new IllegalArgumentException("No LDAP user found for login: " + login));
+        return toAdminUserMap(user);
+    }
+
+    /**
+     * Looks up a directory user and resolves group membership (no password bind).
+     *
+     * @param id the server id
+     * @param login the login to search for
+     * @return a JSON-safe map with login, dn, profile attributes, and groupLabels
+     * @throws ValidatorException if login is blank
+     * @throws IllegalArgumentException if no matching user is found
+     * @throws LdapServiceException if the directory cannot be consulted
+     */
+    public Map<String, Object> testGroupResolution(long id, String login) throws LdapServiceException {
+        requireLogin(login);
+        LdapUser user = ldapService(id).lookupUserWithGroups(login.trim())
+                .orElseThrow(() -> new IllegalArgumentException("No LDAP user found for login: " + login));
+        return toAdminUserMap(user);
+    }
+
+    private LdapAuthenticationService ldapService(long id) {
+        LdapAuthServer server = get(id);
+        LdapServerConfig config = DbLdapAuthConfigProvider.settingsFor(server).connectionConfig();
+        return new DefaultLdapServiceFactory(connectionFactory).getInstance(config);
+    }
+
+    private static void requireLogin(String login) {
+        if (StringUtils.isBlank(login)) {
+            ValidatorResult result = new ValidatorResult();
+            result.addFieldError("login", "ldap.login_required");
+            throw new ValidatorException(result);
+        }
+    }
+
+    private static Map<String, Object> toAdminUserMap(LdapUser user) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("login", user.login());
+        map.put("dn", user.distinguishedName());
+        map.put("firstName", user.firstName());
+        map.put("lastName", user.lastName());
+        map.put("email", user.email());
+        map.put("groupLabels", user.groupLabels());
+        return map;
     }
 
     private void applyProperties(LdapAuthServer server, LdapProperties properties, boolean creating) {

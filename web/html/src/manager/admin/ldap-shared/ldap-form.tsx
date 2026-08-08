@@ -8,7 +8,10 @@ import {
   LdapServerProperties,
   OrgOption,
   PROVISIONING_MODE_OPTIONS,
+  SERVER_TYPE_ATTR_FIELDS,
+  SERVER_TYPE_DEFAULTS,
   SERVER_TYPE_OPTIONS,
+  TRANSPORT_DEFAULT_PORTS,
   TRANSPORT_OPTIONS,
 } from "./ldap-types";
 
@@ -22,6 +25,51 @@ type Props = {
 };
 
 const TAB_HASHES = ["#server", "#account", "#attributes"];
+
+const applyServerTypeDefaults = (
+  previous: LdapServerProperties,
+  next: LdapServerProperties
+): LdapServerProperties => {
+  if (previous.serverType === next.serverType) {
+    return next;
+  }
+  const prevDefaults = SERVER_TYPE_DEFAULTS[previous.serverType];
+  const nextDefaults = SERVER_TYPE_DEFAULTS[next.serverType];
+  if (!nextDefaults) {
+    return next;
+  }
+
+  const updated = { ...next };
+  for (const field of SERVER_TYPE_ATTR_FIELDS) {
+    const current = next[field];
+    const isEmpty = current === "" || current == null;
+    const matchesPrevDefault = prevDefaults != null && current === prevDefaults[field];
+    if (isEmpty || matchesPrevDefault) {
+      updated[field] = nextDefaults[field];
+    }
+  }
+  return updated;
+};
+
+const applyTransportPortDefault = (
+  previous: LdapServerProperties,
+  next: LdapServerProperties
+): LdapServerProperties => {
+  if (previous.transport === next.transport) {
+    return next;
+  }
+  const prevDefaultPort = TRANSPORT_DEFAULT_PORTS[previous.transport];
+  const nextDefaultPort = TRANSPORT_DEFAULT_PORTS[next.transport];
+  if (nextDefaultPort == null) {
+    return next;
+  }
+  const portMatchesPrevDefault =
+    next.port === "" || next.port == null || (prevDefaultPort != null && Number(next.port) === prevDefaultPort);
+  if (portMatchesPrevDefault) {
+    return { ...next, port: nextDefaultPort };
+  }
+  return next;
+};
 
 const LdapForm = (props: Props) => {
   const [activeHash, setActiveHash] = useState(TAB_HASHES[0]);
@@ -96,6 +144,15 @@ const LdapForm = (props: Props) => {
             : t("Required when a bind DN is set.")
         }
       />
+      <Text required name="userBaseDn" label={t("User base DN")} labelClass="col-md-3" divClass="col-md-6" />
+      <Text name="groupBaseDn" label={t("Group base DN")} labelClass="col-md-3" divClass="col-md-6" />
+      <Text
+        name="userFilter"
+        label={t("User filter")}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+        hint={t("Optional override. Use {login} as the placeholder.")}
+      />
       <DEPRECATED_Select
         name="provisioningMode"
         label={t("Provisioning mode")}
@@ -123,19 +180,10 @@ const LdapForm = (props: Props) => {
 
   const attributesTab = (
     <Panel headingLevel="h2" title={t("Attribute mappings")}>
-      <Text required name="userBaseDn" label={t("User base DN")} labelClass="col-md-3" divClass="col-md-6" />
-      <Text
-        name="userFilter"
-        label={t("User filter")}
-        labelClass="col-md-3"
-        divClass="col-md-6"
-        hint={t("Optional override. Use {login} as the placeholder.")}
-      />
       <Text name="loginAttribute" label={t("Login attribute")} labelClass="col-md-3" divClass="col-md-6" />
       <Text name="firstNameAttribute" label={t("First name attribute")} labelClass="col-md-3" divClass="col-md-6" />
       <Text name="lastNameAttribute" label={t("Last name attribute")} labelClass="col-md-3" divClass="col-md-6" />
       <Text name="emailAttribute" label={t("Email attribute")} labelClass="col-md-3" divClass="col-md-6" />
-      <Text name="groupBaseDn" label={t("Group base DN")} labelClass="col-md-3" divClass="col-md-6" />
       <Text
         name="groupFilter"
         label={t("Group filter")}
@@ -144,7 +192,6 @@ const LdapForm = (props: Props) => {
         hint={t("Optional override. Use {userDn} as the placeholder.")}
       />
       <Text name="groupNameAttribute" label={t("Group name attribute")} labelClass="col-md-3" divClass="col-md-6" />
-      <DEPRECATED_Check name="useMemberOf" label={t("Use memberOf")} divClass="col-md-6 col-md-offset-3 offset-md-3" />
     </Panel>
   );
 
@@ -153,11 +200,14 @@ const LdapForm = (props: Props) => {
       model={props.model}
       errors={props.errors}
       onChange={(newModel) => {
-        // Normalize empty defaultOrgId from the clearable select
-        const normalized = {
+        let normalized: LdapServerProperties = {
           ...newModel,
-          defaultOrgId: newModel.defaultOrgId === "" || newModel.defaultOrgId === undefined ? null : newModel.defaultOrgId,
+          defaultOrgId:
+            newModel.defaultOrgId === "" || newModel.defaultOrgId === undefined ? null : newModel.defaultOrgId,
+          useMemberOf: false,
         };
+        normalized = applyServerTypeDefaults(props.model, normalized);
+        normalized = applyTransportPortDefault(props.model, normalized);
         props.onChange(normalized);
       }}
     >

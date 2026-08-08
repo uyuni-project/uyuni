@@ -43,6 +43,8 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
+
 import spark.Request;
 import spark.Response;
 
@@ -83,6 +85,8 @@ public class LdapApiController {
         put("/manager/api/admin/config/ldap/:id", withUser(this::updateLdap));
         delete("/manager/api/admin/config/ldap/:id", withUser(this::deleteLdap));
         post("/manager/api/admin/config/ldap/:id/test-connection", withUser(this::testConnection));
+        post("/manager/api/admin/config/ldap/:id/test-user-lookup", withUser(this::testUserLookup));
+        post("/manager/api/admin/config/ldap/:id/test-group-resolution", withUser(this::testGroupResolution));
     }
 
     /**
@@ -240,6 +244,75 @@ public class LdapApiController {
             return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error(LOC.getMessage("ldap.connection_test_failed")), new TypeToken<>() { });
         }
+    }
+
+    /**
+     * Looks up a directory user by login (no password) for admin troubleshooting.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON with user summary or generic error
+     */
+    public String testUserLookup(Request request, Response response, User user) {
+        requireSatAdmin(user);
+        try {
+            long id = Long.parseLong(request.params("id"));
+            String login = loginFromBody(request);
+            Map<String, Object> result = ldapAdminManager.testUserLookup(id, login);
+            return json(GSON, response,
+                    ResultJson.success(result, LOC.getMessage("ldap.user_lookup_success")),
+                    new TypeToken<>() { });
+        }
+        catch (LookupException | NumberFormatException e) {
+            return json(GSON, response, HttpStatus.SC_NOT_FOUND, ResultJson.error(), new TypeToken<>() { });
+        }
+        catch (ValidatorException e) {
+            return validationError(response, e);
+        }
+        catch (LdapServiceException | IllegalStateException | IllegalArgumentException e) {
+            LOG.warn("LDAP user lookup test failed: {}", e.getMessage());
+            LOG.debug("LDAP user lookup test failure details", e);
+            return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(LOC.getMessage("ldap.user_lookup_failed")), new TypeToken<>() { });
+        }
+    }
+
+    /**
+     * Looks up a directory user and resolves groups (no password) for admin troubleshooting.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON with user and group summary or generic error
+     */
+    public String testGroupResolution(Request request, Response response, User user) {
+        requireSatAdmin(user);
+        try {
+            long id = Long.parseLong(request.params("id"));
+            String login = loginFromBody(request);
+            Map<String, Object> result = ldapAdminManager.testGroupResolution(id, login);
+            return json(GSON, response,
+                    ResultJson.success(result, LOC.getMessage("ldap.group_resolution_success")),
+                    new TypeToken<>() { });
+        }
+        catch (LookupException | NumberFormatException e) {
+            return json(GSON, response, HttpStatus.SC_NOT_FOUND, ResultJson.error(), new TypeToken<>() { });
+        }
+        catch (ValidatorException e) {
+            return validationError(response, e);
+        }
+        catch (LdapServiceException | IllegalStateException | IllegalArgumentException e) {
+            LOG.warn("LDAP group resolution test failed: {}", e.getMessage());
+            LOG.debug("LDAP group resolution test failure details", e);
+            return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(LOC.getMessage("ldap.group_resolution_failed")), new TypeToken<>() { });
+        }
+    }
+
+    private static String loginFromBody(Request request) {
+        Map<String, String> body = GSON.fromJson(request.body(), new TypeToken<Map<String, String>>() { }.getType());
+        return body == null ? null : body.get("login");
     }
 
     private static void requireSatAdmin(User user) {

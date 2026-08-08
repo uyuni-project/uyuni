@@ -94,6 +94,40 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
         }
     }
 
+    @Override
+    public Optional<LdapUser> lookupUser(String login) throws LdapServiceException {
+        if (login == null || login.isBlank()) {
+            LOG.debug("Rejecting LDAP user lookup with an empty login");
+            return Optional.empty();
+        }
+        try (LDAPConnectionPool pool = connectionFactory.createServicePool(config)) {
+            SearchResultEntry entry = findUser(pool, login);
+            if (entry == null) {
+                LOG.info("LDAP user lookup found no match for [{}]", login);
+                return Optional.empty();
+            }
+            return Optional.of(toUser(login, entry, List.of()));
+        }
+    }
+
+    @Override
+    public Optional<LdapUser> lookupUserWithGroups(String login) throws LdapServiceException {
+        if (login == null || login.isBlank()) {
+            LOG.debug("Rejecting LDAP group resolution with an empty login");
+            return Optional.empty();
+        }
+        try (LDAPConnectionPool pool = connectionFactory.createServicePool(config)) {
+            SearchResultEntry entry = findUser(pool, login);
+            if (entry == null) {
+                LOG.info("LDAP group resolution found no user for [{}]", login);
+                return Optional.empty();
+            }
+            List<String> groups = findGroups(pool, entry.getDN(), login);
+            LOG.info("LDAP group resolution for [{}] returned {} group label(s)", login, groups.size());
+            return Optional.of(toUser(login, entry, groups));
+        }
+    }
+
     private SearchResultEntry findUser(LDAPConnectionPool pool, String login) throws LdapServiceException {
         Filter filter = LdapFilters.userFilter(config.getUserFilter(), login);
         try {
