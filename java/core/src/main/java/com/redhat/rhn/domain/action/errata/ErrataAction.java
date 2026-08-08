@@ -129,6 +129,13 @@ public class ErrataAction extends Action {
     }
 
     /**
+     * default constructor
+     */
+    public ErrataAction() {
+        setDetails(new ActionPackageDetails(this, false));
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

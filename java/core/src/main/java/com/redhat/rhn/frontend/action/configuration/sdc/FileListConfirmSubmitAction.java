@@ -17,8 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.sdc;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -146,7 +145,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     public ActionForward deploy(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) {
         return createRevisionAction(request, formIn, mapping,
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY, "config.deploy.success");
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY, "config.deploy.success");
     }
 
     /**
@@ -160,11 +159,11 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     public ActionForward diff(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
         return createRevisionAction(request, form, mapping,
-                ActionFactory.TYPE_CONFIGFILES_DIFF, "config.diff.success");
+                ActionTypeEnum.TYPE_CONFIGFILES_DIFF, "config.diff.success");
     }
 
     private ActionForward createRevisionAction(HttpServletRequest request, ActionForm form,
-            ActionMapping mapping, ActionType type, String successKey) {
+                                               ActionMapping mapping, ActionTypeEnum typeEnum, String successKey) {
         RequestContext ctxt = new RequestContext(request);
         User user = ctxt.getCurrentUser();
         Long sid = ctxt.getRequiredParam("sid");
@@ -189,7 +188,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
             user);
         try {
             Set<Action> actions = ActionChainManager.createConfigActions(user,
-                    revisions, servers, type, earliest, actionChain);
+                    revisions, servers, typeEnum, earliest, actionChain);
 
             //clean-up the set we just worked with
             RhnSetManager.remove(set);

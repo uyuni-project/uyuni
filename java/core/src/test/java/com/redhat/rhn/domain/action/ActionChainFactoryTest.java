@@ -117,19 +117,25 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChain actionChain2 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         ActionChain actionChain3 = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
 
-        Action action1 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action1.setOrg(user.getOrg());
+        Action action1 = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
         Server server1 = ServerFactoryTest.createTestServer(user);
 
         ActionChainFactory.queueActionChainEntry(action1, actionChain1, server1);
 
-        Action action2 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action2.setOrg(user.getOrg());
+        Action action2 = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
 
         ActionChainFactory.queueActionChainEntry(action2, actionChain2, server1);
 
-        Action action3 = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action3.setOrg(user.getOrg());
+        Action action3 = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
         Server server2 = ServerFactoryTest.createTestServer(user);
 
         ActionChainFactory.queueActionChainEntry(action3, actionChain3, server2);
@@ -183,8 +189,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
     public void testQueueActionChainEntry() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         Server server = ServerFactoryTest.createTestServer(user);
 
         assertEquals(0, actionChain.getEntries().size());
@@ -197,8 +206,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         actionChain = TestUtils.reload(actionChain);
         assertEquals(1, actionChain.getEntries().size());
 
-        Action secondAction = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        secondAction.setOrg(user.getOrg());
+        Action secondAction = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(secondAction, actionChain, server);
         assertNotNull(secondEntry);
         assertEquals(1, secondEntry.getSortOrder().intValue());
@@ -223,8 +235,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
     public void testGetActionChainEntry() throws Exception {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
             actionChain, ServerFactoryTest.createTestServer(user), 0);
 
@@ -245,14 +260,20 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
         for (int i = 0; i < 5; i++) {
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 0);
         }
         for (int i = 5; i < 10; i++) {
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
-            action.setOrg(user.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_PACKAGES_UPDATE)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 1);
         }
@@ -288,14 +309,20 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChain actionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
-            action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 0);
         }
 
         for (int i = 0; i < 2; i++) {
-            action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
-            action.setOrg(user.getOrg());
+            action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_PACKAGES_UPDATE)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 2);
         }
 
@@ -319,23 +346,32 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                 ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
-            action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-             action.setOrg(user.getOrg());
+            action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 0);
         }
 
-        action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         action = TestUtils.saveAndFlush(action);
         ActionChainEntry toRemove =
                 ActionChainFactory.queueActionChainEntry(action, actionChain,
                         ServerFactoryTest.createTestServer(user), 1);
 
         for (int i = 0; i < 2; i++) {
-            action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
-            action.setOrg(user.getOrg());
+            action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_PACKAGES_UPDATE)
+                    .withOrg(user.getOrg())
+                    .build();
+
             action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 2);
@@ -370,8 +406,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChain actionChain = ActionChainFactory.createActionChain(
             TestUtils.randomString(), user);
         for (int i = 0; i < 10; i++) {
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), i % 2);
         }
@@ -397,14 +436,20 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         Server server2 = ServerFactoryTest.createTestServer(user);
         Map<Long, Integer> sortOrders = new HashMap<>();
         for (int i = 0; i < 10; i++) {
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
             action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i % 2 == 0) {
-                action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-                action.setOrg(user.getOrg());
+                action = new ActionBuilder()
+                        .ofType(ActionTypeEnum.TYPE_ERRATA)
+                        .withOrg(user.getOrg())
+                        .build();
+
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
                 action = TestUtils.saveAndFlush(action);
                 sortOrders.put(action.getId(), i);
@@ -488,8 +533,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         long firstActionIdServer2 = 0;
         for (int i = 0; i < 5; i++) {
             // Server 1
-            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            Action action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
             action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
@@ -497,8 +545,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                 firstActionIdServer1 = action.getId();
             }
             // Server 2
-            action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            action = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_ERRATA)
+                    .withOrg(user.getOrg())
+                    .build();
+
             ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
             action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
@@ -592,8 +643,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             fail();
         }
 
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        Action action = new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_ERRATA)
+                .withOrg(user.getOrg())
+                .build();
+
         Server server = ServerFactoryTest.createTestServer(user);
         ac = ActionChainFactory.getActionChain(user, "chain1");
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,

@@ -18,8 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -97,7 +96,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
     public ActionForward diff(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
         return confirm(mapping, request, form, "schedulediff",
-                ActionFactory.TYPE_CONFIGFILES_DIFF);
+                ActionTypeEnum.TYPE_CONFIGFILES_DIFF);
     }
 
     /**
@@ -111,7 +110,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
     public ActionForward deploy(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
         return confirm(mapping, request, form, "scheduledeploy",
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
     }
 
     /**
@@ -121,11 +120,11 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
      * @param request HttpServletRequest
      * @param form struts ActionForm
      * @param msgPrefix A prefix for success and failure message keys.
-     * @param type The exact type of config action to schedule.
+     * @param typeEnum The exact type of config action to schedule.
      * @return forward to the next page.
      */
     public ActionForward confirm(ActionMapping mapping, HttpServletRequest request,
-            ActionForm form, String msgPrefix, ActionType type) {
+            ActionForm form, String msgPrefix, ActionTypeEnum typeEnum) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -134,7 +133,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
 
         DataResult<ConfigSystemDto> systems = cm.listSystemsForConfigAction(user, null,
-                type.getLabel());
+                typeEnum.getLabel());
         List<Long> servers = new LinkedList<>();
 
         for (ConfigSystemDto system : systems) {
@@ -174,7 +173,7 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
 
         SsmConfigFilesEvent event =
                 new SsmConfigFilesEvent(user.getId(), serverConfigMap, servers,
-                        type, earliest, actionChain);
+                        typeEnum, earliest, actionChain);
         MessageQueue.publish(event);
 
         //create the message

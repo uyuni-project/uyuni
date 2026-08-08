@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -489,7 +490,7 @@ public class ServerSnapshot extends BaseDomainHelper {
             List<Long> serverIds = new ArrayList<>();
             serverIds.add(this.server.getId());
             ActionManager.createConfigAction(user, revLongs, serverIds,
-                                  ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date());
+                                  ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY, new Date());
         }
         return deployed;
     }

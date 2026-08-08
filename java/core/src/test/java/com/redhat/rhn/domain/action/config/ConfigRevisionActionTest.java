@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -82,14 +83,14 @@ public class ConfigRevisionActionTest extends BaseTestCase {
     @Test
     public void testLookupConfigRevision() throws Exception {
         User user = UserTestUtils.createUser(this);
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
 
         assertNotNull(a);
         assertInstanceOf(ConfigAction.class, a);
         assertNotNull(a.getActionType());
 
         ConfigAction a2 = (ConfigAction) ActionFactoryTest.createAction(user,
-                          ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+                          ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ActionFactory.save(a2);
         ConfigRevisionAction cra = (ConfigRevisionAction)
             a2.getConfigRevisionActions().toArray()[0];

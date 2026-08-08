@@ -19,8 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
@@ -52,7 +54,7 @@ public class PackageActionTest extends BaseTestCase {
 
         Action newA = ActionFactoryTest.createAction(
                 UserTestUtils.createUser(this),
-                ActionFactory.TYPE_PACKAGES_VERIFY);
+                ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         assertNotNull(newA.getId());
         assertInstanceOf(PackageAction.class, newA);
         PackageAction p = (PackageAction) newA;
@@ -99,7 +101,7 @@ public class PackageActionTest extends BaseTestCase {
     public void testCreatePackageUpdateAction() throws Exception {
         User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction) ActionFactoryTest.createAction(usr,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithNvre(usr, testAction);
         ActionFactory.save(testAction);
         TestUtils.flushAndEvict(testAction);
@@ -123,7 +125,7 @@ public class PackageActionTest extends BaseTestCase {
     public void testCreatePackageUpdateActionWithName() throws Exception {
         User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithName(usr, testAction);
         ActionFactory.save(testAction);
         TestUtils.flushAndEvict(testAction);
@@ -152,10 +154,11 @@ public class PackageActionTest extends BaseTestCase {
         sa.setRemainingTries(10L);
         sa.setServerWithCheck(srvr);
         log.debug("Creating PackageRemoveAction.");
-        PackageAction pra = (PackageAction) ActionFactory.createAction(
-                    ActionFactory.TYPE_PACKAGES_REMOVE);
-        pra.setOrg(user.getOrg());
-        pra.setName("Package Removal");
+        PackageAction pra = (PackageAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_PACKAGES_REMOVE)
+                .withOrg(user.getOrg())
+                .withName("Package Removal")
+                .build();
         pra.addServerAction(sa);
         sa.setParentActionWithCheck(pra);
         log.debug("Committing PackageRemoveAction.");

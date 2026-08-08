@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -78,7 +78,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         final MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         serverId = server.getId();
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
-                .createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+                .createAction(user, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
         serverAction = createChildServerAction(action, server, ServerAction::setStatusQueued);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
