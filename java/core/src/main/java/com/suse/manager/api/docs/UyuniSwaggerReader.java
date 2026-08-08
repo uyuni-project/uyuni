@@ -13,6 +13,7 @@ package com.suse.manager.api.docs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -154,10 +155,55 @@ public class UyuniSwaggerReader {
         MediaType mediaType = new MediaType();
 
         resolveAndRegisterSchema(apiDoc.requestClass());
+        applyLegacyDocTypes(apiDoc.requestClass());
         mediaType.setSchema(buildSchemaRef(apiDoc.requestClass()));
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
         requestBody.setContent(content);
         operation.setRequestBody(requestBody);
+    }
+
+    /**
+     * Carries the legacy documentation type of the request properties into the specification.
+     *
+     * Some legacy types have no OpenAPI counterpart, so swagger-core normalises them to the
+     * closest primitive. Annotating the request getter with {@link LegacyDocResponse#type()}
+     * keeps the original name available to the documentation parsers.
+     *
+     * @param requestClass the request class of the endpoint
+     */
+    private void applyLegacyDocTypes(Class<?> requestClass) {
+        if (this.components.getSchemas() == null) {
+            return;
+        }
+        Schema<?> requestSchema = this.components.getSchemas().get(schemaRefName(requestClass));
+        if (requestSchema == null || requestSchema.getProperties() == null) {
+            return;
+        }
+        for (Method getter : requestClass.getMethods()) {
+            LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
+            if (legacyDoc == null || legacyDoc.type().isBlank()) {
+                continue;
+            }
+            Schema<?> property = requestSchema.getProperties().get(resolvePropertyName(getter));
+            if (property != null) {
+                property.addExtension(DOC_RESPONSE_TYPE_EXTENSION, legacyDoc.type());
+            }
+        }
+    }
+
+    private String resolvePropertyName(Method getter) {
+        var schemaAnnotation = getter.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (schemaAnnotation != null && !schemaAnnotation.name().isEmpty()) {
+            return schemaAnnotation.name();
+        }
+        String name = getter.getName();
+        if (name.startsWith("get")) {
+            name = name.substring(3);
+        }
+        else if (name.startsWith("is")) {
+            name = name.substring(2);
+        }
+        return Introspector.decapitalize(name);
     }
 
     private void configureResponses(ApiEndpointDoc apiDoc, Operation operation) {
@@ -341,12 +387,15 @@ public class UyuniSwaggerReader {
     }
 
     private Schema<?> buildSchemaRef(Class<?> clazz) {
+        return new Schema<>().$ref("#/components/schemas/" + schemaRefName(clazz));
+    }
+
+    private String schemaRefName(Class<?> clazz) {
         var classAnnotation = findClassAnnotation(clazz, io.swagger.v3.oas.annotations.media.Schema.class);
-        String refName = Optional.ofNullable(classAnnotation)
+        return Optional.ofNullable(classAnnotation)
                 .map(io.swagger.v3.oas.annotations.media.Schema::name)
                 .filter(name -> !name.isEmpty())
                 .orElse(clazz.getSimpleName());
-        return new Schema<>().$ref("#/components/schemas/" + refName);
     }
 
     private <A extends Annotation> A findClassAnnotation(Class<?> cls, Class<A> annotationClass) {
