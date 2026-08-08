@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
+import static org.hamcrest.CoreMatchers.any;
+import static org.hamcrest.Matchers.anything;
+import static org.jmock.Expectations.allowing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -66,21 +69,27 @@ public class CSVTagTest extends MockObjectTestCase {
         csv.setParent(lst);
         csv.setDataset(listName);
 
-        context().checking(new Expectations() { {
-            List<Map<String, String>> dataList = CSVWriterTest.getTestListOfMaps();
-            atLeast(1).of(context).getAttribute(listName);
-            will(returnValue(dataList));
-            atLeast(1).of(context).getRequest();
-            will(returnValue(req));
-            atLeast(1).of(req).getSession(true);
-            will(returnValue(session));
-            atLeast(1).of(session).setAttribute(
-                    with(equal("exportColumns_" + csv.getUniqueName())),
-                    with(any(String.class)));
-            atLeast(1).of(session).setAttribute(
-                    with(equal("pageList_" + csv.getUniqueName())),
-                    with(any(List.class)));
-        } });
+        context().checking(new Expectations() {
+            {
+                List<Map<String, String>> dataList = CSVWriterTest.getTestListOfMaps();
+                atLeast(1).of(context).getAttribute(listName);
+                will(returnValue(dataList));
+                atLeast(1).of(context).getRequest();
+                will(returnValue(req));
+                atLeast(1).of(req).getSession(true);
+                will(returnValue(session));
+                atLeast(1).of(session).setAttribute(
+                        with(equal("exportColumns_" + csv.getUniqueName())),
+                        with(any(String.class)));
+                atLeast(1).of(session).setAttribute(
+                        with(equal("pageList_" + csv.getUniqueName())),
+                        with(any(List.class)));
+                atLeast(1).of(req).getParameterMap();
+                will(returnValue(java.util.Collections.emptyMap()));
+                allowing(req).getParameter(with(anything()));
+                will(returnValue(null));
+            }
+        });
     }
 
     @Test
@@ -102,14 +111,17 @@ public class CSVTagTest extends MockObjectTestCase {
      * Requires a list of columns set under "exportColumns"
      * as well as a parameter "lde=1" to be present on the
      * requesting URL.
+     * 
      * @throws Exception something bad happened
      */
     @Test
     public void testExport() throws Exception {
-        context().checking(new Expectations() { {
-            atLeast(1).of(context).getOut();
-            will(returnValue(writer));
-        } });
+        context().checking(new Expectations() {
+            {
+                atLeast(1).of(context).getOut();
+                will(returnValue(writer));
+            }
+        });
 
         csv.setExportColumns("column1,column2,column3");
 

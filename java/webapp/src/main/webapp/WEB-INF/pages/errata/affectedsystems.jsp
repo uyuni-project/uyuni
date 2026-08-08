@@ -30,7 +30,7 @@
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
                    <rl:csv dataset="pageList"
-                        name="systemAffectedCSVExport"
+                        name="systemAffectedList"
                         exportColumns="name, status, channelLabels, entitlementLevel"
                         header="${errata.advisoryName} - ${errata.advisoryType}" />
                     <html:submit styleClass="btn btn-default" property="dispatch">
