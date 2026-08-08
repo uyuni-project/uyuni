@@ -1,0 +1,1 @@
+- Fix Fine Grained search for hyphenated hostnames (bsc#1257102)
