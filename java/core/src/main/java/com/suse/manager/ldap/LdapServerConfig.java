@@ -49,6 +49,8 @@ public final class LdapServerConfig {
     private final int connectTimeoutMillis;
     private final int responseTimeoutMillis;
 
+    private final String rootCa;
+
     private LdapServerConfig(Builder builder) {
         this.serverType = builder.serverType;
         this.host = builder.host;
@@ -68,6 +70,7 @@ public final class LdapServerConfig {
         this.emailAttribute = builder.emailAttribute;
         this.connectTimeoutMillis = builder.connectTimeoutMillis;
         this.responseTimeoutMillis = builder.responseTimeoutMillis;
+        this.rootCa = builder.rootCa;
     }
 
     /**
@@ -209,6 +212,13 @@ public final class LdapServerConfig {
     }
 
     /**
+     * @return the optional PEM-encoded directory CA certificate used to trust TLS connections
+     */
+    public Optional<String> getRootCa() {
+        return Optional.ofNullable(rootCa);
+    }
+
+    /**
      * Fluent builder for {@link LdapServerConfig}. Optional values default to those of the
      * configured {@link LdapServerType}; timeouts default to ten seconds.
      */
@@ -235,6 +245,7 @@ public final class LdapServerConfig {
         private String emailAttribute;
         private int connectTimeoutMillis = DEFAULT_TIMEOUT_MILLIS;
         private int responseTimeoutMillis = DEFAULT_TIMEOUT_MILLIS;
+        private String rootCa;
 
         private Builder(LdapServerType serverTypeIn, String hostIn, String userBaseDnIn) {
             this.serverType = Objects.requireNonNull(serverTypeIn, "serverType must not be null");
@@ -380,6 +391,18 @@ public final class LdapServerConfig {
          */
         public Builder responseTimeoutMillis(int responseTimeoutMillisIn) {
             this.responseTimeoutMillis = responseTimeoutMillisIn;
+            return this;
+        }
+
+        /**
+         * Sets an optional PEM-encoded CA certificate used to trust the directory TLS endpoint
+         * in addition to the JVM default trust store.
+         *
+         * @param rootCaIn PEM certificate text, or {@code null}/blank to use the JVM defaults only
+         * @return this builder
+         */
+        public Builder rootCa(String rootCaIn) {
+            this.rootCa = rootCaIn;
             return this;
         }
 

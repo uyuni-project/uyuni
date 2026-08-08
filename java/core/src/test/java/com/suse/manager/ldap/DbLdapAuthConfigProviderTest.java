@@ -129,4 +129,15 @@ public class DbLdapAuthConfigProviderTest {
     public void serverWithoutDefaultOrgHasNoOrgId() {
         assertNull(providerFor(minimalServer()).getServers().get(0).defaultOrgId());
     }
+
+    @Test
+    public void mapsRootCaWhenPresent() {
+        LdapAuthServer server = minimalServer();
+        server.setRootCa("-----BEGIN CERTIFICATE-----\nMIIB\n-----END CERTIFICATE-----");
+
+        LdapServerConfig config = providerFor(server).getServers().get(0).connectionConfig();
+
+        assertTrue(config.getRootCa().isPresent());
+        assertTrue(config.getRootCa().get().contains("BEGIN CERTIFICATE"));
+    }
 }

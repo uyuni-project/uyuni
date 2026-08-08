@@ -1,0 +1,2 @@
+- Add RBAC endpoints for the Setup Wizard LDAP admin
+  UI and API under admin.config

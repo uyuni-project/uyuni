@@ -101,9 +101,23 @@ public class DbLdapAuthConfigProvider implements LdapAuthConfigProvider {
         applyIfSet(server.getGroupFilter(), builder::groupFilter);
         applyIfSet(server.getGroupNameAttribute(), builder::groupNameAttribute);
         applyProfileAttributes(server, builder);
+        if (StringUtils.isNotBlank(server.getRootCa())) {
+            builder.rootCa(server.getRootCa());
+        }
 
         return new LdapAuthServerSettings(server.getId(), builder.build(), server.getProvisioningMode(),
                 orgId(server), server.isAutoJoinRegularUser(), server.getPriority());
+    }
+
+    /**
+     * Translates a persisted directory row into login-layer settings. Exposed so admin tooling
+     * (for example connection tests) can reuse the same mapping as the login path.
+     *
+     * @param server the directory record
+     * @return connection and provisioning settings for that record
+     */
+    public static LdapAuthServerSettings settingsFor(LdapAuthServer server) {
+        return toSettings(server);
     }
 
     private static void applyBind(LdapAuthServer server, LdapServerConfig.Builder builder) {

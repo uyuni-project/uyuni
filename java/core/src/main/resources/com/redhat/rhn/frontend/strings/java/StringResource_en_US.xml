@@ -9163,6 +9163,63 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
       </trans-unit>
+      <trans-unit id="ldap.server_created" xml:space="preserve">
+        <source>LDAP server {0} created successfully</source>
+      </trans-unit>
+      <trans-unit id="ldap.server_deleted" xml:space="preserve">
+        <source>LDAP server {0} deleted successfully</source>
+      </trans-unit>
+      <trans-unit id="ldap.label_exists" xml:space="preserve">
+        <source>An LDAP server with this label already exists</source>
+      </trans-unit>
+      <trans-unit id="ldap.label_required" xml:space="preserve">
+        <source>Label is required</source>
+      </trans-unit>
+      <trans-unit id="ldap.host_required" xml:space="preserve">
+        <source>Host is required</source>
+      </trans-unit>
+      <trans-unit id="ldap.server_type_required" xml:space="preserve">
+        <source>Server type is required</source>
+      </trans-unit>
+      <trans-unit id="ldap.server_type_invalid" xml:space="preserve">
+        <source>Server type is invalid</source>
+      </trans-unit>
+      <trans-unit id="ldap.transport_required" xml:space="preserve">
+        <source>Transport is required</source>
+      </trans-unit>
+      <trans-unit id="ldap.transport_invalid" xml:space="preserve">
+        <source>Transport is invalid</source>
+      </trans-unit>
+      <trans-unit id="ldap.user_base_dn_required" xml:space="preserve">
+        <source>User base DN is required</source>
+      </trans-unit>
+      <trans-unit id="ldap.port_invalid" xml:space="preserve">
+        <source>Port must be a positive number</source>
+      </trans-unit>
+      <trans-unit id="ldap.bind_password_required" xml:space="preserve">
+        <source>Bind password is required when a bind DN is set</source>
+      </trans-unit>
+      <trans-unit id="ldap.default_org_required" xml:space="preserve">
+        <source>Default organization is required for just-in-time provisioning</source>
+      </trans-unit>
+      <trans-unit id="ldap.default_org_invalid" xml:space="preserve">
+        <source>Default organization is invalid</source>
+      </trans-unit>
+      <trans-unit id="ldap.provisioning_mode_invalid" xml:space="preserve">
+        <source>Provisioning mode is invalid</source>
+      </trans-unit>
+      <trans-unit id="ldap.root_ca_invalid" xml:space="preserve">
+        <source>Root CA certificate is not a valid PEM certificate</source>
+      </trans-unit>
+      <trans-unit id="ldap.connection_test_success" xml:space="preserve">
+        <source>LDAP connection test succeeded</source>
+      </trans-unit>
+      <trans-unit id="ldap.connection_test_failed" xml:space="preserve">
+        <source>LDAP connection test failed</source>
+      </trans-unit>
+      <trans-unit id="ldap.properties_required" xml:space="preserve">
+        <source>LDAP server properties are required</source>
+      </trans-unit>
       <trans-unit id="hub.tokenType.issued">
         <source>Issued</source>
       </trans-unit>

@@ -117,4 +117,21 @@ public class LdapServerConfigTest {
                 .bind("cn=admin,dc=example,dc=com", "");
         assertThrows(IllegalStateException.class, builder::build);
     }
+
+    @Test
+    public void rootCaIsOptionalOnTheConfig() {
+        LdapServerConfig withoutCa = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")
+                .anonymousBind()
+                .build();
+        assertTrue(withoutCa.getRootCa().isEmpty());
+
+        LdapServerConfig withCa = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")
+                .anonymousBind()
+                .rootCa("-----BEGIN CERTIFICATE-----\nMIIB\n-----END CERTIFICATE-----")
+                .build();
+        assertTrue(withCa.getRootCa().isPresent());
+        assertTrue(withCa.getRootCa().get().contains("BEGIN CERTIFICATE"));
+    }
 }

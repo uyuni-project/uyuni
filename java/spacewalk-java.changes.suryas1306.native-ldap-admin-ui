@@ -1,0 +1,2 @@
+- Add Setup Wizard LDAP admin UI and API to manage
+  directory servers, including custom CA and StartTLS
