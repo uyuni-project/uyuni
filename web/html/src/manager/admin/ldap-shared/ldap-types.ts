@@ -130,19 +130,14 @@ export const emptyLdapProperties = (): LdapServerProperties => ({
   bindDn: "",
   bindPassword: "",
   userBaseDn: "",
-  userFilter: "",
-  loginAttribute: "",
-  firstNameAttribute: "",
-  lastNameAttribute: "",
-  emailAttribute: "",
   groupBaseDn: "",
-  groupFilter: "",
-  groupNameAttribute: "",
   useMemberOf: false,
   provisioningMode: "JIT",
   defaultOrgId: null,
   autoJoinRegularUser: true,
   rootCa: "",
+  // Prefill attribute/filter defaults for the initial server type (RFC Attribute mappings tab).
+  ...SERVER_TYPE_DEFAULTS.OPEN_LDAP,
 });
 
 export const SERVER_TYPE_OPTIONS = [
