@@ -59,7 +59,7 @@ import javax.security.auth.login.LoginException;
  * @apidoc.namespace admin.configuration
  * @apidoc.doc Provides methods to configure the #product() server.
  */
-public class AdminConfigurationHandler extends BaseHandler {
+public class AdminConfigurationHandler extends BaseHandler implements AdminConfigurationHandlerApi {
     private static final Logger LOG = LogManager.getLogger(AdminConfigurationHandler.class);
     private final OrgHandler orgHandler;
     private final ServerGroupHandler serverGroupHandler;
