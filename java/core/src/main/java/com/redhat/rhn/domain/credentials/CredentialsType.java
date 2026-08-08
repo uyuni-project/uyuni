@@ -22,7 +22,8 @@ public enum CredentialsType {
     CLOUD_RMT(Label.CLOUD_RMT),
     REPORT_DATABASE(Label.REPORT_DATABASE),
     RHUI(Label.RHUI),
-    HUB_SCC(Label.HUB_SCC);
+    HUB_SCC(Label.HUB_SCC),
+    LDAP(Label.LDAP);
 
     private final String label;
 
@@ -56,6 +57,7 @@ public enum CredentialsType {
         public static final String REPORT_DATABASE = "reportcreds";
         public static final String RHUI = "rhui";
         public static final String HUB_SCC = "hub_scc";
+        public static final String LDAP = "ldap";
 
         private Label() {
         }

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2012 Novell
+-- Copyright (c) 2026 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -8,34 +8,17 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
--- Red Hat trademarks are not licensed under GPLv2. No permission is
--- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation.
---
 
-CREATE TABLE suseCredentials
-(
-    id                  NUMERIC NOT NULL
-                            CONSTRAINT suse_credentials_pk PRIMARY KEY,
-    user_id             NUMERIC NULL
-                            CONSTRAINT suse_credentials_user_fk
-                            REFERENCES web_contact (id)
-                            ON DELETE CASCADE,
-    type                VARCHAR(128) DEFAULT ('scc') NOT NULL
-                             CONSTRAINT rhn_type_ck
-                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc', 'ldap')),
-    url                 VARCHAR(256),
-    username            VARCHAR(64),
-    password            VARCHAR(4096),
-    created             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    modified            TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    extra_auth          bytea,
-    payg_ssh_data_id    NUMERIC
-                            CONSTRAINT suse_credentials_payg_ssh_data_id_fk REFERENCES susePaygSshData (id)
-);
+-- Bind password of an LDAP authentication server. Idempotent: safe if re-applied.
+ALTER TABLE suseCredentials
+    DROP CONSTRAINT IF EXISTS rhn_type_ck;
+
+ALTER TABLE suseCredentials
+    ADD CONSTRAINT rhn_type_ck
+    CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc', 'ldap'));
 
 ALTER TABLE susecredentials
-    ADD CONSTRAINT suse_credentials_payg_ssh_data_id_uq UNIQUE (payg_ssh_data_id);
+    DROP CONSTRAINT IF EXISTS cred_type_check;
 
 ALTER TABLE susecredentials
     ADD CONSTRAINT cred_type_check CHECK (
@@ -66,4 +49,12 @@ ALTER TABLE susecredentials
         END
     );
 
-CREATE SEQUENCE suse_credentials_id_seq;
+DO $$
+  BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'susecredentialstype') THEN
+      INSERT INTO suseCredentialsType (id, label, name)
+        SELECT sequence_nextval('suse_credtype_id_seq'), 'ldap', 'LDAP Authentication Server'
+        WHERE NOT EXISTS (SELECT 1 FROM suseCredentialsType WHERE label = 'ldap');
+    END IF;
+  END;
+$$;
