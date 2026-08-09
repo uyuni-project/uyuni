@@ -37,6 +37,10 @@ public interface ImageProfileHandlerApi {
     /**
      * List available image profile types.
      *
+     * The summary below intentionally mirrors the legacy doclet text ("image store types"),
+     * which is inaccurate but has to be reproduced verbatim to keep the generated
+     * documentation identical.
+     *
      * @param loggedInUser the current user
      * @return the list of image profile types
      */
