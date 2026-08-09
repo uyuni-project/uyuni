@@ -36,7 +36,7 @@ const CreateLdap = (props: Props) => {
         model={state.properties}
         errors={state.errors}
         orgs={props.orgs}
-        onChange={(properties) => setState({ ...state, properties })}
+        onChange={(properties) => setState((prev) => ({ ...prev, properties }))}
       >
         <div className="row">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
@@ -51,7 +51,7 @@ const CreateLdap = (props: Props) => {
                     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/setup/ldap/` + data);
                   })
                   .catch((error) => {
-                    setState({ ...state, errors: error.errors || {} });
+                    setState((prev) => ({ ...prev, errors: error.errors || {} }));
                     showErrorToastr(error.messages || error, { autoHide: false });
                   })
               }

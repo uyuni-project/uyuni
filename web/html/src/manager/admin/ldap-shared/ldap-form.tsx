@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import { DEPRECATED_Check, DEPRECATED_Select, Form, Password, Text, TextArea } from "components/input";
 import { Panel } from "components/panels/Panel";
-import { TabContainer } from "components/tab-container";
 
 import {
   LdapServerProperties,
@@ -24,7 +23,8 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const TAB_HASHES = ["#server", "#account", "#attributes"];
+const TAB_HASHES = ["#server", "#account", "#attributes"] as const;
+const TAB_LABELS = ["Server", "Account", "Attribute mappings"] as const;
 
 const applyServerTypeDefaults = (
   previous: LdapServerProperties,
@@ -195,6 +195,10 @@ const LdapForm = (props: Props) => {
     </Panel>
   );
 
+  // Keep every tab mounted (hide inactive with CSS). TabContainer only renders the
+  // active panel, which unmounts inputs and InputBase clears their model values.
+  const tabs = [serverTab, accountTab, attributesTab];
+
   return (
     <Form
       model={props.model}
@@ -211,13 +215,31 @@ const LdapForm = (props: Props) => {
         props.onChange(normalized);
       }}
     >
-      <TabContainer
-        labels={[t("Server"), t("Account"), t("Attribute mappings")]}
-        hashes={TAB_HASHES}
-        tabs={[serverTab, accountTab, attributesTab]}
-        initialActiveTabHash={activeHash}
-        onTabHashChange={setActiveHash}
-      />
+      <div>
+        <div className="spacewalk-content-nav mb-5">
+          <ul className="nav nav-tabs">
+            {TAB_HASHES.map((hash, i) => (
+              <li className={activeHash === hash ? "active" : ""} key={hash}>
+                <a
+                  className="js-spa"
+                  href={hash}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setActiveHash(hash);
+                  }}
+                >
+                  {t(TAB_LABELS[i])}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {tabs.map((tab, i) => (
+          <div key={TAB_HASHES[i]} hidden={activeHash !== TAB_HASHES[i]}>
+            {tab}
+          </div>
+        ))}
+      </div>
       {props.children}
     </Form>
   );
