@@ -42,6 +42,7 @@ import java.util.function.UnaryOperator;
  *   <li>{@code bind_dn}, {@code bind_password} (omit both to attempt an anonymous bind)</li>
  *   <li>{@code user_base_dn} (required), {@code user_filter}, {@code login_attribute}</li>
  *   <li>{@code group_base_dn}, {@code group_filter}, {@code group_name_attribute}</li>
+ *   <li>{@code use_memberof} - {@code 1}/{@code true} to resolve groups via {@code memberOf}</li>
  *   <li>{@code provisioning_mode} ({@code JIT}/{@code EXISTING_ONLY}), {@code default_org_id}</li>
  * </ul>
  */
@@ -131,6 +132,9 @@ public class ConfigLdapAuthConfigProvider implements LdapAuthConfigProvider {
         applyIfSet("group_base_dn", builder::groupBaseDn);
         applyIfSet("group_filter", builder::groupFilter);
         applyIfSet("group_name_attribute", builder::groupNameAttribute);
+        if (Boolean.TRUE.equals(booleanReader.apply(PREFIX + "use_memberof"))) {
+            builder.useMemberOf(true);
+        }
 
         LdapProvisioningMode mode = LdapProvisioningMode.fromLabel(str("provisioning_mode"));
         int orgId = intReader.apply(PREFIX + "default_org_id");

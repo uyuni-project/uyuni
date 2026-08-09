@@ -22,11 +22,17 @@ package com.suse.manager.ldap;
  */
 public enum LdapServerType {
 
-    /** Microsoft Active Directory. */
+    /**
+     * Microsoft Active Directory.
+     *
+     * <p>The default group filter uses LDAP_MATCHING_RULE_IN_CHAIN
+     * ({@code 1.2.840.113556.1.4.1941}) so nested group membership is resolved without a separate
+     * walker. Administrators can override the filter for direct membership only.</p>
+     */
     ACTIVE_DIRECTORY(
             "(&(objectClass=user)(sAMAccountName={login}))",
             "sAMAccountName",
-            "(&(objectClass=group)(member={userDn}))",
+            "(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={userDn}))",
             "cn",
             "givenName",
             "sn",

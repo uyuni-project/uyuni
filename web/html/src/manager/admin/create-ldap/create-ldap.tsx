@@ -23,7 +23,7 @@ const toRequestBody = (model) => ({
     model.defaultOrgId === "" || model.defaultOrgId === null || model.defaultOrgId === undefined
       ? null
       : Number(model.defaultOrgId),
-  useMemberOf: false,
+  useMemberOf: Boolean(model.useMemberOf),
 });
 
 const CreateLdap = (props: Props) => {

@@ -13,6 +13,12 @@
         attr="roleNames"/>
 
 <rl:column bound="true"
+        headerkey="userlist.jsp.authorizedby"
+        sortable="true"
+        sortattr="authType"
+        attr="authorizedBy"/>
+
+<rl:column bound="true"
         headerkey="userdetails.jsp.lastsign"
         sortable="true"
         sortattr="lastLoggedInDate"

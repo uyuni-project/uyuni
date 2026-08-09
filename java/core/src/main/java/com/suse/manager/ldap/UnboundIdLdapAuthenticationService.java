@@ -11,10 +11,13 @@
 
 package com.suse.manager.ldap;
 
+import com.unboundid.ldap.sdk.Attribute;
+import com.unboundid.ldap.sdk.DN;
 import com.unboundid.ldap.sdk.Filter;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPConnectionPool;
 import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.RDN;
 import com.unboundid.ldap.sdk.ResultCode;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
@@ -25,8 +28,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * {@link LdapAuthenticationService} backed by the UnboundID LDAP SDK.
@@ -172,6 +177,17 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
     }
 
     private List<String> findGroups(LDAPConnectionPool pool, String userDn, String login) {
+        if (config.isUseMemberOf()) {
+            return findGroupsViaMemberOf(pool, userDn, login);
+        }
+        return findGroupsViaMemberSearch(pool, userDn, login);
+    }
+
+    /**
+     * Baseline path: search the group tree with the configured {@code member=} (or nested AD)
+     * filter and collect the configured group-name attribute.
+     */
+    private List<String> findGroupsViaMemberSearch(LDAPConnectionPool pool, String userDn, String login) {
         Filter filter;
         try {
             filter = LdapFilters.groupFilter(config.getGroupFilter(), userDn);
@@ -198,6 +214,82 @@ public class UnboundIdLdapAuthenticationService implements LdapAuthenticationSer
                     login, config.getGroupBaseDn(), filter, e.getMessage(), e);
             return List.of();
         }
+    }
+
+    /**
+     * Optional optimization: read {@code memberOf} from the user entry (including AD
+     * {@code memberOf;range=} pages), then resolve each group DN to a label.
+     */
+    private List<String> findGroupsViaMemberOf(LDAPConnectionPool pool, String userDn, String login) {
+        try {
+            List<String> groupDns = LdapRangedAttributes.readAllValues(pool, userDn, "memberOf");
+            Set<String> labels = new LinkedHashSet<>();
+            for (String groupDn : groupDns) {
+                if (!isUnderGroupBase(groupDn)) {
+                    continue;
+                }
+                String label = resolveGroupLabel(pool, groupDn);
+                if (label != null && !label.isBlank()) {
+                    labels.add(label);
+                }
+            }
+            List<String> sorted = new ArrayList<>(labels);
+            sorted.sort(Comparator.naturalOrder());
+            return sorted;
+        }
+        catch (LDAPException e) {
+            LOG.warn("LDAP memberOf group lookup failed for [{}] (user DN={}): {}",
+                    login, userDn, e.getMessage(), e);
+            return List.of();
+        }
+    }
+
+    private boolean isUnderGroupBase(String groupDn) {
+        String groupBase = config.getGroupBaseDn();
+        if (groupBase == null || groupBase.isBlank()) {
+            return true;
+        }
+        try {
+            return DN.isDescendantOf(groupDn, groupBase, true);
+        }
+        catch (LDAPException e) {
+            LOG.debug("Skipping memberOf DN that is not a valid DN under the group base: {}", groupDn);
+            return false;
+        }
+    }
+
+    private String resolveGroupLabel(LDAPConnectionPool pool, String groupDn) throws LDAPException {
+        SearchResultEntry groupEntry = pool.getEntry(groupDn, config.getGroupNameAttribute());
+        if (groupEntry != null) {
+            String label = groupEntry.getAttributeValue(config.getGroupNameAttribute());
+            if (label != null && !label.isBlank()) {
+                return label;
+            }
+        }
+        return labelFromDn(groupDn, config.getGroupNameAttribute());
+    }
+
+    /**
+     * Best-effort label from the group DN's RDN when the group entry cannot be read (or the
+     * configured name attribute is {@code cn}).
+     */
+    private static String labelFromDn(String groupDn, String groupNameAttribute) {
+        if (groupNameAttribute == null ||
+                !"cn".equalsIgnoreCase(groupNameAttribute.trim())) {
+            return null;
+        }
+        try {
+            RDN rdn = new DN(groupDn).getRDN();
+            for (Attribute attribute : rdn.getAttributes()) {
+                if ("cn".equalsIgnoreCase(attribute.getName())) {
+                    return attribute.getValue();
+                }
+            }
+        }
+        catch (LDAPException e) {
+            return null;
+        }
+        return null;
     }
 
     private LdapUser toUser(String login, SearchResultEntry entry, List<String> groups) {

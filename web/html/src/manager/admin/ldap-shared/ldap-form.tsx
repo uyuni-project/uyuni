@@ -189,9 +189,17 @@ const LdapForm = (props: Props) => {
         label={t("Group filter")}
         labelClass="col-md-3"
         divClass="col-md-6"
-        hint={t("Optional override. Use {userDn} as the placeholder.")}
+        hint={t("Optional override. Use {userDn} as the placeholder. Ignored when memberOf is enabled.")}
       />
       <Text name="groupNameAttribute" label={t("Group name attribute")} labelClass="col-md-3" divClass="col-md-6" />
+      <DEPRECATED_Check
+        name="useMemberOf"
+        label={t("Use memberOf attribute")}
+        divClass="col-md-6 col-md-offset-3 offset-md-3"
+        hint={t(
+          "Read group membership from the user entry (including Active Directory memberOf;range= pages) instead of searching groups by member=."
+        )}
+      />
     </Panel>
   );
 
@@ -208,7 +216,7 @@ const LdapForm = (props: Props) => {
           ...newModel,
           defaultOrgId:
             newModel.defaultOrgId === "" || newModel.defaultOrgId === undefined ? null : newModel.defaultOrgId,
-          useMemberOf: false,
+          useMemberOf: Boolean(newModel.useMemberOf),
         };
         normalized = applyServerTypeDefaults(props.model, normalized);
         normalized = applyTransportPortDefault(props.model, normalized);

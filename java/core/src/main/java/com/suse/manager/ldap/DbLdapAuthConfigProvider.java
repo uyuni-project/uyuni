@@ -100,6 +100,7 @@ public class DbLdapAuthConfigProvider implements LdapAuthConfigProvider {
         applyIfSet(server.getGroupBaseDn(), builder::groupBaseDn);
         applyIfSet(server.getGroupFilter(), builder::groupFilter);
         applyIfSet(server.getGroupNameAttribute(), builder::groupNameAttribute);
+        builder.useMemberOf(server.isUseMemberOf());
         applyProfileAttributes(server, builder);
         if (StringUtils.isNotBlank(server.getRootCa())) {
             builder.rootCa(server.getRootCa());

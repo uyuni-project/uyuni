@@ -78,7 +78,7 @@ export const SERVER_TYPE_DEFAULTS: Record<string, ServerTypeDefaults> = {
     firstNameAttribute: "givenName",
     lastNameAttribute: "sn",
     emailAttribute: "mail",
-    groupFilter: "(&(objectClass=group)(member={userDn}))",
+    groupFilter: "(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={userDn}))",
     groupNameAttribute: "cn",
   },
   FREE_IPA: {

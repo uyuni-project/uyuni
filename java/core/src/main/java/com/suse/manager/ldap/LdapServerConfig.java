@@ -41,6 +41,7 @@ public final class LdapServerConfig {
     private final String groupBaseDn;
     private final String groupFilter;
     private final String groupNameAttribute;
+    private final boolean useMemberOf;
 
     private final String firstNameAttribute;
     private final String lastNameAttribute;
@@ -65,6 +66,7 @@ public final class LdapServerConfig {
         this.groupBaseDn = builder.groupBaseDn;
         this.groupFilter = builder.groupFilter;
         this.groupNameAttribute = builder.groupNameAttribute;
+        this.useMemberOf = builder.useMemberOf;
         this.firstNameAttribute = builder.firstNameAttribute;
         this.lastNameAttribute = builder.lastNameAttribute;
         this.emailAttribute = builder.emailAttribute;
@@ -177,6 +179,14 @@ public final class LdapServerConfig {
     }
 
     /**
+     * @return {@code true} when group membership should be read from the user entry's
+     * {@code memberOf} attribute instead of searching groups by {@code member=}
+     */
+    public boolean isUseMemberOf() {
+        return useMemberOf;
+    }
+
+    /**
      * @return the attribute carrying the user's first (given) name
      */
     public String getFirstNameAttribute() {
@@ -240,6 +250,7 @@ public final class LdapServerConfig {
         private String groupBaseDn;
         private String groupFilter;
         private String groupNameAttribute;
+        private boolean useMemberOf;
         private String firstNameAttribute;
         private String lastNameAttribute;
         private String emailAttribute;
@@ -357,6 +368,19 @@ public final class LdapServerConfig {
          */
         public Builder groupNameAttribute(String groupNameAttributeIn) {
             this.groupNameAttribute = groupNameAttributeIn;
+            return this;
+        }
+
+        /**
+         * When {@code true}, group membership is read from the user entry's {@code memberOf}
+         * attribute (including AD {@code memberOf;range=} pages) instead of searching the directory
+         * with the configured group filter.
+         *
+         * @param useMemberOfIn whether to use the memberOf attribute path
+         * @return this builder
+         */
+        public Builder useMemberOf(boolean useMemberOfIn) {
+            this.useMemberOf = useMemberOfIn;
             return this;
         }
 

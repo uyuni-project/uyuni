@@ -42,7 +42,7 @@ CREATE TABLE suseLdapAuthServer
     group_base_dn           VARCHAR(1024),
     group_filter            VARCHAR(1024),
     group_name_attribute    VARCHAR(128),
-    -- Optional optimization; v1 group lookup uses the member filter. Stored for UI/config parity.
+    -- When true, resolve groups from the user entry's memberOf attribute (incl. AD range pages).
     use_memberof            BOOLEAN NOT NULL DEFAULT FALSE,
     provisioning_mode       VARCHAR(16) NOT NULL DEFAULT ('JIT')
                                 CONSTRAINT suse_ldap_auth_srv_prov_ck

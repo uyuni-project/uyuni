@@ -140,4 +140,14 @@ public class DbLdapAuthConfigProviderTest {
         assertTrue(config.getRootCa().isPresent());
         assertTrue(config.getRootCa().get().contains("BEGIN CERTIFICATE"));
     }
+
+    @Test
+    public void mapsUseMemberOfWhenEnabled() {
+        LdapAuthServer server = minimalServer();
+        server.setUseMemberOf(true);
+
+        LdapServerConfig config = providerFor(server).getServers().get(0).connectionConfig();
+
+        assertTrue(config.isUseMemberOf());
+    }
 }

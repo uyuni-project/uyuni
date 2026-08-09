@@ -23,7 +23,7 @@
     <rhn:submitted />
         <rl:csv dataset="pageList"
         name="userList"
-        exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn,status"/>
+        exportColumns="userLogin,userLastName,userFirstName,roleNames,authorizedBy,lastLoggedIn,status"/>
         <rl:list
          width="100%"
          name="userList"

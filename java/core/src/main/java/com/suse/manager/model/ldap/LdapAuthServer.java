@@ -444,8 +444,8 @@ public class LdapAuthServer implements Serializable {
     }
 
     /**
-     * @return {@code true} if group resolution may use the {@code memberOf} attribute when the
-     *         directory supports it; v1 still uses the member filter by default
+     * @return {@code true} if group resolution uses the user entry's {@code memberOf} attribute
+     *         (including Active Directory ranged attribute pages) instead of a group-tree search
      */
     public boolean isUseMemberOf() {
         return useMemberOf;

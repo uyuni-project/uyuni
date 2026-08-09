@@ -69,7 +69,10 @@ public class UnboundIdLdapAuthenticationServiceTest {
                 "sn: Anderson",
                 "uid: alice",
                 "mail: alice@uyuni.test",
-                "userPassword: alice123");
+                "userPassword: alice123",
+                // Simulated memberOf overlay values for the optional memberOf resolution path.
+                "memberOf: cn=uyuni-admins," + GROUPS_DN,
+                "memberOf: cn=uyuni-users," + GROUPS_DN);
         directory.add(
                 "dn: uid=bob," + USERS_DN,
                 "objectClass: inetOrgPerson",
@@ -78,7 +81,8 @@ public class UnboundIdLdapAuthenticationServiceTest {
                 "sn: Brown",
                 "uid: bob",
                 "mail: bob@uyuni.test",
-                "userPassword: bob123");
+                "userPassword: bob123",
+                "memberOf: cn=uyuni-users," + GROUPS_DN);
 
         directory.add(
                 "dn: cn=uyuni-admins," + GROUPS_DN,
@@ -94,16 +98,21 @@ public class UnboundIdLdapAuthenticationServiceTest {
     }
 
     private LdapAuthenticationService service() {
-        return service(ADMIN_DN, ADMIN_PASSWORD);
+        return service(ADMIN_DN, ADMIN_PASSWORD, false);
     }
 
     private LdapAuthenticationService service(String bindDn, String bindPassword) {
+        return service(bindDn, bindPassword, false);
+    }
+
+    private LdapAuthenticationService service(String bindDn, String bindPassword, boolean useMemberOf) {
         LdapServerConfig config = LdapServerConfig
                 .builder(LdapServerType.OPEN_LDAP, "127.0.0.1", USERS_DN)
                 .transport(LdapTransport.PLAIN)
                 .port(directory.getListenPort())
                 .bind(bindDn, bindPassword)
                 .groupBaseDn(GROUPS_DN)
+                .useMemberOf(useMemberOf)
                 .build();
         return new DefaultLdapServiceFactory().getInstance(config);
     }
@@ -216,5 +225,13 @@ public class UnboundIdLdapAuthenticationServiceTest {
         assertTrue(service().lookupUser("carol").isEmpty());
         assertTrue(service().lookupUserWithGroups("carol").isEmpty());
         assertTrue(service().lookupUser("").isEmpty());
+    }
+
+    @Test
+    public void resolvesGroupsViaMemberOfAttribute() throws Exception {
+        Optional<LdapUser> result = service(ADMIN_DN, ADMIN_PASSWORD, true).authenticate("alice", "alice123");
+
+        assertTrue(result.isPresent());
+        assertEquals(List.of("uyuni-admins", "uyuni-users"), result.get().groupLabels());
     }
 }

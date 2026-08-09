@@ -29,7 +29,7 @@ const toFormModel = (ldap: LdapServerFull): LdapServerFull => ({
   connectTimeout: ldap.connectTimeout ?? "",
   responseTimeout: ldap.responseTimeout ?? "",
   defaultOrgId: ldap.defaultOrgId ?? null,
-  useMemberOf: false,
+  useMemberOf: Boolean(ldap.useMemberOf),
 });
 
 const toRequestBody = (model) => ({
@@ -42,7 +42,7 @@ const toRequestBody = (model) => ({
     model.defaultOrgId === "" || model.defaultOrgId === null || model.defaultOrgId === undefined
       ? null
       : Number(model.defaultOrgId),
-  useMemberOf: false,
+  useMemberOf: Boolean(model.useMemberOf),
   // Empty password means keep existing; do not send a dummy value
   bindPassword: model.bindPassword || "",
 });

@@ -196,6 +196,8 @@ SELECT  UIOO.user_id as id, user_login, user_first_name, user_last_name, role_na
 <query name="users_in_org_overview" params="">
   SELECT  UIOO.user_id as id, user_login, user_first_name, user_last_name, role_names,
           server_count, server_group_count, last_logged_in, WUPI.email as email,
+          UI.auth_type as auth_type,
+          las.label as ldap_server_label,
           nvl((select
                 distinct wccs.label
             from
@@ -208,10 +210,11 @@ SELECT  UIOO.user_id as id, user_login, user_first_name, user_last_name, role_na
                               (select max(wccl_exists.date_completed)
                                  from rhnWebContactChangeLog   wccl_exists
                                 where wccl.web_contact_id = wccl_exists.web_contact_id)),'enabled') as status
-    FROM  rhnUsersInOrgOverview UIOO, rhnUserInfo UI, web_user_personal_info WUPI
+    FROM  rhnUsersInOrgOverview UIOO
+          inner join rhnUserInfo UI on UI.user_id = UIOO.user_id
+          inner join web_user_personal_info WUPI on UIOO.user_id = WUPI.web_user_id
+          left join suseLdapAuthServer las on las.id = UI.ldap_server_id
    WHERE  UIOO.user_id IN (%s)
-     AND  UI.user_id = UIOO.user_id
-     AND  UIOO.user_id = WUPI.web_user_id
 ORDER BY  UPPER(user_login), UIOO.user_id
 </query>
 

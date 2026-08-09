@@ -1,0 +1,3 @@
+- Add LDAP `memberOf` group resolution with Active Directory
+  `memberOf;range=` paging, nested AD group filter defaults, and
+  an Authorized by column on the users list

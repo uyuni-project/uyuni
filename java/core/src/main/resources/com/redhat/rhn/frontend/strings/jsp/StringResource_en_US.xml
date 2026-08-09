@@ -1909,6 +1909,36 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userlist.jsp.authorizedby" xml:space="preserve">
+        <source>Authorized by</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.internal" xml:space="preserve">
+        <source>Internal</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.pam" xml:space="preserve">
+        <source>PAM</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.ldap" xml:space="preserve">
+        <source>LDAP</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.ldap_server" xml:space="preserve">
+        <source>LDAP ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
