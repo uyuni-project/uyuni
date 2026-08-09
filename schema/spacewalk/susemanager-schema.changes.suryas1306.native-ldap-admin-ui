@@ -1,4 +1,4 @@
 - Add RBAC endpoints for LDAP admin test user lookup
-  and test group resolution under admin.config
+  and test group resolution under `admin.config`
 - Add RBAC endpoints for the Setup Wizard LDAP admin
-  UI and API under admin.config
+  UI and API under `admin.config`

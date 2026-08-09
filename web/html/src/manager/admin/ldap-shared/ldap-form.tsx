@@ -72,7 +72,7 @@ const applyTransportPortDefault = (
 };
 
 const LdapForm = (props: Props) => {
-  const [activeHash, setActiveHash] = useState(TAB_HASHES[0]);
+  const [activeHash, setActiveHash] = useState<(typeof TAB_HASHES)[number]>(TAB_HASHES[0]);
   const orgOptions = props.orgs.map((org) => ({ value: org.id, label: org.name }));
 
   const serverTab = (
