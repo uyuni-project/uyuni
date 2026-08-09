@@ -31,7 +31,7 @@ import java.util.Map;
  * @apidoc.doc Provides methods to handle recurring ansible playbook execution
  * for minions, system groups and organizations.
  */
-public class RecurringPlaybookHandler extends BaseHandler {
+public class RecurringPlaybookHandler extends BaseHandler implements RecurringPlaybookHandlerApi {
     private final RecurringActionHandler actionHandler = new RecurringActionHandler();
 
     /**
