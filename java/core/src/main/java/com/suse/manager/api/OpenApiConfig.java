@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
@@ -118,6 +119,7 @@ public final class OpenApiConfig {
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("distchannel", DistChannelHandler.class);
         handlers.put("image.profile", ImageProfileHandler.class);
+        handlers.put("image.store", ImageStoreHandler.class);
         handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
