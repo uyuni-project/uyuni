@@ -26,10 +26,7 @@ type Props = {
 const TAB_HASHES = ["#server", "#account", "#attributes"] as const;
 const TAB_LABELS = ["Server", "Account", "Attribute mappings"] as const;
 
-const applyServerTypeDefaults = (
-  previous: LdapServerProperties,
-  next: LdapServerProperties
-): LdapServerProperties => {
+const applyServerTypeDefaults = (previous: LdapServerProperties, next: LdapServerProperties): LdapServerProperties => {
   if (previous.serverType === next.serverType) {
     return next;
   }
@@ -42,8 +39,8 @@ const applyServerTypeDefaults = (
   const updated = { ...next };
   for (const field of SERVER_TYPE_ATTR_FIELDS) {
     const current = next[field];
-    const isEmpty = current === "" || current == null;
-    const matchesPrevDefault = prevDefaults != null && current === prevDefaults[field];
+    const isEmpty = current === "" || current === null || current === undefined;
+    const matchesPrevDefault = prevDefaults !== undefined && current === prevDefaults[field];
     if (isEmpty || matchesPrevDefault) {
       updated[field] = nextDefaults[field];
     }
@@ -60,11 +57,14 @@ const applyTransportPortDefault = (
   }
   const prevDefaultPort = TRANSPORT_DEFAULT_PORTS[previous.transport];
   const nextDefaultPort = TRANSPORT_DEFAULT_PORTS[next.transport];
-  if (nextDefaultPort == null) {
+  if (nextDefaultPort === undefined) {
     return next;
   }
   const portMatchesPrevDefault =
-    next.port === "" || next.port == null || (prevDefaultPort != null && Number(next.port) === prevDefaultPort);
+    next.port === "" ||
+    next.port === null ||
+    next.port === undefined ||
+    (prevDefaultPort !== undefined && Number(next.port) === prevDefaultPort);
   if (portMatchesPrevDefault) {
     return { ...next, port: nextDefaultPort };
   }

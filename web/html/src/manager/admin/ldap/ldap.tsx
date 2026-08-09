@@ -38,7 +38,10 @@ const toRequestBody = (model) => ({
   port: model.port === "" ? null : Number(model.port),
   connectTimeout: model.connectTimeout === "" ? null : Number(model.connectTimeout),
   responseTimeout: model.responseTimeout === "" ? null : Number(model.responseTimeout),
-  defaultOrgId: model.defaultOrgId === "" || model.defaultOrgId == null ? null : Number(model.defaultOrgId),
+  defaultOrgId:
+    model.defaultOrgId === "" || model.defaultOrgId === null || model.defaultOrgId === undefined
+      ? null
+      : Number(model.defaultOrgId),
   useMemberOf: false,
   // Empty password means keep existing; do not send a dummy value
   bindPassword: model.bindPassword || "",
@@ -163,7 +166,7 @@ const Ldap = (props: Props) => {
       />
       <Dialog
         id="ldap-test-login-modal"
-        isOpen={testDialog != null}
+        isOpen={testDialog !== null}
         onClose={closeTestDialog}
         title={testDialog === "groupResolution" ? t("Test group resolution") : t("Test user lookup")}
         content={

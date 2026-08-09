@@ -30,7 +30,9 @@ const ListLdap = (props: Props) => {
     const keysToSearch = ["label", "host", "serverType", "transport"];
     if (criteria) {
       const needle = criteria.toLocaleLowerCase();
-      return keysToSearch.map((key) => String(row[key] ?? "")).some((item) => item.toLocaleLowerCase().includes(needle));
+      return keysToSearch
+        .map((key) => String(row[key] ?? ""))
+        .some((item) => item.toLocaleLowerCase().includes(needle));
     }
     return true;
   };

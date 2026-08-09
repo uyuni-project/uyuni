@@ -69,7 +69,7 @@ const useLdapActionsApi = (): ReturnUseLdapActionsApi => {
           throw getErrorMessage(response);
         }
         // Prefer data when present (lookup results); otherwise surface success messages
-        if (response.data != null) {
+        if (response.data !== null && response.data !== undefined) {
           return response.data;
         }
         return response.messages;
