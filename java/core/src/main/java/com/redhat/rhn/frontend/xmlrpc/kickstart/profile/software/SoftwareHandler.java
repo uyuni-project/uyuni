@@ -40,7 +40,7 @@ import java.util.Set;
  * @apidoc.doc Provides methods to access and modify the software list
  * associated with a kickstart profile.
  */
-public class SoftwareHandler extends BaseHandler {
+public class SoftwareHandler extends BaseHandler implements SoftwareHandlerApi {
 
     /**
      * Get a list of a kickstart profile's software packages.
@@ -175,8 +175,8 @@ public class SoftwareHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
      * @apidoc.param
      *          #struct_desc("params", "kickstart packages info")
-     *              #prop_desc("string", "noBase", "install @Base package group")
-     *              #prop_desc("string", "ignoreMissing", "ignore missing packages")
+     *              #prop_desc("boolean", "noBase", "install @Base package group")
+     *              #prop_desc("boolean", "ignoreMissing", "ignore missing packages")
      *          #struct_end()
      * @apidoc.returntype #return_int_success()
      */
@@ -201,8 +201,8 @@ public class SoftwareHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "ksLabel", "the label of the kickstart profile")
      * @apidoc.returntype
      *          #struct_begin("kickstart packages info")
-     *              #prop_desc("string", "noBase", "install @Base package group")
-     *              #prop_desc("string", "ignoreMissing", "ignore missing packages")
+     *              #prop_desc("boolean", "noBase", "install @Base package group")
+     *              #prop_desc("boolean", "ignoreMissing", "ignore missing packages")
      *          #struct_end()
      */
     @ReadOnly
