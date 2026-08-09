@@ -210,7 +210,8 @@ public class UyuniSwaggerReader {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
-            apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, createIntegerResponse()));
+            apiResponses.addApiResponse(HTTP_200,
+                    addLegacyDocResponse(apiDoc, createIntegerResponse(apiDoc.responseDescription())));
             operation.setResponses(apiResponses);
             return;
         }
@@ -350,7 +351,7 @@ public class UyuniSwaggerReader {
         }
     }
 
-    private ApiResponse createIntegerResponse() {
+    private ApiResponse createIntegerResponse(String description) {
         if (this.components.getSchemas() == null || !this.components.getSchemas().containsKey("IntegerResponse")) {
             Schema<?> integerResponseSchema = new Schema<>()
                     .type("object")
@@ -366,7 +367,7 @@ public class UyuniSwaggerReader {
         }
 
         ApiResponse response = new ApiResponse();
-        response.setDescription("1 on success, exception thrown otherwise.");
+        response.setDescription(description.isEmpty() ? "1 on success, exception thrown otherwise." : description);
 
         Content content = new Content();
         MediaType mediaType = new MediaType();
