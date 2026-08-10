@@ -26,6 +26,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 
@@ -125,6 +126,7 @@ public final class OpenApiConfig {
         handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
+        handlers.put("recurring.playbook", RecurringPlaybookHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
         handlers.put("subscriptionmatching.pinnedsubscription", PinnedSubscriptionHandler.class);
         return handlers;
