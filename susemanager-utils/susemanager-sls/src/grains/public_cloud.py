@@ -106,10 +106,9 @@ def __virtual__():
     results = []
 
     try:
-        pool = ThreadPool(3)
-        results = pool.map(_do_api_request, api_check_dict)
-        pool.close()
-        pool.join()
+        for check in api_check_dict:
+            res = _do_api_request(check)
+            results.append(res)
     # pylint: disable-next=broad-exception-caught
     except Exception as exc:
         # pylint: disable-next=import-outside-toplevel
