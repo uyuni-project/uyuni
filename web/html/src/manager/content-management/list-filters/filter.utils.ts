@@ -101,9 +101,9 @@ export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []
       const parsedDate = parseIssueDateValue(filterResponse.criteriaValue);
 
       // This allows the UI to warn the user that the stored value is invalid or non-empty issue_date.
-      filterForm.issueDateFormatError = !parsedDate && !_isEmpty(filterResponse.criteriaValue);
+      filterForm.hasInvalidDateFormat = !parsedDate && !_isEmpty(filterResponse.criteriaValue);
 
-      // If the stored issue_date is invalid, use the current date so the user
+      // If the stored issue_date is invalid, use the current date as a fallback to avoid the form from breaking.
       filterForm[clmFilterOptions.ISSUE_DATE.key] = parsedDate ?? localizedMoment();
     } else if (filterResponse.criteriaKey === "nevr") {
       // NEVR filter is mapped into NEVRA in the UI

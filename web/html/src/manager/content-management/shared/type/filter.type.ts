@@ -42,5 +42,5 @@ export type FilterFormType = {
   kernelId?: number;
   kernelName?: string;
   channelId?: number;
-  issueDateFormatError?: boolean;
+  hasInvalidDateFormat?: boolean;
 };

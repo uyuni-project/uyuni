@@ -14,14 +14,12 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.response;
 
+import com.redhat.rhn.manager.contentmgmt.ContentManagementUtils;
 
 import com.suse.manager.webui.utils.ViewHelper;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
@@ -63,13 +61,9 @@ public class FilterResponse {
      */
     public void setCriteriaValue(String criteriaValueIn) {
         // If we have a date as a criteria value we need to format it with the current user timezone
-        if (("issue_date".equals(this.criteriaKey) || "build_date".equals(this.criteriaKey)) &&
-            criteriaValueIn != null &&
-            !criteriaValueIn.isEmpty()) {
+        if (ContentManagementUtils.isDateCriteria(criteriaKey, criteriaValueIn)) {
             try {
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-                OffsetDateTime offsetDateTime = OffsetDateTime.parse(criteriaValueIn, timeFormatter);
-                Date criteriaValueDate = Date.from(Instant.from(offsetDateTime));
+                Date criteriaValueDate = ContentManagementUtils.parseDateCriteria(criteriaValueIn);
                 criteriaValueIn = ViewHelper.getInstance().renderDate(criteriaValueDate);
             }
             catch (DateTimeParseException ignored) {

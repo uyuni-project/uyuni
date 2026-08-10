@@ -521,7 +521,7 @@ public class ContentManager {
         });
 
         ContentPropertiesValidator.validateFilterProperties(name);
-        ContentPropertiesValidator.validateIssueDate(
+        ContentPropertiesValidator.validateDateCriteria(
         criteria.getField(),
         criteria.getValue());
 
@@ -550,7 +550,7 @@ public class ContentManager {
 
         ContentPropertiesValidator.validateFilterProperties(name.orElse(filter.getName()));
         if (criteria.isPresent()) {
-            ContentPropertiesValidator.validateIssueDate(
+            ContentPropertiesValidator.validateDateCriteria(
                 criteria.get().getField(),
                 criteria.get().getValue());
         }

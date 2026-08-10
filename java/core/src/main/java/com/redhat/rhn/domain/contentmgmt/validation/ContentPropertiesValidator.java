@@ -19,12 +19,11 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
+import com.redhat.rhn.manager.contentmgmt.ContentManagementUtils;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
@@ -157,14 +156,14 @@ public class ContentPropertiesValidator {
      * @param field the filter field
      * @param value the filter value
      */
-    public static void validateIssueDate(String field, String value) throws ValidatorException {
+    public static void validateDateCriteria(String field, String value) throws ValidatorException {
 
-        if ((!"issue_date".equals(field) && !"build_date".equals(field)) || StringUtils.isEmpty(value)) {
+        if (!ContentManagementUtils.isDateCriteria(field, value)) {
             return;
         }
 
         try {
-            OffsetDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
+            ContentManagementUtils.parseDateCriteria(value);
         }
         catch (DateTimeParseException e) {
             ValidatorResult result = new ValidatorResult();

@@ -206,7 +206,7 @@ const FilterForm = (props: Props) => {
 
             {clmFilterOptions.ISSUE_DATE.key === filterType && (
               <>
-                {filter.issueDateFormatError && (
+                {filter.hasInvalidDateFormat && (
                   <div className="col-md-8 col-md-offset-3 offset-md-3">
                     <Messages
                       key="filter-issue-date-messages"
