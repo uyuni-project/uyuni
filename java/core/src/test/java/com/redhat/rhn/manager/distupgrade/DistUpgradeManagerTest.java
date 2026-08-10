@@ -1195,7 +1195,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Map<Long, DistUpgradeActionDetails> detailsMap = new HashMap<>();
         detailsMap.put(det.getServer().getId(), det);
 
-        var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_DIST_UPGRADE);
+        var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         detailsMap.values().stream()
                 .map(DistUpgradeActionDetails::getServer)
                 .forEach(server -> ActionFactory.createAddServerAction(server, action));
