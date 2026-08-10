@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -1198,7 +1199,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         detailsMap.values().stream()
                 .map(DistUpgradeActionDetails::getServer)
-                .forEach(server -> ActionFactory.createAddServerAction(server, action));
+                .forEach(server -> ServerActionFactory.createAddServerAction(server, action));
 
         // Add the details and save
         action.setDetailsMap(detailsMap);
@@ -1207,7 +1208,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Simulate SaltUtils prematurely marking the action complete
         ServerAction sa = action.getServerActions().stream().findFirst().orElseThrow();
         sa.setStatusCompleted();
-        ActionFactory.save(sa);
+        ServerActionFactory.save(sa);
 
         assertEquals(sles157Channel, minion.getBaseChannel());
 
