@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.mqtt.event.ClmBuildCompletedEvent;
 import com.suse.manager.reactor.mqtt.event.ClmBuildStartedEvent;
 import com.suse.manager.reactor.mqtt.event.OrgCreatedEvent;
@@ -29,6 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Unit test for {@link MqttEventHelper}.
@@ -100,6 +103,35 @@ public class MqttEventHelperTest {
         assertEquals("clm-proj-1", data.get("projectLabel"));
         assertEquals("v2", data.get("version"));
         assertEquals("admin", data.get("username"));
+    }
+
+    @Test
+    public void testPublishStatesApplied() {
+        var message = new ApplyStatesEventMessage(1001L, true, "channels", "packages");
+        var event = com.suse.manager.reactor.mqtt.event.StatesAppliedEvent.from(message);
+        MqttEventHelper.publish(event);
+
+        assertEquals(testService.getTopicPrefix() + "/states/applied", testService.lastTopic);
+        assertNotNull(testService.lastPayload);
+        assertTrue(testService.lastPayload instanceof Map);
+
+        Map<?, ?> data = (Map<?, ?>) testService.lastPayload;
+        assertEquals(1001L, data.get("serverId"));
+        assertEquals(true, data.get("forcePackageListRefresh"));
+    }
+
+    @Test
+    public void testPublishMinionRegistered() {
+        var message = new RegisterMinionEventMessage("minion-test-1", Optional.empty());
+        var event = com.suse.manager.reactor.mqtt.event.MinionRegisteredEvent.from(message);
+        MqttEventHelper.publish(event);
+
+        assertEquals(testService.getTopicPrefix() + "/systems/registered", testService.lastTopic);
+        assertNotNull(testService.lastPayload);
+        assertTrue(testService.lastPayload instanceof Map);
+
+        Map<?, ?> data = (Map<?, ?>) testService.lastPayload;
+        assertEquals("minion-test-1", data.get("minionId"));
     }
 
     @Test
