@@ -28,9 +28,10 @@ module.exports = function (RED) {
       ? `${topicPrefix}/#` 
       : `${topicPrefix}/${category}`;
 
-    // Build MQTT connection options
+    // Build MQTT connection options with unique client ID per node instance
+    const baseClientId = node.server.clientId || 'nodered-uyuni';
     const mqttOpts = {
-      clientId: node.server.clientId,
+      clientId: `${baseClientId}-${node.id}`,
       clean: true,
       reconnectPeriod: 5000,
     };

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "flow_slack_alert",
+    "type": "tab",
+    "label": "Uyuni Slack Webhook Alert",
+    "disabled": false,
+    "info": "Listens for Uyuni events and posts formatted Slack incoming webhook notifications."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "evt_reg_slack",
+    "type": "uyuni-events",
+    "z": "flow_slack_alert",
+    "name": "Listen Registered Minions",
+    "server": "mqtt_conf_1",
+    "eventCategory": "systems/registered",
+    "x": 170,
+    "y": 140,
+    "wires": [["fmt_slack_payload"]]
+  },
+  {
+    "id": "fmt_slack_payload",
+    "type": "function",
+    "z": "flow_slack_alert",
+    "name": "Format Slack Webhook Payload",
+    "func": "const minionId = msg.payload.minionId || 'Unknown Minion';\nconst timestamp = msg.uyuni ? msg.uyuni.timestamp : new Date().toISOString();\n\nmsg.headers = {\n    'Content-Type': 'application/json'\n};\n\nmsg.payload = {\n    text: `🚨 *Uyuni Alert*: Minion *${minionId}* has registered!`,\n    blocks: [\n        {\n            type: 'header',\n            text: { type: 'plain_text', text: '🔔 Uyuni Minion Registration Alert' }\n        },\n        {\n            type: 'section',\n            fields: [\n                { type: 'mrkdwn', text: `*Minion ID:*\\n${minionId}` },\n                { type: 'mrkdwn', text: `*Timestamp:*\\n${timestamp}` }\n            ]\n        }\n    ]\n};\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 440,
+    "y": 140,
+    "wires": [["http_slack_post"]]
+  },
+  {
+    "id": "http_slack_post",
+    "type": "http request",
+    "z": "flow_slack_alert",
+    "name": "POST to Slack Webhook",
+    "method": "POST",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 710,
+    "y": 140,
+    "wires": [["dbg_slack_res"]]
+  },
+  {
+    "id": "dbg_slack_res",
+    "type": "debug",
+    "z": "flow_slack_alert",
+    "name": "Slack Response",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 930,
+    "y": 140,
+    "wires": []
+  }
+]
