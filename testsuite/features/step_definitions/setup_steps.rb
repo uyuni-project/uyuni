@@ -493,16 +493,10 @@ When(/^I check for failed events on history event page$/) do
     And I follow "History" in the content area
     Then I should see a "System History" text
   '
-  failings = ''
-  event_table_xpath = '//div[@class=\'table-responsive\']/table/tbody'
-  rows = find(:xpath, event_table_xpath)
-  rows.all('tr').each do |tr|
-    if tr.all(:css, '.fa.fa-times-circle-o.fa-1-5x.text-danger').any?
-      failings << "#{tr.text}\n"
-    end
-  end
-  count_failures = failings.length
-  raise ScriptError, "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
+  failed_events_xpath = "//div[@class='table-responsive']/table/tbody/tr[.//*[contains(@class, 'fa-times-circle-o')]]"
+  failed_events = all(:xpath, failed_events_xpath).map(&:text)
+
+  raise ScriptError, "\nFailures in event history found:\n\n#{failed_events.join("\n")}\n\n" if failed_events.any?
 end
 
 Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|
