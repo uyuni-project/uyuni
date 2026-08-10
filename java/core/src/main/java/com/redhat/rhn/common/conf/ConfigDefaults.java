@@ -433,12 +433,6 @@ public class ConfigDefaults {
     private static final String UBUNTU_ERRATA_DB_DOWNLOAD_URL = "java.ubuntu_errata_db_download_url";
 
     /**
-     * Default url to download the Ubuntu USN database from
-     */
-    private static final String DEFAULT_UBUNTU_ERRATA_DB_DOWNLOAD_URL =
-            "https://usn.ubuntu.com/usn-db/database.json";
-
-    /**
      * OpenID Connect authorization parameters
      */
     public static final String OIDC_ENABLED = "web.oidc.enabled";
@@ -1377,7 +1371,7 @@ public class ConfigDefaults {
      * @return the url to download the Ubuntu USN database from
      */
     public String getUbuntuErrataDbDownloadUrl() {
-        return Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL, DEFAULT_UBUNTU_ERRATA_DB_DOWNLOAD_URL);
+        return Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL, "https://usn.ubuntu.com/usn-db/database.json");
     }
 
     /**
