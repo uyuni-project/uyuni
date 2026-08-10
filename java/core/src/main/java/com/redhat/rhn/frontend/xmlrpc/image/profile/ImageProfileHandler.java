@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace image.profile
  * @apidoc.doc Provides methods to access and modify image profiles.
  */
-public class ImageProfileHandler extends BaseHandler {
+public class ImageProfileHandler extends BaseHandler implements ImageProfileHandlerApi {
 
     /**
      * List available Image Profile Types

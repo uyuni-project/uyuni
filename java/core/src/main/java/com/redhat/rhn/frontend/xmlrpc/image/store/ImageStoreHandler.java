@@ -38,7 +38,7 @@ import java.util.Set;
  * @apidoc.namespace image.store
  * @apidoc.doc Provides methods to access and modify image stores.
  */
-public class ImageStoreHandler extends BaseHandler {
+public class ImageStoreHandler extends BaseHandler implements ImageStoreHandlerApi {
 
     /**
      * Create a new Image Store
