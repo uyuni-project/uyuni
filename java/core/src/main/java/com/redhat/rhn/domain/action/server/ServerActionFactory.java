@@ -260,11 +260,12 @@ public class ServerActionFactory extends HibernateFactory {
     public static void updateServerActions(Action actionIn, List<Long> serverIds, ActionStatus status) {
         LOG.debug("Action status {} is going to be set for these servers: {}", status.getName(), serverIds);
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("action_id", actionIn.getId());
-        parameters.put("status", status.getId());
-        parameters.put("completed", ActionFactory.STATUS_COMPLETED.getId());
-        parameters.put("failed", ActionFactory.STATUS_FAILED.getId());
+        Map<String, Object> parameters = Map.of(
+                "action_id", actionIn.getId(),
+                "status", status.getId(),
+                "completed", ActionFactory.STATUS_COMPLETED.getId(),
+                "failed", ActionFactory.STATUS_FAILED.getId()
+        );
 
         StringBuilder queryString = new StringBuilder("UPDATE rhnServerAction SET status = :status ");
         if (status.isPickedUp()) {
@@ -325,7 +326,6 @@ public class ServerActionFactory extends HibernateFactory {
      * @param serverId server
      * @return true if found, otherwise false
      */
-    @SuppressWarnings("unchecked")
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
         return findFirstPendingActionForServerAndActionType(serverId, "kickstart.initiate").isPresent();
     }
@@ -336,7 +336,6 @@ public class ServerActionFactory extends HibernateFactory {
      * @param serverId server
      * @return ID of a possibly scheduled migration or null.
      */
-    @SuppressWarnings("unchecked")
     public static Action isMigrationScheduledForServer(Long serverId) {
         return findFirstPendingActionForServerAndActionType(serverId, "distupgrade.upgrade").orElse(null);
     }
@@ -347,7 +346,6 @@ public class ServerActionFactory extends HibernateFactory {
      * @param serverId server
      * @return reboot Action or null otherwise
      */
-    @SuppressWarnings("unchecked")
     public static Action isRebootScheduled(Long serverId) {
         return findFirstPendingActionForServerAndActionType(serverId, "reboot.reboot").orElse(null);
     }
@@ -362,9 +360,9 @@ public class ServerActionFactory extends HibernateFactory {
                             AND status.id in ( 0, 1 )""", ServerAction.class)
                 .setParameter("serverId", serverId)
                 .setParameter("label", actionTypeLabel)
-                .list().stream()
-                .findFirst()
-                .map(ServerAction::getParentAction);
+                .stream()
+                .map(ServerAction::getParentAction)
+                .findFirst();
     }
 
     /**
@@ -403,7 +401,7 @@ public class ServerActionFactory extends HibernateFactory {
      * @param action the action id
      * @return the count
      */
-    public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
+    public static long getServerActionCountByStatus(Action action, ActionStatus status) {
         return getSession()
                 .createQuery("""
                         SELECT COUNT(sa.server.id)
@@ -411,8 +409,7 @@ public class ServerActionFactory extends HibernateFactory {
                         WHERE sa.parentAction.id = :aid AND sa.status.id = :stid""", Long.class)
                 .setParameter("aid", action.getId())
                 .setParameter("stid", status.getId())
-                .uniqueResult()
-                .intValue();
+                .uniqueResult();
     }
 
     /**
