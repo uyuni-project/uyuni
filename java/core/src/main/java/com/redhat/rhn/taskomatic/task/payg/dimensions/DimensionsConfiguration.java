@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.payg.dimensions;
 
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.BaseProductRule;
+import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.ChannelFamilyRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.EntitlementRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.RequirementType;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.rules.SUSEManagerToolsRule;
@@ -50,6 +51,16 @@ public class DimensionsConfiguration {
 
             BillingDimension.MONITORING, List.of(
                 new EntitlementRule(RuleType.INCLUDE, RequirementType.ANY, Set.of(EntitlementManager.MONITORING))
+            ),
+
+            BillingDimension.MULTI_LINUX_SUPPORT, List.of(
+                new ChannelFamilyRule(RuleType.INCLUDE, RequirementType.ANY, false, false,
+                        Set.of("RES", "RES-7-LTSS-X86"))
+            ),
+
+            BillingDimension.MULTI_LINUX_SUPPORT_LTSS, List.of(
+                new ChannelFamilyRule(RuleType.INCLUDE, RequirementType.ANY, false, false,
+                        Set.of("RES-7-LTSS-X86"))
             )
         )
     );

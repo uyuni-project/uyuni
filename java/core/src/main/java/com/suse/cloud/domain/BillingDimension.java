@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023--2024 SUSE LLC
+ * Copyright (c) 2023--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,7 +15,9 @@ import com.redhat.rhn.domain.Labeled;
 
 public enum BillingDimension implements Labeled {
     MANAGED_SYSTEMS,
-    MONITORING;
+    MONITORING,
+    MULTI_LINUX_SUPPORT,
+    MULTI_LINUX_SUPPORT_LTSS;
 
     public String getLabel() {
         return this.name().toLowerCase();
