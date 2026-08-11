@@ -1,4 +1,4 @@
-import {  type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;

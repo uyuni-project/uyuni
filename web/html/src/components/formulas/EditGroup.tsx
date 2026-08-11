@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { type ReactNode, Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -158,7 +158,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
             setSectionsExpanded={this.props.setSectionsExpanded}
             formulaForm={this.props.formulaForm}
           />
-          <div className={`form-group ${!isPrimitiveGroup ? "form-add-button" : ""}`}>
+          <div className={`row ${!isPrimitiveGroup ? "form-add-button" : ""}`}>
             <div className="col-lg-3 "></div>
             <div className="col-lg-9 ">
               {isPrimitiveGroup && <hr className="mt-1 mb-3" />}
@@ -220,7 +220,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   };
 
   render() {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     const itemIndices: string[] = [];
 
     // Collect all valid indices (not "$meta")
@@ -240,7 +240,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       };
 
       elements.push(
-        <div className="form-group formula-primitive-group-item" id={id} key={id}>
+        <div className="row formula-primitive-group-item" id={id} key={id}>
           <div className="formula-primitive-group-item-content">
             {generateFormulaComponentForId(
               this.props.element.$prototype,
@@ -404,7 +404,7 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
           <span className="required-form-field"> *</span>:
         </label>
         <div className="col-lg-6">{innerHTML}</div>
-        <div className="col-lg-3">
+        <div className="col-lg-3 d-flex align-items-center">
           <HelpIcon
             text={t(
               "This field is used as a 'key' identifier in the resulting pillar data. It must be unique across all items in this group and should not be changed once set."

@@ -75,11 +75,10 @@ export function generateFormulaComponent(
   formulaForm: any,
   parents?: any,
   wrapper?: any,
-  disabled = false,
-  level = 1
+  disabled = false
 ) {
   const id = (parents ? parents + "#" : "") + element.$id;
-  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled, level);
+  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled);
 }
 
 export function generateFormulaComponentForId(
@@ -88,8 +87,7 @@ export function generateFormulaComponentForId(
   formulaForm: any,
   id,
   wrapper,
-  disabled = false,
-  level = 1
+  disabled = false
 ) {
   wrapper = get(wrapper, defaultWrapper);
 
@@ -207,11 +205,11 @@ export function generateFormulaComponentForId(
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
       >
-        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level)}
+        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
       </Group>
     );
   } else if (element.$type === "namespace")
-    return generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level);
+    return generateChildrenFormItems(element, value, formulaForm, id, isDisabled);
   else if (element.$type === "edit-group") {
     return (
       <EditGroup
@@ -390,12 +388,12 @@ function isVisibleByCriteria(element: any, criteria: string) {
   );
 }
 
-function generateChildrenFormItems(element, value, formulaForm, id, disabled = false, level = 1) {
+function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
   const child_items: ReactNode[] = [];
   for (const child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
-      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled, level + 1)
+      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled)
     );
   }
   return child_items;
@@ -449,7 +447,7 @@ function wrapCheckboxFormGroup(
   help?: string | null
 ) {
   return (
-    <div className="form-group" key={elementName}>
+    <div className="row" key={elementName}>
       <div className="col-lg-3 control-label"></div>
       <div className="col-lg-6">
         <div className="checkbox">
