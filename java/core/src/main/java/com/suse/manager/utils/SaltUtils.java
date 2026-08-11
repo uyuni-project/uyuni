@@ -21,11 +21,10 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROO
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -818,8 +817,8 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        List<ActionType> typesIn = List.of(ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_REBOOT));
-        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion, typesIn);
+        List<ServerAction> serverActions =
+                ServerActionFactory.listServerActionsForServer(minion, ActionTypeEnum.TYPE_REBOOT);
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             Action action = sa.getParentAction();
@@ -828,7 +827,7 @@ public class SaltUtils {
                 sa.setCompletionTime(new Date());
                 sa.setResultMsg("Reboot completed.");
                 sa.setResultCode(0L);
-                ActionFactory.save(sa);
+                ServerActionFactory.save(sa);
                 actionsChanged += 1;
             }
         }

@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
@@ -171,7 +172,7 @@ public class ActionManager extends BaseManager {
         if (action == null) {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
         }
-        ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server,
+        ServerAction serverAction = ServerActionFactory.getServerActionForServerAndAction(server,
                 action);
         if (serverAction == null) {
             throw new LookupException("Could not find action " + actionId + " on system " + serverId);
@@ -400,7 +401,7 @@ public class ActionManager extends BaseManager {
             // Delete ServerActions from the database only if QUEUED
             if (sa.isStatusQueued()) {
                 sa.getParentAction().getServerActions().remove(sa);
-                ActionFactory.delete(sa);
+                ServerActionFactory.delete(sa);
             }
             // Set to FAILED if the state is PICKED_UP
             else if (sa.isStatusPickedUp()) {
@@ -495,7 +496,7 @@ public class ActionManager extends BaseManager {
         //put a single row into rhnActionConfigChannel
         a.addConfigChannelAndServer(channel, server);
         //put a single row into rhnServerAction
-        ActionFactory.addServerToAction(server.getId(), a);
+        ServerActionFactory.addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
         for (Long cfnid : filenames) {
@@ -563,7 +564,7 @@ public class ActionManager extends BaseManager {
 
         for (Server server : servers) {
             checkConfigActionOnServer(typeEnum, server);
-            ActionFactory.addServerToAction(server.getId(), a);
+            ServerActionFactory.addServerToAction(server.getId(), a);
 
             //now that we made a server action, we must make config revision actions
             //which depend on the server as well.
@@ -654,10 +655,10 @@ public class ActionManager extends BaseManager {
             throws TaskomaticApiException {
         //5 was hardcoded from perl :/
         if (onlyFailed) {
-            ActionFactory.rescheduleFailedServerActions(action, 5L);
+            ServerActionFactory.rescheduleFailedServerActions(action, 5L);
         }
         else {
-            ActionFactory.rescheduleAllServerActions(action, 5L);
+            ServerActionFactory.rescheduleAllServerActions(action, 5L);
         }
         taskomaticApi.scheduleActionExecution(action);
     }
@@ -1048,7 +1049,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(earliest)
                 .build();
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1078,7 +1079,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .build();
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
         action.setEarliestAction(earliest);
 
         if (!SystemManager.clientCapable(server.getId(),
@@ -1183,7 +1184,7 @@ public class ActionManager extends BaseManager {
 
         ScriptRunAction sra = (ScriptRunAction) ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_SCRIPT_RUN,
                 scheduler, name, earliest);
-        ActionFactory.scheduleForExecution(sra, sidSet);
+        ServerActionFactory.scheduleForExecution(sra, sidSet);
 
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
@@ -1261,7 +1262,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(earliestAction)
                 .build();
 
-        ActionFactory.createAddServerAction(srvr, ksaction);
+        ServerActionFactory.createAddServerAction(srvr, ksaction);
 
         KickstartActionDetails kad = new KickstartActionDetails();
         kad.setAppendString(appendString);
@@ -1294,7 +1295,7 @@ public class ActionManager extends BaseManager {
                 .withEarliest(pcmd.getScheduleDate())
                 .build();
 
-        ActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
+        ServerActionFactory.createAddServerAction(pcmd.getHostServer(), ksAction);
 
         KickstartGuestActionDetails kad = new KickstartGuestActionDetails();
         kad.setAppendString(pcmd.getExtraOptions());
@@ -1345,7 +1346,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
         return action;
     }
 
@@ -1365,7 +1366,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
         return action;
     }
 
@@ -1387,7 +1388,7 @@ public class ActionManager extends BaseManager {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, scheduler,
                 ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST).getName(),
                 earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
         return action;
     }
 
@@ -1410,7 +1411,7 @@ public class ActionManager extends BaseManager {
                 .withOrg(schedulerOrg)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(srvr, action);
+        ServerActionFactory.createAddServerAction(srvr, action);
 
         ActionFactory.save(action);
 
@@ -1497,7 +1498,7 @@ public class ActionManager extends BaseManager {
         String name = actionTypeEnum.getPackageActionName();
 
         Action action = ActionFactory.createAndSaveAction(actionTypeEnum, scheduler, name, earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
 
         ActionFactory.save(action);
 
@@ -1720,7 +1721,7 @@ public class ActionManager extends BaseManager {
                 scheduler,
                 finalActionName,
                 earliestAction);
-        ActionFactory.scheduleForExecution(action, serverIds);
+        ServerActionFactory.scheduleForExecution(action, serverIds);
 
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
@@ -1744,7 +1745,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1772,7 +1773,7 @@ public class ActionManager extends BaseManager {
                 .withSchedulerUser(scheduler)
                 .withEarliest(earliestAction)
                 .build();
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1831,7 +1832,7 @@ public class ActionManager extends BaseManager {
 
         detailsMap.values().stream()
             .map(details -> details.getServer())
-            .forEach(server -> ActionFactory.createAddServerAction(server, action));
+            .forEach(server -> ServerActionFactory.createAddServerAction(server, action));
 
         // Add the details and save
         action.setDetailsMap(detailsMap);
@@ -1978,7 +1979,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         action = ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2038,7 +2039,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2074,7 +2075,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
+        ServerActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 
@@ -2190,7 +2191,7 @@ public class ActionManager extends BaseManager {
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
-        ActionFactory.scheduleForExecution(action, Set.of(sid));
+        ServerActionFactory.scheduleForExecution(action, Set.of(sid));
         return action;
     }
 
@@ -2230,7 +2231,7 @@ public class ActionManager extends BaseManager {
         details.setInventoryPath(inventoryPath);
         action.setDetails(details);
 
-        ActionFactory.createAddServerAction(server, action);
+        ServerActionFactory.createAddServerAction(server, action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);

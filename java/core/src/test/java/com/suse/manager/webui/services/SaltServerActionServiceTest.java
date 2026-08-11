@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -184,7 +185,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinionServer, action);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
@@ -230,7 +231,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinionServer, action);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
 
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
@@ -279,7 +280,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinionServer, action);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
@@ -317,7 +318,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinionServer, action);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), Collections.singletonList(pkgMap));
         TestUtils.flushAndEvict(action);
@@ -371,7 +372,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_UPDATE, user,
                 "test action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinionServer, action);
+        ServerActionFactory.addServerToAction(testMinionServer, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
@@ -430,7 +431,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Action action = ActionFactory.createAndSaveAction(ActionTypeEnum.TYPE_PACKAGES_REMOVE, user,
                 "test remove action", Date.from(now.toInstant()));
 
-        ActionFactory.addServerToAction(testMinion, action);
+        ServerActionFactory.addServerToAction(testMinion, action);
 
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
@@ -474,10 +475,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 .withEarliest(Date.from(now.toInstant()))
                 .build();
 
-        ActionFactory.addServerToAction(minion1, configAction);
-        ActionFactory.addServerToAction(minion2, configAction);
-        ActionFactory.addServerToAction(minion3, configAction);
-        ActionFactory.addServerToAction(minion4, configAction);
+        ServerActionFactory.addServerToAction(minion1, configAction);
+        ServerActionFactory.addServerToAction(minion2, configAction);
+        ServerActionFactory.addServerToAction(minion3, configAction);
+        ServerActionFactory.addServerToAction(minion4, configAction);
 
         //create the revision, file, and channel.
         ConfigRevision revision1 = ConfigTestUtils.createConfigRevision(user.getOrg());
@@ -691,7 +692,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         details.setParentAction(action);
         TestUtils.persist(details);
 
-        ActionFactory.addServerToAction(minion1, action);
+        ServerActionFactory.addServerToAction(minion1, action);
 
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
@@ -1125,7 +1126,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         details.setPlaybookPath("/path/to/myplaybook.yml");
         action.setDetails(details);
 
-        ActionFactory.addServerToAction(controlNode, action);
+        ServerActionFactory.addServerToAction(controlNode, action);
 
         Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action,
                 Collections.singletonList(new MinionSummary(controlNode)));
