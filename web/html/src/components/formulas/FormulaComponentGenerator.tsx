@@ -449,7 +449,7 @@ function wrapCheckboxFormGroup(
   help?: string | null
 ) {
   return (
-    <div className="form-group" key={elementName}>
+    <div className="row" key={elementName}>
       <div className="col-lg-3 control-label"></div>
       <div className="col-lg-6">
         <div className="checkbox">
