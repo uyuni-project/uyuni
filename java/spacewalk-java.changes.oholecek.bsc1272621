@@ -1,0 +1,2 @@
+- Use Channel equality even for ClonedChannel
+  (bsc#1272621)

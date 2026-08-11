@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -36,6 +37,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -123,6 +125,21 @@ public class ChannelTest extends BaseTestCaseWithUser {
         testSet.add(c2);
         testSet.add(c3);
         assertEquals(2, testSet.size());
+    }
+
+    @Test
+    public void testClonedChannelEqualsWithProxy() throws Exception {
+        Channel original = ChannelFactoryTest.createTestChannel(user);
+        Channel clonedChannel = ChannelFactoryTest.createTestClonedChannel(original, user);
+
+        TestUtils.flushAndEvict(clonedChannel);
+
+        // Fetch a proxy of the cloned channel
+        Channel proxy = HibernateFactory.getSession().getReference(Channel.class, clonedChannel.getId());
+        assertFalse(Hibernate.isInitialized(proxy));
+
+        assertEquals(clonedChannel, proxy);
+        assertEquals(proxy, clonedChannel);
     }
 
     @Test
