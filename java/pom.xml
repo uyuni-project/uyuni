@@ -769,12 +769,6 @@
                 <version>2.27.2</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>strutstest</groupId>
-                <artifactId>strutstest</artifactId>
-                <version>1.0.0</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
