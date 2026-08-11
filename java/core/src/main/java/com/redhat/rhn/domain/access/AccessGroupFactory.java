@@ -58,18 +58,6 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
-     * Checks whether the given label belongs to a default access group.
-     *
-     * @param label the access group label
-     * @return {@code true} if the label belongs to a default access group,
-     *         {@code false} otherwise
-     */
-    public static boolean isDefaultGroup(String label) {
-        return DEFAULT_GROUPS.stream()
-            .anyMatch(group -> group.getLabel().equals(label));
-    }
-
-    /**
      * Persists an {@code AccessGroup} entity to DB.
      * @param accessGroupIn the entity to save
      * @return the saved entity (managed instance)
