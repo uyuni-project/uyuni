@@ -1260,21 +1260,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="final">Hub 配置</target>
+        <target state="final">中心配置</target>
       </trans-unit>
       <trans-unit approved="yes" id="Hub Details" xml:space="preserve">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="final">Hub 细节</target>
+        <target state="final">中心详情</target>
       </trans-unit>
       <trans-unit approved="yes" id="Peripherals Configuration" xml:space="preserve">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="final">外设配置</target>
+        <target state="final">外围配置</target>
       </trans-unit>
       <trans-unit approved="yes" id="Access Tokens" xml:space="preserve">
         <source>Access Tokens</source>
@@ -1304,20 +1304,20 @@
         </context-group>
         <target state="final">查看排名</target>
       </trans-unit>
-      <trans-unit id="Support" xml:space="preserve">
+      <trans-unit id="Support" xml:space="preserve" approved="yes">
         <source>Support</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">支持</target>
       </trans-unit>
-    <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
-          <source>Schedule</source>
+      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve" approved="yes">
+        <source>Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">日程安排</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
