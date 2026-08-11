@@ -107,8 +107,17 @@ public abstract class DocWriter {
      * @throws IOException e
      */
     public String generateHandler(Handler handler, String templateDir) throws IOException {
+        if (handler.getDesc() != null) {
+            handler.setDesc(renderMacro(templateDir, handler.getDesc(),
+                    "handler:" + handler.getName()));
+        }
+
         for (ApiCall call : handler.getCalls()) {
             log(String.format("Generating handler call %s.%s", handler.getName(), call.getName()));
+            if (call.getDoc() != null) {
+                call.setDoc(renderMacro(templateDir, call.getDoc(),
+                        "doc:" + handler.getName() + "." + call.getName()));
+            }
             call.setReturnDoc(renderMacro(templateDir, call.getReturnDoc(),
                     call.getName()));
             List<String> params = new ArrayList<>();
