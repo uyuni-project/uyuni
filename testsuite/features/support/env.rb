@@ -111,7 +111,10 @@ def capybara_register_driver
       app,
       browser_type: :chromium,
       headless: !$debug_mode,
-      playwright_cli_executable_path: ENV.fetch('PLAYWRIGHT_CLI_EXECUTABLE_PATH', '/usr/local/bin/playwright'),
+      # Routed through playwright_driver_supervisor.rb (BUG-031 fix), which resolves the real
+      # driver itself from the same PLAYWRIGHT_CLI_EXECUTABLE_PATH env var and enforces each
+      # call's own declared metadata.timeout - see that file for why.
+      playwright_cli_executable_path: File.expand_path('playwright_driver_supervisor.rb', __dir__),
       args: %w[
         --disable-dev-shm-usage
         --ignore-certificate-errors

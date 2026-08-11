@@ -1,0 +1,27 @@
+name: Playwright Driver Supervisor Test
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/playwright-driver-supervisor-test.yml'
+      - 'testsuite/features/support/playwright_driver_supervisor.rb'
+      - 'testsuite/features/support/env.rb'
+      - 'testsuite/test/**'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+      - uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 #v1.268.0
+        with:
+          ruby-version: '3.3'
+
+      - name: Run supervisor test
+        run: |
+          cd testsuite
+          ruby test/playwright_driver_supervisor_test.rb
