@@ -13,9 +13,8 @@ cp /root/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 # install python3 and python3-psutil in the container
 zypper --non-interactive in tar gzip python3 python3-psutil
 
-# re-enable normal repo and remove helper repo
+# re-enable normal repo
 zypper mr --enable Fake-RPM-SUSE-Channel || :
-zypper rr sles15sp7
 
 # do the real test
 zypper --non-interactive --gpg-auto-import-keys ref
