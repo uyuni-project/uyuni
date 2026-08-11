@@ -258,8 +258,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         },
                         minionServer -> server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
                                 serverAsMinion -> {
-                                    // Case 2.2a - minion_id and machine-id are the same
-                                    updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                                    // Case 2.2a - minion_id and machine-id are the same. Just apply start states
                                     applyMinionStartStates(minionId, minionServer, saltbootInitrd);
                                 },
                                 () -> {
@@ -391,12 +390,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void reactivateSystem(String minionId, String machineId, String reActivationKey) {
         // The machine id may have changed, but we know from the reactivation key
         // which system should become this one
+        LOG.info("Reactivate '{}' with key '{}'", minionId, reActivationKey);
         of(ActivationKeyFactory.lookupByKey(reActivationKey))
                 .flatMap(ak -> ak.getServer().asMinionServer())
-                .ifPresent(minion -> {
-                    minion.setMachineId(machineId);
-                    minion.setMinionId(minionId);
-        });
+                .ifPresentOrElse(minion -> {
+                            minion.setMachineId(machineId);
+                            minion.setMinionId(minionId);
+                        },
+                        () -> LOG.warn("Reactivationkey '{}' did not point to a minion", reActivationKey)
+                );
     }
 
     private void setMinionName(String minionId, MinionServer minion, Optional<ValueMap> grains) {
@@ -553,6 +555,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 "organization selected for registration (" + org + "). Keeping the " +
                                 "existing server organization. " + ignoreAKMessage);
             }
+
+            LOG.info("Register '{}' to Org '{}' with activation key '{}'. SSH: {} saltboot: {}", minionId,
+                    org.getName(), activationKey.map(ActivationKey::getKey).orElse(""), isSaltSSH, saltbootInitrd);
 
             // Set creator to the user who accepted the key if available
             minion.setCreator(creator.orElse(null));
