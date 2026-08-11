@@ -31,7 +31,7 @@ import com.suse.manager.api.ReadOnly;
  * @apidoc.namespace system.custominfo
  * @apidoc.doc Provides methods to access and modify custom system information.
  */
-public class CustomInfoHandler extends BaseHandler {
+public class CustomInfoHandler extends BaseHandler implements CustomInfoHandlerApi {
 
     /**
      * Create a new custom key

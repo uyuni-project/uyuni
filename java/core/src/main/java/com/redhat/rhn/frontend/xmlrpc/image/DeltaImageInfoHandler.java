@@ -34,7 +34,7 @@ import java.util.Optional;
  * @apidoc.namespace image.delta
  * @apidoc.doc Provides methods to access and modify delta images.
  */
-public class DeltaImageInfoHandler extends BaseHandler {
+public class DeltaImageInfoHandler extends BaseHandler implements DeltaImageInfoHandlerApi {
 
     /**
      * List all delta images visible for the logged in user

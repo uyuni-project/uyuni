@@ -42,7 +42,7 @@ import redstone.xmlrpc.XmlRpcFault;
  * @apidoc.doc Provides methods to perform system search requests using the search server.
  *
  */
-public class SystemSearchHandler extends BaseHandler {
+public class SystemSearchHandler extends BaseHandler implements SystemSearchHandlerApi {
     private static Logger log = LogManager.getLogger(SystemSearchHandler.class);
 
     private List<SystemSearchResult> performSearch(String sessionKey, String searchString,

@@ -35,7 +35,7 @@ import java.util.List;
  * preservation lists.
  *
  */
-public class FilePreservationListHandler extends BaseHandler {
+public class FilePreservationListHandler extends BaseHandler implements FilePreservationListHandlerApi {
 
     /**
      * Lists all file preservation lists associated with the org of the user

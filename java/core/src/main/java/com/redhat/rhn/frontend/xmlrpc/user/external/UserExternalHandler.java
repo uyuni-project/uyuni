@@ -52,7 +52,7 @@ import java.util.Set;
  * happens, like what organization they are created in or what roles they will have.
  * These options can also be set in the web admin interface.
  */
-public class UserExternalHandler extends BaseHandler {
+public class UserExternalHandler extends BaseHandler implements UserExternalHandlerApi {
 
     /**
      * Set the value of EXT_AUTH_KEEP_ROLES

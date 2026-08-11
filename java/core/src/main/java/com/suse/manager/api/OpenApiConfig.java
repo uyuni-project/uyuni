@@ -20,14 +20,20 @@ import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
+import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
+import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
@@ -119,14 +125,20 @@ public final class OpenApiConfig {
         handlers.put("api", ApiHandler.class);
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("distchannel", DistChannelHandler.class);
+        handlers.put("image.delta", DeltaImageInfoHandler.class);
         handlers.put("image.profile", ImageProfileHandler.class);
         handlers.put("image.store", ImageStoreHandler.class);
+        handlers.put("kickstart.filepreservation", FilePreservationListHandler.class);
         handlers.put("kickstart.profile.software", SoftwareHandler.class);
         handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
+        handlers.put("schedule", ScheduleHandler.class);
         handlers.put("subscriptionmatching.pinnedsubscription", PinnedSubscriptionHandler.class);
+        handlers.put("system.custominfo", CustomInfoHandler.class);
+        handlers.put("system.search", SystemSearchHandler.class);
+        handlers.put("user.external", UserExternalHandler.class);
         return handlers;
     }
 }
