@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-04-20 11:04+0000\n"
+"PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -83,7 +83,7 @@ msgstr "认证报告细节"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
 msgid "No Scans"
-msgstr ""
+msgstr "无扫描记录"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -146,10 +146,8 @@ msgid "Loading the scheduler..."
 msgstr "正在加载日程安排程序..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:147
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "SCAP scan has been "
-msgstr "操作已{0}。"
+msgstr "SCAP 扫描已 "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
@@ -157,127 +155,101 @@ msgid "scheduled."
 msgstr "已安排。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:171
-#, fuzzy
-#| msgid "Schedule Name"
 msgid "Schedule New XCCDF Scan"
-msgstr "日程安排名称"
+msgstr "安排新的 XCCDF 扫描"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:180
 #: ../html/src/components/policies-picker.tsx:117
-#, fuzzy
-#| msgid "Policy"
 msgid "SCAP Policy"
-msgstr "策略"
+msgstr "SCAP 策略"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:184
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No Policy Selected"
-msgstr "未选择配置文件"
+msgstr "未选择任何策略"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:175
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:111
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "SCAP Content"
-msgstr "剧本内容"
+msgstr "SCAP 内容"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required."
-msgstr "必须指定正整数"
+msgstr "必须提供 SCAP 内容。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:196
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:323
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "XCCDF Profile"
-msgstr "删除配置文件"
+msgstr "XCCDF 配置文件"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:231
-#, fuzzy
-#| msgid "Image version is required."
 msgid "XCCDF Profile is required."
-msgstr "映像版本是必填的。"
+msgstr "必须提供 XCCDF 配置文件。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:238
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select XCCDF profile..."
-msgstr "选择模块..."
+msgstr "选择 XCCDF 配置文件…"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:212
 msgid "Tailoring File"
-msgstr ""
+msgstr "剪裁文件"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select Tailoring file..."
-msgstr "选择模块..."
+msgstr "选择剪裁文件…"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:276
 msgid "Profile from Tailoring File"
-msgstr ""
+msgstr "取自剪裁文件的配置文件"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select profile..."
-msgstr "选择模块..."
+msgstr "选择配置文件…"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:292
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:248
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Advanced Arguments"
-msgstr "命令行参数"
+msgstr "高级参数"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:252
 msgid "e.g: --rule <rule_id> --remediate"
-msgstr ""
+msgstr "例如：--rule <rule_id> --remediate"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:297
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:253
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Additional command-line arguments for oscap"
-msgstr "命令行参数"
+msgstr "oscap 的其他命令行参数"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:302
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:258
 msgid "OVAL Files"
-msgstr ""
+msgstr "OVAL 文件"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:306
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:262
 msgid "e.g: /usr/share/xml/scap/suse-sles15-cve.xml"
-msgstr ""
+msgstr "例如：/usr/share/xml/scap/suse-sles15-cve.xml"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:307
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:263
-#, fuzzy
-#| msgid "Has to be a comma-separated list of host names"
 msgid "Comma-separated list of OVAL files"
-msgstr "必须为主机名逗号分隔列表"
+msgstr "以逗号分隔的 OVAL 文件列表"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:310
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:266
 msgid "Note: Paths to local OVAL definitions on target system (comma separated)"
-msgstr ""
+msgstr "注意：目标系统上本地 OVAL 定义的路径（以逗号分隔）"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
 msgid "Fetch Remote Content"
-msgstr ""
+msgstr "提取远程内容"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
-msgstr ""
+msgstr "这需要连接互联网并占用大量内存，请确保此受控端有充足的可用内存！"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
@@ -920,7 +892,7 @@ msgstr "取消注册"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:40
 msgid "Deregister from the hub"
-msgstr "从 Hub 取消注册"
+msgstr "从中心取消注册"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:45
 msgid "Confirm deregistration"
@@ -941,11 +913,11 @@ msgstr "清理操作超时。请检查计算机是否可访问。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:79
 msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will no longer receive data from it."
-msgstr "您确定要从 Hub {fqdn} 取消注册吗？如果取消注册，您将无法再从该处获得数据。"
+msgstr "您确定要从中心 {fqdn} 取消注册吗？如果取消注册，您将无法再从该处获得数据。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:85
 msgid "Are you sure you want to deregister peripheral {fqdn}? All the current configuration will be lost."
-msgstr "您确定要取消注册外设 {fqdn} 吗？当前的所有配置都将丢失。"
+msgstr "您确定要取消注册外围 {fqdn} 吗？当前的所有配置都将丢失。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:118
 msgid "The server {fqdn} has been successfully deregistered."
@@ -982,7 +954,7 @@ msgstr "设置远程服务器的 FQDN"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:134
 msgid "Peripheral migration in progress: waiting for a response..."
-msgstr "正在迁移外设：正在等待响应..."
+msgstr "正在迁移外围：正在等待响应..."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:152
 msgid "Migration partially succeeded"
@@ -1040,7 +1012,7 @@ msgstr "该从属服务器目前已禁用，无法选择将其迁移"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:268
 msgid "Check to migrate this server to a peripheral"
-msgstr "选中会将此服务器迁移为外设"
+msgstr "选中会将此服务器迁移为外围"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:287
 msgid "Not defined"
@@ -1089,7 +1061,7 @@ msgstr "不需要"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:333
 msgid "The root CA is the same of the hub."
-msgstr "该根 CA 与该 Hub 的相同。"
+msgstr "该根 CA 与该中心的相同。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:334
 msgid "This server has a different root CA."
@@ -1097,7 +1069,7 @@ msgstr "此服务器的根 CA 不同。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:337
 msgid "Ensure the certificate you are providing for {fqdn} is correct before proceeding. A wrong value will prevent the connection with the hub."
-msgstr "请确保您提供的 {fqdn} 的证书正确无误，然后再继续。错误的值将导致无法与 Hub 连接。"
+msgstr "请确保您提供的 {fqdn} 的证书正确无误，然后再继续。错误的值将导致无法与中心连接。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:342
 msgid "Are you sure you want to remove the current Root Certificate Authority for {fqdn}?"
@@ -1127,7 +1099,7 @@ msgstr "按 FQDN 过滤"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:36
 msgid "Peripheral FQDN"
-msgstr "外设 FQDN"
+msgstr "外围 FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of synced channels"
@@ -1143,19 +1115,19 @@ msgstr "下载根 CA"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:70
 msgid "View details of peripheral {fqdn}"
-msgstr "查看外设 {fqdn} 的详细信息"
+msgstr "查看外围 {fqdn} 的详细信息"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "Register a new peripheral server"
-msgstr "注册新的外设服务器"
+msgstr "注册新的外围服务器"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
 msgid "Peripheral registration in progress: waiting for a response..."
-msgstr "正在注册外设：正在等待响应..."
+msgstr "正在注册外围：正在等待响应..."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid "Peripheral Server FQDN"
-msgstr "外设服务器 FQDN"
+msgstr "外围服务器 FQDN"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
 msgid "The unique, DNS-resolvable fully-qualified domain name of the server to register."
@@ -1251,43 +1223,43 @@ msgstr "清除字段"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
 msgid "Hub server FQDN:"
-msgstr "Hub 服务器 FQDN："
+msgstr "中心服务器 FQDN："
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
 msgid "Peripheral server FQDN:"
-msgstr "外设服务器 FQDN："
+msgstr "外围服务器 FQDN："
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "A customized Root Certificate Authority is currently configured for this hub."
-msgstr "目前已为此 Hub 配置自定义根证书颁发机构。"
+msgstr "目前已为此中心配置自定义根证书颁发机构。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:21
 msgid "A customized Root Certificate Authority is currently configured for this peripheral."
-msgstr "目前已为此外设配置自定义根证书颁发机构。"
+msgstr "目前已为此外围配置自定义根证书颁发机构。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:24
 msgid "This hub is currently using the default Root Certificate Authority."
-msgstr "此 Hub 目前使用的是默认根证书颁发机构。"
+msgstr "此中心目前使用的是默认根证书颁发机构。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:25
 msgid "This peripheral is currently using the default Root Certificate Authority."
-msgstr "此外设目前使用的是默认根证书颁发机构。"
+msgstr "此外围目前使用的是默认根证书颁发机构。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:29
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the hub."
-msgstr "请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与 Hub 的连接。"
+msgstr "请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与中心的连接。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:32
 msgid "Ensure the certificate you are providing is correct before proceeding. A wrong value will break the connection with the peripheral."
-msgstr "请确保您提供的证书正确无误，然后再继续。错误的值将导致与外设的连接中断。"
+msgstr "请确保您提供的证书正确无误，然后再继续。错误的值将导致与外围的连接中断。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:37
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the hub."
-msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与 Hub 的连接。"
+msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与中心的连接。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:40
 msgid "Are you sure you want to delete the current Root Certificate Authority? This change may break the connection with the peripheral."
-msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会导致与外设的连接中断。"
+msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会导致与外围的连接中断。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:79
 msgid "Registration date:"
@@ -1307,11 +1279,11 @@ msgstr "GPG 公共密钥："
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:128
 msgid "A customized GPG key is currently configured for this hub."
-msgstr "目前已为此 Hub 配置自定义 GPG 密钥。"
+msgstr "目前已为此中心配置自定义 GPG 密钥。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:129
 msgid "This hub is currently not using a custom GPG key."
-msgstr "此 Hub 目前使用的不是自定义 GPG 密钥。"
+msgstr "此中心目前使用的不是自定义 GPG 密钥。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:140
 msgid "Mirror credentials:"
@@ -1367,7 +1339,7 @@ msgstr "没有可应用的更改"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:149
 msgid "Channels synced correctly to peripheral!"
-msgstr "通道已正确同步到外设！"
+msgstr "通道已正确同步到外围！"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:185
 msgid "Please select at least one channel to add or remove from sync"
@@ -1444,7 +1416,7 @@ msgstr "确认"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
-msgstr "{peripheralFqdn} - 外设同步通道"
+msgstr "{peripheralFqdn} - 外围同步通道"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:322
 msgid "Back to details"
@@ -1458,7 +1430,7 @@ msgstr "应用更改"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
 msgid "Sync Channels from Hub to Peripheral"
-msgstr "将 Hub 中的通道同步到外设"
+msgstr "将中心中的通道同步到外围"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:355
 msgid "Confirm Channel Synchronization Changes"
@@ -1550,51 +1522,51 @@ msgstr "否，会过期 <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:216
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
-msgstr "无法删除此访问令牌。它目前已被 Hub {fqdn} 使用"
+msgstr "无法删除此访问令牌。它目前已被中心 {fqdn} 使用"
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
-msgstr "无法删除此访问令牌。它目前已被外设 {fqdn} 使用"
+msgstr "无法删除此访问令牌。它目前已被外围 {fqdn} 使用"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:231
 msgid "Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr "如果将此访问令牌设为无效，将会阻止 Hub {fqdn} 进行访问。"
+msgstr "如果将此访问令牌设为无效，将会阻止中心 {fqdn} 进行访问。"
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:234
 msgid "Invalidating this access token will prevent the peripheral {fqdn} from accesssing."
-msgstr "如果将此访问令牌设为无效，将会阻止外设 {fqdn} 进行访问。"
+msgstr "如果将此访问令牌设为无效，将会阻止外围 {fqdn} 进行访问。"
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:237
 msgid "Enabling this access token will grant access to the hub {fqdn}."
-msgstr "启用此访问令牌将授予对 Hub {fqdn} 的访问权限。"
+msgstr "启用此访问令牌将授予对中心 {fqdn} 的访问权限。"
 
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:240
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr "启用此访问令牌将授予对外设 {fqdn} 的访问权限。"
+msgstr "启用此访问令牌将授予对外围 {fqdn} 的访问权限。"
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:243
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr "如果将此访问令牌设为无效，将会阻止访问 Hub {fqdn}。"
+msgstr "如果将此访问令牌设为无效，将会阻止访问中心 {fqdn}。"
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:246
 msgid "Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr "如果将此访问令牌设为无效，将会阻止访问外设 {fqdn}。"
+msgstr "如果将此访问令牌设为无效，将会阻止访问外围 {fqdn}。"
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:249
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr "启用此访问令牌将恢复对 Hub {fqdn} 的访问权限。"
+msgstr "启用此访问令牌将恢复对中心 {fqdn} 的访问权限。"
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:252
 msgid "Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr "启用此访问令牌将恢复对外设 {fqdn} 的访问权限。"
+msgstr "启用此访问令牌将恢复对外围 {fqdn} 的访问权限。"
 
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
@@ -1832,10 +1804,8 @@ msgid "Select a Schedule"
 msgstr "选择日程安排"
 
 #: ../html/src/components/policies-picker.tsx:91
-#, fuzzy
-#| msgid "State assignments have been saved."
 msgid "Policy assignment has been saved."
-msgstr "已保存状态指派。"
+msgstr "策略分配已保存。"
 
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
@@ -1844,13 +1814,11 @@ msgstr "保存时出错。"
 
 #: ../html/src/components/policies-picker.tsx:105
 msgid "No SCAP Policies Found"
-msgstr ""
+msgstr "未找到 SCAP 策略"
 
 #: ../html/src/components/policies-picker.tsx:160
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search in SCAP policies"
-msgstr "在状态中搜索"
+msgstr "在 SCAP 策略中搜索"
 
 #: ../html/src/components/policies-picker.tsx:165
 #: ../html/src/components/states-picker.tsx:432
@@ -1864,17 +1832,13 @@ msgstr "搜索"
 
 #: ../html/src/components/policies-picker.tsx:175
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:318
-#, fuzzy
-#| msgid "Policy"
 msgid "Policy Name"
-msgstr "策略"
+msgstr "策略名称"
 
 #: ../html/src/components/policies-picker.tsx:176
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:322
-#, fuzzy
-#| msgid "Stream"
 msgid "Data Stream"
-msgstr "流"
+msgstr "数据流"
 
 #: ../html/src/components/policies-picker.tsx:177
 #: ../html/src/components/states-picker.tsx:465
@@ -1962,35 +1926,31 @@ msgstr "操作的最早执行时间"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:108
 msgid "Before Migrating to SLES 16 — Please ensure"
-msgstr ""
+msgstr "迁移到 SLES 16 前 — 请确认"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
-#, fuzzy
-#| msgid "System is up to date"
 msgid "System is fully up to date"
-msgstr "系统是最新的"
+msgstr "系统已完全更新"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:111
-#, fuzzy
-#| msgid "Affected, patch is unavailable"
 msgid "Sufficient disk space is available"
-msgstr "受影响，未提供补丁"
+msgstr "磁盘空间充足"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
-msgstr ""
+msgstr "至少有一位用户可通过 SSH 密钥方式访问。如果需要通过 root 帐户登录，请创建 /etc/ssh/sshd_config.d/50-permit-root-login.conf 文件，并写入配置：PermitRootLogin yes"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:117
 msgid "KVM guests are shut down (if applicable)"
-msgstr ""
+msgstr "KVM Guest 已关闭（如有）"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
 msgid "Network configuration will be migrated from wicked to NetworkManager"
-msgstr ""
+msgstr "网络配置将从 wicked 迁移到 NetworkManager"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:119
 msgid "AppArmor profiles will be migrated to SELinux"
-msgstr ""
+msgstr "AppArmor 配置文件将迁移到 SELinux"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
@@ -2006,7 +1966,7 @@ msgstr "试运行"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:148
 msgid "Dry run is not available for this migration"
-msgstr ""
+msgstr "此迁移不支持试运行模式"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -2196,7 +2156,7 @@ msgstr "代理"
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr "外设服务器"
+msgstr "外围服务器"
 
 #: ../html/src/components/systems.tsx:102
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:193
@@ -2258,7 +2218,7 @@ msgstr "通道名称"
 
 #: ../html/src/components/table/nested-data.example.tsx:67
 msgid "Hub Org"
-msgstr "Hub 组织"
+msgstr "中心组织"
 
 #: ../html/src/components/table/nested-data.example.tsx:71
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
@@ -2728,21 +2688,19 @@ msgstr "确认通道同步"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:43
 msgid "Do you want to schedule a channels synchronization from the hub?"
-msgstr "是否要安排从 Hub 服务器同步通道？"
+msgstr "是否要安排从中心同步通道？"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
-msgstr "Hub 细节"
+msgstr "中心详情"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. "
-msgstr "目前未为此服务器配置 Hub。 "
+msgstr "目前未为此服务器配置中心。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "此服务器目前注册为 Hub {fqdn} 的外设。此页面显示该 Hub 服务器的详细信息。"
+msgstr "此服务器目前注册为中心 {fqdn} 的外围。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2762,21 +2720,19 @@ msgstr "从 ISSv2 迁移"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:20
 msgid "{fqdn} - Peripheral Details"
-msgstr "{fqdn} - 外设详细信息"
+msgstr "{fqdn} - 外围详细信息"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "服务器 {fqdn} 目前注册为此 Hub 的外设。此页面显示该外设服务器的详细信息。"
+msgstr "服务器 {fqdn} 目前注册为此中心的外围。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
-msgstr "外设配置"
+msgstr "外围配置"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:33
 msgid "Add Peripheral"
-msgstr "添加外设"
+msgstr "添加外围"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:39
 msgid "Migrate an existing configuration of a previous version of ISS"
@@ -2792,7 +2748,7 @@ msgstr "迁移 ISS v2..."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:54
 msgid "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
-msgstr "此服务器已配置为某个 Hub 配置的外设服务器。禁止管理 PAYG 连接。"
+msgstr "此服务器已配置为某个中心配置的外围服务器。无法管理 PAYG 连接。"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:63
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:92
@@ -2910,10 +2866,8 @@ msgid "Last Status Update"
 msgstr "上次状态更新"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
-#, fuzzy
-#| msgid "Edit"
 msgid "Edit "
-msgstr "编辑"
+msgstr "编辑 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
@@ -3040,7 +2994,7 @@ msgstr "如果您确信缺少了产品，请确保已在向导的上一步中添
 
 #: ../html/src/manager/admin/setup/products/products.tsx:402
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
-msgstr "此服务器已配置为某个 Hub 配置的外设服务器。只能在相应 Hub 服务器上管理产品。"
+msgstr "此服务器已配置为某个中心配置的外围服务器。只能在相应中心服务器上管理产品。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:521
 msgid "Filter by product Description"
@@ -3506,51 +3460,43 @@ msgid "Errata"
 msgstr "勘误"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:80
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while uploading the SCAP content."
-msgstr "显示软件包列表时发生错误。"
+msgstr "上载 SCAP 内容时发生错误。"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:84
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:87
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred."
-msgstr "提取用户时发生意外错误。"
+msgstr "发生意外错误。"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:91
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Edit SCAP Content"
-msgstr "剧本内容"
+msgstr "编辑 SCAP 内容"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
-msgstr ""
+msgstr "SCAP 数据流文件"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
-#, fuzzy
-#| msgid "Current Schedule"
 msgid "Current file"
-msgstr "当前日程安排"
+msgstr "当前文件"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
 msgid "Upload a new file to replace the existing one"
-msgstr ""
+msgstr "上载新文件以替换现有文件"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "上载数据流文件 (*-ds.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
 msgid "XCCDF File"
-msgstr ""
+msgstr "XCCDF 文件"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "上载 XCCDF 文件 (*-xccdf.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
@@ -3562,258 +3508,196 @@ msgid "Update"
 msgstr "更新"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required"
-msgstr "必须指定正整数"
+msgstr "必须提供 SCAP 内容"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:129
 msgid "XCCDF Profile is required"
-msgstr ""
+msgstr "必须提供 XCCDF 配置文件"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:156
 msgid "Unexpected error."
-msgstr ""
+msgstr "意外错误。"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
 msgid "Edit Compliance Policy"
-msgstr ""
+msgstr "编辑合规策略"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Compliance Policy"
-msgstr "创建映像配置文件"
+msgstr "创建合规策略"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:233
-#, fuzzy
-#| msgid "Image Profile"
 msgid "Tailoring Profile"
-msgstr "映像配置文件"
+msgstr "剪裁配置文件"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
 msgid "Fetch Remote Resources"
-msgstr ""
+msgstr "获取远程资源"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:288
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
-msgstr ""
+msgstr "这需要连接互联网并占用大量内存。在应用前，请确保目标受控端有充足的可用内存！"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:305
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to List"
 msgstr "返回列表"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while saving the tailoring file."
-msgstr "显示软件包列表时发生错误。"
+msgstr "保存剪裁文件时发生错误。"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
-#, fuzzy
-#| msgid "Edit variables"
 msgid "Edit Tailoring File"
-msgstr "编辑变量"
+msgstr "编辑剪裁文件"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
-#, fuzzy
-#| msgid "Create Filter"
 msgid "Current File"
-msgstr "创建过滤器"
+msgstr "当前文件"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "替换文件（可选）"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "SCAP content has been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "SCAP 内容已删除。"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:43
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "SCAP content items have been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "SCAP 内容项已删除。"
 
 #. Handle server-returned error messages
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:58
-#, fuzzy
-#| msgid "Failed to connect"
 msgid "Failed to delete SCAP content"
-msgstr "无法连接"
+msgstr "删除 SCAP 内容失败"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:61
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:62
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:58
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred while deleting"
-msgstr "提取用户时发生意外错误。"
+msgstr "删除过程中发生意外错误"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:82
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:83
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload"
-msgstr "上载文件"
+msgstr "上载"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:141
-#, fuzzy
-#| msgid "Filter Name"
 msgid "File Name"
-msgstr "过滤器名称"
+msgstr "文件名"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:157
-#, fuzzy
-#| msgid "Delete PAYG Connection"
 msgid "Delete SCAP Content"
-msgstr "删除 PAYG 连接"
+msgstr "删除 SCAP 内容"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
-#, fuzzy
-#| msgid "Are you sure you want to delete store"
 msgid "Are you sure you want to delete"
-msgstr "您确定要删除存储区吗"
+msgstr "是否确定要删除"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
-#, fuzzy
-#| msgid "Loading content.."
 msgid "this content"
-msgstr "正在加载内容..."
+msgstr "此内容"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Scap Policy has been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "SCAP 策略已删除。"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:45
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Scap Policies have been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "SCAP 策略已删除。"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
 msgid "Failed to delete SCAP policy"
-msgstr ""
+msgstr "删除 SCAP 策略失败"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
 msgid "Scap Policies"
-msgstr ""
+msgstr "SCAP 策略"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Content"
-msgstr "剧本内容"
+msgstr "内容"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:150
-#, fuzzy
-#| msgid "System Locked"
 msgid "Systems Scanned"
-msgstr "系统已锁定"
+msgstr "已扫描系统"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:157
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliance"
-msgstr "已完成"
+msgstr "合规性"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:179
-#, fuzzy
-#| msgid "Delete Pin"
 msgid "Delete Scap Policy"
-msgstr "删除关联"
+msgstr "删除 SCAP 策略"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 msgid "this policy"
-msgstr ""
+msgstr "此策略"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:40
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Tailoring file has been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "剪裁文件已删除。"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:41
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Tailoring files have been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "剪裁文件已删除。"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:55
 msgid "Failed to delete tailoring file"
-msgstr ""
+msgstr "删除剪裁文件失败"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:104
 msgid "Tailoring Files"
-msgstr ""
+msgstr "剪裁文件"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:127
-#, fuzzy
-#| msgid "Target Name"
 msgid "Tailoring File Name"
-msgstr "目标名称"
+msgstr "剪裁文件名"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:143
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Tailoring file"
-msgstr "删除配置文件"
+msgstr "删除剪裁文件"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
-#, fuzzy
-#| msgid "Attach file"
 msgid "this file"
-msgstr "附加文件"
+msgstr "此文件"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliant"
-msgstr "已完成"
+msgstr "合规"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 msgid "Non-Compliant"
-msgstr ""
+msgstr "不合规"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
-#, fuzzy
-#| msgid "Proxy Configuration"
 msgid "Policy Configuration"
-msgstr "代理配置"
+msgstr "策略配置"
 
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
-#, fuzzy
-#| msgid "Select an image store"
 msgid "Scan History"
-msgstr "选择映像储存"
+msgstr "扫描历史记录"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
 msgid "No scans have been performed with this policy yet."
-msgstr ""
+msgstr "尚未通过此策略执行任何扫描。"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
 msgid "Show only latest scan per system"
-msgstr ""
+msgstr "仅显示每个系统的最新扫描结果"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:222
 msgid "Scan Date"
-msgstr ""
+msgstr "扫描日期"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
-#, fuzzy
-#| msgid "Password"
 msgid "Passed"
-msgstr "口令"
+msgstr "通过"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:32
@@ -3824,17 +3708,15 @@ msgstr "失败"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:249
 msgid "not selected or not applicable"
-msgstr ""
+msgstr "未选择或不适用"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
-#, fuzzy
-#| msgid "Filter Details"
 msgid "View Details"
-msgstr "过滤器细节"
+msgstr "查看详情"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
@@ -4324,20 +4206,16 @@ msgid "Rule"
 msgstr "规则"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Filter has been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "过滤器已删除。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "部分选定过滤器已用于项目中，无法删除。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Filter have been deleted."
-msgstr "已删除映像配置文件。"
+msgstr "过滤器已删除。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
 msgid "Create Filter"
@@ -4364,34 +4242,24 @@ msgid "Edit Filter"
 msgstr "编辑过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:242
-#, fuzzy
-#| msgid "Delete Cluster"
 msgid "Delete Filter"
-msgstr "删除群集"
+msgstr "删除过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
-#, fuzzy
-#| msgid "Are you sure you want to delete profile"
 msgid "Are you sure you want to delete the filter"
-msgstr "您确定要删除配置文件吗"
+msgstr "是否确定要删除该过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
-#, fuzzy
-#| msgid "Delete Selected Profile(s)"
 msgid "Delete Selected Filter(s)"
-msgstr "删除选定的配置文件"
+msgstr "删除选定的过滤器"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
-#, fuzzy
-#| msgid "Are you sure you want to delete the selected item?"
 msgid "Are you sure you want to delete the selected filter?"
-msgstr "您确定要删除选定项吗？"
+msgstr "您确定要删除所选的这个过滤器吗？"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
-#, fuzzy
-#| msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
-msgstr "您确定要删除选定的配置文件吗？（已选择 {count} 个配置文件）"
+msgstr "您确定要删除选定的过滤器吗？（已选择 {count} 个过滤器）"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4917,14 +4785,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "未找到您请求的页面 {currentUrl}。"
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "如果您是手动在浏览器中输入的地址，请核对拼写和大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "如果您是通过链接跳转至此，则表明链接可能不正确或已过期。请单击浏览器的后退按钮 "
 
@@ -4933,8 +4797,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "如果您认为误进入此页面，请联系我们并详细说明访问路径 "
 
@@ -5619,50 +5481,36 @@ msgid "A schema upgrade is required. Please upgrade your schema at your earliest
 msgstr "需要进行纲要升级。请尽早升级您的纲要，以接收最新 bug 修复并避免潜在问题。"
 
 #: ../html/src/manager/login/messages.tsx:27
-#, fuzzy
-#| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Server. Please contact your system administrator if this problem persists."
-msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
+msgstr "无法验证服务器可用磁盘空间。如果问题持续存在，请联系您的系统管理员。"
 
 #: ../html/src/manager/login/messages.tsx:32
 msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
 
 #: ../html/src/manager/login/messages.tsx:37
-#, fuzzy
-#| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
+msgstr "服务器可用磁盘空间不足。为避免健康检查触发自动关机，请立即联系系统管理员分配更多空间。"
 
 #: ../html/src/manager/login/messages.tsx:42
-#, fuzzy
-#| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
+msgstr "服务器可用磁盘空间严重不足。为避免健康检查触发自动关机，请立即联系系统管理员分配更多空间。"
 
 #: ../html/src/manager/login/messages.tsx:59
-#, fuzzy
-#| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Database. Please contact your system administrator if this problem persists."
-msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
+msgstr "无法验证数据库可用磁盘空间。如果问题持续存在，请联系系统管理员。"
 
 #: ../html/src/manager/login/messages.tsx:64
-#, fuzzy
-#| msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgid "Some important directories are missing on database. Please contact your system administrator to review the configuration."
-msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
+msgstr "数据库上的部分重要目录缺失。请联系系统管理员核查配置。"
 
 #: ../html/src/manager/login/messages.tsx:69
-#, fuzzy
-#| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
+msgstr "数据库可用磁盘空间不足。为避免健康检查触发自动关机，请立即联系系统管理员分配更多空间。"
 
 #: ../html/src/manager/login/messages.tsx:74
-#, fuzzy
-#| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
+msgstr "数据库可用磁盘空间严重不足。为避免健康检查触发自动关机，请立即联系系统管理员分配更多空间。"
 
 #: ../html/src/manager/login/messages.tsx:89
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
@@ -6209,44 +6057,36 @@ msgid "Name and value"
 msgstr "名称和值"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:310
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "Remediation has been "
-msgstr "操作已{0}。"
+msgstr "修复操作已 "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
-#, fuzzy
-#| msgid "Loading..."
 msgid "Saving..."
-msgstr "正在加载..."
+msgstr "正在保存…"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 msgid "Save Custom Remediation"
-msgstr ""
+msgstr "保存自定义修复方案"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
-#, fuzzy
-#| msgid "Delete Notification"
 msgid "Delete Custom Remediation"
-msgstr "删除通知"
+msgstr "删除自定义修复方案"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
 msgid "Original"
-msgstr ""
+msgstr "原始"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
-#, fuzzy
-#| msgid "Custom value"
 msgid "Custom"
-msgstr "自定义值"
+msgstr "自定义"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
 msgid "Apply Remediation"
-msgstr ""
+msgstr "应用修复方案"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
+msgstr "在此系统上无法使用 OpenSCAP。请安装软件包 \"{package}\" 以启用 SCAP 扫描。"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6847,10 +6687,8 @@ msgid "SSL certificate"
 msgstr "SSL 证书"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
-#, fuzzy
-#| msgid "Configuration"
 msgid "Skip SSL configuration"
-msgstr "配置"
+msgstr "跳过 SSL 配置"
 
 #: ../html/src/manager/proxy/container-config.tsx:258
 #: ../html/src/manager/proxy/container-config.tsx:383
@@ -7010,16 +6848,12 @@ msgid "Order"
 msgstr "排序"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:310
-#, fuzzy
-#| msgid "State Summary for {name}"
 msgid "SCAP Policy for {name}"
-msgstr "{name} 的状态摘要"
+msgstr "{name} 的 SCAP 策略"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:332
-#, fuzzy
-#| msgid "Description"
 msgid "No description"
-msgstr "说明"
+msgstr "无说明"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
@@ -7050,7 +6884,7 @@ msgstr "配置要执行的状态"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
 msgid "SCAP Policies"
-msgstr ""
+msgstr "SCAP 策略"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
 msgid "Create Recurring Action"
@@ -7461,10 +7295,8 @@ msgid "Don't change"
 msgstr "不更改"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
-#, fuzzy
-#| msgid " (system default)"
 msgid " (No system to disable)"
-msgstr " （系统默认）"
+msgstr " （无可禁用的系统）"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -7609,7 +7441,7 @@ msgstr "未知系统"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
 msgid "System is not a peripheral server"
-msgstr "系统不是外设服务器"
+msgstr "系统不是外围服务器"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "Setting new credentials for the report database failed"
@@ -7617,7 +7449,7 @@ msgstr "为报告数据库设置新身份凭证失败"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:50
 msgid "New password generated and changed on the peripheral server"
-msgstr "已生成新口令并针对外设服务器更改口令"
+msgstr "已生成新口令并针对外围服务器更改口令"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
