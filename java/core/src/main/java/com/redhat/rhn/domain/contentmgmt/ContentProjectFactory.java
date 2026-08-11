@@ -146,6 +146,20 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up a ContentProject by label
+     *
+     * @param projectLabel the label
+     * @return Optional with ContentProject with given label
+     */
+    public static Optional<ContentProject> lookupProjectByLabel(String projectLabel) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM ContentProject p WHERE p.label = :label",
+                        ContentProject.class)
+                .setParameter("label", projectLabel)
+                .uniqueResultOptional();
+    }
+
+    /**
      * Looks up a ContentProject by label and organization
      *
      * @param label the label

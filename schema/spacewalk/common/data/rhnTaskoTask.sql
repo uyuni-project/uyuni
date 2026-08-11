@@ -161,4 +161,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'clm-channel-diff', 'com.redh
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'diskcheck-task', 'com.redhat.rhn.taskomatic.task.DiskCheckTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'clm-diff', 'com.redhat.rhn.taskomatic.task.ClmDiff');
+
 commit;

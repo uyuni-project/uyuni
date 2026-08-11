@@ -36,6 +36,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -703,15 +704,51 @@ public class ContentManager {
      */
     public void diffProject(ContentProject project) {
 
-        Optional<ContentEnvironment> env = project.getFirstEnvironmentOpt();
+        project.getEnvironmentsStream()
+                .forEach(environment -> {
+                    TimeUtils.logTime(LOG, "Creating diff for Environment " + environment.getLabel(),
+                            () -> diffEnvironment(project, environment));
+                });
+    }
 
-        do {
-            ContentEnvironment currentEnv = env.orElseThrow(
-                    () -> new ContentManagementException("Environment missing"));
-            diffEnvironment(project, currentEnv);
-            env = currentEnv.getNextEnvironmentOpt();
+    /**
+     * Generate a diff of the given project, environment and channel label
+     *
+     * @param projectLabel the product label
+     * @param environmentLabel the environment label
+     * @param channelLabel the channel label
+     * @throws ContentManagementException
+     */
+    public void diffClmChannel(String projectLabel, String environmentLabel, String channelLabel) {
+        ContentProject project = ContentProjectFactory.lookupProjectByLabel(projectLabel).orElseThrow(() -> {
+            LOG.error("Project {} does not exist", projectLabel);
+            return new ContentManagementException("Project " + projectLabel + " does not exist");
+        });
+        ContentEnvironment currentEnv = ContentProjectFactory.lookupEnvironmentByLabelAndProject(
+                environmentLabel, project).orElseThrow(() -> {
+            LOG.error("Environment {} does not exist", environmentLabel);
+            return new ContentManagementException("Environment " + environmentLabel + " does not exist");
+        });
+        Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+        if (channel == null) {
+            LOG.error("Channel {} does not exist", channelLabel);
+            throw new ContentManagementException("Channel " + channelLabel + " does not exist");
         }
-        while(env.isPresent());
+        if (!channel.isCloned()) {
+            throw new ContentManagementException("Channel is not a cloned channel: %s"
+                    .formatted(channelLabel));
+        }
+
+        try {
+            DependencyResolver resolver = new DependencyResolver(project, this.modulemdApi);
+            DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
+
+            TimeUtils.logTime(LOG, "Creating diff for Channel " + channel,
+                    () -> diffEnvironmentChannel(project, currentEnv, channel, result.getFilters()));
+        }
+        catch (DependencyResolutionException e) {
+            throw new ContentManagementException(e);
+        }
     }
 
     /**
@@ -743,7 +780,10 @@ public class ContentManager {
                     throw new ContentManagementException("Channel is not a cloned channel: %s"
                             .formatted(channel.getLabel()));
                 }
+                long start = System.nanoTime();
                 diffEnvironmentChannel(project, currentEnv, channel, result.getFilters());
+                LOG.info("{} took {} seconds.", "Creating diff for Channel " + channel,
+                        (System.nanoTime() - start) / 1e9);
             }
         }
         catch (DependencyResolutionException e) {
@@ -770,6 +810,8 @@ public class ContentManager {
         Channel src = channel.getOriginal();
         List<PackageFilter> packageFilters = extractFiltersOfType(filters, PackageFilter.class);
         List<ErrataFilter> errataFilters = extractFiltersOfType(filters, ErrataFilter.class);
+
+        long startPackageDiff = System.nanoTime();
 
         Set<Package> oldTgtPackages = new HashSet<>(channel.getPackages());
         Pair<Set<Package>, Set<Package>> partPackages = filterEntities(src.getPackages(), packageFilters);
@@ -808,6 +850,9 @@ public class ContentManager {
                     }
             );
         }
+        long endPackageDiff = System.nanoTime();
+        LOG.info("{} took {} seconds.", "Package Diff", (endPackageDiff - startPackageDiff) / 1e9);
+        long startErrataDiff = System.nanoTime();
 
         Set<Errata> oldTgtErrata = new HashSet<>(channel.getErratas());
         Pair<Set<Errata>, Set<Errata>> partErrata = filterEntities(src.getErratas(), errataFilters);
@@ -849,13 +894,17 @@ public class ContentManager {
                     }
             );
         }
+        long endErrataDiff = System.nanoTime();
+        LOG.info("{} took {} seconds.", "Errata Diff", (endErrataDiff - startErrataDiff) / 1e9);
 
-        Map<Boolean, Map<Pair<Long, EntryType>, ContentEnvironmentDiff>> removeOrSave = diffMap.entrySet().stream()
-                .collect(partitioningBy(e -> keep.contains(e.getKey()),
-                        Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-        removeOrSave.get(false).values().forEach(ContentProjectFactory::remove);
+        TimeUtils.logTime(LOG, "Write diff map ", () -> {
+            Map<Boolean, Map<Pair<Long, EntryType>, ContentEnvironmentDiff>> removeOrSave = diffMap.entrySet().stream()
+                    .collect(partitioningBy(e -> keep.contains(e.getKey()),
+                            Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+            removeOrSave.get(false).values().forEach(ContentProjectFactory::remove);
 
-        removeOrSave.get(true).values().forEach(ContentProjectFactory::save);
+            removeOrSave.get(true).values().forEach(ContentProjectFactory::save);
+        });
     }
 
     // helper method to determine if given environment is BUILDING

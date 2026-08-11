@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,16 +10,19 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
+import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClmChannelDiff extends RhnJavaJob {
 
@@ -30,13 +33,34 @@ public class ClmChannelDiff extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContextIn) throws JobExecutionException {
-        ContentManager cm = new ContentManager();
+        WriteMode clmDiffInsert = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_CLMDIFF_INSERT_TASK);
+
         List<Org> orgs = OrgFactory.lookupAllOrgs();
+        int cntProjects = 0;
         for (Org org : orgs) {
             List<ContentProject> clmProjects = ContentProjectFactory.listProjects(org);
             for (ContentProject project : clmProjects) {
-                cm.diffProject(project);
+                String projectLabel = project.getLabel();
+                cntProjects++;
+                project.getEnvironmentsStream()
+                        .map(environment -> {
+                            String environmentLabel = environment.getLabel();
+
+                            return environment.getTargets().stream()
+                                    .flatMap(target -> target.asSoftwareTarget().stream())
+                                    .map(SoftwareEnvironmentTarget::getChannel)
+                                    .map(channel -> Map.<String, Object>of(
+                                            "project_label", projectLabel,
+                                            "environment_label", environmentLabel,
+                                            "channel_label", channel.getLabel()
+                                    ))
+                                    .toList();
+                        })
+                        .filter(parameterList -> !parameterList.isEmpty())
+                        .forEach(clmDiffInsert::executeUpdates);
             }
         }
+        log.info("Calculating differences for the environments of {} projects", cntProjects);
     }
 }

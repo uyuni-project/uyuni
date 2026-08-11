@@ -217,6 +217,7 @@ rhnActionSubChannelsList           :: rhnActionSubChannels rhnChannel
 rhnActionSubChannelsTokens         :: suseChannelAccessToken rhnActionSubChannels
 suseChannelAccessToken             :: suseMinionInfo
 suseChannelAccessTokenChannel      :: suseChannelAccessToken rhnChannel
+suseClmDiffQueue                   :: suseContentProject rhnChannel
 suseCoCoAttestationResult          :: suseServerCoCoAttestationReport
 suseContentProject                 :: web_customer
 suseContentProject_alters          :: suseContentEnvironment
