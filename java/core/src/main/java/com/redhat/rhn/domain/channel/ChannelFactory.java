@@ -2644,7 +2644,8 @@ public class ChannelFactory extends HibernateFactory {
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
         setValueIfNotNull(channel, modifyChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);
         setValueIfNotNull(channel, modifyChannelInfo.getSupportPolicy(), Channel::setSupportPolicy);
-        setValueIfNotNull(channel, modifyChannelInfo.getUpdateTag(), Channel::setUpdateTag);
+        // we also need to be able to change the update tag to NULL.
+        channel.setUpdateTag(modifyChannelInfo.getUpdateTag());
         setValueIfNotNull(channel, modifyChannelInfo.isInstallerUpdates(), Channel::setInstallerUpdates);
 
         if (null != modifyChannelInfo.getRepositoryInfo()) {

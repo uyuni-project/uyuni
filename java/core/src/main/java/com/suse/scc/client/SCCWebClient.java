@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
@@ -219,6 +220,13 @@ public class SCCWebClient implements SCCClient {
         List<ProductTreeEntry> list = getList("/suma/product_tree.json",
                 ProductTreeEntry.class);
         return writeCache(list, "product_tree");
+    }
+
+    @Override
+    public List<ChannelInfoDetailsJson> listHubChannels() throws SCCClientException {
+        List<ChannelInfoDetailsJson> list = getList("/suma/hub_channels",
+                ChannelInfoDetailsJson.class);
+        return writeCache(list, "hub_channels");
     }
 
     /**

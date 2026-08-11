@@ -21,11 +21,21 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.product.ProductType;
 import com.redhat.rhn.domain.product.ReleaseStage;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCFileClient;
@@ -44,11 +54,12 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Tests for {@link SCCClient} methods.
  */
-public class SCCClientTest  {
+public class SCCClientTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link com.suse.scc.client.SCCWebClient#listProducts()}.
@@ -304,5 +315,44 @@ public class SCCClientTest  {
                 "cpe:/o:suse:rancher:2.5.8", false, null, "",
                 List.of(), List.of(), List.of(), List.of(), ProductType.base, false);
         assertNull(product.getArch());
+    }
+
+    @Test
+    public void testCallHubChannels() throws Exception {
+        SCCEndpoints hubEP = new SCCEndpoints("abcd", new URI("http://peripheral1.example.com"));
+        String fqdn = "peripheral1.example.com";
+        HubFactory hubFactory = new HubFactory();
+
+        IssPeripheral peripheral = new IssPeripheral("peripheral1.example.com");
+        hubFactory.save(peripheral);
+
+        Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn("peripheral1.example.com");
+        assertTrue(issPeripheral.isPresent(), "Peripheral object not found");
+
+        HubSCCCredentials sccCredentials = CredentialsFactory.createHubSCCCredentials("U123", "not so secret", fqdn);
+        sccCredentials.setIssPeripheral(peripheral);
+        CredentialsFactory.storeCredentials(sccCredentials);
+
+        peripheral.setRootCa("----- BEGIN CA -----");
+        peripheral.setMirrorCredentials(sccCredentials);
+        hubFactory.save(peripheral);
+
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
+        childChannel.setParentChannel(baseChannel);
+        ChannelFactory.save(baseChannel);
+        ChannelFactory.save(childChannel);
+
+        IssPeripheralChannels pcBase = new IssPeripheralChannels(peripheral, baseChannel);
+        IssPeripheralChannels pcChild = new IssPeripheralChannels(peripheral, childChannel);
+        hubFactory.save(pcBase);
+        hubFactory.save(pcChild);
+
+        TestUtils.flushAndEvict(peripheral);
+
+        String s = hubEP.hubChannels(null, null, sccCredentials);
+        assertTrue(s.startsWith("[{\"label\""));
+        TestUtils.assertContains(s, baseChannel.getLabel());
+        TestUtils.assertContains(s, childChannel.getLabel());
     }
 }

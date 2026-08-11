@@ -1040,6 +1040,8 @@ public class ContentManager {
 
         // Sync GPG key info to target in case it's updated since last build
         syncGpgKeyInfo(newSource, tgt);
+        // Sync also the update tag. This should not change, but in case it does we have to promote it
+        tgt.setUpdateTag(newSource.getUpdateTag());
 
         return swTgt;
     }
