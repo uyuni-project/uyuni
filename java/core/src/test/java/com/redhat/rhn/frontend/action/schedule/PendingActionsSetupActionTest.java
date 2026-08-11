@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.action.schedule;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
@@ -64,7 +64,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
         Server server = ServerFactoryTest.createTestServer(user);
 
-        Action act = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action act = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         ServerAction sAction = ActionFactoryTest.createServerAction(server, act);
         sAction.setStatusQueued();
         TestUtils.saveAndFlush(sAction); //reassign variable if still needed

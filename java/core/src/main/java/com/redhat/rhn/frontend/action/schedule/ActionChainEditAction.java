@@ -24,6 +24,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -177,7 +178,7 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
             DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
 
         Set<Long> systemsWithMaintAwareAction = actionChain.getEntries().stream()
-                .filter(e -> e.getAction().getActionType().isMaintenancemodeOnly())
+                .filter(e -> e.getAction().getActionType().isMaintenanceModeOnly())
                 .map(e -> e.getServer().getId())
                 .collect(Collectors.toSet());
 
@@ -191,5 +192,10 @@ public class ActionChainEditAction extends RhnAction implements MaintenanceWindo
     @Override
     public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
         MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+    }
+
+    @Override
+    public ActionTypeEnum referenceMaintenanceWindowsType() {
+        return null;
     }
 }

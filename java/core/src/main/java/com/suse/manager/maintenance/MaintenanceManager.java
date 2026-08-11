@@ -647,7 +647,7 @@ public class MaintenanceManager {
 
         // we only take maintenance-mode-only actions and actions that don't have prerequisite
         // (first actions in action chains) into account
-        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
+        if (action.getActionType().isMaintenanceModeOnly() && action.getPrerequisite() == null) {
 
             // Special Cases
             if (action.canBeScheduledAnyway()) {
@@ -725,13 +725,13 @@ public class MaintenanceManager {
                     // skip actions not first in a chain
                     return false;
                 }
-                if (a.getActionType().isMaintenancemodeOnly()) {
+                if (a.getActionType().isMaintenanceModeOnly()) {
                     // test them, when they require maintenance mode
                     return true;
                 }
                 // check actions where a depended on action in the chain requires maintenance mode
                 return ActionFactory.lookupDependentActions(a)
-                        .anyMatch(da -> da.getActionType().isMaintenancemodeOnly());
+                        .anyMatch(da -> da.getActionType().isMaintenanceModeOnly());
             })
             .filter(Opt.fold(calendarOpt,
                     () -> (sa -> true),

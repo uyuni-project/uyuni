@@ -18,6 +18,8 @@ package com.redhat.rhn.taskomatic.task.matcher;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
@@ -58,8 +60,10 @@ public class MatcherJob extends RhnJavaJob {
         // Wait on running actions scheduled by the gatherer jobs
         Instant i = Instant.now().plus(60, ChronoUnit.SECONDS);
         do {
-            List<ServerAction> pending = ActionFactory.listPendingServerActionsByTypes(
-                    List.of(ActionFactory.TYPE_VIRT_PROFILE_REFRESH));
+            List<ActionType> types = List.of(
+                    ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH));
+
+            List<ServerAction> pending = ActionFactory.listPendingServerActionsByTypes(types);
             if (pending.isEmpty()) {
                 break;
             }

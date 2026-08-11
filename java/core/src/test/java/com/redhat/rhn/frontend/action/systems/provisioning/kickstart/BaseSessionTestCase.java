@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.action.systems.provisioning.kickstart;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -51,8 +51,7 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID,
                 s.getId().toString());
 
-        Action a = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action a = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_KICKSTART_INITIATE);
         sess.setAction(a);
 
         sess = KickstartSessionTest.addHistory(sess);
