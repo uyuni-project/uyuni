@@ -18,12 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
@@ -31,8 +33,12 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -47,6 +53,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -98,6 +105,78 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         catch (LookupException e) {
             // expected
         }
+    }
+
+    /**
+     * Deleting a config channel that is assigned at the front of an ordered config-channel list
+     * must renumber (compact) the surviving channels so no position gap is left behind. This is
+     * checked for every kind of owner in a single delete: a server (rhnServerConfigChannel) and
+     * an activation key
+     */
+    @Test
+    public void testDeletingAssignedChannelCompactsPositions() throws Exception {
+        ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannelSaltManagerTestUtils.addFileToChannel(channel1);
+        ConfigurationManager.getInstance().save(channel1, empty());
+        ConfigChannel channel2 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannelSaltManagerTestUtils.addFileToChannel(channel2);
+        ConfigurationManager.getInstance().save(channel2, empty());
+
+        // subscribe both channels, in the same order, to a server and to an activation key
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setConfigChannels(Arrays.asList(channel1, channel2), user);
+        ServerFactory.save(server);
+
+        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(user, "bsc1272988");
+        ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
+        proc.add(key.getConfigChannelsFor(user), channel1);
+        proc.add(key.getConfigChannelsFor(user), channel2);
+        ActivationKeyFactory.save(key);
+
+        Long serverId = server.getId();
+        Long tokenId = key.getToken().getId();
+        Long channel1Id = channel1.getId();
+        Long channel2Id = channel2.getId();
+        TestUtils.flushSession();
+        TestUtils.clearSession();
+
+        // both ordered lists start as [channel1@1, channel2@2]
+        assertEquals(1, positionOf("rhnServerConfigChannel", "server_id", serverId, channel1Id));
+        assertEquals(2, positionOf("rhnServerConfigChannel", "server_id", serverId, channel2Id));
+        assertEquals(1, positionOf("rhnRegTokenConfigChannels", "token_id", tokenId, channel1Id));
+        assertEquals(2, positionOf("rhnRegTokenConfigChannels", "token_id", tokenId, channel2Id));
+
+        // a single delete of the front channel must renumber the survivor in EVERY referencing
+        // list, not leave it stranded at position 2 (which reconstructs as [null, channel2])
+        ConfigurationManager.getInstance().deleteConfigChannel(user, channel1);
+        TestUtils.flushSession();
+        TestUtils.clearSession();
+
+        assertEquals(1, positionOf("rhnServerConfigChannel", "server_id", serverId, channel2Id),
+                "Surviving channel on the server must be renumbered to position 1");
+        assertEquals(1, positionOf("rhnRegTokenConfigChannels", "token_id", tokenId, channel2Id),
+                "Surviving channel on the activation key must be renumbered to position 1 ");
+
+        // and the reconstructed server list must be exactly [channel2] with no null hole
+        Server reloaded = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
+        List<ConfigChannel> channels = reloaded.getConfigChannelList();
+        assertFalse(channels.contains(null), "Reconstructed list must not contain a null hole");
+        assertEquals(List.of(channel2Id),
+                channels.stream().map(ConfigChannel::getId).toList());
+    }
+
+    /**
+     * Read the raw position of a config channel in an ordered join table, bypassing the Hibernate
+     * load path (which strips nulls) so gaps are visible.
+     */
+    private int positionOf(String table, String ownerColumn, Long ownerId, Long channelId) {
+        return ((Number) HibernateFactory.getSession().createNativeQuery(
+                "SELECT position FROM " + table +
+                        " WHERE " + ownerColumn + " = :oid AND config_channel_id = :cid")
+                .setParameter("oid", ownerId)
+                .setParameter("cid", channelId)
+                .getSingleResult()).intValue();
     }
 
     @Test
