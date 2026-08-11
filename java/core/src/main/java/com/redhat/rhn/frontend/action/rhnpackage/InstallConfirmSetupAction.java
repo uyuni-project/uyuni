@@ -92,7 +92,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     }
 
     @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
+    public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         return ActionTypeEnum.TYPE_PACKAGES_UPDATE;
     }
 }

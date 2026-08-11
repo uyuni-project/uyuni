@@ -21,12 +21,12 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 /**
  * GlobalRevisionDeploySetup
  */
-public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements MaintenanceWindowsAware {
+public class GlobalRevisionDeployConfirmSetup extends BaseListAction {
 
     /**
      * {@inheritDoc}
@@ -74,7 +74,8 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
         Set<Long> systemIds = getSystemIds(ctxt);
-        populateMaintenanceWindows(ctxt.getRequest(), systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(ctxt.getRequest(), systemIds,
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 
@@ -82,10 +83,5 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
         return RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS.get(ctxt.getCurrentUser()).getElements().stream()
                 .map(RhnSetElement::getElement)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
     }
 }

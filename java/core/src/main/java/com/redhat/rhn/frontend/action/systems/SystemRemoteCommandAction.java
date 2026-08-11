@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -58,7 +58,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Bo Maryniuk {@literal <bo@suse.de>}
  */
-public class SystemRemoteCommandAction extends RhnAction implements MaintenanceWindowsAware {
+public class SystemRemoteCommandAction extends RhnAction {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SystemRemoteCommandAction.class);
 
@@ -347,7 +347,8 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
         // End the page
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
-        populateMaintenanceWindows(request, Set.of(server.getId()));
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, Set.of(server.getId()),
+                ActionTypeEnum.TYPE_SCRIPT_RUN);
         ActionChainHelper.prepopulateActionChains(request);
         request.setAttribute("system", server);
 
@@ -360,10 +361,5 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 RequestContext.SID, server.getId().toString()
                 );
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_SCRIPT_RUN;
     }
 }

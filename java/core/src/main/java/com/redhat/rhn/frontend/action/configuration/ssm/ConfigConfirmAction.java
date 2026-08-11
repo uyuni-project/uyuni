@@ -18,11 +18,11 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * DiffConfirmAction
  */
-public class ConfigConfirmAction extends BaseListAction implements MaintenanceWindowsAware {
+public class ConfigConfirmAction extends BaseListAction {
 
     /**
      * {@inheritDoc}
@@ -83,13 +83,10 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
                 .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
 
-        populateMaintenanceWindows(ctxt.getRequest(), systems);
-        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
         // we only handle 'deploy' actions here. for 'diff' actions, we early return at the beginning of processForm
-        return ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY;
+        MaintenanceWindowHelper.populateMaintenanceWindows(ctxt.getRequest(), systems,
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
+
+        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 }

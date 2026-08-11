@@ -29,7 +29,7 @@ public class ImportFileConfirmAction extends FileListConfirmSetupAction {
     }
 
     @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
+    public ActionTypeEnum getReferenceMaintenanceWindowsType() {
         // no-op
         return null;
     }

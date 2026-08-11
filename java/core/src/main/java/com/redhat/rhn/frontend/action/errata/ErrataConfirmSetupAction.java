@@ -19,11 +19,11 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -43,7 +43,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * ErrataConfirmSetupAction
  */
-public class ErrataConfirmSetupAction extends RhnListAction implements MaintenanceWindowsAware {
+public class ErrataConfirmSetupAction extends RhnListAction {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -66,7 +66,7 @@ public class ErrataConfirmSetupAction extends RhnListAction implements Maintenan
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request,
                 (DynaActionForm)formIn, "date", DatePicker.YEAR_RANGE_POSITIVE);
 
-        populateMaintenanceWindows(request, getSystemIds(dr));
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, getSystemIds(dr), ActionTypeEnum.TYPE_ERRATA);
 
         //Setup the Action Chain widget
         ActionChainHelper.prepopulateActionChains(request);
@@ -82,10 +82,5 @@ public class ErrataConfirmSetupAction extends RhnListAction implements Maintenan
         return dr.stream()
                 .map(SystemOverview::getId)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public ActionTypeEnum referenceMaintenanceWindowsType() {
-        return ActionTypeEnum.TYPE_ERRATA;
     }
 }
