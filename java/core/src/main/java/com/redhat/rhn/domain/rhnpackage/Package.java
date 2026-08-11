@@ -140,7 +140,7 @@ public class Package extends BaseDomainHelper {
     @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageFile> packageFiles = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "checksum_id")
     private Checksum checksum;
 
