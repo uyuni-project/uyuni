@@ -158,7 +158,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
             setSectionsExpanded={this.props.setSectionsExpanded}
             formulaForm={this.props.formulaForm}
           />
-          <div className={`form-group ${!isPrimitiveGroup ? "form-add-button" : ""}`}>
+          <div className={`row ${!isPrimitiveGroup ? "form-add-button" : ""}`}>
             <div className="col-lg-3 "></div>
             <div className="col-lg-9 ">
               {isPrimitiveGroup && <hr className="mt-1 mb-3" />}
@@ -240,7 +240,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       };
 
       elements.push(
-        <div className="form-group formula-primitive-group-item" id={id} key={id}>
+        <div className="row formula-primitive-group-item" id={id} key={id}>
           <div className="formula-primitive-group-item-content">
             {generateFormulaComponentForId(
               this.props.element.$prototype,
