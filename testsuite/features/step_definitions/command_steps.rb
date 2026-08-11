@@ -1859,7 +1859,7 @@ end
 When(/^I stop the health check tool on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run('mgr-health-check stop', check_errors: false, verbose: true)
-  node.run('podman rm -f health_check_loki health_check_promtail health_check_supportconfig_exporter health-check-grafana', check_errors: false)
+  node.run("podman rm -f #{HEALTH_CHECK_CONTAINERS.join(' ')}", check_errors: false)
   node.run('podman network rm -f health-check-network', check_errors: false)
 end
 
@@ -1947,7 +1947,20 @@ end
 
 Then(/^the health check tool (should be|should not be) running on "([^"]*)"$/) do |action, host|
   node = get_target(host)
-  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'should be' ? '4' : '0'}", check_errors: true, verbose: true)
+  expected = action == 'should be' ? HEALTH_CHECK_CONTAINERS : []
+  running, _code = node.run('podman ps --format "{{.Names}}"', check_errors: true, verbose: true)
+  running_containers = running.lines.map(&:strip).grep(/^health[-_]check/)
+  missing = expected - running_containers
+  unexpected = running_containers - expected
+  next if missing.empty? && unexpected.empty?
+
+  problems = []
+  problems << "not running: #{missing.join(', ')}" unless missing.empty?
+  problems << "unexpectedly running: #{unexpected.join(', ')}" unless unexpected.empty?
+  output, _code = node.run('podman ps -a --format "{{.Names}} {{.Status}}"', check_errors: true)
+  containers = output.lines.map(&:strip).grep(/^health[-_]check/)
+  statuses = containers.empty? ? 'no health check containers found' : containers.join("\n")
+  raise "Health check containers #{problems.join('; ')}\n#{statuses}"
 end
 
 Then(/^podman container "([^"]*)" should be (running|healthy) on "([^"]*)"$/) do |container, state, host|
