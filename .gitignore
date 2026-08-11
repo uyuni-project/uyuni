@@ -115,3 +115,10 @@ schema/reportdb/postgres/views/common/
 
 # Charts
 .debug
+
+# Claude Code session files
+.claude/
+.mcp.json
+
+# Graphify output
+graphify-out/
