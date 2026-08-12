@@ -33,7 +33,6 @@ declare global {
     timezone?: any;
     localTime?: any;
     isRuntimeInfoEnabled?: any;
-    osImageStoreUrl?: string;
   }
 }
 
@@ -716,14 +715,6 @@ class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
             }}
           />
         </Table>
-        {window.osImageStoreUrl && (
-          <div>
-            <a href={window.osImageStoreUrl} target="_blank" rel="noopener noreferrer">
-              <i className="fa fa-folder-open" />
-              Go to OS image directory listing
-            </a>
-          </div>
-        )}
         <DeleteDialog
           id="delete-modal"
           title={t("Delete Image")}
