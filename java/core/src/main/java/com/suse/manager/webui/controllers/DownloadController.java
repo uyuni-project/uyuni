@@ -482,6 +482,12 @@ public class DownloadController {
         // See https://bugzilla.suse.com/show_bug.cgi?id=972158
         // https://github.com/perwendel/spark/issues/490
         String channel = request.params(":channel");
+
+        // Log for diagnosis of sitemesh vs non-sitemesh behavior
+        LOG.info("[DOWNLOAD-ENTRY] URL={} QueryString={} Channel={} HasQueryParams={}",
+                request.url(), request.queryString(), channel, !request.queryParams().isEmpty());
+        dumpSparkRequest(request, "[DOWNLOAD-ENTRY-SPARK]");
+
         return downloadPackage(request, response, channel);
     }
 
@@ -499,6 +505,9 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
+        LOG.info("[DOWNLOAD-VARS] Channel={} Basename={} QueryParams={}",
+                channel, basename, request.queryString());
+
         validatePaygCompliant();
 
         processToken(request, channel, basename);
@@ -576,6 +585,11 @@ public class DownloadController {
     @SuppressWarnings({"javasecurity:S5145"}) // controlled by log level
     private String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
+        LOG.info("[TOKEN-EXTRACT] QueryParamCount={} HasXMgrAuth={} HasAuthorization={}",
+                queryParams.size(),
+                StringUtils.isNotBlank(request.headers("X-Mgr-Auth")),
+                StringUtils.isNotBlank(request.headers("Authorization")));
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("URL: {}", request.url());
             LOG.debug("Query Params: {}", request.queryString());
@@ -596,12 +610,16 @@ public class DownloadController {
             LOG.info("Bad Request: Only one token is accepted");
             halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
         }
+        String result;
         if (!queryParams.isEmpty()) {
-            return queryParams.iterator().next();
+            result = queryParams.iterator().next();
+            LOG.info("[TOKEN-SOURCE] Extracted from query params");
         }
         else {
-            return header;
+            result = header;
+            LOG.info("[TOKEN-SOURCE] Extracted from header");
         }
+        return result;
     }
 
     /**
@@ -660,6 +678,9 @@ public class DownloadController {
 
             // enforce channel claim
             List<String> onlyChannels = parsedToken.getListClaim("onlyChannels", String.class);
+            LOG.info("[TOKEN-CLAIMS] Channel={} OnlyChannels={}", channel,
+                    CollectionUtils.isEmpty(onlyChannels) ? "<empty>" : String.join(",", onlyChannels));
+
             if (CollectionUtils.isEmpty(onlyChannels)) {
                 LOG.info("Token ...{} does not provide access to any channel", () -> sanitizeToken(token));
             }
@@ -672,14 +693,21 @@ public class DownloadController {
 
             // enforce org claim
             Long orgId = parsedToken.getClaim("org", Long.class);
+            LOG.info("[TOKEN-ORG] OrgId={} Channel={}", orgId, channel);
+
             if (orgId == null) {
                 LOG.info("Forbidden: Token does not specify the organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }
-            else if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                String sanitChannel = StringUtil.sanitizeLogInput(channel);
-                LOG.info("Forbidden: Token does not provide access to channel {}", sanitChannel);
-                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(sanitChannel));
+            else {
+                boolean isAccessible = ChannelFactory.isAccessibleBy(channel, orgId);
+                LOG.info("[CHANNEL-ACCESS] Channel={} OrgId={} Accessible={}", channel, orgId, isAccessible);
+
+                if (!isAccessible) {
+                    String sanitized = StringUtil.sanitizeLogInput(channel);
+                    LOG.info("Forbidden: Token does not provide access to channel {}", sanitized);
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(sanitized));
+                }
             }
         }
         catch (TokenParsingException e) {
@@ -773,6 +801,44 @@ public class DownloadController {
         }
         catch (NumberFormatException e) {
             return Optional.ofNullable(request.params(":sccrepoid"));
+        }
+    }
+
+    /**
+     * Dump full Spark request details for reproduction/debugging
+     */
+    private void dumpSparkRequest(Request request, String prefix) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n").append(prefix).append(" SPARK REQUEST DUMP\n");
+            sb.append("URL: ").append(request.url()).append("\n");
+            sb.append("PathInfo: ").append(request.pathInfo()).append("\n");
+            sb.append("QueryString: ").append(request.queryString()).append("\n");
+            sb.append("RequestMethod: ").append(request.requestMethod()).append("\n");
+            sb.append("ContentType: ").append(request.contentType()).append("\n");
+            sb.append("ContentLength: ").append(request.contentLength()).append("\n");
+
+            sb.append("Headers:\n");
+            for (String header : request.headers()) {
+                String value = request.headers(header);
+                sb.append("  ").append(header).append(": ").append(value).append("\n");
+            }
+
+            sb.append("Query Parameters:\n");
+            for (String param : request.queryParams()) {
+                String value = request.queryParams(param);
+                sb.append("  ").append(param).append(" = ").append(value).append("\n");
+            }
+
+            sb.append("Params (path params):\n");
+            for (String param : request.params().keySet()) {
+                sb.append("  ").append(param).append(" = ").append(request.params(param)).append("\n");
+            }
+
+            LOG.info(sb.toString());
+        }
+        catch (Exception e) {
+            LOG.warn("Error dumping Spark request", e);
         }
     }
 }
