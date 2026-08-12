@@ -1939,3 +1939,11 @@ UYUNI_MAIN_REPO_URL_BYPASS = {
   'ubuntu-2404-amd64-uyuni-client-devel' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/xUbuntu_24.04-debbuild/',
   'uyuni-proxy-devel-tumbleweed-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/'
 }.freeze
+
+# Containers started by the health check tool, as named in its config.toml
+HEALTH_CHECK_CONTAINERS = %w[
+  health_check_loki
+  health_check_promtail
+  health_check_supportconfig_exporter
+  health-check-grafana
+].freeze
