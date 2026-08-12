@@ -49,14 +49,6 @@
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
-%if 0%{?suse_version} >= 1600
-%define scram_client_jar scram-client
-%define scram_common_jar scram-common
-%else
-%define scram_client_jar client
-%define scram_common_jar common
-%endif
-
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
 %else
@@ -400,11 +392,6 @@ This package contains the Java version of taskomatic.
 %prep
 %setup -q
 
-%if 0%{?suse_version} >= 1600
-%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="client"]' 'scram-client' core/pom.xml
-%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="common"]' 'scram-common' core/pom.xml
-%endif
-
 %if 0%{?fedora}
 %define skip_xliff  1
 %endif
@@ -594,29 +581,29 @@ install -m 644 conf/cobbler/snippets/root_ca %{buildroot}%{spacewalksnippetsdir}
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
-ln -s -f %{_javadir}/ongres-scram/%{scram_client_jar}.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_client_jar}.jar
-ln -s -f %{_javadir}/ongres-scram/%{scram_common_jar}.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_common_jar}.jar
+ln -s -f %{_javadir}/ongres-scram/scram-client.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_scram-client.jar
+ln -s -f %{_javadir}/ongres-scram/scram-common.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_scram-common.jar
 
 # write an include file for the filelist
 if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
     ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
     ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
     echo "
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_client_jar}.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_common_jar}.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_scram-client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_scram-common.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
-%{_datadir}/rhn/search/lib/ongres-scram_%{scram_client_jar}.jar
-%{_datadir}/rhn/search/lib/ongres-scram_%{scram_common_jar}.jar
+%{_datadir}/rhn/search/lib/ongres-scram_scram-client.jar
+%{_datadir}/rhn/search/lib/ongres-scram_scram-common.jar
 %{_datadir}/rhn/search/lib/ongres-stringprep_stringprep.jar
 %{_datadir}/rhn/search/lib/ongres-stringprep_saslprep.jar
     " > .mfiles-postgresql
 else
     echo "
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_client_jar}.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_common_jar}.jar
-%{_datadir}/rhn/search/lib/ongres-scram_%{scram_client_jar}.jar
-%{_datadir}/rhn/search/lib/ongres-scram_%{scram_common_jar}.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_scram-client.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_scram-common.jar
+%{_datadir}/rhn/search/lib/ongres-scram_scram-client.jar
+%{_datadir}/rhn/search/lib/ongres-scram_scram-common.jar
     " > .mfiles-postgresql
 fi
 

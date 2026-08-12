@@ -152,10 +152,10 @@ artifacts:
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Uyuni
-  - artifact: client
+  - artifact: scram-client
     package: ongres-scram-client
     repository: Leap
-  - artifact: common
+  - artifact: scram-common
     package: ongres-scram
     repository: Leap
   - artifact: stringprep
