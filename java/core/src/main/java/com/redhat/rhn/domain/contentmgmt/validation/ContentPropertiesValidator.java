@@ -19,10 +19,12 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
+import com.redhat.rhn.manager.contentmgmt.ContentManagementUtils;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 /**
@@ -146,5 +148,27 @@ public class ContentPropertiesValidator {
     public static boolean isLabelValid(String label) {
         return Pattern.compile(CreateChannelCommand.CHANNEL_LABEL_REGEX).matcher(label).find() &&
                 Pattern.compile(CreateChannelCommand.CHANNEL_NAME_REGEX).matcher(label).find();
+    }
+
+    /**
+     * Validate an issue_date and build_date filter value.
+     *
+     * @param field the filter field
+     * @param value the filter value
+     */
+    public static void validateDateCriteria(String field, String value) throws ValidatorException {
+
+        if (!ContentManagementUtils.isDateCriteria(field, value)) {
+            return;
+        }
+
+        try {
+            ContentManagementUtils.parseDateCriteria(value);
+        }
+        catch (DateTimeParseException e) {
+            ValidatorResult result = new ValidatorResult();
+            result.addFieldError(field, "contentmanagement.invalid_issue_date");
+            throw new ValidatorException(result);
+        }
     }
 }

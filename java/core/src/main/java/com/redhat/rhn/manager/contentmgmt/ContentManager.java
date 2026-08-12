@@ -521,6 +521,9 @@ public class ContentManager {
         });
 
         ContentPropertiesValidator.validateFilterProperties(name);
+        ContentPropertiesValidator.validateDateCriteria(
+        criteria.getField(),
+        criteria.getValue());
 
         if (ContentFilter.EntityType.MODULE.equals(entityType) && ContentFilter.Rule.DENY.equals(rule)) {
             // DENY rule is not applicable for module filters
@@ -546,6 +549,11 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(id));
 
         ContentPropertiesValidator.validateFilterProperties(name.orElse(filter.getName()));
+        if (criteria.isPresent()) {
+            ContentPropertiesValidator.validateDateCriteria(
+                criteria.get().getField(),
+                criteria.get().getValue());
+        }
 
         return ContentProjectFactory.updateFilter(filter, name, rule, criteria);
     }

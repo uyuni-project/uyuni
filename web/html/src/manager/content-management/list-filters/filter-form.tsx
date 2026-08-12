@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import { localizedMoment } from "utils";
 import produce from "utils/produce";
@@ -69,9 +70,12 @@ const FilterForm = (props: Props) => {
     >
       <Fragment>
         {props.editing && (
-          <div className="alert alert-info" style={{ marginTop: "0px" }}>
-            {t("Bear in mind that all the associated projects need to be rebuilt after a filter update")}
-          </div>
+          <Messages
+            key="filter-editing-messages"
+            items={MessagesUtils.info(
+              t("Bear in mind that all the associated projects need to be rebuilt after a filter update")
+            )}
+          />
         )}
         {filterBy === FilterBy.Type ? (
           <Text
@@ -201,13 +205,28 @@ const FilterForm = (props: Props) => {
             )}
 
             {clmFilterOptions.ISSUE_DATE.key === filterType && (
-              <DateTime
-                name={clmFilterOptions.ISSUE_DATE.key}
-                label={t("Issued")}
-                labelClass="col-md-3"
-                divClass="col-md-8"
-                required
-              />
+              <>
+                {filter.hasInvalidDateFormat && (
+                  <div className="col-md-8 col-md-offset-3 offset-md-3">
+                    <Messages
+                      key="filter-issue-date-messages"
+                      items={MessagesUtils.warning(
+                        t(
+                          "The stored issue date is in an invalid format. Please select a valid date and save the filter."
+                        )
+                      )}
+                    />
+                  </div>
+                )}
+
+                <DateTime
+                  name={clmFilterOptions.ISSUE_DATE.key}
+                  label={t("Issued")}
+                  labelClass="col-md-3"
+                  divClass="col-md-8"
+                  required
+                />
+              </>
             )}
 
             {clmFilterOptions.PACKAGE_BUILD_DATE.key === filterType && (
