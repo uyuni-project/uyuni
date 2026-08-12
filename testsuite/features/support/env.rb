@@ -172,10 +172,17 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      # web_session_is_active? can raise if the session went stale after a long step.
+      # web_session_is_active? can raise or hang if the Playwright pipe was corrupted mid-call
+      # (e.g. by Timeout.timeout firing inside repeat_until_timeout). The 10s backstop ensures
+      # the After hook doesn't wait 36+ minutes for the watchdog when the connection is already dead.
       session_active =
         begin
-          web_session_is_active?
+          Timeout.timeout(10) { web_session_is_active? }
+        rescue Timeout::Error
+          warn 'After: Playwright connection hung during session check — triggering emergency browser kill'
+          unblock_wedged_browser
+          $watchdog_run_aborted = true
+          false
         rescue StandardError => e
           log "Web session went stale when checking for active session: #{e.message}"
           false
