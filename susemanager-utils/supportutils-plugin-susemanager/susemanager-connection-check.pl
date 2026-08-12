@@ -3,7 +3,6 @@ use strict;
 use XML::Simple;
 use IPC::Open3 ();
 use List::Util qw(min);
-use File::Temp qw(tempfile);
 
 my $apachemax = 0;
 
@@ -53,10 +52,10 @@ sub run_query {
 
 
 sub get_apache_max_request_workers {
-    my $server_flags = "-DSYSCONFIG";
+    my @server_flags = ("-DSYSCONFIG");
     my $mpm = "prefork"; # default MPM
 
-    # 1. Read APACHE_SERVER_FLAGS and APACHE_MPM
+    # Read APACHE_SERVER_FLAGS and APACHE_MPM
     if (open(my $fh, '<', '/etc/sysconfig/apache2')) {
         while (<$fh>) {
             if (/^\s*APACHE_SERVER_FLAGS\s*=$VALUE_REGEXP/) {
@@ -65,9 +64,9 @@ sub get_apache_max_request_workers {
                 foreach my $flag (split(/\s+/, $flags)) {
                     next unless $flag;
                     if ($flag =~ /^-D/) {
-                        $server_flags .= " $flag";
+                        push @server_flags, $flag;
                     } else {
-                        $server_flags .= " -D$flag";
+                        push @server_flags, "-D$flag";
                     }
                 }
             }
@@ -79,42 +78,38 @@ sub get_apache_max_request_workers {
         close($fh);
     }
 
-    # 2. Determine binary based on active MPM
+    # Determine binary based on active MPM
     my $apache_bin = "/usr/sbin/httpd";
     if (-x "/usr/sbin/httpd-$mpm") {
         $apache_bin = "/usr/sbin/httpd-$mpm";
     }
 
-    # 3. Create temp file to load mod_info
-    my ($tfh, $tfilename) = tempfile();
     my $mod_path = "/usr/lib64/apache2-$mpm/mod_info.so";
     $mod_path = "/usr/lib64/apache2/mod_info.so" unless -e $mod_path;
-    print $tfh "LoadModule info_module $mod_path\n";
-    close $tfh;
 
-    # 4. Construct and execute the direct binary call
-    my $cmd = "$apache_bin $server_flags " .
-              "-C 'Include /etc/apache2/sysconfig.d/loadmodule.conf' " .
-              "-C 'Include /etc/apache2/sysconfig.d/global.conf' " .
-              "-f /etc/apache2/httpd.conf " .
-              "-c 'Include /etc/apache2/sysconfig.d/include.conf' " .
-              "-c 'Include $tfilename' " .
-              "-D DUMP_CONFIG 2>&1";
+    # Construct and execute the direct binary call
+    my @cmd = ($apache_bin,
+        @server_flags,
+        '-C', 'Include /etc/apache2/sysconfig.d/loadmodule.conf',
+        '-C', 'Include /etc/apache2/sysconfig.d/global.conf',
+        '-f', '/etc/apache2/httpd.conf',
+        '-c', 'Include /etc/apache2/sysconfig.d/include.conf',
+        '-c', "LoadModule info_module $mod_path",
+        '-D', 'DUMP_CONFIG');
 
     my $max_clients = 0;
-    if (open(my $out, '-|', $cmd)) {
-        while (<$out>) {
-            if (/^\s*(?:MaxRequestWorkers|MaxClients)\s+(\d+)/i) {
-                $max_clients = int($1);
-            }
+    my $out;
+    my $pid = IPC::Open3::open3(undef, $out, '>', @cmd);
+    while (my $line = <$out>) {
+        if ($line =~ /^\s*(?:MaxRequestWorkers|MaxClients)\s+(\d+)/i) {
+            $max_clients = int($1);
         }
-        close($out);
     }
-
-    unlink $tfilename;
+    waitpid( $pid, 0);
 
     # Fallback to static parsing if dynamic extraction failed
     if ($max_clients == 0) {
+        print STDERR "WARN: Unable to check Apache variables, trying conf files directly\n";
         if (open(my $sfh, "<", "/etc/apache2/server-tuning.conf")) {
             my $in_active_mpm_section = 0;
             while (<$sfh>) {
@@ -154,11 +149,11 @@ foreach my $con (@{$ref->{'Service'}->{'Connector'}})
 my $hardmax = $tomcatmax + $acceptCount;
 
 if( $apachemax < $tomcatmax ) {
-    print STDERR "\nERROR: Apache allows fewer connections ($apachemax) than Tomcat does ($tomcatmax). Please align the values.\n";
+    print STDERR "ERROR: Apache allows fewer connections ($apachemax) than Tomcat does ($tomcatmax). Please align the values.\n";
 }
 elsif( $apachemax > $hardmax ) {
     # 100 is the default acceptCount value for tomcat. Meaning tomcat accepts up to acceptCount in a TCP queue, see $acceptCount.
-    print STDERR "\nERROR: Apache allows significantly more connections ($apachemax) than Tomcat ($tomcatmax). Please align the values.\n";
+    print STDERR "ERROR: Apache allows significantly more connections ($apachemax) than Tomcat ($tomcatmax). Please align the values.\n";
 }
 else {
     print "Apache connections: $apachemax\nTomcat connections: $tomcatmax\n";
