@@ -5,6 +5,7 @@
     "ms-python.python",
     "ms-python.vscode-pylance",
     "CucumberOpen.cucumber-official",
+    "shopify.ruby-lsp",
     "peterevans.perl",
     "ms-vscode.shellcheck",
     "ms-ossdata.vscode-postgresql",

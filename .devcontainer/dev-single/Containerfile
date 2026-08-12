@@ -10,7 +10,7 @@ RUN zypper -n addrepo --no-gpgcheck "https://download.opensuse.org/repositories/
     zypper -n install gawk bash-completion curl expect git iputils make man neovim openssh rsync sudo tar vim wget \
                 intltool cpio java-17-openjdk-devel \
                 nodejs22 npm22 \
-                rpmlint ruby \
+                rpmlint ruby ruby-devel \
                 ant ant-junit ant-junit5 apache-ivy maven servletapi5 \
                 python3 python3-pip python3-PyYAML python3-setuptools \
                 obs-to-maven mgradm mgrctl && \
