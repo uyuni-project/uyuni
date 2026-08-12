@@ -260,10 +260,6 @@
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
         </dependency>
-        <dependency>
-            <groupId>suse</groupId>
-            <artifactId>simple-core</artifactId>
-        </dependency>
 
         <!-- Runtime Dependencies -->
         <dependency>
