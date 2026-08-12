@@ -7,6 +7,8 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import { type PermissionType, AccessModeByPermissionType } from "./access-mode";
+
 type Props = {
   state: any;
   onChange?: () => void;
@@ -18,8 +20,8 @@ const AccessGroupReview = (props: Props) => {
   const [expandCollapseAll, setExpandCollapseAll] = useState(true);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
-  const isItemDisabled = useCallback((item, type) => {
-    const requiredAccessMode = type === "view" ? "R" : "W";
+  const isItemDisabled = useCallback((item, type: PermissionType) => {
+    const requiredAccessMode = AccessModeByPermissionType[type];
 
     if (!item.children || item.children.length === 0) {
       return !item.accessMode.includes(requiredAccessMode);
