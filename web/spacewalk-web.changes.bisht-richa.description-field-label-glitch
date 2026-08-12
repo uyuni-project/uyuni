@@ -1,0 +1,2 @@
+- Fix duplicate remaining characters label in the Create Custom
+  Info Key description field. (bsc#1269679)

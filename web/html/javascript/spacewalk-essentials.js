@@ -394,23 +394,29 @@ jQuery(document).on('keyup change', '.activationKey-check', function(e) {
 
 function addTextareaLengthNotification() {
   // Add a notification text of the remaining length for a textarea
-  jQuery('textarea.with-maxlength').each(function() {
-    const textareaId = jQuery(this).attr('id');
-    jQuery(this).after(
-      jQuery('<div/>')
-        .attr("id", "newDiv1")
-        .addClass("remaining-length-wrapper text-right")
-        .html(
-          jQuery('<span/>')
-            .html([
-              jQuery('<span/>')
-              .attr("id", textareaId + '-remaining-length')
-              .text(jQuery(this).attr('maxlength') - jQuery(this).val().length)
-              , jQuery('<span/>').text(' ' + t('remaining'))
-            ])
-        )
+  jQuery('textarea.with-maxlength').each(function () {
+    const textarea = jQuery(this);
+    const textareaId = textarea.attr('id');
+
+    if (textarea.next('.remaining-length-wrapper').length) {
+        return;
+    }
+
+    textarea.after(
+        jQuery('<div/>')
+            .attr('id', textareaId + '-remaining-wrapper')
+            .addClass('remaining-length-wrapper text-right')
+            .append(
+                jQuery('<span/>')
+                    .append(
+                        jQuery('<span/>')
+                            .attr('id', textareaId + '-remaining-length')
+                            .text(textarea.attr('maxlength') - textarea.val().length)
+                    )
+                    .append(' ' + t('remaining'))
+            )
     );
-  });
+});
 
   // Update the remaining length text of the related textarea
   jQuery(document).on('input', 'textarea.with-maxlength', function() {
