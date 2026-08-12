@@ -637,16 +637,21 @@ When(/^the controller starts mocking a Redfish host$/) do
   file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
 
   data_dir = "#{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/data/public-catfish"
+  log_file = '/tmp/redfish_mockup_server.log'
   cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{hostname} -p 8443 " \
         "-S -D #{data_dir} " \
         '--ssl --cert /root/controller.crt --key /root/controller.key ' \
-        '< /dev/null > /dev/null 2>&1 &'
+        "< /dev/null > #{log_file} 2>&1 &"
   `#{cmd}`
-  repeat_until_timeout(timeout: 30, message: 'Redfish mock server did not start on port 8443') do
-    result = `curl -sk --connect-timeout 2 --max-time 3 https://#{hostname}:8443/redfish/v1 2>/dev/null`
-    break unless result.empty?
-    sleep 1
+  begin
+    repeat_until_timeout(timeout: 30, message: 'Redfish mock server did not start on port 8443') do
+      result = `curl -sk --connect-timeout 2 --max-time 3 https://#{hostname}:8443/redfish/v1 2>/dev/null`
+      break unless result.empty?
+      sleep 1
+    end
+  rescue Timeout::Error
+    raise ScriptError, "Redfish mock server did not start on port 8443:\n#{`tail -n 20 #{log_file} 2>&1`}"
   end
 end
 
