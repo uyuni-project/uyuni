@@ -855,7 +855,7 @@ end
 
 When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
   if host == 'server'
-    step %(I follow the left menu "Admin > Task Schedules")
+    visit('/rhn/admin/SatSchedules.do')
     step %(I follow "update-reporting-hub-default")
     step %(I follow "mgr-update-reporting-hub-bunch")
     step %(I click on "Single Run Schedule")

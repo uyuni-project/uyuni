@@ -26,38 +26,22 @@ Feature: Grafana formula setup in hub reporting mode on the monitoring server (C
   Scenario: Log in as admin for Grafana formula setup (C-02)
     Given I am authorized for the "Admin" section
 
-  Scenario: Enable Grafana formula on the monitoring system (C-02)
-    Given I am on the Systems overview page of this "monitoring_server"
-    When I follow "Formulas" in the content area
-    Then I should see a "Choose formulas:" text
-    When I check the "grafana" formula
-    And I click on "Save"
-    Then I should see a "Formula saved." text
-    And the "grafana" formula should be checked
-
   Scenario: Configure Grafana formula for hub reporting mode (C-02)
     Given I am on the Systems overview page of this "monitoring_server"
     When I follow "Formulas" in the content area
-    And I follow first "Grafana" in the content area
-    And I enable Grafana in the formula
-    And I set the Grafana admin username in the formula
-    And I set the Grafana admin password in the formula
-    And I set the Prometheus datasource URL for "monitoring_server"
+    When I follow "Grafana" in the content area
+    And I click on "Expand All Sections"
     And I enable the Report DB datasource in the Grafana formula
     And I enable the hub server mode for the Report DB in the formula
-    And I check the "MLM server" Grafana dashboard checkbox
-    And I check the "MLM clients" Grafana dashboard checkbox
-    And I check the "PostgreSQL" Grafana dashboard checkbox
-    And I check the "Apache HTTPD" Grafana dashboard checkbox
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-  Scenario: Apply highstate on the monitoring system to deploy Grafana (C-02)
-    Given I am on the Systems overview page of this "monitoring_server"
     When I follow "States" in the content area
+    And I store the current last event id for "monitoring_server"
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled" is completed
+    And I wait until a new "Apply highstate" event is completed for "monitoring_server"
+    # Visit monitoring endpoints on the minion
+    When I wait until "grafana-server" service is active on "monitoring_server"
+    And I visit "Grafana" endpoint of this "monitoring_server"
 
   Scenario: Verify grafana-server service is active on the monitoring node (C-02)
     Then the "grafana-server" service should be active on "monitoring_server"

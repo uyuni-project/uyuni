@@ -92,30 +92,13 @@ When(/^I set the Prometheus datasource URL for "([^"]*)"$/) do |host|
 end
 
 When(/^I enable the Report DB datasource in the Grafana formula$/) do
-  find(
-    :xpath,
-    "//legend[contains(normalize-space(),'Report DB')] | //label[contains(normalize-space(),'Report DB')]",
-    match: :first
-  )
-  enabled_checkbox = find(
-    :xpath,
-    "//legend[contains(normalize-space(),'Report DB')]/ancestor::fieldset" \
-    "//label[normalize-space()='Enabled']/following-sibling::input | " \
-    "//label[contains(normalize-space(),'Report DB') and not(contains(normalize-space(),'Hub'))]/following-sibling::input",
-    match: :first
-  )
-  enabled_checkbox.check unless enabled_checkbox.checked?
+  checkbox = find(:xpath, "//*[@id='grafana#datasources#reportdb#enabled']")
+  checkbox.check unless checkbox.checked?
 end
 
 When(/^I enable the hub server mode for the Report DB in the formula$/) do
-  hub_checkbox = find(
-    :xpath,
-    "//label[contains(normalize-space(),'Hub server') or contains(normalize-space(),'Hub Server') or " \
-    "contains(normalize-space(),'hub_server') or contains(normalize-space(),'This Report DB is for a Hub')]" \
-    '/following-sibling::input',
-    match: :first
-  )
-  hub_checkbox.check unless hub_checkbox.checked?
+  checkbox = find(:xpath, "//*[@id='grafana#datasources#reportdb#is_hub']")
+  checkbox.check unless checkbox.checked?
 end
 
 When(/^I check the "([^"]*)" Grafana dashboard checkbox$/) do |dashboard|
