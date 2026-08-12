@@ -110,9 +110,9 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
       # At the time of writing some of the problems described have been addressed.
       # However, at least https://bugs.ruby-lang.org/issues/15886 remains reproducible and code below
       # works around it by adding an additional check between loops
-      start = Time.new
+      deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
       attempts = 0
-      while (Time.new - start <= timeout) && (retries.nil? || attempts < retries)
+      while Process.clock_gettime(Process::CLOCK_MONOTONIC) <= deadline && (retries.nil? || attempts < retries)
         last_result = yield
         attempts += 1
       end
