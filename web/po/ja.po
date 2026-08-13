@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-05-27 09:12+0000\n"
+"PO-Revision-Date: 2026-08-13 14:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -83,7 +83,7 @@ msgstr "認証レポートの詳細"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
 msgid "No Scans"
-msgstr ""
+msgstr "スキャンなし"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -146,10 +146,8 @@ msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:147
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "SCAP scan has been "
-msgstr "動作は {0} でした。"
+msgstr "SCAPスキャンを"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
@@ -157,123 +155,97 @@ msgid "scheduled."
 msgstr "スケジュールしました。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:171
-#, fuzzy
-#| msgid "Schedule Name"
 msgid "Schedule New XCCDF Scan"
-msgstr "スケジュール名"
+msgstr "新しいXCCDFスキャンをスケジュール"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:180
 #: ../html/src/components/policies-picker.tsx:117
-#, fuzzy
-#| msgid "Policy"
 msgid "SCAP Policy"
-msgstr "ポリシー"
+msgstr "SCAPポリシー"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:184
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No Policy Selected"
-msgstr "プロファイルが選択されていません"
+msgstr "ポリシーが選択されていません"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:175
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:111
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "SCAP Content"
-msgstr "playbook の内容"
+msgstr "SCAPコンテンツ"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required."
-msgstr "正の整数を指定する必要があります"
+msgstr "SCAPコンテンツが必要です。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:196
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:323
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "XCCDF Profile"
-msgstr "プロファイルの削除"
+msgstr "XCCDFプロファイル"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:231
-#, fuzzy
-#| msgid "Image version is required."
 msgid "XCCDF Profile is required."
-msgstr "イメージバージョンを指定する必要があります。"
+msgstr "XCCDFプロファイルが必要です。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:238
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select XCCDF profile..."
-msgstr "モジュールを選択してください..."
+msgstr "XCCDFプロファイルを選択してください..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:212
 msgid "Tailoring File"
-msgstr ""
+msgstr "テーラリングファイル"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select Tailoring file..."
-msgstr "モジュールを選択してください..."
+msgstr "テーラリングファイルを選択してください..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:276
 msgid "Profile from Tailoring File"
-msgstr ""
+msgstr "テーラリングファイルからのプロファイル"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select profile..."
-msgstr "モジュールを選択してください..."
+msgstr "プロファイルを選択してください..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:292
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:248
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Advanced Arguments"
-msgstr "コマンドライン引数"
+msgstr "高度な引数"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:252
 msgid "e.g: --rule <rule_id> --remediate"
-msgstr ""
+msgstr "例: --rule <rule_id> --remediate"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:297
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:253
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Additional command-line arguments for oscap"
-msgstr "コマンドライン引数"
+msgstr "oscap用の追加のコマンドライン引数"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:302
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:258
 msgid "OVAL Files"
-msgstr ""
+msgstr "OVALファイル"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:306
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:262
 msgid "e.g: /usr/share/xml/scap/suse-sles15-cve.xml"
-msgstr ""
+msgstr "例: /usr/share/xml/scap/suse-sles15-cve.xml"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:307
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:263
-#, fuzzy
-#| msgid "Has to be a comma-separated list of host names"
 msgid "Comma-separated list of OVAL files"
-msgstr "カンマ区切りのホスト名リストでなければなりません"
+msgstr "カンマ区切りのOVALファイルリスト"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:310
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:266
 msgid "Note: Paths to local OVAL definitions on target system (comma separated)"
-msgstr ""
+msgstr "メモ: ターゲットシステム上のローカルOVAL定義へのパス(カンマ区切り)"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
 msgid "Fetch Remote Content"
-msgstr ""
+msgstr "リモートコンテンツのフェッチ"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
@@ -1832,10 +1804,8 @@ msgid "Select a Schedule"
 msgstr "スケジュールの選択:"
 
 #: ../html/src/components/policies-picker.tsx:91
-#, fuzzy
-#| msgid "State assignments have been saved."
 msgid "Policy assignment has been saved."
-msgstr "状態の割り当てが保存されました。"
+msgstr "ポリシーの割り当てが保存されました。"
 
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
@@ -1847,10 +1817,8 @@ msgid "No SCAP Policies Found"
 msgstr ""
 
 #: ../html/src/components/policies-picker.tsx:160
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search in SCAP policies"
-msgstr "状態の検索"
+msgstr "SCAPポリシーの検索"
 
 #: ../html/src/components/policies-picker.tsx:165
 #: ../html/src/components/states-picker.tsx:432
@@ -1864,17 +1832,13 @@ msgstr "検索"
 
 #: ../html/src/components/policies-picker.tsx:175
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:318
-#, fuzzy
-#| msgid "Policy"
 msgid "Policy Name"
-msgstr "ポリシー"
+msgstr "ポリシー名"
 
 #: ../html/src/components/policies-picker.tsx:176
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:322
-#, fuzzy
-#| msgid "Stream"
 msgid "Data Stream"
-msgstr "ストリーム"
+msgstr "データストリーム"
 
 #: ../html/src/components/policies-picker.tsx:177
 #: ../html/src/components/states-picker.tsx:465
@@ -1965,16 +1929,12 @@ msgid "Before Migrating to SLES 16 — Please ensure"
 msgstr ""
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
-#, fuzzy
-#| msgid "System is up to date"
 msgid "System is fully up to date"
-msgstr "システムは最新の状態です"
+msgstr "システムは完全に最新の状態です"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:111
-#, fuzzy
-#| msgid "Affected, patch is unavailable"
 msgid "Sufficient disk space is available"
-msgstr "影響を受ける、パッチは利用不可"
+msgstr "十分なディスク容量が利用可能です"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
