@@ -57,6 +57,8 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
+    /** Legacy name for a date, bound as {@code $date} in the doclet's macros for both formats. */
+    public static final String LEGACY_DATE_TYPE = "dateTime.iso8601";
 
     private final OpenAPI openAPI;
     private final Components components;

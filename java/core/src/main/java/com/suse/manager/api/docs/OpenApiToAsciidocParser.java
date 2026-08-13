@@ -349,13 +349,7 @@ public class OpenApiToAsciidocParser {
         if (resolved == null || resolved.getProperties() == null) {
             return;
         }
-        resolved.getProperties().forEach((name, prop) -> {
-            Schema<?> propertySchema = prop;
-            String propDesc = propertySchema.getDescription() != null ?
-                    " - " + propertySchema.getDescription() : "";
-            String propertyType = structPropertyType(propertySchema);
-            writer.printf("** [.%s]#%s#  \"%s\"%s%n", propertyType, propertyType, name, propDesc);
-        });
+        resolved.getProperties().forEach((name, prop) -> writeStructProperty(writer, "", name, prop));
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
@@ -402,16 +396,46 @@ public class OpenApiToAsciidocParser {
         return "integer".equals(schema.getType()) ? "int" : schema.getType();
     }
 
+    /**
+     * Resolves the legacy type name of a struct property, mirroring the doclet macros:
+     * {@code #type($t)} renders {@code [.$t]#$t#} and {@code #atype($t)} renders
+     * {@code [.array]#$t array#}, with {@code $date} bound to {@code dateTime.iso8601}.
+     */
     private String structPropertyType(Schema<?> schema) {
         String type = schema.getType();
         if ("integer".equals(type)) {
             return "int";
         }
-        if ("string".equals(type) || "boolean".equals(type) || "number".equals(type)) {
+        if ("string".equals(type)) {
+            return "date-time".equals(schema.getFormat()) ? UyuniSwaggerReader.LEGACY_DATE_TYPE : type;
+        }
+        if ("boolean".equals(type) || "number".equals(type)) {
             return type;
         }
-        // arrays, objects and $ref types keep the legacy "string" fallback
+        if ("array".equals(type)) {
+            // #prop_array renders the element type ("string array"); #prop_array_begin, which
+            // is what a non-scalar element compiles to, renders a bare "array".
+            Schema<?> items = resolveSchemaReference(schema.getItems());
+            return items != null && isSimpleType(items) ? structPropertyType(items) + " array" : "array";
+        }
+        if ("object".equals(type) || schema.get$ref() != null || schema.getProperties() != null) {
+            return "struct";
+        }
         return "string";
+    }
+
+    /**
+     * The AsciiDoc marker differs from the rendered type only for arrays, where the doclet
+     * emits {@code [.array]} but shows the element type.
+     */
+    private String structPropertyMarker(Schema<?> schema) {
+        return "array".equals(schema.getType()) ? "array" : structPropertyType(schema);
+    }
+
+    private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema) {
+        String description = schema.getDescription() != null ? " - " + schema.getDescription() : "";
+        writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, structPropertyMarker(schema),
+                structPropertyType(schema), name, description);
     }
 
     private ApiResponse getSuccessResponse(ApiResponses responses) {
@@ -451,16 +475,8 @@ public class OpenApiToAsciidocParser {
         }
 
         if (schema.getProperties() != null) {
-            schema.getProperties().forEach((name, property) -> {
-                Schema<?> propertySchema = (Schema<?>) property;
-                String propertyDescription = "";
-                if (propertySchema.getDescription() != null) {
-                    propertyDescription = " - " + propertySchema.getDescription();
-                }
-                String propertyType = structPropertyType(propertySchema);
-                writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, propertyType, propertyType, name,
-                        propertyDescription);
-            });
+            schema.getProperties().forEach((name, property) ->
+                    writeStructProperty(writer, prefix, name, property));
         }
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
@@ -470,16 +486,8 @@ public class OpenApiToAsciidocParser {
                 resolvedInner = nested.get$ref() != null ? resolveSchema(nested.get$ref()) : nested;
             }
             if (resolvedInner.getProperties() != null) {
-                resolvedInner.getProperties().forEach((name, property) -> {
-                    Schema<?> propertySchema = (Schema<?>) property;
-                    String propertyDescription = "";
-                    if (propertySchema.getDescription() != null) {
-                        propertyDescription = " - " + propertySchema.getDescription();
-                    }
-                    String propertyType = structPropertyType(propertySchema);
-                    writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, propertyType, propertyType, name,
-                            propertyDescription);
-                });
+                resolvedInner.getProperties().forEach((name, property) ->
+                        writeStructProperty(writer, prefix, name, property));
             }
             else if (isSimpleType(resolvedInner)) {
                 String description = "";

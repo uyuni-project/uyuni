@@ -629,10 +629,20 @@ public class OpenApiToDocBookParser {
             return "array";
         }
         if (s.get$ref() != null) {
-            return extractRefName(s.get$ref());
+            // A referenced schema that carries properties is a struct in legacy terms; only a
+            // reference without properties keeps its name as the type.
+            Schema<?> resolved = resolveSchema(s.get$ref());
+            return resolved != null && resolved.getProperties() != null ?
+                    "struct" : extractRefName(s.get$ref());
         }
         if ("integer".equals(type)) {
             return "int";
+        }
+        if ("string".equals(type) && "date-time".equals(s.getFormat())) {
+            return UyuniSwaggerReader.LEGACY_DATE_TYPE;
+        }
+        if ("object".equals(type) || s.getProperties() != null) {
+            return "struct";
         }
         return type != null ? type : "string";
     }
