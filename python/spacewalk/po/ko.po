@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-05-27 09:12+0000\n"
+"PO-Revision-Date: 2026-08-13 20:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -479,6 +479,7 @@ msgid "Invalid channel version."
 msgstr "유효하지 않은 채널 버전입니다."
 
 #: ../common/rhnException.py:109
+#, fuzzy
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -498,6 +499,7 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:119
+#, fuzzy
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -894,6 +896,7 @@ msgid "Invalid content encoding"
 msgstr "유효하지 않은 컨텐트 인코딩"
 
 #: ../common/rhnException.py:317
+#, fuzzy
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -960,7 +963,7 @@ msgstr ""
 "%s\n"
 
 #: ../satellite_tools/messages.py:35
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "\n"
 "ERROR: there was a problem accessing the channel data from your temporary\n"
@@ -1002,7 +1005,7 @@ msgstr ""
 "       오류 메시지: %s\n"
 
 #: ../satellite_tools/messages.py:61
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
