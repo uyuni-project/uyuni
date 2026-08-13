@@ -16,7 +16,12 @@ zypper rr sles15sp4
 
 # do the real test
 zypper --non-interactive --gpg-auto-import-keys ref
-zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar gzip python3 python3-psutil
+zypper --non-interactive in aaa_base aaa_base-extras net-tools timezone vim less sudo tar gzip python3
+# psutil is called python3-psutil on SLE 15, but python313-psutil on Leap 16 and SLE 16
+python_abi=$(python3 -c 'import sys; print("%d%d" % sys.version_info[:2])')
+psutil_package="python${python_abi}-psutil"
+zypper --non-interactive search --match-exact "${psutil_package}" | grep -q "${psutil_package}" || psutil_package="python3-psutil"
+zypper --non-interactive in "${psutil_package}"
 
 # kill avahi
 /usr/sbin/avahi-daemon -k
