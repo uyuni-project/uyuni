@@ -2054,8 +2054,10 @@ public class SystemManager extends BaseManager {
             Set<Channel> channels = server.getChannels();
             for (Channel c : channels) {
                 ChannelFamily cf = c.getChannelFamily();
-                if (cf.getLabel().equals(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL) ||
-                        cf.getLabel().equals(ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL)) {
+                if ((cf != null) &&
+                        (cf.getLabel().equals(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL) ||
+                         cf.getLabel().equals(ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL))
+                ) {
                     SystemManager.unsubscribeServerFromChannel(server, c);
                 }
             }
