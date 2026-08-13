@@ -269,17 +269,49 @@ public class ApiDocumentationCompatibilityTest {
 
         expected.entrySet().stream()
                 .filter(entry -> actual.containsKey(entry.getKey()))
-                .filter(entry -> !entry.getValue().returns().equals(actual.get(entry.getKey()).returns()))
+                .filter(entry -> !alignArrayElementNesting(entry.getValue().returns())
+                        .equals(alignArrayElementNesting(actual.get(entry.getKey()).returns())))
                 .forEach(entry -> differences.add(
                         "[%s] Return mismatch for %s: expected %s, actual %s".formatted(
                                 namespace,
                                 entry.getKey(),
-                                entry.getValue().returns(),
-                                actual.get(entry.getKey()).returns()
+                                alignArrayElementNesting(entry.getValue().returns()),
+                                alignArrayElementNesting(actual.get(entry.getKey()).returns())
                         )
                 ));
 
         return differences;
+    }
+
+    /**
+     * Aligns the nesting of the struct that describes the element type of an array return value.
+     *
+     * The legacy doclet documents it in two interchangeable ways depending on the namespace: as a
+     * sibling of the array marker, or indented one level below it. Both describe the same return
+     * value, so the depth difference is an artifact of how each namespace was documented rather
+     * than a difference in the documented shape. The indented form is rebased on the sibling form
+     * before comparing, which keeps the depth of every other item, and the nesting relative to the
+     * element struct, part of the comparison.
+     *
+     * @param items the parsed return value items
+     * @return the items with the element struct and its contents rebased, when indented
+     */
+    private List<DocItem> alignArrayElementNesting(List<DocItem> items) {
+        if (items.size() < 2) {
+            return items;
+        }
+        DocItem array = items.get(0);
+        DocItem elementStruct = items.get(1);
+        if (!"array".equals(array.type()) || !"struct".equals(elementStruct.type()) ||
+                elementStruct.level() != array.level() + 1) {
+            return items;
+        }
+
+        List<DocItem> aligned = new ArrayList<>(items.size());
+        aligned.add(array);
+        items.subList(1, items.size())
+                .forEach(item -> aligned.add(new DocItem(item.level() - 1, item.type(), item.name())));
+        return aligned;
     }
 
     private Map<MethodKey, ApiMethodDoc> parse(String content) {
