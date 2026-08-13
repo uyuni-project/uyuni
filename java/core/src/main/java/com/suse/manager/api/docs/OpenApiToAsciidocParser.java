@@ -288,7 +288,10 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        if (isSimpleType(schema)) {
+        // A declared legacy type describes the whole return value, so it also applies to schemas
+        // that are not simple: the doclet renders those as a single typed line, without expanding
+        // the schema.
+        if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
             writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation);
             return;
         }
