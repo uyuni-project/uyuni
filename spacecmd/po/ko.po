@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-05-27 09:12+0000\n"
+"PO-Revision-Date: 2026-08-13 20:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -466,6 +466,7 @@ msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone: 활성화 키 복제"
 
 #: ../src/spacecmd/activationkey.py:1581
+#, fuzzy
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -612,7 +613,7 @@ msgid "api: call server API with arguments directly"
 msgstr "api: 인수를 사용하여 서버 API를 직접 호출"
 
 #: ../src/spacecmd/api.py:50
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "usage: api [options] API_STRING)\n"
 "\n"
@@ -969,6 +970,7 @@ msgid "Delete these channels [y/N]:"
 msgstr "이러한 채널을 삭제하시겠습니까 [y/N]:"
 
 #: ../src/spacecmd/configchannel.py:640
+#, fuzzy
 msgid "Symlink [y/N]:"
 msgstr "Symlink [y/N]:"
 
@@ -1164,7 +1166,7 @@ msgid "revision:                 %s"
 msgstr "리비전:                 %s"
 
 #: ../src/spacecmd/configchannel.py:1062
-#, python-format
+#, fuzzy, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
@@ -1327,6 +1329,7 @@ msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: 구성 채널 복제"
 
 #: ../src/spacecmd/configchannel.py:1520
+#, fuzzy
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1401,6 +1404,7 @@ msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/configchannel.py:1736
+#, fuzzy
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
@@ -1814,7 +1818,7 @@ msgid "Apply these patches [y/N]:"
 msgstr "이 패치 적용 [y/N]:"
 
 #: ../src/spacecmd/errata.py:227
-#, python-format
+#, fuzzy, python-format
 msgid "Scheduled %i system(s) for %s"
 msgstr "%s에 예약된 %i 시스템"
 
@@ -1824,7 +1828,7 @@ msgid "No patches to schedule for %s"
 msgstr "%s에 예약할 패치 없음"
 
 #: ../src/spacecmd/errata.py:258
-#, python-format
+#, fuzzy, python-format
 msgid "Scheduled %i patches for %s"
 msgstr "%s에 예약된 %i 패치"
 
@@ -2046,6 +2050,7 @@ msgid "usage: group_addsystems GROUP <SYSTEMS>"
 msgstr "사용법: group_addsystems GROUP <SYSTEMS>"
 
 #: ../src/spacecmd/group.py:56
+#, fuzzy
 msgid "       group_addsystems GROUP <ssm>"
 msgstr "       group_addsystems GROUP <ssm>"
 
@@ -2515,7 +2520,7 @@ msgid "Scripts"
 msgstr "스크립트"
 
 #: ../src/spacecmd/kickstart.py:562 ../src/spacecmd/kickstart.py:2111
-#, python-format
+#, fuzzy, python-format
 msgid "Chroot:      %s"
 msgstr "Chroot:      %s"
 
@@ -2888,7 +2893,7 @@ msgid "Execution Time: %s"
 msgstr "실행 시간: %s"
 
 #: ../src/spacecmd/kickstart.py:2226
-#, python-format
+#, fuzzy, python-format
 msgid "Chroot:         %s"
 msgstr "Chroot:         %s"
 
@@ -3045,7 +3050,7 @@ msgid "Error adding %s script"
 msgstr "%s 스크립트 추가 중 오류"
 
 #: ../src/spacecmd/kickstart.py:2731
-#, python-format
+#, fuzzy, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr "IP 범위 %s~%s 추가 실패, 계속 진행"
 
@@ -3170,12 +3175,12 @@ msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr "사용법: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 
 #: ../src/spacecmd/kickstart.py:3071
-#, python-format
+#, fuzzy, python-format
 msgid "noBase:        %s"
 msgstr "noBase:        %s"
 
 #: ../src/spacecmd/kickstart.py:3072
-#, python-format
+#, fuzzy, python-format
 msgid "ignoreMissing: %s"
 msgstr "ignoreMissing: %s"
 
@@ -3185,12 +3190,12 @@ msgid "Kickstart Label: %s"
 msgstr "킥스타트 레이블: %s"
 
 #: ../src/spacecmd/kickstart.py:3075
-#, python-format
+#, fuzzy, python-format
 msgid "noBase:          %s"
 msgstr "noBase:          %s"
 
 #: ../src/spacecmd/kickstart.py:3076
-#, python-format
+#, fuzzy, python-format
 msgid "ignoreMissing:   %s"
 msgstr "ignoreMissing:   %s"
 
@@ -3231,6 +3236,7 @@ msgstr ""
 "channel:CHANNEL\n"
 
 #: ../src/spacecmd/misc.py:72
+#, fuzzy
 msgid ""
 "Dates can be any of the following:\n"
 "Explicit Dates:\n"
@@ -3564,6 +3570,7 @@ msgid "Dr."
 msgstr "Dr."
 
 #: ../src/spacecmd/org.py:126
+#, fuzzy
 msgid "Miss"
 msgstr "Miss"
 
@@ -4068,30 +4075,10 @@ msgstr ""
 #, fuzzy
 #| msgid "proxy_container_config: create a proxy system and return its configuration file"
 msgid "proxy_container_config_nossl: create a proxy system and return its configuration file without SSL certificate"
-msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
+msgstr "proxy_container_config_nossl: 프록시 시스템을 생성하고 SSL 인증서를 제외한 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:119
 #, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
-#| "  CRT         path to the proxy certificate in PEM format\n"
-#| "  KEY         path to the proxy certificate private key in PEM format\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
-#| "            certicate in PEM format. May be provided multiple times.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4108,25 +4095,20 @@ msgid ""
 "examples:\n"
 "  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org\n"
 msgstr ""
-"%사용법: proxy_container_config [옵션] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+"사용법: proxy_container_config_nossl [옵션] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
 "  SERVER_FQDN 프록시에 연결할 서버의 정규화된 도메인 이름입니다.\n"
 "  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60%가 적합합니다.\n"
 "  EMAIL       프록시 관리자의 전자 메일입니다.\n"
-"  CA          PEM 형식의 프록시 인증서에 서명하기 위해 사용할 루트 CA의 경로입니다.\n"
-"  CRT         PEM 형식의 프록시 인증서 경로입니다.\n"
-"  KEY         PEM 형식의 프록시 인증서 개인 키 경로입니다.\n"
 "\n"
 "옵션:\n"
 "  -o, --output 생성된 구성을 생성할 경로입니다. 기본값: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH 포트 프록시는 하나를 수신합니다. 기본값: 8022\n"
-"  -i, --intermediate-ca  프록시 서명에 사용되는 중간 CA에 대한 경로입니다.\n"
-"            PEM 형식의 인증서. 여러 번 제공될 수 있습니다.\n"
-"\n"
+"  \n"
 "예:\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
+"  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org\n"
 
 #: ../src/spacecmd/proxy.py:169
 msgid "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
@@ -4659,6 +4641,7 @@ msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 msgstr "사용법: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 
 #: ../src/spacecmd/scap.py:221
+#, fuzzy
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
 msgstr "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
 
@@ -5967,6 +5950,7 @@ msgstr ""
 "-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스가 허용됨)"
 
 #: ../src/spacecmd/softwarechannel.py:2292
+#, fuzzy
 msgid "softwarechannel_regenerateneededcache: "
 msgstr "softwarechannel_regenerateneededcache: "
 
@@ -5979,6 +5963,7 @@ msgid "usage: softwarechannel_regenerateneededcache"
 msgstr "사용법: softwarechannel_regenerateneededcache"
 
 #: ../src/spacecmd/softwarechannel.py:2310
+#, fuzzy
 msgid "softwarechannel_regenerateyumcache: "
 msgstr "softwarechannel_regenerateyumcache: "
 
@@ -6025,6 +6010,7 @@ msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:2508
+#, fuzzy
 msgid "softwarechannel_sync: "
 msgstr "softwarechannel_sync: "
 
@@ -6051,6 +6037,7 @@ msgstr "소프트웨어 채널 %s에서 %s(으)로의 %s 패키지"
 #: ../src/spacecmd/softwarechannel.py:2743
 #: ../src/spacecmd/softwarechannel.py:2915
 #: ../src/spacecmd/softwarechannel.py:2923
+#, fuzzy
 msgid "failed to read key id"
 msgstr "키 ID를 읽지 못함"
 
@@ -6103,6 +6090,7 @@ msgid "Perform these changes to channel "
 msgstr "채널에서 이 변경 수행 "
 
 #: ../src/spacecmd/softwarechannel.py:2673
+#, fuzzy
 msgid "softwarechannel_errata_sync: "
 msgstr "softwarechannel_errata_sync: "
 
@@ -6153,6 +6141,7 @@ msgid "errata from"
 msgstr "오류 출처"
 
 #: ../src/spacecmd/softwarechannel.py:2813
+#, fuzzy
 msgid "softwarechannel_errata_merge: "
 msgstr "softwarechannel_errata_merge: "
 
@@ -6212,6 +6201,7 @@ msgid "Perform these changes to channel {} [y/N]:"
 msgstr "{} 채널에 이 변경 수행 [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:2970
+#, fuzzy
 msgid "softwarechannel_syncrepos: "
 msgstr "softwarechannel_syncrepos: "
 
@@ -6244,6 +6234,7 @@ msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr "    -l/--latest : 저장소 동기화 시 가장 최신 패키지 버전만 다운로드"
 
 #: ../src/spacecmd/softwarechannel.py:3020
+#, fuzzy
 msgid "softwarechannel_setsyncschedule: "
 msgstr "softwarechannel_setsyncschedule: "
 
@@ -6268,6 +6259,7 @@ msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "<SCHEDULE>을 비워두면 비활성화됩니다."
 
 #: ../src/spacecmd/softwarechannel.py:3081
+#, fuzzy
 msgid "softwarechannel_removesyncschedule: "
 msgstr "softwarechannel_removesyncschedule: "
 
@@ -6524,10 +6516,12 @@ msgid "Examples:"
 msgstr "예:"
 
 #: ../src/spacecmd/system.py:296
+#, fuzzy
 msgid "> system_search device:vmware"
 msgstr "> system_search device:vmware"
 
 #: ../src/spacecmd/system.py:297
+#, fuzzy
 msgid "> system_search ip:192.168.82"
 msgstr "> system_search ip:192.168.82"
 
@@ -7318,7 +7312,7 @@ msgid "New Child channels %s"
 msgstr "새 하위 채널 %s"
 
 #: ../src/spacecmd/system.py:2864 ../src/spacecmd/system.py:4724
-#, python-format
+#, fuzzy, python-format
 msgid "Scheduled action id: %s"
 msgstr "예약된 작업 ID: %s"
 
@@ -7747,14 +7741,17 @@ msgid "Channel Version"
 msgstr "채널 버전"
 
 #: ../src/spacecmd/system.py:4203
+#, fuzzy
 msgid "Channel_newer_than_system"
 msgstr "Channel_newer_than_system"
 
 #: ../src/spacecmd/system.py:4224
+#, fuzzy
 msgid "System_newer_than_channel"
 msgstr "System_newer_than_channel"
 
 #: ../src/spacecmd/system.py:4240
+#, fuzzy
 msgid "Missing_in_channel"
 msgstr "Missing_in_channel"
 
