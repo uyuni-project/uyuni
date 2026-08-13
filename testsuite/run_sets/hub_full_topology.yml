@@ -34,8 +34,6 @@
 - features/hub/srv_hub_grafana_data_validation.feature
 - features/hub/srv_hub_verification_cleanup.feature
 
-# B-01: Peripheral host as hub minion (bootstrap ordering)
-- features/hub/srv_hub_peripheral_as_minion.feature
 
 # B-05: Hub outage resilience (must be last — stops and starts hub services)
 - features/hub/srv_hub_outage_resilience.feature

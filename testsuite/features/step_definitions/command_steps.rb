@@ -61,7 +61,7 @@ Given(/^I mirror the RPM test packages locally$/) do
   dest = '/srv/www/htdocs/pub/TestRepoRpmUpdates'
   server.run("mkdir -p #{dest}")
   server.run(
-    'wget --recursive --no-parent --no-host-directories --cut-dirs=6 ' \
+    'wget --recursive --no-parent --no-host-directories --cut-dirs=6 --no-clobber ' \
     "--reject 'index.html*' --directory-prefix=#{dest} " \
     'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/'
   )

@@ -253,8 +253,8 @@ Then(/^the Grafana fleet overview total systems panel should match the reportdb 
   hub = get_target('server')
   node = get_target(host)
   db_count_raw, _code = hub.run(
-    "echo 'SELECT count(*) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   db_count = db_count_raw.strip.to_i
@@ -274,13 +274,13 @@ end
 Then(/^the Fleet Overview systems-by-organization distribution should sum to the total system count on "([^"]*)"$/) do |_host|
   hub = get_target('server')
   total_raw, _c1 = hub.run(
-    "echo 'SELECT count(*) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   org_sum_raw, _c2 = hub.run(
-    "echo 'SELECT sum(cnt) FROM (SELECT count(*) AS cnt FROM system GROUP BY organization) sub;'" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT sum(cnt) FROM (SELECT count(*) AS cnt FROM system GROUP BY organization) sub;' " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   total = total_raw.strip.to_i
@@ -297,13 +297,13 @@ end
 Then(/^the Grafana fleet overview channel and patch panels should return non-null values on "([^"]*)"$/) do |_host|
   hub = get_target('server')
   channel_count_raw, _c1 = hub.run(
-    "echo 'SELECT count(*) FROM channel;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM channel;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   patch_count_raw, _c2 = hub.run(
-    "echo 'SELECT count(*) FROM errataoverview;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM errataoverview;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   channel_count = channel_count_raw.strip.to_i
@@ -318,8 +318,8 @@ Then(/^the Grafana hub overview peripheral count should match the number of regi
   hub = get_target('server')
   node = get_target(host)
   peripheral_count_raw, _code = hub.run(
-    "echo 'SELECT count(DISTINCT mgm_id) FROM system WHERE mgm_id != 1;'" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(DISTINCT mgm_id) FROM system WHERE mgm_id != 1;' " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   peripheral_count = peripheral_count_raw.strip.to_i
@@ -334,8 +334,8 @@ end
 Then(/^the Grafana hub overview per-peripheral table should have one row per registered peripheral on "([^"]*)"$/) do |_host|
   hub = get_target('server')
   result, _code = hub.run(
-    "echo 'SELECT count(DISTINCT mgm_id) FROM system WHERE mgm_id != 1;'" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(DISTINCT mgm_id) FROM system WHERE mgm_id != 1;' " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   peripheral_count = result.strip.to_i
@@ -347,13 +347,13 @@ end
 Then(/^the Grafana hub overview system inventory should contain entries managed by the hub and by peripherals on "([^"]*)"$/) do |_host|
   hub = get_target('server')
   hub_rows_raw, _c1 = hub.run(
-    "echo 'SELECT count(*) FROM system WHERE mgm_id = 1;'" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM system WHERE mgm_id = 1;' " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   peripheral_rows_raw, _c2 = hub.run(
-    "echo 'SELECT count(*) FROM system WHERE mgm_id != 1;'" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT count(*) FROM system WHERE mgm_id != 1;' " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   hub_rows = hub_rows_raw.strip.to_i
@@ -388,8 +388,8 @@ end
 Then(/^the hub reportdb latest actions should include a recent action for "([^"]*)"$/) do |_host|
   hub = get_target('server')
   result, _code = hub.run(
-    "echo \"SELECT count(*) FROM actionhistory WHERE completed_date > NOW() - INTERVAL '2 hours';\"" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo \"SELECT count(*) FROM actionhistory WHERE completed_date > NOW() - INTERVAL '2 hours';\" " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   count = result.strip.to_i
@@ -402,8 +402,8 @@ Then(/^the hub reportdb user accounts table should include the admin user$/) do
   hub = get_target('server')
   user, = Credentials.for('server')
   result, _code = hub.run(
-    "echo \"SELECT count(*) FROM account WHERE login = '#{user}';\"" \
-    " | spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo \"SELECT count(*) FROM account WHERE login = '#{user}';\" " \
+    "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   count = result.strip.to_i

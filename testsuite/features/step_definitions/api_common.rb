@@ -349,20 +349,20 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
 
-  key = $api_test.activationkey.create(id, description, base_channel_label, 100)
+  key = api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
 
   $stdout.puts "Activation key #{key} created"
   contact_method = client.include?('ssh_minion') ? 'ssh-push' : 'default'
-  success = $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
+  success = api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
   raise 'Failed to set activation key details' unless success
 
-  $api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
+  api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
 
   # Attach the child channels appropriate for this client's role
   child_channels = child_channels_for_activation_key(client, base_channel_label)
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
-  $api_test.activationkey.add_child_channels(key, child_channels)
+  api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 # actionchain namespace

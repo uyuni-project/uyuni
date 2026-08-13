@@ -55,7 +55,7 @@ Feature: Setup containerized proxy2
     And I copy the configuration "/tmp/proxy2_container_config.tar.gz" of containerized proxy from the server2 to the proxy2
 
   Scenario: Set up the containerized proxy2 service to support Avahi
-    When I add avahi hosts in containerized proxy configuration
+    When I add avahi hosts in containerized proxy2 configuration
 
   Scenario: Run a containerized proxy2
     When I run "mgrpxy install podman /tmp/proxy2_container_config.tar.gz" on "proxy2"

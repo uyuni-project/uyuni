@@ -81,7 +81,8 @@ def peripheral_root_ca(node)
   ]
   candidate_cas.each do |ca_path|
     subject_hash, ca_code = node.run("openssl x509 -in #{ca_path} -noout -subject_hash 2>/dev/null",
-                                     check_errors: false, runs_in_container: false)
+                                     check_errors: false,
+runs_in_container: false)
     next unless ca_code.zero? && subject_hash.strip == issuer_hash
 
     ca_content, = node.run("openssl x509 -in #{ca_path} -outform PEM", check_errors: false, runs_in_container: false)
@@ -129,7 +130,7 @@ When(/^I call hub\.listServerIds via XMLRPC$/) do
   $hub_api.list_server_ids
 end
 
-Then(/^I should see "([^"]*)" in the server IDs list$/) do |_host|
+Then(/^the hub server IDs list should not be empty$/) do
   raise ScriptError, 'Hub server IDs list is empty' if $hub_api.server_ids.empty?
 
   log "Hub server IDs: #{$hub_api.server_ids}"
@@ -216,14 +217,10 @@ end
 
 Then(/^unicast response should contain systems from "([^"]*)"$/) do |_host|
   raise ScriptError, 'No unicast response stored' if $unicast_response.nil?
+  raise ScriptError, 'Unicast response is not an array' unless $unicast_response.is_a?(Array)
+  raise ScriptError, 'Unicast response contains no systems' if $unicast_response.empty?
 
-  successful = $unicast_response['Successful']
-  raise ScriptError, 'Unicast response missing Successful key' unless successful
-
-  responses = successful['Responses']
-  raise ScriptError, 'No responses in unicast Successful bucket' if responses.nil? || responses.empty?
-
-  log "Unicast returned #{responses.length} response(s)"
+  log "Unicast returned #{$unicast_response.length} system(s)"
 end
 
 # Hub XMLRPC API: pass-through via /rpc/api (A-08)
@@ -885,8 +882,8 @@ end
 
 Then(/^the hub reportdb should contain one row per peripheral$/) do
   result, _code = get_target('server').run(
-    "echo 'SELECT COUNT(DISTINCT mgm_id) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
+    "echo 'SELECT COUNT(DISTINCT mgm_id) FROM system;' | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   count = result.strip.to_i
@@ -895,8 +892,8 @@ end
 
 Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |table|
   result, _code = get_target('server').run(
-    "echo \"SELECT MAX(synced_date) > NOW() - INTERVAL '1 hour' FROM #{table};\" | spacewalk-sql --reportdb --select-mode - 2>/dev/null" \
-    " | grep -E '^\\s+[tf]\\s*$' | tr -d ' '",
+    "echo \"SELECT MAX(synced_date) > NOW() - INTERVAL '1 hour' FROM #{table};\" | spacewalk-sql --reportdb --select-mode - 2>/dev/null " \
+    "| grep -E '^\\s+[tf]\\s*$' | tr -d ' '",
     check_errors: false
   )
   raise ScriptError, "synced_date in #{table} is not recent" unless result.strip == 't'
@@ -1213,10 +1210,12 @@ def verify_hub_signed_cert_is_served!(peripheral, node, fqdn, paths)
   )
   hub_ca_dn = hub_ca_subject.strip.sub(/^subject=/, '')
   served_dn = served_issuer.strip.sub(/^issuer=/, '')
-  raise ScriptError,
-        "Server container already running on #{peripheral} but serving a certificate issued by " \
-        "'#{served_dn}', not the hub-signed CA ('#{hub_ca_dn}'). The peripheral must not have a server " \
-        'pre-installed before this scenario runs - uninstall the existing server and rerun.' unless hub_ca_dn == served_dn
+  unless hub_ca_dn == served_dn
+    raise ScriptError,
+          "Server container already running on #{peripheral} but serving a certificate issued by " \
+          "'#{served_dn}', not the hub-signed CA ('#{hub_ca_dn}'). The peripheral must not have a server " \
+          'pre-installed before this scenario runs - uninstall the existing server and rerun.'
+  end
 
   log "Server container already running on #{peripheral} and already serving the hub-signed certificate, skipping installation"
 end

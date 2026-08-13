@@ -372,7 +372,7 @@ end
 # @param host [String] host role to check (e.g. 'server', 'server2', 'proxy2')
 # @return [Boolean] Returns true if the host is transactional
 def host_transactional?(host)
-  ENV.key?(ENV_VAR_BY_HOST[host]) && transactional_system?(host, runs_in_container: false)
+  ENV_VAR_BY_HOST.key?(host) && ENV.key?(ENV_VAR_BY_HOST[host]) && transactional_system?(host, runs_in_container: false)
 end
 
 # Checks if the 'proxy' host is a transactional system

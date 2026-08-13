@@ -14,7 +14,7 @@ Feature: Hub XMLRPC API operations
 
   Scenario: List peripheral server IDs via Hub API (A-08)
     When I call hub.listServerIds via XMLRPC
-    Then I should see "server2" in the server IDs list
+    Then the hub server IDs list should not be empty
 
   Scenario: Login to Hub API with manual mode returns a session key (A-07)
     When I login to hub XMLRPC API with standard mode
@@ -29,7 +29,7 @@ Feature: Hub XMLRPC API operations
 
   Scenario: List server IDs before unicast and pass-through tests (A-08)
     When I call hub.listServerIds via XMLRPC
-    Then I should see "server2" in the server IDs list
+    Then the hub server IDs list should not be empty
 
   Scenario: Execute unicast system list for one peripheral via Hub API (A-08)
     When I call unicast.system.list_systems for "server2" via XMLRPC
