@@ -844,6 +844,9 @@ public class ImageBuildController {
                                                                       ActionFactory.STATUS_FAILED.getId())
                                  );
 
+        imageOverview.getInspectServerAction()
+                .ifPresent(ia -> json.addProperty("inspectStatusId", ia.getStatus().getId()));
+
         return json;
     }
 
