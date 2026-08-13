@@ -19,7 +19,6 @@ function initEdit(element) {
 function initDelete(element) {
   var id = jQuery(element).data("id");
   var user = jQuery(element).data("user");
-  console.log("initDelete(): " + id);
   deleteId = id;
   jQuery("#delete-user").text(user);
 }
@@ -58,8 +57,6 @@ function saveCredentials() {
 
   if (validated) {
     console.log("Saving credentials: " + editId);
-    var user = escapeHtml(jQuery("#edit-user").val());
-    var password = jQuery("#edit-password").val();
     var user = escapeHtml(jQuery("#edit-user").val());
     var password = jQuery("#edit-password").val();
     showSpinner("edit-credentials-spinner");
