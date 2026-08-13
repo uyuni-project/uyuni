@@ -251,9 +251,12 @@ When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$
     And I wait until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait until I see "System Status" text
-    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Apply states" is completed
-    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Hardware List Refresh" is completed
-    And I wait 180 seconds until the event is picked up and #{seconds} seconds until the event "Package List Refresh" is completed
+    And I wait at most #{seconds} seconds until the event "Apply states" is picked up
+    And I wait at most #{seconds} seconds until the event "Apply states" is completed in the history
+    And I wait at most #{seconds} seconds until the event "Hardware List Refresh" is picked up
+    And I wait at most #{seconds} seconds until the event "Hardware List Refresh" is completed in the history
+    And I wait at most #{seconds} seconds until the event "Package List Refresh" is picked up
+    And I wait at most #{seconds} seconds until the event "Package List Refresh" is completed in the history
   )
 end
 
