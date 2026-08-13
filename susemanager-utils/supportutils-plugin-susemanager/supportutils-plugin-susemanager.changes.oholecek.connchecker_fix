@@ -1,0 +1,4 @@
+- Allow 100 connections difference between Apache and Tomcat
+- Fix reading connections from the correct source
+- Add reportdb connections to the database connection limit
+  (bsc#1262157)
