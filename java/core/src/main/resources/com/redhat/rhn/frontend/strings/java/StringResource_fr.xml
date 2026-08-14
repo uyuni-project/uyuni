@@ -7729,11 +7729,11 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
         <target>Impossible de gérer l'alimentation sur un système qui n'a pas de configuration enregistrée.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target>Cette fonctionnalité n'est disponible que sur les serveurs @@PRODUCT_NAME@@ qui ont installé des paquets « fence agents » également disponibles en tant que « fence-agents », « fence-agents-all » ou « fence-agents-ipmilan » selon votre système d'exploitation et infrastructure de gestion d'alimentation. Veuillez installer les agents fence. Si les agents fence ne sont pas disponibles pour votre système d'exploitation, alors la fonctionnalité de gestion d'alimentation n'est pas prise en charge.</target>
+        <target state="needs-adaptation">Cette fonctionnalité n'est disponible que sur les serveurs @@PRODUCT_NAME@@ qui ont installé des paquets « fence agents » également disponibles en tant que « fence-agents », « fence-agents-all » ou « fence-agents-ipmilan » selon votre système d'exploitation et infrastructure de gestion d'alimentation. Veuillez installer les agents fence. Si les agents fence ne sont pas disponibles pour votre système d'exploitation, alors la fonctionnalité de gestion d'alimentation n'est pas prise en charge.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10304,8 +10304,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="new"/>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="new"/>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -11901,6 +11901,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>
