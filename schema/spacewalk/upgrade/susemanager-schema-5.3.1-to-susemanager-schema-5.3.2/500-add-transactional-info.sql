@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
     created          TIMESTAMPTZ NOT NULL,
     prereq_status    VARCHAR(32) NOT NULL,
     prereq_at        TIMESTAMPTZ,
+    prereq_result    TEXT,
     reboot_required  BOOLEAN NOT NULL DEFAULT FALSE,
     reboot_status    VARCHAR(32) NOT NULL,
     reboot_at        TIMESTAMPTZ,

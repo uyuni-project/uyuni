@@ -40,6 +40,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -156,7 +157,7 @@ public class SaltServerActionService {
             return Collections.emptyMap();
         }
 
-        return actionIn.getSaltCalls(minions);
+        return TransactionalActionManager.prepareSaltCallsForTransactionalMinions(actionIn.getSaltCalls(minions));
     }
 
     /**
@@ -239,6 +240,7 @@ public class SaltServerActionService {
                 stagingJobMinionServerId.flatMap(MinionServerFactory::lookupById)
                         .ifPresent(server -> targetMinions.add(new MinionSummary(server)));
                 call = actionIn.prepareStagingTargets(targetMinions);
+                call = TransactionalActionManager.prepareSaltCallForTransactionalMinions(call, targetMinions);
             }
             else {
                 targetMinions = entry.getValue();
@@ -267,6 +269,32 @@ public class SaltServerActionService {
                 }
             }
         }
+    }
+
+    /**
+     * Continue an existing transactional action after its transactional phase.
+     *
+     * @param actionIn action being continued
+     * @param minionSummaries target minions
+     * @return target minions partitioned by whether the Salt job was accepted
+     */
+    public Map<Boolean, List<MinionSummary>> resumeTransactionalAction(
+            Action actionIn,
+            List<MinionSummary> minionSummaries) {
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(actionIn, minionSummaries).orElseThrow();
+
+        List<MinionSummary> succeeded = new ArrayList<>();
+        List<MinionSummary> failed = new ArrayList<>();
+
+        calls.forEach((call, targets) -> {
+            Map<Boolean, List<MinionSummary>> result =
+                    execute(actionIn, call, targets, false, false);
+            succeeded.addAll(result.get(true));
+            failed.addAll(result.get(false));
+        });
+
+        return Map.of(true, succeeded, false, failed);
     }
 
     /**
@@ -741,6 +769,14 @@ public class SaltServerActionService {
                             !mods.isEmpty() ?
                                     singletonMap("mods", mods) : emptyMap(),
                             createStateApplyKwargs(kwargs));
+                case TransactionalUpdateCalls.APPLY_FUNCTION:
+                    List<String> transactionalMods = (List<String>)kwargs.get("mods");
+                    return new SaltModuleRun(stateId,
+                            TransactionalUpdateCalls.APPLY_FUNCTION,
+                            serverAction.getParentAction().getId(),
+                            !CollectionUtils.isEmpty(transactionalMods) ?
+                                    singletonMap("mods", transactionalMods) : emptyMap(),
+                            createStateApplyKwargs(kwargs));
                 case SaltParameters.SYSTEM_REBOOT:
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
@@ -973,7 +1009,8 @@ public class SaltServerActionService {
          */
         if (!ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType())) {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
-                    Optional.of(Xor.right(function)), null);
+                    Optional.of(Xor.right(function)),
+                    null);
         }
         else if (sa.isStatusQueued()) {
             setActionAsPickedUp(sa);

@@ -13095,6 +13095,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.event.history.waitingForReboot">
+          <source>Waiting for reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.event.history.summary">
           <source>Summary</source>
         <context-group name="ctx">
@@ -13139,6 +13145,90 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.event.details">
           <source>Details:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional">
+          <source>Transactional progress:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.prerequisites">
+          <source>Prerequisites</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.reboot">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.execution">
+          <source>Post-reboot step</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.apply">
+          <source>Transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.applyReboot">
+          <source>System reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.step.finalization">
+          <source>Action completion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.status.completed">
+          <source>completed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.status.failed">
+          <source>failed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.status.pending">
+          <source>pending</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.status.notNeeded">
+          <source>not needed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.status.scheduled">
+          <source>queued</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.at">
+          <source> at </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
+        <trans-unit id="system.event.transactional.prerequisiteResult">
+          <source>Prerequisite result:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>

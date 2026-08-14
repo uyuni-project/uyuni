@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -86,14 +87,14 @@ public class PackageUpdateAction extends PackageAction {
                 getDetails().stream().map(d -> Arrays.asList(d.getPackageName().getName(),
                         d.getArch().toUniversalArchString(), d.getEvr().toUniversalEvrString()))
                 .toList();
-        if (pkgs.isEmpty()) {
-            // Full system package update using update state
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGUPDATE), Optional.empty()), filteredMinions);
-        }
-        else {
-            ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGINSTALL),
-                    Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs))), filteredMinions);
-        }
+        List<String> states = pkgs.isEmpty() ?
+                List.of(SaltParameters.PACKAGES_PKGUPDATE) :
+                List.of(SaltParameters.PACKAGES_PKGINSTALL);
+        Optional<Map<String, Object>> pillar = pkgs.isEmpty() ?
+                Optional.empty() :
+                Optional.of(singletonMap(SaltParameters.PARAM_PKGS, pkgs));
+
+        TransactionalActionManager.addApplyCalls(ret, states, pillar, filteredMinions);
         return ret;
     }
 
