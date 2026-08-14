@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-08-13 20:13+0000\n"
+"PO-Revision-Date: 2026-08-14 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
@@ -479,7 +479,6 @@ msgid "Invalid channel version."
 msgstr "유효하지 않은 채널 버전입니다."
 
 #: ../common/rhnException.py:109
-#, fuzzy
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -494,12 +493,12 @@ msgstr ""
 "     사용자 그룹 구성원 한도에 도달했습니다.\n"
 "\n"
 "     계정의 현재 설정에서 다른 사용자 계정 추가를 허용하지 않습니다.\n"
-"     조직 관리자에게 문의하여 서버에 구독할 수 있는 최대 사용자 수를\n"
-"     변경해야 하는지 확인하십시오.\n"
+"     조직 관리자에게 문의하여 서버에 구독할 수 있는\n"
+"     최대 사용자 수를 변경해야 하는지\n"
+"     확인하십시오.\n"
 "     "
 
 #: ../common/rhnException.py:119
-#, fuzzy
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -514,8 +513,9 @@ msgstr ""
 "     사용자 그룹 구성원 한도에 도달했습니다.\n"
 "\n"
 "     계정의 현재 설정에서 다른 시스템 프로파일 추가를 허용하지 않습니다.\n"
-"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는 최대 시스템 프로파일 수를\n"
-"     수정해야 하는지 확인하십시오.\n"
+"     조직 관리자에게 문의하여 귀하의 계정을 구독할 수 있는\n"
+"     최대 시스템 프로파일 수를 수정해야 하는지\n"
+"     확인하십시오.\n"
 "     "
 
 #: ../common/rhnException.py:129
@@ -896,7 +896,6 @@ msgid "Invalid content encoding"
 msgstr "유효하지 않은 컨텐트 인코딩"
 
 #: ../common/rhnException.py:317
-#, fuzzy
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -907,9 +906,10 @@ msgid ""
 msgstr ""
 "\n"
 "     요청을 처리하는 동안 오류가 발생했습니다. 이 문제가 지속되면\n"
-"     scc.suse.com에 버그 리포트를 입력해 주십시오.\n"
-"     버그 리포트를 제출하려면, 이 오류가 발생할 때 수행한 자세한 사항과\n"
-"     이 문제를 재현할 수 있는 방법에 대한 세부 정보를 포함해 주십시오.\n"
+"     scc.suse.com[]에 버그 리포트를 입력해 주십시오.\n"
+"     버그 리포트를 제출하려면, 이 오류가 발생할 때 수행한\n"
+"     자세한 사항과 이 문제를 재현할 수 있는 방법에 대한\n"
+"     세부 정보를 포함해 주십시오.\n"
 
 #: ../common/rhnException.py:368
 #, python-format
@@ -963,7 +963,7 @@ msgstr ""
 "%s\n"
 
 #: ../satellite_tools/messages.py:35
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "ERROR: there was a problem accessing the channel data from your temporary\n"
@@ -973,10 +973,11 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가 발생했습니다.\n"
-"       채널 ISO에서 이 디렉토리로 모든 데이터를 마이그레이션하셨습니까?\n"
-"       그러한 경우, 채널 ISO를 다시 확인하고 데이터가 모두 있는지 확인한 후\n"
-"       반복해서 다시 마운트하고 임시 리포지토리(%s)를 다시 채우십시오.\n"
+"오류: 임시 리포지토리에서 채널 데이터에 액세스하는 동안 오류가\n"
+"       발생했습니다. 채널 ISO에서 이 디렉토리로 모든 데이터를\n"
+"       마이그레이션하셨습니까? 그러한 경우, 채널 ISO를 다시 확인하고\n"
+"       데이터가 모두 있는지 확인한 후 반복해서 다시 마운트하고\n"
+"       임시 리포지토리(%s)를 다시 채우십시오.\n"
 
 #: ../satellite_tools/messages.py:45
 #, python-format
@@ -1005,7 +1006,7 @@ msgstr ""
 "       오류 메시지: %s\n"
 
 #: ../satellite_tools/messages.py:61
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
@@ -1017,7 +1018,8 @@ msgstr ""
 "\n"
 "오류: 상위 채널이 동기화되지 않은 경우 하위 채널을 동기화할 수 없습니다.\n"
 "       상위 채널이 (a) 이전에 동기화되거나 (b) 원하는 하위 채널과 함께 동기화되어야 합니다.\n"
-"       이 트랜잭션에서 누락된 상위 채널:\n"
+"       이 트랜잭션에서 누락된\n"
+"       상위 채널:\n"
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
