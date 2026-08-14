@@ -1,0 +1,1 @@
+- Include boot time grain in default Salt minion startup events.

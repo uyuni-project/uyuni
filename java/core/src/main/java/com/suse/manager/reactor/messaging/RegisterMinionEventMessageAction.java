@@ -50,6 +50,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -139,7 +140,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         RegisterMinionEventMessage registerMinionEventMessage = ((RegisterMinionEventMessage) msg);
         Optional<MinionStartupGrains> startupGrainsOpt = Opt.or(registerMinionEventMessage.getMinionStartupGrains(),
                 () -> saltApi.getGrains(registerMinionEventMessage.getMinionId(),
-                        new TypeToken<MinionStartupGrains>() { }, "machine_id", "saltboot_initrd", "susemanager"));
+                        new TypeToken<MinionStartupGrains>() { },
+                        "machine_id", "saltboot_initrd", "susemanager", "boot_time"));
         registerMinion(registerMinionEventMessage.getMinionId(), false, empty(), empty(), empty(),  startupGrainsOpt);
     }
 
@@ -156,7 +158,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                   Optional<String> activationKeyOverride) {
         Optional<MinionStartupGrains> startupGrainsOpt = saltApi.getGrains(minionId,
                 new TypeToken<>() {
-                }, "machine_id", "saltboot_initrd", "susemanager");
+                }, "machine_id", "saltboot_initrd", "susemanager", "boot_time");
         registerMinion(minionId, true, of(sshPushPort), proxyId, activationKeyOverride, startupGrainsOpt);
     }
 
@@ -176,6 +178,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                     StringUtil.sanitizeLogInput(minionId)),
             grains-> {
                 boolean saltbootInitrd = grains.getSaltbootInitrd();
+                Optional<Long> bootTime = grains.getBootTime();
                 Optional<String> mkey = grains.getSuseManagerGrain()
                         .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey);
                 Optional<ActivationKey> managementKey =
@@ -187,7 +190,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 Opt.consume(machineIdOpt,
                     ()-> LOG.error("Aborting: cannot find machine id for minion: {}", minionId),
                     machineId -> registerMinion(minionId, isSaltSSH, sshPort, proxyId, activationKeyOverride,
-                            validReactivationKey, machineId, saltbootInitrd));
+                            validReactivationKey, machineId, saltbootInitrd, bootTime));
             });
     }
 
@@ -223,7 +226,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      */
     private void registerMinion(String minionId, boolean isSaltSSH, Optional<Integer> sshPort,
                                 Optional<Long> saltSSHProxyId, Optional<String> actKeyOverride,
-                                Optional<String> reActivationKey, String machineId, boolean saltbootInitrd) {
+                                Optional<String> reActivationKey, String machineId, boolean saltbootInitrd,
+                                Optional<Long> bootTime) {
         Opt.consume(reActivationKey,
             //Case A: Registration
             () -> Opt.consume(ServerFactory.findByMachineId(machineId),
@@ -240,7 +244,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                     "machine-id ( %s vs. %s). Updating existing system with System ID: %s",
                                     minionId, machineId, minionServer.getMachineId(), minionServer.getId()));
                             updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                            applyMinionStartStates(minionId, minionServer, saltbootInitrd);
+                            applyMinionStartStates(minionId, minionServer, saltbootInitrd, bootTime);
                         }),
                 server -> Opt.consume(MinionServerFactory.findByMinionId(minionId),
                         () -> {
@@ -253,14 +257,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 },
                                 registeredMinion -> {
                                     updateAlreadyRegisteredInfo(minionId, machineId, registeredMinion);
-                                    applyMinionStartStates(minionId, registeredMinion, saltbootInitrd);
+                                    applyMinionStartStates(minionId, registeredMinion, saltbootInitrd, bootTime);
                                 });
                         },
                         minionServer -> server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
                                 serverAsMinion -> {
                                     // Case 2.2a - minion_id and machine-id are the same
                                     updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
-                                    applyMinionStartStates(minionId, minionServer, saltbootInitrd);
+                                    applyMinionStartStates(minionId, minionServer, saltbootInitrd, bootTime);
                                 },
                                 () -> {
                                     // Case 2.2b - Cleanup missing - salt DB got out of sync with Uyuni DB
@@ -308,12 +312,15 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     }
 
     /**
-     * Apply the states needed for regular start of an already registered minion
-     * @param minionId
-     * @param registeredMinion
-     * @param saltbootInitrd
+     * Apply the states needed for regular start of an already registered minion.
+     *
+     * @param minionId minion id
+     * @param registeredMinion registered minion
+     * @param saltbootInitrd true when saltboot initrd grain is set
+     * @param bootTime boot time reported by the minion, in seconds since epoch
      */
-    private void applyMinionStartStates(String minionId, MinionServer registeredMinion, boolean saltbootInitrd) {
+    private void applyMinionStartStates(String minionId, MinionServer registeredMinion,
+                                        boolean saltbootInitrd, Optional<Long> bootTime) {
         if (saltbootInitrd) {
             // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
             LOG.info("Applying saltboot for minion {}", minionId);
@@ -327,6 +334,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             saltApi.updateSystemInfo(minionTarget);
             scheduleCoCoAttestation(registeredMinion);
             schedulePackageListRefresh(registeredMinion);
+            TransactionalActionManager.resumePendingRebootActionsIfNeeded(registeredMinion, bootTime);
             // Check for pending SLES 16 migration verification
             RegistrationUtils.scheduleSLES16VerificationIfNeeded(registeredMinion);
         }

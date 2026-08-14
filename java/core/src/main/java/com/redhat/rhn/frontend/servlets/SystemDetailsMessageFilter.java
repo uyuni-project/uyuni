@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -54,22 +53,22 @@ public class SystemDetailsMessageFilter implements Filter {
         ServletResponse response,
         FilterChain chain
     ) throws ServletException, IOException {
-        chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         RequestContext rctx = new RequestContext(req);
         Long sid = rctx.getParamAsLong("sid");
-        if (sid == null) {
-            return;
+
+        if (sid != null) {
+            User user = rctx.getCurrentUser();
+            try {
+                Server s = SystemManager.lookupByIdAndUser(sid, user);
+                this.processSystemMessages(req, s);
+            }
+            catch (LookupException e) {
+                // Expected to happen when transferring systems between orgs, nothing to do.
+            }
         }
 
-        User user = rctx.getCurrentUser();
-        try {
-            Server s = SystemManager.lookupByIdAndUser(sid, user);
-            this.processSystemMessages(req, s);
-        }
-        catch (LookupException e) {
-            // Expected to happen when transferring systems between orgs, nothing to do.
-        }
+        chain.doFilter(request, response);
     }
 
     /**
@@ -99,21 +98,24 @@ public class SystemDetailsMessageFilter implements Filter {
         if (!condition || isMessageAlreadyPresent(req, messageKey)) {
             return;
         }
-        ActionErrors errs = new ActionErrors();
-        errs.add(
+        ActionMessages messages = (ActionMessages) req.getAttribute(Globals.ERROR_KEY);
+        if (messages == null) {
+            messages = new ActionErrors();
+        }
+        messages.add(
             ActionMessages.GLOBAL_MESSAGE,
             new ActionMessage(messageKey)
         );
-        StrutsDelegate.getInstance().saveMessages(req, errs);
+        req.setAttribute(Globals.ERROR_KEY, messages);
     }
 
     /**
-     * Checks if the message is already present in the session, to avoid duplicate alerts
+     * Checks if the message is already present in the request, to avoid duplicate alerts.
      */
     private boolean isMessageAlreadyPresent(HttpServletRequest request, String messageKey) {
-        Object sessionErrs = request.getSession().getAttribute(Globals.ERROR_KEY);
-        if (sessionErrs != null) {
-            Iterator<ActionMessage> i = ((ActionMessages) sessionErrs).get(ActionMessages.GLOBAL_MESSAGE);
+        Object requestErrs = request.getAttribute(Globals.ERROR_KEY);
+        if (requestErrs != null) {
+            Iterator<ActionMessage> i = ((ActionMessages) requestErrs).get(ActionMessages.GLOBAL_MESSAGE);
             while (i.hasNext()) {
                 if (i.next().getKey().equals(messageKey)) {
                     return true;
