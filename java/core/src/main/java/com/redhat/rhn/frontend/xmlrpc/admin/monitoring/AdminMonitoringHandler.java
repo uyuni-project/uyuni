@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace admin.monitoring
  * @apidoc.doc Provides methods to manage the monitoring of the #product() server.
  */
-public class AdminMonitoringHandler extends BaseHandler {
+public class AdminMonitoringHandler extends BaseHandler implements AdminMonitoringHandlerApi {
 
     private static Map<String, String> messageMap = Map.of(
             "enable", "enable_again_to_sync_config",
@@ -63,15 +63,13 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @apidoc.doc Enable monitoring.
      * @apidoc.param #session_key()
      * @apidoc.returntype
-     *  #return_array_begin()
-     *      #struct_begin("Exporters")
-     *          #prop("string", "node")
-     *          #prop("string", "tomcat")
-     *          #prop("string", "taskomatic")
-     *          #prop("string", "postgres")
-     *          #prop("string", "self_monitoring")
-     *      #struct_end()
-     *  #array_end()
+     *  #struct_begin("Exporters")
+     *      #prop("string", "node")
+     *      #prop("string", "tomcat")
+     *      #prop("string", "taskomatic")
+     *      #prop("string", "postgres")
+     *      #prop("string", "self_monitoring")
+     *  #struct_end()
      */
     public Map<String, String> enable(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
@@ -90,15 +88,13 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @apidoc.doc Disable monitoring.
      * @apidoc.param #session_key()
      * @apidoc.returntype
-     *  #return_array_begin()
-     *      #struct_begin("Exporters")
-     *          #prop("string", "node")
-     *          #prop("string", "tomcat")
-     *          #prop("string", "taskomatic")
-     *          #prop("string", "postgres")
-     *          #prop("string", "self_monitoring")
-     *      #struct_end()
-     *  #array_end()
+     *  #struct_begin("Exporters")
+     *      #prop("string", "node")
+     *      #prop("string", "tomcat")
+     *      #prop("string", "taskomatic")
+     *      #prop("string", "postgres")
+     *      #prop("string", "self_monitoring")
+     *  #struct_end()
      */
     public Map<String, String> disable(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
@@ -115,15 +111,13 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @apidoc.doc Get the status of each Prometheus exporter.
      * @apidoc.param #session_key()
      * @apidoc.returntype
-     *  #return_array_begin()
-     *      #struct_begin("Exporters")
-     *          #prop("string", "node")
-     *          #prop("string", "tomcat")
-     *          #prop("string", "taskomatic")
-     *          #prop("string", "postgres")
-     *          #prop("string", "self_monitoring")
-     *      #struct_end()
-     *  #array_end()
+     *  #struct_begin("Exporters")
+     *      #prop("string", "node")
+     *      #prop("string", "tomcat")
+     *      #prop("string", "taskomatic")
+     *      #prop("string", "postgres")
+     *      #prop("string", "self_monitoring")
+     *  #struct_end()
      */
     @ReadOnly
     public Map<String, String> getStatus(User loggedInUser) {
