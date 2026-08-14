@@ -10030,20 +10030,20 @@ Please note that some manual configuration of these scripts may still be require
         <target>預設的散佈版本頻道對映無法刪除。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
-        <target>散佈版本頻道對映會定義伺服器連上的基礎頻道（根據其註冊的 OS 和架構）。預設的散佈版本頻道對映可覆寫但不可刪除。</target>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <target state="needs-adaptation">散佈版本頻道對映會定義伺服器連上的基礎頻道（根據其註冊的 OS 和架構）。預設的散佈版本頻道對映可覆寫但不可刪除。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
-        <target>組織專屬的散佈版本頻道對映可在此進行編輯。預設的散佈版本頻道對映不可編輯。它們在所有組織中僅能被覆寫。</target>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">組織專屬的散佈版本頻道對映可在此進行編輯。預設的散佈版本頻道對映不可編輯。它們在所有組織中僅能被覆寫。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
         <target>組織專屬的散佈版本頻道對映將會被刪除。若它目前正在覆寫預設的頻道對映，預設的對映將會生效。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
-        <target>預設的散佈版本頻道對映無法刪除。它們在所有組織中僅能被覆寫。</target>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">預設的散佈版本頻道對映無法刪除。它們在所有組織中僅能被覆寫。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>

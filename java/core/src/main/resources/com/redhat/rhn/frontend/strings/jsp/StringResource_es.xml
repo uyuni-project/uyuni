@@ -10073,20 +10073,20 @@ Tenga en cuenta que podría ser necesario configurar manualmente estos scripts. 
         <target>No se pueden eliminar las asociaciones de canales de distribución predeterminadas.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
-        <target>La asignación de canales de distribución define los canales base predeterminados en donde los servidores llegan según su SO y arquitectura mediante registro. La asignación de canales de distribución predeterminada puede sobrescribirse, pero no se pueden borrar.</target>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <target state="needs-adaptation">La asignación de canales de distribución define los canales base predeterminados en donde los servidores llegan según su SO y arquitectura mediante registro. La asignación de canales de distribución predeterminada puede sobrescribirse, pero no se pueden borrar.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
-        <target>La asignación de canales de distribución específica puede modificarse aquí. La asignación de canales de distribución predeterminada no puede modificarse. Solamente puede sobrescribirse dentro de cada organización.</target>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">La asignación de canales de distribución específica puede modificarse aquí. La asignación de canales de distribución predeterminada no puede modificarse. Solamente puede sobrescribirse dentro de cada organización.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
         <target>La asignación de canales de distribución específica se borrará. Si está sobrescribiendo una asignación de canales predeterminada, la asignación predeterminada se hace efectiva.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
-        <target>La asignación de canales de distribución predeterminada no se puede borrar. La asignación solamente puede sobrescribirse dentro de cada organización.</target>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">La asignación de canales de distribución predeterminada no se puede borrar. La asignación solamente puede sobrescribirse dentro de cada organización.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>

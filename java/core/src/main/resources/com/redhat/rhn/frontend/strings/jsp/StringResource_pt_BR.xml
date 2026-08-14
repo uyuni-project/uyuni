@@ -10041,20 +10041,20 @@ Please note that some manual configuration of these scripts may still be require
         <target>Mapeamento de Canal de Distribuição Padrão não pode ser removido.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
-        <target>Mapeamentos de canal de distribuição define os canais padrão base onde os servidores se instalam de acordo com seus SO e arquitetura por registro. Os mapeamentos de canal de distribuição podem ser sobrescritos mas não podem ser removidos.</target>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <target state="needs-adaptation">Mapeamentos de canal de distribuição define os canais padrão base onde os servidores se instalam de acordo com seus SO e arquitetura por registro. Os mapeamentos de canal de distribuição podem ser sobrescritos mas não podem ser removidos.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
-        <target>Mapeamentos de Canal de Distribuição específica da Empresa podem ser editados aqui. Os Mapeamentos de Canal de Distribuição Padrão não podem ser editados. Isto pode ser sobrescrito dentro de cada empresa.</target>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">Mapeamentos de Canal de Distribuição específica da Empresa podem ser editados aqui. Os Mapeamentos de Canal de Distribuição Padrão não podem ser editados. Isto pode ser sobrescrito dentro de cada empresa.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
         <target>Mapeamento de Canal de Distribuição específico da Empresa será removido. Caso esteja sobrescrevendo um mapeamento de canal padrão no momento, o mapeamento padrão se torna efetivo.</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
-        <target>Mapeamento de Canal de Distribuição Padrão não pode ser removido. Eles podem ser somente sobrescritos dentro de cada empresa.</target>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">Mapeamento de Canal de Distribuição Padrão não pode ser removido. Eles podem ser somente sobrescritos dentro de cada empresa.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>
