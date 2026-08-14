@@ -47,6 +47,23 @@ namespace :cucumber do
       # Cucumber is now configured to use the consistent path/timestamp
       t.cucumber_opts = cucumber_opts + features unless features.nil?
     end
+    if filename == :reference_reposync
+      # The SLES 15 SP7 product-sync scenario in this run set waits on ~19 channels sequentially;
+      # individual channel syncs have been observed taking up to 1110s, so the default 2400s
+      # per-scenario watchdog (env.rb SCENARIO_HARD_LIMIT) trips before the sync finishes and kills
+      # the browser mid-run. Bump it to 5400s (90 min) for this job only, via a prerequisite task
+      # that sets the env var right before this task's cucumber process starts - other run_sets
+      # (e.g. core.yml, which also runs srv_sync_products.feature) are unaffected since their task
+      # never invokes this prerequisite. `||=` still lets an explicit external override win.
+      # NOTE: the prerequisite is declared with a bare symbol (not "cucumber:...") so Rake's
+      # namespace macro prefixes it exactly once; it's then attached via Rake::Task[task_name],
+      # which does a direct lookup on the already fully-qualified name instead of re-scoping it.
+      watchdog_task = :"#{filename}_bump_scenario_watchdog"
+      task watchdog_task do
+        ENV['SCENARIO_HARD_LIMIT'] ||= '5400'
+      end
+      Rake::Task[task_name].enhance([watchdog_task])
+    end
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
     Rake::Task[task_name].enhance do

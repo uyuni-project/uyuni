@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>spacewalk-java</artifactId>
-        <version>5.2.19</version>
+        <version>5.3.1</version>
     </parent>
 
     <groupId>org.uyuni-project.spacewalk-java</groupId>
@@ -260,14 +260,6 @@
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
         </dependency>
-        <dependency>
-            <groupId>oro</groupId>
-            <artifactId>oro</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>suse</groupId>
-            <artifactId>simple-core</artifactId>
-        </dependency>
 
         <!-- Runtime Dependencies -->
         <dependency>
@@ -307,12 +299,12 @@
         </dependency>
         <dependency>
             <groupId>com.ongres.scram</groupId>
-            <artifactId>client</artifactId>
+            <artifactId>scram-client</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.ongres.scram</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>scram-common</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

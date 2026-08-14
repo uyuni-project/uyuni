@@ -14,13 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_UPDATE;
 import static com.redhat.rhn.manager.rhnset.RhnSetDecl.SYSTEMS;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -46,7 +45,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * SSM enabling systems for config management.
  * EnableListAction
  */
-public class EnableListAction extends RhnListAction implements MaintenanceWindowsAware {
+public class EnableListAction extends RhnListAction {
 
     /**
      * {@inheritDoc}
@@ -79,7 +78,7 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         Set<Long> systemIds = getSystemIds(user);
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
         request.setAttribute("date", picker);
 
@@ -100,12 +99,5 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
         String setLabel = SYSTEMS.getLabel();
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystemsInSet(user, pcIn, setLabel);
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_PACKAGES_UPDATE.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

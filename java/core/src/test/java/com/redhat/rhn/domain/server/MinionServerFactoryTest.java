@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -105,7 +105,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
 
         // ActionFactoryTest.createAction() for TYPE_REBOOT create another minion Server
         // we have 4 minions in this test
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_REBOOT);
         Set<MinionServer> minionServer = action.getServerActions().stream()
                 .map(ServerAction::getServer)
                 .map(s -> s.asMinionServer().orElse(null))

@@ -17,9 +17,8 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
@@ -60,8 +59,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * SSM action that handles prompting the user for when to install the package as well as
  * creating the action when the user confirms the creation.
  */
-public class SchedulePackageInstallationAction extends RhnListAction implements
-        Listable<EssentialServerDto>, MaintenanceWindowsAware {
+public class SchedulePackageInstallationAction extends RhnListAction implements Listable<EssentialServerDto> {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SchedulePackageInstallationAction.class);
@@ -146,7 +144,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
         ActionChainHelper.prepopulateActionChains(request);
 
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_UPDATE);
 
         return strutsDelegate.forwardParams(
                 actionMapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
@@ -160,12 +158,5 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
 
         return SystemManager.systemsSubscribedToChannelInSet(cid, user,
                 SetLabels.SYSTEM_LIST);
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (ActionFactory.TYPE_PACKAGES_UPDATE.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

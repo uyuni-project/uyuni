@@ -24,7 +24,7 @@
 %endif
 
 Name:           spacewalk-reports
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only

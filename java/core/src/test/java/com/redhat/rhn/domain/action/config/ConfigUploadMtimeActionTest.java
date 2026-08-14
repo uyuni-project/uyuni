@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -43,7 +44,7 @@ public class ConfigUploadMtimeActionTest extends BaseTestCase {
     @Test
     public void testLookupConfigUploadAction() throws Exception {
         User user = UserTestUtils.createUser(this);
-        Action newA = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
+        Action newA = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_CONFIGFILES_MTIME_UPLOAD);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
 
@@ -76,7 +77,7 @@ public class ConfigUploadMtimeActionTest extends BaseTestCase {
         User usr = UserTestUtils.createUser(this);
 
         ConfigUploadMtimeAction testAction = (ConfigUploadMtimeAction) ActionFactoryTest
-                .createAction(usr, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
+                .createAction(usr, ActionTypeEnum.TYPE_CONFIGFILES_MTIME_UPLOAD);
 
         ConfigDateFileAction cfda = new ConfigDateFileAction();
         cfda.setFileName("/tmp/rhn-java-" + TestUtils.randomString());

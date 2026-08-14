@@ -1,0 +1,2 @@
+- Fixed custom RBAC role names being incorrectly
+  localized. (bsc#1271116)

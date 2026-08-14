@@ -23,7 +23,7 @@
 %global         snpguest_arch x86_64
 
 Name:           uyuni-coco-attestation
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        %{productprettyname} utility for Confidential Computing Attestation
 License:        GPL-2.0-only
@@ -102,11 +102,6 @@ Package containing the Javadoc API documentation for %{name}.
 
 # Shade is used only for developing convenience
 %pom_remove_plugin -r :maven-shade-plugin
-
-%if 0%{?suse_version} >= 1600
-%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="client"]' 'scram-client' attestation-core/pom.xml
-%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="common"]' 'scram-common' attestation-core/pom.xml
-%endif
 
 %{mvn_package} ':attestation-module-pvattest' module-pvattest
 

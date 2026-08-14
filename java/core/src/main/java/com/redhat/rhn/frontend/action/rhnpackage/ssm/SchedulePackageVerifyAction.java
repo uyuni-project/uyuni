@@ -14,17 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -65,7 +63,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Handles the display and capturing of scheduling package verifications for systems in
  * the SSM.
  */
-public class SchedulePackageVerifyAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class SchedulePackageVerifyAction extends RhnAction implements Listable {
 
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SchedulePackageVerifyAction.class);
@@ -141,7 +139,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
         // Prepopulate the Action Chain selector
         Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_PACKAGES_VERIFY);
         ActionChainHelper.prepopulateActionChains(request);
 
         return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
@@ -177,12 +175,5 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
         TagHelper.bindElaboratorTo("groupList", results.getElaborator(), request);
 
         return results;
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_PACKAGES_VERIFY.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

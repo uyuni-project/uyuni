@@ -37,13 +37,14 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -2424,7 +2425,7 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
-        List<ServerAction> sActions = ActionFactory.listServerActionsForServer(server, actionType, earliestDate);
+        List<ServerAction> sActions = ServerActionFactory.listServerActionsForServer(server, actionType, earliestDate);
 
         // In order to support bug 501224, this method is being updated to populate
         // the result vs having the serializer do so.  The reason is that in order to
@@ -3613,7 +3614,7 @@ public class SystemHandler extends BaseHandler {
         if (eventDetail.getHistoryType() != null) {
             // This is an action related entry this we can extract additional information
             final Action action = ActionManager.lookupAction(loggedInUser, eventDetail.getId());
-            final ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server, action);
+            final ServerAction serverAction = ServerActionFactory.getServerActionForServerAndAction(server, action);
 
             eventDetail.setEarliestAction(action.getEarliestAction());
             eventDetail.setResultMsg(serverAction.getResultMsg());
@@ -4179,7 +4180,8 @@ public class SystemHandler extends BaseHandler {
      * @return package action id
      */
     private Long[] schedulePackagesAction(User loggedInUser, List<Integer> sids,
-            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionType acT, Boolean allowModules) {
+            List<Map<String, Long>> packageMaps, Date earliestOccurrence, ActionTypeEnum actionTypeEnum,
+                                          Boolean allowModules) {
 
         List<Long> actionIds = new ArrayList<>();
 
@@ -4208,7 +4210,7 @@ public class SystemHandler extends BaseHandler {
             return PackageFactory.lookupByNevraIds(org, nameId, evrId, archId).stream();
         }).toList();
 
-        if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
+        if (ActionTypeEnum.TYPE_PACKAGES_UPDATE == actionTypeEnum) {
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
                     packages.stream().map(Package::getId).collect(toList()),
                     sids.stream().map(Integer::longValue).collect(toList())
@@ -4225,7 +4227,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // PTF master packages cannot be removed
-        if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(acT)) {
+        if (ActionTypeEnum.TYPE_PACKAGES_REMOVE == actionTypeEnum) {
             List<Long> ptfMasterPackages = packages.stream()
                                                    .filter(Package::isMasterPtfPackage)
                                                    .map(Package::getId)
@@ -4252,7 +4254,7 @@ public class SystemHandler extends BaseHandler {
             Action action = null;
             try {
 
-                action = ActionManager.schedulePackageAction(loggedInUser, packageMaps, acT,
+                action = ActionManager.schedulePackageAction(loggedInUser, packageMaps, actionTypeEnum,
                         earliestOccurrence, server);
             }
             catch (MissingEntitlementException e) {
@@ -4276,8 +4278,7 @@ public class SystemHandler extends BaseHandler {
      * @param earliestOccurrence Earliest occurrence of the package install
      * @return package action id
      */
-    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids,
-            Date earliestOccurrence, ActionType acT) {
+    private Long schedulePackagesUpdateAction(User loggedInUser, List<Integer> sids, Date earliestOccurrence) {
         HashSet<Long> lsids = new HashSet<>();
         for (Integer sid : sids) {
             Server server;
@@ -4298,7 +4299,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         try {
-            return ActionManager.schedulePackageAction(loggedInUser, null, acT,
+            return ActionManager.schedulePackageAction(loggedInUser, null, ActionTypeEnum.TYPE_PACKAGES_UPDATE,
                     earliestOccurrence, lsids).getId();
         }
         catch (MissingEntitlementException e) {
@@ -4458,7 +4459,7 @@ public class SystemHandler extends BaseHandler {
         if (retracted.isEmpty()) {
             return schedulePackagesAction(loggedInUser, sids,
                     packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                    ActionFactory.TYPE_PACKAGES_UPDATE, allowModules);
+                    ActionTypeEnum.TYPE_PACKAGES_UPDATE, allowModules);
         }
         else {
             throw new RetractedPackageFault(retractedPids);
@@ -4483,9 +4484,7 @@ public class SystemHandler extends BaseHandler {
     public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
                                         Date earliestOccurrence) {
 
-        return schedulePackagesUpdateAction(loggedInUser, sids,
-                earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE);
+        return schedulePackagesUpdateAction(loggedInUser, sids, earliestOccurrence);
     }
 
     /**
@@ -4603,7 +4602,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_UPDATE, allowModules);
+                ActionTypeEnum.TYPE_PACKAGES_UPDATE, allowModules);
     }
 
     /**
@@ -4695,7 +4694,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, false);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, false);
     }
 
     /**
@@ -4723,7 +4722,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, allowModules);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, allowModules);
     }
 
     /**
@@ -4750,7 +4749,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, false)[0].intValue();
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, false)[0].intValue();
     }
 
     /**
@@ -4781,7 +4780,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
     }
 
     /**
@@ -4814,7 +4813,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, false);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, false);
     }
 
     /**
@@ -4851,7 +4850,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, allowModules);
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, allowModules);
     }
 
     /**
@@ -4887,7 +4886,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, false)[0].intValue();
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, false)[0].intValue();
     }
 
     /**
@@ -4927,7 +4926,7 @@ public class SystemHandler extends BaseHandler {
 
         return schedulePackagesAction(loggedInUser, sids,
                 packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
-                ActionFactory.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
+                ActionTypeEnum.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
     }
 
     /**

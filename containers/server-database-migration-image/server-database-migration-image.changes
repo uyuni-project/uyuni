@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 05 13:29:44 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Add a README file for artifacthub to display
+  * Ensure su is installed
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Wed Jun 17 15:04:20 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5

@@ -1,0 +1,1 @@
+- Fix salt deletion on SSH minions (bsc#1274023)

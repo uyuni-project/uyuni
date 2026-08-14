@@ -23,14 +23,15 @@ LABEL org.opencontainers.image.description="${PRODUCT} PostgreSQL container imag
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.3.0
+LABEL org.opencontainers.image.version=5.3.1
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 # Hard code the postgres UID / GID to the upstream image value and what was in the big container
-# The files are chown'ed in the entrypoint
+# Ownership and permissions are fixed at runtime by /usr/bin/sanity_run.sh
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
@@ -39,4 +40,4 @@ RUN echo "${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%" > 
 ENTRYPOINT ["/uyuni-entrypoint.sh"]
 
 CMD ["postgres"]
-HEALTHCHECK --interval=10s --start-period=10s --timeout=5s --retries=3 CMD ["/usr/bin/healthcheck.sh"]
+HEALTHCHECK --interval=10s --start-period=600s --timeout=120s --retries=3 CMD ["/usr/bin/healthcheck.sh"]

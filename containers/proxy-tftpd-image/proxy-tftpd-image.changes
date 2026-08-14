@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Aug 05 12:37:32 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Add a README file for artifacthub to display
+  * Bump version to 5.3.0
+  * Install python3 to provide /usr/bin/python3 required by the
+    container entry point scripts on BCI 16.0
+    (gh#uyuni-project/uyuni#12368, bsc#1273343)
+
+-------------------------------------------------------------------
 Wed Jun 17 15:02:03 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8

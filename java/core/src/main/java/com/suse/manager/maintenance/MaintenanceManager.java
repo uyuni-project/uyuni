@@ -29,6 +29,7 @@ import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -647,7 +648,7 @@ public class MaintenanceManager {
 
         // we only take maintenance-mode-only actions and actions that don't have prerequisite
         // (first actions in action chains) into account
-        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
+        if (action.getActionType().isMaintenanceModeOnly() && action.getPrerequisite() == null) {
 
             // Special Cases
             if (action.canBeScheduledAnyway()) {
@@ -718,20 +719,21 @@ public class MaintenanceManager {
         Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c));
 
         Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
-            .flatMap(s -> ActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
+            .flatMap(s ->
+                    ServerActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
             .filter(sa -> {
                 Action a = sa.getParentAction();
                 if (a.getPrerequisite() != null) {
                     // skip actions not first in a chain
                     return false;
                 }
-                if (a.getActionType().isMaintenancemodeOnly()) {
+                if (a.getActionType().isMaintenanceModeOnly()) {
                     // test them, when they require maintenance mode
                     return true;
                 }
                 // check actions where a depended on action in the chain requires maintenance mode
                 return ActionFactory.lookupDependentActions(a)
-                        .anyMatch(da -> da.getActionType().isMaintenancemodeOnly());
+                        .anyMatch(da -> da.getActionType().isMaintenanceModeOnly());
             })
             .filter(Opt.fold(calendarOpt,
                     () -> (sa -> true),

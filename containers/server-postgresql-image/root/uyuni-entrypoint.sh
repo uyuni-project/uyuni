@@ -150,12 +150,20 @@ main() {
         exec "$@"
     fi
 
+    # Check if disk space is critically low before starting up
+    if ! /usr/bin/diskcheck.sh; then
+        log "Startup aborted due to disk space check failure."
+        exit 1
+    fi
+
     if ! db_already_exists; then
         log "No existing database found – running upstream entrypoint: $UPSTREAM_ENTRYPOINT"
         exec "$UPSTREAM_ENTRYPOINT" "$@"
     fi
 
     if [ "$(id -u)" = '0' ]; then
+        log "Running sanity ownership check"
+        /usr/bin/sanity_run.sh
         log "Running as root, dropping privileges to postgres..."
         exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "$BASH_SOURCE" "$@"
     fi

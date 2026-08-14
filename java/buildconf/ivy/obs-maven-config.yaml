@@ -152,10 +152,10 @@ artifacts:
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Uyuni
-  - artifact: client
+  - artifact: scram-client
     package: ongres-scram-client
     repository: Leap
-  - artifact: common
+  - artifact: scram-common
     package: ongres-scram
     repository: Leap
   - artifact: stringprep
@@ -163,8 +163,6 @@ artifacts:
     repository: Leap
   - artifact: saslprep
     package: ongres-stringprep
-    repository: Leap
-  - artifact: oro
     repository: Leap
   - artifact: postgresql
     package: postgresql-jdbc
@@ -199,10 +197,6 @@ artifacts:
     repository: Uyuni
   - artifact: prometheus-metrics-exposition-textformats
     package: prometheus-metrics-java-exposition-textformats
-    repository: Uyuni
-  - artifact: simple-core
-    # How comes that package is not noarch?
-    arch: x86_64
     repository: Uyuni
   - artifact: sitemesh
     repository: Uyuni

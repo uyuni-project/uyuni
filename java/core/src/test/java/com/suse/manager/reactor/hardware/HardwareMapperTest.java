@@ -220,6 +220,13 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
         assertEquals(expectedOsString, os);
     }
 
+    private void assertComputeOsVersionString(String expectedOsVersionString, HardwareMapper hwMapper,
+                                              String readValuesOutput) {
+        Map<String, String> sysValues = hwMapper.getSysValuesMap(readValuesOutput);
+        String osVersion = hwMapper.computeOsVersionStringForS390Arch(sysValues);
+        assertEquals(expectedOsVersionString, osVersion);
+    }
+
     private void assertHostS390ServerFamily(String expectedS390ServerFamily, HardwareMapper hwMapper,
                                             String readValuesOutput, String digitalServerId) {
         hwMapper.mapSysinfo(readValuesOutput);
@@ -235,13 +242,13 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
 
     private static Stream<Arguments> allServersInfo() {
         return Stream.of(
-                Arguments.of("z/VM", "z12", "IBM Mainframe z12 2827 0000000000061A23",
+                Arguments.of("z/VM", "6.3.0", "z12", "IBM Mainframe z12 2827 0000000000061A23",
                         SERVER_1_DIGITAL_SERVER_ID, SERVER_1_STATE_CHANGES_RET_READ_VALUES),
-                Arguments.of("z/VM", "z15", "IBM Mainframe z15 8561 00000000000612A3",
+                Arguments.of("z/VM", "7.4.0", "z15", "IBM Mainframe z15 8561 00000000000612A3",
                         SERVER_2_DIGITAL_SERVER_ID, SERVER_2_STATE_CHANGES_RET_PROC_SYSINFO),
-                Arguments.of("KVM/Linux", "z16", "IBM Mainframe z16 3932 00000000000987F6",
+                Arguments.of("KVM/Linux", "N/A", "z16", "IBM Mainframe z16 3932 00000000000987F6",
                         SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_READ_VALUES),
-                Arguments.of("KVM/Linux", "z16", "IBM Mainframe z16 3932 00000000000987F6",
+                Arguments.of("KVM/Linux", "N/A", "z16", "IBM Mainframe z16 3932 00000000000987F6",
                         SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_PROC_SYSINFO)
         );
     }
@@ -249,8 +256,8 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
     @ParameterizedTest
     @MethodSource("allServersInfo")
     @DisplayName("mapSysinfo correctly showing OS value on s390 hypervisors")
-    public void mapSysinfoShowingCorrectValues(String expectedOs, String expectedFamily, String expectedName,
-                                               String digitalServerId, String readValuesOutput) {
+    public void mapSysinfoShowingCorrectValues(String expectedOs, String expectedOsVersion, String expectedFamily,
+                                               String expectedName, String digitalServerId, String readValuesOutput) {
         HardwareMapper hwMapper = createTestS390HwMapper();
         assertNull(ServerFactory.lookupForeignSystemByDigitalServerId(digitalServerId));
 
@@ -258,6 +265,7 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
 
         assertNotNull(ServerFactory.lookupForeignSystemByDigitalServerId(digitalServerId));
         assertComputeOsString(expectedOs, hwMapper, readValuesOutput);
+        assertComputeOsVersionString(expectedOsVersion, hwMapper, readValuesOutput);
         assertHostOsString(expectedOs, digitalServerId);
 
         assertComputeS390ServerFamily(expectedFamily, hwMapper, readValuesOutput);

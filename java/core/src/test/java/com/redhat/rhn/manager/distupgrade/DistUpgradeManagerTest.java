@@ -23,10 +23,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -534,8 +536,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ErrataTestUtils.createTestInstalledPackage(zyppPlugin, server);
 
         // Store a dist upgrade action for this server
-        Action action = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_DIST_UPGRADE);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
         TestUtils.saveAndFlush(serverAction); //reassign variable if still needed
 
@@ -1095,7 +1096,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testHandleVerificationResultSuccess() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);
@@ -1119,7 +1120,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testHandleVerificationResultFailure() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);
@@ -1143,7 +1144,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testInitialMigrationStateKeepsActionInProgress() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);
@@ -1195,10 +1196,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Map<Long, DistUpgradeActionDetails> detailsMap = new HashMap<>();
         detailsMap.put(det.getServer().getId(), det);
 
-        var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_DIST_UPGRADE);
+        var action = (DistUpgradeAction) ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         detailsMap.values().stream()
                 .map(DistUpgradeActionDetails::getServer)
-                .forEach(server -> ActionFactory.createAddServerAction(server, action));
+                .forEach(server -> ServerActionFactory.createAddServerAction(server, action));
 
         // Add the details and save
         action.setDetailsMap(detailsMap);
@@ -1207,7 +1208,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Simulate SaltUtils prematurely marking the action complete
         ServerAction sa = action.getServerActions().stream().findFirst().orElseThrow();
         sa.setStatusCompleted();
-        ActionFactory.save(sa);
+        ServerActionFactory.save(sa);
 
         assertEquals(sles157Channel, minion.getBaseChannel());
 
@@ -1307,7 +1308,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testHandleVerificationResultSuccessWithRealFixture() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);
@@ -1335,7 +1336,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testHandleVerificationExtractsMessageFallbackWhenNoComment() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);
@@ -1363,7 +1364,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testHandleVerificationResultFailureForcesRepoRevertForSles16() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         DistUpgradeAction dupAction = (DistUpgradeAction) ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_DIST_UPGRADE);
+                user, ActionTypeEnum.TYPE_DIST_UPGRADE);
         dupAction.setDetailsMap(new HashMap<>());
         ServerAction sa = ActionFactoryTest.createServerAction(minion, dupAction);
         dupAction.addServerAction(sa);

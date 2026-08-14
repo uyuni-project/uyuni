@@ -224,10 +224,12 @@ public class FilterApiController {
             return createFromTemplate(req, res, user);
         }
 
+        String createCriteriaValue = StringUtils.trimToNull(createFilterRequest.getCriteriaValue());
+
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
                 createFilterRequest.getCriteriaKey(),
-                StringUtils.trimToNull(createFilterRequest.getCriteriaValue()));
+                createCriteriaValue);
 
 
         ContentFilter createdFilter;
@@ -275,10 +277,12 @@ public class FilterApiController {
     public static String updateContentFilter(Request req, Response res, User user) {
         FilterRequest updateFilterRequest = FilterHandler.getFilterRequest(req);
 
+        String updateCriteriaValue = StringUtils.trimToNull(updateFilterRequest.getCriteriaValue());
+
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
-                StringUtils.trimToNull(updateFilterRequest.getCriteriaValue()));
+                updateCriteriaValue);
         try {
             CONTENT_MGR.updateFilter(
                     Long.parseLong(req.params("filterId")),

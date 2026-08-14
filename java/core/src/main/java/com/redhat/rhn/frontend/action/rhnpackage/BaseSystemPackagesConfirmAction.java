@@ -21,11 +21,10 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -63,13 +62,19 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author paji
  * BaseSystemPackagesAction
  */
-public abstract class BaseSystemPackagesConfirmAction extends RhnAction implements MaintenanceWindowsAware {
+public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(BaseSystemPackagesConfirmAction.class);
 
     private static final String DATA_SET = RequestContext.PAGE_LIST;
     private static final String WIDGET_SUMMARY = "widgetSummary";
     private static final String HEADER_KEY = "header";
+
+    /**
+     * Retrieves the reference action type to check if the maintenance mode only is on
+     * @return the reference action type
+     */
+    abstract ActionTypeEnum getReferenceMaintenanceWindowsType();
 
     /** {@inheritDoc} */
     @Override
@@ -115,7 +120,8 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
         request.setAttribute("date", picker);
 
         ActionChainHelper.prepopulateActionChains(request);
-        populateMaintenanceWindows(request, Set.of(server.getId()));
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, Set.of(server.getId()),
+                getReferenceMaintenanceWindowsType());
 
         request.setAttribute("system", server);
         requestContext.copyParamToAttributes(RequestContext.SID);
@@ -131,19 +137,6 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
 
 
     }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (getActionType().isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
-    }
-
-    /**
-     * Return the {@link ActionType} of the backend action executed by this struts action.
-     * @return the {@link ActionType}
-     */
-    protected abstract ActionType getActionType();
 
     private List<PackageListItem> getDataResult(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);

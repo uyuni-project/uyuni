@@ -32,11 +32,14 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.ScapPolicy;
@@ -1734,13 +1737,15 @@ public class ScapAuditController {
         }
         ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
                 "root", "root", scriptTimeout, script);
-        ScriptRunAction action = (ScriptRunAction) ActionFactory.createAction(ActionFactory.TYPE_SCRIPT_RUN);
-        action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());
-        action.setOrg(user.getOrg());
-        action.setSchedulerUser(user);
-        action.setEarliestAction(new Date());
+        ScriptRunAction action = (ScriptRunAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_SCRIPT_RUN)
+                .withSchedulerUser(user)
+                .withOrg(user.getOrg())
+                .withName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier())
+                .build();
+
         action.setScriptActionDetails(scriptDetails);
-        ActionFactory.addServerToAction(server.getId(), action);
+        ServerActionFactory.addServerToAction(server.getId(), action);
         ActionFactory.save(action);
         return action;
     }

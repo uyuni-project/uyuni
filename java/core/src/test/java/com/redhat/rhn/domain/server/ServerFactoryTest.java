@@ -26,8 +26,8 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
@@ -1466,18 +1466,60 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void testFindByFqdnConflictWithPrimary() {
+        // Create server 1 (non-primary)
+        Server s1 = createTestServer(user);
+        s1.addFqdn("duplicate.fqdn.com");
+
+        // Create server 2 (primary)
+        Server s2 = createTestServer(user);
+        ServerFQDN s2Primary = new ServerFQDN(s2, "duplicate.fqdn.com");
+        s2Primary.setPrimary(true);
+        s2.getFqdns().add(s2Primary);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Looking up by FQDN should return the preferred (primary) server
+        Optional<Server> found = ServerFactory.findByFqdn("duplicate.fqdn.com");
+        assertTrue(found.isPresent());
+        assertEquals(s2.getId(), found.get().getId());
+    }
+
+    @Test
+    public void testFindByAnyFqdnConflictWithPrimary() {
+        // Create server 1 (non-primary)
+        Server s1 = createTestServer(user);
+        s1.addFqdn("duplicate.fqdn.com");
+
+        // Create server 2 (primary)
+        Server s2 = createTestServer(user);
+        ServerFQDN s2Primary = new ServerFQDN(s2, "duplicate.fqdn.com");
+        s2Primary.setPrimary(true);
+        s2.getFqdns().add(s2Primary);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Looking up by Any FQDN should return the preferred (primary) server
+        Optional<Server> found = ServerFactory.findByAnyFqdn(Set.of("duplicate.fqdn.com", "other.fqdn.com"));
+        assertTrue(found.isPresent());
+        assertEquals(s2.getId(), found.get().getId());
+    }
+
+    @Test
     public void testFilterSystemsWithMaintOnlyActions() throws Exception {
         Server systemWith = MinionServerFactoryTest.createTestMinionServer(user);
         Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
 
         // non-offending action
-        Action allowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action allowedAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
         // assign it to both systems
         ServerActionTest.createServerAction(systemWith, allowedAction);
         ServerActionTest.createServerAction(systemWithout, allowedAction);
 
         // offending action
-        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        Action disallowedAction = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_APPLY_STATES);
         // assign it to one system only
         ServerActionTest.createServerAction(systemWith, disallowedAction);
 

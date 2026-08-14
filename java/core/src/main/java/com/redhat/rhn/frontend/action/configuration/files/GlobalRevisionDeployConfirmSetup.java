@@ -14,15 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.configuration.files;
 
-import static com.redhat.rhn.domain.action.ActionFactory.TYPE_CONFIGFILES_DEPLOY;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -39,12 +37,10 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * GlobalRevisionDeploySetup
  */
-public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements MaintenanceWindowsAware {
+public class GlobalRevisionDeployConfirmSetup extends BaseListAction {
 
     /**
      * {@inheritDoc}
@@ -78,7 +74,8 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
         Set<Long> systemIds = getSystemIds(ctxt);
-        populateMaintenanceWindows(ctxt.getRequest(), systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(ctxt.getRequest(), systemIds,
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 
@@ -86,12 +83,5 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
         return RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS.get(ctxt.getCurrentUser()).getElements().stream()
                 .map(RhnSetElement::getElement)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

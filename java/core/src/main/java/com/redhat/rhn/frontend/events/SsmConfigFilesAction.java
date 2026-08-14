@@ -18,6 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -46,7 +47,7 @@ public class SsmConfigFilesAction implements MessageAction {
                     user,
                     event.getRevisionMappings(),
                     event.getSystemIds(),
-                    event.getType(),
+                    ActionTypeEnum.of(event.getType()).orElse(null),
                     event.getEarliest(),
                     actionChain);
         }

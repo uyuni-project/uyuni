@@ -16,10 +16,8 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -35,12 +33,10 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * DiffConfirmAction
  */
-public class ConfigConfirmAction extends BaseListAction implements MaintenanceWindowsAware {
+public class ConfigConfirmAction extends BaseListAction {
 
     /**
      * {@inheritDoc}
@@ -81,23 +77,16 @@ public class ConfigConfirmAction extends BaseListAction implements MaintenanceWi
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
 
-        Set<Long> systems = getSystemIds(ctxt, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
-        populateMaintenanceWindows(ctxt.getRequest(), systems);
-        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
-    }
-
-    private Set<Long> getSystemIds(RequestContext ctxt, ActionType actionType) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionType.getLabel()).stream()
+        Set<Long> systems = cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null,
+                        ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY.getLabel()).stream()
                 .map(ConfigSystemDto::getId)
                 .collect(Collectors.toSet());
-    }
 
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
         // we only handle 'deploy' actions here. for 'diff' actions, we early return at the beginning of processForm
-        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
+        MaintenanceWindowHelper.populateMaintenanceWindows(ctxt.getRequest(), systems,
+                ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
+
+        ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 }

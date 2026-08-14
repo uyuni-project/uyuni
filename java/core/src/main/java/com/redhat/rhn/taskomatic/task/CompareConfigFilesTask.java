@@ -15,9 +15,12 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -61,14 +64,13 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                 continue;
             }
 
-            Action act = ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DIFF);
-            ConfigAction cfact = (ConfigAction) act;
-            // set up needed fields for the action
-            act.setName(act.getActionTypeName());
-            act.setOrg(server.getOrg());
+            ConfigAction act = (ConfigAction) new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_CONFIGFILES_DIFF)
+                    .withOrg(server.getOrg())
+                    .build();
 
             // add the server to the action
-            ActionFactory.addServerToAction(server, act);
+            ServerActionFactory.addServerToAction(server, act);
 
             // add file revisions to the action
             for (ConfigFileNameDto cfn : cm.listAllFileNamesForSystem(server)) {
@@ -76,13 +78,13 @@ public class CompareConfigFilesTask extends RhnJavaJob {
                 ConfigFile cf = ConfigurationFactory.lookupConfigFileById(cfid);
                 ConfigRevision crev = cf.getLatestConfigRevision();
 
-                ActionFactory.addConfigRevisionToAction(crev, server, cfact);
+                ActionFactory.addConfigRevisionToAction(crev, server, act);
             }
 
             if (act.getServerActions() == null || act.getServerActions().isEmpty()) {
                 continue;
             }
-            Set<ConfigRevisionAction> cra = cfact.getConfigRevisionActions();
+            Set<ConfigRevisionAction> cra = act.getConfigRevisionActions();
             if (cra == null || cra.isEmpty()) {
                 continue;
             }

@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerActionTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -65,8 +66,7 @@ public class ActionSystemsSetupActionTest extends BaseTestCase {
         }
 
         sah.getUser().addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action a = ActionFactoryTest.createAction(sah.getUser(),
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        Action a = ActionFactoryTest.createAction(sah.getUser(), ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         Server server = ServerFactoryTest.createTestServer(sah.getUser(), true);
         ServerActionTest.createServerAction(server, a);
         ActionFactory.save(a);

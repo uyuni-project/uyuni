@@ -1,0 +1,48 @@
+name: Check Entrypoint Executable Bit
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'containers/*-image/**/*.sh'
+  pull_request:
+    paths:
+      - 'containers/*-image/**/*.sh'
+
+jobs:
+  check-exec-bit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify executable bit
+        run: |
+          # Exclude files that are only meant to be sourced or not checked
+          EXCLUDES=("containers/server-image/root/usr/lib/entrypoint-lib.sh")
+
+          # Find files without executable bit (100644) that are .sh or inside container directories
+          CANDIDATES=$(git ls-files -s containers/*-image | awk '$1 == "100644" && $4 ~ /\.sh$/ {print $4}')
+
+          MISSING_EXEC=()
+          for file in $CANDIDATES; do
+            excluded=false
+            for ex in "${EXCLUDES[@]}"; do
+              if [[ "$file" == "$ex" ]]; then
+                excluded=true
+                break
+              fi
+            done
+            if [[ "$excluded" == false ]]; then
+              MISSING_EXEC+=("$file")
+            fi
+          done
+
+          if [ ${#MISSING_EXEC[@]} -ne 0 ]; then
+            echo "The following scripts are missing the executable bit in Git:"
+            printf '  %s\n' "${MISSING_EXEC[@]}"
+            echo "Please fix by running: chmod +x <file> && git add <file>"
+            exit 1
+          fi
+
+          echo "All checked entrypoint scripts have the correct executable bit set."

@@ -38,10 +38,11 @@ LABEL org.opencontainers.image.description="${PRODUCT} database migration image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.3.0
+LABEL org.opencontainers.image.version=5.3.1
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-database-migration:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 ENTRYPOINT ["/docker-entrypoint-initdb.d/00-pgsqlVersionUpgrade.sh"]

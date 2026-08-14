@@ -254,6 +254,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'proxy' => 'SL-Micro-6.2-Pool for x86_64',
     'proxy_container' => 'SL-Micro-6.2-Pool for x86_64',
     'proxy_nontransactional' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
+    'server' => 'SL-Micro-6.2-Pool for x86_64',
+    'server_nontransactional' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sshminion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -495,6 +497,39 @@ LABEL_BY_BASE_CHANNEL = {
     'openSUSE Leap 15.6 (aarch64)' => 'opensuse_leap15_6-aarch64',
     'openSUSE Leap 16.0 (aarch64)' => 'opensuse_leap16_0-aarch64'
   }
+}.freeze
+
+# Maps an activation-key client to its deployment role. Anything not listed
+# (minions, monitoring_server, terminals, buildhosts) defaults to :minion.
+ACTIVATION_KEY_ROLE_BY_CLIENT = {
+  'proxy' => :proxy,
+  'proxy_container' => :proxy,
+  'proxy_nontransactional' => :proxy,
+  'server' => :server,
+  'server_nontransactional' => :server
+}.freeze
+
+# Channel-label substrings grouped by the role that owns them. Retail branch
+# server is a proxy-type role, so it lives in :proxy.
+ACTIVATION_KEY_CHANNEL_CATEGORIES = {
+  proxy: %w[
+    suse-manager-proxy
+    suse-multi-linux-manager-proxy
+    suse-manager-retail-branch-server
+    suse-multi-linux-manager-retail-branch-server
+    custom_channel_proxy
+  ],
+  server: %w[
+    suse-manager-server
+    suse-multi-linux-manager-server
+  ]
+}.freeze
+
+# Channel categories each role must NOT carry on its activation key.
+ACTIVATION_KEY_EXCLUDED_CATEGORIES_BY_ROLE = {
+  minion: %i[proxy server],
+  proxy: %i[server],
+  server: %i[proxy]
 }.freeze
 
 # Used for creating bootstrap repositories
@@ -1152,6 +1187,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7
         suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
+      ],
+    'suse-multi-linux-manager-server-52' =>
+      %w[
+        suse-multi-linux-manager-server-5.2-x86_64
+      ],
+    'suse-multi-linux-manager-server-52-sp7' =>
+      %w[
+        suse-multi-linux-manager-server-sle-5.2-pool-x86_64-sp7
+        suse-multi-linux-manager-server-sle-5.2-updates-x86_64-sp7
       ]
   },
   'Uyuni' => {
@@ -1519,7 +1563,7 @@ CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
 TIMEOUT_BY_CHANNEL_NAME = {
   'almalinux8-appstream-x86_64' => 1920,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
-  'almalinux8-x86_64' => 1080,
+  'almalinux8-x86_64' => 1200,
   'almalinux8-x86_64-appstream' => 1740,
   'almalinux8-x86_64-extras' => 60,
   'almalinux9-appstream-x86_64' => 660,
@@ -1645,7 +1689,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_leap15_6-x86_64-sle-updates' => 5400,
   'opensuse_leap15_6-x86_64-updates' => 60,
   'opensuse_leap16_0-aarch64' => 4500,
-  'opensuse-leap-16.0-aarch64' => 4500,
+  'opensuse-leap-16.0-aarch64' => 7200,
   'opensuse_micro5_5-uyuni-client-devel-x86_64' => 120,
   'opensuse_micro5_5-uyuni-client-x86_64' => 120,
   'opensuse_micro5_5-x86_64' => 240,
@@ -1657,8 +1701,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 1620,
-  'oraclelinux10-appstream-x86_64' => 720,
-  'oraclelinux10-x86_64' => 240,
+  'oraclelinux10-appstream-x86_64' => 900,
+  'oraclelinux10-x86_64' => 540,
   'res-7-ltss-updates-x86_64' => 1020,
   'res7-x86_64' => 10_080,
   'res8-manager-tools-pool-x86_64-rocky' => 60,
@@ -1685,8 +1729,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-micro-5.4-pool-x86_64' => 60,
   'sle-micro-5.4-updates-x86_64' => 120,
   'sle-micro-5.5-devel-uyuni-client-x86_64' => 120,
-  'sle-micro-5.5-pool-x86_64' => 120,
-  'sle-micro-5.5-updates-x86_64' => 840,
+  'sle-micro-5.5-pool-x86_64' => 180,
+  'sle-micro-5.5-updates-x86_64' => 1200,
   'sle-module-basesystem15-sp4-pool-x86_64' => 240,
   'sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1700,7 +1744,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp6-pool-x86_64' => 120,
   'sle-module-basesystem15-sp6-updates-x86_64' => 480,
   'sle-module-basesystem15-sp7-pool-x86_64' => 720,
-  'sle-module-basesystem15-sp7-updates-x86_64' => 660,
+  'sle-module-basesystem15-sp7-updates-x86_64' => 840,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1710,7 +1754,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-containers15-sp4-updates-x86_64-smrbs-4.3' => 60,
   'sle-module-containers15-sp7-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp4-pool-x86_64' => 180,
-  'sle-module-desktop-applications15-sp4-updates-x86_64' => 60,
+  'sle-module-desktop-applications15-sp4-updates-x86_64' => 120,
   'sle-module-desktop-applications15-sp5-pool-x86_64' => 120,
   'sle-module-desktop-applications15-sp5-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp6-pool-x86_64' => 120,
@@ -1721,7 +1765,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-devtools15-sp4-updates-x86_64' => 480,
   'sle-module-devtools15-sp5-pool-x86_64' => 180,
   'sle-module-devtools15-sp5-updates-x86_64' => 1200,
-  'sle-module-devtools15-sp6-pool-x86_64' => 60,
+  'sle-module-devtools15-sp6-pool-x86_64' => 120,
   'sle-module-devtools15-sp6-updates-x86_64' => 360,
   'sle-module-devtools15-sp7-pool-x86_64' => 180,
   'sle-module-devtools15-sp7-updates-x86_64' => 480,
@@ -1756,7 +1800,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp6-updates-x86_64' => 120,
   'sle-module-server-applications15-sp7-pool-x86_64' => 60,
   'sle-module-server-applications15-sp7-updates-x86_64' => 60,
-  'sles12-sp5-ltss-updates-x86_64' => 420,
+  'sles12-sp5-ltss-updates-x86_64' => 540,
   'sle-product-sles15-sp4-ltss-updates-x86_64' => 1560,
   'sle-product-sles15-sp4-pool-x86_64' => 60,
   'sle-product-sles15-sp4-updates-x86_64' => 60,
@@ -1764,13 +1808,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-pool-x86_64' => 60,
   'sle-product-sles15-sp5-updates-s390x' => 60,
   'sle-product-sles15-sp5-updates-x86_64' => 60,
-  'sle-product-sles15-sp5-ltss-updates-x86_64' => 2160,
+  'sle-product-sles15-sp5-ltss-updates-x86_64' => 2760,
   'sle-product-sles15-sp6-pool-x86_64' => 60,
   'sle-product-sles15-sp6-updates-x86_64' => 60,
-  'sle-product-sles15-sp6-ltss-updates-x86_64' => 120,
+  'sle-product-sles15-sp6-ltss-updates-x86_64' => 660,
   'sle-product-sles15-sp7-pool-x86_64' => 60,
   'sle-product-sles15-sp7-updates-x86_64' => 60,
-  'sle-product-sles-16.0-x86_64' => 420,
+  'sle-product-sles-16.0-x86_64' => 1920,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 120,
   'sles12-sp5-updates-x86_64' => 1920,
@@ -1784,10 +1828,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-as-9-updates-x86_64' => 2460,
   'sll-cb-9-updates-x86_64' => 2160,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.0-pool-x86_64' => 660,
+  'sl-micro-6.0-pool-x86_64' => 1200,
   'managertools-sl-micro-6.0-x86_64' => 60,
   'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.1-pool-x86_64' => 300,
+  'sl-micro-6.1-pool-x86_64' => 360,
   'managertools-sl-micro-6.1-x86_64' => 60,
   'sl-micro-6.2-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.2-pool-x86_64' => 300,
@@ -1812,9 +1856,12 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-server-5.2-x86_64' => 60, # for slmicro6.2
+  'suse-multi-linux-manager-server-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-server-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.2-pool-x86_64' => 120,
-  'suse-microos-5.2-updates-x86_64' => 540,
+  'suse-microos-5.2-updates-x86_64' => 660,
   'test-child-channel-x86_64' => 360,
   'ubuntu-2204-amd64-main-amd64' => 540,
   'ubuntu-2204-amd64-main-security-amd64' => 2640,
@@ -1839,6 +1886,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-updates-uyuni' => 240,
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
+  'ubuntu-2404-noble-amd64' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
   'uyuni-proxy-devel-tumbleweed-x86_64' => 120,
   'uyuni-proxy-stable-tumbleweed-x86_64' => 120
@@ -1891,3 +1939,11 @@ UYUNI_MAIN_REPO_URL_BYPASS = {
   'ubuntu-2404-amd64-uyuni-client-devel' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main:/UyuniTools/xUbuntu_24.04-debbuild/',
   'uyuni-proxy-devel-tumbleweed-x86_64' => 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Main/images/repo/Uyuni-Proxy-POOL-x86_64-Media1/'
 }.freeze
+
+# Containers started by the health check tool, as named in its config.toml
+HEALTH_CHECK_CONTAINERS = %w[
+  health_check_loki
+  health_check_promtail
+  health_check_supportconfig_exporter
+  health-check-grafana
+].freeze

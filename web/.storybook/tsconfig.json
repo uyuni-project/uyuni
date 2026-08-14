@@ -1,0 +1,17 @@
+{
+  "extends": "../html/src/tsconfig.json",
+  "include": [
+    "./*.ts",
+    "./*.tsx",
+    "../html/src/**/*.stories.ts",
+    "../html/src/**/*.stories.tsx",
+    "../html/src/core/log/index.ts",
+    "../html/src/global.d.ts",
+    "../html/src/imports.d.ts"
+  ],
+  "exclude": ["../html/src/storybook/generated/**/*"],
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "types": ["jquery", "node"]
+  }
+}

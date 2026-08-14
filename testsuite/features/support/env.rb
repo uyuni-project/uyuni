@@ -44,6 +44,11 @@ end
 # Context per feature
 $context = {}
 
+# Set by the Layer 3 watchdog (see the Around hook below) when it has force-torn-down the browser
+# session. Once true, every remaining scenario in the run is skipped with one clear reason instead
+# of failing individually with confusing Playwright::Transport::AlreadyDisconnectedError traces.
+$watchdog_run_aborted = false
+
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
@@ -167,10 +172,17 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      # web_session_is_active? can raise if the session went stale after a long step.
+      # web_session_is_active? can raise or hang if the Playwright pipe was corrupted mid-call
+      # (e.g. by Timeout.timeout firing inside repeat_until_timeout). The 10s backstop ensures
+      # the After hook doesn't wait 36+ minutes for the watchdog when the connection is already dead.
       session_active =
         begin
-          web_session_is_active?
+          Timeout.timeout(10) { web_session_is_active? }
+        rescue Timeout::Error
+          warn 'After: Playwright connection hung during session check — triggering emergency browser kill'
+          unblock_wedged_browser
+          $watchdog_run_aborted = true
+          false
         rescue StandardError => e
           log "Web session went stale when checking for active session: #{e.message}"
           false
@@ -366,6 +378,11 @@ Around do |scenario, block|
       warn "WATCHDOG: scenario '#{scenario.name}' exceeded its hard limit of #{limit}s - " \
            'tearing down the browser session to unblock the run'
       unblock_wedged_browser
+      # capybara/cucumber's own After hook calls driver.reset! unconditionally, which tries to talk
+      # to the browser process we just killed and raises again - it does not rebuild a fresh one.
+      # Without this flag every remaining scenario would fail one-by-one with confusing
+      # Playwright::Transport::AlreadyDisconnectedError traces instead of a single clear reason.
+      $watchdog_run_aborted = true
     end
 
   begin
@@ -374,6 +391,12 @@ Around do |scenario, block|
     finished = true
     watchdog.kill
   end
+end
+
+# Must be the first unconditional Before hook in the suite (registered here, right after the
+# watchdog) so it runs before any hook that touches the browser. See $watchdog_run_aborted above.
+Before do
+  skip_this_scenario if $watchdog_run_aborted
 end
 
 Before('@skip') do

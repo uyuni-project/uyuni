@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 05 13:30:17 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Use the appVersion of the chart as the default tag for images
+    (bsc#1271902)
+  * Add metadata for artifactory
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Tue Jun 30 11:05:32 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9

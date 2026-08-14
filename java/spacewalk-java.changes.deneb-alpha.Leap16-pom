@@ -1,0 +1,2 @@
+- Align the pom files after 'com.ongres.scram:client/common' have
+  been renamed to 'com.ongres.scram:scram-client/scram-common'

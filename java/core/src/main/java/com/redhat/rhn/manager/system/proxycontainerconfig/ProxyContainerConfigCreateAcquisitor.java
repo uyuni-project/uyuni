@@ -87,15 +87,6 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         context.setProxyPair(proxyPair);
         context.setRootCaCert(rootCaCert);
 
-        SSLCertPair proxyCertKey = context.getProxyCertKey();
-        if (proxyCertKey != null && proxyCertKey.getCertificate() != null) {
-            // Get the cnames from the certificate using openssl
-            fqdns.addAll(context.getCertManager().getNamesFromSslCert(proxyCertKey.getCertificate()));
-        }
-        else if (context.getCertData() != null) {
-            fqdns.addAll(context.getCertData().getAllCnames());
-        }
-
         if (rootCaCert != null && proxyPair != null) {
             // Check the SSL files using mgr-ssl-cert-setup
             try {

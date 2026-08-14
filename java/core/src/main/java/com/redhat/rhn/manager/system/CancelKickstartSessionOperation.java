@@ -20,6 +20,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.user.User;
@@ -67,7 +68,7 @@ public class CancelKickstartSessionOperation
         // Remove any possible autoinstallation initiate actions from the server
         DataResult<SystemPendingEventDto> pendingActions = SystemManager.systemPendingEvents(server.getId(), null);
 
-        String rebootName = ActionFactory.TYPE_KICKSTART_INITIATE.getName();
+        String rebootName = ActionFactory.lookupActionTypeByEnum(ActionTypeEnum.TYPE_KICKSTART_INITIATE).getName();
         List<Action> actions = pendingActions.stream().filter(action -> action.getActionName().equals(rebootName))
                 .map(action -> ActionManager.lookupAction(user, action.getId()))
                 .collect(Collectors.toList());

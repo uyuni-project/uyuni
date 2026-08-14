@@ -20,7 +20,9 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -330,7 +332,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     return;
                 }
                 // Find the SLES 15.x -> 16.x migration action
-                ActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
+                ServerActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
                     .stream()
                     .filter(sa -> sa.getParentAction() instanceof DistUpgradeAction dup &&
                       dup.getDetails(minion.getId()) != null && dup.getDetails(minion.getId()).isSles15To16Migration())
@@ -342,7 +344,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                      dupAction.getId(), minionId);
                             // Delegate the actual result parsing back to the Action class
                             dupAction.handleUpdateServerAction(sa, result, null);
-                            ActionFactory.save(sa);
+                            ServerActionFactory.save(sa);
                             LOG.info("SLES 16: Migration action {} for {} updated to: {}",
                                      dupAction.getId(), minionId, sa.getStatus().getName());
                         },
@@ -371,7 +373,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         boolean isDistUpgrade = action.map(Action::getActionType)
-                .map(type -> type.equals(ActionFactory.TYPE_DIST_UPGRADE))
+                .map(ActionTypeEnum.TYPE_DIST_UPGRADE::equalsType)
                 .orElse(false);
 
         if (isDistUpgrade) {

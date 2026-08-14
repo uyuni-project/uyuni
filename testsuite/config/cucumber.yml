@@ -15,7 +15,6 @@ deblike: --tags @scope_deblike
 formulas: --tags @scope_formulas
 hibernate: --tags @scope_hibernate
 hub: --tags @scope_hub
-kubernetes_integration: --tags @scope_kubernetes_integration
 maintenance_windows: --tags @scope_maintenance_windows
 monitoring: --tags @scope_monitoring
 notification_message: --tags @scope_notification_message
@@ -23,7 +22,6 @@ onboarding: --tags @scope_onboarding
 openscap: --tags @scope_openscap
 power_management: --tags @scope_power_management
 project_lotus: --tags @scope_project_lotus
-proxy: --tags @scope_proxy
 recurring_actions: --tags @scope_recurring_actions
 reportdb: --tags @scope_reportdb
 res: --tags @scope_res
@@ -33,12 +31,7 @@ rhlike: --tags @scope_rhlike
 salt_ssh: --tags @scope_salt_ssh
 salt: --tags @scope_salt
 software_channels_and_repositories: --tags @scope_software_channels_and_repositories
-spacecmd: --tags @scope_spacecmd
 spacewalk_utils: --tags @scope_spacewalk_utils
-sp_migration: --tags @scope_sp_migration
-subscription_matching: --tags @scope_subscription_matching
-sumatoolbox: --tags @scope_sumatoolbox
 tomcat: --tags @scope_tomcat
 virtual_host_manager: --tags @scope_virtual_host_manager
-virtualization: --tags @scope_virtualization
 visualization: --tags @scope_visualization

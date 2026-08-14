@@ -22,9 +22,9 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
@@ -62,8 +62,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Bo Maryniuk
  */
-public class ProvisioningRemoteCommand extends RhnAction implements
-        Listable<SystemOverview>, MaintenanceWindowsAware {
+public class ProvisioningRemoteCommand extends RhnAction implements Listable<SystemOverview> {
     private static final String[] FORM_FIELD_IDS = {
         "uid", "gid", "script_body",
     };
@@ -266,7 +265,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
                 "date", this.getStrutsDelegate().prepopulateDatePicker(
                                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
         Set<Long> systemIds = getSystemIds(context);
-        populateMaintenanceWindows(request, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ActionChainHelper.prepopulateActionChains(request);
 
         ListHelper helper = new ListHelper(this, request);
@@ -352,12 +351,5 @@ public class ProvisioningRemoteCommand extends RhnAction implements
         return getResult(context).stream()
                 .map(SystemOverview::getId)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (ActionFactory.TYPE_SCRIPT_RUN.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

@@ -13,9 +13,8 @@
       "default": "registry.opensuse.org/uyuni"
     },
     "tag": {
-      "type": "string",
-      "description": "The default tag to use for images",
-      "default": "latest"
+      "type": ["string", "null"],
+      "description": "The default tag to use for images. This is the chart's appVersion"
     },
     "pullPolicy": {
       "type": "string",

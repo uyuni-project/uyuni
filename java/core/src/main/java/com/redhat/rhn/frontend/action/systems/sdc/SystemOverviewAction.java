@@ -18,7 +18,10 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -115,7 +118,7 @@ public class SystemOverviewAction extends RhnAction {
 
         // Check if reboot is scheduled
         boolean rebootScheduled = false;
-        Action rebootAction = ActionFactory.isRebootScheduled(sid);
+        Action rebootAction = ServerActionFactory.isRebootScheduled(sid);
         if (rebootAction != null) {
             request.setAttribute("rebootActionId", rebootAction.getId());
             rebootScheduled = true;
@@ -268,8 +271,12 @@ public class SystemOverviewAction extends RhnAction {
 
         if (appValue != null && appValue == 1) {
 
-            Action a = ActionFactory.createAction(ActionFactory.TYPE_RHN_APPLET_USE_SATELLITE, user, new Date());
-            ActionFactory.createAddServerAction(s, a);
+            Action a = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_RHN_APPLET_USE_SATELLITE)
+                    .withSchedulerUser(user)
+                    .build();
+
+            ServerActionFactory.createAddServerAction(s, a);
 
             ActionFactory.save(a);
             createSuccessMessage(rctx.getRequest(),

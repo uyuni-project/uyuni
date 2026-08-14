@@ -15,7 +15,10 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -64,13 +67,13 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
                 continue;
             }
 
-            Action act = ActionFactory.createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-            // set up needed fields for the action
-            act.setName(act.getActionTypeName());
-            act.setOrg(org);
+            Action act = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST)
+                    .withOrg(org)
+                    .build();
             ActionFactory.save(act);
 
-            ActionFactory.scheduleForExecution(act, sids);
+            ServerActionFactory.scheduleForExecution(act, sids);
 
             log.info("  schedule HW refresh for {} systems in org {}", sids.size(), org.getName());
             actionsToSchedule.add(act);

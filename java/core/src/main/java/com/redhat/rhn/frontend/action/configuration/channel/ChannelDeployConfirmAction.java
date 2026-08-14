@@ -21,12 +21,11 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -58,7 +57,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * ChannelDeployConfirmAction
  */
-public class ChannelDeployConfirmAction extends RhnAction implements MaintenanceWindowsAware {
+public class ChannelDeployConfirmAction extends RhnAction {
 
     /**
      * ${@inheritDoc}
@@ -94,7 +93,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
         RequestContext ctx = new RequestContext(req);
         RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(ctx.getCurrentUser());
         Set<Long> systemIds = buildIds(systems);
-        populateMaintenanceWindows(req, systemIds);
+        MaintenanceWindowHelper.populateMaintenanceWindows(req, systemIds, ActionTypeEnum.TYPE_CONFIGFILES_DEPLOY);
         ActionChainHelper.prepopulateActionChains(req);
 
         ConfigActionHelper.setupRequestAttributes(ctx, cc);
@@ -217,12 +216,5 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
             s.add(id);
         }
         return s;
-    }
-
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
-            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
-        }
     }
 }

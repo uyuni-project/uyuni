@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.common.util.http;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.absent;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,31 +30,26 @@ import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManagerTest;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
-import com.redhat.rhn.testing.httpservermock.HttpServerMock;
-import com.redhat.rhn.testing.httpservermock.Responder;
+
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import simple.http.Request;
-import simple.http.Response;
 
 /**
  * Integrational unit tests for {@link HttpClientAdapter}.
  */
 public class HttpClientAdapterTest extends BaseTestCase {
 
-    // Mock server for reuse
-    private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
+    private WireMockServer wireMockServer;
 
     // String values
     private static final String TEST_PASSWORD = "testpassword";
@@ -55,98 +57,129 @@ public class HttpClientAdapterTest extends BaseTestCase {
     private static final String PROXY_TEST_USER = "proxyuser";
     private static final String PROXY_TEST_PASSWORD = "proxypassword";
 
+    @BeforeEach
+    void setup() {
+        wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
+        wireMockServer.start();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        wireMockServer.stop();
+
+        // Clear proxy settings
+        ProxySettingsDto proxySettings = new ProxySettingsDto();
+        proxySettings.setHostname("");
+        proxySettings.setUsername("");
+        proxySettings.setPassword("");
+        ProxySettingsManagerTest.setProxySettings(proxySettings);
+
+        // Clean up the no_proxy setting
+        setNoProxy("");
+    }
+
     /**
      * Test for executeRequest(): an authenticated GET request.
      * @throws Exception in case there is a problem
      */
     @Test
     public void testGetRequestAuthenticated() throws Exception {
-        Callable<Integer> requester = () -> {
-            HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
-            HttpClientAdapter client = new HttpClientAdapter();
-            return client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD)
-                    .getStatusLine().getStatusCode();
-        };
+        String authHeader = basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD);
+        String host = "localhost:" + wireMockServer.port();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", SERVER_MOCK.getURI().getAuthority());
-        headers.put("Authorization", basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD));
-        assertEquals((Integer) HttpStatus.SC_OK, SERVER_MOCK.getResult(requester, new TestResponder(headers)));
+        // First request without credentials
+        wireMockServer.stubFor(
+            get(urlPathEqualTo("/"))
+                .atPriority(1)
+                .withHeader("Authorization", absent())
+                .willReturn(aResponse()
+                    .withStatus(HttpStatus.SC_UNAUTHORIZED)
+                    .withHeader("WWW-Authenticate", "Basic realm"))
+        );
+
+        // Second request with the authorization
+        wireMockServer.stubFor(
+            get(urlPathEqualTo("/"))
+                .atPriority(2)
+                .withHeader("Authorization", equalTo(authHeader))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_OK))
+        );
+
+        HttpGet request = new HttpGet(wireMockServer.baseUrl() + "/");
+        HttpClientAdapter client = new HttpClientAdapter();
+        StatusLine status = client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD).getStatusLine();
+
+        assertEquals(HttpStatus.SC_OK, status.getStatusCode());
+        wireMockServer.verify(
+            getRequestedFor(urlPathEqualTo("/"))
+                .withHeader("Host", equalTo(host))
+                .withHeader("Authorization", absent())
+        );
+        wireMockServer.verify(
+            getRequestedFor(urlPathEqualTo("/"))
+                .withHeader("Host", equalTo(host))
+                .withHeader("Authorization", equalTo(authHeader))
+        );
     }
 
-    /**
-     * Test for executeRequest(): an authenticated GET request via a proxy.
-     * @throws Exception in case there is a problem
-     */
     @Test
     public void testGetRequestViaProxy() throws Exception {
-        // Configure proxy
+        String proxyAuthHeader = basicAuthHeader(PROXY_TEST_USER, PROXY_TEST_PASSWORD);
+        String userAuthHeader = basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD);
+
         ProxySettingsDto proxySettings = new ProxySettingsDto();
-        proxySettings.setHostname(SERVER_MOCK.getURI().getAuthority());
+        proxySettings.setHostname("localhost:" + wireMockServer.port());
         proxySettings.setUsername(PROXY_TEST_USER);
         proxySettings.setPassword(PROXY_TEST_PASSWORD);
         ProxySettingsManagerTest.setProxySettings(proxySettings);
 
-        Callable<Integer> requester = () -> {
-            HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
-            HttpClientAdapter client = new HttpClientAdapter();
-            return client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD)
-                    .getStatusLine().getStatusCode();
-        };
+        wireMockServer.stubFor(
+            get(anyUrl())
+                .atPriority(1)
+                .withHeader("Proxy-Authorization", absent())
+                .willReturn(aResponse()
+                    .withStatus(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED)
+                    .withHeader("Proxy-Authenticate", "Basic realm"))
+        );
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Host", TEST_AUTHORITY);
-        headers.put("Authorization", basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD));
-        headers.put("Proxy-Authorization", basicAuthHeader(PROXY_TEST_USER, PROXY_TEST_PASSWORD));
-        headers.put("Proxy-Connection", "Keep-Alive");
-        assertEquals((Integer) HttpStatus.SC_OK, SERVER_MOCK.getResult(requester, new TestResponder(headers)));
-    }
+        wireMockServer.stubFor(
+            get(anyUrl())
+                .atPriority(2)
+                .withHeader("Proxy-Authorization", equalTo(proxyAuthHeader))
+                .withHeader("Authorization", absent())
+                .willReturn(aResponse()
+                    .withStatus(HttpStatus.SC_UNAUTHORIZED)
+                    .withHeader("WWW-Authenticate", "Basic realm"))
+        );
 
-    /**
-     * Responds to HTTP requests coming from the tests in this class while
-     * verifying a given map of headers and values.
-     */
-    private class TestResponder implements Responder {
+        wireMockServer.stubFor(
+            get(anyUrl())
+                .atPriority(3)
+                .withHeader("Proxy-Authorization", equalTo(proxyAuthHeader))
+                .withHeader("Authorization", equalTo(userAuthHeader))
+                .withHeader("Host", equalTo(TEST_AUTHORITY))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_OK))
+        );
 
-        private final Map<String, String> headers;
+        HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
+        HttpClientAdapter client = new HttpClientAdapter();
+        int status = client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD)
+                .getStatusLine().getStatusCode();
 
-        /**
-         * This constructor takes a map of headers and expected values to verify.
-         * @param headersIn the map of headers and expected values
-         */
-        TestResponder(Map<String, String> headersIn) {
-            headers = headersIn;
-        }
+        assertEquals(HttpStatus.SC_OK, status);
 
-        @Override
-        public void respond(Request request, Response response) {
-            try {
-                String proxyAuthKey = "Proxy-Authorization";
-                String proxyAuthValue = request.getValue(proxyAuthKey);
-                String authKey = "Authorization";
-                String authValue = request.getValue(authKey);
-
-                if (headers.containsKey(proxyAuthKey) && proxyAuthValue == null) {
-                    response.set("Proxy-Authenticate", "Basic realm");
-                    response.setCode(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED);
-                }
-                else if (headers.containsKey(authKey) && authValue == null) {
-                    response.set("WWW-Authenticate", "Basic realm");
-                    response.setCode(HttpStatus.SC_UNAUTHORIZED);
-                }
-                else {
-                    for (String header : headers.keySet()) {
-                        assertEquals(headers.get(header), request.getValue(header));
-                    }
-                    response.setCode(HttpStatus.SC_OK);
-                }
-
-                response.commit();
-            }
-            catch (IOException e) {
-                // never happens
-            }
-        }
+        // Verify both phases happened
+        wireMockServer.verify(
+            getRequestedFor(urlPathEqualTo("/"))
+                .withHeader("Proxy-Authorization", absent())
+        );
+        wireMockServer.verify(
+            getRequestedFor(urlPathEqualTo("/"))
+                .withHeader("Host", equalTo(TEST_AUTHORITY))
+                .withHeader("Authorization", equalTo(userAuthHeader))
+                .withHeader("Proxy-Authorization", equalTo(proxyAuthHeader))
+                .withHeader("Proxy-Connection", equalTo("Keep-Alive"))
+        );
     }
 
     /**
@@ -220,22 +253,6 @@ public class HttpClientAdapterTest extends BaseTestCase {
 
         result = callUseProxyFor(new URI("http://localhost:1234"));
         assertFalse(result);
-    }
-
-    /**
-     * Tear down after each test.
-     */
-    @AfterEach
-    public void tearDown() {
-        // Clear proxy settings
-        ProxySettingsDto proxySettings = new ProxySettingsDto();
-        proxySettings.setHostname("");
-        proxySettings.setUsername("");
-        proxySettings.setPassword("");
-        ProxySettingsManagerTest.setProxySettings(proxySettings);
-
-        // Clean up the no_proxy setting
-        setNoProxy("");
     }
 
     /**

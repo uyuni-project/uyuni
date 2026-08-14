@@ -226,6 +226,15 @@ function onDocumentReadyAutoBootstrapGrid() {
  * shows a select box to choose it.
  */
 function setupTextareaEditor(textarea, mode) {
+  // Some legacy JSP fragments include the editor setup even when the
+  // matching textarea is not rendered for the current form type.
+  if (!textarea || textarea.length === 0) {
+    return;
+  }
+
+  const currentTextareaValue = textarea.val();
+  const textareaValue = typeof currentTextareaValue === "string" ? currentTextareaValue : "";
+
   // if textarea is not shown, the height will be negative,
   // so we set the height of the editor in the popup to the 70% of the window height
   var tH = textarea.height() > 0 ? textarea.height() : (jQuery(window).height()  * 0.7);
@@ -241,7 +250,7 @@ function setupTextareaEditor(textarea, mode) {
   textarea.hide();
 
   var editor = ace.edit(editDiv[0]);
-  editor.getSession().setValue(textarea.val());
+  editor.getSession().setValue(textareaValue);
   editor.getSession().setOptions({ tabSize: 4, useSoftTabs: true });
 
   editor.setTheme("ace/theme/xcode");
@@ -394,23 +403,29 @@ jQuery(document).on('keyup change', '.activationKey-check', function(e) {
 
 function addTextareaLengthNotification() {
   // Add a notification text of the remaining length for a textarea
-  jQuery('textarea.with-maxlength').each(function() {
-    const textareaId = jQuery(this).attr('id');
-    jQuery(this).after(
-      jQuery('<div/>')
-        .attr("id", "newDiv1")
-        .addClass("remaining-length-wrapper text-right")
-        .html(
-          jQuery('<span/>')
-            .html([
-              jQuery('<span/>')
-              .attr("id", textareaId + '-remaining-length')
-              .text(jQuery(this).attr('maxlength') - jQuery(this).val().length)
-              , jQuery('<span/>').text(' ' + t('remaining'))
-            ])
-        )
+  jQuery('textarea.with-maxlength').each(function () {
+    const textarea = jQuery(this);
+    const textareaId = textarea.attr('id');
+
+    if (textarea.next('.remaining-length-wrapper').length) {
+        return;
+    }
+
+    textarea.after(
+        jQuery('<div/>')
+            .attr('id', textareaId + '-remaining-wrapper')
+            .addClass('remaining-length-wrapper text-right')
+            .append(
+                jQuery('<span/>')
+                    .append(
+                        jQuery('<span/>')
+                            .attr('id', textareaId + '-remaining-length')
+                            .text(textarea.attr('maxlength') - textarea.val().length)
+                    )
+                    .append(' ' + t('remaining'))
+            )
     );
-  });
+});
 
   // Update the remaining length text of the related textarea
   jQuery(document).on('input', 'textarea.with-maxlength', function() {

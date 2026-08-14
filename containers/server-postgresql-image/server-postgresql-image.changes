@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 05 13:35:21 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Automatically set the log timezone for TZ env (bsc#1267871)
+  * Add a README file for artifacthub to display
+  * Add missing executable bit on timezone entrypoint script
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Fri Jun 26 14:42:55 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12

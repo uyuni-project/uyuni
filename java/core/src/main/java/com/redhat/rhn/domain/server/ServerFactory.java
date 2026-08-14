@@ -26,7 +26,6 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
@@ -1246,13 +1245,34 @@ public class ServerFactory extends HibernateFactory {
      * @return return the first Server found if any
      */
     public static Optional<Server> findByAnyFqdn(Set<String> fqdns) {
-        for (String fqdn : fqdns) {
-            Optional<Server> server = findByFqdn(fqdn);
-            if (server.isPresent()) {
-                return server;
-            }
+        if (fqdns == null || fqdns.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        List<Server> servers = listByAnyFqdn(fqdns);
+        if (servers.isEmpty()) {
+            return Optional.empty();
+        }
+        if (servers.size() == 1) {
+            return Optional.of(servers.get(0));
+        }
+
+        List<String> serverDetails = new ArrayList<>();
+        for (Server s : servers) {
+            List<String> fqdnNames = s.getFqdns().stream().map(ServerFQDN::getName).toList();
+            serverDetails.add(String.format("Server [ID: %d, Name: %s, FQDNs: %s]",
+                    s.getId(), s.getName(), fqdnNames));
+        }
+        LOG.error("Conflicting servers found for FQDN set {}: {}", fqdns, serverDetails);
+
+        Optional<Server> preferred = servers.stream()
+                .filter(s -> s.getFqdns().stream()
+                        .anyMatch(f -> f.isPrimary() && fqdns.stream()
+                                .anyMatch(req -> req.equalsIgnoreCase(f.getName()))))
+                    .findFirst();
+        Server selected = preferred.orElse(servers.get(0));
+        LOG.warn("Selected server: Server [ID: {}, Name: {}]",
+                selected.getId(), selected.getName());
+        return Optional.of(selected);
     }
 
     /**
@@ -1275,22 +1295,34 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * List all servers whose ordered config-channel list references the given channel.
+     * @param channel the config channel
+     * @return list of servers subscribed to the channel
+     */
+    public static List<Server> listByConfigChannel(ConfigChannel channel) {
+        if (channel == null) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("""
+                select distinct s
+                from   com.redhat.rhn.domain.server.Server as s
+                join   s.configChannels as cc
+                where  cc = :channel
+                """, Server.class)
+                .setParameter("channel", channel)
+                .list();
+    }
+
+    /**
      * Lookup a Server by their FQDN
      * @param name of the FQDN to search for
      * @return the Server found
      */
     public static Optional<Server> findByFqdn(String name) {
-        Optional<List<Server>> servers = Optional.ofNullable(name)
-                .map(ServerFactory::listByFqdn);
-        List<Server> list = servers.orElse(new ArrayList<>());
-        if (list.size() == 1) {
-            return Optional.of(list.get(0));
+        if (name == null) {
+            return Optional.empty();
         }
-        else if (list.size() > 1) {
-            throw new HibernateRuntimeException("Executing query findByFqdn" +
-                    " with params " + name + " failed. NonUniqueResultException");
-        }
-        return Optional.empty();
+        return findByAnyFqdn(Set.of(name));
     }
 
     /**

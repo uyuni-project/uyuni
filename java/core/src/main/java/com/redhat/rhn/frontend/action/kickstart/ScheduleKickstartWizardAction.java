@@ -20,7 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -947,7 +947,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
     private void checkForKickstart(DynaActionForm form,
             KickstartScheduleCommand cmd, RequestContext ctx) {
-        if (ActionFactory.doesServerHaveKickstartScheduled((Long) form
+        if (ServerActionFactory.doesServerHaveKickstartScheduled((Long) form
                 .get(RequestContext.SID))) {
             String[] params = { cmd.getServer().getName() };
             getStrutsDelegate().saveMessage(

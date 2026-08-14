@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -79,17 +80,17 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
 
 
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                admin, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                admin, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
+                admin, ActionTypeEnum.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
+                admin, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                admin, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                admin, ActionTypeEnum.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
         assertEquals(
                 new HashSet<>(ActionFactory.listActionsForServer(admin, sapServer)),

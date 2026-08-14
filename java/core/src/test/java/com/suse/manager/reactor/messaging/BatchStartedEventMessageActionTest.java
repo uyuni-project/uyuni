@@ -23,7 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -70,7 +72,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
 
         // Create an action for the 2 minions. Process a 'batch-start' event where both minions are available.
         // No server action should be marked as 'FAILED'.
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         Action foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());
@@ -78,8 +80,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         ServerAction serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         ServerAction serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());
@@ -104,7 +106,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
 
         // Create an action for the 2 minions. Process a 'batch-start' event where both minions are down.
         // Both server action should be marked as 'FAILED'.
-        action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_ERRATA);
         foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());
@@ -112,8 +114,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());
@@ -139,7 +141,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         // Create an action for the 2 minions. Process a 'batch-start' event where 'minion1'
         // is available but 'minion2' is down.
         // Only the server action for 'minion1' should be marked as 'FAILED'.
-        action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        action = ActionFactoryTest.createAction(user, ActionTypeEnum
+                .TYPE_ERRATA);
         foundAction = ActionFactory.lookupById(action.getId());
         assertEquals(foundAction.getId(), action.getId());
         assertNull(foundAction.getServerActions());
@@ -147,8 +150,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
         serverAction1 = ActionFactoryTest.createServerAction(minion1, action);
         serverAction2 = ActionFactoryTest.createServerAction(minion2, action);
 
-        ActionFactory.save(serverAction1);
-        ActionFactory.save(serverAction2);
+        ServerActionFactory.save(serverAction1);
+        ServerActionFactory.save(serverAction2);
         TestUtils.flushAndEvict(action);
 
         foundAction = ActionFactory.lookupById(action.getId());

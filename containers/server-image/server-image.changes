@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Aug 10 11:47:29 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.2
+  * Detect an existing cgroup2 mount by filesystem type,
+    not mountpoint.
+
+-------------------------------------------------------------------
+Thu Aug 06 12:29:20 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1
+  * Tolerate an already mounted /sys/fs/cgroup in the entrypoint, so
+    the server container starts on hosts where the container runtime
+    premounts the cgroup filesystem
+  * Add a README file for artifacthub to display
+  * Bump version to 5.3.0
+
+-------------------------------------------------------------------
 Fri Jun 26 14:43:50 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.14

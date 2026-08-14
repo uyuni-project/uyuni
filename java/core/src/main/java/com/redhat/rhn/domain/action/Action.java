@@ -19,6 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -383,7 +384,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     // Get the number of ServerAction objects that match
     // the passed in ActionStatus
     private long getActionStatusCount(ActionStatus status) {
-        return ActionFactory.getServerActionCountByStatus(this, status);
+        return ServerActionFactory.getServerActionCountByStatus(this, status);
     }
 
     /**
@@ -588,7 +589,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
             LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
                     "in place.");
             Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
-            ActionFactory.rejectScheduledActions(List.of(getId()),
+            ServerActionFactory.rejectScheduledActions(List.of(getId()),
                     LocalizationService.getInstance()
                             .getMessage("task.action.rejection.notcompliantPaygByos", args));
             return true;

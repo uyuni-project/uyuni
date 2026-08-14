@@ -471,14 +471,25 @@ public class HardwareMapper {
         return sysvalues;
     }
 
-    //package-protected
-    String computeOsStringForS390Arch(Map<String, String> sysvalues) {
-        String osString = sysvalues.entrySet().stream()
+    protected String getOsStringForS390Arch(Map<String, String> sysvalues) {
+        return sysvalues.entrySet().stream()
                 .filter(e -> e.getKey().toLowerCase().contains("control program"))
                 .map(Map.Entry::getValue)
                 .findFirst().orElse("z/VM");
+    }
+
+    //package-protected
+    String computeOsStringForS390Arch(Map<String, String> sysvalues) {
+        String osString = getOsStringForS390Arch(sysvalues);
         int index = osString.indexOf(" ");
         return index > 0 ? osString.substring(0, index) : osString;
+    }
+
+    //package-protected
+    String computeOsVersionStringForS390Arch(Map<String, String> sysvalues) {
+        String osString = getOsStringForS390Arch(sysvalues);
+        int index = osString.indexOf(" ");
+        return index > 0 ? osString.substring(index).replace(" ", "") : "N/A";
     }
 
     //package-protected
@@ -519,6 +530,7 @@ public class HardwareMapper {
 
             String identifier = String.format("Z-%s", sysvalues.get("Sequence Code"));
             String os = computeOsStringForS390Arch(sysvalues);
+            String osVersion = computeOsVersionStringForS390Arch(sysvalues);
             String type = sysvalues.get("Type");
 
             String name = String.format("IBM Mainframe %s %s %s",
@@ -554,7 +566,7 @@ public class HardwareMapper {
                         String.format("Initial Registration Parameters:\n" +
                                 "OS: %s\n" +
                                 "Release: %s\n" +
-                                "CPU Arch: %s", os, type, cpuarch));
+                                "CPU Arch: %s", os, osVersion, cpuarch));
 
                 zhost.setDigitalServerId(identifier);
                 zhost.setOrg(OrgFactory.getSatelliteOrg()); // OLDTODO clarify this

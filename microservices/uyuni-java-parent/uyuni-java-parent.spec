@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-java-parent
-Version:        5.3.0
+Version:        5.3.1
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only
@@ -38,11 +38,6 @@ Package that contains the parent POM used by all %{productprettyname} Maven comp
 
 %prep
 %setup -q
-%if 0%{?suse_version} >= 1600
-mv pom-16.xml pom.xml
-%else
-rm -f pom-16.xml
-%endif
 
 %build
 %{mvn_build} -j -- --non-recursive

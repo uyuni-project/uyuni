@@ -18,7 +18,10 @@ package com.redhat.rhn.taskomatic.task.gatherer;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -117,7 +120,10 @@ public class GathererJob extends RhnJavaJob {
             Set<Long> sids = TimeUtils.logTime(log, "Find physical systems",
                     () -> ServerFactory.listOrgSystems(org.getId()).stream()
                             .filter(s -> !s.isInactive())
-                            .filter(s -> (s.hasEntitlement(EntitlementManager.SALT)))
+                            .filter(s -> (
+                                    s.hasEntitlement(EntitlementManager.SALT) &&
+                                    s.hasEntitlement(EntitlementManager.VIRTUALIZATION))
+                            )
                             .filter(s -> !s.isVirtualGuest())
                             .map(Server::getId)
                             .collect(Collectors.toSet()));
@@ -125,13 +131,13 @@ public class GathererJob extends RhnJavaJob {
                 continue;
             }
 
-            Action act = ActionFactory.createAction(ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
-            // set up needed fields for the action
-            act.setName(act.getActionTypeName());
-            act.setOrg(org);
+            Action act = new ActionBuilder()
+                    .ofType(ActionTypeEnum.TYPE_VIRT_PROFILE_REFRESH)
+                    .withOrg(org)
+                    .build();
             ActionFactory.save(act);
 
-            ActionFactory.scheduleForExecution(act, sids);
+            ServerActionFactory.scheduleForExecution(act, sids);
             TaskHelper.scheduleActionExecution(act);
 
             log.info("  schedule Virt profile refresh for {} systems in org {}", sids.size(), org.getName());

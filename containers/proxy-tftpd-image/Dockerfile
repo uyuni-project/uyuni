@@ -6,6 +6,7 @@ FROM $BASE AS base
 
 # Main packages
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
+        python3 \
         python3-PyYAML \
         python3-fbtftp \
         python3-requests && \
@@ -31,10 +32,11 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-tftpd-image
-LABEL org.opencontainers.image.version=5.3.0
+LABEL org.opencontainers.image.version=5.3.1
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL io.artifacthub.package.readme-url="%SOURCEURL_WITH(README.md)%"
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 # tftp

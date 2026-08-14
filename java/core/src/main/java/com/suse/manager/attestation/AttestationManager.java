@@ -17,10 +17,13 @@ package com.suse.manager.attestation;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionBuilder;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
+import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -146,7 +149,7 @@ public class AttestationManager {
         minionsSet.forEach(minionServer -> initializeAttestation(action, minionServer));
 
         Set<Long> minionIds = minionsSet.stream().map(Server::getId).collect(Collectors.toSet());
-        ActionFactory.scheduleForExecution(action, minionIds);
+        ServerActionFactory.scheduleForExecution(action, minionIds);
 
         CoCoAttestationAction updated = (CoCoAttestationAction) ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(updated);
@@ -172,11 +175,14 @@ public class AttestationManager {
     }
 
     private static CoCoAttestationAction createAttestationAction(User user, Org org, Date earliest) {
-        CoCoAttestationAction action = (CoCoAttestationAction) ActionFactory.createAction(
-            ActionFactory.TYPE_COCO_ATTESTATION, earliest);
-        action.setSchedulerUser(user);
-        action.setOrg(org);
-        action.setName("Confidential Compute Attestation");
+        CoCoAttestationAction action = (CoCoAttestationAction) new ActionBuilder()
+                .ofType(ActionTypeEnum.TYPE_COCO_ATTESTATION)
+                .withSchedulerUser(user)
+                .withOrg(org)
+                .withName("Confidential Compute Attestation")
+                .withEarliest(earliest)
+                .build();
+
         ActionFactory.save(action);
         return action;
     }
