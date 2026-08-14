@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -122,9 +123,10 @@ public class ApplyStatesAction extends Action {
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(details.getMods(), details.getPillarsMap(),
+        TransactionalActionManager.addCustomStateApplyCalls(ret, details.getMods(), details.getPillarsMap(),
                 Optional.of(true),
-                details.isTest() ? Optional.of(details.isTest()) : Optional.empty()), minionSummaries);
+                details.isTest() ? Optional.of(details.isTest()) : Optional.empty(),
+                minionSummaries);
         return ret;
     }
 
