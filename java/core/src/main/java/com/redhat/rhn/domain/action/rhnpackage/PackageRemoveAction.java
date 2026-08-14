@@ -19,9 +19,9 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +68,11 @@ public class PackageRemoveAction extends PackageAction {
         params.put(SaltParameters.PARAM_PKGS, uniquePkgs);
         params.put("param_pkgs_duplicates", duplicatedPkgs);
 
-        ret.put(State.apply(List.of(SaltParameters.PACKAGES_PKGREMOVE),
-                Optional.of(params)), minionSummaries);
+        TransactionalActionManager.addApplyCalls(
+                ret,
+                List.of(SaltParameters.PACKAGES_PKGREMOVE),
+                Optional.of(params),
+                minionSummaries);
         return ret;
     }
 

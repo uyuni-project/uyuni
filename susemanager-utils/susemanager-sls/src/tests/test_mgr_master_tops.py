@@ -39,6 +39,18 @@ TEST_MANAGER_STATIC_TOP = {
     ]
 }
 
+TEST_MANAGER_TRANSACTIONAL_TOP = {
+    "base": [
+        "ansible.prereq",
+        "channels",
+        "certs",
+        "services.docker",
+        "services.kiwi-image-server",
+        "services.salt-minion",
+        "switch_to_bundle.mgr_switch_to_venv_minion",
+    ]
+}
+
 
 def test_virtual():
     """
@@ -63,6 +75,22 @@ def test_top_base_saltenv():
     """
     kwargs = {"opts": {"environment": "base"}}
     assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
+
+
+def test_top_transactional_saltenv():
+    """
+    Test if top function excludes live-only states for transactional minions.
+    """
+    kwargs = {"opts": {"environment": "base"}, "grains": {"transactional": True}}
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_TRANSACTIONAL_TOP
+
+
+def test_top_transactional_saltenv_from_opts_grains():
+    """
+    Test if top function detects transactional minions from opts grains.
+    """
+    kwargs = {"opts": {"environment": "base", "grains": {"transactional": True}}}
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_TRANSACTIONAL_TOP
 
 
 def test_top_unknown_saltenv():

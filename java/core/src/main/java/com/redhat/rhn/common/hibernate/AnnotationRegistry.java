@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.RollbackAction;
 import com.redhat.rhn.domain.action.RollbackConfigAction;
 import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
+import com.redhat.rhn.domain.action.SnapshotRefreshAction;
 import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
 import com.redhat.rhn.domain.action.Up2DateConfigUpdateAction;
 import com.redhat.rhn.domain.action.VirtualInstanceRefreshAction;
@@ -312,6 +313,8 @@ import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
+import com.redhat.rhn.domain.server.MinionTransactionalInfo;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
@@ -590,6 +593,8 @@ public class AnnotationRegistry {
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
+            MinionTransactionalActionHistory.class,
+            MinionTransactionalInfo.class,
             MinionSummary.class,
             Modules.class,
             ModuleFilter.class,
@@ -734,6 +739,7 @@ public class AnnotationRegistry {
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SourceRpm.class,
+            SnapshotRefreshAction.class,
             SslContentSource.class,
             SslCryptoKey.class,
             State.class,

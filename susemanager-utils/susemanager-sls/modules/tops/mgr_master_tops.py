@@ -38,6 +38,16 @@ MANAGER_BASE_TOP = [
     "switch_to_bundle.mgr_switch_to_venv_minion",
 ]
 
+MANAGER_TRANSACTIONAL_TOP = [
+    "ansible.prereq",
+    "channels",
+    "certs",
+    "services.docker",
+    "services.kiwi-image-server",
+    "services.salt-minion",
+    "switch_to_bundle.mgr_switch_to_venv_minion",
+]
+
 
 # pylint: disable-next=invalid-name
 def __virtual__():
@@ -45,6 +55,13 @@ def __virtual__():
     Ensure the module name.
     """
     return __virtualname__
+
+
+def _is_transactional(grains):
+    """
+    Check whether the target minion is transactional.
+    """
+    return str(grains.get("transactional", "")).lower() in ["1", "true", "yes", "on"]
 
 
 def top(**kwargs):
@@ -57,5 +74,10 @@ def top(**kwargs):
         log.debug(
             'Loading SUSE Multi-Linux Manager TOP state information for the "base" environment'
         )
-        return {"base": MANAGER_BASE_TOP}
+        grains = kwargs.get("grains") or kwargs["opts"].get("grains", {})
+        return {
+            "base": MANAGER_TRANSACTIONAL_TOP
+            if _is_transactional(grains)
+            else MANAGER_BASE_TOP
+        }
     return None
