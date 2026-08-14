@@ -7837,11 +7837,11 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         <target>Impossibile eseguire la gestione dell'alimentazione su un sistema sul quale non è stata salvata la configurazione.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target>La funzione è disponibile solo sui server @@PRODUCT_NAME@@ sui quali è stato installato un "fence agent," quest'ultimo disponibile con i pacchetti "fence-agents", "fence-agents-all" o "fence-agents-ipmilan" in base al sistema operativo e all'infrastruttura di gestione dell'alimentazione. Installare il fence agent. Se i suddetti agent non sono disponibili per il sistema operativo utilizzato, la funzione di gestione dell'alimentazione non sarà disponibile.</target>
+        <target state="needs-adaptation">La funzione è disponibile solo sui server @@PRODUCT_NAME@@ sui quali è stato installato un "fence agent," quest'ultimo disponibile con i pacchetti "fence-agents", "fence-agents-all" o "fence-agents-ipmilan" in base al sistema operativo e all'infrastruttura di gestione dell'alimentazione. Installare il fence agent. Se i suddetti agent non sono disponibili per il sistema operativo utilizzato, la funzione di gestione dell'alimentazione non sarà disponibile.</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10602,8 +10602,8 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         <target state="translated">Il calendario con id '{0}' non esiste</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="translated">Si è verificato un errore nel tentativo di annullare le azioni interessate per la pianificazione '{0}'</target>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <target state="needs-adaptation">Si è verificato un errore nel tentativo di annullare le azioni interessate per la pianificazione '{0}'</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12199,6 +12199,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>

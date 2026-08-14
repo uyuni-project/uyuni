@@ -7835,11 +7835,11 @@ Follow this url to see the full list of inactive systems:
         <target state="final">保存した設定のないシステムで電力管理を行うことはできません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="final">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャーによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合は、電力管理機能はサポートされません。</target>
+        <target state="needs-adaptation">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャーによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合は、電力管理機能はサポートされません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10608,8 +10608,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">ID '{0}' のカレンダーは存在していません</target>
       </trans-unit>
       <trans-unit approved="yes" id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="final">スケジュール '{0}' に対して影響のある処理をキャンセルしようとしている際にエラーが発生しました</target>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <target state="needs-adaptation">スケジュール '{0}' に対して影響のある処理をキャンセルしようとしている際にエラーが発生しました</target>
       </trans-unit>
       <trans-unit approved="yes" id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12092,9 +12092,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">アクセス制御</target>
       </trans-unit>
-      <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve" approved="yes">
         <source>PXE Event Failed</source>
-        <target state="new"/>
+        <target state="final">PXEイベントに失敗しました</target>
       </trans-unit>
       <trans-unit id="ARMHF Debian" xml:space="preserve" approved="yes">
         <source>ARMHF Debian</source>
@@ -12113,26 +12113,26 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
         <target state="final">@@PRODUCT_NAME@@ {0} の空き容量が不足しています。これは {1} です。ディスク容量が不足すると、@@PRODUCT_NAME@@ は動作を停止し、データの損失につながる可能性があります。@@PRODUCT_NAME@@ は自動的にシャットダウンします。</target>
       </trans-unit>
-      <trans-unit id="SCAP Policies" xml:space="preserve">
+      <trans-unit id="SCAP Policies" xml:space="preserve" approved="yes">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">SCAPポリシー</target>
       </trans-unit>
-      <trans-unit id="SCAP Content" xml:space="preserve">
+      <trans-unit id="SCAP Content" xml:space="preserve" approved="yes">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">SCAPコンテンツ</target>
       </trans-unit>
-      <trans-unit id="Tailoring Files" xml:space="preserve">
+      <trans-unit id="Tailoring Files" xml:space="preserve" approved="yes">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">ファイルの調整</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
@@ -12150,91 +12150,95 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="final">SLES 16への移行が失敗したか、結果が見つかりませんでした。{0}</target>
       </trans-unit>
-    <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve">
         <source>IBM Secure Execution (IBM SEL)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve">
         <source>IBM SEL PVATTEST</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.requested.description" xml:space="preserve">
         <source>Requested</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.queued.description" xml:space="preserve">
         <source>Queued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.submitted.description" xml:space="preserve">
         <source>Submitted</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
         <source>The mandatory input data is missing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
         <source>The secure execution header is missing.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
         <source>The secure execution header is not a valid Base64 string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
         <source>The secure execution header is empty.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve">
         <source>The secure execution header is too short.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve">
         <source>The secure execution header does not start with the expected byte sequence.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve">
         <source>The secure execution header size does not match the expected value.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve">
         <source>The host key document is not a valid string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve">
         <source>The host key document is not valid yet.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve">
         <source>The host key document has expired.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>

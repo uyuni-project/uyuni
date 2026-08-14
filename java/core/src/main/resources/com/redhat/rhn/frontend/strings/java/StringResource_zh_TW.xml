@@ -7724,11 +7724,11 @@ Follow this url to see the full list of inactive systems:
         <target>無法在沒有配置的系統上進行電源管理。</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target>這功能僅及於安裝了「隔離代理程式」（fence agent）的 @@PRODUCT_NAME@@ 伺服器，根據作業系統與電源管理架構而定，這代理程式可能是透過「fence-agents」、「fence-agents-all」、或「fence-agents-ipmilan」套件而來。如果作業系統上沒有隔離代理程式，那就不支援電源管理功能。</target>
+        <target state="needs-adaptation">這功能僅及於安裝了「隔離代理程式」（fence agent）的 @@PRODUCT_NAME@@ 伺服器，根據作業系統與電源管理架構而定，這代理程式可能是透過「fence-agents」、「fence-agents-all」、或「fence-agents-ipmilan」套件而來。如果作業系統上沒有隔離代理程式，那就不支援電源管理功能。</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10299,8 +10299,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <target state="new"/>
   </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-      <target state="new"/>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -11896,6 +11896,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>

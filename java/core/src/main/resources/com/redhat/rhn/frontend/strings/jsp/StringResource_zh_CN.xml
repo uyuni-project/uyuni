@@ -10178,20 +10178,20 @@ Please note that some manual configuration of these scripts may still be require
         <target state="translated">无法删除默认分发通道映射。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.summary" xml:space="preserve">
-        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overriden, but not deleted.</source>
-        <target state="translated">分发通道映射定义为客户端根据注册的操作系统和体系结构所应用的默认基础通道。这些映射可以被覆盖，但无法删除。</target>
+        <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
+        <target state="needs-adaptation">分发通道映射定义为客户端根据注册的操作系统和体系结构所应用的默认基础通道。这些映射可以被覆盖，但无法删除。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.edit.summary" xml:space="preserve">
-        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overriden within every organization.</source>
-        <target state="translated">在此处可以编辑组织特定的分发通道映射。默认分发通道映射无法编辑，只能在各个组织中将其覆盖。</target>
+        <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">在此处可以编辑组织特定的分发通道映射。默认分发通道映射无法编辑，只能在各个组织中将其覆盖。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mapping will be deleted. If it is currently overriding a default channel mapping, the default mapping becomes effective.</source>
         <target state="translated">组织特定的分发通道映射将被删除。如果它当前正在覆盖某个默认通道映射，则该默认映射将生效。</target>
       </trans-unit>
       <trans-unit id="distchannelmap.jsp.delete.default.summary" xml:space="preserve">
-        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overriden within every organization.</source>
-        <target state="translated">无法删除默认分发通道映射。只能在各个组织中将其覆盖。</target>
+        <source>Default Distribution Channel Mappings cannot be deleted. They can only be overridden within every organization.</source>
+        <target state="needs-adaptation">无法删除默认分发通道映射。只能在各个组织中将其覆盖。</target>
       </trans-unit>
       <trans-unit id="toolbar.create.distchannelmap" xml:space="preserve">
         <source>Create Distribution Channel Mapping</source>
@@ -28577,7 +28577,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="final">此服务器已配置为某个 Hub 配置的外设服务器。只能在相应 Hub 服务器上管理身份凭证。</target>
+        <target state="final">此服务器已配置为某个中心配置的外围服务器。只能在相应中心服务器上管理身份凭证。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -29179,18 +29179,18 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-        <target state="final">外设服务器</target>
+        <target state="final">外围服务器</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">更新 Hub 报告数据库</target>
+        <target state="final">更新中心报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-        <target state="final">更新 Hub 报告数据库</target>
+        <target state="final">更新中心报告数据库</target>
       </trans-unit>
       <trans-unit approved="yes" id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
@@ -29440,7 +29440,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-        <target state="final">外设服务器</target>
+        <target state="final">外围服务器</target>
       </trans-unit>
       <trans-unit approved="yes" id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
@@ -29715,33 +29715,33 @@ given channel.</source>
         <source>Disk Check Actions</source>
         <target state="final">磁盘检查操作</target>
       </trans-unit>
-      <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
+      <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve" approved="yes">
         <source> Enable beta features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="final"> 启用 Beta 功能</target>
       </trans-unit>
-      <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
+      <trans-unit id="preferences.jsp.betaheader" xml:space="preserve" approved="yes">
         <source>Beta Features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">Beta 功能</target>
       </trans-unit>
-      <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
+      <trans-unit id="preferences.jsp.betadescription" xml:space="preserve" approved="yes">
         <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">Beta 功能属于实验性功能，可能未经过全面测试。启用此选项可访问尚在开发中的新功能。请在生产环境中谨慎使用。</target>
       </trans-unit>
-      <trans-unit id="system.audit.xccdfdetails.jsp.action" xml:space="preserve">
+      <trans-unit id="system.audit.xccdfdetails.jsp.action" xml:space="preserve" approved="yes">
         <source>Action</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">操作</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve" approved="yes">
         <source>Before Migrating to SLES 16 — Please ensure</source>
@@ -29792,17 +29792,17 @@ given channel.</source>
         </context-group>
         <target state="final">姓氏</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
+      <trans-unit id="channel.jsp.repoautosync" xml:space="preserve" approved="yes">
         <source>Automatic Repository Synchronization</source>
-        <target state="new"/>
+        <target state="final">储存库自动同步</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
+      <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve" approved="yes">
         <source> Enabled </source>
-        <target state="new"/>
+        <target state="final"> 已启用 </target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve" approved="yes">
         <source> Disabled </source>
-        <target state="new"/>
+        <target state="final"> 已禁用 </target>
       </trans-unit>
     </body>
   </file>

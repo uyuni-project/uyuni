@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2023-10-17 07:15+0000\n"
+"PO-Revision-Date: 2026-08-13 20:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/ko/>\n"
 "Language: ko\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/config.py:166
@@ -102,6 +102,7 @@ msgid "Network error: "
 msgstr "네트워크 오류: "
 
 #: ../src/up2date_client/up2dateErrors.py:385
+#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to register this\n"
@@ -121,9 +122,9 @@ msgstr ""
 "    조직의 기존 인타이틀먼트를 정지시키거나 추가로 인타이틀먼트를 구매하기 전에는 이 시스템을 등록\n"
 "    할 수 없습니다. SUSE Customer Center에서 조직 관리자가 추가로 인타이틀먼트를 구매할 수 있습니다.\n"
 "     \n"
-"    이 오류 코드의 오류가 발생하는 일반적인 원인은 실수로 활성화 키를 전체 \n"
-"    디폴트로 설정했기 때문일 수도 있습니다. 만약 이 계정에 대해 설정된 활성화 키가\n"
-"    전체 디폴트 상태라면, 이 키를 비활성화하고 다시 시도하면, 추가로 관리\n"
+"    이 오류 코드의 오류가 발생하는 일반적인 원인은 실수로 활성화 키를 범용 \n"
+"    기본값로 설정했기 때문일 수도 있습니다. 만약 이 계정에 대해 설정된 활성화 키가\n"
+"    범용 기본값 상태라면, 이 키를 비활성화하고 다시 시도하면, 추가로 관리\n"
 "    인타이틀먼트를 요청하지 않아도 될 수 있습니다."
 
 #, python-format

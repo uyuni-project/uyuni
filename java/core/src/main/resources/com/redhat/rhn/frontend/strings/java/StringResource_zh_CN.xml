@@ -7838,11 +7838,11 @@ Follow this url to see the full list of inactive systems:
         <target state="translated">无法对没有保存配置的系统进行电源管理。</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="translated">只能在安装了 "隔离代理" 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理基础结构，需要的软件包可能为 "fence-agents"、"fence-agents-all" 或 "fence-agents-ipmilan"。请安装隔离代理。如果您的操作系统无法使用隔离代理，将不会支持电源管理功能。</target>
+        <target state="needs-adaptation">只能在安装了 "隔离代理" 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理基础结构，需要的软件包可能为 "fence-agents"、"fence-agents-all" 或 "fence-agents-ipmilan"。请安装隔离代理。如果您的操作系统无法使用隔离代理，将不会支持电源管理功能。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10613,8 +10613,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">ID 为 "{0}" 的日历不存在</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target state="translated">尝试取消日程安排 "{0}" 的受影响操作时出错</target>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <target state="needs-adaptation">尝试取消日程安排 "{0}" 的受影响操作时出错</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -10982,7 +10982,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="final">外设服务器</target>
+        <target state="final">外围服务器</target>
       </trans-unit>
       <trans-unit approved="yes" id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
@@ -11575,7 +11575,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
-        <target state="final">服务器 {0} 已成功注册为外设</target>
+        <target state="final">服务器 {0} 已成功注册为外围</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
@@ -11704,7 +11704,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.fail_channel_config" xml:space="preserve">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-        <target state="final">无法为外设 {0} 配置通道：{1}</target>
+        <target state="final">无法为外围 {0} 配置通道：{1}</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
@@ -11712,11 +11712,11 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-        <target state="final">无法去除部分迁移的外设 {0}：{1}</target>
+        <target state="final">无法去除部分迁移的外围 {0}：{1}</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-        <target state="final">指定的外设 ID 无效。</target>
+        <target state="final">指定的外围 ID 无效。</target>
       </trans-unit>
       <trans-unit approved="yes" id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
@@ -11764,7 +11764,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
-        <target state="final">Hub 注册已更改</target>
+        <target state="final">中心注册已更改</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
@@ -11792,31 +11792,31 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
-        <target state="final">此服务器现在是 {0} 的外设</target>
+        <target state="final">此服务器现在是 {0} 的外围</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.registered.details" xml:space="preserve">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-        <target state="final">&lt;p&gt;此服务器已注册为 Hub {0} 的外设，将开始接收来自该 Hub 的数据。&lt;/p&gt; &lt;p&gt;有关详细信息，请参见 &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub 详细信息页面&lt;/a&gt;。&lt;/p&gt;</target>
+        <target state="final">&lt;p&gt;此服务器已注册为中心 {0} 的外围，将开始接收来自该中心的数据。&lt;/p&gt; &lt;p&gt;有关详细信息，请参见&lt;a href="/rhn/manager/admin/hub/hub-details"&gt;中心详细信息页面&lt;/a&gt;。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.hub_deregistered.summary" xml:space="preserve">
         <source>This server is no longer a peripheral of {0}</source>
-        <target state="final">此服务器不再是 {0} 的外设</target>
+        <target state="final">此服务器不再是 {0} 的外围</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.hub_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-        <target state="final">&lt;p&gt;Hub {0} 已将此服务器取消注册，也就是说，此服务器不再是其外设。&lt;/p&gt; &lt;p&gt;请检查您的配置，因为之前与该 Hub 同步的所有通道都将不再更新。&lt;/p&gt;</target>
+        <target state="final">&lt;p&gt;中心 {0} 已将此服务器取消注册，也就是说，此服务器不再是其外围。&lt;/p&gt; &lt;p&gt;请检查您的配置，因为之前与该中心同步的所有通道都将不再更新。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
         <source>Server {0} is no longer a peripheral.</source>
-        <target state="final">服务器 {0} 不再是外设。</target>
+        <target state="final">服务器 {0} 不再是外围。</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-        <target state="final">&lt;p&gt;外设 {0} 已从此 Hub 取消注册，不再可作为外设进行管理。&lt;/p&gt; &lt;p&gt;系统已去除所有现有的同步配置。&lt;/p&gt;</target>
+        <target state="final">&lt;p&gt;外围 {0} 已从此中心取消注册，不再可作为外围进行管理。&lt;/p&gt; &lt;p&gt;系统已去除所有现有的同步配置。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.error_peripheral_not_registrable" xml:space="preserve">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-        <target state="final">服务器 {0} 无法注册为此 Hub 的外设</target>
+        <target state="final">服务器 {0} 无法注册为此中心的外围</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
@@ -11875,7 +11875,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-        <target state="final">案例 ID {0} 无效。</target>
+        <target state="final">案例编号 {0} 无效。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
@@ -11917,7 +11917,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-        <target state="final">尝试从外设服务器 {0} 获取数据时产生以下错误：</target>
+        <target state="final">尝试从外围服务器 {0} 获取数据时产生以下错误：</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.migration.noServersSelected" xml:space="preserve">
         <source>Unable to identify the selected systems for the migration.</source>
@@ -12016,7 +12016,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="event.proxymigrationfailedparsing" xml:space="preserve">
         <source>Unable to parse uploaded data. See log file for details</source>
-        <target state="final">无法解析上载的数据。请查看日志文件了解详细信息。</target>
+        <target state="final">无法解析上载的数据。请查看日志文件了解详细信息</target>
       </trans-unit>
       <trans-unit approved="yes" id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
@@ -12097,9 +12097,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">访问控制</target>
       </trans-unit>
-      <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve" approved="yes">
         <source>PXE Event Failed</source>
-        <target state="new"/>
+        <target state="final">PXE 事件失败</target>
       </trans-unit>
       <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
@@ -12118,26 +12118,26 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
         <target state="final">您的 @@PRODUCT_NAME@@ {0} 存储空间即将不足。当前状态为 {1}。一旦磁盘空间耗尽，@@PRODUCT_NAME@@ 将停止运行，还可能造成数据丢失，@@PRODUCT_NAME@@ 将会自动关闭。</target>
       </trans-unit>
-      <trans-unit id="SCAP Policies" xml:space="preserve">
+      <trans-unit id="SCAP Policies" xml:space="preserve" approved="yes">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">SCAP 策略</target>
       </trans-unit>
-      <trans-unit id="SCAP Content" xml:space="preserve">
+      <trans-unit id="SCAP Content" xml:space="preserve" approved="yes">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">SCAP 内容</target>
       </trans-unit>
-      <trans-unit id="Tailoring Files" xml:space="preserve">
+      <trans-unit id="Tailoring Files" xml:space="preserve" approved="yes">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">剪裁文件</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
@@ -12155,91 +12155,95 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="final">SLES 16 迁移失败或未找到迁移结果。{0}</target>
       </trans-unit>
-    <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve">
         <source>IBM Secure Execution (IBM SEL)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve">
         <source>IBM SEL PVATTEST</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.requested.description" xml:space="preserve">
         <source>Requested</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.queued.description" xml:space="preserve">
         <source>Queued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.submitted.description" xml:space="preserve">
         <source>Submitted</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
         <source>The mandatory input data is missing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
         <source>The secure execution header is missing.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
         <source>The secure execution header is not a valid Base64 string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
         <source>The secure execution header is empty.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve">
         <source>The secure execution header is too short.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve">
         <source>The secure execution header does not start with the expected byte sequence.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve">
         <source>The secure execution header size does not match the expected value.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve">
         <source>The host key document is not a valid string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve">
         <source>The host key document is not valid yet.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve">
         <source>The host key document has expired.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>

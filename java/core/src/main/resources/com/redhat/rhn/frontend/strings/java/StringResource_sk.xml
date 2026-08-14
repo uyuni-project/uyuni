@@ -7845,8 +7845,8 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
-        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly availabe as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
-        <target>Táto funkcia je dostupná len na serveroch @@PRODUCT_NAME@@, ktoré majú nainštalovaných "agentov zábran", ktorí sú prípadne k dispozícii ako balíky "fence-agents", "fence-agents-all" alebo "fence-agents-ipmilan" v závislosti od operačného systému a požadovanej infraštruktúry správy napájania. Prosím, nainštalujte agentov zábran. Ak pre váš operačný systém nie sú k dispozícii agenti zábran, funkcia správy napájania nie je podporovaná.</target>
+        <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
+        <target state="needs-adaptation">Táto funkcia je dostupná len na serveroch @@PRODUCT_NAME@@, ktoré majú nainštalovaných "agentov zábran", ktorí sú prípadne k dispozícii ako balíky "fence-agents", "fence-agents-all" alebo "fence-agents-ipmilan" v závislosti od operačného systému a požadovanej infraštruktúry správy napájania. Prosím, nainštalujte agentov zábran. Ak pre váš operačný systém nie sú k dispozícii agenti zábran, funkcia správy napájania nie je podporovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -10613,8 +10613,8 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <target>Kalendár s id '{0}' neexistuje</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
-        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-        <target>Pri pokuse o zrušenie ovplyvnených akcií pre plán '{0}' došlo k chybe</target>
+        <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
+        <target state="needs-adaptation">Pri pokuse o zrušenie ovplyvnených akcií pre plán '{0}' došlo k chybe</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12155,91 +12155,95 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="translated">Migrácia SLES 16 zlyhala alebo sa nenašiel výsledok.{0}</target>
       </trans-unit>
-    <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Prístup administrátora</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na sérii IBM z16</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na sérii IBM z16</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na sérii IBM z17</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve">
         <source>KVM on IBM z17 series</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na sérii IBM z17</target>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve">
         <source>IBM Secure Execution (IBM SEL)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">IBM Secure Execution (IBM SEL)</target>
+      </trans-unit>
       <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve">
         <source>IBM SEL PVATTEST</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">IBM SEL PVATTEST</target>
+      </trans-unit>
       <trans-unit id="coco.status.requested.description" xml:space="preserve">
         <source>Requested</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Požadované</target>
+      </trans-unit>
       <trans-unit id="coco.status.queued.description" xml:space="preserve">
         <source>Queued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Zaradené</target>
+      </trans-unit>
       <trans-unit id="coco.status.submitted.description" xml:space="preserve">
         <source>Submitted</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Odoslané</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
         <source>The mandatory input data is missing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Chýbajú povinné vstupné údaje</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
         <source>The secure execution header is missing.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Chýba hlavička bezpečného vykonania.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
         <source>The secure execution header is not a valid Base64 string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hlavička bezpečného vykonania nie je platný reťazec Base64.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
         <source>The secure execution header is empty.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hlavička bezpečného vykonania je prázdna.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve">
         <source>The secure execution header is too short.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hlavička bezpečného vykonania je príliš krátka.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve">
         <source>The secure execution header does not start with the expected byte sequence.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hlavička bezpečného vykonania nezačína očakávanou sekvenciou bajtov.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve">
         <source>The secure execution header size does not match the expected value.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Veľkosť hlavičky bezpečného vykonania nezodpovedá očakávanej hodnote.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve">
         <source>The host key document is not a valid string.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Dokument kľúča hostiteľa nie je platný reťazec.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve">
         <source>The host key document is not valid yet.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Dokument kľúča hostiteľa ešte nie je platný.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve">
         <source>The host key document has expired.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Dokument kľúča hostiteľa vypršal.</target>
+      </trans-unit>
       <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
         <source>The host key document is not a valid PEM certificate.</source>
+        <target state="translated">Dokument kľúča hostiteľa nie je platný certifikát PEM.</target>
+      </trans-unit>
+    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+        <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
       <target state="new"/>
   </trans-unit>
       </body>

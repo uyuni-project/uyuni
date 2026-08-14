@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-04-22 10:04+0000\n"
+"POT-Creation-Date: 2026-08-14 10:02+0200\n"
+"PO-Revision-Date: 2026-08-14 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -21,69 +21,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.8.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:409
+#: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
 msgstr "남음"
 
-#: ../html/javascript/spacewalk-essentials.js:429
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 사용하십시오."
 
-#: ../html/src/components/CoCoScansList.tsx:75
+#: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
 #: ../html/src/components/product-migration/utils.tsx:102
-#: ../html/src/manager/minion/details/support-data.tsx:74
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
+#: ../html/src/manager/minion/details/support-data.tsx:78
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:78
+#, fuzzy
 msgid "The action has been <link>scheduled</link>."
 msgstr "작업이 <link>예약</link>되었습니다."
 
-#: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
+#: ../html/src/components/CoCoScansList.tsx:100
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:90
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "작업을 예약할 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오."
 
-#: ../html/src/components/CoCoScansList.tsx:122
+#: ../html/src/components/CoCoScansList.tsx:132
 msgid "Confirm Attestation Execution"
 msgstr "증명 실행 확인"
 
-#: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/components/CoCoScansList.tsx:140
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:162
 #: ../html/src/manager/admin/hub/hub-details.tsx:45
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:126
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:157
-#: ../html/src/manager/minion/details/support-data.tsx:141
+#: ../html/src/manager/minion/details/support-data.tsx:145
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:112
 msgid "Schedule"
 msgstr "일정"
 
-#: ../html/src/components/CoCoScansList.tsx:137
-#: ../html/src/components/CoCoScansList.tsx:192
+#: ../html/src/components/CoCoScansList.tsx:147
+#: ../html/src/components/CoCoScansList.tsx:200
 #: ../html/src/components/package/PackageListActionScheduler.tsx:191
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Back to list"
 msgstr "목록으로 돌아가기"
 
-#: ../html/src/components/CoCoScansList.tsx:153
+#: ../html/src/components/CoCoScansList.tsx:163
 msgid "Confidential Computing Attestations"
 msgstr "기밀 컴퓨팅 증명"
 
-#: ../html/src/components/CoCoScansList.tsx:163
+#: ../html/src/components/CoCoScansList.tsx:173
 msgid "Schedule Attestation"
 msgstr "증명 예약"
 
-#: ../html/src/components/CoCoScansList.tsx:187
+#: ../html/src/components/CoCoScansList.tsx:195
 msgid "Attestation Report details"
 msgstr "증명 보고서 세부 정보"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
+#, fuzzy
 msgid "No Scans"
-msgstr ""
+msgstr "스캔 없음"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -149,7 +151,7 @@ msgstr "스케줄러를 로드하는 중..."
 #, fuzzy
 #| msgid "The action has been {0}."
 msgid "SCAP scan has been "
-msgstr "작업이 {0}되었습니다."
+msgstr "SCAP 스캔이  "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
@@ -158,22 +160,21 @@ msgstr "예약되었습니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:171
 #, fuzzy
-#| msgid "Schedule Name"
 msgid "Schedule New XCCDF Scan"
-msgstr "일정 이름"
+msgstr "새 XCCDF 스캔 예약"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:180
 #: ../html/src/components/policies-picker.tsx:117
 #, fuzzy
 #| msgid "Policy"
 msgid "SCAP Policy"
-msgstr "정책"
+msgstr "SCAP 정책"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:184
 #, fuzzy
 #| msgid "No profile selected"
 msgid "No Policy Selected"
-msgstr "프로파일을 선택하지 않음"
+msgstr "정책을 선택하지 않음"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:175
@@ -181,13 +182,13 @@ msgstr "프로파일을 선택하지 않음"
 #, fuzzy
 #| msgid "Playbook Content"
 msgid "SCAP Content"
-msgstr "플레이북 컨텐트"
+msgstr "SCAP 컨텐트"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
 #, fuzzy
 #| msgid "A positive integer is required"
 msgid "SCAP Content is required."
-msgstr "양수 필요"
+msgstr "SCAP 컨텐트는 필수입니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:196
@@ -195,89 +196,96 @@ msgstr "양수 필요"
 #, fuzzy
 #| msgid "Delete Profile"
 msgid "XCCDF Profile"
-msgstr "프로파일 삭제"
+msgstr "XCCDF 프로파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:231
 #, fuzzy
 #| msgid "Image version is required."
 msgid "XCCDF Profile is required."
-msgstr "이미지 버전은 필수입니다."
+msgstr "XCCDF 프로파일은 필수입니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:238
 #, fuzzy
 #| msgid "Select a module..."
 msgid "Select XCCDF profile..."
-msgstr "모듈을 선택하십시오..."
+msgstr "XCCDF 프로파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:212
+#, fuzzy
 msgid "Tailoring File"
-msgstr ""
+msgstr "맞춤 설정 파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
 #, fuzzy
 #| msgid "Select a module..."
 msgid "Select Tailoring file..."
-msgstr "모듈을 선택하십시오..."
+msgstr "맞춤 설정 파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:276
 msgid "Profile from Tailoring File"
-msgstr ""
+msgstr "맞춤 설정 파일의 프로파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
 #, fuzzy
 #| msgid "Select a module..."
 msgid "Select profile..."
-msgstr "모듈을 선택하십시오..."
+msgstr "프로파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:292
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:248
 #, fuzzy
 #| msgid "Command-line Arguments"
 msgid "Advanced Arguments"
-msgstr "명령줄 인수"
+msgstr "고급 인수"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:252
+#, fuzzy
 msgid "e.g: --rule <rule_id> --remediate"
-msgstr ""
+msgstr "예: --rule <rule_id> --remediate"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:297
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:253
 #, fuzzy
 #| msgid "Command-line Arguments"
 msgid "Additional command-line arguments for oscap"
-msgstr "명령줄 인수"
+msgstr "oscap의 추가 명령줄 인수"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:302
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:258
+#, fuzzy
 msgid "OVAL Files"
-msgstr ""
+msgstr "OVAL 파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:306
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:262
+#, fuzzy
 msgid "e.g: /usr/share/xml/scap/suse-sles15-cve.xml"
-msgstr ""
+msgstr "예: /usr/share/xml/scap/suse-sles15-cve.xml"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:307
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:263
 #, fuzzy
 #| msgid "Has to be a comma-separated list of host names"
 msgid "Comma-separated list of OVAL files"
-msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
+msgstr "쉼표로 구분된 OVAL 파일 목록"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:310
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:266
+#, fuzzy
 msgid "Note: Paths to local OVAL definitions on target system (comma separated)"
-msgstr ""
+msgstr "참고: 대상 시스템에 있는 로컬 OVAL 정의의 경로(쉼표로 구분)"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
+#, fuzzy
 msgid "Fetch Remote Content"
-msgstr ""
+msgstr "원격 콘텐트 가져오기"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
+#, fuzzy
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
-msgstr ""
+msgstr "이 기능을 사용하려면 인터넷 연결과 많은 메모리가 필요하므로, 이 미니언에 사용 가능한 메모리가 충분한지 확인하십시오!"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
@@ -303,8 +311,8 @@ msgstr "성"
 #: ../html/src/components/steps-progress-bar.stories.tsx:9
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:107
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:354
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:175
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:353
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:177
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:409
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:103
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:170
@@ -358,7 +366,7 @@ msgstr "시스템"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:195
 msgid "Environment Type"
 msgstr "환경 유형"
 
@@ -414,7 +422,7 @@ msgstr "작업"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:116
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/access-control/access-group.tsx:185
+#: ../html/src/manager/admin/access-control/access-group.tsx:186
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:199
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:93
 #: ../html/src/manager/images/image-view-patches.tsx:87
@@ -477,27 +485,87 @@ msgstr "증명 날짜:"
 msgid "Process Output"
 msgstr "프로세스 출력"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:80
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
+#: ../html/src/components/large-text-input.tsx:117
+msgid "Unable to retrieve the uploaded file"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
+#: ../html/src/manager/minion/coco/coco-settings.tsx:86
+msgid "Settings"
+msgstr "설정"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:187
 msgid "Enable attestation"
 msgstr "증명 활성화"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:105
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
+msgid "Secure execution header"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
+msgid "Download the current Secure execution header"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
+#, fuzzy
+#| msgid "Changes"
+msgid "Change"
+msgstr "변경 사항"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
+msgid "Host key document"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
+msgid "Download the current Host Key Document certificate"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+msgid "Certificate File"
+msgstr "인증서 파일"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:274
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
+msgid "Certificate file, in PEM format"
+msgstr "인증서 파일(PEM 형식)"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
+#, fuzzy
+#| msgid "PEM Certificate"
+msgid "PEM certificate"
+msgstr "PEM 인증서"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:276
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:199
+msgid "The text representing the certificate, in PEM format"
+msgstr "PEM 형식의 인증서를 나타내는 텍스트"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:284
 msgid "Executions"
 msgstr "실행"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:109
-msgid "Peform attestation during the boot process"
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
+#, fuzzy
+#| msgid "Peform attestation during the boot process"
+msgid "Perform attestation during the boot process"
 msgstr "부팅 프로세스 중 증명 수행"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:121
-msgid "Peform attestation on a schedule"
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
+#, fuzzy
+#| msgid "Peform attestation on a schedule"
+msgid "Perform attestation on a schedule"
 msgstr "일정에 따라 증명 수행"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:132
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:312
 msgid "Select a schedule"
 msgstr "일정 선택"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:153
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:334
 #: ../html/src/components/formula-selection.tsx:302
 #: ../html/src/components/hub/ModalEditButton.tsx:98
 #: ../html/src/components/large-text-attachment.tsx:195
@@ -512,7 +580,7 @@ msgstr "일정 선택"
 msgid "Save"
 msgstr "저장"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:159
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:341
 msgid "Reset Changes"
 msgstr "변경사항 재설정"
 
@@ -594,7 +662,7 @@ msgstr "취소"
 #: ../html/src/components/large-text-attachment.tsx:208
 #: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:243
+#: ../html/src/components/table/Table.tsx:245
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/admin/payg/payg.tsx:71
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:99
@@ -665,7 +733,7 @@ msgid "Checkbox"
 msgstr "확인란"
 
 #: ../html/src/components/formik/Form.example.tsx:39
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:181
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:25
@@ -716,6 +784,7 @@ msgid "Select"
 msgstr "선택"
 
 #: ../html/src/components/formik/Form.example.tsx:65
+#, fuzzy
 msgid "Foo"
 msgstr "Foo"
 
@@ -755,7 +824,7 @@ msgid "{rangeInputName} end"
 msgstr "{rangeInputName} 끝"
 
 #: ../html/src/components/formik/field/FieldBase.tsx:35
-#: ../html/src/components/input/InputBase.tsx:281
+#: ../html/src/components/input/InputBase.tsx:295
 msgid "required"
 msgstr "필수"
 
@@ -822,20 +891,20 @@ msgid "Server FQDN"
 msgstr "서버 FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:134
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "e.g. server.domain.com"
 msgstr "예: server.domain.com"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:138
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:73
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:140
 #: ../html/src/manager/proxy/container-config.tsx:203
 #: ../html/src/manager/proxy/container-config.tsx:214
 msgid "Has to be a valid FQDN address"
 msgstr "유효한 FQDN 주소여야 함"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:143
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "Token"
 msgstr "토큰"
 
@@ -880,7 +949,7 @@ msgid "Select Organization"
 msgstr "조직 선택"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:112
-#: ../html/src/manager/admin/setup/products/products.tsx:503
+#: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
@@ -899,9 +968,9 @@ msgstr "채널 이름"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:145
 #: ../html/src/components/table/nested-data.example.tsx:62
-#: ../html/src/manager/admin/setup/products/products.tsx:603
+#: ../html/src/manager/admin/setup/products/products.tsx:605
 #: ../html/src/manager/admin/setup/products/products.tsx:997
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 msgid "Architecture"
@@ -1083,7 +1152,7 @@ msgid "Root CA available"
 msgstr "루트 CA 사용 가능"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:323
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+#: ../html/src/components/large-text-input.tsx:59
 msgid "Not needed"
 msgstr "필요하지 않음"
 
@@ -1145,45 +1214,45 @@ msgstr "루트 CA 다운로드"
 msgid "View details of peripheral {fqdn}"
 msgstr "주변 장치 {fqdn}의 세부 정보 보기"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:112
 msgid "Register a new peripheral server"
 msgstr "새 주변기기 서버 등록"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:118
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr "주변기기 등록 진행 중: 응답을 기다리는 중..."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:133
 msgid "Peripheral Server FQDN"
 msgstr "주변기기 서버 FQDN"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:134
 msgid "The unique, DNS-resolvable fully-qualified domain name of the server to register."
 msgstr "등록할 서버의 고유한 DNS-Resolvable FQDN(전체 도메인 이름)입니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:144
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:145
 msgid "Registration mode"
 msgstr "등록 모드"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:146
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr "등록을 시작하기 위해 원격 서버에 연결하는 방법을 정의합니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:153
 msgid "Existing token"
 msgstr "기존 토큰"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:178
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:154
 msgid "Administrator User/Password"
 msgstr "관리자 사용자/암호"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:161
 msgid "The token that grant access to the remote server to establish the connection."
 msgstr "원격 서버에 연결을 설정하기 위한 액세스 권한을 부여하는 토큰입니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:162
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:172
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:136
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1192,53 +1261,31 @@ msgstr "원격 서버에 연결을 설정하기 위한 액세스 권한을 부�
 msgid "Username"
 msgstr "사용자 이름"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:173
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "원격 서버에 대한 {productname} 관리자의 사용자 이름입니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:206
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:182
 msgid "The password of the specified user."
 msgstr "지정된 사용자의 암호입니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:192
 msgid "Root CA certificate"
 msgstr "루트 CA 인증서"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:194
 msgid "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
 msgstr "보안 연결을 설정하기 위해 신뢰할 수 있어야 하는 원격 서버의 루트 인증 기관입니다."
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#: ../html/src/components/large-text-attachment.tsx:155
-msgid "Upload a file"
-msgstr "파일 업로드"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:228
-msgid "Paste a PEM certificate"
-msgstr "PEM 인증서 붙여넣기"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-msgid "Certificate File"
-msgstr "인증서 파일"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:235
-msgid "Certificate file, in PEM format"
-msgstr "인증서 파일(PEM 형식)"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:198
 msgid "PEM Certificate"
 msgstr "PEM 인증서"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:246
-msgid "The text representing the certificate, in PEM format"
-msgstr "PEM 형식의 인증서를 나타내는 텍스트"
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:261
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:207
 msgid "Register"
 msgstr "등록"
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/manager/images/image-import.tsx:313
 #: ../html/src/manager/images/image-profile-edit.tsx:485
 #: ../html/src/manager/images/image-store-edit.tsx:201
@@ -1401,7 +1448,7 @@ msgstr "레이블"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:235
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
-#: ../html/src/manager/admin/setup/products/products.tsx:605
+#: ../html/src/manager/admin/setup/products/products.tsx:607
 msgid "Arch"
 msgstr "아키텍처"
 
@@ -1483,8 +1530,8 @@ msgstr "유효"
 #: ../html/src/components/hub/TokenTable.tsx:77
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:90
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:176
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:120
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:66
 #: ../html/src/manager/systems/list-filter.tsx:38
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "Yes"
@@ -1493,8 +1540,8 @@ msgstr "예"
 #: ../html/src/components/hub/TokenTable.tsx:77
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:90
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:176
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:120
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:66
 #: ../html/src/manager/systems/list-filter.tsx:39
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "No"
@@ -1608,7 +1655,7 @@ msgstr "제거"
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
 #: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
-#: ../html/src/manager/admin/access-control/access-group.tsx:208
+#: ../html/src/manager/admin/access-control/access-group.tsx:209
 msgid "Users"
 msgstr "사용자"
 
@@ -1669,7 +1716,7 @@ msgstr "두 값 모두 양의 정수여야 합니다."
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
 #: ../html/src/components/table/SelectedRowDetails.tsx:37
 #: ../html/src/components/table/SelectedRowDetails.tsx:60
-#: ../html/src/manager/admin/setup/products/products.tsx:341
+#: ../html/src/manager/admin/setup/products/products.tsx:343
 msgid "Clear"
 msgstr "지우기"
 
@@ -1716,6 +1763,11 @@ msgstr "메소드 편집"
 msgid "Define how to provide the new value"
 msgstr "새로운 값 제공 방법 정의"
 
+#: ../html/src/components/large-text-attachment.tsx:155
+#: ../html/src/components/large-text-input.tsx:60
+msgid "Upload a file"
+msgstr "파일 업로드"
+
 #: ../html/src/components/large-text-attachment.tsx:156
 msgid "Paste the new value"
 msgstr "새 값 붙여넣기"
@@ -1733,6 +1785,12 @@ msgstr "새 값"
 msgid "Confirm Deletion"
 msgstr "삭제 확인"
 
+#: ../html/src/components/large-text-input.tsx:61
+#, fuzzy
+#| msgid "Paste the new value"
+msgid "Paste the data"
+msgstr "새 값 붙여넣기"
+
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
 msgstr "선택을 취소할 수 없음"
@@ -1749,11 +1807,11 @@ msgstr "패키지 이름을 기준으로 필터링"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:312
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
@@ -1835,7 +1893,7 @@ msgstr "일정 선택"
 #, fuzzy
 #| msgid "State assignments have been saved."
 msgid "Policy assignment has been saved."
-msgstr "상태 할당이 저장되었습니다."
+msgstr "정책 할당이 저장되었습니다."
 
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
@@ -1843,14 +1901,15 @@ msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
 #: ../html/src/components/policies-picker.tsx:105
+#, fuzzy
 msgid "No SCAP Policies Found"
-msgstr ""
+msgstr "SCAP 정책 없음"
 
 #: ../html/src/components/policies-picker.tsx:160
 #, fuzzy
 #| msgid "Search in states"
 msgid "Search in SCAP policies"
-msgstr "상태에서 검색"
+msgstr "SCAP 정책에서 검색"
 
 #: ../html/src/components/policies-picker.tsx:165
 #: ../html/src/components/states-picker.tsx:432
@@ -1867,21 +1926,21 @@ msgstr "검색"
 #, fuzzy
 #| msgid "Policy"
 msgid "Policy Name"
-msgstr "정책"
+msgstr "정책 이름"
 
 #: ../html/src/components/policies-picker.tsx:176
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:322
 #, fuzzy
 #| msgid "Stream"
 msgid "Data Stream"
-msgstr "스트림"
+msgstr "데이터 스트림"
 
 #: ../html/src/components/policies-picker.tsx:177
 #: ../html/src/components/states-picker.tsx:465
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:374
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:176
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:178
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:45
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:78
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:21
@@ -1961,36 +2020,39 @@ msgid "Schedule action for no sooner than"
 msgstr "다음 이전에 작업 예약:"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:108
+#, fuzzy
 msgid "Before Migrating to SLES 16 — Please ensure"
-msgstr ""
+msgstr "SLES 16으로 마이그레이션하기 전 다음을 확인하십시오."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
 #, fuzzy
 #| msgid "System is up to date"
 msgid "System is fully up to date"
-msgstr "시스템이 최신임"
+msgstr "시스템이 완전히 최신임"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:111
-#, fuzzy
-#| msgid "Affected, patch is unavailable"
 msgid "Sufficient disk space is available"
-msgstr "영향을 받음, 패치를 사용할 수 없음"
+msgstr "부족한 디스크 공간을 사용할 수 있습니다"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
+#, fuzzy
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
-msgstr ""
+msgstr "한 명 이상의 사용자가 SSH 키 기반 액세스를 이용할 수 있어야 합니다. 루트로 로그인해야 하는 경우, /etc/ssh/sshd_config.d/50-permit-root-login.conf 파일을 PermitRootLogin yes로 설정하십시오."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:117
+#, fuzzy
 msgid "KVM guests are shut down (if applicable)"
-msgstr ""
+msgstr "KVM 게스트가 종료됩니다(해당되는 경우)."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
+#, fuzzy
 msgid "Network configuration will be migrated from wicked to NetworkManager"
-msgstr ""
+msgstr "네트워크 구성은 wicked에서 NetworkManager로 마이그레이션될 예정입니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:119
+#, fuzzy
 msgid "AppArmor profiles will be migrated to SELinux"
-msgstr ""
+msgstr "AppArmor 프로파일은 SELinux로 마이그레이션될 예정입니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
@@ -2005,8 +2067,9 @@ msgid "Dry run"
 msgstr "드라이 런"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:148
+#, fuzzy
 msgid "Dry run is not available for this migration"
-msgstr ""
+msgstr "이 마이그레이션에는 드라이런을 사용할 수 없습니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -2199,7 +2262,7 @@ msgid "Peripheral Server"
 msgstr "주변기기 서버"
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:193
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
 msgid "Security Advisory"
 msgstr "보안 자문"
 
@@ -2233,7 +2296,7 @@ msgid "not equal to"
 msgstr "다음과 같지 않음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:138
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
 msgid "Matcher"
 msgstr "선택기"
 
@@ -2261,18 +2324,19 @@ msgid "Hub Org"
 msgstr "허브 조직"
 
 #: ../html/src/components/table/nested-data.example.tsx:71
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:179
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:379
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:181
 msgid "View"
 msgstr "보기"
 
 #: ../html/src/components/table/nested-data.example.tsx:72
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:403
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:194
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:196
 msgid "Modify"
 msgstr "수정"
 
 #: ../html/src/components/table/search.example.tsx:20
+#, fuzzy
 msgid "Item id"
 msgstr "항목 ID"
 
@@ -2320,6 +2384,7 @@ msgstr "하위 채널을 찾을 수 없거나 인증되지 않았습니다."
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
+#, fuzzy
 msgid "Invalid channel id"
 msgstr "유효하지 않은 채널 ID"
 
@@ -2337,6 +2402,7 @@ msgid "Require this channel"
 msgstr "이 채널 필요"
 
 #: ../html/src/core/intl/index.example.tsx:7
+#, fuzzy
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "메시지 구문은 <link>Format.JS docs</link>를 참조하십시오."
 
@@ -2431,40 +2497,40 @@ msgstr "권한"
 msgid "Are you sure you want to delete the selected Access Group?"
 msgstr "선택한 액세스 그룹을 삭제하시겠습니까?"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:156
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "네임스페이스를 가져오는 동안 예기치 않은 오류가 발생했습니다."
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:201
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:362
 msgid "API"
 msgstr "API"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:204
 msgid "Web"
 msgstr "웹"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
 msgid "Only selected"
 msgstr "선택한 항목만"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:267
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:130
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 msgid "Expand All"
 msgstr "모두 확장"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:267
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:130
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 msgid "Collapse All"
 msgstr "모두 축소"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:337
 msgid "Review and modify the permissions for this custom group as needed."
 msgstr "필요에 따라 이 사용자 정의 그룹의 권한을 검토 및 수정하십시오."
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:346
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
@@ -2472,23 +2538,23 @@ msgstr "필요에 따라 이 사용자 정의 그룹의 권한을 검토 및 수
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:160
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:162
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
 msgid "No Users selected."
 msgstr "사용자를 선택하지 않았습니다."
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:163
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:165
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
 #: ../html/src/manager/proxy/container-config.tsx:324
 msgid "Email"
 msgstr "전자 메일"
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:164
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:166
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
 msgid "Real Name"
 msgstr "실제 이름"
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:171
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:173
 msgid "No permissions selected."
 msgstr "권한을 선택하지 않았습니다."
 
@@ -2504,23 +2570,23 @@ msgstr "사용자를 가져오는 동안 예기치 않은 오류가 발생했습
 msgid "Search & Add Users"
 msgstr "사용자 검색 및 추가"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:175
+#: ../html/src/manager/admin/access-control/access-group.tsx:176
 msgid "Access Group successfully created."
 msgstr "액세스 그룹을 생성했습니다."
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:197
+#: ../html/src/manager/admin/access-control/access-group.tsx:198
 msgid "Namespaces & Permissions"
 msgstr "네임스페이스 및 권한"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:213
+#: ../html/src/manager/admin/access-control/access-group.tsx:214
 msgid "Review"
 msgstr "검토"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:221
+#: ../html/src/manager/admin/access-control/access-group.tsx:222
 msgid "Access Group Details"
 msgstr "액세스 그룹 세부 사항"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:226
+#: ../html/src/manager/admin/access-control/access-group.tsx:227
 msgid "Create: Access Group"
 msgstr "생성: 액세스 그룹"
 
@@ -2616,6 +2682,7 @@ msgid "The server uses <link>Prometheus</link> exporters to expose metrics about
 msgstr "서버는 <link>Prometheus</link> 내보내기를 사용하여 사용자 환경에 대한 메트릭을 노출합니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
+#, fuzzy
 msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
 msgstr "이러한 메트릭을 사용하는 방법은 <link>설명서</link>를 참조하십시오."
 
@@ -2658,6 +2725,7 @@ msgid "Restart"
 msgstr "다시 시작"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
+#, fuzzy
 msgid "Cobbler"
 msgstr "Cobbler"
 
@@ -2742,7 +2810,7 @@ msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 #, fuzzy
 #| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. 이 페이지에는 허브 서버의 세부 정보가 표시됩니다."
+msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2768,7 +2836,7 @@ msgstr "{fqdn} - 주변 장치 세부 정보"
 #, fuzzy
 #| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다. 이 페이지에는 주변기기 서버의 세부 정보가 표시됩니다."
+msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2913,9 +2981,10 @@ msgstr "최신 상태 업데이트"
 #, fuzzy
 #| msgid "Edit"
 msgid "Edit "
-msgstr "편집"
+msgstr "편집  "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+#, fuzzy
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
@@ -2989,93 +3058,93 @@ msgstr "완료됨"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "작업 실패: 서버에서 빈 회신"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:135
+#: ../html/src/manager/admin/setup/products/products.tsx:137
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgstr "사용할 수 있는 SUSE Multi-Linux Manager Server 구독이 없습니다. 클라이언트 도구 채널이 필요한 제품이 표시되지 않습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:186
+#: ../html/src/manager/admin/setup/products/products.tsx:188
 msgid "The product catalog refresh is running..."
 msgstr "제품 카탈로그 새로 고침이 실행 중입니다..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:213
+#: ../html/src/manager/admin/setup/products/products.tsx:215
 msgid "The following product installations failed. Please check log files."
 msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:260
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:301
+#: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "The product catalog is still refreshing, please wait."
 msgstr "제품 카탈로그를 아직 새로 고치는 중입니다. 기다려 주십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:305
 msgid "Select some product first."
 msgstr "우선 일부 제품을 선택하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:312
-#: ../html/src/manager/admin/setup/products/products.tsx:321
+#: ../html/src/manager/admin/setup/products/products.tsx:314
+#: ../html/src/manager/admin/setup/products/products.tsx:323
 msgid "Add products"
 msgstr "제품 추가"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:342
 msgid "Clear products selection"
 msgstr "제품 선택 지우기"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:384
+#: ../html/src/manager/admin/setup/products/products.tsx:386
 msgid "Why aren't all products displayed in the list?"
 msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:387
+#: ../html/src/manager/admin/setup/products/products.tsx:389
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:394
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
 msgstr "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:402
+#: ../html/src/manager/admin/setup/products/products.tsx:404
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
 msgstr "이 서버는 허브 구성에서 주변기기 서버로 설정되어 있습니다. 제품은 허브 서버에서만 관리할 수 있습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:521
+#: ../html/src/manager/admin/setup/products/products.tsx:523
 msgid "Filter by product Description"
 msgstr "제품 설명을 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:597
+#: ../html/src/manager/admin/setup/products/products.tsx:599
 msgid "Product Description"
 msgstr "제품 설명"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:612
+#: ../html/src/manager/admin/setup/products/products.tsx:614
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:619
+#: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:800
+#: ../html/src/manager/admin/setup/products/products.tsx:802
 msgid " channels sync failed"
 msgstr " 채널을 동기화하지 못함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:808
+#: ../html/src/manager/admin/setup/products/products.tsx:810
 msgid " channels sync in progress"
 msgstr " 채널 동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:816
+#: ../html/src/manager/admin/setup/products/products.tsx:818
 msgid " channels synced"
 msgstr " 채널 동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:841
+#: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "To enable this product, the parent product should be selected first"
 msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:842
+#: ../html/src/manager/admin/setup/products/products.tsx:843
 msgid "Select this product"
 msgstr "이 제품 선택"
 
@@ -3177,6 +3246,7 @@ msgid "HTTP Proxy"
 msgstr "HTTP 프록시"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
+#, fuzzy
 msgid "If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case, move on to <link>Organization Credentials</link>."
 msgstr "이 서버가 HTTP 프록시를 사용하여 외부 네트워크에 액세스하는 경우 이 양식을 사용하여 구성할 수 있습니다. 그렇지 않은 경우 <link>조직 자격 증명</link>으로 이동하십시오."
 
@@ -3258,6 +3328,7 @@ msgid " seconds"
 msgstr " 초"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#, fuzzy
 msgid "Task Id"
 msgstr "작업 ID"
 
@@ -3307,6 +3378,7 @@ msgstr "AppStream {stream}에 {count}개 패키지 있음:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:67
+#, fuzzy
 msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습니다."
 
@@ -3315,6 +3387,7 @@ msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습�
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:74
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:92
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:129
+#, fuzzy
 msgid "AppStreams"
 msgstr "AppStreams"
 
@@ -3502,6 +3575,7 @@ msgid "Channel"
 msgstr "채널"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
+#, fuzzy
 msgid "Errata"
 msgstr "Errata"
 
@@ -3509,48 +3583,53 @@ msgstr "Errata"
 #, fuzzy
 #| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while uploading the SCAP content."
-msgstr "패키지 목록을 표시하는 동안 오류가 발생했습니다."
+msgstr "SCAP 컨텐트를 업로드하는 동안 오류가 발생했습니다."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:84
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:87
 #, fuzzy
 #| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred."
-msgstr "사용자를 가져오는 동안 예기치 않은 오류가 발생했습니다."
+msgstr "예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:91
 #, fuzzy
 #| msgid "Playbook Content"
 msgid "Edit SCAP Content"
-msgstr "플레이북 컨텐트"
+msgstr "SCAP 컨텐트 편집"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
+#, fuzzy
 msgid "SCAP Datastream File"
-msgstr ""
+msgstr "SCAP Datastream 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
 #, fuzzy
 #| msgid "Current Schedule"
 msgid "Current file"
-msgstr "현재 일정"
+msgstr "현재 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
+#, fuzzy
 msgid "Upload a new file to replace the existing one"
-msgstr ""
+msgstr "기존 파일을 대체할 새 파일을 업로드하십시오."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
+#, fuzzy
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "DataStream 파일(*-ds.xml)을 업로드하십시오."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
+#, fuzzy
 msgid "XCCDF File"
-msgstr ""
+msgstr "XCCDF 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
+#, fuzzy
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "XCCDF 파일(*-xccdf.xml) 업로드"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
@@ -3565,39 +3644,44 @@ msgstr "업데이트"
 #, fuzzy
 #| msgid "A positive integer is required"
 msgid "SCAP Content is required"
-msgstr "양수 필요"
+msgstr "SCAP 컨텐트는 필수입니다"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:129
+#, fuzzy
 msgid "XCCDF Profile is required"
-msgstr ""
+msgstr "XCCDF 프로파일 필수"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:156
+#, fuzzy
 msgid "Unexpected error."
-msgstr ""
+msgstr "예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
+#, fuzzy
 msgid "Edit Compliance Policy"
-msgstr ""
+msgstr "호환 정책 편집"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
 #, fuzzy
 #| msgid "Create Image Profile"
 msgid "Create Compliance Policy"
-msgstr "이미지 프로파일 만들기"
+msgstr "호환 정책 만들기"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:233
 #, fuzzy
 #| msgid "Image Profile"
 msgid "Tailoring Profile"
-msgstr "이미지 프로파일"
+msgstr "맞춤 설정 프로파일"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
+#, fuzzy
 msgid "Fetch Remote Resources"
-msgstr ""
+msgstr "원격 리소스 가져오기"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:288
+#, fuzzy
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
-msgstr ""
+msgstr "이 작업을 위해서는 인터넷 연결과 상당한 메모리 용량이 필요합니다. 적용하기 전에 대상 미니언에 사용 가능한 메모리가 충분한지 확인하십시오!"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:305
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
@@ -3610,42 +3694,43 @@ msgstr "목록으로 돌아가기"
 #, fuzzy
 #| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while saving the tailoring file."
-msgstr "패키지 목록을 표시하는 동안 오류가 발생했습니다."
+msgstr "맞춤 설정 파일을 저장하는 동안 오류가 발생했습니다."
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
 #, fuzzy
 #| msgid "Edit variables"
 msgid "Edit Tailoring File"
-msgstr "변수 편집"
+msgstr "맞춤 설정 파일 편집"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 #, fuzzy
 #| msgid "Create Filter"
 msgid "Current File"
-msgstr "필터 만들기"
+msgstr "현재 파일"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+#, fuzzy
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "파일 바꾸기(선택 사항)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 #, fuzzy
 #| msgid "Image profile has been deleted."
 msgid "SCAP content has been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "SCAP 컨텐트가 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:43
 #, fuzzy
 #| msgid "Image profiles have been deleted."
 msgid "SCAP content items have been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "SCAP 컨텐트 항목이 삭제되었습니다."
 
 #. Handle server-returned error messages
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:58
 #, fuzzy
 #| msgid "Failed to connect"
 msgid "Failed to delete SCAP content"
-msgstr "연결 실패"
+msgstr "SCAP 컨텐트를 삭제하지 못했습니다"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:61
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:62
@@ -3653,26 +3738,26 @@ msgstr "연결 실패"
 #, fuzzy
 #| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred while deleting"
-msgstr "사용자를 가져오는 동안 예기치 않은 오류가 발생했습니다."
+msgstr "다음을 삭제하는 동안 예기치 않은 오류 발생:"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:82
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:83
 #, fuzzy
 #| msgid "Upload a file"
 msgid "Upload"
-msgstr "파일 업로드"
+msgstr "업로드"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:141
 #, fuzzy
 #| msgid "Filter Name"
 msgid "File Name"
-msgstr "필터 이름"
+msgstr "파일 이름"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:157
 #, fuzzy
 #| msgid "Delete PAYG Connection"
 msgid "Delete SCAP Content"
-msgstr "PAYG 연결 삭제"
+msgstr "SCAP 컨텐트 삭제"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
@@ -3680,138 +3765,147 @@ msgstr "PAYG 연결 삭제"
 #, fuzzy
 #| msgid "Are you sure you want to delete store"
 msgid "Are you sure you want to delete"
-msgstr "저장소를 삭제하시겠습니까"
+msgstr "다음을 삭제하시겠습니까"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 #, fuzzy
 #| msgid "Loading content.."
 msgid "this content"
-msgstr "컨텐트를 로드하는 중..."
+msgstr "이 컨텐트"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
 #, fuzzy
 #| msgid "Image profile has been deleted."
 msgid "Scap Policy has been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "Scap 정책이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:45
 #, fuzzy
 #| msgid "Image profiles have been deleted."
 msgid "Scap Policies have been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "Scap 정책이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
+#, fuzzy
 msgid "Failed to delete SCAP policy"
-msgstr ""
+msgstr "SCAP 정책을 삭제하지 못했습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
+#, fuzzy
 msgid "Scap Policies"
-msgstr ""
+msgstr "Scap 정책"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
 #, fuzzy
 #| msgid "Playbook Content"
 msgid "Content"
-msgstr "플레이북 컨텐트"
+msgstr "컨텐트"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:150
 #, fuzzy
 #| msgid "System Locked"
 msgid "Systems Scanned"
-msgstr "시스템 잠김"
+msgstr "시스템 스캔됨"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:157
 #, fuzzy
 #| msgid "Completed"
 msgid "Compliance"
-msgstr "완료됨"
+msgstr "호환"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:179
 #, fuzzy
 #| msgid "Delete Pin"
 msgid "Delete Scap Policy"
-msgstr "핀 삭제"
+msgstr "Scap 정책 삭제"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
+#, fuzzy
 msgid "this policy"
-msgstr ""
+msgstr "이 정책"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:40
 #, fuzzy
 #| msgid "Image profile has been deleted."
 msgid "Tailoring file has been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "맞춤 설정 파일이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:41
 #, fuzzy
 #| msgid "Image profiles have been deleted."
 msgid "Tailoring files have been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "맞춤 설정 파일이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:55
+#, fuzzy
 msgid "Failed to delete tailoring file"
-msgstr ""
+msgstr "맞춤 설정 파일을 삭제하지 못했습니다."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:104
+#, fuzzy
 msgid "Tailoring Files"
-msgstr ""
+msgstr "맞춤 설정 파일"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:127
 #, fuzzy
 #| msgid "Target Name"
 msgid "Tailoring File Name"
-msgstr "대상 이름"
+msgstr "맞춤 설정 파일 이름"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:143
 #, fuzzy
 #| msgid "Delete Profile"
 msgid "Delete Tailoring file"
-msgstr "프로파일 삭제"
+msgstr "맞춤 설정 파일 삭제"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
 #, fuzzy
 #| msgid "Attach file"
 msgid "this file"
-msgstr "파일 첨부"
+msgstr "이 파일"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 #, fuzzy
-#| msgid "Completed"
 msgid "Compliant"
-msgstr "완료됨"
+msgstr "호환"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
+#, fuzzy
 msgid "Non-Compliant"
-msgstr ""
+msgstr "비호환"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
 #, fuzzy
 #| msgid "Proxy Configuration"
 msgid "Policy Configuration"
-msgstr "프록시 구성"
+msgstr "정책 구성"
 
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
+#, fuzzy
 msgid "Scan History"
-msgstr ""
+msgstr "스캔 기록"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
+#, fuzzy
 msgid "No scans have been performed with this policy yet."
-msgstr ""
+msgstr "아직 이 정책에 따라 스캔이 수행된 적이 없습니다."
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
+#, fuzzy
 msgid "Show only latest scan per system"
-msgstr ""
+msgstr "시스템별로 가장 최근에 스캔한 결과만 표시"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:222
+#, fuzzy
 msgid "Scan Date"
-msgstr ""
+msgstr "스캔 날짜"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
 #, fuzzy
 #| msgid "Password"
 msgid "Passed"
-msgstr "비밀번호"
+msgstr "통과함"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:32
@@ -3821,18 +3915,20 @@ msgid "Failed"
 msgstr "실패"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "기타"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:249
+#, fuzzy
 msgid "not selected or not applicable"
-msgstr ""
+msgstr "선택하지 않거나 적용할 수 없음"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
 #, fuzzy
 #| msgid "Filter Details"
 msgid "View Details"
-msgstr "필터 세부사항"
+msgstr "세부 정보 보기"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
@@ -4193,41 +4289,41 @@ msgstr "새 필터 만들기"
 msgid "Filter deleted successfully"
 msgstr "필터 삭제됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:84
 msgid "Filter Name"
 msgstr "필터 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:94
 msgid "Prefix"
 msgstr "접두사"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr "접두사는 템플릿에 의해 생성된 모든 개별 필터의 이름 앞에 추가됩니다."
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:107
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:111
 msgid "Use a template"
 msgstr "템플릿 사용"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:114
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
 msgid "Use a manual filter"
 msgstr "수동 필터 만들기"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
 msgid "Filter Type"
 msgstr "필터 유형"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:176
 msgid "Epoch"
 msgstr "에포크"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:104
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:47
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:79
@@ -4238,33 +4334,37 @@ msgstr "에포크"
 msgid "Version"
 msgstr "버전"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:174
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
 msgid "Release"
 msgstr "릴리스"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Advisory name"
 msgstr "자문 이름"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
 msgid "Bug Fix Advisory"
 msgstr "버그 수정 자문"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:195
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
 msgid "Product Enhancement Advisory"
 msgstr "제품 향상 자문"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
 msgid "Advisory Type"
 msgstr "자문 유형"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:206
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
 msgstr "발급됨"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:216
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:423
@@ -4275,49 +4375,49 @@ msgstr "발급됨"
 msgid "Build"
 msgstr "빌드"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "개요"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:238
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:257
 msgid "Reboot Required"
 msgstr "재부팅 필요"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:239
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:258
 msgid "Package Manager Restart Required"
 msgstr "패키지 관리자를 다시 시작해야 함"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
 msgid "Advisory Keywords"
 msgstr "자문 키워드"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:280
 msgid "Package Provides Name"
 msgstr "패키지 이름 제공"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Provides Name"
 msgstr "이름 제공"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:283
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:302
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
 msgstr "번호"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:324
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr "거부"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:325
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr "허용"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:308
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
 msgid "Rule"
 msgstr "규칙"
 
@@ -4325,7 +4425,7 @@ msgstr "규칙"
 #, fuzzy
 #| msgid "Image profile has been deleted."
 msgid "Filter has been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "필터가 삭제되었습니다."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
 msgid "Some of the selected filters are used in projects and can not be deleted."
@@ -4335,7 +4435,7 @@ msgstr "선택한 필터 중 일부가 프로젝트에서 사용되며 삭제할
 #, fuzzy
 #| msgid "Image profiles have been deleted."
 msgid "Filter have been deleted."
-msgstr "이미지 프로파일이 삭제되었습니다."
+msgstr "필터가 삭제되었습니다."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
 msgid "Create Filter"
@@ -4365,31 +4465,31 @@ msgstr "필터 편집"
 #, fuzzy
 #| msgid "Delete Cluster"
 msgid "Delete Filter"
-msgstr "클러스터 삭제"
+msgstr "필터 삭제"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
 #, fuzzy
 #| msgid "Are you sure you want to delete profile"
 msgid "Are you sure you want to delete the filter"
-msgstr "프로파일을 삭제하시겠습니까"
+msgstr "필터를 삭제하시겠습니까"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
 #, fuzzy
 #| msgid "Delete Selected Profile(s)"
 msgid "Delete Selected Filter(s)"
-msgstr "선택한 프로파일 삭제"
+msgstr "선택한 필터 삭제"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
 #, fuzzy
 #| msgid "Are you sure you want to delete the selected item?"
 msgid "Are you sure you want to delete the selected filter?"
-msgstr "선택한 항목을 삭제하시겠습니까?"
+msgstr "선택한 필터를 삭제하시겠습니까?"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
 #, fuzzy
 #| msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
-msgstr "선택한 프로파일을 삭제하시겠습니까?({count}개 프로파일 선택됨)"
+msgstr "선택한 필터를 삭제하시겠습니까?({count}개 필터 선택됨)"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4693,6 +4793,7 @@ msgid "Environment {name} deleted successfully"
 msgstr "{name} 환경 삭제됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:137
+#, fuzzy
 msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
 msgstr "이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
 
@@ -4942,6 +5043,7 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+#, fuzzy
 msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
 msgstr "공식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
@@ -4954,6 +5056,7 @@ msgstr "잘못된 대상 유형입니다."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:12
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:12
+#, fuzzy
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "공식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
@@ -5103,6 +5206,7 @@ msgid "Target Image Store"
 msgstr "대상 이미지 저장소"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:306
+#, fuzzy
 msgid "Dockerfile URL"
 msgstr "Dockerfile URL"
 
@@ -5145,10 +5249,12 @@ msgid "Label is required and must be a unique string and it cannot include any c
 msgstr "레이블은 필수이며 고유 문자열이고 콜론(:)을 포함할 수 없습니다."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
+#, fuzzy
 msgid "Dockerfile"
 msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.tsx:27
+#, fuzzy
 msgid "Kiwi"
 msgstr "Kiwi"
 
@@ -5620,7 +5726,7 @@ msgstr "스키마를 업데이트해야 합니다. 최신 버그 수정을 수�
 #, fuzzy
 #| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Server. Please contact your system administrator if this problem persists."
-msgstr "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
+msgstr "서버의 디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:32
 msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
@@ -5630,37 +5736,35 @@ msgstr "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토
 #, fuzzy
 #| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
+msgstr "서버의 가용 디스크 공간이 부족합니다. 상태 점검으로 인한 자동 종료가 발생하지 않도록 하려면, 즉시 시스템 관리자에게 문의하여 추가 공간을 할당받으십시오."
 
 #: ../html/src/manager/login/messages.tsx:42
 #, fuzzy
-#| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
+msgstr "서버의 가용 디스크 공간이 매우 부족합니다. 상태 점검으로 인한 자동 종료가 발생하지 않도록 하려면, 즉시 시스템 관리자에게 문의하여 추가 공간을 할당받으십시오."
 
 #: ../html/src/manager/login/messages.tsx:59
 #, fuzzy
 #| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Database. Please contact your system administrator if this problem persists."
-msgstr "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
+msgstr "데이터베이스에서 디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:64
 #, fuzzy
 #| msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgid "Some important directories are missing on database. Please contact your system administrator to review the configuration."
-msgstr "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문의하십시오."
+msgstr "데이터베이스에서 일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:69
 #, fuzzy
-#| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
+msgstr "데이터베이스의 가용 디스크 공간이 부족합니다. 상태 점검으로 인한 자동 종료가 발생하지 않도록 하려면, 즉시 시스템 관리자에게 문의하여 추가 공간을 할당받으십시오."
 
 #: ../html/src/manager/login/messages.tsx:74
 #, fuzzy
 #| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
+msgstr "데이터베이스의 가용 디스크 공간이 매우 부족합니다. 상태 점검으로 인한 자동 종료가 발생하지 않도록 하려면, 즉시 시스템 관리자에게 문의하여 추가 공간을 할당받으십시오."
 
 #: ../html/src/manager/login/messages.tsx:89
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
@@ -6210,45 +6314,45 @@ msgstr "이름 및 값"
 #, fuzzy
 #| msgid "The action has been {0}."
 msgid "Remediation has been "
-msgstr "작업이 {0}되었습니다."
+msgstr "교정이  "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 #, fuzzy
 #| msgid "Loading..."
 msgid "Saving..."
-msgstr "로드하는 중..."
+msgstr "저장하는 중..."
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
+#, fuzzy
 msgid "Save Custom Remediation"
-msgstr ""
+msgstr "사용자 정의 교정 저장"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
 #, fuzzy
 #| msgid "Delete Notification"
 msgid "Delete Custom Remediation"
-msgstr "알림 삭제"
+msgstr "사용자 정의 교정 삭제"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
+#, fuzzy
 msgid "Original"
-msgstr ""
+msgstr "원본"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
 #, fuzzy
 #| msgid "Custom value"
 msgid "Custom"
-msgstr "사용자 정의 값"
+msgstr "사용자 정의"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
+#, fuzzy
 msgid "Apply Remediation"
-msgstr ""
+msgstr "교정 적용"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
+#, fuzzy
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
-
-#: ../html/src/manager/minion/coco/coco-settings.tsx:66
-msgid "Settings"
-msgstr "설정"
+msgstr "이 시스템에서는 OpenSCAP을 사용할 수 없습니다. SCAP 스캔을 사용하려면 \"{package}\" 패키지를 설치하십시오."
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 msgid "Applying the config channels has been "
@@ -6258,47 +6362,47 @@ msgstr "구성 채널 적용이 "
 msgid "The OS of this system does not support the collection of support data."
 msgstr "이 시스템의 운영 체제는 지원 데이터 수집을 지원하지 않습니다."
 
-#: ../html/src/manager/minion/details/support-data.tsx:89
+#: ../html/src/manager/minion/details/support-data.tsx:93
 msgid "Upload Support Data"
 msgstr "지원 데이터 업로드"
 
-#: ../html/src/manager/minion/details/support-data.tsx:101
+#: ../html/src/manager/minion/details/support-data.tsx:105
 msgid "Support Case Number"
 msgstr "지원 케이스 번호"
 
-#: ../html/src/manager/minion/details/support-data.tsx:102
+#: ../html/src/manager/minion/details/support-data.tsx:106
 msgid "The support case number to which this data will be attached."
 msgstr "이 데이터가 첨부될 지원 케이스 번호입니다."
 
-#: ../html/src/manager/minion/details/support-data.tsx:104
+#: ../html/src/manager/minion/details/support-data.tsx:108
 msgid "e.g. 12345"
 msgstr "예: 12345"
 
-#: ../html/src/manager/minion/details/support-data.tsx:108
+#: ../html/src/manager/minion/details/support-data.tsx:112
 msgid "Has to be a valid support case number"
 msgstr "유효한 지원 케이스 번호여야 합니다."
 
-#: ../html/src/manager/minion/details/support-data.tsx:112
+#: ../html/src/manager/minion/details/support-data.tsx:116
 msgid "Upload Region"
 msgstr "업로드 영역"
 
-#: ../html/src/manager/minion/details/support-data.tsx:113
+#: ../html/src/manager/minion/details/support-data.tsx:117
 msgid "The location of the FTP server where the data is uploaded."
 msgstr "데이터가 업로드되는 FTP 서버의 위치입니다."
 
-#: ../html/src/manager/minion/details/support-data.tsx:123
+#: ../html/src/manager/minion/details/support-data.tsx:127
 msgid "Command-line Arguments"
 msgstr "명령줄 인수"
 
-#: ../html/src/manager/minion/details/support-data.tsx:124
+#: ../html/src/manager/minion/details/support-data.tsx:128
 msgid "Optional command line arguments for the execution of <programName></programName>."
 msgstr "<programName></programName> 행을 위한 선택적 명령줄 인수입니다."
 
-#: ../html/src/manager/minion/details/support-data.tsx:132
+#: ../html/src/manager/minion/details/support-data.tsx:136
 msgid "Earliest"
 msgstr "가장 빠른 날짜"
 
-#: ../html/src/manager/minion/details/support-data.tsx:133
+#: ../html/src/manager/minion/details/support-data.tsx:137
 msgid "The earliest moment the action can be executed."
 msgstr "작업이 실행될 수 있는 가장 이른 시점."
 
@@ -6848,7 +6952,7 @@ msgstr "SSL 인증서"
 #, fuzzy
 #| msgid "Configuration"
 msgid "Skip SSL configuration"
-msgstr "구성"
+msgstr "SSL 구성 건너뛰기"
 
 #: ../html/src/manager/proxy/container-config.tsx:258
 #: ../html/src/manager/proxy/container-config.tsx:383
@@ -7011,13 +7115,13 @@ msgstr "주문"
 #, fuzzy
 #| msgid "State Summary for {name}"
 msgid "SCAP Policy for {name}"
-msgstr "{name}에 대한 상태 요약"
+msgstr "{name}에 대한 SCAP 정책"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:332
 #, fuzzy
 #| msgid "Description"
 msgid "No description"
-msgstr "설명"
+msgstr "설명 없음"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
@@ -7047,8 +7151,9 @@ msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
+#, fuzzy
 msgid "SCAP Policies"
-msgstr ""
+msgstr "SCAP 정책"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
 msgid "Create Recurring Action"
@@ -7369,6 +7474,7 @@ msgid "${defaultChannelName}"
 msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+#, fuzzy
 msgid "${this.getDefaultBase().name}"
 msgstr "${this.getDefaultBase().name}"
 
@@ -7462,7 +7568,7 @@ msgstr "변경 금지"
 #, fuzzy
 #| msgid " (system default)"
 msgid " (No system to disable)"
-msgstr " (시스템 기본값)"
+msgstr " (비활성화할 시스템 없음)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -7579,8 +7685,8 @@ msgstr "SSH를 통해 시스템을 완전히 관리합니다(에이전트를 설
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:73
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:119
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:65
 msgid "Confidential Computing Capability"
 msgstr "기밀 컴퓨팅 성능"
 
@@ -7598,6 +7704,7 @@ msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:29
+#, fuzzy
 msgid "Not a system id"
 msgstr "시스템 ID가 아닙니다."
 
@@ -8119,6 +8226,7 @@ msgid "Amazon EC2"
 msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
+#, fuzzy
 msgid "Google Compute Engine"
 msgstr "Google Compute Engine"
 
@@ -8127,10 +8235,12 @@ msgid "Azure"
 msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
+#, fuzzy
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+#, fuzzy
 msgid "Libvirt API"
 msgstr "Libvirt API"
 
@@ -8161,6 +8271,9 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:106
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Paste a PEM certificate"
+#~ msgstr "PEM 인증서 붙여넣기"
 
 #~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 #~ msgstr "작업이 작업 체인 <link>\"{name}\"</link>에 추가되었습니다."

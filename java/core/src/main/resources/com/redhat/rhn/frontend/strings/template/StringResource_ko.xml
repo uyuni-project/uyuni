@@ -206,7 +206,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -223,7 +223,7 @@ Summary:
 ------------------------------------------------------------------------------
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -233,7 +233,7 @@ Summary:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
+        </context-group>
         <target>
 @@PRODUCT_NAME@@에 따르면 다음과 같은 권장 사항이 고객님께서 등록한 하나 
 이상의 시스템에 적용 가능합니다. 
@@ -255,7 +255,7 @@ Summary:
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -276,7 +276,7 @@ package profile for that server is out of date.
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -289,15 +289,15 @@ which you have explicitly enabled Patch Alerts are shown).
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
+        </context-group>
         <target>
 '개요'에 등록된 {0}개 시스템이 영향을 받습니다(패치 알림은 명시적으로 
 활성화된 시스템만 표시됨).
@@ -306,8 +306,8 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+      <trans-unit approved="no" id="email.errata.notification.body.affected" xml:space="preserve">
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -322,12 +322,12 @@ You may address the issues outlined in this advisory in two ways:
      - run the Update Agent on each affected server.
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
-        <target>
+        </context-group>
+        <target state="needs-translation">
 릴리스      아키텍처       프로파일 이름
 ---------- ---------- ---------------------------------------------
 {0}
@@ -344,8 +344,8 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+      <trans-unit approved="no" id="email.errata.notification.body.preferences" xml:space="preserve">
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -361,21 +361,21 @@ click the "Details" tab.
 {2}
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
-        <target>
-통지 설정 변경
+        </context-group>
+        <target state="needs-translation">
+알림 설정 변경
 ---------------------------------
-패치 알림 설정을 전역으로 활성화 또는 비활성화하려면 @@PRODUCT_NAME@@에 
-로그인한 후 "개요"/"사용자 계정"에서 "설정" 탭으로 이동합니다.
+패치 알림 기본 설정을 전역으로 활성화/비활성화하려면 @@PRODUCT_NAME@@에 
+로그인한 후 "개요"/"내 계정"에서 "기본 설정" 탭으로 이동합니다.
 
         URL: {0}
 
-또한, "시스템 목록"에서 개별 시스템을 선택하여 시스템마다 통지를
+또한, "시스템 목록"에서 개별 시스템을 선택하여 시스템마다 알림을
 활성화/비활성화할 수도 있습니다. 개별 시스템 보기에서 "상세 정보" 탭을 클릭합니다.
 
 {1}
@@ -575,7 +575,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
         <target state="final">경고: 이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않으며 일부 기능이 비활성화되어 있습니다.
