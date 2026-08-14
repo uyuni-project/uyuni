@@ -33,10 +33,22 @@ import jakarta.persistence.Transient;
 @Table(name = "suseRecurringPlaybook")
 public class RecurringPlaybook extends RecurringActionType {
 
+
+    @Column(name = "extra_vars")
     private byte[] extraVars;
+
+    @Column(name = "flush_cache")
+    @Convert(converter = YesNoConverter.class)
     private boolean flushCache;
+
+    @Column(name = "inventory_path")
     private String inventoryPath;
+
+    @Column(name = "playbook_path")
     private String playbookPath;
+
+    @Column(name = "test_mode")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
 
     /**
@@ -66,7 +78,6 @@ public class RecurringPlaybook extends RecurringActionType {
      *
      * @return the extra vars
      */
-    @Column(name = "extra_vars")
     public byte[] getExtraVars() {
         return extraVars;
     }
@@ -93,8 +104,6 @@ public class RecurringPlaybook extends RecurringActionType {
      *
      * @return flushCache - if the cache should be flushed
      */
-    @Column(name = "flush_cache")
-    @Convert(converter = YesNoConverter.class)
     public boolean isFlushCache() {
         return flushCache;
     }
@@ -113,7 +122,6 @@ public class RecurringPlaybook extends RecurringActionType {
      *
      * @return the inventory path
      */
-    @Column(name = "inventory_path")
     public String getInventoryPath() {
         return inventoryPath;
     }
@@ -132,7 +140,6 @@ public class RecurringPlaybook extends RecurringActionType {
      *
      * @return the playbook path
      */
-    @Column(name = "playbook_path")
     public String getPlaybookPath() {
         return playbookPath;
     }
@@ -151,8 +158,6 @@ public class RecurringPlaybook extends RecurringActionType {
      *
      * @return testMode - if action is testMode
      */
-    @Column(name = "test_mode")
-    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }

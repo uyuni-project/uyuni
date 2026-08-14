@@ -36,12 +36,27 @@ import jakarta.persistence.Transient;
 @Table(name = "susepaygdimensionresult")
 public class PaygDimensionResult {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionResult_seq")
+    @SequenceGenerator(
+            name = "paygDimensionResult_seq", sequenceName = "susePaygDimensionResult_id_seq", allocationSize = 1
+    )
     private Long id;
 
+
+    @ManyToOne()
+    @JoinColumn(name = "computation_id", nullable = false)
     private PaygDimensionComputation computation;
 
+
+    @Column(name = "dimension")
+    @Type(value = com.suse.cloud.domain.BillingDimensionEnumType.class)
     private BillingDimension dimension;
 
+
+    @Column(name = "count")
     private Long count;
 
     /**
@@ -62,12 +77,6 @@ public class PaygDimensionResult {
         this.count = countIn;
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionResult_seq")
-    @SequenceGenerator(
-            name = "paygDimensionResult_seq", sequenceName = "susePaygDimensionResult_id_seq", allocationSize = 1
-    )
     public Long getId() {
         return id;
     }
@@ -76,8 +85,6 @@ public class PaygDimensionResult {
         this.id = idIn;
     }
 
-    @ManyToOne()
-    @JoinColumn(name = "computation_id", nullable = false)
     public PaygDimensionComputation getComputation() {
         return computation;
     }
@@ -91,8 +98,6 @@ public class PaygDimensionResult {
         return this.computation != null ? this.computation.getId() : null;
     }
 
-    @Column(name = "dimension")
-    @Type(value = com.suse.cloud.domain.BillingDimensionEnumType.class)
     public BillingDimension getDimension() {
         return dimension;
     }
@@ -101,7 +106,6 @@ public class PaygDimensionResult {
         this.dimension = dimensionIn;
     }
 
-    @Column(name = "count")
     public Long getCount() {
         return count;
     }

@@ -31,7 +31,12 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
+
+    @Column(name = "gpg_key")
     private String gpgKey;
+
+    @OneToOne(targetEntity = SCCCredentials.class)
+    @JoinColumn(name = "mirror_creds_id")
     private SCCCredentials mirrorCredentials;
 
     protected IssHub() {
@@ -97,7 +102,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the configured GPG Key
      * @return return the gpg key
      */
-    @Column(name = "gpg_key")
     public String getGpgKey() {
         return gpgKey;
     }
@@ -106,8 +110,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @OneToOne(targetEntity = SCCCredentials.class)
-    @JoinColumn(name = "mirror_creds_id")
     public SCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
     }

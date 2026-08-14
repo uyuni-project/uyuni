@@ -37,10 +37,24 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "suseMaintenanceCalendar")
 public class MaintenanceCalendar extends BaseDomainHelper {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtcal_seq")
+    @SequenceGenerator(name = "mtcal_seq", sequenceName = "suse_mtcal_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(name = "label")
     private String label;
+
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "ical")
     private String ical;
 
     /**
@@ -62,10 +76,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtcal_seq")
-    @SequenceGenerator(name = "mtcal_seq", sequenceName = "suse_mtcal_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -73,8 +83,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return the organization
      */
-    @ManyToOne()
-    @JoinColumn(name = "org_id", nullable = false)
     public Org getOrg() {
         return org;
     }
@@ -82,7 +90,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return the label
      */
-    @Column(name = "label")
     public String getLabel() {
         return label;
     }
@@ -90,7 +97,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return the url
      */
-    @Column(name = "url")
     protected String getUrl() {
         return url;
     }
@@ -106,7 +112,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return return the ical data
      */
-    @Column(name = "ical")
     public String getIcal() {
         return ical;
     }

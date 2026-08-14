@@ -37,11 +37,29 @@ import jakarta.persistence.Table;
 @Table(name = "suseImageCustomDataValue")
 public class ImageInfoCustomDataValue extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "icdv_seq")
+    @SequenceGenerator(name = "icdv_seq", sequenceName = "suse_icdv_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", nullable = false)
     private ImageInfo imageInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "key_id", nullable = false)
     private CustomDataKey key;
+
+    @Column
     private String value;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = true)
     private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_modified_by", nullable = true)
     private User lastModifier;
 
     /**
@@ -68,48 +86,36 @@ public class ImageInfoCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the Id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "icdv_seq")
-    @SequenceGenerator(name = "icdv_seq", sequenceName = "suse_icdv_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
     /**
      * @return Returns the image info.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id", nullable = false)
     public ImageInfo getImageInfo() {
         return imageInfo;
     }
     /**
      * @return Returns the key.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "key_id", nullable = false)
     public CustomDataKey getKey() {
         return key;
     }
     /**
      * @return Returns the value.
      */
-    @Column
     public String getValue() {
         return value;
     }
     /**
      * @return Returns the creator.
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = true)
     public User getCreator() {
         return creator;
     }
     /**
      * @return Returns the lastModifier.
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "last_modified_by", nullable = true)
     public User getLastModifier() {
         return lastModifier;
     }

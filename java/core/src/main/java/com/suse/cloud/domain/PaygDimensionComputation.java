@@ -41,10 +41,16 @@ public class PaygDimensionComputation {
 
     private Long id;
 
+
+    @Column(name = "timestamp")
     private Date timestamp;
 
+
+    @Column(name = "success")
     private boolean success;
 
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "computation")
     private Set<PaygDimensionResult> dimensionResults;
 
     /**
@@ -71,7 +77,6 @@ public class PaygDimensionComputation {
         this.id = idIn;
     }
 
-    @Column(name = "timestamp")
     public Date getTimestamp() {
         return timestamp;
     }
@@ -80,7 +85,6 @@ public class PaygDimensionComputation {
         this.timestamp = timestampIn;
     }
 
-    @Column(name = "success")
     public boolean isSuccess() {
         return success;
     }
@@ -89,7 +93,6 @@ public class PaygDimensionComputation {
         this.success = successIn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "computation")
     public Set<PaygDimensionResult> getDimensionResults() {
         return dimensionResults;
     }

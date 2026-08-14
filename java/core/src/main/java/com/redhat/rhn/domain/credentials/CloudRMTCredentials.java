@@ -34,7 +34,11 @@ import jakarta.persistence.Transient;
 public class CloudRMTCredentials extends RemoteCredentials implements CloudCredentials {
 
     private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
+
+    @Column(name = "extra_auth")
     private byte[] extraAuthData;
+
+    @Column(name = "payg_ssh_data_id")
     private Long paygSshDataId;
 
     // No args constructor for hibernate
@@ -54,7 +58,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
         return CredentialsType.CLOUD_RMT;
     }
 
-    @Column(name = "extra_auth")
     public byte[] getExtraAuthData() {
         return extraAuthData;
     }
@@ -63,7 +66,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
         this.extraAuthData = extraAuthDataIn;
     }
 
-    @Column(name = "payg_ssh_data_id")
     protected Long getPaygSshDataId() {
         return paygSshDataId;
     }

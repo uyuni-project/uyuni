@@ -29,6 +29,8 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue(CredentialsType.Label.SCC)
 public class SCCCredentials extends RemoteCredentials {
 
+
+    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     private IssHub issHub;
 
     // No args constructor for hibernate
@@ -47,7 +49,6 @@ public class SCCCredentials extends RemoteCredentials {
         return CredentialsType.SCC;
     }
 
-    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     public IssHub getIssHub() {
         return issHub;
     }

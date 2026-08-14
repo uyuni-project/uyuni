@@ -35,6 +35,8 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     }
 
     private byte[] extraAuthData;
+
+    @Column(name = "payg_ssh_data_id")
     private Long paygSshDataId;
 
     @Override
@@ -54,7 +56,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
         this.extraAuthData = extraAuthDataIn;
     }
 
-    @Column(name = "payg_ssh_data_id")
     protected Long getPaygSshDataId() {
         return paygSshDataId;
     }

@@ -25,9 +25,19 @@ import jakarta.persistence.Table;
 @Table(name = "suseErrataAdvisoryMap")
 public class ErrataAdvisoryMap extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "patch_id")
     private String patchId;
+
+    @Column(name = "announcement_id")
     private String announcementId;
+
+    @Column(name = "advisory_uri")
     private String advisoryUri;
 
     /**
@@ -50,9 +60,6 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
         advisoryUri = advisoryUriIn;
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -61,7 +68,6 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
         id = idIn;
     }
 
-    @Column(name = "patch_id")
     public String getPatchId() {
         return patchId;
     }
@@ -70,7 +76,6 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
         patchId = patchIdIn;
     }
 
-    @Column(name = "announcement_id")
     public String getAnnouncementId() {
         return announcementId;
     }
@@ -79,7 +84,6 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
         announcementId = announcementIdIn;
     }
 
-    @Column(name = "advisory_uri")
     public String getAdvisoryUri() {
         return advisoryUri;
     }

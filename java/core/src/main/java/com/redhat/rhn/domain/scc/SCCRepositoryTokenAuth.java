@@ -37,6 +37,8 @@ public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
     // Logger instance
     private static Logger log = LogManager.getLogger(SCCRepositoryTokenAuth.class);
 
+
+    @Column
     private String auth;
 
     /**
@@ -55,7 +57,6 @@ public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
     /**
      * @return the auth string
      */
-    @Column
     public String getAuth() {
         return auth;
     }

@@ -39,6 +39,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("minion")
 public class MinionRecurringAction extends RecurringAction {
 
+
+    @ManyToOne
+    @JoinColumn(name = "minion_id")
     private MinionServer minion;
 
     /**
@@ -98,8 +101,6 @@ public class MinionRecurringAction extends RecurringAction {
      *
      * @return the minion server
      */
-    @ManyToOne
-    @JoinColumn(name = "minion_id")
     public MinionServer getMinion() {
         return minion;
     }

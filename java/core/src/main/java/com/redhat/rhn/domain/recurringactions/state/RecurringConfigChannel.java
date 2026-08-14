@@ -37,6 +37,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("CONFCHAN")
 public class RecurringConfigChannel extends RecurringStateConfig {
 
+
+    @ManyToOne(targetEntity = ConfigChannel.class)
+    @JoinColumn(name = "confchan_id")
     private ConfigChannel configChannel;
 
     /**
@@ -86,8 +89,6 @@ public class RecurringConfigChannel extends RecurringStateConfig {
      *
      * @return the Config Channel
      */
-    @ManyToOne(targetEntity = ConfigChannel.class)
-    @JoinColumn(name = "confchan_id")
     public ConfigChannel getConfigChannel() {
         return configChannel;
     }

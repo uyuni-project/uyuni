@@ -36,6 +36,9 @@ import jakarta.persistence.OneToOne;
 @DiscriminatorValue("software")
 public class SoftwareProjectSource extends ProjectSource {
 
+
+    @OneToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     /**
@@ -59,8 +62,6 @@ public class SoftwareProjectSource extends ProjectSource {
      *
      * @return the channel
      */
-    @OneToOne
-    @JoinColumn(name = "channel_id")
     public Channel getChannel() {
         return channel;
     }

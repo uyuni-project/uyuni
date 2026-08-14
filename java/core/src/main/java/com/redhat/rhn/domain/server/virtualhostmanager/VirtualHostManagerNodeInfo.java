@@ -31,23 +31,41 @@ import jakarta.persistence.Table;
 @Table(name = "suseVirtualHostManagerNodeInfo")
 public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vhmnodeinfo_seq")
+    @SequenceGenerator(name = "vhmnodeinfo_seq", sequenceName = "suse_vhm_nodeinfo_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "identifier")
     private String identifier;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "cpu_sockets")
     private Integer cpuSockets;
+
+    @Column(name = "cpu_cores")
     private Integer cpuCores;
+
+    @Column(name = "ram")
     private Integer ram;
+
+    @ManyToOne
+    @JoinColumn(name = "node_arch_id")
     private ServerArch nodeArch;
+
+    @Column(name = "os")
     private String os;
+
+    @Column(name = "os_version")
     private String osVersion;
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vhmnodeinfo_seq")
-    @SequenceGenerator(name = "vhmnodeinfo_seq", sequenceName = "suse_vhm_nodeinfo_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -62,7 +80,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the cpuSockets
      */
-    @Column(name = "cpu_sockets")
     public Integer getCpuSockets() {
         return cpuSockets;
     }
@@ -77,7 +94,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the memory
      */
-    @Column(name = "ram")
     public Integer getRam() {
         return ram;
     }
@@ -92,8 +108,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the node arch
      */
-    @ManyToOne
-    @JoinColumn(name = "node_arch_id")
     public ServerArch getNodeArch() {
         return nodeArch;
     }
@@ -108,7 +122,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the identifier
      */
-    @Column(name = "identifier")
     public String getIdentifier() {
         return identifier;
     }
@@ -123,7 +136,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -138,7 +150,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the cpuCores
      */
-    @Column(name = "cpu_cores")
     public Integer getCpuCores() {
         return cpuCores;
     }
@@ -153,7 +164,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the os
      */
-    @Column(name = "os")
     public String getOs() {
         return os;
     }
@@ -168,7 +178,6 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     /**
      * @return the osVersion
      */
-    @Column(name = "os_version")
     public String getOsVersion() {
         return osVersion;
     }

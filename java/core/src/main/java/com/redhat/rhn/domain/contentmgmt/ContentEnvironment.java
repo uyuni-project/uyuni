@@ -52,14 +52,36 @@ import jakarta.persistence.Transient;
 @Table(name = "suseContentEnvironment")
 public class ContentEnvironment extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_env_seq")
+    @SequenceGenerator(name = "content_env_seq", sequenceName = "suse_ct_env_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String label;
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @Column
     private Long version = 0L;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private ContentProject contentProject;
+
+    @OneToMany(mappedBy = "contentEnvironment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnvironmentTarget> targets = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "next_env_id")
     private ContentEnvironment nextEnvironment;
+
+    @OneToOne(mappedBy = "nextEnvironment")
     private ContentEnvironment prevEnvironment;
 
     /**
@@ -86,9 +108,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_env_seq")
-    @SequenceGenerator(name = "content_env_seq", sequenceName = "suse_ct_env_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -96,7 +115,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the label
      */
-    @Column
     public String getLabel() {
         return label;
     }
@@ -104,7 +122,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column
     public String getName() {
         return name;
     }
@@ -112,7 +129,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the description
      */
-    @Column
     public String getDescription() {
         return description;
     }
@@ -120,7 +136,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the version
      */
-    @Column
     public Long getVersion() {
         return version;
     }
@@ -128,8 +143,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the Content Project
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     public ContentProject getContentProject() {
         return contentProject;
     }
@@ -139,7 +152,6 @@ public class ContentEnvironment extends BaseDomainHelper {
      *
      * @return targets
      */
-    @OneToMany(mappedBy = "contentEnvironment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     public List<EnvironmentTarget> getTargets() {
         return targets;
     }
@@ -217,8 +229,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the nextEnvironment
      */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "next_env_id")
     protected ContentEnvironment getNextEnvironment() {
         return nextEnvironment;
     }
@@ -226,7 +236,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return the nextEnvironment
      */
-    @OneToOne(mappedBy = "nextEnvironment")
     protected ContentEnvironment getPrevEnvironment() {
         return prevEnvironment;
     }

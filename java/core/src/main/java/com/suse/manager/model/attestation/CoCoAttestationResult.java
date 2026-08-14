@@ -42,23 +42,47 @@ public class CoCoAttestationResult implements Serializable {
     @Serial
     private static final long serialVersionUID = -8527665110758960151L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cocoatt_result_seq")
+    @SequenceGenerator(name = "cocoatt_result_seq", sequenceName = "suse_cocoatt_res_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "report_id")
     private ServerCoCoAttestationReport report;
+
+    @Column(name = "result_type")
+    @Convert(converter = CoCoResultTypeConverter.class)
     private CoCoResultType resultType;
+
+    @Column(name = "env_type")
+    @Convert(converter = CoCoEnvironmentTypeConverter.class)
     private CoCoEnvironmentType environmentType;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "in_data")
     private Map<String, Object> inData = new TreeMap<>();
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private CoCoResultStatus status;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "details")
     private String details;
+
+    @Column(name = "process_output")
     private String processOutput;
+
+    @Column(name = "attested")
     private Date attested;
 
     /**
      * @return return the ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cocoatt_result_seq")
-    @SequenceGenerator(name = "cocoatt_result_seq", sequenceName = "suse_cocoatt_res_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -66,8 +90,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the server
      */
-    @ManyToOne
-    @JoinColumn(name = "report_id")
     public ServerCoCoAttestationReport getReport() {
         return report;
     }
@@ -75,8 +97,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the selected result type
      */
-    @Column(name = "result_type")
-    @Convert(converter = CoCoResultTypeConverter.class)
     public CoCoResultType getResultType() {
         return resultType;
     }
@@ -84,8 +104,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the selected environment type
      */
-    @Column(name = "env_type")
-    @Convert(converter = CoCoEnvironmentTypeConverter.class)
     public CoCoEnvironmentType getEnvironmentType() {
         return environmentType;
     }
@@ -93,8 +111,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return returns the input data
      */
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", name = "in_data")
     public Map<String, Object> getInData() {
         return inData;
     }
@@ -102,8 +118,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return returns the status
      */
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
     public CoCoResultStatus getStatus() {
         return status;
     }
@@ -111,7 +125,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return returns the description
      */
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -119,7 +132,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the details if available
      */
-    @Column(name = "details")
     protected String getDetails() {
         return details;
     }
@@ -127,7 +139,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the process output if available
      */
-    @Column(name = "process_output")
     protected String getProcessOutput() {
         return processOutput;
     }
@@ -135,7 +146,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return the time this result was attested
      */
-    @Column(name = "attested")
     public Date getAttested() {
         return attested;
     }

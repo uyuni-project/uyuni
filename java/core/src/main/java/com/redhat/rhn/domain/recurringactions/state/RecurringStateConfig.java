@@ -45,8 +45,19 @@ public abstract class RecurringStateConfig implements Serializable {
     @Serial
     private static final long serialVersionUID = 1772543788360679832L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_state_config_seq")
+    @SequenceGenerator(
+            name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq", allocationSize = 1
+    )
     private Long id;
+
+    @Column(name = "position")
     private Long position;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = RecurringState.class)
+    @JoinColumn(name = "rec_id")
     private RecurringState recurringState;
 
     /**
@@ -77,11 +88,6 @@ public abstract class RecurringStateConfig implements Serializable {
      *
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_state_config_seq")
-    @SequenceGenerator(
-            name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq", allocationSize = 1
-    )
     public Long getId() {
         return id;
     }
@@ -100,7 +106,6 @@ public abstract class RecurringStateConfig implements Serializable {
      *
      * @return the position
      */
-    @Column(name = "position")
     public Long getPosition() {
         return position;
     }
@@ -119,8 +124,6 @@ public abstract class RecurringStateConfig implements Serializable {
      *
      * @return the Recurring State object
      */
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = RecurringState.class)
-    @JoinColumn(name = "rec_id")
     public RecurringState getRecurringState() {
         return recurringState;
     }

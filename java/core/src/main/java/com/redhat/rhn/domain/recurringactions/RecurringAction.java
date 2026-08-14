@@ -54,12 +54,32 @@ import jakarta.persistence.Transient;
 @DiscriminatorColumn(name = "target_type")
 public abstract class RecurringAction extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_action_seq")
+    @SequenceGenerator(name = "recurring_action_seq", sequenceName = "suse_recurring_action_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column(name = "cron_expr")
     private String cronExpr;
+
+    @Column
+    @Convert(converter = YesNoConverter.class)
     private boolean active;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
     private User creator;
+
+    @OneToOne(mappedBy = "recurringAction", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private RecurringActionType recurringActionType;
+
+    @Column(name = "action_type")
+    @Enumerated(EnumType.STRING)
     private RecurringActionType.ActionType actionType;
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
@@ -145,9 +165,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_action_seq")
-    @SequenceGenerator(name = "recurring_action_seq", sequenceName = "suse_recurring_action_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -166,7 +183,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return name
      */
-    @Column
     public String getName() {
         return name;
     }
@@ -185,7 +201,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return cronExpr
      */
-    @Column(name = "cron_expr")
     public String getCronExpr() {
         return cronExpr;
     }
@@ -204,8 +219,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return active - if action is active
      */
-    @Column
-    @Convert(converter = YesNoConverter.class)
     public boolean isActive() {
         return active;
     }
@@ -224,8 +237,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return creator
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id")
     public User getCreator() {
         return creator;
     }
@@ -244,8 +255,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return the RecurringActionType
      */
-    @OneToOne(mappedBy = "recurringAction", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     public RecurringActionType getRecurringActionType() {
         return recurringActionType;
     }
@@ -264,8 +273,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return the RecurringActionType.ActionType
      */
-    @Column(name = "action_type")
-    @Enumerated(EnumType.STRING)
     public RecurringActionType.ActionType getActionType() {
         return actionType;
     }

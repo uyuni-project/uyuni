@@ -37,16 +37,42 @@ import jakarta.persistence.Transient;
 @Table(name = "suseScapPolicy")
 public class ScapPolicy extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "policy_name")
     private String policyName;
+
+    @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "scap_content_id", nullable = false)
     private ScapContent scapContent;
+
+    @Column(name = "xccdf_profile_id")
     private String xccdfProfileId;
+
+    @ManyToOne
+    @JoinColumn(name = "tailoring_file")
     private TailoringFile tailoringFile;
+
+    @Column(name = "tailoring_profile_id")
     private String tailoringProfileId;
+
+    @Column(name = "oval_files")
     private String ovalFiles;
+
+    @Column(name = "advanced_args")
     private String advancedArgs;
+
+    @Column(name = "fetch_remote_resources", nullable = false)
     private boolean fetchRemoteResources = false;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org org;
 
     /**
@@ -59,8 +85,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -75,7 +99,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the policyName
      */
-    @Column(name = "policy_name")
     public String getPolicyName() {
         return policyName;
     }
@@ -90,7 +113,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the description
      */
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -106,8 +128,6 @@ public class ScapPolicy extends BaseDomainHelper {
      * Get the SCAP content file associated with this policy.
      * @return the SCAP content
      */
-    @ManyToOne
-    @JoinColumn(name = "scap_content_id", nullable = false)
     public ScapContent getScapContent() {
         return scapContent;
     }
@@ -130,7 +150,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the xccdfProfileId
      */
-    @Column(name = "xccdf_profile_id")
     public String getXccdfProfileId() {
         return xccdfProfileId;
     }
@@ -147,8 +166,6 @@ public class ScapPolicy extends BaseDomainHelper {
      * TailoringFile is optional, so it can be null.
      * @return the TailoringFile, or null if not set
      */
-    @ManyToOne
-    @JoinColumn(name = "tailoring_file")
     public TailoringFile getTailoringFile() {
         return tailoringFile;
     }
@@ -163,7 +180,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the tailoringProfileId
      */
-    @Column(name = "tailoring_profile_id")
     public String getTailoringProfileId() {
         return tailoringProfileId;
     }
@@ -178,7 +194,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the ovalFiles
      */
-    @Column(name = "oval_files")
     public String getOvalFiles() {
         return ovalFiles;
     }
@@ -193,7 +208,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the advancedArgs
      */
-    @Column(name = "advanced_args")
     public String getAdvancedArgs() {
         return advancedArgs;
     }
@@ -208,7 +222,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the fetchRemoteResources
      */
-    @Column(name = "fetch_remote_resources", nullable = false)
     public boolean isFetchRemoteResources() {
         return fetchRemoteResources;
     }
@@ -224,8 +237,6 @@ public class ScapPolicy extends BaseDomainHelper {
      * Get the organization (Org) associated with this SCAP policy.
      * @return the organization
      */
-    @ManyToOne
-    @JoinColumn(name = "org_id")
     public Org getOrg() {
         return org;
     }

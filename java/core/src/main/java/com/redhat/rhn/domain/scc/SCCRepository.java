@@ -43,17 +43,42 @@ import jakarta.persistence.Transient;
 @Table(name = "suseSCCRepository")
 public class SCCRepository extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccrepository_seq")
+    @SequenceGenerator(name = "sccrepository_seq", sequenceName = "suse_sccrepository_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "scc_id")
     private Long sccId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "distro_target")
     private String distroTarget;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "autorefresh")
+    @Convert(converter = YesNoConverter.class)
     private boolean autorefresh;
     private boolean signed = true;
+
+    @Convert(converter = YesNoConverter.class)
+    @Column(name = "installer_updates")
     private boolean installerUpdates = false;
 
+
+    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
     private Set<ChannelTemplate> channelTemplates = new HashSet<>();
+
+    @OneToMany(mappedBy = "repo", orphanRemoval = true)
     private Set<SCCRepositoryAuth> auth = new HashSet<>();
 
     /**
@@ -85,7 +110,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the SCC id
      */
-    @Column(name = "scc_id")
     public Long getSccId() {
         return sccId;
     }
@@ -100,7 +124,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -115,7 +138,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the distroTarget
      */
-    @Column(name = "distro_target")
     public String getDistroTarget() {
         return distroTarget;
     }
@@ -130,7 +152,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the description
      */
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -145,7 +166,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the url
      */
-    @Column(name = "url")
     public String getUrl() {
         return url;
     }
@@ -160,8 +180,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the autorefresh
      */
-    @Column(name = "autorefresh")
-    @Convert(converter = YesNoConverter.class)
     public boolean isAutorefresh() {
         return autorefresh;
     }
@@ -177,10 +195,6 @@ public class SCCRepository extends BaseDomainHelper {
      * Gets the id.
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccrepository_seq")
-    @SequenceGenerator(name = "sccrepository_seq", sequenceName = "suse_sccrepository_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -211,8 +225,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Return true if this is for installer updates
      */
-    @Convert(converter = YesNoConverter.class)
-    @Column(name = "installer_updates")
     public boolean isInstallerUpdates() {
         return installerUpdates;
     }
@@ -227,7 +239,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the auth.
      */
-    @OneToMany(mappedBy = "repo", orphanRemoval = true)
     public Set<SCCRepositoryAuth> getRepositoryAuth() {
         return auth;
     }
@@ -266,7 +277,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
     public Set<ChannelTemplate> getChannelTemplates() {
         return channelTemplates;
     }

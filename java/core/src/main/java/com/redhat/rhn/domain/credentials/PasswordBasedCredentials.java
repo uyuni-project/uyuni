@@ -26,7 +26,11 @@ import jakarta.persistence.Transient;
 @MappedSuperclass
 public abstract class PasswordBasedCredentials extends BaseCredentials {
 
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String encodedPassword;
 
     /**
@@ -41,7 +45,6 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
         return null;
     }
 
-    @Column(name = "password")
     protected String getEncodedPassword() {
         return this.encodedPassword;
     }
@@ -67,7 +70,6 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
      * Return the username
      * @return username
      */
-    @Column(name = "username")
     public String getUsername() {
         return username;
     }

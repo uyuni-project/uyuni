@@ -43,24 +43,36 @@ import jakarta.persistence.Table;
 public class ImageStore extends BaseDomainHelper {
 
     /** The id. */
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstore_seq")
+    @SequenceGenerator(name = "imgstore_seq", sequenceName = "suse_imgstore_id_seq", allocationSize = 1)
     private Long id;
 
+
+    @Column(name = "label")
     private String label;
 
+
+    @Column(name = "uri")
     private String uri;
 
+
+    @ManyToOne
+    @JoinColumn(name = "store_type_id")
     private ImageStoreType storeType;
 
+
+    @ManyToOne
     private Org org;
 
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RegistryCredentials creds;
 
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstore_seq")
-    @SequenceGenerator(name = "imgstore_seq", sequenceName = "suse_imgstore_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -68,7 +80,6 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @return the label
      */
-    @Column(name = "label")
     public String getLabel() {
         return label;
     }
@@ -76,7 +87,6 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @return the uri
      */
-    @Column(name = "uri")
     public String getUri() {
         return uri;
     }
@@ -84,8 +94,6 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @return the storeType
      */
-    @ManyToOne
-    @JoinColumn(name = "store_type_id")
     public ImageStoreType getStoreType() {
         return storeType;
     }
@@ -93,7 +101,6 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @return the org
      */
-    @ManyToOne
     public Org getOrg() {
         return org;
     }
@@ -101,7 +108,6 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * @return the creds
      */
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public RegistryCredentials getCreds() {
         return creds;
     }

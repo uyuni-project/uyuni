@@ -29,7 +29,11 @@ import jakarta.persistence.Transient;
 public class HubSCCCredentials extends PasswordBasedCredentials {
 
 
+
+    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     private IssPeripheral issPeripheral;
+
+    @Column(name = "url")
     private String peripheralUrl;
 
     // No args constructor for hibernate
@@ -43,7 +47,6 @@ public class HubSCCCredentials extends PasswordBasedCredentials {
         this.peripheralUrl = peripheralUrlIn;
     }
 
-    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     public IssPeripheral getIssPeripheral() {
         return issPeripheral;
     }
@@ -58,7 +61,6 @@ public class HubSCCCredentials extends PasswordBasedCredentials {
         return CredentialsType.HUB_SCC;
     }
 
-    @Column(name = "url")
     public String getPeripheralUrl() {
         return peripheralUrl;
     }

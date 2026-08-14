@@ -39,7 +39,12 @@ import jakarta.persistence.Transient;
 @Table(name = "suseRecurringState")
 public class RecurringState extends RecurringActionType {
 
+
+    @Column(name = "test_mode")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
+
+    @OneToMany(mappedBy = "recurringState", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<RecurringStateConfig> stateConfig;
 
     /**
@@ -95,8 +100,6 @@ public class RecurringState extends RecurringActionType {
      *
      * @return testMode - if action is testMode
      */
-    @Column(name = "test_mode")
-    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }
@@ -115,7 +118,6 @@ public class RecurringState extends RecurringActionType {
      *
      * @return the Recurring State Config
      */
-    @OneToMany(mappedBy = "recurringState", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<RecurringStateConfig> getStateConfig() {
         return this.stateConfig;
     }

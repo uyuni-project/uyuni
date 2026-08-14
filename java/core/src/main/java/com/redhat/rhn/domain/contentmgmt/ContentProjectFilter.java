@@ -38,9 +38,19 @@ public class ContentProjectFilter implements Serializable {
     @Serial
     private static final long serialVersionUID = -7815314048984388240L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_filter_seq")
+    @SequenceGenerator(name = "content_project_filter_seq", sequenceName = "suse_ct_f_p_seq", allocationSize = 1)
     private Long id;
     private State state;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private ContentProject project;
+
+    @ManyToOne
+    @JoinColumn(name = "filter_id")
     private ContentFilter filter;
 
     /**
@@ -77,9 +87,6 @@ public class ContentProjectFilter implements Serializable {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_filter_seq")
-    @SequenceGenerator(name = "content_project_filter_seq", sequenceName = "suse_ct_f_p_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -117,8 +124,6 @@ public class ContentProjectFilter implements Serializable {
      *
      * @return project
      */
-    @ManyToOne
-    @JoinColumn(name = "project_id")
     public ContentProject getProject() {
         return project;
     }
@@ -137,8 +142,6 @@ public class ContentProjectFilter implements Serializable {
      *
      * @return filter
      */
-    @ManyToOne
-    @JoinColumn(name = "filter_id")
     public ContentFilter getFilter() {
         return filter;
     }

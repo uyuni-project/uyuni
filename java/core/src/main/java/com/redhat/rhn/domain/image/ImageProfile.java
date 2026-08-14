@@ -50,20 +50,32 @@ public abstract class ImageProfile extends BaseDomainHelper {
     public static final String TYPE_KIWI = "kiwi";
 
     /** The profileId. */
+
+    @Id
+    @Column(name = "profile_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgprof_seq")
+    @SequenceGenerator(name = "imgprof_seq", sequenceName = "suse_imgprof_prid_seq", allocationSize = 1)
     private Long profileId;
+
+    @Column(name = "label")
     private String label;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Token token;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_store_id")
     private ImageStore targetStore;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     private Set<ProfileCustomDataValue> customDataValues;
 
     /**
      * @return the profileId
      */
-    @Id
-    @Column(name = "profile_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgprof_seq")
-    @SequenceGenerator(name = "imgprof_seq", sequenceName = "suse_imgprof_prid_seq", allocationSize = 1)
     public Long getProfileId() {
         return profileId;
     }
@@ -71,7 +83,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the label
      */
-    @Column(name = "label")
     public String getLabel() {
         return label;
     }
@@ -79,7 +90,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the org
      */
-    @ManyToOne(fetch = FetchType.LAZY)
     public Org getOrg() {
         return org;
     }
@@ -87,7 +97,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the token
      */
-    @ManyToOne(fetch = FetchType.LAZY)
     public Token getToken() {
         return token;
     }
@@ -95,8 +104,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the targetStore
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "target_store_id")
     public ImageStore getTargetStore() {
         return targetStore;
     }
@@ -104,7 +111,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
     public Set<ProfileCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }

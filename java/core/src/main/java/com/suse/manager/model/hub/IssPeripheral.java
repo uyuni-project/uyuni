@@ -37,7 +37,12 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
+
+    @OneToOne(targetEntity = HubSCCCredentials.class)
+    @JoinColumn(name = "mirror_creds_id")
     private HubSCCCredentials mirrorCredentials;
+
+    @OneToMany(mappedBy = "peripheral", fetch = FetchType.LAZY)
     private Set<IssPeripheralChannels> peripheralChannels;
 
     protected IssPeripheral() {
@@ -105,8 +110,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @OneToOne(targetEntity = HubSCCCredentials.class)
-    @JoinColumn(name = "mirror_creds_id")
     public HubSCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
     }
@@ -114,7 +117,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     /**
      * @return return channels which should be synced to the peripheral server
      */
-    @OneToMany(mappedBy = "peripheral", fetch = FetchType.LAZY)
     public Set<IssPeripheralChannels> getPeripheralChannels() {
         return peripheralChannels;
     }

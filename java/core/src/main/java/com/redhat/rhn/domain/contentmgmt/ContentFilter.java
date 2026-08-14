@@ -45,8 +45,16 @@ import jakarta.persistence.Transient;
 @DiscriminatorColumn(name = "type")
 public abstract class ContentFilter extends BaseDomainHelper implements Predicate<Object> {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_filter_seq")
+    @SequenceGenerator(name = "content_filter_seq", sequenceName = "suse_ct_filter_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne
     private Org org;
+
+    @Column
     private String name;
     private Rule rule;
     private FilterCriteria criteria;
@@ -143,9 +151,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_filter_seq")
-    @SequenceGenerator(name = "content_filter_seq", sequenceName = "suse_ct_filter_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -164,7 +169,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      *
      * @return org
      */
-    @ManyToOne
     public Org getOrg() {
         return org;
     }
@@ -183,7 +187,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      *
      * @return name
      */
-    @Column
     public String getName() {
         return name;
     }

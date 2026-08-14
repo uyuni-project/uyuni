@@ -31,6 +31,9 @@ import jakarta.persistence.Transient;
 @Table(name = "suseRecurringHighstate")
 public class RecurringHighstate extends RecurringActionType {
 
+
+    @Column(name = "test_mode")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
 
     /**
@@ -60,8 +63,6 @@ public class RecurringHighstate extends RecurringActionType {
      *
      * @return testMode - if action is testMode
      */
-    @Column(name = "test_mode")
-    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }

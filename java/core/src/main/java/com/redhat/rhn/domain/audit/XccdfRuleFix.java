@@ -33,9 +33,18 @@ import jakarta.persistence.Table;
 @Table(name = "suseXccdfRuleFix")
 public class XccdfRuleFix {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "identifier")
     private String identifier;
+
+    @Column(name = "remediation")
     private String remediation;
+
+    @Column(name = "benchmark_identifier")
     private String benchmarkIdentifier;
 
     /**
@@ -60,8 +69,6 @@ public class XccdfRuleFix {
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -76,7 +83,6 @@ public class XccdfRuleFix {
     /**
      * @return the benchmarkIdentifier
      */
-    @Column(name = "benchmark_identifier")
     public String getBenchmarkIdentifier() {
         return benchmarkIdentifier;
     }
@@ -91,7 +97,6 @@ public class XccdfRuleFix {
     /**
      * @return the identifier
      */
-    @Column(name = "identifier")
     public String getIdentifier() {
         return identifier;
     }
@@ -106,7 +111,6 @@ public class XccdfRuleFix {
     /**
      * @return the remediation
      */
-    @Column(name = "remediation")
     public String getRemediation() {
         return remediation;
     }

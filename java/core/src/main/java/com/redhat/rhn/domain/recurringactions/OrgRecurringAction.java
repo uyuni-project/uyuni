@@ -44,6 +44,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("organization")
 public class OrgRecurringAction extends RecurringAction {
 
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org organization;
 
     /**
@@ -102,8 +105,6 @@ public class OrgRecurringAction extends RecurringAction {
      *
      * @return the organization
      */
-    @ManyToOne
-    @JoinColumn(name = "org_id")
     public Org getOrg() {
         return organization;
     }
