@@ -26,6 +26,7 @@ import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
+import com.redhat.rhn.frontend.xmlrpc.org.trusts.OrgTrustHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
@@ -133,6 +134,7 @@ public final class OpenApiConfig {
         handlers.put("kickstart.filepreservation", FilePreservationListHandler.class);
         handlers.put("kickstart.profile.software", SoftwareHandler.class);
         handlers.put("kickstart.snippet", SnippetHandler.class);
+        handlers.put("org.trusts", OrgTrustHandler.class);
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("recurring.playbook", RecurringPlaybookHandler.class);

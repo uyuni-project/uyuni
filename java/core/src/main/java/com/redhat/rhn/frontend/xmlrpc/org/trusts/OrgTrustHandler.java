@@ -44,7 +44,7 @@ import java.util.Map;
  * @apidoc.doc Contains methods to access common organization trust information
  * available from the web interface.
  */
-public class OrgTrustHandler extends BaseHandler {
+public class OrgTrustHandler extends BaseHandler implements OrgTrustHandlerApi {
 
     /**
      * Lists all organizations trusted by the user's organization.
@@ -324,7 +324,7 @@ public class OrgTrustHandler extends BaseHandler {
      *   This basically lists systems that are sharing at least (1) package.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "orgId")
-     * @apidoc.param #param("string", "trustOrgId")
+     * @apidoc.param #param("int", "trustOrgId")
      * @apidoc.returntype
      *   #return_array_begin()
      *     #struct_begin("affected systems")
