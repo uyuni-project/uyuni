@@ -28,7 +28,7 @@
 }
 
 thead tr {
-  background:$eos-bc-gray-100 !important;
+  background: $eos-bc-gray-100 !important;
   color: $eos-bc-gray-900 !important;
 
   .btn-link {
@@ -72,11 +72,28 @@ tbody tr td .modal-link {
 }
 
 .selected-row-details {
+  opacity: 0;
   background-color: rgba(179, 232, 246, 0.5);
-  padding: 0px 15px;
+  overflow: hidden;
+  height: 0;
+  transition:
+    opacity 50ms ease,
+    height 200ms ease;
 
   .btn {
     padding: 4px 6px;
+  }
+
+  &.show-details {
+    opacity: 1;
+    height: 38px;
+    padding: 0 15px;
+  }
+
+  &.hide-details {
+    opacity: 0;
+    height: 0;
+    padding: 0 15px;
   }
 }
 
@@ -121,6 +138,6 @@ tbody tr td .modal-link {
   }
 }
 
-.table-hover>tbody>tr:hover {
+.table-hover > tbody > tr:hover {
   background-color: rgba($eos-bc-gray-100, 50%) !important;
 }
