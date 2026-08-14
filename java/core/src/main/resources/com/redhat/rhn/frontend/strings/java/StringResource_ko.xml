@@ -7928,79 +7928,79 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="final">Dell DRAC 5</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Eaton SNMP</target>
+        <target state="final">Eaton SNMP</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.egenera" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.egenera" xml:space="preserve">
         <source>Egenera</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Egenera</target>
+        <target state="final">Egenera</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.eps" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.eps" xml:space="preserve">
         <source>ePowerSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">ePowerSwitch</target>
+        <target state="final">ePowerSwitch</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.hds_cb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hds_cb" xml:space="preserve">
         <source>Hitachi HDS Compute Blade</source>
-        <target state="needs-translation">Hitachi HDS Compute Blade</target>
+        <target state="final">Hitachi HDS Compute Blade</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.hpblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.hpblade" xml:space="preserve">
         <source>HP Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">HP Blade</target>
+        <target state="final">HP Blade</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ibmblade" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ibmblade" xml:space="preserve">
         <source>IBM Blade</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">IBM Blade</target>
+        <target state="final">IBM Blade</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ifmib" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ifmib" xml:space="preserve">
         <source>Cisco IF-MIB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Cisco IF-MIB</target>
+        <target state="final">Cisco IF-MIB</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ilo" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ilo" xml:space="preserve">
         <source>HP Integrated Lights-Out</source>
-        <target state="needs-translation">HP Integrated Lights-Out</target>
+        <target state="final">HP Integrated Lights-Out</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ilo_mp" xml:space="preserve">
         <source>HP Integrated Lights-Out Management Processor</source>
-        <target state="needs-translation">HP Integrated Lights-Out Management Processor</target>
+        <target state="final">HP Integrated Lights-Out Management Processor</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.intelmodular" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.intelmodular" xml:space="preserve">
         <source>Intel Modular Server</source>
-        <target state="needs-translation">Intel Modular Server</target>
+        <target state="final">Intel Modular Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ipdu" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipdu" xml:space="preserve">
         <source>HP Intelligent Power Distribution Unit</source>
-        <target state="needs-translation">HP Intelligent Power Distribution Unit</target>
+        <target state="final">HP Intelligent Power Distribution Unit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -8012,9 +8012,9 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IPMI</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ldom" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ldom" xml:space="preserve">
         <source>SPARC Logical Domains</source>
-        <target state="needs-translation">SPARC Logical Domains</target>
+        <target state="final">SPARC Logical Domains</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -8026,19 +8026,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>IBM LPAR</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.mcdata" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.mcdata" xml:space="preserve">
         <source>McData</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">McData</target>
+        <target state="final">McData</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.netio" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.netio" xml:space="preserve">
         <source>Koukaam NETIO</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Koukaam NETIO</target>
+        <target state="final">Koukaam NETIO</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ovh" xml:space="preserve">
         <source>OVH</source>
@@ -8047,40 +8047,40 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>OVH</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.rackswitch" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rackswitch" xml:space="preserve">
         <source>IBM RackSwitch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">IBM RackSwitch</target>
+        <target state="final">IBM RackSwitch</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.rhevm" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rhevm" xml:space="preserve">
         <source>Red Hat Enterprise Virtualization Manager</source>
-        <target state="needs-translation">Red Hat Enterprise Virtualization Manager</target>
+        <target state="final">Red Hat Enterprise Virtualization Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.rsa" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsa" xml:space="preserve">
         <source>IBM Remote Supervisor Adapter</source>
-        <target state="needs-translation">IBM Remote Supervisor Adapter</target>
+        <target state="final">IBM Remote Supervisor Adapter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.rsb" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.rsb" xml:space="preserve">
         <source>Fujitsu-Siemens RSB</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Fujitsu-Siemens RSB</target>
+        <target state="final">Fujitsu-Siemens RSB</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.sanbox2" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.sanbox2" xml:space="preserve">
         <source>QLogic SANbox2</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">QLogic SANbox2</target>
+        <target state="final">QLogic SANbox2</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.scsi" xml:space="preserve">
         <source>SCSI-3</source>
@@ -8089,26 +8089,26 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>SCSI-3</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.virsh" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.virsh" xml:space="preserve">
         <source>libvirt</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">libvirt</target>
+        <target state="final">libvirt</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.vixel" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.vixel" xml:space="preserve">
         <source>Vixel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Vixel</target>
+        <target state="final">Vixel</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.vmware" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.vmware" xml:space="preserve">
         <source>VMWare</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">VMWare</target>
+        <target state="final">VMWare</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.vmware_soap" xml:space="preserve">
         <source>VMWare via SOAP</source>
@@ -8117,16 +8117,16 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.wti" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.wti" xml:space="preserve">
         <source>WTI PowerSwitch</source>
-        <target state="needs-translation">WTI PowerSwitch</target>
+        <target state="final">WTI PowerSwitch</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.xcat" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.xcat" xml:space="preserve">
         <source>Extreme Cloud Administration Toolkit</source>
-        <target state="needs-translation">Extreme Cloud Administration Toolkit</target>
+        <target state="final">Extreme Cloud Administration Toolkit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -8600,9 +8600,9 @@ Follow this url to see the full list of inactive systems:
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
         <target>서버는 PAM 인증을 지원하도록 설정되어 있지 않습니다. PAM을 설정하는 방법은 참조 가이드에서 살펴보십시오.</target>
       </trans-unit>
-      <trans-unit approved="no" id="api.org.migrationtosameorg" xml:space="preserve">
+      <trans-unit approved="yes" id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target state="needs-translation">기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 마이그레이션할 수 없습니다. 조직 ID: {0}, 시스템 ID: {1}.</target>
+        <target state="final">기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 마이그레이션할 수 없습니다.   조직 ID: {0}, 시스템 ID: {1}.</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
@@ -8712,9 +8712,9 @@ Follow this url to see the full list of inactive systems:
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
         <target>등록을 위해 다중 기본 채널이 선택되었습니다. {0} 및 {1} 채널이 등록을 위해 선택되었으나, 시스템은 단일 기본 채널에만 등록될 수 있습니다.</target>
       </trans-unit>
-      <trans-unit approved="no" id="api.channel.invalidchannellist" xml:space="preserve">
+      <trans-unit approved="yes" id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target state="needs-translation">제공된 채널 목록이 잘못되었습니다. 채널 목록에는 채널 레이블이나 ID가 포함되어야 하며 두 가지를 혼용해서는 안 됩니다.</target>
+        <target state="final">제공된 채널 목록이 잘못되었습니다. 채널 목록에는 채널 레이블이나 ID가 포함되어야 하며 두 가지를 혼용해서는 안 됩니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
@@ -8950,9 +8950,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cpuMHz" xml:space="preserve">
+      <trans-unit approved="yes" id="cpuMHz" xml:space="preserve">
         <source>CPU MHz</source>
-        <target state="needs-translation">CPU MHz</target>
+        <target state="final">CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
@@ -8992,23 +8992,23 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systemIdForCsv" xml:space="preserve" approved="no">
+      <trans-unit id="systemIdForCsv" xml:space="preserve" approved="yes">
         <source>System Id</source>
-        <target state="needs-translation">시스템 ID</target>
+        <target state="final">시스템 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="hostSystemIdForCsv" xml:space="preserve" approved="no">
+      <trans-unit id="hostSystemIdForCsv" xml:space="preserve" approved="yes">
         <source>Host System Id</source>
-        <target state="needs-translation">호스트 시스템 ID</target>
+        <target state="final">호스트 시스템 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="xid" xml:space="preserve">
+      <trans-unit approved="yes" id="xid" xml:space="preserve">
         <source>Xid</source>
-        <target state="needs-translation">Xid</target>
+        <target state="final">Xid</target>
       </trans-unit>
       <trans-unit approved="yes" id="testResult" xml:space="preserve">
         <source>Idref of TestResult</source>
@@ -9208,13 +9208,13 @@ Follow this url to see the full list of inactive systems:
         <source>s390x</source>
         <target>s390x</target>
       </trans-unit>
-      <trans-unit approved="no" id="iSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="iSeries" xml:space="preserve">
         <source>iSeries</source>
-        <target state="needs-translation">iSeries</target>
+        <target state="final">iSeries</target>
       </trans-unit>
-      <trans-unit approved="no" id="pSeries" xml:space="preserve">
+      <trans-unit approved="yes" id="pSeries" xml:space="preserve">
         <source>pSeries</source>
-        <target state="needs-translation">pSeries</target>
+        <target state="final">pSeries</target>
       </trans-unit>
       <trans-unit id="x86_64" xml:space="preserve">
         <source>x86_64</source>
@@ -9232,21 +9232,21 @@ Follow this url to see the full list of inactive systems:
         <source>PowerPC Debian</source>
         <target>PowerPC Debian</target>
       </trans-unit>
-      <trans-unit approved="no" id="ARM soft. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM soft. FP" xml:space="preserve">
         <source>ARM soft. FP</source>
-        <target state="needs-translation">ARM soft. FP</target>
+        <target state="final">ARM soft. FP</target>
       </trans-unit>
-      <trans-unit approved="no" id="ARM hard. FP" xml:space="preserve">
+      <trans-unit approved="yes" id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target state="needs-translation">ARM hard. FP</target>
+        <target state="final">ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
         <target>arm Debian</target>
       </trans-unit>
-      <trans-unit approved="no" id="mips Debian" xml:space="preserve">
+      <trans-unit approved="yes" id="mips Debian" xml:space="preserve">
         <source>mips Debian</source>
-        <target state="needs-translation">mips Debian</target>
+        <target state="final">mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64" xml:space="preserve">
         <source>ARM aarch64</source>
@@ -9292,13 +9292,13 @@ Follow this url to see the full list of inactive systems:
         <source>Single Ip Address</source>
         <target>단일 Ip 주소</target>
       </trans-unit>
-      <trans-unit approved="no" id="api.kickstart.iprange.duplicate" xml:space="preserve">
+      <trans-unit approved="yes" id="api.kickstart.iprange.duplicate" xml:space="preserve">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target state="needs-translation">지정된 IP 범위 {0}이(가) 기존 IP 범위와 충돌합니다.</target>
+        <target state="final">지정된 IP 범위 {0}이(가) 기존 IP 범위와 충돌합니다.</target>
       </trans-unit>
-      <trans-unit approved="no" id="api.kickstart.ip.invalid" xml:space="preserve">
+      <trans-unit approved="yes" id="api.kickstart.ip.invalid" xml:space="preserve">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target state="needs-translation">지정된 IP 주소 {0}이(가) 잘못되었습니다.</target>
+        <target state="final">지정된 IP 주소 {0}이(가) 잘못되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.filelist.exists" xml:space="preserve">
         <source>A file list with label {0} already exists.</source>
@@ -9645,17 +9645,17 @@ Follow this url to see the full list of inactive systems:
         <source>The repository label '{0}' is already in use, please choose a different label</source>
         <target>리포지토리 레이블 '{0}'은(는) 이미 사용 중입니다. 다른 레이블을 선택하십시오.</target>
       </trans-unit>
-      <trans-unit approved="no" id="edit.channel.repo.invalidrepotype" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target state="needs-translation">'{0}' 리포지토리 유형이 잘못되었거나 지정된 URL에서 이미 사용 중입니다. 다른 유형을 선택하십시오.</target>
+        <target state="final">'{0}' 리포지토리 유형이 잘못되었거나 지정된 URL에서 이미 사용 중입니다. 다른 유형을 선택하십시오.</target>
       </trans-unit>
-      <trans-unit approved="no" id="edit.channel.repo.repourlinuse" xml:space="preserve">
+      <trans-unit approved="yes" id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="needs-translation">지정된 URL을 가진 정의된 리포지토리가 이미 존재합니다. 이를 다시 사용하십시오.</target>
+        <target state="final">지정된 URL을 가진 정의된 리포지토리가 이미 존재합니다. 이를 다시 사용하십시오.</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve" approved="no">
+      <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve" approved="yes">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
-        <target state="needs-translation">지정된 URL이 잘못되었습니다. 구문이 올바른 URL을 입력하십시오(예: 프로토콜 지정).</target>
+        <target state="final">지정된 URL이 잘못되었습니다. 구문이 올바른 URL을 입력하십시오(예: 프로토콜 지정).</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing" xml:space="preserve">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
@@ -9749,7 +9749,7 @@ Follow this url to see the full list of inactive systems:
         <source>Base Channel Subscription Updates</source>
         <target>기본 채널 서브스크립션 업데이트</target>
       </trans-unit>
-      <trans-unit approved="no" id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.cobbler.distro.syncfail" xml:space="preserve">
         <source>
 The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
 synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
@@ -9766,7 +9766,7 @@ Please check:
 
 for more detailed errors. If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.</source>
-        <target state="needs-translation">
+        <target state="final">
 @@PRODUCT_NAME@@이(가) @@PRODUCT_NAME@@에서 Cobbler로
 자동 설치 가능 배포를 동기화하는 동안 발생한 오류 목록은 다음과 같습니다.
 자동 설치 시스템에서 배포를 사용하려면 이러한 오류를 수정해야 합니다.
@@ -10448,9 +10448,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
         <target>&lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; 채널 동기화 완료</target>
       </trans-unit>
-      <trans-unit id="notification.onboardingfailed" xml:space="preserve" approved="no">
+      <trans-unit id="notification.onboardingfailed" xml:space="preserve" approved="yes">
         <source>Error registering minion id: {0}</source>
-        <target state="needs-translation">minion ID 등록 중 오류: {0}</target>
+        <target state="final">minion ID 등록 중 오류: {0}</target>
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
@@ -10603,13 +10603,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Calendar '{0}' does not exist</source>
         <target state="translated">'{0}' 달력 없음</target>
       </trans-unit>
-      <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve" approved="no">
+      <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve" approved="yes">
         <source>Schedule with id '{0}' does not exist</source>
-        <target state="needs-translation">ID가 '{0}'인 일정 없음</target>
+        <target state="final">ID가 "{0}"인 일정 없음</target>
       </trans-unit>
-      <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve" approved="no">
+      <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve" approved="yes">
         <source>Calendar with id '{0}' does not exist</source>
-        <target state="needs-translation">ID가 '{0}'인 달력 없음</target>
+        <target state="final">ID가 "{0}"인 달력 없음</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
@@ -10627,12 +10627,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Some of the specified servers cannot be found</source>
         <target state="translated">지정된 일부 서버를 찾을 수 없음</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.redfish" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Redfish</target>
+        <target state="final">Redfish</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
@@ -11014,9 +11014,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>unable to parse json</source>
         <target state="final">json을 파싱할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit approved="no" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
+      <trans-unit approved="yes" id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-        <target state="needs-translation">SSH 연결을 수립할 수 없습니다.</target>
+        <target state="final">SSH 연결을 수립할 수 없습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
@@ -11054,9 +11054,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Please fill in login.</source>
         <target state="final">로그인을 입력하십시오.</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-        <target state="needs-translation">IPMI lanplus</target>
+        <target state="final">IPMI lanplus</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
@@ -11326,9 +11326,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a standalone Salt update</source>
         <target state="final">독립형 Salt 업데이트 수행</target>
       </trans-unit>
-      <trans-unit approved="no" id="riscv64-deb" xml:space="preserve">
+      <trans-unit approved="yes" id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
-        <target state="needs-translation">RISCV64 Debian</target>
+        <target state="final">RISCV64 Debian</target>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
@@ -11336,14 +11336,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target>ARM64 Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit approved="no" id="armel-deb" xml:space="preserve">
+      <trans-unit approved="yes" id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
-        <target state="needs-translation">ARMEL Debian</target>
+        <target state="final">ARMEL Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit approved="no" id="s390x-deb" xml:space="preserve">
+      <trans-unit approved="yes" id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
-        <target state="needs-translation">PPC64EL Debian</target>
+        <target state="final">PPC64EL Debian</target>
         <target state="new"/>
       </trans-unit>
       <trans-unit approved="yes" id="message.savereposyncflags" xml:space="preserve">
@@ -11713,9 +11713,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
         <target state="final">부분적으로 마이그레이션된 주변 장치 {0}을(를) 제거할 수 없음: {1}</target>
       </trans-unit>
-      <trans-unit approved="no" id="hub.invalid_id" xml:space="preserve">
+      <trans-unit approved="yes" id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-        <target state="needs-translation">지정한 주변 장치 ID가 잘못되었습니다.</target>
+        <target state="final">지정한 주변 장치 ID가 잘못되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
@@ -11765,17 +11765,17 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Hub Registration Changed</source>
         <target state="final">허브 등록 변경됨</target>
       </trans-unit>
-      <trans-unit approved="no" id="notification.not_found" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-        <target state="needs-translation">재시도 불가: ID가 '{0}'인 알림이 없습니다.</target>
+        <target state="final">재시도 불가: ID가 "{0}"인 알림이 없습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.type_not_actionable" xml:space="preserve">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
         <target state="final">재시도 불가: 알림 유형 '{0}'을(를) 실행할 수 없습니다.</target>
       </trans-unit>
-      <trans-unit approved="no" id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-        <target state="needs-translation">reposync를 다시 시작하지 못했습니다. ID가 {0}인 채널이 없습니다.</target>
+        <target state="final">reposync를 다시 시작하지 못했습니다. ID가 {0}인 채널이 없습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.channelsyncfailed.action.failed" xml:space="preserve">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
@@ -11785,9 +11785,9 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Reposync restarted for the channel '{0}'</source>
         <target state="final">'{0}' 채널에 대한 reposync 다시 시작됨</target>
       </trans-unit>
-      <trans-unit approved="no" id="notification.onboardingfailed.action.success" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.onboardingfailed.action.success" xml:space="preserve">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-        <target state="needs-translation">ID가 '{0}'인 미니언에 대한 온보딩 다시 시작됨</target>
+        <target state="final">ID가 "{0}"인 미니언에 대한 온보딩 다시 시작됨</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
@@ -12096,13 +12096,13 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">액세스 제어</target>
       </trans-unit>
-      <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve" approved="yes">
         <source>PXE Event Failed</source>
-        <target state="needs-translation">PXE 이벤트 실패</target>
+        <target state="final">PXE 이벤트 실패</target>
       </trans-unit>
-      <trans-unit id="ARMHF Debian" xml:space="preserve">
+      <trans-unit id="ARMHF Debian" xml:space="preserve" approved="yes">
         <source>ARMHF Debian</source>
-        <target state="needs-translation">ARMHF Debian</target>
+        <target state="final">ARMHF Debian</target>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="diskcheckwarning" xml:space="preserve" approved="yes">
@@ -12117,26 +12117,26 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
         <target state="final">@@PRODUCT_NAME@@ {0}의 디스크 공간이 거의 다 찼습니다. {1}입니다. 디스크 공간이 부족하면 @@PRODUCT_NAME@@의 작동이 중단되고 데이터가 손실될 수 있습니다. @@PRODUCT_NAME@@이(가) 자동으로 종료됩니다.</target>
       </trans-unit>
-      <trans-unit id="SCAP Policies" xml:space="preserve">
+      <trans-unit id="SCAP Policies" xml:space="preserve" approved="yes">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">SCAP 정책</target>
+        <target state="final">SCAP 정책</target>
       </trans-unit>
-      <trans-unit id="SCAP Content" xml:space="preserve">
+      <trans-unit id="SCAP Content" xml:space="preserve" approved="yes">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">SCAP 콘텐츠</target>
+        <target state="final">SCAP 콘텐츠</target>
       </trans-unit>
-      <trans-unit id="Tailoring Files" xml:space="preserve">
+      <trans-unit id="Tailoring Files" xml:space="preserve" approved="yes">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">파일 맞춤 설정</target>
+        <target state="final">파일 맞춤 설정</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
