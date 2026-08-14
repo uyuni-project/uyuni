@@ -359,9 +359,9 @@
         </context-group>
         <target state="final">전체</target>
       </trans-unit>
-      <trans-unit id="url" xml:space="preserve" approved="no">
+      <trans-unit id="url" xml:space="preserve" approved="yes">
         <source>url</source>
-        <target state="needs-translation">URL</target>
+        <target state="final">URL</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
@@ -443,12 +443,12 @@
         </context-group>
         <target>감사</target>
       </trans-unit>
-      <trans-unit approved="no" id="OpenSCAP" xml:space="preserve">
+      <trans-unit approved="yes" id="OpenSCAP" xml:space="preserve">
         <source>OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">OpenSCAP</target>
+        <target state="final">OpenSCAP</target>
       </trans-unit>
       <trans-unit approved="yes" id="All Scans" xml:space="preserve">
         <source>All Scans</source>
@@ -1163,12 +1163,12 @@
         </context-group>
         <target>Hr.</target>
       </trans-unit>
-      <trans-unit approved="no" id="user prefix Miss" xml:space="preserve">
+      <trans-unit approved="yes" id="user prefix Miss" xml:space="preserve">
         <source>Miss</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="needs-translation">Miss</target>
+        <target state="final">Miss</target>
       </trans-unit>
       <trans-unit id="user prefix Mr." xml:space="preserve">
         <source>Mr.</source>
@@ -1177,12 +1177,12 @@
         </context-group>
         <target>Mr.</target>
       </trans-unit>
-      <trans-unit approved="no" id="user prefix Mrs." xml:space="preserve">
+      <trans-unit approved="yes" id="user prefix Mrs." xml:space="preserve">
         <source>Mrs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="needs-translation">Mrs.</target>
+        <target state="final">Mrs.</target>
       </trans-unit>
       <trans-unit id="user prefix Ms." xml:space="preserve">
         <source>Ms.</source>
@@ -1774,16 +1774,16 @@
         </context-group>
         <target>XCCDF 문서 경로</target>
       </trans-unit>
-      <trans-unit approved="no" id="first" xml:space="preserve">
+      <trans-unit approved="yes" id="first" xml:space="preserve">
         <source>First Scan Id</source>
-        <target state="needs-translation">첫 번째 스캔 ID</target>
+        <target state="final">첫 번째 스캔 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="second" xml:space="preserve">
+      <trans-unit approved="yes" id="second" xml:space="preserve">
         <source>Second Scan Id</source>
-        <target state="needs-translation">두 번째 스캔 ID</target>
+        <target state="final">두 번째 스캔 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
@@ -2268,7 +2268,7 @@ available for this kickstart profile to function properly.
 &lt;/div&gt;
 </target>
       </trans-unit>
-      <trans-unit approved="no" id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.invalidchannel.satmessage.appstream" xml:space="preserve">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
 &lt;ul&gt;
@@ -2289,7 +2289,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="needs-translation">&lt;div style="text-align: left;"&gt;
+        <target state="final">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;이 문제를 해결하려면 다음 사항을 확인하십시오.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2300,7 +2300,8 @@ and try again.
 &lt;li&gt;
 이 킥스타트 프로파일의 기본 채널을 위한 'appstream' 하위 채널을 @@PRODUCT_NAME@@에서
 사용할 수 있는지 확인하십시오. 그렇지 않은 경우, @@PRODUCT_NAME@@ 관리자에게 문의하여
-appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
+appstream 채널에 대한 cdn-sync를 요청한 후
+다시 시도하십시오.
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -2488,12 +2489,12 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         </context-group>
         <target state="final">코드 조각 삭제</target>
       </trans-unit>
-      <trans-unit approved="no" id="kickstart.iprange.url" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target state="needs-translation">자동 설치를 위해 커널 매개 변수에 &lt;code&gt;{0}&lt;/code&gt;을(를) 추가하면 새로운 시스템이 IP 주소에 기반하여 자동으로 설치될 수 있습니다.</target>
+        <target state="final">자동 설치를 위해 커널 매개 변수에 &lt;code&gt;{0}&lt;/code&gt;을(를) 추가하면 새로운 시스템이 IP 주소에 기반하여 자동으로 설치될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
@@ -6954,12 +6955,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="config_channel.server_import" xml:space="preserve">
+      <trans-unit approved="yes" id="config_channel.server_import" xml:space="preserve">
         <source>Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
-        <target state="needs-translation">Sandbox</target>
+        <target state="final">샌드박스</target>
       </trans-unit>
       <trans-unit approved="yes" id="scheduledeploy.ssm.success" xml:space="preserve">
         <source>Configuration Deploy Action is being scheduled for &lt;strong&gt;1 system&lt;/strong&gt;.</source>
@@ -7043,19 +7044,19 @@ Follow this url to see the full list of inactive systems:
         <target>설정 채널 설명</target>
       </trans-unit>
       <!-- config-file form-bean I18N -->
-      <trans-unit id="cffUid" xml:space="preserve" approved="no">
+      <trans-unit id="cffUid" xml:space="preserve" approved="yes">
         <source>User name or id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="needs-translation">사용자 이름 또는 ID</target>
+        <target state="final">사용자 이름 또는 ID</target>
       </trans-unit>
-      <trans-unit id="cffGid" xml:space="preserve" approved="no">
+      <trans-unit id="cffGid" xml:space="preserve" approved="yes">
         <source>Group name or id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="needs-translation">그룹 이름 또는 ID</target>
+        <target state="final">그룹 이름 또는 ID</target>
       </trans-unit>
       <trans-unit id="cffPermissions" xml:space="preserve">
         <source>File permissions setting</source>
@@ -7843,9 +7844,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.alom" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
-        <target state="needs-translation">Advanced Lights Out Manager</target>
+        <target state="final">Advanced Lights Out Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -7864,19 +7865,19 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.baytech" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.baytech" xml:space="preserve">
         <source>BayTech</source>
-        <target state="needs-translation">BayTech</target>
+        <target state="final">BayTech</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.bladecenter" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.bladecenter" xml:space="preserve">
         <source>BladeCenter</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">BladeCenter</target>
+        <target state="final">BladeCenter</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.brocade" xml:space="preserve">
         <source>BROCADE</source>
@@ -7892,19 +7893,19 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_mds" xml:space="preserve">
         <source>Cisco MDS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Cisco MDS</target>
+        <target state="final">Cisco MDS</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.cisco_ucs" xml:space="preserve">
         <source>Cisco UCS</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Cisco UCS</target>
+        <target state="final">Cisco UCS</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.cpint" xml:space="preserve">
         <source>GFS on s390 and zSeries</source>
@@ -7913,19 +7914,19 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.drac" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac" xml:space="preserve">
         <source>Dell DRAC</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Dell DRAC</target>
+        <target state="final">Dell DRAC</target>
       </trans-unit>
-      <trans-unit approved="no" id="cobbler.powermanagement.drac5" xml:space="preserve">
+      <trans-unit approved="yes" id="cobbler.powermanagement.drac5" xml:space="preserve">
         <source>Dell DRAC 5</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-translation">Dell DRAC 5</target>
+        <target state="final">Dell DRAC 5</target>
       </trans-unit>
       <trans-unit approved="no" id="cobbler.powermanagement.eaton_snmp" xml:space="preserve">
         <source>Eaton SNMP</source>
