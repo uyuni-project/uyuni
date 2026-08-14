@@ -271,6 +271,9 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return true if this Channel is a mgr server channel.
      */
     public boolean isMgrServer() {
+        if (null == getChannelFamily()) {
+            return false;
+        }
         return getChannelFamily().getLabel().startsWith(
                 ChannelFamilyFactory.SATELLITE_CHANNEL_FAMILY_LABEL);
     }
