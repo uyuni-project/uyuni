@@ -310,7 +310,9 @@ public class KickstartEditCommand extends BaseKickstartCommand {
         Collection<Channel> channels = getAvailableChannels();
         Set<ChannelFamily> retval = new HashSet<>();
         for (Channel c : channels) {
-            retval.add(c.getChannelFamily());
+            if (c.getChannelFamily() != null) {
+                retval.add(c.getChannelFamily());
+            }
         }
         logger.debug("getAvailableChannelFamilies() - end - return value={}", retval);
         return retval;

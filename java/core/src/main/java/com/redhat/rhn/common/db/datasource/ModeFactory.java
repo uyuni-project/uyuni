@@ -117,7 +117,8 @@ public class ModeFactory implements ManifestFactoryBuilder {
             return new WriteMode(session, pm);
         default:
             // should never reach here
-            return null;
+            throw new ModeNotFoundException(
+                    "Could not find mode type " + pm.getType() + " in mode " + mode + " in " + name);
         }
     }
 

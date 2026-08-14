@@ -329,12 +329,13 @@ public class SystemCompareDto {
         for (Server system : servers) {
             List keys = new LinkedList<>();
 
-            if (system.getBaseChannel() != null && !system.getBaseChannel().isCustom()) {
+            if ((system.getBaseChannel() != null) && (!system.getBaseChannel().isCustom()) &&
+                    (system.getBaseChannel().getChannelFamily() != null)) {
                 keys.add(system.getBaseChannel().getChannelFamily().getName());
             }
 
             for (Channel channel : system.getChildChannels()) {
-                if (!channel.isCustom()) {
+                if ((!channel.isCustom() && (channel.getChannelFamily() != null))) {
                     keys.add(channel.getChannelFamily().getName());
                 }
             }
