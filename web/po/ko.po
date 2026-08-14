@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-08-13 20:13+0000\n"
+"PO-Revision-Date: 2026-08-14 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -36,6 +36,7 @@ msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Ch
 #: ../html/src/components/product-migration/utils.tsx:102
 #: ../html/src/manager/minion/details/support-data.tsx:74
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
+#, fuzzy
 msgid "The action has been <link>scheduled</link>."
 msgstr "작업이 <link>예약</link>되었습니다."
 
@@ -82,8 +83,9 @@ msgid "Attestation Report details"
 msgstr "증명 보고서 세부 정보"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
+#, fuzzy
 msgid "No Scans"
-msgstr ""
+msgstr "스캔 없음"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -210,8 +212,9 @@ msgstr "XCCDF 프로파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:212
+#, fuzzy
 msgid "Tailoring File"
-msgstr ""
+msgstr "맞춤 설정 파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
 #, fuzzy
@@ -221,7 +224,7 @@ msgstr "맞춤 설정 파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:276
 msgid "Profile from Tailoring File"
-msgstr ""
+msgstr "맞춤 설정 파일의 프로파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
 #, fuzzy
@@ -238,8 +241,9 @@ msgstr "고급 인수"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:252
+#, fuzzy
 msgid "e.g: --rule <rule_id> --remediate"
-msgstr ""
+msgstr "예: --rule <rule_id> --remediate"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:297
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:253
@@ -250,13 +254,15 @@ msgstr "oscap의 추가 명령줄 인수"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:302
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:258
+#, fuzzy
 msgid "OVAL Files"
-msgstr ""
+msgstr "OVAL 파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:306
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:262
+#, fuzzy
 msgid "e.g: /usr/share/xml/scap/suse-sles15-cve.xml"
-msgstr ""
+msgstr "예: /usr/share/xml/scap/suse-sles15-cve.xml"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:307
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:263
@@ -267,16 +273,19 @@ msgstr "쉼표로 구분된 OVAL 파일 목록"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:310
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:266
+#, fuzzy
 msgid "Note: Paths to local OVAL definitions on target system (comma separated)"
-msgstr ""
+msgstr "참고: 대상 시스템에 있는 로컬 OVAL 정의의 경로(쉼표로 구분)"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
+#, fuzzy
 msgid "Fetch Remote Content"
-msgstr ""
+msgstr "원격 콘텐트 가져오기"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
+#, fuzzy
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
-msgstr ""
+msgstr "이 기능을 사용하려면 인터넷 연결과 많은 메모리가 필요하므로, 이 미니언에 사용 가능한 메모리가 충분한지 확인하십시오!"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
@@ -715,6 +724,7 @@ msgid "Select"
 msgstr "선택"
 
 #: ../html/src/components/formik/Form.example.tsx:65
+#, fuzzy
 msgid "Foo"
 msgstr "Foo"
 
@@ -1842,8 +1852,9 @@ msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
 #: ../html/src/components/policies-picker.tsx:105
+#, fuzzy
 msgid "No SCAP Policies Found"
-msgstr ""
+msgstr "SCAP 정책 없음"
 
 #: ../html/src/components/policies-picker.tsx:160
 #, fuzzy
@@ -1960,8 +1971,9 @@ msgid "Schedule action for no sooner than"
 msgstr "다음 이전에 작업 예약:"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:108
+#, fuzzy
 msgid "Before Migrating to SLES 16 — Please ensure"
-msgstr ""
+msgstr "SLES 16으로 마이그레이션하기 전 다음을 확인하십시오."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
 #, fuzzy
@@ -1974,20 +1986,24 @@ msgid "Sufficient disk space is available"
 msgstr "부족한 디스크 공간을 사용할 수 있습니다"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
+#, fuzzy
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
-msgstr ""
+msgstr "한 명 이상의 사용자가 SSH 키 기반 액세스를 이용할 수 있어야 합니다. 루트로 로그인해야 하는 경우, /etc/ssh/sshd_config.d/50-permit-root-login.conf 파일을 PermitRootLogin yes로 설정하십시오."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:117
+#, fuzzy
 msgid "KVM guests are shut down (if applicable)"
-msgstr ""
+msgstr "KVM 게스트가 종료됩니다(해당되는 경우)."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
+#, fuzzy
 msgid "Network configuration will be migrated from wicked to NetworkManager"
-msgstr ""
+msgstr "네트워크 구성은 wicked에서 NetworkManager로 마이그레이션될 예정입니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:119
+#, fuzzy
 msgid "AppArmor profiles will be migrated to SELinux"
-msgstr ""
+msgstr "AppArmor 프로파일은 SELinux로 마이그레이션될 예정입니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
@@ -2002,8 +2018,9 @@ msgid "Dry run"
 msgstr "드라이 런"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:148
+#, fuzzy
 msgid "Dry run is not available for this migration"
-msgstr ""
+msgstr "이 마이그레이션에는 드라이런을 사용할 수 없습니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -2270,6 +2287,7 @@ msgid "Modify"
 msgstr "수정"
 
 #: ../html/src/components/table/search.example.tsx:20
+#, fuzzy
 msgid "Item id"
 msgstr "항목 ID"
 
@@ -2317,6 +2335,7 @@ msgstr "하위 채널을 찾을 수 없거나 인증되지 않았습니다."
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
+#, fuzzy
 msgid "Invalid channel id"
 msgstr "유효하지 않은 채널 ID"
 
@@ -2334,6 +2353,7 @@ msgid "Require this channel"
 msgstr "이 채널 필요"
 
 #: ../html/src/core/intl/index.example.tsx:7
+#, fuzzy
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "메시지 구문은 <link>Format.JS docs</link>를 참조하십시오."
 
@@ -2613,6 +2633,7 @@ msgid "The server uses <link>Prometheus</link> exporters to expose metrics about
 msgstr "서버는 <link>Prometheus</link> 내보내기를 사용하여 사용자 환경에 대한 메트릭을 노출합니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:149
+#, fuzzy
 msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
 msgstr "이러한 메트릭을 사용하는 방법은 <link>설명서</link>를 참조하십시오."
 
@@ -2655,6 +2676,7 @@ msgid "Restart"
 msgstr "다시 시작"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
+#, fuzzy
 msgid "Cobbler"
 msgstr "Cobbler"
 
@@ -2913,6 +2935,7 @@ msgid "Edit "
 msgstr "편집  "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
+#, fuzzy
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
@@ -3174,6 +3197,7 @@ msgid "HTTP Proxy"
 msgstr "HTTP 프록시"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
+#, fuzzy
 msgid "If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case, move on to <link>Organization Credentials</link>."
 msgstr "이 서버가 HTTP 프록시를 사용하여 외부 네트워크에 액세스하는 경우 이 양식을 사용하여 구성할 수 있습니다. 그렇지 않은 경우 <link>조직 자격 증명</link>으로 이동하십시오."
 
@@ -3255,6 +3279,7 @@ msgid " seconds"
 msgstr " 초"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
+#, fuzzy
 msgid "Task Id"
 msgstr "작업 ID"
 
@@ -3304,6 +3329,7 @@ msgstr "AppStream {stream}에 {count}개 패키지 있음:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:67
+#, fuzzy
 msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습니다."
 
@@ -3312,6 +3338,7 @@ msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습�
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:74
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:92
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:129
+#, fuzzy
 msgid "AppStreams"
 msgstr "AppStreams"
 
@@ -3499,6 +3526,7 @@ msgid "Channel"
 msgstr "채널"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
+#, fuzzy
 msgid "Errata"
 msgstr "Errata"
 
@@ -3522,8 +3550,9 @@ msgid "Edit SCAP Content"
 msgstr "SCAP 컨텐트 편집"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
+#, fuzzy
 msgid "SCAP Datastream File"
-msgstr ""
+msgstr "SCAP Datastream 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
@@ -3534,20 +3563,24 @@ msgstr "현재 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
+#, fuzzy
 msgid "Upload a new file to replace the existing one"
-msgstr ""
+msgstr "기존 파일을 대체할 새 파일을 업로드하십시오."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
+#, fuzzy
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "DataStream 파일(*-ds.xml)을 업로드하십시오."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
+#, fuzzy
 msgid "XCCDF File"
-msgstr ""
+msgstr "XCCDF 파일"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
+#, fuzzy
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "XCCDF 파일(*-xccdf.xml) 업로드"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
@@ -3565,16 +3598,19 @@ msgid "SCAP Content is required"
 msgstr "SCAP 컨텐트는 필수입니다"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:129
+#, fuzzy
 msgid "XCCDF Profile is required"
-msgstr ""
+msgstr "XCCDF 프로파일 필수"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:156
+#, fuzzy
 msgid "Unexpected error."
-msgstr ""
+msgstr "예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
+#, fuzzy
 msgid "Edit Compliance Policy"
-msgstr ""
+msgstr "호환 정책 편집"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
 #, fuzzy
@@ -3589,12 +3625,14 @@ msgid "Tailoring Profile"
 msgstr "맞춤 설정 프로파일"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
+#, fuzzy
 msgid "Fetch Remote Resources"
-msgstr ""
+msgstr "원격 리소스 가져오기"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:288
+#, fuzzy
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
-msgstr ""
+msgstr "이 작업을 위해서는 인터넷 연결과 상당한 메모리 용량이 필요합니다. 적용하기 전에 대상 미니언에 사용 가능한 메모리가 충분한지 확인하십시오!"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:305
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
@@ -3622,8 +3660,9 @@ msgid "Current File"
 msgstr "현재 파일"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+#, fuzzy
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "파일 바꾸기(선택 사항)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 #, fuzzy
@@ -3698,12 +3737,14 @@ msgid "Scap Policies have been deleted."
 msgstr "Scap 정책이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
+#, fuzzy
 msgid "Failed to delete SCAP policy"
-msgstr ""
+msgstr "SCAP 정책을 삭제하지 못했습니다."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
+#, fuzzy
 msgid "Scap Policies"
-msgstr ""
+msgstr "Scap 정책"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
 #, fuzzy
@@ -3730,8 +3771,9 @@ msgid "Delete Scap Policy"
 msgstr "Scap 정책 삭제"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
+#, fuzzy
 msgid "this policy"
-msgstr ""
+msgstr "이 정책"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:40
 #, fuzzy
@@ -3746,12 +3788,14 @@ msgid "Tailoring files have been deleted."
 msgstr "맞춤 설정 파일이 삭제되었습니다."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:55
+#, fuzzy
 msgid "Failed to delete tailoring file"
-msgstr ""
+msgstr "맞춤 설정 파일을 삭제하지 못했습니다."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:104
+#, fuzzy
 msgid "Tailoring Files"
-msgstr ""
+msgstr "맞춤 설정 파일"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:127
 #, fuzzy
@@ -3777,8 +3821,9 @@ msgid "Compliant"
 msgstr "호환"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
+#, fuzzy
 msgid "Non-Compliant"
-msgstr ""
+msgstr "비호환"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
 #, fuzzy
@@ -3788,20 +3833,24 @@ msgstr "정책 구성"
 
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
+#, fuzzy
 msgid "Scan History"
-msgstr ""
+msgstr "스캔 기록"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
+#, fuzzy
 msgid "No scans have been performed with this policy yet."
-msgstr ""
+msgstr "아직 이 정책에 따라 스캔이 수행된 적이 없습니다."
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
+#, fuzzy
 msgid "Show only latest scan per system"
-msgstr ""
+msgstr "시스템별로 가장 최근에 스캔한 결과만 표시"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:222
+#, fuzzy
 msgid "Scan Date"
-msgstr ""
+msgstr "스캔 날짜"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
 #, fuzzy
@@ -3817,12 +3866,14 @@ msgid "Failed"
 msgstr "실패"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
+#, fuzzy
 msgid "Other"
-msgstr ""
+msgstr "기타"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:249
+#, fuzzy
 msgid "not selected or not applicable"
-msgstr ""
+msgstr "선택하지 않거나 적용할 수 없음"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
 #, fuzzy
@@ -4689,6 +4740,7 @@ msgid "Environment {name} deleted successfully"
 msgstr "{name} 환경 삭제됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:137
+#, fuzzy
 msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
 msgstr "이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
 
@@ -4938,6 +4990,7 @@ msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었�
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
+#, fuzzy
 msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
 msgstr "공식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
@@ -4950,6 +5003,7 @@ msgstr "잘못된 대상 유형입니다."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:12
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:12
+#, fuzzy
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "공식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
@@ -5099,6 +5153,7 @@ msgid "Target Image Store"
 msgstr "대상 이미지 저장소"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:306
+#, fuzzy
 msgid "Dockerfile URL"
 msgstr "Dockerfile URL"
 
@@ -5141,10 +5196,12 @@ msgid "Label is required and must be a unique string and it cannot include any c
 msgstr "레이블은 필수이며 고유 문자열이고 콜론(:)을 포함할 수 없습니다."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
+#, fuzzy
 msgid "Dockerfile"
 msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.tsx:27
+#, fuzzy
 msgid "Kiwi"
 msgstr "Kiwi"
 
@@ -6213,8 +6270,9 @@ msgid "Saving..."
 msgstr "저장하는 중..."
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
+#, fuzzy
 msgid "Save Custom Remediation"
-msgstr ""
+msgstr "사용자 정의 교정 저장"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
 #, fuzzy
@@ -6223,8 +6281,9 @@ msgid "Delete Custom Remediation"
 msgstr "사용자 정의 교정 삭제"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
+#, fuzzy
 msgid "Original"
-msgstr ""
+msgstr "원본"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
 #, fuzzy
@@ -6233,12 +6292,14 @@ msgid "Custom"
 msgstr "사용자 정의"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
+#, fuzzy
 msgid "Apply Remediation"
-msgstr ""
+msgstr "교정 적용"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
+#, fuzzy
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
+msgstr "이 시스템에서는 OpenSCAP을 사용할 수 없습니다. SCAP 스캔을 사용하려면 \"{package}\" 패키지를 설치하십시오."
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -7041,8 +7102,9 @@ msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
+#, fuzzy
 msgid "SCAP Policies"
-msgstr ""
+msgstr "SCAP 정책"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
 msgid "Create Recurring Action"
@@ -7363,6 +7425,7 @@ msgid "${defaultChannelName}"
 msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+#, fuzzy
 msgid "${this.getDefaultBase().name}"
 msgstr "${this.getDefaultBase().name}"
 
@@ -7592,6 +7655,7 @@ msgid "An error occurred during cleanup"
 msgstr "정리 중 오류 발생"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:29
+#, fuzzy
 msgid "Not a system id"
 msgstr "시스템 ID가 아닙니다."
 
@@ -8113,6 +8177,7 @@ msgid "Amazon EC2"
 msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
+#, fuzzy
 msgid "Google Compute Engine"
 msgstr "Google Compute Engine"
 
@@ -8121,10 +8186,12 @@ msgid "Azure"
 msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
+#, fuzzy
 msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
+#, fuzzy
 msgid "Libvirt API"
 msgstr "Libvirt API"
 
