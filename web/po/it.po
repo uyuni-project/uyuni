@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 12:03+0000\n"
+"POT-Creation-Date: 2026-08-14 10:02+0200\n"
 "PO-Revision-Date: 2026-07-02 17:12+0000\n"
 "Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -23,61 +23,61 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2026.7\n"
 
-#: ../html/javascript/spacewalk-essentials.js:409
+#: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
 msgstr "rimanente"
 
-#: ../html/javascript/spacewalk-essentials.js:429
+#: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Il browser Internet Explorer non è supportato. Utilizza Firefox, Chrome o Edge"
 
-#: ../html/src/components/CoCoScansList.tsx:75
+#: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
 #: ../html/src/components/product-migration/utils.tsx:102
-#: ../html/src/manager/minion/details/support-data.tsx:74
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
+#: ../html/src/manager/minion/details/support-data.tsx:78
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:78
 msgid "The action has been <link>scheduled</link>."
 msgstr "L'azione è stata <link>programmata</link>."
 
-#: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
+#: ../html/src/components/CoCoScansList.tsx:100
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:90
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "Impossibile pianificare l'azione. Si prega di controllare i registri del server per informazioni dettagliate."
 
-#: ../html/src/components/CoCoScansList.tsx:122
+#: ../html/src/components/CoCoScansList.tsx:132
 msgid "Confirm Attestation Execution"
 msgstr "Conferma l'esecuzione dell'attestazione"
 
-#: ../html/src/components/CoCoScansList.tsx:130
+#: ../html/src/components/CoCoScansList.tsx:140
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:162
 #: ../html/src/manager/admin/hub/hub-details.tsx:45
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:126
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:157
-#: ../html/src/manager/minion/details/support-data.tsx:141
+#: ../html/src/manager/minion/details/support-data.tsx:145
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:112
 msgid "Schedule"
 msgstr "programma"
 
-#: ../html/src/components/CoCoScansList.tsx:137
-#: ../html/src/components/CoCoScansList.tsx:192
+#: ../html/src/components/CoCoScansList.tsx:147
+#: ../html/src/components/CoCoScansList.tsx:200
 #: ../html/src/components/package/PackageListActionScheduler.tsx:191
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Back to list"
 msgstr "torna alla lista"
 
-#: ../html/src/components/CoCoScansList.tsx:153
+#: ../html/src/components/CoCoScansList.tsx:163
 msgid "Confidential Computing Attestations"
 msgstr "Attestazioni informatiche riservate"
 
-#: ../html/src/components/CoCoScansList.tsx:163
+#: ../html/src/components/CoCoScansList.tsx:173
 msgid "Schedule Attestation"
 msgstr ""
 
-#: ../html/src/components/CoCoScansList.tsx:187
+#: ../html/src/components/CoCoScansList.tsx:195
 msgid "Attestation Report details"
 msgstr ""
 
@@ -279,8 +279,8 @@ msgstr "Stato"
 #: ../html/src/components/steps-progress-bar.stories.tsx:9
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:113
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:107
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:354
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:175
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:353
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:177
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:409
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:103
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:170
@@ -334,7 +334,7 @@ msgstr "Sistema"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:195
 msgid "Environment Type"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:116
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/access-control/access-group.tsx:185
+#: ../html/src/manager/admin/access-control/access-group.tsx:186
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:199
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:93
 #: ../html/src/manager/images/image-view-patches.tsx:87
@@ -457,28 +457,82 @@ msgstr ""
 msgid "Process Output"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:80
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
+#: ../html/src/components/large-text-input.tsx:117
+msgid "Unable to retrieve the uploaded file"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
+#: ../html/src/manager/minion/coco/coco-settings.tsx:86
+msgid "Settings"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:187
 msgid "Enable attestation"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:105
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
+msgid "Secure execution header"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
+msgid "Download the current Secure execution header"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
+#, fuzzy
+#| msgid "No Change"
+msgid "Change"
+msgstr "Nessuna modifica"
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
+msgid "Host key document"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
+msgid "Download the current Host Key Document certificate"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+msgid "Certificate File"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:274
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
+msgid "Certificate file, in PEM format"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
+msgid "PEM certificate"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:276
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:199
+msgid "The text representing the certificate, in PEM format"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:284
 #, fuzzy
 msgid "Executions"
 msgstr "Espandi tutte le sezioni"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:109
-msgid "Peform attestation during the boot process"
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
+msgid "Perform attestation during the boot process"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:121
-msgid "Peform attestation on a schedule"
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
+msgid "Perform attestation on a schedule"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:132
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:312
 msgid "Select a schedule"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:153
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:334
 #: ../html/src/components/formula-selection.tsx:302
 #: ../html/src/components/hub/ModalEditButton.tsx:98
 #: ../html/src/components/large-text-attachment.tsx:195
@@ -493,7 +547,7 @@ msgstr ""
 msgid "Save"
 msgstr "Salva"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:159
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:341
 #, fuzzy
 msgid "Reset Changes"
 msgstr "Nessuna modifica"
@@ -577,7 +631,7 @@ msgstr "Annulla"
 #: ../html/src/components/large-text-attachment.tsx:208
 #: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:243
+#: ../html/src/components/table/Table.tsx:245
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/admin/payg/payg.tsx:71
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:99
@@ -650,7 +704,7 @@ msgid "Checkbox"
 msgstr ""
 
 #: ../html/src/components/formik/Form.example.tsx:39
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:181
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:25
@@ -740,7 +794,7 @@ msgid "{rangeInputName} end"
 msgstr ""
 
 #: ../html/src/components/formik/field/FieldBase.tsx:35
-#: ../html/src/components/input/InputBase.tsx:281
+#: ../html/src/components/input/InputBase.tsx:295
 msgid "required"
 msgstr "richiesto"
 
@@ -813,20 +867,20 @@ msgid "Server FQDN"
 msgstr "Proxy"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:134
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
 msgid "e.g. server.domain.com"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:138
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:73
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:140
 #: ../html/src/manager/proxy/container-config.tsx:203
 #: ../html/src/manager/proxy/container-config.tsx:214
 msgid "Has to be a valid FQDN address"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:143
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "Token"
 msgstr ""
 
@@ -873,7 +927,7 @@ msgid "Select Organization"
 msgstr "Organizzazione"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:112
-#: ../html/src/manager/admin/setup/products/products.tsx:503
+#: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by architecture"
 msgstr "Filtra per architettura"
 
@@ -893,9 +947,9 @@ msgstr "Nome Canale"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:145
 #: ../html/src/components/table/nested-data.example.tsx:62
-#: ../html/src/manager/admin/setup/products/products.tsx:603
+#: ../html/src/manager/admin/setup/products/products.tsx:605
 #: ../html/src/manager/admin/setup/products/products.tsx:997
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 msgid "Architecture"
@@ -1079,7 +1133,7 @@ msgid "Root CA available"
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:323
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+#: ../html/src/components/large-text-input.tsx:59
 msgid "Not needed"
 msgstr ""
 
@@ -1143,45 +1197,45 @@ msgstr ""
 msgid "View details of peripheral {fqdn}"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:136
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:112
 msgid "Register a new peripheral server"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:142
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:118
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:133
 msgid "Peripheral Server FQDN"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:158
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:134
 msgid "The unique, DNS-resolvable fully-qualified domain name of the server to register."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:144
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:145
 msgid "Registration mode"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:170
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:146
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:153
 msgid "Existing token"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:178
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:154
 msgid "Administrator User/Password"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:185
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:161
 msgid "The token that grant access to the remote server to establish the connection."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:162
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:172
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:136
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1190,53 +1244,31 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:173
 msgid "The username of {productName} Administrator of the remote server."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:206
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:182
 msgid "The password of the specified user."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:216
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:192
 msgid "Root CA certificate"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:218
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:194
 msgid "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#: ../html/src/components/large-text-attachment.tsx:155
-msgid "Upload a file"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:228
-msgid "Paste a PEM certificate"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-msgid "Certificate File"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:235
-msgid "Certificate file, in PEM format"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:198
 msgid "PEM Certificate"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:246
-msgid "The text representing the certificate, in PEM format"
-msgstr ""
-
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:261
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:207
 msgid "Register"
 msgstr ""
 
-#: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/manager/images/image-import.tsx:313
 #: ../html/src/manager/images/image-profile-edit.tsx:485
 #: ../html/src/manager/images/image-store-edit.tsx:201
@@ -1405,7 +1437,7 @@ msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:235
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
-#: ../html/src/manager/admin/setup/products/products.tsx:605
+#: ../html/src/manager/admin/setup/products/products.tsx:607
 msgid "Arch"
 msgstr "arco"
 
@@ -1489,8 +1521,8 @@ msgstr ""
 #: ../html/src/components/hub/TokenTable.tsx:77
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:90
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:176
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:120
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:66
 #: ../html/src/manager/systems/list-filter.tsx:38
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "Yes"
@@ -1499,8 +1531,8 @@ msgstr ""
 #: ../html/src/components/hub/TokenTable.tsx:77
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:90
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:176
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:120
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:66
 #: ../html/src/manager/systems/list-filter.tsx:39
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "No"
@@ -1615,7 +1647,7 @@ msgstr "Rimuovi"
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
 #: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
-#: ../html/src/manager/admin/access-control/access-group.tsx:208
+#: ../html/src/manager/admin/access-control/access-group.tsx:209
 msgid "Users"
 msgstr ""
 
@@ -1677,7 +1709,7 @@ msgstr "Entrambi i valori devono essere numeri interi positivi"
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
 #: ../html/src/components/table/SelectedRowDetails.tsx:37
 #: ../html/src/components/table/SelectedRowDetails.tsx:60
-#: ../html/src/manager/admin/setup/products/products.tsx:341
+#: ../html/src/manager/admin/setup/products/products.tsx:343
 msgid "Clear"
 msgstr "Libera"
 
@@ -1724,6 +1756,11 @@ msgstr ""
 msgid "Define how to provide the new value"
 msgstr ""
 
+#: ../html/src/components/large-text-attachment.tsx:155
+#: ../html/src/components/large-text-input.tsx:60
+msgid "Upload a file"
+msgstr ""
+
 #: ../html/src/components/large-text-attachment.tsx:156
 msgid "Paste the new value"
 msgstr ""
@@ -1739,6 +1776,10 @@ msgstr ""
 #: ../html/src/components/large-text-attachment.tsx:216
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
+msgstr ""
+
+#: ../html/src/components/large-text-input.tsx:61
+msgid "Paste the data"
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
@@ -1757,11 +1798,11 @@ msgstr "Filtra per nome del pacchetto"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:161
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:251
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:312
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
@@ -1881,8 +1922,8 @@ msgstr ""
 #: ../html/src/components/states-picker.tsx:465
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:374
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:176
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:178
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:45
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:78
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:21
@@ -2202,7 +2243,7 @@ msgid "Peripheral Server"
 msgstr ""
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:193
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
 msgid "Security Advisory"
 msgstr "avviso di sicurezza"
 
@@ -2236,7 +2277,7 @@ msgid "not equal to"
 msgstr ""
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:138
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
 msgid "Matcher"
 msgstr ""
 
@@ -2265,14 +2306,14 @@ msgid "Hub Org"
 msgstr ""
 
 #: ../html/src/components/table/nested-data.example.tsx:71
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:179
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:379
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:181
 msgid "View"
 msgstr ""
 
 #: ../html/src/components/table/nested-data.example.tsx:72
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:403
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:194
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:196
 msgid "Modify"
 msgstr ""
 
@@ -2445,44 +2486,44 @@ msgstr ""
 msgid "Are you sure you want to delete the selected Access Group?"
 msgstr "Sei sicuro di voler {0} {1} "
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:156
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:201
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:362
 msgid "API"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:204
 msgid "Web"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
 msgid "Only selected"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:267
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:130
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 #, fuzzy
 #| msgid "Expand All Sections"
 msgid "Expand All"
 msgstr "Espandi tutte le sezioni"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:267
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:130
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 #, fuzzy
 #| msgid "Collapse All Sections"
 msgid "Collapse All"
 msgstr "Chiudi tutte le sezioni"
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:337
 msgid "Review and modify the permissions for this custom group as needed."
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:346
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
@@ -2490,24 +2531,24 @@ msgstr ""
 msgid "Filter by name"
 msgstr "filtrato per nome"
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:160
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:162
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
 msgid "No Users selected."
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:163
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:165
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
 #: ../html/src/manager/proxy/container-config.tsx:324
 msgid "Email"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:164
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:166
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
 #, fuzzy
 msgid "Real Name"
 msgstr "Stato"
 
-#: ../html/src/manager/admin/access-control/access-group-review.tsx:171
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:173
 msgid "No permissions selected."
 msgstr ""
 
@@ -2523,23 +2564,23 @@ msgstr ""
 msgid "Search & Add Users"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:175
+#: ../html/src/manager/admin/access-control/access-group.tsx:176
 msgid "Access Group successfully created."
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:197
+#: ../html/src/manager/admin/access-control/access-group.tsx:198
 msgid "Namespaces & Permissions"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:213
+#: ../html/src/manager/admin/access-control/access-group.tsx:214
 msgid "Review"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:221
+#: ../html/src/manager/admin/access-control/access-group.tsx:222
 msgid "Access Group Details"
 msgstr ""
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:226
+#: ../html/src/manager/admin/access-control/access-group.tsx:227
 msgid "Create: Access Group"
 msgstr ""
 
@@ -3008,93 +3049,93 @@ msgstr "Completato"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operazione non riuscita: risposta vuota dal server"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:135
+#: ../html/src/manager/admin/setup/products/products.tsx:137
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:186
+#: ../html/src/manager/admin/setup/products/products.tsx:188
 msgid "The product catalog refresh is running..."
 msgstr "L'aggiornamento del catalogo prodotti è in esecuzione..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:213
+#: ../html/src/manager/admin/setup/products/products.tsx:215
 msgid "The following product installations failed. Please check log files."
 msgstr "Le seguenti installazioni del prodotto non sono riuscite. Si prega di controllare i file di registro."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:260
+#: ../html/src/manager/admin/setup/products/products.tsx:262
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "I canali selezionati sono stati programmati con successo per la sincronizzazione."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:296
+#: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "Attualmente è in esecuzione in background un aggiornamento dei dati del prodotto. Per favore riprova più tardi."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:301
+#: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Il catalogo prodotti è ancora in aggiornamento, attendi."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:305
 msgid "Select some product first."
 msgstr "Seleziona prima un prodotto."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:312
-#: ../html/src/manager/admin/setup/products/products.tsx:321
+#: ../html/src/manager/admin/setup/products/products.tsx:314
+#: ../html/src/manager/admin/setup/products/products.tsx:323
 msgid "Add products"
 msgstr "Aggiungi prodotti"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:342
 msgid "Clear products selection"
 msgstr "Cancella la selezione dei prodotti"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:384
+#: ../html/src/manager/admin/setup/products/products.tsx:386
 msgid "Why aren't all products displayed in the list?"
 msgstr "Perché non tutti i prodotti vengono visualizzati nell'elenco?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:387
+#: ../html/src/manager/admin/setup/products/products.tsx:389
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr "I prodotti visualizzati in questo elenco sono direttamente collegati alle credenziali della tua Organizzazione (Mirror credentials) e ai tuoi abbonamenti SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:392
+#: ../html/src/manager/admin/setup/products/products.tsx:394
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
 msgstr "Se ritieni che manchino dei prodotti, assicurati di aver aggiunto le credenziali di organizzazione corrette nel passaggio precedente della procedura guidata."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:402
+#: ../html/src/manager/admin/setup/products/products.tsx:404
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:521
+#: ../html/src/manager/admin/setup/products/products.tsx:523
 msgid "Filter by product Description"
 msgstr "Filtra per descrizione del prodotto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:597
+#: ../html/src/manager/admin/setup/products/products.tsx:599
 msgid "Product Description"
 msgstr "Descrizione Prodotto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:612
+#: ../html/src/manager/admin/setup/products/products.tsx:614
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Canali"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:619
+#: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:800
+#: ../html/src/manager/admin/setup/products/products.tsx:802
 msgid " channels sync failed"
 msgstr " sincronizzazione dei canali non riuscita"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:808
+#: ../html/src/manager/admin/setup/products/products.tsx:810
 msgid " channels sync in progress"
 msgstr " sincronizzazione dei canali in corso"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:816
+#: ../html/src/manager/admin/setup/products/products.tsx:818
 msgid " channels synced"
 msgstr " Canali Sincronizzati"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:841
+#: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Per abilitare questo prodotto, il prodotto principale deve essere selezionato per primo"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:842
+#: ../html/src/manager/admin/setup/products/products.tsx:843
 msgid "Select this product"
 msgstr "seleziona questo prodotto"
 
@@ -4158,41 +4199,41 @@ msgstr ""
 msgid "Filter deleted successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:84
 msgid "Filter Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:94
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:107
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:111
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:114
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
 msgid "Use a manual filter"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
 msgid "Filter Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:176
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:104
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:47
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:79
@@ -4203,33 +4244,37 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:174
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
 msgid "Release"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
 msgid "Advisory name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
 msgid "Bug Fix Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:195
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
 msgid "Product Enhancement Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
 msgid "Advisory Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:206
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:216
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:423
@@ -4240,49 +4285,49 @@ msgstr ""
 msgid "Build"
 msgstr "Crea"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:238
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:257
 msgid "Reboot Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:239
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:258
 msgid "Package Manager Restart Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
 msgid "Advisory Keywords"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:280
 msgid "Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:283
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:302
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:324
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:325
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:308
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
 msgid "Rule"
 msgstr ""
 
@@ -6201,10 +6246,6 @@ msgstr ""
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
 msgstr ""
 
-#: ../html/src/manager/minion/coco/coco-settings.tsx:66
-msgid "Settings"
-msgstr ""
-
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 msgid "Applying the config channels has been "
 msgstr ""
@@ -6213,47 +6254,47 @@ msgstr ""
 msgid "The OS of this system does not support the collection of support data."
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:89
+#: ../html/src/manager/minion/details/support-data.tsx:93
 msgid "Upload Support Data"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:101
+#: ../html/src/manager/minion/details/support-data.tsx:105
 msgid "Support Case Number"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:102
+#: ../html/src/manager/minion/details/support-data.tsx:106
 msgid "The support case number to which this data will be attached."
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:104
+#: ../html/src/manager/minion/details/support-data.tsx:108
 msgid "e.g. 12345"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:108
+#: ../html/src/manager/minion/details/support-data.tsx:112
 msgid "Has to be a valid support case number"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:112
+#: ../html/src/manager/minion/details/support-data.tsx:116
 msgid "Upload Region"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:113
+#: ../html/src/manager/minion/details/support-data.tsx:117
 msgid "The location of the FTP server where the data is uploaded."
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:123
+#: ../html/src/manager/minion/details/support-data.tsx:127
 msgid "Command-line Arguments"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:124
+#: ../html/src/manager/minion/details/support-data.tsx:128
 msgid "Optional command line arguments for the execution of <programName></programName>."
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:132
+#: ../html/src/manager/minion/details/support-data.tsx:136
 msgid "Earliest"
 msgstr ""
 
-#: ../html/src/manager/minion/details/support-data.tsx:133
+#: ../html/src/manager/minion/details/support-data.tsx:137
 msgid "The earliest moment the action can be executed."
 msgstr ""
 
@@ -7555,8 +7596,8 @@ msgstr ""
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr ""
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:73
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:119
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:65
 msgid "Confidential Computing Capability"
 msgstr ""
 
