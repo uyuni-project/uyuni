@@ -26,6 +26,8 @@ public class MinionStartupGrains {
     private Optional<String> machineId = Optional.empty();
     @SerializedName("saltboot_initrd")
     private boolean saltbootInitrd = false;
+    @SerializedName("boot_time")
+    private Optional<Long> bootTime = Optional.empty();
     @SerializedName("susemanager")
     private Optional<SuseManagerGrain> suseManagerGrain = Optional.empty();
 
@@ -50,6 +52,10 @@ public class MinionStartupGrains {
 
     public boolean getSaltbootInitrd() {
         return saltbootInitrd;
+    }
+
+    public Optional<Long> getBootTime() {
+        return bootTime;
     }
 
     public Optional<SuseManagerGrain> getSuseManagerGrain() {

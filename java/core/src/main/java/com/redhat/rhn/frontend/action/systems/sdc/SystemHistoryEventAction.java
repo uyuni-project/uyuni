@@ -31,6 +31,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -108,6 +110,13 @@ public class SystemHistoryEventAction extends RhnAction {
                 serverAction.isStatusPickedUp());
         request.setAttribute("completed",
                 serverAction.isStatusCompleted());
+        TransactionalActionManager.findTransactionalActionHistory(server.getId(), action.getId())
+                .ifPresent(history -> {
+                    request.setAttribute("transactionalProgressEntries",
+                            TransactionalActionManager.getProgressEntries(action, history));
+                    TransactionalActionManager.getPrerequisiteResult(history)
+                            .ifPresent(result -> request.setAttribute("transactionalPrerequisiteResult", result));
+                });
 
         boolean typeDistUpgradeDryRun = action.setRequestAttributeDryRun(request);
 
