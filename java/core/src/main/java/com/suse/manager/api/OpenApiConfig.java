@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
@@ -127,6 +128,7 @@ public final class OpenApiConfig {
         handlers.put("admin.payg", AdminPaygHandler.class);
         handlers.put("admin.ssh", AdminSshHandler.class);
         handlers.put("api", ApiHandler.class);
+        handlers.put("channel", ChannelHandler.class);
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("distchannel", DistChannelHandler.class);
         handlers.put("image.delta", DeltaImageInfoHandler.class);
