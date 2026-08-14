@@ -33,11 +33,13 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.utils.BtrfsSnapshotUtils;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.SnapshotRefreshSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.State;
@@ -98,9 +100,13 @@ public class PackageRefreshListAction extends PackageAction {
         else {
             serverAction.setResultMsg("Success");
         }
-        serverAction.getServer().asMinionServer()
-                .ifPresent(minionServer -> handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        PkgProfileUpdateSlsResult.class)));
+        serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+            PkgProfileUpdateSlsResult profileUpdateResult =
+                    Json.GSON.fromJson(jsonResult, PkgProfileUpdateSlsResult.class);
+            SnapshotRefreshSlsResult snapshotRefreshResult =
+                    Json.GSON.fromJson(jsonResult, SnapshotRefreshSlsResult.class);
+            handlePackageProfileUpdate(minionServer, profileUpdateResult, snapshotRefreshResult.getSnapperRawStdout());
+        });
     }
 
     /**
@@ -110,7 +116,8 @@ public class PackageRefreshListAction extends PackageAction {
      * @param result the result of the call as parsed from event data
      */
     private void handlePackageProfileUpdate(MinionServer server,
-                                            PkgProfileUpdateSlsResult result) {
+                                            PkgProfileUpdateSlsResult result,
+                                            Optional<String> snapperRawStdout) {
         Instant start = Instant.now();
 
         HibernateFactory.doWithoutAutoFlushing(() -> updatePackages(server, result));
@@ -250,6 +257,8 @@ public class PackageRefreshListAction extends PackageAction {
                 server.setRelease(grains.getValueAsString("osrelease"));
             }
         }
+
+        BtrfsSnapshotUtils.updateSnapshotInfo(server, snapperRawStdout);
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
