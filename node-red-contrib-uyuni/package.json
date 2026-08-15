@@ -13,7 +13,7 @@
     "gsoc"
   ],
   "author": "Geetansh Goyal <geetxnshgoyal@gmail.com>",
-  "license": "GPL-2.0",
+  "license": "GPL-2.0-only",
   "files": [
     "nodes/",
     "examples/",

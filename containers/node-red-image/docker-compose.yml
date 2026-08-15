@@ -1,7 +1,8 @@
 # Automation stack for Uyuni: an MQTT broker and Node-RED with the Uyuni nodes
 # pre-installed.
 #
-# Copy .env.example to .env and set the two broker passwords first, then:
+# Copy .env.example to .env and fill in the passwords and the Node-RED editor
+# password hash first, then:
 #
 #     podman-compose up -d      (or: docker compose up -d)
 #
@@ -39,6 +40,14 @@ services:
     restart: unless-stopped
     ports:
       - "1880:1880"
+    environment:
+      # Encrypts credentials stored inside flows.
+      NODERED_CREDENTIAL_SECRET: ${NODERED_CREDENTIAL_SECRET:?set NODERED_CREDENTIAL_SECRET in .env}
+      # The admin API can deploy flows and a flow can run arbitrary code, so
+      # the container refuses to start with an unauthenticated editor. Set a
+      # bcrypt hash here, or NODERED_DISABLE_EDITOR=true to run flows only.
+      NODERED_ADMIN_PASSWORD_HASH: ${NODERED_ADMIN_PASSWORD_HASH:?set NODERED_ADMIN_PASSWORD_HASH in .env}
+      MQTT_BROKER_HOST: mqtt-broker
     volumes:
       - node-red-data:/data
     depends_on:

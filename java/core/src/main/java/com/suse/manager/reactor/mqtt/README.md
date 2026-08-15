@@ -44,11 +44,12 @@ Configuration is read from JVM system properties. In a containerised
 deployment these are set in `/etc/tomcat/conf.d/`, for example:
 
 ```
-JAVA_OPTS="$JAVA_OPTS -Duyuni.mqtt.broker.url=tcp://mosquitto:1883"
+JAVA_OPTS="$JAVA_OPTS -Duyuni.mqtt.enabled=true -Duyuni.mqtt.broker.url=tcp://mosquitto:1883"
 ```
 
 | Property | Default | Description |
 |----------|---------|-------------|
+| `uyuni.mqtt.enabled` | `false` | Master switch. The publisher is not started unless this is `true` |
 | `uyuni.mqtt.broker.url` | `tcp://mosquitto:1883` | Broker connection URL |
 | `uyuni.mqtt.broker.username` | _(none)_ | Broker authentication username |
 | `uyuni.mqtt.broker.password` | _(none)_ | Broker authentication password |

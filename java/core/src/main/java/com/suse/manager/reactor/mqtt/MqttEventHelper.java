@@ -20,6 +20,7 @@ import com.suse.manager.reactor.mqtt.event.MqttEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
@@ -63,12 +64,22 @@ public final class MqttEventHelper {
      * @param event the event to publish
      */
     public static void publishAfterCommit(MqttEvent event) {
-        if (!HibernateFactory.inTransaction()) {
+        Transaction transaction;
+        try {
+            if (!HibernateFactory.inTransaction()) {
+                publish(event);
+                return;
+            }
+            transaction = HibernateFactory.getSession().getTransaction();
+        }
+        catch (RuntimeException e) {
+            // No session on this thread, so there is no commit to wait for.
+            LOG.debug("No Hibernate session available, publishing {} directly.", event.getTopicSuffix());
             publish(event);
             return;
         }
 
-        HibernateFactory.getSession().getTransaction().runAfterCompletion(status -> {
+        transaction.runAfterCompletion(status -> {
             if (status == TransactionStatus.COMMITTED) {
                 publish(event);
             }

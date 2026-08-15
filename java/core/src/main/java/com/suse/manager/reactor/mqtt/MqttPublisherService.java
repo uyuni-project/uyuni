@@ -16,6 +16,8 @@ package com.suse.manager.reactor.mqtt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +31,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -58,6 +63,9 @@ public class MqttPublisherService {
     private static final int KEEP_ALIVE_INTERVAL_SECONDS = 60;
     private static final int CONNECT_WAIT_MS = 10000;
     private static final int DISCONNECT_WAIT_MS = 5000;
+
+    private static final DateTimeFormatter UTC_TIMESTAMP =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC);
 
     private static final AtomicReference<MqttPublisherService> INSTANCE = new AtomicReference<>();
 
@@ -91,6 +99,19 @@ public class MqttPublisherService {
     }
 
     /**
+     * Whether MQTT publishing has been turned on by the administrator.
+     *
+     * <p>Publishing is off unless {@code uyuni.mqtt.enabled} is set to {@code true}.
+     * Constructing the service opens a connection and starts a background executor,
+     * so a server that does not use MQTT should not pay for either.</p>
+     *
+     * @return true when the feature is explicitly enabled
+     */
+    public static boolean isEnabled() {
+        return Boolean.parseBoolean(System.getProperty("uyuni.mqtt.enabled", "false"));
+    }
+
+    /**
      * Default constructor using standard broker URL from system property
      * {@code uyuni.mqtt.broker.url} or {@code tcp://mosquitto:1883}.
      */
@@ -120,8 +141,12 @@ public class MqttPublisherService {
             this.enabledEvents = null;
         }
 
+        // The trailing 'Z' in the pattern is a literal, so the value has to be
+        // formatted in UTC explicitly. GsonBuilder.setDateFormat(String) would
+        // use the JVM default zone and label the result as UTC regardless.
         this.gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .registerTypeAdapter(Date.class, (JsonSerializer<Date>) (src, type, context) ->
+                        new JsonPrimitive(UTC_TIMESTAMP.format(src.toInstant())))
                 .create();
 
         int qosVal = 1;
@@ -164,7 +189,7 @@ public class MqttPublisherService {
                 }
         );
 
-        LOG.warn("Initializing MqttPublisherService with broker: {}, " +
+        LOG.info("Initializing MqttPublisherService with broker: {}, " +
                 "client ID: {}, topic prefix: {}",
                 this.brokerUrl, this.clientId, this.topicPrefix);
         connectAsync();
@@ -198,18 +223,20 @@ public class MqttPublisherService {
     }
 
     /**
-     * Returns the MQTT broker username.
+     * Returns the MQTT broker username. Package private: the credentials are
+     * only read by this class and its tests.
      * @return the username
      */
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
     /**
-     * Returns the MQTT broker password.
+     * Returns the MQTT broker password. Package private so the credential is
+     * not exposed outside this package.
      * @return the password
      */
-    public String getPassword() {
+    String getPassword() {
         return password;
     }
 
@@ -249,7 +276,7 @@ public class MqttPublisherService {
         isConnecting = true;
         executorService.submit(() -> {
             try {
-                LOG.warn("Connecting to MQTT broker at {}...", brokerUrl);
+                LOG.info("Connecting to MQTT broker at {}...", brokerUrl);
                 client = new MqttAsyncClient(brokerUrl, clientId,
                         new MemoryPersistence());
 
@@ -268,7 +295,7 @@ public class MqttPublisherService {
 
                 IMqttToken token = client.connect(options);
                 token.waitForCompletion(CONNECT_WAIT_MS);
-                LOG.warn("Successfully connected to MQTT broker: {}", brokerUrl);
+                LOG.info("Successfully connected to MQTT broker: {}", brokerUrl);
             }
             catch (MqttException e) {
                 LOG.error("Failed to connect to MQTT broker: {}",
@@ -304,7 +331,7 @@ public class MqttPublisherService {
                 // Wrap payload with standard envelope metadata
                 Map<String, Object> envelope = new HashMap<>();
                 envelope.put("eventId", UUID.randomUUID().toString());
-                envelope.put("timestamp", new java.util.Date());
+                envelope.put("timestamp", new Date());
                 envelope.put("topic", topic);
                 envelope.put("data", payload);
 
@@ -329,7 +356,7 @@ public class MqttPublisherService {
      * Clean shutdown of the executor service and MQTT client.
      */
     public void shutdown() {
-        LOG.warn("Shutting down MqttPublisherService...");
+        LOG.info("Shutting down MqttPublisherService...");
         executorService.shutdown();
         if (client != null) {
             try {
