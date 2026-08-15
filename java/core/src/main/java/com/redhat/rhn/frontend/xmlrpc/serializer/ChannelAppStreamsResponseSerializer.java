@@ -30,8 +30,8 @@ import java.util.List;
  *
  * @apidoc.doc
  *  #struct_begin("ChannelAppStreams")
- *      #prop("string", "channel_name")
- *      #prop_array_begin("AppStreams")
+ *      #prop("string", "channel_label")
+ *      #prop_array_begin("app_streams")
  *          $AppStreamModuleResponseSerializer
  *      #array_end()
  *  #struct_end()
