@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-15 03:13+0000\n"
+"PO-Revision-Date: 2026-08-15 06:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -3658,44 +3658,32 @@ msgid "Scap Policies"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Content"
-msgstr "playbook の内容"
+msgstr "コンテンツ"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:150
-#, fuzzy
-#| msgid "System Locked"
 msgid "Systems Scanned"
-msgstr "システムはロック済み"
+msgstr "システムはスキャン済み"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:157
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliance"
-msgstr "完了しました"
+msgstr "コンプライアンス"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:179
-#, fuzzy
-#| msgid "Delete Pin"
 msgid "Delete Scap Policy"
-msgstr "ピンの削除"
+msgstr "SCAPポリシーの削除"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 msgid "this policy"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:40
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Tailoring file has been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "テーラリングファイルを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:41
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Tailoring files have been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "テーラリングファイルを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:55
 msgid "Failed to delete tailoring file"
@@ -3706,45 +3694,33 @@ msgid "Tailoring Files"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:127
-#, fuzzy
-#| msgid "Target Name"
 msgid "Tailoring File Name"
-msgstr "ターゲット名"
+msgstr "テーラリングファイル名"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:143
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Tailoring file"
-msgstr "プロファイルの削除"
+msgstr "テーラリングファイルの削除"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
-#, fuzzy
-#| msgid "Attach file"
 msgid "this file"
-msgstr "ファイルの添付"
+msgstr "このファイル"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliant"
-msgstr "完了しました"
+msgstr "コンプライアンス"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 msgid "Non-Compliant"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
-#, fuzzy
-#| msgid "Proxy Configuration"
 msgid "Policy Configuration"
-msgstr "プロキシ設定"
+msgstr "ポリシー設定"
 
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
-#, fuzzy
-#| msgid "Select an image store"
 msgid "Scan History"
-msgstr "イメージストアの選択"
+msgstr "スキャン履歴"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
 msgid "No scans have been performed with this policy yet."
@@ -3759,10 +3735,8 @@ msgid "Scan Date"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
-#, fuzzy
-#| msgid "Password"
 msgid "Passed"
-msgstr "パスワード"
+msgstr "成功"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:32
@@ -3780,10 +3754,8 @@ msgid "not selected or not applicable"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
-#, fuzzy
-#| msgid "Filter Details"
 msgid "View Details"
-msgstr "フィルタの詳細"
+msgstr "表示の詳細"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
@@ -4277,20 +4249,16 @@ msgid "Rule"
 msgstr "ルール"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Filter has been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "フィルタを削除しました。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除できません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Filter have been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "フィルタを削除しました。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
 msgid "Create Filter"
@@ -4317,34 +4285,24 @@ msgid "Edit Filter"
 msgstr "フィルタの編集"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:242
-#, fuzzy
-#| msgid "Delete Cluster"
 msgid "Delete Filter"
-msgstr "クラスタの削除"
+msgstr "フィルタの削除"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
-#, fuzzy
-#| msgid "Are you sure you want to delete profile"
 msgid "Are you sure you want to delete the filter"
-msgstr "プロファイルを削除してよろしいですか"
+msgstr "フィルタを削除してよろしいですか"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
-#, fuzzy
-#| msgid "Delete Selected Profile(s)"
 msgid "Delete Selected Filter(s)"
-msgstr "選択したプロファイルの削除"
+msgstr "選択したフィルタの削除"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
-#, fuzzy
-#| msgid "Are you sure you want to delete the selected item?"
 msgid "Are you sure you want to delete the selected filter?"
-msgstr "選択した項目を削除してよろしいですか？"
+msgstr "選択したフィルタを削除してよろしいですか?"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
-#, fuzzy
-#| msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
-msgstr "選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択されています)"
+msgstr "選択したフィルタを削除してよろしいですか? ({count}個のフィルタが選択されています)"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4870,14 +4828,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。ブラウザの戻るボタンをクリックしてください。 "
 
@@ -4886,8 +4840,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "このページが間違って表示されたと判断する場合は、このメッセージを受け取った状況の詳細を弊社にご報告ください。 "
 
@@ -5572,44 +5524,32 @@ msgid "A schema upgrade is required. Please upgrade your schema at your earliest
 msgstr "スキーマのアップグレードが必要です。最新のバグ修正を受け取ったり、潜在的なバグの回避を行なったりできるよう、できる限り速やかにスキーマをアップグレードすることをお勧めします。"
 
 #: ../html/src/manager/login/messages.tsx:27
-#, fuzzy
-#| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Server. Please contact your system administrator if this problem persists."
-msgstr "ディスクの空き容量を検証できません。この問題が解決しない場合は、システム管理者に連絡してください。"
+msgstr "サーバのディスク空き容量を検証できません。この問題が解決しない場合は、システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/messages.tsx:32
 msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgstr "いくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を確認してください。"
 
 #: ../html/src/manager/login/messages.tsx:37
-#, fuzzy
-#| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するには、システム管理者に連絡してください。"
+msgstr "サーバに使用可能なディスク容量が少なくなっています。ヘルスチェックによる自動シャットダウンを避けるため、直ちにシステム管理者に連絡して、追加の容量を割り当ててください。"
 
 #: ../html/src/manager/login/messages.tsx:42
-#, fuzzy
-#| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追加するには、システム管理者に連絡してください。"
+msgstr "サーバに使用可能なディスク容量が非常に少なくなっています。ヘルスチェックによる自動シャットダウンを避けるため、直ちにシステム管理者に連絡して、追加の容量を割り当ててください。"
 
 #: ../html/src/manager/login/messages.tsx:59
-#, fuzzy
-#| msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgid "Unable to validate the disk space availability on Database. Please contact your system administrator if this problem persists."
-msgstr "ディスクの空き容量を検証できません。この問題が解決しない場合は、システム管理者に連絡してください。"
+msgstr "データベースのディスク空き容量を検証できません。この問題が解決しない場合は、システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/messages.tsx:64
-#, fuzzy
-#| msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgid "Some important directories are missing on database. Please contact your system administrator to review the configuration."
-msgstr "いくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を確認してください。"
+msgstr "データベースにいくつかの重要なディレクトリがありません。システム管理者に連絡して、設定を確認してください。"
 
 #: ../html/src/manager/login/messages.tsx:69
-#, fuzzy
-#| msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するには、システム管理者に連絡してください。"
+msgstr "データベースに使用可能なディスク容量が不足しています。ヘルスチェックによる自動シャットダウンを避けるため、直ちにシステム管理者に連絡して、追加の容量を割り当ててください。"
 
 #: ../html/src/manager/login/messages.tsx:74
 msgid "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
