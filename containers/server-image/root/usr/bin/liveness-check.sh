@@ -26,7 +26,7 @@ if [ $DISK_EXIT_CODE -eq 3 ]; then
 fi
 
 if [ -f "$MANAGER_COMPLETE" ]; then
-    /usr/bin/systemctl is-active multi-user.target
+    s6-rc -a list | grep -qx "legacy-services"
     salt-call --local --no-color status.ping_master localhost |grep -q True
 else
     echo "Healthcheck failed: setup file not found. Skipping app checks, disk is healthy."

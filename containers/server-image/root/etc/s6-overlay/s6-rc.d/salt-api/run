@@ -1,0 +1,9 @@
+#!/usr/bin/execlineb -P
+
+# Set fd limits (s6-softlimit -o sets RLIMIT_NOFILE to 8192)
+s6-softlimit -o 8192
+
+export SHELL /bin/bash
+
+s6-setuidgid salt
+/usr/bin/salt-api
