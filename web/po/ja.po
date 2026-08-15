@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-15 06:13+0000\n"
+"PO-Revision-Date: 2026-08-15 09:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -249,7 +249,7 @@ msgstr "リモートコンテンツのフェッチ"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
-msgstr ""
+msgstr "これにはインターネットと大量のメモリが必要です。このminionに十分な空きメモリがあることを確認してください。"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
@@ -452,7 +452,7 @@ msgstr "プロセス出力"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
 #: ../html/src/components/large-text-input.tsx:117
 msgid "Unable to retrieve the uploaded file"
-msgstr ""
+msgstr "アップロードされたファイルを取得できません"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
 #: ../html/src/manager/minion/coco/coco-settings.tsx:86
@@ -466,11 +466,11 @@ msgstr "認証を有効にする"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
 msgid "Secure execution header"
-msgstr ""
+msgstr "セキュア実行ヘッダー"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
 msgid "Download the current Secure execution header"
-msgstr ""
+msgstr "現在のセキュア実行ヘッダーをダウンロードする"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
@@ -480,11 +480,11 @@ msgstr "変更"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
 msgid "Host key document"
-msgstr ""
+msgstr "ホストキードキュメント"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
 msgid "Download the current Host Key Document certificate"
-msgstr ""
+msgstr "現在のホストキードキュメントをダウンロードする"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
@@ -1853,7 +1853,7 @@ msgstr "保存時にエラーが発生しました。"
 
 #: ../html/src/components/policies-picker.tsx:105
 msgid "No SCAP Policies Found"
-msgstr ""
+msgstr "SCAPポリシーが見つかりません"
 
 #: ../html/src/components/policies-picker.tsx:160
 msgid "Search in SCAP policies"
@@ -1965,7 +1965,7 @@ msgstr "早くとも指定日時以降にアクションをスケジュール"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:108
 msgid "Before Migrating to SLES 16 — Please ensure"
-msgstr ""
+msgstr "SLES 16に移行する前に — ご確認ください"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
 msgid "System is fully up to date"
@@ -1977,19 +1977,19 @@ msgstr "十分なディスク容量が利用可能です"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
-msgstr ""
+msgstr "少なくとも1人のユーザに対して、SSHキーベースのアクセスが利用可能であることを確認してください。rootログインが必要な場合は、PermitRootLogin yesと記述した/etc/ssh/sshd_config.d/50-permit-root-login.confを作成してください"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:117
 msgid "KVM guests are shut down (if applicable)"
-msgstr ""
+msgstr "KVMゲストがシャットダウンされています(該当する場合)"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
 msgid "Network configuration will be migrated from wicked to NetworkManager"
-msgstr ""
+msgstr "ネットワーク設定はwickedからNetworkManagerに移行されます"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:119
 msgid "AppArmor profiles will be migrated to SELinux"
-msgstr ""
+msgstr "AppArmorプロファイルはSELinuxに移行されます"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
@@ -2005,7 +2005,7 @@ msgstr "予行演習"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:148
 msgid "Dry run is not available for this migration"
-msgstr ""
+msgstr "この移行では予行演習は利用できません"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -3513,7 +3513,7 @@ msgstr "SCAPコンテンツの編集"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
-msgstr ""
+msgstr "SCAPデータストリームファイル"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
@@ -3523,19 +3523,19 @@ msgstr "現在のファイル"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
 msgid "Upload a new file to replace the existing one"
-msgstr ""
+msgstr "新しいファイルをアップロードして既存のファイルを置き換える"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "データストリームファイル(*-ds.xml)のアップロード"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
 msgid "XCCDF File"
-msgstr ""
+msgstr "XCCDFファイル"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "XCCDFファイル(*-xccdf.xml)のアップロード"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
@@ -3552,15 +3552,15 @@ msgstr "SCAPコンテンツが必要です"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:129
 msgid "XCCDF Profile is required"
-msgstr ""
+msgstr "XCCDFプロファイルが必要です"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:156
 msgid "Unexpected error."
-msgstr ""
+msgstr "予期しないエラー。"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
 msgid "Edit Compliance Policy"
-msgstr ""
+msgstr "コンプライアンスポリシーの編集"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
 msgid "Create Compliance Policy"
@@ -3572,11 +3572,11 @@ msgstr "テーラリングプロファイル"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
 msgid "Fetch Remote Resources"
-msgstr ""
+msgstr "リモートリソースのフェッチ"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:288
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
-msgstr ""
+msgstr "これにはインターネット接続と十分なメモリが必要です。適用する前に、対象のminionに十分な空きメモリがあることを確認してください。"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:305
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
@@ -3597,7 +3597,7 @@ msgstr "現在のファイル"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "ファイルの置換(オプション)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -3651,11 +3651,11 @@ msgstr "SCAPポリシーを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
 msgid "Failed to delete SCAP policy"
-msgstr ""
+msgstr "SCAPポリシーの削除に失敗しました"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
 msgid "Scap Policies"
-msgstr ""
+msgstr "SCAPポリシー"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
 msgid "Content"
@@ -3675,7 +3675,7 @@ msgstr "SCAPポリシーの削除"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 msgid "this policy"
-msgstr ""
+msgstr "このポリシー"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:40
 msgid "Tailoring file has been deleted."
@@ -3687,11 +3687,11 @@ msgstr "テーラリングファイルを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:55
 msgid "Failed to delete tailoring file"
-msgstr ""
+msgstr "テーラリングファイルの削除に失敗しました"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:104
 msgid "Tailoring Files"
-msgstr ""
+msgstr "テーラリングファイル"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:127
 msgid "Tailoring File Name"
@@ -3707,11 +3707,11 @@ msgstr "このファイル"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 msgid "Compliant"
-msgstr "コンプライアンス"
+msgstr "準拠"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 msgid "Non-Compliant"
-msgstr ""
+msgstr "非準拠"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
 msgid "Policy Configuration"
@@ -3724,15 +3724,15 @@ msgstr "スキャン履歴"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
 msgid "No scans have been performed with this policy yet."
-msgstr ""
+msgstr "このポリシーに基づくスキャンはまだ実行されていません。"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
 msgid "Show only latest scan per system"
-msgstr ""
+msgstr "システムごとの最新のスキャンのみを表示する"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:222
 msgid "Scan Date"
-msgstr ""
+msgstr "スキャン日"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
 msgid "Passed"
@@ -3747,11 +3747,11 @@ msgstr "失敗"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:249
 msgid "not selected or not applicable"
-msgstr ""
+msgstr "未選択または該当なし"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
 msgid "View Details"
@@ -4185,7 +4185,7 @@ msgstr "アドバイザリタイプ"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
-msgstr ""
+msgstr "保存された発行日は無効な形式です。有効な日付を選択してフィルタを保存してください。"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
@@ -6109,7 +6109,7 @@ msgstr "保存しています..."
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 msgid "Save Custom Remediation"
-msgstr ""
+msgstr "カスタム修復の保存"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
 msgid "Delete Custom Remediation"
@@ -6117,7 +6117,7 @@ msgstr "カスタム修復の削除"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
 msgid "Original"
-msgstr ""
+msgstr "オリジナル"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
 msgid "Custom"
@@ -6125,11 +6125,11 @@ msgstr "カスタム"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
 msgid "Apply Remediation"
-msgstr ""
+msgstr "修復の適用"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
+msgstr "OpenSCAPはこのシステムで利用できません。SCAPスキャンを有効にするには、パッケージ「{package}」をインストールしてください。"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 msgid "Applying the config channels has been "
@@ -6923,7 +6923,7 @@ msgstr "実行する状態を設定する"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
 msgid "SCAP Policies"
-msgstr ""
+msgstr "SCAPポリシー"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
 msgid "Create Recurring Action"
