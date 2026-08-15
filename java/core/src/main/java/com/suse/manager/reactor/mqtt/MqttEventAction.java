@@ -79,7 +79,12 @@ public class MqttEventAction implements MessageAction {
             }
 
             LOG.debug("MqttEventAction.execute called for message of type: {}", msg.getClass().getName());
-            mqttPublisherService.publish(topic, event.getPayload());
+            // Deferred until the transaction commits, for the same reason as the
+            // events raised from application code: the handlers registered
+            // alongside this action may still be persisting the change, and a
+            // rollback must not leave an event announcing it. Publishes
+            // immediately when no transaction is active.
+            MqttEventHelper.publishAfterCommit(event);
         }
         catch (Exception e) {
             LOG.error("Failed to process event in MqttEventAction: {}", e.getMessage(), e);

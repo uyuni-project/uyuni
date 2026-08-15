@@ -85,10 +85,13 @@ describe('uyuni-api-config Node', function () {
     });
   });
 
-  it('should skip verification when self-signed is allowed', function (done) {
+  it('should skip verification and warn when self-signed is allowed', function (done) {
     helper.load([uyuniApiConfig], flow({ allowSelfSigned: true }), function () {
+      const node = helper.getNode("c1");
+      node.warn.called.should.be.true();
+      String(node.warn.firstCall.args[0]).should.match(/development only/);
       responder = function (method, params, cb) { cb(null, "ok"); };
-      helper.getNode("c1").callMethod("ping", []).then(function () {
+      node.callMethod("ping", []).then(function () {
         created[0].opts.rejectUnauthorized.should.be.false();
         done();
       }).catch(done);
@@ -196,6 +199,61 @@ describe('uyuni-api-config Node', function () {
         String(err).should.match(/username is incorrect/);
         done();
       });
+    });
+  });
+  it('should default the request timeout to 30 seconds', function (done) {
+    helper.load([uyuniApiConfig], flow(), function () {
+      responder = function (method, params, cb) { cb(null, "ok"); };
+      helper.getNode("c1").callMethod("ping", []).then(function () {
+        created[0].opts.timeout.should.equal(30000);
+        done();
+      }).catch(done);
+    });
+  });
+
+  it('should pass a configured timeout to the client', function (done) {
+    helper.load([uyuniApiConfig], flow({ timeout: 5000 }), function () {
+      responder = function (method, params, cb) { cb(null, "ok"); };
+      helper.getNode("c1").callMethod("ping", []).then(function () {
+        created[0].opts.timeout.should.equal(5000);
+        done();
+      }).catch(done);
+    });
+  });
+
+  it('should ignore a non-numeric or zero timeout and use the default', function (done) {
+    helper.load([uyuniApiConfig], flow({ timeout: "not-a-number" }), function () {
+      responder = function (method, params, cb) { cb(null, "ok"); };
+      helper.getNode("c1").callMethod("ping", []).then(function () {
+        created[0].opts.timeout.should.equal(30000);
+        done();
+      }).catch(done);
+    });
+  });
+
+  it('should log in only once when several calls start at the same time', function (done) {
+    helper.load([uyuniApiConfig], flow(), function () {
+      let logins = 0;
+      responder = function (method, params, cb) {
+        if (method === "auth.login") {
+          logins++;
+          // Resolve on a later tick so all three calls are in flight while the
+          // first login is still outstanding. Without a shared promise each
+          // would start its own login.
+          setTimeout(function () { cb(null, "session-1"); }, 10);
+          return;
+        }
+        cb(null, "ok");
+      };
+      const node = helper.getNode("c1");
+      Promise.all([
+        node.callMethod("system.getDetails", [1]),
+        node.callMethod("system.getDetails", [2]),
+        node.callMethod("system.getDetails", [3])
+      ]).then(function () {
+        logins.should.equal(1);
+        done();
+      }).catch(done);
     });
   });
 });

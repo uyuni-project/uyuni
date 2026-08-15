@@ -134,7 +134,10 @@ public class RhnServletListener implements ServletContextListener {
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs
         if (sce != null) {
-            new MqttPublisherService();
+            if (MqttPublisherService.isEnabled()) {
+                new MqttPublisherService();
+                logStart("MQTT publisher");
+            }
             saltReactor.start();
             logStart("Salt reactor");
         }

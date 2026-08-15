@@ -9,13 +9,23 @@ if [ -z "${NODERED_CREDENTIAL_SECRET:-}" ]; then
     exit 1
 fi
 
-# Generate settings.js from template
-sed \
-    -e "s|@@CREDENTIAL_SECRET@@|${NODERED_CREDENTIAL_SECRET}|g" \
-    -e "s|@@MQTT_BROKER_HOST@@|${MQTT_BROKER_HOST:-mosquitto}|g" \
-    -e "s|@@MQTT_BROKER_PORT@@|${MQTT_BROKER_PORT:-1883}|g" \
-    -e "s|@@UYUNI_SERVER_URL@@|${UYUNI_SERVER_URL:-https://uyuni-server}|g" \
-    /opt/settings.js.template > "$SETTINGS_FILE"
+# The admin API can deploy flows and a flow can run arbitrary code, so an
+# unauthenticated editor is remote code execution. Refuse to start unless the
+# editor is either protected by a password or switched off entirely.
+# See https://nodered.org/docs/user-guide/runtime/securing-node-red
+if [ -z "${NODERED_ADMIN_PASSWORD_HASH:-}" ] && [ "${NODERED_DISABLE_EDITOR:-}" != "true" ]; then
+    echo "ERROR: the Node-RED editor and admin API would be unauthenticated." >&2
+    echo "Set NODERED_ADMIN_PASSWORD_HASH to a bcrypt hash, or set" >&2
+    echo "NODERED_DISABLE_EDITOR=true to run flows without the editor." >&2
+    echo "Generate a hash with: node-red admin hash-pw" >&2
+    exit 1
+fi
+
+# settings.js reads its values from the environment, so it is copied rather
+# than substituted into. Interpolating secrets with sed would corrupt the file
+# whenever a value contained a character that sed or JavaScript treats
+# specially, and would let a crafted value inject code into the settings.
+cp /opt/settings.js.template "$SETTINGS_FILE"
 
 # Create default empty flows file if it does not exist
 if [ ! -f "$FLOWS_FILE" ]; then

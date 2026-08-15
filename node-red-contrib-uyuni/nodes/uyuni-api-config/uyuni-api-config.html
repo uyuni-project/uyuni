@@ -4,7 +4,8 @@
     defaults: {
       name: { value: '' },
       url: { value: 'https://localhost/rpc/api', required: true },
-      allowSelfSigned: { value: false }
+      allowSelfSigned: { value: false },
+      timeout: { value: 30000 }
     },
     credentials: {
       username: { type: 'text' },
@@ -34,6 +35,10 @@
     <input type="password" id="node-config-input-password" />
   </div>
   <div class="form-row">
+    <label for="node-config-input-timeout"><i class="fa fa-clock-o"></i> Timeout (ms)</label>
+    <input type="number" id="node-config-input-timeout" placeholder="30000" />
+  </div>
+  <div class="form-row">
     <label for="node-config-input-allowSelfSigned"><i class="fa fa-shield"></i> Self-signed</label>
     <input type="checkbox" id="node-config-input-allowSelfSigned" style="width:auto; vertical-align:top;" />
     <span style="margin-left:6px;">Accept a self-signed server certificate</span>
@@ -51,6 +56,9 @@
     <dt>Username / Password <span class="property-type">credentials</span></dt>
     <dd>A Uyuni account with permission for the actions the flow performs. Rebooting
     systems or installing packages needs more privilege than listing them.</dd>
+    <dt>Timeout (ms) <span class="property-type">number</span></dt>
+    <dd>How long to wait for the server before giving up. Without one a slow or
+    unreachable server would hold the flow open indefinitely.</dd>
     <dt>Self-signed <span class="property-type">boolean</span></dt>
     <dd>Leave unticked so the server's certificate is verified. Tick it only for a
     development server using a self-signed certificate — it disables verification
