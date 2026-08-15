@@ -52,6 +52,7 @@ collection by the container runtime.
 Set these on the Uyuni server so the publisher can authenticate:
 
 ```
+uyuni.mqtt.enabled=true
 uyuni.mqtt.broker.url=tcp://<broker host>:1883
 uyuni.mqtt.broker.username=uyuni-publisher
 uyuni.mqtt.broker.password=<publisher password>

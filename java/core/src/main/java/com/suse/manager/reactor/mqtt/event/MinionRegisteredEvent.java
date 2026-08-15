@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.mqtt.event;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
-import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,12 +48,12 @@ public class MinionRegisteredEvent implements MqttEvent {
     public Map<String, Object> getPayload() {
         Map<String, Object> payload = new HashMap<>();
         payload.put("minionId", message.getMinionId());
+        // The management key is deliberately not published. It can be used to
+        // register systems, so broadcasting it to every subscriber would hand
+        // out a credential.
         message.getMinionStartupGrains().ifPresent(grains -> {
             grains.getMachineId().ifPresent(id -> payload.put("machineId", id));
             payload.put("saltbootInitrd", grains.getSaltbootInitrd());
-            grains.getSuseManagerGrain()
-                    .flatMap(MinionStartupGrains.SuseManagerGrain::getManagementKey)
-                    .ifPresent(key -> payload.put("managementKey", key));
         });
         return payload;
     }

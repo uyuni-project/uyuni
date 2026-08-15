@@ -63,7 +63,7 @@ survives the container being recreated:
 
 ```bash
 podman exec uyuni-server sh -c 'cat > /etc/tomcat/conf.d/mqtt_java_opts.conf <<EOF
-JAVA_OPTS="\$JAVA_OPTS -Duyuni.mqtt.broker.url=tcp://mosquitto:1883 -Duyuni.mqtt.broker.username=uyuni-publisher -Duyuni.mqtt.broker.password=a-long-random-string"
+JAVA_OPTS="\$JAVA_OPTS -Duyuni.mqtt.enabled=true -Duyuni.mqtt.broker.url=tcp://mosquitto:1883 -Duyuni.mqtt.broker.username=uyuni-publisher -Duyuni.mqtt.broker.password=a-long-random-string"
 EOF'
 podman exec uyuni-server systemctl restart tomcat
 ```
@@ -92,6 +92,7 @@ podman run -d \
   -p 1880:1880 \
   -v uyuni-nodered-data:/data \
   -e NODERED_CREDENTIAL_SECRET='another-long-random-string' \
+  -e NODERED_ADMIN_PASSWORD_HASH='$2b$08$...' \
   -e MQTT_BROKER_HOST=mosquitto \
   -e UYUNI_SERVER_URL=https://uyuni.example.com \
   registry.opensuse.org/uyuni/node-red:latest
@@ -100,9 +101,18 @@ podman run -d \
 Mount a volume for `/data`. Without one, every flow an administrator builds is
 lost when the container is replaced.
 
+Generate the password hash first, since the container will not start without it:
+
+```bash
+podman run --rm -it registry.opensuse.org/uyuni/node-red:latest node-red admin hash-pw
+```
+
+To run flows without an editor at all, set `NODERED_DISABLE_EDITOR=true` and omit
+the hash.
+
 ### 5. Connect a flow
 
-Open `http://<your-server>:1880`.
+Open `http://<your-server>:1880` and sign in with the editor credentials.
 
 Add a **Uyuni Events** node and create a broker configuration for it: host
 `mosquitto`, port `1883`, and the `uyuni-subscriber` credentials. Leave the topic
@@ -180,6 +190,12 @@ This has not been tested on a cluster and should be treated as a starting point.
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `NODERED_CREDENTIAL_SECRET` | Yes | — | Encrypts credentials stored in flows |
+| `NODERED_ADMIN_PASSWORD_HASH` | Yes, unless the editor is disabled | — | bcrypt hash of the editor password |
+| `NODERED_ADMIN_USER` | No | `admin` | Editor username |
+| `NODERED_DISABLE_EDITOR` | No | `false` | `true` stops the editor and admin API being served |
+| `NODERED_HTTP_NODE_PASSWORD_HASH` | No | — | Protects endpoints created by `http in` nodes |
+| `NODERED_HTTP_NODE_USER` | No | `uyuni` | Username for those endpoints |
+| `NODERED_LOG_LEVEL` | No | `info` | Runtime log level |
 | `MQTT_BROKER_HOST` | No | `mosquitto` | Broker host, offered to flows |
 | `MQTT_BROKER_PORT` | No | `1883` | Broker port, offered to flows |
 | `UYUNI_SERVER_URL` | No | `https://uyuni-server` | Server URL, offered to flows |
@@ -193,6 +209,7 @@ and `uyuni-api-config` nodes, where they are stored encrypted.
 
 | Property | Default | Description |
 |----------|---------|-------------|
+| `uyuni.mqtt.enabled` | `false` | Master switch. The publisher is not started unless this is `true` |
 | `uyuni.mqtt.broker.url` | `tcp://mosquitto:1883` | Broker connection URL |
 | `uyuni.mqtt.broker.username` | _(none)_ | Broker authentication username |
 | `uyuni.mqtt.broker.password` | _(none)_ | Broker authentication password |

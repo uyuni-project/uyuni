@@ -29,6 +29,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
@@ -129,17 +130,6 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
-        MqttPublisherService mqttPublisherService = MqttPublisherService.getInstance();
-        if (mqttPublisherService != null) {
-            MqttEventAction mqttEventAction = new MqttEventAction(mqttPublisherService);
-
-            MessageQueue.registerAction(mqttEventAction, RegisterMinionEventMessage.class);
-            MessageQueue.registerAction(mqttEventAction, ApplyStatesEventMessage.class);
-            MessageQueue.registerAction(mqttEventAction, JobReturnEventMessage.class);
-            MessageQueue.registerAction(mqttEventAction, ImageDeployedEventMessage.class);
-            MessageQueue.registerAction(mqttEventAction, BatchStartedEventMessage.class);
-        }
-
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr, attestationMgr),
                 RegisterMinionEventMessage.class);
@@ -165,6 +155,25 @@ public class SaltReactor {
          * ApplyStatesEventMessage => ApplyStatesEventMessageAction() is registered in
          * MessageQueue.configureDefaultActions as it is also used in taskomatic.
          */
+
+        // Registered last on purpose. ActionExecutor runs the handlers for a
+        // message in registration order, each inside its own transaction, so
+        // registering this first would announce an event before the handler
+        // that actually persists the change had run. Running last means the
+        // preceding handler has already committed. For ApplyStatesEventMessage
+        // the persisting handler is registered in
+        // MessageQueue.configureDefaultActions, which RhnServletListener calls
+        // before saltReactor.start(), so it still precedes this one.
+        MqttPublisherService mqttPublisherService = MqttPublisherService.getInstance();
+        if (mqttPublisherService != null) {
+            MqttEventAction mqttEventAction = new MqttEventAction(mqttPublisherService);
+
+            MessageQueue.registerAction(mqttEventAction, RegisterMinionEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, ApplyStatesEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, JobReturnEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, ImageDeployedEventMessage.class);
+            MessageQueue.registerAction(mqttEventAction, BatchStartedEventMessage.class);
+        }
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
