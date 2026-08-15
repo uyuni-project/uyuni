@@ -215,12 +215,18 @@ public class UyuniSwaggerReader {
         }
         for (Method getter : documentedClass.getMethods()) {
             LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
-            if (legacyDoc == null || legacyDoc.type().isBlank()) {
+            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
                 continue;
             }
             Schema<?> property = schema.getProperties().get(resolvePropertyName(getter));
-            if (property != null) {
+            if (property == null) {
+                continue;
+            }
+            if (!legacyDoc.type().isBlank()) {
                 property.addExtension(DOC_RESPONSE_TYPE_EXTENSION, legacyDoc.type());
+            }
+            if (!legacyDoc.name().isBlank()) {
+                property.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDoc.name());
             }
         }
     }
@@ -244,7 +250,8 @@ public class UyuniSwaggerReader {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
-            apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, createIntegerResponse()));
+            apiResponses.addApiResponse(HTTP_200,
+                    addLegacyDocResponse(apiDoc, createIntegerResponse(apiDoc.responseDescription())));
             operation.setResponses(apiResponses);
             return;
         }
@@ -386,7 +393,7 @@ public class UyuniSwaggerReader {
         }
     }
 
-    private ApiResponse createIntegerResponse() {
+    private ApiResponse createIntegerResponse(String description) {
         if (this.components.getSchemas() == null || !this.components.getSchemas().containsKey("IntegerResponse")) {
             Schema<?> integerResponseSchema = new Schema<>()
                     .type("object")
@@ -402,7 +409,7 @@ public class UyuniSwaggerReader {
         }
 
         ApiResponse response = new ApiResponse();
-        response.setDescription("1 on success, exception thrown otherwise.");
+        response.setDescription(description.isBlank() ? "1 on success, exception thrown otherwise." : description);
 
         Content content = new Content();
         MediaType mediaType = new MediaType();

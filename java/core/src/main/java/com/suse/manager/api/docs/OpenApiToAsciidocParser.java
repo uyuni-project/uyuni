@@ -48,6 +48,15 @@ public class OpenApiToAsciidocParser {
 
     private static final Logger LOGGER = LogManager.getLogger(OpenApiToAsciidocParser.class);
 
+    /** Bullet level the doclet uses for the properties of a struct. */
+    private static final int STRUCT_PROPERTY_LEVEL = 2;
+
+    /** Bullet level the doclet uses for the element struct of an array-valued struct property. */
+    private static final int ELEMENT_STRUCT_LEVEL = 1;
+
+    /** Bullet level the doclet uses for the element struct of an array-valued parameter. */
+    private static final int PARAMETER_ELEMENT_STRUCT_LEVEL = 2;
+
     private final OpenAPI openAPI;
 
     /**
@@ -219,7 +228,34 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        writer.printf("* %s  %s%s%n%n", parameterType(schema), paramName, suffix);
+        writer.printf("* %s  %s%s%n", parameterType(schema), paramName, suffix);
+        writeParameterElement(writer, resolved == null ? schema : resolved);
+        writer.println();
+    }
+
+    /**
+     * Writes the element type of an array parameter.
+     *
+     * The doclet expands the body of {@code #array_begin} into a nested item, one level deeper
+     * than the equivalent expansion in a return value. Struct elements bring their properties
+     * with them; simple elements are a single item labelled by the legacy element name.
+     */
+    private void writeParameterElement(PrintWriter writer, Schema<?> schema) {
+        if (!"array".equals(schema.getType()) || schema.getItems() == null) {
+            return;
+        }
+        Schema<?> resolvedItems = resolveSchemaReference(schema.getItems());
+        if (resolvedItems != null && resolvedItems.getProperties() != null &&
+                !resolvedItems.getProperties().isEmpty()) {
+            printElementStruct(writer, schema, PARAMETER_ELEMENT_STRUCT_LEVEL);
+            return;
+        }
+        String label = legacyDocName(schema);
+        if (resolvedItems != null && isSimpleType(resolvedItems) && !label.isEmpty()) {
+            String itemType = displayType(resolvedItems);
+            writer.printf("%s [.%s]#%s#  %s%n", "*".repeat(PARAMETER_ELEMENT_STRUCT_LEVEL),
+                    itemType, itemType, label);
+        }
     }
 
     private boolean hasProperties(Schema<?> schema) {
@@ -349,12 +385,16 @@ public class OpenApiToAsciidocParser {
     }
 
     private void printStructProperties(PrintWriter writer, Schema<?> resolved) {
+        printStructProperties(writer, resolved, STRUCT_PROPERTY_LEVEL);
+    }
+
+    private void printStructProperties(PrintWriter writer, Schema<?> resolved, int level) {
         if (resolved == null || resolved.getProperties() == null) {
             return;
         }
         resolved.getProperties().forEach((name, prop) -> {
-            writeStructProperty(writer, "", name, prop);
-            printElementStruct(writer, prop);
+            writeStructProperty(writer, "", name, prop, level);
+            printElementStruct(writer, prop, ELEMENT_STRUCT_LEVEL);
         });
     }
 
@@ -365,7 +405,7 @@ public class OpenApiToAsciidocParser {
      * the element struct followed by its properties, in the same shape it uses for an array return
      * value. Without this the element struct is documented by the legacy doclet but dropped here.
      */
-    private void printElementStruct(PrintWriter writer, Schema<?> property) {
+    private void printElementStruct(PrintWriter writer, Schema<?> property, int level) {
         if (!"array".equals(property.getType())) {
             return;
         }
@@ -378,9 +418,22 @@ public class OpenApiToAsciidocParser {
                 resolvedItems.getProperties().isEmpty()) {
             return;
         }
-        writer.printf("    * [.struct]#struct#  %s%n",
-                items.get$ref() != null ? extractRefName(items.get$ref()) : "");
-        printStructProperties(writer, resolvedItems);
+        String label = legacyDocName(property);
+        if (label.isEmpty()) {
+            label = items.get$ref() != null ? extractRefName(items.get$ref()) : "";
+        }
+        // the response shape the doclet uses indents the element struct instead of nesting it
+        String marker = level == ELEMENT_STRUCT_LEVEL ? "    *" : "*".repeat(level);
+        writer.printf("%s [.struct]#struct#  %s%n", marker, label);
+        printStructProperties(writer, resolvedItems, level + 1);
+    }
+
+    private String legacyDocName(Schema<?> schema) {
+        if (schema.getExtensions() == null) {
+            return "";
+        }
+        Object value = schema.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_NAME_EXTENSION);
+        return value == null ? "" : value.toString();
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
@@ -470,8 +523,12 @@ public class OpenApiToAsciidocParser {
     }
 
     private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema) {
+        writeStructProperty(writer, prefix, name, schema, STRUCT_PROPERTY_LEVEL);
+    }
+
+    private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema, int level) {
         String description = schema.getDescription() != null ? " - " + schema.getDescription() : "";
-        writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, structPropertyMarker(schema),
+        writer.printf("%s%s [.%s]#%s#  \"%s\"%s%n", prefix, "*".repeat(level), structPropertyMarker(schema),
                 structPropertyType(schema), name, description);
     }
 
