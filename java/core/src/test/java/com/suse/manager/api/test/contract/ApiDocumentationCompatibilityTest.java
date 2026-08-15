@@ -297,6 +297,10 @@ public class ApiDocumentationCompatibilityTest {
      * @return the items with the element struct and its contents rebased, when indented
      */
     private List<DocItem> alignArrayElementNesting(List<DocItem> items) {
+        return alignNestedElementStructs(alignLeadingArrayElement(items));
+    }
+
+    private List<DocItem> alignLeadingArrayElement(List<DocItem> items) {
         if (items.size() < 2) {
             return items;
         }
@@ -311,6 +315,39 @@ public class ApiDocumentationCompatibilityTest {
         aligned.add(array);
         items.subList(1, items.size())
                 .forEach(item -> aligned.add(new DocItem(item.level() - 1, item.type(), item.name())));
+        return aligned;
+    }
+
+    /**
+     * Aligns the nesting of a struct that describes the element type of an array valued property.
+     *
+     * This is the same artifact as above, one level in. The doclet indents the element struct below
+     * its property when the namespace spells the element out with {@code #struct_begin}, and emits
+     * it flat when the namespace refers to a {@code $Serializer} instead. Both spellings describe
+     * the same property, and the OpenAPI schema is a reference either way, so the depth cannot be
+     * reproduced from the specification. The indented form is rebased on the flat form before
+     * comparing; the type, name and order of every item, and the nesting relative to the element
+     * struct, all stay part of the comparison.
+     *
+     * @param items the parsed return value items
+     * @return the items with every nested element struct and its contents rebased, when indented
+     */
+    private List<DocItem> alignNestedElementStructs(List<DocItem> items) {
+        List<DocItem> aligned = new ArrayList<>(items);
+        for (int i = 0; i + 1 < aligned.size(); i++) {
+            DocItem array = aligned.get(i);
+            DocItem elementStruct = aligned.get(i + 1);
+            if (!"array".equals(array.type()) || !"struct".equals(elementStruct.type()) ||
+                    elementStruct.level() <= array.level()) {
+                continue;
+            }
+            int shift = elementStruct.level() - 1;
+            aligned.set(i + 1, new DocItem(1, elementStruct.type(), elementStruct.name()));
+            for (int j = i + 2; j < aligned.size() && aligned.get(j).level() > array.level(); j++) {
+                DocItem item = aligned.get(j);
+                aligned.set(j, new DocItem(item.level() - shift, item.type(), item.name()));
+            }
+        }
         return aligned;
     }
 
