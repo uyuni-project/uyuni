@@ -127,19 +127,19 @@ public interface DeltaImageInfoHandlerApi {
         /**
          * @return the source image id
          */
-        @Schema(name = "source_id")
+        @Schema(name = "source_id", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getSourceId();
 
         /**
          * @return the target image id
          */
-        @Schema(name = "target_id")
+        @Schema(name = "target_id", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getTargetId();
 
         /**
          * @return the file path
          */
-        @Schema(description = "file path")
+        @Schema(description = "file path", requiredMode = Schema.RequiredMode.REQUIRED)
         String getFile();
 
         /**
@@ -148,7 +148,7 @@ public interface DeltaImageInfoHandlerApi {
          *
          * @return the pillar data
          */
-        @Schema(description = "pillar data",
+        @Schema(description = "pillar data", requiredMode = Schema.RequiredMode.REQUIRED,
                 additionalProperties = Schema.AdditionalPropertiesValue.TRUE)
         Map<String, Object> getPillar();
     }

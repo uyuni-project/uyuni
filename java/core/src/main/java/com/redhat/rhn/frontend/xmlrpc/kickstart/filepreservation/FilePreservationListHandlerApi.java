@@ -132,12 +132,14 @@ public interface FilePreservationListHandlerApi {
         /**
          * @return the file list name
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
 
         /**
          * @return the list of file names
          */
-        @Schema(name = "file_names", description = "the list of file names")
+        @Schema(name = "file_names", description = "the list of file names",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         List<String> getFileNames();
     }
 
@@ -148,22 +150,25 @@ public interface FilePreservationListHandlerApi {
         /**
          * @return the file preservation list id
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the file preservation list name
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
 
         /**
          * @return the creation date
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Date getCreated();
 
         /**
          * @return the last modification date
          */
-        @Schema(name = "last_modified")
+        @Schema(name = "last_modified", requiredMode = Schema.RequiredMode.REQUIRED)
         Date getLastModified();
     }
 

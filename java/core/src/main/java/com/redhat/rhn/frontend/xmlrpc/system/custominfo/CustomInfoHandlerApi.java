@@ -141,28 +141,31 @@ public interface CustomInfoHandlerApi {
         /**
          * @return the key id
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the key label
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getLabel();
 
         /**
          * @return the key description
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getDescription();
 
         /**
          * @return the number of systems carrying a value for the key
          */
-        @Schema(name = "system_count")
+        @Schema(name = "system_count", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getSystemCount();
 
         /**
          * @return the last modification date
          */
-        @Schema(name = "last_modified")
+        @Schema(name = "last_modified", requiredMode = Schema.RequiredMode.REQUIRED)
         Date getLastModified();
     }
 
