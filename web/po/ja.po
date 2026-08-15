@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-13 14:13+0000\n"
+"PO-Revision-Date: 2026-08-15 03:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -474,8 +474,6 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
-#, fuzzy
-#| msgid "Changes"
 msgid "Change"
 msgstr "変更"
 
@@ -499,8 +497,6 @@ msgid "Certificate file, in PEM format"
 msgstr "PEM形式の証明書ファイル"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
-#, fuzzy
-#| msgid "PEM Certificate"
 msgid "PEM certificate"
 msgstr "PEM証明書"
 
@@ -514,14 +510,10 @@ msgid "Executions"
 msgstr "実行"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
-#, fuzzy
-#| msgid "Peform attestation during the boot process"
 msgid "Perform attestation during the boot process"
 msgstr "ブートプロセス中に認証を実行する"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
-#, fuzzy
-#| msgid "Peform attestation on a schedule"
 msgid "Perform attestation on a schedule"
 msgstr "スケジュールに従って認証を実行する"
 
@@ -1749,10 +1741,8 @@ msgid "Confirm Deletion"
 msgstr "削除の確認"
 
 #: ../html/src/components/large-text-input.tsx:61
-#, fuzzy
-#| msgid "Paste the new value"
 msgid "Paste the data"
-msgstr "新しい値の貼り付け"
+msgstr "データの貼り付け"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
@@ -2748,10 +2738,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 このページには、ハブサーバの詳細が表示されます。"
+msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2774,10 +2762,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 このページには、周辺機器サーバの詳細が表示されます。"
+msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2919,10 +2905,8 @@ msgid "Last Status Update"
 msgstr "最終ステータス更新"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
-#, fuzzy
-#| msgid "Edit"
 msgid "Edit "
-msgstr "編集"
+msgstr "編集 "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
@@ -3515,23 +3499,17 @@ msgid "Errata"
 msgstr "Errata"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:80
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while uploading the SCAP content."
-msgstr "パッケージのリストを表示中にエラーが発生しました。"
+msgstr "SCAPコンテンツをアップロード中にエラーが発生しました。"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:84
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:87
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred."
-msgstr "ユーザのフェッチ中に予期しないエラーが発生しました。"
+msgstr "予期しないエラーが発生しました。"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:91
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Edit SCAP Content"
-msgstr "playbook の内容"
+msgstr "SCAPコンテンツの編集"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
@@ -3539,10 +3517,8 @@ msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
-#, fuzzy
-#| msgid "Current Schedule"
 msgid "Current file"
-msgstr "現在のスケジュール"
+msgstr "現在のファイル"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
@@ -3571,10 +3547,8 @@ msgid "Update"
 msgstr "更新"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required"
-msgstr "正の整数を指定する必要があります"
+msgstr "SCAPコンテンツが必要です"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:129
 msgid "XCCDF Profile is required"
@@ -3589,16 +3563,12 @@ msgid "Edit Compliance Policy"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:160
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Compliance Policy"
-msgstr "イメージプロファイルの作成"
+msgstr "コンプライアンスポリシーの作成"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:233
-#, fuzzy
-#| msgid "Image Profile"
 msgid "Tailoring Profile"
-msgstr "イメージプロファイル"
+msgstr "テーラリングプロファイル"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
 msgid "Fetch Remote Resources"
@@ -3610,104 +3580,74 @@ msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:305
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to List"
 msgstr "一覧に戻る"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while saving the tailoring file."
-msgstr "パッケージのリストを表示中にエラーが発生しました。"
+msgstr "テーラリングファイルを保存中にエラーが発生しました。"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
-#, fuzzy
-#| msgid "Edit variables"
 msgid "Edit Tailoring File"
-msgstr "変数の編集"
+msgstr "テーラリングファイルの編集"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
-#, fuzzy
-#| msgid "Create Filter"
 msgid "Current File"
-msgstr "フィルタの作成"
+msgstr "現在のファイル"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "SCAP content has been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "SCAPコンテンツを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:43
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "SCAP content items have been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "SCAPコンテンツ項目を削除しました。"
 
 #. Handle server-returned error messages
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:58
-#, fuzzy
-#| msgid "Failed to connect"
 msgid "Failed to delete SCAP content"
-msgstr "接続に失敗しました"
+msgstr "SCAPコンテンツの削除に失敗しました"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:61
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:62
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:58
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred while deleting"
-msgstr "ユーザのフェッチ中に予期しないエラーが発生しました。"
+msgstr "削除中に予期しないエラーが発生しました"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:82
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:83
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload"
-msgstr "ファイルのアップロード"
+msgstr "アップロード"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:141
-#, fuzzy
-#| msgid "Filter Name"
 msgid "File Name"
-msgstr "フィルタ名"
+msgstr "ファイル名"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:157
-#, fuzzy
-#| msgid "Delete PAYG Connection"
 msgid "Delete SCAP Content"
-msgstr "PAYGの接続の削除"
+msgstr "SCAPコンテンツの削除"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
-#, fuzzy
-#| msgid "Are you sure you want to delete store"
 msgid "Are you sure you want to delete"
-msgstr "ストアを削除してよろしいですか"
+msgstr "このコンテンツを削除して"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
-#, fuzzy
-#| msgid "Loading content.."
 msgid "this content"
-msgstr "内容を読み込んでいます..."
+msgstr "よろしいですか"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Scap Policy has been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "SCAPポリシーを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:45
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Scap Policies have been deleted."
-msgstr "イメージプロファイルを削除しました。"
+msgstr "SCAPポリシーを削除しました。"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
 msgid "Failed to delete SCAP policy"
@@ -5672,10 +5612,8 @@ msgid "The available disk space for the database is low. To prevent an automatic
 msgstr "サーバの使用可能なディスク容量が不足しています。ディスク容量を追加するには、システム管理者に連絡してください。"
 
 #: ../html/src/manager/login/messages.tsx:74
-#, fuzzy
-#| msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgid "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
-msgstr "サーバで使用可能なディスク容量が非常に少なくなっています。ディスク容量を追加するには、システム管理者に連絡してください。"
+msgstr "データベースに使用可能なディスク容量が非常に少なくなっています。ヘルスチェックによる自動シャットダウンを避けるため、直ちにシステム管理者に連絡して、追加の容量を割り当ててください。"
 
 #: ../html/src/manager/login/messages.tsx:89
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
@@ -6222,36 +6160,28 @@ msgid "Name and value"
 msgstr "名前と値"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:310
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "Remediation has been "
-msgstr "動作は {0} でした。"
+msgstr "修復状況: "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
-#, fuzzy
-#| msgid "Loading..."
 msgid "Saving..."
-msgstr "読み込んでいます..."
+msgstr "保存しています..."
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 msgid "Save Custom Remediation"
 msgstr ""
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
-#, fuzzy
-#| msgid "Delete Notification"
 msgid "Delete Custom Remediation"
-msgstr "通知の削除"
+msgstr "カスタム修復の削除"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
 msgid "Original"
 msgstr ""
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
-#, fuzzy
-#| msgid "Custom value"
 msgid "Custom"
-msgstr "カスタム値"
+msgstr "カスタム"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
 msgid "Apply Remediation"
@@ -6856,10 +6786,8 @@ msgid "SSL certificate"
 msgstr "SSL証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
-#, fuzzy
-#| msgid "Configuration"
 msgid "Skip SSL configuration"
-msgstr "設定"
+msgstr "SSL設定を飛ばす"
 
 #: ../html/src/manager/proxy/container-config.tsx:258
 #: ../html/src/manager/proxy/container-config.tsx:383
@@ -7019,16 +6947,12 @@ msgid "Order"
 msgstr "順序"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:310
-#, fuzzy
-#| msgid "State Summary for {name}"
 msgid "SCAP Policy for {name}"
-msgstr "{name}の状態概要"
+msgstr "{name}のSCAPポリシー"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:332
-#, fuzzy
-#| msgid "Description"
 msgid "No description"
-msgstr "説明"
+msgstr "説明なし"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
@@ -7470,10 +7394,8 @@ msgid "Don't change"
 msgstr "変更しない"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
-#, fuzzy
-#| msgid " (system default)"
 msgid " (No system to disable)"
-msgstr " (システムのデフォルト)"
+msgstr " (無効にするシステムなし)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
