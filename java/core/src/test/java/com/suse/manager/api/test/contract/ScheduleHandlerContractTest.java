@@ -75,6 +75,17 @@ public class ScheduleHandlerContractTest extends BaseOpenApiTest {
     }
 
     @Test
+    public void testListCompletedActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listCompletedActions(with(mockUser));
+            will(returnValue(new Object[] {scheduledAction()}));
+        }});
+
+        validateApiContract("/schedule/listCompletedActions", "GET")
+                .onHandlerMethod("listCompletedActions", User.class);
+    }
+
+    @Test
     public void testListInProgressActions() throws Exception {
         context.checking(new Expectations() {{
             oneOf(handler()).listInProgressActions(with(mockUser));
@@ -83,6 +94,50 @@ public class ScheduleHandlerContractTest extends BaseOpenApiTest {
 
         validateApiContract("/schedule/listInProgressActions", "GET")
                 .onHandlerMethod("listInProgressActions", User.class);
+    }
+
+    @Test
+    public void testListFailedActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listFailedActions(with(mockUser));
+            will(returnValue(new Object[] {scheduledAction()}));
+        }});
+
+        validateApiContract("/schedule/listFailedActions", "GET")
+                .onHandlerMethod("listFailedActions", User.class);
+    }
+
+    @Test
+    public void testListArchivedActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listArchivedActions(with(mockUser));
+            will(returnValue(new Object[] {scheduledAction()}));
+        }});
+
+        validateApiContract("/schedule/listArchivedActions", "GET")
+                .onHandlerMethod("listArchivedActions", User.class);
+    }
+
+    @Test
+    public void testListAllArchivedActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listAllArchivedActions(with(mockUser));
+            will(returnValue(new Object[] {scheduledAction()}));
+        }});
+
+        validateApiContract("/schedule/listAllArchivedActions", "GET")
+                .onHandlerMethod("listAllArchivedActions", User.class);
+    }
+
+    @Test
+    public void testListAllCompletedActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listAllCompletedActions(with(mockUser));
+            will(returnValue(new Object[] {scheduledAction()}));
+        }});
+
+        validateApiContract("/schedule/listAllCompletedActions", "GET")
+                .onHandlerMethod("listAllCompletedActions", User.class);
     }
 
     @Test
@@ -95,6 +150,18 @@ public class ScheduleHandlerContractTest extends BaseOpenApiTest {
         validateApiContract("/schedule/listCompletedSystems", "GET")
                 .withParams(Map.of("actionId", new String[] {"10"}))
                 .onHandlerMethod("listCompletedSystems", User.class, Integer.class);
+    }
+
+    @Test
+    public void testListInProgressSystems() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listInProgressSystems(with(mockUser), with(10));
+            will(returnValue(new Object[] {actionedSystem()}));
+        }});
+
+        validateApiContract("/schedule/listInProgressSystems", "GET")
+                .withParams(Map.of("actionId", new String[] {"10"}))
+                .onHandlerMethod("listInProgressSystems", User.class, Integer.class);
     }
 
     @Test
@@ -131,6 +198,18 @@ public class ScheduleHandlerContractTest extends BaseOpenApiTest {
         validateApiContract("/schedule/archiveActions", "POST")
                 .withBody(Map.of("actionIds", List.of(10)))
                 .onHandlerMethod("archiveActions", User.class, List.class);
+    }
+
+    @Test
+    public void testDeleteActions() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).deleteActions(with(mockUser), with(List.of(10)));
+            will(returnValue(1));
+        }});
+
+        validateApiContract("/schedule/deleteActions", "POST")
+                .withBody(Map.of("actionIds", List.of(10)))
+                .onHandlerMethod("deleteActions", User.class, List.class);
     }
 
     @Test
