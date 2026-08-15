@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,31 @@ public class UserOverviewTest extends BaseTestCase {
         assertUserOverview("jesusr_redhat", "jesusr_redhat");
         assertUserOverview("joe&me", "joe&amp;me");
         assertUserOverview("joe me", "joe me");
+    }
+
+    @Test
+    public void authorizedByShowsInternalForLocalUsers() {
+        LocalizationService ls = LocalizationService.getInstance();
+        uo.setAuthType("LOCAL");
+        assertEquals(ls.getMessage("userlist.jsp.authorized.internal"), uo.getAuthorizedBy());
+
+        uo.setAuthType(null);
+        assertEquals(ls.getMessage("userlist.jsp.authorized.internal"), uo.getAuthorizedBy());
+    }
+
+    @Test
+    public void authorizedByShowsPamAndLdapSources() {
+        LocalizationService ls = LocalizationService.getInstance();
+
+        uo.setAuthType("PAM");
+        assertEquals(ls.getMessage("userlist.jsp.authorized.pam"), uo.getAuthorizedBy());
+
+        uo.setAuthType("LDAP");
+        assertEquals(ls.getMessage("userlist.jsp.authorized.ldap"), uo.getAuthorizedBy());
+
+        uo.setLdapServerLabel("dev-openldap");
+        assertEquals(ls.getMessage("userlist.jsp.authorized.ldap_server", "dev-openldap"),
+                uo.getAuthorizedBy());
     }
 
     private void assertUserOverview(String login, String compare) {

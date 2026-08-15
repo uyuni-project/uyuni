@@ -33,6 +33,21 @@ public class LdapServerConfigTest {
         assertEquals("givenName", config.getFirstNameAttribute());
         // group base DN defaults to the user base DN until overridden
         assertEquals("OU=Users,DC=example,DC=com", config.getGroupBaseDn());
+        // Phase 5 / RFC: AD defaults to LDAP_MATCHING_RULE_IN_CHAIN for nested group membership
+        assertEquals("(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={userDn}))",
+                config.getGroupFilter());
+        assertFalse(config.isUseMemberOf());
+    }
+
+    @Test
+    public void useMemberOfCanBeEnabledOnTheBuilder() {
+        LdapServerConfig config = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "ldap.example.com", "ou=users,dc=example,dc=com")
+                .anonymousBind()
+                .useMemberOf(true)
+                .build();
+
+        assertTrue(config.isUseMemberOf());
     }
 
     @Test

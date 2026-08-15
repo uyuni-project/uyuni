@@ -183,4 +183,16 @@ public class LdapAdminManagerTest extends BaseTestCaseWithUser {
         assertThrows(ValidatorException.class, () -> manager.testUserLookup(created.getId(), ""));
         assertThrows(ValidatorException.class, () -> manager.testGroupResolution(created.getId(), "   "));
     }
+
+    @Test
+    public void createPersistsUseMemberOfFlag() {
+        String label = "ldap-" + TestUtils.randomString();
+        LdapProperties properties = validProperties(label);
+        properties.setUseMemberOf(true);
+
+        LdapAuthServer created = manager.create(properties);
+        LdapAuthServer reloaded = LdapAuthServerFactory.lookupById(created.getId()).orElseThrow();
+
+        assertTrue(reloaded.isUseMemberOf());
+    }
 }

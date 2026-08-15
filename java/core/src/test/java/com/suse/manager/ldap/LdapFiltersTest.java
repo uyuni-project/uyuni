@@ -36,6 +36,17 @@ public class LdapFiltersTest {
     }
 
     @Test
+    public void buildsActiveDirectoryNestedGroupFilterFromTemplate() throws Exception {
+        // Phase 5 default for ACTIVE_DIRECTORY: LDAP_MATCHING_RULE_IN_CHAIN (1.2.840.113556.1.4.1941)
+        Filter filter = LdapFilters.groupFilter(
+                "(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={userDn}))",
+                "CN=Alice,OU=Users,DC=example,DC=com");
+        assertEquals(
+                "(&(objectClass=group)(member:1.2.840.113556.1.4.1941:=CN=Alice,OU=Users,DC=example,DC=com))",
+                filter.toString());
+    }
+
+    @Test
     public void escapesSpecialCharactersToPreventInjection() throws Exception {
         Filter filter = LdapFilters.userFilter("(uid={login})", "a)(uid=*");
         // The asterisk and parentheses must be escaped so the supplied value cannot widen the

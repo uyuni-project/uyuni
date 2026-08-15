@@ -97,5 +97,21 @@ public class ConfigLdapAuthConfigProviderTest {
         assertEquals(LdapServerType.OPEN_LDAP, server.connectionConfig().getServerType());
         assertTrue(server.allowsJit());
         assertEquals(1L, server.defaultOrgId());
+        assertFalse(server.connectionConfig().isUseMemberOf());
+    }
+
+    @Test
+    public void mapsUseMemberOfFromConfig() {
+        Map<String, String> values = new HashMap<>();
+        values.put("ldap.auth_enabled", "1");
+        values.put("ldap.host", "ldap.example.com");
+        values.put("ldap.bind_dn", "uid=reader,dc=example,dc=com");
+        values.put("ldap.bind_password", "secret");
+        values.put("ldap.user_base_dn", "ou=users,dc=example,dc=com");
+        values.put("ldap.use_memberof", "true");
+
+        LdapServerConfig config = providerFor(values).getServers().get(0).connectionConfig();
+
+        assertTrue(config.isUseMemberOf());
     }
 }

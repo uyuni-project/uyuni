@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
+import com.unboundid.ldap.sdk.Modification;
+import com.unboundid.ldap.sdk.ModificationType;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +45,9 @@ public class UnboundIdLdapAuthenticationServiceTest {
     @BeforeEach
     public void startDirectory() throws Exception {
         InMemoryDirectoryServerConfig dsConfig = new InMemoryDirectoryServerConfig(BASE_DN);
+        // memberOf is an overlay attribute not in the default schema; disable schema checks so the
+        // fixture can simulate the memberOf path used by Active Directory / OpenLDAP overlays.
+        dsConfig.setSchema(null);
         dsConfig.addAdditionalBindCredentials(ADMIN_DN, ADMIN_PASSWORD);
         directory = new InMemoryDirectoryServer(dsConfig);
         seed();
@@ -230,6 +235,55 @@ public class UnboundIdLdapAuthenticationServiceTest {
     @Test
     public void resolvesGroupsViaMemberOfAttribute() throws Exception {
         Optional<LdapUser> result = service(ADMIN_DN, ADMIN_PASSWORD, true).authenticate("alice", "alice123");
+
+        assertTrue(result.isPresent());
+        assertEquals(List.of("uyuni-admins", "uyuni-users"), result.get().groupLabels());
+    }
+
+    @Test
+    public void memberOfIgnoresGroupsOutsideTheConfiguredGroupBase() throws Exception {
+        // A memberOf DN outside the group base must not become a role-mapping label.
+        directory.add(
+                "dn: ou=other," + BASE_DN,
+                "objectClass: organizationalUnit",
+                "ou: other");
+        directory.add(
+                "dn: cn=outside," + "ou=other," + BASE_DN,
+                "objectClass: groupOfNames",
+                "cn: outside",
+                "member: uid=bob," + USERS_DN);
+        directory.modify(
+                "uid=bob," + USERS_DN,
+                new Modification(ModificationType.ADD, "memberOf",
+                        "cn=outside,ou=other," + BASE_DN));
+
+        Optional<LdapUser> result = service(ADMIN_DN, ADMIN_PASSWORD, true).authenticate("bob", "bob123");
+
+        assertTrue(result.isPresent());
+        assertEquals(List.of("uyuni-users"), result.get().groupLabels());
+    }
+
+    @Test
+    public void memberOfWithNoMembershipYieldsEmptyGroupLabels() throws Exception {
+        directory.add(
+                "dn: uid=carol," + USERS_DN,
+                "objectClass: inetOrgPerson",
+                "cn: Carol",
+                "givenName: Carol",
+                "sn: Carter",
+                "uid: carol",
+                "mail: carol@uyuni.test",
+                "userPassword: carol123");
+
+        Optional<LdapUser> result = service(ADMIN_DN, ADMIN_PASSWORD, true).authenticate("carol", "carol123");
+
+        assertTrue(result.isPresent());
+        assertTrue(result.get().groupLabels().isEmpty());
+    }
+
+    @Test
+    public void lookupUserWithGroupsUsesMemberOfWhenConfigured() throws Exception {
+        Optional<LdapUser> result = service(ADMIN_DN, ADMIN_PASSWORD, true).lookupUserWithGroups("alice");
 
         assertTrue(result.isPresent());
         assertEquals(List.of("uyuni-admins", "uyuni-users"), result.get().groupLabels());
