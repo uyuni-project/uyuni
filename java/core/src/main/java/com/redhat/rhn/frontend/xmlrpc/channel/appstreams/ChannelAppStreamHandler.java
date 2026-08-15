@@ -34,7 +34,7 @@ import java.util.List;
  * @apidoc.namespace channel.appstreams
  * @apidoc.doc Provides methods to handle appstreams for channels.
  */
-public class ChannelAppStreamHandler extends BaseHandler {
+public class ChannelAppStreamHandler extends BaseHandler implements ChannelAppStreamHandlerApi {
 
     /**
      * List available module streams for a given channel.
