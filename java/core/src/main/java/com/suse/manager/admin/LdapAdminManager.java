@@ -38,14 +38,13 @@ import com.suse.utils.CertificateUtils;
 import com.unboundid.ldap.sdk.LDAPConnection;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.security.cert.CertificateException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Creates, updates, deletes and lists LDAP directory server records for the Setup Wizard admin UI.
@@ -55,8 +54,6 @@ import java.util.Map;
  * server row.</p>
  */
 public class LdapAdminManager {
-
-    private static final Logger LOG = LogManager.getLogger(LdapAdminManager.class);
 
     private final LdapConnectionFactory connectionFactory;
 
@@ -167,8 +164,9 @@ public class LdapAdminManager {
         // factory performs the actual open/bind used for the admin smoke test.
         new DefaultLdapServiceFactory(connectionFactory).getInstance(config);
         try (LDAPConnection connection = connectionFactory.openConnection(config)) {
-            if (config.getBindDn().isPresent()) {
-                connection.bind(config.getBindDn().get(), config.getBindPassword().orElse(""));
+            Optional<String> bindDn = config.getBindDn();
+            if (bindDn.isPresent()) {
+                connection.bind(bindDn.get(), config.getBindPassword().orElse(""));
             }
         }
         catch (com.unboundid.ldap.sdk.LDAPException e) {

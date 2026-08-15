@@ -33,8 +33,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * A directory server the login layer authenticates against, as configured by an administrator.
@@ -141,11 +139,9 @@ public class LdapAuthServer implements Serializable {
     @Column(name = "root_ca")
     private String rootCa;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", insertable = false, updatable = false)
     private Date created;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 

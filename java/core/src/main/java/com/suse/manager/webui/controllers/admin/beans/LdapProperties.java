@@ -49,6 +49,7 @@ public class LdapProperties {
      * Default constructor for Gson.
      */
     public LdapProperties() {
+        // Intentionally empty: Gson requires a public no-arg constructor.
     }
 
     public String getLabel() {
