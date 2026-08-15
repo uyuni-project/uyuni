@@ -107,7 +107,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         metadataSigned = cs.getMetadataSigned();
         downloadStrategyId = cs.getDownloadStrategyId();
         channels = new HashSet<>(cs.getChannels());
-        sslSets = new HashSet<>(cs.getSslSets());
+        sslSets = new HashSet<>(cs.getSslContentSources());
         repositoryAuths = new HashSet<>(cs.getRepositoryAuths());
     }
 
