@@ -7839,7 +7839,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="final">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合は、電力管理機能はサポートされません。</target>
+        <target state="final">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合、電力管理機能はサポートされません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
