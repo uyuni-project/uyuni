@@ -83,9 +83,18 @@ RUN set -euo pipefail; \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
         mozilla-nss-sysinit \
-        zchunk && \
+        zchunk \
+        zip unzip && \
+    #Remove maven and version from jars to prevent scanners from reporting false positives: RPMs is the source of truth
+    for jar in $(find /usr/share/java/ -name "*.jar" -type f ! -type l); do \
+        zip -d "$jar" "META-INF/maven/*" || true; \
+        unzip -p "$jar" META-INF/MANIFEST.MF | \
+            sed -E '/^(Implementation-Version|Bundle-Version|Specification-Version):/d' > /tmp/MANIFEST.MF && \
+        zip -u "$jar" /tmp/MANIFEST.MF && \
+        rm -f /tmp/MANIFEST.MF; \
+    done && \
     zypper --non-interactive clean --all && \
-    (rpm -e container-suseconnect || true) && \
+    (rpm -e container-suseconnect zip unzip || true) && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
@@ -103,6 +112,8 @@ RUN set -euo pipefail; \
     ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
     ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
     ln -sf /dev/null /etc/systemd/system/console-getty.service && \
+# Remove egg-info as they lead trivy to think the package misses security fixes: force it to only use SUSE's data
+    rm -rf /usr/lib/python*/site-packages/*.egg-info && \
     zypper --non-interactive removerepo --all; \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
