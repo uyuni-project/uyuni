@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-15 09:13+0000\n"
+"PO-Revision-Date: 2026-08-16 07:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -484,7 +484,7 @@ msgstr "ホストキードキュメント"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
 msgid "Download the current Host Key Document certificate"
-msgstr "現在のホストキードキュメントをダウンロードする"
+msgstr "現在のホストキードキュメント証明書をダウンロードする"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
@@ -1857,7 +1857,7 @@ msgstr "SCAPポリシーが見つかりません"
 
 #: ../html/src/components/policies-picker.tsx:160
 msgid "Search in SCAP policies"
-msgstr "SCAPポリシーの検索"
+msgstr "SCAPポリシーを検索"
 
 #: ../html/src/components/policies-picker.tsx:165
 #: ../html/src/components/states-picker.tsx:432
@@ -3635,11 +3635,11 @@ msgstr "SCAPコンテンツの削除"
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:146
 msgid "Are you sure you want to delete"
-msgstr "このコンテンツを削除して"
+msgstr "削除してよろしいですか"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 msgid "this content"
-msgstr "よろしいですか"
+msgstr "このコンテンツ"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
 msgid "Scap Policy has been deleted."
@@ -6727,7 +6727,7 @@ msgstr "SSL証明書"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Skip SSL configuration"
-msgstr "SSL設定を飛ばす"
+msgstr "SSL設定をスキップする"
 
 #: ../html/src/manager/proxy/container-config.tsx:258
 #: ../html/src/manager/proxy/container-config.tsx:383
