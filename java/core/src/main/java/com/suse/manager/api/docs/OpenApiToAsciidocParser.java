@@ -393,9 +393,33 @@ public class OpenApiToAsciidocParser {
             return;
         }
         resolved.getProperties().forEach((name, prop) -> {
-            writeStructProperty(writer, "", name, prop, level);
+            Schema<?> nested = resolveNestedStruct(prop);
+            String label = nested != null && !legacyDocName(prop).isEmpty() ? legacyDocName(prop) : name;
+            writeStructProperty(writer, "", label, prop, level);
             printElementStruct(writer, prop, ELEMENT_STRUCT_LEVEL);
+            printStructProperties(writer, nested, level + 1);
         });
+    }
+
+    /**
+     * Resolves a property that documents a nested struct, or {@code null} for any other property.
+     *
+     * The doclet expands a struct valued property into its own properties one level below the
+     * property itself. Without this those properties are documented by the legacy doclet but
+     * dropped here. Array properties are handled by {@link #printElementStruct} instead.
+     *
+     * @param property the property schema
+     * @return the resolved schema of the nested struct, or null if the property is not one
+     */
+    private Schema<?> resolveNestedStruct(Schema<?> property) {
+        if ("array".equals(property.getType())) {
+            return null;
+        }
+        Schema<?> resolved = resolveSchemaReference(property);
+        if (resolved == null || resolved.getProperties() == null || resolved.getProperties().isEmpty()) {
+            return null;
+        }
+        return resolved;
     }
 
     /**
@@ -569,8 +593,7 @@ public class OpenApiToAsciidocParser {
         }
 
         if (schema.getProperties() != null) {
-            schema.getProperties().forEach((name, property) ->
-                    writeStructProperty(writer, prefix, name, property));
+            printStructProperties(writer, schema);
         }
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
