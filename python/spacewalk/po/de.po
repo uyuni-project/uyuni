@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2024-12-07 15:48+0000\n"
+"PO-Revision-Date: 2026-08-16 21:13+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/>\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -481,7 +481,6 @@ msgid ""
 msgstr ""
 
 #: ../common/rhnException.py:129
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -492,7 +491,7 @@ msgstr ""
 "\n"
 "     Ungültige Architektur.\n"
 "\n"
-"     Die Architektur dieses Paketes ist vom Red Hat Network nicht unterstützt\n"
+"     Die Architektur des Pakets wird nicht unterstützt von\n"
 "     "
 
 #: ../common/rhnException.py:136
@@ -578,6 +577,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     Für Ihr System wurde kein passender Basiskanal gefunden.\n"
+"     "
 
 #: ../common/rhnException.py:176
 msgid ""
@@ -652,9 +654,8 @@ msgid "This user has read only API access. Action denied."
 msgstr ""
 
 #: ../common/rhnException.py:203
-#, fuzzy
 msgid "System Name cannot be less than 1 character"
-msgstr "der Benutzername darf höchstens %d Zeichen lang sein"
+msgstr "Der Systemname muss mindestens 1 Zeichen lang sein"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
@@ -677,14 +678,12 @@ msgid ""
 msgstr ""
 
 #: ../common/rhnException.py:215
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr "RHN Proxy Session-Token ist ungültig."
+msgstr "Das Proxy-Sitzungstoken des SUSE Multi-Linux Managers ist ungültig."
 
 #: ../common/rhnException.py:216
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr "RHN Proxy Session Token abgelaufen."
+msgstr "Das Proxy-Sitzungstoken des SUSE Multi-Linux Managers ist abgelaufen."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -739,11 +738,11 @@ msgstr "Datei nicht vorhanden"
 
 #: ../common/rhnException.py:241
 msgid "Function retrieval error"
-msgstr ""
+msgstr "Funktionsabruffehler"
 
 #: ../common/rhnException.py:242
 msgid "Function execution error"
-msgstr ""
+msgstr "Funktionausführungsfehler"
 
 #: ../common/rhnException.py:243
 msgid "Missing version string"
@@ -772,7 +771,7 @@ msgstr "Comps-Datei kann nicht abgerufen werden."
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:250
 msgid "Configuration action missing"
-msgstr ""
+msgstr "Konfigurationsaktion fehlt"
 
 #: ../common/rhnException.py:251
 msgid "File too large"
@@ -837,20 +836,19 @@ msgstr "Ein Vergeich zwischen verschiedenen Datei-Typen kann nicht erstellt werd
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "Die Übertragung der SCAP-Ergebnisdatei ist ungültig oder unvollständig"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
+msgstr "Fehler beim Erstellen des Verzeichnispfads für detaillierte SCAP-Ergebnisse"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "Fehler beim Erstellen des Dateipfads für detaillierte SCAP-Ergebnisse"
 
 #: ../common/rhnException.py:270
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "Ungültiger Feldcode"
+msgstr "Ungültige Inhaltskodierung"
 
 #: ../common/rhnException.py:317
 #, fuzzy
@@ -896,18 +894,18 @@ msgstr "Erklärung: %s"
 #: ../common/rhnTB.py:220
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "FEHLER: %s %s: %s"
 
 #: ../common/rhnTB.py:221
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "RÜCKVERFOLGUNG: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1634
 #: ../satellite_tools/disk_dumper/iss.py:1640
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "Das Format von %s sollte mindestens JJJJMMTT sein.\n"
 
 #: ../satellite_tools/messages.py:28
 #, python-format
@@ -916,6 +914,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"FEHLER: Ausführung des Schritts %s. Der Fehler lautet:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:35
 #, python-format
@@ -969,27 +970,27 @@ msgstr ""
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  FEHLER: Nicht genügend freier Speicherplatz (%s KB) auf dem Gerät."
 
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s Abruf erfolgreich: %s (%s Bytes)"
 
 #: ../satellite_tools/messages.py:80
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "Paket erwartet, nicht: %s"
+msgstr "    Auslaufendes Paket:  %s"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Gesamtgröße: %s"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      %s von %s heruntergeladen. Geschätzte verbleibende Zeit: %s"
 
 #: ../satellite_tools/messages.py:85
 #, python-format
@@ -1009,7 +1010,7 @@ msgstr ""
 #: ../satellite_tools/messages.py:88
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       fehlgeschlagen:  %d"
 
 #: ../satellite_tools/messages.py:89
 #, python-format
@@ -1043,12 +1044,11 @@ msgstr ""
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * WARNUNG: Dies kann ein langsamer Prozess sein."
 
 #: ../satellite_tools/messages.py:97
-#, fuzzy
 msgid "Linking packages to channels"
-msgstr "Konflikt zwischen Basis-Channels"
+msgstr "Pakete mit Kanälen verknüpfen"
 
 #: ../satellite_tools/messages.py:98
 #, python-format
