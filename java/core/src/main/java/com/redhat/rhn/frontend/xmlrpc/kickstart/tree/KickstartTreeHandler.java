@@ -40,7 +40,7 @@ import java.util.List;
  * @apidoc.namespace kickstart.tree
  * @apidoc.doc Provides methods to access and modify the kickstart trees.
  */
-public class KickstartTreeHandler extends BaseHandler {
+public class KickstartTreeHandler extends BaseHandler implements KickstartTreeHandlerApi {
 
     /**
      * Returns details of kickstartable tree specified by the label
