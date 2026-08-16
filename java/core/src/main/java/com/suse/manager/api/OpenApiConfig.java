@@ -42,6 +42,7 @@ import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
@@ -167,6 +168,7 @@ public final class OpenApiConfig {
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.monitoring", SystemMonitoringHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
+        handlers.put("sync.content", ContentSyncHandler.class);
         handlers.put("sync.hub", HubHandler.class);
         handlers.put("user.external", UserExternalHandler.class);
         handlers.put("user.notifications", UserNotificationsHandler.class);

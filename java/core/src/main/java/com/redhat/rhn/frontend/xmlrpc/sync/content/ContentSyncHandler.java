@@ -42,7 +42,7 @@ import java.util.List;
  * @apidoc.namespace sync.content
  * @apidoc.doc Provides the namespace for the content synchronization methods.
  */
-public class ContentSyncHandler extends BaseHandler {
+public class ContentSyncHandler extends BaseHandler implements ContentSyncHandlerApi {
 
     /**
      * List all accessible products.
