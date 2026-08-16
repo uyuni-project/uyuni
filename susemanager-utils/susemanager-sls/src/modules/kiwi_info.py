@@ -245,13 +245,12 @@ def _disk_format_types():
     return [
         ".gce",
         ".qcow2",
-        ".vmdk",
         ".ova",
-        ".vmx",
-        ".vhd",
-        ".vhdx",
-        ".vhdfixed",
+        ".vmdk",
         ".vdi",
+        ".vhd",
+        ".vhdfixed",
+        ".vhdx",
         ".vagrant.libvirt.box",
         ".vagrant.virtualbox.box",
     ]
