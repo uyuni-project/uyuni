@@ -44,17 +44,7 @@ ALTER TABLE susecredentials
                     and password is not null and password <> ''
                     and url is not null and url <> ''
             WHEN 'ldap' THEN
-                -- The bind DN is stored on suseLdapAuthServer, so only the password lives here.
+                -- Bind DN is on suseLdapAuthServer, so only the password lives here.
                 password is not null and password <> ''
         END
     );
-
-DO $$
-  BEGIN
-    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'susecredentialstype') THEN
-      INSERT INTO suseCredentialsType (id, label, name)
-        SELECT sequence_nextval('suse_credtype_id_seq'), 'ldap', 'LDAP Authentication Server'
-        WHERE NOT EXISTS (SELECT 1 FROM suseCredentialsType WHERE label = 'ldap');
-    END IF;
-  END;
-$$;

@@ -25,7 +25,7 @@ CREATE TABLE rhnUserExtGroup
                     REFERENCES web_customer (id)
                     ON DELETE CASCADE,
     label     VARCHAR(512) NOT NULL,
-    -- Null = server-agnostic (REMOTE_USER and shared LDAP mappings); set to scope to one directory.
+    -- Null = server-agnostic (REMOTE_USER and shared LDAP mappings). Set to scope to one directory.
     ldap_server_id NUMERIC
                 DEFAULT NULL
                 CONSTRAINT rhn_userextgroup_ldap_srv_fk

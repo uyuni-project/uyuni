@@ -61,7 +61,7 @@ ALTER TABLE susecredentials
                     and password is not null and password <> ''
                     and url is not null and url <> ''
             WHEN 'ldap' THEN
-                -- The bind DN is stored on suseLdapAuthServer, so only the password lives here.
+                -- Bind DN is on suseLdapAuthServer, so only the password lives here.
                 password is not null and password <> ''
         END
     );

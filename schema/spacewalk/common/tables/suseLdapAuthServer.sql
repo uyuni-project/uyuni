@@ -26,8 +26,8 @@ CREATE TABLE suseLdapAuthServer
                                     CHECK (transport in ('PLAIN','LDAPS','STARTTLS')),
     connect_timeout         NUMERIC,
     response_timeout        NUMERIC,
-    -- The bind DN lives here rather than in suseCredentials.username, which is too short for
-    -- directory DNs; suseCredentials holds only the bind password. Both null means anonymous bind.
+    -- Bind DN lives here (suseCredentials.username is too short for directory DNs).
+    -- suseCredentials holds only the bind password. Both null means anonymous bind.
     bind_dn                 VARCHAR(1024),
     credentials_id          NUMERIC
                                 CONSTRAINT suse_ldap_auth_srv_cred_fk
@@ -52,7 +52,7 @@ CREATE TABLE suseLdapAuthServer
                                     REFERENCES web_customer (id)
                                     ON DELETE SET NULL,
     auto_join_regular_user  BOOLEAN NOT NULL DEFAULT TRUE,
-    -- Public CA for LDAPS/STARTTLS (PEM). Loaded by the Java client; not written to JVM cacerts.
+    -- Public CA for LDAPS/STARTTLS (PEM). Loaded by the Java client, not written to JVM cacerts.
     root_ca                 TEXT,
     created                 TIMESTAMPTZ
                                 DEFAULT (current_timestamp) NOT NULL,
