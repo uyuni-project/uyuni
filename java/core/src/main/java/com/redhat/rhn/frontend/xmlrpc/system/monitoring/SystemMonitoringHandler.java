@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc Provides methods to access information about managed systems, applications and formulas which can be
  * relevant for Prometheus monitoring
  */
-public class SystemMonitoringHandler extends BaseHandler {
+public class SystemMonitoringHandler extends BaseHandler implements SystemMonitoringHandlerApi {
 
     private final FormulaManager formulaManager;
 
