@@ -297,7 +297,42 @@ public class ApiDocumentationCompatibilityTest {
      * @return the items with the element struct and its contents rebased, when indented
      */
     private List<DocItem> alignArrayElementNesting(List<DocItem> items) {
-        return alignNestedElementStructs(alignLeadingArrayElement(items));
+        return alignSerializerStructs(alignNestedElementStructs(alignLeadingArrayElement(items)));
+    }
+
+    /**
+     * Aligns the nesting of a struct that the doclet expanded from a serializer reference.
+     *
+     * The doclet renders the bullet level from a template variable that it resets whenever it
+     * inlines a {@code $Serializer} reference, so a struct reached through such a reference is
+     * always emitted at the top level, however deeply it is nested in the documented value. A
+     * struct spelled out inline with {@code #struct_begin} on the very same position is emitted
+     * one level below its parent instead. Both spell the same shape, and the OpenAPI schema is a
+     * reference either way, so the depth cannot be reproduced from the specification. The flattened
+     * form is rebased below the property it follows before comparing; the type, name and order of
+     * every item, and the nesting below the struct itself, all stay part of the comparison.
+     *
+     * @param items the parsed items
+     * @return the items with every flattened serializer struct and its contents rebased
+     */
+    private List<DocItem> alignSerializerStructs(List<DocItem> items) {
+        List<DocItem> aligned = new ArrayList<>(items);
+        for (int i = 1; i < aligned.size(); i++) {
+            DocItem struct = aligned.get(i);
+            boolean nestedBefore = aligned.subList(0, i).stream().anyMatch(item -> item.level() > 1);
+            if (!"struct".equals(struct.type()) || struct.level() != 1 || !nestedBefore ||
+                    "array".equals(aligned.get(i - 1).type())) {
+                continue;
+            }
+
+            int shift = aligned.get(i - 1).level() - 1;
+            aligned.set(i, new DocItem(struct.level() + shift, struct.type(), struct.name()));
+            for (int j = i + 1; j < aligned.size() && aligned.get(j).level() > 1; j++) {
+                DocItem item = aligned.get(j);
+                aligned.set(j, new DocItem(item.level() + shift, item.type(), item.name()));
+            }
+        }
+        return aligned;
     }
 
     private List<DocItem> alignLeadingArrayElement(List<DocItem> items) {
