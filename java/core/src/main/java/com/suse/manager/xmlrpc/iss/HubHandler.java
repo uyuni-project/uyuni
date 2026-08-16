@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace sync.hub
  * @apidoc.doc Contains methods to set up and manage Hub Inter-Server synchronization
  */
-public class HubHandler extends BaseHandler {
+public class HubHandler extends BaseHandler implements HubHandlerApi {
 
     private static final Logger LOGGER = LogManager.getLogger(HubHandler.class);
 
@@ -572,9 +572,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Add peripheral channels to synchronize on a peripheral server
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
-     * @apidoc.param #prop_array_begin(" channelLabels ")
-     * #prop_desc("string", "label", "The channel label")
-     * #array_end()
+     * @apidoc.param #array_single_desc("string", "channelLabels", "The channel label")
      * @apidoc.returntype #return_int_success()
      */
     public int addPeripheralChannelsToSync(User loggedInUser, String fqdn, List<String> channelLabels) {
@@ -606,10 +604,8 @@ public class HubHandler extends BaseHandler {
      * Add peripheral channels to synchronize on a peripheral server, forcing the peripheral org in custom channels
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
-     * @apidoc.param #prop_array_begin("channelLabels")
-     * #prop_desc("string", "label", "The channel label")
-     * #array_end()
-     * @apidoc.param #prop_desc("int", "peripheralOrgIdWhenCustomChannel",
+     * @apidoc.param #array_single_desc("string", "channelLabels", "The channel label")
+     * @apidoc.param #param_desc("int", "peripheralOrgIdWhenCustomChannel",
      * "ID of the peripheral Org to be set in custom channels")
      * @apidoc.returntype #return_int_success()
      */
@@ -641,9 +637,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Remove peripheral channels to synchronize on a peripheral server
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
-     * @apidoc.param #prop_array_begin(" channelLabels ")
-     * #prop_desc("string", "label", "The channel label")
-     * #array_end()
+     * @apidoc.param #array_single_desc("string", "channelLabels", "The channel label")
      * @apidoc.returntype #return_int_success()
      */
     public int removePeripheralChannelsToSync(User loggedInUser, String fqdn, List<String> channelLabels) {
@@ -671,9 +665,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Lists current peripheral channel to synchronize on a peripheral server
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
-     * @apidoc.returntype #return_array_begin()
-     * #prop_desc("string", "label", "Label of a peripheral channel to sync")
-     * #array_end()
+     * @apidoc.returntype #array_single("string", "Label of a peripheral channel to sync")
      */
     @ReadOnly
     public List<String> listPeripheralChannelsToSync(User loggedInUser, String fqdn) {
@@ -762,7 +754,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param
      *   #array_begin("migrationData")
-     *     #struct_begin("")
+     *     #struct_begin("migration data")
      *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote slave server.")
      *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
      *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the
@@ -804,7 +796,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param
      *   #array_begin("migrationData")
-     *     #struct_begin("")
+     *     #struct_begin("migration data")
      *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote peripheral server.")
      *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
      *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the

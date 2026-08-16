@@ -49,6 +49,7 @@ import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandl
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
+import com.suse.manager.xmlrpc.iss.HubHandler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -160,6 +161,7 @@ public final class OpenApiConfig {
         handlers.put("system.appstreams", SystemAppStreamHandler.class);
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
+        handlers.put("sync.hub", HubHandler.class);
         handlers.put("user.external", UserExternalHandler.class);
         handlers.put("user.notifications", UserNotificationsHandler.class);
         handlers.put("virtualhostmanager", VirtualHostManagerHandler.class);

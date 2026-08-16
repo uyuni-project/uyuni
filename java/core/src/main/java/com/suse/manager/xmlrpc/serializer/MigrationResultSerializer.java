@@ -30,7 +30,7 @@ import java.util.Map;
  *         #prop_desc("string", "message", "the message")
  *       #struct_end()
  *     #prop_array_end()
- *     #prop("result_code", "success")
+ *     #prop("string", "result_code")
  *   #struct_end()
  */
 public class MigrationResultSerializer extends ApiResponseSerializer<MigrationResult> {
