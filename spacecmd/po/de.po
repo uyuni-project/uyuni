@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2025-12-06 15:04+0000\n"
+"PO-Revision-Date: 2026-08-16 21:13+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacecmd/de/>\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -221,7 +221,7 @@ msgstr "Universeller Standard [j/N]::"
 #: ../src/spacecmd/activationkey.py:863
 #, python-format
 msgid "Created activation key %s"
-msgstr ""
+msgstr "Aktivierungsschlüssel %s erstellt"
 
 #: ../src/spacecmd/activationkey.py:872
 msgid "activationkey_delete: Delete an activation key"
