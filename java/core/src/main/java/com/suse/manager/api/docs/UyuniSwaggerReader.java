@@ -22,6 +22,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -426,7 +428,8 @@ public class UyuniSwaggerReader {
                     );
                     if (parameterAnnotation != null && !parameterAnnotation.hidden()) {
                         operation.addParametersItem(
-                                mapToOpenApiParameter(parameterAnnotation, reflectionParams[index].getType())
+                                mapToOpenApiParameter(parameterAnnotation,
+                                        reflectionParams[index].getParameterizedType())
                         );
                     }
                 });
@@ -434,22 +437,45 @@ public class UyuniSwaggerReader {
 
     private Parameter mapToOpenApiParameter(
             io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
-            Class<?> type) {
+            Type type) {
         Parameter openApiParam = new Parameter()
                 .name(parameterAnnotation.name())
                 .required(parameterAnnotation.required())
                 .in(parameterAnnotation.in().toString().toLowerCase())
-                .schema(switch (type.getName()) {
-                    case "int", "java.lang.Integer" -> new IntegerSchema();
-                    case "boolean", "java.lang.Boolean" -> new BooleanSchema();
-                    default -> new StringSchema();
-                });
+                .schema(literalParameterSchema(type));
 
         if (!parameterAnnotation.description().isBlank()) {
             openApiParam.setDescription(parameterAnnotation.description());
         }
 
         return openApiParam;
+    }
+
+    /**
+     * Maps the declared type of a literal parameter to its schema.
+     *
+     * A collection parameter is documented as an array of its element type, the same way a
+     * collection property of a request body is, so that both spell the parameter out with its
+     * element type rather than collapsing it to a string.
+     *
+     * @param type the declared parameter type
+     * @return the schema describing the parameter
+     */
+    private Schema<?> literalParameterSchema(Type type) {
+        if (type instanceof ParameterizedType parameterized &&
+                parameterized.getRawType() instanceof Class<?> rawType &&
+                Collection.class.isAssignableFrom(rawType)) {
+            Type[] arguments = parameterized.getActualTypeArguments();
+            return new ArraySchema()
+                    .items(literalParameterSchema(arguments.length == 1 ? arguments[0] : Object.class));
+        }
+
+        String typeName = type instanceof Class<?> parameterClass ? parameterClass.getName() : "";
+        return switch (typeName) {
+            case "int", "java.lang.Integer" -> new IntegerSchema();
+            case "boolean", "java.lang.Boolean" -> new BooleanSchema();
+            default -> new StringSchema();
+        };
     }
 
     private void registerOperationOnPath(String namespace, Method method, HttpMethod httpMethod, Operation operation) {
