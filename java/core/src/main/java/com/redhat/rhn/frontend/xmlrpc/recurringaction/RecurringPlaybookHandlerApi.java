@@ -129,7 +129,7 @@ public interface RecurringPlaybookHandlerApi {
          * @return the path to the configured Ansible inventory
          */
         @Schema(name = "inventory_path", description = "the path to the configured Ansible inventory",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getInventoryPath();
 
         /**
