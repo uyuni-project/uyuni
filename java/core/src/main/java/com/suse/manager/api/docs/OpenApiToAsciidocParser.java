@@ -142,12 +142,9 @@ public class OpenApiToAsciidocParser {
 
         List<DocEntry> entries = operationsByTag.computeIfAbsent(tag, key -> new ArrayList<>());
 
-        if (!optional.isEmpty()) {
-            List<String> allParams = new ArrayList<>(required);
-            allParams.addAll(optional);
-            entries.add(DocEntry.create(method, operation, allParams, securityRequired));
+        for (List<String> params : UyuniSwaggerReader.expandOverloads(operation, required, optional)) {
+            entries.add(DocEntry.create(method, operation, params, securityRequired));
         }
-        entries.add(DocEntry.create(method, operation, required, securityRequired));
     }
 
     private String renderAdocFile(String tag, List<DocEntry> entries) {

@@ -10,6 +10,8 @@
  */
 package com.suse.manager.api.docs;
 
+import com.redhat.rhn.domain.user.User;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -59,6 +62,8 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
+    /** Parameter counts of the handler overloads an operation stands for, longest first. */
+    public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
     /** Legacy name for a date, bound as {@code $date} in the doclet's macros for both formats. */
@@ -104,18 +109,19 @@ public class UyuniSwaggerReader {
 
         Arrays.stream(cls.getMethods())
                 .sorted(Comparator.comparing(Method::getName))
-                .forEach(method -> processMethod(namespace, method, tagAnnotation));
+                .forEach(method -> processMethod(cls, namespace, method, tagAnnotation));
 
         return openAPI;
     }
 
-    private void processMethod(String namespace, Method method, Tag tagAnnotation) {
+    private void processMethod(Class<?> cls, String namespace, Method method, Tag tagAnnotation) {
         ApiEndpointDoc apiDoc = findMethodAnnotation(method, ApiEndpointDoc.class);
         if (apiDoc == null) {
             return;
         }
 
         Operation openApiOperation = createOperationWithBasicInfo(method, tagAnnotation, apiDoc);
+        applyOverloadArities(cls, method, openApiOperation);
         applySecurityIfNeeded(method, openApiOperation);
         configureRequestBodyIfPresent(apiDoc, openApiOperation);
         configureResponses(apiDoc, openApiOperation);
@@ -134,6 +140,82 @@ public class UyuniSwaggerReader {
         }
         operation.addTagsItem(tagAnnotation.name());
         return operation;
+    }
+
+    /**
+     * Records how many parameters each handler overload of an operation takes.
+     *
+     * A single operation with optional parameters stands for every overload of the handler method,
+     * and the legacy doclet documents one call per overload. Which parameter combinations exist is
+     * a property of the handler, not of the schema: overloads may add several parameters at once,
+     * so the combinations cannot be derived from the optional parameters alone. The counts exclude
+     * the logged in user, which is not a documented parameter.
+     *
+     * @param cls the handler class being read
+     * @param method the handler method backing the operation
+     * @param operation the operation being built
+     */
+    private void applyOverloadArities(Class<?> cls, Method method, Operation operation) {
+        List<Integer> arities = Arrays.stream(cls.getMethods())
+                .filter(candidate -> candidate.getName().equals(method.getName()))
+                .filter(candidate -> candidate.getParameterCount() > 0 &&
+                        User.class.equals(candidate.getParameterTypes()[0]))
+                .map(candidate -> candidate.getParameterCount() - 1)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+
+        if (arities.size() > 1) {
+            operation.addExtension(DOC_OVERLOAD_ARITIES_EXTENSION, arities);
+        }
+    }
+
+    /**
+     * Lists the parameter combinations the legacy doclet documents for an operation.
+     *
+     * Each combination is the required parameters plus as many of the optional ones as the
+     * corresponding handler overload takes, so an overload that adds several parameters at once
+     * produces no intermediate documented call. Combinations are returned longest first, the order
+     * the doclet uses, and an operation backed by a single overload yields a single combination.
+     *
+     * @param operation the operation to expand
+     * @param required the parameters present in every overload
+     * @param optional the parameters added by the longer overloads, in declaration order
+     * @return the parameter names of each documented call
+     */
+    public static List<List<String>> expandOverloads(Operation operation, List<String> required,
+                                                     List<String> optional) {
+        List<List<String>> combinations = new ArrayList<>();
+        for (int count : optionalParameterCounts(operation, required.size(), optional.size())) {
+            List<String> params = new ArrayList<>(required);
+            params.addAll(optional.subList(0, count));
+            combinations.add(params);
+        }
+        return combinations;
+    }
+
+    /**
+     * Resolves how many optional parameters each documented call carries.
+     *
+     * @param operation the operation to expand
+     * @param requiredCount the number of required parameters
+     * @param optionalCount the number of optional parameters
+     * @return the optional parameter counts, descending
+     */
+    private static List<Integer> optionalParameterCounts(Operation operation, int requiredCount, int optionalCount) {
+        Object arities = operation.getExtensions() == null ?
+                null : operation.getExtensions().get(DOC_OVERLOAD_ARITIES_EXTENSION);
+
+        if (arities instanceof List<?> recorded && !recorded.isEmpty()) {
+            return recorded.stream()
+                    .filter(Number.class::isInstance)
+                    .map(arity -> ((Number) arity).intValue() - requiredCount)
+                    .filter(count -> count >= 0 && count <= optionalCount)
+                    .distinct()
+                    .sorted(Comparator.reverseOrder())
+                    .toList();
+        }
+        return List.of(optionalCount);
     }
 
     private void applySecurityIfNeeded(Method method, Operation operation) {
