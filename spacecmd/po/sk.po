@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-05-21 16:12+0000\n"
+"PO-Revision-Date: 2026-08-16 07:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -7380,10 +7380,9 @@ msgstr ""
 "  -s ČAS_SPUSTENIA"
 
 #: ../src/spacecmd/system.py:3259
-#, fuzzy, python-format
-#| msgid "Can't find system ID for %s"
+#, python-format
 msgid "Could not find system IDs for: %s"
-msgstr "Nie je možné nájsť ID systému pre %s"
+msgstr "Nepodarilo sa nájsť systémové ID pre: %s"
 
 #: ../src/spacecmd/system.py:3301 ../src/spacecmd/system.py:3329
 msgid "This method is deprecated and will be removed in a future API version. Please use system_listeventhistory instead.\n"
