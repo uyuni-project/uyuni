@@ -59,10 +59,10 @@ public class ApiDocumentationCompatibilityTest {
             Pattern.compile("(?s)<title>(?:<function>)?(?:Method: )?([^<]+)(?:</function>)?</title>");
     private static final Pattern DOCBOOK_HTTP =
             Pattern.compile("(?s)HTTP\\s+(?:<function>|<literal>)([^<]+)(?:</function>|</literal>)");
-    private static final Pattern DOCBOOK_PARAMETERS =
-            Pattern.compile("(?s)<term>Parameters</term>.*?<itemizedlist[^>]*>(.*?)</itemizedlist>");
-    private static final Pattern DOCBOOK_RETURNS =
-            Pattern.compile("(?s)<term>Return Value</term>.*?<itemizedlist[^>]*>(.*?)</itemizedlist>");
+    private static final Pattern DOCBOOK_PARAMETERS = Pattern.compile("<term>Parameters</term>");
+    private static final Pattern DOCBOOK_RETURNS = Pattern.compile("<term>Return Value</term>");
+    private static final Pattern DOCBOOK_LIST_OPEN = Pattern.compile("<itemizedlist[^>]*>");
+    private static final Pattern DOCBOOK_LIST_TAG = Pattern.compile("<(/)?itemizedlist[^>]*>");
     private static final Pattern DOCBOOK_LIST_ITEM =
             Pattern.compile("(?s)<listitem>\\s*<para>(.*?)</para>");
     private static final Pattern METHOD_TITLE = Pattern.compile("^== Method:\\s+(.+?)\\s*$");
@@ -435,11 +435,43 @@ public class ApiDocumentationCompatibilityTest {
         }
 
         List<DocItem> items = new ArrayList<>();
-        Matcher itemMatcher = DOCBOOK_LIST_ITEM.matcher(sectionMatcher.group(1));
+        Matcher itemMatcher = DOCBOOK_LIST_ITEM.matcher(itemizedListBody(section, sectionMatcher.start()));
         while (itemMatcher.find()) {
             parseDocBookItem(itemMatcher.group(1)).ifPresent(items::add);
         }
         return items;
+    }
+
+    /**
+     * Extracts the contents of the first item list of a section, nested lists included.
+     *
+     * A struct property and an {@code #options()} block are both rendered as an item list inside
+     * an item of the enclosing list, so the list that opens a section closes only after the ones
+     * it contains. Matching up to the first closing tag would cut the section short at the first
+     * nested list and silently drop every item after it, so the closing tag is found by balancing.
+     *
+     * @param section the method section to read
+     * @param from the offset of the section header
+     * @return the body of the item list, or an empty string when the section has none
+     */
+    private String itemizedListBody(String section, int from) {
+        Matcher openMatcher = DOCBOOK_LIST_OPEN.matcher(section);
+        if (!openMatcher.find(from)) {
+            return "";
+        }
+
+        int bodyStart = openMatcher.end();
+        int depth = 1;
+        Matcher tagMatcher = DOCBOOK_LIST_TAG.matcher(section);
+        int cursor = bodyStart;
+        while (tagMatcher.find(cursor)) {
+            depth += tagMatcher.group(1) == null ? 1 : -1;
+            if (depth == 0) {
+                return section.substring(bodyStart, tagMatcher.start());
+            }
+            cursor = tagMatcher.end();
+        }
+        return section.substring(bodyStart);
     }
 
     private Optional<DocItem> parseDocBookItem(String item) {

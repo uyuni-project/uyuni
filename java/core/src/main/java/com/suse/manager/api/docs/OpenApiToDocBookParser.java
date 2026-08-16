@@ -208,7 +208,7 @@ public class OpenApiToDocBookParser {
                 params.add(new ParamDoc(legacyType.isEmpty() ? "struct" : legacyType, name, desc));
                 resolved.getProperties().forEach((propName, propSchema) ->
                         params.add(new ParamDoc(formatType(propSchema), "\"" + propName + "\"",
-                                findDescription(propSchema))));
+                                findDescription(propSchema), renderParameterElement(propSchema))));
                 continue;
             }
             params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema)));
