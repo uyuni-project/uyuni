@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc Provides methods to access and modify Content Lifecycle Management related entities
  * (Projects, Environments, Filters, Sources).
  */
-public class ContentManagementHandler extends BaseHandler {
+public class ContentManagementHandler extends BaseHandler implements ContentManagementHandlerApi {
 
     private final ContentManager contentManager;
     private final FilterTemplateManager filterTemplateManager = new FilterTemplateManager();
@@ -277,7 +277,10 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
      * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @apidoc.returntype $ContentEnvironmentDifferenceSerializer
+     * @apidoc.returntype
+     * #return_array_begin()
+     *     $ContentEnvironmentDifferenceSerializer
+     * #array_end()
      */
     @ReadOnly
     public List<ContentEnvironmentDiff> listEnvironmentDifference(User loggedInUser, String projectLabel,

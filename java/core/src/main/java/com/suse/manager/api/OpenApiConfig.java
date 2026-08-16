@@ -23,6 +23,7 @@ import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.appstreams.ChannelAppStreamHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler;
+import com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler;
 import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
@@ -139,6 +140,7 @@ public final class OpenApiConfig {
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("channel.appstreams", ChannelAppStreamHandler.class);
         handlers.put("channel.org", ChannelOrgHandler.class);
+        handlers.put("contentmanagement", ContentManagementHandler.class);
         handlers.put("distchannel", DistChannelHandler.class);
         handlers.put("image.delta", DeltaImageInfoHandler.class);
         handlers.put("image.profile", ImageProfileHandler.class);
