@@ -456,14 +456,53 @@ public class OpenApiToDocBookParser {
         sb.append("<listitem>\n");
         sb.append("  <para>struct ").append(escapeXml(structLabel)).append("</para>\n");
         sb.append("  <itemizedlist spacing=\"compact\">\n");
+        sb.append(renderPropertyItems(schema));
+        sb.append("  </itemizedlist>\n");
+        sb.append("</listitem>");
+        return sb.toString();
+    }
+
+    /**
+     * Resolves a property that documents a nested struct, or {@code null} for any other property.
+     *
+     * The doclet expands a struct valued property into its own properties one level below the
+     * property itself. Without this those properties are documented by the legacy doclet but
+     * dropped here. Array properties are handled by {@link #renderElementStruct} instead.
+     *
+     * @param property the property schema
+     * @return the resolved schema of the nested struct, or null if the property is not one
+     */
+    private Schema<?> resolveNestedStruct(Schema<?> property) {
+        if ("array".equals(property.getType())) {
+            return null;
+        }
+        Schema<?> resolved = resolveSchemaReference(property);
+        if (resolved == null || resolved.getProperties() == null || resolved.getProperties().isEmpty()) {
+            return null;
+        }
+        return resolved;
+    }
+
+    private String renderNestedStructProperties(Schema<?> nested) {
+        return renderPropertyItems(nested).stripTrailing();
+    }
+
+    private String renderPropertyItems(Schema<?> schema) {
+        StringBuilder sb = new StringBuilder();
         schema.getProperties().forEach((name, prop) -> {
             Schema<?> propSchema = prop;
             String desc = findDescription(propSchema);
-            String body = String.format("%s \"%s\"", formatType(propSchema), name);
+            Schema<?> nested = resolveNestedStruct(propSchema);
+            String label = nested != null && !getLegacyDocName(propSchema).isBlank() ?
+                    getLegacyDocName(propSchema) : name;
+            // the doclet labels a nested struct with #struct_begin, which does not quote the label
+            String body = nested != null ? String.format("%s %s", formatType(propSchema), label) :
+                    String.format("%s \"%s\"", formatType(propSchema), label);
             if (!desc.isBlank()) {
                 body += " - " + desc;
             }
-            String elementStruct = renderElementStruct(propSchema);
+            String elementStruct = nested != null ? renderNestedStructProperties(nested) :
+                    renderElementStruct(propSchema);
             if (elementStruct.isEmpty()) {
                 sb.append("    <listitem><para>")
                   .append(escapeXml(body))
@@ -477,8 +516,6 @@ public class OpenApiToDocBookParser {
             sb.append("      </itemizedlist>\n");
             sb.append("    </listitem>\n");
         });
-        sb.append("  </itemizedlist>\n");
-        sb.append("</listitem>");
         return sb.toString();
     }
 
