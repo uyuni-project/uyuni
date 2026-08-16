@@ -149,12 +149,9 @@ public class OpenApiToDocBookParser {
         List<String> required = getFieldsByRequirement(op, true);
         List<String> optional = getFieldsByRequirement(op, false);
 
-        if (!optional.isEmpty()) {
-            List<String> allParams = new ArrayList<>(required);
-            allParams.addAll(optional);
-            handler.calls.add(buildCallDoc(httpMethod, op, allParams, securityRequired));
+        for (List<String> params : UyuniSwaggerReader.expandOverloads(op, required, optional)) {
+            handler.calls.add(buildCallDoc(httpMethod, op, params, securityRequired));
         }
-        handler.calls.add(buildCallDoc(httpMethod, op, required, securityRequired));
     }
 
     private CallDoc buildCallDoc(String httpMethod, Operation op,
