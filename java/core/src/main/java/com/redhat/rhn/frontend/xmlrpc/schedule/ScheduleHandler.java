@@ -39,7 +39,7 @@ import java.util.List;
  * @apidoc.namespace schedule
  * @apidoc.doc Methods to retrieve information about scheduled actions.
  */
-public class ScheduleHandler extends BaseHandler {
+public class ScheduleHandler extends BaseHandler implements ScheduleHandlerApi {
 
     /**
      * Cancel all actions in given list. If an invalid action is provided, none of the
