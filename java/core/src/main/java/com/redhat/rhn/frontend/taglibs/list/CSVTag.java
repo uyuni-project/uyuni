@@ -16,12 +16,14 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
 import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.taglibs.IconTag;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -215,17 +217,39 @@ public class CSVTag extends BodyTagSupport {
         // so CSVDownloadAction is able to retreive them.
         session.setAttribute(paramExportColumns, exportColumns);
 
-        String csvKey =
-            CSVDownloadAction.EXPORT_COLUMNS + "=" + paramExportColumns +
-                "&" + exportDataToSession(session) +
-                "&" + CSVDownloadAction.UNIQUE_NAME + "=" + getUniqueName();
-
+        StringBuilder csvKey = new StringBuilder();
+        csvKey.append(CSVDownloadAction.EXPORT_COLUMNS).append("=").append(paramExportColumns);
+        csvKey.append("&").append(exportDataToSession(session));
         if (header != null) {
             session.setAttribute(paramHeader, header);
-            csvKey += "&" + CSVDownloadAction.HEADER_NAME + "=" + paramHeader;
+            csvKey.append("&").append(CSVDownloadAction.HEADER_NAME).append("=").append(paramHeader);
         }
 
-        return csvKey;
+        csvKey.append(appendActiveListFilterParams(getUniqueName(), request));
+
+        return csvKey.toString();
+    }
+
+    /**
+     * Copies list filter parameters from the current request into the CSV download URL so
+     * {@link com.redhat.rhn.frontend.action.CSVDownloadAction} can apply the same filter after
+     * re-running a stored query.
+     */
+    static String appendActiveListFilterParams(String uniqueName, HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        String listPrefix = "list_" + uniqueName;
+        request.getParameterMap().forEach((key, values) -> {
+            if (key.startsWith(listPrefix) || key.startsWith("filter_" + uniqueName)
+                    || key.startsWith("filterattr_" + uniqueName)) {
+                sb.append("&").append(StringUtil.urlEncode(key)).append("=")
+                        .append(StringUtil.urlEncode(values[0]));
+            } else if (key.startsWith("filterclass_" + uniqueName)) {
+                String alias = CSVDownloadAction.getFilterAlias(values[0]);
+                sb.append("&").append(StringUtil.urlEncode(key)).append("=")
+                        .append(StringUtil.urlEncode(alias));
+            }
+        });
+        return sb.toString();
     }
 
     private String exportDataToSession(HttpSession session) {
