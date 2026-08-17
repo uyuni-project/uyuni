@@ -1,7 +1,7 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@benchmark @long_running
+@benchmark
 Feature: Salt channel package download on configured minions
   In order to measure package storage performance
   As an operator of an existing Uyuni environment
