@@ -56,7 +56,11 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
 
     @Column
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private Rule rule;
+
+    @Embedded
     private FilterCriteria criteria;
 
     /**
@@ -205,7 +209,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      *
      * @return rule
      */
-    @Enumerated(EnumType.STRING)
     public Rule getRule() {
         return rule;
     }
@@ -224,7 +227,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      *
      * @return criteria
      */
-    @Embedded
     public FilterCriteria getCriteria() {
         return criteria;
     }

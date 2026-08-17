@@ -39,6 +39,14 @@ import jakarta.persistence.Table;
 @Table(name = "susepaygdimensioncomputation")
 public class PaygDimensionComputation {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionComputation_seq")
+    @SequenceGenerator(
+            name = "paygDimensionComputation_seq",
+            sequenceName = "susePaygDimensionComputation_id_seq",
+            allocationSize = 1
+    )
     private Long id;
 
 
@@ -61,14 +69,6 @@ public class PaygDimensionComputation {
         this.dimensionResults = new HashSet<>();
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionComputation_seq")
-    @SequenceGenerator(
-            name = "paygDimensionComputation_seq",
-            sequenceName = "susePaygDimensionComputation_id_seq",
-            allocationSize = 1
-    )
     public Long getId() {
         return id;
     }

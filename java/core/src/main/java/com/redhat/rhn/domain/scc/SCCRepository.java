@@ -68,6 +68,8 @@ public class SCCRepository extends BaseDomainHelper {
     @Column(name = "autorefresh")
     @Convert(converter = YesNoConverter.class)
     private boolean autorefresh;
+
+    @Convert(converter = YesNoConverter.class)
     private boolean signed = true;
 
     @Convert(converter = YesNoConverter.class)
@@ -210,7 +212,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the signed
      */
-    @Convert(converter = YesNoConverter.class)
     public boolean isSigned() {
         return signed;
     }

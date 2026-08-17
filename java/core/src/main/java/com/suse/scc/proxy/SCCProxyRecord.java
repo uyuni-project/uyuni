@@ -58,6 +58,8 @@ public class SCCProxyRecord extends BaseDomainHelper {
 
     @Column(name = "last_seen_at")
     private Date lastSeenAt;
+
+    @Type(value = com.suse.scc.proxy.SccProxyStatusEnumType.class)
     private SccProxyStatus status;
 
     /**
@@ -197,7 +199,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
     }
 
 
-    @Type(value = com.suse.scc.proxy.SccProxyStatusEnumType.class)
     public SccProxyStatus getStatus() {
         return status;
     }

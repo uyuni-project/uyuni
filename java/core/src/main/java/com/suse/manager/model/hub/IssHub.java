@@ -28,8 +28,16 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "suseISSHub")
 public class IssHub extends BaseDomainHelper implements IssServer {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fqdn", unique = true)
     private String fqdn;
+
+    @Column(name = "root_ca")
     private String rootCa;
 
     @Column(name = "gpg_key")
@@ -70,9 +78,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
     public Long getId() {
         return id;
@@ -82,7 +87,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the FQDN of the Hub Server
      * @return return the FQDN of the Hub Server
      */
-    @Column(name = "fqdn", unique = true)
     @Override
     public String getFqdn() {
         return fqdn;
@@ -92,7 +96,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the configured Root CA
      * @return return the root ca
      */
-    @Column(name = "root_ca")
     @Override
     public String getRootCa() {
         return rootCa;

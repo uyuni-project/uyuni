@@ -47,7 +47,7 @@ public class OrgRecurringAction extends RecurringAction {
 
     @ManyToOne
     @JoinColumn(name = "org_id")
-    private Org organization;
+    private Org org;
 
     /**
      * Standard constructor
@@ -60,12 +60,12 @@ public class OrgRecurringAction extends RecurringAction {
      *
      * @param actionType the recurring action type
      * @param active if action is active
-     * @param org organization affiliated with the action
+     * @param orgIn organization affiliated with the action
      * @param creator the creator User
      */
-    public OrgRecurringAction(RecurringActionType actionType, boolean active, Org org, User creator) {
+    public OrgRecurringAction(RecurringActionType actionType, boolean active, Org orgIn, User creator) {
         super(actionType, active, creator);
-        this.organization = org;
+        this.org = orgIn;
     }
 
     /**
@@ -75,7 +75,7 @@ public class OrgRecurringAction extends RecurringAction {
      */
     @Override
     public List<MinionServer> computeMinions() {
-        return MinionServerUtils.filterSaltMinions(ServerFactory.listOrgSystems(organization.getId()))
+        return MinionServerUtils.filterSaltMinions(ServerFactory.listOrgSystems(org.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -106,22 +106,22 @@ public class OrgRecurringAction extends RecurringAction {
      * @return the organization
      */
     public Org getOrg() {
-        return organization;
+        return org;
     }
 
     /**
      * Sets the organization
      *
-     * @param org the organization
+     * @param orgIn the organization
      */
-    public void setOrg(Org org) {
-        this.organization = org;
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
     }
 
     @Override
     public String toString() {
         return super.toStringBuilder()
-                .append("org", organization)
+                .append("org", org)
                 .toString();
     }
 
@@ -139,7 +139,7 @@ public class OrgRecurringAction extends RecurringAction {
 
         return new EqualsBuilder()
                 .append(getName(), that.getName())
-                .append(organization, that.organization)
+                .append(org, that.org)
                 .isEquals();
     }
 
@@ -147,7 +147,7 @@ public class OrgRecurringAction extends RecurringAction {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(getName())
-                .append(organization)
+                .append(org)
                 .toHashCode();
     }
 }

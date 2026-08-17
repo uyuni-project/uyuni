@@ -38,6 +38,7 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("errata")
 public class ErrataFilter extends ContentFilter {
 
+    @Transient
     private Pattern pattern;
 
     @Override

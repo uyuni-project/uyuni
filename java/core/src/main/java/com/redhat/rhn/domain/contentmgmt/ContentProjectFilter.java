@@ -43,6 +43,8 @@ public class ContentProjectFilter implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_filter_seq")
     @SequenceGenerator(name = "content_project_filter_seq", sequenceName = "suse_ct_f_p_seq", allocationSize = 1)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @ManyToOne
@@ -105,7 +107,6 @@ public class ContentProjectFilter implements Serializable {
      *
      * @return state
      */
-    @Enumerated(EnumType.STRING)
     public State getState() {
         return state;
     }

@@ -34,8 +34,15 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "suseISSPeripheral")
 public class IssPeripheral extends BaseDomainHelper implements IssServer {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fqdn", unique = true)
     private String fqdn;
+
+    @Column(name = "root_ca")
     private String rootCa;
 
     @OneToOne(targetEntity = HubSCCCredentials.class)
@@ -78,9 +85,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
     public Long getId() {
         return id;
@@ -90,7 +94,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the FQDN of the Peripheral Server
      * @return return the FQDN of the Peripheral Server
      */
-    @Column(name = "fqdn", unique = true)
     @Override
     public String getFqdn() {
         return fqdn;
@@ -100,7 +103,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the configured Root CA
      * @return return the root ca
      */
-    @Column(name = "root_ca")
     @Override
     public String getRootCa() {
         return rootCa;
