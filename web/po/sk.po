@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-05-21 16:12+0000\n"
+"PO-Revision-Date: 2026-08-17 17:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -452,7 +452,7 @@ msgstr "Výstup procesu"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
 #: ../html/src/components/large-text-input.tsx:117
 msgid "Unable to retrieve the uploaded file"
-msgstr ""
+msgstr "Nemožno načítať nahratý súbor"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
 #: ../html/src/manager/minion/coco/coco-settings.tsx:86
@@ -466,27 +466,25 @@ msgstr "Povolenie atestácie"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
 msgid "Secure execution header"
-msgstr ""
+msgstr "Hlavička bezpečného vykonania"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
 msgid "Download the current Secure execution header"
-msgstr ""
+msgstr "Stiahnutie aktuálnej hlavičky bezpečného vykonania"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
-#, fuzzy
-#| msgid "Changes"
 msgid "Change"
-msgstr "Zmeny"
+msgstr "Zmena"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
 msgid "Host key document"
-msgstr ""
+msgstr "Dokument kľúča hostiteľa"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
 msgid "Download the current Host Key Document certificate"
-msgstr ""
+msgstr "Stiahnutie aktuálneho certifikátu dokument kľúča hostiteľa"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
@@ -499,8 +497,6 @@ msgid "Certificate file, in PEM format"
 msgstr "Súbor certifikátu, vo formáte PEM"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
-#, fuzzy
-#| msgid "PEM Certificate"
 msgid "PEM certificate"
 msgstr "Certifikát PEM"
 
@@ -514,14 +510,10 @@ msgid "Executions"
 msgstr "Vykonania"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
-#, fuzzy
-#| msgid "Peform attestation during the boot process"
 msgid "Perform attestation during the boot process"
 msgstr "Vykonanie atestácie počas procesu štartu systému"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
-#, fuzzy
-#| msgid "Peform attestation on a schedule"
 msgid "Perform attestation on a schedule"
 msgstr "Vykonávanie atestácie podľa plánu"
 
@@ -1749,10 +1741,8 @@ msgid "Confirm Deletion"
 msgstr "Potvrdiť vymazanie"
 
 #: ../html/src/components/large-text-input.tsx:61
-#, fuzzy
-#| msgid "Paste the new value"
 msgid "Paste the data"
-msgstr "Vložiť novú hodnotu"
+msgstr "Vložiť dáta"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
@@ -4195,7 +4185,7 @@ msgstr "Typ upozornenia"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
-msgstr ""
+msgstr "Uložený dátum vydania má neplatný formát. Prosím, vyberte platný dátum a uložte filter."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
