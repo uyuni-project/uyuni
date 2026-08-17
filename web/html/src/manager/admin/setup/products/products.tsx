@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { DEPRECATED_Select, DEPRECATED_Check, Form } from "components/input";
+import { DEPRECATED_Check, DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
