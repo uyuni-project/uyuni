@@ -3,7 +3,7 @@
 
 
 @scope_hub
-Feature: Create an activation key for sles15sp7
+Feature: Create an activation key for sles15sp7, ubuntu2404, and proxy on peripheral1
   In order to register systems to the spacewalk server
   As the testing user
   I want to use activation keys

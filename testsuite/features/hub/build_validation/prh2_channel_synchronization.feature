@@ -4,7 +4,7 @@
 @scope_hub
 @hub_server_to_server
 @peripheral2
-Feature: Hub ISSv3 channel synchronization to peripheral
+Feature: Hub ISSv3 channel synchronization to peripheral2
   In order to distribute content from a hub to peripheral servers
   As an authorized user
   I want to synchronize channels via the hub UI and peripheral UI

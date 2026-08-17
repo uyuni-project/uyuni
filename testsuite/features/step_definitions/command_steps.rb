@@ -1165,7 +1165,7 @@ def bootstrap_repo_cmd(client, without_flushing)
   cmd
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on (the server|server\d+)((?: without flushing)?)$/) do |client, host, without_flushing|
+When(/^I create the bootstrap repository for "([^"]*)" on (the server|server\d+|peripheral\d+)((?: without flushing)?)$/) do |client, host, without_flushing|
   target = host == 'the server' ? 'server' : host
   cmd = bootstrap_repo_cmd(client, without_flushing)
   get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
