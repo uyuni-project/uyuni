@@ -5,7 +5,7 @@
 
 @scope_hub
 @hub_server_to_server
-@server2
+@peripheral1
 Feature: Hub XMLRPC API operations
   In order to manage multiple peripheral servers from a hub
   As an authorized user
@@ -34,8 +34,8 @@ Feature: Hub XMLRPC API operations
     Then the hub server IDs list should not be empty
 
   Scenario: Execute unicast system list for one peripheral via Hub API (A-08)
-    When I call unicast.system.list_systems for "server2" via XMLRPC
-    Then unicast response should contain systems from "server2"
+    When I call unicast.system.list_systems for "peripheral1" via XMLRPC
+    Then unicast response should contain systems from "peripheral1"
 
   Scenario: Call system.list_systems on hub's own XMLRPC endpoint (pass-through) (A-08)
     When I call system.list_systems on hub's own XMLRPC endpoint

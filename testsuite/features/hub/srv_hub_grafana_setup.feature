@@ -5,7 +5,7 @@
 # dedicated monitoring server via the Grafana Salt formula in hub reporting mode.
 #
 # Prerequisites:
-# - server2 registered as a peripheral (srv_hub_setup_registration.feature)
+# - peripheral1 registered as a peripheral (srv_hub_setup_registration.feature)
 # - hub reportdb populated with peripheral data (srv_hub_reporting.feature)
 # - monitoring_server bootstrapped as a minion of the hub
 #
@@ -16,7 +16,7 @@
 
 @scope_hub
 @hub_full_topology
-@server2
+@peripheral1
 @monitoring_server
 Feature: Grafana formula setup in hub reporting mode on the monitoring server (C-02)
   In order to visualize hub reporting data from the monitoring server

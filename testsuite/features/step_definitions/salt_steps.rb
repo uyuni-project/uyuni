@@ -8,7 +8,7 @@ require 'timeout'
 require 'open-uri'
 require 'tempfile'
 
-Given(/^the Salt master can reach "(.*?)"(?: on (server|server2|server3))?$/) do |minion, host|
+Given(/^the Salt master can reach "(.*?)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |minion, host|
   host ||= 'server'
   system_name = get_system_name(minion, mgr_server: host)
   server = get_target(host)

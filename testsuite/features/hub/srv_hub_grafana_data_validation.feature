@@ -13,22 +13,22 @@
 #
 # Prerequisites:
 # - srv_hub_grafana_setup.feature and srv_hub_grafana_dashboards.feature completed
-# - At least one peripheral registered (server2) with reporting data in hub reportdb
+# - At least one peripheral registered (peripheral1) with reporting data in hub reportdb
 # - monitoring_server is a hub minion (for the C-06 action trigger)
 #
 # Cleanup: this feature disables the Grafana formula and applies highstate at the end,
 # restoring pre-suite state. Run AFTER srv_hub_grafana_dashboards.feature and BEFORE
 # srv_hub_verification_cleanup.feature.
 #
-# This feature also owns final server2 deregistration for the reporting+Grafana stretch
+# This feature also owns final peripheral1 deregistration for the reporting+Grafana stretch
 # of the run set (moved here from srv_hub_reporting.feature, since srv_hub_grafana_setup.feature
-# needed server2 to stay registered through that stretch). srv_hub_verification_cleanup.feature,
+# needed peripheral1 to stay registered through that stretch). srv_hub_verification_cleanup.feature,
 # which runs next, does its own fresh peripheral registration and would hit a duplicate-
-# registration error if server2 were still registered when it starts.
+# registration error if peripheral1 were still registered when it starts.
 
 @scope_hub
 @hub_full_topology
-@server2
+@peripheral1
 @monitoring_server
 Feature: Grafana hub reporting data cross-validation and cleanup (C-04, C-05, C-06)
   In order to confirm Grafana reporting dashboards reflect accurate hub reporting data
@@ -60,7 +60,7 @@ Feature: Grafana hub reporting data cross-validation and cleanup (C-04, C-05, C-
     When I trigger a fresh highstate action on "monitoring_server"
 
   Scenario: Run hub reporting aggregation task after fresh action (C-06)
-    When I schedule the reporting update task on "server"
+    When I schedule the reporting update task on "hub"
     Then I should see a "FINISHED" text
 
   Scenario: Reportdb latest actions include the recent highstate action (C-06)
@@ -85,6 +85,6 @@ Feature: Grafana hub reporting data cross-validation and cleanup (C-04, C-05, C-
     And I wait until event "Apply highstate scheduled" is completed
     And the "grafana-server" service should be stopped on "monitoring_server"
 
-  Scenario: Cleanup - deregister server2 from hub
-    When I unregister "server2" from hub
-    Then I should not see the name of "server2"
+  Scenario: Cleanup - deregister peripheral1 from hub
+    When I unregister "peripheral1" from hub
+    Then I should not see the name of "peripheral1"

@@ -456,6 +456,14 @@ Before('@server3') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server3']
 end
 
+Before('@peripheral1') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral1']
+end
+
+Before('@peripheral2') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['peripheral2']
+end
+
 Before('@server4') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server4']
 end

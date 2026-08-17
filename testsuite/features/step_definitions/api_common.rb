@@ -339,7 +339,7 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
   raise ScriptError unless details['description'] == description
 end
 
-When(/^I create an activation key including custom channels for "([^"]*)" via API(?: on (server|server2|server3))?$/) do |client, host|
+When(/^I create an activation key including custom channels for "([^"]*)" via API(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |client, host|
   host ||= 'server'
   api_test = api_client_for(host)
 

@@ -8,7 +8,7 @@
 
 @scope_hub
 @hub_server_to_server
-@server2
+@peripheral1
 Feature: Hub ISSv3 channel synchronization to peripheral
   In order to distribute content from a hub to peripheral servers
   As an authorized user
@@ -17,10 +17,10 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Log in as admin user for channel sync tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite - register server2 as peripheral for channel sync tests (A-06)
-    When I add "server2" as peripheral using administrator credentials
+  Scenario: Prerequisite - register peripheral1 as peripheral for channel sync tests (A-06)
+    When I add "peripheral1" as peripheral using administrator credentials
     And I wait until I see "is currently registered as peripheral of this hub" text
-    Then I should see "server2" in peripherals list
+    Then I should see "peripheral1" in peripherals list
 
   Scenario: Clone a channel on hub for sync testing (A-06)
     When I follow the left menu "Software > Manage > Channels"
@@ -41,34 +41,34 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I follow "List/Remove Patches"
     Then I should see a "There are no patches associated with this channel." text
 
-  Scenario: Configure cloned channel sync from hub to server2 via hub UI - Method A (A-06)
-    When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "server2"
+  Scenario: Configure cloned channel sync from hub to peripheral1 via hub UI - Method A (A-06)
+    When I configure hub to sync channel "Fake-Clone-RPM-SLES15SP7-Channel" to "peripheral1"
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1271703
     Then I should see a "Channels synced correctly to peripheral!" text
 
-  Scenario: Trigger channel sync from hub to server2 (A-06)
-    Given I am authorized for the "Admin" section on "server2"
-    When I initiate channel sync from peripheral "server2"
+  Scenario: Trigger channel sync from hub to peripheral1 (A-06)
+    Given I am authorized for the "Admin" section on "peripheral1"
+    When I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
-  Scenario: Wait for cloned channel to appear on server2 (A-06)
+  Scenario: Wait for cloned channel to appear on peripheral1 (A-06)
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155 (clone channel ISS sync is currently broken)
-    # When I wait until channel "clone-fake-rpm-suse-channel" has been fully synchronized on "server2"
-    # Then channel "clone-fake-rpm-suse-channel" should exist on "server2"
+    # When I wait until channel "clone-fake-rpm-suse-channel" has been fully synchronized on "peripheral1"
+    # Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
 
-  Scenario: Verify cloned channel on server2 has expected packages (A-06)
+  Scenario: Verify cloned channel on peripheral1 has expected packages (A-06)
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155
-    # Then channel "clone-fake-rpm-suse-channel" on "server2" should have "4" packages
+    # Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
 
-  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on server2 (A-06)
-    And I wait until all synchronized channels for "sles15-sp7" have finished on server2
+  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on peripheral1 (A-06)
+    And I wait until all synchronized channels for "sles15-sp7" have finished on peripheral1
 
   Scenario: Verify all channels are solved
-    When I wait until all synchronized channels have solved their dependencies on server2
+    When I wait until all synchronized channels have solved their dependencies on peripheral1
     Then all channels have been synced without errors
 
-  Scenario: Verify SLE-Product-SLES15-SP7-Pool channel on server2 has expected packages (A-06)
-    Then channel "sle-product-sles15-sp7-pool-x86_64" on "server2" should have "3" packages
+  Scenario: Verify SLE-Product-SLES15-SP7-Pool channel on peripheral1 has expected packages (A-06)
+    Then channel "sle-product-sles15-sp7-pool-x86_64" on "peripheral1" should have "3" packages
 
   Scenario: Create a custom channel on hub for org-mapping test (A-06)
     When I follow the left menu "Software > Manage > Channels"
@@ -80,23 +80,23 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     And I click on "Create Channel"
     Then I should see a "Channel Test Hub Custom Channel created" text
 
-  Scenario: Create a second organization on server2 for org-mapping test (A-06)
-    When I create organization "Test Default Organization" on "server2"
+  Scenario: Create a second organization on peripheral1 for org-mapping test (A-06)
+    When I create organization "Test Default Organization" on "peripheral1"
 
-  # The organization must exist on server2 before the channel is synced there for the
+  # The organization must exist on peripheral1 before the channel is synced there for the
   # first time -- per the Hub Online Synchronization docs, the target-organization
   # drop-down only offers a real choice for a custom channel that does not yet exist
   # on the peripheral. Once synced, a channel's organization stays unchanged.
-  Scenario: Configure custom channel sync to server2 with organization mapping (A-06)
-    When I configure hub to sync channel "Test Hub Custom Channel" to "server2"
-    And I select target organization "Test Default Organization" for channel "Test Hub Custom Channel" on "server2"
+  Scenario: Configure custom channel sync to peripheral1 with organization mapping (A-06)
+    When I configure hub to sync channel "Test Hub Custom Channel" to "peripheral1"
+    And I select target organization "Test Default Organization" for channel "Test Hub Custom Channel" on "peripheral1"
     Then I should see a "Channel configuration updated" text
 
-  Scenario: Trigger sync for custom channel and verify it arrives on server2 (A-06)
-    When I initiate channel sync from peripheral "server2"
+  Scenario: Trigger sync for custom channel and verify it arrives on peripheral1 (A-06)
+    When I initiate channel sync from peripheral "peripheral1"
     And I should see a "Successfully scheduled a channels synchronization." text
-    And I wait at most 300 seconds until channel "test-hub-custom-channel" has been synced on "server2"
-    Then channel "test-hub-custom-channel" should exist on "server2"
+    And I wait at most 300 seconds until channel "test-hub-custom-channel" has been synced on "peripheral1"
+    Then channel "test-hub-custom-channel" should exist on "peripheral1"
 
   # Method B — hub-side trigger via Admin > Hub Configuration > Peripherals Configuration
   # ("Sync Channels" button next to a registered peripheral) does not exist as a separate
@@ -120,13 +120,13 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   # Re-evaluate if a step I create a repo with a URL of length N characters
   # is added to api_common.rb or command_steps.rb.
 
-  Scenario: Regenerate mirror credentials for server2 and verify sync still works (A-06)
-    When I regenerate mirror credentials for peripheral "server2"
-    And I initiate channel sync from peripheral "server2"
+  Scenario: Regenerate mirror credentials for peripheral1 and verify sync still works (A-06)
+    When I regenerate mirror credentials for peripheral "peripheral1"
+    And I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
-  Scenario: Cleanup - remove synced channels from server2
-    When I remove synced channels from "server2"
+  Scenario: Cleanup - remove synced channels from peripheral1
+    When I remove synced channels from "peripheral1"
     And I wait until I see "Channel configuration updated" text
     Then I should see a "Updated" text
 

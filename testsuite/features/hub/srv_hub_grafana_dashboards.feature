@@ -15,7 +15,7 @@
 
 @scope_hub
 @hub_full_topology
-@server2
+@peripheral1
 @monitoring_server
 Feature: Grafana hub reporting dashboard provisioning verification (C-03)
   In order to confirm hub reporting dashboards are correctly provisioned

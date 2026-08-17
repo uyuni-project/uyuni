@@ -3,7 +3,7 @@
 
 @scope_hub
 @hub_server_to_server
-@server2
+@peripheral1
 Feature: Hub ISSv3 channel synchronization to peripheral
   In order to distribute content from a hub to peripheral servers
   As an authorized user
@@ -12,26 +12,26 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Log in as admin user for channel sync tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to server2 for minion bootstrap
-    When I configure hub to sync all "-SP7-" channels to "server2"
+  Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap
+    When I configure hub to sync all "-SP7-" channels to "peripheral1"
 
-  Scenario: Sync the Ubuntu 24.04 channels from hub to server2 for minion bootstrap
-    When I configure hub to sync all "ubuntu-2404" channels to "server2"
+  Scenario: Sync the Ubuntu 24.04 channels from hub to peripheral1 for minion bootstrap
+    When I configure hub to sync all "ubuntu-2404" channels to "peripheral1"
 
-  Scenario: Trigger channel sync from hub to server2
-    Given I am authorized for the "Admin" section on "server2"
-    When I initiate channel sync from peripheral "server2"
+  Scenario: Trigger channel sync from hub to peripheral1
+    Given I am authorized for the "Admin" section on "peripheral1"
+    When I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
-  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on server2
-    And I wait until all synchronized channels for "sles15-sp7" have finished on server2
+  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on peripheral1
+    And I wait until all synchronized channels for "sles15-sp7" have finished on peripheral1
 
-  Scenario: Wait for Ubuntu 24.04 channels to be synchronized on server2
-    And I wait until all synchronized channels for "ubuntu-2404" have finished on server2
+  Scenario: Wait for Ubuntu 24.04 channels to be synchronized on peripheral1
+    And I wait until all synchronized channels for "ubuntu-2404" have finished on peripheral1
 
   Scenario: Verify all channels are solved
-    When I wait until all synchronized channels have solved their dependencies on server2
+    When I wait until all synchronized channels have solved their dependencies on peripheral1
     Then all channels have been synced without errors
 
-  Scenario: Verify SLE-Product-SLES15-SP7-Pool channel on server2 has expected packages
-    Then channel "sle-product-sles15-sp7-pool-x86_64" on "server2" should have "3" packages
+  Scenario: Verify SLE-Product-SLES15-SP7-Pool channel on peripheral1 has expected packages
+    Then channel "sle-product-sles15-sp7-pool-x86_64" on "peripheral1" should have "3" packages

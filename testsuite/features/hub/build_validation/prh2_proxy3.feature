@@ -8,12 +8,12 @@
 # Bootstrap the proxy3 as a Pod
 
 @scope_hub
-@server3
+@peripheral2
 @proxy3
-Feature: Setup containerized proxy3
-  In order to use a containerized proxy3 with the server
+Feature: Setup containerized proxy3 on peripheral2
+  In order to use a containerized proxy3 with peripheral2
   As the system administrator
-  I want to register the containerized proxy3 on the server
+  I want to register the containerized proxy3 on peripheral2
 
   Scenario: Clean up sumaform leftovers on the containerized proxy3
     When I perform a full salt minion cleanup on "proxy3"
@@ -23,9 +23,9 @@ Feature: Setup containerized proxy3
     When I reboot the "proxy3" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section on "server3"
+    Given I am authorized for the "Admin" section on "peripheral2"
 
-  Scenario: Bootstrap the proxy3 host as a salt minion
+  Scenario: Bootstrap the proxy3 host as a salt minion of peripheral2
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "proxy3" as "hostname"
@@ -44,15 +44,15 @@ Feature: Setup containerized proxy3
     When I wait until onboarding is completed for "proxy3"
 
   Scenario: Upgrade mgrpxy tool
-    When I upgrade "mgrpxy" on "proxy3" using the API from server3
+    When I upgrade "mgrpxy" on "proxy3" using the API from peripheral2
 
 @transactional_proxy3
   Scenario: Reboot after mgrpxy upgrade
     When I reboot the "proxy3" minion through the web UI
 
   Scenario: Generate containerized proxy3 configuration
-    When I generate the configuration "/tmp/proxy3_container_config.tar.gz" of containerized proxy3 on the server3
-    And I copy the configuration "/tmp/proxy3_container_config.tar.gz" of containerized proxy from the server3 to the proxy3
+    When I generate the configuration "/tmp/proxy3_container_config.tar.gz" of containerized proxy3 on the peripheral2
+    And I copy the configuration "/tmp/proxy3_container_config.tar.gz" of containerized proxy from the peripheral2 to the proxy3
 
   Scenario: Set up the containerized proxy3 service to support Avahi
     When I add avahi hosts in containerized proxy3 configuration

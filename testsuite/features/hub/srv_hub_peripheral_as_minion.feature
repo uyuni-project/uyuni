@@ -6,7 +6,7 @@
 
 @scope_hub
 @hub_full_topology
-@server2
+@peripheral1
 Feature: Hub peripheral host managed as a hub minion
   In order to understand the correct bootstrap ordering for hub topologies
   As an authorized user
@@ -19,29 +19,29 @@ Feature: Hub peripheral host managed as a hub minion
   Scenario: Log in as admin user for peripheral-as-minion tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite - register server2 as peripheral of hub (B-01)
-    When I add "server2" as peripheral using administrator credentials
+  Scenario: Prerequisite - register peripheral1 as peripheral of hub (B-01)
+    When I add "peripheral1" as peripheral using administrator credentials
     And I wait until I see "is currently registered as peripheral of this hub" text
-    Then I should see "server2" in peripherals list
+    Then I should see "peripheral1" in peripherals list
 
-  Scenario: Deregister server2 to set up bootstrap-before-registration path (B-01)
-    When I unregister "server2" from hub
-    Then I should not see the name of "server2"
+  Scenario: Deregister peripheral1 to set up bootstrap-before-registration path (B-01)
+    When I unregister "peripheral1" from hub
+    Then I should not see the name of "peripheral1"
 
-  Scenario: Bootstrap server2 host as a Salt minion of hub (B-01 path 1 - minion before peripheral)
-    When I bootstrap "server2" as a Salt minion of hub
-    And I wait until onboarding is completed for "server2"
-    Then I should see "server2" in hub system list as "Salt Minion" type
+  Scenario: Bootstrap peripheral1 host as a Salt minion of hub (B-01 path 1 - minion before peripheral)
+    When I bootstrap "peripheral1" as a Salt minion of hub
+    And I wait until onboarding is completed for "peripheral1"
+    Then I should see "peripheral1" in hub system list as "Salt Minion" type
 
-  Scenario: Register server2 as peripheral after minion bootstrap - verify single entry (B-01)
-    When I add "server2" as peripheral using administrator credentials
+  Scenario: Register peripheral1 as peripheral after minion bootstrap - verify single entry (B-01)
+    When I add "peripheral1" as peripheral using administrator credentials
     And I wait until I see "is currently registered as peripheral of this hub" text
-    Then there should be exactly one entry for "server2" in hub system list
+    Then there should be exactly one entry for "peripheral1" in hub system list
 
   Scenario: Document bootstrap-after-registration behavior for path 2 (B-01)
-    When I document the two-entries behavior for "server2" when bootstrapped after peripheral registration
+    When I document the two-entries behavior for "peripheral1" when bootstrapped after peripheral registration
 
-  Scenario: Cleanup - delete server2 from hub system list and deregister peripheral (B-01)
-    When I delete "server2" system using the api
-    And I unregister "server2" from hub
-    Then I should not see the name of "server2"
+  Scenario: Cleanup - delete peripheral1 from hub system list and deregister peripheral (B-01)
+    When I delete "peripheral1" system using the api
+    And I unregister "peripheral1" from hub
+    Then I should not see the name of "peripheral1"

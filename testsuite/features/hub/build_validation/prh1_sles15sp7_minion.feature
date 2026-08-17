@@ -3,17 +3,17 @@
 
 @scope_hub
 @hub_server_to_server
-@server2
+@peripheral1
 @sles15sp7_minion
-Feature: Bootstrap a SLES 15 SP7 Salt minion
+Feature: Bootstrap a SLES 15 SP7 Salt minion on peripheral1
 
   Scenario: Clean up sumaform leftovers on a SLES 15 SP7 Salt minion
     When I perform a full salt minion cleanup on "sles15sp7_minion"
 
   Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section on "server2"
+    Given I am authorized for the "Admin" section on "peripheral1"
 
-  Scenario: Bootstrap a SLES 15 SP7 minion
+  Scenario: Bootstrap a SLES 15 SP7 minion on peripheral1
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sles15sp7_minion" as "hostname"
@@ -29,22 +29,22 @@ Feature: Bootstrap a SLES 15 SP7 Salt minion
   Scenario: Check the new bootstrapped SLES 15 SP7 minion in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    And the Salt master can reach "sles15sp7_minion" on server2
+    And the Salt master can reach "sles15sp7_minion" on peripheral1
 
 @proxy2
   Scenario: Check connection from SLES 15 SP7 minion to proxy
-    Given I am on the Systems overview page of this "sles15sp7_minion" on server2
+    Given I am on the Systems overview page of this "sles15sp7_minion" on peripheral1
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy2" short hostname
 
 @proxy2
   Scenario: Check registration on proxy of SLES 15 SP7 minion
-    Given I am on the Systems overview page of this "proxy2" on server2
+    Given I am on the Systems overview page of this "proxy2" on peripheral1
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sles15sp7_minion" hostname
 
   Scenario: Check events history for failures on SLES 15 SP7 minion
-    Given I am on the Systems overview page of this "sles15sp7_minion" on server2
+    Given I am on the Systems overview page of this "sles15sp7_minion" on peripheral1
     Then I check for failed events on history event page

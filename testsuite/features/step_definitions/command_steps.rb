@@ -432,13 +432,13 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3))?$/) do |channel, host|
+When(/^I wait until the channel "([^"]*)" has been synced(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |channel, host|
   host ||= 'server'
   margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
   wait_for_channels([channel], "channel '#{channel}'", host: host, margin: margin)
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3))?$/) do |os_product_version, host|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |os_product_version, host|
   host ||= 'server'
   channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
   raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
@@ -447,7 +447,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on 
   wait_for_channels(channels_to_sync, "product '#{os_product_version}'", host: host)
 end
 
-When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3))?$/) do |host|
+When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
   host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
@@ -1426,7 +1426,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
   get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
-Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
+Then(/^"(.*?)" folder on (?:server|hub) is ISS v2 export directory$/) do |folder|
   raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
 end
 
@@ -1602,7 +1602,7 @@ end
 # Usage:
 #   I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
 #   I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy2 on server2
-When(/^I generate the configuration "([^"]*)" of containerized (proxy|proxy2|proxy3) on (?:the )?(server|server2|server3)$/) do |file_path, proxy_target, host|
+When(/^I generate the configuration "([^"]*)" of containerized (proxy|proxy2|proxy3) on (?:the )?(server|server2|server3|hub|peripheral1|peripheral2)$/) do |file_path, proxy_target, host|
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
@@ -1642,7 +1642,7 @@ end
 # Usage:
 #   I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from the server to the proxy
 #   I copy the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy from server2 to proxy2
-When(/^I copy the configuration "([^"]*)" of containerized proxy from (?:the )?(server|server2|server3) to (?:the )?(proxy|proxy2|proxy3)$/) do |file_path, host, proxy_target|
+When(/^I copy the configuration "([^"]*)" of containerized proxy from (?:the )?(server|server2|server3|hub|peripheral1|peripheral2) to (?:the )?(proxy|proxy2|proxy3)$/) do |file_path, host, proxy_target|
   get_target(host).extract(file_path, file_path)
   get_target(proxy_target).inject(file_path, file_path)
 end
@@ -1943,7 +1943,7 @@ When(/^I wait until a new "([^"]*)" event is completed for "([^"]*)"$/) do |even
   wait_action_complete(target_event['id'])
 end
 
-When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|server2|server3))?$/) do |action, package, host, mgr_server|
+When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |action, package, host, mgr_server|
   mgr_server ||= 'server'
   system_name = get_system_name(host, mgr_server: mgr_server)
   last_event_before_action = get_last_events(host, mgr_server: mgr_server).first

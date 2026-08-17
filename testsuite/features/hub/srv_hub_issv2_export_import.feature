@@ -6,7 +6,7 @@
 
 @scope_hub
 @hub_server_to_server
-@server2
+@peripheral1
 Feature: Hub ISSv2 CLI channel export and import
   In order to distribute content offline between hub and peripheral servers
   As an authorized user
@@ -15,12 +15,12 @@ Feature: Hub ISSv2 CLI channel export and import
   Background:
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite - org names match on hub and server2 for ISS v2 import (A-09)
-    Given the default organization name on hub and "server2" match
+  Scenario: Prerequisite - org names match on hub and peripheral1 for ISS v2 import (A-09)
+    Given the default organization name on hub and "peripheral1" match
 
-  Scenario: Prerequisite - inter-server-sync is installed on hub and server2 (A-09)
-    Given "inter-server-sync" is installed on both hub and "server2"
-    And hub and "server2" have the same MLM version
+  Scenario: Prerequisite - inter-server-sync is installed on hub and peripheral1 (A-09)
+    Given "inter-server-sync" is installed on both hub and "peripheral1"
+    And hub and "peripheral1" have the same MLM version
 
   Scenario: Prerequisite - create a custom channel on hub for ISS v2 export (A-09)
     When I follow the left menu "Software > Manage > Channels"
@@ -34,15 +34,15 @@ Feature: Hub ISSv2 CLI channel export and import
 
   Scenario: Export the test channel from hub using ISS v2 (A-09)
     When I export channel "iss-v2-test-channel" with ISS v2 to "/var/spacewalk/iss-export-hub-test" on hub
-    Then "/var/spacewalk/iss-export-hub-test" folder on server is ISS v2 export directory
+    Then "/var/spacewalk/iss-export-hub-test" folder on hub is ISS v2 export directory
 
-  Scenario: Transfer ISS v2 export from hub to server2 (A-09)
-    When I transfer ISS v2 export from hub to "server2"
+  Scenario: Transfer ISS v2 export from hub to peripheral1 (A-09)
+    When I transfer ISS v2 export from hub to "peripheral1"
     Then I should not see a "Transfer failed" text
 
-  Scenario: Import ISS v2 data on server2 (A-09)
-    When I import ISS v2 data from "/var/spacewalk/iss-export-hub-test" on "server2"
-    Then channel "iss-v2-test-channel" should be listed in API on "server2"
+  Scenario: Import ISS v2 data on peripheral1 (A-09)
+    When I import ISS v2 data from "/var/spacewalk/iss-export-hub-test" on "peripheral1"
+    Then channel "iss-v2-test-channel" should be listed in API on "peripheral1"
 
   Scenario: Cleanup - delete ISS v2 test channel from hub
     When I follow the left menu "Software > Manage > Channels"
@@ -53,5 +53,5 @@ Feature: Hub ISSv2 CLI channel export and import
     Then I should see a "ISS v2 Test Channel" text
 
   Scenario: Cleanup - remove ISS v2 export directory from hub
-    When I run "rm -rf /var/spacewalk/iss-export-hub-test" on "server"
-    Then file "/var/spacewalk/iss-export-hub-test" should not exist on server
+    When I run "rm -rf /var/spacewalk/iss-export-hub-test" on "hub"
+    Then file "/var/spacewalk/iss-export-hub-test" should not exist on "hub"
