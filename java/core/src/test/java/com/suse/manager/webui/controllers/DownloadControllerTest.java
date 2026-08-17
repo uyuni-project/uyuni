@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2024 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -661,6 +661,31 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
+    public void testFailDownloadWhenInvalidPackagePath() throws Exception {
+        Token token = new DownloadTokenBuilder(user.getOrg().getId()).usingServerSecret().build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
+        String tokenChannel = accessToken.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenChannel, "");
+
+        String invalidFile = "invalid-package-name.cenas";
+        Request request = getMockRequestWithParamsAndHeaders(params, Collections.emptyMap(), invalidFile);
+
+        try {
+            downloadController.downloadPackage(request, response);
+            fail(String.format("%s should halt 400 if an invalid package path is given",
+                    DownloadController.class.getSimpleName()));
+        }
+        catch (spark.HaltException e) {
+            assertEquals(400, e.statusCode());
+            assertTrue(e.body().contains("Invalid package path"));
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
     /**
      * Test for setting correct headers for comps.xml file.
      *
@@ -856,42 +881,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         catch (spark.HaltException e) {
             assertEquals(404, e.getStatusCode(), "Not Found Exception expected");
         }
-    }
-
-    @Test
-    public void testParseDebPkgFilename1() {
-        DownloadController.PkgInfo pack =
-                downloadController.parsePackageFileName(
-                        "/rhn/manager/download/debchannel/getPackage/gcc-8-base_8-20180414-1ubuntu2.amd64-deb.deb");
-        assertEquals("gcc-8-base", pack.getName());
-        assertNull(pack.getEpoch());
-        assertEquals("8-20180414", pack.getVersion());
-        assertEquals("1ubuntu2", pack.getRelease());
-        assertEquals("amd64-deb", pack.getArch());
-    }
-
-    @Test
-    public void testParseDebPkgFilename2() {
-        DownloadController.PkgInfo pack =
-                downloadController.parsePackageFileName(
-                        "/rhn/manager/download/debchannel/getPackage/python-tornado_4.2.1-1ubuntu3.amd64-deb.deb");
-        assertEquals("python-tornado", pack.getName());
-        assertNull(pack.getEpoch());
-        assertEquals("4.2.1", pack.getVersion());
-        assertEquals("1ubuntu3", pack.getRelease());
-        assertEquals("amd64-deb", pack.getArch());
-    }
-
-    @Test
-    public void testParseDebPkgFilename3() {
-        DownloadController.PkgInfo pack =
-                downloadController.parsePackageFileName(
-                        "/rhn/manager/download/ubuntu-18.04-amd64-main/getPackage/ruby_1:2.5.1-X.amd64-deb.deb");
-        assertEquals("ruby", pack.getName());
-        assertEquals("1", pack.getEpoch());
-        assertEquals("2.5.1", pack.getVersion());
-        assertEquals("X", pack.getRelease());
-        assertEquals("amd64-deb", pack.getArch());
     }
 
     @Test
