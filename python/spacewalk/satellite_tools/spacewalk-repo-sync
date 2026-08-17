@@ -195,6 +195,14 @@ def main():
     )
     parser.add_option(
         "",
+        "--metadata-only",
+        action="store_true",
+        dest="metadata_only",
+        default=False,
+        help="Do not download packages but import the metadata",
+    )
+    parser.add_option(
+        "",
         "--no-errata",
         action="store_true",
         dest="no_errata",
@@ -417,6 +425,7 @@ def main():
             noninteractive=options.noninteractive,
             filters=options.filters,
             deep_verify=options.deep_verify,
+            metadata_only=options.metadata_only,
             no_errata=options.no_errata,
             no_packages=options.no_packages,
             sync_kickstart=options.sync_kickstart,

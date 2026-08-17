@@ -655,9 +655,13 @@ public class SaltUtils {
 
         sb.append(name);
         sb.append("-");
+        // Filter epoch 0 to treat it as null 
         sb.append(
                 new PackageEvr(
-                        info.getEpoch().orElse(null),
+                        info.getEpoch()
+                                .map(StringUtils::trimToNull)
+                                .filter(e -> !"0".equals(e))
+                                .orElse(null),
                         info.getVersion().orElseThrow(),
                         info.getRelease().orElse("X"),
                         PackageType.RPM
@@ -691,7 +695,11 @@ public class SaltUtils {
                                              PackageType type) {
         return switch (type) {
             case DEB -> PackageEvrFactory.lookupOrCreatePackageEvr(PackageEvr.parseDebian(version));
-            case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(epoch.map(StringUtils::trimToNull).orElse(null),
+            // Filter epoch 0 to treat it as null
+            case RPM -> PackageEvrFactory.lookupOrCreatePackageEvr(
+                    epoch.map(StringUtils::trimToNull)
+                        .filter(e -> !"0".equals(e))
+                        .orElse(null),
                     version, release.orElse("0"), PackageType.RPM);
         };
     }
