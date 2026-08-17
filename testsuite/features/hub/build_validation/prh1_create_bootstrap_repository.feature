@@ -13,3 +13,6 @@ I create all bootstrap repos with --with-custom-channels option
 
   Scenario: Create the bootstrap repository for sles15sp7
     When I create the bootstrap repository for "proxy2" on server2
+
+  Scenario: Create the bootstrap repository for ubuntu2404
+    When I create the bootstrap repository for "ubuntu2404_minion" on server2

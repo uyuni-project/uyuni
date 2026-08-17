@@ -13,3 +13,6 @@ Feature: Create an activation key for sles15sp7
 
   Scenario: Create an activation key with the channel and child channels for proxy
     When I create an activation key including custom channels for "proxy2" via API on server2
+
+  Scenario: Create an activation key with the channel and child channels for ubuntu2404
+    When I create an activation key including custom channels for "ubuntu2404_minion" via API on server2

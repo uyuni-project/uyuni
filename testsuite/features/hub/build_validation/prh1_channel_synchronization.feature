@@ -15,6 +15,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to server2 for minion bootstrap
     When I configure hub to sync all "-SP7-" channels to "server2"
 
+  Scenario: Sync the Ubuntu 24.04 channels from hub to server2 for minion bootstrap
+    When I configure hub to sync all "ubuntu-2404" channels to "server2"
+
   Scenario: Trigger channel sync from hub to server2
     Given I am authorized for the "Admin" section on "server2"
     When I initiate channel sync from peripheral "server2"
@@ -22,6 +25,9 @@ Feature: Hub ISSv3 channel synchronization to peripheral
 
   Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on server2
     And I wait until all synchronized channels for "sles15-sp7" have finished on server2
+
+  Scenario: Wait for Ubuntu 24.04 channels to be synchronized on server2
+    And I wait until all synchronized channels for "ubuntu-2404" have finished on server2
 
   Scenario: Verify all channels are solved
     When I wait until all synchronized channels have solved their dependencies on server2
