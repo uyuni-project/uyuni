@@ -286,6 +286,7 @@ Then(/^the Fleet Overview systems-by-organization distribution should sum to the
   total = total_raw.strip.to_i
   org_sum = org_sum_raw.strip.to_i
   raise ScriptError, "Could not read total system count from hub reportdb (got: '#{total_raw.strip}')" if total.zero?
+
   unless org_sum == total
     raise ScriptError,
           "Organization distribution sum (#{org_sum}) does not equal total system count (#{total})"

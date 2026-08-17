@@ -12,7 +12,6 @@ Feature: Create fake repositories for each fake child channel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I mirror the RPM test packages locally
 
   Scenario: Create a fake repository for distributions using RPM
     When I follow the left menu "Software > Manage > Repositories"
