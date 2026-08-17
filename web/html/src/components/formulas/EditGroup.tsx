@@ -1,6 +1,6 @@
 import "./formula-form.css";
 
-import { Component, Fragment } from "react";
+import { Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -147,7 +147,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
         </div>
         <div>
           {this.state.visible ? (
-            <Fragment>
+            <>
               {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
               <Component
                 handleRemoveItem={this.handleRemoveItem}
@@ -160,7 +160,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                 setSectionsExpanded={this.props.setSectionsExpanded}
                 formulaForm={this.props.formulaForm}
               />
-            </Fragment>
+            </>
           ) : null}
         </div>
       </div>
@@ -185,7 +185,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simpleWrapper = (name, required, element, help = null) => {
     return (
-      <Fragment>
+      <>
         <div className="col-lg-3">{element}</div>
         {required ? (
           <span className="required-form-field" style={{ float: "left", paddingRight: "10px" }}>
@@ -193,7 +193,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
           </span>
         ) : null}
         <HelpIcon text={this.props.element["$help"]} />
-      </Fragment>
+      </>
     );
   };
 
