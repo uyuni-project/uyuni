@@ -6,21 +6,24 @@
 # Lazily initialize the Cobbler client: not every run set exercises Cobbler,
 # and the Cobbler API may not be reachable at step-definition load time.
 class LazyCobblerTest
-  # Instantiates the real CobblerTest on first use and forwards the call to it.
+  # Instantiates the real CobblerTest on first use and forwards its public methods.
   #
   # @param name [Symbol] The name of the method being called.
   # @return [Object] The result of the forwarded method call.
   def method_missing(name, *, &)
+    return super unless CobblerTest.public_method_defined?(name)
+
     @cobbler_test ||= CobblerTest.new
     @cobbler_test.public_send(name, *, &)
   end
 
-  # Declares that every method is handled through method_missing.
+  # Declares which CobblerTest methods are handled through method_missing.
   #
-  # @param _name [Symbol] The name of the method being looked up.
-  # @return [Boolean] Always true.
-  def respond_to_missing?(_name, _include_private = false)
-    true
+  # @param name [Symbol] The name of the method being looked up.
+  # @param include_private [Boolean] Whether private methods should be considered.
+  # @return [Boolean] Whether the public method is available on CobblerTest.
+  def respond_to_missing?(name, include_private = false)
+    CobblerTest.public_method_defined?(name) || super
   end
 end
 $cobbler_test = LazyCobblerTest.new
