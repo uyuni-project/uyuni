@@ -1,5 +1,19 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in:
+# If the hub-peripheral registration fails:
+# - features/hub/srv_hub_channel_synchronization.feature
+# - features/hub/srv_hub_token_registration.feature
+# - features/hub/srv_hub_token_lifecycle.feature
+# - features/hub/srv_hub_xmlrpc_operations.feature
+# - features/hub/srv_hub_reporting.feature
+# - features/hub/srv_hub_grafana_setup.feature
+# - features/hub/srv_hub_issv2_export_import.feature
+# - features/hub/srv_hub_peripheral_as_minion.feature
+# - features/hub/srv_hub_minion_on_peripheral.feature
+# - features/hub/srv_hub_outage_resilience.feature
+# - features/hub/srv_hub_verification_cleanup.feature
 
 @scope_hub
 @hub_server_to_server

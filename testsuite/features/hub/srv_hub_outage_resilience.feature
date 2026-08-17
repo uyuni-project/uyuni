@@ -1,5 +1,8 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# Prerequisites: srv_hub_minion_on_peripheral.feature must have completed successfully
+# (a managed minion on the peripheral must exist to test hub-outage behavior).
 
 @scope_hub
 @hub_full_topology

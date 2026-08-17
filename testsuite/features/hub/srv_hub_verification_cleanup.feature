@@ -1,5 +1,9 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature should run last in the hub suite — it deregisters peripherals and
+# clears hub state, so it will break any subsequent feature that expects the
+# peripheral to still be registered.
 
 @scope_hub
 @hub_server_to_server

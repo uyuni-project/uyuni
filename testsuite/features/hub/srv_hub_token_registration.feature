@@ -1,5 +1,9 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in:
+# If token-based peripheral registration fails:
+# - features/hub/srv_hub_token_lifecycle.feature
 
 @scope_hub
 @hub_server_to_server

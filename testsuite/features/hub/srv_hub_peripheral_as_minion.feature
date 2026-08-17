@@ -1,5 +1,8 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# Prerequisites: srv_hub_setup_registration.feature must have completed successfully
+# (the peripheral host must be registered as a hub minion before bootstrap ordering can be validated).
 
 @scope_hub
 @hub_full_topology

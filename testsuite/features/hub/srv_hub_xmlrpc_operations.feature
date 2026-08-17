@@ -1,5 +1,7 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# Prerequisites: srv_hub_setup_registration.feature must have completed successfully.
 
 @scope_hub
 @hub_server_to_server

@@ -1,5 +1,8 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# Prerequisites: srv_hub_setup_registration.feature and srv_hub_channel_synchronization.feature
+# must have completed successfully (channels must exist on the peripheral to export).
 
 @scope_hub
 @hub_server_to_server
