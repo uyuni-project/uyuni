@@ -10177,7 +10177,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit approved="yes" id="distchannelmap.jsp.summary" xml:space="preserve">
         <source>Distribution channel mappings are defined as default base channels that clients pick up according to their OS and architecture at registration time. These mappings may be overridden, but not deleted.</source>
-        <target state="final">ディストリビューションチャンネルマッピングは、クライアントが登録時にOSとアーキテクチャに応じて選択するデフォルトのベースチャンネルとして定義されます。ディストリビューションチャンネルマッピングはオーバーライドできますが、削除できません。</target>
+        <target state="final">ディストリビューションチャンネルマッピングは、クライアントが登録時にOSとアーキテクチャに応じて選択するデフォルトのベースチャンネルとして定義されます。これらのマッピングはオーバーライドできますが、削除できません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="distchannelmap.jsp.edit.summary" xml:space="preserve">
         <source>Organization specific Distribution Channel Mappings may be edited here. Default Distribution Channel Mappings cannot be edited. They can only be overridden within every organization.</source>
@@ -16409,7 +16409,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit approved="yes" id="channelOverview.jsp.state.channel.numfiles" xml:space="preserve">
         <source>{0} sls, {1} files</source>
-        <target state="final">{0} 個の SLS, {1} 個のファイル</target>
+        <target state="final">{0} 個の SLS、{1} 個のファイル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
