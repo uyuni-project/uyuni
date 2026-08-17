@@ -1,4 +1,4 @@
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_hub
