@@ -35,7 +35,6 @@ cpuinfo:
 udev:
   module.run:
     - name: udev.exportdb
-    - require:
 network-interfaces:
   module.run:
     - name: network.interfaces
