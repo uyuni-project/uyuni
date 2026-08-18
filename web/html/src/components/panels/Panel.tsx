@@ -1,3 +1,5 @@
+import { type ReactNode } from "react";
+
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
@@ -5,10 +7,10 @@ type Props = {
   title?: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  children: React.ReactNode;
-  buttons?: React.ReactNode;
+  header?: ReactNode;
+  footer?: ReactNode;
+  children: ReactNode;
+  buttons?: ReactNode;
   collapsClose?: boolean;
 };
 

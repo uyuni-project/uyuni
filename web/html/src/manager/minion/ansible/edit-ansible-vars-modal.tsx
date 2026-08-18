@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import yaml from "js-yaml";
 
@@ -16,7 +16,7 @@ type Props = {
   title?: string;
   creatingText?: string;
   onSave?: () => void;
-  renderContent?: React.ReactNode;
+  renderContent?: ReactNode;
   disableEditing?: boolean;
   onCancel?: () => void;
   onOpen?: () => void;

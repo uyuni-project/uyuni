@@ -1,6 +1,6 @@
 import "./formula-form.css";
 
-import { Component } from "react";
+import { type ReactNode, Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -198,7 +198,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   };
 
   render() {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
@@ -253,7 +253,7 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
   }
 
   render() {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
 
     for (const i in this.props.value) {
       if (i === "$meta") {
@@ -392,14 +392,14 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
   }
 
   render() {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
       const id = this.props.id + "#" + i;
 
-      const item_elements: React.ReactNode[] = [];
+      const item_elements: ReactNode[] = [];
       for (const element_name in this.props.element.$prototype) {
         if (element_name.startsWith("$") && element_name !== "$key") continue;
         item_elements.push(
