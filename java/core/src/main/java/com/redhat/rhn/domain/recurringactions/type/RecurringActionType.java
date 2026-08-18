@@ -26,7 +26,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action Type base class
@@ -69,7 +68,6 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @return recurring action type
      */
-    @Transient
     public abstract ActionType getActionType();
 
     /**

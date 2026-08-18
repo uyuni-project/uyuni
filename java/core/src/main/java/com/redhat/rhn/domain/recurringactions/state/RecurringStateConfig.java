@@ -30,7 +30,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring State Configuration base class
@@ -80,7 +79,6 @@ public abstract class RecurringStateConfig implements Serializable {
      *
      * @return the state name
      */
-    @Transient
     public abstract String getStateName();
 
     /**

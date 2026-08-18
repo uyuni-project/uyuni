@@ -42,7 +42,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action base class
@@ -136,7 +135,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return the ID
      */
-    @Transient
     public abstract Long getEntityId();
 
     /**
@@ -144,7 +142,6 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return the type of the entitiy
      */
-    @Transient
     public abstract TargetType getTargetType();
 
     /**

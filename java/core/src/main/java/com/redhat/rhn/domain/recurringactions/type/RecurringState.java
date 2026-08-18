@@ -29,7 +29,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for state implementation
@@ -89,7 +88,6 @@ public class RecurringState extends RecurringActionType {
         this.stateConfig.forEach(c -> c.setRecurringState(this));
     }
 
-    @Transient
     public ActionType getActionType() {
         return ActionType.CUSTOMSTATE;
     }

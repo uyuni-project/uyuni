@@ -34,7 +34,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Represents path to an Ansible entity (inventory, playbook).
@@ -114,7 +113,6 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      * Gets the type of the Path.
      * @return the Path type
      */
-    @Transient
     public abstract Type getEntityType();
 
     /**

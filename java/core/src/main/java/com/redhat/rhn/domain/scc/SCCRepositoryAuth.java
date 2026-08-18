@@ -37,7 +37,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -140,7 +139,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * return url with authentication parameters
      * @return the url
      */
-    @Transient
     public abstract String getUrl();
 
     /**

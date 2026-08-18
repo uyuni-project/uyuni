@@ -31,7 +31,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * A notification NotificationMessage Object.
@@ -98,7 +97,6 @@ public class NotificationMessage implements Serializable {
      * Set the notification specific data.
      * @param notificationData notification data
      */
-    @Transient
     public void setNotificationData(NotificationData notificationData) {
         this.type = notificationData.getType();
         this.data = new NotificationTypeAdapter(type).toJson(notificationData);

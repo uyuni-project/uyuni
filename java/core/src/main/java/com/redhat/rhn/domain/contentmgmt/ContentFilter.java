@@ -33,7 +33,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Content Filter
@@ -147,7 +146,6 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
      * Get {@link EntityType} of this object
      * @return the {@link EntityType}
      */
-    @Transient
     public abstract EntityType getEntityType();
 
     /**
