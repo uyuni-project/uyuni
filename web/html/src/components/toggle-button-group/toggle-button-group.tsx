@@ -27,15 +27,15 @@ export function ToggleButtonGroup<T extends string>({
 
   return (
     <div className={`toggle-button-group ${className}`}>
-      {options.map((option) => (
+      {options.map(({ value: optionValue, label, icon, disabled, tooltip }) => (
         <Button
-          key={option.value}
-          text={option.label}
-          icon={option.icon}
-          disabled={option.disabled}
-          className={`btn-default ${sizeClass} ${value === option.value ? "active" : ""}`}
-          handler={() => onChange(option.value)}
-          title={option.tooltip}
+          key={optionValue}
+          text={label}
+          icon={icon}
+          disabled={disabled}
+          className={`btn-default ${sizeClass} ${value === optionValue ? "active" : ""}`}
+          handler={() => onChange(optionValue)}
+          title={tooltip}
         />
       ))}
     </div>

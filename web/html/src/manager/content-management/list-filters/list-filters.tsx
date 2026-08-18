@@ -158,14 +158,14 @@ const ListFilters = (props: Props) => {
   ];
 
   useEffect(() => {
-    if (openFilterId) {
+    if (hasEditingPermissions && openFilterId) {
       const filter = displayedFilters.find((f) => f.id === openFilterId);
 
       if (filter) {
         setEditingFilter(filter);
       }
     }
-  }, [openFilterId, displayedFilters]);
+  }, [hasEditingPermissions, openFilterId, displayedFilters]);
 
   const clearOpenFilterUrl = () => {
     const url = new URL(window.location.href);
@@ -278,7 +278,7 @@ const ListFilters = (props: Props) => {
         onConfirm={deleteSelectedRows}
       />
 
-      {editingFilter && (
+      {hasEditingPermissions && editingFilter && (
         <FilterEdit
           id="edit-filter-modal"
           initialFilterForm={editingFilter}

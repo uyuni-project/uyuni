@@ -12,9 +12,9 @@ describe("ToggleButtonGroup", () => {
   test("renders buttons based on options", () => {
     const { getByText } = render(<ToggleButtonGroup value="option1" options={options} onChange={() => {}} />);
 
-    expect(getByText("Option 1")).toBeTruthy();
-    expect(getByText("Option 2")).toBeTruthy();
-    expect(getByText("Option 3")).toBeTruthy();
+    options.forEach(({ label }) => {
+      expect(getByText(label!)).toBeTruthy();
+    });
   });
 
   test("calls onChange with correct value when a button is clicked", () => {

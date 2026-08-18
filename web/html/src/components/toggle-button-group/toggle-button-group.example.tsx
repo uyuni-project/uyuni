@@ -26,7 +26,7 @@ export default () => {
             },
             {
               value: "Value2",
-              label: "Value2",
+              icon: "fa-solid fa-align-center",
             },
             {
               value: "Value3",
