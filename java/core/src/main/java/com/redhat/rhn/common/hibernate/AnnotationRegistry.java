@@ -172,6 +172,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.domain.credentials.LdapCredentials;
 import com.redhat.rhn.domain.credentials.RHUICredentials;
 import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
@@ -390,6 +391,7 @@ import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
+import com.suse.manager.model.ldap.LdapAuthServer;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.scc.proxy.SCCProxyRecord;
@@ -580,6 +582,8 @@ public class AnnotationRegistry {
             KickstartVirtualizationType.class,
             KickstartableTree.class,
             KiwiProfile.class,
+            LdapAuthServer.class,
+            LdapCredentials.class,
             Location.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,

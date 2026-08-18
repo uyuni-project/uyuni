@@ -16,6 +16,7 @@
 
 package com.redhat.rhn.domain.user.legacy;
 
+import com.redhat.rhn.domain.user.AuthType;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 
@@ -27,6 +28,8 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -60,6 +63,13 @@ public class UserInfo extends AbstractUserChild implements Serializable {
     @Column(name = "use_pam_authentication")
     @Convert(converter = YesNoConverter.class)
     private boolean usePamAuthentication;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_type", nullable = false)
+    private AuthType authType = AuthType.LOCAL;
+
+    @Column(name = "ldap_server_id")
+    private Long ldapServerId;
 
     @Column(name = "show_system_group_list")
     private String showSystemGroupList;
@@ -136,6 +146,38 @@ public class UserInfo extends AbstractUserChild implements Serializable {
      */
     public void setUsePamAuthentication(boolean usePamAuthenticationIn) {
         this.usePamAuthentication = usePamAuthenticationIn;
+    }
+
+    /**
+     * Getter for authType
+     * @return the authentication backend for this user, never {@code null}
+     */
+    public AuthType getAuthType() {
+        return authType == null ? AuthType.LOCAL : authType;
+    }
+
+    /**
+     * Setter for authType
+     * @param authTypeIn New value for authType
+     */
+    public void setAuthType(AuthType authTypeIn) {
+        this.authType = authTypeIn == null ? AuthType.LOCAL : authTypeIn;
+    }
+
+    /**
+     * Getter for ldapServerId
+     * @return the directory that authenticated this user, {@code null} for non-LDAP users
+     */
+    public Long getLdapServerId() {
+        return ldapServerId;
+    }
+
+    /**
+     * Setter for ldapServerId
+     * @param ldapServerIdIn New value for ldapServerId
+     */
+    public void setLdapServerId(Long ldapServerIdIn) {
+        this.ldapServerId = ldapServerIdIn;
     }
 
     /**
