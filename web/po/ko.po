@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-14 03:13+0000\n"
+"PO-Revision-Date: 2026-08-18 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -36,7 +36,6 @@ msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Ch
 #: ../html/src/components/product-migration/utils.tsx:102
 #: ../html/src/manager/minion/details/support-data.tsx:78
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:78
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
 msgstr "작업이 <link>예약</link>되었습니다."
 
@@ -83,7 +82,6 @@ msgid "Attestation Report details"
 msgstr "증명 보고서 세부 정보"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
-#, fuzzy
 msgid "No Scans"
 msgstr "스캔 없음"
 
@@ -148,8 +146,6 @@ msgid "Loading the scheduler..."
 msgstr "스케줄러를 로드하는 중..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:147
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "SCAP scan has been "
 msgstr "SCAP 스캔이  "
 
@@ -159,66 +155,48 @@ msgid "scheduled."
 msgstr "예약되었습니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:171
-#, fuzzy
 msgid "Schedule New XCCDF Scan"
 msgstr "새 XCCDF 스캔 예약"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:180
 #: ../html/src/components/policies-picker.tsx:117
-#, fuzzy
-#| msgid "Policy"
 msgid "SCAP Policy"
 msgstr "SCAP 정책"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:184
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No Policy Selected"
 msgstr "정책을 선택하지 않음"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:175
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:111
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "SCAP Content"
 msgstr "SCAP 컨텐트"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required."
 msgstr "SCAP 컨텐트는 필수입니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:196
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:323
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "XCCDF Profile"
 msgstr "XCCDF 프로파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:231
-#, fuzzy
-#| msgid "Image version is required."
 msgid "XCCDF Profile is required."
 msgstr "XCCDF 프로파일은 필수입니다."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:238
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select XCCDF profile..."
 msgstr "XCCDF 프로파일을 선택하십시오..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:212
-#, fuzzy
 msgid "Tailoring File"
 msgstr "맞춤 설정 파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select Tailoring file..."
 msgstr "맞춤 설정 파일을 선택하십시오..."
 
@@ -227,8 +205,6 @@ msgid "Profile from Tailoring File"
 msgstr "맞춤 설정 파일의 프로파일"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select profile..."
 msgstr "프로파일을 선택하십시오..."
 
