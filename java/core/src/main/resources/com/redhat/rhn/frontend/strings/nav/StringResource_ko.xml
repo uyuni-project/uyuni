@@ -1201,12 +1201,12 @@
         <source>Image List</source>
         <target>이미지 목록</target>
       </trans-unit>
-      <trans-unit approved="no" id="Ansible" xml:space="preserve">
+      <trans-unit approved="yes" id="Ansible" xml:space="preserve">
         <source>Ansible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target state="needs-translation">Ansible</target>
+        <target state="final">Ansible</target>
       </trans-unit>
       <trans-unit approved="yes" id="Ansible Control Node" xml:space="preserve">
         <source>Control Node</source>
@@ -1236,12 +1236,12 @@
         </context-group>
         <target state="final">앱 스트림</target>
       </trans-unit>
-      <trans-unit approved="no" id="AppStreams" xml:space="preserve">
+      <trans-unit approved="yes" id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="needs-translation">AppStreams</target>
+        <target state="final">AppStreams</target>
       </trans-unit>
       <trans-unit approved="yes" id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
@@ -1304,19 +1304,19 @@
         </context-group>
         <target state="final">순위 보기</target>
       </trans-unit>
-      <trans-unit id="Support" xml:space="preserve">
+      <trans-unit id="Support" xml:space="preserve" approved="yes">
         <source>Support</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">지원</target>
+        <target state="final">지원</target>
       </trans-unit>
-      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
+      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve" approved="yes">
         <source>Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
         </context-group>
-        <target state="needs-translation">일정</target>
+        <target state="final">일정</target>
       </trans-unit>
     </body>
   </file>
