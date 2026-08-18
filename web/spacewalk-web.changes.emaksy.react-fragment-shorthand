@@ -1,1 +1,1 @@
-- Refactor import of react components
+- Replace explicit React Fragment components with shorthand syntax
