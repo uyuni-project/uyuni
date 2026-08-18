@@ -59,12 +59,19 @@ end
 Given(/^I mirror the RPM test packages locally$/) do
   server = get_target('server')
   dest = '/srv/www/htdocs/pub/TestRepoRpmUpdates'
-  server.run("mkdir -p #{dest}")
-  server.run(
-    'wget --recursive --no-parent --no-host-directories --cut-dirs=6 ' \
-    "--reject 'index.html*' --directory-prefix=#{dest} " \
-    'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/'
-  )
+  base_url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm'
+  server.run("mkdir -p #{dest}/repodata")
+  server.run("curl -sLf #{base_url}/repodata/repomd.xml -o #{dest}/repodata/repomd.xml")
+  repomd_xml, = server.run("cat #{dest}/repodata/repomd.xml")
+  repomd_xml.scan(/href="([^"]+)"/).flatten.each do |href|
+    server.run("curl -sLf #{base_url}/#{href} -o #{dest}/#{href}")
+  end
+  primary_href = repomd_xml.match(/href="(repodata\/[^"]*primary[^"]*\.xml\.gz)"/)[1]
+  rpm_hrefs, = server.run("gzip -dc #{dest}/#{primary_href} | grep -o 'href=\"[^\"]*\\.rpm\"' | sed 's/href=\"//;s/\"//'")
+  rpm_hrefs.split("\n").each do |href|
+    server.run("mkdir -p #{dest}/#{File.dirname(href)}")
+    server.run("curl -sLf #{base_url}/#{href} -o #{dest}/#{href}")
+  end
   server.run("ln -sf #{dest} /srv/www/htdocs/pub/AnotherRepo")
 end
 
