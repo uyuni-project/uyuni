@@ -455,8 +455,7 @@ public class UyuniSwaggerReader {
      * Maps the declared type of a literal parameter to its schema.
      *
      * A collection parameter is documented as an array of its element type, the same way a
-     * collection property of a request body is, so that both spell the parameter out with its
-     * element type rather than collapsing it to a string.
+     * collection property of a request body is.
      *
      * @param type the declared parameter type
      * @return the schema describing the parameter

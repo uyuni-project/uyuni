@@ -287,11 +287,8 @@ public class ApiDocumentationCompatibilityTest {
      * Aligns the nesting of the struct that describes the element type of an array return value.
      *
      * The legacy doclet documents it in two interchangeable ways depending on the namespace: as a
-     * sibling of the array marker, or indented one level below it. Both describe the same return
-     * value, so the depth difference is an artifact of how each namespace was documented rather
-     * than a difference in the documented shape. The indented form is rebased on the sibling form
-     * before comparing, which keeps the depth of every other item, and the nesting relative to the
-     * element struct, part of the comparison.
+     * sibling of the array marker, or indented one level below it. The indented form is rebased on
+     * the sibling form before comparing.
      *
      * @param items the parsed return value items
      * @return the items with the element struct and its contents rebased, when indented
@@ -307,10 +304,8 @@ public class ApiDocumentationCompatibilityTest {
      * inlines a {@code $Serializer} reference, so a struct reached through such a reference is
      * always emitted at the top level, however deeply it is nested in the documented value. A
      * struct spelled out inline with {@code #struct_begin} on the very same position is emitted
-     * one level below its parent instead. Both spell the same shape, and the OpenAPI schema is a
-     * reference either way, so the depth cannot be reproduced from the specification. The flattened
-     * form is rebased below the property it follows before comparing; the type, name and order of
-     * every item, and the nesting below the struct itself, all stay part of the comparison.
+     * one level below its parent instead. The OpenAPI schema is a reference either way, so the
+     * flattened form is rebased below the property it follows before comparing.
      *
      * @param items the parsed items
      * @return the items with every flattened serializer struct and its contents rebased
@@ -356,13 +351,10 @@ public class ApiDocumentationCompatibilityTest {
     /**
      * Aligns the nesting of a struct that describes the element type of an array valued property.
      *
-     * This is the same artifact as above, one level in. The doclet indents the element struct below
-     * its property when the namespace spells the element out with {@code #struct_begin}, and emits
-     * it flat when the namespace refers to a {@code $Serializer} instead. Both spellings describe
-     * the same property, and the OpenAPI schema is a reference either way, so the depth cannot be
-     * reproduced from the specification. The indented form is rebased on the flat form before
-     * comparing; the type, name and order of every item, and the nesting relative to the element
-     * struct, all stay part of the comparison.
+     * The doclet indents the element struct below its property when the namespace spells the
+     * element out with {@code #struct_begin}, and emits it flat when the namespace refers to a
+     * {@code $Serializer} instead. The OpenAPI schema is a reference either way, so the indented
+     * form is rebased on the flat form before comparing.
      *
      * @param items the parsed return value items
      * @return the items with every nested element struct and its contents rebased, when indented
