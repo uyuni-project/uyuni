@@ -7837,9 +7837,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve" approved="yes">
         <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
-        <target state="needs-adaptation">이 기능은 "펜스 에이전트"가 설치된 @@PRODUCT_NAME@@ 서버에서만 사용할 수 있으며, 사용 중인 운영 체제 및 원하는 전원 관리 인프라에 따라 "fence-agents", "fence-agents-all" 또는 "fence-agents-ipmilan" 패키지로 사용할 수 있습니다. 펜스 에이전트를 설치하십시오. 운영 체제에서 펜스 에이전트를 사용할 수 없는 경우에는 전원 관리 기능이 지원되지 않습니다.</target>
+        <target state="final">이 기능은 "펜스 에이전트"가 설치된 @@PRODUCT_NAME@@ 서버에서만 사용할 수 있으며, 사용 중인 운영 체제 및 원하는 전원 관리 인프라에 따라 "fence-agents", "fence-agents-all" 또는 "fence-agents-ipmilan" 패키지로 사용할 수 있습니다. 펜스 에이전트를 설치하십시오. 운영 체제에서 펜스 에이전트를 사용할 수 없는 경우에는 전원 관리 기능이 지원되지 않습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -10611,9 +10611,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Calendar with id '{0}' does not exist</source>
         <target state="final">ID가 "{0}"인 달력 없음</target>
       </trans-unit>
-      <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
+      <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve" approved="yes">
         <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
-        <target state="needs-adaptation">'{0}' 일정에 대한 영향을 받는 작업을 취소하는 동안 오류 발생</target>
+        <target state="final">"{0}" 일정에 대한 영향을 받는 작업을 취소하는 동안 오류 발생</target>
       </trans-unit>
       <trans-unit approved="yes" id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12154,16 +12154,16 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="final">SLES 16 마이그레이션이 실패했으며 결과가 없습니다.{0}</target>
       </trans-unit>
-      <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve" approved="yes">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">관리 액세스</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
+      <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve" approved="yes">
         <source>KVM on IBM z16 series</source>
-        <target state="new"/>
+        <target state="final">KVM on IBM z16 series</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
         <source>KVM on IBM z16 series</source>
@@ -12241,10 +12241,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The host key document is not a valid PEM certificate.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve" approved="yes">
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">유효하지 않은 날짜 형식입니다. ISO 8601 오프셋 형식(예: 2026-06-04T22:00:00Z)을 따라야 합니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
