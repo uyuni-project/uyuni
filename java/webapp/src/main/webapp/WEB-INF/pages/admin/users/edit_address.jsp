@@ -23,7 +23,6 @@
                 </div>
             </div>
             <html:hidden property="uid" />
-            <html:hidden property="type"/>
         </html:form>
     </body>
 </html>
