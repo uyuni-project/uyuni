@@ -1090,6 +1090,58 @@ When(/I generate a supportconfig for the server$/) do
   node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
 end
 
+Given(/^the "([^"]*)" command is available on the host$/) do |command|
+  node = get_target('server')
+  _result, return_code = node.run("command -v #{command}", runs_in_container: false, check_errors: false)
+  raise ScriptError, "#{command} command not found" unless return_code.zero?
+end
+
+Then(/^the argument "([^"]*)" is valid in mgradm$/) do |arg|
+  node = get_target('server')
+  cmd = "mgradm #{arg} --help"
+
+  output, return_code = node.run(cmd, runs_in_container: false, check_errors: false)
+  raise ScriptError, "#{cmd} argument is unknown or not found" unless return_code.zero?
+  raise ScriptError, "#{cmd} one of parameters supplied is invalid" if output.include?('for more information')
+end
+
+When(/^I login to SUSE Customer Center DUMMY Sanity Check Account$/) do
+  ptf_username = ENV['SCC_PTF_USER']
+  ptf_password = ENV['SCC_PTF_PASSWORD']
+  raise ScriptError, 'SCC_PTF_USER environment variable not set' if ptf_username.nil? || ptf_username.empty?
+  raise ScriptError, 'SCC_PTF_PASSWORD environment variable not set' if ptf_password.nil? || ptf_password.empty?
+
+  node = get_target('server')
+  _result, return_code = node.run("podman login -u #{ptf_username} -p #{ptf_password} registry.suse.com", timeout: 60, runs_in_container: false)
+  raise ScriptError, "Failed to log in to SUSE Customer Center with provided DUMMY Sanity Check Account credentials" unless return_code.zero?
+end
+
+When(/^I apply a Program Temporary Fix to the containerized server$/) do
+  ptf_id = ENV['SCC_PTF_ID']
+  raise ScriptError, 'SCC_PTF_ID environment variable not set' if ptf_id.nil? || ptf_id.empty?
+
+  node = get_target('server')
+  node.run("mgradm support ptf podman --ptf #{ptf_id} --user a127499", timeout: 180, runs_in_container: false)
+end
+
+Then(/^I expect "([^"]*)" container to be healthy within (\d+) seconds$/) do |container, timeout|
+  node = get_target('server')
+  healthcheck_cmd = "podman inspect #{container} --format '{{.State.Health.Status}}'"
+
+  repeat_until_timeout(timeout: timeout.to_i, message: "Timeout after #{timeout} seconds: container '#{container}' is not healthy") do
+    output, _code = node.run(healthcheck_cmd, runs_in_container: false, check_errors: false)
+    status = output.strip
+    break if status == "healthy"
+    sleep 5
+  end
+end
+
+When(/^I redeploy the original server container$/) do
+  node = get_target('server')
+  original_container_repository, _code = node.run("venv-salt-call --local grains.get container_repository | cut -d':' -f2 | xargs", runs_in_container: false)
+  node.run("mgradm upgrade podman --registry #{original_container_repository}", timeout: 180, runs_in_container: false)
+end
+
 When(/I obtain and extract the supportconfig from the server$/) do
   supportconfig_path = '/root/server-supportconfig.tar.gz'
   test_runner_file = '/root/server-supportconfig.tar.gz'
