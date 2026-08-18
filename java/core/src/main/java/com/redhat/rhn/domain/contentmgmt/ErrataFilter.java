@@ -173,7 +173,6 @@ public class ErrataFilter extends ContentFilter {
     }
 
     @Override
-    @Transient
     public EntityType getEntityType() {
         return EntityType.ERRATUM;
     }

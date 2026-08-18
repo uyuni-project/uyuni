@@ -22,7 +22,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.HUB_SCC)
@@ -56,7 +55,6 @@ public class HubSCCCredentials extends PasswordBasedCredentials {
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.HUB_SCC;
     }

@@ -34,7 +34,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action for organization implementation
@@ -89,13 +88,11 @@ public class OrgRecurringAction extends RecurringAction {
     }
 
     @Override
-    @Transient
     public Long getEntityId() {
         return getOrg().getId();
     }
 
     @Override
-    @Transient
     public TargetType getTargetType() {
         return TargetType.ORG;
     }

@@ -25,7 +25,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for scap policy implementation
@@ -73,7 +72,6 @@ public class RecurringScapPolicy extends RecurringActionType {
     }
 
     @Override
-    @Transient
     public ActionType getActionType() {
         return ActionType.SCAPPOLICY;
     }

@@ -25,7 +25,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.RHUI)
@@ -41,7 +40,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     private Long paygSshDataId;
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.RHUI;
     }
@@ -65,7 +63,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     }
 
     @Override
-    @Transient
     public PaygSshData getPaygSshData() {
         if (paygSshDataId == null) {
             return null;
@@ -75,7 +72,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     }
 
     @Override
-    @Transient
     public void setPaygSshData(PaygSshData paygSshDataIn) {
         this.paygSshDataId = paygSshDataIn != null ? paygSshDataIn.getId() : null;
     }

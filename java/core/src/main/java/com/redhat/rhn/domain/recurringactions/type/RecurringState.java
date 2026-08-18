@@ -89,7 +89,6 @@ public class RecurringState extends RecurringActionType {
         this.stateConfig.forEach(c -> c.setRecurringState(this));
     }
 
-    @Override
     @Transient
     public ActionType getActionType() {
         return ActionType.CUSTOMSTATE;

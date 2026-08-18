@@ -26,7 +26,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseSccProxy")
@@ -161,7 +160,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
     /**
      * @return Returns the SCC ID when this system was registered already
      */
-    @Transient
     public Optional<Long> getOptSccId() {
         return ofNullable(sccId);
     }
@@ -177,7 +175,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccRegistrationErrorTime = sccRegistrationErrorTimeIn;
     }
 
-    @Transient
     public Optional<Date> getOptSccRegistrationErrorTime() {
         return ofNullable(sccRegistrationErrorTime);
     }
@@ -193,7 +190,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         lastSeenAt = lastSeenAtIn;
     }
 
-    @Transient
     public Optional<Date> getOptLastSeenAt() {
         return ofNullable(lastSeenAt);
     }

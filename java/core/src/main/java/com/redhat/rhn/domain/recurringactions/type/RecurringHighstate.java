@@ -21,7 +21,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for highstate implementation
@@ -53,7 +52,6 @@ public class RecurringHighstate extends RecurringActionType {
     }
 
     @Override
-    @Transient
     public ActionType getActionType() {
         return ActionType.HIGHSTATE;
     }

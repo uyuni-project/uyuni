@@ -46,7 +46,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * ImageInfo
@@ -480,7 +479,6 @@ public class ImageInfo extends BaseDomainHelper {
         this.built = builtIn;
     }
 
-    @Transient
     public PackageType getPackageType() {
         return getImageArch().getArchType().getPackageType();
     }

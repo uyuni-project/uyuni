@@ -108,7 +108,6 @@ public class NotificationMessage implements Serializable {
      * Get the notification specific data.
      * @return the notification data
      */
-    @Transient
     public NotificationData getNotificationData() {
         return new NotificationTypeAdapter(type).fromJson(data);
     }

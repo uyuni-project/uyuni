@@ -46,7 +46,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * A Content Project
@@ -201,7 +200,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return optional of the first environment
      */
-    @Transient
     public Optional<ContentEnvironment> getFirstEnvironmentOpt() {
         return Optional.ofNullable(getFirstEnvironment());
     }
@@ -236,7 +234,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return the active project sources
      */
-    @Transient
     public List<ProjectSource> getActiveSources() {
         return sources.stream()
                 .filter(s -> !ProjectSource.State.DETACHED.equals(s.getState()))
@@ -327,7 +324,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return the active Project Filters
      */
-    @Transient
     public List<ContentFilter> getActiveFilters() {
         return getProjectFilters().stream()
                 .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)

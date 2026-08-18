@@ -30,7 +30,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSAccessToken")
@@ -158,7 +157,6 @@ public class IssAccessToken extends BaseDomainHelper {
      * Checks if the current instance is expired.
      * @return true if the current date is after the expiration date
      */
-    @Transient
     public boolean isExpired() {
         if (expirationDate == null) {
             return false;
@@ -172,7 +170,6 @@ public class IssAccessToken extends BaseDomainHelper {
      * @return the parsed token
      * @throws TokenParsingException if parsing the serialized value fails
      */
-    @Transient
     public Token getParsedToken() throws TokenParsingException {
         return new TokenParser()
             .usingServerSecret()

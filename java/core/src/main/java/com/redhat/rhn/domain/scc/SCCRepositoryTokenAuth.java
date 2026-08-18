@@ -25,7 +25,6 @@ import java.util.function.Function;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -72,7 +71,6 @@ public class SCCRepositoryTokenAuth extends SCCRepositoryAuth {
      * @return the URL including authentication info
      */
     @Override
-    @Transient
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());

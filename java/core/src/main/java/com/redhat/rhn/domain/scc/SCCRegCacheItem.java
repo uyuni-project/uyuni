@@ -39,7 +39,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * This is a representation of the SCC registration cache.
@@ -114,7 +113,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return Returns the SCC ID when this system was registered already
      */
-    @Transient
     public Optional<Long> getOptSccId() {
         return ofNullable(sccId);
     }
@@ -131,7 +129,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * Get the mirror credentials
      * @return the mirror credentials
      */
-    @Transient
     public Optional<SCCCredentials> getOptCredentials() {
         return ofNullable(credentials);
     }
@@ -153,7 +150,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return returns the server if available
      */
-    @Transient
     public Optional<Server> getOptServer() {
         return ofNullable(server);
     }
@@ -168,7 +164,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return return the scc login if set
      */
-    @Transient
     public Optional<String> getOptSccLogin() {
         return ofNullable(sccLogin);
     }
@@ -183,7 +178,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return return the scc password if set
      */
-    @Transient
     public Optional<String> getOptSccPasswd() {
         return ofNullable(sccPasswd);
     }
@@ -198,7 +192,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return the time when the last registration failed
      */
-    @Transient
     public Optional<Date> getOptRegistrationErrorTime() {
         return ofNullable(registrationErrorTime);
     }

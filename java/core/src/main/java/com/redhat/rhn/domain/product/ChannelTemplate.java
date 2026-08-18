@@ -29,7 +29,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 
 /**
@@ -232,7 +231,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return true of this item represents a root item
      */
-    @Transient
     public boolean isRoot() {
         return getParentChannelLabel() == null;
     }

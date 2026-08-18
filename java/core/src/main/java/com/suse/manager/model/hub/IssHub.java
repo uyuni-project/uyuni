@@ -23,7 +23,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSHub")
@@ -51,7 +50,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
         // Default empty Constructor for Hibernate
     }
 
-    @Transient
     public IssRole getRole() {
         return IssRole.HUB;
     }

@@ -31,7 +31,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 
 /**
  * Ansible Inventory Path
@@ -77,7 +76,6 @@ public class InventoryPath extends AnsiblePath {
     }
 
     @Override
-    @Transient
     public Type getEntityType() {
         return Type.INVENTORY;
     }

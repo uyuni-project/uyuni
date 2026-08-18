@@ -35,7 +35,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * ImageProfile
@@ -201,7 +200,6 @@ public abstract class ImageProfile extends BaseDomainHelper {
      * Gets the image type value as specified in {@code @DiscriminatorValue} annotation
      * @return the image type
      */
-    @Transient
     public String getImageType() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }

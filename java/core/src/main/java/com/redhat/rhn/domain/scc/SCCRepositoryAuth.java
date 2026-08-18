@@ -96,7 +96,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      *  an Optional.empty() is returned
      * @return the credentials or empty
      */
-    @Transient
     public Optional<RemoteCredentials> getOptionalCredentials() {
         return Optional.ofNullable(credentials).flatMap(c -> c.castAs(RemoteCredentials.class));
     }

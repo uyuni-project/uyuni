@@ -53,7 +53,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.CLOUD_RMT;
     }
@@ -75,7 +74,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
     }
 
     @Override
-    @Transient
     public PaygSshData getPaygSshData() {
         if (paygSshDataId == null) {
             return null;
@@ -95,7 +93,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      *
      * @return true if we have a user and a password, else false
      */
-    @Transient
     public boolean isComplete() {
         return !StringUtils.isEmpty(getUsername()) &&
                 !StringUtils.isEmpty(getEncodedPassword());
@@ -113,7 +110,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      * Check if this credential is valid
      * @return true if valid
      */
-    @Transient
     @Override
     public boolean isValid() {
         return isComplete() && !INVALIDATED_PASSWORD.equals(getEncodedPassword());
@@ -125,7 +121,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      *
      * @return true if we have a user and a password, else false
      */
-    @Transient
     public boolean isEmpty() {
         return StringUtils.isEmpty(getUsername()) &&
                 StringUtils.isEmpty(getEncodedPassword()) &&

@@ -23,7 +23,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for state implementation
@@ -68,7 +67,6 @@ public class RecurringPlaybook extends RecurringActionType {
     }
 
     @Override
-    @Transient
     public ActionType getActionType() {
         return ActionType.PLAYBOOK;
     }
@@ -94,7 +92,6 @@ public class RecurringPlaybook extends RecurringActionType {
     /**
      * @return String version of the Script contents
      */
-    @Transient
     public String getExtraVarsContents() {
         return HibernateFactory.getByteArrayContents(getExtraVars());
     }

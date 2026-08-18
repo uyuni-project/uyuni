@@ -29,7 +29,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "susePaygSshData")
@@ -296,7 +295,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.errorMessage = errorMessageIn;
     }
 
-    @Transient
     public CloudCredentials getCredentials() {
         return PaygSshDataFactory.lookupCloudCredentials(this).orElse(null);
     }
@@ -313,7 +311,6 @@ public class PaygSshData extends BaseDomainHelper {
      * Identifies a connection for SUSE Manager PAYG
      * @return true if this SSH data refers to a SUSE Manager PAYG connection.
      */
-    @Transient
     public boolean isSUSEManagerPayg() {
         return "localhost".equals(host);
     }

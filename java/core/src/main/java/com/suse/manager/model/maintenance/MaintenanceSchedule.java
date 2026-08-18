@@ -30,7 +30,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * MaintenanceSchedule - store maintenance schedule objects
@@ -134,7 +133,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the calendar as optional
      */
-    @Transient
     public Optional<MaintenanceCalendar> getCalendarOpt() {
         return Optional.ofNullable(calendar);
     }

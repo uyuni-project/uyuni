@@ -24,7 +24,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring State configuration for internal state implementation
@@ -74,7 +73,6 @@ public class RecurringInternalState extends RecurringStateConfig {
     }
 
     @Override
-    @Transient
     public String getStateName() {
         return internalState.getName();
     }

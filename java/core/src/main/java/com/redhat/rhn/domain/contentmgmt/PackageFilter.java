@@ -146,7 +146,6 @@ public class PackageFilter extends ContentFilter {
     }
 
     @Override
-    @Transient
     public EntityType getEntityType() {
         return EntityType.PACKAGE;
     }

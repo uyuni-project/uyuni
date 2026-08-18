@@ -34,7 +34,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -247,7 +246,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return true if this repository is accessible.
      */
-    @Transient
     public boolean isAccessible() {
         return !getRepositoryAuth().isEmpty();
     }
@@ -256,7 +254,6 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the best authentication object if there is one for this repository.
      */
-    @Transient
     public Optional<SCCRepositoryAuth> getBestAuth() {
         Optional<SCCRepositoryAuth> result = Optional.empty();
 

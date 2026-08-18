@@ -28,7 +28,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * ScapPolicy entity representing a SCAP audit policy.
@@ -142,7 +141,6 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the dataStreamName
      */
-    @Transient
     public String getDataStreamName() {
         return scapContent != null ? scapContent.getDataStreamFileName() : null;
     }

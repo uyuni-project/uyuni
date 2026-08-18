@@ -29,7 +29,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSPeripheral")
@@ -57,7 +56,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
         // Default empty Constructor for Hibernate
     }
 
-    @Transient
     public IssRole getRole() {
         return IssRole.PERIPHERAL;
     }

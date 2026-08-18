@@ -23,7 +23,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.SCC)
@@ -44,7 +43,6 @@ public class SCCCredentials extends RemoteCredentials {
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.SCC;
     }
@@ -61,7 +59,6 @@ public class SCCCredentials extends RemoteCredentials {
      * @return if this credential is the current primary scc credential which
      * is at the moment denoted by having the url field set.
      */
-    @Transient
     public boolean isPrimary() {
         return getUrl() != null;
     }

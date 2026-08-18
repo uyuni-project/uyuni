@@ -34,7 +34,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseCoCoAttestationResult")
@@ -153,7 +152,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the details if available
      */
-    @Transient
     public Optional<String> getDetailsOpt() {
         return Optional.ofNullable(details);
     }
@@ -161,7 +159,6 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @return return the details if available
      */
-    @Transient
     public Optional<String> getProcessOutputOpt() {
         return Optional.ofNullable(processOutput);
     }

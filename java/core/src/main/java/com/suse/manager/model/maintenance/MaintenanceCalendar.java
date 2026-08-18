@@ -32,7 +32,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseMaintenanceCalendar")
@@ -104,7 +103,6 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     /**
      * @return the url as optional
      */
-    @Transient
     public Optional<String> getUrlOpt() {
         return Optional.ofNullable(url);
     }

@@ -27,7 +27,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring State configuration for config channel implementation
@@ -79,7 +78,6 @@ public class RecurringConfigChannel extends RecurringStateConfig {
     }
 
     @Override
-    @Transient
     public String getStateName() {
         return ConfigChannelSaltManager.getInstance().getChannelStateName(this.configChannel);
     }

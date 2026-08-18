@@ -43,7 +43,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * A Content Environment
@@ -243,7 +242,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return optional of the next environment
      */
-    @Transient
     public Optional<ContentEnvironment> getNextEnvironmentOpt() {
         return ofNullable(getNextEnvironment());
     }
@@ -251,7 +249,6 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @return optional of the previous environment
      */
-    @Transient
     public Optional<ContentEnvironment> getPrevEnvironmentOpt() {
         return ofNullable(getPrevEnvironment());
     }

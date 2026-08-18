@@ -44,7 +44,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * View: suseImageOverview
@@ -381,7 +380,6 @@ public class ImageOverview {
      *
      * @return the build server action
      */
-    @Transient
     public Optional<ServerAction> getBuildServerAction() {
         return getServerAction(getBuildAction());
     }
@@ -391,7 +389,6 @@ public class ImageOverview {
      *
      * @return the inspect server action
      */
-    @Transient
     public Optional<ServerAction> getInspectServerAction() {
         return getServerAction(getInspectAction());
     }
