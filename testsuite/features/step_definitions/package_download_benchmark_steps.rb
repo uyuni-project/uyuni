@@ -8,7 +8,6 @@ require 'shellwords'
 require 'time'
 
 PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_TIMEOUT = 14_400
-PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS = 30
 PACKAGE_DOWNLOAD_BENCHMARK_CACHE_ROOT = '/var/cache/zypp/packages'.freeze
 PACKAGE_DOWNLOAD_BENCHMARK_IDLE_TIMEOUT = 600
 PACKAGE_DOWNLOAD_BENCHMARK_IDLE_POLL_SECONDS = 2
@@ -238,21 +237,15 @@ def package_download_benchmark_snapshot(inputs)
   )
 end
 
-# Build a safely serialized command with a process-level timeout.
-def package_download_benchmark_timeout_command(argv, timeout:)
-  Shellwords.join(['timeout', '--signal=TERM', '--kill-after=10s', "#{timeout}s", *argv])
-end
-
-# Build a kubectl exec command for the Uyuni container.
-def package_download_benchmark_kubectl(pod, argv)
-  ['kubectl', '--namespace', 'uyuni', 'exec', '--container', 'uyuni', pod, '--', *argv]
+# Build a safely serialized kubectl exec command for the Uyuni container.
+def package_download_benchmark_kubectl_command(pod, argv)
+  Shellwords.join(['kubectl', '--namespace', 'uyuni', 'exec', '--container', 'uyuni', pod, '--', *argv])
 end
 
 # Find one ready Uyuni server pod.
 def package_download_benchmark_server_pod
-  timeout = 30
   command =
-    package_download_benchmark_timeout_command(
+    Shellwords.join(
       [
         'kubectl',
         '--namespace',
@@ -262,15 +255,12 @@ def package_download_benchmark_server_pod
         '--selector',
         'app.kubernetes.io/component=server',
         '--output=json'
-      ],
-      timeout: timeout
+      ]
     )
-  stdout, stderr, code = get_target('localhost').run(
+  stdout, stderr, code = get_target('localhost').run_local(
     command,
-    runs_in_container: false,
     separated_results: true,
-    check_errors: false,
-    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
+    check_errors: false
   )
   raise "Unable to query the Uyuni server pod: #{stderr}" unless code.zero?
 
@@ -332,13 +322,12 @@ end
 def package_download_benchmark_salt_call(inputs, pod, function, arguments, context, timeout_seconds: inputs[:timeout_seconds])
   salt = package_download_benchmark_salt(inputs, function, arguments, timeout_seconds: timeout_seconds)
   timeout = timeout_seconds + 60
-  command = package_download_benchmark_timeout_command(package_download_benchmark_kubectl(pod, salt), timeout: timeout)
-  stdout, stderr, code = get_target('localhost').run(
+  command = package_download_benchmark_kubectl_command(pod, salt)
+  stdout, stderr, code = get_target('localhost').run_local(
     command,
-    runs_in_container: false,
     separated_results: true,
     check_errors: false,
-    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
+    timeout: timeout
   )
   raise "#{context} exited with #{code}: #{package_download_benchmark_excerpt(stderr)}" unless code.zero?
 
@@ -528,13 +517,12 @@ def package_download_benchmark_clear_cache(inputs, pod)
       [script, 'python_shell=True', "timeout=#{command_timeout}"]
     )
   timeout = inputs[:timeout_seconds] + 60
-  command = package_download_benchmark_timeout_command(package_download_benchmark_kubectl(pod, salt), timeout: timeout)
-  stdout, stderr, code = get_target('localhost').run(
+  command = package_download_benchmark_kubectl_command(pod, salt)
+  stdout, stderr, code = get_target('localhost').run_local(
     command,
-    runs_in_container: false,
     separated_results: true,
     check_errors: false,
-    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
+    timeout: timeout
   )
   raise "RPM cache reset exited with #{code}: #{stderr}" unless code.zero?
 
@@ -632,7 +620,7 @@ def package_download_benchmark_workload(inputs, pod)
     ],
     timeout_seconds: salt_timeout
   )
-  argv = package_download_benchmark_kubectl(pod, salt)
+  command = package_download_benchmark_kubectl_command(pod, salt)
   started_at = Time.now.utc
   started_monotonic = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
@@ -641,13 +629,11 @@ def package_download_benchmark_workload(inputs, pod)
   code = nil
   exception = nil
   begin
-    command = package_download_benchmark_timeout_command(argv, timeout: timeout_seconds)
-    stdout, stderr, code = get_target('localhost').run(
+    stdout, stderr, code = get_target('localhost').run_local(
       command,
-      runs_in_container: false,
       separated_results: true,
       check_errors: false,
-      timeout: timeout_seconds + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
+      timeout: timeout_seconds
     )
   rescue StandardError => e
     exception = "#{e.class}: #{package_download_benchmark_excerpt(e.message)}"
@@ -681,7 +667,7 @@ def package_download_benchmark_workload(inputs, pod)
     returns.values.any? do |value|
       value.is_a?(String) && value.match?(/\A(?:Minion did not return(?:\. \[No response\])?|Timed out waiting for minion response)\z/i)
     end
-  timed_out = [124, 137].include?(code) || no_return
+  timed_out = code == 124 || no_return
   uncertain_completion = !exception.nil? || timed_out || !target_errors.empty?
 
   {
