@@ -34,11 +34,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>sitemesh</artifactId>
         </dependency>
         <dependency>

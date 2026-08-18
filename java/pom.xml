@@ -526,20 +526,9 @@
                 <version>2.2</version>
             </dependency>
             <dependency>
-                <groupId>com.sparkjava</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>spark-core</artifactId>
                 <version>2.9.3</version>
-                <exclusions>
-                    <!-- We don't use Jetty -->
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty.websocket</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.sparkjava</groupId>
@@ -557,16 +546,9 @@
                 <version>4.2.1</version>
             </dependency>
             <dependency>
-                <groupId>suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>struts</artifactId>
                 <version>1.2.9</version>
-                <exclusions>
-                    <!-- We are using org.apache.commons:commons-fileupload2 -->
-                    <exclusion>
-                        <groupId>commons-fileupload</groupId>
-                        <artifactId>commons-fileupload</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.santuario</groupId>
@@ -636,17 +618,17 @@
 
             <!-- These are not available on maven central -->
             <dependency>
-                <groupId>suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>redstone-xmlrpc</artifactId>
                 <version>1.1_20071120</version>
             </dependency>
             <dependency>
-                <groupId>suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>redstone-xmlrpc-client</artifactId>
                 <version>1.1_20071120</version>
             </dependency>
             <dependency>
-                <groupId>suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>sitemesh</artifactId>
                 <version>2.1</version>
             </dependency>
