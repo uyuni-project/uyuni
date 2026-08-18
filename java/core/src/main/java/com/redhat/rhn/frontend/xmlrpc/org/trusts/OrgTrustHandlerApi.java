@@ -256,49 +256,56 @@ public interface OrgTrustHandlerApi {
         /**
          * @return the date the organization was created
          */
-        @Schema(requiredMode = REQUIRED)
+        @Schema(description = "Date the organization was created", requiredMode = REQUIRED)
         Date getCreated();
 
         /**
          * @return the date the organization has been trusted since
          */
-        @Schema(name = "trusted_since", requiredMode = REQUIRED)
+        @Schema(name = "trusted_since", description = "Date the organization was defined as trusted",
+                requiredMode = REQUIRED)
         Date getTrustedSince();
 
         /**
          * @return the number of channels provided
          */
-        @Schema(name = "channels_provided", requiredMode = REQUIRED)
+        @Schema(name = "channels_provided", description = "Number of channels provided by the organization.",
+                requiredMode = REQUIRED)
         Integer getChannelsProvided();
 
         /**
          * @return the number of channels consumed
          */
-        @Schema(name = "channels_consumed", requiredMode = REQUIRED)
+        @Schema(name = "channels_consumed", description = "Number of channels consumed by the organization.",
+                requiredMode = REQUIRED)
         Integer getChannelsConsumed();
 
         /**
          * @return the number of systems migrated to the organization
          */
-        @Schema(name = "systems_migrated_to", requiredMode = REQUIRED)
+        @Schema(name = "systems_migrated_to", description = "(Deprecated by systems_transferred_to) Number of " +
+                "systems transferred to the organization.", requiredMode = REQUIRED)
         Integer getSystemsMigratedTo();
 
         /**
          * @return the number of systems migrated from the organization
          */
-        @Schema(name = "systems_migrated_from", requiredMode = REQUIRED)
+        @Schema(name = "systems_migrated_from", description = "(Deprecated by systems_transferred_from) Number " +
+                "of systems transferred from the organization.", requiredMode = REQUIRED)
         Integer getSystemsMigratedFrom();
 
         /**
          * @return the number of systems transferred to the organization
          */
-        @Schema(name = "systems_transferred_to", requiredMode = REQUIRED)
+        @Schema(name = "systems_transferred_to", description = "Number of systems transferred to the " +
+                "organization.", requiredMode = REQUIRED)
         Integer getSystemsTransferredTo();
 
         /**
          * @return the number of systems transferred from the organization
          */
-        @Schema(name = "systems_transferred_from", requiredMode = REQUIRED)
+        @Schema(name = "systems_transferred_from", description = "Number of systems transferred from the " +
+                "organization.", requiredMode = REQUIRED)
         Integer getSystemsTransferredFrom();
     }
 

@@ -597,6 +597,30 @@ public interface HubHandlerApi {
         List<MigrationDataDoc> getMigrationData();
     }
 
+    @Schema(name = "HubMigrationDataV2")
+    @JsonPropertyOrder({"fqdn", "token", "rootCa"})
+    interface MigrationDataV2Doc {
+
+        /**
+         * @return the fully qualified domain name of the remote server
+         */
+        @Schema(description = "The fully qualified domain name of the remote peripheral server.")
+        String getFqdn();
+
+        /**
+         * @return the token used to authenticate on the remote server
+         */
+        @Schema(description = "The token used to authenticate on the remote server.")
+        String getToken();
+
+        /**
+         * @return the root ca of the remote server
+         */
+        @Schema(name = "root_ca",
+                description = "The root ca needed to establish a secure connection to the remote server.")
+        String getRootCa();
+    }
+
     @Schema(name = "HubMigrateFromISSv2Request")
     interface MigrateFromISSv2Request {
 
@@ -605,7 +629,7 @@ public interface HubHandlerApi {
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "migration data")
-        List<MigrationDataDoc> getMigrationData();
+        List<MigrationDataV2Doc> getMigrationData();
     }
 
     @Schema(name = "HubScheduleUpdateTaskRequest")

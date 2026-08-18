@@ -472,7 +472,7 @@ public interface ContentManagementHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "Detach a Filter from a Project",
-        requestClass = ProjectFilterRequest.class,
+        requestClass = DetachProjectFilterRequest.class,
         isIntegerResponse = true
     )
     int detachFilter(User loggedInUser, String projectLabel, Integer filterId);
@@ -502,7 +502,7 @@ public interface ContentManagementHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "Promote an Environment in a Project",
-        requestClass = EnvironmentLabelRequest.class,
+        requestClass = PromoteProjectRequest.class,
         isIntegerResponse = true
     )
     int promoteProject(User loggedInUser, String projectLabel, String envLabel);
@@ -516,7 +516,7 @@ public interface ContentManagementHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "Generate the difference of all the Environments in a Project",
-        requestClass = ProjectLabelRequest.class,
+        requestClass = ProjectDifferenceRequest.class,
         isIntegerResponse = true
     )
     int generateProjectDifference(User loggedInUser, String projectLabel);
@@ -856,6 +856,16 @@ public interface ContentManagementHandlerApi {
         String getDescription();
     }
 
+    @Schema(name = "ContentProjectDifferenceRequest")
+    interface ProjectDifferenceRequest {
+
+        /**
+         * @return the Content Project label
+         */
+        @Schema(description = "Project label", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getProjectLabel();
+    }
+
     @Schema(name = "ContentProjectLabelRequest")
     interface ProjectLabelRequest {
 
@@ -905,6 +915,23 @@ public interface ContentManagementHandlerApi {
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "props")
         ContentProjectPropsDoc getProps();
+    }
+
+    @Schema(name = "ContentPromoteProjectRequest")
+    @JsonPropertyOrder({"projectLabel", "envLabel"})
+    interface PromoteProjectRequest {
+
+        /**
+         * @return the Content Project label
+         */
+        @Schema(description = "Project label", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getProjectLabel();
+
+        /**
+         * @return the Content Environment label
+         */
+        @Schema(description = "Environment label", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getEnvLabel();
     }
 
     @Schema(name = "ContentEnvironmentLabelRequest")
@@ -1153,6 +1180,23 @@ public interface ContentManagementHandlerApi {
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "criteria")
         CreateFilterCriteriaDoc getCriteria();
+    }
+
+    @Schema(name = "ContentDetachProjectFilterRequest")
+    @JsonPropertyOrder({"projectLabel", "filterId"})
+    interface DetachProjectFilterRequest {
+
+        /**
+         * @return the Project label
+         */
+        @Schema(description = "Project label", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getProjectLabel();
+
+        /**
+         * @return the Filter id
+         */
+        @Schema(description = "filter ID to detach", requiredMode = Schema.RequiredMode.REQUIRED)
+        Integer getFilterId();
     }
 
     @Schema(name = "ContentProjectFilterRequest")

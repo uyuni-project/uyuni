@@ -181,7 +181,7 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the label of the kickstart tree
          */
-        @Schema(description = "Label for the kickstart tree to be removed.",
+        @Schema(description = "Label for the kickstart tree to delete.",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getTreeLabel();
     }
@@ -193,7 +193,7 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the current label of the kickstart tree
          */
-        @Schema(description = "Label for the kickstart tree to be renamed.",
+        @Schema(description = "Label for the kickstart tree to rename.",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getOriginalLabel();
 
@@ -232,7 +232,7 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the kickstart install type label
          */
-        @Schema(description = "Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).",
+        @Schema(description = "Label for KickstartInstallType (rhel_6, rhel_7, rhel_8, rhel_9, fedora_9).",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getInstallType();
 
@@ -270,14 +270,14 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the label of the channel to associate
          */
-        @Schema(description = "Label of channel to associate with the kickstart tree. ",
+        @Schema(description = "Label of channel to associate with kickstart tree.",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getChannelLabel();
 
         /**
          * @return the kickstart install type label
          */
-        @Schema(description = "Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).",
+        @Schema(description = "Label for KickstartInstallType (rhel_6, rhel_7, rhel_8, rhel_9, fedora_9).",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getInstallType();
 

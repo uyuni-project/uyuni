@@ -57,7 +57,7 @@ public interface ChannelOrgHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "Enable access to the channel for the given organization.",
-        requestClass = ChannelOrgAccessRequest.class,
+        requestClass = ChannelOrgEnableAccessRequest.class,
         isIntegerResponse = true
     )
     int enableAccess(User loggedInUser, String label, Integer orgId);
@@ -72,7 +72,7 @@ public interface ChannelOrgHandlerApi {
      */
     @ApiEndpointDoc(
         summary = "Disable access to the channel for the given organization.",
-        requestClass = ChannelOrgAccessRequest.class,
+        requestClass = ChannelOrgDisableAccessRequest.class,
         isIntegerResponse = true
     )
     int disableAccess(User loggedInUser, String label, Integer orgId);
@@ -87,9 +87,9 @@ public interface ChannelOrgHandlerApi {
         String getLabel();
     }
 
-    @Schema(name = "ChannelOrgAccessRequest")
+    @Schema(name = "ChannelOrgEnableAccessRequest")
     @JsonPropertyOrder({"label", "orgId"})
-    interface ChannelOrgAccessRequest {
+    interface ChannelOrgEnableAccessRequest {
 
         /**
          * @return label of the channel
@@ -101,6 +101,23 @@ public interface ChannelOrgHandlerApi {
          * @return ID of the org
          */
         @Schema(description = "ID of org being granted access", requiredMode = REQUIRED)
+        Integer getOrgId();
+    }
+
+    @Schema(name = "ChannelOrgDisableAccessRequest")
+    @JsonPropertyOrder({"label", "orgId"})
+    interface ChannelOrgDisableAccessRequest {
+
+        /**
+         * @return label of the channel
+         */
+        @Schema(description = "label of the channel", requiredMode = REQUIRED)
+        String getLabel();
+
+        /**
+         * @return ID of the org
+         */
+        @Schema(description = "ID of org being removed access", requiredMode = REQUIRED)
         Integer getOrgId();
     }
 

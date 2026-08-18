@@ -123,6 +123,7 @@ public interface VirtualHostManagerHandlerApi {
         summary = "Get a list of parameters for a virtual-host-gatherer module.",
         method = HttpMethod.get,
         responseClass = ModuleParametersResponse.class,
+        responseDescription = "module parameters",
         legacyDocResponse = @LegacyDocResponse(type = "map", name = "module_params")
     )
     Map<String, String> getModuleParameters(
