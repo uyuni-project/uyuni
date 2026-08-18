@@ -531,7 +531,7 @@
                 <version>2.9.3</version>
             </dependency>
             <dependency>
-                <groupId>com.sparkjava</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>spark-template-jade</artifactId>
                 <version>2.7.1</version>
             </dependency>

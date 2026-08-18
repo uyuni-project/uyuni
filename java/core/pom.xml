@@ -138,7 +138,7 @@
             <artifactId>spark-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sparkjava</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>spark-template-jade</artifactId>
         </dependency>
         <dependency>
