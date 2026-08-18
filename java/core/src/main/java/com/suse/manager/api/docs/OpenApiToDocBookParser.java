@@ -364,7 +364,7 @@ public class OpenApiToDocBookParser {
         }
         // A declared legacy type describes the whole return value, so it also applies to schemas
         // that are not simple: the doclet renders those as a single typed line, without expanding
-        // the schema. Without this the override would be silently dropped for map returns.
+        // the schema.
         if (isSimpleType(schema) || !typeOverride.isBlank()) {
             return renderSimpleReturn(schema, label, typeOverride);
         }
@@ -463,8 +463,7 @@ public class OpenApiToDocBookParser {
      * Resolves a property that documents a nested struct, or {@code null} for any other property.
      *
      * The doclet expands a struct valued property into its own properties one level below the
-     * property itself. Without this those properties are documented by the legacy doclet but
-     * dropped here. Array properties are handled by {@link #renderElementStruct} instead.
+     * property itself. Array properties are handled by {@link #renderElementStruct} instead.
      *
      * @param property the property schema
      * @return the resolved schema of the nested struct, or null if the property is not one
@@ -520,8 +519,7 @@ public class OpenApiToDocBookParser {
      * Renders the element type of an array property that holds structs.
      *
      * The doclet expands the {@code $Serializer} reference inside {@code #prop_array_begin} into a
-     * nested list holding the element struct. Without this the element struct is documented by the
-     * legacy doclet but dropped here. Returns an empty string for any other property.
+     * nested list holding the element struct. Returns an empty string for any other property.
      */
     private String renderElementStruct(Schema<?> property) {
         if (!"array".equals(property.getType()) || property.getItems() == null) {
