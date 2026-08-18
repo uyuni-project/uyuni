@@ -1,7 +1,7 @@
 #notifications {
   > a:hover {
     i {
-      color: $green;
+      color: $eos-bc-green-500;
     }
   }
 
@@ -13,16 +13,16 @@
     position: absolute;
     left: 19px;
     top: -5px;
-    color: #333;
+    color: $notification-badge-color;
     font-size: 0.9em;
     min-width: 19px;
     height: 19px;
     padding: 0px 2px;
     border-radius: 10px;
-    border: 1px solid #333;
+    border: 1px solid $notification-badge-color;
   }
   #notification-counter.highlight-updated-value {
-    transform:scale(1.5,1.5);
+    transform: scale(1.5, 1.5);
   }
 }
 
