@@ -7839,7 +7839,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.no_fence_agents" xml:space="preserve">
         <source>This functionality is only available on @@PRODUCT_NAME@@ servers that have installed "fence agents," which are possibly available as "fence-agents", "fence-agents-all", or "fence-agents-ipmilan" packages depending on your operating system and desired power management infrastructure. Please install the fence agents. If fence agents are not available for your operating system then power management functionality is not supported.</source>
-        <target state="needs-adaptation">Aquesta funcionalitat només està disponible en servidors .PRODUCTNAME. que tenen instal·lats els «agents de tanca», que possiblement estan disponibles com a «agents de tanca», «agents de tanca-tots» o «agents de tanca-ipmilan» depenent del vostre sistema operatiu i de la infraestructura de gestió d'energia desitjada. Instal·leu els agents de tanca. Si els agents de tanca no estan disponibles per al vostre sistema operatiu, la funcionalitat de gestió d'energia no és compatible.</target>
+        <target state="translated">Aquesta funcionalitat només està disponible als servidors @@PRODUCT_NAME@@ que tenen instal·lats els "fence agents", que possiblement estan disponibles com a paquets "fence-agents", "fence-agents-all" o "fence-agents-ipmilan" segons el vostre sistema operatiu i la infraestructura de gestió d'energia desitjada. Instal·leu els agents fence. Si els agents fence no estan disponibles per al vostre sistema operatiu, la funcionalitat de gestió d'energia no és compatible.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -10614,7 +10614,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
-        <target state="needs-adaptation">S'ha produït un error en intentar cancel·lar les accions afectades per a la planificació «{0}»</target>
+        <target state="translated">S'ha produït un error en intentar cancel·lar les accions afectades per a la programació {0}</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12242,10 +12242,10 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>The host key document is not a valid PEM certificate.</source>
         <target state="translated">El document de la clau de l'amfitrió no és un certificat PEM vàlid.</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Format de data no vàlid. Ha de seguir el format de desplaçament ISO 8601 (per exemple, 2026-06-04T22:00:00Z).</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
