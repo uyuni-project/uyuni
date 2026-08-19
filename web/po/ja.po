@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-17 02:13+0000\n"
+"PO-Revision-Date: 2026-08-19 05:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4833,7 +4833,7 @@ msgstr "このアドレスをご使用のブラウザに入力したら、スペ
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。ブラウザの戻るボタンをクリックしてください。 "
+msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンをクリックしてください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
@@ -4841,7 +4841,7 @@ msgstr "ブックマークを使用している場合は、ブックマークの
 
 #: ../html/src/manager/errors/not-found.tsx:30
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "このページが間違って表示されたと判断する場合は、このメッセージを受け取った状況の詳細を弊社にご報告ください。 "
+msgstr "このページが間違って表示されたと判断する場合は、受け取った状況の詳細を弊社にご報告ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -6101,7 +6101,7 @@ msgstr "名前と値"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:310
 msgid "Remediation has been "
-msgstr "修復状況: "
+msgstr "修復されました "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 msgid "Saving..."
