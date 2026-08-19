@@ -426,13 +426,44 @@ public class OpenApiToDocBookParser {
             if (!desc.isBlank()) {
                 body += " - " + desc;
             }
-            sb.append("    <listitem><para>")
-              .append(escapeXml(body))
-              .append("</para></listitem>\n");
+            String elementStruct = renderElementStruct(propSchema);
+            if (elementStruct.isEmpty()) {
+                sb.append("    <listitem><para>")
+                  .append(escapeXml(body))
+                  .append("</para></listitem>\n");
+                return;
+            }
+            sb.append("    <listitem>\n");
+            sb.append("      <para>").append(escapeXml(body)).append("</para>\n");
+            sb.append("      <itemizedlist spacing=\"compact\">\n");
+            sb.append(indentLines(elementStruct, 8)).append("\n");
+            sb.append("      </itemizedlist>\n");
+            sb.append("    </listitem>\n");
         });
         sb.append("  </itemizedlist>\n");
         sb.append("</listitem>");
         return sb.toString();
+    }
+
+    /**
+     * Renders the element type of an array property that holds structs.
+     *
+     * The doclet expands the {@code $Serializer} reference inside {@code #prop_array_begin} into a
+     * nested list holding the element struct. Without this the element struct is documented by the
+     * legacy doclet but dropped here. Returns an empty string for any other property.
+     */
+    private String renderElementStruct(Schema<?> property) {
+        if (!"array".equals(property.getType()) || property.getItems() == null) {
+            return "";
+        }
+        Schema<?> items = property.getItems();
+        Schema<?> resolvedItems = resolveSchemaReference(items);
+        if (resolvedItems == null || resolvedItems.getProperties() == null ||
+                resolvedItems.getProperties().isEmpty()) {
+            return "";
+        }
+        return renderStructList(resolvedItems,
+                items.get$ref() != null ? extractRefName(items.get$ref()) : "", "");
     }
 
     private String renderHandlerFile(HandlerDoc handler) {
