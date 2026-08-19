@@ -13,7 +13,6 @@ package com.suse.manager.action;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.partitioningBy;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
@@ -58,13 +57,6 @@ public class TransactionalActionManager {
     private static final Logger LOG = LogManager.getLogger(TransactionalActionManager.class);
 
     private static final List<String> DIRECT_CALL_EXECUTOR = List.of("direct_call");
-
-    private static final Set<String> CONFIGURABLE_CUSTOM_STATES = Set.of(
-            "custom",
-            "custom_groups",
-            "custom_org",
-            "recurring",
-            SaltParameters.REMOTE_COMMANDS);
 
     private static final Map<String, String> PREREQUISITE_STATE_BY_STATE = Map.of(
             ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ);
@@ -277,10 +269,7 @@ public class TransactionalActionManager {
     }
 
     /**
-     * Add Salt calls for configurable custom states.
-     *
-     * <p>When {@code java.salt_custom_states_use_transactional_update} is enabled, transactional systems use
-     * {@code transactional_update.apply}. Otherwise they use {@code state.apply} through the direct executor.</p>
+     * Add Salt calls for state executions whose transactional behavior is selected per action.
      *
      * @param calls destination map
      * @param states states to apply
@@ -288,42 +277,38 @@ public class TransactionalActionManager {
      * @param queue optional queue flag
      * @param test optional test flag
      * @param minionSummaries target minions
+     * @param useTransactionalUpdate whether transactional minions should execute the states through
+     * transactional-update
      */
-    public static void addCustomStateApplyCalls(
+    public static void addOptionalTransactionalApplyCalls(
             Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
             List<String> states,
             Optional<Map<String, Object>> pillar,
             Optional<Boolean> queue,
             Optional<Boolean> test,
-            List<MinionSummary> minionSummaries) {
+            List<MinionSummary> minionSummaries,
+            boolean useTransactionalUpdate) {
         Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minionSummaries.stream()
                 .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
-        if (states.isEmpty()) {
+        Optional<String> stateToApply = findSingleTransactionalStateToApply(states);
+        if (stateToApply.isPresent()) {
+            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+            addCall(calls, TransactionalUpdateCalls.apply(List.of(stateToApply.get()), pillar, queue, test),
+                    minionsByTransactionalUpdate.get(true));
+            return;
+        }
+
+        if (useTransactionalUpdate) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
                     minionsByTransactionalUpdate.get(true));
             return;
         }
 
-        if (!shouldUseTransactionalUpdateForCustomStates(states)) {
-            Optional<String> stateToApply = findSingleTransactionalStateToApply(states);
-            if (stateToApply.isPresent()) {
-                addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-                addCall(calls, TransactionalUpdateCalls.apply(List.of(stateToApply.get()), pillar, queue, test),
-                        minionsByTransactionalUpdate.get(true));
-                return;
-            }
-
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
-            return;
-        }
-
         addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-        addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
-                minionsByTransactionalUpdate.get(true));
+        addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
     }
 
     /**
@@ -369,10 +354,13 @@ public class TransactionalActionManager {
         MinionTransactionalActionHistory history = lookupOrCreateActionHistory(minionServerId, actionId);
         Action action = ActionFactory.lookupById(actionId);
         boolean hasAfterRebootState = action != null && hasAfterRebootState(action);
-        String prerequisiteResult = hasAfterRebootState ? formatResult(jsonResult) : null;
+        String formattedResult = formatResult(jsonResult);
+        String prerequisiteResult = hasAfterRebootState ? formattedResult : null;
         if (failed) {
             history.recordTransactionalApplyFailed(prerequisiteResult);
-            return TransactionalResult.failed("Failed to apply transactional states.");
+            return TransactionalResult.failed(formattedResult == null || formattedResult.isBlank()
+                    ? "Failed to apply transactional states."
+                    : formattedResult);
         }
 
         history.recordTransactionalStateApplied(prerequisiteResult);
@@ -541,16 +529,6 @@ public class TransactionalActionManager {
 
     private static Optional<String> findSingleTransactionalStateToApply(List<String> states) {
         return states.size() == 1 ? getTransactionalStateToApply(states.get(0)) : Optional.empty();
-    }
-
-    private static boolean shouldUseTransactionalUpdateForCustomStates(List<String> states) {
-        return ConfigDefaults.get().isSaltCustomStatesUseTransactionalUpdate() &&
-                isConfigurableCustomState(states);
-    }
-
-    private static boolean isConfigurableCustomState(List<String> states) {
-        return !states.isEmpty() &&
-                CONFIGURABLE_CUSTOM_STATES.containsAll(states);
     }
 
     private static Optional<List<String>> getStatesFromFunctionArg(Object arg) {

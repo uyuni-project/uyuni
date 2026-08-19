@@ -40,6 +40,17 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
     CONSTRAINT suse_transactional_action_history_refresh_uq UNIQUE (snapshot_refresh_action_id)
 );
 
+ALTER TABLE rhnActionScript
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL
+        CONSTRAINT rhn_actscript_use_tu_ck CHECK (use_transactional_update in ('Y','N'));
+
+ALTER TABLE rhnActionApplyStates
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL
+        CONSTRAINT rhn_act_apply_states_use_tu_ck CHECK (use_transactional_update in ('Y','N'));
+
+ALTER TABLE suseRecurringState
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL;
+
 INSERT INTO rhnActionType (id, label, name, trigger_snapshot, unlocked_only, maintenance_mode_only)
 SELECT 528, 'snapshots.refresh_list', 'Refresh Snapshots', 'N', 'N', 'N'
 WHERE NOT EXISTS (SELECT 1 FROM rhnActionType WHERE id = 528);

@@ -32,6 +32,7 @@ declare global {
     timezone?: any;
     localTime?: any;
     betaEnabled?: boolean;
+    hasTransactionalSystems?: boolean;
   }
 }
 

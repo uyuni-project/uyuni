@@ -16,5 +16,7 @@ CREATE TABLE suseRecurringState
                       REFERENCES suseRecurringAction(id)
                       ON DELETE CASCADE,
   test_mode         CHAR(1) NOT NULL
+                    DEFAULT 'N',
+  use_transactional_update CHAR(1) NOT NULL
                     DEFAULT 'N'
 );
