@@ -1966,7 +1966,7 @@ public class ActionManager extends BaseManager {
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring) {
-        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false, false);
     }
 
     /**
@@ -1980,12 +1980,34 @@ public class ActionManager extends BaseManager {
      * @param earliest  action will not be executed before this date
      * @param test      run states in test-only mode
      * @param recurring whether the state is being applied recurring
-     * @param direct    whenther the state should be executed as direct call
+     * @param direct    whether the state should be executed as direct call
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
                                                         Optional<Map<String, Object>> pillar, Date earliest,
                                                         Optional<Boolean> test, boolean recurring, boolean direct) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, direct, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids      list of server ids
+     * @param mods      list of state modules to be applied
+     * @param pillar    optional pillar map
+     * @param earliest  action will not be executed before this date
+     * @param test      run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @param direct    whether the state should be executed as direct call
+     * @param useTransactionalUpdate whether transactional systems should execute through transactional-update
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring, boolean direct,
+                                                        boolean useTransactionalUpdate) {
 
         ApplyStatesAction action = (ApplyStatesAction) new ActionBuilder()
                 .ofType(ActionTypeEnum.TYPE_APPLY_STATES)
@@ -2000,6 +2022,7 @@ public class ActionManager extends BaseManager {
         actionDetails.setPillarsMap(pillar);
         test.ifPresent(actionDetails::setTest);
         actionDetails.setDirect(direct);
+        actionDetails.setUseTransactionalUpdate(useTransactionalUpdate);
         action.setDetails(actionDetails);
         action = ActionFactory.save(action);
 

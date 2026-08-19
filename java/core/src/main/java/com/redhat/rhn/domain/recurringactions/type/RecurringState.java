@@ -40,6 +40,7 @@ import jakarta.persistence.Transient;
 public class RecurringState extends RecurringActionType {
 
     private boolean testMode;
+    private boolean useTransactionalUpdate;
     private Set<RecurringStateConfig> stateConfig;
 
     /**
@@ -108,6 +109,26 @@ public class RecurringState extends RecurringActionType {
      */
     public void setTestMode(boolean testModeIn) {
         this.testMode = testModeIn;
+    }
+
+    /**
+     * Gets whether transactional systems execute this recurring state through transactional-update.
+     *
+     * @return true when transactional-update should be used
+     */
+    @Column(name = "use_transactional_update")
+    @Convert(converter = YesNoConverter.class)
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
+     * Sets whether transactional systems execute this recurring state through transactional-update.
+     *
+     * @param useTransactionalUpdateIn whether transactional-update should be used
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**

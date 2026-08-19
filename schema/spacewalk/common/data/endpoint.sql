@@ -5753,6 +5753,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleApplyStates', '/manager/api/system/scheduleApplyStates', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleApplyStatesWithTransactionalUpdate', '/manager/api/system/scheduleApplyStatesWithTransactionalUpdate', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleCertificateUpdate', '/manager/api/system/scheduleCertificateUpdate', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -5799,6 +5802,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRun', '/manager/api/system/scheduleScriptRun', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRunWithTransactionalUpdate', '/manager/api/system/scheduleScriptRunWithTransactionalUpdate', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleSnapshotRefresh', '/manager/api/system/scheduleSnapshotRefresh', 'POST', 'A', True)

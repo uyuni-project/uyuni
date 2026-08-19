@@ -309,7 +309,7 @@ public class ActionChainManager {
         for (Action action : result) {
             ScriptActionDetails actionScript = ActionFactory.createScriptActionDetails(
                     script.getUsername(), script.getGroupname(), script.getTimeout(),
-                    script.getScriptContents());
+                    script.getScriptContents(), script.isUseTransactionalUpdate());
             ((ScriptRunAction)action).setScriptActionDetails(actionScript);
             ActionFactory.save(action);
         }
