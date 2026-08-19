@@ -328,7 +328,10 @@ public class OpenApiToDocBookParser {
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
             return renderArrayReturn(schema, label, legacyStructLabel);
         }
-        if (isSimpleType(schema)) {
+        // A declared legacy type describes the whole return value, so it also applies to schemas
+        // that are not simple: the doclet renders those as a single typed line, without expanding
+        // the schema. Without this the override would be silently dropped for map returns.
+        if (isSimpleType(schema) || !typeOverride.isBlank()) {
             return renderSimpleReturn(schema, label, typeOverride);
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
