@@ -16,11 +16,15 @@ import org.apache.logging.log4j.Logger;
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import io.swagger.v3.core.converter.ModelConverters;
@@ -165,28 +169,56 @@ public class UyuniSwaggerReader {
     }
 
     /**
-     * Carries the legacy documentation type of the request properties into the specification.
+     * Carries the legacy documentation type of the documented properties into the specification.
      *
      * Some legacy types have no OpenAPI counterpart, so swagger-core normalises them to the
-     * closest primitive. Annotating the request getter with {@link LegacyDocResponse#type()}
-     * keeps the original name available to the documentation parsers.
+     * closest primitive. Annotating the getter with {@link LegacyDocResponse#type()} keeps the
+     * original name available to the documentation parsers.
      *
-     * @param requestClass the request class of the endpoint
+     * A documented class describes its payload through the classes its getters return, so the
+     * whole reachable graph is visited: the annotation means the same thing on a request property,
+     * on a response property and on a property of a nested structure.
+     *
+     * @param documentedClass the request or response class of the endpoint
      */
-    private void applyLegacyDocTypes(Class<?> requestClass) {
+    private void applyLegacyDocTypes(Class<?> documentedClass) {
         if (this.components.getSchemas() == null) {
             return;
         }
-        Schema<?> requestSchema = this.components.getSchemas().get(schemaRefName(requestClass));
-        if (requestSchema == null || requestSchema.getProperties() == null) {
+        applyLegacyDocTypes(documentedClass, new HashSet<>());
+    }
+
+    private void applyLegacyDocTypes(Type type, Set<Class<?>> visited) {
+        if (type instanceof ParameterizedType parameterized) {
+            applyLegacyDocTypes(parameterized.getRawType(), visited);
+            Arrays.stream(parameterized.getActualTypeArguments())
+                    .forEach(argument -> applyLegacyDocTypes(argument, visited));
             return;
         }
-        for (Method getter : requestClass.getMethods()) {
+        if (!(type instanceof Class<?> documentedClass) || documentedClass.getPackageName().startsWith("java.") ||
+                !visited.add(documentedClass)) {
+            return;
+        }
+
+        stampLegacyDocTypes(documentedClass);
+
+        Arrays.stream(documentedClass.getGenericInterfaces())
+                .forEach(iface -> applyLegacyDocTypes(iface, visited));
+        Arrays.stream(documentedClass.getMethods())
+                .forEach(getter -> applyLegacyDocTypes(getter.getGenericReturnType(), visited));
+    }
+
+    private void stampLegacyDocTypes(Class<?> documentedClass) {
+        Schema<?> schema = this.components.getSchemas().get(schemaRefName(documentedClass));
+        if (schema == null || schema.getProperties() == null) {
+            return;
+        }
+        for (Method getter : documentedClass.getMethods()) {
             LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
             if (legacyDoc == null || legacyDoc.type().isBlank()) {
                 continue;
             }
-            Schema<?> property = requestSchema.getProperties().get(resolvePropertyName(getter));
+            Schema<?> property = schema.getProperties().get(resolvePropertyName(getter));
             if (property != null) {
                 property.addExtension(DOC_RESPONSE_TYPE_EXTENSION, legacyDoc.type());
             }
@@ -260,6 +292,7 @@ public class UyuniSwaggerReader {
         MediaType mediaType = new MediaType();
 
         resolveAndRegisterSchema(apiDoc.responseClass());
+        applyLegacyDocTypes(apiDoc.responseClass());
         mediaType.setSchema(buildSchemaRef(apiDoc.responseClass()));
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
 
@@ -275,6 +308,7 @@ public class UyuniSwaggerReader {
 
         if (legacyDocResponse.responseClass() != Void.class) {
             resolveAndRegisterSchema(legacyDocResponse.responseClass());
+            applyLegacyDocTypes(legacyDocResponse.responseClass());
             response.addExtension(DOC_RESPONSE_SCHEMA_EXTENSION, buildSchemaRef(legacyDocResponse.responseClass()));
         }
         if (!legacyDocResponse.type().isBlank()) {
