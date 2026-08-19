@@ -40,6 +40,17 @@ CREATE TABLE IF NOT EXISTS suseTransactionalActionHistory
     CONSTRAINT suse_transactional_action_history_refresh_uq UNIQUE (snapshot_refresh_action_id)
 );
 
+ALTER TABLE rhnActionScript
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL
+        CONSTRAINT rhn_actscript_use_tu_ck CHECK (use_transactional_update in ('Y','N'));
+
+ALTER TABLE rhnActionApplyStates
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL
+        CONSTRAINT rhn_act_apply_states_use_tu_ck CHECK (use_transactional_update in ('Y','N'));
+
+ALTER TABLE suseRecurringState
+    ADD COLUMN IF NOT EXISTS use_transactional_update CHAR(1) DEFAULT ('N') NOT NULL;
+
 INSERT INTO rhnActionType (id, label, name, trigger_snapshot, unlocked_only, maintenance_mode_only)
 SELECT 528, 'snapshots.refresh_list', 'Refresh Snapshots', 'N', 'N', 'N'
 WHERE NOT EXISTS (SELECT 1 FROM rhnActionType WHERE id = 528);
@@ -54,6 +65,16 @@ WHERE NOT EXISTS (
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.getSnapshotInfo',
             '/manager/api/system/getSnapshotInfo', 'GET', 'A', TRUE)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleApplyStatesWithTransactionalUpdate',
+            '/manager/api/system/scheduleApplyStatesWithTransactionalUpdate', 'POST', 'A', TRUE)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.scheduleScriptRunWithTransactionalUpdate',
+            '/manager/api/system/scheduleScriptRunWithTransactionalUpdate', 'POST', 'A', TRUE)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -80,6 +101,20 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.get_snapshot_info' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/system/getSnapshotInfo' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_apply_states' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleApplyStatesWithTransactionalUpdate'
+    AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_script_run' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleScriptRunWithTransactionalUpdate'
+    AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
