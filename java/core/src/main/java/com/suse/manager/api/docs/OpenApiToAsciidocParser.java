@@ -405,6 +405,12 @@ public class OpenApiToAsciidocParser {
      * {@code [.array]#$t array#}, with {@code $date} bound to {@code dateTime.iso8601}.
      */
     private String structPropertyType(Schema<?> schema) {
+        // A declared legacy type has no OpenAPI counterpart to derive, so it wins over the
+        // resolved type, exactly as it already does for parameters and in the DocBook parser.
+        String legacyType = legacyDocType(schema);
+        if (!legacyType.isEmpty()) {
+            return legacyType;
+        }
         String type = schema.getType();
         if ("integer".equals(type)) {
             return "int";
