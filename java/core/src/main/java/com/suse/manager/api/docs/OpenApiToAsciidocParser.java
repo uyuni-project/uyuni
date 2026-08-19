@@ -54,6 +54,9 @@ public class OpenApiToAsciidocParser {
     /** Bullet level the doclet uses for the element struct of an array-valued parameter. */
     private static final int PARAMETER_ELEMENT_STRUCT_LEVEL = 2;
 
+    /** OpenAPI type name for an array-valued schema. */
+    private static final String ARRAY_TYPE = "array";
+
     private final OpenAPI openAPI;
 
     /**
@@ -260,7 +263,7 @@ public class OpenApiToAsciidocParser {
      * @return true if the element is documented as a nested item
      */
     private boolean nestsElement(Schema<?> schema) {
-        if (!"array".equals(schema.getType()) || schema.getItems() == null) {
+        if (!ARRAY_TYPE.equals(schema.getType()) || schema.getItems() == null) {
             return false;
         }
         Schema<?> resolvedItems = resolveSchemaReference(schema.getItems());
@@ -280,10 +283,10 @@ public class OpenApiToAsciidocParser {
         if (!legacyType.isEmpty()) {
             return "[." + legacyType + "]#" + legacyType + "#";
         }
-        if ("array".equals(schema.getType())) {
+        if (ARRAY_TYPE.equals(schema.getType())) {
             // An element rendered as a nested item leaves the parent a bare "array", exactly as
             // #array_begin does; otherwise the element type is shown inline by #array_single.
-            String type = nestsElement(schema) ? "array" : structPropertyType(schema);
+            String type = nestsElement(schema) ? ARRAY_TYPE : structPropertyType(schema);
             return "[.array]#" + type + "#";
         }
         return "[." + displayType(schema) + "]#" + displayType(schema) + "#";
@@ -335,7 +338,7 @@ public class OpenApiToAsciidocParser {
             schema = resolveSchemaReference(resultSchema);
         }
 
-        if ("array".equals(schema.getType()) && schema.getItems() != null) {
+        if (ARRAY_TYPE.equals(schema.getType()) && schema.getItems() != null) {
             writeArrayReturn(writer, schema, responseLabel, legacyDocResponse.name());
             return;
         }
@@ -427,7 +430,7 @@ public class OpenApiToAsciidocParser {
      * @return the resolved schema of the nested struct, or null if the property is not one
      */
     private Schema<?> resolveNestedStruct(Schema<?> property) {
-        if ("array".equals(property.getType())) {
+        if (ARRAY_TYPE.equals(property.getType())) {
             return null;
         }
         Schema<?> resolved = resolveSchemaReference(property);
@@ -445,7 +448,7 @@ public class OpenApiToAsciidocParser {
      * value.
      */
     private void printElementStruct(PrintWriter writer, Schema<?> property, int level) {
-        if (!"array".equals(property.getType())) {
+        if (!ARRAY_TYPE.equals(property.getType())) {
             return;
         }
         Schema<?> items = property.getItems();
@@ -539,11 +542,11 @@ public class OpenApiToAsciidocParser {
         if ("boolean".equals(type) || "number".equals(type)) {
             return type;
         }
-        if ("array".equals(type)) {
+        if (ARRAY_TYPE.equals(type)) {
             // #prop_array renders the element type ("string array"); #prop_array_begin, which
             // is what a non-scalar element compiles to, renders a bare "array".
             Schema<?> items = resolveSchemaReference(schema.getItems());
-            return items != null && isSimpleType(items) ? structPropertyType(items) + " array" : "array";
+            return items != null && isSimpleType(items) ? structPropertyType(items) + " array" : ARRAY_TYPE;
         }
         if ("object".equals(type) || schema.get$ref() != null || schema.getProperties() != null) {
             return "struct";
@@ -556,7 +559,7 @@ public class OpenApiToAsciidocParser {
      * emits {@code [.array]} but shows the element type.
      */
     private String structPropertyMarker(Schema<?> schema) {
-        return "array".equals(schema.getType()) ? "array" : structPropertyType(schema);
+        return ARRAY_TYPE.equals(schema.getType()) ? ARRAY_TYPE : structPropertyType(schema);
     }
 
     private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema) {
