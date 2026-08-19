@@ -35,6 +35,7 @@ import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
+import com.redhat.rhn.frontend.xmlrpc.user.UserNotificationsHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 
@@ -144,6 +145,7 @@ public final class OpenApiConfig {
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
         handlers.put("user.external", UserExternalHandler.class);
+        handlers.put("user.notifications", UserNotificationsHandler.class);
         handlers.put("virtualhostmanager", VirtualHostManagerHandler.class);
         return handlers;
     }

@@ -26,12 +26,12 @@ import com.suse.manager.api.SerializedApiResponse;
  * @apidoc.doc
  *  #struct_begin("notification")
  *      #prop("long", "id")
- *      #prop_array("boolean", "read")
- *      #prop_array("string", "message")
- *      #prop_array("string", "summary")
- *      #prop_array("string", "details")
- *      #prop_array("notificationType", "type")
- *      #prop_array("date", "created")
+ *      #prop("boolean", "read")
+ *      #prop("string", "message")
+ *      #prop("string", "summary")
+ *      #prop("string", "details")
+ *      #prop("notificationType", "type")
+ *      #prop("date", "created")
  *  #struct_end()
  *
  */
