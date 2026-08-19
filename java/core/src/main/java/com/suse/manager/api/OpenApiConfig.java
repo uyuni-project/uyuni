@@ -35,6 +35,7 @@ import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHan
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
+import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
@@ -141,6 +142,7 @@ public final class OpenApiConfig {
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
         handlers.put("user.external", UserExternalHandler.class);
+        handlers.put("virtualhostmanager", VirtualHostManagerHandler.class);
         return handlers;
     }
 }
