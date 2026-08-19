@@ -61,9 +61,11 @@ public interface ErrataHandlerApi {
      * @return 1 on success
      */
     @ApiEndpointDoc(
-        summary = "Set erratum details. All arguments are optional and will only be modified\n" +
-                "if included in the struct. This method will only allow for modification of custom\n" +
-                "errata created either through the UI or API.",
+        summary = """
+            Set erratum details. All arguments are optional and will only be modified
+            if included in the struct. This method will only allow for modification of custom
+            errata created either through the UI or API.\
+            """,
         requestClass = SetDetailsRequest.class,
         isIntegerResponse = true
     )
@@ -77,9 +79,11 @@ public interface ErrataHandlerApi {
      * @return the affected systems
      */
     @ApiEndpointDoc(
-        summary = "Return the list of systems affected by the errata with the given advisory name.\n" +
-                "For those errata that are present in both vendor and user organizations under the same " +
-                "advisory name,\nthis method retrieves the affected systems by both of them.",
+        summary = """
+            Return the list of systems affected by the errata with the given advisory name.
+            For those errata that are present in both vendor and user organizations under the same advisory name,
+            this method retrieves the affected systems by both of them.\
+            """,
         method = HttpMethod.get,
         responseClass = AffectedSystemListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "system")
@@ -96,12 +100,14 @@ public interface ErrataHandlerApi {
      * @return the Bugzilla fixes, keyed by bug id
      */
     @ApiEndpointDoc(
-        summary = "Get the Bugzilla fixes for an erratum matching the given\n" +
-                "advisoryName. The bugs will be returned in a struct where the bug id is\n" +
-                "the key.  i.e. 208144=\"errata.bugzillaFixes Method Returns different\n" +
-                "results than docs say\"\n" +
-                "For those errata that are present in both vendor and user organizations under the same " +
-                "advisory name,\nthis method retrieves the list of Bugzilla fixes of both of them.",
+        summary = """
+            Get the Bugzilla fixes for an erratum matching the given
+            advisoryName. The bugs will be returned in a struct where the bug id is
+            the key.  i.e. 208144="errata.bugzillaFixes Method Returns different
+            results than docs say"
+            For those errata that are present in both vendor and user organizations under the same advisory name,
+            this method retrieves the list of Bugzilla fixes of both of them.\
+            """,
         requestClass = AdvisoryNameRequest.class,
         responseClass = BugzillaFixesResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "Bugzilla info")
@@ -116,9 +122,11 @@ public interface ErrataHandlerApi {
      * @return the keywords of the erratum
      */
     @ApiEndpointDoc(
-        summary = "Get the keywords associated with an erratum matching the given advisory name.\n" +
-                "For those errata that are present in both vendor and user organizations under the same " +
-                "advisory name,\nthis method retrieves the keywords of both of them.",
+        summary = """
+            Get the keywords associated with an erratum matching the given advisory name.
+            For those errata that are present in both vendor and user organizations under the same advisory name,
+            this method retrieves the keywords of both of them.\
+            """,
         method = HttpMethod.get,
         responseClass = StringListResponse.class,
         responseDescription = "keyword associated with erratum."
@@ -135,9 +143,11 @@ public interface ErrataHandlerApi {
      * @return the applicable channels
      */
     @ApiEndpointDoc(
-        summary = "Returns a list of channels applicable to the errata with the given advisory name.\n" +
-                "For those errata that are present in both vendor and user organizations under the same " +
-                "advisory name,\nthis method retrieves the list of channels applicable of both of them.",
+        summary = """
+            Returns a list of channels applicable to the errata with the given advisory name.
+            For those errata that are present in both vendor and user organizations under the same advisory name,
+            this method retrieves the list of channels applicable of both of them.\
+            """,
         method = HttpMethod.get,
         responseClass = ErrataChannelListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "channel")
@@ -154,10 +164,12 @@ public interface ErrataHandlerApi {
      * @return the CVE names
      */
     @ApiEndpointDoc(
-        summary = "Returns a list of CVEs (http://cve.mitre.org/) applicable to the errata\n" +
-                "with the given advisory name. For those errata that are present in both vendor and user " +
-                "organizations under the\nsame advisory name, this method retrieves the list of CVEs of " +
-                "both of them.",
+        summary = """
+            Returns a list of CVEs (http://cve.mitre.org/) applicable to the errata
+            with the given advisory name. For those errata that are present in both vendor and user organizations \
+            under the
+            same advisory name, this method retrieves the list of CVEs of both of them.\
+            """,
         method = HttpMethod.get,
         responseClass = StringListResponse.class,
         responseDescription = "CVE name"
@@ -174,9 +186,11 @@ public interface ErrataHandlerApi {
      * @return the affected packages
      */
     @ApiEndpointDoc(
-        summary = "Returns a list of the packages affected by the errata with the given advisory name.\n" +
-                "For those errata that are present in both vendor and user organizations under the same " +
-                "advisory name,\nthis method retrieves the packages of both of them.",
+        summary = """
+            Returns a list of the packages affected by the errata with the given advisory name.
+            For those errata that are present in both vendor and user organizations under the same advisory name,
+            this method retrieves the packages of both of them.\
+            """,
         method = HttpMethod.get,
         responseClass = ErrataPackageListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "package")
@@ -230,11 +244,12 @@ public interface ErrataHandlerApi {
      * @return the cloned errata
      */
     @ApiEndpointDoc(
-        summary = "Clone a list of errata into the specified channel.\n" +
-                "It only links the packages if the destination channel already contains an older version of " +
-                "the\nsame package (same name and architecture). If the package is completely new to that " +
-                "channel,\nit will not be linked and the resulting behaviour will be the same as a " +
-                "channel.software.mergeErrata call.",
+        summary = """
+            Clone a list of errata into the specified channel.
+            It only links the packages if the destination channel already contains an older version of the
+            same package (same name and architecture). If the package is completely new to that channel,
+            it will not be linked and the resulting behaviour will be the same as a channel.software.mergeErrata call.\
+            """,
         requestClass = CloneErrataRequest.class,
         responseClass = ErrataListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "errata")
@@ -283,10 +298,12 @@ public interface ErrataHandlerApi {
      * @return 1 on success
      */
     @ApiEndpointDoc(
-        summary = "Asynchronously clones a list of errata into a specified cloned channel\n" +
-                "according the original erratas.\n" +
-                "It always links the packages to the target channel by searching all related packages among " +
-                "all the parent clones.",
+        summary = """
+            Asynchronously clones a list of errata into a specified cloned channel
+            according the original erratas.
+            It always links the packages to the target channel by searching all related packages among all the parent \
+            clones.\
+            """,
         requestClass = CloneErrataRequest.class,
         isIntegerResponse = true
     )
@@ -523,9 +540,11 @@ public interface ErrataHandlerApi {
         /**
          * @return the advisory type
          */
-        @Schema(name = "advisory_type", description = "Type of advisory (one of the\n" +
-                "following: 'Security Advisory', 'Product Enhancement Advisory',\n" +
-                "or 'Bug Fix Advisory'")
+        @Schema(name = "advisory_type", description = """
+            Type of advisory (one of the
+            following: 'Security Advisory', 'Product Enhancement Advisory',
+            or 'Bug Fix Advisory'\
+            """)
         String getAdvisoryType();
 
         /**
@@ -573,9 +592,11 @@ public interface ErrataHandlerApi {
         /**
          * @return the severity
          */
-        @Schema(description = "Severity of advisory (one of the\n" +
-                "following: 'Low', 'Moderate', 'Important', 'Critical'\n" +
-                "or 'Unspecified'")
+        @Schema(description = """
+            Severity of advisory (one of the
+            following: 'Low', 'Moderate', 'Important', 'Critical'
+            or 'Unspecified'\
+            """)
         String getSeverity();
     }
 
@@ -605,9 +626,11 @@ public interface ErrataHandlerApi {
         /**
          * @return the advisory type
          */
-        @Schema(name = "advisory_type", description = "Type of advisory (one of the\n" +
-                "following: 'Security Advisory', 'Product Enhancement Advisory',\n" +
-                "or 'Bug Fix Advisory'")
+        @Schema(name = "advisory_type", description = """
+            Type of advisory (one of the
+            following: 'Security Advisory', 'Product Enhancement Advisory',
+            or 'Bug Fix Advisory'\
+            """)
         String getAdvisoryType();
 
         /**
@@ -660,9 +683,11 @@ public interface ErrataHandlerApi {
         /**
          * @return the severity
          */
-        @Schema(description = "Severity of advisory (one of the\n" +
-                "following: 'Low', 'Moderate', 'Important', 'Critical'\n" +
-                "or 'Unspecified'")
+        @Schema(description = """
+            Severity of advisory (one of the
+            following: 'Low', 'Moderate', 'Important', 'Critical'
+            or 'Unspecified'\
+            """)
         String getSeverity();
 
         /**
@@ -814,9 +839,11 @@ public interface ErrataHandlerApi {
          * @return whether a package manager restart is suggested
          */
         @Schema(name = "restart_suggested",
-                description = "A boolean flag signaling a weather reboot of\n" +
-                "the package manager is advisable following the application of the errata. This is commonly\n" +
-                "used to address update stack issues before proceeding with other updates.")
+                description = """
+                    A boolean flag signaling a weather reboot of
+                    the package manager is advisable following the application of the errata. This is commonly
+                    used to address update stack issues before proceeding with other updates.\
+                    """)
         Boolean getRestartSuggested();
     }
 
