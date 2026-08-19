@@ -1,0 +1,4 @@
+- Remove the warning banner stating that there are
+  outstanding management stack updates needed during
+  product migration and allow the API to proceed
+  without (bsc#1275215)

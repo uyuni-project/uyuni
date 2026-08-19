@@ -1510,63 +1510,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                             .getSingleResult();
     }
 
-    /**
-     * Test updateStackUpdateNeeded
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testUpdateStackUpdateNeeded() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        errata2 = TestUtils.saveAndFlush(errata2);
-        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        errata3 = TestUtils.saveAndFlush(errata3);
-
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-
-        Set<Channel> serverChannels = new HashSet<>();
-        serverChannels.add(channel1);
-        Server server = createTestServer(user, serverChannels);
-
-        // server 1 has an errata for package1 available
-        com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
-        createTestInstalledPackage(package1, server);
-        createLaterTestPackage(user, errata1, channel1, package1);
-
-        // server 2 has an errata for package2 available
-        Package package2 = createTestPackage(user, channel1, "noarch");
-        createTestInstalledPackage(package2, server);
-        createLaterTestPackage(user, errata2, channel1, package2);
-
-        // errata in common for both servers
-        Package package3 = createTestPackage(user, channel1, "noarch");
-        createTestInstalledPackage(package3, server);
-        createLaterTestPackage(user, errata3, channel1, package3);
-
-        ErrataCacheManager.insertNeededErrataCache(
-                server.getId(), errata1.getId(), package1.getId());
-        ErrataCacheManager.insertNeededErrataCache(
-                server.getId(), errata2.getId(), package2.getId());
-        ErrataCacheManager.insertNeededErrataCache(
-                server.getId(), errata3.getId(), package3.getId());
-        TestUtils.flushSession();
-
-        assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
-
-        Set<Keyword> kw = new HashSet<>();
-        Keyword k = new Keyword();
-        k.setKeyword("restart_suggested");
-        k.setErrata(errata3);
-        kw.add(k);
-        errata3.setKeywords(kw);
-        TestUtils.saveAndFlush(errata3); //reassign variable if still needed
-
-        assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
-    }
 
     /**
      * Tests truncating errata - simple case (overlap of errata in channels)

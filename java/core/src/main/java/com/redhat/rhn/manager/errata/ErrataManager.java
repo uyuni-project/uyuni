@@ -86,7 +86,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
@@ -2098,26 +2097,7 @@ public class ErrataManager extends BaseManager {
         return errataUpdate;
     }
 
-    /**
-     * Returns true if there are relevant errata for the server which
-     * affect the update stack, otherwise false.
-     * @param scheduler the user which schedule this actions
-     * @param server the server which update stack should be updated
-     * @return true if an update of the updatestack is needed
-     */
-    public static boolean updateStackUpdateNeeded(User scheduler, Server server) {
-        boolean needed = false;
-        List<ErrataOverview> erratas =
-                SystemManager.relevantErrata(scheduler, server.getId());
-        for (ErrataOverview errata : erratas) {
-            Errata erratum = ErrataManager.lookupErrata(errata.getId(), scheduler);
-            if (erratum.hasKeyword("restart_suggested")) {
-                needed = true;
-                break;
-            }
-        }
-        return needed;
-    }
+
 
     /**
      * Insert an errata cache task for a given channel, will be picked up by taskomatic on
