@@ -19,6 +19,9 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import java.util.Objects;
+import java.util.function.Predicate;
+
 /**
  * PeripheralServer entitlement
  */
@@ -52,15 +55,20 @@ public class PeripheralServerEntitlement extends Entitlement {
 
     @Override
     public boolean isAllowedOnServer(Server server) {
+        Predicate<Server> differentForeignType = s -> server.isForeign() != s.isForeign();
+
+        //the last two filters (foreign type and hostname) were added to tackle bug (bsc#1269086)
         if (server.getFqdns().stream()
                 .flatMap(fqdn -> ServerFactory.listByFqdn(fqdn.getName()).stream())
                 .filter(s -> !s.equals(server))
+                .filter(differentForeignType)
+                .filter(s -> Objects.equals(s.getHostname(), server.getHostname()))
                 .anyMatch(s -> s.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER))) {
             // Peripheral Server with given fqdn already exists
             return false;
         }
         return super.isAllowedOnServer(server) &&
                 ((server.getBaseEntitlement() instanceof SaltEntitlement) ||
-                 (server.getBaseEntitlement() instanceof ForeignEntitlement));
+                        (server.getBaseEntitlement() instanceof ForeignEntitlement));
     }
 }
