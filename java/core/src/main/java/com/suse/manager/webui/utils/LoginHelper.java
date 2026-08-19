@@ -85,7 +85,13 @@ public class LoginHelper {
      * Fixed prefix a directory group must carry to take part in Uyuni role mapping. Not
      * configurable in v1; stripped before the external-group lookup.
      */
-    private static final String LDAP_GROUP_PREFIX = "uyuni_";
+    /**
+     * Fixed prefixes a directory group must carry to take part in Uyuni role mapping. Not
+     * configurable in v1; stripped before the external-group lookup. {@code uyuni_} is the
+     * documented v1 prefix; {@code uyuni-} is accepted so RFC examples such as
+     * {@code uyuni-admins} map through external group {@code admins}.
+     */
+    private static final String[] LDAP_GROUP_PREFIXES = {"uyuni_", "uyuni-"};
 
     private static LdapAuthConfigProvider ldapConfigProvider = new DefaultLdapAuthConfigProvider();
     private static LdapServiceFactory ldapServiceFactory = new DefaultLdapServiceFactory();
@@ -460,11 +466,12 @@ public class LoginHelper {
      * Selects the directory groups that participate in role mapping and converts them to
      * external-group labels.
      *
-     * <p>Only groups whose name starts with {@link #LDAP_GROUP_PREFIX} are considered, and the
-     * prefix is stripped before the lookup, so directory group {@code uyuni_admins} is mapped
-     * through external group {@code admins}. Every other directory group is ignored, which keeps
-     * unrelated directory groups from accidentally matching an existing external-group mapping. The
-     * prefix is deliberately fixed rather than configurable for v1.</p>
+     * <p>Only groups whose name starts with {@code uyuni_} or {@code uyuni-} are considered, and
+     * that prefix is stripped before the lookup, so directory groups {@code uyuni_admins} and
+     * {@code uyuni-admins} both map through external group {@code admins}. Every other directory
+     * group is ignored, which keeps unrelated directory groups from accidentally matching an
+     * existing external-group mapping. The prefixes are deliberately fixed rather than
+     * configurable for v1.</p>
      *
      * @param ldapGroupLabels the group names as returned by the directory
      * @return the external-group labels to look up, prefix removed
@@ -476,16 +483,31 @@ public class LoginHelper {
                 continue;
             }
             String trimmed = groupLabel.trim();
-            if (trimmed.length() > LDAP_GROUP_PREFIX.length() &&
-                    trimmed.regionMatches(true, 0, LDAP_GROUP_PREFIX, 0, LDAP_GROUP_PREFIX.length())) {
-                labels.add(trimmed.substring(LDAP_GROUP_PREFIX.length()));
+            String stripped = stripLdapGroupPrefix(trimmed);
+            if (stripped != null) {
+                labels.add(stripped);
             }
             else if (log.isDebugEnabled()) {
-                log.debug("Ignoring LDAP group '{}': it does not start with '{}'.",
-                        StringUtil.sanitizeLogInput(trimmed), LDAP_GROUP_PREFIX);
+                log.debug("Ignoring LDAP group '{}': it does not start with uyuni_ or uyuni-.",
+                        StringUtil.sanitizeLogInput(trimmed));
             }
         }
         return labels;
+    }
+
+    /**
+     * @param groupLabel a directory group CN
+     * @return the label with {@code uyuni_}/{@code uyuni-} removed, or {@code null} if it does not
+     *         carry a mapping prefix
+     */
+    private static String stripLdapGroupPrefix(String groupLabel) {
+        for (String prefix : LDAP_GROUP_PREFIXES) {
+            if (groupLabel.length() > prefix.length() &&
+                    groupLabel.regionMatches(true, 0, prefix, 0, prefix.length())) {
+                return groupLabel.substring(prefix.length());
+            }
+        }
+        return null;
     }
 
     private static Optional<LdapUser> tryAuthenticate(LdapAuthServerSettings server, String login,

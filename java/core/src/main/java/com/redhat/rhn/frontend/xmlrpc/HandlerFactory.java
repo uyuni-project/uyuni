@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
 import com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler;
 import com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler;
+import com.redhat.rhn.frontend.xmlrpc.auth.ldap.AuthLdapHandler;
 import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
@@ -192,6 +193,7 @@ public class HandlerFactory {
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());
         factory.addHandler("auth", new AuthHandler());
+        factory.addHandler("auth.ldap", new AuthLdapHandler());
         factory.addHandler("channel", channelHandler);
         factory.addHandler("channel.access", new ChannelAccessHandler());
         factory.addHandler("channel.appstreams", new ChannelAppStreamHandler());

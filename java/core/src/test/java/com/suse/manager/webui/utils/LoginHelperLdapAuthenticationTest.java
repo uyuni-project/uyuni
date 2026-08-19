@@ -281,6 +281,54 @@ public class LoginHelperLdapAuthenticationTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void hyphenPrefixedLdapGroupsAreMappedLikeUnderscore() throws Exception {
+        // RFC motivation uses uyuni-admins (hyphen). The same stripped label must map.
+        UserFactory.IMPLIEDROLES.forEach(user::removePermanentRole);
+        user.setAuthType(AuthType.LDAP);
+        UserManager.storeUser(user);
+        addGroup("uyuni-admins", user.getLogin());
+        mapExtGroupToRole("admins", RoleFactory.CHANNEL_ADMIN);
+        enableLdap(LdapProvisioningMode.JIT);
+
+        List<String> errors = new ArrayList<>();
+        User result = LoginHelper.checkLdapAuthentication(user.getLogin(), "existing-secret",
+                true, true, new ArrayList<>(), errors);
+
+        assertNotNull(result);
+        assertTrue(errors.isEmpty());
+        assertTrue(result.getTemporaryRoles().contains(RoleFactory.CHANNEL_ADMIN),
+                "uyuni-admins should map through external group admins");
+    }
+
+    @Test
+    public void unknownUserProbesServersInPriorityOrderUntilJitSucceeds() {
+        // First directory authenticates but is EXISTING_ONLY; the second (lower priority number
+        // is tried first, so give EXISTING_ONLY priority 0 and JIT priority 1) should provision.
+        LdapServerConfig config = LdapServerConfig
+                .builder(LdapServerType.OPEN_LDAP, "127.0.0.1", USERS_DN)
+                .transport(LdapTransport.PLAIN)
+                .port(directory.getListenPort())
+                .bind(ADMIN_DN, ADMIN_PASSWORD)
+                .groupBaseDn(GROUPS_DN)
+                .build();
+        LdapAuthServerSettings existingOnly =
+                new LdapAuthServerSettings(null, config, LdapProvisioningMode.EXISTING_ONLY,
+                        user.getOrg().getId(), true, 0);
+        LdapAuthServerSettings jit =
+                new LdapAuthServerSettings(null, config, LdapProvisioningMode.JIT,
+                        user.getOrg().getId(), true, 1);
+        LoginHelper.setLdapConfigProvider(new StubProvider(true, List.of(existingOnly, jit)));
+        LoginHelper.setLdapServiceFactory(new DefaultLdapServiceFactory());
+
+        User result = LoginHelper.checkLdapAuthentication(JIT_LOGIN, JIT_PASSWORD, true,
+                true, new ArrayList<>(), new ArrayList<>());
+
+        assertNotNull(result);
+        assertEquals(JIT_LOGIN, result.getLogin());
+        assertEquals(AuthType.LDAP, result.getAuthType());
+    }
+
+    @Test
     public void unknownUserIsProvisionedJustInTime() {
         enableLdap(LdapProvisioningMode.JIT);
 
