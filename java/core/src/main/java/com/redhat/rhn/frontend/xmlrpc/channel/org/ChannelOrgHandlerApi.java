@@ -21,6 +21,7 @@ import com.suse.manager.api.docs.LegacyDocResponse;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,7 +46,7 @@ public interface ChannelOrgHandlerApi {
         responseClass = OrgListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "org")
     )
-    List list(User loggedInUser, String label);
+    List<Map<String, Object>> list(User loggedInUser, String label);
 
     /**
      * Enables access to the channel for the given organization.

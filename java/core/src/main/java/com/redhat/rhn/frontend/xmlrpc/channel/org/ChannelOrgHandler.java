@@ -69,7 +69,7 @@ public class ChannelOrgHandler extends BaseHandler implements ChannelOrgHandlerA
      *     #struct_end()
      *  #array_end()
      */
-    public List list(User loggedInUser, String label)
+    public List<Map<String, Object>> list(User loggedInUser, String label)
         throws FaultException {
 
         Channel channel = lookupChannelByLabel(loggedInUser, label);
