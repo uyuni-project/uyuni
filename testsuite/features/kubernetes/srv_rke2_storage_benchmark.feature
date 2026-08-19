@@ -11,7 +11,7 @@ Feature: RKE2 storage benchmark
   I want to run a real Uyuni repository synchronization workload
 
   Scenario: Run a local file repository synchronization benchmark
-    Given The Kubernetes cluster is ready on "server"
+    Given The Kubernetes cluster is ready on "localhost"
     And the reposync benchmark source repository is mounted in the server pod
     When I create a unique reposync benchmark channel
     And I run the reposync benchmark for the mounted source repository

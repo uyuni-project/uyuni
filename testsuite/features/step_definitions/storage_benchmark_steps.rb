@@ -15,29 +15,66 @@ UYUNI_BENCH_DEFAULT_RESULTS_PARENT = '/var/spacewalk/uyuni-bench/results/reposyn
 def reposync_benchmark_server_pod
   return @reposync_benchmark_server_pod if @reposync_benchmark_server_pod
 
-  pod = get_pod_name('server', 'server')
-  raise ScriptError, 'Unable to determine the Uyuni server pod name' if pod.nil? || pod.empty?
+  command =
+    Shellwords.join(
+      [
+        'kubectl',
+        '--namespace',
+        'uyuni',
+        'get',
+        'pods',
+        '--selector',
+        'app.kubernetes.io/component=server',
+        '--output=json'
+      ]
+    )
+  stdout, stderr, code = get_target('localhost').run_local(
+    command,
+    separated_results: true,
+    check_errors: false
+  )
+  raise ScriptError, "Unable to query the Uyuni server pod: #{stderr}" unless code.zero?
+
+  pods = JSON.parse(stdout)['items']
+  raise ScriptError, 'The Uyuni server pod response did not contain an items array' unless pods.is_a?(Array)
+
+  ready_pods =
+    pods.select do |pod|
+      conditions = pod.dig('status', 'conditions')
+      pod.dig('status', 'phase') == 'Running' &&
+        conditions.is_a?(Array) &&
+        conditions.any? { |condition| condition['type'] == 'Ready' && condition['status'] == 'True' }
+    end
+  raise ScriptError, "Expected exactly one ready Uyuni server pod, found #{ready_pods.length}" unless ready_pods.length == 1
+
+  pod = ready_pods.first.dig('metadata', 'name')
+  raise ScriptError, 'The ready Uyuni server pod has no metadata.name' unless pod.is_a?(String) && !pod.empty?
 
   @reposync_benchmark_server_pod = pod
+rescue JSON::ParserError => e
+  raise ScriptError, "Unable to parse the Uyuni server pod response: #{e.message}"
 end
 
-# Run a shell command on the RKE2 host.
-def reposync_benchmark_run_on_host(command, timeout: DEFAULT_TIMEOUT, verbose: true, check_errors: true)
-  get_target('server').run(
-    command,
-    runs_in_container: false,
-    timeout: timeout,
-    verbose: verbose,
-    check_errors: check_errors
-  )
-end
-
-# Run a shell command inside the Uyuni server pod.
+# Run a shell command inside the Uyuni server pod from the testsuite controller.
 def reposync_benchmark_run_in_server_pod(command, timeout: DEFAULT_TIMEOUT, verbose: true, check_errors: true)
-  pod = Shellwords.escape(reposync_benchmark_server_pod)
-  escaped_command = Shellwords.escape(command)
-  reposync_benchmark_run_on_host(
-    "kubectl -n uyuni exec #{pod} -- sh -lc #{escaped_command}",
+  kubectl_command =
+    Shellwords.join(
+      [
+        'kubectl',
+        '--namespace',
+        'uyuni',
+        'exec',
+        '--container',
+        'uyuni',
+        reposync_benchmark_server_pod,
+        '--',
+        'sh',
+        '-lc',
+        command
+      ]
+    )
+  get_target('localhost').run_local(
+    kubectl_command,
     timeout: timeout,
     verbose: verbose,
     check_errors: check_errors
