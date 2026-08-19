@@ -481,6 +481,12 @@ public class SaltUtils {
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
         boolean transactionalResult = TransactionalUpdateCalls.isApplyFunction(function);
 
+        if (transactionalResult &&
+                action instanceof ApplyStatesAction applyStatesAction &&
+                !TransactionalActionManager.hasAfterRebootState(action)) {
+            applyStatesAction.storeApplyStatesResult(serverAction, jsonResult, retcode);
+        }
+
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             LOG.debug("Status of action {} being set to Failed.", action.getId());

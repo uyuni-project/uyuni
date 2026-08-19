@@ -9181,6 +9181,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_apply_states' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleApplyStatesWithTransactionalUpdate' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.schedule_certificate_update' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/scheduleCertificateUpdate' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -9258,6 +9263,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.schedule_script_run' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/scheduleScriptRun' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.schedule_script_run' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/scheduleScriptRunWithTransactionalUpdate' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

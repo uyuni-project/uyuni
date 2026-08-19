@@ -18560,6 +18560,12 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label">
+          <source>Use transactional update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/ssm/provisioning/RemoteCommand</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.form.chain_id.new">
           <source>New...</source>
         <context-group name="ctx">

@@ -13,6 +13,7 @@
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.orgId = "#{orgId}";
+    window.hasTransactionalSystems = #{hasTransactionalSystems};
 
 script(src='/javascript/legacy/jquery-ui.js?cb=#{webBuildtimestamp}')
 

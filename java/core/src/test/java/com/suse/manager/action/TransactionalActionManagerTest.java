@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
@@ -357,13 +355,14 @@ public class TransactionalActionManagerTest {
         MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
         MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
 
-        TransactionalActionManager.addCustomStateApplyCalls(
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
                 calls,
                 List.of(SaltParameters.PACKAGES_PKGLOCK),
                 Optional.empty(),
                 Optional.of(true),
                 Optional.empty(),
-                List.of(regularMinion, transactionalMinion));
+                List.of(regularMinion, transactionalMinion),
+                false);
 
         assertEquals(2, calls.size());
         assertTrue(calls.entrySet().stream()
@@ -375,101 +374,105 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testCustomStatesUseTransactionalUpdateWhenEnabled() {
-        withCustomStatesTransactionalUpdateConfig("true", () -> {
-            Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
-            MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-            MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+    public void testTransactionalStateMappingTakesPrecedenceWhenTransactionalUpdateRequested() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion =
+                new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
 
-            TransactionalActionManager.addCustomStateApplyCalls(
-                    calls,
-                    List.of("custom"),
-                    Optional.empty(),
-                    Optional.of(true),
-                    Optional.of(true),
-                    List.of(regularMinion, transactionalMinion));
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true);
 
-            assertEquals(2, calls.size());
-            assertTrue(calls.entrySet().stream()
-                    .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
-                            entry.getValue().equals(List.of(regularMinion))));
-            Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
-                    .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
-                    .map(Map.Entry::getKey)
-                    .findFirst();
-            assertTrue(transactionalCall.isPresent());
-            assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
-            Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
-            assertEquals(List.of("custom"), kwargs.get("mods"));
-            assertEquals(true, kwargs.get("queue"));
-            assertEquals(true, kwargs.get("test"));
-        });
+        assertEquals(1, calls.size());
+        LocalCall<?> transactionalCall = calls.keySet().iterator().next();
+        assertEquals("transactional_update.apply", transactionalCall.getPayload().get("fun"));
+
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.getPayload().get("kwarg");
+        assertEquals(List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ), kwargs.get("mods"));
     }
 
     @Test
-    public void testCustomStatesUseRegularStateApplyWhenDisabled() {
-        withCustomStatesTransactionalUpdateConfig("false", () -> {
-            Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
-            MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+    public void testCustomStatesUseTransactionalUpdateWhenRequested() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
 
-            TransactionalActionManager.addCustomStateApplyCalls(
-                    calls,
-                    List.of("custom"),
-                    Optional.empty(),
-                    Optional.empty(),
-                    Optional.empty(),
-                    List.of(transactionalMinion));
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.empty(),
+                Optional.of(true),
+                Optional.of(true),
+                List.of(regularMinion, transactionalMinion),
+                true);
 
-            assertEquals(1, calls.size());
-            Map<String, Object> payload = calls.keySet().iterator().next().getPayload();
-            assertEquals("state.apply", payload.get("fun"));
-            assertEquals(List.of("direct_call"), payload.get("module_executors"));
-        });
+        assertEquals(2, calls.size());
+        assertTrue(calls.entrySet().stream()
+                .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                        entry.getValue().equals(List.of(regularMinion))));
+        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
+                .map(Map.Entry::getKey)
+                .findFirst();
+        assertTrue(transactionalCall.isPresent());
+        assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
+        assertEquals(List.of("custom"), kwargs.get("mods"));
+        assertEquals(true, kwargs.get("queue"));
+        assertEquals(true, kwargs.get("test"));
     }
 
     @Test
-    public void testHighstateUsesTransactionalUpdateForTransactionalMinions() {
-        withCustomStatesTransactionalUpdateConfig("true", () -> {
-            Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
-            MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-            MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+    public void testCustomStatesUseDirectStateApplyWhenTransactionalUpdateNotRequested() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
 
-            TransactionalActionManager.addCustomStateApplyCalls(
-                    calls,
-                    List.of(),
-                    Optional.empty(),
-                    Optional.empty(),
-                    Optional.empty(),
-                    List.of(regularMinion, transactionalMinion));
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false);
 
-            assertEquals(2, calls.size());
-            assertTrue(calls.entrySet().stream()
-                    .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
-                            entry.getValue().equals(List.of(regularMinion))));
-            Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
-                    .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
-                    .map(Map.Entry::getKey)
-                    .findFirst();
-            assertTrue(transactionalCall.isPresent());
-            assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
-            Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
-            assertFalse(kwargs.containsKey("mods"));
-        });
+        assertEquals(1, calls.size());
+        Map<String, Object> payload = calls.keySet().iterator().next().getPayload();
+        assertEquals("state.apply", payload.get("fun"));
+        assertEquals(List.of("direct_call"), payload.get("module_executors"));
     }
 
-    private void withCustomStatesTransactionalUpdateConfig(String value, Runnable test) {
-        String previousValue = Config.get().getString(ConfigDefaults.SALT_CUSTOM_STATES_USE_TRANSACTIONAL_UPDATE);
-        Config.get().setBoolean(ConfigDefaults.SALT_CUSTOM_STATES_USE_TRANSACTIONAL_UPDATE, value);
-        try {
-            test.run();
-        }
-        finally {
-            if (previousValue == null) {
-                Config.get().remove(ConfigDefaults.SALT_CUSTOM_STATES_USE_TRANSACTIONAL_UPDATE);
-            }
-            else {
-                Config.get().setString(ConfigDefaults.SALT_CUSTOM_STATES_USE_TRANSACTIONAL_UPDATE, previousValue);
-            }
-        }
+    @Test
+    public void testHighstateUsesTransactionalUpdateWhenRequested() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(regularMinion, transactionalMinion),
+                true);
+
+        assertEquals(2, calls.size());
+        assertTrue(calls.entrySet().stream()
+                .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                        entry.getValue().equals(List.of(regularMinion))));
+        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
+                .map(Map.Entry::getKey)
+                .findFirst();
+        assertTrue(transactionalCall.isPresent());
+        assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
+        assertFalse(kwargs.containsKey("mods"));
     }
 }
