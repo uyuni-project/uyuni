@@ -5171,13 +5171,54 @@ public class SystemHandler extends BaseHandler {
     public Integer scheduleScriptRun(User loggedInUser, String label, List<Integer>
             sids, String username, String groupname, Integer timeout, String script,
                                      Date earliestOccurrence) {
+        return scheduleScriptRunInternal(loggedInUser, label, sids, username, groupname, timeout, script,
+                earliestOccurrence, false);
+    }
+
+    /**
+     * Schedule a script to run.
+     *
+     * @param loggedInUser           The current user
+     * @param label                  Text description
+     * @param sids                   IDs of the servers to run the script on.
+     * @param username               User to run script as.
+     * @param groupname              Group to run script as.
+     * @param timeout                Seconds to allow the script to run before timing out.
+     * @param script                 Contents of the script to run.
+     * @param earliestOccurrence     Earliest the script can run.
+     * @return ID of the new script action.
+     * @apidoc.doc Schedule a script to run using transactional-update on transactional systems.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "label")
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs of the servers to run the script on.")
+     * @apidoc.param #param_desc("string", "username", "User to run script as.")
+     * @apidoc.param #param_desc("string", "groupname", "Group to run script as.")
+     * @apidoc.param #param_desc("int", "timeout", "Seconds to allow the script to run
+     *before timing out.")
+     * @apidoc.param #param_desc("string", "script", "Contents of the script to run.
+     * Must start with a shebang (e.g. #!/bin/bash)")
+     * @apidoc.param #param_desc("$date", "earliestOccurrence",
+     * "Earliest the script can run.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
+     */
+    public Integer scheduleScriptRunWithTransactionalUpdate(User loggedInUser, String label, List<Integer>
+            sids, String username, String groupname, Integer timeout, String script,
+                                     Date earliestOccurrence) {
+        return scheduleScriptRunInternal(loggedInUser, label, sids, username, groupname, timeout, script,
+                earliestOccurrence, true);
+    }
+
+    private Integer scheduleScriptRunInternal(User loggedInUser, String label, List<Integer>
+            sids, String username, String groupname, Integer timeout, String script,
+                                     Date earliestOccurrence, boolean useTransactionalUpdate) {
 
         if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
             throw new PermissionCheckFailureException("Running remote scripts has been disabled");
         }
 
         ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(username, groupname,
-                timeout.longValue(), script);
+                timeout.longValue(), script, useTransactionalUpdate);
         ScriptAction action = null;
 
         List<Long> servers = new ArrayList<>();
@@ -8914,6 +8955,33 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
+        return scheduleApplyStatesInternal(loggedInUser, sids, stateNames, earliestOccurrence, test, false);
+    }
+
+    /**
+     * Schedule state application for a list of systems.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of system id of the target systems
+     * @param stateNames A list of state names to be applied
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @return action id or exception thrown otherwise
+     * @apidoc.doc Schedule state application using transactional-update on transactional systems.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #array_single("string", "stateNames")
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleApplyStatesWithTransactionalUpdate(User loggedInUser, List<Integer> sids,
+            List<String> stateNames, Date earliestOccurrence, Boolean test) {
+        return scheduleApplyStatesInternal(loggedInUser, sids, stateNames, earliestOccurrence, test, true);
+    }
+
+    private Long scheduleApplyStatesInternal(User loggedInUser, List<Integer> sids, List<String> stateNames,
+            Date earliestOccurrence, Boolean test, boolean useTransactionalUpdate) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
@@ -8922,9 +8990,9 @@ public class SystemHandler extends BaseHandler {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
             }
-
-            Action a = ActionManager.scheduleApplyStates(loggedInUser, sysids, stateNames, earliestOccurrence,
-                    Optional.of(test));
+            Action a = ActionManager.scheduleApplyStates(loggedInUser, sysids, stateNames,
+                    Optional.empty(), earliestOccurrence, Optional.of(test), false, false,
+                    useTransactionalUpdate);
             a = ActionFactory.save(a);
             taskomaticApi.scheduleActionExecution(a);
             return a.getId();

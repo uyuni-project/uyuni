@@ -186,13 +186,14 @@ public class ScriptRunAction extends ScriptAction {
             pillar.put("mgr_remote_cmd_script", SALT_FS_PREFIX + SCRIPTS_DIR + "/" + scriptFile.getFileName());
             pillar.put("mgr_remote_cmd_runas", getScriptActionDetails().getUsername());
             pillar.put("mgr_remote_cmd_timeout", getScriptActionDetails().getTimeout());
-            TransactionalActionManager.addCustomStateApplyCalls(
+            TransactionalActionManager.addOptionalTransactionalApplyCalls(
                     ret,
                     List.of(SaltParameters.REMOTE_COMMANDS),
                     Optional.of(pillar),
                     Optional.empty(),
                     Optional.empty(),
-                    minions);
+                    minions,
+                    getScriptActionDetails().isUseTransactionalUpdate());
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
