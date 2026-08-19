@@ -352,7 +352,35 @@ public class OpenApiToAsciidocParser {
         if (resolved == null || resolved.getProperties() == null) {
             return;
         }
-        resolved.getProperties().forEach((name, prop) -> writeStructProperty(writer, "", name, prop));
+        resolved.getProperties().forEach((name, prop) -> {
+            writeStructProperty(writer, "", name, prop);
+            printElementStruct(writer, prop);
+        });
+    }
+
+    /**
+     * Writes the element type of an array property that holds structs.
+     *
+     * The doclet expands the {@code $Serializer} reference inside {@code #prop_array_begin} into
+     * the element struct followed by its properties, in the same shape it uses for an array return
+     * value. Without this the element struct is documented by the legacy doclet but dropped here.
+     */
+    private void printElementStruct(PrintWriter writer, Schema<?> property) {
+        if (!"array".equals(property.getType())) {
+            return;
+        }
+        Schema<?> items = property.getItems();
+        if (items == null) {
+            return;
+        }
+        Schema<?> resolvedItems = resolveSchemaReference(items);
+        if (resolvedItems == null || resolvedItems.getProperties() == null ||
+                resolvedItems.getProperties().isEmpty()) {
+            return;
+        }
+        writer.printf("    * [.struct]#struct#  %s%n",
+                items.get$ref() != null ? extractRefName(items.get$ref()) : "");
+        printStructProperties(writer, resolvedItems);
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
