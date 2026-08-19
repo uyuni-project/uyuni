@@ -71,6 +71,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         public static final String SCRIPT = "script_body";
         public static final String LABEL = "lbl";
         public static final String TIMEOUT = "timeout";
+        public static final String USE_TRANSACTIONAL_UPDATE = "use_transactional_update";
         public static final Long DEFAULT_TIMEOUT = 600L;
         public static final Long MAX_TIMEOUT = (long) Integer.MAX_VALUE;
 
@@ -85,6 +86,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         private String scriptBody;
         private String label;
         private Long timeout;
+        private boolean useTransactionalUpdate;
 
         /**
          * Default constructor.
@@ -186,6 +188,22 @@ public class SystemRemoteCommandAction extends RhnAction {
             this.timeout = commandTimeout;
             return this;
         }
+
+        /**
+         * @return true when transactional systems should execute through transactional-update
+         */
+        public boolean isUseTransactionalUpdate() {
+            return useTransactionalUpdate;
+        }
+
+        /**
+         * @param useTransactionalUpdateIn whether transactional-update should be used
+         * @return Form data object.
+         */
+        public FormData setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+            this.useTransactionalUpdate = useTransactionalUpdateIn;
+            return this;
+        }
     }
 
 
@@ -267,7 +285,9 @@ public class SystemRemoteCommandAction extends RhnAction {
                         form.get(FormData.TIMEOUT) == null ?
                                  FormData.DEFAULT_TIMEOUT :
                                  (Long) form.get(FormData.TIMEOUT),
-                        form.getString(FormData.SCRIPT)), scheduleDate, actionChain);
+                        form.getString(FormData.SCRIPT),
+                        Boolean.TRUE.equals(form.get(FormData.USE_TRANSACTIONAL_UPDATE))),
+                scheduleDate, actionChain);
     }
 
 
@@ -284,6 +304,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         data.setLabel(form.getString(FormData.LABEL));
         data.setScriptBody(form.getString(FormData.SCRIPT));
         data.setTimeout((Long) form.get(FormData.TIMEOUT));
+        data.setUseTransactionalUpdate(Boolean.TRUE.equals(form.get(FormData.USE_TRANSACTIONAL_UPDATE)));
 
         return data;
     }
@@ -312,6 +333,8 @@ public class SystemRemoteCommandAction extends RhnAction {
         // Are we set up to allow remote-commands on SID?
         request.setAttribute("has_script_run",
                               SystemManager.clientCapable(server.getId(), "script.run"));
+        request.setAttribute("has_transactional_update",
+                              server.doesOsSupportsTransactionalUpdate());
 
         // Process submit
         if (form.get(RhnAction.SUBMITTED) != null) {

@@ -268,6 +268,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         String orgId = request.queryParams("oid");
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("hasTransactionalSystems", hasTransactionalSystems(servers));
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
@@ -287,9 +288,11 @@ public class MinionController {
      */
     public static ModelAndView orgCustomStates(Request request, Response response) {
         String orgId = request.queryParams("oid");
+        List<Server> servers = ServerFactory.listOrgSystems(Long.parseLong(orgId));
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
+        data.put("hasTransactionalSystems", hasTransactionalSystems(servers));
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/custom.jade");
@@ -317,6 +320,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("hasTransactionalSystems", hasTransactionalSystems(servers));
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
@@ -338,6 +342,8 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
+        data.put("hasTransactionalSystems",
+                hasTransactionalSystems(ServerFactory.listOrgSystems(user.getOrg().getId())));
         return new ModelAndView(data, "templates/yourorg/custom.jade");
     }
 
@@ -352,10 +358,12 @@ public class MinionController {
     public static ModelAndView serverGroupConfigChannels(Request request, Response response,
                                                        User user) {
         String orgId = request.queryParams("sgid");
+        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(orgId),
+                user.getOrg());
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", orgId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(orgId),
-                user.getOrg()).getName());
+        data.put("groupName", group.getName());
+        data.put("hasTransactionalSystems", hasTransactionalSystems(ServerGroupFactory.listServers(group)));
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         return new ModelAndView(data, "templates/groups/custom.jade");
@@ -386,6 +394,7 @@ public class MinionController {
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("hasTransactionalSystems", hasTransactionalSystems(groupServers));
         data.put("entityType", "GROUP");
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
@@ -455,7 +464,9 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView minionCustomStates(Request request, Response response, User user, Server server) {
-        return new ModelAndView(new HashMap<String, Object>(), "templates/minion/custom.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("hasTransactionalSystems", server.doesOsSupportsTransactionalUpdate());
+        return new ModelAndView(data, "templates/minion/custom.jade");
     }
 
     /**
@@ -473,6 +484,7 @@ public class MinionController {
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("isControlNode", server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
         data.put("betaEnabled", user.getBetaFeaturesEnabled());
+        data.put("hasTransactionalSystems", server.doesOsSupportsTransactionalUpdate());
         return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 
@@ -856,5 +868,10 @@ public class MinionController {
             LOGGER.warn("Ignoring invalid parameter {} passed as action id", parameter, ex);
             return null;
         }
+    }
+
+    private static boolean hasTransactionalSystems(List<Server> servers) {
+        return MinionServerUtils.filterSaltMinions(servers)
+                .anyMatch(Server::doesOsSupportsTransactionalUpdate);
     }
 }
