@@ -59,7 +59,8 @@ public interface OrgTrustHandlerApi {
      * @return the channels provided
      */
     @ApiEndpointDoc(
-        summary = "Lists all software channels that the organization given may consume.",
+        summary = "Lists all software channels that the organization given is providing to the user's " +
+                "organization.",
         method = HttpMethod.get,
         responseClass = ChannelInfoListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "channel info")
@@ -78,7 +79,8 @@ public interface OrgTrustHandlerApi {
      * @return the channels consumed
      */
     @ApiEndpointDoc(
-        summary = "Lists all software channels that the organization given is consuming.",
+        summary = "Lists all software channels that the organization given may consume from the user's " +
+                "organization.",
         method = HttpMethod.get,
         responseClass = ChannelInfoListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "channel info")

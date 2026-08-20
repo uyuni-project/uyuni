@@ -232,7 +232,7 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the kickstart install type label
          */
-        @Schema(description = "Label for KickstartInstallType (rhel_6, rhel_7, rhel_8, rhel_9, fedora_9).",
+        @Schema(description = "Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getInstallType();
 
@@ -277,7 +277,7 @@ public interface KickstartTreeHandlerApi {
         /**
          * @return the kickstart install type label
          */
-        @Schema(description = "Label for KickstartInstallType (rhel_6, rhel_7, rhel_8, rhel_9, fedora_9).",
+        @Schema(description = "Label for KickstartInstallType (rhel_2.1, rhel_3, rhel_4, rhel_5, fedora_9).",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String getInstallType();
 

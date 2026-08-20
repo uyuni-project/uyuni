@@ -195,7 +195,7 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
     /**
      * Set the formulas for a server
      * @param loggedInUser The current user
-     * @param sid The Id of the server
+     * @param systemId The Id of the server
      * @param formulas The formulas to apply to the server group.
      * @return 1 on success, exception thrown otherwise
      * @throws IOFaultException if an IOException occurs during saving
@@ -208,10 +208,10 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
      * @apidoc.param #array_single("string", "formulas")
      * @apidoc.returntype #return_int_success()
      */
-    public int setFormulasOfServer(User loggedInUser, Integer sid,
+    public int setFormulasOfServer(User loggedInUser, Integer systemId,
             List<String> formulas) throws IOFaultException, InvalidParameterException {
         try {
-            MinionServer minion = MinionServerFactory.lookupById(sid.longValue())
+            MinionServer minion = MinionServerFactory.lookupById(systemId.longValue())
                     .orElseThrow(() -> new InvalidParameterException(
                             "Provided systemId does not correspond to a minion"));
             FormulaUtil.ensureUserHasPermissionsOnServer(loggedInUser, minion);
@@ -233,7 +233,7 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
      *
      * @param loggedInUser user
      * @param formulaName formula name
-     * @param sid system id
+     * @param systemId system id
      * @return saved data as Json
      *
      * @apidoc.doc Get the saved data for the specific formula against specific server
@@ -244,9 +244,9 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
      * @apidoc.returntype #param("struct", "the saved formula data")
      */
     @ReadOnly
-    public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer sid, String formulaName) {
+    public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
         return formulaManager
-                .getSystemFormulaData(loggedInUser, formulaName, sid.longValue());
+                .getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
     }
 
     /**
