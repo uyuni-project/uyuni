@@ -48,6 +48,15 @@ public class OpenApiToAsciidocParser {
 
     private static final Logger LOGGER = LogManager.getLogger(OpenApiToAsciidocParser.class);
 
+    /** Bullet level the doclet uses for the properties of a struct. */
+    private static final int STRUCT_PROPERTY_LEVEL = 2;
+
+    /** Bullet level the doclet uses for the element struct of an array-valued parameter. */
+    private static final int PARAMETER_ELEMENT_STRUCT_LEVEL = 2;
+
+    /** OpenAPI type name for an array-valued schema. */
+    private static final String ARRAY_TYPE = "array";
+
     private final OpenAPI openAPI;
 
     /**
@@ -133,12 +142,9 @@ public class OpenApiToAsciidocParser {
 
         List<DocEntry> entries = operationsByTag.computeIfAbsent(tag, key -> new ArrayList<>());
 
-        if (!optional.isEmpty()) {
-            List<String> allParams = new ArrayList<>(required);
-            allParams.addAll(optional);
-            entries.add(DocEntry.create(method, operation, allParams, securityRequired));
+        for (List<String> params : UyuniSwaggerReader.expandOverloads(operation, required, optional)) {
+            entries.add(DocEntry.create(method, operation, params, securityRequired));
         }
-        entries.add(DocEntry.create(method, operation, required, securityRequired));
     }
 
     private String renderAdocFile(String tag, List<DocEntry> entries) {
@@ -219,7 +225,53 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        writer.printf("* %s  %s%s%n%n", parameterType(schema), paramName, suffix);
+        writer.printf("* %s  %s%s%n", parameterType(schema), paramName, suffix);
+        writeParameterElement(writer, resolved == null ? schema : resolved);
+        writer.println();
+    }
+
+    /**
+     * Writes the element type of an array parameter.
+     *
+     * The doclet expands the body of {@code #array_begin} into a nested item, one level deeper
+     * than the equivalent expansion in a return value. Struct elements bring their properties
+     * with them; simple elements are a single item labelled by the legacy element name.
+     */
+    private void writeParameterElement(PrintWriter writer, Schema<?> schema) {
+        if (!nestsElement(schema)) {
+            return;
+        }
+        Schema<?> resolvedItems = resolveSchemaReference(schema.getItems());
+        if (hasProperties(resolvedItems)) {
+            printElementStruct(writer, schema, PARAMETER_ELEMENT_STRUCT_LEVEL);
+            return;
+        }
+        String itemType = displayType(resolvedItems);
+        writer.printf("%s [.%s]#%s#  %s%n", "*".repeat(PARAMETER_ELEMENT_STRUCT_LEVEL),
+                itemType, itemType, legacyDocName(schema));
+    }
+
+    /**
+     * Tells whether an array documents its element type as a nested item.
+     *
+     * The doclet compiles a struct element, and a scalar element that carries a legacy element
+     * name, into {@code #array_begin}, which renders a bare {@code array} and nests the element
+     * below it. A plain scalar array compiles to {@code #array_single}, which renders the element
+     * type inline as {@code "<type> array"} and nests nothing.
+     *
+     * @param schema the array schema
+     * @return true if the element is documented as a nested item
+     */
+    private boolean nestsElement(Schema<?> schema) {
+        if (!ARRAY_TYPE.equals(schema.getType()) || schema.getItems() == null) {
+            return false;
+        }
+        Schema<?> resolvedItems = resolveSchemaReference(schema.getItems());
+        if (resolvedItems == null) {
+            return false;
+        }
+        return hasProperties(resolvedItems) ||
+                (isSimpleType(resolvedItems) && !legacyDocName(schema).isEmpty());
     }
 
     private boolean hasProperties(Schema<?> schema) {
@@ -231,8 +283,11 @@ public class OpenApiToAsciidocParser {
         if (!legacyType.isEmpty()) {
             return "[." + legacyType + "]#" + legacyType + "#";
         }
-        if ("array".equals(schema.getType())) {
-            return "[.array]#string array#";
+        if (ARRAY_TYPE.equals(schema.getType())) {
+            // An element rendered as a nested item leaves the parent a bare "array", exactly as
+            // #array_begin does; otherwise the element type is shown inline by #array_single.
+            String type = nestsElement(schema) ? ARRAY_TYPE : structPropertyType(schema);
+            return "[.array]#" + type + "#";
         }
         return "[." + displayType(schema) + "]#" + displayType(schema) + "#";
     }
@@ -283,12 +338,15 @@ public class OpenApiToAsciidocParser {
             schema = resolveSchemaReference(resultSchema);
         }
 
-        if ("array".equals(schema.getType()) && schema.getItems() != null) {
+        if (ARRAY_TYPE.equals(schema.getType()) && schema.getItems() != null) {
             writeArrayReturn(writer, schema, responseLabel, legacyDocResponse.name());
             return;
         }
 
-        if (isSimpleType(schema)) {
+        // A declared legacy type describes the whole return value, so it also applies to schemas
+        // that are not simple: the doclet renders those as a single typed line, without expanding
+        // the schema.
+        if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
             writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation);
             return;
         }
@@ -346,10 +404,76 @@ public class OpenApiToAsciidocParser {
     }
 
     private void printStructProperties(PrintWriter writer, Schema<?> resolved) {
+        printStructProperties(writer, resolved, STRUCT_PROPERTY_LEVEL);
+    }
+
+    private void printStructProperties(PrintWriter writer, Schema<?> resolved, int level) {
         if (resolved == null || resolved.getProperties() == null) {
             return;
         }
-        resolved.getProperties().forEach((name, prop) -> writeStructProperty(writer, "", name, prop));
+        resolved.getProperties().forEach((name, prop) -> {
+            Schema<?> nested = resolveNestedStruct(prop);
+            String label = nested != null && !legacyDocName(prop).isEmpty() ? legacyDocName(prop) : name;
+            writeStructProperty(writer, "", label, prop, level);
+            printElementStruct(writer, prop, level + 1);
+            printStructProperties(writer, nested, level + 1);
+        });
+    }
+
+    /**
+     * Resolves a property that documents a nested struct, or {@code null} for any other property.
+     *
+     * The doclet expands a struct valued property into its own properties one level below the
+     * property itself. Array properties are handled by {@link #printElementStruct} instead.
+     *
+     * @param property the property schema
+     * @return the resolved schema of the nested struct, or null if the property is not one
+     */
+    private Schema<?> resolveNestedStruct(Schema<?> property) {
+        if (ARRAY_TYPE.equals(property.getType())) {
+            return null;
+        }
+        Schema<?> resolved = resolveSchemaReference(property);
+        if (resolved == null || resolved.getProperties() == null || resolved.getProperties().isEmpty()) {
+            return null;
+        }
+        return resolved;
+    }
+
+    /**
+     * Writes the element type of an array property that holds structs.
+     *
+     * The doclet expands the {@code $Serializer} reference inside {@code #prop_array_begin} into
+     * the element struct followed by its properties, in the same shape it uses for an array return
+     * value.
+     */
+    private void printElementStruct(PrintWriter writer, Schema<?> property, int level) {
+        if (!ARRAY_TYPE.equals(property.getType())) {
+            return;
+        }
+        Schema<?> items = property.getItems();
+        if (items == null) {
+            return;
+        }
+        Schema<?> resolvedItems = resolveSchemaReference(items);
+        if (resolvedItems == null || resolvedItems.getProperties() == null ||
+                resolvedItems.getProperties().isEmpty()) {
+            return;
+        }
+        String label = legacyDocName(property);
+        if (label.isEmpty()) {
+            label = items.get$ref() != null ? extractRefName(items.get$ref()) : "";
+        }
+        writer.printf("%s [.struct]#struct#  %s%n", "*".repeat(level), label);
+        printStructProperties(writer, resolvedItems, level + 1);
+    }
+
+    private String legacyDocName(Schema<?> schema) {
+        if (schema.getExtensions() == null) {
+            return "";
+        }
+        Object value = schema.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_NAME_EXTENSION);
+        return value == null ? "" : value.toString();
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
@@ -402,6 +526,12 @@ public class OpenApiToAsciidocParser {
      * {@code [.array]#$t array#}, with {@code $date} bound to {@code dateTime.iso8601}.
      */
     private String structPropertyType(Schema<?> schema) {
+        // A declared legacy type has no OpenAPI counterpart to derive, so it wins over the
+        // resolved type.
+        String legacyType = legacyDocType(schema);
+        if (!legacyType.isEmpty()) {
+            return legacyType;
+        }
         String type = schema.getType();
         if ("integer".equals(type)) {
             return "int";
@@ -412,11 +542,11 @@ public class OpenApiToAsciidocParser {
         if ("boolean".equals(type) || "number".equals(type)) {
             return type;
         }
-        if ("array".equals(type)) {
+        if (ARRAY_TYPE.equals(type)) {
             // #prop_array renders the element type ("string array"); #prop_array_begin, which
             // is what a non-scalar element compiles to, renders a bare "array".
             Schema<?> items = resolveSchemaReference(schema.getItems());
-            return items != null && isSimpleType(items) ? structPropertyType(items) + " array" : "array";
+            return items != null && isSimpleType(items) ? structPropertyType(items) + " array" : ARRAY_TYPE;
         }
         if ("object".equals(type) || schema.get$ref() != null || schema.getProperties() != null) {
             return "struct";
@@ -429,12 +559,16 @@ public class OpenApiToAsciidocParser {
      * emits {@code [.array]} but shows the element type.
      */
     private String structPropertyMarker(Schema<?> schema) {
-        return "array".equals(schema.getType()) ? "array" : structPropertyType(schema);
+        return ARRAY_TYPE.equals(schema.getType()) ? ARRAY_TYPE : structPropertyType(schema);
     }
 
     private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema) {
+        writeStructProperty(writer, prefix, name, schema, STRUCT_PROPERTY_LEVEL);
+    }
+
+    private void writeStructProperty(PrintWriter writer, String prefix, String name, Schema<?> schema, int level) {
         String description = schema.getDescription() != null ? " - " + schema.getDescription() : "";
-        writer.printf("%s** [.%s]#%s#  \"%s\"%s%n", prefix, structPropertyMarker(schema),
+        writer.printf("%s%s [.%s]#%s#  \"%s\"%s%n", prefix, "*".repeat(level), structPropertyMarker(schema),
                 structPropertyType(schema), name, description);
     }
 
@@ -475,8 +609,7 @@ public class OpenApiToAsciidocParser {
         }
 
         if (schema.getProperties() != null) {
-            schema.getProperties().forEach((name, property) ->
-                    writeStructProperty(writer, prefix, name, property));
+            printStructProperties(writer, schema);
         }
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {

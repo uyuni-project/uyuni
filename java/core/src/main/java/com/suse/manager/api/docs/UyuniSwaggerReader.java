@@ -10,17 +10,25 @@
  */
 package com.suse.manager.api.docs;
 
+import com.redhat.rhn.domain.user.User;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import io.swagger.v3.core.converter.ModelConverters;
@@ -31,6 +39,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -55,6 +64,8 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
+    /** Parameter counts of the handler overloads an operation stands for, longest first. */
+    public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
     /** Legacy name for a date, bound as {@code $date} in the doclet's macros for both formats. */
@@ -100,18 +111,19 @@ public class UyuniSwaggerReader {
 
         Arrays.stream(cls.getMethods())
                 .sorted(Comparator.comparing(Method::getName))
-                .forEach(method -> processMethod(namespace, method, tagAnnotation));
+                .forEach(method -> processMethod(cls, namespace, method, tagAnnotation));
 
         return openAPI;
     }
 
-    private void processMethod(String namespace, Method method, Tag tagAnnotation) {
+    private void processMethod(Class<?> cls, String namespace, Method method, Tag tagAnnotation) {
         ApiEndpointDoc apiDoc = findMethodAnnotation(method, ApiEndpointDoc.class);
         if (apiDoc == null) {
             return;
         }
 
         Operation openApiOperation = createOperationWithBasicInfo(method, tagAnnotation, apiDoc);
+        applyOverloadArities(cls, method, openApiOperation);
         applySecurityIfNeeded(method, openApiOperation);
         configureRequestBodyIfPresent(apiDoc, openApiOperation);
         configureResponses(apiDoc, openApiOperation);
@@ -130,6 +142,82 @@ public class UyuniSwaggerReader {
         }
         operation.addTagsItem(tagAnnotation.name());
         return operation;
+    }
+
+    /**
+     * Records how many parameters each handler overload of an operation takes.
+     *
+     * A single operation with optional parameters stands for every overload of the handler method,
+     * and the legacy doclet documents one call per overload. Which parameter combinations exist is
+     * a property of the handler, not of the schema: overloads may add several parameters at once,
+     * so the combinations cannot be derived from the optional parameters alone. The counts exclude
+     * the logged in user, which is not a documented parameter.
+     *
+     * @param cls the handler class being read
+     * @param method the handler method backing the operation
+     * @param operation the operation being built
+     */
+    private void applyOverloadArities(Class<?> cls, Method method, Operation operation) {
+        List<Integer> arities = Arrays.stream(cls.getMethods())
+                .filter(candidate -> candidate.getName().equals(method.getName()))
+                .filter(candidate -> candidate.getParameterCount() > 0 &&
+                        User.class.equals(candidate.getParameterTypes()[0]))
+                .map(candidate -> candidate.getParameterCount() - 1)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+
+        if (arities.size() > 1) {
+            operation.addExtension(DOC_OVERLOAD_ARITIES_EXTENSION, arities);
+        }
+    }
+
+    /**
+     * Lists the parameter combinations the legacy doclet documents for an operation.
+     *
+     * Each combination is the required parameters plus as many of the optional ones as the
+     * corresponding handler overload takes, so an overload that adds several parameters at once
+     * produces no intermediate documented call. Combinations are returned longest first, the order
+     * the doclet uses, and an operation backed by a single overload yields a single combination.
+     *
+     * @param operation the operation to expand
+     * @param required the parameters present in every overload
+     * @param optional the parameters added by the longer overloads, in declaration order
+     * @return the parameter names of each documented call
+     */
+    public static List<List<String>> expandOverloads(Operation operation, List<String> required,
+                                                     List<String> optional) {
+        List<List<String>> combinations = new ArrayList<>();
+        for (int count : optionalParameterCounts(operation, required.size(), optional.size())) {
+            List<String> params = new ArrayList<>(required);
+            params.addAll(optional.subList(0, count));
+            combinations.add(params);
+        }
+        return combinations;
+    }
+
+    /**
+     * Resolves how many optional parameters each documented call carries.
+     *
+     * @param operation the operation to expand
+     * @param requiredCount the number of required parameters
+     * @param optionalCount the number of optional parameters
+     * @return the optional parameter counts, descending
+     */
+    private static List<Integer> optionalParameterCounts(Operation operation, int requiredCount, int optionalCount) {
+        Object arities = operation.getExtensions() == null ?
+                null : operation.getExtensions().get(DOC_OVERLOAD_ARITIES_EXTENSION);
+
+        if (arities instanceof List<?> recorded && !recorded.isEmpty()) {
+            return recorded.stream()
+                    .filter(Number.class::isInstance)
+                    .map(arity -> ((Number) arity).intValue() - requiredCount)
+                    .filter(count -> count >= 0 && count <= optionalCount)
+                    .distinct()
+                    .sorted(Comparator.reverseOrder())
+                    .toList();
+        }
+        return List.of(optionalCount);
     }
 
     private void applySecurityIfNeeded(Method method, Operation operation) {
@@ -165,30 +253,64 @@ public class UyuniSwaggerReader {
     }
 
     /**
-     * Carries the legacy documentation type of the request properties into the specification.
+     * Carries the legacy documentation type of the documented properties into the specification.
      *
      * Some legacy types have no OpenAPI counterpart, so swagger-core normalises them to the
-     * closest primitive. Annotating the request getter with {@link LegacyDocResponse#type()}
-     * keeps the original name available to the documentation parsers.
+     * closest primitive. Annotating the getter with {@link LegacyDocResponse#type()} keeps the
+     * original name available to the documentation parsers.
      *
-     * @param requestClass the request class of the endpoint
+     * A documented class describes its payload through the classes its getters return, so the
+     * whole reachable graph is visited: the annotation means the same thing on a request property,
+     * on a response property and on a property of a nested structure.
+     *
+     * @param documentedClass the request or response class of the endpoint
      */
-    private void applyLegacyDocTypes(Class<?> requestClass) {
+    private void applyLegacyDocTypes(Class<?> documentedClass) {
         if (this.components.getSchemas() == null) {
             return;
         }
-        Schema<?> requestSchema = this.components.getSchemas().get(schemaRefName(requestClass));
-        if (requestSchema == null || requestSchema.getProperties() == null) {
+        applyLegacyDocTypes(documentedClass, new HashSet<>());
+    }
+
+    private void applyLegacyDocTypes(Type type, Set<Class<?>> visited) {
+        if (type instanceof ParameterizedType parameterized) {
+            applyLegacyDocTypes(parameterized.getRawType(), visited);
+            Arrays.stream(parameterized.getActualTypeArguments())
+                    .forEach(argument -> applyLegacyDocTypes(argument, visited));
             return;
         }
-        for (Method getter : requestClass.getMethods()) {
+        if (!(type instanceof Class<?> documentedClass) || documentedClass.getPackageName().startsWith("java.") ||
+                !visited.add(documentedClass)) {
+            return;
+        }
+
+        stampLegacyDocTypes(documentedClass);
+
+        Arrays.stream(documentedClass.getGenericInterfaces())
+                .forEach(iface -> applyLegacyDocTypes(iface, visited));
+        Arrays.stream(documentedClass.getMethods())
+                .forEach(getter -> applyLegacyDocTypes(getter.getGenericReturnType(), visited));
+    }
+
+    private void stampLegacyDocTypes(Class<?> documentedClass) {
+        Schema<?> schema = this.components.getSchemas().get(schemaRefName(documentedClass));
+        if (schema == null || schema.getProperties() == null) {
+            return;
+        }
+        for (Method getter : documentedClass.getMethods()) {
             LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
-            if (legacyDoc == null || legacyDoc.type().isBlank()) {
+            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
                 continue;
             }
-            Schema<?> property = requestSchema.getProperties().get(resolvePropertyName(getter));
-            if (property != null) {
+            Schema<?> property = schema.getProperties().get(resolvePropertyName(getter));
+            if (property == null) {
+                continue;
+            }
+            if (!legacyDoc.type().isBlank()) {
                 property.addExtension(DOC_RESPONSE_TYPE_EXTENSION, legacyDoc.type());
+            }
+            if (!legacyDoc.name().isBlank()) {
+                property.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDoc.name());
             }
         }
     }
@@ -212,7 +334,8 @@ public class UyuniSwaggerReader {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
-            apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, createIntegerResponse()));
+            apiResponses.addApiResponse(HTTP_200,
+                    addLegacyDocResponse(apiDoc, createIntegerResponse(apiDoc.responseDescription())));
             operation.setResponses(apiResponses);
             return;
         }
@@ -260,6 +383,7 @@ public class UyuniSwaggerReader {
         MediaType mediaType = new MediaType();
 
         resolveAndRegisterSchema(apiDoc.responseClass());
+        applyLegacyDocTypes(apiDoc.responseClass());
         mediaType.setSchema(buildSchemaRef(apiDoc.responseClass()));
         content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
 
@@ -275,6 +399,7 @@ public class UyuniSwaggerReader {
 
         if (legacyDocResponse.responseClass() != Void.class) {
             resolveAndRegisterSchema(legacyDocResponse.responseClass());
+            applyLegacyDocTypes(legacyDocResponse.responseClass());
             response.addExtension(DOC_RESPONSE_SCHEMA_EXTENSION, buildSchemaRef(legacyDocResponse.responseClass()));
         }
         if (!legacyDocResponse.type().isBlank()) {
@@ -303,7 +428,8 @@ public class UyuniSwaggerReader {
                     );
                     if (parameterAnnotation != null && !parameterAnnotation.hidden()) {
                         operation.addParametersItem(
-                                mapToOpenApiParameter(parameterAnnotation, reflectionParams[index].getType())
+                                mapToOpenApiParameter(parameterAnnotation,
+                                        reflectionParams[index].getParameterizedType())
                         );
                     }
                 });
@@ -311,22 +437,44 @@ public class UyuniSwaggerReader {
 
     private Parameter mapToOpenApiParameter(
             io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
-            Class<?> type) {
+            Type type) {
         Parameter openApiParam = new Parameter()
                 .name(parameterAnnotation.name())
                 .required(parameterAnnotation.required())
                 .in(parameterAnnotation.in().toString().toLowerCase())
-                .schema(switch (type.getName()) {
-                    case "int", "java.lang.Integer" -> new IntegerSchema();
-                    case "boolean", "java.lang.Boolean" -> new BooleanSchema();
-                    default -> new StringSchema();
-                });
+                .schema(literalParameterSchema(type));
 
         if (!parameterAnnotation.description().isBlank()) {
             openApiParam.setDescription(parameterAnnotation.description());
         }
 
         return openApiParam;
+    }
+
+    /**
+     * Maps the declared type of a literal parameter to its schema.
+     *
+     * A collection parameter is documented as an array of its element type, the same way a
+     * collection property of a request body is.
+     *
+     * @param type the declared parameter type
+     * @return the schema describing the parameter
+     */
+    private Schema<?> literalParameterSchema(Type type) {
+        if (type instanceof ParameterizedType parameterized &&
+                parameterized.getRawType() instanceof Class<?> rawType &&
+                Collection.class.isAssignableFrom(rawType)) {
+            Type[] arguments = parameterized.getActualTypeArguments();
+            return new ArraySchema()
+                    .items(literalParameterSchema(arguments.length == 1 ? arguments[0] : Object.class));
+        }
+
+        String typeName = type instanceof Class<?> parameterClass ? parameterClass.getName() : "";
+        return switch (typeName) {
+            case "int", "java.lang.Integer" -> new IntegerSchema();
+            case "boolean", "java.lang.Boolean" -> new BooleanSchema();
+            default -> new StringSchema();
+        };
     }
 
     private void registerOperationOnPath(String namespace, Method method, HttpMethod httpMethod, Operation operation) {
@@ -352,7 +500,7 @@ public class UyuniSwaggerReader {
         }
     }
 
-    private ApiResponse createIntegerResponse() {
+    private ApiResponse createIntegerResponse(String description) {
         if (this.components.getSchemas() == null || !this.components.getSchemas().containsKey("IntegerResponse")) {
             Schema<?> integerResponseSchema = new Schema<>()
                     .type("object")
@@ -368,7 +516,7 @@ public class UyuniSwaggerReader {
         }
 
         ApiResponse response = new ApiResponse();
-        response.setDescription("1 on success, exception thrown otherwise.");
+        response.setDescription(description.isBlank() ? "1 on success, exception thrown otherwise." : description);
 
         Content content = new Content();
         MediaType mediaType = new MediaType();

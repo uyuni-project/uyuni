@@ -149,12 +149,9 @@ public class OpenApiToDocBookParser {
         List<String> required = getFieldsByRequirement(op, true);
         List<String> optional = getFieldsByRequirement(op, false);
 
-        if (!optional.isEmpty()) {
-            List<String> allParams = new ArrayList<>(required);
-            allParams.addAll(optional);
-            handler.calls.add(buildCallDoc(httpMethod, op, allParams, securityRequired));
+        for (List<String> params : UyuniSwaggerReader.expandOverloads(op, required, optional)) {
+            handler.calls.add(buildCallDoc(httpMethod, op, params, securityRequired));
         }
-        handler.calls.add(buildCallDoc(httpMethod, op, required, securityRequired));
     }
 
     private CallDoc buildCallDoc(String httpMethod, Operation op,
@@ -211,12 +208,41 @@ public class OpenApiToDocBookParser {
                 params.add(new ParamDoc(legacyType.isEmpty() ? "struct" : legacyType, name, desc));
                 resolved.getProperties().forEach((propName, propSchema) ->
                         params.add(new ParamDoc(formatType(propSchema), "\"" + propName + "\"",
-                                findDescription(propSchema))));
+                                findDescription(propSchema), renderParameterElement(propSchema))));
                 continue;
             }
-            params.add(new ParamDoc(formatType(schema), name, desc));
+            params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema)));
         }
         return params;
+    }
+
+    /**
+     * Renders the element type of an array parameter as markup to nest under it.
+     *
+     * The doclet expands the body of {@code #array_begin} into an {@code itemizedlist} inside the
+     * parameter's own list item. Struct elements bring their properties with them; simple elements
+     * are a single item labelled by the legacy element name. Returns an empty string otherwise.
+     */
+    private String renderParameterElement(Schema<?> schema) {
+        if (!"array".equals(schema.getType()) || schema.getItems() == null) {
+            return "";
+        }
+        Schema<?> items = schema.getItems();
+        Schema<?> resolvedItems = resolveSchemaReference(items);
+        if (resolvedItems == null) {
+            return "";
+        }
+        if (resolvedItems.getProperties() != null && !resolvedItems.getProperties().isEmpty()) {
+            String label = getLegacyDocName(schema);
+            return renderStructList(resolvedItems,
+                    items.get$ref() != null ? extractRefName(items.get$ref()) : "", label);
+        }
+        String label = getLegacyDocName(schema);
+        if (isSimpleType(resolvedItems) && !label.isEmpty()) {
+            return String.format("<listitem><para>%s</para></listitem>",
+                    escapeXml(formatSimpleType(resolvedItems) + " " + label));
+        }
+        return "";
     }
 
     private boolean hasProperties(Schema<?> schema) {
@@ -228,6 +254,14 @@ public class OpenApiToDocBookParser {
             return "";
         }
         Object value = schema.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_TYPE_EXTENSION);
+        return value == null ? "" : value.toString();
+    }
+
+    private String getLegacyDocName(Schema<?> schema) {
+        if (schema.getExtensions() == null) {
+            return "";
+        }
+        Object value = schema.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_NAME_EXTENSION);
         return value == null ? "" : value.toString();
     }
 
@@ -328,7 +362,10 @@ public class OpenApiToDocBookParser {
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
             return renderArrayReturn(schema, label, legacyStructLabel);
         }
-        if (isSimpleType(schema)) {
+        // A declared legacy type describes the whole return value, so it also applies to schemas
+        // that are not simple: the doclet renders those as a single typed line, without expanding
+        // the schema.
+        if (isSimpleType(schema) || !typeOverride.isBlank()) {
             return renderSimpleReturn(schema, label, typeOverride);
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
@@ -416,20 +453,87 @@ public class OpenApiToDocBookParser {
         sb.append("<listitem>\n");
         sb.append("  <para>struct ").append(escapeXml(structLabel)).append("</para>\n");
         sb.append("  <itemizedlist spacing=\"compact\">\n");
-        schema.getProperties().forEach((name, prop) -> {
-            Schema<?> propSchema = prop;
-            String desc = findDescription(propSchema);
-            String body = String.format("%s \"%s\"", formatType(propSchema), name);
-            if (!desc.isBlank()) {
-                body += " - " + desc;
-            }
-            sb.append("    <listitem><para>")
-              .append(escapeXml(body))
-              .append("</para></listitem>\n");
-        });
+        sb.append(renderPropertyItems(schema));
         sb.append("  </itemizedlist>\n");
         sb.append("</listitem>");
         return sb.toString();
+    }
+
+    /**
+     * Resolves a property that documents a nested struct, or {@code null} for any other property.
+     *
+     * The doclet expands a struct valued property into its own properties one level below the
+     * property itself. Array properties are handled by {@link #renderElementStruct} instead.
+     *
+     * @param property the property schema
+     * @return the resolved schema of the nested struct, or null if the property is not one
+     */
+    private Schema<?> resolveNestedStruct(Schema<?> property) {
+        if ("array".equals(property.getType())) {
+            return null;
+        }
+        Schema<?> resolved = resolveSchemaReference(property);
+        if (resolved == null || resolved.getProperties() == null || resolved.getProperties().isEmpty()) {
+            return null;
+        }
+        return resolved;
+    }
+
+    private String renderNestedStructProperties(Schema<?> nested) {
+        return renderPropertyItems(nested).stripTrailing();
+    }
+
+    private String renderPropertyItems(Schema<?> schema) {
+        StringBuilder sb = new StringBuilder();
+        schema.getProperties().forEach((name, prop) -> {
+            Schema<?> propSchema = prop;
+            String desc = findDescription(propSchema);
+            Schema<?> nested = resolveNestedStruct(propSchema);
+            String label = nested != null && !getLegacyDocName(propSchema).isBlank() ?
+                    getLegacyDocName(propSchema) : name;
+            // the doclet labels a nested struct with #struct_begin, which does not quote the label
+            String body = nested != null ? String.format("%s %s", formatType(propSchema), label) :
+                    String.format("%s \"%s\"", formatType(propSchema), label);
+            if (!desc.isBlank()) {
+                body += " - " + desc;
+            }
+            String elementStruct = nested != null ? renderNestedStructProperties(nested) :
+                    renderElementStruct(propSchema);
+            if (elementStruct.isEmpty()) {
+                sb.append("    <listitem><para>")
+                  .append(escapeXml(body))
+                  .append("</para></listitem>\n");
+                return;
+            }
+            sb.append("    <listitem>\n");
+            sb.append("      <para>").append(escapeXml(body)).append("</para>\n");
+            sb.append("      <itemizedlist spacing=\"compact\">\n");
+            sb.append(indentLines(elementStruct, 8)).append("\n");
+            sb.append("      </itemizedlist>\n");
+            sb.append("    </listitem>\n");
+        });
+        return sb.toString();
+    }
+
+    /**
+     * Renders the element type of an array property that holds structs.
+     *
+     * The doclet expands the {@code $Serializer} reference inside {@code #prop_array_begin} into a
+     * nested list holding the element struct. Returns an empty string for any other property.
+     */
+    private String renderElementStruct(Schema<?> property) {
+        if (!"array".equals(property.getType()) || property.getItems() == null) {
+            return "";
+        }
+        Schema<?> items = property.getItems();
+        Schema<?> resolvedItems = resolveSchemaReference(items);
+        if (resolvedItems == null || resolvedItems.getProperties() == null ||
+                resolvedItems.getProperties().isEmpty()) {
+            return "";
+        }
+        return renderStructList(resolvedItems,
+                items.get$ref() != null ? extractRefName(items.get$ref()) : "",
+                getLegacyDocName(property));
     }
 
     private String renderHandlerFile(HandlerDoc handler) {
@@ -475,8 +579,16 @@ public class OpenApiToDocBookParser {
                 String body = p.description.isEmpty() ?
                         String.format("%s %s", p.type, p.name) :
                         String.format("%s %s - %s", p.type, p.name, p.description);
-                w.printf("            <listitem><para>%s</para></listitem>%n",
-                        escapeXml(body));
+                if (p.nested.isEmpty()) {
+                    w.printf("            <listitem><para>%s</para></listitem>%n", escapeXml(body));
+                    continue;
+                }
+                w.printf("            <listitem>%n");
+                w.printf("              <para>%s</para>%n", escapeXml(body));
+                w.printf("              <itemizedlist spacing=\"compact\">%n");
+                w.printf("%s%n", indentLines(p.nested, 16));
+                w.printf("              </itemizedlist>%n");
+                w.printf("            </listitem>%n");
             }
         }
         w.printf("          </itemizedlist>%n");
@@ -725,10 +837,18 @@ public class OpenApiToDocBookParser {
         private final String name;
         private final String description;
 
+        /** Pre-rendered element markup nested under this parameter, empty when there is none. */
+        private final String nested;
+
         ParamDoc(String paramType, String paramName, String paramDescription) {
+            this(paramType, paramName, paramDescription, "");
+        }
+
+        ParamDoc(String paramType, String paramName, String paramDescription, String nestedMarkup) {
             this.type = paramType;
             this.name = paramName;
             this.description = paramDescription;
+            this.nested = nestedMarkup;
         }
     }
 }
