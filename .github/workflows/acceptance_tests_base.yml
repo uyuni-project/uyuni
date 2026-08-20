@@ -237,7 +237,7 @@ jobs:
 
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        timeout-minutes: 20
+        timeout-minutes: 45
         run: ./testsuite/podman_runner/08_start_server.sh
 
       - name: Inject cached Ivy JARs into server container
