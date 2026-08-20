@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor.mqtt;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
@@ -202,6 +204,17 @@ public class MqttPublisherService {
      * @return the topic prefix in the form "uyuni/fqdn"
      */
     private static String resolveFqdn() {
+        // The configured hostname is the server's real FQDN and is what consumers
+        // expect in the topic. Asking the network stack instead returns the
+        // container-internal name on a containerised install, which is the only
+        // supported deployment, so every server would answer
+        // "uyuni-server.mgr.internal" and collide on a shared broker.
+        String configured = ConfigDefaults.get().getHostname();
+        if (configured != null && !configured.trim().isEmpty() && !"localhost".equals(configured)) {
+            LOG.info("Using configured server FQDN for MQTT topics: {}", configured);
+            return "uyuni/" + configured;
+        }
+
         try {
             String fqdn = InetAddress.getLocalHost().getCanonicalHostName();
             LOG.info("Resolved server FQDN for MQTT topics: {}", fqdn);

@@ -260,7 +260,7 @@ status.
 |---------|-------|-----|
 | Node-RED shows "disconnected" | Wrong broker credentials | A broker that rejects the login refuses the connection outright, so authentication problems look like connection problems. Check the username and password first. |
 | No events arriving | Publisher not configured or not started | Check `rhn_web_ui.log` for `Successfully connected`. If absent, verify `/etc/tomcat/conf.d/mqtt_java_opts.conf` and restart Tomcat. |
-| Publisher connects but nothing is published | Topic prefix mismatch | The server publishes under its own FQDN, shown in the `Initializing MqttPublisherService` log line. Make the subscription match. |
+| Publisher connects but nothing is published | Topic prefix mismatch | The server publishes under its configured FQDN (`java.hostname` in `rhn.conf`). Subscribe to `uyuni/#` to see the prefix it is actually using, then narrow the subscription to match. |
 | Events stop after a broker restart | By design | Events published while the broker is unavailable are dropped rather than queued, to avoid unbounded memory use. Publishing resumes automatically. |
 | Connection loop in the broker log | Duplicate MQTT client ID | Two Node-RED nodes sharing a client ID will disconnect each other repeatedly. Give each one its own. |
 | Flows disappeared after replacing the container | No volume on `/data` | There is no recovery. Check the mount before relying on it. |
