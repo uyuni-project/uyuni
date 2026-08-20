@@ -329,6 +329,24 @@ public class ContentManagementHandlerContractTest extends BaseOpenApiTest {
     }
 
     @Test
+    public void testAttachSourceWithoutPosition() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).attachSource(with(mockUser), with(PROJECT_LABEL), with(SOURCE_TYPE),
+                    with(SOURCE_LABEL));
+            will(returnValue(source()));
+        }});
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("projectLabel", PROJECT_LABEL);
+        body.put("sourceType", SOURCE_TYPE);
+        body.put("sourceLabel", SOURCE_LABEL);
+
+        validateApiContract("/contentmanagement/attachSource", "POST")
+                .withBody(body)
+                .onHandlerMethod("attachSource", User.class, String.class, String.class, String.class);
+    }
+
+    @Test
     public void testDetachSource() throws Exception {
         context.checking(new Expectations() {{
             oneOf(handler()).detachSource(with(mockUser), with(PROJECT_LABEL), with(SOURCE_TYPE),
@@ -489,6 +507,18 @@ public class ContentManagementHandlerContractTest extends BaseOpenApiTest {
         validateApiContract("/contentmanagement/buildProject", "POST")
                 .withBody(Map.of("projectLabel", PROJECT_LABEL, "message", "a build"))
                 .onHandlerMethod("buildProject", User.class, String.class, String.class);
+    }
+
+    @Test
+    public void testBuildProjectWithoutMessage() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).buildProject(with(mockUser), with(PROJECT_LABEL));
+            will(returnValue(1));
+        }});
+
+        validateApiContract("/contentmanagement/buildProject", "POST")
+                .withBody(Map.of("projectLabel", PROJECT_LABEL))
+                .onHandlerMethod("buildProject", User.class, String.class);
     }
 
     @Test

@@ -143,6 +143,25 @@ public class KickstartTreeHandlerContractTest extends BaseOpenApiTest {
     }
 
     @Test
+    public void testCreateWithoutKernelOptions() throws Exception {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("treeLabel", TREE_LABEL);
+        body.put("basePath", BASE_PATH);
+        body.put("channelLabel", CHANNEL_LABEL);
+        body.put("installType", "sles15generic");
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).create(with(mockUser), with(TREE_LABEL), with(BASE_PATH), with(CHANNEL_LABEL),
+                    with("sles15generic"));
+            will(returnValue(1));
+        }});
+
+        validateApiContract("/kickstart.tree/create", "POST")
+                .withBody(body)
+                .onHandlerMethod("create", User.class, String.class, String.class, String.class, String.class);
+    }
+
+    @Test
     public void testUpdate() throws Exception {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("treeLabel", TREE_LABEL);
@@ -162,6 +181,25 @@ public class KickstartTreeHandlerContractTest extends BaseOpenApiTest {
                 .withBody(body)
                 .onHandlerMethod("update", User.class, String.class, String.class, String.class, String.class,
                         String.class, String.class);
+    }
+
+    @Test
+    public void testUpdateWithoutKernelOptions() throws Exception {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("treeLabel", TREE_LABEL);
+        body.put("basePath", BASE_PATH);
+        body.put("channelLabel", CHANNEL_LABEL);
+        body.put("installType", "sles15generic");
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).update(with(mockUser), with(TREE_LABEL), with(BASE_PATH), with(CHANNEL_LABEL),
+                    with("sles15generic"));
+            will(returnValue(1));
+        }});
+
+        validateApiContract("/kickstart.tree/update", "POST")
+                .withBody(body)
+                .onHandlerMethod("update", User.class, String.class, String.class, String.class, String.class);
     }
 
     @Test
