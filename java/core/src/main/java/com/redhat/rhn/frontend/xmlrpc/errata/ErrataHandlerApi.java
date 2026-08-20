@@ -932,7 +932,7 @@ public interface ErrataHandlerApi {
          * @return the last check in time
          */
         @Schema(name = "last_checkin", description = "last time server\n" +
-                "successfully checked in", requiredMode = Schema.RequiredMode.REQUIRED)
+                "successfully checked in")
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getLastCheckin();
 
@@ -1136,14 +1136,13 @@ public interface ErrataHandlerApi {
          * @return the Bugzilla id
          */
         @Schema(name = "bugzilla_id", description = "actual bug number is the key into the\n" +
-                "struct", requiredMode = Schema.RequiredMode.REQUIRED)
+                "struct")
         String getBugzillaId();
 
         /**
          * @return the bug summary
          */
-        @Schema(name = "bug_summary", description = "summary who's key is the bug id",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "bug_summary", description = "summary who's key is the bug id")
         String getBugSummary();
     }
 
