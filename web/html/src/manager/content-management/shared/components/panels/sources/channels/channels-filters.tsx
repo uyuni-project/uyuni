@@ -1,4 +1,4 @@
-import { Fragment, memo } from "react";
+import { memo } from "react";
 
 import { channelsFiltersAvailableValues, FilterType } from "./channels-filters-state";
 
@@ -9,7 +9,7 @@ type Props = {
 
 const ChannelsFilters = (props: Props) => {
   return (
-    <Fragment>
+    <>
       {channelsFiltersAvailableValues.map((filter: FilterType) => (
         <div key={filter.id} className="checkbox">
           <label htmlFor={`filter_${filter.id}`}>
@@ -24,7 +24,7 @@ const ChannelsFilters = (props: Props) => {
           </label>
         </div>
       ))}
-    </Fragment>
+    </>
   );
 };
 

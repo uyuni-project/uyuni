@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { type ReactNode } from "react";
+
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
@@ -6,10 +7,10 @@ type Props = {
   title?: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  children: React.ReactNode;
-  buttons?: React.ReactNode;
+  header?: ReactNode;
+  footer?: ReactNode;
+  children: ReactNode;
+  buttons?: ReactNode;
   collapsClose?: boolean;
 };
 
@@ -17,17 +18,17 @@ export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
 
   const titleContent = props.title && (
-    <Fragment>
+    <>
       {props.icon && <i className={`fa ${props.icon}`} />}
       {props.title}
-    </Fragment>
+    </>
   );
 
   const bodyContent = (
-    <Fragment>
+    <>
       <div className="panel-body">{props.children}</div>
       {props.footer && <div className="panel-footer">{props.footer}</div>}
-    </Fragment>
+    </>
   );
 
   return (
