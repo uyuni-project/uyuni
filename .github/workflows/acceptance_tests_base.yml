@@ -71,6 +71,11 @@ jobs:
   tests:
     runs-on: ubuntu-24.04
     needs: filters
+    # Cancel superseded runs from the same PR/branch+server_id to free slots.
+    # server_id in the key preserves parallel runs for distinct server variants.
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.server_id }}
+      cancel-in-progress: true
     # GitHub-hosted runners hard-kill jobs at 6h; keep this below that so the
     # timeout actually fires (and runs post steps) instead of being pre-empted.
     timeout-minutes: 350
@@ -158,6 +163,12 @@ jobs:
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/02_setup_network.sh
 
+      - name: Configure Podman cgroupfs manager
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          sudo mkdir -p /etc/containers
+          echo -e '[engine]\ncgroup_manager = "cgroupfs"' | sudo tee /etc/containers/containers.conf
+
       - name: Build controller image from current branch
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && needs.filters.outputs.controller_dockerfile == 'true' }}
         timeout-minutes: 20
@@ -166,14 +177,39 @@ jobs:
             -t ghcr.io/${{ env.UYUNI_PROJECT }}/uyuni/ci-test-controller-dev:${{ env.UYUNI_VERSION }} \
             ./testsuite/dockerfiles/controller-dev/
 
+      - name: Pull Podman images for containers
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 90
+        run: ./testsuite/podman_runner/03a_pull_podman_images.sh
+
       - name: Start controller, registry and build host
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        timeout-minutes: 30
+        timeout-minutes: 45
         run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh
+
+      - name: Debug on hang (controller start)
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true
+
+      - name: Pull and push Docker images for local registries
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 45
+        run: ./testsuite/podman_runner/03b_pull_and_push_docker_images.sh
 
       - name: Create SSH configuration in controller
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 45
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh
+
+      - name: Debug on hang
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true
 
       - name: Parse recommended tests coming from the input as XML
         if: ${{ !inputs.skip_tests && inputs.recommended_tests != '' && needs.filters.outputs.require_acceptance_tests == 'true' }}
@@ -183,11 +219,12 @@ jobs:
 
       - name: Generate recommended tests as YAML
         if: ${{ !inputs.skip_tests && inputs.recommended_tests != '' && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 10
         run: ./testsuite/podman_runner/19_generate_recommended_tests_yml.sh
 
       - name: Install gems in controller
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        timeout-minutes: 20
+        timeout-minutes: 30
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
 
       - name: Collect and tag flaky tests in controller
@@ -204,18 +241,32 @@ jobs:
 
       - name: Setup server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        timeout-minutes: 45
+        timeout-minutes: 90
         run: ./testsuite/podman_runner/07_server_setup.sh
+
+      - name: Debug on hang (server setup)
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true
 
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        timeout-minutes: 20
+        timeout-minutes: 90
         run: ./testsuite/podman_runner/08_start_server.sh
+
+      - name: Debug with tmate on failure
+        if: failure()
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true
 
       - name: Inject cached Ivy JARs into server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-ivy.outputs.cache-hit == 'true' }}
         run: |
-          sudo podman exec server mkdir -p /root/.ivy2/cache/
+          until sudo timeout 30 podman exec server mkdir -p /root/.ivy2/cache/; do sleep 2; done
           sudo podman cp java/buildconf/ivy/repository/. server:/root/.ivy2/cache/
 
       - name: Inject cached node_modules into server container
@@ -245,18 +296,22 @@ jobs:
 
       - name: Configure SSHD in controller, server, build host and SSH minion
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 15
         run: ./testsuite/podman_runner/11_setup_sshd.sh
 
       - name: Run and configure Salt Minion container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 30
         run: ./testsuite/podman_runner/12_run_salt_sle_minion.sh
 
       - name: Run and configure RH-Like Minion container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 30
         run: ./testsuite/podman_runner/13_run_salt_rhlike_minion.sh
 
       - name: Run and configure Deb-Like Minion container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 30
         run: ./testsuite/podman_runner/14_run_salt_deblike_minion.sh
 
       - name: Run Core tests

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025 SUSE LLC
+# Copyright (c) 2018-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Skip if container because action chains fail on containers

@@ -11,7 +11,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 echo ubuntuminionproductuuid > /tmp/testing/ubuntu_product_uuid
 
-$PODMAN_CMD run --pull newer --privileged -d --network network -p 9093:9090 -v /tmp/testing/ubuntu_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name deblike_minion -h deblike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-ubuntu-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-DEBLIKE-KEY"
+$PODMAN_CMD run --pull missing --privileged -d --network network -p 9093:9090 -v /tmp/testing/ubuntu_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name deblike_minion -h deblike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-ubuntu-minion:$UYUNI_VERSION bash -c "exec tail -f /dev/null"
 $PODMAN_CMD exec deblike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
 $PODMAN_CMD exec deblike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
 $PODMAN_CMD exec -d deblike_minion prometheus-node-exporter
@@ -21,3 +21,5 @@ $PODMAN_CMD exec -d deblike_minion bash -c "prometheus-exporter-exporter -config
 
 $PODMAN_CMD exec deblike_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
 $PODMAN_CMD exec deblike_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
+# ponytail: start salt-minion last — see docs/adr/0001-ci-queue-jam-podman-exec-hang.md
+$PODMAN_CMD exec -d deblike_minion bash -c "/salt-minion-entry-point.sh server 1-DEBLIKE-KEY"

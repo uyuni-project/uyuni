@@ -1,11 +1,8 @@
 #!/bin/bash
 set -xe
+source "$(dirname "$0")/helpers.sh"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  PODMAN_CMD="podman"
-else
-  PODMAN_CMD="sudo -i podman"
-fi
+if [[ "$(uname)" == "Darwin" ]]; then PODMAN_CMD="podman"; fi
 
 $PODMAN_CMD exec server bash -c "cp /testsuite/podman_runner/debug_logging.properties /etc/tomcat/logging.properties"
 

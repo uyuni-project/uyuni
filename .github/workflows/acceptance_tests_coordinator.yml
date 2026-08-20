@@ -6,6 +6,7 @@ on:
       - opened
       - reopened
       - synchronize
+      - closed
 
 permissions:
   contents: read
@@ -21,6 +22,7 @@ env:
 jobs:
   determine_tests:
     name: Get recommended tests
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
