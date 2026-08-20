@@ -153,8 +153,7 @@ $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 World(MiniTest::Assertions)
 
 # Initialize the API client
-$api_test = new_api_client
-
+$api_test = new_api_client unless ENV.key?('UYUNI_NOT_INSTALLED') && ENV['UYUNI_NOT_INSTALLED'] == 'true'
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new if $code_coverage_mode
 
@@ -408,7 +407,7 @@ Before('@skip_known_issue') do
 end
 
 # Create a user for each feature
-Before do |scenario|
+Before('not @no_user_creation') do |scenario|
   feature_path = scenario.location.file
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
