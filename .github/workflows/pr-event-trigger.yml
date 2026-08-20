@@ -18,6 +18,7 @@ permissions:
 jobs:
   trigger:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Save PR number
         run: echo "${{ github.event.pull_request.number }}" > pr-number
