@@ -331,13 +331,6 @@ spec:
             name: web
             port:
               number: 80
-        path: /cobbler_api
-        pathType: Prefix
-      - backend:
-          service:
-            name: web
-            port:
-              number: 80
         path: /cblr
         pathType: Prefix
       - backend:
