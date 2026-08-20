@@ -39,7 +39,19 @@ public final class MqttEventHelper {
      * @param event the event to publish
      */
     public static void publish(MqttEvent event) {
-        MqttPublisherService service = MqttPublisherService.getInstance();
+        publish(event, MqttPublisherService.getInstance());
+    }
+
+    /**
+     * Publish an event through a specific publisher service.
+     *
+     * <p>Used by callers that already hold a service instance, so that publishing goes
+     * through the same one they were configured with rather than the global singleton.</p>
+     *
+     * @param event the event to publish
+     * @param service the publisher service to use, may be null
+     */
+    public static void publish(MqttEvent event, MqttPublisherService service) {
         if (service != null) {
             String topic = service.getTopicPrefix() + "/" + event.getTopicSuffix();
             if (service.isEventEnabled(topic)) {
@@ -64,10 +76,21 @@ public final class MqttEventHelper {
      * @param event the event to publish
      */
     public static void publishAfterCommit(MqttEvent event) {
+        publishAfterCommit(event, MqttPublisherService.getInstance());
+    }
+
+    /**
+     * Publish an event through a specific publisher service once the transaction that
+     * produced it has committed.
+     *
+     * @param event the event to publish
+     * @param service the publisher service to use, may be null
+     */
+    public static void publishAfterCommit(MqttEvent event, MqttPublisherService service) {
         Transaction transaction;
         try {
             if (!HibernateFactory.inTransaction()) {
-                publish(event);
+                publish(event, service);
                 return;
             }
             transaction = HibernateFactory.getSession().getTransaction();
@@ -75,13 +98,13 @@ public final class MqttEventHelper {
         catch (RuntimeException e) {
             // No session on this thread, so there is no commit to wait for.
             LOG.debug("No Hibernate session available, publishing {} directly.", event.getTopicSuffix());
-            publish(event);
+            publish(event, service);
             return;
         }
 
         transaction.runAfterCompletion(status -> {
             if (status == TransactionStatus.COMMITTED) {
-                publish(event);
+                publish(event, service);
             }
             else {
                 LOG.debug("Skipping MQTT event {}: transaction completed with status {}.",

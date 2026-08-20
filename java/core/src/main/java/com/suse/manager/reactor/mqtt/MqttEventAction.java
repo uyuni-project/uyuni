@@ -84,7 +84,7 @@ public class MqttEventAction implements MessageAction {
             // alongside this action may still be persisting the change, and a
             // rollback must not leave an event announcing it. Publishes
             // immediately when no transaction is active.
-            MqttEventHelper.publishAfterCommit(event);
+            MqttEventHelper.publishAfterCommit(event, mqttPublisherService);
         }
         catch (Exception e) {
             LOG.error("Failed to process event in MqttEventAction: {}", e.getMessage(), e);
