@@ -21,8 +21,8 @@ Feature: RKE2 External CA Replacement
     And the "db-cert" certificate on "server" should be signed by the external CA
 
   Scenario: Verify server deployments recover after CA replacement
-    Then the "db" deployment on "server" should become ready within 5 minutes
-    And the "uyuni" deployment on "server" should become ready within 15 minutes
+    Then the "db" deployment on "server" in the namespace "uyuni" should become ready within 5 minutes
+    And the "uyuni" deployment on "server" in the namespace "uyuni" should become ready within 15 minutes
 
   Scenario: Inject external CA into proxy cluster
     Given The Kubernetes cluster is ready on "proxy"
@@ -32,8 +32,8 @@ Feature: RKE2 External CA Replacement
     Then the "proxy-cert" certificate on "proxy" should be signed by the external CA
 
   Scenario: Verify proxy deployments recover after CA replacement
-    Then the "uyuni-proxy" deployment on "proxy" should become ready within 10 minutes
-    And the "uyuni-proxy-tftp" deployment on "proxy" should become ready within 10 minutes
+    Then the "uyuni-proxy" deployment on "proxy" in the namespace "uyuni" should become ready within 10 minutes
+    And the "uyuni-proxy-tftp" deployment on "proxy" in the namespace "uyuni" should become ready within 10 minutes
 
   Scenario: Cleanup: Restore original CA certificates after external CA tests
     When I restore the original CA certificates on the server and proxy
