@@ -104,7 +104,7 @@ public class FormulaHandlerContractTest extends BaseOpenApiTest {
 
         validateApiContract("/formula/getSystemFormulaData", "GET")
                 .withParams(Map.of(
-                        "sid", new String[] {SYSTEM_ID.toString()},
+                        "systemId", new String[] {SYSTEM_ID.toString()},
                         "formulaName", new String[] {FORMULA_NAME}))
                 .onHandlerMethod("getSystemFormulaData", User.class, Integer.class, String.class);
     }
@@ -157,7 +157,7 @@ public class FormulaHandlerContractTest extends BaseOpenApiTest {
     @Test
     public void testSetFormulasOfServer() throws Exception {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("sid", SYSTEM_ID);
+        body.put("systemId", SYSTEM_ID);
         body.put("formulas", List.of("locale"));
 
         context.checking(new Expectations() {{

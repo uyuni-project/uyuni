@@ -204,7 +204,7 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
      * @apidoc.doc Set the formulas of a server.
      *
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #param_desc("int", "systemId", "the system ID")
      * @apidoc.param #array_single("string", "formulas")
      * @apidoc.returntype #return_int_success()
      */
@@ -239,7 +239,7 @@ public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
      * @apidoc.doc Get the saved data for the specific formula against specific server
      *
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #param_desc("int", "systemId", "the system ID")
      * @apidoc.param #param("string", "formulaName")
      * @apidoc.returntype #param("struct", "the saved formula data")
      */

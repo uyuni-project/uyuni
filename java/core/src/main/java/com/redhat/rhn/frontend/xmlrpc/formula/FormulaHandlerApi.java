@@ -145,7 +145,7 @@ public interface FormulaHandlerApi {
     )
     Map<String, Object> getSystemFormulaData(
         @Parameter(hidden = true) User loggedInUser,
-        @Parameter(name = "sid", description = "the system ID", in = ParameterIn.QUERY,
+        @Parameter(name = "systemId", description = "the system ID", in = ParameterIn.QUERY,
                 required = true) Integer systemId,
         @Parameter(name = "formulaName", in = ParameterIn.QUERY, required = true) String formulaName);
 
@@ -238,14 +238,14 @@ public interface FormulaHandlerApi {
     }
 
     @Schema(name = "SetServerFormulasRequest")
-    @JsonPropertyOrder({"sid", "formulas"})
+    @JsonPropertyOrder({"systemId", "formulas"})
     interface SetServerFormulasRequest {
 
         /**
          * @return the system id
          */
         @Schema(description = "the system ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSid();
+        Integer getSystemId();
 
         /**
          * @return the formulas to set
