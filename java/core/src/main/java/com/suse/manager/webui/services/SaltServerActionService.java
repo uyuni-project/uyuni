@@ -25,7 +25,9 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -38,6 +40,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -972,9 +975,13 @@ public class SaltServerActionService {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
                     Optional.of(Xor.right(function)), null);
         }
-
         else if (sa.isStatusQueued()) {
             setActionAsPickedUp(sa);
+        }
+
+        // find and update the original pending DistUpgradeAction.
+        if (isMajorMigrationVerifyJob(action, function)) {
+            handleMajorMigrationVerificationResult(minion.getMinionId(), Optional.of(jsonResult));
         }
 
         // Perform a "check-in" after every executed action
@@ -1349,5 +1356,61 @@ public class SaltServerActionService {
      */
     public void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
         this.taskomaticApi = taskomaticApiIn;
+    }
+
+    /**
+     * Checks if the job return event corresponds to a post-reboot verification state
+     * used in major version migrations (specifically the SLES 15 to 16 bridge).
+     *
+     * @param actionIn the action
+     * @param function the Salt function called (e.g., state.apply)
+     * @return true if this is a major migration verification handshake
+     */
+    private boolean isMajorMigrationVerifyJob(Action actionIn, String function) {
+        if (!"state.apply".equals(function) && !"state.sls".equals(function)) {
+            return false;
+        }
+        if (actionIn instanceof ApplyStatesAction apAction) {
+            return apAction.getDetails().getMods().contains(ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY);
+        }
+        return false;
+    }
+
+    /**
+     * Update the original pending {@link DistUpgradeAction} when sles16_verify completes.
+     * This method finds the still-pending DistUpgradeAction and passes the FULL result map
+     * to {@link DistUpgradeAction#handleUpdateServerAction} so that
+     * {@code isVerificationStateResult} recognises it and calls {@code handleVerificationResult}.
+     *
+     * @param minionId  the reconnected minion
+     * @param jobResult the full state.apply result from sles16_verify
+     */
+    public void handleMajorMigrationVerificationResult(String minionId, Optional<JsonElement> jobResult) {
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minion ->
+                jobResult.filter(JsonElement::isJsonObject).ifPresent(result -> {
+                    if (!DistUpgradeAction.isMajorMigrationVerificationResult(result)) {
+                        return;
+                    }
+                    // Find the SLES 15.x -> 16.x migration action
+                    ServerActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
+                            .stream()
+                            .filter(sa -> sa.getParentAction() instanceof DistUpgradeAction dup &&
+                                    dup.getDetails(minion.getId()) != null &&
+                                    dup.getDetails(minion.getId()).isSles15To16Migration())
+                            .findFirst()
+                            .ifPresentOrElse(sa -> {
+                                DistUpgradeAction dupAction = (DistUpgradeAction) sa.getParentAction();
+                                LOG.info("SLES 16 verify: Found pending migration {} for minion {}. Updating...",
+                                         dupAction.getId(), minionId);
+                                // Delegate the actual result parsing back to the Action class
+                                dupAction.handleUpdateServerAction(sa, result, null);
+                                ServerActionFactory.save(sa);
+                                LOG.info("SLES 16: Migration action {} for {} updated to: {}",
+                                        dupAction.getId(), minionId, sa.getStatus().getName());
+                            },
+                            () -> LOG.warn("SLES 16: No pending SLES 15->16 action found for minion {}", minionId)
+                            );
+                })
+        );
     }
 }
