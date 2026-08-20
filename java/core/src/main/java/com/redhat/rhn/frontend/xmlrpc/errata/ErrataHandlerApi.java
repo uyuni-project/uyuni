@@ -523,18 +523,19 @@ public interface ErrataHandlerApi {
         /**
          * @return the synopsis
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSynopsis();
 
         /**
          * @return the advisory name
          */
-        @Schema(name = "advisory_name")
+        @Schema(name = "advisory_name", requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryName();
 
         /**
          * @return the advisory release
          */
-        @Schema(name = "advisory_release")
+        @Schema(name = "advisory_release", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getAdvisoryRelease();
 
         /**
@@ -544,7 +545,7 @@ public interface ErrataHandlerApi {
             Type of advisory (one of the
             following: 'Security Advisory', 'Product Enhancement Advisory',
             or 'Bug Fix Advisory'\
-            """)
+            """, requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryType();
 
         /**
@@ -557,6 +558,7 @@ public interface ErrataHandlerApi {
         /**
          * @return the product
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getProduct();
 
         /**
@@ -567,11 +569,13 @@ public interface ErrataHandlerApi {
         /**
          * @return the topic
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getTopic();
 
         /**
          * @return the description
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getDescription();
 
         /**
@@ -587,6 +591,7 @@ public interface ErrataHandlerApi {
         /**
          * @return the solution
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSolution();
 
         /**
@@ -717,12 +722,13 @@ public interface ErrataHandlerApi {
         /**
          * @return the bug id
          */
-        @Schema(description = "Bug Id")
+        @Schema(description = "Bug Id", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the summary
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSummary();
 
         /**
@@ -740,91 +746,104 @@ public interface ErrataHandlerApi {
         /**
          * @return the erratum id
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the issue date
          */
-        @Schema(name = "issue_date")
+        @Schema(name = "issue_date", requiredMode = Schema.RequiredMode.REQUIRED)
         String getIssueDate();
 
         /**
          * @return the update date
          */
-        @Schema(name = "update_date")
+        @Schema(name = "update_date", requiredMode = Schema.RequiredMode.REQUIRED)
         String getUpdateDate();
 
         /**
          * @return the last modification date
          */
-        @Schema(name = "last_modified_date", description = "last time the erratum was modified.")
+        @Schema(name = "last_modified_date", description = "last time the erratum was modified.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getLastModifiedDate();
 
         /**
          * @return the advisory release
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getRelease();
 
         /**
          * @return the advisory status
          */
-        @Schema(name = "advisory_status")
+        @Schema(name = "advisory_status", requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryStatus();
 
         /**
          * @return the vendor advisory
          */
-        @Schema(name = "vendor_advisory")
+        @Schema(name = "vendor_advisory", requiredMode = Schema.RequiredMode.REQUIRED)
         String getVendorAdvisory();
 
         /**
          * @return the product
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getProduct();
 
         /**
          * @return the errata origin
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getErrataFrom();
 
         /**
          * @return the solution
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSolution();
 
         /**
          * @return the description
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getDescription();
 
         /**
          * @return the synopsis
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSynopsis();
 
         /**
          * @return the topic
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getTopic();
 
         /**
          * @return the references
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getReferences();
 
         /**
          * @return the notes
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getNotes();
 
         /**
          * @return the advisory type
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getType();
 
         /**
          * @return the severity
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSeverity();
 
         /**
@@ -832,7 +851,8 @@ public interface ErrataHandlerApi {
          */
         @Schema(name = "reboot_suggested",
                 description = "A boolean flag signaling whether a system reboot is\n" +
-                "advisable following the application of the errata. Typical example is upon kernel update.")
+                "advisable following the application of the errata. Typical example is upon kernel update.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         Boolean getRebootSuggested();
 
         /**
@@ -843,7 +863,7 @@ public interface ErrataHandlerApi {
                     A boolean flag signaling a weather reboot of
                     the package manager is advisable following the application of the errata. This is commonly
                     used to address update stack issues before proceeding with other updates.\
-                    """)
+                    """, requiredMode = Schema.RequiredMode.REQUIRED)
         Boolean getRestartSuggested();
     }
 
@@ -854,37 +874,41 @@ public interface ErrataHandlerApi {
         /**
          * @return the errata id
          */
-        @Schema(description = "errata ID")
+        @Schema(description = "errata ID", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the creation date
          */
-        @Schema(description = "the date erratum was created")
+        @Schema(description = "the date erratum was created", requiredMode = Schema.RequiredMode.REQUIRED)
         String getDate();
 
         /**
          * @return the advisory type
          */
-        @Schema(name = "advisory_type", description = "type of the advisory")
+        @Schema(name = "advisory_type", description = "type of the advisory",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryType();
 
         /**
          * @return the advisory status
          */
-        @Schema(name = "advisory_status", description = "status of the advisory")
+        @Schema(name = "advisory_status", description = "status of the advisory",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryStatus();
 
         /**
          * @return the advisory name
          */
-        @Schema(name = "advisory_name", description = "name of the advisory")
+        @Schema(name = "advisory_name", description = "name of the advisory",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisoryName();
 
         /**
          * @return the advisory synopsis
          */
-        @Schema(name = "advisory_synopsis", description = "summary of the erratum")
+        @Schema(name = "advisory_synopsis", description = "summary of the erratum",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getAdvisorySynopsis();
     }
 
@@ -895,18 +919,20 @@ public interface ErrataHandlerApi {
         /**
          * @return the system id
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the system name
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
 
         /**
          * @return the last check in time
          */
         @Schema(name = "last_checkin", description = "last time server\n" +
-                "successfully checked in")
+                "successfully checked in", requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getLastCheckin();
 
@@ -928,13 +954,14 @@ public interface ErrataHandlerApi {
          * @return the number of packages outside the assigned channels
          */
         @Schema(name = "extra_pkg_count", description = "number of packages not belonging\n" +
-                "to any assigned channel")
+                "to any assigned channel", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getExtraPkgCount();
 
         /**
          * @return the number of out-of-date packages
          */
-        @Schema(name = "outdated_pkg_count", description = "number of out-of-date packages")
+        @Schema(name = "outdated_pkg_count", description = "number of out-of-date packages",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getOutdatedPkgCount();
     }
 
@@ -945,23 +972,25 @@ public interface ErrataHandlerApi {
         /**
          * @return the channel id
          */
-        @Schema(name = "channel_id")
+        @Schema(name = "channel_id", requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getChannelId();
 
         /**
          * @return the channel label
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getLabel();
 
         /**
          * @return the channel name
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
 
         /**
          * @return the label of the parent channel
          */
-        @Schema(name = "parent_channel_label")
+        @Schema(name = "parent_channel_label", requiredMode = Schema.RequiredMode.REQUIRED)
         String getParentChannelLabel();
     }
 
@@ -974,114 +1003,128 @@ public interface ErrataHandlerApi {
         /**
          * @return the package id
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Integer getId();
 
         /**
          * @return the package name
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
 
         /**
          * @return the package epoch
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getEpoch();
 
         /**
          * @return the package version
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getVersion();
 
         /**
          * @return the package release
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getRelease();
 
         /**
          * @return the architecture label
          */
-        @Schema(name = "arch_label")
+        @Schema(name = "arch_label", requiredMode = Schema.RequiredMode.REQUIRED)
         String getArchLabel();
 
         /**
          * @return the labels of the channels providing the package
          */
         @Schema(name = "providing_channels", description = "Channel label\n" +
-                "providing this package.")
+                "providing this package.", requiredMode = Schema.RequiredMode.REQUIRED)
         List<String> getProvidingChannels();
 
         /**
          * @return the build host
          */
-        @Schema(name = "build_host")
+        @Schema(name = "build_host", requiredMode = Schema.RequiredMode.REQUIRED)
         String getBuildHost();
 
         /**
          * @return the package description
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getDescription();
 
         /**
          * @return the package checksum
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getChecksum();
 
         /**
          * @return the checksum type
          */
-        @Schema(name = "checksum_type")
+        @Schema(name = "checksum_type", requiredMode = Schema.RequiredMode.REQUIRED)
         String getChecksumType();
 
         /**
          * @return the package vendor
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getVendor();
 
         /**
          * @return the package summary
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSummary();
 
         /**
          * @return the package cookie
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getCookie();
 
         /**
          * @return the package license
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getLicense();
 
         /**
          * @return the package path
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getPath();
 
         /**
          * @return the package file
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getFile();
 
         /**
          * @return the build date
          */
-        @Schema(name = "build_date")
+        @Schema(name = "build_date", requiredMode = Schema.RequiredMode.REQUIRED)
         String getBuildDate();
 
         /**
          * @return the last modification date
          */
-        @Schema(name = "last_modified_date")
+        @Schema(name = "last_modified_date", requiredMode = Schema.RequiredMode.REQUIRED)
         String getLastModifiedDate();
 
         /**
          * @return the package size
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getSize();
 
         /**
          * @return the payload size
          */
-        @Schema(name = "payload_size")
+        @Schema(name = "payload_size", requiredMode = Schema.RequiredMode.REQUIRED)
         String getPayloadSize();
     }
 
@@ -1093,13 +1136,14 @@ public interface ErrataHandlerApi {
          * @return the Bugzilla id
          */
         @Schema(name = "bugzilla_id", description = "actual bug number is the key into the\n" +
-                "struct")
+                "struct", requiredMode = Schema.RequiredMode.REQUIRED)
         String getBugzillaId();
 
         /**
          * @return the bug summary
          */
-        @Schema(name = "bug_summary", description = "summary who's key is the bug id")
+        @Schema(name = "bug_summary", description = "summary who's key is the bug id",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getBugSummary();
     }
 

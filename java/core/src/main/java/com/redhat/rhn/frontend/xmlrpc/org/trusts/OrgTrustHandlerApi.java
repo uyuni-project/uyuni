@@ -10,6 +10,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.org.trusts;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import com.redhat.rhn.domain.user.User;
@@ -258,14 +259,14 @@ public interface OrgTrustHandlerApi {
         /**
          * @return the date the organization was created
          */
-        @Schema(description = "Date the organization was created", requiredMode = REQUIRED)
+        @Schema(description = "Date the organization was created", requiredMode = NOT_REQUIRED)
         Date getCreated();
 
         /**
          * @return the date the organization has been trusted since
          */
         @Schema(name = "trusted_since", description = "Date the organization was defined as trusted",
-                requiredMode = REQUIRED)
+                requiredMode = NOT_REQUIRED)
         Date getTrustedSince();
 
         /**

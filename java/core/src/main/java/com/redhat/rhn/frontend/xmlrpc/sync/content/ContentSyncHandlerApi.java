@@ -194,7 +194,7 @@ public interface ContentSyncHandlerApi {
         /**
          * @return the mirror url
          */
-        @Schema(description = "Optional mirror url or null", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Optional mirror url or null", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getMirrorUrl();
     }
 
@@ -211,7 +211,7 @@ public interface ContentSyncHandlerApi {
         /**
          * @return the mirror url
          */
-        @Schema(description = "Sync from mirror temporarily", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Sync from mirror temporarily", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getMirrorUrl();
     }
 

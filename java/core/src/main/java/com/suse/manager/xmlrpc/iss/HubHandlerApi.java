@@ -569,13 +569,15 @@ public interface HubHandlerApi {
         /**
          * @return the fully qualified domain name of the remote server
          */
-        @Schema(description = "The fully qualified domain name of the remote slave server.")
+        @Schema(description = "The fully qualified domain name of the remote slave server.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getFqdn();
 
         /**
          * @return the token used to authenticate on the remote server
          */
-        @Schema(description = "The token used to authenticate on the remote server.")
+        @Schema(description = "The token used to authenticate on the remote server.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getToken();
 
         /**
@@ -604,13 +606,15 @@ public interface HubHandlerApi {
         /**
          * @return the fully qualified domain name of the remote server
          */
-        @Schema(description = "The fully qualified domain name of the remote peripheral server.")
+        @Schema(description = "The fully qualified domain name of the remote peripheral server.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getFqdn();
 
         /**
          * @return the token used to authenticate on the remote server
          */
-        @Schema(description = "The token used to authenticate on the remote server.")
+        @Schema(description = "The token used to authenticate on the remote server.",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String getToken();
 
         /**
@@ -740,7 +744,7 @@ public interface HubHandlerApi {
          * @return the organization id of the channel
          */
         @Schema(name = "org_id", description = "the organization id of the channel",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "long")
         Long getOrgId();
 
@@ -748,7 +752,7 @@ public interface HubHandlerApi {
          * @return the parent channel id of the channel
          */
         @Schema(name = "parent_channel_id", description = "the parent channel ID of the channel",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "long")
         Long getParentChannelId();
     }
@@ -773,7 +777,7 @@ public interface HubHandlerApi {
          * @return the root CA certificate of the peripheral server
          */
         @Schema(name = "root_ca", description = "The root CA certificate of the peripheral server",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getRootCa();
     }
 

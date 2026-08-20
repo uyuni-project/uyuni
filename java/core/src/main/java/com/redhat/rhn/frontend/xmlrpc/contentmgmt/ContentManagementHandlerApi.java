@@ -1125,7 +1125,7 @@ public interface ContentManagementHandlerApi {
          * @return the field value to match
          */
         @Schema(description = "The field value to match (e.g. 'kernel')",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getValue();
     }
 

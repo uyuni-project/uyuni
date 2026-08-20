@@ -71,7 +71,7 @@ public interface SystemMonitoringHandlerApi {
         /**
          * @return the exporter name
          */
-        @Schema(name = "exporter_name", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "exporter_name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getExporterName();
 
         /**
