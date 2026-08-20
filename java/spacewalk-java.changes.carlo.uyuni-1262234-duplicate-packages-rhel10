@@ -1,0 +1,2 @@
+- Fix duplicate UI entries in rhel10-like minion package
+  upgrades (bsc#1262234)
