@@ -1,7 +1,7 @@
 #!jinja|yaml
 # SUSE Multi-Linux Manager image build state
 #
-# Copyright (c) 2017 - 2025 SUSE LLC
+# Copyright (c) 2017 - 2026 SUSE LLC
 
 {% from "images/kiwi-detect.sls" import kiwi_method with context %}
 
@@ -23,10 +23,25 @@
 
 {%- set activation_key = pillar.get('activation_key') %}
 {%- set use_bundle_build = pillar.get('use_bundle_build', salt['pillar.get']('custom_info:use_bundle_build', False)) %}
+{%- set sbom_supported = grains.get('os_family') == 'Suse' %}
 
 {# Default images and overrides #}
 {%- set eib_image = salt['pillar.get']('custom_info:eib_image', 'registry.suse.com/edge/3.2/edge-image-builder:1.1.0') %}
 {%- set kiwi_image = salt['pillar.get']('custom_info:kiwi_image', 'registry.suse.com/bci/kiwi:10.2') %}
+
+{%- if sbom_supported %}
+mgr_buildimage_install_sbom_generator:
+  pkg.installed:
+    - name: build
+
+mgr_buildimage_sync_modules:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+  saltutil.sync_modules
+{%- else %}
+  module.run:
+    - name: saltutil.sync_modules
+{%- endif %}
+{%- endif %}
 
 mgr_buildimage_prepare_source:
   file.directory:
@@ -166,6 +181,30 @@ mgr_buildimage_kiwi_bundle:
 {%- endif %} {# use_bundle_build #}
 {%- endif %} {# else kiwi legacy #}
 
+{%- if sbom_supported %}
+mgr_buildimage_generate_sbom:
+  module.run:
+    - name: kiwi_info.generate_sbom
+    - root: {{ chroot_dir }}
+    - dest: {{ dest_dir }}
+    - build_id: {{ build_id }}
+    {%- if use_bundle_build %}
+    - bundle_dest: {{ bundle_dir }}
+    {%- endif %}
+    - require:
+      - pkg: mgr_buildimage_install_sbom_generator
+    {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: mgr_buildimage_sync_modules
+    {%- else %}
+      - module: mgr_buildimage_sync_modules
+    {%- endif %}
+    {%- if use_bundle_build %}
+      - cmd: mgr_buildimage_kiwi_bundle
+    {%- else %}
+      - cmd: mgr_buildimage_kiwi_create
+    {%- endif %}
+{%- endif %}
+
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
   module.run:
@@ -174,10 +213,16 @@ mgr_buildimage_kiwi_collect_image:
     - path: {{ bundle_dir }}
     - require:
       - cmd: mgr_buildimage_kiwi_bundle
+      {%- if sbom_supported %}
+      - module: mgr_buildimage_generate_sbom
+      {%- endif %}
     {%- else %}
     - path: {{ dest_dir }}
     - require:
       - cmd: mgr_buildimage_kiwi_create
+      {%- if sbom_supported %}
+      - module: mgr_buildimage_generate_sbom
+      {%- endif %}
     {%- endif %}
 {%- endif %} {# use_salt_transport #}
 
@@ -199,6 +244,9 @@ mgr_buildimage_info:
       - mgr_buildimage_kiwi_create
     {%- endif %} {# use_bundle_build #}
 {%- endif %} {# use_salt_transport #}
+    {%- if sbom_supported %}
+      - module: mgr_buildimage_generate_sbom
+    {%- endif %}
 
 mgr_buildimage_kiwi_collect_logs:
   module.run:
