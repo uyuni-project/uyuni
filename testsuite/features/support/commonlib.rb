@@ -10,6 +10,11 @@ require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
+# Return whether the testsuite controls an external Kubernetes cluster.
+def external_kubernetes_cluster?
+  ENV.fetch('KUBERNETES_CLUSTER_MODE', '') == 'external'
+end
+
 # Switch the active Capybara session and app_host to a different server for the
 # duration of the block. Each server gets its own isolated browser session
 # (separate cookies, history), so two servers can be logged into simultaneously.
@@ -49,6 +54,14 @@ end
 # @return [String] The product name.
 def product
   return $product unless $product.nil?
+
+  if external_kubernetes_cluster?
+    configured_product = ENV.fetch('PRODUCT', nil)
+    return $product = 'Uyuni' if configured_product == 'Uyuni'
+    return $product = 'SUSE Manager' if ['SUSE Manager', 'SUSE Multi-Linux Manager'].include?(configured_product)
+
+    raise NotImplementedError, "Unsupported PRODUCT value for an external Kubernetes cluster: #{configured_product.inspect}"
+  end
 
   patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
   server = get_target('server')
@@ -938,7 +951,7 @@ end
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
-  hostname = get_target('server').full_hostname
+  hostname = external_kubernetes_cluster? ? ENV.fetch('SERVER', nil) : get_target('server').full_hostname
   ssl_verify = !$is_gh_validation
 
   case $api_protocol

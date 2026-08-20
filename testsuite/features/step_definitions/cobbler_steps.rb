@@ -3,7 +3,30 @@
 
 ### This file contains the definitions for all steps concerning Cobbler.
 
-$cobbler_test = CobblerTest.new
+# Lazily initialize the Cobbler client: not every run set exercises Cobbler,
+# and the Cobbler API may not be reachable at step-definition load time.
+class LazyCobblerTest
+  # Instantiates the real CobblerTest on first use and forwards its public methods.
+  #
+  # @param name [Symbol] The name of the method being called.
+  # @return [Object] The result of the forwarded method call.
+  def method_missing(name, *, &)
+    return super unless CobblerTest.public_method_defined?(name)
+
+    @cobbler_test ||= CobblerTest.new
+    @cobbler_test.public_send(name, *, &)
+  end
+
+  # Declares which CobblerTest methods are handled through method_missing.
+  #
+  # @param name [Symbol] The name of the method being looked up.
+  # @param include_private [Boolean] Whether private methods should be considered.
+  # @return [Boolean] Whether the public method is available on CobblerTest.
+  def respond_to_missing?(name, include_private = false)
+    CobblerTest.public_method_defined?(name) || super
+  end
+end
+$cobbler_test = LazyCobblerTest.new
 
 # cobbler daemon
 Given(/^cobblerd is running$/) do
