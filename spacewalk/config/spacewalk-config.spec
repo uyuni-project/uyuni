@@ -96,6 +96,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/pki/tls/private/
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
 %config %{apacheconfdir}/conf.d/z-public.conf
+%config %{apacheconfdir}/conf.d/01-cobblerapi.conf
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
