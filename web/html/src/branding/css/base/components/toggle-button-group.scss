@@ -1,0 +1,18 @@
+.toggle-button-group {
+  display: flex;
+
+  .btn {
+    margin: 0;
+    margin-right: -2px;
+
+    &.active {
+      background: $eos-bc-pine-500;
+      color: $white;
+      border-color: $eos-bc-pine-500;
+    }
+  }
+}
+
+@include onUyuni {
+  @import "toggle-button-group.uyuni.scss";
+}

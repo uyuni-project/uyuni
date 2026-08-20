@@ -1,8 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 
-import { Button } from "components/buttons";
 import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
+import { MessagesContainer } from "components/toastr/toastr";
+import { ToggleButtonGroup } from "components/toggle-button-group/toggle-button-group";
 
 import { localizedMoment } from "utils";
 import produce from "utils/produce";
@@ -69,6 +70,7 @@ const FilterForm = (props: Props) => {
       }}
     >
       <Fragment>
+        <MessagesContainer containerId="filter-modal-errors" />
         {props.editing && (
           <Messages
             key="filter-editing-messages"
@@ -77,6 +79,28 @@ const FilterForm = (props: Props) => {
             )}
           />
         )}
+        {!props.editing ? (
+          <div className="row form-group mt-3">
+            <div className="col-md-6 col-md-offset-3 offset-md-3">
+              <ToggleButtonGroup
+                value={filterBy}
+                onChange={setFilterBy}
+                options={[
+                  {
+                    value: FilterBy.Type,
+                    label: t("Manual Filter"),
+                    icon: "fa-filter",
+                  },
+                  {
+                    value: FilterBy.Template,
+                    label: t("Use Template"),
+                    icon: "fa-file-text-o",
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        ) : null}
         {filterBy === FilterBy.Type ? (
           <Text
             key="filter_name"
@@ -99,28 +123,6 @@ const FilterForm = (props: Props) => {
             disabled={props.editing}
           />
         )}
-
-        {!props.editing ? (
-          <div className="row">
-            <div className="col-md-6 col-md-offset-3 offset-md-3">
-              {filterBy === FilterBy.Type ? (
-                <Button
-                  className="btn-tertiary"
-                  handler={() => setFilterBy(FilterBy.Template)}
-                  icon="fa-file-text-o"
-                  text={t("Use a template")}
-                />
-              ) : (
-                <Button
-                  className="btn-tertiary"
-                  handler={() => setFilterBy(FilterBy.Type)}
-                  icon="fa-filter"
-                  text={t("Use a manual filter")}
-                />
-              )}
-            </div>
-          </div>
-        ) : null}
 
         {filterBy === FilterBy.Type ? (
           <Fragment>
@@ -261,6 +263,7 @@ const FilterForm = (props: Props) => {
                 label={t("Advisory Keywords")}
                 labelClass="col-md-3"
                 divClass="col-md-8"
+                inline={true}
               />
             )}
 
