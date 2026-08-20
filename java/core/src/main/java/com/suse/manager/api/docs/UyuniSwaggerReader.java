@@ -66,6 +66,9 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
     /** Parameter counts of the handler overloads an operation stands for, longest first. */
     public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
+
+    /** Extension holding the description the namespace documented for each allowed value. */
+    public static final String DOC_OPTION_DESCRIPTIONS_EXTENSION = "x-uyuni-doc-option-descriptions";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
     /** Legacy name for a date, bound as {@code $date} in the doclet's macros for both formats. */

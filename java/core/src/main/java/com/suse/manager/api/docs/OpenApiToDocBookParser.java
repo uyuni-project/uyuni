@@ -208,10 +208,12 @@ public class OpenApiToDocBookParser {
                 params.add(new ParamDoc(legacyType.isEmpty() ? "struct" : legacyType, name, desc));
                 resolved.getProperties().forEach((propName, propSchema) ->
                         params.add(new ParamDoc(formatType(propSchema), "\"" + propName + "\"",
-                                findDescription(propSchema), renderParameterElement(propSchema))));
+                                findDescription(propSchema), renderParameterElement(propSchema),
+                                renderOptions(propSchema))));
                 continue;
             }
-            params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema)));
+            params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema),
+                    renderOptions(schema)));
         }
         return params;
     }
@@ -499,10 +501,12 @@ public class OpenApiToDocBookParser {
             }
             String elementStruct = nested != null ? renderNestedStructProperties(nested) :
                     renderElementStruct(propSchema);
+            String options = renderOptions(propSchema);
             if (elementStruct.isEmpty()) {
                 sb.append("    <listitem><para>")
                   .append(escapeXml(body))
                   .append("</para></listitem>\n");
+                appendOptions(sb, options);
                 return;
             }
             sb.append("    <listitem>\n");
@@ -511,6 +515,7 @@ public class OpenApiToDocBookParser {
             sb.append(indentLines(elementStruct, 8)).append("\n");
             sb.append("      </itemizedlist>\n");
             sb.append("    </listitem>\n");
+            appendOptions(sb, options);
         });
         return sb.toString();
     }
@@ -534,6 +539,84 @@ public class OpenApiToDocBookParser {
         return renderStructList(resolvedItems,
                 items.get$ref() != null ? extractRefName(items.get$ref()) : "",
                 getLegacyDocName(property));
+    }
+
+    /**
+     * Renders the documented values of a parameter or property as a sibling item list.
+     *
+     * The doclet renders {@code #options()} as a separate {@code <listitem override="none">}
+     * following the item it documents, and appends the description after a dash for the
+     * {@code #item_desc} form.
+     *
+     * @param schema the parameter or property schema
+     * @return the markup for the values, or an empty string when there are none
+     */
+    private void writeOptions(PrintWriter w, String options) {
+        if (!options.isEmpty()) {
+            w.printf("%s%n", indentLines(options, 12));
+        }
+    }
+
+    private void appendOptions(StringBuilder sb, String options) {
+        if (!options.isEmpty()) {
+            sb.append(indentLines(options, 4)).append("\n");
+        }
+    }
+
+    private String renderOptions(Schema<?> schema) {
+        Schema<?> documented = optionsSchema(schema);
+        if (documented == null || documented.getEnum() == null) {
+            return "";
+        }
+        Map<String, String> descriptions = optionDescriptions(documented);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<listitem override=\"none\">\n");
+        sb.append("  <itemizedlist spacing=\"compact\">\n");
+        for (Object value : documented.getEnum()) {
+            String option = String.valueOf(value);
+            String description = descriptions.getOrDefault(option, "");
+            sb.append("  <listitem><para>")
+              .append(escapeXml(description.isEmpty() ? option : option + " - " + description))
+              .append("</para></listitem>\n");
+        }
+        sb.append("  </itemizedlist>\n");
+        sb.append("</listitem>");
+        return sb.toString();
+    }
+
+    /**
+     * Resolves the schema that carries the documented values.
+     *
+     * An array documents the values of its element type; every other parameter or property
+     * documents its own.
+     *
+     * @param schema the parameter or property schema
+     * @return the schema holding the values, or null when there is none
+     */
+    private Schema<?> optionsSchema(Schema<?> schema) {
+        if (schema == null) {
+            return null;
+        }
+        return "array".equals(schema.getType()) && schema.getItems() != null ?
+                resolveSchemaReference(schema.getItems()) : schema;
+    }
+
+    /**
+     * Reads the descriptions the namespace documented for individual values.
+     *
+     * @param schema the schema holding the values
+     * @return the description of each value, empty when the values carry none
+     */
+    private Map<String, String> optionDescriptions(Schema<?> schema) {
+        Object descriptions = schema.getExtensions() == null ? null :
+                schema.getExtensions().get(UyuniSwaggerReader.DOC_OPTION_DESCRIPTIONS_EXTENSION);
+        if (!(descriptions instanceof Map<?, ?> documented)) {
+            return Map.of();
+        }
+        Map<String, String> byOption = new LinkedHashMap<>();
+        documented.forEach((option, description) ->
+                byOption.put(String.valueOf(option), String.valueOf(description)));
+        return byOption;
     }
 
     private String renderHandlerFile(HandlerDoc handler) {
@@ -581,6 +664,7 @@ public class OpenApiToDocBookParser {
                         String.format("%s %s - %s", p.type, p.name, p.description);
                 if (p.nested.isEmpty()) {
                     w.printf("            <listitem><para>%s</para></listitem>%n", escapeXml(body));
+                    writeOptions(w, p.options);
                     continue;
                 }
                 w.printf("            <listitem>%n");
@@ -589,6 +673,7 @@ public class OpenApiToDocBookParser {
                 w.printf("%s%n", indentLines(p.nested, 16));
                 w.printf("              </itemizedlist>%n");
                 w.printf("            </listitem>%n");
+                writeOptions(w, p.options);
             }
         }
         w.printf("          </itemizedlist>%n");
@@ -840,15 +925,20 @@ public class OpenApiToDocBookParser {
         /** Pre-rendered element markup nested under this parameter, empty when there is none. */
         private final String nested;
 
+        /** Pre-rendered value list following this parameter, empty when there is none. */
+        private final String options;
+
         ParamDoc(String paramType, String paramName, String paramDescription) {
-            this(paramType, paramName, paramDescription, "");
+            this(paramType, paramName, paramDescription, "", "");
         }
 
-        ParamDoc(String paramType, String paramName, String paramDescription, String nestedMarkup) {
+        ParamDoc(String paramType, String paramName, String paramDescription, String nestedMarkup,
+                 String optionsMarkup) {
             this.type = paramType;
             this.name = paramName;
             this.description = paramDescription;
             this.nested = nestedMarkup;
+            this.options = optionsMarkup;
         }
     }
 }

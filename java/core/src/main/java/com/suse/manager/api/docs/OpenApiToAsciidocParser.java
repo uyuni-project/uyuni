@@ -54,6 +54,9 @@ public class OpenApiToAsciidocParser {
     /** Bullet level the doclet uses for the element struct of an array-valued parameter. */
     private static final int PARAMETER_ELEMENT_STRUCT_LEVEL = 2;
 
+    /** Bullet level the doclet uses for the documented values of a parameter. */
+    private static final int PARAMETER_OPTION_LEVEL = 2;
+
     /** OpenAPI type name for an array-valued schema. */
     private static final String ARRAY_TYPE = "array";
 
@@ -226,6 +229,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.printf("* %s  %s%s%n", parameterType(schema), paramName, suffix);
+        printOptions(writer, resolved == null ? schema : resolved, PARAMETER_OPTION_LEVEL);
         writeParameterElement(writer, resolved == null ? schema : resolved);
         writer.println();
     }
@@ -415,6 +419,7 @@ public class OpenApiToAsciidocParser {
             Schema<?> nested = resolveNestedStruct(prop);
             String label = nested != null && !legacyDocName(prop).isEmpty() ? legacyDocName(prop) : name;
             writeStructProperty(writer, "", label, prop, level);
+            printOptions(writer, prop, level + 1);
             printElementStruct(writer, prop, level + 1);
             printStructProperties(writer, nested, level + 1);
         });
@@ -466,6 +471,65 @@ public class OpenApiToAsciidocParser {
         }
         writer.printf("%s [.struct]#struct#  %s%n", "*".repeat(level), label);
         printStructProperties(writer, resolvedItems, level + 1);
+    }
+
+    /**
+     * Writes the documented values of a parameter or property, one bullet level below it.
+     *
+     * The doclet renders {@code #options()} as a plain bullet list carrying no type marker, and
+     * appends the description after a dash for the {@code #item_desc} form.
+     *
+     * @param writer the writer to write to
+     * @param schema the parameter or property schema
+     * @param level the bullet level of the values
+     */
+    private void printOptions(PrintWriter writer, Schema<?> schema, int level) {
+        Schema<?> documented = optionsSchema(schema);
+        if (documented == null || documented.getEnum() == null) {
+            return;
+        }
+        Map<String, String> descriptions = optionDescriptions(documented);
+        for (Object value : documented.getEnum()) {
+            String option = String.valueOf(value);
+            String description = descriptions.getOrDefault(option, "");
+            writer.printf("%s %s%s%n", "*".repeat(level), option,
+                    description.isEmpty() ? "" : " - " + description);
+        }
+    }
+
+    /**
+     * Resolves the schema that carries the documented values.
+     *
+     * An array documents the values of its element type; every other parameter or property
+     * documents its own.
+     *
+     * @param schema the parameter or property schema
+     * @return the schema holding the values, or null when there is none
+     */
+    private Schema<?> optionsSchema(Schema<?> schema) {
+        if (schema == null) {
+            return null;
+        }
+        return ARRAY_TYPE.equals(schema.getType()) && schema.getItems() != null ?
+                resolveSchemaReference(schema.getItems()) : schema;
+    }
+
+    /**
+     * Reads the descriptions the namespace documented for individual values.
+     *
+     * @param schema the schema holding the values
+     * @return the description of each value, empty when the values carry none
+     */
+    private Map<String, String> optionDescriptions(Schema<?> schema) {
+        Object descriptions = schema.getExtensions() == null ? null :
+                schema.getExtensions().get(UyuniSwaggerReader.DOC_OPTION_DESCRIPTIONS_EXTENSION);
+        if (!(descriptions instanceof Map<?, ?> documented)) {
+            return Map.of();
+        }
+        Map<String, String> byOption = new LinkedHashMap<>();
+        documented.forEach((option, description) ->
+                byOption.put(String.valueOf(option), String.valueOf(description)));
+        return byOption;
     }
 
     private String legacyDocName(Schema<?> schema) {
