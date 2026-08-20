@@ -56,6 +56,7 @@ Then(/^it should be possible to reach the test packages$/) do
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
+# Downloads all RPM packages and repodata from base_url into dest on the server.
 def mirror_repo_locally(server, base_url, dest)
   _out, rc = server.run("test -f #{dest}/repodata/repomd.xml", check_errors: false)
   return if rc.zero?
