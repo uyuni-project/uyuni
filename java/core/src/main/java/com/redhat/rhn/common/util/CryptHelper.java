@@ -58,7 +58,7 @@ public class CryptHelper {
             salt = salt.substring(prefix.length());
         }
 
-        // If we recieve a string such as $1$salt$something else, we only want
+        // If we receive a string such as $1$salt$something else, we only want
         // to keep the salt portion of it
         int end = salt.indexOf('$');
         if (end != -1) {

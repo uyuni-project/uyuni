@@ -105,7 +105,7 @@ public class ScapManager extends BaseManager {
 
     /**
      * Returns the given system is scap enabled.
-     * @param server The system for which to seach scap capability
+     * @param server The system for which to search scap capability
      * @param user The user requesting to view the system
      * @return true if the system is scap capable
      */
