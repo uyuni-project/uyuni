@@ -86,28 +86,13 @@ export const Playground: Story = {
   },
 };
 
-export const IconOnly: Story = {
-  args: {
-    className: "btn-danger",
-    text: "",
-    icon: "fa-trash",
-    title: "Delete item",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Icon-only buttons must set `title` so the action stays accessible. The wrapper also wires it up as a tooltip.",
-      },
-    },
-  },
-};
-
 export const Variants: Story = {
   parameters: {
     controls: { disable: true },
     docs: {
-      description: { story: "Reference of the four supported variants in default and small size." },
+      description: {
+        story: "Use the button variant that matches the importance and impact of the action.",
+      },
     },
   },
   render: () => (
@@ -118,11 +103,74 @@ export const Variants: Story = {
         <Button className="btn-danger" text="Danger" />
         <Button className="btn-tertiary" text="Tertiary" />
       </StoryRow>
+    </StripedStorySection>
+  ),
+};
+
+export const Icons: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "Buttons can combine an icon and a label or display an icon alone. Icon-only buttons must have a descriptive `title` so their action remains accessible.",
+      },
+    },
+  },
+  render: () => (
+    <StripedStorySection>
       <StoryRow>
-        <Button className="btn-primary btn-sm" text="Primary" />
-        <Button className="btn-default btn-sm" text="Default" />
-        <Button className="btn-danger btn-sm" text="Danger" />
-        <Button className="btn-tertiary btn-sm" text="Tertiary" />
+        <Button className="btn-primary" title="Add" icon="fa-plus" />
+        <Button className="btn-default" title="Delete" icon="fa-trash" />
+        <Button className="btn-primary" icon="fa-plus" text="Primary" />
+        <Button className="btn-default" icon="fa-plus" text="Default" />
+        <Button className="btn-tertiary" icon="fa-plus" text="Tertiary" />
+        <Button className="btn-tertiary" title="Delete" icon="fa-trash" />
+      </StoryRow>
+    </StripedStorySection>
+  ),
+};
+
+export const Sizes: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: "Buttons support the default size and a small size. Add `btn-sm` for small buttons.",
+      },
+    },
+  },
+  render: () => (
+    <StripedStorySection>
+      <StoryRow>
+        <Button className="btn-primary" text="Default button" />
+        <Button className="btn-primary btn-sm" text="Small button" />
+        <Button className="btn-default btn-sm" text="Small button" />
+        <Button className="btn-danger btn-sm" text="Small button" />
+        <Button className="btn-default btn-sm" title="Delete" icon="fa-trash" />
+        <Button className="btn-primary btn-sm" title="Add" icon="fa-plus" />
+        <Button className="btn-tertiary btn-sm" title="Delete" icon="fa-trash" />
+      </StoryRow>
+    </StripedStorySection>
+  ),
+};
+
+export const Disabled: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: "Set the `disabled` boolean property to make a button unavailable.",
+      },
+    },
+  },
+  render: () => (
+    <StripedStorySection>
+      <StoryRow>
+        <Button className="btn-primary" text="Primary" disabled />
+        <Button className="btn-default" text="Default" disabled />
+        <Button className="btn-danger" text="Danger" disabled />
+        <Button className="btn-tertiary" text="Tertiary" disabled />
       </StoryRow>
     </StripedStorySection>
   ),
