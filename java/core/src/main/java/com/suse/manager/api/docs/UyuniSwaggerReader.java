@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -441,17 +442,42 @@ public class UyuniSwaggerReader {
     private Parameter mapToOpenApiParameter(
             io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
             Type type) {
+        Schema<?> schema = literalParameterSchema(type);
+        applyDocumentedValues(schema, parameterAnnotation.schema());
         Parameter openApiParam = new Parameter()
                 .name(parameterAnnotation.name())
                 .required(parameterAnnotation.required())
                 .in(parameterAnnotation.in().toString().toLowerCase())
-                .schema(literalParameterSchema(type));
+                .schema(schema);
 
         if (!parameterAnnotation.description().isBlank()) {
             openApiParam.setDescription(parameterAnnotation.description());
         }
 
         return openApiParam;
+    }
+
+    /**
+     * Carries the values a literal parameter documents onto its schema.
+     *
+     * The type of a literal parameter is derived from its declared Java type, so the documented
+     * values are the only part of the annotation left to read. An array parameter documents the
+     * values of its element type, the same way an array property does.
+     *
+     * @param schema the schema built from the declared type
+     * @param annotation the schema annotation of the parameter
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void applyDocumentedValues(Schema<?> schema, io.swagger.v3.oas.annotations.media.Schema annotation) {
+        AnnotationsUtils.getSchemaFromAnnotation(annotation, null)
+                .filter(documented -> documented.getEnum() != null && !documented.getEnum().isEmpty())
+                .ifPresent(documented -> {
+                    Schema target = schema.getItems() != null ? schema.getItems() : schema;
+                    target.setEnum(documented.getEnum());
+                    if (documented.getExtensions() != null) {
+                        target.setExtensions(documented.getExtensions());
+                    }
+                });
     }
 
     /**
