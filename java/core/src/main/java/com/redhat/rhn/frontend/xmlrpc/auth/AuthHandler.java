@@ -26,10 +26,14 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.security.auth.login.LoginException;
@@ -109,13 +113,32 @@ public class AuthHandler extends BaseHandler {
     @ApiIgnore(ApiType.HTTP)
     public String login(String username, String password, Integer duration) {
         //Log in the user (handles authentication and active/disabled logic)
-        User user = null;
-        try {
-            user = UserManager.loginReadOnlyUser(username, password);
+        // Native LDAP is tried first so that already-provisioned LDAP users (auth_type = LDAP) can
+        // authenticate through the API and get their group-to-role membership refreshed. Unlike the
+        // Web UI, the XML-RPC path does NOT just-in-time provision unknown users (allowJit = false,
+        // per RFC v1): only existing accounts may log in here. The API allows read-only accounts, so
+        // read-only LDAP users are permitted.
+        List<String> ldapErrors = new ArrayList<>();
+        User user = LoginHelper.checkLdapAuthentication(username, password, true, false,
+                new ArrayList<>(), ldapErrors);
+        if (user != null) {
+            // Post-login bookkeeping the local path would otherwise do via performLoginActions. We do
+            // not reset temporary roles here: they were just recomputed from live LDAP group membership.
+            user.setLastLoggedIn(new Date());
+            UserManager.storeUser(user);
         }
-        catch (LoginException e) {
-            // Convert to fault exception
-            throw new UserLoginException(e.getMessage());
+        else {
+            if (!ldapErrors.isEmpty()) {
+                // Known LDAP user that failed authentication: reject, do not fall back.
+                throw new UserLoginException(ldapErrors.get(0));
+            }
+            try {
+                user = UserManager.loginReadOnlyUser(username, password);
+            }
+            catch (LoginException e) {
+                // Convert to fault exception
+                throw new UserLoginException(e.getMessage());
+            }
         }
 
         long dur = getDuration(duration);
