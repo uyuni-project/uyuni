@@ -86,6 +86,26 @@ jobs:
         timeout-minutes: 10
         run: sudo apt install podman
 
+      # The step above installs podman 4.9.3 in /usr/bin, but since runner image
+      # 20260810.271 the image itself also ships podman 5.8.4 in /usr/local/bin,
+      # which wins on root's PATH. That is the image where the jobs began to
+      # wedge in "podman exec", so keep using the version that has been running
+      # these tests all along. The two use different storage backends, so start
+      # from an empty store.
+      - name: Use the distro podman, not the one shipped with the runner image
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          if [ -e /usr/local/bin/podman ]; then
+            sudo mv -v /usr/local/bin/podman /usr/local/bin/podman-runner-image
+            sudo rm -rf /var/lib/containers
+          fi
+          # The rest of the image is still built around podman 5: its conmon has
+          # no journald support, so keep the log driver 5.8.4 was using here.
+          sudo mkdir -p /etc/containers/containers.conf.d
+          printf '[containers]\nlog_driver = "k8s-file"\n\n[engine]\nconmon_path = ["/usr/bin/conmon"]\n' \
+            | sudo tee /etc/containers/containers.conf.d/99-distro-podman.conf
+          sudo -i podman version | head -2
+
       - name: Install Python dependencies
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: pip install pyyaml
@@ -153,6 +173,14 @@ jobs:
       - name: Create temporary directories
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
+
+      # Before the first podman call, so an early wedge is still on record.
+      - name: Container runtime info
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        # Purely informational, and it calls podman: never let it fail the job.
+        continue-on-error: true
+        timeout-minutes: 5
+        run: ./testsuite/podman_runner/00_container_runtime_info.sh
 
       - name: Create Podman network
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
@@ -293,12 +321,24 @@ jobs:
           # For more details: https://github.com/actions/upload-artifact?tab=readme-ov-file#altering-compressions-level-speed-v-size
           compression-level: 6
 
+      # Runs before the log collection below, because that one goes through
+      # podman too and hangs as well when the runtime is wedged.
+      - name: Dump container runtime diagnostics
+        if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 10
+        run: ./testsuite/podman_runner/26_dump_hang_diagnostics.sh
+
+      # Both collect through podman, so when the runtime is the thing that is
+      # wedged they hang too. They have been seen running for hours on master,
+      # holding a runner for logs that will never arrive.
       - name: Get server logs
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true'}}
+        timeout-minutes: 15
         run: ./testsuite/podman_runner/24_get_server_logs.sh ${{ inputs.server_id }}
 
       - name: Get client logs
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 15
         run: ./testsuite/podman_runner/25_get_client_logs.sh ${{ inputs.server_id }}
 
       - name: Upload server log artifacts
