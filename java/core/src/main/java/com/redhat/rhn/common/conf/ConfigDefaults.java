@@ -432,6 +432,11 @@ public class ConfigDefaults {
     private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
 
     /**
+     * url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     */
+    private static final String UBUNTU_ERRATA_DB_DOWNLOAD_URL = "java.ubuntu_errata_db_download_url";
+
+    /**
      * OpenID Connect authorization parameters
      */
     public static final String OIDC_ENABLED = "web.oidc.enabled";
@@ -1383,6 +1388,15 @@ public class ConfigDefaults {
     public String getErrataAdvisoryMapCsvDownloadUrl() {
         return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
                 "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+    }
+
+    /**
+     * Return the url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     *
+     * @return the url to download the Ubuntu USN database from
+     */
+    public String getUbuntuErrataDbDownloadUrl() {
+        return Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL, "https://usn.ubuntu.com/usn-db/database.json");
     }
 
     /**
