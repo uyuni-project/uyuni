@@ -182,7 +182,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \
              cp /manager/spacewalk/config/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf && \
-             /docker-entrypoint-init.d/00-mgrSetup.sh && \
+             /docker-entrypoint-init.d/01-mgrSetup.sh && \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
