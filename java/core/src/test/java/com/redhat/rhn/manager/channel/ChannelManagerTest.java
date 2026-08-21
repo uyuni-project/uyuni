@@ -988,11 +988,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         c.addErrata(e);
 
-        c = TestUtils.saveAndReload(c);
-        e = TestUtils.saveAndReload(e);
-
-        bothP = TestUtils.saveAndReload(bothP);
-
+        TestUtils.flushAndClearSession();
 
         List<PackageDto> list = ChannelManager.listErrataPackages(c, e);
         assertEquals(list.size(), 1);
