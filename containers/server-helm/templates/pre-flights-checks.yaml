@@ -1,0 +1,30 @@
+{{- if not .Values.skipPreFlight -}}
+  {{- if (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "ca-certs") }}
+    {{- $ns := .Release.Namespace }}
+    {{- $msg := list
+        "ERROR: The ca-certs PVC still exists on the cluster."
+        "Custom CA certificates stored in this PVC must be recovered BEFORE upgrading."
+        ""
+        "To proceed:"
+        "  1. Check the reclaim policy of the storage class used by the ca-certs PVC:"
+        (printf "     SC=$(kubectl get pvc ca-certs -n %s -o jsonpath='{.spec.storageClassName}')" $ns)
+        "     kubectl get storageclass \"$SC\" -o jsonpath='{.reclaimPolicy}'"
+        ""
+        "     - If the reclaim policy is 'Delete': the PV and its data will be permanently"
+        "       removed when the PVC is deleted. You MUST recover the custom CA certificates"
+        "       before proceeding (see step 2)."
+        ""
+        "     - If the reclaim policy is 'Retain': the PV will be preserved after the PVC is"
+        "       deleted, but it will not be automatically reused. You should still recover the"
+        "       custom CA certificates before proceeding to avoid manual PV rebinding."
+        ""
+        "  2. Recover any custom CA certificates (see the 'Migrating custom CAs from the"
+        "     removed ca-certs PVC' section in the Kubernetes deployment documentation)"
+        ""
+        (printf "  3. Delete the PVC: kubectl delete pvc ca-certs -n %s" $ns)
+        ""
+        "  4. Re-run helm upgrade"
+    | join "\n" }}
+    {{- fail $msg }}
+  {{- end -}}
+{{- end -}}

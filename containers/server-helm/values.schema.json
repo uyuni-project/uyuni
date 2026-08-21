@@ -145,7 +145,6 @@
         "var-log": { "$ref": "#/definitions/volumeConfig" },
         "srv-www": { "$ref": "#/definitions/volumeConfig" },
         "srv-tftpboot": { "$ref": "#/definitions/volumeConfig" },
-        "ca-certs": { "$ref": "#/definitions/volumeConfig" },
         "etc-apache2": { "$ref": "#/definitions/volumeConfig" },
         "etc-cobbler": { "$ref": "#/definitions/volumeConfig" },
         "etc-postfix": { "$ref": "#/definitions/volumeConfig" },
@@ -347,6 +346,11 @@
         "internal": { "ref": "#/definitions/dbConnectionConfig" },
         "report": { "ref": "#/definitions/dbConnectionConfig" }
       }
+    },
+    "skipPreFlight": {
+      "type": "boolean",
+      "description": "Skip pre-flight validation checks during helm template or --dry-run",
+      "default": false
     }
   },
   "definitions": {

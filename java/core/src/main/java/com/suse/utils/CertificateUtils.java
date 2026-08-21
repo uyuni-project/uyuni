@@ -41,6 +41,8 @@ public final class CertificateUtils {
 
     public static final Path CERTS_PATH = Path.of("/etc/pki/trust/anchors/");
 
+    public static final Path CERTS_SAVE_PATH = Path.of("/etc/rhn/ca/");
+
     private static final Path LOCAL_TRUSTED_ROOT = CERTS_PATH.resolve("LOCAL-RHN-ORG-TRUSTED-SSL-CERT");
 
     private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
@@ -208,8 +210,8 @@ public final class CertificateUtils {
             throw new IllegalArgumentException("File name contains invalid characters");
         }
 
-        Path filePath = CERTS_PATH.resolve(fileName).normalize();
-        if (!filePath.startsWith(CERTS_PATH)) {
+        Path filePath = CERTS_SAVE_PATH.resolve(fileName).normalize();
+        if (!filePath.startsWith(CERTS_SAVE_PATH)) {
             //Prevent unauthorized access through path traversal (CWE-22)
             throw new IllegalArgumentException("Attempted path traversal attack detected");
         }
