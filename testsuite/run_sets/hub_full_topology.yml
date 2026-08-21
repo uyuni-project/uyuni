@@ -1,0 +1,41 @@
+# Hub full topology run set (BV-style pipeline).
+# Requires: hub (SERVER), peripheral (SERVER2), proxy (PROXY), and a minion (MINION).
+# Includes all server-to-server features (@hub_server_to_server) plus
+# full-topology-only features (@hub_full_topology). The two tag sets are distinct.
+#
+# Run with:
+#   cucumber -r features features/hub/srv_hub_*.feature
+
+## Hub full topology features BEGIN ##
+
+# All server-to-server features (A-01 through A-10, C-01)
+- features/hub/srv_hub_setup_registration.feature
+- features/hub/srv_hub_token_registration.feature
+- features/hub/srv_hub_token_lifecycle.feature
+
+# B-01..B-04: proxy + minion bootstrapped onto server2 peripheral.
+# Placed here deliberately: this is the only gap in the run set where server2 is
+# deregistered (srv_hub_token_lifecycle.feature deregisters it in its own cleanup)
+# so this feature's own "register server2" prerequisite succeeds instead of hitting
+# a duplicate-registration error, and its own "deregister server2" cleanup restores
+# the deregistered state that srv_hub_channel_synchronization.feature expects before
+# it registers server2 again. The sle_minion it bootstraps is registered directly to
+# server2 and is unaffected by later hub-peripheral register/deregister cycles, so it
+# is still present and reporting when srv_hub_reporting.feature (C-01) runs below.
+- features/hub/srv_hub_minion_on_peripheral.feature
+
+- features/hub/srv_hub_channel_synchronization.feature
+- features/hub/srv_hub_xmlrpc_operations.feature
+- features/hub/srv_hub_issv2_export_import.feature
+- features/hub/srv_hub_reporting.feature
+# C-02..C-06: Grafana formula setup and hub reporting dashboard validation (requires monitoring node)
+- features/hub/srv_hub_grafana_setup.feature
+- features/hub/srv_hub_grafana_dashboards.feature
+- features/hub/srv_hub_grafana_data_validation.feature
+- features/hub/srv_hub_verification_cleanup.feature
+
+
+# B-05: Hub outage resilience (must be last — stops and starts hub services)
+- features/hub/srv_hub_outage_resilience.feature
+
+## Hub full topology features END ##
