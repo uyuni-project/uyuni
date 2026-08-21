@@ -325,7 +325,13 @@ AfterStep do
 
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
-  log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+  # Rescue NoMethodError: Playwright returns a nil future when the browser dies during a long step
+  # (e.g. channel-sync waits), and has_no_css? then calls .value! on nil.
+  begin
+    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+  rescue NoMethodError => e
+    log "AfterStep: browser connection lost (#{e.message}) — skipping AJAX spinner check"
+  end
 end
 
 Before do
