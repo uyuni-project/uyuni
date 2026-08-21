@@ -306,7 +306,7 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="email.errata.notification.body.affected" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
         <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
@@ -327,15 +327,16 @@ You may address the issues outlined in this advisory in two ways:
         {1} - system list URL
       </context>
         </context-group>
-        <target state="needs-translation">
+        <target state="final">
 릴리스      아키텍처       프로파일 이름
 ---------- ---------- ---------------------------------------------
 {0}
 
 이 권장 사항에서 설명되는 문제는 다음의 두 가지 방법으로 해결할 수 있습니다.
 
-     - 다음 위치에서 사용할 수 있는 목록에서 이름을 클릭하여 서버 
-이름을 선택한 후 패치 업데이트 일정을 예약합니다.
+     - 다음 위치에서 사용할 수 있는 목록에서 
+       이름을 클릭하여 서버 이름을 선택한 후 
+       패치 업데이트 일정을 예약합니다.
            {1}
 
      - 영향을 받은 각 서버에서 업데이트 에이전트를 실행합니다.
@@ -344,7 +345,7 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="no" id="email.errata.notification.body.preferences" xml:space="preserve">
+      <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
         <source>
 Changing Notification Preferences
 ---------------------------------
@@ -367,7 +368,7 @@ click the "Details" tab.
         {2} - account info
       </context>
         </context-group>
-        <target state="needs-translation">
+        <target state="final">
 알림 설정 변경
 ---------------------------------
 패치 알림 기본 설정을 전역으로 활성화/비활성화하려면 @@PRODUCT_NAME@@에 
@@ -376,7 +377,8 @@ click the "Details" tab.
         URL: {0}
 
 또한, "시스템 목록"에서 개별 시스템을 선택하여 시스템마다 알림을
-활성화/비활성화할 수도 있습니다. 개별 시스템 보기에서 "상세 정보" 탭을 클릭합니다.
+활성화/비활성화할 수도 있습니다. 개별 시스템 보기에서 
+"상세 정보" 탭을 클릭합니다.
 
 {1}
 {2}

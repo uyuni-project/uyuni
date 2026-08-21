@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 10:02+0200\n"
-"PO-Revision-Date: 2026-08-13 20:13+0000\n"
+"POT-Creation-Date: 2026-08-21 10:52+0200\n"
+"PO-Revision-Date: 2026-08-18 03:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
@@ -466,7 +467,6 @@ msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone: 활성화 키 복제"
 
 #: ../src/spacecmd/activationkey.py:1581
-#, fuzzy
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -488,9 +488,11 @@ msgstr ""
 "                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
 "\n"
 "옵션:\n"
-"  -c CLONE_NAME  : 결과 키 이름, 여러 키에 대한 접두어로 취급됨\n"
-"  -x \"s/foo/bar\" : 선택 사항 정규식 대체, 클론 설명, 기본 채널 레이블,\n"
-"                   하위 채널 레이블, 구성 채널 이름에서 foo를 bar로 대체 "
+"  -c CLONE_NAME  : 결과 키 이름, 여러 키에 대한 \n"
+"                   접두어로 취급됨\n"
+"  -x \"s/foo/bar\" : 선택 사항 정규식 대체, 클론 설명, \n"
+"                   기본 채널 레이블, 하위 채널 레이블, \n"
+"                   구성 채널 이름에서 foo를 bar로 대체 "
 
 #: ../src/spacecmd/activationkey.py:1611 ../src/spacecmd/kickstart.py:519
 #: ../src/spacecmd/system.py:3102
@@ -613,7 +615,7 @@ msgid "api: call server API with arguments directly"
 msgstr "api: 인수를 사용하여 서버 API를 직접 호출"
 
 #: ../src/spacecmd/api.py:50
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: api [options] API_STRING)\n"
 "\n"
@@ -632,7 +634,8 @@ msgstr ""
 "사용법: api [옵션] API_STRING)\n"
 "\n"
 "옵션:\n"
-"  -A, --args  쉼표로 구분된 문자열 또는 JSON 식으로 세션 ID를 제외한 API를 위한 인수\n"
+"  -A, --args  쉼표로 구분된 문자열 또는 JSON 식으로 세션 ID를 제외한 \n"
+"              API를 위한 인수\n"
 "  -F, --format   출력 형식\n"
 "  -o, --output   출력 파일\n"
 "\n"
@@ -970,7 +973,6 @@ msgid "Delete these channels [y/N]:"
 msgstr "이러한 채널을 삭제하시겠습니까 [y/N]:"
 
 #: ../src/spacecmd/configchannel.py:640
-#, fuzzy
 msgid "Symlink [y/N]:"
 msgstr "Symlink [y/N]:"
 
@@ -1166,7 +1168,7 @@ msgid "revision:                 %s"
 msgstr "리비전:                 %s"
 
 #: ../src/spacecmd/configchannel.py:1062
-#, fuzzy, python-format
+#, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
@@ -1264,6 +1266,7 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1366
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 
@@ -1329,7 +1332,6 @@ msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: 구성 채널 복제"
 
 #: ../src/spacecmd/configchannel.py:1520
-#, fuzzy
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1353,7 +1355,8 @@ msgstr ""
 "\n"
 "옵션:\n"
 "  -c CLONE_LABEL : 결과 cc의 이름/레이블(설명을 업데이트하지 않음,\n"
-"                   -x 옵션 참조), 키가 여러 개 전달된 경우 접두어로 취급됨\n"
+"                   -x 옵션 참조), 키가 여러 개 전달된 경우 \n"
+"                   접두어로 취급됨\n"
 "  -x \"s/foo/bar\" : 선택 사항 정규식 대체, 클론 이름, 레이블 및 설명에서\n"
 "                   foo를 bar로 대체\n"
 "  참고 : -c 또는 -x 옵션이 지정되면 비활성으로 간주됨"
@@ -1404,7 +1407,6 @@ msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/configchannel.py:1736
-#, fuzzy
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
@@ -1586,6 +1588,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "사용법: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "'{}' 인수와 일치하는 키가 없습니다."
 
@@ -1818,7 +1821,7 @@ msgid "Apply these patches [y/N]:"
 msgstr "이 패치 적용 [y/N]:"
 
 #: ../src/spacecmd/errata.py:227
-#, fuzzy, python-format
+#, python-format
 msgid "Scheduled %i system(s) for %s"
 msgstr "%s에 예약된 %i 시스템"
 
@@ -1828,7 +1831,7 @@ msgid "No patches to schedule for %s"
 msgstr "%s에 예약할 패치 없음"
 
 #: ../src/spacecmd/errata.py:258
-#, fuzzy, python-format
+#, python-format
 msgid "Scheduled %i patches for %s"
 msgstr "%s에 예약된 %i 패치"
 
@@ -2050,7 +2053,6 @@ msgid "usage: group_addsystems GROUP <SYSTEMS>"
 msgstr "사용법: group_addsystems GROUP <SYSTEMS>"
 
 #: ../src/spacecmd/group.py:56
-#, fuzzy
 msgid "       group_addsystems GROUP <ssm>"
 msgstr "       group_addsystems GROUP <ssm>"
 
@@ -2520,7 +2522,7 @@ msgid "Scripts"
 msgstr "스크립트"
 
 #: ../src/spacecmd/kickstart.py:562 ../src/spacecmd/kickstart.py:2111
-#, fuzzy, python-format
+#, python-format
 msgid "Chroot:      %s"
 msgstr "Chroot:      %s"
 
@@ -2893,7 +2895,7 @@ msgid "Execution Time: %s"
 msgstr "실행 시간: %s"
 
 #: ../src/spacecmd/kickstart.py:2226
-#, fuzzy, python-format
+#, python-format
 msgid "Chroot:         %s"
 msgstr "Chroot:         %s"
 
@@ -3050,7 +3052,7 @@ msgid "Error adding %s script"
 msgstr "%s 스크립트 추가 중 오류"
 
 #: ../src/spacecmd/kickstart.py:2731
-#, fuzzy, python-format
+#, python-format
 msgid "failed to add ip range %s-%s, continuing"
 msgstr "IP 범위 %s~%s 추가 실패, 계속 진행"
 
@@ -3175,12 +3177,12 @@ msgid "usage: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 msgstr "사용법: kickstart_getsoftwaredetails KS_LABEL KS_LABEL2 ..."
 
 #: ../src/spacecmd/kickstart.py:3071
-#, fuzzy, python-format
+#, python-format
 msgid "noBase:        %s"
 msgstr "noBase:        %s"
 
 #: ../src/spacecmd/kickstart.py:3072
-#, fuzzy, python-format
+#, python-format
 msgid "ignoreMissing: %s"
 msgstr "ignoreMissing: %s"
 
@@ -3190,12 +3192,12 @@ msgid "Kickstart Label: %s"
 msgstr "킥스타트 레이블: %s"
 
 #: ../src/spacecmd/kickstart.py:3075
-#, fuzzy, python-format
+#, python-format
 msgid "noBase:          %s"
 msgstr "noBase:          %s"
 
 #: ../src/spacecmd/kickstart.py:3076
-#, fuzzy, python-format
+#, python-format
 msgid "ignoreMissing:   %s"
 msgstr "ignoreMissing:   %s"
 
@@ -3236,7 +3238,6 @@ msgstr ""
 "channel:CHANNEL\n"
 
 #: ../src/spacecmd/misc.py:72
-#, fuzzy
 msgid ""
 "Dates can be any of the following:\n"
 "Explicit Dates:\n"
@@ -3260,7 +3261,8 @@ msgstr ""
 "명확한 날짜:\n"
 "날짜는 YYYYMMDD[HHMMSS] 형식의 명확한 날짜 문자열로 표현할 수 있습니다.\n"
 "연, 월 및 일은 필수이지만 시간 및 분은 그렇지 않습니다.\n"
-"시간 및 분의 값을 입력하지 않으면 0000의 기본값이 사용됩니다.\n"
+"시간 및 분의 값을 입력하지 않으면 0000의 \n"
+"기본값이 사용됩니다.\n"
 "\n"
 "델타:\n"
 "날짜는 델타 값으로 표현할 수 있습니다. 예를 들어, '2h'는\n"
@@ -3570,7 +3572,6 @@ msgid "Dr."
 msgstr "Dr."
 
 #: ../src/spacecmd/org.py:126
-#, fuzzy
 msgid "Miss"
 msgstr "Miss"
 
@@ -3650,6 +3651,7 @@ msgstr "이름이 %s인 조직을 찾지 못함"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "'{}' 조직을 찾지 못함"
 
@@ -3679,6 +3681,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "이름이 %s인 트러스트 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "트러스트 대상인 '{}' 조직을 찾지 못함"
 
@@ -3712,6 +3715,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "이름이 %s인 트러스트된 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "트러스트된 조직 '{}'을(를) 찾지 못함"
 
@@ -4009,27 +4013,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
-#| "  CRT         path to the proxy certificate in PEM format\n"
-#| "  KEY         path to the proxy certificate private key in PEM format\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
-#| "            certicate in PEM format. May be provided multiple times.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4056,7 +4039,7 @@ msgstr ""
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
 "  SERVER_FQDN 프록시에 연결할 서버의 정규화된 도메인 이름입니다.\n"
-"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60%가 적합합니다.\n"
+"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60% o가 적합합니다.\n"
 "  EMAIL       프록시 관리자의 전자 메일입니다.\n"
 "  CA          PEM 형식의 프록시 인증서에 서명하기 위해 사용할 루트 CA의 경로입니다.\n"
 "  CRT         PEM 형식의 프록시 인증서 경로입니다.\n"
@@ -4072,13 +4055,10 @@ msgstr ""
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 
 #: ../src/spacecmd/proxy.py:114
-#, fuzzy
-#| msgid "proxy_container_config: create a proxy system and return its configuration file"
 msgid "proxy_container_config_nossl: create a proxy system and return its configuration file without SSL certificate"
 msgstr "proxy_container_config_nossl: 프록시 시스템을 생성하고 SSL 인증서를 제외한 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4100,7 +4080,7 @@ msgstr ""
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
 "  SERVER_FQDN 프록시에 연결할 서버의 정규화된 도메인 이름입니다.\n"
-"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60%가 적합합니다.\n"
+"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60% o가 적합합니다.\n"
 "  EMAIL       프록시 관리자의 전자 메일입니다.\n"
 "\n"
 "옵션:\n"
@@ -4115,34 +4095,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:174
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4176,7 +4128,7 @@ msgstr ""
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
 "  SERVER_FQDN 프록시에 연결할 서버의 정규화된 도메인 이름입니다.\n"
-"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60%가 적합합니다.\n"
+"  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60% o가 적합합니다.\n"
 "  EMAIL       프록시 관리자의 전자 메일입니다.\n"
 "\n"
 "옵션:\n"
@@ -4245,6 +4197,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "저장소 SSL 클라이언트 키:         %s"
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' 쿼리에 대한 저장소를 찾지 못함"
 
@@ -4465,6 +4418,7 @@ msgid "%s  # Systems"
 msgstr "%s  # 시스템"
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}'에 대한 오류를 찾지 못함"
 
@@ -4641,7 +4595,6 @@ msgid "usage: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 msgstr "사용법: scap_schedulexccdfscan PATH_TO_XCCDF_FILE XCCDF_OPTIONS SYSTEMS"
 
 #: ../src/spacecmd/scap.py:221
-#, fuzzy
 msgid "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
 msgstr "       scap_schedulexccdfscan ssm PATH_TO_XCCDF_FILE XCCDF_OPTIONS"
 
@@ -4890,6 +4843,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
@@ -4910,6 +4864,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
@@ -5950,7 +5905,6 @@ msgstr ""
 "-p,--protected ORG : ORG에 대해서만 보호된 조직 액세스(-p ORG의 여러 인스턴스가 허용됨)"
 
 #: ../src/spacecmd/softwarechannel.py:2292
-#, fuzzy
 msgid "softwarechannel_regenerateneededcache: "
 msgstr "softwarechannel_regenerateneededcache: "
 
@@ -5963,7 +5917,6 @@ msgid "usage: softwarechannel_regenerateneededcache"
 msgstr "사용법: softwarechannel_regenerateneededcache"
 
 #: ../src/spacecmd/softwarechannel.py:2310
-#, fuzzy
 msgid "softwarechannel_regenerateyumcache: "
 msgstr "softwarechannel_regenerateyumcache: "
 
@@ -6010,7 +5963,6 @@ msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "사용법: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:2508
-#, fuzzy
 msgid "softwarechannel_sync: "
 msgstr "softwarechannel_sync: "
 
@@ -6037,7 +5989,6 @@ msgstr "소프트웨어 채널 %s에서 %s(으)로의 %s 패키지"
 #: ../src/spacecmd/softwarechannel.py:2743
 #: ../src/spacecmd/softwarechannel.py:2915
 #: ../src/spacecmd/softwarechannel.py:2923
-#, fuzzy
 msgid "failed to read key id"
 msgstr "키 ID를 읽지 못함"
 
@@ -6090,7 +6041,6 @@ msgid "Perform these changes to channel "
 msgstr "채널에서 이 변경 수행 "
 
 #: ../src/spacecmd/softwarechannel.py:2673
-#, fuzzy
 msgid "softwarechannel_errata_sync: "
 msgstr "softwarechannel_errata_sync: "
 
@@ -6141,7 +6091,6 @@ msgid "errata from"
 msgstr "오류 출처"
 
 #: ../src/spacecmd/softwarechannel.py:2813
-#, fuzzy
 msgid "softwarechannel_errata_merge: "
 msgstr "softwarechannel_errata_merge: "
 
@@ -6180,10 +6129,12 @@ msgid "merging errata from softwarechannel "
 msgstr "소프트웨어 채널의 오류 병합 "
 
 #: ../src/spacecmd/softwarechannel.py:2931
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{}에는 {}에 없는 오류가 포함되지 않음"
 
 #: ../src/spacecmd/softwarechannel.py:2939
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "{} 채널에 추가할 오류: "
 
@@ -6197,11 +6148,11 @@ msgid " errata to  "
 msgstr " 오류 대상  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "{} 채널에 이 변경 수행 [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:2970
-#, fuzzy
 msgid "softwarechannel_syncrepos: "
 msgstr "softwarechannel_syncrepos: "
 
@@ -6234,7 +6185,6 @@ msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr "    -l/--latest : 저장소 동기화 시 가장 최신 패키지 버전만 다운로드"
 
 #: ../src/spacecmd/softwarechannel.py:3020
-#, fuzzy
 msgid "softwarechannel_setsyncschedule: "
 msgstr "softwarechannel_setsyncschedule: "
 
@@ -6259,7 +6209,6 @@ msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "<SCHEDULE>을 비워두면 비활성화됩니다."
 
 #: ../src/spacecmd/softwarechannel.py:3081
-#, fuzzy
 msgid "softwarechannel_removesyncschedule: "
 msgstr "softwarechannel_removesyncschedule: "
 
@@ -6516,12 +6465,10 @@ msgid "Examples:"
 msgstr "예:"
 
 #: ../src/spacecmd/system.py:292
-#, fuzzy
 msgid "> system_search device:vmware"
 msgstr "> system_search device:vmware"
 
 #: ../src/spacecmd/system.py:293
-#, fuzzy
 msgid "> system_search ip:192.168.82"
 msgstr "> system_search ip:192.168.82"
 
@@ -7312,7 +7259,7 @@ msgid "New Child channels %s"
 msgstr "새 하위 채널 %s"
 
 #: ../src/spacecmd/system.py:2816 ../src/spacecmd/system.py:4684
-#, fuzzy, python-format
+#, python-format
 msgid "Scheduled action id: %s"
 msgstr "예약된 작업 ID: %s"
 
@@ -7443,8 +7390,7 @@ msgstr ""
 "  -s START_TIME"
 
 #: ../src/spacecmd/system.py:3259
-#, fuzzy, python-format
-#| msgid "Can't find system ID for %s"
+#, python-format
 msgid "Could not find system IDs for: %s"
 msgstr "%s에 대한 시스템 ID를 찾을 수 없음"
 
@@ -7747,17 +7693,14 @@ msgid "Channel Version"
 msgstr "채널 버전"
 
 #: ../src/spacecmd/system.py:4175
-#, fuzzy
 msgid "Channel_newer_than_system"
 msgstr "Channel_newer_than_system"
 
 #: ../src/spacecmd/system.py:4196
-#, fuzzy
 msgid "System_newer_than_channel"
 msgstr "System_newer_than_channel"
 
 #: ../src/spacecmd/system.py:4212
-#, fuzzy
 msgid "Missing_in_channel"
 msgstr "Missing_in_channel"
 
@@ -8089,6 +8032,7 @@ msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4974
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
@@ -8102,11 +8046,13 @@ msgstr "system_needrebootafterupdate: 사용 가능한 패치가 적용된 경�
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5064
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "시스템 '{}'은(는) 업데이트 후 재부팅해야 합니다."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5073
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "사용 가능한 업데이트를 적용한 후 시스템 '{}'을(를) 재부팅할 필요 없습니다."
 
@@ -8458,6 +8404,7 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
 #: ../src/spacecmd/utils.py:993
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 

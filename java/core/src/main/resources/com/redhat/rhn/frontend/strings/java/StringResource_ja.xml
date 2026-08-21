@@ -7839,7 +7839,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target state="needs-adaptation">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャーによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合は、電力管理機能はサポートされません。</target>
+        <target state="final">この機能は、「フェンスエージェント」をインストールしている @@PRODUCT_NAME@@ サーバーでのみ利用できます。「フェンスエージェント」は、お使いのオペレーティングシステムおよび必要な電力管理インフラストラクチャによって、「fence-agents」、「fence-agents-all」、または「fence-agents-ipmilan」パッケージとして使用できる可能性があります。フェンスエージェントをインストールしてください。フェンスエージェントがご使用のオペレーティングシステムで利用できない場合、電力管理機能はサポートされません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="cobbler.powermanagement.alom" xml:space="preserve">
         <source>Advanced Lights Out Manager</source>
@@ -10609,7 +10609,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occurred trying to cancel affected actions for schedule '{0}'</source>
-        <target state="needs-adaptation">スケジュール '{0}' に対して影響のある処理をキャンセルしようとしている際にエラーが発生しました</target>
+        <target state="final">スケジュール '{0}' に対して影響のある処理をキャンセルしようとしている際にエラーが発生しました</target>
       </trans-unit>
       <trans-unit approved="yes" id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
@@ -12132,7 +12132,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="final">ファイルの調整</target>
+        <target state="final">テーラリングファイル</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
@@ -12150,97 +12150,97 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>SLES 16 migration failed or result not found.{0}</source>
         <target state="final">SLES 16への移行が失敗したか、結果が見つかりませんでした。{0}</target>
       </trans-unit>
-      <trans-unit id="user.admin.access" xml:space="preserve">
+      <trans-unit id="user.admin.access" xml:space="preserve" approved="yes">
         <source>Admin Access</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">管理者アクセス</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve">
+      <trans-unit id="coco.environment.kvm_ibm_z16.description" xml:space="preserve" approved="yes">
         <source>KVM on IBM z16 series</source>
-        <target state="new"/>
+        <target state="final">IBM z16シリーズ上のKVM</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve">
+      <trans-unit id="coco.environment.kvm_ibm_z16.label" xml:space="preserve" approved="yes">
         <source>KVM on IBM z16 series</source>
-        <target state="new"/>
+        <target state="final">IBM z16シリーズ上のKVM</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve">
+      <trans-unit id="coco.environment.kvm_ibm_z17.description" xml:space="preserve" approved="yes">
         <source>KVM on IBM z17 series</source>
-        <target state="new"/>
+        <target state="final">IBM z17シリーズ上のKVM</target>
       </trans-unit>
-      <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve">
+      <trans-unit id="coco.environment.kvm_ibm_z17.label" xml:space="preserve" approved="yes">
         <source>KVM on IBM z17 series</source>
-        <target state="new"/>
+        <target state="final">IBM z17シリーズ上のKVM</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve">
+      <trans-unit id="coco.resultType.ibm_pvattest.description" xml:space="preserve" approved="yes">
         <source>IBM Secure Execution (IBM SEL)</source>
-        <target state="new"/>
+        <target state="final">IBM Secure Execution (IBM SEL)</target>
       </trans-unit>
-      <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve">
+      <trans-unit id="coco.resultType.ibm_pvattest.label" xml:space="preserve" approved="yes">
         <source>IBM SEL PVATTEST</source>
-        <target state="new"/>
+        <target state="final">IBM SEL PVATTEST</target>
       </trans-unit>
-      <trans-unit id="coco.status.requested.description" xml:space="preserve">
+      <trans-unit id="coco.status.requested.description" xml:space="preserve" approved="yes">
         <source>Requested</source>
-        <target state="new"/>
+        <target state="final">要求済み</target>
       </trans-unit>
-      <trans-unit id="coco.status.queued.description" xml:space="preserve">
+      <trans-unit id="coco.status.queued.description" xml:space="preserve" approved="yes">
         <source>Queued</source>
-        <target state="new"/>
+        <target state="final">キューに追加済み</target>
       </trans-unit>
-      <trans-unit id="coco.status.submitted.description" xml:space="preserve">
+      <trans-unit id="coco.status.submitted.description" xml:space="preserve" approved="yes">
         <source>Submitted</source>
-        <target state="new"/>
+        <target state="final">送信済み</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve" approved="yes">
         <source>The mandatory input data is missing</source>
-        <target state="new"/>
+        <target state="final">必須の入力データがありません</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve" approved="yes">
         <source>The secure execution header is missing.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーがありません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve" approved="yes">
         <source>The secure execution header is not a valid Base64 string.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーが有効なBase64文字列ではありません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve" approved="yes">
         <source>The secure execution header is empty.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーが空です。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short" xml:space="preserve" approved="yes">
         <source>The secure execution header is too short.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーが短すぎます。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header" xml:space="preserve" approved="yes">
         <source>The secure execution header does not start with the expected byte sequence.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーが、予期されるバイトシーケンスで始まっていません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch" xml:space="preserve" approved="yes">
         <source>The secure execution header size does not match the expected value.</source>
-        <target state="new"/>
+        <target state="final">セキュア実行ヘッダーのサイズが予期される値と一致しません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format" xml:space="preserve" approved="yes">
         <source>The host key document is not a valid string.</source>
-        <target state="new"/>
+        <target state="final">ホストキードキュメントが有効な文字列ではありません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet" xml:space="preserve" approved="yes">
         <source>The host key document is not valid yet.</source>
-        <target state="new"/>
+        <target state="final">ホストキードキュメントはまだ有効ではありません。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired" xml:space="preserve" approved="yes">
         <source>The host key document has expired.</source>
-        <target state="new"/>
+        <target state="final">ホストキードキュメントの有効期限が切れています。</target>
       </trans-unit>
-      <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve">
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed" xml:space="preserve" approved="yes">
         <source>The host key document is not a valid PEM certificate.</source>
-        <target state="new"/>
+        <target state="final">ホストキードキュメントが有効なPEM証明書ではありません。</target>
       </trans-unit>
-    <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve">
+      <trans-unit id="contentmanagement.invalid_issue_date" xml:space="preserve" approved="yes">
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">無効な日付形式です。ISO 8601オフセット形式(例: 2026-06-04T22:00:00Z)に従う必要があります。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

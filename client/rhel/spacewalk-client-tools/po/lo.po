@@ -8,63 +8,64 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2014-01-14 09:23+0000\n"
-"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Lao (http://www.transifex.com/projects/p/spacewalk/language/lo/)\n"
+"PO-Revision-Date: 2026-08-19 20:52+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/lo/>\n"
 "Language: lo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
-msgstr ""
+msgstr "ບໍ່ພົບ %s"
 
 #: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ: ແມ່ຂ່າຍບໍ່ສາມາດໃຊ້ງານໄດ້. ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/rpcServer.py:221
 msgid "ERROR: can not find server CA file"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ: ບໍ່ພົບໄຟລ໌ CA ຂອງແມ່ຂ່າຍ"
 
 #: ../src/up2date_client/up2dateErrors.py:62
 #: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
-msgstr ""
+msgstr "ຄລາສ %s ບໍ່ມີຄຸນສົມບັດ '%s'"
 
 #: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ RPM. ຂໍ້ຄວາມແມ່ນ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດລະຫັດຜ່ານ. ຂໍ້ຄວາມແມ່ນ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດຄວາມກ່ຽວພັນຂອງ RPM (dependency). ຂໍ້ຄວາມແມ່ນ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສື່ສານກັບແມ່ຂ່າຍ. ຂໍ້ຄວາມແມ່ນ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌: \n"
 
 #: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດການຕອບສະໜອງຊ້າຈາກແມ່ຂ່າຍ. ຂໍ້ຄວາມແມ່ນ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການກວດສອບຄວາມຖືກຕ້ອງຂອງຂໍ້ມູນທີ່ແມ່ຂ່າຍ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
@@ -72,18 +73,21 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"ບໍ່ຮອງຮັບ Red Hat Network Classic.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
-msgstr ""
+msgstr "ໝາຍເລກການຕິດຕັ້ງບໍ່ຖືກຕ້ອງ"
 
 #: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການວິເຄາະ (parse) ໄຟລ໌ oemInfo ທີ່ຟິວ:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດເຄືອຂ່າຍ: "
 
 #: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
@@ -99,3 +103,14 @@ msgid ""
 "    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
+"\n"
+"    ອົງກອນຂອງທ່ານມີສິດໃນການຈັດການ (Management entitlements) ບໍ່ພຽງພໍເພື່ອລົງທະບຽນລະບົບນີ້.\n"
+"    ກະລຸນາແຈ້ງຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານກ່ຽວກັບຂໍ້ຜິດພາດນີ້.\n"
+"    ທ່ານຄວນຈະສາມາດລົງທະບຽນລະບົບນີ້ໄດ້ ຫຼັງຈາກທີ່ອົງກອນຂອງທ່ານຍົກເລີກສິດທີ່ມີຢູ່\n"
+"    ຫຼື ຊື້ສິດເພີ່ມເຕີມ. ຜູ້ດູແລລະບົບອົງກອນສາມາດຊື້ສິດເພີ່ມເຕີມໄດ້ທີ່\n"
+"    SUSE Customer Center.\n"
+"\n"
+"    ສາເຫດທົ່ວໄປຂອງຂໍ້ຜິດພາດນີ້ແມ່ນຍ້ອນການຕັ້ງຄ່າ ຄີເປີດໃຊ້ງານ (Activation Key)\n"
+"    ທີ່ເປັນຄ່າເລີ່ມຕົ້ນແບບສາກົນໄວ້ໂດຍບໍ່ຕັ້ງໃຈ. ຖ້າໃນບັນຊີມີການຕັ້ງຄ່າຄີດັ່ງກ່າວເປັນຄ່າເລີ່ມຕົ້ນ,\n"
+"    ທ່ານສາມາດປິດການໃຊ້ງານຄີນັ້ນ ແລະ ລອງໃໝ່ ເພື່ອຫຼີກເວັ້ນ\n"
+"ການຮຽກຮ້ອງສິດການຈັດການ (Management entitlement)."
