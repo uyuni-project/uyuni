@@ -993,6 +993,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles-16.0-x86_64
         multi-linux-managertools-sle-16-x86_64
       ],
+    'sles16-aarch64' =>
+      %w[
+        sle-product-sles-16.0-aarch64
+        multi-linux-managertools-sle-16-aarch64
+      ],
     'slesforsap15-sp5' =>
       %w[
         managertools-sle15-pool-x86_64-sap-sp5
@@ -1669,6 +1674,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-ubuntu2404-updates-amd64' => 60,
   'managertools-ubuntu2604-updates-amd64' => 60,
   'multi-linux-managertools-sle-16-aarch64-opensuse-16.0' => 60,
+  'multi-linux-managertools-sle-16-aarch64' => 60,
   'multi-linux-managertools-sle-16-x86_64' => 60,
   'opensuse-backports-15.6-updates-aarch64' => 300,
   'opensuse_leap15_6-aarch64' => 10_020,
@@ -1814,6 +1820,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp6-ltss-updates-x86_64' => 660,
   'sle-product-sles15-sp7-pool-x86_64' => 60,
   'sle-product-sles15-sp7-updates-x86_64' => 60,
+  'sle-product-sles-16.0-aarch64' => 1920,
   'sle-product-sles-16.0-x86_64' => 1920,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 120,
