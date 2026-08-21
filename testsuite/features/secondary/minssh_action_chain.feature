@@ -174,6 +174,9 @@ Feature: Salt SSH action chain
 
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on "sshminion"
+    Given I am on the Systems overview page of this "sshminion"
+    And I wait at most 900 seconds until the event "Remote Command on" is picked up
+    And I wait at most 300 seconds until the event "Remote Command on" is completed in the history
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sshminion"
 
   # previous, completed, action chain will no longer be available
