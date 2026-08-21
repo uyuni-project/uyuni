@@ -550,6 +550,6 @@ public class ErrataTestUtils {
         copy.setLastModified(original.getLastModified());
 
         // Copy the packages
-        copy.setPackages(new HashSet<>(original.getPackages()));
+        copy.replacePackages(new HashSet<>(original.getPackages()));
     }
 }

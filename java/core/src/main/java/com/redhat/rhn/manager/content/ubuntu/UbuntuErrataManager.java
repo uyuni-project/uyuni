@@ -367,11 +367,15 @@ public class UbuntuErrataManager {
                                 org.orElseGet(OrgFactory::getSatelliteOrg)))
                         .collect(Collectors.toSet());
                 if (errata.getPackages() == null) {
-                    errata.setPackages(packages);
+                    errata.replacePackages(packages);
                     changedErrata.add(errata);
                 }
-                else if (errata.getPackages().addAll(packages)) {
-                    changedErrata.add(errata);
+                else {
+                    int packageCount = errata.getPackages().size();
+                    errata.addPackages(packages);
+                    if (errata.getPackages().size() > packageCount) {
+                        changedErrata.add(errata);
+                    }
                 }
 
                 Set<Channel> matchingChannels = e.getValue().entrySet().stream()
@@ -379,7 +383,9 @@ public class UbuntuErrataManager {
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toSet());
 
-                if (errata.getChannels().addAll(matchingChannels)) {
+                int channelCount = errata.getChannels().size();
+                matchingChannels.forEach(channel -> channel.addErrata(errata));
+                if (errata.getChannels().size() > channelCount) {
                     changedErrata.add(errata);
                 }
 

@@ -1889,7 +1889,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 differentPackages.add(pack);
             }
         }
-        mergeTo.getPackages().addAll(differentPackages);
+        mergeTo.addPackages(differentPackages);
         ChannelFactory.save(mergeTo);
         ChannelManager.refreshWithNewestPackages(mergeTo, "java::mergePackages");
 

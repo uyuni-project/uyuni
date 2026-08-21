@@ -105,7 +105,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             List<Package> packages = IntStream.range(1, 10)
                 .mapToObj(index -> PackageTest.createTestPackage(user.getOrg()))
                 .collect(Collectors.toList());
-            channel.getPackages().addAll(packages);
+            channel.addPackages(packages);
 
 
             // Create a newer version for each of the packages and add  them to the channel as well
@@ -113,7 +113,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
                 .map(originalPackage -> PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null,
                     user.getOrg()))
                 .collect(Collectors.toList());
-            channel.getPackages().addAll(updatedPackages);
+            channel.addPackages(updatedPackages);
             updatablePackagesMap.put(server.getId(), updatedPackages);
 
             // Install the original package on the server
