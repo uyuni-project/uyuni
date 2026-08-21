@@ -34,33 +34,59 @@ jobs:
           pr_number="$(cat pr-number)"
           echo "number=${pr_number}" >> "$GITHUB_OUTPUT"
 
-      - uses: actions-cool/maintain-one-comment@4b2dbf086015f892dcb5e8c1106f5fccd6c1476b # v3.2.0
-        with:
-          number: ${{ steps.pr.outputs.number }}
-          body: |
-            :wave: Hello! Thanks for contributing to our project.
-            Acceptance tests will take some time (approx. 1h), please be patient :coffee:
+      # This used to be actions-cool/maintain-one-comment. GitHub blocked that
+      # organisation for a terms of service violation on 2026-05-19, so every
+      # run since has failed before reaching this step with "Repository access
+      # blocked". The job already has pull-requests: write, so gh can do the
+      # same thing with no third party action.
+      - name: Post or update the greeting comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          # Invisible when rendered, and it is how we find our own comment on a
+          # later run. The old action matched on a line of the body that the
+          # body did not actually contain, so it never found the previous
+          # comment and greeted the contributor again on every push.
+          MARKER: <!-- uyuni-acceptance-tests-greeting -->
+        run: |
+          body=$(cat <<EOF
+          ${MARKER}
+          :wave: Hello! Thanks for contributing to our project.
+          Acceptance tests will take some time (approx. 1h), please be patient :coffee:
 
-            You can see the progress at the end of this page and at https://github.com/uyuni-project/uyuni/pull/${{ steps.pr.outputs.number }}/checks
-            Once tests finish, if they fail, you can check :eyes: the cucumber report. See the link at the output of the action.
-            You can also check the artifacts section, which contains the logs at https://github.com/uyuni-project/uyuni/pull/${{ steps.pr.outputs.number }}/checks.
-            
-            If you are unsure the failing tests are related to your code, you can check the "reference jobs". These are jobs that run on a scheduled time with code from master. If they fail for the same reason as your build, it means the tests or the infrastructure are broken. If they do not fail, but yours do, it means it is related to your code.
-            
-            Reference tests:
-            
-              * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary_parallel.yml?query=event%3Aschedule
-            
-              * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary.yml?query=event%3Aschedule
+          You can see the progress at the end of this page and at https://github.com/uyuni-project/uyuni/pull/${PR_NUMBER}/checks
+          Once tests finish, if they fail, you can check :eyes: the cucumber report. See the link at the output of the action.
+          You can also check the artifacts section, which contains the logs at https://github.com/uyuni-project/uyuni/pull/${PR_NUMBER}/checks.
 
-            KNOWN ISSUES
+          If you are unsure the failing tests are related to your code, you can check the "reference jobs". These are jobs that run on a scheduled time with code from master. If they fail for the same reason as your build, it means the tests or the infrastructure are broken. If they do not fail, but yours do, it means it is related to your code.
 
-            Sometimes the build can fail when pulling new jar files from download.opensuse.org . This is a known limitation. Given this happens rarely, when it does, all you need to do is rerun the test. Sorry for the inconvenience.
+          Reference tests:
+
+            * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary_parallel.yml?query=event%3Aschedule
+
+            * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary.yml?query=event%3Aschedule
+
+          KNOWN ISSUES
+
+          Sometimes the build can fail when pulling new jar files from download.opensuse.org . This is a known limitation. Given this happens rarely, when it does, all you need to do is rerun the test. Sorry for the inconvenience.
 
 
-            For more tips on troubleshooting, see the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting).
+          For more tips on troubleshooting, see the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting).
 
-            Happy hacking!
-            
-          body-include: ":warning: You should not merge if acceptance tests fail to pass. :warning:" 
+          Happy hacking!
+          EOF
+          )
+
+          # jq reads MARKER straight out of the step environment, so the marker
+          # is written once and there is nothing to quote twice.
+          existing=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" \
+            --jq '[.[] | select(.body | contains(env.MARKER)) | .id] | first // empty')
+
+          if [ -n "${existing}" ]; then
+            gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" \
+              -f body="${body}" --silent
+          else
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
+              -f body="${body}" --silent
+          fi
 
