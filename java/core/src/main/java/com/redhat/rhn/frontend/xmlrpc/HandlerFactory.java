@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
+import com.redhat.rhn.frontend.xmlrpc.admin.gpg.AdminGpgHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
@@ -187,6 +188,7 @@ public class HandlerFactory {
         factory.addHandler("admin.configuration", adminConfigurationHandler);
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
         factory.addHandler("admin.payg", new AdminPaygHandler(taskomaticApi));
+        factory.addHandler("admin.gpg", new AdminGpgHandler());
         factory.addHandler("admin.ssh", new AdminSshHandler(saltApi));
         factory.addHandler("ansible", new AnsibleHandler(new AnsibleManager(GlobalInstanceHolder.SALT_API)));
         factory.addHandler("api", new ApiHandler(factory));

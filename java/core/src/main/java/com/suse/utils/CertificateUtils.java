@@ -32,7 +32,9 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -48,6 +50,10 @@ public final class CertificateUtils {
     private static final Path CUSTOMER_GPG_DIR = Path.of("/var/spacewalk/gpg");
 
     private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
+
+    private static final Path PUBRING_DIR = Path.of("/var/lib/spacewalk/gpgdir");
+
+    private static final Path PUBRING = PUBRING_DIR.resolve("pubring.gpg");
 
     private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
 
@@ -221,6 +227,10 @@ public final class CertificateUtils {
     }
 
     private static void executeExtCmd(String[] args) {
+        executeExtCmdAndGetOutput(args);
+    }
+
+    private static String executeExtCmdAndGetOutput(String[] args) {
         SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(LOG, true);
         int exitCode = ce.execute(args);
 
@@ -232,16 +242,16 @@ public final class CertificateUtils {
             if (msg.length() > 2300) {
                 msg = "... " + msg.substring(msg.length() - 2300);
             }
-            throw new RhnRuntimeException("Command '%s' exited with error code %d%s".formatted(
-                    Arrays.toString(args),
-                    exitCode,
-                    msg.isBlank() ? "" : ": " + msg)
-            );
+            throw new RhnRuntimeException("Command '%s' exited with error code %d%s"
+                    .formatted(Arrays.toString(args), exitCode,
+                            msg.isBlank() ? "" : ": " + msg));
         }
+
+        return ce.getLastCommandOutput() == null ? "" : ce.getLastCommandOutput();
     }
 
     /**
-     * Import the GPG Key in the customer keyring
+     * Import the GPG Key in the keyring
      * @param gpgKey the gpg key (armored text)
      * @throws IOException if something goes wrong
      */
@@ -259,7 +269,8 @@ public final class CertificateUtils {
             if (!Files.exists(CUSTOMER_GPG_RING)) {
                 initializeGpgKeyring();
             }
-            String[] cmdAdd = {"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal",
+            String[] cmdAdd = {"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
+                    "--import", "--import-options", "import-minimal",
                     "--keyring", CUSTOMER_GPG_RING.toString(), gpgTempFile.toString()};
             executeExtCmd(cmdAdd);
             executeExtCmd(new String[]{"/usr/sbin/import-suma-build-keys"});
@@ -271,13 +282,179 @@ public final class CertificateUtils {
 
     private static void initializeGpgKeyring() {
         try {
-            executeExtCmd(new String[]{"mkdir", "-m", "700", "-p", CUSTOMER_GPG_DIR.toString()});
-            executeExtCmd(new String[]{"gpg", "--no-default-keyring", "--keyring", CUSTOMER_GPG_RING.toString(),
-                    "--fingerprint"});
+            if (!Files.isDirectory(CUSTOMER_GPG_DIR)) {
+                FileAttribute<Set<PosixFilePermission>> dirAttrs =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
+                Files.createDirectories(CUSTOMER_GPG_DIR, dirAttrs);
+            }
+            executeExtCmd(new String[]{"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
+                    "--keyring", CUSTOMER_GPG_RING.toString(), "--fingerprint"});
         }
-        catch (Exception e) {
+        catch (IOException e) {
+            LOG.error("Failed to create the customer gpg directory {}: {}", CUSTOMER_GPG_DIR, e.getMessage());
+            throw new RhnRuntimeException("Failed to create customer gpg directory " + CUSTOMER_GPG_DIR, e);
+        }
+        catch (RhnRuntimeException e) {
             LOG.error("Failed to initialize the customer gpg keyring: {}", e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Remove a GPG key identified by its fingerprint
+     * @param fingerprint the hex representation of the fingerprint
+     * @return true on success
+     */
+    public static boolean removeGpgKey(String fingerprint) {
+        if (StringUtils.isBlank(fingerprint)) {
+            LOG.info("No GPG fingerprint provided");
+            return false;
+        }
+
+        if (!Files.exists(CUSTOMER_GPG_RING)) {
+            LOG.info("No customer GPG keyring present at {}", CUSTOMER_GPG_RING);
+            return false;
+        }
+
+        try {
+            String[] cmdAdd = {"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--batch", "--yes",
+                    "--no-default-keyring", "--keyring", CUSTOMER_GPG_RING.toString(),
+                    "--delete-keys", fingerprint};
+            executeExtCmd(cmdAdd);
+        }
+        catch (RhnRuntimeException e) {
+            LOG.warn("Failed to remove GPG key {} from keyring: {}", fingerprint, e.getMessage());
+            return false;
+        }
+
+        if (Files.exists(PUBRING)) {
+            try {
+                executeExtCmd(new String[]{"gpg", "--homedir", PUBRING_DIR.toString(), "--batch", "--yes",
+                        "--no-default-keyring", "--keyring", PUBRING.toString(),
+                        "--delete-keys", fingerprint});
+            }
+            catch (RhnRuntimeException e) {
+                LOG.warn("Failed to remove GPG key {} from pubring: {}", fingerprint, e.getMessage());
+            }
+        }
+
+        return true;
+    }
+
+    public static class GpgKeyListing {
+
+        /**
+         * Creates a new empty listing
+         */
+        public GpgKeyListing() {
+            keyType = 0;
+            keySize = 0;
+            fingerprint = "<unknown>";
+            names = new ArrayList<>();
+        }
+
+        /**
+         * Creates a new listing with starting values
+         * @param keyTypeIn GPG type number
+         * @param keySizeIn Size of the key in bits
+         * @param fingerprintIn Fingerprint of the key
+         * @param namesIn Names associated with the key
+         */
+        public GpgKeyListing(int keyTypeIn, int keySizeIn, String fingerprintIn,
+                List<String> namesIn) {
+            keyType = keyTypeIn;
+            keySize = keySizeIn;
+            fingerprint = fingerprintIn;
+            names = namesIn;
+        }
+
+        private int keyType;
+
+        /**
+         * @return GPG type number
+         */
+        public int getKeyType() {
+            return keyType;
+        }
+
+        private int keySize;
+
+        /**
+         * @return Size of the key in bits
+         */
+        public int getKeySize() {
+            return keySize;
+        }
+
+        private String fingerprint;
+
+        /**
+         * @return Fingerprint of the key
+         */
+        public String getFingerprint() {
+            return fingerprint;
+        }
+
+        private List<String> names;
+
+        /**
+         * @return Names associated with the key
+         */
+        public List<String> getNames() {
+            return names;
+        }
+
+    }
+
+    /**
+     * Get all keys stored in the keyring
+     * @return decoded list of all found keys
+     */
+    public static List<GpgKeyListing> getGpgKeys() {
+        if (!Files.exists(CUSTOMER_GPG_RING)) {
+            return new ArrayList<>();
+        }
+
+        String output = executeExtCmdAndGetOutput(
+                new String[] {"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--batch", "--with-colons",
+                        "--no-default-keyring", "--keyring", CUSTOMER_GPG_RING.toString(), "--list-keys"});
+        return parseGpgColonListing(output);
+    }
+
+    /**
+     * Parse all keys from a keyring dump
+     * @param output output generated by gpg --with-colons
+     * @return decoded list of all found keys
+     */
+    public static List<GpgKeyListing> parseGpgColonListing(String output) {
+        List<GpgKeyListing> keys = new ArrayList<>();
+        if (StringUtils.isBlank(output)) {
+            return keys;
+        }
+
+        GpgKeyListing currentKey = null;
+        boolean pendingFingerprint = false;
+
+        for (String line : output.split("\\R")) {
+            String[] fields = line.split(":", -1);
+            String recordType = fields[0];
+
+            if ("pub".equals(recordType)) {
+                currentKey = new GpgKeyListing();
+                currentKey.keySize = fields.length > 2 ? Integer.parseInt(fields[2]) : 0;
+                currentKey.keyType = fields.length > 3 ? Integer.parseInt(fields[3]) : 0;
+                keys.add(currentKey);
+                pendingFingerprint = true;
+            }
+            else if ("fpr".equals(recordType) && pendingFingerprint) {
+                currentKey.fingerprint = fields.length > 9 ? fields[9] : "";
+                pendingFingerprint = false;
+            }
+            else if ("uid".equals(recordType) && currentKey != null) {
+                currentKey.names.add(fields.length > 9 ? fields[9] : "");
+            }
+        }
+
+        return keys;
     }
 }
