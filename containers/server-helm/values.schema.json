@@ -339,6 +339,11 @@
           "description": "Deploy a PostgreSQL instance.",
           "default": true
         },
+        "podsCIDR": {
+          "type": "string",
+          "description": "Network IP range to allow plain text connections from, usually the cluster pods CIDR",
+          "default": "10.42.0.0/16"
+        },
         "internal": { "ref": "#/definitions/dbConnectionConfig" },
         "report": { "ref": "#/definitions/dbConnectionConfig" }
       }
