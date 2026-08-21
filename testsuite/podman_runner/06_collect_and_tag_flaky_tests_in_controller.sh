@@ -1,11 +1,8 @@
 #!/bin/bash
 set -e
+source "$(dirname "$0")/helpers.sh"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  PODMAN_CMD="podman"
-else
-  PODMAN_CMD="sudo -i podman"
-fi
+if [[ "$(uname)" == "Darwin" ]]; then PODMAN_CMD="podman"; fi
 
 if [[ -n "$GITHUB_TOKEN" ]]; then
   echo "Running flaky tests collection..."

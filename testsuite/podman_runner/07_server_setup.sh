@@ -1,11 +1,8 @@
 #!/bin/bash
 set -xe
+source "$(dirname "$0")/helpers.sh"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  PODMAN_CMD="podman"
-else
-  PODMAN_CMD="sudo -i podman"
-fi
+if [[ "$(uname)" == "Darwin" ]]; then PODMAN_CMD="podman"; fi
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 

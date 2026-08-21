@@ -5,6 +5,9 @@ echo "grains:" >> /etc/venv-salt-minion/minion
 echo " susemanager:" >> /etc/venv-salt-minion/minion
 echo "   activation_key: '$2'" >> /etc/venv-salt-minion/minion
 echo >> /etc/venv-salt-minion/minion
+# ponytail: slow reconnect loop so ZeroMQ thread churn doesn't starve cgroup_mutex on cgroupv2 hosts
+echo "recon_default: 5000" >> /etc/venv-salt-minion/minion
+echo "recon_max: 30000" >> /etc/venv-salt-minion/minion
 echo $RANDOM > /etc/machine-id
 /usr/bin/venv-salt-minion
 

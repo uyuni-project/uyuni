@@ -1,0 +1,37 @@
+#!/bin/bash
+# Drop-in replacement for "sudo -i podman" on Linux GitHub runners.
+# For non-detached exec calls: probes "exec CONTAINER true" until cgroup_mutex
+# is not held, then runs the real command without a timeout ceiling.
+# All other subcommands (run, ps, top, secret, ...) pass through immediately.
+# See docs/adr/0001-ci-queue-jam-podman-exec-hang.md
+
+if [ "$1" = "exec" ]; then
+    detached=0
+    container=""
+    skip_next=0
+    for arg in "${@:2}"; do
+        [ "$skip_next" = "1" ] && { skip_next=0; continue; }
+        case "$arg" in
+            -d|--detach)                                  detached=1 ;;
+            -e|--env|-u|--user|-w|--workdir|--env-file)  skip_next=1 ;;
+            -*)                                           ;;
+            *)                                            container="$arg"; break ;;
+        esac
+    done
+
+    if [ "$detached" = "0" ] && [ -n "$container" ]; then
+        i=0
+        deadline=$(($(date +%s) + 1200))  # 20 min per exec call
+        # ponytail: probe loop; upgrade to per-container locks if host parallelism grows
+        until timeout -k 5 5 sudo -i podman exec "$container" true 2>/dev/null; do
+            i=$((i + 1))
+            if [ $(date +%s) -ge $deadline ]; then
+                echo "podman_cmd: exec into $container unresponsive after ${i} probes (20 min deadline)"; exit 1
+            fi
+            echo "podman_cmd: cgroup_mutex busy on $container, probe $i..."
+            sleep 2
+        done
+    fi
+fi
+
+exec sudo -i podman "$@"

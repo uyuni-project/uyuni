@@ -1,11 +1,8 @@
 #!/bin/bash
 set -xe
+source "$(dirname "$0")/helpers.sh"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  PODMAN_CMD="podman"
-else
-  PODMAN_CMD="sudo -i podman"
-fi
+if [[ "$(uname)" == "Darwin" ]]; then PODMAN_CMD="podman"; fi
 
 wait_for_server_ready() {
     local timeout=${1:-360}  # Default timeout of 360 seconds if not provided
@@ -15,7 +12,11 @@ wait_for_server_ready() {
 
     echo "Waiting for Tomcat to be ready..."
 
-    while ! $podman_cmd exec server curl -kfs https://localhost/rhn/Login.do > /dev/null 2>&1; do
+    # The server container runs systemd which hammers cgroup_mutex during service
+    # startup. Without timeout, the exec hangs and the elapsed-time check below
+    # never runs, causing the outer step to hit its ceiling (45 min) instead of
+    # this internal timeout. 30s is long enough for any responsive curl.
+    while ! timeout 30 $podman_cmd exec server curl -kfs https://localhost/rhn/Login.do > /dev/null 2>&1; do
         local current_time=$(date +%s)
         if [ $((current_time - start_time)) -ge $timeout ]; then
             echo ""
@@ -64,6 +65,9 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v etc-sssd:/etc/sssd \
     -v etc-rhn:/etc/rhn \
     -e TZ=${TZ} \
+    -e container=podman \
+    -e SYSTEMD_SECCOMP=0 \
+    --cgroups=no-conmon \
     --secret uyuni-ca,type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
     --secret uyuni-ca,type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
     --secret uyuni-ca,type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
@@ -118,5 +122,5 @@ $PODMAN_CMD exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-in-
 $PODMAN_CMD exec server bash -c "rm -f /usr/bin/mgrctl"
 
 # publish mirrors in apache
-$PODMAN_CMD exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
+$PODMAN_CMD exec server bash -c "ln -sfn /mirror /srv/www/htdocs/pub/mirror && chown root:root /srv/www/htdocs/pub/mirror && chown -R root:root /mirror"
 
