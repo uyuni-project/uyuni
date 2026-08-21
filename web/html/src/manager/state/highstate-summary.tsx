@@ -9,7 +9,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-type StateSource = {
+export type StateSource = {
   id?: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
@@ -40,11 +40,25 @@ export default function HighstateSummary({ minionId }) {
   };
 
   useEffect(() => {
+    let isCurrentRequest = true;
+
     setIsLoading(true);
     Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`)
       .then((data) => data.map(toDisplayValues))
-      .then(setSummary)
-      .then(() => setIsLoading(false));
+      .then((data) => {
+        if (isCurrentRequest) {
+          setSummary(data);
+        }
+      })
+      .then(() => {
+        if (isCurrentRequest) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [minionId]);
 
   if (isLoading) {
