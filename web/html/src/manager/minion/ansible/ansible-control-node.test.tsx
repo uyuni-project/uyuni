@@ -1,4 +1,4 @@
-import { render, screen, server, waitFor } from "utils/test-utils";
+import { render, screen, server } from "utils/test-utils";
 
 import { AnsibleControlNode } from "./ansible-control-node";
 
@@ -29,16 +29,14 @@ describe("Ansible control node path configuration", () => {
 
     render(<AnsibleControlNode minionServerId={1000} />); // load the component at initial state
 
-    screen.getByText("Loading...");
+    expect(screen.getByText("Loading...")).toBeDefined();
 
     // wait until the render loads and changes, then check for content
-    await waitFor(() => {
-      screen.getByText("Playbook Directories");
-      screen.getByText("Inventory Files");
-      screen.getByText("Add a Playbook directory");
-      screen.getByText("Add an Inventory file");
-      screen.getByText("/srv/playbooks");
-      screen.getByText("/srv/playbooks/orion_dummy/hosts");
-    });
+    expect(await screen.findByText("Playbook Directories")).toBeDefined();
+    expect(await screen.findByText("Inventory Files")).toBeDefined();
+    expect(await screen.findByText("Add a Playbook directory")).toBeDefined();
+    expect(await screen.findByText("Add an Inventory file")).toBeDefined();
+    expect(await screen.findByText("/srv/playbooks")).toBeDefined();
+    expect(await screen.findByText("/srv/playbooks/orion_dummy/hosts")).toBeDefined();
   });
 });
