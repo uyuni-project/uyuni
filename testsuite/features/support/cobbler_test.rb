@@ -31,12 +31,38 @@ require 'pp'
 #
 # @attr_reader [XMLRPC::Client] server The XMLRPC::Client object for communicating with the Cobbler server.
 # @attr_reader [String] token The authentication token obtained after successful login.
+# @raise [ScriptError] If the injection of the apache config fails.
+# @raise [SystemCallError] Apache restart fails or if no running server is found
 class CobblerTest
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
-    server_address = get_target('server').full_hostname
+    node = get_target('server')
+    # expose cobbler api to public
+    source = "#{File.dirname(__FILE__)}/../upload_files/zz-cobblerapi.conf"
+    dest = '/etc/apache2/conf.d/zz-cobblerapi.conf'
+    success = file_inject(node, source, dest)
+    raise(ScriptError, 'Apache config injection failed') unless success
+
+    # restart apache to reload the configuration
+    output, retcode = node.run('systemctl restart apache2')
+    raise(SystemCallError, "Failed to restart apache2 (rc=#{retcode}): #{output}") unless retcode.zero?
+
+    # check running and connection
+    server_address = node.full_hostname
     @server = XMLRPC::Client.new2("http://#{server_address}/cobbler_api", nil, DEFAULT_TIMEOUT)
-    raise(SystemCallError, "No running server at found at #{server_address}") unless running?
+
+    retries = 10
+    connected = false
+
+    retries.times do
+      if running?
+        connected = true
+        break
+      end
+      sleep 0.5
+    end
+
+    raise(SystemCallError, "No running server at found at #{server_address}") unless connected
   end
 
   # Logs into Cobbler and returns the session token.
