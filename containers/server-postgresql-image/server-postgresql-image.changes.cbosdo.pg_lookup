@@ -1,0 +1,2 @@
+- Avoid reverse lookups from postgresql (bsc#1270038)
+- Use the POD_NETWORK variable as the CIDR for plain connections

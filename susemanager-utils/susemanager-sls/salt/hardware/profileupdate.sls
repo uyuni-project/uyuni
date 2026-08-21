@@ -35,12 +35,6 @@ cpuinfo:
 udev:
   module.run:
     - name: udev.exportdb
-    - require:
-{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
-      - saltutil: sync_states
-{%- else %}
-      - module: sync_states
-{%- endif %}
 network-interfaces:
   module.run:
     - name: network.interfaces

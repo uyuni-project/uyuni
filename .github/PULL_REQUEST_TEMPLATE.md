@@ -2,6 +2,12 @@
 
 **add description**
 
+## End-User Impact & Release Notes
+
+If this PR alters behavior for end-users (WebUI, API, CLI, configs), modifies container architecture, or affects existing **migrations/upgrades**, you must add release note details to the pull request and ping the release engineers.
+
+- [ ] **DONE**
+
 ## Codespace
 <!-- Button to create CodeSpace -->
 

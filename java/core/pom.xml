@@ -134,11 +134,11 @@
             <artifactId>ical4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sparkjava</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>spark-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sparkjava</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>spark-template-jade</artifactId>
         </dependency>
         <dependency>
@@ -158,11 +158,11 @@
             <artifactId>jose4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>sitemesh</artifactId>
         </dependency>
         <dependency>
@@ -170,11 +170,11 @@
             <artifactId>quartz</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>redstone-xmlrpc</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>redstone-xmlrpc-client</artifactId>
         </dependency>
         <dependency>

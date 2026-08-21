@@ -71,6 +71,9 @@ jobs:
   tests:
     runs-on: ubuntu-24.04
     needs: filters
+    # GitHub-hosted runners hard-kill jobs at 6h; keep this below that so the
+    # timeout actually fires (and runs post steps) instead of being pre-empted.
+    timeout-minutes: 350
     steps:
       - name: Skipping tests
         if: ${{ inputs.skip_tests }}
@@ -80,6 +83,7 @@ jobs:
           echo "The job will be marked as success, but the steps will be skipped."
       - name: Install Podman
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 10
         run: sudo apt install podman
 
       - name: Install Python dependencies
@@ -156,6 +160,7 @@ jobs:
 
       - name: Build controller image from current branch
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && needs.filters.outputs.controller_dockerfile == 'true' }}
+        timeout-minutes: 20
         run: |
           sudo podman build \
             -t ghcr.io/${{ env.UYUNI_PROJECT }}/uyuni/ci-test-controller-dev:${{ env.UYUNI_VERSION }} \
@@ -163,6 +168,7 @@ jobs:
 
       - name: Start controller, registry and build host
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 30
         run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh
 
       - name: Create SSH configuration in controller
@@ -181,6 +187,7 @@ jobs:
 
       - name: Install gems in controller
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 20
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
 
       - name: Collect and tag flaky tests in controller
@@ -197,10 +204,12 @@ jobs:
 
       - name: Setup server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 45
         run: ./testsuite/podman_runner/07_server_setup.sh
 
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 20
         run: ./testsuite/podman_runner/08_start_server.sh
 
       - name: Inject cached Ivy JARs into server container
@@ -215,6 +224,7 @@ jobs:
 
       - name: Build server code
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        timeout-minutes: 90
         run: ./testsuite/podman_runner/09_build_server_code.sh
       #     - name: copy_ca
       #     run: podman exec server bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
