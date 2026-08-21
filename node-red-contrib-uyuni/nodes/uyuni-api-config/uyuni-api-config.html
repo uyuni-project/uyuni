@@ -1,0 +1,76 @@
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-api-config', {
+    category: 'config',
+    defaults: {
+      name: { value: '' },
+      url: { value: 'https://localhost/rpc/api', required: true },
+      allowSelfSigned: { value: false },
+      timeout: { value: 30000 }
+    },
+    credentials: {
+      username: { type: 'text' },
+      password: { type: 'password' }
+    },
+    label: function () {
+      return this.name || this.url;
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-api-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Uyuni API Server" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-url"><i class="fa fa-globe"></i> API URL</label>
+    <input type="text" id="node-config-input-url" placeholder="https://localhost/rpc/api" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+    <input type="text" id="node-config-input-username" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-password"><i class="fa fa-lock"></i> Password</label>
+    <input type="password" id="node-config-input-password" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-timeout"><i class="fa fa-clock-o"></i> Timeout (ms)</label>
+    <input type="number" id="node-config-input-timeout" placeholder="30000" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-allowSelfSigned"><i class="fa fa-shield"></i> Self-signed</label>
+    <input type="checkbox" id="node-config-input-allowSelfSigned" style="width:auto; vertical-align:top;" />
+    <span style="margin-left:6px;">Accept a self-signed server certificate</span>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="uyuni-api-config">
+  <p>Credentials for the Uyuni API. Shared by the <b>Uyuni Action</b> and
+  <b>Uyuni Query</b> nodes, so a flow only needs one of these.</p>
+
+  <h3>Settings</h3>
+  <dl class="message-properties">
+    <dt>API URL <span class="property-type">string</span></dt>
+    <dd>The XML-RPC endpoint, normally <code>https://&lt;server&gt;/rpc/api</code>.</dd>
+    <dt>Username / Password <span class="property-type">credentials</span></dt>
+    <dd>A Uyuni account with permission for the actions the flow performs. Rebooting
+    systems or installing packages needs more privilege than listing them.</dd>
+    <dt>Timeout (ms) <span class="property-type">number</span></dt>
+    <dd>How long to wait for the server before giving up. Without one a slow or
+    unreachable server would hold the flow open indefinitely.</dd>
+    <dt>Self-signed <span class="property-type">boolean</span></dt>
+    <dd>Leave unticked so the server's certificate is verified. Tick it only for a
+    development server using a self-signed certificate — it disables verification
+    for every call this node makes.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Sessions are handled for you: the node logs in on first use and reuses the
+  session afterwards. If a call comes back with a fault mentioning the session, it
+  logs in once more and retries, so long-running flows keep working without any
+  extra wiring. A fault that isn't session-related is reported as-is rather than
+  retried.</p>
+  <p>Credentials are held in Node-RED's encrypted credential store and are not
+  included when a flow is exported.</p>
+</script>
