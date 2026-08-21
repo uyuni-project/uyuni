@@ -1,0 +1,2 @@
+- Increase advisory char limit to 150 in
+  rhnErrata (bsc#1273846)

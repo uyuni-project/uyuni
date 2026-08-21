@@ -817,7 +817,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Map<String, Object> errataInfo = new HashMap<>();
 
 
-        String advisoryName = RandomStringUtils.randomAscii(101);
+        String advisoryName = RandomStringUtils.randomAscii(151);
         populateErrataInfo(errataInfo);
         errataInfo.put("advisory_name", advisoryName);
 
