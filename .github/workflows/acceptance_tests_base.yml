@@ -86,6 +86,13 @@ jobs:
           echo "Skipping tests."
           echo "This is a workaround to avoid running the tests, but still have a passing status check."
           echo "The job will be marked as success, but the steps will be skipped."
+      - name: Stagger job start
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          delay=$(( ${{ strategy.job-index }} * 300 ))
+          echo "Job index ${{ strategy.job-index }}: sleeping ${delay}s to stagger server container startup"
+          sleep $delay
+
       - name: Install Podman
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         timeout-minutes: 10
@@ -98,6 +105,13 @@ jobs:
       - name: Welcome message
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
+
+      - name: Runner fingerprint
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          echo "Host: $(hostname)"
+          echo "IP: $(hostname -I | awk '{print $1}')"
+          echo "Cgroup: $(cat /proc/self/cgroup | head -3)"
 
       - name: Checkout repository
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
