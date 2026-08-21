@@ -1,3 +1,4 @@
+- Show loading indicator on CVE Audit page (gh#uyuni-project/uyuni#11627)
 -------------------------------------------------------------------
 Wed Aug 05 16:49:27 CEST 2026 - antonio.garofalo@suse.com
 
