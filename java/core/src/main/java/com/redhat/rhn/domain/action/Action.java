@@ -497,12 +497,14 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         private final SystemQuery systemQuery;
 
         /**
-         * @param retcodeIn
-         * @param successIn
-         * @param jidIn
-         * @param saltUtilsIn
-         * @param saltApiIn
-         * @param systemQueryIn
+         * Constructor for UpdateAuxArgs.
+         *
+         * @param retcodeIn return code
+         * @param successIn whether the action succeeded
+         * @param jidIn Salt job id
+         * @param saltUtilsIn Salt utilities
+         * @param saltApiIn Salt API
+         * @param systemQueryIn system query helper
          */
         public UpdateAuxArgs(long retcodeIn, boolean successIn, String jidIn, SaltUtils saltUtilsIn, SaltApi saltApiIn,
                              SystemQuery systemQueryIn) {
@@ -688,4 +690,3 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
 }
-

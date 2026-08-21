@@ -142,7 +142,8 @@ public class JobReturnEventMessageAction implements MessageAction {
                     jobReturnEvent.getData().isSuccess(),
                     jobReturnEvent.getJobId(),
                     jobResult.get(),
-                    Optional.ofNullable(jobReturnEvent.getData().getFun()).map(Xor::right), null)));
+                    Optional.ofNullable(jobReturnEvent.getData().getFun()).map(Xor::right),
+                    null)));
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
@@ -150,7 +151,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             handleEventInActionChain(jobResult, jobReturnEvent, isFunctionTestMode);
         });
 
-        //For all jobs except when action chains are involved or the action was in test mode
+        // For all jobs except when action chains are involved or the action was in test mode
         boolean isStandaloneAction = !isActionChainInvolved && !isFunctionTestMode;
         if (isStandaloneAction) {
             handleStandaloneAction(jobResult, jobReturnEvent, function, actionId);

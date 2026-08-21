@@ -206,11 +206,27 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ScriptActionDetails createScriptActionDetails(String username,
             String groupname, Long timeout, String script) {
+        return createScriptActionDetails(username, groupname, timeout, script, false);
+    }
+
+    /**
+     * Creates a ScriptActionDetails which contains an arbitrary script to be
+     * run by a ScriptRunAction.
+     * @param username Username of script
+     * @param groupname Group script runs as
+     * @param timeout script timeout
+     * @param script Script contents
+     * @param useTransactionalUpdate execute through transactional-update on transactional systems
+     * @return ScriptActionDetails containing script to be run by ScriptRunAction
+     */
+    public static ScriptActionDetails createScriptActionDetails(String username,
+            String groupname, Long timeout, String script, boolean useTransactionalUpdate) {
         ScriptActionDetails sad = new ScriptActionDetails();
         sad.setUsername(username);
         sad.setGroupname(groupname);
         sad.setTimeout(timeout);
         sad.setScript(script.getBytes(StandardCharsets.UTF_8));
+        sad.setUseTransactionalUpdate(useTransactionalUpdate);
 
         return sad;
     }

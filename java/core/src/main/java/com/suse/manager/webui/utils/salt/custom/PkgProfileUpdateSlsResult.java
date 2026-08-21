@@ -217,4 +217,5 @@ public class PkgProfileUpdateSlsResult {
     public StateApplyResult<CmdResult> getWhatProvidesSLLReleasePkg() {
         return whatProvidesSLLReleasePkg;
     }
+
 }
