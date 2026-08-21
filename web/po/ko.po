@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:52
-#: ../html/src/components/input/range/Range.tsx:53
-#: ../html/src/components/input/range/Range.tsx:65
-#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 10:02+0200\n"
+"POT-Creation-Date: 2026-08-21 10:52+0200\n"
 "PO-Revision-Date: 2026-08-18 06:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -30,6 +26,16 @@ msgstr "남음"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 사용하십시오."
+
+#: ../html/src/components/CoCoScansList.tsx:78
+#: ../html/src/components/package/PackageListActionScheduler.tsx:84
+#: ../html/src/components/product-migration/utils.tsx:95
+#: ../html/src/manager/appstreams/appstreams.tsx:61
+#: ../html/src/manager/state/highstate.tsx:63
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr "작업이 작업 체인 <link>\"{name}\"</link>에 추가되었습니다."
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -88,6 +94,10 @@ msgstr "스캔 없음"
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
+
+#: ../html/src/components/FormulaForm.tsx:134
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{name}\"에 대한 1개의 수식만 사용할 수 있습니다."
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -302,6 +312,10 @@ msgstr "이름"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 msgid "Attestations"
 msgstr "증명"
+
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr "인증 보고서가 없습니다. 생성하려면 실행을 예약하십시오."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -619,6 +633,7 @@ msgstr "취소"
 #: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:95
 #: ../html/src/components/table/Table.tsx:245
+#: ../html/src/components/table/search.example.tsx:23
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/admin/payg/payg.tsx:71
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:99
@@ -1706,6 +1721,7 @@ msgstr "다운로드"
 
 #: ../html/src/components/large-text-attachment.tsx:120
 #: ../html/src/components/large-text-attachment.tsx:122
+#: ../html/src/components/table/search.example.tsx:22
 msgid "Add"
 msgstr "추가"
 
@@ -1774,6 +1790,18 @@ msgstr "패키지 이름"
 msgid "Items {from} - {to} of {total}"
 msgstr "항목 {from} - {to} / {total}"
 
+#: ../html/src/components/pagination.tsx:139
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> / #페이지}\n"
+"            other {<dropdown></dropdown> / #페이지}\n"
+"        }"
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
 msgstr "일요일"
@@ -1837,6 +1865,10 @@ msgstr "모든 달에 반복 일정을 사용할 수 있도록 일수는 28일�
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
 msgstr "사용자 정의 Quartz 형식:"
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:489
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr "예: \"0 15 2 ? * 7\""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
@@ -2271,9 +2303,31 @@ msgstr "보기"
 msgid "Modify"
 msgstr "수정"
 
-#: ../html/src/components/table/search.example.tsx:20
+#: ../html/src/components/table/search.example.tsx:32
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:201
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:362
+msgid "API"
+msgstr "API"
+
+#: ../html/src/components/table/search.example.tsx:35
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:204
+msgid "Web"
+msgstr "웹"
+
+#: ../html/src/components/table/search.example.tsx:38
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
+msgid "Only selected"
+msgstr "선택한 항목만"
+
+#: ../html/src/components/table/search.example.tsx:49
 msgid "Item id"
 msgstr "항목 ID"
+
+#: ../html/src/components/table/search.example.tsx:50
+#, fuzzy
+#| msgid "System name"
+msgid "Item name"
+msgstr "시스템 이름"
 
 #: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
@@ -2338,6 +2392,18 @@ msgstr "이 채널 필요"
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "메시지 구문은 <link>Format.JS docs</link>를 참조하십시오."
+
+#: ../html/src/core/intl/index.example.tsx:23
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
+msgstr ""
+"항상 번호에 복수형 사용: {fooCount, plural,\n"
+"            one {1개 항목}\n"
+"            other {{fooCount}개 항목}\n"
+"          }."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2433,19 +2499,6 @@ msgstr "선택한 액세스 그룹을 삭제하시겠습니까?"
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:156
 msgid "An unexpected error occurred while fetching namespaces."
 msgstr "네임스페이스를 가져오는 동안 예기치 않은 오류가 발생했습니다."
-
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:201
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:362
-msgid "API"
-msgstr "API"
-
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:204
-msgid "Web"
-msgstr "웹"
-
-#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:207
-msgid "Only selected"
-msgstr "선택한 항목만"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:267
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:130
@@ -2734,11 +2787,13 @@ msgid "Hub Details"
 msgstr "허브 상세 정보"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. "
-msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgstr "현재 이 서버에 구성된 허브가 없습니다. 허브 상세 정보를 확인하려면 이 서버를 주변기기로 구성한 후 이 페이지를 새로 고치십시오."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+#, fuzzy
+#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2762,7 +2817,9 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+#, fuzzy
+#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -2904,10 +2961,6 @@ msgstr "속성을 편집하는 중..."
 msgid "Last Status Update"
 msgstr "최신 상태 업데이트"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
-msgid "Edit "
-msgstr "편집  "
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
@@ -2998,6 +3051,10 @@ msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하�
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
+#: ../html/src/manager/admin/setup/products/products.tsx:271
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr "\"{product}\"에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
+
 #: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하십시오."
@@ -3051,18 +3108,6 @@ msgstr "채널"
 #: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
 msgstr "권장"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:802
-msgid " channels sync failed"
-msgstr " 채널을 동기화하지 못함"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:810
-msgid " channels sync in progress"
-msgstr " 채널 동기화 진행 중"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:818
-msgid " channels synced"
-msgstr " 채널 동기화됨"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "To enable this product, the parent product should be selected first"
@@ -3344,14 +3389,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "이 클라이언트는 취약점의 영향을 받으며, 이에 대한 패치가 있습니다."
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 제공하는 채널이 클라이언트에 할당되지 않았습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "제품 마이그레이션 대상에서 사용 가능한 패치가 적용됨"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하려면 제품을 최신 버전으로 마이그레이션해야 합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3387,12 +3434,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "영향을 받음, 관련 채널에서 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr "이 클라이언트는 패치가 배포된 취약점의 영향을 받습니다."
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgstr "클라이언트가 패치가 릴리스된 취약점의 영향을 받지만, 관련 채널에서 패치를 찾을 수 없습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "영향을 받음, 할당된 채널에서 부분 패치 사용 가능"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하면 취약한 패키지 중 일부만 업데이트됩니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3507,10 +3558,6 @@ msgstr "SCAP 컨텐트를 업로드하는 동안 오류가 발생했습니다."
 msgid "An unexpected error occurred."
 msgstr "예기치 않은 오류가 발생했습니다."
 
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
-msgid "Edit SCAP Content"
-msgstr "SCAP 컨텐트 편집"
-
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
 msgstr "SCAP Datastream 파일"
@@ -3536,15 +3583,6 @@ msgstr "XCCDF 파일"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr "XCCDF 파일(*-xccdf.xml) 업로드"
-
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr "업데이트"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
 msgid "SCAP Content is required"
@@ -3583,21 +3621,20 @@ msgstr "이 작업을 위해서는 인터넷 연결과 상당한 메모리 용�
 msgid "Back to List"
 msgstr "목록으로 돌아가기"
 
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
+msgstr "업데이트"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 msgid "An error occurred while saving the tailoring file."
 msgstr "맞춤 설정 파일을 저장하는 동안 오류가 발생했습니다."
 
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
-msgid "Edit Tailoring File"
-msgstr "맞춤 설정 파일 편집"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 msgid "Current File"
 msgstr "현재 파일"
-
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
-msgid "Replace File (optional)"
-msgstr "파일 바꾸기(선택 사항)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4828,19 +4865,25 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+#, fuzzy
+#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "이 주소를 브라우저에 직접 입력한 경우 철자와 대/소문자를 다시 확인하십시오."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+#, fuzzy
+#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr "링크를 따라온 경우 해당 링크가 잘못되었거나 오래되었을 수 있습니다. 다음의 뒤로 버튼을 클릭하십시오. "
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgstr "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 사용하여 찾고 있는 페이지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
 
 #: ../html/src/manager/errors/not-found.tsx:30
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+#, fuzzy
+#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "실수로 인해 이 페이지에 방문하게 되었다고 생각되는 경우, 수신한 방법에 대한 자세한 내용과 함께 문의해 주십시오. "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -5038,10 +5081,6 @@ msgid "Create additional custom info keys"
 msgstr "추가 사용자 정의 정보 키 만들기"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
-msgid "Edit Image Profile: '"
-msgstr "이미지 프로파일 편집: '"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -5107,10 +5146,6 @@ msgstr "선택한 프로파일을 삭제하시겠습니까?({count}개 프로파
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "자격 증명 사용"
-
-#: ../html/src/manager/images/image-store-edit.tsx:234
-msgid "Edit Image Store: '"
-msgstr "이미지 저장소 편집: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5194,29 +5229,13 @@ msgstr "큐에 추가됨"
 msgid "Go to event"
 msgstr "이벤트로 이동"
 
-#: ../html/src/manager/images/image-view-overview.tsx:56
-msgid " is queued"
-msgstr " 이(가) 큐에 추가됨"
-
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr "진행 중"
 
-#: ../html/src/manager/images/image-view-overview.tsx:68
-msgid " in progress"
-msgstr " 진행 중"
-
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "성공"
-
-#: ../html/src/manager/images/image-view-overview.tsx:80
-msgid " is successful"
-msgstr " 성공"
-
-#: ../html/src/manager/images/image-view-overview.tsx:92
-msgid " has failed"
-msgstr " 실패"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5236,10 +5255,6 @@ msgstr "정보 없음"
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
 msgstr "외부에서 빌드됨"
-
-#: ../html/src/manager/images/image-view-overview.tsx:134
-msgid " Status"
-msgstr " 상태"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5287,6 +5302,11 @@ msgstr "프로파일 편집"
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "저장소 편집"
+
+#: ../html/src/manager/images/image-view-overview.tsx:469
+#: ../html/src/manager/images/image-view.tsx:759
+msgid "Instance Details for \"{name}\""
+msgstr "\"{name}\"용 인스턴스 세부 사항"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5737,6 +5757,10 @@ msgstr "검색 시스템"
 msgid "Current Schedule"
 msgstr "현재 일정"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
+msgid "Url \"{url}\" is invalid"
+msgstr "\"{url}\" URL이 잘못됨"
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "달력 날짜"
@@ -5824,10 +5848,6 @@ msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 일정 �
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "아래는 현재 사용자가 사용할 수 있는 유지보수 달력 목록입니다."
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
-msgid "schedule"
-msgstr "일정"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "일정이 생성되지 않았습니다. 일정을 추가하려면 생성을 사용하십시오."
@@ -5835,14 +5855,6 @@ msgstr "일정이 생성되지 않았습니다. 일정을 추가하려면 생성
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "이 작업을 수행하면 할당된 모든 시스템에서 일정이 제거됩니다."
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
-msgid "successfully"
-msgstr "성공"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
-msgid "Error when deleting the "
-msgstr "다음 삭제 중 오류 발생: "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -6020,6 +6032,10 @@ msgstr "다른 플레이북 선택"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
 msgid "Save the current Playbook"
 msgstr "현재 플레이북 저장"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
+msgid "Playbook \"{name}\""
+msgstr "\"{name}\" 플레이북"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6420,10 +6436,6 @@ msgstr "고급"
 msgid "Registry URL"
 msgstr "등록 URL"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
-msgid "e.g., "
-msgstr "예: "
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
 msgstr "컨테이너 태그"
@@ -6511,8 +6523,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "프로그램 임시 수정(PTF) 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. 이 패키지의 용도는 특정 미해결 문제를 해결하는 것입니다. 설치를 진행하기 전에 고객 지원팀의 안내를 따르십시오."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6531,8 +6543,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "프로그램 임시 수정(PTF) 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgstr "현재 이 시스템에는 다음 프로그램 임시 수정(PTF)이 설치되어 있습니다. 이러한 PTF를 선택하고 아래 \"PTF 제거\"를 클릭하여 제거를 예약할 수 있습니다. 유효한 PTF를 제거하면 해당 PTF에 포함된 패키지의 최신 버전이 설치됨에 유의하세요."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7239,14 +7251,6 @@ msgstr "하위 채널 로드 중.."
 msgid "Base Channel:"
 msgstr "기본 채널:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
-msgid "${defaultChannelName}"
-msgstr "${defaultChannelName}"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
-msgid "${this.getDefaultBase().name}"
-msgstr "${this.getDefaultBase().name}"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "하위 채널:"
@@ -7332,10 +7336,6 @@ msgstr "({count}개 AppStreams)"
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
 msgid "Don't change"
 msgstr "변경 금지"
-
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
-msgid " (No system to disable)"
-msgstr " (비활성화할 시스템 없음)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -8031,82 +8031,92 @@ msgstr "인증 오류입니다. 페이지를 다시 로드하거나 로그아웃
 msgid "Resource not found."
 msgstr "리소스를 찾을 수 없음"
 
-#: ../html/src/utils/network.ts:106
-msgid "HTTP Error code "
-msgstr "HTTP 오류 코드 "
+#~ msgid "No hub is currently configured for this server. "
+#~ msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
+
+#~ msgid "Edit "
+#~ msgstr "편집  "
+
+#~ msgid " channels sync failed"
+#~ msgstr " 채널을 동기화하지 못함"
+
+#~ msgid " channels sync in progress"
+#~ msgstr " 채널 동기화 진행 중"
+
+#~ msgid " channels synced"
+#~ msgstr " 채널 동기화됨"
+
+#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
+#~ msgstr "이 클라이언트는 취약점의 영향을 받으며, 이에 대한 패치가 있습니다."
+
+#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
+#~ msgstr "이 클라이언트는 패치가 배포된 취약점의 영향을 받습니다."
+
+#~ msgid "Edit SCAP Content"
+#~ msgstr "SCAP 컨텐트 편집"
+
+#~ msgid "Edit Tailoring File"
+#~ msgstr "맞춤 설정 파일 편집"
+
+#~ msgid "Replace File (optional)"
+#~ msgstr "파일 바꾸기(선택 사항)"
+
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+#~ msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
+
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "이미지 프로파일 편집: '"
+
+#~ msgid "Edit Image Store: '"
+#~ msgstr "이미지 저장소 편집: '"
+
+#~ msgid " is queued"
+#~ msgstr " 이(가) 큐에 추가됨"
+
+#~ msgid " in progress"
+#~ msgstr " 진행 중"
+
+#~ msgid " is successful"
+#~ msgstr " 성공"
+
+#~ msgid " has failed"
+#~ msgstr " 실패"
+
+#~ msgid " Status"
+#~ msgstr " 상태"
+
+#~ msgid "schedule"
+#~ msgstr "일정"
+
+#~ msgid "successfully"
+#~ msgstr "성공"
+
+#~ msgid "Error when deleting the "
+#~ msgstr "다음 삭제 중 오류 발생: "
+
+#~ msgid "e.g., "
+#~ msgstr "예: "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+#~ msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+#~ msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
+
+#~ msgid "${defaultChannelName}"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid " (No system to disable)"
+#~ msgstr " (비활성화할 시스템 없음)"
+
+#~ msgid "HTTP Error code "
+#~ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Paste a PEM certificate"
 #~ msgstr "PEM 인증서 붙여넣기"
-
-#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-#~ msgstr "작업이 작업 체인 <link>\"{name}\"</link>에 추가되었습니다."
-
-#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-#~ msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{name}\"에 대한 1개의 수식만 사용할 수 있습니다."
-
-#~ msgid "No attestation report available. Schedule an execution to create one."
-#~ msgstr "인증 보고서가 없습니다. 생성하려면 실행을 예약하십시오."
-
-#~ msgid ""
-#~ "{total, plural,\n"
-#~ "            one {<dropdown></dropdown> of # page}\n"
-#~ "            other {<dropdown></dropdown> of # pages}\n"
-#~ "        }"
-#~ msgstr ""
-#~ "{total, plural,\n"
-#~ "            one {<dropdown></dropdown> / #페이지}\n"
-#~ "            other {<dropdown></dropdown> / #페이지}\n"
-#~ "        }"
-
-#~ msgid "e.g. \"0 15 2 ? * 7\""
-#~ msgstr "예: \"0 15 2 ? * 7\""
-
-#~ msgid ""
-#~ "Always use plural forms for numbers: {fooCount, plural,\n"
-#~ "            one {only one item}\n"
-#~ "            other {{fooCount} items}\n"
-#~ "          }."
-#~ msgstr ""
-#~ "항상 번호에 복수형 사용: {fooCount, plural,\n"
-#~ "            one {1개 항목}\n"
-#~ "            other {{fooCount}개 항목}\n"
-#~ "          }."
-
-#~ msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-#~ msgstr "현재 이 서버에 구성된 허브가 없습니다. 허브 상세 정보를 확인하려면 이 서버를 주변기기로 구성한 후 이 페이지를 새로 고치십시오."
-
-#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
-#~ msgstr "\"{product}\"에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-#~ msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 제공하는 채널이 클라이언트에 할당되지 않았습니다."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-#~ msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하려면 제품을 최신 버전으로 마이그레이션해야 합니다."
-
-#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-#~ msgstr "클라이언트가 패치가 릴리스된 취약점의 영향을 받지만, 관련 채널에서 패치를 찾을 수 없습니다."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-#~ msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하면 취약한 패키지 중 일부만 업데이트됩니다."
-
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-#~ msgstr "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 사용하여 찾고 있는 페이지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
-
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "\"{name}\"용 인스턴스 세부 사항"
-
-#~ msgid "Url \"{url}\" is invalid"
-#~ msgstr "\"{url}\" URL이 잘못됨"
-
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "\"{name}\" 플레이북"
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-#~ msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. 이 패키지의 용도는 특정 미해결 문제를 해결하는 것입니다. 설치를 진행하기 전에 고객 지원팀의 안내를 따르십시오."
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-#~ msgstr "현재 이 시스템에는 다음 프로그램 임시 수정(PTF)이 설치되어 있습니다. 이러한 PTF를 선택하고 아래 \"PTF 제거\"를 클릭하여 제거를 예약할 수 있습니다. 유효한 PTF를 제거하면 해당 PTF에 포함된 패키지의 최신 버전이 설치됨에 유의하세요."
 
 #~ msgid "Add a new access token"
 #~ msgstr "새 액세스 토큰 추가"
