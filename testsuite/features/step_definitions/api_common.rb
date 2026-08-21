@@ -351,7 +351,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   raise StandardError, 'Error creating activation key via the API' if key.nil?
 
   $stdout.puts "Activation key #{key} created"
-  contact_method = client.include?('ssh_minion') ? 'ssh-push' : 'default'
+  contact_method = client.include?('sshminion') ? 'ssh-push' : 'default'
   success = $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
   raise 'Failed to set activation key details' unless success
 
