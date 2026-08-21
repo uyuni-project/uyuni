@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Jason Dobies
  */
-public class CryptoKeysHandler extends BaseHandler {
+public class CryptoKeysHandler extends BaseHandler implements CryptoKeysHandlerApi {
 
     /**
      * Lists all keys associated with the org of the user (identified by the session key).

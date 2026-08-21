@@ -36,7 +36,7 @@ import java.util.Map;
  * @apidoc.namespace channel
  * @apidoc.doc Provides method to get back a list of Software Channels.
  */
-public class ChannelHandler extends BaseHandler {
+public class ChannelHandler extends BaseHandler implements ChannelHandlerApi {
 
     /**
      * Lists all visible software channels. For all child channels,
@@ -102,7 +102,7 @@ public class ChannelHandler extends BaseHandler {
      *
      * @apidoc.doc List all visible software channels.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("Boolean", "autoSync", "If should return channels with auto-sync
+     * @apidoc.param #param_desc("boolean", "autoSync", "If should return channels with auto-sync
      *                                                   enabled (true) or disabled (false)")
      * @apidoc.returntype #array_single("string", "the list of channel labels")
      */

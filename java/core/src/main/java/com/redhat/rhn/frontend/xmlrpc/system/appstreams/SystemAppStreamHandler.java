@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace system.appstreams
  * @apidoc.doc Provides methods to handle appstreams for systems.
  */
-public class SystemAppStreamHandler extends BaseHandler {
+public class SystemAppStreamHandler extends BaseHandler implements SystemAppStreamHandlerApi {
 
     private static Logger log = LogManager.getLogger(SystemAppStreamHandler.class);
 

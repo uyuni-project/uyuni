@@ -38,7 +38,7 @@ import java.util.Set;
  * @apidoc.doc Methods to retrieve information about Package Providers associated with
  *      packages.
  */
-public class PackagesProviderHandler extends BaseHandler {
+public class PackagesProviderHandler extends BaseHandler implements PackagesProviderHandlerApi {
 
     /**
      * list the package providers

@@ -36,7 +36,7 @@ import java.util.Map;
  * @apidoc.namespace virtualhostmanager
  * @apidoc.doc Provides the namespace for the Virtual Host Manager methods.
  */
-public class VirtualHostManagerHandler extends BaseHandler {
+public class VirtualHostManagerHandler extends BaseHandler implements VirtualHostManagerHandlerApi {
 
     /**
      * Lists Virtual Host Managers visible to a user

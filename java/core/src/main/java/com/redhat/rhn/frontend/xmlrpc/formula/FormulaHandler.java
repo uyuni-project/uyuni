@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace formula
  * @apidoc.doc Provides methods to access and modify formulas.
  */
-public class FormulaHandler extends BaseHandler {
+public class FormulaHandler extends BaseHandler implements FormulaHandlerApi {
 
     private final FormulaManager formulaManager;
     private final SaltApi saltApi;
@@ -204,7 +204,7 @@ public class FormulaHandler extends BaseHandler {
      * @apidoc.doc Set the formulas of a server.
      *
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #param_desc("int", "systemId", "the system ID")
      * @apidoc.param #array_single("string", "formulas")
      * @apidoc.returntype #return_int_success()
      */
@@ -239,7 +239,7 @@ public class FormulaHandler extends BaseHandler {
      * @apidoc.doc Get the saved data for the specific formula against specific server
      *
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "sid", "the system ID")
+     * @apidoc.param #param_desc("int", "systemId", "the system ID")
      * @apidoc.param #param("string", "formulaName")
      * @apidoc.returntype #param("struct", "the saved formula data")
      */

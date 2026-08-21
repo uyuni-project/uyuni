@@ -44,7 +44,7 @@ import java.util.Set;
  * @apidoc.doc Provides methods to retrieve and alter organization trust
  * relationships for a channel.
  */
-public class ChannelOrgHandler extends BaseHandler {
+public class ChannelOrgHandler extends BaseHandler implements ChannelOrgHandlerApi {
 
     /**
      * List the organizations associated with the given channel that may be trusted.
@@ -69,7 +69,7 @@ public class ChannelOrgHandler extends BaseHandler {
      *     #struct_end()
      *  #array_end()
      */
-    public List list(User loggedInUser, String label)
+    public List<Map<String, Object>> list(User loggedInUser, String label)
         throws FaultException {
 
         Channel channel = lookupChannelByLabel(loggedInUser, label);

@@ -93,7 +93,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace errata
  * @apidoc.doc Provides methods to access and modify errata.
  */
-public class ErrataHandler extends BaseHandler {
+public class ErrataHandler extends BaseHandler implements ErrataHandlerApi {
 
     private static Logger log = LogManager.getLogger(ErrataHandler.class);
 

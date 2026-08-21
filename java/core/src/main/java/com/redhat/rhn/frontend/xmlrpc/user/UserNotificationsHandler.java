@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace user.notifications
  * @apidoc.doc Provides methods to manage user notifications.
  */
-public class UserNotificationsHandler extends BaseHandler {
+public class UserNotificationsHandler extends BaseHandler implements UserNotificationsHandlerApi {
     private static final Logger LOG = LogManager.getLogger(UserNotificationsHandler.class);
 
     /**
