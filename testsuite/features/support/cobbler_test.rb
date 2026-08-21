@@ -34,7 +34,16 @@ require 'pp'
 class CobblerTest
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
-    server_address = get_target('server').full_hostname
+    node = get_target('server')
+    # expose cobbler api to public
+    source = "#{File.dirname(__FILE__)}/../upload_files/01-cobblerapi.conf"
+    dest = "/etc/apache2/conf.d/01-cobblerapi.conf"
+    success = file_inject(node, source, dest)
+    raise ScriptError, "Apache config injection failed" unless success
+    # restart apache
+    node.run("systemctl restart apache2")
+    # check running and connection
+    server_address = node.full_hostname
     @server = XMLRPC::Client.new2("http://#{server_address}/cobbler_api", nil, DEFAULT_TIMEOUT)
     raise(SystemCallError, "No running server at found at #{server_address}") unless running?
   end
