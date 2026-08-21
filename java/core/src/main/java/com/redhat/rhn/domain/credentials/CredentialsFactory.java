@@ -155,6 +155,16 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new LDAP bind {@link LdapCredentials}. The matching bind DN is
+     * stored on the LDAP server record, not here.
+     * @param password the bind password that will be BASE64 encoded
+     * @return new credential with type LDAP
+     */
+    public static LdapCredentials createLdapCredentials(String password) {
+        return new LdapCredentials(password);
+    }
+
+    /**
      * List all the existing credentials
      * @return the list of all the existing credentials
      */

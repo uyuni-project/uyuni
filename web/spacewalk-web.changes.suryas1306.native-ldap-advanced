@@ -1,0 +1,2 @@
+- Expose Use memberOf on the LDAP attribute mappings tab and
+  update Active Directory nested group filter defaults

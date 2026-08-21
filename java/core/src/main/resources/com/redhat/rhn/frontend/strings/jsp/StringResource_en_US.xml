@@ -1909,6 +1909,36 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userlist.jsp.authorizedby" xml:space="preserve">
+        <source>Authorized by</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.internal" xml:space="preserve">
+        <source>Internal</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.pam" xml:space="preserve">
+        <source>PAM</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.ldap" xml:space="preserve">
+        <source>LDAP</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userlist.jsp.authorized.ldap_server" xml:space="preserve">
+        <source>LDAP ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserList</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
@@ -8979,6 +9009,15 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="extgroup.jsp.header" xml:space="preserve">
         <source>External Group to Roles Mapping</source>
+      </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source" xml:space="preserve">
+        <source>Auth source</source>
+      </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source.any" xml:space="preserve">
+        <source>Any (server-agnostic)</source>
+      </trans-unit>
+      <trans-unit id="extgroup.jsp.auth_source.hint" xml:space="preserve">
+        <source>Optionally scope this mapping to one LDAP directory. Server-agnostic mappings apply to REMOTE_USER and any directory.</source>
       </trans-unit>
       <trans-unit id="extgroups.jsp.header" xml:space="preserve">
         <source>External Groups</source>

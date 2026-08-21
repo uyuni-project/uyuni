@@ -1,0 +1,5 @@
+- Add LDAP `memberOf` group resolution with Active Directory
+  `memberOf;range=` paging, nested AD group filter defaults, and
+  an Authorized by column on the users list
+- Accept `uyuni-` as well as `uyuni_` on LDAP group names when mapping
+  to external groups, and expose `auth.ldap` XML-RPC list/test methods

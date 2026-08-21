@@ -23,7 +23,7 @@ CREATE TABLE suseCredentials
                             ON DELETE CASCADE,
     type                VARCHAR(128) DEFAULT ('scc') NOT NULL
                              CONSTRAINT rhn_type_ck
-                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc')),
+                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc', 'ldap')),
     url                 VARCHAR(256),
     username            VARCHAR(64),
     password            VARCHAR(4096),
@@ -60,6 +60,9 @@ ALTER TABLE susecredentials
                 username is not null and username <> ''
                     and password is not null and password <> ''
                     and url is not null and url <> ''
+            WHEN 'ldap' THEN
+                -- Bind DN is on suseLdapAuthServer, so only the password lives here.
+                password is not null and password <> ''
         END
     );
 

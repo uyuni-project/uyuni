@@ -22,7 +22,7 @@
 <rhn:submitted />
 <rl:csv dataset="pageList"
     name="userList"
-    exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn"/>
+    exportColumns="userLogin,userLastName,userFirstName,email,roleNames,authorizedBy,lastLoggedIn"/>
 <!-- Start of active users list -->
 <rl:list dataset="pageList"
          width="100%"
@@ -53,6 +53,14 @@
                    bound="true"
                    sortable="true"
                    headerkey="userdetails.jsp.adminroles"
+                    />
+
+        <!-- Authorized by column (LOCAL / PAM / LDAP) -->
+        <rl:column attr="authorizedBy"
+                   bound="true"
+                   sortable="true"
+                   sortattr="authType"
+                   headerkey="userlist.jsp.authorizedby"
                     />
 
         <!-- Last logged in column -->
