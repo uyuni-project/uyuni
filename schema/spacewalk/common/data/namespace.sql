@@ -930,13 +930,13 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.ansible.lookup_ansible_path_by_id', 'R', 'Lookup ansible path by path id')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('api.ansible.remove_ansible_path', 'W', 'Create ansible path')
+    VALUES ('api.ansible.remove_ansible_path', 'W', 'Remove ansible path')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.ansible.schedule_playbook', 'W', 'Schedule a playbook execution')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('api.ansible.update_ansible_path', 'W', 'Create ansible path')
+    VALUES ('api.ansible.update_ansible_path', 'W', 'Update ansible path')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.channel.access.disable_user_restrictions', 'W', 'Disable user restrictions for the given channel.  If disabled,')
