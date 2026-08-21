@@ -27,22 +27,27 @@ import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssSlave;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.admin.LdapAdminManager;
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.ldap.LdapAuthServer;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
 import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
+import com.suse.manager.webui.controllers.admin.mappers.LdapResponseMappers;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
@@ -82,6 +87,7 @@ public class AdminViewsController {
             .create();
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
+    private static final LdapAdminManager LDAP_ADMIN_MANAGER = new LdapAdminManager();
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
     private static final HubManager HUB_MANAGER = new HubManager();
@@ -112,6 +118,12 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createPayg))), jade);
         get("/manager/admin/setup/payg/:id",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
+        get("/manager/admin/setup/ldap",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listLdap))), jade);
+        get("/manager/admin/setup/ldap/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createLdap))), jade);
+        get("/manager/admin/setup/ldap/:id",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showLdap))), jade);
         get("/manager/admin/setup/proxy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
         get("/manager/admin/hub/hub-details",
@@ -343,6 +355,69 @@ public class AdminViewsController {
             data.put("paygInstance", GSON.toJson(null));
         }
         return new ModelAndView(data, "controllers/admin/templates/payg.jade");
+    }
+
+    /**
+     * Show the list of configured LDAP directory servers.
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return list view
+     */
+    public static ModelAndView listLdap(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<LdapAuthServer> servers = LDAP_ADMIN_MANAGER.list();
+        data.put("flashMessage", FlashScopeHelper.flash(request));
+        data.put("contentLdapServers", GSON.toJson(LdapResponseMappers.mapResumeFromDB(servers)));
+        return new ModelAndView(data, "controllers/admin/templates/ldap_list.jade");
+    }
+
+    /**
+     * Render the create-LDAP-server page.
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return create form view
+     */
+    public static ModelAndView createLdap(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("orgs", GSON.toJson(orgOptions()));
+        return new ModelAndView(data, "controllers/admin/templates/ldap_create.jade");
+    }
+
+    /**
+     * Render the edit-LDAP-server page for one directory.
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return detail/edit view
+     */
+    public static ModelAndView showLdap(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("orgs", GSON.toJson(orgOptions()));
+        try {
+            long id = Long.parseLong(request.params("id"));
+            LdapAuthServer server = LDAP_ADMIN_MANAGER.get(id);
+            data.put("ldapServer", GSON.toJson(LdapResponseMappers.mapFullFromDB(server)));
+            data.put("wasFreshlyCreatedMessage", FlashScopeHelper.flash(request));
+        }
+        catch (NumberFormatException | com.redhat.rhn.common.hibernate.LookupException e) {
+            data.put("ldapServer", GSON.toJson(null));
+        }
+        return new ModelAndView(data, "controllers/admin/templates/ldap.jade");
+    }
+
+    private static List<Map<String, Object>> orgOptions() {
+        return OrgFactory.lookupAllOrgs().stream()
+                .map(AdminViewsController::orgOption)
+                .toList();
+    }
+
+    private static Map<String, Object> orgOption(Org org) {
+        Map<String, Object> option = new HashMap<>();
+        option.put("id", org.getId());
+        option.put("name", org.getName());
+        return option;
     }
 
     /**

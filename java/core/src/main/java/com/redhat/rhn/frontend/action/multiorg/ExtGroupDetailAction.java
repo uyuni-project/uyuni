@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,18 +29,23 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.SelectableLabelValueBean;
 
+import com.suse.manager.model.ldap.LdapAuthServer;
+import com.suse.manager.model.ldap.LdapAuthServerFactory;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,7 +76,7 @@ public class ExtGroupDetailAction extends RhnAction {
         }
 
         if (ctx.isSubmitted()) {
-            DynaActionForm form = (DynaActionForm)formIn;
+            DynaActionForm form = (DynaActionForm) formIn;
             ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
                     makeValidationMap(form), null,
                     VALIDATION_XSD);
@@ -83,6 +89,7 @@ public class ExtGroupDetailAction extends RhnAction {
             Boolean satAdm = (Boolean) form.get("role_satellite_admin");
             Boolean orgAdm = (Boolean) form.get("role_org_admin");
             String selectedRoles = (String) form.get("selected_regular_roles");
+            Long ldapServerId = parseLdapServerId((String) form.get("ldapServerId"));
 
             Set<Role> roles = new HashSet<>();
             if (BooleanUtils.isTrue(satAdm)) {
@@ -103,16 +110,16 @@ public class ExtGroupDetailAction extends RhnAction {
                 extGroup = new UserExtGroup();
             }
 
-            if (!label.equals(extGroup.getLabel())) {
-                if (UserGroupFactory.lookupExtGroupByLabel(label) != null) {
-                    createErrorMessage(request, "extgrouplabel.already.exists", label);
-                    setupRoles(request, user, extGroup);
-                    return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-                }
+            UserExtGroup existing = UserGroupFactory.lookupExtGroupByLabelAndServer(label, ldapServerId);
+            if (existing != null && !Objects.equals(existing.getId(), extGroup.getId())) {
+                createErrorMessage(request, "extgrouplabel.already.exists", label);
+                setupRoles(request, user, extGroup);
+                return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
 
             extGroup.setLabel(label);
             extGroup.setRoles(roles);
+            extGroup.setLdapServerId(ldapServerId);
             UserGroupFactory.save(extGroup);
 
 
@@ -134,6 +141,13 @@ public class ExtGroupDetailAction extends RhnAction {
         Map<String, String> map = new HashMap<>();
         map.put("label", (String) form.get("extGroupLabel"));
         return map;
+    }
+
+    private static Long parseLdapServerId(String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+        return Long.valueOf(value.trim());
     }
 
     /**
@@ -173,8 +187,17 @@ public class ExtGroupDetailAction extends RhnAction {
             }
         }
 
+        List<LabelValueBean> ldapServers = new ArrayList<>();
+        for (LdapAuthServer server : LdapAuthServerFactory.listAll()) {
+            ldapServers.add(lv(server.getLabel(), server.getId().toString()));
+        }
+
         request.setAttribute("adminRoles", adminRoles);
         request.setAttribute("regularRoles", regularRoles);
         request.setAttribute("orgAdmin", extGroup != null && extGroup.getRoles().contains(RoleFactory.ORG_ADMIN));
+        request.setAttribute("ldapServers", ldapServers);
+        request.setAttribute("ldapServerId",
+                extGroup != null && extGroup.getLdapServerId() != null ?
+                        extGroup.getLdapServerId().toString() : "");
     }
 }

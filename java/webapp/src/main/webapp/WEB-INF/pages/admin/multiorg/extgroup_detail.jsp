@@ -64,6 +64,21 @@
                     </div>
                 </div>
                 <div class="row">
+                    <label class="col-lg-3 control-label"><bean:message key="extgroup.jsp.auth_source"/>:</label>
+                       <div class="col-lg-6">
+                          <select class="form-control" name="ldapServerId">
+                              <option value=""><bean:message key="extgroup.jsp.auth_source.any"/></option>
+                              <c:forEach items="${ldapServers}" var="server">
+                                  <option value="${server.value}"
+                                          <c:if test="${not empty ldapServerId and ldapServerId eq server.value}">selected="selected"</c:if>>
+                                      ${server.label}
+                                  </option>
+                              </c:forEach>
+                          </select>
+                          <span class="help-block"><bean:message key="extgroup.jsp.auth_source.hint"/></span>
+                    </div>
+                </div>
+                <div class="row">
                     <label class="col-lg-3 control-label"><bean:message key="userdetails.jsp.adminRoles"/>:</label>
                        <div class="col-lg-6">
                             <c:forEach items="${adminRoles}" var="role">

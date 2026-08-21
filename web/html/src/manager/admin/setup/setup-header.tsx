@@ -22,6 +22,11 @@ export const SetupHeader = () => {
       label: t("PAYG Connections"),
       url: "/rhn/manager/admin/setup/payg",
     },
+    {
+      id: "wizard-step-ldap",
+      label: t("LDAP"),
+      url: "/rhn/manager/admin/setup/ldap",
+    },
   ];
 
   return (

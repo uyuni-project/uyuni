@@ -1,0 +1,20 @@
+include /templates/common.jade
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+#create-ldap
+
+div#init_data_orgs(style="display: none")
+    | #{orgs}
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/create-ldap')
+        .then(function(module) {
+            module.renderer(
+                'create-ldap',
+                {
+                    orgs: document.getElementById('init_data_orgs').textContent
+                }
+            );
+        });

@@ -44,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -197,26 +198,39 @@ public class LoginController {
     private String performLogin(Request request, Response response, boolean allowReadOnly) {
         Optional<String> errorMsg = Optional.empty();
         LoginCredentials creds = GSON.fromJson(request.body(), LoginCredentials.class);
-        User user = LoginHelper.checkExternalAuthentication(request.raw(), new ArrayList<>(), new ArrayList<>());
+        List<String> messages = new ArrayList<>();
+        User user = LoginHelper.checkExternalAuthentication(request.raw(), messages, new ArrayList<>());
 
-        // External-auth didn't return a user - try local-auth
+        // External-auth didn't return a user - try native LDAP, then local-auth
         if (user == null) {
             if (creds == null) {
                 Spark.halt(HttpServletResponse.SC_BAD_REQUEST);
             }
             else {
-                try {
-                    if (allowReadOnly) {
-                        user = UserManager.loginReadOnlyUser(creds.getLogin(), creds.getPassword());
-                    }
-                    else {
-                        user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
-                    }
-                    LOGGER.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                List<String> ldapErrors = new ArrayList<>();
+                user = LoginHelper.checkLdapAuthentication(creds.getLogin(), creds.getPassword(),
+                        allowReadOnly, true, messages, ldapErrors);
+                if (user != null) {
+                    LOGGER.info("LDAP AUTH SUCCESS: [{}]", user.getLogin());
                 }
-                catch (LoginException e) {
-                    LOGGER.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
-                    errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+                else if (!ldapErrors.isEmpty()) {
+                    // Known LDAP user that failed authentication: reject, do not fall back.
+                    errorMsg = Optional.of(ldapErrors.get(0));
+                }
+                else {
+                    try {
+                        if (allowReadOnly) {
+                            user = UserManager.loginReadOnlyUser(creds.getLogin(), creds.getPassword());
+                        }
+                        else {
+                            user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                        }
+                        LOGGER.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                    }
+                    catch (LoginException e) {
+                        LOGGER.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                        errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+                    }
                 }
             }
         }
