@@ -40,7 +40,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
 import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -81,8 +80,6 @@ public class SPMigrationAction extends RhnAction {
     private static Logger logger = LogManager.getLogger(SPMigrationAction.class);
 
     // Request attributes
-    private static final String UPGRADE_SUPPORTED = "upgradeSupported";
-    private static final String ZYPP_INSTALLED = "zyppPluginInstalled";
     private static final String MIGRATION_SCHEDULED = "migrationScheduled";
     private static final String LATEST_SP = "latestServicePack";
     private static final String MISSING_SUCCESSOR_EXTENSIONS = "missingSuccessorExtensions";
@@ -90,7 +87,6 @@ public class SPMigrationAction extends RhnAction {
 
     private static final String NO_MAINTENANCE_WINDOW = "noMaintenanceWindow";
     private static final String CHANNEL_MAP = "channelMap";
-    private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
     private static final String IS_MINION = "isMinion";
     private static final String IS_SUSE_MINION = "isSUSEMinion";
     private static final String IS_REDHAT_MINION = "isRedHatMinion";
@@ -146,13 +142,10 @@ public class SPMigrationAction extends RhnAction {
 
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
 
-        setGeneralAttributes(request, ctx, server, minion, parHolder);
+        setGeneralAttributes(request, server, minion, parHolder);
 
         // Check if there is already a migration in the schedule
-        Action migration = null;
-        if (parHolder.isTradCliUpgradesViaCapabilitySupported()) {
-            migration = ServerActionFactory.isMigrationScheduledForServer(server.getId());
-        }
+        Action migration = ServerActionFactory.isMigrationScheduledForServer(server.getId());
         request.setAttribute(MIGRATION_SCHEDULED, migration);
 
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
@@ -176,8 +169,7 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, parHolder.isGoBack());
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) && parHolder.isTradCliUpgradesViaCapabilitySupported() &&
-                migration == null) {
+        if (forward.getName().equals(TARGET) && migration == null) {
 
             boolean mustReturn = handleTargetForward(request, ctx, server);
             if (mustReturn) {
@@ -200,7 +192,7 @@ public class SPMigrationAction extends RhnAction {
         return forward;
     }
 
-    private void setGeneralAttributes(HttpServletRequest request, RequestContext ctx, Server server,
+    private void setGeneralAttributes(HttpServletRequest request, Server server,
                                       Optional<MinionServer> minion, SPMigrationActionParameterHolder parHolder) {
         // Check if this server is a minion
         parHolder.setMinion(minion.isPresent());
@@ -228,25 +220,6 @@ public class SPMigrationAction extends RhnAction {
         request.setAttribute(IS_SALT_UP_TO_DATE, parHolder.isSaltPackageUpToDateOnMinion());
         request.setAttribute(SALT_PACKAGE, parHolder.getSaltPackageOnMinion());
 
-        // Check if this server supports distribution upgrades via capabilities
-        // (for traditional clients only)
-        parHolder.setTradCliUpgradesViaCapabilitySupported(parHolder.isSuseMinion() || parHolder.isRedHatMinion() ||
-                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser()));
-        logger.debug("Upgrade supported for '{}'? {}", server.getName(),
-                parHolder.isTradCliUpgradesViaCapabilitySupported());
-        request.setAttribute(UPGRADE_SUPPORTED, parHolder.isTradCliUpgradesViaCapabilitySupported());
-
-        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
-        parHolder.setTradCliZyppPluginInstalled(PackageFactory.
-                lookupByNameAndServer("zypp-plugin-spacewalk", server) != null);
-        logger.debug("zypp plugin installed? {}", parHolder.isTradCliZyppPluginInstalled());
-        request.setAttribute(ZYPP_INSTALLED, parHolder.isTradCliZyppPluginInstalled());
-
-        // Check if the newest update stack is installed (for traditional clients only)
-        parHolder.setTradCliUpdateStackUpdateNeeded(ErrataManager
-                .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
-        logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());
-        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, parHolder.isTradCliUpdateStackUpdateNeeded());
     }
 
     private void handleWhenDispatching(HttpServletRequest request, DynaActionForm form, String dispatch,

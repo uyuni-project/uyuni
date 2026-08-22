@@ -32,7 +32,6 @@ import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -43,7 +42,6 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -616,31 +614,9 @@ public class DistUpgradeManager extends BaseManager {
     public static Server performServerChecks(Long sid, User user) throws DistUpgradeException {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        if (server.asMinionServer().isEmpty()) {
-            // Check if server supports distribution upgrades
-            boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
-            if (!supported) {
-                throw new DistUpgradeException("Dist upgrade not supported for server: " + sid);
-            }
-
-            // Check if zypp-plugin-spacewalk is installed
-            boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
-                    "zypp-plugin-spacewalk", server) != null;
-            if (!zyppPluginInstalled) {
-                throw new DistUpgradeException("Package zypp-plugin-spacewalk is not installed: " + sid);
-            }
-        }
-        else {
-            Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-            if (minion.isEmpty() || !minion.get().isOsFamilySuse()) {
-                throw new DistUpgradeException("Dist upgrade only supported for SUSE systems");
-            }
-        }
-
-        // Check if the newest update stack is installed (for traditional clients only)
-        if (ErrataManager.updateStackUpdateNeeded(user, server)) {
-            throw new DistUpgradeException("There are outstanding Package Management " +
-                    "updates available for this system.");
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
+        if (minion.isEmpty() || !(minion.get().isOsFamilySuse() || minion.get().getOsFamily().equals("RedHat"))) {
+            throw new DistUpgradeException("Dist upgrade only supported for SUSE and RedHat systems");
         }
 
         // Check if there is already a migration in the schedule
