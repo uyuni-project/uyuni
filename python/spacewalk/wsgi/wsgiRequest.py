@@ -100,7 +100,6 @@ class WsgiRequest:
         self.headers_out.remove_key("Transfer-Encoding")
 
         self.start_response(self.status, list(self.headers_out.items()))
-        return
 
     def get_remote_host(self, _rev=""):
         host = self.headers_in["REMOTE_ADDR"]

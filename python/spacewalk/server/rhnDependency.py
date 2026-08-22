@@ -568,7 +568,7 @@ def _avoid_compat_packages(dict):
     if len(dict) > 1:
         matches = list(dict.keys())
         # check we have at least one non- "compat-*" package name
-        compats = [a for a in matches if a[:7] == "compat-"]
+        compats = [a for a in matches if a.startswith("compat-")]
         if len(compats) > 0 and len(compats) < len(matches):  # compats and other things
             for (
                 p
@@ -622,7 +622,7 @@ def test_evr(evr, operator, limit):
     """
     good_operators = ["<", "<=", "==", ">=", ">"]
 
-    if not operator in good_operators:
+    if operator not in good_operators:
         raise rhnFault(err_code=21, err_text="Bad operator passed into test_evr.")
 
     evr_epoch = evr["epoch"]

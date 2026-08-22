@@ -71,15 +71,15 @@ def getServerID(server, fields=[]):
         return reduce(lambda a, b: a and b in "0123456789", s, 1)
 
     log_debug(4, server, fields)
-    if not type(server) in [type(""), type(0)]:
+    if type(server) not in [type(""), type(0)]:
         return None
 
     # pylint: disable-next=unidiomatic-typecheck
     if type(server) == type(0):
         search_id = server  # will search by number
-    elif server[:7] == "SERVER-":  # old style certificate
+    elif server.startswith("SERVER-"):  # old style certificate
         search_id = server
-    elif server[:3] == "ID-":  # new style id, extract the numeric id
+    elif server.startswith("ID-"):  # new style id, extract the numeric id
         tmp_id = server[3:]
         if not tmp_id or check_chars(tmp_id) == 0:
             # invalid certificate, after ID- we have non numbers
@@ -163,22 +163,19 @@ def getServerSecret(server):
 def __create_server_group(group_label, org_id):
     """create the initial server groups for a new server"""
     # Add this new server to the pending group
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select sg.id, sg.current_members
     from rhnServerGroup sg
     where sg.group_type = ( select id from rhnServerGroupType
                             where label = :group_label )
     and sg.org_id = :org_id
-    """
-    )
+    """)
     h.execute(org_id=org_id, group_label=group_label)
     data = h.fetchone_dict()
     if not data:
         # create the requested group
         ret_id = rhnSQL.Sequence("rhn_server_group_id_seq")()
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         insert into rhnServerGroup
         ( id, name, description,
           group_type, org_id)
@@ -187,8 +184,7 @@ def __create_server_group(group_label, org_id):
             sgt.id, :org_id
         from rhnServerGroupType sgt
         where sgt.label = :group_label
-        """
-        )
+        """)
         rownum = h.execute(new_id=ret_id, org_id=org_id, group_label=group_label)
         if rownum == 0:
             # No rows were created, probably invalid label
@@ -220,12 +216,10 @@ def join_server_group(server_id, server_group_id):
 def create_server_setup(server_id, org_id):
     """This function inserts a row in rhnServerInfo."""
     # create the rhnServerInfo record
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     insert into rhnServerInfo (server_id, checkin, checkin_counter)
                        values (:server_id, current_timestamp, :checkin_counter)
-    """
-    )
+    """)
     h.execute(server_id=server_id, checkin_counter=0)
 
     # Do not entitle the server yet
@@ -235,13 +229,11 @@ def create_server_setup(server_id, org_id):
 def checkin(server_id, commit=1):
     """checkin - update the last checkin time"""
     log_debug(3, server_id)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     update rhnServerInfo
     set checkin = current_timestamp, checkin_counter = checkin_counter + 1
     where server_id = :server_id
-    """
-    )
+    """)
     h.execute(server_id=server_id)
     if commit:
         rhnSQL.commit()
@@ -266,13 +258,11 @@ def throttle(server):
     # if not os.path.exists(throttlefile):
     #    # We don't throttle anybody
     #    return
-    return
 
 
 # pylint: disable-next=unused-argument
 def join_rhn(org_id):
     """Stub"""
-    return
 
 
 def snapshot_server(server_id, reason):
@@ -284,7 +274,6 @@ def check_entitlement(server_id, want_array=False):
     h = rhnSQL.prepare(
         """select server_id, label, is_base from rhnServerEntitlementView where server_id = :server_id order by is_base DESC"""
     )
-    # h = rhnSQL.prepare("""select server_id, label from rhnServerEntitlementView where server_id = :server_id""")
     h.execute(server_id=server_id)
 
     # if I read the old code correctly, this should do about the same thing.
@@ -309,12 +298,10 @@ def check_entitlement(server_id, want_array=False):
 
 
 def check_entitlement_by_machine_id(machine_id):
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select e.label from rhnServer s, rhnServerEntitlementView e
     where s.machine_id=:machine_id and s.id=e.server_id
-    """
-    )
+    """)
     h.execute(machine_id=machine_id)
     rows = h.fetchall_dict()
     return [row["label"] for row in rows] if rows else []
@@ -322,8 +309,7 @@ def check_entitlement_by_machine_id(machine_id):
 
 # Push client related
 # XXX should be moved to a different file?
-_query_update_push_client_registration = rhnSQL.Statement(
-    """
+_query_update_push_client_registration = rhnSQL.Statement("""
     update rhnPushClient
        set name = :name_in,
            shared_key = :shared_key_in,
@@ -331,16 +317,13 @@ _query_update_push_client_registration = rhnSQL.Statement(
            next_action_time = NULL,
            last_ping_time = NULL
      where server_id = :server_id_in
-"""
-)
-_query_insert_push_client_registration = rhnSQL.Statement(
-    """
+""")
+_query_insert_push_client_registration = rhnSQL.Statement("""
         insert into rhnPushClient
            (id, server_id, name, shared_key, state_id)
         values (sequence_nextval('rhn_pclient_id_seq'), :server_id_in, :name_in,
             :shared_key_in, :state_id_in)
-"""
-)
+""")
 
 
 def update_push_client_registration(server_id):
@@ -375,24 +358,20 @@ def update_push_client_registration(server_id):
     return timestamp, client_name, shared_key
 
 
-_query_delete_duplicate_client_jids = rhnSQL.Statement(
-    """
+_query_delete_duplicate_client_jids = rhnSQL.Statement("""
     update rhnPushClient
        set jabber_id = null
      where jabber_id = :jid and
            server_id <> :server_id
-"""
-)
+""")
 
-_query_update_push_client_jid = rhnSQL.Statement(
-    """
+_query_update_push_client_jid = rhnSQL.Statement("""
     update rhnPushClient
        set jabber_id = :jid,
            next_action_time = NULL,
            last_ping_time = NULL
      where server_id = :server_id
-"""
-)
+""")
 
 
 def update_push_client_jid(server_id, jid):

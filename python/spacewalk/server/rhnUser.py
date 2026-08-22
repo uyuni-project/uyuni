@@ -366,7 +366,7 @@ def search(user):
         return None
     ret = User(user, "")
     # pylint: disable-next=unnecessary-negation
-    if not ret.reload(userid) == 0:
+    if ret.reload(userid) != 0:
         # something horked during reloading entry from database
         # we can not realy say that the entry does not exist...
         raise rhnFault(10)
