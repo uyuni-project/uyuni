@@ -33,4 +33,14 @@ public @interface LegacyDocResponse {
      * @return optional response body type to use when rendering legacy API documentation
      */
     Class<?> responseClass() default Void.class;
+
+    /**
+     * Tells that the legacy documentation renders the return value as a bare type.
+     *
+     * A return value carries no name of its own in the specification, so the parsers label it
+     * with the operation name. A namespace that documents the type alone opts out of that.
+     *
+     * @return whether the legacy documentation renders the return value without a label
+     */
+    boolean unnamed() default false;
 }

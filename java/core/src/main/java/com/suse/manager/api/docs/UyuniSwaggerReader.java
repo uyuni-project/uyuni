@@ -65,6 +65,8 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
+
+    public static final String DOC_RESPONSE_UNNAMED_EXTENSION = "x-uyuni-doc-response-unnamed";
     /** Parameter counts of the handler overloads an operation stands for, longest first. */
     public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
 
@@ -130,7 +132,7 @@ public class UyuniSwaggerReader {
         applyOverloadArities(cls, method, openApiOperation);
         applySecurityIfNeeded(method, openApiOperation);
         configureRequestBodyIfPresent(apiDoc, openApiOperation);
-        configureResponses(apiDoc, openApiOperation);
+        configureResponses(apiDoc, method, openApiOperation);
         processLiteralParameters(method, openApiOperation);
         registerOperationOnPath(namespace, method, apiDoc.method(), openApiOperation);
     }
@@ -138,6 +140,9 @@ public class UyuniSwaggerReader {
     private Operation createOperationWithBasicInfo(Method method, Tag tagAnnotation, ApiEndpointDoc apiDoc) {
         Operation operation = new Operation();
         operation.setOperationId(method.getName());
+        if (findMethodAnnotation(method, Deprecated.class) != null) {
+            operation.setDeprecated(true);
+        }
         if (!apiDoc.summary().isEmpty()) {
             operation.setSummary(apiDoc.summary());
         }
@@ -301,13 +306,18 @@ public class UyuniSwaggerReader {
         if (schema == null || schema.getProperties() == null) {
             return;
         }
+        LegacyDocResponse structDoc = documentedClass.getAnnotation(LegacyDocResponse.class);
+        if (structDoc != null && !structDoc.name().isBlank()) {
+            schema.addExtension(DOC_RESPONSE_NAME_EXTENSION, structDoc.name());
+        }
         for (Method getter : documentedClass.getMethods()) {
-            LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
-            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
-                continue;
-            }
             Schema<?> property = schema.getProperties().get(resolvePropertyName(getter));
             if (property == null) {
+                continue;
+            }
+            applyDocumentedValues(property, getter);
+            LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
+            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
                 continue;
             }
             if (!legacyDoc.type().isBlank()) {
@@ -316,6 +326,29 @@ public class UyuniSwaggerReader {
             if (!legacyDoc.name().isBlank()) {
                 property.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDoc.name());
             }
+        }
+    }
+
+    /**
+     * Applies the values a property documents to its schema.
+     *
+     * The model converter builds a property schema knowing the declared Java type, and coerces
+     * every documented value to it: a value the type cannot hold is reshaped, or lost. Resolving
+     * the annotation without a type context, the way a documented parameter already does, keeps
+     * the values as the namespace spelled them.
+     *
+     * @param property the property schema built for the getter
+     * @param getter the getter documenting the property
+     */
+    private void applyDocumentedValues(Schema<?> property, Method getter) {
+        var arraySchema = getter.getAnnotation(io.swagger.v3.oas.annotations.media.ArraySchema.class);
+        if (arraySchema != null) {
+            applyDocumentedValues(property, arraySchema.schema());
+            return;
+        }
+        var schemaAnnotation = getter.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (schemaAnnotation != null) {
+            applyDocumentedValues(property, schemaAnnotation);
         }
     }
 
@@ -334,7 +367,7 @@ public class UyuniSwaggerReader {
         return Introspector.decapitalize(name);
     }
 
-    private void configureResponses(ApiEndpointDoc apiDoc, Operation operation) {
+    private void configureResponses(ApiEndpointDoc apiDoc, Method method, Operation operation) {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
@@ -359,6 +392,12 @@ public class UyuniSwaggerReader {
                     case "Boolean" -> new BooleanSchema();
                     default -> new StringSchema();
                 };
+
+                var responseSchemaAnnotation =
+                        findMethodAnnotation(method, io.swagger.v3.oas.annotations.media.Schema.class);
+                if (responseSchemaAnnotation != null) {
+                    applyDocumentedValues(schema, responseSchemaAnnotation);
+                }
 
                 mediaType.setSchema(schema);
                 content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
@@ -412,13 +451,17 @@ public class UyuniSwaggerReader {
         if (!legacyDocResponse.name().isBlank()) {
             response.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDocResponse.name());
         }
+        if (legacyDocResponse.unnamed()) {
+            response.addExtension(DOC_RESPONSE_UNNAMED_EXTENSION, Boolean.TRUE);
+        }
         return response;
     }
 
     private boolean isEmptyLegacyDocResponse(LegacyDocResponse legacyDocResponse) {
         return legacyDocResponse.responseClass() == Void.class &&
                 legacyDocResponse.type().isBlank() &&
-                legacyDocResponse.name().isBlank();
+                legacyDocResponse.name().isBlank() &&
+                !legacyDocResponse.unnamed();
     }
 
     private void processLiteralParameters(Method method, Operation operation) {

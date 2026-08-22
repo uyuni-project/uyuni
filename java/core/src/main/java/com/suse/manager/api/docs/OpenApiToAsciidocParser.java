@@ -57,6 +57,8 @@ public class OpenApiToAsciidocParser {
     /** Bullet level the doclet uses for the documented values of a parameter. */
     private static final int PARAMETER_OPTION_LEVEL = 2;
 
+    private static final int RETURN_OPTION_LEVEL = 2;
+
     /** OpenAPI type name for an array-valued schema. */
     private static final String ARRAY_TYPE = "array";
 
@@ -191,7 +193,8 @@ public class OpenApiToAsciidocParser {
                     """,
                 tag,
                 entry.anchor(),
-                operation.getOperationId(),
+                Boolean.TRUE.equals(operation.getDeprecated()) ?
+                        operation.getOperationId() + " (Deprecated)" : operation.getOperationId(),
                 entry.method(),
                 summary,
                 description
@@ -330,7 +333,8 @@ public class OpenApiToAsciidocParser {
         LegacyDocResponseData legacyDocResponse = getLegacyDocResponse(successResponse);
         Schema<?> docSchema = legacyDocResponse.schema();
         String responseDescription = responseDescription(successResponse);
-        String responseLabel = legacyDocResponse.label(responseDescription).orElse(responseDescription);
+        String responseLabel = legacyDocResponse.unnamed() ? "" :
+                legacyDocResponse.label(responseDescription).orElse(responseDescription);
         if (docSchema != null) {
             refName = docSchema.get$ref() != null ? extractRefName(docSchema.get$ref()) : "";
             schema = resolveSchemaReference(docSchema);
@@ -351,7 +355,8 @@ public class OpenApiToAsciidocParser {
         // that are not simple: the doclet renders those as a single typed line, without expanding
         // the schema.
         if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
-            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation);
+            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation,
+                    legacyDocResponse.unnamed());
             return;
         }
 
@@ -368,7 +373,8 @@ public class OpenApiToAsciidocParser {
         return new LegacyDocResponseData(
                 schema instanceof Schema<?> docSchema ? docSchema : null,
                 type,
-                name
+                name,
+                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_UNNAMED_EXTENSION))
         );
     }
 
@@ -417,10 +423,18 @@ public class OpenApiToAsciidocParser {
         }
         resolved.getProperties().forEach((name, prop) -> {
             Schema<?> nested = resolveNestedStruct(prop);
-            String label = nested != null && !legacyDocName(prop).isEmpty() ? legacyDocName(prop) : name;
+            // An array property spends its legacy name on the element struct, so only a scalar or
+            // struct property renames itself with it.
+            String label = ARRAY_TYPE.equals(prop.getType()) || legacyDocName(prop).isEmpty() ?
+                    name : legacyDocName(prop);
             writeStructProperty(writer, "", label, prop, level);
             printOptions(writer, prop, level + 1);
             printElementStruct(writer, prop, level + 1);
+            // A serializer referenced by a struct property brings its own struct label, which the
+            // doclet renders as a sibling of the property before the fields it introduces.
+            if (nested != null && !legacyDocName(nested).isEmpty()) {
+                writer.printf("%s [.struct]#struct#  %s%n", "*".repeat(level), legacyDocName(nested));
+            }
             printStructProperties(writer, nested, level + 1);
         });
     }
@@ -540,9 +554,18 @@ public class OpenApiToAsciidocParser {
         return value == null ? "" : value.toString();
     }
 
-    private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
-                                   String responseLabel, String legacyType, Operation operation) {
+    private void writeSimpleReturn(PrintWriter writer, Schema<?> schema, String responseLabel,
+                                   String legacyType, Operation operation, boolean unnamed) {
         String displayType = legacyType.isBlank() ? displayType(schema) : legacyType;
+        // The doclet renders a return value documented as a bare type as plain text, without the
+        // type role a named one carries.
+        if (unnamed) {
+            writer.printf("* %s %n", displayType);
+            printOptions(writer, schema, RETURN_OPTION_LEVEL);
+            writer.print(" ");
+            return;
+        }
+
         String label = Optional.of(responseLabel)
                 .filter(d -> !d.isBlank())
                 .orElseGet(() -> operation.getOperationId()
@@ -550,7 +573,9 @@ public class OpenApiToAsciidocParser {
                         .replaceAll("([a-z])([A-Z])", "$1 $2")
                         .toLowerCase().trim());
 
-        writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
+        writer.printf("* [.%s]#%s#  %s%n", displayType, displayType, label);
+        printOptions(writer, schema, RETURN_OPTION_LEVEL);
+        writer.print(" ");
     }
 
     private Schema<?> resolveSchemaReference(Schema<?> schema) {
@@ -566,8 +591,8 @@ public class OpenApiToAsciidocParser {
                 .orElse("");
     }
 
-    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
-        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean unnamed) {
+        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "", false);
 
         Optional<String> label(String description) {
             if (name.isBlank()) {

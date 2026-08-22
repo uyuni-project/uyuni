@@ -317,7 +317,8 @@ public class OpenApiToDocBookParser {
             schema = resolveSchemaReference(docSchema);
         }
 
-        String label = legacyDocResponse.label(responseDescription).orElseGet(() ->
+        String label = legacyDocResponse.unnamed() ? "" :
+                legacyDocResponse.label(responseDescription).orElseGet(() ->
                 !responseDescription.isBlank() ?
                 responseDescription :
                 fallbackLabel
@@ -339,7 +340,8 @@ public class OpenApiToDocBookParser {
         return new LegacyDocResponseData(
                 schema instanceof Schema<?> docSchema ? docSchema : null,
                 type,
-                name
+                name,
+                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_UNNAMED_EXTENSION))
         );
     }
 
@@ -411,7 +413,9 @@ public class OpenApiToDocBookParser {
     private String renderSimpleReturn(Schema<?> schema, String label, String typeOverride) {
         String type = typeOverride.isBlank() ? formatSimpleType(schema) : typeOverride;
         String text = (label == null || label.isBlank()) ? type : type + " - " + label;
-        return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+        String item = String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+        String options = renderOptions(schema);
+        return options.isEmpty() ? item : item + "\n" + options;
     }
 
     private String extensionString(ApiResponse response, String extensionName) {
@@ -491,14 +495,19 @@ public class OpenApiToDocBookParser {
             Schema<?> propSchema = prop;
             String desc = findDescription(propSchema);
             Schema<?> nested = resolveNestedStruct(propSchema);
-            String label = nested != null && !getLegacyDocName(propSchema).isBlank() ?
-                    getLegacyDocName(propSchema) : name;
+            // An array property spends its legacy name on the element struct, so only a scalar or
+            // struct property renames itself with it.
+            String label = "array".equals(propSchema.getType()) || getLegacyDocName(propSchema).isBlank() ?
+                    name : getLegacyDocName(propSchema);
             // the doclet labels a nested struct with #struct_begin, which does not quote the label
             String body = nested != null ? String.format("%s %s", formatType(propSchema), label) :
                     String.format("%s \"%s\"", formatType(propSchema), label);
             if (!desc.isBlank()) {
                 body += " - " + desc;
             }
+            // A serializer referenced by a struct property brings its own struct label, which the
+            // doclet renders as a sibling of the property before the fields it introduces.
+            String structLabel = nested == null ? "" : getLegacyDocName(nested);
             String elementStruct = nested != null ? renderNestedStructProperties(nested) :
                     renderElementStruct(propSchema);
             String options = renderOptions(propSchema);
@@ -506,6 +515,19 @@ public class OpenApiToDocBookParser {
                 sb.append("    <listitem><para>")
                   .append(escapeXml(body))
                   .append("</para></listitem>\n");
+                appendOptions(sb, options);
+                return;
+            }
+            if (!structLabel.isBlank()) {
+                sb.append("    <listitem><para>")
+                  .append(escapeXml(body))
+                  .append("</para></listitem>\n");
+                sb.append("    <listitem>\n");
+                sb.append("      <para>").append(escapeXml(String.format("struct %s", structLabel))).append("</para>\n");
+                sb.append("      <itemizedlist spacing=\"compact\">\n");
+                sb.append(indentLines(elementStruct, 8)).append("\n");
+                sb.append("      </itemizedlist>\n");
+                sb.append("    </listitem>\n");
                 appendOptions(sb, options);
                 return;
             }
@@ -875,8 +897,8 @@ public class OpenApiToDocBookParser {
         return out.toString();
     }
 
-    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
-        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean unnamed) {
+        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "", false);
 
         Optional<String> label(String description) {
             if (name.isBlank()) {
