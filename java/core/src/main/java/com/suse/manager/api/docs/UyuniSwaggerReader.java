@@ -68,7 +68,9 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
 
-    public static final String DOC_RESPONSE_UNNAMED_EXTENSION = "x-uyuni-doc-response-unnamed";
+    public static final String DOC_RESPONSE_PLAIN_TEXT_EXTENSION = "x-uyuni-doc-response-plain-text";
+
+    public static final String DOC_RESPONSE_VALUES_EXTENSION = "x-uyuni-doc-response-values";
     /** Parameter counts of the handler overloads an operation stands for, longest first. */
     public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
 
@@ -463,12 +465,6 @@ public class UyuniSwaggerReader {
                     default -> new StringSchema();
                 };
 
-                var responseSchemaAnnotation =
-                        findMethodAnnotation(method, io.swagger.v3.oas.annotations.media.Schema.class);
-                if (responseSchemaAnnotation != null) {
-                    applyDocumentedValues(schema, responseSchemaAnnotation);
-                }
-
                 mediaType.setSchema(schema);
                 content.addMediaType(DEFAULT_MEDIA_TYPE, mediaType);
                 response.setContent(content);
@@ -483,7 +479,31 @@ public class UyuniSwaggerReader {
             apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, response));
         }
 
+        applyDocumentedReturnValues(method, apiResponses);
         operation.setResponses(apiResponses);
+    }
+
+    /**
+     * Carries the values a return value documents into the specification.
+     *
+     * A return value is documented on the operation, the only place an annotation can reach the
+     * result of a wrapped response, and the values it lists travel with the response rather than
+     * with the schema, which a wrapper shares with every other operation returning it.
+     *
+     * @param method the handler method backing the operation
+     * @param apiResponses the responses of the operation
+     */
+    private void applyDocumentedReturnValues(Method method, ApiResponses apiResponses) {
+        var annotation = findMethodAnnotation(method, io.swagger.v3.oas.annotations.media.Schema.class);
+        ApiResponse response = apiResponses.get(HTTP_200);
+        if (annotation == null || response == null) {
+            return;
+        }
+        Schema<?> values = new Schema<>();
+        applyDocumentedValues(values, annotation);
+        if (values.getEnum() != null && !values.getEnum().isEmpty()) {
+            response.addExtension(DOC_RESPONSE_VALUES_EXTENSION, values);
+        }
     }
 
     private void processApiResponseClass(ApiEndpointDoc apiDoc, ApiResponses apiResponses) {
@@ -521,8 +541,8 @@ public class UyuniSwaggerReader {
         if (!legacyDocResponse.name().isBlank()) {
             response.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDocResponse.name());
         }
-        if (legacyDocResponse.unnamed()) {
-            response.addExtension(DOC_RESPONSE_UNNAMED_EXTENSION, Boolean.TRUE);
+        if (legacyDocResponse.plainText()) {
+            response.addExtension(DOC_RESPONSE_PLAIN_TEXT_EXTENSION, Boolean.TRUE);
         }
         return response;
     }
@@ -531,7 +551,7 @@ public class UyuniSwaggerReader {
         return legacyDocResponse.responseClass() == Void.class &&
                 legacyDocResponse.type().isBlank() &&
                 legacyDocResponse.name().isBlank() &&
-                !legacyDocResponse.unnamed();
+                !legacyDocResponse.plainText();
     }
 
     private void processLiteralParameters(Method method, Operation operation) {

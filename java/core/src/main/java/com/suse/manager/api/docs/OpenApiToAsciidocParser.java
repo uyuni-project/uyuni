@@ -333,8 +333,7 @@ public class OpenApiToAsciidocParser {
         LegacyDocResponseData legacyDocResponse = getLegacyDocResponse(successResponse);
         Schema<?> docSchema = legacyDocResponse.schema();
         String responseDescription = responseDescription(successResponse);
-        String responseLabel = legacyDocResponse.unnamed() ? "" :
-                legacyDocResponse.label(responseDescription).orElse(responseDescription);
+        String responseLabel = legacyDocResponse.label(responseDescription).orElse(responseDescription);
         if (docSchema != null) {
             refName = docSchema.get$ref() != null ? extractRefName(docSchema.get$ref()) : "";
             schema = resolveSchemaReference(docSchema);
@@ -356,7 +355,7 @@ public class OpenApiToAsciidocParser {
         // the schema.
         if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
             writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation,
-                    legacyDocResponse.unnamed());
+                    legacyDocResponse.plainText(), legacyDocResponse.values());
             return;
         }
 
@@ -374,7 +373,9 @@ public class OpenApiToAsciidocParser {
                 schema instanceof Schema<?> docSchema ? docSchema : null,
                 type,
                 name,
-                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_UNNAMED_EXTENSION))
+                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_PLAIN_TEXT_EXTENSION)),
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION)
+                        instanceof Schema<?> values ? values : null
         );
     }
 
@@ -555,13 +556,15 @@ public class OpenApiToAsciidocParser {
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema, String responseLabel,
-                                   String legacyType, Operation operation, boolean unnamed) {
+                                   String legacyType, Operation operation, boolean plainText,
+                                   Schema<?> documentedValues) {
         String displayType = legacyType.isBlank() ? displayType(schema) : legacyType;
-        // The doclet renders a return value documented as a bare type as plain text, without the
-        // type role a named one carries.
-        if (unnamed) {
-            writer.printf("* %s %n", displayType);
-            printOptions(writer, schema, RETURN_OPTION_LEVEL);
+        Schema<?> values = documentedValues == null ? schema : documentedValues;
+        // The doclet passes a return value documented without a macro through as written, so it
+        // carries neither the type role nor a label synthesised from the operation.
+        if (plainText) {
+            writer.printf("* %s%s %n", displayType, responseLabel.isBlank() ? "" : " - " + responseLabel);
+            printOptions(writer, values, RETURN_OPTION_LEVEL);
             writer.print(" ");
             return;
         }
@@ -574,7 +577,7 @@ public class OpenApiToAsciidocParser {
                         .toLowerCase().trim());
 
         writer.printf("* [.%s]#%s#  %s%n", displayType, displayType, label);
-        printOptions(writer, schema, RETURN_OPTION_LEVEL);
+        printOptions(writer, values, RETURN_OPTION_LEVEL);
         writer.print(" ");
     }
 
@@ -591,8 +594,10 @@ public class OpenApiToAsciidocParser {
                 .orElse("");
     }
 
-    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean unnamed) {
-        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "", false);
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean plainText,
+                                         Schema<?> values) {
+        private static final LegacyDocResponseData EMPTY =
+                new LegacyDocResponseData(null, "", "", false, null);
 
         Optional<String> label(String description) {
             if (name.isBlank()) {

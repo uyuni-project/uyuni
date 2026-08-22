@@ -515,12 +515,25 @@ public class ApiDocumentationCompatibilityTest {
                 .replace("&amp;", "&");
     }
 
+    /**
+     * Tells whether a line ends the text of the item before it.
+     *
+     * @param trimmed the trimmed line
+     * @return true when the line starts something else
+     */
+    private boolean isBoundary(String trimmed) {
+        return trimmed.startsWith("*") || trimmed.startsWith("==") || trimmed.startsWith("[#") ||
+                trimmed.startsWith("HTTP ") || trimmed.endsWith(":");
+    }
+
     private Optional<ApiMethodDoc> parseMethod(List<String> lines) {
         String method = "";
         String httpMethod = "";
         List<DocItem> parameters = new ArrayList<>();
         List<DocItem> returns = new ArrayList<>();
         Section section = Section.NONE;
+        String itemText = "";
+        boolean continues = false;
 
         for (String line : lines) {
             Matcher methodMatcher = METHOD_TITLE.matcher(line);
@@ -545,19 +558,31 @@ public class ApiDocumentationCompatibilityTest {
                 continue;
             }
 
+            List<DocItem> items = section == Section.PARAMETERS ? parameters : returns;
             Matcher itemMatcher = LIST_ITEM.matcher(line);
             if (itemMatcher.matches() && section != Section.NONE) {
-                DocItem item = new DocItem(
+                itemText = itemMatcher.group(3);
+                items.add(new DocItem(
                         itemMatcher.group(1).length(),
                         normalize(itemMatcher.group(2)),
-                        normalizeLabel(itemMatcher.group(3))
-                );
-                if (section == Section.PARAMETERS) {
-                    parameters.add(item);
-                }
-                else {
-                    returns.add(item);
-                }
+                        normalizeLabel(itemText)
+                ));
+                continues = true;
+                continue;
+            }
+            if (trimmed.isEmpty() || isBoundary(trimmed)) {
+                continues = false;
+                continue;
+            }
+
+            // The doclet keeps the line breaks of the documentation it copies, so an item whose
+            // text runs over several lines arrives as the item followed by the rest of its text.
+            // The DocBook renderer joins them, and so does this one, or the text would be read
+            // only as far as the break.
+            if (continues && section != Section.NONE && !items.isEmpty()) {
+                itemText = itemText + " " + trimmed;
+                DocItem previous = items.remove(items.size() - 1);
+                items.add(new DocItem(previous.level(), previous.type(), normalizeLabel(itemText)));
             }
         }
 

@@ -35,12 +35,14 @@ public @interface LegacyDocResponse {
     Class<?> responseClass() default Void.class;
 
     /**
-     * Tells that the legacy documentation renders the return value as a bare type.
+     * Tells that the legacy documentation renders the return value as plain text.
      *
-     * A return value carries no name of its own in the specification, so the parsers label it
-     * with the operation name. A namespace that documents the type alone opts out of that.
+     * The doclet passes a return value documented without a macro through as it was written,
+     * carrying neither the type role a documented one carries nor a label of its own. A return
+     * value has no name in the specification, so the parsers otherwise label it with the
+     * operation name, which such a return value does not show.
      *
-     * @return whether the legacy documentation renders the return value without a label
+     * @return whether the legacy documentation renders the return value as plain text
      */
-    boolean unnamed() default false;
+    boolean plainText() default false;
 }
