@@ -24,7 +24,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring State configuration for internal state implementation
@@ -34,6 +33,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("STATE")
 public class RecurringInternalState extends RecurringStateConfig {
 
+
+    @ManyToOne(targetEntity = InternalState.class)
+    @JoinColumn(name = "state_id")
     private InternalState internalState;
 
     /**
@@ -71,7 +73,6 @@ public class RecurringInternalState extends RecurringStateConfig {
     }
 
     @Override
-    @Transient
     public String getStateName() {
         return internalState.getName();
     }
@@ -81,8 +82,6 @@ public class RecurringInternalState extends RecurringStateConfig {
      *
      * @return the Internal State
      */
-    @ManyToOne(targetEntity = InternalState.class)
-    @JoinColumn(name = "state_id")
     public InternalState getInternalState() {
         return internalState;
     }

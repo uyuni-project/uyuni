@@ -38,19 +38,34 @@ import jakarta.persistence.Table;
 
 public class ProfileCustomDataValue extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pcdv_seq")
+    @SequenceGenerator(name = "pcdv_seq", sequenceName = "suse_pcdv_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", nullable = false)
     private ImageProfile profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "key_id", nullable = false)
     private CustomDataKey key;
+
+    @Column
     private String value;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = true)
     private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_modified_by", nullable = true)
     private User lastModifier;
 
     /**
      * @return Returns the Id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pcdv_seq")
-    @SequenceGenerator(name = "pcdv_seq", sequenceName = "suse_pcdv_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -58,8 +73,6 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the image profile.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
     public ImageProfile getProfile() {
         return profile;
     }
@@ -67,8 +80,6 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the key.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "key_id", nullable = false)
     public CustomDataKey getKey() {
         return key;
     }
@@ -76,7 +87,6 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the value.
      */
-    @Column
     public String getValue() {
         return value;
     }
@@ -84,8 +94,6 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the creator.
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = true)
     public User getCreator() {
         return creator;
     }
@@ -93,8 +101,6 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the lastModifier.
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "last_modified_by", nullable = true)
     public User getLastModifier() {
         return lastModifier;
     }

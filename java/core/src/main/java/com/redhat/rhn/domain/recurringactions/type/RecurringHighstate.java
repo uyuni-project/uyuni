@@ -21,7 +21,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for highstate implementation
@@ -31,6 +30,9 @@ import jakarta.persistence.Transient;
 @Table(name = "suseRecurringHighstate")
 public class RecurringHighstate extends RecurringActionType {
 
+
+    @Column(name = "test_mode")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
 
     /**
@@ -50,7 +52,6 @@ public class RecurringHighstate extends RecurringActionType {
     }
 
     @Override
-    @Transient
     public ActionType getActionType() {
         return ActionType.HIGHSTATE;
     }
@@ -60,8 +61,6 @@ public class RecurringHighstate extends RecurringActionType {
      *
      * @return testMode - if action is testMode
      */
-    @Column(name = "test_mode")
-    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }

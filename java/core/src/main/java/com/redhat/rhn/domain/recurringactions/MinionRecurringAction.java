@@ -29,7 +29,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action for minion server implementation
@@ -39,6 +38,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("minion")
 public class MinionRecurringAction extends RecurringAction {
 
+
+    @ManyToOne
+    @JoinColumn(name = "minion_id")
     private MinionServer minion;
 
     /**
@@ -82,13 +84,11 @@ public class MinionRecurringAction extends RecurringAction {
     }
 
     @Override
-    @Transient
     public Long getEntityId() {
         return getMinion().getId();
     }
 
     @Override
-    @Transient
     public TargetType getTargetType() {
         return TargetType.MINION;
     }
@@ -98,8 +98,6 @@ public class MinionRecurringAction extends RecurringAction {
      *
      * @return the minion server
      */
-    @ManyToOne
-    @JoinColumn(name = "minion_id")
     public MinionServer getMinion() {
         return minion;
     }
