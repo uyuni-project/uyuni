@@ -1,0 +1,2 @@
+- RBAC: add missing endpoints to 'systems.profiles' namespace
+  (bsc#1271963)
