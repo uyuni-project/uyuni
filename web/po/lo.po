@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-22 20:14+0000\n"
+"PO-Revision-Date: 2026-08-23 06:41+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -221,7 +221,7 @@ msgstr "ເລືອກໂປຣໄຟລ໌..."
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:292
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:248
 msgid "Advanced Arguments"
-msgstr "ອາຄິວເມັ້ນຂັ້ນສູງ (Advanced Arguments)"
+msgstr "ອາຣກິວເມັນຂັ້ນສູງ (Advanced Arguments)"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:252
@@ -1627,7 +1627,7 @@ msgstr "ເອົາອອກ"
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
 #: ../html/src/manager/admin/access-control/access-group.tsx:209
 msgid "Users"
-msgstr "ຜູ້ໃຊ້"
+msgstr "ຜູ້ໃຊ້ (Users)"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
 #: ../html/src/manager/login/uyuni/login.tsx:85
@@ -2218,7 +2218,7 @@ msgstr "ລະບົບທີ່ບໍ່ແມ່ນ Virtual"
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr "ພຣັອກຊີ"
+msgstr "Proxy"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
@@ -3089,7 +3089,7 @@ msgstr "ຄຳອະທິບາຍຜະລິດຕະພັນ"
 #: ../html/src/manager/admin/setup/products/products.tsx:614
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
-msgstr "ຊ່ອງທາງ"
+msgstr "ຊ່ອງທາງ (Channels)"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
@@ -3145,7 +3145,7 @@ msgstr "ເລືອກຊ່ອງທາງເສີມທີ່ທ່ານຕ
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
-msgstr "ຊ່ອງທາງບັງຄັບ"
+msgstr "ຊ່ອງທາງທີ່ບັງຄັບ"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
@@ -3592,11 +3592,11 @@ msgstr "ສ້າງນະໂຍບາຍຄວາມສອດຄ່ອງ"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:233
 msgid "Tailoring Profile"
-msgstr "ໂປຣໄຟລ໌ Tailoring"
+msgstr "ໂປຣໄຟລ໌ການປັບແຕ່ງ"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:272
 msgid "Fetch Remote Resources"
-msgstr "ດຶງຂໍ້ມູນຊັບພະຍາກອນຈາກທາງໄກ"
+msgstr "ດຶງຂໍ້ມູນຈາກແຫຼ່ງພາຍນອກ (Fetch Remote Resources)"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:288
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
@@ -4395,7 +4395,7 @@ msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶ
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:27
 #: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
-msgstr "ແພັກເກດ"
+msgstr "ແພັກເກັດ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:31
 msgid "Patch"
@@ -4473,7 +4473,7 @@ msgstr "ປະກອບມີແພັກເກດທີ່ໃຫ້ຊື່ເ
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower"
-msgstr "ຕໍ່າກວ່າ"
+msgstr "ນ້ອຍກວ່າ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "lower than"
@@ -4481,7 +4481,7 @@ msgstr "ຕໍ່າກວ່າ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal"
-msgstr "ຕໍ່າກວ່າ ຫຼື ເທົ່າກັບ"
+msgstr "ນ້ອຍກວ່າ ຫຼື ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "lower or equal than"
@@ -4493,7 +4493,7 @@ msgstr "ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal"
-msgstr "ສູງກວ່າ ຫຼື ເທົ່າກັບ"
+msgstr "ຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
 msgid "greater or equal than"
@@ -4501,7 +4501,7 @@ msgstr "ສູງກວ່າ ຫຼື ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater"
-msgstr "ສູງກວ່າ"
+msgstr "ຫຼາຍກວ່າ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "matches regular expression"
@@ -4901,7 +4901,7 @@ msgstr "ແພັກເກດ"
 #: ../html/src/manager/systems/all-list.tsx:110
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
-msgstr "ແພັດຊ໌"
+msgstr "ແພັດ (Patches)"
 
 #: ../html/src/manager/header/search/search.tsx:56
 msgid "Open search"
@@ -7047,7 +7047,7 @@ msgstr "ລັນຄຳສັ່ງໃນ minions ເປົ້າໝາຍ"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
-msgstr "ຄຳສັ່ງທາງໄກ (Remote Commands)"
+msgstr "ຄຳສັ່ງທາງໄກ"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
@@ -7749,7 +7749,7 @@ msgstr "ຊ່ອງທາງ SUSE"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:230
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:500
 msgid "Custom Channels"
-msgstr "ຊ່ອງທາງທີ່ກຳນົດເອງ"
+msgstr "ຊ່ອງທາງກຳນົດເອງ"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:241
 msgid "Systems subscribed to"
