@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -36,34 +37,34 @@ public class UbuntuErrataManagerTest {
     @Test
     public void testDefaultErrataDbUrl() throws IOException {
         Config.get().remove(CONFIG_KEY);
-        assertEquals(DEFAULT_URL, UbuntuErrataManager.getUbuntuErrataDbUrl());
+        assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
     }
 
     @Test
     public void testConfiguredErrataDbUrl() throws IOException {
         String mirrorUrl = "http://mirror.example.com/usn-db/database.json";
         Config.get().setString(CONFIG_KEY, mirrorUrl);
-        assertEquals(mirrorUrl, UbuntuErrataManager.getUbuntuErrataDbUrl());
+        assertEquals(mirrorUrl, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
     }
 
     @Test
     public void testEmptyErrataDbUrlFallsBackToDefault() throws IOException {
         Config.get().setString(CONFIG_KEY, "");
-        assertEquals(DEFAULT_URL, UbuntuErrataManager.getUbuntuErrataDbUrl());
+        assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
     }
 
     @Test
     public void testNonHttpErrataDbUrlIsRejected() {
         Config.get().setString(CONFIG_KEY, "file:///srv/mirror/database.json");
-        assertThrows(IOException.class, UbuntuErrataManager::getUbuntuErrataDbUrl);
+        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
 
         Config.get().setString(CONFIG_KEY, "/srv/mirror/database.json");
-        assertThrows(IOException.class, UbuntuErrataManager::getUbuntuErrataDbUrl);
+        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
     }
 
     @Test
     public void testMalformedErrataDbUrlIsRejected() {
         Config.get().setString(CONFIG_KEY, "ht tp://mirror.example.com");
-        assertThrows(IOException.class, UbuntuErrataManager::getUbuntuErrataDbUrl);
+        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
     }
 }
