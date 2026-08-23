@@ -59,7 +59,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
@@ -231,30 +230,8 @@ public class UbuntuErrataManager {
         });
     }
 
-    /**
-     * Returns the url of the Ubuntu USN database as configured by the operator, using the default when
-     * java.ubuntu_errata_db_download_url is not set.
-     *
-     * @return the url of the Ubuntu USN database
-     * @throws IOException in case the configured url is not a http(s) url
-     */
-    static String getUbuntuErrataDbUrl() throws IOException {
-        String jsonDBUrl = ConfigDefaults.get().getUbuntuErrataDbDownloadUrl();
-        String scheme = null;
-        try {
-            scheme = new URI(jsonDBUrl).getScheme();
-        }
-        catch (URISyntaxException e) {
-            LOG.error("Unable to create ubuntu errata database url: {} {}.", jsonDBUrl, e.getMessage());
-        }
-        if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
-            throw new IOException("java.ubuntu_errata_db_download_url must be a http(s) url: " + jsonDBUrl);
-        }
-        return jsonDBUrl;
-    }
-
     private static Map<String, UbuntuErrataInfo> getUbuntuErrataInfo() throws IOException {
-        String jsonDBUrl = getUbuntuErrataDbUrl();
+        String jsonDBUrl = ConfigDefaults.get().getUbuntuErrataDbDownloadUrl();
         if (isFromDir()) {
             URI uri = MgrSyncUtils.urlToFSPath(jsonDBUrl, "");
             try (

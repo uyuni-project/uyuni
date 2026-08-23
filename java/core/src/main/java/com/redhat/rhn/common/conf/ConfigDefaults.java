@@ -24,6 +24,9 @@ import com.suse.utils.CertificateUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -1369,9 +1372,22 @@ public class ConfigDefaults {
      * Return the url to download the Ubuntu USN database, the source of the Ubuntu errata information
      *
      * @return the url to download the Ubuntu USN database from
+     * @throws IOException in case the configured url is not a http(s) url
      */
-    public String getUbuntuErrataDbDownloadUrl() {
-        return Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL, "https://usn.ubuntu.com/usn-db/database.json");
+    public String getUbuntuErrataDbDownloadUrl() throws IOException {
+        String jsonDBUrl = Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL,
+                "https://usn.ubuntu.com/usn-db/database.json");
+        String scheme;
+        try {
+            scheme = new URI(jsonDBUrl).getScheme();
+        }
+        catch (URISyntaxException e) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl, e);
+        }
+        if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl);
+        }
+        return jsonDBUrl;
     }
 
     /**
