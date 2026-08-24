@@ -25,6 +25,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
       openssh-server \
       git \
       hostname \
+      wget \
       apache-ivy \
       ant \
       ant-junit && \
