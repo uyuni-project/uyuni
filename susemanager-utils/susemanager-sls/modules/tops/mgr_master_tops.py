@@ -42,7 +42,7 @@ MANAGER_TRANSACTIONAL_TOP = [
     "ansible.prereq",
     "channels",
     "certs",
-    "services.docker",
+    "services.docker_prereqs",
     "services.kiwi-image-server",
     "services.salt-minion",
     "switch_to_bundle.mgr_switch_to_venv_minion",
