@@ -19,8 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -139,7 +140,7 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
      * check to actual test logs
      */
     @Test
-    public void testGetFailedStateErrors() {
+    public void testGetFailedStateErrors() throws Exception {
         String stateSuccess = "module_|-grains_|-grains.items_|-run";
         String stateFail1 = "module_|-pkg_|-pkg.info_installed_|-run";
         String stateFail2 = "module_|-hw_|-hardware.udevdb_|-run";
@@ -193,7 +194,8 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
 
         // setup and call updateServerAction. No really useful assertions out of it but messages should be logged
         SaltUtils saltUtils = new SaltUtils(null, null);
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
+                .createAction(user, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
         ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusFailed);
 
         saltUtils.updateServerAction(serverAction, 1L, false, "test-jid-123", jsonResult,
@@ -209,7 +211,7 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
      * expect {@code SaltUtils.getFailedStateErrors} to detect no states
      */
     @Test
-    public void testGetFailedStateErrorsWhenNonStateApplyJson() {
+    public void testGetFailedStateErrorsWhenNonStateApplyJson() throws Exception {
         String unparsableJson = """
             {
                 "error": "Something went wrong",
@@ -221,7 +223,8 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
 
         // setup and call updateServerAction. No really useful assertions out of it but messages should be logged
         SaltUtils saltUtils = new SaltUtils(null, null);
-        Action action = ActionFactory.createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
+        SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactoryTest
+                .createAction(user, ActionTypeEnum.TYPE_SUBSCRIBE_CHANNELS);
         ServerAction serverAction = addServerAction(user, action, ServerAction::setStatusFailed);
 
         JsonElement jsonResult = JsonParser.parseString(unparsableJson);
