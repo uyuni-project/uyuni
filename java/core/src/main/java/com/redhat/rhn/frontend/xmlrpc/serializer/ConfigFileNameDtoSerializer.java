@@ -39,9 +39,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *      "the label of the  central configuration channel
  *      that has this file. Note this entry only shows up
  *      if the file has not been overridden by a central channel.")
+ *   #prop_desc($date, "last_modified","Last Modified Date")
  *   #prop("struct", "channel_type")
  *   $ConfigChannelTypeSerializer
- *   #prop_desc($date, "last_modified","Last Modified Date")
  * #struct_end()
  */
 public class ConfigFileNameDtoSerializer extends ApiResponseSerializer<ConfigFileNameDto> {
