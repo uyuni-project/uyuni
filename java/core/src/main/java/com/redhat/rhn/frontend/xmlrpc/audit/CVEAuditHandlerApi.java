@@ -118,15 +118,26 @@ public interface CVEAuditHandlerApi {
          * @return the patch status
          */
         @Schema(name = "patch_status", requiredMode = Schema.RequiredMode.REQUIRED,
-                allowableValues = {"AFFECTED_PATCH_INAPPLICABLE", "AFFECTED_PATCH_APPLICABLE", "NOT_AFFECTED",
-                    "PATCHED"},
+                allowableValues = {"AFFECTED_PATCH_UNAVAILABLE", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI",
+                    "AFFECTED_PATCH_INAPPLICABLE", "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT",
+                    "AFFECTED_PARTIAL_PATCH_APPLICABLE", "AFFECTED_FULL_PATCH_APPLICABLE", "NOT_AFFECTED",
+                    "PATCHED", "UNKNOWN"},
                 extensions = @Extension(name = "x-uyuni-doc-option-descriptions", properties = {
+                    @ExtensionProperty(name = "AFFECTED_PATCH_UNAVAILABLE",
+                        value = "affected, patch is unavailable anywhere"),
+                    @ExtensionProperty(name = "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI",
+                        value = "affected, patch is unavailable in any of the synced channels"),
                     @ExtensionProperty(name = "AFFECTED_PATCH_INAPPLICABLE",
                         value = "affected, patch available in unassigned channel"),
-                    @ExtensionProperty(name = "AFFECTED_PATCH_APPLICABLE",
-                        value = "affected, patch available in assigned channel"),
+                    @ExtensionProperty(name = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT",
+                        value = "affected, patch available in a Product Migration target"),
+                    @ExtensionProperty(name = "AFFECTED_PARTIAL_PATCH_APPLICABLE",
+                        value = "affected, partial patch available in assigned channel"),
+                    @ExtensionProperty(name = "AFFECTED_FULL_PATCH_APPLICABLE",
+                        value = "affected, full patch available in assigned channel"),
                     @ExtensionProperty(name = "NOT_AFFECTED", value = "not affected"),
-                    @ExtensionProperty(name = "PATCHED", value = "patched")
+                    @ExtensionProperty(name = "PATCHED", value = "patched"),
+                    @ExtensionProperty(name = "UNKNOWN", value = "unknown, CVE metadata not available")
                 }))
         String getPatchStatus();
 
@@ -160,15 +171,26 @@ public interface CVEAuditHandlerApi {
          * @return the patch status
          */
         @Schema(name = "patch_status", requiredMode = Schema.RequiredMode.REQUIRED,
-                allowableValues = {"AFFECTED_PATCH_INAPPLICABLE", "AFFECTED_PATCH_APPLICABLE", "NOT_AFFECTED",
-                    "PATCHED"},
+                allowableValues = {"AFFECTED_PATCH_UNAVAILABLE", "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI",
+                    "AFFECTED_PATCH_INAPPLICABLE", "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT",
+                    "AFFECTED_PARTIAL_PATCH_APPLICABLE", "AFFECTED_FULL_PATCH_APPLICABLE", "NOT_AFFECTED",
+                    "PATCHED", "UNKNOWN"},
                 extensions = @Extension(name = "x-uyuni-doc-option-descriptions", properties = {
+                    @ExtensionProperty(name = "AFFECTED_PATCH_UNAVAILABLE",
+                        value = "affected, patch is unavailable anywhere"),
+                    @ExtensionProperty(name = "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI",
+                        value = "affected, patch is unavailable in any of the synced channels"),
                     @ExtensionProperty(name = "AFFECTED_PATCH_INAPPLICABLE",
                         value = "affected, patch available in unassigned channel"),
-                    @ExtensionProperty(name = "AFFECTED_PATCH_APPLICABLE",
-                        value = "affected, patch available in assigned channel"),
+                    @ExtensionProperty(name = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT",
+                        value = "affected, patch available in a Product Migration target"),
+                    @ExtensionProperty(name = "AFFECTED_PARTIAL_PATCH_APPLICABLE",
+                        value = "affected, partial patch available in assigned channel"),
+                    @ExtensionProperty(name = "AFFECTED_FULL_PATCH_APPLICABLE",
+                        value = "affected, full patch available in assigned channel"),
                     @ExtensionProperty(name = "NOT_AFFECTED", value = "not affected"),
-                    @ExtensionProperty(name = "PATCHED", value = "patched")
+                    @ExtensionProperty(name = "PATCHED", value = "patched"),
+                    @ExtensionProperty(name = "UNKNOWN", value = "unknown, CVE metadata not available")
                 }))
         String getPatchStatus();
 
