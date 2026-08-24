@@ -149,7 +149,7 @@ public interface RecurringCustomStateHandlerApi {
          * @return whether the action should be executed in test mode
          */
         @Schema(description = "whether the action should be executed in test mode (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getTest();
     }
 
@@ -166,35 +166,35 @@ public interface RecurringCustomStateHandlerApi {
         /**
          * @return the name of the action
          */
-        @Schema(description = "the name of the action (optional)", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "the name of the action (optional)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getName();
 
         /**
          * @return the execution frequency of the action
          */
         @Schema(name = "cron_expr", description = "the execution frequency of the action (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getCronExpr();
 
         /**
          * @return the ordered list of custom state names to be executed
          */
         @Schema(description = "the ordered list of custom state names to be executed (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         List<String> getStates();
 
         /**
          * @return whether the action should be executed in test mode
          */
         @Schema(description = "whether the action should be executed in test mode (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getTest();
 
         /**
          * @return whether the action should be active
          */
         @Schema(description = "whether the action should be active (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getActive();
     }
 }
