@@ -349,8 +349,8 @@ public class OpenApiToDocBookParser {
                 type,
                 name,
                 Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_PLAIN_TEXT_EXTENSION)),
-                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION)
-                        instanceof Schema<?> values ? values : null
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION) instanceof
+                        Schema<?> values ? values : null
         );
     }
 
@@ -543,7 +543,8 @@ public class OpenApiToDocBookParser {
                   .append(escapeXml(body))
                   .append("</para></listitem>\n");
                 sb.append("    <listitem>\n");
-                sb.append("      <para>").append(escapeXml(String.format("struct %s", structLabel))).append("</para>\n");
+                sb.append("      <para>").append(escapeXml(String.format("struct %s", structLabel)))
+                  .append("</para>\n");
                 sb.append("      <itemizedlist spacing=\"compact\">\n");
                 sb.append(indentLines(elementStruct, 8)).append("\n");
                 sb.append("      </itemizedlist>\n");

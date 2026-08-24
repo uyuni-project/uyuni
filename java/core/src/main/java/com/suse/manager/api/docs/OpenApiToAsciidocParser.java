@@ -388,8 +388,8 @@ public class OpenApiToAsciidocParser {
                 type,
                 name,
                 Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_PLAIN_TEXT_EXTENSION)),
-                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION)
-                        instanceof Schema<?> values ? values : null
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION) instanceof
+                        Schema<?> values ? values : null
         );
     }
 
