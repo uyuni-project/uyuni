@@ -580,7 +580,7 @@ public class UyuniSwaggerReader {
     private Parameter mapToOpenApiParameter(
             io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
             Type type) {
-        Schema<?> schema = literalParameterSchema(type);
+        Schema<?> schema = documentedParameterSchema(parameterAnnotation, type);
         applyDocumentedValues(schema, parameterAnnotation.schema());
         Parameter openApiParam = new Parameter()
                 .name(parameterAnnotation.name())
@@ -616,6 +616,28 @@ public class UyuniSwaggerReader {
                         target.setExtensions(documented.getExtensions());
                     }
                 });
+    }
+
+    /**
+     * Resolves the schema describing a literal parameter.
+     *
+     * A parameter documented as a struct cannot be described by its declared type, a map naming
+     * none of the properties the namespace documents, so the class standing for the struct is
+     * named on the parameter and its schema is built from that class, the way a request body is.
+     *
+     * @param parameterAnnotation the annotation documenting the parameter
+     * @param type the declared parameter type
+     * @return the schema describing the parameter
+     */
+    private Schema<?> documentedParameterSchema(io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
+                                                Type type) {
+        Class<?> documentedClass = parameterAnnotation.schema().implementation();
+        if (documentedClass == Void.class) {
+            return literalParameterSchema(type);
+        }
+        resolveAndRegisterSchema(documentedClass);
+        applyLegacyDocTypes(documentedClass);
+        return buildSchemaRef(documentedClass);
     }
 
     /**
