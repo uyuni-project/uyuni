@@ -28,7 +28,7 @@ import java.util.Map;
  * @apidoc.namespace recurring.highstate
  * @apidoc.doc Provides methods to handle recurring highstates for minions, system groups and organizations.
  */
-public class RecurringHighstateHandler extends BaseHandler {
+public class RecurringHighstateHandler extends BaseHandler implements RecurringHighstateHandlerApi {
     private final RecurringActionHandler actionHandler = new RecurringActionHandler();
 
     /**
