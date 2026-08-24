@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
@@ -155,6 +156,7 @@ public final class OpenApiConfig {
         handlers.put("image.delta", DeltaImageInfoHandler.class);
         handlers.put("image.profile", ImageProfileHandler.class);
         handlers.put("image.store", ImageStoreHandler.class);
+        handlers.put("kickstart", KickstartHandler.class);
         handlers.put("kickstart.filepreservation", FilePreservationListHandler.class);
         handlers.put("kickstart.keys", CryptoKeysHandler.class);
         handlers.put("kickstart.profile.software", SoftwareHandler.class);

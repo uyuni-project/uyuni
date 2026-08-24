@@ -46,7 +46,7 @@ import java.util.List;
  * @apidoc.namespace kickstart
  * @apidoc.doc Provides methods to create kickstart files
  */
-public class KickstartHandler extends BaseHandler {
+public class KickstartHandler extends BaseHandler implements KickstartHandlerApi {
 
     /**
      * List kickstartable channels for the logged in user.
