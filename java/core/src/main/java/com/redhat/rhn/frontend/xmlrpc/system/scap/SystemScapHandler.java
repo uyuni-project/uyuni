@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace system.scap
  * @apidoc.doc Provides methods to schedule SCAP scans and access the results.
  */
-public class SystemScapHandler extends BaseHandler {
+public class SystemScapHandler extends BaseHandler implements SystemScapHandlerApi {
 
     /**
      * List OpenSCAP XCCDF scans for a given system.
@@ -186,7 +186,7 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "Additional parameters for oscap tool.")
      * @apidoc.param #param_desc("string", "ovalFiles", "Additional OVAL files for oscap tool.")
      * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
@@ -233,7 +233,7 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "Additional parameters for oscap tool.")
      * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
@@ -254,7 +254,7 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "Additional parameters for oscap tool.")
      * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
