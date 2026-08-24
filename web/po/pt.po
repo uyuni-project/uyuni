@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-07-21 16:12+0000\n"
+"PO-Revision-Date: 2026-08-24 12:13+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
 "Language: pt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -468,7 +468,7 @@ msgstr "Resultados do Processo"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
 #: ../html/src/components/large-text-input.tsx:117
 msgid "Unable to retrieve the uploaded file"
-msgstr ""
+msgstr "Não foi possível obter o ficheiro carregado."
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
 #: ../html/src/manager/minion/coco/coco-settings.tsx:86
@@ -482,27 +482,25 @@ msgstr "Ativar atestação"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
 msgid "Secure execution header"
-msgstr ""
+msgstr "Cabeçalho de execução segura"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
 msgid "Download the current Secure execution header"
-msgstr ""
+msgstr "Transferir o cabeçalho de execução segura atual"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
-#, fuzzy
-#| msgid "Changes"
 msgid "Change"
-msgstr "Alterações"
+msgstr "Alteração"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
 msgid "Host key document"
-msgstr ""
+msgstr "Documento da chave do host"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
 msgid "Download the current Host Key Document certificate"
-msgstr ""
+msgstr "Transferir o certificado atual do Documento da Chave do Host"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
@@ -515,8 +513,6 @@ msgid "Certificate file, in PEM format"
 msgstr "Ficheiro de certificado, em formato PEM"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
-#, fuzzy
-#| msgid "PEM Certificate"
 msgid "PEM certificate"
 msgstr "Certificado PEM"
 
@@ -530,8 +526,6 @@ msgid "Executions"
 msgstr "Execuções"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
-#, fuzzy
-#| msgid "Peform attestation during the boot process"
 msgid "Perform attestation during the boot process"
 msgstr "Executar atestação durante o arranque"
 
@@ -1767,10 +1761,8 @@ msgid "Confirm Deletion"
 msgstr "Confirmar Eliminação"
 
 #: ../html/src/components/large-text-input.tsx:61
-#, fuzzy
-#| msgid "Paste the new value"
 msgid "Paste the data"
-msgstr "Cole o novo valor"
+msgstr "Cole os dados"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
@@ -4236,7 +4228,7 @@ msgstr "Tipo de Advisory"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
-msgstr ""
+msgstr "A data de issue guardada está num formato inválido. Selecione uma data válida e guarde o filtro."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
