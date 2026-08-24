@@ -150,19 +150,19 @@ public class OpenApiToDocBookParser {
         List<String> optional = getFieldsByRequirement(op, false);
 
         for (List<String> params : UyuniSwaggerReader.expandOverloads(op, required, optional)) {
-            handler.calls.add(buildCallDoc(httpMethod, op, params,
-                    isSecurityRequired(UyuniSwaggerReader.operationForCall(op, params))));
+            handler.calls.add(buildCallDoc(httpMethod, op, params));
         }
     }
 
-    private CallDoc buildCallDoc(String httpMethod, Operation op,
-                                 List<String> activeParams, boolean securityRequired) {
+    private CallDoc buildCallDoc(String httpMethod, Operation op, List<String> activeParams) {
+        Operation documentedByOverload = UyuniSwaggerReader.operationForCall(op, activeParams);
         String name = Optional.ofNullable(op.getOperationId())
                 .filter(s -> !s.isBlank())
                 .orElse("");
         String description = buildDescription(op);
-        List<ParamDoc> params = buildParams(op, activeParams, securityRequired);
-        String returnDoc = buildReturnDoc(op, name, activeParams);
+        List<ParamDoc> params = buildParams(op, documentedByOverload, activeParams,
+                isSecurityRequired(documentedByOverload));
+        String returnDoc = buildReturnDoc(documentedByOverload, name);
         return new CallDoc(name, httpMethod, description, params, returnDoc);
     }
 
@@ -187,8 +187,8 @@ public class OpenApiToDocBookParser {
         return fields;
     }
 
-    private List<ParamDoc> buildParams(Operation op, List<String> activeParams,
-                                       boolean securityRequired) {
+    private List<ParamDoc> buildParams(Operation op, Operation documentedByOverload,
+                                       List<String> activeParams, boolean securityRequired) {
         List<ParamDoc> params = new ArrayList<>();
 
         if (securityRequired) {
@@ -196,7 +196,10 @@ public class OpenApiToDocBookParser {
                     "Session token, must be obtained via auth.login."));
         }
 
+        // A call takes the parameters of the overload documenting it, which describes the ones it
+        // shares with the others as its own signature declares them.
         Map<String, Schema<?>> allProps = getAllPossibleProperties(op);
+        allProps.putAll(getAllPossibleProperties(documentedByOverload));
         for (String name : activeParams) {
             Schema<?> schema = allProps.get(name);
             if (schema == null) {
@@ -286,8 +289,8 @@ public class OpenApiToDocBookParser {
         return props;
     }
 
-    private String buildReturnDoc(Operation op, String fallbackLabel, List<String> activeParams) {
-        ApiResponses responses = UyuniSwaggerReader.operationForCall(op, activeParams).getResponses();
+    private String buildReturnDoc(Operation op, String fallbackLabel) {
+        ApiResponses responses = op.getResponses();
         if (responses == null) {
             return "<listitem><para></para></listitem>";
         }

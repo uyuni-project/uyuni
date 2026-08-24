@@ -718,6 +718,8 @@ public class UyuniSwaggerReader {
             return;
         }
         Operation documentedByOverload = new Operation()
+                .parameters(alternative.getParameters())
+                .requestBody(alternative.getRequestBody())
                 .responses(alternative.getResponses())
                 .security(alternative.getSecurity())
                 .deprecated(Boolean.TRUE.equals(alternative.getDeprecated()));
@@ -738,7 +740,44 @@ public class UyuniSwaggerReader {
         return !Objects.equals(documented.getResponses(), alternative.getResponses()) ||
                 !Objects.equals(documented.getSecurity(), alternative.getSecurity()) ||
                 Boolean.TRUE.equals(documented.getDeprecated()) !=
-                        Boolean.TRUE.equals(alternative.getDeprecated());
+                        Boolean.TRUE.equals(alternative.getDeprecated()) ||
+                documentsParameterDifferently(documented, alternative);
+    }
+
+    /**
+     * Tells whether an overload describes a parameter both overloads take differently.
+     *
+     * Overloads taking a parameter of the same name in different types describe one property, so
+     * the operation can only hold one of the two, while the legacy doclet documents each overload
+     * with the type its own signature declares.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @return whether a parameter the two overloads share is described differently
+     */
+    private boolean documentsParameterDifferently(Operation documented, Operation alternative) {
+        Map<String, Schema<?>> described = describedParameters(documented);
+        return describedParameters(alternative).entrySet().stream()
+                .anyMatch(parameter -> described.containsKey(parameter.getKey()) &&
+                        !Objects.equals(described.get(parameter.getKey()), parameter.getValue()));
+    }
+
+    /**
+     * Reads the schema describing each parameter of an operation, wherever the parameter is sent.
+     *
+     * @param operation the operation to read
+     * @return the schema of each parameter, keyed by name
+     */
+    private Map<String, Schema<?>> describedParameters(Operation operation) {
+        Map<String, Schema<?>> described = new LinkedHashMap<>();
+        if (operation.getParameters() != null) {
+            operation.getParameters().forEach(parameter -> described.put(parameter.getName(), parameter.getSchema()));
+        }
+        Schema<?> body = requestBodySchema(operation);
+        if (body != null && body.getProperties() != null) {
+            body.getProperties().forEach((name, property) -> described.put(name, property));
+        }
+        return described;
     }
 
     /**

@@ -205,7 +205,10 @@ public class OpenApiToAsciidocParser {
             writer.println("* [.string]#string#  sessionKey\n");
         }
 
+        // A call takes the parameters of the overload documenting it, which describes the ones it
+        // shares with the others as its own signature declares them.
         Map<String, Schema> allProps = getAllPossibleProperties(operation);
+        allProps.putAll(getAllPossibleProperties(entry.documentedByOverload()));
         for (String paramName : entry.activeParams()) {
             Schema schema = allProps.get(paramName);
             if (schema != null) {
