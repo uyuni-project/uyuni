@@ -217,7 +217,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.println("\nReturns:\n");
-        writeReturn(writer, operation, entry.activeParams());
+        writeReturn(writer, operation, entry.documentedByOverload());
         writer.print("\n\n\n");
     }
 
@@ -318,8 +318,15 @@ public class OpenApiToAsciidocParser {
         return openAPI.getSecurity() != null && !openAPI.getSecurity().isEmpty();
     }
 
-    private void writeReturn(PrintWriter writer, Operation operation, List<String> activeParams) {
-        var responses = UyuniSwaggerReader.operationForCall(operation, activeParams).getResponses();
+    /**
+     * Writes the return value of a documented call.
+     *
+     * @param writer the writer to write to
+     * @param operation the operation the call belongs to, which names it
+     * @param documentedByOverload the overload documenting the call, which describes what it answers
+     */
+    private void writeReturn(PrintWriter writer, Operation operation, Operation documentedByOverload) {
+        var responses = documentedByOverload.getResponses();
         if (responses == null) {
             return;
         }
