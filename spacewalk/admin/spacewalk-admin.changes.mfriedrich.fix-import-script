@@ -1,0 +1,2 @@
+- Fix GPG home directory and permissions for non-root users
+  when building keys

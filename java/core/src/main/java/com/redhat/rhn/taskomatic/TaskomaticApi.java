@@ -974,18 +974,6 @@ public class TaskomaticApi {
     }
 
     /**
-     * Schedule an import of a GPG key.
-     * @param gpgKey the GPG key (armored text)
-     * @throws TaskomaticApiException if there was an error
-     */
-    public void scheduleSingleGpgKeyImport(String gpgKey) throws TaskomaticApiException {
-        if (StringUtils.isBlank(gpgKey)) {
-            return;
-        }
-        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "custom-gpg-key-import-bunch", Map.of("gpg-key", gpgKey));
-    }
-
-    /**
      * Schedule a product refresh via taskomatic
      * @param earliest earliest execution
      * @param withReposync perform also a repo-sync
