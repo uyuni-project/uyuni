@@ -57,7 +57,7 @@ import java.util.Map;
  * @apidoc.doc Methods to retrieve information about the Packages contained
  * within this server.
  */
-public class PackagesHandler extends BaseHandler {
+public class PackagesHandler extends BaseHandler implements PackagesHandlerApi {
 
     private static Logger logger = LogManager.getLogger(PackagesHandler.class);
     private static float freeMemCoeff = 0.9f;

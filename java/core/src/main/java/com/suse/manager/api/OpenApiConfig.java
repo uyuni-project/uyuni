@@ -37,6 +37,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
 import com.redhat.rhn.frontend.xmlrpc.org.trusts.OrgTrustHandler;
+import com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
@@ -161,6 +162,7 @@ public final class OpenApiConfig {
         handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("kickstart.tree", KickstartTreeHandler.class);
         handlers.put("org.trusts", OrgTrustHandler.class);
+        handlers.put("packages", PackagesHandler.class);
         handlers.put("packages.provider", PackagesProviderHandler.class);
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
