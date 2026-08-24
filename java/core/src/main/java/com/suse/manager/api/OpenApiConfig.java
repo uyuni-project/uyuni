@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.ansible.AnsibleHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler;
 import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
@@ -151,6 +152,7 @@ public final class OpenApiConfig {
         handlers.put("admin.ssh", AdminSshHandler.class);
         handlers.put("ansible", AnsibleHandler.class);
         handlers.put("api", ApiHandler.class);
+        handlers.put("audit", CVEAuditHandler.class);
         handlers.put("channel", ChannelHandler.class);
         handlers.put("channel.access", ChannelAccessHandler.class);
         handlers.put("channel.appstreams", ChannelAppStreamHandler.class);
