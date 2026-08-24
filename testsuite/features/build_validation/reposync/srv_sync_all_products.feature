@@ -461,6 +461,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "openSUSE Leap 16.0 aarch64" product has been added
     And I wait until all synchronized channels for "leap16.0-aarch64" have finished
 
+# needed to test Leap 16.0 ARM to SLE 16.0 ARM migrations in BV
+@susemanager
+@opensuse160arm_minion
+  Scenario: Add SUSE Linux Enterprise Server 16.0 for ARM
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 16.0" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server 16.0 aarch64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 16.0 aarch64"
+    When I select "SUSE Linux Enterprise Server 16.0 aarch64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 16.0 aarch64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 16.0 aarch64" product has been added
+    And I wait until all synchronized channels for "sles16-aarch64" have finished
+
 @uyuni
 @opensuse160arm_minion
   Scenario: Add openSUSE 16.0 for ARM Uyuni Client tools
