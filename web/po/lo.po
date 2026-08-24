@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-23 06:41+0000\n"
+"PO-Revision-Date: 2026-08-24 16:07+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -2218,7 +2218,7 @@ msgstr "ລະບົບທີ່ບໍ່ແມ່ນ Virtual"
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr "Proxy"
+msgstr "ພຣັອກຊີ"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
@@ -2693,7 +2693,7 @@ msgstr "Bootstrap Script"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:343
 msgid "Organizations"
-msgstr "ອົງກອນ"
+msgstr "ອົງກອນ (Organizations)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:348
 msgid "Restart"
@@ -2871,7 +2871,7 @@ msgstr "ການຕັ້ງຄ່ານະໂຍບາຍລະຫັດຜ່
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
-msgstr "ຄວາມຍາວລະຫັດຜ່ານຂັ້ນຕ່ຳ"
+msgstr "ຄວາມຍາວລະຫັດຜ່ານຕ່ຳສຸດ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:38
 msgid "Max Password Length"
@@ -3145,7 +3145,7 @@ msgstr "ເລືອກຊ່ອງທາງເສີມທີ່ທ່ານຕ
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
-msgstr "ຊ່ອງທາງທີ່ບັງຄັບ"
+msgstr "ຊ່ອງທາງທີ່ຈຳເປັນ"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
@@ -3766,7 +3766,7 @@ msgstr "ຜ່ານ"
 #: ../html/src/manager/images/image-view-overview.tsx:87
 #: ../html/src/manager/images/image-view.tsx:514
 msgid "Failed"
-msgstr "ລົ້ມເຫຼວ"
+msgstr "ຫຼົ້ມເຫຼວ"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
@@ -4049,7 +4049,7 @@ msgstr "ແກ້ໄຂຕົວຈັດການ Virtual Host"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:92
 msgid "Subscription Matching"
-msgstr "ການຈັບຄູ່ການສະໝັກໃຊ້"
+msgstr "ການຈັບຄູ່ການສະໝັກໃຊ້ (Subscription Matching)"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
 msgid "Subscriptions"
@@ -4395,7 +4395,7 @@ msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶ
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:27
 #: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
-msgstr "ແພັກເກັດ"
+msgstr "ແພັກເກດ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:31
 msgid "Patch"
@@ -5009,7 +5009,7 @@ msgstr "ທ່ານສາມາດນຳເຂົ້າໄດ້ສະເພາ
 
 #: ../html/src/manager/images/image-import.tsx:271
 msgid "Image name"
-msgstr "ຊື່ຮູບພາບ"
+msgstr "ຊື່ອິເມຈ໌"
 
 #: ../html/src/manager/images/image-import.tsx:273
 msgid "Image name is required."
@@ -5017,7 +5017,7 @@ msgstr "ຈຳເປັນຕ້ອງໃສ່ຊື່ຮູບພາບ."
 
 #: ../html/src/manager/images/image-import.tsx:280
 msgid "Image version"
-msgstr "ເວີຊັນຮູບພາບ"
+msgstr "ເວີຊັນອິເມຈ໌"
 
 #: ../html/src/manager/images/image-import.tsx:282
 msgid "Image version is required."
@@ -7047,7 +7047,7 @@ msgstr "ລັນຄຳສັ່ງໃນ minions ເປົ້າໝາຍ"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
-msgstr "ຄຳສັ່ງທາງໄກ"
+msgstr "ຄຳສັ່ງທາງໄກ (Remote Commands)"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
@@ -7749,7 +7749,7 @@ msgstr "ຊ່ອງທາງ SUSE"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:230
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:500
 msgid "Custom Channels"
-msgstr "ຊ່ອງທາງກຳນົດເອງ"
+msgstr "ຊ່ອງທາງກຳນົດເອງ (Custom Channels)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:241
 msgid "Systems subscribed to"
