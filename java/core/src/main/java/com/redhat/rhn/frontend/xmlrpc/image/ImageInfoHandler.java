@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace image
  * @apidoc.doc Provides methods to access and modify images.
  */
-public class ImageInfoHandler extends BaseHandler {
+public class ImageInfoHandler extends BaseHandler implements ImageInfoHandlerApi {
 
     private final SaltApi saltApi;
 

@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
 import com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
@@ -150,6 +151,7 @@ public final class OpenApiConfig {
         handlers.put("distchannel", DistChannelHandler.class);
         handlers.put("errata", ErrataHandler.class);
         handlers.put("formula", FormulaHandler.class);
+        handlers.put("image", ImageInfoHandler.class);
         handlers.put("image.delta", DeltaImageInfoHandler.class);
         handlers.put("image.profile", ImageProfileHandler.class);
         handlers.put("image.store", ImageStoreHandler.class);
