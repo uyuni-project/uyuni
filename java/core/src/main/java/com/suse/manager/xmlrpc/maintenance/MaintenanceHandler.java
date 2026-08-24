@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace maintenance
  * @apidoc.doc Provides methods to access and modify Maintenance Schedules related entities
  */
-public class MaintenanceHandler extends BaseHandler {
+public class MaintenanceHandler extends BaseHandler implements MaintenanceHandlerApi {
 
     private final MaintenanceManager mm = new MaintenanceManager();
 
@@ -77,9 +77,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "name", "maintenance Schedule Name")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceScheduleSerializer
-     * #array_end()
      */
     public MaintenanceSchedule getScheduleDetails(User loggedInUser, String name) {
         return mm.lookupScheduleByUserAndName(loggedInUser, name)
@@ -99,9 +97,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "name", "maintenance schedule name")
      * @apidoc.param #param_desc("string", "type", "schedule type: single, multi")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceScheduleSerializer
-     * #array_end()
      */
     public MaintenanceSchedule createSchedule(User loggedInUser, String name, String type) {
         ensureOrgAdmin(loggedInUser);
@@ -129,9 +125,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "type", "schedule type: single, multi")
      * @apidoc.param #param_desc("string", "calendar", "maintenance calendar label")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceScheduleSerializer
-     * #array_end()
      */
     public MaintenanceSchedule createSchedule(User loggedInUser, String name, String type,
             String calendar) {
@@ -238,9 +232,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceCalendarSerializer
-     * #array_end()
      */
     public MaintenanceCalendar getCalendarDetails(User loggedInUser, String label) {
         return mm.lookupCalendarByUserAndLabel(loggedInUser, label)
@@ -260,9 +252,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
      * @apidoc.param #param_desc("string", "ical", "ICal calendar data")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceCalendarSerializer
-     * #array_end()
      */
     public MaintenanceCalendar createCalendar(User loggedInUser, String label, String ical) {
         ensureOrgAdmin(loggedInUser);
@@ -287,9 +277,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "label", "maintenance calendar label")
      * @apidoc.param #param_desc("string", "url", "download URL for ICal calendar data")
      * @apidoc.returntype
-     * #return_array_begin()
      * $MaintenanceCalendarSerializer
-     * #array_end()
      */
     public MaintenanceCalendar createCalendarWithUrl(User loggedInUser, String label, String url) {
         ensureOrgAdmin(loggedInUser);

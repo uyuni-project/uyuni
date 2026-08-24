@@ -63,6 +63,7 @@ import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandl
 import com.suse.manager.api.docs.UyuniSwaggerReader;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
 import com.suse.manager.xmlrpc.iss.HubHandler;
+import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -172,6 +173,7 @@ public final class OpenApiConfig {
         handlers.put("kickstart.profile.system", SystemDetailsHandler.class);
         handlers.put("kickstart.snippet", SnippetHandler.class);
         handlers.put("kickstart.tree", KickstartTreeHandler.class);
+        handlers.put("maintenance", MaintenanceHandler.class);
         handlers.put("org", OrgHandler.class);
         handlers.put("org.trusts", OrgTrustHandler.class);
         handlers.put("packages", PackagesHandler.class);
