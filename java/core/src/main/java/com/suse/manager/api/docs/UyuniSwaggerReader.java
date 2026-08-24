@@ -46,6 +46,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
@@ -639,6 +640,9 @@ public class UyuniSwaggerReader {
         return switch (typeName) {
             case "int", "java.lang.Integer" -> new IntegerSchema();
             case "boolean", "java.lang.Boolean" -> new BooleanSchema();
+            // A date reaches the specification as a string carrying the date-time format, the
+            // shape the model converter gives a date property of a request body.
+            case "java.util.Date" -> new DateTimeSchema();
             default -> new StringSchema();
         };
     }

@@ -612,7 +612,14 @@ public class OpenApiToAsciidocParser {
     }
 
     private String displayType(Schema<?> schema) {
-        return "integer".equals(schema.getType()) ? "int" : schema.getType();
+        if ("integer".equals(schema.getType())) {
+            return "int";
+        }
+        // The doclet binds $date to its own type name, whichever value carries the date.
+        if ("string".equals(schema.getType()) && "date-time".equals(schema.getFormat())) {
+            return UyuniSwaggerReader.LEGACY_DATE_TYPE;
+        }
+        return schema.getType();
     }
 
     /**
