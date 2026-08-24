@@ -524,6 +524,19 @@ Note that the text area variant handles the new lines characters while the other
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 ```
 
+Both of the above give the event `DEFAULT_TIMEOUT` seconds to leave the pending
+list and `DEFAULT_TIMEOUT` seconds again to reach Completed, so the total wait can
+be twice that.
+When that phase can take longer than the execution itself — an action chain that
+reboots the system, or anything on a Salt SSH minion, where the chain resumes
+only on the next `ssh-service-default` push — wait for each phase on its own
+budget instead, from the system's page:
+
+```gherkin
+  When I wait at most 900 seconds until the event "Remote Command on" is picked up
+  And I wait at most 300 seconds until the event "Remote Command on" is completed in the history
+```
+
 ### Salt
 
 * Control Salt service
