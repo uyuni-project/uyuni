@@ -68,7 +68,7 @@ import java.util.List;
  * @apidoc.doc Provides methods to activate/deactivate a proxy
  * server.
  */
-public class ProxyHandler extends BaseHandler {
+public class ProxyHandler extends BaseHandler implements ProxyHandlerApi {
     private static final Logger LOG = LogManager.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final SystemManager systemManager;
