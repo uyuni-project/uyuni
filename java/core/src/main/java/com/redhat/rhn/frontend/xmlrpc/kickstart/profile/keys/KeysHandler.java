@@ -37,7 +37,7 @@ import java.util.List;
 * @apidoc.doc Provides methods to access and modify the list of activation keys
 * associated with a kickstart profile.
 */
-public class KeysHandler extends BaseHandler {
+public class KeysHandler extends BaseHandler implements KeysHandlerApi {
 
     /**
      * Lookup the activation keys associated with the kickstart profile.
