@@ -15,6 +15,7 @@
 package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
@@ -143,6 +144,7 @@ public final class OpenApiConfig {
     public static Map<String, Class<?>> getHandlerClasses() {
         Map<String, Class<?>> handlers = new LinkedHashMap<>();
         handlers.put("access", AccessHandler.class);
+        handlers.put("activationkey", ActivationKeyHandler.class);
         handlers.put("admin.configuration", AdminConfigurationHandler.class);
         handlers.put("admin.monitoring", AdminMonitoringHandler.class);
         handlers.put("admin.payg", AdminPaygHandler.class);

@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc Contains methods to access common activation key functions
  * available from the web interface.
  */
-public class ActivationKeyHandler extends BaseHandler {
+public class ActivationKeyHandler extends BaseHandler implements ActivationKeyHandlerApi {
 
     private static Logger log = LogManager.getLogger(ActivationKeyHandler.class);
 
