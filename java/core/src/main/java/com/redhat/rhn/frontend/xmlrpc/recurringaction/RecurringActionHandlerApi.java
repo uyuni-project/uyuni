@@ -158,38 +158,38 @@ public interface RecurringActionHandlerApi {
         /**
          * @return whether the action is executed in test mode
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getTest();
 
         /**
          * @return the ordered list of states executed by a custom state action
          */
         @Schema(description = "the ordered list of states to be executed by a custom state action",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         List<String> getStates();
 
         /**
          * @return the contents of the Ansible extra variables
          */
-        @Schema(name = "extra_vars", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "extra_vars", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getExtraVars();
 
         /**
          * @return whether the Ansible cache is flushed
          */
-        @Schema(name = "flush_cache", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "flush_cache", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getFlushCache();
 
         /**
          * @return the path to the configured Ansible inventory
          */
-        @Schema(name = "inventory_path", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "inventory_path", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getInventoryPath();
 
         /**
          * @return the path to the playbook to be executed
          */
-        @Schema(name = "playbook_path", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(name = "playbook_path", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPlaybookPath();
 
         /**
