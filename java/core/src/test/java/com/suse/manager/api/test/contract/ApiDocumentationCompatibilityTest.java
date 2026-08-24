@@ -294,7 +294,33 @@ public class ApiDocumentationCompatibilityTest {
      * @return the items with the element struct and its contents rebased, when indented
      */
     private List<DocItem> alignArrayElementNesting(List<DocItem> items) {
-        return alignSerializerStructs(alignNestedElementStructs(alignLeadingArrayElement(items)));
+        return alignSerializerStructs(
+                alignNestedElementStructs(alignLeadingArrayElement(dropElementListMarkers(items))));
+    }
+
+    /**
+     * Drops the marker the doclet writes when a property opens the list of its elements.
+     *
+     * A namespace documents an array valued property either with {@code #prop_array_begin}, which
+     * expands straight into the element, or as a bare array followed by {@code #return_array_begin}
+     * , which writes an unnamed array marker before it. The schema describes the property the same
+     * way either way, so the marker is dropped before comparing.
+     *
+     * @param items the parsed return value items
+     * @return the items without the element list markers
+     */
+    private List<DocItem> dropElementListMarkers(List<DocItem> items) {
+        List<DocItem> kept = new ArrayList<>(items.size());
+        for (int i = 0; i < items.size(); i++) {
+            DocItem item = items.get(i);
+            DocItem property = i == 0 ? null : items.get(i - 1);
+            if (property != null && "array".equals(item.type()) && item.name().isEmpty() &&
+                    "array".equals(property.type()) && !property.name().isEmpty()) {
+                continue;
+            }
+            kept.add(item);
+        }
+        return kept;
     }
 
     /**
