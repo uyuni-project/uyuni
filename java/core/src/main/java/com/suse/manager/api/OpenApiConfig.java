@@ -48,6 +48,7 @@ import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringCustomStateHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
@@ -182,6 +183,7 @@ public final class OpenApiConfig {
         handlers.put("packages.search", PackagesSearchHandler.class);
         handlers.put("preferences.locale", PreferencesLocaleHandler.class);
         handlers.put("recurring", RecurringActionHandler.class);
+        handlers.put("recurring.custom", RecurringCustomStateHandler.class);
         handlers.put("recurring.playbook", RecurringPlaybookHandler.class);
         handlers.put("saltkey", SaltKeyHandler.class);
         handlers.put("schedule", ScheduleHandler.class);
