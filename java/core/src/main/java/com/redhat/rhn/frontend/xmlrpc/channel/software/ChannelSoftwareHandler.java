@@ -113,7 +113,7 @@ import jakarta.persistence.NoResultException;
  * @apidoc.namespace channel.software
  * @apidoc.doc Provides methods to access and modify many aspects of a channel.
  */
-public class ChannelSoftwareHandler extends BaseHandler {
+public class ChannelSoftwareHandler extends BaseHandler implements ChannelSoftwareHandlerApi {
 
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
