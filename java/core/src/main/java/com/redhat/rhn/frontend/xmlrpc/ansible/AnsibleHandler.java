@@ -44,7 +44,7 @@ import java.util.Set;
  * @apidoc.namespace ansible
  * @apidoc.doc Provides methods to manage Ansible systems
  */
-public class AnsibleHandler extends BaseHandler {
+public class AnsibleHandler extends BaseHandler implements AnsibleHandlerApi {
 
     // Keys to pass to schedulePlaybook endpoint as additional args for Ansible
     public static final String ANSIBLE_FLUSH_CACHE = "flushCache";
@@ -418,7 +418,7 @@ public class AnsibleHandler extends BaseHandler {
      * @apidoc.param #param_desc("int", "pathId", "path id")
      * @apidoc.returntype
      * #struct_begin("Inventory in a nested structure")
-     *   #param_desc("object", "Inventory item", "Inventory item (can be nested)")
+     *   #prop_desc("object", "Inventory item", "Inventory item (can be nested)")
      * #struct_end()
      */
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {
