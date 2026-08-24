@@ -42,9 +42,9 @@ import java.util.List;
  *             #item_desc ("NOT_AFFECTED", "not affected")
  *             #item_desc ("PATCHED", "patched")
  *         #options_end()
- *     #prop_array("string", "channel_labels",
+ *     #prop_array("channel_labels", "string",
  *         "labels of channels that contain an unapplied patch")
- *     #prop_array("string", "errata_advisories",
+ *     #prop_array("errata_advisories", "string",
  *         "advisories of erratas that patch the specified vulnerability")
  * #struct_end()
  */
