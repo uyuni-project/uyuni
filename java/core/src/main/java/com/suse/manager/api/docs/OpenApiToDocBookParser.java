@@ -395,7 +395,10 @@ public class OpenApiToDocBookParser {
     }
 
     private Schema<?> getResultSchema(Schema<?> schema) {
-        if (schema.getProperties() == null || !schema.getProperties().containsKey("result")) {
+        // The payload of a response is carried beside the status of the call, which tells the
+        // wrapper apart from a documented struct that happens to hold a property called result.
+        if (schema.getProperties() == null || !schema.getProperties().containsKey("result") ||
+                !schema.getProperties().containsKey("success")) {
             return null;
         }
         Object resultProp = schema.getProperties().get("result");

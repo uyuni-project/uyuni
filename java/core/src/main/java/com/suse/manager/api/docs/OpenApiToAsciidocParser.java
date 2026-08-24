@@ -343,7 +343,10 @@ public class OpenApiToAsciidocParser {
             schema = resolveSchemaReference(docSchema);
         }
 
-        if (docSchema == null && schema.getProperties() != null && schema.getProperties().containsKey("result")) {
+        // The payload of a response is carried beside the status of the call, which tells the
+        // wrapper apart from a documented struct that happens to hold a property called result.
+        if (docSchema == null && schema.getProperties() != null &&
+                schema.getProperties().containsKey("result") && schema.getProperties().containsKey("success")) {
             Schema<?> resultSchema = (Schema<?>) schema.getProperties().get("result");
             refName = extractRefName(resultSchema.get$ref());
             schema = resolveSchemaReference(resultSchema);
