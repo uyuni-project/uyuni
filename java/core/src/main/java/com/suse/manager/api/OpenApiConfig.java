@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.ProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
@@ -164,6 +165,7 @@ public final class OpenApiConfig {
         handlers.put("kickstart", KickstartHandler.class);
         handlers.put("kickstart.filepreservation", FilePreservationListHandler.class);
         handlers.put("kickstart.keys", CryptoKeysHandler.class);
+        handlers.put("kickstart.profile", ProfileHandler.class);
         handlers.put("kickstart.profile.keys", KeysHandler.class);
         handlers.put("kickstart.profile.software", SoftwareHandler.class);
         handlers.put("kickstart.snippet", SnippetHandler.class);
