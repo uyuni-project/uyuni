@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc Provides methods to access and modify many aspects of
  * configuration channels.
  */
-public class ConfigChannelHandler extends BaseHandler {
+public class ConfigChannelHandler extends BaseHandler implements ConfigChannelHandlerApi {
 
     /**
      * Creates a new 'normal' config channel based on the values provided..
