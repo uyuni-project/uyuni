@@ -343,8 +343,14 @@ public class ApiDocumentationCompatibilityTest {
 
         List<DocItem> aligned = new ArrayList<>(items.size());
         aligned.add(array);
-        items.subList(1, items.size())
-                .forEach(item -> aligned.add(new DocItem(item.level() - 1, item.type(), item.name())));
+        boolean rebasing = true;
+        for (DocItem item : items.subList(1, items.size())) {
+            // The doclet resets its bullet level when it inlines a serializer reference, so the
+            // struct it expands there and everything below it are numbered from the top again,
+            // independently of the element struct this rebases.
+            rebasing = rebasing && !(aligned.size() > 1 && "struct".equals(item.type()) && item.level() == 1);
+            aligned.add(rebasing ? new DocItem(item.level() - 1, item.type(), item.name()) : item);
+        }
         return aligned;
     }
 
