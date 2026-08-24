@@ -531,6 +531,7 @@ public class OpenApiToDocBookParser {
                 sb.append("    <listitem><para>")
                   .append(escapeXml(body))
                   .append("</para></listitem>\n");
+                appendSimpleElement(sb, propSchema);
                 appendOptions(sb, options);
                 return;
             }
@@ -556,6 +557,31 @@ public class OpenApiToDocBookParser {
             appendOptions(sb, options);
         });
         return sb.toString();
+    }
+
+    /**
+     * Appends the named element of an array property that holds a simple type.
+     *
+     * The doclet names such an element with {@code #array_single}, which it renders as an item of
+     * its own beside a property documented as a bare array. A property documenting the element
+     * type on itself, with {@code #prop_array}, names the element there and shows no such item,
+     * so only a property declaring the bare array type carries one.
+     *
+     * @param sb the markup being built
+     * @param property the array property schema
+     */
+    private void appendSimpleElement(StringBuilder sb, Schema<?> property) {
+        String label = getLegacyDocName(property);
+        if (!"array".equals(getLegacyDocType(property)) || label.isBlank()) {
+            return;
+        }
+        Schema<?> items = resolveSchemaReference(property.getItems());
+        if (items == null || !isSimpleType(items)) {
+            return;
+        }
+        sb.append("    <listitem><para>")
+          .append(escapeXml(String.format("array(%s) %s", formatSimpleType(items), label)))
+          .append("</para></listitem>\n");
     }
 
     /**

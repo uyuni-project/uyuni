@@ -435,6 +435,7 @@ public class OpenApiToAsciidocParser {
             writeStructProperty(writer, "", label, prop, level);
             printOptions(writer, prop, level + 1);
             printElementStruct(writer, prop, level + 1);
+            printSimpleElement(writer, prop, level);
             // A serializer referenced by a struct property brings its own struct label, which the
             // doclet renders as a sibling of the property before the fields it introduces.
             if (nested != null && !legacyDocName(nested).isEmpty()) {
@@ -490,6 +491,30 @@ public class OpenApiToAsciidocParser {
         }
         writer.printf("%s [.struct]#struct#  %s%n", "*".repeat(level), label);
         printStructProperties(writer, resolvedItems, level + 1);
+    }
+
+    /**
+     * Writes the named element of an array property that holds a simple type.
+     *
+     * The doclet names such an element with {@code #array_single}, which it renders as an item of
+     * its own beside a property documented as a bare array. A property documenting the element
+     * type on itself, with {@code #prop_array}, names the element there and shows no such item,
+     * so only a property declaring the bare array type carries one.
+     *
+     * @param writer the writer to write to
+     * @param property the array property schema
+     * @param level the bullet level of the property
+     */
+    private void printSimpleElement(PrintWriter writer, Schema<?> property, int level) {
+        String label = legacyDocName(property);
+        if (!ARRAY_TYPE.equals(legacyDocType(property)) || label.isEmpty()) {
+            return;
+        }
+        Schema<?> items = resolveSchemaReference(property.getItems());
+        if (items == null || !isSimpleType(items)) {
+            return;
+        }
+        writer.printf("%s [.array]#%s array#  %s%n", "*".repeat(level), structPropertyType(items), label);
     }
 
     /**
