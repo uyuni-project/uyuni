@@ -114,7 +114,6 @@ BuildRequires:  jaxb-core
 BuildRequires:  jboss-logging >= 3.6.1
 BuildRequires:  jcache
 BuildRequires:  jctools
-BuildRequires:  jdom
 BuildRequires:  jose4j
 BuildRequires:  jsch
 BuildRequires:  libxml2
@@ -199,7 +198,6 @@ Requires:       jaxb-core
 Requires:       jboss-logging >= 3.6.1
 Requires:       jcache
 Requires:       jctools
-Requires:       jdom
 Requires:       jose4j
 Requires:       libsolv-tools
 Requires:       log4j
