@@ -223,7 +223,7 @@ public class RecurringActionManager extends BaseManager {
      * @return list of group recurring actions
      */
     public static List<RecurringAction> listGroupRecurringActions(long groupId, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.getSystemGroupAdmin())) {
             throw new PermissionException(String.format("User does not have access to group id %d", groupId));
         }
         try {
@@ -265,7 +265,7 @@ public class RecurringActionManager extends BaseManager {
         DataResult<SimpleMinionJson> members;
         switch (type) {
             case GROUP:
-                if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+                if (!user.isMemberOf(AccessGroupFactory.getSystemGroupAdmin())) {
                     throw new PermissionException(String.format("User does not have access to group id %d", id));
                 }
                 members = RecurringActionFactory.listGroupMembers(id, pc, parser);

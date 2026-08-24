@@ -669,7 +669,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             Channel c = ChannelManager.lookupByIdAndUser(cid,
                                                          ctx.getCurrentUser());
             if (!UserManager.verifyChannelAdmin(ctx.getCurrentUser(), c)) {
-                throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+                throw new PermissionException(AccessGroupFactory.getChannelAdmin());
             }
 
             form.set(NAME, c.getName());

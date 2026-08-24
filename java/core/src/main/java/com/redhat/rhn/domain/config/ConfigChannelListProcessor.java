@@ -158,7 +158,7 @@ public class ConfigChannelListProcessor implements Serializable {
     public void validateUserAccess(User user, List<ConfigChannel> cfgChannels) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         for (ConfigChannel cc : cfgChannels) {
-            if (!user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN) &&
+            if (!user.isMemberOf(AccessGroupFactory.getActivationKeyAdmin()) &&
                         !cm.accessToChannel(user.getId(), cc.getId())) {
                 LocalizationService ls = LocalizationService.getInstance();
                 throw new LookupException(

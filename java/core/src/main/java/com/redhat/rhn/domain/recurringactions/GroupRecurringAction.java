@@ -85,7 +85,7 @@ public class GroupRecurringAction extends RecurringAction {
      */
     @Override
     public boolean canAccess(User user) {
-        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.getSystemGroupAdmin())) {
             return false;
         }
         try {

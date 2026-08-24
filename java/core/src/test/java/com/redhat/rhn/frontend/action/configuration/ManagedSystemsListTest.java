@@ -34,7 +34,7 @@ public class ManagedSystemsListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //Make a channel so it will appear in the list.
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),

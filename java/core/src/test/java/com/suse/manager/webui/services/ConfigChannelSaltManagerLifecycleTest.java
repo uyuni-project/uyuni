@@ -66,7 +66,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     @BeforeEach
     public void setUp() throws Exception {
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
-        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
+        user.addToGroup(AccessGroupFactory.getConfigAdmin());
         user = TestUtils.saveAndFlush(user);
     }
 
@@ -127,7 +127,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         server.setConfigChannels(Arrays.asList(channel1, channel2), user);
         ServerFactory.save(server);
 
-        user.addToGroup(AccessGroupFactory.ACTIVATION_KEY_ADMIN);
+        user.addToGroup(AccessGroupFactory.getActivationKeyAdmin());
         ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(user, "bsc1272988");
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         proc.add(key.getConfigChannelsFor(user), channel1);

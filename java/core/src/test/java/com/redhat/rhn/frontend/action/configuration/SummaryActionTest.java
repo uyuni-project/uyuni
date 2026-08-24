@@ -34,7 +34,7 @@ public class SummaryActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //The information for this page is simply stored into a set
         Long sid = ServerFactoryTest.createTestServer(user, true).getId();

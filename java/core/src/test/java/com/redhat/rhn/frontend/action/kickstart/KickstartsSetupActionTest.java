@@ -33,7 +33,7 @@ public class KickstartsSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testKickstartList() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         // Create a kickstart and the defaults so the list
         // will return something.

@@ -32,7 +32,7 @@ public class CryptoKeysListSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         TestUtils.flushAndEvict(key);

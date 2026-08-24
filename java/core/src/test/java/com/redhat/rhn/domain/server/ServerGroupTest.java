@@ -70,8 +70,8 @@ public class ServerGroupTest extends BaseTestCase {
      * @param user the user
      */
     public static void checkSysGroupAdminRole(User user) {
-        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
-            user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getSystemGroupAdmin())) {
+            user.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
         }
     }
 

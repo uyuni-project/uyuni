@@ -132,7 +132,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testListConfigEnabledSystems() throws Exception {
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //That is not enough though, the user must also have a server that is
         //a member of the config channel and have access to the server as well.
@@ -247,7 +247,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Collection servers = new ArrayList<>();
         servers.add(server);
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        user.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 

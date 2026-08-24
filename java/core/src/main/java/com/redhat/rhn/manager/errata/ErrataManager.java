@@ -1228,8 +1228,8 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the removing
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         //Since we don't remove the packages, we need to insert those entries
@@ -1281,8 +1281,8 @@ public class ErrataManager extends BaseManager {
      */
     public static void removeErratumAndPackagesFromChannel(Set<Errata> excludedErrata, Set<Errata> includedErrata,
                                                            Channel chan, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
 

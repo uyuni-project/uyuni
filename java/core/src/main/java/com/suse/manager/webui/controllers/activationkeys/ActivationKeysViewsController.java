@@ -97,7 +97,7 @@ public class ActivationKeysViewsController {
         data.put("channelsAppStreams", Json.GSON.toJson(channelsAppStreams));
         data.put("note", activationKey.getNote());
         data.put("activationKeyId", activationKey.getId());
-        data.put("isActivationKeyAdmin", user.isMemberOf(AccessGroupFactory.ACTIVATION_KEY_ADMIN));
+        data.put("isActivationKeyAdmin", user.isMemberOf(AccessGroupFactory.getActivationKeyAdmin()));
         data.put("tabs", ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/activation_key.xml"));
         return new ModelAndView(data, "templates/activation_keys/appstreams.jade");
     }

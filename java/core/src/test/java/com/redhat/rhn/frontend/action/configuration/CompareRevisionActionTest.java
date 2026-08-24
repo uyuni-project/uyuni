@@ -31,7 +31,7 @@ public class CompareRevisionActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //Make the user a config admin
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //Create the revision to copy
         ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());

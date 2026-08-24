@@ -33,7 +33,7 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testPlaintextExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
 
@@ -52,7 +52,7 @@ public class FileDownloadActionTest extends RhnMockStrutsTestCase {
 
     @Test
         public void testBinaryExecute() {
-            UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+            UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
             ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
             revision.getConfigContent().setBinary(true);

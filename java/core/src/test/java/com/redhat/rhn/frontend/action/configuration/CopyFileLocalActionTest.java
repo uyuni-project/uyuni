@@ -32,7 +32,7 @@ public class CopyFileLocalActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //Create the revision to copy
         ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());

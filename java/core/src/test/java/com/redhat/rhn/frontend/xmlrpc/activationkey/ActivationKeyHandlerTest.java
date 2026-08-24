@@ -854,7 +854,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         String newKey = keyHandler.create(admin, KEY,
                         KEY_DESCRIPTION + " " + 1, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.FALSE);
-        admin.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
+        admin.addToGroup(AccessGroupFactory.getConfigAdmin());
         // Create a global channel
         ConfigChannel global1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.normal());

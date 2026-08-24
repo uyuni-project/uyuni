@@ -185,7 +185,7 @@ public class UserEditSetupAction extends RhnAction {
             boolean disabled = false;
 
             String label = ag.getLabel();
-            boolean isDefaultGroup = AccessGroupFactory.DEFAULT_GROUPS.stream()
+            boolean isDefaultGroup = AccessGroupFactory.getDefaultGroups().stream()
                     .anyMatch(group -> group.getLabel().equals(ag.getLabel()));
 
             if (isDefaultGroup) {

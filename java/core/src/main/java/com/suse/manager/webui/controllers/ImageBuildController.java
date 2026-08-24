@@ -285,7 +285,7 @@ public class ImageBuildController {
             model.put("osImageStoreUrl", OSImageStoreUtils.getOSImageStoreRelativeURI(user.getOrg()));
         }
 
-        model.put("isAdmin", user.isMemberOf(AccessGroupFactory.IMAGE_ADMIN));
+        model.put("isAdmin", user.isMemberOf(AccessGroupFactory.getImageAdmin()));
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         model.put("isRuntimeInfoEnabled", ImagesUtil.isImageRuntimeInfoEnabled());
         return new ModelAndView(model, "templates/content_management/view.jade");

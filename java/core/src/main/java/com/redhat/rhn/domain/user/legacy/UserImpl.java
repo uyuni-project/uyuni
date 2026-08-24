@@ -390,7 +390,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         addRole(label, false);
 
         if (RoleFactory.ORG_ADMIN.equals(label)) {
-            getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
+            getAccessGroups().addAll(AccessGroupFactory.getDefaultGroups());
         }
     }
 

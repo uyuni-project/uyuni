@@ -252,7 +252,7 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         if (target.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
-            userGroups.addAll(AccessGroupFactory.DEFAULT_GROUPS);
+            userGroups.addAll(AccessGroupFactory.getDefaultGroups());
         }
     }
 

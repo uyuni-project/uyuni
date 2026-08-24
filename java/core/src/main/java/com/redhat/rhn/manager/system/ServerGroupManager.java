@@ -166,7 +166,7 @@ public class ServerGroupManager implements Serializable {
      * @param user the user to authenticate
      */
     public void validateAdminCredentials(User user) {
-        if (!user.isMemberOf(AccessGroupFactory.SYSTEM_GROUP_ADMIN)) {
+        if (!user.isMemberOf(AccessGroupFactory.getSystemGroupAdmin())) {
             String msg = "The desired operation cannot be performed since the user" +
                             "[" + user + "] does not have the system group admin role";
             throw new PermissionException(msg);
