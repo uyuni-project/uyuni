@@ -49,7 +49,7 @@ import java.util.Set;
  * @apidoc.namespace system.provisioning.snapshot
  * @apidoc.doc Provides methods to access and delete system snapshots.
  */
-public class SnapshotHandler extends BaseHandler {
+public class SnapshotHandler extends BaseHandler implements SnapshotHandlerApi {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 

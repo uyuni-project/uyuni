@@ -59,6 +59,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.provisioning.powermanagement.PowerManagementHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserNotificationsHandler;
@@ -196,6 +197,7 @@ public final class OpenApiConfig {
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.monitoring", SystemMonitoringHandler.class);
         handlers.put("system.provisioning.powermanagement", PowerManagementHandler.class);
+        handlers.put("system.provisioning.snapshot", SnapshotHandler.class);
         handlers.put("system.scap", SystemScapHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
         handlers.put("sync.content", ContentSyncHandler.class);
