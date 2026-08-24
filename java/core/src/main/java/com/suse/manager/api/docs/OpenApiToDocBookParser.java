@@ -40,6 +40,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 
 /**
  * Converts the generated OpenAPI specification into DocBook XML files.
@@ -145,12 +146,12 @@ public class OpenApiToDocBookParser {
         HandlerDoc handler = handlers.computeIfAbsent(tag,
                 k -> new HandlerDoc(k, getTagDescription(k)));
 
-        boolean securityRequired = isSecurityRequired(op);
         List<String> required = getFieldsByRequirement(op, true);
         List<String> optional = getFieldsByRequirement(op, false);
 
         for (List<String> params : UyuniSwaggerReader.expandOverloads(op, required, optional)) {
-            handler.calls.add(buildCallDoc(httpMethod, op, params, securityRequired));
+            handler.calls.add(buildCallDoc(httpMethod, op, params,
+                    isSecurityRequired(UyuniSwaggerReader.operationForCall(op, params))));
         }
     }
 
@@ -161,7 +162,7 @@ public class OpenApiToDocBookParser {
                 .orElse("");
         String description = buildDescription(op);
         List<ParamDoc> params = buildParams(op, activeParams, securityRequired);
-        String returnDoc = buildReturnDoc(op, name);
+        String returnDoc = buildReturnDoc(op, name, activeParams);
         return new CallDoc(name, httpMethod, description, params, returnDoc);
     }
 
@@ -285,11 +286,12 @@ public class OpenApiToDocBookParser {
         return props;
     }
 
-    private String buildReturnDoc(Operation op, String fallbackLabel) {
-        if (op.getResponses() == null) {
+    private String buildReturnDoc(Operation op, String fallbackLabel, List<String> activeParams) {
+        ApiResponses responses = UyuniSwaggerReader.operationForCall(op, activeParams).getResponses();
+        if (responses == null) {
             return "<listitem><para></para></listitem>";
         }
-        ApiResponse resp = op.getResponses().entrySet().stream()
+        ApiResponse resp = responses.entrySet().stream()
                 .filter(e -> e.getKey().startsWith("2") || e.getKey().equals("default"))
                 .map(Map.Entry::getValue)
                 .findFirst()

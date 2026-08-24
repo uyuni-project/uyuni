@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -75,6 +76,9 @@ public class UyuniSwaggerReader {
     public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
 
     public static final String DOC_OVERLOAD_SHAPES_EXTENSION = "x-uyuni-doc-overload-shapes";
+
+    /** Facts a documented call takes from its own overload rather than from the merged operation. */
+    public static final String DOC_OVERLOAD_CALLS_EXTENSION = "x-uyuni-doc-overload-calls";
 
     /** Extension holding the description the namespace documented for each allowed value. */
     public static final String DOC_OPTION_DESCRIPTIONS_EXTENSION = "x-uyuni-doc-option-descriptions";
@@ -662,7 +666,8 @@ public class UyuniSwaggerReader {
      */
     private Operation mergeAlternativeOverload(Operation documented, Operation alternative) {
         List<List<String>> calls = new ArrayList<>(documentedCalls(documented));
-        documentedCalls(alternative).stream().filter(call -> !calls.contains(call)).forEach(calls::add);
+        List<List<String>> alternativeCalls = documentedCalls(alternative);
+        alternativeCalls.stream().filter(call -> !calls.contains(call)).forEach(calls::add);
 
         if (alternative.getParameters() != null) {
             alternative.getParameters().stream()
@@ -685,8 +690,90 @@ public class UyuniSwaggerReader {
                     .toList());
         }
 
+        recordAlternativeCalls(documented, alternative, alternativeCalls);
         documented.addExtension(DOC_OVERLOAD_SHAPES_EXTENSION, calls);
         return documented;
+    }
+
+    /**
+     * Keeps what an overload documents differently from the ones read before it.
+     *
+     * The overloads sharing an endpoint are one operation, which is documented once, while the
+     * legacy doclet documents each overload on its own: overloads may answer with a different
+     * return value, authenticate differently, or be deprecated one at a time. The calls such an
+     * overload stands for are therefore recorded against what it documents, so that each call is
+     * described by the overload it comes from rather than by the first overload read.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @param alternativeCalls the calls the alternative overload stands for
+     */
+    private void recordAlternativeCalls(Operation documented, Operation alternative,
+                                        List<List<String>> alternativeCalls) {
+        if (!documentsDifferently(documented, alternative)) {
+            return;
+        }
+        Operation documentedByOverload = new Operation()
+                .responses(alternative.getResponses())
+                .security(alternative.getSecurity())
+                .deprecated(Boolean.TRUE.equals(alternative.getDeprecated()));
+
+        Map<String, Operation> calls = new LinkedHashMap<>(recordedCalls(documented));
+        alternativeCalls.forEach(call -> calls.putIfAbsent(callKey(call), documentedByOverload));
+        documented.addExtension(DOC_OVERLOAD_CALLS_EXTENSION, calls);
+    }
+
+    /**
+     * Tells whether an overload documents anything differently from the operation it folds into.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @return whether the alternative overload needs its calls recorded
+     */
+    private boolean documentsDifferently(Operation documented, Operation alternative) {
+        return !Objects.equals(documented.getResponses(), alternative.getResponses()) ||
+                !Objects.equals(documented.getSecurity(), alternative.getSecurity()) ||
+                Boolean.TRUE.equals(documented.getDeprecated()) !=
+                        Boolean.TRUE.equals(alternative.getDeprecated());
+    }
+
+    /**
+     * Reads what the overloads of an operation document for the calls they stand for.
+     *
+     * @param operation the operation to read
+     * @return what each recorded call documents, keyed by call
+     */
+    private static Map<String, Operation> recordedCalls(Operation operation) {
+        Object recorded = operation.getExtensions() == null ?
+                null : operation.getExtensions().get(DOC_OVERLOAD_CALLS_EXTENSION);
+        if (!(recorded instanceof Map<?, ?> byCall)) {
+            return Map.of();
+        }
+        Map<String, Operation> calls = new LinkedHashMap<>();
+        byCall.forEach((call, documented) -> {
+            if (documented instanceof Operation documentedByOverload) {
+                calls.put(String.valueOf(call), documentedByOverload);
+            }
+        });
+        return calls;
+    }
+
+    /**
+     * Reads what a documented call documents of its own.
+     *
+     * A call is described by the overload it comes from, which is the operation itself unless
+     * another overload documented that call differently.
+     *
+     * @param operation the operation the call belongs to
+     * @param call the parameters of the documented call
+     * @return the operation documenting the call
+     */
+    public static Operation operationForCall(Operation operation, List<String> call) {
+        return recordedCalls(operation).getOrDefault(callKey(call), operation);
+    }
+
+    private static String callKey(List<String> call) {
+        return String.join(",", call);
     }
 
     /**

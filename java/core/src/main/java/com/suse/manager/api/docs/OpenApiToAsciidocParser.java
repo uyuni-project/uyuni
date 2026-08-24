@@ -141,14 +141,15 @@ public class OpenApiToAsciidocParser {
         }
         String tag = operation.getTags().get(0);
 
-        boolean securityRequired = isSecurityRequired(operation);
         List<String> required = getFieldsByRequirement(operation, true);
         List<String> optional = getFieldsByRequirement(operation, false);
 
         List<DocEntry> entries = operationsByTag.computeIfAbsent(tag, key -> new ArrayList<>());
 
         for (List<String> params : UyuniSwaggerReader.expandOverloads(operation, required, optional)) {
-            entries.add(DocEntry.create(method, operation, params, securityRequired));
+            Operation documentedByOverload = UyuniSwaggerReader.operationForCall(operation, params);
+            entries.add(DocEntry.create(method, operation, documentedByOverload, params,
+                    isSecurityRequired(documentedByOverload)));
         }
     }
 
@@ -193,14 +194,14 @@ public class OpenApiToAsciidocParser {
                     """,
                 tag,
                 entry.anchor(),
-                Boolean.TRUE.equals(operation.getDeprecated()) ?
+                Boolean.TRUE.equals(entry.documentedByOverload().getDeprecated()) ?
                         operation.getOperationId() + " (Deprecated)" : operation.getOperationId(),
                 entry.method(),
                 summary,
                 description
         );
 
-        if (isSecurityRequired(operation)) {
+        if (isSecurityRequired(entry.documentedByOverload())) {
             writer.println("* [.string]#string#  sessionKey\n");
         }
 
@@ -213,7 +214,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.println("\nReturns:\n");
-        writeReturn(writer, operation);
+        writeReturn(writer, operation, entry.activeParams());
         writer.print("\n\n\n");
     }
 
@@ -314,8 +315,8 @@ public class OpenApiToAsciidocParser {
         return openAPI.getSecurity() != null && !openAPI.getSecurity().isEmpty();
     }
 
-    private void writeReturn(PrintWriter writer, Operation operation) {
-        var responses = operation.getResponses();
+    private void writeReturn(PrintWriter writer, Operation operation, List<String> activeParams) {
+        var responses = UyuniSwaggerReader.operationForCall(operation, activeParams).getResponses();
         if (responses == null) {
             return;
         }
@@ -819,9 +820,11 @@ public class OpenApiToAsciidocParser {
         return schema.getItems() != null ? findDescription(schema.getItems()) : "";
     }
 
-    private record DocEntry(String method, String anchor, Operation operation, List<String> activeParams) {
+    private record DocEntry(String method, String anchor, Operation operation,
+                           Operation documentedByOverload, List<String> activeParams) {
 
-        static DocEntry create(String method, Operation operation, List<String> params, boolean securityRequired) {
+        static DocEntry create(String method, Operation operation, Operation documentedByOverload,
+                               List<String> params, boolean securityRequired) {
             String suffix = String.join("-", params);
             String authPart = securityRequired ? "loggedInUser" : "";
 
@@ -839,7 +842,7 @@ public class OpenApiToAsciidocParser {
                 anchor += "-";
             }
 
-            return new DocEntry(method, anchor, operation, List.copyOf(params));
+            return new DocEntry(method, anchor, operation, documentedByOverload, List.copyOf(params));
         }
     }
 }
