@@ -19,6 +19,7 @@ import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHand
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.channel.appstreams.ChannelAppStreamHandler;
@@ -142,6 +143,7 @@ public final class OpenApiConfig {
     public static Map<String, Class<?>> getHandlerClasses() {
         Map<String, Class<?>> handlers = new LinkedHashMap<>();
         handlers.put("access", AccessHandler.class);
+        handlers.put("actionchain", ActionChainHandler.class);
         handlers.put("admin.configuration", AdminConfigurationHandler.class);
         handlers.put("admin.monitoring", AdminMonitoringHandler.class);
         handlers.put("admin.payg", AdminPaygHandler.class);

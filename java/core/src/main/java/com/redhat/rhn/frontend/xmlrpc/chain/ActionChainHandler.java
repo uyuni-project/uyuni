@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace actionchain
  * @apidoc.doc Provides the namespace for the Action Chain methods.
  */
-public class ActionChainHandler extends BaseHandler {
+public class ActionChainHandler extends BaseHandler implements ActionChainHandlerApi {
 
     private static Logger log = LogManager.getLogger(ActionChainHandler.class);
 
