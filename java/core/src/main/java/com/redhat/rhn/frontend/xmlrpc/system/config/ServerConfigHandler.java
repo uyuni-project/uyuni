@@ -69,7 +69,7 @@ import java.util.stream.Stream;
  * configuration channels and server association.
  * basically system.config name space
  */
-public class ServerConfigHandler extends BaseHandler {
+public class ServerConfigHandler extends BaseHandler implements ServerConfigHandlerApi {
 
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;

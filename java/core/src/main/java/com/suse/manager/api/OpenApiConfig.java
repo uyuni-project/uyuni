@@ -45,6 +45,7 @@ import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
@@ -167,6 +168,7 @@ public final class OpenApiConfig {
         handlers.put("schedule", ScheduleHandler.class);
         handlers.put("subscriptionmatching.pinnedsubscription", PinnedSubscriptionHandler.class);
         handlers.put("system.appstreams", SystemAppStreamHandler.class);
+        handlers.put("system.config", ServerConfigHandler.class);
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.monitoring", SystemMonitoringHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
