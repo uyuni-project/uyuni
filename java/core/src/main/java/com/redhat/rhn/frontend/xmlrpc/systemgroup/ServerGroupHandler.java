@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace systemgroup
  * @apidoc.doc Provides methods to access and modify system groups.
  */
-public class ServerGroupHandler extends BaseHandler {
+public class ServerGroupHandler extends BaseHandler implements ServerGroupHandlerApi {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final ServerGroupManager serverGroupManager;

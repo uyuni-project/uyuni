@@ -52,6 +52,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.monitoring.SystemMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
+import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserNotificationsHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
@@ -179,6 +180,7 @@ public final class OpenApiConfig {
         handlers.put("system.custominfo", CustomInfoHandler.class);
         handlers.put("system.monitoring", SystemMonitoringHandler.class);
         handlers.put("system.search", SystemSearchHandler.class);
+        handlers.put("systemgroup", ServerGroupHandler.class);
         handlers.put("sync.content", ContentSyncHandler.class);
         handlers.put("sync.hub", HubHandler.class);
         handlers.put("user", UserHandler.class);
