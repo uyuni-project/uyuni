@@ -70,7 +70,7 @@ import java.util.Set;
  * @apidoc.doc Contains methods to access common organization management
  * functions available from the web interface.
  */
-public class OrgHandler extends BaseHandler {
+public class OrgHandler extends BaseHandler implements OrgHandlerApi {
 
     private static final String VALIDATION_XSD =
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
