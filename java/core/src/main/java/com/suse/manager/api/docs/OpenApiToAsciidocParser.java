@@ -368,7 +368,7 @@ public class OpenApiToAsciidocParser {
         // that are not simple: the doclet renders those as a single typed line, without expanding
         // the schema.
         if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
-            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation,
+            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(),
                     legacyDocResponse.plainText(), legacyDocResponse.values());
             return;
         }
@@ -595,12 +595,11 @@ public class OpenApiToAsciidocParser {
     }
 
     private void writeSimpleReturn(PrintWriter writer, Schema<?> schema, String responseLabel,
-                                   String legacyType, Operation operation, boolean plainText,
-                                   Schema<?> documentedValues) {
+                                   String legacyType, boolean plainText, Schema<?> documentedValues) {
         String displayType = legacyType.isBlank() ? displayType(schema) : legacyType;
         Schema<?> values = documentedValues == null ? schema : documentedValues;
         // The doclet passes a return value documented without a macro through as written, so it
-        // carries neither the type role nor a label synthesised from the operation.
+        // carries no type role.
         if (plainText) {
             writer.printf("* %s%s %n", displayType, responseLabel.isBlank() ? "" : " - " + responseLabel);
             printOptions(writer, values, RETURN_OPTION_LEVEL);
@@ -608,14 +607,9 @@ public class OpenApiToAsciidocParser {
             return;
         }
 
-        String label = Optional.of(responseLabel)
-                .filter(d -> !d.isBlank())
-                .orElseGet(() -> operation.getOperationId()
-                        .replace("get", "")
-                        .replaceAll("([a-z])([A-Z])", "$1 $2")
-                        .toLowerCase().trim());
-
-        writer.printf("* [.%s]#%s#  %s%n", displayType, displayType, label);
+        // The doclet renders the label the namespace documented and invents none, so a return
+        // value documented without one is a bare typed line.
+        writer.printf("* [.%s]#%s#  %s%n", displayType, displayType, responseLabel);
         printOptions(writer, values, RETURN_OPTION_LEVEL);
         writer.print(" ");
     }

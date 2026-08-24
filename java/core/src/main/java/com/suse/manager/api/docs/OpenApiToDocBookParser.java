@@ -162,7 +162,7 @@ public class OpenApiToDocBookParser {
         String description = buildDescription(op);
         List<ParamDoc> params = buildParams(op, documentedByOverload, activeParams,
                 isSecurityRequired(documentedByOverload));
-        String returnDoc = buildReturnDoc(documentedByOverload, name);
+        String returnDoc = buildReturnDoc(documentedByOverload);
         return new CallDoc(name, httpMethod, description, params, returnDoc);
     }
 
@@ -289,7 +289,7 @@ public class OpenApiToDocBookParser {
         return props;
     }
 
-    private String buildReturnDoc(Operation op, String fallbackLabel) {
+    private String buildReturnDoc(Operation op) {
         ApiResponses responses = op.getResponses();
         if (responses == null) {
             return "<listitem><para></para></listitem>";
@@ -322,16 +322,9 @@ public class OpenApiToDocBookParser {
             schema = resolveSchemaReference(docSchema);
         }
 
-        String label = legacyDocResponse.plainText() ?
-                legacyDocResponse.label(responseDescription).orElse(responseDescription) :
-                legacyDocResponse.label(responseDescription).orElseGet(() ->
-                !responseDescription.isBlank() ?
-                responseDescription :
-                fallbackLabel
-                        .replaceAll("^(get|list|is|set|create|delete|update)", "")
-                        .replaceAll("([a-z])([A-Z])", "$1 $2")
-                        .toLowerCase().trim()
-        );
+        // The doclet renders the label the namespace documented and invents none, so a return
+        // value documented without one carries no label.
+        String label = legacyDocResponse.label(responseDescription).orElse(responseDescription);
 
         return renderReturnSchema(schema, label, legacyDocResponse.type(), legacyDocResponse.name(),
                 legacyDocResponse.values());
