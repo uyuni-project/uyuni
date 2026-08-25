@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 06:27+0000\n"
+"PO-Revision-Date: 2026-08-25 15:32+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -820,7 +820,7 @@ msgstr "ໃນໜ້ານີ້ ທ່ານສາມາດເລືອກ Salt
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:63
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 msgid "Formulas"
-msgstr "ສູດ (Formulas)"
+msgstr "ຟໍມູລາ (Formulas)"
 
 #: ../html/src/components/formulas/EditGroup.tsx:361
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
@@ -2972,7 +2972,7 @@ msgstr "ຜູ້ໃຊ້"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
 msgid "SSH Private Key"
-msgstr "ກະແຈສ່ວນຕົວ SSH"
+msgstr "SSH Private Key (ຄີສ່ວນຕົວ SSH)"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:37
@@ -3364,7 +3364,7 @@ msgstr "ແພັກເກັດໃນ {stream}"
 
 #: ../html/src/manager/appstreams/panel-appstream.tsx:20
 msgid "Modules"
-msgstr "ໂມດູນ"
+msgstr "ໂມດູນ (Modules)"
 
 #: ../html/src/manager/appstreams/panel-appstream.tsx:21
 msgid "Streams"
@@ -4212,7 +4212,7 @@ msgstr "ວັນທີອອກທີ່ຈັດເກັບໄວ້ຢູ່
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
 msgid "Issued"
-msgstr "ອອກເມື່ອ"
+msgstr "Issued (ຖືກອອກໃຫ້)"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
@@ -6989,7 +6989,7 @@ msgstr "ຕົວປ່ຽນ (Variables)"
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
 #: ../html/src/manager/state/highstate.tsx:148
 msgid "Highstate"
-msgstr "ໄຮສະເຕດ (Highstate)"
+msgstr "Highstate"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 msgid "Custom State"
@@ -7278,7 +7278,7 @@ msgstr "ກວດສອບຫຼ້າສຸດເມື່ອ"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:590
 msgid "Base Channel"
-msgstr "ຊ່ອງທາງພື້ນຖານ"
+msgstr "Base Channel (ຊ່ອງທາງຫຼັກ)"
 
 #: ../html/src/manager/systems/all-list.tsx:183
 #: ../html/src/manager/systems/list-filter.tsx:53
