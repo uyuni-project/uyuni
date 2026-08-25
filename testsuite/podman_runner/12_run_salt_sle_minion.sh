@@ -22,3 +22,6 @@ $PODMAN_CMD exec -d sle_minion bash -c "exporter_exporter -config.file /etc/expo
 
 $PODMAN_CMD exec sle_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 $PODMAN_CMD exec sle_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/http:\/\/server\/pub\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
+
+$PODMAN_CMD exec sle_minion bash -c "zypper --non-interactive modifyrepo --disable repo-non-oss repo-update Uyuni-Server-POOL-x86_64"
+$PODMAN_CMD exec sle_minion bash -c "zypper --non-interactive modifyrepo --no-gpgcheck repo-oss"
