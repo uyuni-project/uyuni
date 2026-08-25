@@ -2,30 +2,37 @@ type StatusColor = "default" | "success" | "warning" | "error" | "info" | "runni
 
 type SpecialColor = "gray" | "green" | "yellow" | "blue" | "red";
 
-type BadgeProps =
-  | {
-      text: string;
-      icon?: string;
-      variant?: "status";
-      color?: StatusColor;
-    }
-  | {
-      text: string;
-      icon?: string;
-      variant: "special";
-      color?: SpecialColor;
-    };
+type DefaultBadgeProps = {
+  text: string;
+  icon?: string;
+  small?: boolean;
+};
+
+type StatusProps = DefaultBadgeProps & {
+  variant?: "status";
+  color?: StatusColor;
+};
+
+type SpecialProps = DefaultBadgeProps & {
+  variant: "special";
+  color?: SpecialColor;
+};
+
+type BadgeProps = StatusProps | SpecialProps;
 
 export const Badge = (props: BadgeProps) => {
-  const { text, icon, variant = "status", color = variant === "status" ? "default" : "gray" } = props;
+  const { text, icon, small = false, variant = "status", color = variant === "status" ? "default" : "gray" } = props;
+
   // Determine the class name based on the status prop
-
-  const badgeClassName = ["badge", `badge--${variant}`, `badge--${color}`].join(" ");
-
+  const resolvedColor = color ?? (variant === "status" ? "default" : "gray");
+  const badgeClassName = ["badge", `badge--${variant}`, `badge--${resolvedColor}`, small && "badge--sm"]
+    .filter(Boolean)
+    .join(" ");
+  const formatBadgeText = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
   return (
     <span className={badgeClassName}>
       {icon && <i className={`fa ${icon}`} aria-hidden="true" />}
-      {text}
+      {formatBadgeText(text)}
     </span>
   );
 };
