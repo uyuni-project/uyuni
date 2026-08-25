@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-24 18:13+0000\n"
+"PO-Revision-Date: 2026-08-25 06:27+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -2218,7 +2218,7 @@ msgstr "ລະບົບທີ່ບໍ່ແມ່ນ Virtual"
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr "ພຣັອກຊີ"
+msgstr "ພຣັອກຊີ (Proxy)"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
@@ -6983,7 +6983,7 @@ msgstr "ລ້າງແຄຊ໌ຂໍ້ມູນ (fact cache):"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
 msgid "Variables"
-msgstr "ຕົວປ່ຽນ"
+msgstr "ຕົວປ່ຽນ (Variables)"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
