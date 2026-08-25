@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 15:42+0000\n"
+"PO-Revision-Date: 2026-08-25 22:52+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
 "Language: lo\n"
@@ -304,7 +304,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1041 ../src/spacecmd/kickstart.py:482
 #: ../src/spacecmd/system.py:3107
 msgid "Software Channels"
-msgstr ""
+msgstr "ຊ່ອງທາງຊອບແວ"
 
 #: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:872
 #: ../src/spacecmd/configchannel.py:992 ../src/spacecmd/system.py:3117
@@ -485,7 +485,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1611 ../src/spacecmd/kickstart.py:519
 #: ../src/spacecmd/system.py:3102
 msgid "Activation Keys"
-msgstr ""
+msgstr "ຄີເປີດໃຊ້ງານ (Activation Keys)"
 
 #: ../src/spacecmd/activationkey.py:1617
 #, python-format
@@ -1966,7 +1966,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:1581 ../src/spacecmd/system.py:1904
 #: ../src/spacecmd/system.py:4671
 msgid "Systems"
-msgstr ""
+msgstr "Systems"
 
 #: ../src/spacecmd/group.py:161
 msgid "Remove these systems [y/N]:"
@@ -2824,7 +2824,7 @@ msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2341
 msgid "Kickstart Profiles"
-msgstr "Kickstart Profiles"
+msgstr "ໂປຣໄຟລ໌ Kickstart"
 
 #: ../src/spacecmd/kickstart.py:2346
 msgid "Original Profile:"
