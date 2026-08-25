@@ -11,13 +11,12 @@
 
 package com.suse.manager.autoinstallation.installer.rhel;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
-import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
-import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderException;
 import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.AbstractKernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Profile;
@@ -26,16 +25,11 @@ import org.cobbler.SystemRecord;
 /**
  * RHEL installer-specific implementation of the KernelOptionsBuilder.
  */
-public class RhelKernelOptionsBuilder implements KernelOptionsBuilder {
+public class RhelKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
 
-    private String serverFqdn = ConfigDefaults.get().getJavaHostname();
-
-    /**
-     * Set public facing server FQDN. Default is JavaHostname config value
-     * @param serverFqdnIn Server FQDN to be used in generated values
-     */
-    public void setServerFqdn(String serverFqdnIn) {
-        this.serverFqdn = serverFqdnIn;
+    @Override
+    protected String urlScheme() {
+        return "http";
     }
 
     @Override
@@ -44,7 +38,10 @@ public class RhelKernelOptionsBuilder implements KernelOptionsBuilder {
             throw new KernelOptionsBuilderException("Kickstartable tree cannot be null");
         }
         KernelOptionsList list = new KernelOptionsList();
-        return list.addOption("inst.repo", "https://" + serverFqdn + "/ks/dist/" + ksTree.getLabel());
+        if (ksTree.getInstallType().isRhel8OrGreater()) {
+            list.setOptionIfNotPresent("inst.repo", baseUrl() + "/ks/dist/" + ksTree.getLabel());
+        }
+        return list;
     }
 
     @Override
@@ -53,45 +50,23 @@ public class RhelKernelOptionsBuilder implements KernelOptionsBuilder {
             throw new KernelOptionsBuilderException("Profile and/or profile name cannot be empty");
         }
         KernelOptionsList list = new KernelOptionsList();
-        return list.addOption("inst.auto", KickstartUrlHelper.getCobblerProfileUrl(profile)).
-                addOption("inst.auto_insecure");
+        return list.setOptionIfNotPresent("inst.auto", KickstartUrlHelper.getCobblerProfileUrl(profile))
+                .setFlagIfNotPresent("inst.auto_insecure");
     }
 
     @Override
     public KernelOptionsList systemOptions(SystemRecord system) {
         if (system == null || StringUtils.isBlank(system.getName())) {
-            throw new KernelOptionsBuilderException("Profile and/or profile name cannot be empty");
+            throw new KernelOptionsBuilderException("System name cannot be empty");
         }
         KernelOptionsList list = new KernelOptionsList();
-        String autoinst = "https://" + serverFqdn + "/cblr/svc/op/autoinstall/system/" + system.getName();
-        if (system.getProfile().getDistro().getOsVersion().equals("rhel6")) {
+        String autoinst = autoinstallSystemUrl(system);
+        if ("rhel6".equals(system.getProfile().getDistro().getOsVersion())) {
             list.setFlagIfNotPresent("kssendmac").setOptionIfNotPresent("ks", autoinst);
         }
         else {
             list.setFlagIfNotPresent("inst.ks.sendmac").setOptionIfNotPresent("ks", autoinst);
         }
         return list;
-    }
-
-    @Override
-    public KernelOptionsList networkBoot(KickstartableTree ksTree, SystemRecord system) {
-        if (system == null) {
-            throw new KernelOptionsBuilderException("System record cannot be null");
-        }
-        if (ksTree == null) {
-            throw new KernelOptionsBuilderException("Kickstartable tree cannot be null");
-        }
-        Profile prof = system.getProfile();
-        return distroOptions(ksTree).addOptions(profileOptions(prof)).
-                addOption("info", "https://" + serverFqdn + "/cblr/svc/op/nopxe/system/" + system.getName());
-    }
-
-    @Override
-    public KernelOptionsList localBoot(KickstartableTree ksTree, SystemRecord system) {
-        if (system == null) {
-            throw new KernelOptionsBuilderException("System record cannot be null");
-        }
-        Profile prof = system.getProfile();
-        return distroOptions(ksTree).addOptions(profileOptions(prof));
     }
 }

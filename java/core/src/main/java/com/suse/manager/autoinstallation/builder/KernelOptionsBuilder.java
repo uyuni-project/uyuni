@@ -63,7 +63,7 @@ public interface KernelOptionsBuilder {
      * @return the complete kernel options for a network boot
      * @throws KernelOptionsBuilderException on incorrect options
      */
-    KernelOptionsList networkBoot(KickstartableTree ksTree, SystemRecord system) throws KernelOptionsBuilderException;;
+    KernelOptionsList networkBoot(KickstartableTree ksTree, SystemRecord system) throws KernelOptionsBuilderException;
 
     /**
      * Builds the complete kernel options required for a local system reboot (Salt initiation).
@@ -73,5 +73,15 @@ public interface KernelOptionsBuilder {
      * @return the complete kernel options for non-PXE initiation
      * @throws KernelOptionsBuilderException on incorrect options
      */
-    KernelOptionsList localBoot(KickstartableTree ksTree, SystemRecord system) throws KernelOptionsBuilderException;;
+    KernelOptionsList localBoot(KickstartableTree ksTree, SystemRecord system) throws KernelOptionsBuilderException;
+
+    /**
+     * Builds only the self_update option, if applicable.
+     *
+     * @param ksTree the kickstart tree
+     * @return the self_update option list
+     */
+    default KernelOptionsList selfUpdateOption(KickstartableTree ksTree) {
+        return new KernelOptionsList();
+    }
 }

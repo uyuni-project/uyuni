@@ -9,10 +9,9 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.autoinstallation.installer.agama;
+package com.suse.manager.autoinstallation.installer.debian;
 
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
 import com.suse.manager.autoinstallation.KernelOptionsList;
 import com.suse.manager.autoinstallation.builder.AbstractKernelOptionsBuilder;
@@ -23,18 +22,13 @@ import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
 
 /**
- * SLES 16 / Agama installer-specific implementation of the KernelOptionsBuilder.
+ * Debian and Ubuntu installer-specific implementation of the KernelOptionsBuilder.
  */
-public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
+public class DebianKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
 
     @Override
     protected String urlScheme() {
-        return "https";
-    }
-
-    @Override
-    protected String sslVerifySuffix() {
-        return "?ssl_verify=no";
+        return "http";
     }
 
     @Override
@@ -42,23 +36,7 @@ public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
         if (ksTree == null) {
             throw new KernelOptionsBuilderException("Kickstartable tree cannot be null");
         }
-        KernelOptionsList list = new KernelOptionsList();
-        list.addMissingOptions(selfUpdateOption(ksTree));
-        String rootUrl = "live:" + baseUrl() + "/ks/dist/" + ksTree.getLabel() +
-                "/LiveOS/squashfs.img";
-        list.setOptionIfNotPresent("root", rootUrl);
-        list.setFlagIfNotPresent("rd.noverifyssl");
-        return list;
-    }
-
-    @Override
-    public KernelOptionsList selfUpdateOption(KickstartableTree ksTree) {
-        if (ksTree == null) {
-            return new KernelOptionsList();
-        }
-        KernelOptionsList list = new KernelOptionsList();
-        installerUpdatesUrl(ksTree).ifPresent(url -> list.setOptionIfNotPresent("self_update", url));
-        return list;
+        return new KernelOptionsList();
     }
 
     @Override
@@ -66,9 +44,7 @@ public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
         if (profile == null || StringUtils.isBlank(profile.getName())) {
             throw new KernelOptionsBuilderException("Profile and/or profile name cannot be empty");
         }
-        KernelOptionsList list = new KernelOptionsList();
-        return list.setOptionIfNotPresent("inst.auto", KickstartUrlHelper.getCobblerProfileUrl(profile))
-                .setFlagIfNotPresent("inst.auto_insecure");
+        return new KernelOptionsList();
     }
 
     @Override
@@ -76,6 +52,11 @@ public class AgamaKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
         if (system == null || StringUtils.isBlank(system.getName())) {
             throw new KernelOptionsBuilderException("System name cannot be empty");
         }
-        return new KernelOptionsList();
+        KernelOptionsList list = new KernelOptionsList();
+        list.setOptionIfNotPresent("auto-install/enable", "true");
+        list.setOptionIfNotPresent("priority", "critical");
+        list.setOptionIfNotPresent("netcfg/choose_interface", "auto");
+        list.setOptionIfNotPresent("url", autoinstallSystemUrl(system));
+        return list;
     }
 }

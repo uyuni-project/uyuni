@@ -11,15 +11,11 @@
 
 package com.suse.manager.autoinstallation.installer.autoyast;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
-import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
-import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
-import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderException;
 import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.AbstractKernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Profile;
@@ -28,17 +24,11 @@ import org.cobbler.SystemRecord;
 /**
  * SLES15 / AutoYast installer-specific implementation of the KernelOptionsBuilder.
  */
-public class AutoYastKernelOptionsBuilder implements KernelOptionsBuilder {
+public class AutoYastKernelOptionsBuilder extends AbstractKernelOptionsBuilder {
 
-    private String serverFqdn = ConfigDefaults.get().getJavaHostname();
-    private final String noSslVerify = "?ssl_verify=no";
-
-    /**
-     * Set public facing server FQDN. Default is JavaHostname config value
-     * @param serverFqdnIn Server FQDN to be used in generated values
-     */
-    public void setServerFqdn(String serverFqdnIn) {
-        this.serverFqdn = serverFqdnIn;
+    @Override
+    protected String urlScheme() {
+        return "http";
     }
 
     @Override
@@ -47,16 +37,22 @@ public class AutoYastKernelOptionsBuilder implements KernelOptionsBuilder {
             throw new KernelOptionsBuilderException("Kickstartable tree cannot be null");
         }
         KernelOptionsList list = new KernelOptionsList();
-        Channel ksBaseChannel = ksTree.getChannel();
-        ChannelFactory.listAllChildrenForChannel(ksBaseChannel)
-                .stream()
-                .filter(Channel::isInstallerUpdates)
-                .findFirst()
-                .ifPresent(channel ->
-                list.addOption("self_update", "https://" + serverFqdn + "/ks/dist/child/" +
-                channel.getLabel() + "/" + ksTree.getLabel() + noSslVerify));
+        list.setOptionIfNotPresent("install", distTreeUrl(ksTree));
+        list.addMissingOptions(selfUpdateOption(ksTree));
+        return list;
+    }
 
-        return list.addOption("install", "https://" + serverFqdn + "/ks/dist/" + ksTree.getLabel() + noSslVerify);
+    @Override
+    public KernelOptionsList selfUpdateOption(KickstartableTree ksTree) {
+        if (ksTree == null) {
+            return new KernelOptionsList();
+        }
+        KernelOptionsList list = new KernelOptionsList();
+        installerUpdatesUrl(ksTree).ifPresentOrElse(
+                url -> list.setOptionIfNotPresent("self_update", url),
+                () -> list.setOptionIfNotPresent("self_update", "0")
+        );
+        return list;
     }
 
     @Override
@@ -64,35 +60,16 @@ public class AutoYastKernelOptionsBuilder implements KernelOptionsBuilder {
         if (profile == null || StringUtils.isBlank(profile.getName())) {
             throw new KernelOptionsBuilderException("Profile and/or profile name cannot be empty");
         }
-        KernelOptionsList list = new KernelOptionsList();
-        return list.addOption("inst.auto", KickstartUrlHelper.getCobblerProfileUrl(profile)).
-                addOption("inst.auto_insecure");
-    }
-
-    @Override
-    public KernelOptionsList systemOptions(SystemRecord system) {
         return new KernelOptionsList();
     }
 
     @Override
-    public KernelOptionsList networkBoot(KickstartableTree ksTree, SystemRecord system) {
-        if (system == null) {
-            throw new KernelOptionsBuilderException("System record cannot be null");
+    public KernelOptionsList systemOptions(SystemRecord system) {
+        if (system == null || StringUtils.isBlank(system.getName())) {
+            throw new KernelOptionsBuilderException("System name cannot be empty");
         }
-        if (ksTree == null) {
-            throw new KernelOptionsBuilderException("Kickstartable tree cannot be null");
-        }
-        Profile prof = system.getProfile();
-        return distroOptions(ksTree).addOptions(profileOptions(prof)).
-                addOption("info", "https://" + serverFqdn + "/cblr/svc/op/nopxe/system/" + system.getName());
-    }
-
-    @Override
-    public KernelOptionsList localBoot(KickstartableTree ksTree, SystemRecord system) {
-        if (system == null) {
-            throw new KernelOptionsBuilderException("System record cannot be null");
-        }
-        Profile prof = system.getProfile();
-        return distroOptions(ksTree).addOptions(profileOptions(prof));
+        KernelOptionsList list = new KernelOptionsList();
+        list.setOptionIfNotPresent("autoyast", autoinstallSystemUrl(system));
+        return list;
     }
 }

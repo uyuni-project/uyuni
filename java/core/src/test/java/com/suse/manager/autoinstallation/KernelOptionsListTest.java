@@ -202,4 +202,19 @@ public class KernelOptionsListTest {
         assertTrue(list.hasOption("key1"));
         assertFalse(list.hasOption("unknown"));
     }
+
+    /**
+     * Test getValue method
+     */
+    @Test
+    public void testGetValue() {
+        KernelOptionsList list = new KernelOptionsList();
+        list.addOption("flag1");
+        list.addOption("key1", "val1");
+        list.addOption("key1", "val2");
+        assertFalse(list.getValue("flag1").isPresent());
+        assertTrue(list.getValue("key1").isPresent());
+        assertEquals("val1", list.getValue("key1").get());
+        assertFalse(list.getValue("unknown").isPresent());
+    }
 }

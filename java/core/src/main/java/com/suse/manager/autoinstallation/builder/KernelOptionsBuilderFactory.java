@@ -17,6 +17,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.suse.manager.autoinstallation.KernelOptionsList;
 import com.suse.manager.autoinstallation.installer.agama.AgamaKernelOptionsBuilder;
 import com.suse.manager.autoinstallation.installer.autoyast.AutoYastKernelOptionsBuilder;
+import com.suse.manager.autoinstallation.installer.debian.DebianKernelOptionsBuilder;
 import com.suse.manager.autoinstallation.installer.rhel.RhelKernelOptionsBuilder;
 
 import org.cobbler.Profile;
@@ -57,7 +58,7 @@ public class KernelOptionsBuilderFactory {
     };
 
     /**
-     * Returns the appropriate KernelOptionsBuilder for the given breed.
+     * Returns the appropriate KernelOptionsBuilder for the given install type.
      *
      * @param installType the installer install type
      * @return the kernel options builder (never null)
@@ -72,9 +73,27 @@ public class KernelOptionsBuilderFactory {
         if (installType.isSUSE()) {
             return new AutoYastKernelOptionsBuilder();
         }
-        else if (installType.isRhel()) {
+        if (installType.isRhel() || installType.isFedora() || installType.isGeneric()) {
             return new RhelKernelOptionsBuilder();
         }
         return DEFAULT_BUILDER;
+    }
+
+    /**
+     * Returns the appropriate KernelOptionsBuilder for the given cobbler breed and os version.
+     *
+     * @param breed the cobbler breed
+     * @param osVersion the os version
+     * @return the kernel options builder (never null)
+     */
+    public static KernelOptionsBuilder getBuilderForBreed(String breed, String osVersion) {
+        if (breed == null || breed.isBlank() || "redhat".equals(breed) || "generic".equals(breed)) {
+            return new RhelKernelOptionsBuilder();
+        }
+        return switch (breed) {
+            case "suse" -> new AutoYastKernelOptionsBuilder();
+            case "debian", "ubuntu" -> new DebianKernelOptionsBuilder();
+            default -> DEFAULT_BUILDER;
+        };
     }
 }

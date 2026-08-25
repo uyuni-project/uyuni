@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Utility class to manage a list of kernel command line options.
@@ -315,6 +316,23 @@ public class KernelOptionsList {
      */
     public boolean isEmpty() {
         return optionsList.isEmpty();
+    }
+
+    /**
+     * Returns the value of the first occurrence of the given key.
+     * @param key the option key
+     * @return the value, or empty if the key is absent or is a value-less flag
+     */
+    public Optional<String> getValue(String key) {
+        if (key == null || key.isEmpty()) {
+            return Optional.empty();
+        }
+        for (Map.Entry<String, String> entry : optionsList) {
+            if (key.equals(entry.getKey())) {
+                return Optional.ofNullable(entry.getValue());
+            }
+        }
+        return Optional.empty();
     }
 
     /**
