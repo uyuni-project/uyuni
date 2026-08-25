@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 15:32+0000\n"
+"PO-Revision-Date: 2026-08-25 15:42+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -1627,7 +1627,7 @@ msgstr "ລຶບອອກ"
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
 #: ../html/src/manager/admin/access-control/access-group.tsx:209
 msgid "Users"
-msgstr "ຜູ້ໃຊ້ (Users)"
+msgstr "ຜູ້ໃຊ້"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
 #: ../html/src/manager/login/uyuni/login.tsx:85
@@ -2871,7 +2871,7 @@ msgstr "ການຕັ້ງຄ່ານະໂຍບາຍລະຫັດຜ່
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
-msgstr "ຄວາມຍາວລະຫັດຜ່ານຕ່ຳສຸດ"
+msgstr "ຄວາມຍາວລະຫັດຜ່ານຕໍ່າສຸດ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:38
 msgid "Max Password Length"
@@ -3145,7 +3145,7 @@ msgstr "ເລືອກຊ່ອງທາງເສີມທີ່ທ່ານຕ
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
-msgstr "ຊ່ອງທາງທີ່ຈຳເປັນ"
+msgstr "ຊ່ອງທາງທີ່ບັງຄັບ"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
@@ -3766,7 +3766,7 @@ msgstr "ຜ່ານ"
 #: ../html/src/manager/images/image-view-overview.tsx:87
 #: ../html/src/manager/images/image-view.tsx:514
 msgid "Failed"
-msgstr "ຫຼົ້ມເຫຼວ"
+msgstr "ຫຼົ້ມເຫຼວ (Failed)"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
@@ -4407,7 +4407,7 @@ msgstr "ການແກ້ໄຂຊົ່ວຄາວຂອງຜະລິດຕ
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "contains"
-msgstr "ປະກອບມີ"
+msgstr "ປະກອບມີ (contains)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
 msgid "containing"
@@ -4425,7 +4425,7 @@ msgstr "Regular expression ກົງກັບຊື່ແພັກເກດ"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "equals"
-msgstr "ເທົ່າກັບ"
+msgstr "ເທົ່າກັບ (equals)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
 msgid "contains package name equals"
@@ -4473,7 +4473,7 @@ msgstr "ປະກອບມີແພັກເກດທີ່ມີຊື່ສິ
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower"
-msgstr "ນ້ອຍກວ່າ"
+msgstr "ນ້ອຍກວ່າ (lower)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "lower than"
@@ -4481,7 +4481,7 @@ msgstr "ນ້ອຍກວ່າ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal"
-msgstr "ນ້ອຍກວ່າ ຫຼື ເທົ່າກັບ"
+msgstr "ນ້ອຍກວ່າ ຫຼື ເທົ່າກັບ (lower or equal)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "lower or equal than"
@@ -4493,7 +4493,7 @@ msgstr "ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal"
-msgstr "ຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ"
+msgstr "ຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ (greater or equal)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
 msgid "greater or equal than"
@@ -4501,7 +4501,7 @@ msgstr "ຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater"
-msgstr "ຫຼາຍກວ່າ"
+msgstr "ຫຼາຍກວ່າ (greater)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "matches regular expression"
@@ -5009,7 +5009,7 @@ msgstr "ເຈົ້າສາມາດນຳເຂົ້າໄດ້ສະເພ
 
 #: ../html/src/manager/images/image-import.tsx:271
 msgid "Image name"
-msgstr "ຊື່ອິເມຈ໌"
+msgstr "ຊື່ອິເມຈ"
 
 #: ../html/src/manager/images/image-import.tsx:273
 msgid "Image name is required."
@@ -5017,7 +5017,7 @@ msgstr "ຈຳເປັນຕ້ອງໃສ່ຊື່ອິເມຈ໌."
 
 #: ../html/src/manager/images/image-import.tsx:280
 msgid "Image version"
-msgstr "ເວີຊັນອິເມຈ໌"
+msgstr "ເວີຊັນອິເມຈ"
 
 #: ../html/src/manager/images/image-import.tsx:282
 msgid "Image version is required."
@@ -5215,7 +5215,7 @@ msgstr "ກຳລັງດຳເນີນການ"
 
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
-msgstr "ສຳເລັດ"
+msgstr "ສຳເລັດ (Successful)"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -7047,7 +7047,7 @@ msgstr "ຣັນຄຳສັ່ງໃນມິນນຽນເປົ້າໝາ
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
-msgstr "ຄຳສັ່ງທາງໄກ (Remote Commands)"
+msgstr "ຄຳສັ່ງທາງໄກ"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
@@ -7749,7 +7749,7 @@ msgstr "ຊ່ອງທາງ SUSE"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:230
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:500
 msgid "Custom Channels"
-msgstr "ຊ່ອງທາງກຳນົດເອງ (Custom Channels)"
+msgstr "ຊ່ອງທາງກຳນົດເອງ"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:241
 msgid "Systems subscribed to"
