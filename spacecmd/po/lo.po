@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 15:32+0000\n"
+"PO-Revision-Date: 2026-08-25 15:42+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
 "Language: lo\n"
@@ -5084,7 +5084,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:806
 msgid "Channels"
-msgstr ""
+msgstr "ຊ່ອງທາງ (Channels)"
 
 #: ../src/spacecmd/softwarechannel.py:836
 msgid "softwarechannel_update: Update a software channel"
@@ -6117,7 +6117,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:83 ../src/spacecmd/system.py:4143
 msgid "Package"
-msgstr ""
+msgstr "ແພັກເກດ"
 
 #: ../src/spacecmd/system.py:84
 msgid "This System"
