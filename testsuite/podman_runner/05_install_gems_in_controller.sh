@@ -1,11 +1,8 @@
 #!/bin/bash
 set -xe
+source "$(dirname "$0")/helpers.sh"
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  PODMAN_CMD="podman"
-else
-  PODMAN_CMD="sudo -i podman"
-fi
+if [[ "$(uname)" == "Darwin" ]]; then PODMAN_CMD="podman"; fi
 
 $PODMAN_CMD exec controller bash --login -c 'export GEM_PATH="/usr/lib64/ruby/gems/3.4.0"'
 $PODMAN_CMD exec controller bash --login -c "cd /testsuite && bundle.ruby3.4 install --gemfile Gemfile --verbose"
