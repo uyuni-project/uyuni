@@ -94,7 +94,7 @@ class TaskoTop extends Component<Props> {
         cell = <Badge text={t("Running")} icon="fa-cog fa-spin" color="running" />;
         break;
       case "finished":
-        cell = <Badge text={t(" Finished")} icon="fa-check" color="success" />;
+        cell = <Badge text={t("Finished")} icon="fa-check" color="success" />;
         break;
       case "failed":
         cell = <Badge text={t("Failed")} icon="fa-times-circle" color="error" />;
@@ -106,7 +106,7 @@ class TaskoTop extends Component<Props> {
         cell = <Badge text={t("Ready to run")} icon="fa-list" color="info" />;
         break;
       case "skipped":
-        cell = <Badge text={t("skipped")} icon="fa-angle-double-right" />;
+        cell = <Badge text={t("Skipped")} icon="fa-angle-double-right" />;
         break;
       default:
         cell = null;

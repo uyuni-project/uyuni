@@ -8,9 +8,14 @@ describe("CounterBadge Component", () => {
     expect(screen.getByText("1")).toBeTruthy();
   });
 
-  test("renders the counter badge with a large number value", () => {
-    render(<CounterBadge count={999} />);
-    expect(screen.getByText("999+")).toBeTruthy();
+  test.each([
+    [-1, "0"],
+    [0, "0"],
+    [999, "999"],
+    [1000, "999+"],
+  ])("renders count %s as %s", (count, expected) => {
+    render(<CounterBadge count={count} />);
+    expect(screen.getByText(expected)).toBeTruthy();
   });
 
   test("uses the default status class", () => {
@@ -24,7 +29,7 @@ describe("CounterBadge Component", () => {
 
   test("applies the highlight status class", () => {
     render(<CounterBadge count={999} status="highlight" />);
-    const badge = screen.getByText("999+");
+    const badge = screen.getByText("999");
 
     expect(badge.className).toContain("badge");
     expect(badge.className).toContain("counter-badge");
