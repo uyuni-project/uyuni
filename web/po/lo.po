@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 15:42+0000\n"
+"PO-Revision-Date: 2026-08-25 22:52+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -1977,7 +1977,7 @@ msgstr "ກະລຸນາກວດສອບສິ່ງທີ່ເລືອກ
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:103
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:182
 msgid "Systems"
-msgstr "ລະບົບ"
+msgstr "Systems"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:63
 msgid "Product after migration"
@@ -2871,7 +2871,7 @@ msgstr "ການຕັ້ງຄ່ານະໂຍບາຍລະຫັດຜ່
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
-msgstr "ຄວາມຍາວລະຫັດຜ່ານຕໍ່າສຸດ"
+msgstr "ຄວາມຍາວລະຫັດຜ່ານຂັ້ນຕ່ຳ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:38
 msgid "Max Password Length"
@@ -2880,15 +2880,15 @@ msgstr "ຄວາມຍາວລະຫັດຜ່ານສູງສຸດ"
 #. Require Digits
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:56
 msgid "Require Digits"
-msgstr "ຕ້ອງມີຕົວເລກ"
+msgstr "ຕ້ອງການຕົວເລກ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:59
 msgid "Require Lowercase Characters"
-msgstr "ຕ້ອງມີຕົວອັກສອນພິມນ້ອຍ"
+msgstr "ຕ້ອງການຕົວອັກສອນພິມນ້ອຍ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:66
 msgid "Require Uppercase Characters"
-msgstr "ຕ້ອງມີຕົວອັກສອນພິມໃຫຍ່"
+msgstr "ຕ້ອງການຕົວອັກສອນພິມໃຫຍ່"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:73
 msgid "Restrict Consecutive Characters"
@@ -2896,7 +2896,7 @@ msgstr "ຈຳກັດຕົວອັກສອນທີ່ລຽງກັນ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:80
 msgid "Require Special Characters"
-msgstr "ຕ້ອງມີຕົວອັກສອນພິເສດ"
+msgstr "ຕ້ອງການຕົວອັກສອນພິເສດ"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Allowed Special Characters"
@@ -4407,7 +4407,7 @@ msgstr "ການແກ້ໄຂຊົ່ວຄາວຂອງຜະລິດຕ
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "contains"
-msgstr "ປະກອບມີ (contains)"
+msgstr "ປະກອບດ້ວຍ (contains)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
 msgid "containing"
@@ -4473,7 +4473,7 @@ msgstr "ປະກອບມີແພັກເກດທີ່ມີຊື່ສິ
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower"
-msgstr "ນ້ອຍກວ່າ (lower)"
+msgstr "ໜ້ອຍກວ່າ (lower)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "lower than"
@@ -4481,7 +4481,7 @@ msgstr "ນ້ອຍກວ່າ"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal"
-msgstr "ນ້ອຍກວ່າ ຫຼື ເທົ່າກັບ (lower or equal)"
+msgstr "ໜ້ອຍກວ່າ ຫຼື ເທົ່າກັບ (lower or equal)"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "lower or equal than"
@@ -7047,7 +7047,7 @@ msgstr "ຣັນຄຳສັ່ງໃນມິນນຽນເປົ້າໝາ
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
-msgstr "ຄຳສັ່ງທາງໄກ"
+msgstr "ຄຳສັ່ງທາງໄກ (Remote Commands)"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
@@ -7749,7 +7749,7 @@ msgstr "ຊ່ອງທາງ SUSE"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:230
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:500
 msgid "Custom Channels"
-msgstr "ຊ່ອງທາງກຳນົດເອງ"
+msgstr "ຊ່ອງທາງກຳນົດເອງ (Custom Channels)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:241
 msgid "Systems subscribed to"
@@ -7993,7 +7993,7 @@ msgstr "ເພີ່ມຕົວຈັດການໂຮສສະເໝືອນ
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:152
 msgid "Virtual Host Managers"
-msgstr "ຕົວຈັດການໂຮສສະເໝືອນ"
+msgstr "Virtual Host Managers (VHM)"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
 msgid "Add a virtual host manager"
