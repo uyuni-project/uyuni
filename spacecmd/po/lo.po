@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 06:27+0000\n"
+"PO-Revision-Date: 2026-08-25 15:32+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
 "Language: lo\n"
@@ -1807,7 +1807,7 @@ msgstr ""
 #: ../src/spacecmd/errata.py:449 ../src/spacecmd/package.py:134
 #: ../src/spacecmd/softwarechannel.py:649
 msgid "Description"
-msgstr ""
+msgstr "ຄຳອະທິບາຍ"
 
 #: ../src/spacecmd/errata.py:455
 msgid "Notes"
@@ -1892,7 +1892,7 @@ msgstr ""
 
 #: ../src/spacecmd/errata.py:600 ../src/spacecmd/scap.py:223
 msgid "Example:"
-msgstr ""
+msgstr "ຕົວຢ່າງ:"
 
 #: ../src/spacecmd/filepreservation.py:44
 msgid "filepreservation_list: List all file preservations"
