@@ -46,7 +46,7 @@ TEST_MANAGER_TRANSACTIONAL_TOP = {
         "certs",
         "services.docker_prereqs",
         "services.kiwi-image-server_prereqs",
-        "services.salt-minion",
+        "services.salt-minion_prereqs",
         "switch_to_bundle.mgr_switch_to_venv_minion",
     ]
 }
