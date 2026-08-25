@@ -43,7 +43,7 @@ MANAGER_TRANSACTIONAL_TOP = [
     "channels",
     "certs",
     "services.docker_prereqs",
-    "services.kiwi-image-server",
+    "services.kiwi-image-server_prereqs",
     "services.salt-minion",
     "switch_to_bundle.mgr_switch_to_venv_minion",
 ]
