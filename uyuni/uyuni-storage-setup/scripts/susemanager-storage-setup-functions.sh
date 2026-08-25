@@ -109,7 +109,12 @@ create_filesystem() {
     local part=$(get_first_partition_device $1)
     local fs=$2
     local tool=mkfs.$fs
-    result=$($tool -f $part 2>&1)
+    local opts=(-f)
+    # Do not discard blocks at mkfs time: on large, thin-provisioned or
+    # SAN backed disks the discard can take very long, and the disk is
+    # dedicated and empty anyway. Regular TRIM is left to fstrim.
+    [ "$fs" = "xfs" ] && opts+=(-K)
+    result=$($tool "${opts[@]}" $part 2>&1)
     if [ $? != 0 ]; then
         die "$fs filesystem setup failed: $result"
     fi
