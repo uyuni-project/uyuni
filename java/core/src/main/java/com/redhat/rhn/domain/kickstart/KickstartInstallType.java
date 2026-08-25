@@ -49,6 +49,7 @@ public class KickstartInstallType extends BaseDomainHelper {
     // distros
     public static final String FEDORA_PREFIX = "fedora";
     public static final String SLES_PREFIX = "sles";
+    private static final String SLES16 = "sles16generic";
 
     // Cobbler's OS versions
     public static final String GENERIC_OS_VERSION = "virtio26";
@@ -199,6 +200,20 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the installer type is SLES 16
+     */
+    public boolean isSLES16() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "16");
+    }
+
+    /**
+     * @return if this installer type is SLES 16 or greater (for SLES 16+)
+     */
+    public boolean isSLES16OrGreater() {
+        return (isSLES15OrGreater() && !isSLES15());
+    }
+
+    /**
      * @return if this installer type is SLES 12 or greater (for SLES 15)
      */
     public boolean isSLES12OrGreater() {
@@ -289,16 +304,13 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
-        String breed = REDHAT_BREED;
-
-        if (getLabel().equals(GENERIC_RPM)) {
-            breed = GENERIC_BREED;
+        if (getLabel().equals(GENERIC_RPM) || isSLES16OrGreater()) {
+            return GENERIC_BREED;
         }
-        else if (isSUSE()) {
-            breed = SUSE_BREED;
+        if (isSUSE()) {
+            return SUSE_BREED;
         }
-
-        return breed;
+        return REDHAT_BREED;
     }
 
     /**
@@ -306,6 +318,9 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler os_version compatible string
      */
     public String getCobblerOsVersion() {
+        if (isSLES16OrGreater()) {
+            return this.getLabel();
+        }
         if (this.getCobblerBreed().equals(REDHAT_BREED) && !this.isFedora()) {
             return this.getLabel().replace("_", "");
         }

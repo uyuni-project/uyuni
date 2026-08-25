@@ -66,10 +66,9 @@ public class KernelOptionsBuilderFactory {
         if (installType == null) {
             throw new KernelOptionsBuilderException("InstallType cannot be null");
         }
-//      // TODO: add SLES16 type
-//        if (installType.isSLES16OrGreater()) {
-//            return new AgamaKernelOptionsBuilder();
-//        }
+        if (installType.isSLES16OrGreater()) {
+            return new AgamaKernelOptionsBuilder();
+        }
         if (installType.isSUSE()) {
             return new AutoYastKernelOptionsBuilder();
         }
