@@ -8,33 +8,34 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-08-25 02:15+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/backend/lo/>\n"
 "Language: lo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr ""
+msgstr "ໂທເຄັນການຢືນຢັນຕົວຕົນພຣັອກຊີບໍ່ສົມບູນ: %s"
 
 #: ../server/apacheAuth.py:103
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "ລາຍເຊັນພຣັອກຊີ %s ທີ່ສົ່ງມາ ບໍ່ກົງກັບຂອງພວກເຮົາ %s."
 
 #: ../server/apacheAuth.py:142
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "ການຢືນຢັນຕົວຕົນພຣັອກຊີຖືກປະຕິເສດ"
 
 #: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "ໄດ້ຮັບຄຳຮ້ອງຂໍບໍ່ຖືກຕ້ອງ (%s)."
 
 #. Send the message as a fault.
 #: ../server/apacheRequest.py:130
@@ -43,6 +44,8 @@ msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
+"ຂໍ້ຄວາມສຳຄັນມີດັ່ງນີ້:\n"
+"%s"
 
 #: ../server/apacheRequest.py:160
 #, python-format
@@ -50,12 +53,14 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"ໃນຂະນະທີ່ກຳລັງທຳງານ '%s': ພົບຂໍ້ຜິດພາດ\n"
+"%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "URI %s ບໍ່ຖືກຕ້ອງ"
 
 #: ../server/handlers/app/packages.py:220
 #, python-format
@@ -64,41 +69,44 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   ບັນຊີ %s ຖືກປິດການນຳໃຊ້ໃນເຊີເວີນີ້ແລ້ວ.\n"
+"                   ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, python-format
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "ບໍລິການ SUSE Multi-Linux Manager Proxy ບໍ່ໄດ້ຖືກເປີດໃຊ້ງານສຳລັບໂປຣໄຟລ໌ເຊີເວີ: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
-msgstr ""
+msgstr "ຄີເຊດຊັນບໍ່ຖືກຕ້ອງ"
 
 #: ../server/handlers/xmlrpc/proxy.py:102
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "ID ເຊີເວີນີ້ບໍ່ມີອີກຕໍ່ໄປແລ້ວ"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການແພັກເກດໃນອົງກອນທີ່ວ່າງເປົ່າ (null org)"
 
 #: ../server/importlib/userAuth.py:115
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການແພັກເກດໃນອົງກອນ %s"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
 #: ../server/importlib/userAuth.py:132
 msgid "You are not allowed to perform administrative tasks"
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດໜ້າທີ່ໃນການບໍລິຫານລະບົບ"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການຊ່ອງທາງ %s, ຫຼື ຊ່ອງທາງດັ່ງກ່າວບໍ່ມີຢູ່"
 
 #: ../server/importlib/userAuth.py:229
 #, python-format
@@ -107,18 +115,21 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               ບັນຊີ %s ຖືກປິດການນຳໃຊ້ໃນເຊີເວີນີ້ແລ້ວ.\n"
+"               ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ."
 
 #: ../server/rhnChannel.py:2216
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
+msgstr "ບັນຊີຂອງທ່ານບໍ່ມີສິດເຂົ້າເຖິງຊ່ອງທາງໃດໆທີ່ກົງກັບ (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "ສິດການສະໝັກນຳໃຊ້ບໍ່ພຽງພໍສຳລັບລຸ້ນ (%s, %s)"
 
 #. Various messages that can be reused
 #.
@@ -126,7 +137,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "ລະບົບລົງທະບຽນແລ້ວ ແຕ່ຍັງບໍ່ທັນເປີດໃຊ້ງານ"
 
 #: ../server/rhnChannel.py:2551
 #, python-format
@@ -137,6 +148,11 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"ການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ລຸ້ນ OS ບໍ່ຖືກຕ້ອງ (%s, %s).\n"
+"ລະບົບຂອງທ່ານໄດ້ລົງທະບຽນແລ້ວ, ແຕ່ຈະບໍ່ໄດ້ຮັບການອັບເດດ\n"
+"ເນື່ອງຈາກບໍ່ສາມາດສະໝັກເຂົ້າໃຊ້ຊ່ອງທາງພື້ນຖານໄດ້.\n"
+"ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອ.\n"
 
 #: ../server/rhnChannel.py:2560
 #, python-format
@@ -147,6 +163,11 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ຍັງບໍ່ທັນມີສິດນຳໃຊ້\n"
+"  ການບໍລິການ. ເພື່ອໃຫ້ລະບົບນີ້ມີສິດນຳໃຊ້, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2570
 #, python-format
@@ -158,216 +179,221 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ບໍ່ມີສິດນຳໃຊ້ການບໍລິການ\n"
+"  ທີ່ພ້ອມໃຊ້ງານ. ເພື່ອໃຫ້ລະບົບນີ້ມີສິດນຳໃຊ້, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "ກະລຸນາລັນ rhn_register ດ້ວຍສິດ root ໃນເຄື່ອງຄລາຍແອນນີ້"
 
 #: ../server/rhnHandler.py:76
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "ການບໍລິການບໍ່ໄດ້ເປີດໃຊ້ງານສຳລັບໂປຣໄຟລ໌ລະບົບ: \"%s\""
 
 #: ../server/rhnPackage.py:52 ../server/rhnPackage.py:98
 #: ../server/rhnPackage.py:118 ../server/rhnPackage.py:179
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "ມີການຮ້ອງຂໍແພັກເກດ RPM %s ທີ່ບໍ່ຖືກຕ້ອງ"
 
 #: ../server/rhnPackage.py:124
 msgid "Package not found"
-msgstr ""
+msgstr "ບໍ່ພົບແພັກເກດ"
 
 #: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳ `%s'"
 
 #: ../server/rhnServer/server_token.py:86
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "ໂທເຄັນ `%s' ຖືກກຳນົດໃຫ້ມີຫຼາຍກວ່າໜຶ່ງຊ່ອງທາງພື້ນຖານ"
 
 #: ../server/rhnServer/server_token.py:89
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "ຊ່ອງທາງພື້ນຖານຂັດແຍ້ງກັນ"
 
 #: ../server/rhnServer/server_token.py:223
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "ບໍ່ສາມາດເພີ່ມເຊີເວີເຂົ້າໃນກຸ່ມ %s ໄດ້"
 
 #: ../server/rhnServer/server_token.py:574
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "ນຳໃຊ້ຄົບຈຳນວນສູງສຸດ %s ເທື່ອແລ້ວ"
 
 #: ../server/rhnServer/server_token.py:869
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນກັນຂອງໂທເຄັນການລົງທະບຽນໃໝ່ທີ່ມີສິດນຳໃຊ້ພື້ນຖານຕ່າງກັນ"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "ບໍ່ພົບໂທເຄັນ '%s'"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:979
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "ໂທເຄັນມາຈາກອົງກອນທີ່ບໍ່ກົງກັນ"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:989
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "ເຊດຊັນ Kickstart ບໍ່ກົງກັນ"
 
 #: ../server/rhnServer/server_token.py:1013
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນກັນຂອງໂທເຄັນການລົງທະບຽນໃໝ່"
 
 #: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ `%s' ບໍ່ໄດ້ຖືກຈອງໄວ້"
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມລ"
 
 #: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີໜ້ອຍກວ່າ %d ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ = `%s', ຕົວອັກສອນ `%s' ບໍ່ຖືກຕ້ອງ"
 
 #: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "ກະລຸນາຈຳກັດທີ່ຢູ່ອີເມລຂອງທ່ານບໍ່ໃຫ້ເກີນ %s ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "ລະຫັດຜ່ານຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "ລະຫັດຜ່ານມີຕົວອັກສອນ `%s'"
 
 #: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີຄວາມຍາວຢ່າງໜ້ອຍ %d ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "ບໍ່ສາມາດລົງທະບຽນຊື່ຜູ້ໃຊ້ທີ່ລົງທ້າຍດ້ວຍ %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:55
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "ເບິ່ງຄືວ່າຊື່ຜູ້ໃຊ້ນີ້ບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:56
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:57
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "ຊື່ເຂົ້າລະບົບນີ້ຖືກໃຊ້ແລ້ວ, ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:58
 msgid "Permission denied."
-msgstr ""
+msgstr "ການອະນຸຍາດຖືກປະຕິເສດ."
 
 #: ../common/rhnException.py:59
 msgid "Object not found."
-msgstr ""
+msgstr "ບໍ່ພົບວັດຖຸ (Object)."
 
 #: ../common/rhnException.py:60
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "Digital ID ຂອງລະບົບບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:61
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "ຂໍ້ມູນປະຈຳຕົວຂອງລະບົບບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:62
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນຜູ້ໃຊ້ຈາກຖານຂໍ້ມູນໄດ້."
 
 #: ../common/rhnException.py:63
 msgid "Valid username required."
-msgstr ""
+msgstr "ຕ້ອງການຊື່ຜູ້ໃຊ້ທີ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:64
 msgid "Valid password required."
-msgstr ""
+msgstr "ຕ້ອງການລະຫັດຜ່ານທີ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:65
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "ຄວາມຍາວຊື່ຜູ້ໃຊ້ຕໍ່າກວ່າກຳນົດ."
 
 #: ../common/rhnException.py:66
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "ຄວາມຍາວລະຫັດຜ່ານຕໍ່າກວ່າກຳນົດ."
 
 #: ../common/rhnException.py:67
 msgid "The username contains invalid characters."
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:68
 msgid "File not found."
-msgstr ""
+msgstr "ບໍ່ພົບໄຟລ໌."
 
 #: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ລຸ້ນ OS ນີ້."
 
 #: ../common/rhnException.py:70
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນລະບົບຈາກຖານຂໍ້ມູນໄດ້."
 
 #: ../common/rhnException.py:71
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "ຄ່າອາກິວເມັນ (arguments) ທີ່ສົ່ງໄປຫາຟັງຊັນບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:72
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນລາຍການທີ່ຮ້ອງຂໍໄດ້."
 
 #: ../common/rhnException.py:73
 msgid "Could not update database entry."
-msgstr ""
+msgstr "ບໍ່ສາມາດອັບເດດລາຍການໃນຖານຂໍ້ມູນໄດ້."
 
 #: ../common/rhnException.py:74
 msgid "Unsupported server architecture."
-msgstr ""
+msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳເຊີເວີນີ້."
 
 #: ../common/rhnException.py:76
 #, python-format
@@ -382,14 +408,22 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     ຟັງຊັນເຊີເວີແບບບໍ່ລະບຸຕົວຕົນບໍ່ສາມາດໃຊ້ງານໄດ້ອີກຕໍ່ໄປ.\n"
+"\n"
+"     ກະລຸນາລົງທະບຽນລະບົບນີ້ໃໝ່ໂດຍການລັນ mgr_register ດ້ວຍສິດ root.\n"
+"     ກະລຸນາເຂົ້າໄປທີ່ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     ຫຼື ເຂົ້າສູ່ລະບົບທີ່ https://%(hostname)s, ແລະ ຈາກແຖບ \"Overview\",\n"
+"     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້.\n"
+"     "
 
 #: ../common/rhnException.py:85
 msgid "Record not available in the database."
-msgstr ""
+msgstr "ບໍ່ມີຂໍ້ມູນບັນທຶກໃນຖານຂໍ້ມູນ."
 
 #: ../common/rhnException.py:86
 msgid "Invalid value for entry."
-msgstr ""
+msgstr "ຄ່າສຳລັບລາຍການບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:88
 #, python-format
@@ -403,46 +437,52 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     ລະບົບນີ້ບໍ່ມີສິດນຳໃຊ້ທີ່ຖືກຕ້ອງສຳລັບ SUSE Multi-Linux Manager.\n"
+"     ກະລຸນາເຂົ້າໄປທີ່ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     ຫຼື ເຂົ້າສູ່ລະບົບທີ່ https://%(hostname)s, ແລະ ຈາກແຖບ \"Overview\",\n"
+"     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້.\n"
+"     "
 
 #: ../common/rhnException.py:95
 msgid "Channel error"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດຂອງຊ່ອງທາງ"
 
 #: ../common/rhnException.py:96
 msgid "Client session token is invalid."
-msgstr ""
+msgstr "ໂທເຄັນເຊດຊັນຂອງຄລາຍແອນບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:97
 msgid "Client session token has expired."
-msgstr ""
+msgstr "ໂທເຄັນເຊດຊັນຂອງຄລາຍແອນໝົດອາຍຸແລ້ວ."
 
 #: ../common/rhnException.py:98
 msgid "You are not authorized to retrieve the requested object."
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ດຶງຂໍ້ມູນວັດຖຸທີ່ຮ້ອງຂໍ."
 
 #: ../common/rhnException.py:99
 msgid "Invalid action"
-msgstr ""
+msgstr "ການກະທຳບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:101
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr ""
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດໜ້າທີ່ບໍລິຫານລະບົບໃນລະບົບນີ້."
 
 #: ../common/rhnException.py:104
 msgid "The system is already subscribed to the specified channel."
-msgstr ""
+msgstr "ລະບົບໄດ້ສະໝັກໃຊ້ຊ່ອງທາງທີ່ລະບຸໄວ້ແລ້ວ."
 
 #: ../common/rhnException.py:105
 msgid "The system is not currently subscribed to the specified channel."
-msgstr ""
+msgstr "ປັດຈຸບັນລະບົບບໍ່ໄດ້ສະໝັກໃຊ້ຊ່ອງທາງທີ່ລະບຸໄວ້."
 
 #: ../common/rhnException.py:106
 msgid "The specified channel does not exist."
-msgstr ""
+msgstr "ຊ່ອງທາງທີ່ລະບຸໄວ້ບໍ່ມີຢູ່."
 
 #: ../common/rhnException.py:107
 msgid "Invalid channel version."
-msgstr ""
+msgstr "ລຸ້ນຂອງຊ່ອງທາງບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:109
 msgid ""
@@ -457,6 +497,14 @@ msgid ""
 "     to be changed.\n"
 "     "
 msgstr ""
+"\n"
+"     ກາຍຂີດຈຳກັດການເປັນສະມາຊິກກຸ່ມຜູ້ໃຊ້ແລ້ວ.\n"
+"\n"
+"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານ ບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມ\n"
+"     ບັນຊີຜູ້ໃຊ້ອື່ນ. ກະລຸນາຕິດຕໍ່ຜູ້ບໍລິຫານອົງກອນສຳລັບບັນຊີຂອງທ່ານ\n"
+"     ຫາກຈຳນວນຜູ້ໃຊ້ສູງສຸດທີ່ອະນຸຍາດໃຫ້ລົງທະບຽນໃນເຊີເວີ ຈຳເປັນຕ້ອງ\n"
+"     ໄດ້ຮັບການປ່ຽນແປງ.\n"
+"     "
 
 #: ../common/rhnException.py:119
 msgid ""
@@ -471,6 +519,14 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     ກາຍຂີດຈຳກັດການເປັນສະມາຊິກກຸ່ມລະບົບແລ້ວ.\n"
+"\n"
+"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານ ບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມ\n"
+"     ໂປຣໄຟລ໌ລະບົບອື່ນ. ກະລຸນາຕິດຕໍ່ຜູ້ບໍລິຫານອົງກອນສຳລັບບັນຊີຂອງທ່ານ\n"
+"     ເພື່ອແກ້ໄຂຈຳນວນສູງສຸດຂອງໂປຣໄຟລ໌ລະບົບ ທີ່ສາມາດ\n"
+"     ລົງທະບຽນເຂົ້າໃນບັນຊີຂອງທ່ານ.\n"
+"     "
 
 #: ../common/rhnException.py:129
 msgid ""
@@ -480,10 +536,15 @@ msgid ""
 "     The architecture of the package is not supported by\n"
 "     "
 msgstr ""
+"\n"
+"     ສະຖາປັດຕະຍະກຳບໍ່ຖືກຕ້ອງ.\n"
+"\n"
+"     ສະຖາປັດຕະຍະກຳຂອງແພັກເກດບໍ່ຖືກຮອງຮັບໂດຍ\n"
+"     "
 
 #: ../common/rhnException.py:136
 msgid "Invalid RPM header"
-msgstr ""
+msgstr "Header ຂອງ RPM ບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:138
 msgid ""
@@ -494,15 +555,19 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    ລະບົບນີ້ໄດ້ລົງທະບຽນເປັນ Salt Minion ແລ້ວ. ຫາກທ່ານຕ້ອງການລົງທະບຽນເປັນຄລາຍແອນແບບດັ້ງເດີມ\n"
+"    ກະລຸນາລຶບມັນອອກກ່ອນຜ່ານທາງເວັບ UI ຫຼື API ແລ້ວຈຶ່ງລົງທະບຽນໂດຍໃຊ້ເຄື່ອງມືແບບດັ້ງເດີມ.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:144
 msgid "Invalid information uploaded to the server"
-msgstr ""
+msgstr "ຂໍ້ມູນທີ່ອັບໂຫຼດຂຶ້ນເຊີເວີບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:145
 msgid "Error uploading network interfaces configuration."
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການອັບໂຫຼດການຕັ້ງຄ່າອິນເຕີເຟສເຄືອຂ່າຍ."
 
 #: ../common/rhnException.py:147
 msgid ""
@@ -512,6 +577,11 @@ msgid ""
 "     does not already exists on the server\n"
 "     "
 msgstr ""
+"\n"
+"     ການອັບໂຫຼດແພັກເກດລົ້ມເຫຼວ ເນື່ອງຈາກມີຂໍ້ມູນຊໍ້າຊ້ອນ.\n"
+"     ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າແພັກເກດບໍ່ມີ dependencies ທີ່ຊໍ້າກັນ\n"
+"     ຫຼື ບໍ່ມີແພັກເກດນັ້ນຢູ່ໃນເຊີເວີແລ້ວ\n"
+"     "
 
 #: ../common/rhnException.py:154
 msgid ""
@@ -521,6 +591,10 @@ msgid ""
 "help.\n"
 "     "
 msgstr ""
+"\n"
+"     ຕົວເລືອກ --force mgrpush ຖືກປິດໃຊ້ງານໃນເຊີເວີນີ້.\n"
+"     ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບ SUSE Multi-Linux Manager ຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ.\n"
+"     "
 
 #: ../common/rhnException.py:161
 msgid ""
@@ -529,18 +603,22 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     ບໍ່ພົບໂທເຄັນການເປີດໃຊ້ງານ (activation token) ທີ່ລະບຸໄວ້ໃນເຊີເວີ.\n"
+"     ກະລຸນາລອງໃໝ່ດ້ວຍຄີທີ່ຖືກຕ້ອງ.\n"
+"     "
 
 #: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
-msgstr ""
+msgstr "ມີລະບົບລົງທະບຽນໂດຍໃຊ້ໂທເຄັນນີ້ຫຼາຍເກີນໄປແລ້ວ"
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr ""
+msgstr "ໂທເຄັນມີການຕັ້ງຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ຫຼ້າສະໄໝ ຫຼື ບໍ່ພຽງພໍ"
 
 #: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
-msgstr ""
+msgstr "ໂທເຄັນການເປີດໃຊ້ງານຂັດແຍ້ງກັນ"
 
 #: ../common/rhnException.py:171
 msgid ""
@@ -548,6 +626,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     ບໍ່ພົບຊ່ອງທາງພື້ນຖານທີ່ກົງກັບລະບົບຂອງທ່ານ.\n"
+"     "
 
 #: ../common/rhnException.py:176
 msgid ""
@@ -557,83 +638,88 @@ msgid ""
 "     administrators for further details.\n"
 "     "
 msgstr ""
+"\n"
+"     ທ່ານບໍ່ມີສິດສະໝັກໃຊ້ໃນຊ່ອງທາງທີ່ກຳນົດໄວ້.\n"
+"     ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຊ່ອງທາງ ຫຼື ຜູ້ດູແລອົງກອນຂອງທ່ານ\n"
+"     ສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.\n"
+"     "
 
 #: ../common/rhnException.py:182
 msgid "You can not unsubscribe from base channel."
-msgstr ""
+msgstr "ທ່ານບໍ່ສາມາດຍົກເລີກການສະໝັກໃຊ້ຈາກຊ່ອງທາງພື້ນຖານໄດ້."
 
 #: ../common/rhnException.py:183
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "ບໍ່ສາມາດສະໝັກໃຊ້ຊ່ອງທາງ SUSE Multi-Linux Manager ຫຼື Proxy ໄດ້."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດຂະນະພະຍາຍາມນຳລະບົບເຂົ້າຮ່ວມກຸ່ມ"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:187
 msgid "Unable to entitle system"
-msgstr ""
+msgstr "ບໍ່ສາມາດກຳນົດສິດນຳໃຊ້ໃຫ້ກັບລະບົບໄດ້"
 
 #. 100-109: e-mail and uuid related faults
 #: ../common/rhnException.py:189
 msgid "Maximum e-mail length violation."
-msgstr ""
+msgstr "ຄວາມຍາວອີເມລເກີນກຳນົດ."
 
 #: ../common/rhnException.py:190
 msgid "This system has been previously registered."
-msgstr ""
+msgstr "ລະບົບນີ້ໄດ້ຖືກລົງທະບຽນມາກ່ອນແລ້ວ."
 
 #: ../common/rhnException.py:191
 msgid "Invalid username"
-msgstr ""
+msgstr "ຊື່ຜູ້ໃຊ້ບໍ່ຖືກຕ້ອງ"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:193
 msgid "Unable to look up server"
-msgstr ""
+msgstr "ບໍ່ສາມາດຄົ້ນຫາເຊີເວີໄດ້"
 
 #. 160-179: OSAD errors
 #: ../common/rhnException.py:195
 msgid "Required argument is missing"
-msgstr ""
+msgstr "ອາກິວເມັນ (argument) ທີ່ຈຳເປັນຫາຍໄປ"
 
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:197
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "ບໍ່ມີຂໍ້ມູນສິດນຳໃຊ້ທີ່ຜູກກັບຮາດແວ"
 
 #: ../common/rhnException.py:198
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "ໝາຍເລກການຕິດຕັ້ງບໍ່ມີສິດນຳໃຊ້"
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:200
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "ຄວາມຍາວຊື່ຜູ້ໃຊ້ເກີນກຳນົດສູງສຸດ"
 
 #: ../common/rhnException.py:201
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "ຄວາມຍາວລະຫັດຜ່ານເກີນກຳນົດສູງສຸດ"
 
 #: ../common/rhnException.py:202
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "ຜູ້ໃຊ້ນີ້ມີສິດເຂົ້າເຖິງ API ແບບອ່ານຢ່າງດຽວ. ການກະທຳຖືກປະຕິເສດ."
 
 #: ../common/rhnException.py:203
 msgid "System Name cannot be less than 1 character"
-msgstr ""
+msgstr "ຊື່ລະບົບຕ້ອງມີຢ່າງໜ້ອຍ 1 ຕົວອັກສອນ"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
 msgid "SUSE Multi-Linux Manager Proxy error."
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດຂອງ SUSE Multi-Linux Manager Proxy."
 
 #: ../common/rhnException.py:207
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
-msgstr ""
+msgstr "SUSE Multi-Linux Manager Proxy ບໍ່ສາມາດເຂົ້າສູ່ລະບົບໄດ້."
 
 #: ../common/rhnException.py:210
 msgid ""
@@ -643,14 +729,18 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     ID ລະບົບຂອງ SUSE Multi-Linux Manager Proxy ບໍ່ກົງກັບ Spacewalk Proxy Server\n"
+"     ໃນຖານຂໍ້ມູນ.\n"
+"     "
 
 #: ../common/rhnException.py:215
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr ""
+msgstr "ໂທເຄັນເຊດຊັນຂອງ SUSE Multi-Linux Manager Proxy ບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:216
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr ""
+msgstr "ໂທເຄັນເຊດຊັນຂອງ SUSE Multi-Linux Manager Proxy ໝົດອາຍຸແລ້ວ."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -659,6 +749,10 @@ msgid ""
 "     please contact your sysadmin to have your account created.\n"
 "     "
 msgstr ""
+"\n"
+"      ບໍ່ອະນຸຍາດໃຫ້ສ້າງຜູ້ໃຊ້ຜ່ານ mgr_register;\n"
+"     ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຂອງທ່ານເພື່ອສ້າງບັນຊີ.\n"
+"     "
 
 #: ../common/rhnException.py:226
 msgid ""
@@ -667,6 +761,9 @@ msgid ""
 "Sync on this server\n"
 "     "
 msgstr ""
+"\n"
+"     ເຊີເວີ SUSE Multi-Linux Manager ນີ້ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ໃຊ້ Inter Server Sync ໃນເຊີເວີນີ້\n"
+"     "
 
 #: ../common/rhnException.py:231
 msgid ""
@@ -674,141 +771,144 @@ msgid ""
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
 "     "
 msgstr ""
+"\n"
+"     Inter Server Sync ຖືກປິດໃຊ້ງານໃນເຊີເວີ SUSE Multi-Linux Manager ນີ້.\n"
+"     "
 
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:236
 msgid "Invalid datatype passed"
-msgstr ""
+msgstr "ປະເພດຂໍ້ມູນທີ່ສົ່ງມາບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:237
 msgid "Unable to retrieve channel"
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນຊ່ອງທາງໄດ້"
 
 #: ../common/rhnException.py:238
 msgid "Unable to retrieve package"
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນແພັກເກດໄດ້"
 
 #: ../common/rhnException.py:239
 msgid "Unable to retrieve erratum"
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນ erratum ໄດ້"
 
 #: ../common/rhnException.py:240
 msgid "File is missing"
-msgstr ""
+msgstr "ໄຟລ໌ຫາຍໄປ"
 
 #: ../common/rhnException.py:241
 msgid "Function retrieval error"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດໃນການດຶງຂໍ້ມູນຟັງຊັນ"
 
 #: ../common/rhnException.py:242
 msgid "Function execution error"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດໃນການເຮັດວຽກຂອງຟັງຊັນ"
 
 #: ../common/rhnException.py:243
 msgid "Missing version string"
-msgstr ""
+msgstr "ຂໍ້ຄວາມລະບຸລຸ້ນ (version string) ຫາຍໄປ"
 
 #: ../common/rhnException.py:244
 msgid "Invalid version string"
-msgstr ""
+msgstr "ຂໍ້ຄວາມລະບຸລຸ້ນ (version string) ບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:245
 msgid "Mismatching versions"
-msgstr ""
+msgstr "ລຸ້ນບໍ່ກົງກັນ"
 
 #: ../common/rhnException.py:246
 msgid "Invalid channel version"
-msgstr ""
+msgstr "ລຸ້ນຂອງຊ່ອງທາງບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:247
 msgid "No comps file for channel"
-msgstr ""
+msgstr "ບໍ່ມີໄຟລ໌ comps ສຳລັບຊ່ອງທາງນີ້"
 
 #: ../common/rhnException.py:248
 msgid "Unable to retrieve comps file"
-msgstr ""
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນໄຟລ໌ comps ໄດ້"
 
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:250
 msgid "Configuration action missing"
-msgstr ""
+msgstr "ການກະທຳໃນການຕັ້ງຄ່າຫາຍໄປ"
 
 #: ../common/rhnException.py:251
 msgid "File too large"
-msgstr ""
+msgstr "ໄຟລ໌ມີຂະໜາດໃຫຍ່ເກີນໄປ"
 
 #: ../common/rhnException.py:252
 msgid "File contains binary data"
-msgstr ""
+msgstr "ໄຟລ໌ມີຂໍ້ມູນໄບນາຣີ (binary)"
 
 #: ../common/rhnException.py:253
 msgid "Configuration channel is not empty"
-msgstr ""
+msgstr "ຊ່ອງທາງການຕັ້ງຄ່າບໍ່ໄດ້ວ່າງເປົ່າ"
 
 #: ../common/rhnException.py:254
 msgid "Permission error"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດກ່ຽວກັບການອະນຸຍາດ"
 
 #: ../common/rhnException.py:255
 msgid "Content missing for configuration file"
-msgstr ""
+msgstr "ເນື້ອໃນຂອງໄຟລ໌ການຕັ້ງຄ່າຫາຍໄປ"
 
 #: ../common/rhnException.py:256
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "ບໍ່ໄດ້ລະບຸຕົວຂັ້ນເທັມເພລດ (Template delimiters)"
 
 #: ../common/rhnException.py:257
 msgid "Configuration channel does not exist"
-msgstr ""
+msgstr "ຊ່ອງທາງການຕັ້ງຄ່າບໍ່ມີຢູ່"
 
 #: ../common/rhnException.py:258
 msgid "Configuration channel already exists"
-msgstr ""
+msgstr "ຊ່ອງທາງການຕັ້ງຄ່າມີຢູ່ແລ້ວ"
 
 #: ../common/rhnException.py:259
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "ໄຟລ໌ຫາຍໄປຈາກຊ່ອງທາງການຕັ້ງຄ່າ"
 
 #: ../common/rhnException.py:260
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "ມີການອັບໂຫຼດເວີຊັນແກ້ໄຂ (revision) ອື່ນຂອງໄຟລ໌ນີ້ແລ້ວ"
 
 #: ../common/rhnException.py:261
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "ໄຟລ໌ໄດ້ຖືກອັບໂຫຼດຂຶ້ນຊ່ອງທາງການຕັ້ງຄ່າແລ້ວ"
 
 #: ../common/rhnException.py:262
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "ຂະໜາດໄຟລ໌ເກີນພື້ນທີ່ໂຄຕາທີ່ເຫຼືອ"
 
 #: ../common/rhnException.py:263
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "ຕ້ອງລະບຸເສັ້ນທາງ (path) ທັງໝົດຂອງໄຟລ໌"
 
 #: ../common/rhnException.py:264
 msgid "Invalid revision number"
-msgstr ""
+msgstr "ໝາຍເລກເວີຊັນແກ້ໄຂ (revision number) ບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:265
 msgid "Cannot compare files of different file type"
-msgstr ""
+msgstr "ບໍ່ສາມາດປຽບທຽບໄຟລ໌ທີ່ມີປະເພດຕ່າງກັນໄດ້"
 
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "ການສົ່ງໄຟລ໌ຜົນລັບ SCAP ບໍ່ຖືກຕ້ອງ ຫຼື ບໍ່ສົມບູນ"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເສັ້ນທາງໄດເຣັກທໍຣີສຳລັບຜົນລັບ SCAP ແບບລະອຽດ"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເສັ້ນທາງໄຟລ໌ສຳລັບຜົນລັບ SCAP ແບບລະອຽດ"
 
 #: ../common/rhnException.py:270
 msgid "Invalid content encoding"
-msgstr ""
+msgstr "ການເຂົ້າລະຫັດເນື້ອໃນບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:317
 msgid ""
@@ -819,6 +919,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ກຳລັງປະມວນຜົນຄຳຮ້ອງຂໍຂອງທ່ານ. ຫາກບັນຫານີ້\n"
+"     ຍັງຄົງມີຢູ່ ກະລຸນາສົ່ງລາຍງານບັກທີ່ scc.suse.com.\n"
+"     ຫາກທ່ານເລືອກທີ່ຈະສົ່ງລາຍງານບັກ, ກະລຸນາແນ່ໃຈວ່າໄດ້ລະບຸລາຍລະອຽດ\n"
+"     ສິ່ງທີ່ທ່ານກຳລັງພະຍາຍາມເຮັດໃນເວລາທີ່ເກີດຂໍ້ຜິດພາດນີ້ ແລະ\n"
+"     ລາຍລະອຽດກ່ຽວກັບວິທີການເຮັດໃຫ້ເກີດບັນຫາຄືນໃໝ່.\n"
 
 #: ../common/rhnException.py:368
 #, python-format
@@ -826,37 +932,39 @@ msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
+"ຂໍ້ຄວາມຜິດພາດ:\n"
+"    %s\n"
 
 #: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
-msgstr ""
+msgstr "ລະຫັດຄລາສຂໍ້ຜິດພາດ: %s\n"
 
 #: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
-msgstr ""
+msgstr "ຂໍ້ມູນຄລາສຂໍ້ຜິດພາດ: %s\n"
 
 #: ../common/rhnException.py:375
 #, python-format
 msgid "Explanation: %s"
-msgstr ""
+msgstr "ຄຳອະທິບາຍ: %s"
 
 #: ../common/rhnTB.py:220
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ: %s %s: %s"
 
 #: ../common/rhnTB.py:221
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRACEBACK: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1634
 #: ../satellite_tools/disk_dumper/iss.py:1640
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "ຮູບແບບຂອງ %s ຄວນເປັນຢ່າງໜ້ອຍ YYYYMMDD.\n"
 
 #: ../satellite_tools/messages.py:28
 #, python-format
@@ -865,6 +973,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ຂະນະປະຕິບັດຂັ້ນຕອນ %s. ຂໍ້ຜິດພາດແມ່ນ:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:35
 #, python-format
@@ -876,6 +987,12 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການເຂົ້າເຖິງຂໍ້ມູນຊ່ອງທາງຈາກ repository ຊົ່ວຄາວຂອງທ່ານ.\n"
+"       ທ່ານໄດ້ຍ້າຍຂໍ້ມູນທັງໝົດຈາກ ISO ຂອງຊ່ອງທາງມາໄວ້ໃນໄດເຣັກທໍຣີນີ້ແລ້ວບໍ່?\n"
+"       ຫາກແມ່ນ, ກະລຸນາກວດສອບ ISO ຂອງຊ່ອງທາງຄືນໃໝ່, ໃຫ້ແນ່ໃຈວ່າ\n"
+"       ທ່ານມີຂໍ້ມູນທັງໝົດ, ແລ້ວຈຶ່ງທຳການ remount ແລະ repopulate\n"
+"       repository ຊົ່ວຄາວ (%s) ອີກເທື່ອ.\n"
 
 #: ../satellite_tools/messages.py:45
 #, python-format
@@ -884,6 +1001,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຊິງໂຄໄນ (synchronizing) ຂໍ້ມູນ.\n"
+"       ຂໍ້ຄວາມຜິດພາດ: %s\n"
 
 #: ../satellite_tools/messages.py:52
 #, python-format
@@ -895,6 +1015,11 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຕິດຕໍ່ສື່ສານກັບ ISS Master.\n"
+"       ອີງຕາມລາຍລະອຽດຂໍ້ຜິດພາດ, ກະລຸນາກວດສອບການຕັ້ງຄ່າຂອງທ່ານ,\n"
+"       ການເຊື່ອມຕໍ່ເຄືອຂ່າຍພື້ນຖານ, ແລະ/ຫຼື ການແປງຊື່ (name resolution), ແລ້ວລອງໃໝ່.\n"
+"       ຂໍ້ຄວາມຜິດພາດ: %s\n"
 
 #: ../satellite_tools/messages.py:61
 #, python-format
@@ -907,6 +1032,12 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ຊ່ອງທາງຍ່ອຍບໍ່ສາມາດປະສານຂໍ້ມູນໄດ້ ໂດຍທີ່ຊ່ອງທາງຫຼັກຍັງບໍ່ໄດ້ຮັບການປະສານຂໍ້ມູນ\n"
+"       ເຊັ່ນກັນ. ຊ່ອງທາງຫຼັກຈຳເປັນຕ້ອງ (ກ) ໄດ້ຮັບການປະສານຂໍ້ມູນມາກ່ອນແລ້ວ ຫຼື (ຂ) ປະສານຂໍ້ມູນ\n"
+"       ໄປພ້ອມໆ ກັບຊ່ອງທາງຍ່ອຍທີ່ຕ້ອງການ. ຊ່ອງທາງຫຼັກທີ່ຂາດຫາຍໄປສຳລັບ\n"
+"       ການດຳເນີນການນີ້:\n"
+"       %s\n"
 
 #: ../satellite_tools/messages.py:71
 #, python-format
@@ -916,118 +1047,122 @@ msgid ""
 "Please contact your SUSE Multi-Linux Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"ຂໍ້ຜິດພາດ: ທ່ານບໍ່ມີສິດຊິງຄ໌ຊ່ອງທາງໃນກຸ່ມຊ່ອງທາງນີ້.\n"
+"ກະລຸນາຕິດຕໍ່ຜູ້ຮັບຜິດຊອບ SUSE Multi-Linux Manager ຂອງທ່ານ\n"
+"%s"
 
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  ຂໍ້ຜິດພາດ: ພື້ນທີ່ວ່າງບໍ່ພຽງພໍ (%s KB) ໃນອຸປະກອນ."
 
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s ດຶງຂໍ້ມູນສຳເລັດ: %s (%s ໄບຕ໌)"
 
 #: ../satellite_tools/messages.py:80
 #, python-format
 msgid "    Extinct package:  %s"
-msgstr ""
+msgstr "    ແພັກເກດທີ່ຍົກເລີກແລ້ວ:  %s"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   ຂະໜາດທັງໝົດ: %s"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      ດາວໂຫຼດແລ້ວ %s ຈາກ %s. ເວລາທີ່ຄາດວ່າຈະເຫຼືອ: %s"
 
 #: ../satellite_tools/messages.py:85
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    ດຶງຂໍ້ມູນບໍ່ສຳເລັດ: %s"
 
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   ສະຫຼຸບການດຶງຂໍ້ມູນ RPM: %s"
 
 #: ../satellite_tools/messages.py:87
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       ສຳເລັດ: %d"
 
 #: ../satellite_tools/messages.py:88
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       ລົ້ມເຫຼວ: %d"
 
 #: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       extinct: %d"
-msgstr ""
+msgstr "       ຍົກເລີກ: %d"
 
 #: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ metadata ຂອງແພັກເກດທີ່ກ່ຽວຂ້ອງ: %s (%s)"
 
 #: ../satellite_tools/messages.py:92
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ errata: %s (%s)"
 
 #: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງດຶງ / ວິເຄາະໄຟລ໌ kickstart tree: %s (%s)"
 
 #: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງນຳເຂົ້າ metadata ຂອງແພັກເກດທີ່ກ່ຽວຂ້ອງ: %s (%s)"
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * ຄຳເຕືອນ: ຂັ້ນຕອນນີ້ອາດຈະຊ້າ."
 
 #: ../satellite_tools/messages.py:97
 msgid "Linking packages to channels"
-msgstr ""
+msgstr "ກຳລັງເຊື່ອມໂຍງແພັກເກດກັບຊ່ອງທາງ"
 
 #: ../satellite_tools/messages.py:98
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   ກຳລັງນຳເຂົ້າ errata ທີ່ກ່ຽວຂ້ອງ: %s (%s)"
 
 #: ../satellite_tools/messages.py:99
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   ບໍ່ມີ kickstartable tree ໃໝ່ທີ່ຈະນຳເຂົ້າ"
 
 #: ../satellite_tools/messages.py:100
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "ກຳລັງນຳເຂົ້າ kickstartable trees (%d)"
 
 #: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "ນຳເຂົ້າ kickstartable trees ສຳເລັດແລ້ວ (%d)"
 
 #: ../satellite_tools/reposync.py:138
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ ກຳລັງສົ່ງລັອກ (log) ທາງອີເມລ +++"
 
 #: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "ລາຍງານການຊິງຄ໌ %s ຈາກ %s"
 
 #: ../satellite_tools/reposync.py:151
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ ມີການຮ້ອງຂໍອີເມລ, ແຕ່ບໍ່ມີຂໍ້ມູນທີ່ຈະສົ່ງ +++"
