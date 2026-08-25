@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-08-25 02:15+0000\n"
+"PO-Revision-Date: 2026-08-25 06:27+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/backend/lo/>\n"
 "Language: lo\n"
@@ -21,12 +21,12 @@ msgstr ""
 #: ../server/apacheAuth.py:72
 #, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr "ໂທເຄັນການຢືນຢັນຕົວຕົນພຣັອກຊີບໍ່ສົມບູນ: %s"
+msgstr "ໂຕເຄັນການຢືນຢັນຕົວຕົນພຣັອກຊີບໍ່ຄົບຖ້ວນ: %s"
 
 #: ../server/apacheAuth.py:103
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr "ລາຍເຊັນພຣັອກຊີ %s ທີ່ສົ່ງມາ ບໍ່ກົງກັບຂອງພວກເຮົາ %s."
+msgstr "ລາຍເຊັນພຣັອກຊີທີ່ສົ່ງມາ %s ບໍ່ກົງກັບຂອງພວກເຮົາ %s."
 
 #: ../server/apacheAuth.py:142
 msgid "declined proxy authentication"
@@ -35,7 +35,7 @@ msgstr "ການຢືນຢັນຕົວຕົນພຣັອກຊີຖື
 #: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr "ໄດ້ຮັບຄຳຮ້ອງຂໍບໍ່ຖືກຕ້ອງ (%s)."
+msgstr "ໄດ້ຮັບການຮ້ອງຂໍທີ່ບໍ່ຖືກຕ້ອງ (%s)."
 
 #. Send the message as a fault.
 #: ../server/apacheRequest.py:130
@@ -53,7 +53,7 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
-"ໃນຂະນະທີ່ກຳລັງທຳງານ '%s': ພົບຂໍ້ຜິດພາດ\n"
+"ໃນຂະນະທີ່ກຳລັງເຮັດວຽກ '%s': ພົບຂໍ້ຜິດພາດ\n"
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
@@ -70,8 +70,8 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   ບັນຊີ %s ຖືກປິດການນຳໃຊ້ໃນເຊີເວີນີ້ແລ້ວ.\n"
-"                   ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ."
+"                   ບັນຊີ %s ຖືກປິດການໃຊ້ງານໃນເຊີເວີນີ້ແລ້ວ.\n"
+"                   ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອ."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, python-format
@@ -89,7 +89,7 @@ msgstr "ID ເຊີເວີນີ້ບໍ່ມີອີກຕໍ່ໄປແ
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
-msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການແພັກເກດໃນອົງກອນທີ່ວ່າງເປົ່າ (null org)"
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການແພັກເກດໃນ org ທີ່ວ່າງເປົ່າ"
 
 #: ../server/importlib/userAuth.py:115
 #, python-format
@@ -100,13 +100,13 @@ msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈ
 #. take a hike.
 #: ../server/importlib/userAuth.py:132
 msgid "You are not allowed to perform administrative tasks"
-msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດໜ້າທີ່ໃນການບໍລິຫານລະບົບ"
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດວຽກງານການດູແລລະບົບ"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການຊ່ອງທາງ %s, ຫຼື ຊ່ອງທາງດັ່ງກ່າວບໍ່ມີຢູ່"
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ຈັດການຊ່ອງທາງ %s, ຫຼື ຊ່ອງທາງນັ້ນບໍ່ມີຢູ່"
 
 #: ../server/importlib/userAuth.py:229
 #, python-format
@@ -116,20 +116,20 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"               ບັນຊີ %s ຖືກປິດການນຳໃຊ້ໃນເຊີເວີນີ້ແລ້ວ.\n"
-"               ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ."
+"               ບັນຊີ %s ຖືກປິດການໃຊ້ງານໃນເຊີເວີນີ້ແລ້ວ.\n"
+"               ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອ."
 
 #: ../server/rhnChannel.py:2216
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr "ບັນຊີຂອງທ່ານບໍ່ມີສິດເຂົ້າເຖິງຊ່ອງທາງໃດໆທີ່ກົງກັບ (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "ບັນຊີຂອງທ່ານບໍ່ສາມາດເຂົ້າເຖິງຊ່ອງທາງໃດໆທີ່ກົງກັບ (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "ສິດການສະໝັກນຳໃຊ້ບໍ່ພຽງພໍສຳລັບລຸ້ນ (%s, %s)"
+msgstr "ສິດການສະໝັກໃຊ້ບໍ່ພຽງພໍສຳລັບການປ່ອຍ (%s, %s)"
 
 #. Various messages that can be reused
 #.
@@ -137,7 +137,7 @@ msgstr "ສິດການສະໝັກນຳໃຊ້ບໍ່ພຽງພໍ
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
-msgstr "ລະບົບລົງທະບຽນແລ້ວ ແຕ່ຍັງບໍ່ທັນເປີດໃຊ້ງານ"
+msgstr "ລະບົບລົງທະບຽນແລ້ວແຕ່ຍັງບໍ່ທັນເຮັດວຽກ"
 
 #: ../server/rhnChannel.py:2551
 #, python-format
@@ -149,9 +149,9 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 "\n"
-"ການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ລຸ້ນ OS ບໍ່ຖືກຕ້ອງ (%s, %s).\n"
-"ລະບົບຂອງທ່ານໄດ້ລົງທະບຽນແລ້ວ, ແຕ່ຈະບໍ່ໄດ້ຮັບການອັບເດດ\n"
-"ເນື່ອງຈາກບໍ່ສາມາດສະໝັກເຂົ້າໃຊ້ຊ່ອງທາງພື້ນຖານໄດ້.\n"
+"ການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ເວີຊັນ OS ບໍ່ຖືກຕ້ອງ (%s, %s).\n"
+"ລະບົບຂອງທ່ານໄດ້ຮັບການລົງທະບຽນແລ້ວ, ແຕ່ຈະບໍ່ໄດ້ຮັບການອັບເດດ\n"
+"ຍ້ອນວ່າບໍ່ສາມາດສະໝັກໃຊ້ຊ່ອງທາງຫຼັກໄດ້.\n"
 "ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບອົງກອນຂອງທ່ານເພື່ອຂໍຄວາມຊ່ວຍເຫຼືອ.\n"
 
 #: ../server/rhnChannel.py:2560
@@ -164,8 +164,8 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ຍັງບໍ່ທັນມີສິດນຳໃຊ້\n"
-"  ການບໍລິການ. ເພື່ອໃຫ້ລະບົບນີ້ມີສິດນຳໃຊ້, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
+"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ຍັງບໍ່ທັນມີສິດໄດ້ຮັບບໍລິການ.\n"
+"  ເພື່ອໃຫ້ລະບົບນີ້ມີສິດໄດ້ຮັບບໍລິການ, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
@@ -180,20 +180,20 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ບໍ່ມີສິດນຳໃຊ້ການບໍລິການ\n"
-"  ທີ່ພ້ອມໃຊ້ງານ. ເພື່ອໃຫ້ລະບົບນີ້ມີສິດນຳໃຊ້, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
+"  ລະບົບນີ້ໄດ້ລົງທະບຽນສຳເລັດແລ້ວ, ແຕ່ບໍ່ມີສິດການໃຊ້ບໍລິການໃດໆ.\n"
+"  ເພື່ອໃຫ້ລະບົບນີ້ມີສິດໄດ້ຮັບບໍລິການ, ກະລຸນາເຂົ້າສູ່ລະບົບທີ່ເວັບໄຊ:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr "ກະລຸນາລັນ rhn_register ດ້ວຍສິດ root ໃນເຄື່ອງຄລາຍແອນນີ້"
+msgstr "ກະລຸນາລັນ rhn_register ດ້ວຍສິດ root ໃນໄຄລເອັນນີ້"
 
 #: ../server/rhnHandler.py:76
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr "ການບໍລິການບໍ່ໄດ້ເປີດໃຊ້ງານສຳລັບໂປຣໄຟລ໌ລະບົບ: \"%s\""
+msgstr "ບໍລິການບໍ່ໄດ້ເປີດໃຊ້ງານສຳລັບໂປຣໄຟລ໌ລະບົບ: \"%s\""
 
 #: ../server/rhnPackage.py:52 ../server/rhnPackage.py:98
 #: ../server/rhnPackage.py:118 ../server/rhnPackage.py:179
@@ -213,37 +213,37 @@ msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳ `%s'"
 #: ../server/rhnServer/server_token.py:86
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "ໂທເຄັນ `%s' ຖືກກຳນົດໃຫ້ມີຫຼາຍກວ່າໜຶ່ງຊ່ອງທາງພື້ນຖານ"
+msgstr "ໂຕເຄັນ `%s' ມີການກຳນົດຊ່ອງທາງຫຼັກຫຼາຍກວ່າໜຶ່ງຊ່ອງ"
 
 #: ../server/rhnServer/server_token.py:89
 msgid "Conflicting base channels"
-msgstr "ຊ່ອງທາງພື້ນຖານຂັດແຍ້ງກັນ"
+msgstr "ຊ່ອງທາງຫຼັກຂັດແຍ່ງກັນ"
 
 #: ../server/rhnServer/server_token.py:223
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr "ບໍ່ສາມາດເພີ່ມເຊີເວີເຂົ້າໃນກຸ່ມ %s ໄດ້"
+msgstr "ບໍ່ສາມາດເພີ່ມເຊີເວີເຂົ້າໃນກຸ່ມ %s"
 
 #: ../server/rhnServer/server_token.py:574
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr "ນຳໃຊ້ຄົບຈຳນວນສູງສຸດ %s ເທື່ອແລ້ວ"
+msgstr "ນຳໃຊ້ຄົບຈຳນວນສູງສຸດ %s ຄັ້ງແລ້ວ"
 
 #: ../server/rhnServer/server_token.py:869
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
-msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນກັນຂອງໂທເຄັນການລົງທະບຽນໃໝ່ທີ່ມີສິດນຳໃຊ້ພື້ນຖານຕ່າງກັນ"
+msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນໂຕເຄັນລົງທະບຽນໃໝ່ທີ່ມີສິດພື້ນຖານຕ່າງກັນ"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
 msgid "Could not find token '%s'"
-msgstr "ບໍ່ພົບໂທເຄັນ '%s'"
+msgstr "ບໍ່ພົບໂຕເຄັນ '%s'"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:979
 msgid "Tokens from mismatching orgs"
-msgstr "ໂທເຄັນມາຈາກອົງກອນທີ່ບໍ່ກົງກັນ"
+msgstr "ໂຕເຄັນຈາກອົງກອນທີ່ບໍ່ກົງກັນ"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:989
@@ -252,7 +252,7 @@ msgstr "ເຊດຊັນ Kickstart ບໍ່ກົງກັນ"
 
 #: ../server/rhnServer/server_token.py:1013
 msgid "Stacking of re-registration tokens is not supported"
-msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນກັນຂອງໂທເຄັນການລົງທະບຽນໃໝ່"
+msgstr "ບໍ່ຮອງຮັບການວາງຊ້ອນໂຕເຄັນລົງທະບຽນໃໝ່"
 
 #: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
@@ -267,7 +267,7 @@ msgstr "ຊື່ຜູ້ໃຊ້ `%s' ບໍ່ໄດ້ຖືກຈອງໄ
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
-msgstr "ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມລ"
+msgstr "ບໍ່ໄດ້ລະບຸທີ່ຢູ່ອີເມວ"
 
 #: ../server/rhnUser.py:575
 #, python-format
@@ -282,12 +282,12 @@ msgstr "ຊື່ຜູ້ໃຊ້ຄວນມີໜ້ອຍກວ່າ %d �
 #: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr "ຊື່ຜູ້ໃຊ້ = `%s', ຕົວອັກສອນ `%s' ບໍ່ຖືກຕ້ອງ"
+msgstr "ຊື່ຜູ້ໃຊ້ = `%s', ຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ `%s'"
 
 #: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr "ກະລຸນາຈຳກັດທີ່ຢູ່ອີເມລຂອງທ່ານບໍ່ໃຫ້ເກີນ %s ຕົວອັກສອນ"
+msgstr "ກະລຸນາຈຳກັດທີ່ຢູ່ອີເມວຂອງທ່ານໃຫ້ບໍ່ເກີນ %s ຕົວອັກສອນ"
 
 #: ../server/rhnUser.py:704
 #, python-format
@@ -317,7 +317,7 @@ msgstr "ບໍ່ສາມາດລົງທະບຽນຊື່ຜູ້ໃຊ
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:55
 msgid "This does not appear to be a valid username."
-msgstr "ເບິ່ງຄືວ່າຊື່ຜູ້ໃຊ້ນີ້ບໍ່ຖືກຕ້ອງ."
+msgstr "ນີ້ເບິ່ງຄືວ່າບໍ່ແມ່ນຊື່ຜູ້ໃຊ້ທີ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:56
 msgid "Invalid username and password combination."
@@ -325,11 +325,11 @@ msgstr "ຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານບໍ�
 
 #: ../common/rhnException.py:57
 msgid "This login is already taken, or the password is incorrect."
-msgstr "ຊື່ເຂົ້າລະບົບນີ້ຖືກໃຊ້ແລ້ວ, ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ."
+msgstr "ຊື່ເຂົ້າລະບົບນີ້ຖືກໃຊ້ໄປແລ້ວ, ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:58
 msgid "Permission denied."
-msgstr "ການອະນຸຍາດຖືກປະຕິເສດ."
+msgstr "ການເຂົ້າເຖິງຖືກປະຕິເສດ."
 
 #: ../common/rhnException.py:59
 msgid "Object not found."
@@ -345,7 +345,7 @@ msgstr "ຂໍ້ມູນປະຈຳຕົວຂອງລະບົບບໍ່
 
 #: ../common/rhnException.py:62
 msgid "Could not retrieve user data from database."
-msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນຜູ້ໃຊ້ຈາກຖານຂໍ້ມູນໄດ້."
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນຜູ້ໃຊ້ຈາກຖານຂໍ້ມູນ."
 
 #: ../common/rhnException.py:63
 msgid "Valid username required."
@@ -357,11 +357,11 @@ msgstr "ຕ້ອງການລະຫັດຜ່ານທີ່ຖືກຕ້
 
 #: ../common/rhnException.py:65
 msgid "Minimum username length violation."
-msgstr "ຄວາມຍາວຊື່ຜູ້ໃຊ້ຕໍ່າກວ່າກຳນົດ."
+msgstr "ຄວາມຍາວຊື່ຜູ້ໃຊ້ສັ້ນກວ່າທີ່ກຳນົດ."
 
 #: ../common/rhnException.py:66
 msgid "Minimum password length violation."
-msgstr "ຄວາມຍາວລະຫັດຜ່ານຕໍ່າກວ່າກຳນົດ."
+msgstr "ຄວາມຍາວລະຫັດຜ່ານສັ້ນກວ່າທີ່ກຳນົດ."
 
 #: ../common/rhnException.py:67
 msgid "The username contains invalid characters."
@@ -373,27 +373,27 @@ msgstr "ບໍ່ພົບໄຟລ໌."
 
 #: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
-msgstr "ບໍ່ຮອງຮັບການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ລຸ້ນ OS ນີ້."
+msgstr "ບໍ່ຮອງຮັບການປະສົມປະສານລະຫວ່າງສະຖາປັດຕະຍະກຳ ແລະ ເວີຊັນ OS ນີ້."
 
 #: ../common/rhnException.py:70
 msgid "Could not retrieve system data from database."
-msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນລະບົບຈາກຖານຂໍ້ມູນໄດ້."
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນລະບົບຈາກຖານຂໍ້ມູນ."
 
 #: ../common/rhnException.py:71
 msgid "Invalid arguments passed to function."
-msgstr "ຄ່າອາກິວເມັນ (arguments) ທີ່ສົ່ງໄປຫາຟັງຊັນບໍ່ຖືກຕ້ອງ."
+msgstr "ມີການສົ່ງອາຄິວເມນທີ່ບໍ່ຖືກຕ້ອງໄປຍັງຟັງຊັນ."
 
 #: ../common/rhnException.py:72
 msgid "Unable to retrieve requested entry."
-msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນລາຍການທີ່ຮ້ອງຂໍໄດ້."
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນທີ່ຮ້ອງຂໍໄດ້."
 
 #: ../common/rhnException.py:73
 msgid "Could not update database entry."
-msgstr "ບໍ່ສາມາດອັບເດດລາຍການໃນຖານຂໍ້ມູນໄດ້."
+msgstr "ບໍ່ສາມາດອັບເດດຂໍ້ມູນໃນຖານຂໍ້ມູນ."
 
 #: ../common/rhnException.py:74
 msgid "Unsupported server architecture."
-msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳເຊີເວີນີ້."
+msgstr "ບໍ່ຮອງຮັບສະຖາປັດຕະຍະກຳຂອງເຊີເວີນີ້."
 
 #: ../common/rhnException.py:76
 #, python-format
@@ -409,21 +409,21 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ຟັງຊັນເຊີເວີແບບບໍ່ລະບຸຕົວຕົນບໍ່ສາມາດໃຊ້ງານໄດ້ອີກຕໍ່ໄປ.\n"
+"     ຟັງຊັນເຊີເວີແບບບໍ່ລະບຸຕົວຕົນບໍ່ມີໃຫ້ໃຊ້ງານອີກຕໍ່ໄປ.\n"
 "\n"
 "     ກະລຸນາລົງທະບຽນລະບົບນີ້ໃໝ່ໂດຍການລັນ mgr_register ດ້ວຍສິດ root.\n"
-"     ກະລຸນາເຂົ້າໄປທີ່ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     ກະລຸນາເຂົ້າເບິ່ງ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     ຫຼື ເຂົ້າສູ່ລະບົບທີ່ https://%(hostname)s, ແລະ ຈາກແຖບ \"Overview\",\n"
 "     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້.\n"
 "     "
 
 #: ../common/rhnException.py:85
 msgid "Record not available in the database."
-msgstr "ບໍ່ມີຂໍ້ມູນບັນທຶກໃນຖານຂໍ້ມູນ."
+msgstr "ບໍ່ມີຂໍ້ມູນນີ້ໃນຖານຂໍ້ມູນ."
 
 #: ../common/rhnException.py:86
 msgid "Invalid value for entry."
-msgstr "ຄ່າສຳລັບລາຍການບໍ່ຖືກຕ້ອງ."
+msgstr "ຄ່າສຳລັບຂໍ້ມູນບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:88
 #, python-format
@@ -450,11 +450,11 @@ msgstr "ຂໍ້ຜິດພາດຂອງຊ່ອງທາງ"
 
 #: ../common/rhnException.py:96
 msgid "Client session token is invalid."
-msgstr "ໂທເຄັນເຊດຊັນຂອງຄລາຍແອນບໍ່ຖືກຕ້ອງ."
+msgstr "ໂຕເຄັນເຊດຊັນຂອງໄຄລເອັນບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:97
 msgid "Client session token has expired."
-msgstr "ໂທເຄັນເຊດຊັນຂອງຄລາຍແອນໝົດອາຍຸແລ້ວ."
+msgstr "ໂຕເຄັນເຊດຊັນຂອງໄຄລເອັນໝົດອາຍຸແລ້ວ."
 
 #: ../common/rhnException.py:98
 msgid "You are not authorized to retrieve the requested object."
@@ -466,7 +466,7 @@ msgstr "ການກະທຳບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:101
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດໜ້າທີ່ບໍລິຫານລະບົບໃນລະບົບນີ້."
+msgstr "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ປະຕິບັດວຽກງານການດູແລລະບົບໃນລະບົບນີ້."
 
 #: ../common/rhnException.py:104
 msgid "The system is already subscribed to the specified channel."
@@ -474,15 +474,15 @@ msgstr "ລະບົບໄດ້ສະໝັກໃຊ້ຊ່ອງທາງທ
 
 #: ../common/rhnException.py:105
 msgid "The system is not currently subscribed to the specified channel."
-msgstr "ປັດຈຸບັນລະບົບບໍ່ໄດ້ສະໝັກໃຊ້ຊ່ອງທາງທີ່ລະບຸໄວ້."
+msgstr "ລະບົບຍັງບໍ່ໄດ້ສະໝັກໃຊ້ຊ່ອງທາງທີ່ລະບຸໄວ້."
 
 #: ../common/rhnException.py:106
 msgid "The specified channel does not exist."
-msgstr "ຊ່ອງທາງທີ່ລະບຸໄວ້ບໍ່ມີຢູ່."
+msgstr "ຊ່ອງທາງທີ່ລະບຸບໍ່ມີຢູ່."
 
 #: ../common/rhnException.py:107
 msgid "Invalid channel version."
-msgstr "ລຸ້ນຂອງຊ່ອງທາງບໍ່ຖືກຕ້ອງ."
+msgstr "ເວີຊັນຂອງຊ່ອງທາງບໍ່ຖືກຕ້ອງ."
 
 #: ../common/rhnException.py:109
 msgid ""
@@ -498,12 +498,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ກາຍຂີດຈຳກັດການເປັນສະມາຊິກກຸ່ມຜູ້ໃຊ້ແລ້ວ.\n"
+"     ເກີນຂີດຈຳກັດການເປັນສະມາຊິກຂອງກຸ່ມຜູ້ໃຊ້.\n"
 "\n"
-"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານ ບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມ\n"
-"     ບັນຊີຜູ້ໃຊ້ອື່ນ. ກະລຸນາຕິດຕໍ່ຜູ້ບໍລິຫານອົງກອນສຳລັບບັນຊີຂອງທ່ານ\n"
-"     ຫາກຈຳນວນຜູ້ໃຊ້ສູງສຸດທີ່ອະນຸຍາດໃຫ້ລົງທະບຽນໃນເຊີເວີ ຈຳເປັນຕ້ອງ\n"
-"     ໄດ້ຮັບການປ່ຽນແປງ.\n"
+"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມບັນຊີ\n"
+"     ຜູ້ໃຊ້ອື່ນ. ກະລຸນາກວດສອບກັບຜູ້ດູແລລະບົບຂອງອົງກອນສຳລັບ\n"
+"     ບັນຊີຂອງທ່ານ ຫາກຈຳນວນຜູ້ໃຊ້ສູງສຸດທີ່ໄດ້ຮັບອະນຸຍາດໃຫ້ສະໝັກເຂົ້າໃຊ້ເຊີບເວີຈຳເປັນ\n"
+"     ຕ້ອງໄດ້ຮັບການປ່ຽນແປງ.\n"
 "     "
 
 #: ../common/rhnException.py:119
@@ -520,12 +520,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ກາຍຂີດຈຳກັດການເປັນສະມາຊິກກຸ່ມລະບົບແລ້ວ.\n"
+"     ເກີນຂີດຈຳກັດການເປັນສະມາຊິກຂອງກຸ່ມລະບົບ.\n"
 "\n"
-"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານ ບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມ\n"
-"     ໂປຣໄຟລ໌ລະບົບອື່ນ. ກະລຸນາຕິດຕໍ່ຜູ້ບໍລິຫານອົງກອນສຳລັບບັນຊີຂອງທ່ານ\n"
-"     ເພື່ອແກ້ໄຂຈຳນວນສູງສຸດຂອງໂປຣໄຟລ໌ລະບົບ ທີ່ສາມາດ\n"
-"     ລົງທະບຽນເຂົ້າໃນບັນຊີຂອງທ່ານ.\n"
+"     ການຕັ້ງຄ່າປັດຈຸບັນສຳລັບບັນຊີຂອງທ່ານບໍ່ອະນຸຍາດໃຫ້ທ່ານເພີ່ມ\n"
+"     ໂປຣໄຟລ໌ລະບົບ. ກະລຸນາກວດສອບກັບຜູ້ດູແລລະບົບຂອງອົງກອນສຳລັບ\n"
+"     ບັນຊີຂອງທ່ານ ເພື່ອແກ້ໄຂຈຳນວນສູງສຸດຂອງໂປຣໄຟລ໌ລະບົບທີ່ສາມາດ\n"
+"     ສະໝັກໃຊ້ກັບບັນຊີຂອງທ່ານ.\n"
 "     "
 
 #: ../common/rhnException.py:129
@@ -539,7 +539,7 @@ msgstr ""
 "\n"
 "     ສະຖາປັດຕະຍະກຳບໍ່ຖືກຕ້ອງ.\n"
 "\n"
-"     ສະຖາປັດຕະຍະກຳຂອງແພັກເກດບໍ່ຖືກຮອງຮັບໂດຍ\n"
+"     ສະຖາປັດຕະຍະກຳຂອງແພັກເກດນີ້ບໍ່ໄດ້ຮັບການຮອງຮັບໂດຍ\n"
 "     "
 
 #: ../common/rhnException.py:136
@@ -556,8 +556,8 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    ລະບົບນີ້ໄດ້ລົງທະບຽນເປັນ Salt Minion ແລ້ວ. ຫາກທ່ານຕ້ອງການລົງທະບຽນເປັນຄລາຍແອນແບບດັ້ງເດີມ\n"
-"    ກະລຸນາລຶບມັນອອກກ່ອນຜ່ານທາງເວັບ UI ຫຼື API ແລ້ວຈຶ່ງລົງທະບຽນໂດຍໃຊ້ເຄື່ອງມືແບບດັ້ງເດີມ.\n"
+"    ລະບົບນີ້ໄດ້ລົງທະບຽນເປັນ Salt Minion ແລ້ວ. ຖ້າທ່ານຕ້ອງການລົງທະບຽນເປັນໄຄລເອັນແບບດັ້ງເດີມ\n"
+"    ກະລຸນາລຶບມັນອອກກ່ອນຜ່ານ Web UI ຫຼື API ແລ້ວຈຶ່ງລົງທະບຽນໃໝ່ໂດຍໃຊ້ເຄື່ອງມືແບບດັ້ງເດີມ.\n"
 "    "
 
 #. For the uploading tools
@@ -578,9 +578,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ການອັບໂຫຼດແພັກເກດລົ້ມເຫຼວ ເນື່ອງຈາກມີຂໍ້ມູນຊໍ້າຊ້ອນ.\n"
-"     ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າແພັກເກດບໍ່ມີ dependencies ທີ່ຊໍ້າກັນ\n"
-"     ຫຼື ບໍ່ມີແພັກເກດນັ້ນຢູ່ໃນເຊີເວີແລ້ວ\n"
+"     ການອັບໂຫຼດແພັກເກດລົ້ມເຫຼວຍ້ອນຂໍ້ກຳນົດຄວາມຊ້ຳຊ້ອນ.\n"
+"     ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າແພັກເກດບໍ່ມີ dependency ທີ່ຊ້ຳກັນ\n"
+"     ຫຼື ບໍ່ມີຢູ່ໃນເຊີເວີແລ້ວ\n"
 "     "
 
 #: ../common/rhnException.py:154
@@ -604,21 +604,21 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ບໍ່ພົບໂທເຄັນການເປີດໃຊ້ງານ (activation token) ທີ່ລະບຸໄວ້ໃນເຊີເວີ.\n"
+"     ບໍ່ພົບໂຕເຄັນການເປີດໃຊ້ງານທີ່ລະບຸໄວ້ໃນເຊີເວີ.\n"
 "     ກະລຸນາລອງໃໝ່ດ້ວຍຄີທີ່ຖືກຕ້ອງ.\n"
 "     "
 
 #: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
-msgstr "ມີລະບົບລົງທະບຽນໂດຍໃຊ້ໂທເຄັນນີ້ຫຼາຍເກີນໄປແລ້ວ"
+msgstr "ມີລະບົບລົງທະບຽນໂດຍໃຊ້ໂຕເຄັນນີ້ຫຼາຍເກີນໄປ"
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr "ໂທເຄັນມີການຕັ້ງຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ຫຼ້າສະໄໝ ຫຼື ບໍ່ພຽງພໍ"
+msgstr "ໂຕເຄັນມີການຕັ້ງຄ່າທີ່ບໍ່ຖືກຕ້ອງ, ຫຼ້າສະໄໝ ຫຼື ບໍ່ພຽງພໍ"
 
 #: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
-msgstr "ໂທເຄັນການເປີດໃຊ້ງານຂັດແຍ້ງກັນ"
+msgstr "ໂຕເຄັນການເປີດໃຊ້ງານຂັດແຍ່ງກັນ"
 
 #: ../common/rhnException.py:171
 msgid ""
@@ -627,7 +627,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ບໍ່ພົບຊ່ອງທາງພື້ນຖານທີ່ກົງກັບລະບົບຂອງທ່ານ.\n"
+"     ບໍ່ພົບຊ່ອງທາງຫຼັກທີ່ກົງກັບລະບົບຂອງທ່ານ.\n"
 "     "
 
 #: ../common/rhnException.py:176
@@ -639,14 +639,14 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ທ່ານບໍ່ມີສິດສະໝັກໃຊ້ໃນຊ່ອງທາງທີ່ກຳນົດໄວ້.\n"
-"     ກະລຸນາຕິດຕໍ່ຜູ້ດູແລລະບົບຊ່ອງທາງ ຫຼື ຜູ້ດູແລອົງກອນຂອງທ່ານ\n"
-"     ສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.\n"
+"     ທ່ານບໍ່ມີສິດໃນການສະໝັກໃຊ້ຊ່ອງທາງທີ່ກຳນົດໄວ້.\n"
+"     ກະລຸນາຕິດຕໍ່ຫາຊ່ອງທາງຂອງອົງກອນ ຫຼື ຜູ້ດູແລລະບົບ\n"
+"     ຂອງອົງກອນ ເພື່ອຂໍລາຍລະອຽດເພີ່ມເຕີມ.\n"
 "     "
 
 #: ../common/rhnException.py:182
 msgid "You can not unsubscribe from base channel."
-msgstr "ທ່ານບໍ່ສາມາດຍົກເລີກການສະໝັກໃຊ້ຈາກຊ່ອງທາງພື້ນຖານໄດ້."
+msgstr "ທ່ານບໍ່ສາມາດຍົກເລີກການສະໝັກໃຊ້ຊ່ອງທາງຫຼັກໄດ້."
 
 #: ../common/rhnException.py:183
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
@@ -655,21 +655,21 @@ msgstr "ບໍ່ສາມາດສະໝັກໃຊ້ຊ່ອງທາງ SU
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
 msgid "There was an error while trying to join the system to its groups"
-msgstr "ເກີດຂໍ້ຜິດພາດຂະນະພະຍາຍາມນຳລະບົບເຂົ້າຮ່ວມກຸ່ມ"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ພະຍາຍາມນຳລະບົບເຂົ້າຮ່ວມກຸ່ມ"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:187
 msgid "Unable to entitle system"
-msgstr "ບໍ່ສາມາດກຳນົດສິດນຳໃຊ້ໃຫ້ກັບລະບົບໄດ້"
+msgstr "ບໍ່ສາມາດກຳນົດສິດໃຫ້ກັບລະບົບໄດ້"
 
 #. 100-109: e-mail and uuid related faults
 #: ../common/rhnException.py:189
 msgid "Maximum e-mail length violation."
-msgstr "ຄວາມຍາວອີເມລເກີນກຳນົດ."
+msgstr "ຄວາມຍາວອີເມວເກີນກຳນົດສູງສຸດ."
 
 #: ../common/rhnException.py:190
 msgid "This system has been previously registered."
-msgstr "ລະບົບນີ້ໄດ້ຖືກລົງທະບຽນມາກ່ອນແລ້ວ."
+msgstr "ລະບົບນີ້ໄດ້ຮັບການລົງທະບຽນມາກ່ອນແລ້ວ."
 
 #: ../common/rhnException.py:191
 msgid "Invalid username"
@@ -678,21 +678,21 @@ msgstr "ຊື່ຜູ້ໃຊ້ບໍ່ຖືກຕ້ອງ"
 #. 140-159 applet errors
 #: ../common/rhnException.py:193
 msgid "Unable to look up server"
-msgstr "ບໍ່ສາມາດຄົ້ນຫາເຊີເວີໄດ້"
+msgstr "ບໍ່ສາມາດຊອກຫາເຊີເວີໄດ້"
 
 #. 160-179: OSAD errors
 #: ../common/rhnException.py:195
 msgid "Required argument is missing"
-msgstr "ອາກິວເມັນ (argument) ທີ່ຈຳເປັນຫາຍໄປ"
+msgstr "ອາຄິວເມນທີ່ຈຳເປັນຫາຍໄປ"
 
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:197
 msgid "No entitlement information tied to hardware"
-msgstr "ບໍ່ມີຂໍ້ມູນສິດນຳໃຊ້ທີ່ຜູກກັບຮາດແວ"
+msgstr "ບໍ່ມີຂໍ້ມູນສິດການໃຊ້ງານທີ່ຜູກກັບຮາດແວ"
 
 #: ../common/rhnException.py:198
 msgid "Installation number is not entitling"
-msgstr "ໝາຍເລກການຕິດຕັ້ງບໍ່ມີສິດນຳໃຊ້"
+msgstr "ໝາຍເລກການຕິດຕັ້ງບໍ່ມີສິດການໃຊ້ງານ"
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:200
@@ -778,7 +778,7 @@ msgstr ""
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:236
 msgid "Invalid datatype passed"
-msgstr "ປະເພດຂໍ້ມູນທີ່ສົ່ງມາບໍ່ຖືກຕ້ອງ"
+msgstr "ມີການສົ່ງປະເພດຂໍ້ມູນທີ່ບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:237
 msgid "Unable to retrieve channel"
@@ -802,23 +802,23 @@ msgstr "ຂໍ້ຜິດພາດໃນການດຶງຂໍ້ມູນຟ
 
 #: ../common/rhnException.py:242
 msgid "Function execution error"
-msgstr "ຂໍ້ຜິດພາດໃນການເຮັດວຽກຂອງຟັງຊັນ"
+msgstr "ຂໍ້ຜິດພາດໃນການປະຕິບັດຟັງຊັນ"
 
 #: ../common/rhnException.py:243
 msgid "Missing version string"
-msgstr "ຂໍ້ຄວາມລະບຸລຸ້ນ (version string) ຫາຍໄປ"
+msgstr "ຂໍ້ຄວາມເວີຊັນຫາຍໄປ"
 
 #: ../common/rhnException.py:244
 msgid "Invalid version string"
-msgstr "ຂໍ້ຄວາມລະບຸລຸ້ນ (version string) ບໍ່ຖືກຕ້ອງ"
+msgstr "ຂໍ້ຄວາມເວີຊັນບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:245
 msgid "Mismatching versions"
-msgstr "ລຸ້ນບໍ່ກົງກັນ"
+msgstr "ເວີຊັນບໍ່ກົງກັນ"
 
 #: ../common/rhnException.py:246
 msgid "Invalid channel version"
-msgstr "ລຸ້ນຂອງຊ່ອງທາງບໍ່ຖືກຕ້ອງ"
+msgstr "ເວີຊັນຊ່ອງທາງບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:247
 msgid "No comps file for channel"
@@ -826,12 +826,12 @@ msgstr "ບໍ່ມີໄຟລ໌ comps ສຳລັບຊ່ອງທາງ�
 
 #: ../common/rhnException.py:248
 msgid "Unable to retrieve comps file"
-msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນໄຟລ໌ comps ໄດ້"
+msgstr "ບໍ່ສາມາດດຶງໄຟລ໌ comps ໄດ້"
 
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:250
 msgid "Configuration action missing"
-msgstr "ການກະທຳໃນການຕັ້ງຄ່າຫາຍໄປ"
+msgstr "ການກະທຳການຕັ້ງຄ່າຫາຍໄປ"
 
 #: ../common/rhnException.py:251
 msgid "File too large"
@@ -839,7 +839,7 @@ msgstr "ໄຟລ໌ມີຂະໜາດໃຫຍ່ເກີນໄປ"
 
 #: ../common/rhnException.py:252
 msgid "File contains binary data"
-msgstr "ໄຟລ໌ມີຂໍ້ມູນໄບນາຣີ (binary)"
+msgstr "ໄຟລ໌ມີຂໍ້ມູນໄບນາຣີ"
 
 #: ../common/rhnException.py:253
 msgid "Configuration channel is not empty"
@@ -847,15 +847,15 @@ msgstr "ຊ່ອງທາງການຕັ້ງຄ່າບໍ່ໄດ້ວ
 
 #: ../common/rhnException.py:254
 msgid "Permission error"
-msgstr "ຂໍ້ຜິດພາດກ່ຽວກັບການອະນຸຍາດ"
+msgstr "ຂໍ້ຜິດພາດກ່ຽວກັບສິດການເຂົ້າເຖິງ"
 
 #: ../common/rhnException.py:255
 msgid "Content missing for configuration file"
-msgstr "ເນື້ອໃນຂອງໄຟລ໌ການຕັ້ງຄ່າຫາຍໄປ"
+msgstr "ເນື້ອໃນຫາຍໄປສຳລັບໄຟລ໌ການຕັ້ງຄ່າ"
 
 #: ../common/rhnException.py:256
 msgid "Template delimiters not specified"
-msgstr "ບໍ່ໄດ້ລະບຸຕົວຂັ້ນເທັມເພລດ (Template delimiters)"
+msgstr "ບໍ່ໄດ້ລະບຸຕົວຂັ້ນ (delimiters) ຂອງແມ່ແບບ"
 
 #: ../common/rhnException.py:257
 msgid "Configuration channel does not exist"
@@ -871,23 +871,23 @@ msgstr "ໄຟລ໌ຫາຍໄປຈາກຊ່ອງທາງການຕັ
 
 #: ../common/rhnException.py:260
 msgid "Different revision of this file is uploaded"
-msgstr "ມີການອັບໂຫຼດເວີຊັນແກ້ໄຂ (revision) ອື່ນຂອງໄຟລ໌ນີ້ແລ້ວ"
+msgstr "ມີການອັບໂຫຼດໄຟລ໌ນີ້ໃນເວີຊັນ (revision) ທີ່ຕ່າງກັນ"
 
 #: ../common/rhnException.py:261
 msgid "File already uploaded to configuration channel"
-msgstr "ໄຟລ໌ໄດ້ຖືກອັບໂຫຼດຂຶ້ນຊ່ອງທາງການຕັ້ງຄ່າແລ້ວ"
+msgstr "ໄຟລ໌ໄດ້ຖືກອັບໂຫຼດໄປຍັງຊ່ອງທາງການຕັ້ງຄ່າແລ້ວ"
 
 #: ../common/rhnException.py:262
 msgid "File size exceeds remaining quota space"
-msgstr "ຂະໜາດໄຟລ໌ເກີນພື້ນທີ່ໂຄຕາທີ່ເຫຼືອ"
+msgstr "ຂະໜາດໄຟລ໌ເກີນໂຄຕ້າທີ່ເຫຼືອ"
 
 #: ../common/rhnException.py:263
 msgid "Full path of file must be specified"
-msgstr "ຕ້ອງລະບຸເສັ້ນທາງ (path) ທັງໝົດຂອງໄຟລ໌"
+msgstr "ຕ້ອງລະບຸ Path ເຕັມຂອງໄຟລ໌"
 
 #: ../common/rhnException.py:264
 msgid "Invalid revision number"
-msgstr "ໝາຍເລກເວີຊັນແກ້ໄຂ (revision number) ບໍ່ຖືກຕ້ອງ"
+msgstr "ໝາຍເລກ revision ບໍ່ຖືກຕ້ອງ"
 
 #: ../common/rhnException.py:265
 msgid "Cannot compare files of different file type"
@@ -896,15 +896,15 @@ msgstr "ບໍ່ສາມາດປຽບທຽບໄຟລ໌ທີ່ມີປ
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr "ການສົ່ງໄຟລ໌ຜົນລັບ SCAP ບໍ່ຖືກຕ້ອງ ຫຼື ບໍ່ສົມບູນ"
+msgstr "ການສົ່ງໄຟລ໌ຜົນການກວດສອບ SCAP ບໍ່ຖືກຕ້ອງ ຫຼື ບໍ່ຄົບຖ້ວນ"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເສັ້ນທາງໄດເຣັກທໍຣີສຳລັບຜົນລັບ SCAP ແບບລະອຽດ"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງ Path ຂອງໄດເຣັກທໍຣີສຳລັບຜົນ SCAP ລະອຽດ"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງເສັ້ນທາງໄຟລ໌ສຳລັບຜົນລັບ SCAP ແບບລະອຽດ"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງ Path ຂອງໄຟລ໌ສຳລັບຜົນ SCAP ລະອຽດ"
 
 #: ../common/rhnException.py:270
 msgid "Invalid content encoding"
@@ -920,11 +920,11 @@ msgid ""
 "     details on how to reproduce this problem.\n"
 msgstr ""
 "\n"
-"     ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ກຳລັງປະມວນຜົນຄຳຮ້ອງຂໍຂອງທ່ານ. ຫາກບັນຫານີ້\n"
-"     ຍັງຄົງມີຢູ່ ກະລຸນາສົ່ງລາຍງານບັກທີ່ scc.suse.com.\n"
-"     ຫາກທ່ານເລືອກທີ່ຈະສົ່ງລາຍງານບັກ, ກະລຸນາແນ່ໃຈວ່າໄດ້ລະບຸລາຍລະອຽດ\n"
-"     ສິ່ງທີ່ທ່ານກຳລັງພະຍາຍາມເຮັດໃນເວລາທີ່ເກີດຂໍ້ຜິດພາດນີ້ ແລະ\n"
-"     ລາຍລະອຽດກ່ຽວກັບວິທີການເຮັດໃຫ້ເກີດບັນຫາຄືນໃໝ່.\n"
+"     ເກີດຂໍ້ຜິດພາດໃນຂະນະທີ່ກຳລັງປະມວນຜົນການຮ້ອງຂໍຂອງທ່ານ. ຖ້າບັນຫານີ້\n"
+"     ຍັງຄົງມີຢູ່ ກະລຸນາລາຍງານບັກໄດ້ທີ່ scc.suse.com.\n"
+"     ຖ້າທ່ານເລືອກທີ່ຈະສົ່ງລາຍງານບັກ, ກະລຸນາລະບຸລາຍລະອຽດ\n"
+"     ກ່ຽວກັບສິ່ງທີ່ທ່ານພະຍາຍາມຈະເຮັດຕອນເກີດຂໍ້ຜິດພາດ ແລະ\n"
+"     ວິທີການເຮັດໃຫ້ເກີດບັນຫານີ້ຄືນໃໝ່.\n"
 
 #: ../common/rhnException.py:368
 #, python-format
@@ -932,18 +932,18 @@ msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
-"ຂໍ້ຄວາມຜິດພາດ:\n"
+"ຂໍ້ຄວາມຂໍ້ຜິດພາດ:\n"
 "    %s\n"
 
 #: ../common/rhnException.py:370
 #, python-format
 msgid "Error Class Code: %s\n"
-msgstr "ລະຫັດຄລາສຂໍ້ຜິດພາດ: %s\n"
+msgstr "ລະຫັດ Error Class: %s\n"
 
 #: ../common/rhnException.py:373
 #, python-format
 msgid "Error Class Info: %s\n"
-msgstr "ຂໍ້ມູນຄລາສຂໍ້ຜິດພາດ: %s\n"
+msgstr "ຂໍ້ມູນ Error Class: %s\n"
 
 #: ../common/rhnException.py:375
 #, python-format
@@ -964,7 +964,7 @@ msgstr "TRACEBACK: %s"
 #: ../satellite_tools/disk_dumper/iss.py:1640
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr "ຮູບແບບຂອງ %s ຄວນເປັນຢ່າງໜ້ອຍ YYYYMMDD.\n"
+msgstr "ຮູບແບບຂອງ %s ຄວນຈະເປັນຢ່າງໜ້ອຍ YYYYMMDD.\n"
 
 #: ../satellite_tools/messages.py:28
 #, python-format
@@ -974,7 +974,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "\n"
-"ຂໍ້ຜິດພາດ: ຂະນະປະຕິບັດຂັ້ນຕອນ %s. ຂໍ້ຜິດພາດແມ່ນ:\n"
+"ຂໍ້ຜິດພາດ: ໃນຂະນະທີ່ກຳລັງເຮັດຂັ້ນຕອນ %s. ຂໍ້ຜິດພາດແມ່ນ:\n"
 "%s\n"
 
 #: ../satellite_tools/messages.py:35
@@ -988,11 +988,11 @@ msgid ""
 "       the temporary repository (%s).\n"
 msgstr ""
 "\n"
-"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການເຂົ້າເຖິງຂໍ້ມູນຊ່ອງທາງຈາກ repository ຊົ່ວຄາວຂອງທ່ານ.\n"
-"       ທ່ານໄດ້ຍ້າຍຂໍ້ມູນທັງໝົດຈາກ ISO ຂອງຊ່ອງທາງມາໄວ້ໃນໄດເຣັກທໍຣີນີ້ແລ້ວບໍ່?\n"
-"       ຫາກແມ່ນ, ກະລຸນາກວດສອບ ISO ຂອງຊ່ອງທາງຄືນໃໝ່, ໃຫ້ແນ່ໃຈວ່າ\n"
-"       ທ່ານມີຂໍ້ມູນທັງໝົດ, ແລ້ວຈຶ່ງທຳການ remount ແລະ repopulate\n"
-"       repository ຊົ່ວຄາວ (%s) ອີກເທື່ອ.\n"
+"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການເຂົ້າເຖິງຂໍ້ມູນຊ່ອງທາງຈາກຄັງເກັບຂໍ້ມູນຊົ່ວຄາວ\n"
+"       ຂອງທ່ານ. ທ່ານໄດ້ຍ້າຍຂໍ້ມູນທັງໝົດຈາກ ISOs ຂອງຊ່ອງທາງ\n"
+"       ມາຍັງໄດເຣັກທໍຣີນີ້ນີ້ແລ້ວບໍ? ຫາກແມ່ນ, ກະລຸນາກວດສອບ ISOs ຂອງຊ່ອງທາງຄືນໃໝ່, ໃຫ້ແນ່ໃຈ\n"
+"       ວ່າທ່ານມີພວກມັນທັງໝົດ, ແລະ ຈາກນັ້ນໃຫ້ທຳການຕິດຕັ້ງ ແລະ ເພີ່ມຂໍ້ມູນໃສ່\n"
+"       ຄັງເກັບຂໍ້ມູນຊົ່ວຄາວ (%s) ຄືນໃໝ່ແບບຊ້ຳໆ.\n"
 
 #: ../satellite_tools/messages.py:45
 #, python-format
@@ -1002,8 +1002,8 @@ msgid ""
 "       Error message: %s\n"
 msgstr ""
 "\n"
-"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຊິງໂຄໄນ (synchronizing) ຂໍ້ມູນ.\n"
-"       ຂໍ້ຄວາມຜິດພາດ: %s\n"
+"ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຊິງໂຄຣໄນຂໍ້ມູນ.\n"
+"       ຂໍ້ຄວາມຂໍ້ຜິດພາດ: %s\n"
 
 #: ../satellite_tools/messages.py:52
 #, python-format
@@ -1017,9 +1017,9 @@ msgid ""
 msgstr ""
 "\n"
 "ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການຕິດຕໍ່ສື່ສານກັບ ISS Master.\n"
-"       ອີງຕາມລາຍລະອຽດຂໍ້ຜິດພາດ, ກະລຸນາກວດສອບການຕັ້ງຄ່າຂອງທ່ານ,\n"
-"       ການເຊື່ອມຕໍ່ເຄືອຂ່າຍພື້ນຖານ, ແລະ/ຫຼື ການແປງຊື່ (name resolution), ແລ້ວລອງໃໝ່.\n"
-"       ຂໍ້ຄວາມຜິດພາດ: %s\n"
+"       ຂຶ້ນກັບລາຍລະອຽດຂໍ້ຜິດພາດ, ກະລຸນາກວດສອບການຕັ້ງຄ່າ,\n"
+"       ການເຊື່ອມຕໍ່ເຄືອຂ່າຍ, ແລະ/ຫຼື ການແປງຊື່ (name resolution) ແລ້ວລອງໃໝ່.\n"
+"       ຂໍ້ຄວາມຂໍ້ຜິດພາດ: %s\n"
 
 #: ../satellite_tools/messages.py:61
 #, python-format
@@ -1033,10 +1033,10 @@ msgid ""
 "       %s\n"
 msgstr ""
 "\n"
-"ຂໍ້ຜິດພາດ: ຊ່ອງທາງຍ່ອຍບໍ່ສາມາດປະສານຂໍ້ມູນໄດ້ ໂດຍທີ່ຊ່ອງທາງຫຼັກຍັງບໍ່ໄດ້ຮັບການປະສານຂໍ້ມູນ\n"
-"       ເຊັ່ນກັນ. ຊ່ອງທາງຫຼັກຈຳເປັນຕ້ອງ (ກ) ໄດ້ຮັບການປະສານຂໍ້ມູນມາກ່ອນແລ້ວ ຫຼື (ຂ) ປະສານຂໍ້ມູນ\n"
-"       ໄປພ້ອມໆ ກັບຊ່ອງທາງຍ່ອຍທີ່ຕ້ອງການ. ຊ່ອງທາງຫຼັກທີ່ຂາດຫາຍໄປສຳລັບ\n"
-"       ການດຳເນີນການນີ້:\n"
+"ຂໍ້ຜິດພາດ: ຊ່ອງທາງລູກບໍ່ສາມາດຊິງຄ໌ໄດ້ໂດຍທີ່ຊ່ອງທາງແມ່ຂອງມັນບໍ່ໄດ້ຖືກຊິງຄ໌ໄປ\n"
+"       ນຳ. ຊ່ອງທາງແມ່ຈຳເປັນຕ້ອງແມ່ນ (ກ) ໄດ້ຮັບການຊິງຄ໌ມາກ່ອນ ຫຼື (ຂ) ຊິງຄ໌\n"
+"       ໄປພ້ອມໆກັບຊ່ອງທາງລູກທີ່ຕ້ອງການ. ຊ່ອງທາງແມ່ທີ່ຂາດຫາຍໄປສຳລັບ\n"
+"       ລາຍການນີ້:\n"
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
@@ -1065,7 +1065,7 @@ msgstr "    %3d/%s ດຶງຂໍ້ມູນສຳເລັດ: %s (%s ໄບ�
 #: ../satellite_tools/messages.py:80
 #, python-format
 msgid "    Extinct package:  %s"
-msgstr "    ແພັກເກດທີ່ຍົກເລີກແລ້ວ:  %s"
+msgstr "    ແພັກເກດທີ່ໝົດອາຍຸ:  %s"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
@@ -1100,27 +1100,27 @@ msgstr "       ລົ້ມເຫຼວ: %d"
 #: ../satellite_tools/messages.py:89
 #, python-format
 msgid "       extinct: %d"
-msgstr "       ຍົກເລີກ: %d"
+msgstr "       ໝົດອາຍຸ: %d"
 
 #: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ metadata ຂອງແພັກເກດທີ່ກ່ຽວຂ້ອງ: %s (%s)"
+msgstr "   ກຳລັງດຶງ / ແປງຂໍ້ມູນ metadata ຂອງແພັກເກດທີ່ກ່ຽວຂ້ອງ: %s (%s)"
 
 #: ../satellite_tools/messages.py:92
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ errata: %s (%s)"
+msgstr "   ກຳລັງດຶງ / ແປງຂໍ້ມູນ errata: %s (%s)"
 
 #: ../satellite_tools/messages.py:93
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr "   ກຳລັງດຶງ / ວິເຄາະຂໍ້ມູນ kickstart: %s (%s)"
+msgstr "   ກຳລັງດຶງ / ແປງຂໍ້ມູນ kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr "   ກຳລັງດຶງ / ວິເຄາະໄຟລ໌ kickstart tree: %s (%s)"
+msgstr "   ກຳລັງດຶງ / ແປງໄຟລ໌ kickstart tree: %s (%s)"
 
 #: ../satellite_tools/messages.py:95
 #, python-format
@@ -1129,7 +1129,7 @@ msgstr "   ກຳລັງນຳເຂົ້າ metadata ຂອງແພັກ�
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
-msgstr "   * ຄຳເຕືອນ: ຂັ້ນຕອນນີ້ອາດຈະຊ້າ."
+msgstr "   * ຄຳເຕືອນ: ຂະບວນການນີ້ອາດຈະຊ້າ."
 
 #: ../satellite_tools/messages.py:97
 msgid "Linking packages to channels"
@@ -1152,17 +1152,17 @@ msgstr "ກຳລັງນຳເຂົ້າ kickstartable trees (%d)"
 #: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr "ນຳເຂົ້າ kickstartable trees ສຳເລັດແລ້ວ (%d)"
+msgstr "ນຳເຂົ້າ kickstartable trees ສຳເລັດ (%d)"
 
 #: ../satellite_tools/reposync.py:138
 msgid "+++ sending log as an email +++"
-msgstr "+++ ກຳລັງສົ່ງລັອກ (log) ທາງອີເມລ +++"
+msgstr "+++ ກຳລັງສົ່ງລັອກ (log) ທາງອີເມວ +++"
 
 #: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
-msgstr "ລາຍງານການຊິງຄ໌ %s ຈາກ %s"
+msgstr "ລາຍງານການຊິງໂຄຣໄນ %s ຈາກ %s"
 
 #: ../satellite_tools/reposync.py:151
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ ມີການຮ້ອງຂໍອີເມລ, ແຕ່ບໍ່ມີຂໍ້ມູນທີ່ຈະສົ່ງ +++"
+msgstr "+++ ມີການຮ້ອງຂໍອີເມວ, ແຕ່ບໍ່ມີຂໍ້ມູນທີ່ຈະສົ່ງ +++"
