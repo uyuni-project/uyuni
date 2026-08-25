@@ -58,14 +58,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DownloadAction;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -107,7 +102,6 @@ public class DownloadFile extends DownloadAction {
     private static final String URL_STRING = "url";
     private static final String CONTENT_TYPE_OCTET_STREAM = "application/octet-stream";
     private static final String CONTENT_TYPE_TEXT_PLAIN = "text/plain";
-    private static final String CONTENT_TYPE_TEXT_XML = "text/xml";
     private static final Long DOWNLOAD_REPO_LOG_LENGTH = 102400L;
     private static final Long DOWNLOAD_REPO_LOG_MIN_LENGTH = 10L;
 
@@ -153,12 +147,6 @@ public class DownloadFile extends DownloadAction {
             Map<String, Object> params = new HashMap<>();
             params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER);
             params.put(URL_STRING, url);
-            request.setAttribute(PARAMS, params);
-            return super.execute(mapping, formIn, request, response);
-        }
-        else if (url.startsWith("/cobbler_api")) {
-            Map<String, Object> params = new HashMap<>();
-            params.put(TYPE,  DownloadManager.DOWNLOAD_TYPE_COBBLER_API);
             request.setAttribute(PARAMS, params);
             return super.execute(mapping, formIn, request, response);
         }
@@ -376,9 +364,6 @@ public class DownloadFile extends DownloadAction {
         else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER)) {
             return getStreamInfoCobbler(params, request, response);
         }
-        else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER_API)) {
-            return getStreamInfoCobblerApi(request, response);
-        }
         else {
             Long fileId = (Long) params.get(FILEID);
             Long userid = (Long) params.get(USERID);
@@ -419,47 +404,6 @@ public class DownloadFile extends DownloadAction {
         }
         setContentInfo(response, data.getBytes().length, CONTENT_TYPE_TEXT_PLAIN);
         return getStream(data.getBytes(), CONTENT_TYPE_TEXT_PLAIN);
-    }
-
-    private StreamInfo getStreamInfoCobblerApi(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        // read data from POST body
-        StringBuilder postData = new StringBuilder();
-        String line;
-        BufferedReader reader = request.getReader();
-        while ((line = reader.readLine()) != null) {
-            postData.append(line);
-        }
-
-        // Send data
-        URL url = new URL(ConfigDefaults.get().getCobblerServerUrl() + "/cobbler_api");
-        URLConnection conn = url.openConnection();
-        conn.setDoOutput(true);
-        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-        // this will write POST /download//cobbler_api instead of
-        // POST /cobbler_api, but cobbler do not mind
-        wr.write(postData.toString(), 0, postData.length());
-        wr.flush();
-        conn.connect();
-
-        // Get the response
-        StringBuilder output = new StringBuilder();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        while ((line = rd.readLine()) != null) {
-            output.append(line);
-        }
-        wr.close();
-
-        KickstartHelper helper = new KickstartHelper(request);
-        String outputStr = output.toString();
-        if (helper.isProxyRequest()) {
-            // Search/replacing all instances of cobbler host with host
-            // we pass in, for use with Spacewalk Proxy.
-            outputStr = outputStr.replaceAll(ConfigDefaults.get().getJavaHostname(), helper.getForwardedHost());
-        }
-
-        setContentInfo(response, outputStr.length(), CONTENT_TYPE_TEXT_XML);
-        return getStream(outputStr.getBytes(), CONTENT_TYPE_TEXT_XML);
     }
 
     private StreamInfo getStreamInfoPackage(Long fileId, User user, HttpServletResponse response) {

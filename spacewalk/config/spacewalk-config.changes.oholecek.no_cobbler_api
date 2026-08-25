@@ -1,0 +1,2 @@
+- CVE-2026-71400: Remove cobbler_api endpoint from public interface
+  (bsc#1274613, bsc#1274775)
