@@ -102,7 +102,6 @@ install -d -m 0775 %{buildroot}%{_localstatedir}/spacewalk
 install -d -m 0775 %{buildroot}/%{_localstatedir}/spacewalk/systems
 install -d -m 0775 %{buildroot}/%{_localstatedir}/spacewalk/packages
 install -d -m 0700 %{buildroot}/%{_localstatedir}/spacewalk/gpg
-install -d -m 0700 %{buildroot}/%{_localstatedir}/lib/spacewalk/gpgdir
 %endif
 mkdir -p %{buildroot}%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/srv/www/distributions
@@ -128,7 +127,6 @@ getent passwd %{apache_user} >/dev/null && %{_sbindir}/usermod -a -G susemanager
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/systems
 %dir %attr(775,%{apache_user}, %{apache_group}) %{_localstatedir}/spacewalk/packages
 %dir %attr(700,tomcat,susemanager) %{_localstatedir}/spacewalk/gpg
-%dir %attr(700,tomcat,susemanager) %{_localstatedir}/lib/spacewalk/gpgdir
 %dir %attr(755,root,root) %{www_path}/www
 %dir %attr(755,root,root) %{www_path}/www/distributions
 %endif

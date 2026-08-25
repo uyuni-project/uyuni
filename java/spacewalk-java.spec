@@ -517,6 +517,7 @@ install -d -m 755 %{buildroot}%{cobprofdir}
 install -d -m 755 %{buildroot}%{cobprofdirup}
 install -d -m 755 %{buildroot}%{cobprofdirwiz}
 install -d -m 755 %{buildroot}%{cobdirsnippets}
+install -d -m 700 %{buildroot}%{_localstatedir}/lib/spacewalk/gpgdir
 install -d -m 755 %{buildroot}%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 %{buildroot}%{_localstatedir}/lib/spacewalk/subscription-matcher
 
@@ -743,6 +744,7 @@ fi
 %endif
 %attr(755,root,root) %dir %{cobblerdir}
 
+%attr(700, tomcat, susemanager) %dir %{_localstatedir}/lib/spacewalk/gpgdir
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/subscription-matcher
 %dir %{serverdir}/tomcat/webapps/rhn/WEB-INF
