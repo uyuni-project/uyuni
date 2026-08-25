@@ -1,0 +1,2 @@
+- Commit transaction in syncChannel when repo-sync is running for
+  the same channel to prevent possible deadlocks (bsc#1274884)

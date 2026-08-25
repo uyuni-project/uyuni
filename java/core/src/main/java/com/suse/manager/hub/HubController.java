@@ -29,6 +29,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
+import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.HubRegistrationChanged;
@@ -56,6 +57,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -344,7 +346,8 @@ public class HubController {
         }
 
         try {
-            hubManager.syncChannels(token, channelInfoList);
+            TimeUtils.logTime(LOGGER, Level.DEBUG, "Sync Channels", () ->
+                    hubManager.syncChannels(token, channelInfoList));
             Date earliest = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
             taskomaticApi.scheduleProductRefresh(earliest, false);
             return success(response);
