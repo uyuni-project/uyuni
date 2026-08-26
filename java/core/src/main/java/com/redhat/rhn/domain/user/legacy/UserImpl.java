@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.AddressImpl;
+import com.redhat.rhn.domain.user.AuthType;
 import com.redhat.rhn.domain.user.EnterpriseUser;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.RhnTimeZone;
@@ -637,6 +638,18 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void setUsePamAuthentication(boolean usePamAuthenticationIn) {
         this.userInfo.setUsePamAuthentication(usePamAuthenticationIn);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AuthType getAuthType() {
+        return this.userInfo.getAuthType();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setAuthType(AuthType authTypeIn) {
+        this.userInfo.setAuthType(authTypeIn);
     }
 
     /** {@inheritDoc} */
