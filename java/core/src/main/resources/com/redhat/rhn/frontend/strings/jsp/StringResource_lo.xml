@@ -17355,7 +17355,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
       <!-- addfiles.jsp -->
       <trans-unit id="config.error.file-exists" xml:space="preserve">
         <source>A file named "{0}" already exists in this channel.</source>
-        <target state="translated">ມີໄຟລ໌ຊື່ "{0}" ຢູ່ແລ້ວໃນຊ່ອງທາງນີ້.</target>
+        <target state="translated">ມີໄຟລ໌ຊື່ "{0}" ຢູ່ໃນຊ່ອງທາງນີ້ແລ້ວ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
@@ -21817,7 +21817,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.operationname" xml:space="preserve">
         <source>Schedule Package Upgrades</source>
-        <target state="translated">ກຳນົດເວລາຍົກລະດັບແພັກເກດ</target>
+        <target state="translated">ກຳນົດເວລາການອັບເກຣດຊຸດໂປຣແກຣມ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
