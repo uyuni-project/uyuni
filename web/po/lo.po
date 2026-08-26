@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-26 15:42+0000\n"
+"PO-Revision-Date: 2026-08-26 18:33+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -568,7 +568,7 @@ msgstr "ສ້າງ {label}"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
-msgstr "ຊ່ອງທາງການຕັ້ງຄ່າ"
+msgstr "ຊ່ອງທາງການກຳນົດຄ່າ"
 
 #: ../html/src/components/datetime/DateTimePicker.tsx:126
 msgid "Previous month"
@@ -1977,7 +1977,7 @@ msgstr "ກະລຸນາກວດສອບສິ່ງທີ່ເລືອກ
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:103
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:182
 msgid "Systems"
-msgstr "Systems"
+msgstr "ລະບົບ"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:63
 msgid "Product after migration"
@@ -6983,7 +6983,7 @@ msgstr "ລ້າງແຄຊ໌ຂໍ້ມູນ (fact cache):"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
 msgid "Variables"
-msgstr "ຕົວປ່ຽນ (Variables)"
+msgstr "ຕົວປ່ຽນ"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -7229,7 +7229,7 @@ msgstr "ກຳລັງໂຫຼດຊ່ອງທາງຍ່ອຍ.."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:112
 msgid "Base Channel:"
-msgstr "ຊ່ອງທາງພື້ນຖານ:"
+msgstr "ຊ່ອງທາງຫຼັກ:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
