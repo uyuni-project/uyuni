@@ -217,7 +217,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.println("\nReturns:\n");
-        writeReturn(writer, operation, entry.documentedByOverload());
+        writeReturn(writer, entry.documentedByOverload());
         writer.print("\n\n\n");
     }
 
@@ -322,10 +322,9 @@ public class OpenApiToAsciidocParser {
      * Writes the return value of a documented call.
      *
      * @param writer the writer to write to
-     * @param operation the operation the call belongs to, which names it
      * @param documentedByOverload the overload documenting the call, which describes what it answers
      */
-    private void writeReturn(PrintWriter writer, Operation operation, Operation documentedByOverload) {
+    private void writeReturn(PrintWriter writer, Operation documentedByOverload) {
         var responses = documentedByOverload.getResponses();
         if (responses == null) {
             return;
