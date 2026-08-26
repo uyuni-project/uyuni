@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 22:52+0000\n"
+"PO-Revision-Date: 2026-08-26 15:42+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -1627,7 +1627,7 @@ msgstr "ລຶບອອກ"
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
 #: ../html/src/manager/admin/access-control/access-group.tsx:209
 msgid "Users"
-msgstr "ຜູ້ໃຊ້"
+msgstr "ຜູ້ໃຊ້ (Users)"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
 #: ../html/src/manager/login/uyuni/login.tsx:85
@@ -2218,7 +2218,7 @@ msgstr "ລະບົບທີ່ບໍ່ແມ່ນ Virtual"
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr "ພຣັອກຊີ (Proxy)"
+msgstr "Proxy"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
@@ -2427,7 +2427,7 @@ msgstr "ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິ
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
-msgstr "ອົງກອນ"
+msgstr "ອົງກອນ (Organization)"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:134
 msgid "Search for organizations..."
@@ -2842,7 +2842,7 @@ msgstr "ກັ່ນຕອງຕາມຄ່າໃດໜຶ່ງ"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:13
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:486
 msgid "Host"
-msgstr "ໂຮສ (Host)"
+msgstr "Host"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:92
 msgid "Last Update Status"
@@ -2959,7 +2959,7 @@ msgstr "ເມື່ອແກ້ໄຂການເຊື່ອມຕໍ່ SSH, 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:17
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
 msgid "SSH Port"
-msgstr "ພອດ SSH"
+msgstr "SSH Port"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
@@ -2972,7 +2972,7 @@ msgstr "ຜູ້ໃຊ້"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
 msgid "SSH Private Key"
-msgstr "SSH Private Key (ຄີສ່ວນຕົວ SSH)"
+msgstr "SSH Private Key"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:37
@@ -4971,7 +4971,7 @@ msgstr "ເສັ້ນທາງ (Path)"
 #: ../html/src/manager/images/image-profile-edit.tsx:398
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:584
 msgid "Activation Key"
-msgstr "ຄີເປີດໃຊ້ງານ (Activation Key)"
+msgstr "Activation Key"
 
 #: ../html/src/manager/images/image-build.tsx:355
 msgid "Build Image"
@@ -6241,7 +6241,7 @@ msgstr "ສະຖານະແພັກເກດ"
 #: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 msgid "State"
-msgstr "ສະຖານະ"
+msgstr "ແຂວງ/ລັດ (State)"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:36
 msgid "Package states have been saved."
@@ -6496,7 +6496,7 @@ msgstr "ນຳໃຊ້"
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:18
 #: ../html/src/manager/notifications/notifications-list.tsx:145
 msgid "Summary"
-msgstr "ສະຫຼຸບ"
+msgstr "ບົດສະຫຼຸບ"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:25
 msgid "Install Program Temporary Fixes (PTFs)"
@@ -6770,11 +6770,11 @@ msgstr "ລະຫັດປະເທດ 2 ຕົວອັກສອນ"
 
 #: ../html/src/manager/proxy/container-config.tsx:321
 msgid "City"
-msgstr "ເມືອງ"
+msgstr "ເມືອງ (City)"
 
 #: ../html/src/manager/proxy/container-config.tsx:323
 msgid "Organization Unit"
-msgstr "ໜ່ວຍງານຂອງອົງກອນ"
+msgstr "ໜ່ວຍງານອົງກອນ (Organization Unit)"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "The root CA"
@@ -6989,7 +6989,7 @@ msgstr "ຕົວປ່ຽນ (Variables)"
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
 #: ../html/src/manager/state/highstate.tsx:148
 msgid "Highstate"
-msgstr "Highstate"
+msgstr "ໄຮສະເຕດ (Highstate)"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 msgid "Custom State"
@@ -7278,7 +7278,7 @@ msgstr "ກວດສອບຫຼ້າສຸດເມື່ອ"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:590
 msgid "Base Channel"
-msgstr "Base Channel (ຊ່ອງທາງຫຼັກ)"
+msgstr "ຊ່ອງທາງຫຼັກ (Base Channel)"
 
 #: ../html/src/manager/systems/all-list.tsx:183
 #: ../html/src/manager/systems/list-filter.tsx:53
@@ -7410,7 +7410,7 @@ msgstr "ບໍ່ມີ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:606
 msgid "Reactivation Key"
-msgstr "ຄີເປີດໃຊ້ງານຄືນໃໝ່ (Reactivation Key)"
+msgstr "Reactivation Key"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:612
 msgid "Leave empty when no reactivation is wanted"
