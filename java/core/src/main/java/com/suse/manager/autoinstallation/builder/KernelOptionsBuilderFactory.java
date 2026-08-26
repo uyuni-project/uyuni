@@ -87,10 +87,17 @@ public class KernelOptionsBuilderFactory {
      * @return the kernel options builder (never null)
      */
     public static KernelOptionsBuilder getBuilderForBreed(String breed, String osVersion) {
-        if (breed == null || breed.isBlank() || "redhat".equals(breed) || "generic".equals(breed)) {
+        if (breed == null || breed.isBlank()) {
             return new RhelKernelOptionsBuilder();
         }
         return switch (breed) {
+            case "generic" -> {
+                if (osVersion.startsWith(KickstartInstallType.SLES_PREFIX + "16")) {
+                    yield new AgamaKernelOptionsBuilder();
+                }
+                yield new RhelKernelOptionsBuilder();
+            }
+            case "redhat" -> new RhelKernelOptionsBuilder();
             case "suse" -> new AutoYastKernelOptionsBuilder();
             case "debian", "ubuntu" -> new DebianKernelOptionsBuilder();
             default -> DEFAULT_BUILDER;

@@ -224,15 +224,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return if this installer type is SLES 11 or greater (for SLES 12)
      */
     public boolean isSLES11OrGreater() {
-        return (isSLES10OrGreater() && !isSLES10());
-    }
-
-    /**
-     * @return if this installer type is SLES 10 or greater (for SLES 11)
-     */
-    public boolean isSLES10OrGreater() {
-        // we need to reverse logic here
-        return (!isRhel() && !isFedora() && !isGeneric() && isSLES());
+        return (isSLES() && !isSLES10());
     }
 
     /**
@@ -304,7 +296,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
-        if (getLabel().equals(GENERIC_RPM) || isSLES16OrGreater()) {
+        if (isGeneric() || isSLES16OrGreater()) {
             return GENERIC_BREED;
         }
         if (isSUSE()) {
@@ -318,9 +310,6 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler os_version compatible string
      */
     public String getCobblerOsVersion() {
-        if (isSLES16OrGreater()) {
-            return this.getLabel();
-        }
         if (this.getCobblerBreed().equals(REDHAT_BREED) && !this.isFedora()) {
             return this.getLabel().replace("_", "");
         }

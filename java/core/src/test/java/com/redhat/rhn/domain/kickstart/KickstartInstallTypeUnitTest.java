@@ -33,7 +33,6 @@ public class KickstartInstallTypeUnitTest {
         assertTrue(sles16.isSLES15OrGreater());
         assertTrue(sles16.isSLES12OrGreater());
         assertTrue(sles16.isSLES11OrGreater());
-        assertTrue(sles16.isSLES10OrGreater());
         assertFalse(sles16.isSLES15());
         assertFalse(sles16.isSLES12());
         assertFalse(sles16.isSLES11());
