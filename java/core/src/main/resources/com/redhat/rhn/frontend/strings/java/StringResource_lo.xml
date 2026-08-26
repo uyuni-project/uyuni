@@ -310,6 +310,7 @@
       </trans-unit>
       <trans-unit id="All" xml:space="preserve">
         <source>All</source>
+        <target state="translated">ທັງໝົດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1171,6 +1172,7 @@
       </trans-unit>
       <trans-unit id="Users" xml:space="preserve">
         <source>Users</source>
+        <target state="translated">ຜູ້ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
