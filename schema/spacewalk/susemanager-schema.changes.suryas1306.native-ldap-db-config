@@ -1,0 +1,2 @@
+- Add suseLdapAuthServer, ldap credentials type, and per-user /
+  per-external-group LDAP directory references for native LDAP auth

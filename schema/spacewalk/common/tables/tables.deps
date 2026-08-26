@@ -194,11 +194,11 @@ rhnTaskoSchedule                   :: rhnTaskoBunch
 rhnTaskoTemplate                   :: rhnTaskoBunch rhnTaskoTask
 rhnTransactionPackage              :: rhnTransactionOperation rhnPackageArch \
                                       rhnPackageEVR rhnPackageName
-rhnUserExtGroup                    :: web_customer
+rhnUserExtGroup                    :: web_customer suseLdapAuthServer
 rhnUserExtGroupMapping             :: rhnUserExtGroup rhnUserGroupType
 rhnUserGroupMembers                :: web_contact rhnUserGroup
 rhnUserGroup                       :: web_customer rhnUserGroupType
-rhnUserInfo                        :: web_contact rhnTimezone
+rhnUserInfo                        :: web_contact rhnTimezone suseLdapAuthServer
 rhnUserInfoPane                    :: rhnInfoPane web_contact
 rhnUserServerGroupPerms            :: web_contact rhnServerGroup
 rhnUserServerPerms                 :: web_contact rhnServer
@@ -245,6 +245,7 @@ suseImageStore                     :: suseCredentials web_customer suseImageStor
 suseISSHub                         :: suseCredentials
 suseISSPeripheral                  :: suseCredentials
 suseISSPeripheralChannels          :: suseISSPeripheral rhnChannel
+suseLdapAuthServer                 :: web_customer suseCredentials
 suseISSAccessToken                 :: iss_access_token_type_t
 suseMaintenanceCalendar            :: web_customer
 suseMaintenanceSchedule            :: web_customer suseMaintenanceCalendar
