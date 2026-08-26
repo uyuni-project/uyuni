@@ -483,7 +483,7 @@ public class SaltUtils {
 
         if (transactionalResult &&
                 action instanceof ApplyStatesAction applyStatesAction &&
-                !TransactionalActionManager.hasAfterRebootState(action)) {
+                !TransactionalActionManager.hasPostTransactionalState(action)) {
             applyStatesAction.storeApplyStatesResult(serverAction, jsonResult, retcode);
         }
 
@@ -528,7 +528,7 @@ public class SaltUtils {
                 serverAction.setCompletionTime(completionTime);
                 serverAction.setStatusFailed();
             }
-            else if (TransactionalActionManager.hasAfterRebootState(action)) {
+            else if (TransactionalActionManager.hasPostTransactionalState(action)) {
                 serverAction.setCompletionTime(null);
             }
             else {
@@ -547,7 +547,20 @@ public class SaltUtils {
                 saltApi, systemQuery);
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
+        if (isStateApplyFunction(function)) {
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minion -> TransactionalActionManager.recordPostTransactionalContinuationResult(
+                            minion.getId(), action.getId(), serverAction.isStatusFailed()));
+        }
+
         LOG.debug("Finished update server action for action {}", action.getId());
+    }
+
+    private static boolean isStateApplyFunction(Optional<Xor<String[], String>> function) {
+        return function
+                .map(xor -> xor.fold(Arrays::asList, List::of))
+                .orElseGet(List::of)
+                .contains("state.apply");
     }
 
     private static TransactionalActionManager.TransactionalResult setTransactionalResultMsg(
