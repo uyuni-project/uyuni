@@ -11,27 +11,23 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.reactor.hardware.cpu.CpuInfoMapper;
 import com.suse.manager.reactor.hardware.device.DeviceSynchronizer;
 import com.suse.manager.reactor.hardware.network.NetworkMapper;
+import com.suse.manager.reactor.hardware.virtualization.VirtualizationMapper;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
@@ -42,7 +38,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +61,7 @@ public class HardwareMapper {
     private final CpuInfoMapper cpuMapper;
     private final NetworkMapper networkMapper;
     private final DeviceSynchronizer deviceSynchronizer;
+    private final VirtualizationMapper virtualizationMapper;
 
     /**
      * Create a hardware mapper for a given server with grains.
@@ -79,6 +75,7 @@ public class HardwareMapper {
         this.cpuMapper = new CpuInfoMapper(serverIn, grains);
         this.networkMapper = new NetworkMapper(server, grains);
         this.deviceSynchronizer = new DeviceSynchronizer(server);
+        this.virtualizationMapper = new VirtualizationMapper(server, grains);
     }
 
     /**
@@ -387,207 +384,12 @@ public class HardwareMapper {
     }
 
     /**
-     * Get the memory amount to set. Most of the times we don't want to update it since a better value comes from
-     * the virtual host, but for foreign hosts and systems with no memory set, take the value seen from the guest OS:
-     * it's better than no value at all.
-     */
-    private long getUpdatedGuestMemory(long memory, VirtualInstance virtualInstance) {
-        boolean isForeign = virtualInstance.getHostSystem() != null &&
-                virtualInstance.getHostSystem().hasEntitlement(EntitlementManager.FOREIGN);
-        long newMemory = memory;
-        // Only foreign system (s390 and VHM) and systems with no memory set should have updated memory
-        if (!isForeign && virtualInstance.getTotalMemory() != null &&
-                0 != virtualInstance.getTotalMemory()) {
-            newMemory = virtualInstance.getTotalMemory();
-        }
-        return newMemory;
-    }
-
-    /**
      * Map virtualization information to the database.
      *
      * @param smbiosRecordsSystem optional DMI information about the system
      */
     public void mapVirtualizationInfo(Optional<Map<String, Object>> smbiosRecordsSystem) {
-        String virtTypeLowerCase = StringUtils.lowerCase(
-                grains.getValueAsString("virtual"));
-        String virtSubtype = grains.getValueAsString("virtual_subtype");
-        String instanceId = grains.getValueAsString("instance_id");
-        String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
-        int vCPUs = grains.getValueAsLong("total_num_cpus").orElse(0L).intValue();
-        long memory = grains.getValueAsLong("mem_total").orElse(0L);
-
-        if (virtTypeLowerCase == null) {
-            errors.add("Virtualization: Grain 'virtual' has no value");
-        }
-
-        VirtualInstanceType type = null;
-
-        if (VirtualizationEntitlement.isVirtualGuest(virtTypeLowerCase, virtSubtype)) {
-            if (StringUtils.isNotBlank(virtUuid)) {
-
-                virtUuid = StringUtils.remove(virtUuid, '-');
-                type = getVirtualInstanceType(virtTypeLowerCase, virtSubtype);
-            }
-        }
-        else if (smbiosRecordsSystem.isPresent()) {
-            // there's no DMI on S390 and PPC64
-            ValueMap dmiSystem = new ValueMap(smbiosRecordsSystem
-                    .orElse(Collections.emptyMap()));
-            String manufacturer = dmiSystem.getValueAsString("manufacturer");
-            String productName = dmiSystem.getValueAsString("product_name");
-            if ("HITACHI".equalsIgnoreCase(manufacturer) &&
-                    productName.endsWith(" HVM LPAR")) {
-                if (StringUtils.isEmpty(virtUuid)) {
-                    virtUuid = "flex-guest";
-                }
-                type = VirtualInstanceFactory.getInstance()
-                        .getVirtualInstanceType("virtage");
-            }
-        }
-
-        if (type != null) {
-            final VirtualInstanceType virtType = type;
-            List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
-                    .lookupVirtualInstanceByUuid(virtUuid);
-
-            if (grains.getValueAsString("os_family").contentEquals(ServerConstants.OS_FAMILY_SUSE) &&
-                    grains.getValueAsString("osrelease").startsWith("11") &&
-                        StringUtils.isEmpty(instanceId)) {
-                virtUuid = fixAndReturnSle11Uuid(virtUuid);
-                // Fix the "uuid" for already wrong created virtual instances
-                for (VirtualInstance virtualInstance : virtualInstances) {
-                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [{}] -> [{}]",
-                            virtualInstance.getUuid(), virtUuid);
-                    VirtualInstanceFactory.getInstance()
-                            .deleteVirtualInstanceOnly(virtualInstance);
-                    VirtualInstanceManager.addGuestVirtualInstance(
-                            virtUuid, virtualInstance.getName(), virtualInstance.getType(),
-                            virtualInstance.getState(), virtualInstance.getHostSystem(),
-                            virtualInstance.getGuestSystem());
-                    }
-                // Now collecting virtual instances with the correct uuid
-                virtualInstances = VirtualInstanceFactory.getInstance()
-                    .lookupVirtualInstanceByUuid(virtUuid);
-            }
-
-            if (virtualInstances.isEmpty()) {
-                // For some reason, the uuid of the VM may have changed.
-                // Check if we already have a VM with the same virtual_system_id.
-                VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance().lookupByGuestId(server.getId());
-                if (virtualInstance == null) {
-                    VirtualInstanceManager.addGuestVirtualInstance(
-                            virtUuid, server.getName(), type,
-                            VirtualInstanceFactory.getInstance().getRunningState(),
-                            null, server, vCPUs, memory);
-                }
-                else {
-                    virtualInstance.setUuid(virtUuid);
-                    updateVirtualInstance(vCPUs, memory, virtType, virtualInstance);
-                }
-            }
-            else {
-                virtualInstances.forEach(
-                        virtualInstance -> updateVirtualInstance(vCPUs, memory, virtType, virtualInstance));
-            }
-        }
-    }
-
-    private VirtualInstanceType getVirtualInstanceType(String virtTypeLowerCase, String virtSubtype) {
-        String virtTypeLabel = virtTypeLowerCase;
-        switch (virtTypeLowerCase) {
-            case "xen":
-                if ("Xen PV DomU".equals(virtSubtype)) {
-                    virtTypeLabel = "para_virtualized";
-                }
-                else {
-                    virtTypeLabel = "fully_virtualized";
-                }
-                break;
-            case "qemu", "kvm":
-                virtTypeLabel = "qemu";
-                break;
-            case "nitro":
-                virtTypeLabel = "aws_nitro";
-                break;
-            default:
-                LOG.info("Detected virtual instance type '{}' for minion '{}'",
-                        virtTypeLabel, server.getMinionId());
-        }
-        if (virtSubtype.startsWith("Amazon EC2")) {
-            switch (virtTypeLowerCase) {
-                case "xen":
-                    virtTypeLabel = "aws_xen";
-                    break;
-                case "qemu", "kvm", "nitro":
-                    virtTypeLabel = "aws_nitro";
-                    break;
-                default:
-                    virtTypeLabel = "aws";
-            }
-        }
-
-        VirtualInstanceType type = VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtTypeLabel);
-
-        if (type == null) { // fallback
-            type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-            LOG.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}' for minion '{}'",
-                    virtTypeLowerCase, type.getLabel(), server.getMinionId());
-        }
-
-        return type;
-    }
-
-    /**
-     * Update the virtual instance information
-     * @param vCPUs virtual CPUs
-     * @param memory memory
-     * @param virtType virtual instance type
-     * @param virtualInstance virtunalInstance to be updated
-     */
-    private void updateVirtualInstance(int vCPUs, long memory, VirtualInstanceType virtType,
-                                       VirtualInstance virtualInstance) {
-        long newMemory = getUpdatedGuestMemory(memory, virtualInstance);
-        String name = virtualInstance.getName();
-        if (StringUtils.isBlank(name)) {
-            // use minion name only when the hypervisor name is unknown
-            name = server.getName();
-        }
-        if (virtType != virtualInstance.getType()) {
-            LOG.info("Changing the type from -> {} to -> {}", virtualInstance.getType().getLabel(),
-                    virtType.getLabel());
-            // Set rereg manual as DB trigger fire on update only, but we delete/insert.
-            Optional.ofNullable(virtualInstance.getGuestSystem()).ifPresent(
-                    gSrv -> SCCCachingFactory.setReregRequired(gSrv, true));
-            virtualInstance.setType(virtType);
-        }
-        // Don't update memory with kernel-seen one
-        VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
-                VirtualInstanceFactory.getInstance().getRunningState(),
-                virtualInstance.getHostSystem(), server, vCPUs, newMemory);
-    }
-
-    /**
-     * Determine the correct virtual guest UUID on SLE11 systems:
-     * - Returns "swapped" (little-endianized) UUID and clean up a
-     * dangling virtual instance with incorrect UUID if such exists.
-     *
-     * @param virtUuid - the virtual UUID as reported from grains
-     * @return the correct UUID of a virtual guest
-     */
-    private String fixAndReturnSle11Uuid(String virtUuid) {
-        // Fix the wrong "uuid" reported by the minion
-        // and remove buggy VirtualInstances with such wrong "uuid" from the DB.
-        String virtUuidSwapped = SaltUtils.uuidToLittleEndian(virtUuid);
-        LOG.warn("Virtual machine doesn't report correct virtual UUID: {}. Coercing to : {}.", virtUuid,
-                virtUuidSwapped);
-        List<VirtualInstance> wrongVirtualInstances = VirtualInstanceFactory
-                .getInstance().lookupVirtualInstanceByUuid(virtUuid);
-        wrongVirtualInstances.forEach(virtInstance ->
-                VirtualInstanceFactory.getInstance()
-                        .deleteVirtualInstanceOnly(virtInstance)
-        );
-        return virtUuidSwapped;
+        virtualizationMapper.mapVirtualizationInfo(smbiosRecordsSystem).ifPresent(errors::add);
     }
 
     /**

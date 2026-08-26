@@ -78,7 +78,45 @@ public final class HardwareConstants {
     // ID_TYPE property values
     public static final String ID_TYPE_CD = "cd";
 
+    // Grain keys for virtualization mapping
+    public static final String GRAIN_VIRTUAL = "virtual";
+    public static final String GRAIN_VIRTUAL_SUBTYPE = "virtual_subtype";
+    public static final String GRAIN_INSTANCE_ID = "instance_id";
+    public static final String GRAIN_UUID = "uuid";
+    public static final String GRAIN_TOTAL_NUM_CPUS = "total_num_cpus";
+    public static final String GRAIN_MEM_TOTAL = "mem_total";
+    public static final String GRAIN_OS_FAMILY = "os_family";
+    public static final String GRAIN_OSRELEASE = "osrelease";
+
+    // Values of the 'virtual' grain
+    public static final String VIRTUAL_XEN = "xen";
+    public static final String VIRTUAL_QEMU = "qemu";
+    public static final String VIRTUAL_KVM = "kvm";
+    public static final String VIRTUAL_NITRO = "nitro";
+
+    // Values of the 'virtual_subtype' grain
+    public static final String VIRTUAL_SUBTYPE_XEN_PV_DOMU = "Xen PV DomU";
+    public static final String VIRTUAL_SUBTYPE_AMAZON_EC2_PREFIX = "Amazon EC2";
+
+    // Virtual instance type labels (from rhnVirtualInstanceType table)
+    public static final String VIRT_TYPE_PARA_VIRTUALIZED = "para_virtualized";
+    public static final String VIRT_TYPE_FULLY_VIRTUALIZED = "fully_virtualized";
+    public static final String VIRT_TYPE_QEMU = "qemu";
+    public static final String VIRT_TYPE_AWS = "aws";
+    public static final String VIRT_TYPE_AWS_XEN = "aws_xen";
+    public static final String VIRT_TYPE_AWS_NITRO = "aws_nitro";
+    public static final String VIRT_TYPE_VIRTAGE = "virtage";
+
+    // Hitachi Virtage (HVM LPAR) detection through DMI
+    public static final String DMI_MANUFACTURER_HITACHI = "HITACHI";
+    public static final String DMI_PRODUCT_HVM_LPAR_SUFFIX = " HVM LPAR";
+    public static final String FLEX_GUEST_UUID = "flex-guest";
+
+    // SLE 11 reports a wrong (big-endian) virtual UUID and needs to be coerced
+    public static final String SLE11_OSRELEASE_PREFIX = "11";
+
     // Error messages
+    public static final String GRAIN_VIRTUAL_HAS_NO_VALUE = "Virtualization: Grain 'virtual' has no value";
     public static final String HARDWARE_REFRESH_INCOMPLETE = "Hardware list could not be refreshed completely:\n";
     public static final String HARDWARE_REFRESH_ERROR = "Hardware list could not be refreshed";
 
