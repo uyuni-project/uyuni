@@ -54,6 +54,11 @@ public class OpenApiToAsciidocParser {
     /** Bullet level the doclet uses for the element struct of an array-valued parameter. */
     private static final int PARAMETER_ELEMENT_STRUCT_LEVEL = 2;
 
+    /** Bullet level the doclet uses for the documented values of a parameter. */
+    private static final int PARAMETER_OPTION_LEVEL = 2;
+
+    private static final int RETURN_OPTION_LEVEL = 2;
+
     /** OpenAPI type name for an array-valued schema. */
     private static final String ARRAY_TYPE = "array";
 
@@ -136,14 +141,15 @@ public class OpenApiToAsciidocParser {
         }
         String tag = operation.getTags().get(0);
 
-        boolean securityRequired = isSecurityRequired(operation);
         List<String> required = getFieldsByRequirement(operation, true);
         List<String> optional = getFieldsByRequirement(operation, false);
 
         List<DocEntry> entries = operationsByTag.computeIfAbsent(tag, key -> new ArrayList<>());
 
         for (List<String> params : UyuniSwaggerReader.expandOverloads(operation, required, optional)) {
-            entries.add(DocEntry.create(method, operation, params, securityRequired));
+            Operation documentedByOverload = UyuniSwaggerReader.operationForCall(operation, params);
+            entries.add(DocEntry.create(method, operation, documentedByOverload, params,
+                    isSecurityRequired(documentedByOverload)));
         }
     }
 
@@ -188,17 +194,21 @@ public class OpenApiToAsciidocParser {
                     """,
                 tag,
                 entry.anchor(),
-                operation.getOperationId(),
+                Boolean.TRUE.equals(entry.documentedByOverload().getDeprecated()) ?
+                        operation.getOperationId() + " (Deprecated)" : operation.getOperationId(),
                 entry.method(),
                 summary,
                 description
         );
 
-        if (isSecurityRequired(operation)) {
+        if (isSecurityRequired(entry.documentedByOverload())) {
             writer.println("* [.string]#string#  sessionKey\n");
         }
 
+        // A call takes the parameters of the overload documenting it, which describes the ones it
+        // shares with the others as its own signature declares them.
         Map<String, Schema> allProps = getAllPossibleProperties(operation);
+        allProps.putAll(getAllPossibleProperties(entry.documentedByOverload()));
         for (String paramName : entry.activeParams()) {
             Schema schema = allProps.get(paramName);
             if (schema != null) {
@@ -207,7 +217,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.println("\nReturns:\n");
-        writeReturn(writer, operation);
+        writeReturn(writer, entry.documentedByOverload());
         writer.print("\n\n\n");
     }
 
@@ -226,6 +236,7 @@ public class OpenApiToAsciidocParser {
         }
 
         writer.printf("* %s  %s%s%n", parameterType(schema), paramName, suffix);
+        printOptions(writer, resolved == null ? schema : resolved, PARAMETER_OPTION_LEVEL);
         writeParameterElement(writer, resolved == null ? schema : resolved);
         writer.println();
     }
@@ -307,8 +318,14 @@ public class OpenApiToAsciidocParser {
         return openAPI.getSecurity() != null && !openAPI.getSecurity().isEmpty();
     }
 
-    private void writeReturn(PrintWriter writer, Operation operation) {
-        var responses = operation.getResponses();
+    /**
+     * Writes the return value of a documented call.
+     *
+     * @param writer the writer to write to
+     * @param documentedByOverload the overload documenting the call, which describes what it answers
+     */
+    private void writeReturn(PrintWriter writer, Operation documentedByOverload) {
+        var responses = documentedByOverload.getResponses();
         if (responses == null) {
             return;
         }
@@ -332,7 +349,10 @@ public class OpenApiToAsciidocParser {
             schema = resolveSchemaReference(docSchema);
         }
 
-        if (docSchema == null && schema.getProperties() != null && schema.getProperties().containsKey("result")) {
+        // The payload of a response is carried beside the status of the call, which tells the
+        // wrapper apart from a documented struct that happens to hold a property called result.
+        if (docSchema == null && schema.getProperties() != null &&
+                schema.getProperties().containsKey("result") && schema.getProperties().containsKey("success")) {
             Schema<?> resultSchema = (Schema<?>) schema.getProperties().get("result");
             refName = extractRefName(resultSchema.get$ref());
             schema = resolveSchemaReference(resultSchema);
@@ -347,7 +367,8 @@ public class OpenApiToAsciidocParser {
         // that are not simple: the doclet renders those as a single typed line, without expanding
         // the schema.
         if (isSimpleType(schema) || !legacyDocResponse.type().isBlank()) {
-            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(), operation);
+            writeSimpleReturn(writer, schema, responseLabel, legacyDocResponse.type(),
+                    legacyDocResponse.plainText(), legacyDocResponse.values());
             return;
         }
 
@@ -364,7 +385,10 @@ public class OpenApiToAsciidocParser {
         return new LegacyDocResponseData(
                 schema instanceof Schema<?> docSchema ? docSchema : null,
                 type,
-                name
+                name,
+                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_PLAIN_TEXT_EXTENSION)),
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION) instanceof
+                        Schema<?> values ? values : null
         );
     }
 
@@ -413,9 +437,19 @@ public class OpenApiToAsciidocParser {
         }
         resolved.getProperties().forEach((name, prop) -> {
             Schema<?> nested = resolveNestedStruct(prop);
-            String label = nested != null && !legacyDocName(prop).isEmpty() ? legacyDocName(prop) : name;
+            // An array property spends its legacy name on the element struct, so only a scalar or
+            // struct property renames itself with it.
+            String label = ARRAY_TYPE.equals(prop.getType()) || legacyDocName(prop).isEmpty() ?
+                    name : legacyDocName(prop);
             writeStructProperty(writer, "", label, prop, level);
+            printOptions(writer, prop, level + 1);
             printElementStruct(writer, prop, level + 1);
+            printSimpleElement(writer, prop, level);
+            // A serializer referenced by a struct property brings its own struct label, which the
+            // doclet renders as a sibling of the property before the fields it introduces.
+            if (nested != null && !legacyDocName(nested).isEmpty()) {
+                writer.printf("%s [.struct]#struct#  %s%n", "*".repeat(level), legacyDocName(nested));
+            }
             printStructProperties(writer, nested, level + 1);
         });
     }
@@ -468,6 +502,89 @@ public class OpenApiToAsciidocParser {
         printStructProperties(writer, resolvedItems, level + 1);
     }
 
+    /**
+     * Writes the named element of an array property that holds a simple type.
+     *
+     * The doclet names such an element with {@code #array_single}, which it renders as an item of
+     * its own beside a property documented as a bare array. A property documenting the element
+     * type on itself, with {@code #prop_array}, names the element there and shows no such item,
+     * so only a property declaring the bare array type carries one.
+     *
+     * @param writer the writer to write to
+     * @param property the array property schema
+     * @param level the bullet level of the property
+     */
+    private void printSimpleElement(PrintWriter writer, Schema<?> property, int level) {
+        String label = legacyDocName(property);
+        if (!ARRAY_TYPE.equals(legacyDocType(property)) || label.isEmpty()) {
+            return;
+        }
+        Schema<?> items = resolveSchemaReference(property.getItems());
+        if (items == null || !isSimpleType(items)) {
+            return;
+        }
+        writer.printf("%s [.array]#%s array#  %s%n", "*".repeat(level), structPropertyType(items), label);
+    }
+
+    /**
+     * Writes the documented values of a parameter or property, one bullet level below it.
+     *
+     * The doclet renders {@code #options()} as a plain bullet list carrying no type marker, and
+     * appends the description after a dash for the {@code #item_desc} form.
+     *
+     * @param writer the writer to write to
+     * @param schema the parameter or property schema
+     * @param level the bullet level of the values
+     */
+    private void printOptions(PrintWriter writer, Schema<?> schema, int level) {
+        Schema<?> documented = optionsSchema(schema);
+        if (documented == null || documented.getEnum() == null) {
+            return;
+        }
+        Map<String, String> descriptions = optionDescriptions(documented);
+        for (Object value : documented.getEnum()) {
+            String option = String.valueOf(value);
+            String description = descriptions.getOrDefault(option, "");
+            writer.printf("%s %s%s%n", "*".repeat(level), option,
+                    description.isEmpty() ? "" : " - " + description);
+        }
+    }
+
+    /**
+     * Resolves the schema that carries the documented values.
+     *
+     * An array documents the values of its element type; every other parameter or property
+     * documents its own.
+     *
+     * @param schema the parameter or property schema
+     * @return the schema holding the values, or null when there is none
+     */
+    private Schema<?> optionsSchema(Schema<?> schema) {
+        if (schema == null) {
+            return null;
+        }
+        return ARRAY_TYPE.equals(schema.getType()) && schema.getItems() != null ?
+                resolveSchemaReference(schema.getItems()) : schema;
+    }
+
+    /**
+     * Reads the descriptions the namespace documented for individual values.
+     *
+     * @param schema the schema holding the values
+     * @return the description of each value, empty when the values carry none
+     */
+    private Map<String, String> optionDescriptions(Schema<?> schema) {
+        Object descriptions = schema.getExtensions() == null ? null :
+                schema.getExtensions().get(UyuniSwaggerReader.DOC_OPTION_DESCRIPTIONS_EXTENSION);
+        if (!(descriptions instanceof Map<?, ?> documented)) {
+            return Map.of();
+        }
+        Map<String, String> byOption = new LinkedHashMap<>();
+        documented.forEach((option, description) ->
+                byOption.put(String.valueOf(option), String.valueOf(description)));
+        return byOption;
+    }
+
     private String legacyDocName(Schema<?> schema) {
         if (schema.getExtensions() == null) {
             return "";
@@ -476,17 +593,24 @@ public class OpenApiToAsciidocParser {
         return value == null ? "" : value.toString();
     }
 
-    private void writeSimpleReturn(PrintWriter writer, Schema<?> schema,
-                                   String responseLabel, String legacyType, Operation operation) {
+    private void writeSimpleReturn(PrintWriter writer, Schema<?> schema, String responseLabel,
+                                   String legacyType, boolean plainText, Schema<?> documentedValues) {
         String displayType = legacyType.isBlank() ? displayType(schema) : legacyType;
-        String label = Optional.of(responseLabel)
-                .filter(d -> !d.isBlank())
-                .orElseGet(() -> operation.getOperationId()
-                        .replace("get", "")
-                        .replaceAll("([a-z])([A-Z])", "$1 $2")
-                        .toLowerCase().trim());
+        Schema<?> values = documentedValues == null ? schema : documentedValues;
+        // The doclet passes a return value documented without a macro through as written, so it
+        // carries no type role.
+        if (plainText) {
+            writer.printf("* %s%s %n", displayType, responseLabel.isBlank() ? "" : " - " + responseLabel);
+            printOptions(writer, values, RETURN_OPTION_LEVEL);
+            writer.print(" ");
+            return;
+        }
 
-        writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
+        // The doclet renders the label the namespace documented and invents none, so a return
+        // value documented without one is a bare typed line.
+        writer.printf("* [.%s]#%s#  %s%n", displayType, displayType, responseLabel);
+        printOptions(writer, values, RETURN_OPTION_LEVEL);
+        writer.print(" ");
     }
 
     private Schema<?> resolveSchemaReference(Schema<?> schema) {
@@ -502,8 +626,10 @@ public class OpenApiToAsciidocParser {
                 .orElse("");
     }
 
-    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
-        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean plainText,
+                                         Schema<?> values) {
+        private static final LegacyDocResponseData EMPTY =
+                new LegacyDocResponseData(null, "", "", false, null);
 
         Optional<String> label(String description) {
             if (name.isBlank()) {
@@ -517,7 +643,14 @@ public class OpenApiToAsciidocParser {
     }
 
     private String displayType(Schema<?> schema) {
-        return "integer".equals(schema.getType()) ? "int" : schema.getType();
+        if ("integer".equals(schema.getType())) {
+            return "int";
+        }
+        // The doclet binds $date to its own type name, whichever value carries the date.
+        if ("string".equals(schema.getType()) && "date-time".equals(schema.getFormat())) {
+            return UyuniSwaggerReader.LEGACY_DATE_TYPE;
+        }
+        return schema.getType();
     }
 
     /**
@@ -725,9 +858,11 @@ public class OpenApiToAsciidocParser {
         return schema.getItems() != null ? findDescription(schema.getItems()) : "";
     }
 
-    private record DocEntry(String method, String anchor, Operation operation, List<String> activeParams) {
+    private record DocEntry(String method, String anchor, Operation operation,
+                           Operation documentedByOverload, List<String> activeParams) {
 
-        static DocEntry create(String method, Operation operation, List<String> params, boolean securityRequired) {
+        static DocEntry create(String method, Operation operation, Operation documentedByOverload,
+                               List<String> params, boolean securityRequired) {
             String suffix = String.join("-", params);
             String authPart = securityRequired ? "loggedInUser" : "";
 
@@ -745,7 +880,7 @@ public class OpenApiToAsciidocParser {
                 anchor += "-";
             }
 
-            return new DocEntry(method, anchor, operation, List.copyOf(params));
+            return new DocEntry(method, anchor, operation, documentedByOverload, List.copyOf(params));
         }
     }
 }

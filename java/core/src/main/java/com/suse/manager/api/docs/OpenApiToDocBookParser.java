@@ -40,6 +40,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 
 /**
  * Converts the generated OpenAPI specification into DocBook XML files.
@@ -145,23 +146,23 @@ public class OpenApiToDocBookParser {
         HandlerDoc handler = handlers.computeIfAbsent(tag,
                 k -> new HandlerDoc(k, getTagDescription(k)));
 
-        boolean securityRequired = isSecurityRequired(op);
         List<String> required = getFieldsByRequirement(op, true);
         List<String> optional = getFieldsByRequirement(op, false);
 
         for (List<String> params : UyuniSwaggerReader.expandOverloads(op, required, optional)) {
-            handler.calls.add(buildCallDoc(httpMethod, op, params, securityRequired));
+            handler.calls.add(buildCallDoc(httpMethod, op, params));
         }
     }
 
-    private CallDoc buildCallDoc(String httpMethod, Operation op,
-                                 List<String> activeParams, boolean securityRequired) {
+    private CallDoc buildCallDoc(String httpMethod, Operation op, List<String> activeParams) {
+        Operation documentedByOverload = UyuniSwaggerReader.operationForCall(op, activeParams);
         String name = Optional.ofNullable(op.getOperationId())
                 .filter(s -> !s.isBlank())
                 .orElse("");
         String description = buildDescription(op);
-        List<ParamDoc> params = buildParams(op, activeParams, securityRequired);
-        String returnDoc = buildReturnDoc(op, name);
+        List<ParamDoc> params = buildParams(op, documentedByOverload, activeParams,
+                isSecurityRequired(documentedByOverload));
+        String returnDoc = buildReturnDoc(documentedByOverload);
         return new CallDoc(name, httpMethod, description, params, returnDoc);
     }
 
@@ -186,8 +187,8 @@ public class OpenApiToDocBookParser {
         return fields;
     }
 
-    private List<ParamDoc> buildParams(Operation op, List<String> activeParams,
-                                       boolean securityRequired) {
+    private List<ParamDoc> buildParams(Operation op, Operation documentedByOverload,
+                                       List<String> activeParams, boolean securityRequired) {
         List<ParamDoc> params = new ArrayList<>();
 
         if (securityRequired) {
@@ -195,7 +196,10 @@ public class OpenApiToDocBookParser {
                     "Session token, must be obtained via auth.login."));
         }
 
+        // A call takes the parameters of the overload documenting it, which describes the ones it
+        // shares with the others as its own signature declares them.
         Map<String, Schema<?>> allProps = getAllPossibleProperties(op);
+        allProps.putAll(getAllPossibleProperties(documentedByOverload));
         for (String name : activeParams) {
             Schema<?> schema = allProps.get(name);
             if (schema == null) {
@@ -208,10 +212,12 @@ public class OpenApiToDocBookParser {
                 params.add(new ParamDoc(legacyType.isEmpty() ? "struct" : legacyType, name, desc));
                 resolved.getProperties().forEach((propName, propSchema) ->
                         params.add(new ParamDoc(formatType(propSchema), "\"" + propName + "\"",
-                                findDescription(propSchema), renderParameterElement(propSchema))));
+                                findDescription(propSchema), renderParameterElement(propSchema),
+                                renderOptions(propSchema))));
                 continue;
             }
-            params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema)));
+            params.add(new ParamDoc(formatType(schema), name, desc, renderParameterElement(schema),
+                    renderOptions(schema)));
         }
         return params;
     }
@@ -283,11 +289,12 @@ public class OpenApiToDocBookParser {
         return props;
     }
 
-    private String buildReturnDoc(Operation op, String fallbackLabel) {
-        if (op.getResponses() == null) {
+    private String buildReturnDoc(Operation op) {
+        ApiResponses responses = op.getResponses();
+        if (responses == null) {
             return "<listitem><para></para></listitem>";
         }
-        ApiResponse resp = op.getResponses().entrySet().stream()
+        ApiResponse resp = responses.entrySet().stream()
                 .filter(e -> e.getKey().startsWith("2") || e.getKey().equals("default"))
                 .map(Map.Entry::getValue)
                 .findFirst()
@@ -315,16 +322,12 @@ public class OpenApiToDocBookParser {
             schema = resolveSchemaReference(docSchema);
         }
 
-        String label = legacyDocResponse.label(responseDescription).orElseGet(() ->
-                !responseDescription.isBlank() ?
-                responseDescription :
-                fallbackLabel
-                        .replaceAll("^(get|list|is|set|create|delete|update)", "")
-                        .replaceAll("([a-z])([A-Z])", "$1 $2")
-                        .toLowerCase().trim()
-        );
+        // The doclet renders the label the namespace documented and invents none, so a return
+        // value documented without one carries no label.
+        String label = legacyDocResponse.label(responseDescription).orElse(responseDescription);
 
-        return renderReturnSchema(schema, label, legacyDocResponse.type(), legacyDocResponse.name());
+        return renderReturnSchema(schema, label, legacyDocResponse.type(), legacyDocResponse.name(),
+                legacyDocResponse.values());
     }
 
     private LegacyDocResponseData getLegacyDocResponse(ApiResponse response) {
@@ -337,16 +340,24 @@ public class OpenApiToDocBookParser {
         return new LegacyDocResponseData(
                 schema instanceof Schema<?> docSchema ? docSchema : null,
                 type,
-                name
+                name,
+                Boolean.TRUE.equals(response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_PLAIN_TEXT_EXTENSION)),
+                response.getExtensions().get(UyuniSwaggerReader.DOC_RESPONSE_VALUES_EXTENSION) instanceof
+                        Schema<?> values ? values : null
         );
     }
 
     private String renderReturnSchema(Schema<?> schema, String label) {
-        return renderReturnSchema(schema, label, "", "");
+        return renderReturnSchema(schema, label, "", "", null);
     }
 
     private String renderReturnSchema(Schema<?> schema, String label, String typeOverride,
                                       String legacyStructLabel) {
+        return renderReturnSchema(schema, label, typeOverride, legacyStructLabel, null);
+    }
+
+    private String renderReturnSchema(Schema<?> schema, String label, String typeOverride,
+                                      String legacyStructLabel, Schema<?> documentedValues) {
         if (schema == null) {
             return "<listitem><para></para></listitem>";
         }
@@ -356,7 +367,8 @@ public class OpenApiToDocBookParser {
                     resolveSchemaReference(resultSchema),
                     getResultLabel(resultSchema, label),
                     typeOverride,
-                    legacyStructLabel
+                    legacyStructLabel,
+                    documentedValues
             );
         }
         if ("array".equals(schema.getType()) && schema.getItems() != null) {
@@ -366,7 +378,8 @@ public class OpenApiToDocBookParser {
         // that are not simple: the doclet renders those as a single typed line, without expanding
         // the schema.
         if (isSimpleType(schema) || !typeOverride.isBlank()) {
-            return renderSimpleReturn(schema, label, typeOverride);
+            return renderSimpleReturn(documentedValues == null ? schema : documentedValues, label, typeOverride,
+                    schema);
         }
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             return renderAdditionalPropertiesReturn(inner, label);
@@ -375,7 +388,10 @@ public class OpenApiToDocBookParser {
     }
 
     private Schema<?> getResultSchema(Schema<?> schema) {
-        if (schema.getProperties() == null || !schema.getProperties().containsKey("result")) {
+        // The payload of a response is carried beside the status of the call, which tells the
+        // wrapper apart from a documented struct that happens to hold a property called result.
+        if (schema.getProperties() == null || !schema.getProperties().containsKey("result") ||
+                !schema.getProperties().containsKey("success")) {
             return null;
         }
         Object resultProp = schema.getProperties().get("result");
@@ -406,10 +422,12 @@ public class OpenApiToDocBookParser {
         return sb.toString();
     }
 
-    private String renderSimpleReturn(Schema<?> schema, String label, String typeOverride) {
+    private String renderSimpleReturn(Schema<?> values, String label, String typeOverride, Schema<?> schema) {
         String type = typeOverride.isBlank() ? formatSimpleType(schema) : typeOverride;
         String text = (label == null || label.isBlank()) ? type : type + " - " + label;
-        return String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+        String item = String.format("<listitem><para>%s</para></listitem>", escapeXml(text));
+        String options = renderOptions(values);
+        return options.isEmpty() ? item : item + "\n" + options;
     }
 
     private String extensionString(ApiResponse response, String extensionName) {
@@ -489,20 +507,42 @@ public class OpenApiToDocBookParser {
             Schema<?> propSchema = prop;
             String desc = findDescription(propSchema);
             Schema<?> nested = resolveNestedStruct(propSchema);
-            String label = nested != null && !getLegacyDocName(propSchema).isBlank() ?
-                    getLegacyDocName(propSchema) : name;
+            // An array property spends its legacy name on the element struct, so only a scalar or
+            // struct property renames itself with it.
+            String label = "array".equals(propSchema.getType()) || getLegacyDocName(propSchema).isBlank() ?
+                    name : getLegacyDocName(propSchema);
             // the doclet labels a nested struct with #struct_begin, which does not quote the label
             String body = nested != null ? String.format("%s %s", formatType(propSchema), label) :
                     String.format("%s \"%s\"", formatType(propSchema), label);
             if (!desc.isBlank()) {
                 body += " - " + desc;
             }
+            // A serializer referenced by a struct property brings its own struct label, which the
+            // doclet renders as a sibling of the property before the fields it introduces.
+            String structLabel = nested == null ? "" : getLegacyDocName(nested);
             String elementStruct = nested != null ? renderNestedStructProperties(nested) :
                     renderElementStruct(propSchema);
+            String options = renderOptions(propSchema);
             if (elementStruct.isEmpty()) {
                 sb.append("    <listitem><para>")
                   .append(escapeXml(body))
                   .append("</para></listitem>\n");
+                appendSimpleElement(sb, propSchema);
+                appendOptions(sb, options);
+                return;
+            }
+            if (!structLabel.isBlank()) {
+                sb.append("    <listitem><para>")
+                  .append(escapeXml(body))
+                  .append("</para></listitem>\n");
+                sb.append("    <listitem>\n");
+                sb.append("      <para>").append(escapeXml(String.format("struct %s", structLabel)))
+                  .append("</para>\n");
+                sb.append("      <itemizedlist spacing=\"compact\">\n");
+                sb.append(indentLines(elementStruct, 8)).append("\n");
+                sb.append("      </itemizedlist>\n");
+                sb.append("    </listitem>\n");
+                appendOptions(sb, options);
                 return;
             }
             sb.append("    <listitem>\n");
@@ -511,8 +551,34 @@ public class OpenApiToDocBookParser {
             sb.append(indentLines(elementStruct, 8)).append("\n");
             sb.append("      </itemizedlist>\n");
             sb.append("    </listitem>\n");
+            appendOptions(sb, options);
         });
         return sb.toString();
+    }
+
+    /**
+     * Appends the named element of an array property that holds a simple type.
+     *
+     * The doclet names such an element with {@code #array_single}, which it renders as an item of
+     * its own beside a property documented as a bare array. A property documenting the element
+     * type on itself, with {@code #prop_array}, names the element there and shows no such item,
+     * so only a property declaring the bare array type carries one.
+     *
+     * @param sb the markup being built
+     * @param property the array property schema
+     */
+    private void appendSimpleElement(StringBuilder sb, Schema<?> property) {
+        String label = getLegacyDocName(property);
+        if (!"array".equals(getLegacyDocType(property)) || label.isBlank()) {
+            return;
+        }
+        Schema<?> items = resolveSchemaReference(property.getItems());
+        if (items == null || !isSimpleType(items)) {
+            return;
+        }
+        sb.append("    <listitem><para>")
+          .append(escapeXml(String.format("array(%s) %s", formatSimpleType(items), label)))
+          .append("</para></listitem>\n");
     }
 
     /**
@@ -534,6 +600,84 @@ public class OpenApiToDocBookParser {
         return renderStructList(resolvedItems,
                 items.get$ref() != null ? extractRefName(items.get$ref()) : "",
                 getLegacyDocName(property));
+    }
+
+    /**
+     * Renders the documented values of a parameter or property as a sibling item list.
+     *
+     * The doclet renders {@code #options()} as a separate {@code <listitem override="none">}
+     * following the item it documents, and appends the description after a dash for the
+     * {@code #item_desc} form.
+     *
+     * @param schema the parameter or property schema
+     * @return the markup for the values, or an empty string when there are none
+     */
+    private void writeOptions(PrintWriter w, String options) {
+        if (!options.isEmpty()) {
+            w.printf("%s%n", indentLines(options, 12));
+        }
+    }
+
+    private void appendOptions(StringBuilder sb, String options) {
+        if (!options.isEmpty()) {
+            sb.append(indentLines(options, 4)).append("\n");
+        }
+    }
+
+    private String renderOptions(Schema<?> schema) {
+        Schema<?> documented = optionsSchema(schema);
+        if (documented == null || documented.getEnum() == null) {
+            return "";
+        }
+        Map<String, String> descriptions = optionDescriptions(documented);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<listitem override=\"none\">\n");
+        sb.append("  <itemizedlist spacing=\"compact\">\n");
+        for (Object value : documented.getEnum()) {
+            String option = String.valueOf(value);
+            String description = descriptions.getOrDefault(option, "");
+            sb.append("  <listitem><para>")
+              .append(escapeXml(description.isEmpty() ? option : option + " - " + description))
+              .append("</para></listitem>\n");
+        }
+        sb.append("  </itemizedlist>\n");
+        sb.append("</listitem>");
+        return sb.toString();
+    }
+
+    /**
+     * Resolves the schema that carries the documented values.
+     *
+     * An array documents the values of its element type; every other parameter or property
+     * documents its own.
+     *
+     * @param schema the parameter or property schema
+     * @return the schema holding the values, or null when there is none
+     */
+    private Schema<?> optionsSchema(Schema<?> schema) {
+        if (schema == null) {
+            return null;
+        }
+        return "array".equals(schema.getType()) && schema.getItems() != null ?
+                resolveSchemaReference(schema.getItems()) : schema;
+    }
+
+    /**
+     * Reads the descriptions the namespace documented for individual values.
+     *
+     * @param schema the schema holding the values
+     * @return the description of each value, empty when the values carry none
+     */
+    private Map<String, String> optionDescriptions(Schema<?> schema) {
+        Object descriptions = schema.getExtensions() == null ? null :
+                schema.getExtensions().get(UyuniSwaggerReader.DOC_OPTION_DESCRIPTIONS_EXTENSION);
+        if (!(descriptions instanceof Map<?, ?> documented)) {
+            return Map.of();
+        }
+        Map<String, String> byOption = new LinkedHashMap<>();
+        documented.forEach((option, description) ->
+                byOption.put(String.valueOf(option), String.valueOf(description)));
+        return byOption;
     }
 
     private String renderHandlerFile(HandlerDoc handler) {
@@ -581,6 +725,7 @@ public class OpenApiToDocBookParser {
                         String.format("%s %s - %s", p.type, p.name, p.description);
                 if (p.nested.isEmpty()) {
                     w.printf("            <listitem><para>%s</para></listitem>%n", escapeXml(body));
+                    writeOptions(w, p.options);
                     continue;
                 }
                 w.printf("            <listitem>%n");
@@ -589,6 +734,7 @@ public class OpenApiToDocBookParser {
                 w.printf("%s%n", indentLines(p.nested, 16));
                 w.printf("              </itemizedlist>%n");
                 w.printf("            </listitem>%n");
+                writeOptions(w, p.options);
             }
         }
         w.printf("          </itemizedlist>%n");
@@ -790,8 +936,10 @@ public class OpenApiToDocBookParser {
         return out.toString();
     }
 
-    private record LegacyDocResponseData(Schema<?> schema, String type, String name) {
-        private static final LegacyDocResponseData EMPTY = new LegacyDocResponseData(null, "", "");
+    private record LegacyDocResponseData(Schema<?> schema, String type, String name, boolean plainText,
+                                         Schema<?> values) {
+        private static final LegacyDocResponseData EMPTY =
+                new LegacyDocResponseData(null, "", "", false, null);
 
         Optional<String> label(String description) {
             if (name.isBlank()) {
@@ -840,15 +988,20 @@ public class OpenApiToDocBookParser {
         /** Pre-rendered element markup nested under this parameter, empty when there is none. */
         private final String nested;
 
+        /** Pre-rendered value list following this parameter, empty when there is none. */
+        private final String options;
+
         ParamDoc(String paramType, String paramName, String paramDescription) {
-            this(paramType, paramName, paramDescription, "");
+            this(paramType, paramName, paramDescription, "", "");
         }
 
-        ParamDoc(String paramType, String paramName, String paramDescription, String nestedMarkup) {
+        ParamDoc(String paramType, String paramName, String paramDescription, String nestedMarkup,
+                 String optionsMarkup) {
             this.type = paramType;
             this.name = paramName;
             this.description = paramDescription;
             this.nested = nestedMarkup;
+            this.options = optionsMarkup;
         }
     }
 }

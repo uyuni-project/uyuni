@@ -33,4 +33,16 @@ public @interface LegacyDocResponse {
      * @return optional response body type to use when rendering legacy API documentation
      */
     Class<?> responseClass() default Void.class;
+
+    /**
+     * Tells that the legacy documentation renders the return value as plain text.
+     *
+     * The doclet passes a return value documented without a macro through as it was written,
+     * carrying neither the type role a documented one carries nor a label of its own. A return
+     * value has no name in the specification, so the parsers otherwise label it with the
+     * operation name, which such a return value does not show.
+     *
+     * @return whether the legacy documentation renders the return value as plain text
+     */
+    boolean plainText() default false;
 }

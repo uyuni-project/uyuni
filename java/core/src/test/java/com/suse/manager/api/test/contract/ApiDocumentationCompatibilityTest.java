@@ -294,7 +294,33 @@ public class ApiDocumentationCompatibilityTest {
      * @return the items with the element struct and its contents rebased, when indented
      */
     private List<DocItem> alignArrayElementNesting(List<DocItem> items) {
-        return alignSerializerStructs(alignNestedElementStructs(alignLeadingArrayElement(items)));
+        return alignSerializerStructs(
+                alignNestedElementStructs(alignLeadingArrayElement(dropElementListMarkers(items))));
+    }
+
+    /**
+     * Drops the marker the doclet writes when a property opens the list of its elements.
+     *
+     * A namespace documents an array valued property either with {@code #prop_array_begin}, which
+     * expands straight into the element, or as a bare array followed by {@code #return_array_begin}
+     * , which writes an unnamed array marker before it. The schema describes the property the same
+     * way either way, so the marker is dropped before comparing.
+     *
+     * @param items the parsed return value items
+     * @return the items without the element list markers
+     */
+    private List<DocItem> dropElementListMarkers(List<DocItem> items) {
+        List<DocItem> kept = new ArrayList<>(items.size());
+        for (int i = 0; i < items.size(); i++) {
+            DocItem item = items.get(i);
+            DocItem property = i == 0 ? null : items.get(i - 1);
+            if (property != null && "array".equals(item.type()) && item.name().isEmpty() &&
+                    "array".equals(property.type()) && !property.name().isEmpty()) {
+                continue;
+            }
+            kept.add(item);
+        }
+        return kept;
     }
 
     /**
@@ -343,8 +369,14 @@ public class ApiDocumentationCompatibilityTest {
 
         List<DocItem> aligned = new ArrayList<>(items.size());
         aligned.add(array);
-        items.subList(1, items.size())
-                .forEach(item -> aligned.add(new DocItem(item.level() - 1, item.type(), item.name())));
+        boolean rebasing = true;
+        for (DocItem item : items.subList(1, items.size())) {
+            // The doclet resets its bullet level when it inlines a serializer reference, so the
+            // struct it expands there and everything below it are numbered from the top again,
+            // independently of the element struct this rebases.
+            rebasing = rebasing && !(aligned.size() > 1 && "struct".equals(item.type()) && item.level() == 1);
+            aligned.add(rebasing ? new DocItem(item.level() - 1, item.type(), item.name()) : item);
+        }
         return aligned;
     }
 
@@ -515,12 +547,25 @@ public class ApiDocumentationCompatibilityTest {
                 .replace("&amp;", "&");
     }
 
+    /**
+     * Tells whether a line ends the text of the item before it.
+     *
+     * @param trimmed the trimmed line
+     * @return true when the line starts something else
+     */
+    private boolean isBoundary(String trimmed) {
+        return trimmed.startsWith("*") || trimmed.startsWith("==") || trimmed.startsWith("[#") ||
+                trimmed.startsWith("HTTP ") || trimmed.endsWith(":");
+    }
+
     private Optional<ApiMethodDoc> parseMethod(List<String> lines) {
         String method = "";
         String httpMethod = "";
         List<DocItem> parameters = new ArrayList<>();
         List<DocItem> returns = new ArrayList<>();
         Section section = Section.NONE;
+        String itemText = "";
+        boolean continues = false;
 
         for (String line : lines) {
             Matcher methodMatcher = METHOD_TITLE.matcher(line);
@@ -545,19 +590,31 @@ public class ApiDocumentationCompatibilityTest {
                 continue;
             }
 
+            List<DocItem> items = section == Section.PARAMETERS ? parameters : returns;
             Matcher itemMatcher = LIST_ITEM.matcher(line);
             if (itemMatcher.matches() && section != Section.NONE) {
-                DocItem item = new DocItem(
+                itemText = itemMatcher.group(3);
+                items.add(new DocItem(
                         itemMatcher.group(1).length(),
                         normalize(itemMatcher.group(2)),
-                        normalizeLabel(itemMatcher.group(3))
-                );
-                if (section == Section.PARAMETERS) {
-                    parameters.add(item);
-                }
-                else {
-                    returns.add(item);
-                }
+                        normalizeLabel(itemText)
+                ));
+                continues = true;
+                continue;
+            }
+            if (trimmed.isEmpty() || isBoundary(trimmed)) {
+                continues = false;
+                continue;
+            }
+
+            // The doclet keeps the line breaks of the documentation it copies, so an item whose
+            // text runs over several lines arrives as the item followed by the rest of its text.
+            // The DocBook renderer joins them, and so does this one, or the text would be read
+            // only as far as the break.
+            if (continues && section != Section.NONE && !items.isEmpty()) {
+                itemText = itemText + " " + trimmed;
+                DocItem previous = items.remove(items.size() - 1);
+                items.add(new DocItem(previous.level(), previous.type(), normalizeLabel(itemText)));
             }
         }
 

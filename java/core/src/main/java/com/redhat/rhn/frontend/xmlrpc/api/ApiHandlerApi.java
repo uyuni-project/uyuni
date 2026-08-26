@@ -58,7 +58,8 @@ public interface ApiHandlerApi {
     @ApiEndpointDoc(
         summary = "Returns the server product name.",
         method = HttpMethod.get,
-        responseClass = StringResponse.class
+        responseClass = StringResponse.class,
+        legacyDocResponse = @LegacyDocResponse(name = "product name")
     )
     String productName();
 
@@ -71,7 +72,8 @@ public interface ApiHandlerApi {
     @ApiEndpointDoc(
         summary = "Returns the version of the API.",
         method = HttpMethod.get,
-        responseClass = StringResponse.class
+        responseClass = StringResponse.class,
+        legacyDocResponse = @LegacyDocResponse(name = "version")
     )
     String getVersion();
 

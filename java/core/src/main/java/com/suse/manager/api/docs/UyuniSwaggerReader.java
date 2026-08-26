@@ -25,13 +25,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -42,6 +45,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
@@ -64,8 +68,20 @@ public class UyuniSwaggerReader {
     public static final String DOC_RESPONSE_SCHEMA_EXTENSION = "x-uyuni-doc-response-schema";
     public static final String DOC_RESPONSE_TYPE_EXTENSION = "x-uyuni-doc-response-type";
     public static final String DOC_RESPONSE_NAME_EXTENSION = "x-uyuni-doc-response-name";
+
+    public static final String DOC_RESPONSE_PLAIN_TEXT_EXTENSION = "x-uyuni-doc-response-plain-text";
+
+    public static final String DOC_RESPONSE_VALUES_EXTENSION = "x-uyuni-doc-response-values";
     /** Parameter counts of the handler overloads an operation stands for, longest first. */
     public static final String DOC_OVERLOAD_ARITIES_EXTENSION = "x-uyuni-doc-overload-arities";
+
+    public static final String DOC_OVERLOAD_SHAPES_EXTENSION = "x-uyuni-doc-overload-shapes";
+
+    /** Facts a documented call takes from its own overload rather than from the merged operation. */
+    public static final String DOC_OVERLOAD_CALLS_EXTENSION = "x-uyuni-doc-overload-calls";
+
+    /** Extension holding the description the namespace documented for each allowed value. */
+    public static final String DOC_OPTION_DESCRIPTIONS_EXTENSION = "x-uyuni-doc-option-descriptions";
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String HTTP_200 = "200";
     /** Legacy name for a date, bound as {@code $date} in the doclet's macros for both formats. */
@@ -126,7 +142,7 @@ public class UyuniSwaggerReader {
         applyOverloadArities(cls, method, openApiOperation);
         applySecurityIfNeeded(method, openApiOperation);
         configureRequestBodyIfPresent(apiDoc, openApiOperation);
-        configureResponses(apiDoc, openApiOperation);
+        configureResponses(apiDoc, method, openApiOperation);
         processLiteralParameters(method, openApiOperation);
         registerOperationOnPath(namespace, method, apiDoc.method(), openApiOperation);
     }
@@ -134,6 +150,9 @@ public class UyuniSwaggerReader {
     private Operation createOperationWithBasicInfo(Method method, Tag tagAnnotation, ApiEndpointDoc apiDoc) {
         Operation operation = new Operation();
         operation.setOperationId(method.getName());
+        if (findMethodAnnotation(method, Deprecated.class) != null) {
+            operation.setDeprecated(true);
+        }
         if (!apiDoc.summary().isEmpty()) {
             operation.setSummary(apiDoc.summary());
         }
@@ -172,6 +191,46 @@ public class UyuniSwaggerReader {
         }
     }
 
+    private List<String> documentedParameters(Operation operation) {
+        List<String> names = new ArrayList<>();
+        if (operation.getParameters() != null) {
+            operation.getParameters().forEach(parameter -> names.add(parameter.getName()));
+        }
+        Schema<?> body = requestBodySchema(operation);
+        if (body != null && body.getProperties() != null) {
+            names.addAll(body.getProperties().keySet());
+        }
+        return names;
+    }
+
+    private boolean isRequired(Operation operation, String name) {
+        if (operation.getParameters() != null) {
+            for (var parameter : operation.getParameters()) {
+                if (name.equals(parameter.getName())) {
+                    return Boolean.TRUE.equals(parameter.getRequired());
+                }
+            }
+        }
+        Schema<?> body = requestBodySchema(operation);
+        return body != null && body.getRequired() != null && body.getRequired().contains(name);
+    }
+
+    private Schema<?> requestBodySchema(Operation operation) {
+        if (operation.getRequestBody() == null || operation.getRequestBody().getContent() == null) {
+            return null;
+        }
+        MediaType mediaType = operation.getRequestBody().getContent().get(DEFAULT_MEDIA_TYPE);
+        if (mediaType == null || mediaType.getSchema() == null) {
+            return null;
+        }
+        Schema<?> schema = mediaType.getSchema();
+        if (schema.get$ref() == null || this.components.getSchemas() == null) {
+            return schema;
+        }
+        return this.components.getSchemas()
+                .get(schema.get$ref().substring(schema.get$ref().lastIndexOf('/') + 1));
+    }
+
     /**
      * Lists the parameter combinations the legacy doclet documents for an operation.
      *
@@ -187,6 +246,11 @@ public class UyuniSwaggerReader {
      */
     public static List<List<String>> expandOverloads(Operation operation, List<String> required,
                                                      List<String> optional) {
+        List<List<String>> resolved = overloadShapes(operation);
+        if (resolved != null) {
+            return resolved;
+        }
+
         List<List<String>> combinations = new ArrayList<>();
         for (int count : optionalParameterCounts(operation, required.size(), optional.size())) {
             List<String> params = new ArrayList<>(required);
@@ -194,6 +258,27 @@ public class UyuniSwaggerReader {
             combinations.add(params);
         }
         return combinations;
+    }
+
+    /**
+     * Reads the parameters of each documented call, when counting them cannot describe them.
+     *
+     * @param operation the operation to expand
+     * @return the parameters of each documented call, or null when the counts describe them
+     */
+    private static List<List<String>> overloadShapes(Operation operation) {
+        Object shapes = operation.getExtensions() == null ?
+                null : operation.getExtensions().get(DOC_OVERLOAD_SHAPES_EXTENSION);
+        if (!(shapes instanceof List<?> recorded) || recorded.isEmpty()) {
+            return null;
+        }
+        List<List<String>> calls = new ArrayList<>();
+        for (Object shape : recorded) {
+            if (shape instanceof List<?> parameters) {
+                calls.add(parameters.stream().map(String::valueOf).toList());
+            }
+        }
+        return calls.isEmpty() ? null : calls;
     }
 
     /**
@@ -297,13 +382,18 @@ public class UyuniSwaggerReader {
         if (schema == null || schema.getProperties() == null) {
             return;
         }
+        LegacyDocResponse structDoc = documentedClass.getAnnotation(LegacyDocResponse.class);
+        if (structDoc != null && !structDoc.name().isBlank()) {
+            schema.addExtension(DOC_RESPONSE_NAME_EXTENSION, structDoc.name());
+        }
         for (Method getter : documentedClass.getMethods()) {
-            LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
-            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
-                continue;
-            }
             Schema<?> property = schema.getProperties().get(resolvePropertyName(getter));
             if (property == null) {
+                continue;
+            }
+            applyDocumentedValues(property, getter);
+            LegacyDocResponse legacyDoc = getter.getAnnotation(LegacyDocResponse.class);
+            if (legacyDoc == null || (legacyDoc.type().isBlank() && legacyDoc.name().isBlank())) {
                 continue;
             }
             if (!legacyDoc.type().isBlank()) {
@@ -312,6 +402,29 @@ public class UyuniSwaggerReader {
             if (!legacyDoc.name().isBlank()) {
                 property.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDoc.name());
             }
+        }
+    }
+
+    /**
+     * Applies the values a property documents to its schema.
+     *
+     * The model converter builds a property schema knowing the declared Java type, and coerces
+     * every documented value to it: a value the type cannot hold is reshaped, or lost. Resolving
+     * the annotation without a type context, the way a documented parameter already does, keeps
+     * the values as the namespace spelled them.
+     *
+     * @param property the property schema built for the getter
+     * @param getter the getter documenting the property
+     */
+    private void applyDocumentedValues(Schema<?> property, Method getter) {
+        var arraySchema = getter.getAnnotation(io.swagger.v3.oas.annotations.media.ArraySchema.class);
+        if (arraySchema != null) {
+            applyDocumentedValues(property, arraySchema.schema());
+            return;
+        }
+        var schemaAnnotation = getter.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (schemaAnnotation != null) {
+            applyDocumentedValues(property, schemaAnnotation);
         }
     }
 
@@ -330,7 +443,7 @@ public class UyuniSwaggerReader {
         return Introspector.decapitalize(name);
     }
 
-    private void configureResponses(ApiEndpointDoc apiDoc, Operation operation) {
+    private void configureResponses(ApiEndpointDoc apiDoc, Method method, Operation operation) {
         ApiResponses apiResponses = new ApiResponses();
 
         if (apiDoc.isIntegerResponse()) {
@@ -370,7 +483,31 @@ public class UyuniSwaggerReader {
             apiResponses.addApiResponse(HTTP_200, addLegacyDocResponse(apiDoc, response));
         }
 
+        applyDocumentedReturnValues(method, apiResponses);
         operation.setResponses(apiResponses);
+    }
+
+    /**
+     * Carries the values a return value documents into the specification.
+     *
+     * A return value is documented on the operation, the only place an annotation can reach the
+     * result of a wrapped response, and the values it lists travel with the response rather than
+     * with the schema, which a wrapper shares with every other operation returning it.
+     *
+     * @param method the handler method backing the operation
+     * @param apiResponses the responses of the operation
+     */
+    private void applyDocumentedReturnValues(Method method, ApiResponses apiResponses) {
+        var annotation = findMethodAnnotation(method, io.swagger.v3.oas.annotations.media.Schema.class);
+        ApiResponse response = apiResponses.get(HTTP_200);
+        if (annotation == null || response == null) {
+            return;
+        }
+        Schema<?> values = new Schema<>();
+        applyDocumentedValues(values, annotation);
+        if (values.getEnum() != null && !values.getEnum().isEmpty()) {
+            response.addExtension(DOC_RESPONSE_VALUES_EXTENSION, values);
+        }
     }
 
     private void processApiResponseClass(ApiEndpointDoc apiDoc, ApiResponses apiResponses) {
@@ -408,13 +545,17 @@ public class UyuniSwaggerReader {
         if (!legacyDocResponse.name().isBlank()) {
             response.addExtension(DOC_RESPONSE_NAME_EXTENSION, legacyDocResponse.name());
         }
+        if (legacyDocResponse.plainText()) {
+            response.addExtension(DOC_RESPONSE_PLAIN_TEXT_EXTENSION, Boolean.TRUE);
+        }
         return response;
     }
 
     private boolean isEmptyLegacyDocResponse(LegacyDocResponse legacyDocResponse) {
         return legacyDocResponse.responseClass() == Void.class &&
                 legacyDocResponse.type().isBlank() &&
-                legacyDocResponse.name().isBlank();
+                legacyDocResponse.name().isBlank() &&
+                !legacyDocResponse.plainText();
     }
 
     private void processLiteralParameters(Method method, Operation operation) {
@@ -438,17 +579,64 @@ public class UyuniSwaggerReader {
     private Parameter mapToOpenApiParameter(
             io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
             Type type) {
+        Schema<?> schema = documentedParameterSchema(parameterAnnotation, type);
+        applyDocumentedValues(schema, parameterAnnotation.schema());
         Parameter openApiParam = new Parameter()
                 .name(parameterAnnotation.name())
                 .required(parameterAnnotation.required())
                 .in(parameterAnnotation.in().toString().toLowerCase())
-                .schema(literalParameterSchema(type));
+                .schema(schema);
 
         if (!parameterAnnotation.description().isBlank()) {
             openApiParam.setDescription(parameterAnnotation.description());
         }
 
         return openApiParam;
+    }
+
+    /**
+     * Carries the values a literal parameter documents onto its schema.
+     *
+     * The type of a literal parameter is derived from its declared Java type, so the documented
+     * values are the only part of the annotation left to read. An array parameter documents the
+     * values of its element type, the same way an array property does.
+     *
+     * @param schema the schema built from the declared type
+     * @param annotation the schema annotation of the parameter
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void applyDocumentedValues(Schema<?> schema, io.swagger.v3.oas.annotations.media.Schema annotation) {
+        AnnotationsUtils.getSchemaFromAnnotation(annotation, null)
+                .filter(documented -> documented.getEnum() != null && !documented.getEnum().isEmpty())
+                .ifPresent(documented -> {
+                    Schema target = schema.getItems() != null ? schema.getItems() : schema;
+                    target.setEnum(documented.getEnum());
+                    if (documented.getExtensions() != null) {
+                        target.setExtensions(documented.getExtensions());
+                    }
+                });
+    }
+
+    /**
+     * Resolves the schema describing a literal parameter.
+     *
+     * A parameter documented as a struct cannot be described by its declared type, a map naming
+     * none of the properties the namespace documents, so the class standing for the struct is
+     * named on the parameter and its schema is built from that class, the way a request body is.
+     *
+     * @param parameterAnnotation the annotation documenting the parameter
+     * @param type the declared parameter type
+     * @return the schema describing the parameter
+     */
+    private Schema<?> documentedParameterSchema(io.swagger.v3.oas.annotations.Parameter parameterAnnotation,
+                                                Type type) {
+        Class<?> documentedClass = parameterAnnotation.schema().implementation();
+        if (documentedClass == Void.class) {
+            return literalParameterSchema(type);
+        }
+        resolveAndRegisterSchema(documentedClass);
+        applyLegacyDocTypes(documentedClass);
+        return buildSchemaRef(documentedClass);
     }
 
     /**
@@ -473,6 +661,9 @@ public class UyuniSwaggerReader {
         return switch (typeName) {
             case "int", "java.lang.Integer" -> new IntegerSchema();
             case "boolean", "java.lang.Boolean" -> new BooleanSchema();
+            // A date reaches the specification as a string carrying the date-time format, the
+            // shape the model converter gives a date property of a request body.
+            case "java.util.Date" -> new DateTimeSchema();
             default -> new StringSchema();
         };
     }
@@ -480,7 +671,231 @@ public class UyuniSwaggerReader {
     private void registerOperationOnPath(String namespace, Method method, HttpMethod httpMethod, Operation operation) {
         String path = buildPath(namespace, method.getName());
         PathItem pathItem = openAPI.getPaths().computeIfAbsent(path, key -> new PathItem());
-        setOperationOnPathItem(pathItem, httpMethod, operation);
+        Operation documented = getOperationOnPathItem(pathItem, httpMethod);
+        setOperationOnPathItem(pathItem, httpMethod,
+                documented == null ? operation : mergeAlternativeOverload(documented, operation));
+    }
+
+    /**
+     * Folds an overload taking different parameters into the operation already documented.
+     *
+     * Overloads of a handler method answer on one endpoint, so they are one operation, while the
+     * legacy doclet documents one call per overload. An overload that only takes further
+     * parameters is described by the optional ones it leaves out, but an overload taking a
+     * different parameter instead has to contribute that parameter, and the calls it stands for,
+     * to the operation the others share.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @return the operation standing for both
+     */
+    private Operation mergeAlternativeOverload(Operation documented, Operation alternative) {
+        List<List<String>> calls = new ArrayList<>(documentedCalls(documented));
+        List<List<String>> alternativeCalls = documentedCalls(alternative);
+        alternativeCalls.stream().filter(call -> !calls.contains(call)).forEach(calls::add);
+
+        if (alternative.getParameters() != null) {
+            alternative.getParameters().stream()
+                    .filter(parameter -> !documentedParameters(documented).contains(parameter.getName()))
+                    .forEach(parameter -> documented.addParametersItem(parameter));
+        }
+        mergeRequestBodies(documented, alternative);
+
+        // A parameter the operation does not take in every call is optional, whichever overload
+        // introduced it.
+        if (documented.getParameters() != null) {
+            documented.getParameters().stream()
+                    .filter(parameter -> !calls.stream().allMatch(call -> call.contains(parameter.getName())))
+                    .forEach(parameter -> parameter.setRequired(false));
+        }
+        Schema<?> body = requestBodySchema(documented);
+        if (body != null && body.getRequired() != null) {
+            body.setRequired(body.getRequired().stream()
+                    .filter(name -> calls.stream().allMatch(call -> call.contains(name)))
+                    .toList());
+        }
+
+        recordAlternativeCalls(documented, alternative, alternativeCalls);
+        documented.addExtension(DOC_OVERLOAD_SHAPES_EXTENSION, calls);
+        return documented;
+    }
+
+    /**
+     * Keeps what an overload documents differently from the ones read before it.
+     *
+     * The overloads sharing an endpoint are one operation, which is documented once, while the
+     * legacy doclet documents each overload on its own: overloads may answer with a different
+     * return value, authenticate differently, or be deprecated one at a time. The calls such an
+     * overload stands for are therefore recorded against what it documents, so that each call is
+     * described by the overload it comes from rather than by the first overload read.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @param alternativeCalls the calls the alternative overload stands for
+     */
+    private void recordAlternativeCalls(Operation documented, Operation alternative,
+                                        List<List<String>> alternativeCalls) {
+        if (!documentsDifferently(documented, alternative)) {
+            return;
+        }
+        Operation documentedByOverload = new Operation()
+                .parameters(alternative.getParameters())
+                .requestBody(alternative.getRequestBody())
+                .responses(alternative.getResponses())
+                .security(alternative.getSecurity())
+                .deprecated(Boolean.TRUE.equals(alternative.getDeprecated()));
+
+        Map<String, Operation> calls = new LinkedHashMap<>(recordedCalls(documented));
+        alternativeCalls.forEach(call -> calls.putIfAbsent(callKey(call), documentedByOverload));
+        documented.addExtension(DOC_OVERLOAD_CALLS_EXTENSION, calls);
+    }
+
+    /**
+     * Tells whether an overload documents anything differently from the operation it folds into.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @return whether the alternative overload needs its calls recorded
+     */
+    private boolean documentsDifferently(Operation documented, Operation alternative) {
+        return !Objects.equals(documented.getResponses(), alternative.getResponses()) ||
+                !Objects.equals(documented.getSecurity(), alternative.getSecurity()) ||
+                Boolean.TRUE.equals(documented.getDeprecated()) !=
+                        Boolean.TRUE.equals(alternative.getDeprecated()) ||
+                documentsParameterDifferently(documented, alternative);
+    }
+
+    /**
+     * Tells whether an overload describes a parameter both overloads take differently.
+     *
+     * Overloads taking a parameter of the same name in different types describe one property, so
+     * the operation can only hold one of the two, while the legacy doclet documents each overload
+     * with the type its own signature declares.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     * @return whether a parameter the two overloads share is described differently
+     */
+    private boolean documentsParameterDifferently(Operation documented, Operation alternative) {
+        Map<String, Schema<?>> described = describedParameters(documented);
+        return describedParameters(alternative).entrySet().stream()
+                .anyMatch(parameter -> described.containsKey(parameter.getKey()) &&
+                        !Objects.equals(described.get(parameter.getKey()), parameter.getValue()));
+    }
+
+    /**
+     * Reads the schema describing each parameter of an operation, wherever the parameter is sent.
+     *
+     * @param operation the operation to read
+     * @return the schema of each parameter, keyed by name
+     */
+    private Map<String, Schema<?>> describedParameters(Operation operation) {
+        Map<String, Schema<?>> described = new LinkedHashMap<>();
+        if (operation.getParameters() != null) {
+            operation.getParameters().forEach(parameter -> described.put(parameter.getName(), parameter.getSchema()));
+        }
+        Schema<?> body = requestBodySchema(operation);
+        if (body != null && body.getProperties() != null) {
+            body.getProperties().forEach((name, property) -> described.put(name, property));
+        }
+        return described;
+    }
+
+    /**
+     * Reads what the overloads of an operation document for the calls they stand for.
+     *
+     * @param operation the operation to read
+     * @return what each recorded call documents, keyed by call
+     */
+    private static Map<String, Operation> recordedCalls(Operation operation) {
+        Object recorded = operation.getExtensions() == null ?
+                null : operation.getExtensions().get(DOC_OVERLOAD_CALLS_EXTENSION);
+        if (!(recorded instanceof Map<?, ?> byCall)) {
+            return Map.of();
+        }
+        Map<String, Operation> calls = new LinkedHashMap<>();
+        byCall.forEach((call, documented) -> {
+            if (documented instanceof Operation documentedByOverload) {
+                calls.put(String.valueOf(call), documentedByOverload);
+            }
+        });
+        return calls;
+    }
+
+    /**
+     * Reads what a documented call documents of its own.
+     *
+     * A call is described by the overload it comes from, which is the operation itself unless
+     * another overload documented that call differently.
+     *
+     * @param operation the operation the call belongs to
+     * @param call the parameters of the documented call
+     * @return the operation documenting the call
+     */
+    public static Operation operationForCall(Operation operation, List<String> call) {
+        return recordedCalls(operation).getOrDefault(callKey(call), operation);
+    }
+
+    private static String callKey(List<String> call) {
+        return String.join(",", call);
+    }
+
+    /**
+     * Merges the request body of an alternative overload into the documented one.
+     *
+     * Two overloads sending different bodies describe one payload holding the properties of both,
+     * so the merged body is spelled out rather than referring to either side's schema.
+     *
+     * @param documented the operation built from the overloads read so far
+     * @param alternative the operation built from an overload taking different parameters
+     */
+    private void mergeRequestBodies(Operation documented, Operation alternative) {
+        Schema<?> alternativeBody = requestBodySchema(alternative);
+        if (alternativeBody == null || alternativeBody.getProperties() == null) {
+            return;
+        }
+        if (documented.getRequestBody() == null) {
+            documented.setRequestBody(alternative.getRequestBody());
+            return;
+        }
+        Schema<?> documentedBody = requestBodySchema(documented);
+        if (documentedBody == null || documentedBody.getProperties() == null) {
+            return;
+        }
+
+        Schema<Object> merged = new Schema<>().type("object");
+        merged.setProperties(new LinkedHashMap<>(documentedBody.getProperties()));
+        merged.setRequired(documentedBody.getRequired() == null ?
+                new ArrayList<>() : new ArrayList<>(documentedBody.getRequired()));
+        alternativeBody.getProperties().forEach((name, property) -> {
+            if (!merged.getProperties().containsKey(name)) {
+                merged.addProperty(name, property);
+            }
+        });
+        documented.getRequestBody().getContent().get(DEFAULT_MEDIA_TYPE).setSchema(merged);
+    }
+
+    /**
+     * Lists the calls an operation stands for on its own.
+     *
+     * @param operation the operation to expand
+     * @return the parameters of each documented call
+     */
+    private List<List<String>> documentedCalls(Operation operation) {
+        List<String> documented = documentedParameters(operation);
+        return expandOverloads(operation,
+                documented.stream().filter(name -> isRequired(operation, name)).toList(),
+                documented.stream().filter(name -> !isRequired(operation, name)).toList());
+    }
+
+    private Operation getOperationOnPathItem(PathItem pathItem, HttpMethod httpMethod) {
+        return switch (httpMethod) {
+            case get -> pathItem.getGet();
+            case put -> pathItem.getPut();
+            case delete -> pathItem.getDelete();
+            case patch -> pathItem.getPatch();
+            default -> pathItem.getPost();
+        };
     }
 
     private String buildPath(String namespace, String methodName) {
