@@ -70,7 +70,7 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
             return;
         }
 
-        if (!TransactionalActionManager.hasAfterRebootState(action)) {
+        if (!TransactionalActionManager.hasPostTransactionalState(action)) {
             if (history.get().isWaitingForReboot()) {
                 TransactionalActionManager.recordTransactionalApplyFinalized(
                         message.getServerId(), message.getActionId());

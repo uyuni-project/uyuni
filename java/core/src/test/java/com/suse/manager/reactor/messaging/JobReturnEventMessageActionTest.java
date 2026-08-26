@@ -1403,6 +1403,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JsonObject result = new JsonObject();
         result.add("state_|-test_|-test_|-run", stateResult);
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         saltUtils.updateServerAction(
                 serverAction,
                 0L,
