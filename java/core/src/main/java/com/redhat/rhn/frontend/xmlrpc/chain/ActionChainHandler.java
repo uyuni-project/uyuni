@@ -77,7 +77,7 @@ public class ActionChainHandler extends BaseHandler implements ActionChainHandle
      * @apidoc.returntype #return_array_begin()
      *                      #struct_begin("chain")
      *                        #prop_desc("string", "label", "Label of an Action Chain")
-     *                        #prop_desc("string", "entrycount",
+     *                        #prop_desc("int", "entrycount",
      *                                   "Number of entries in the Action Chain")
      *                      #struct_end()
      *                    #array_end()

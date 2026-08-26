@@ -700,7 +700,7 @@ public interface ActionChainHandlerApi {
          */
         @Schema(description = "Number of entries in the Action Chain",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        String getEntrycount();
+        Integer getEntrycount();
     }
 
     @Schema(name = "ActionChainEntryInfo", description = "entry")
