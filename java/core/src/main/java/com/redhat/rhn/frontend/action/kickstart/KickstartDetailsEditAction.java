@@ -36,6 +36,10 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
+import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderFactory;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -374,6 +378,19 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         if (prof == null) {
             return;
         }
+
+        // Apply OS-class specific autoinstallation profile options (e.g. inst.auto).
+        Optional.ofNullable(ksdata.getInstallType()).ifPresent(installType -> {
+            KernelOptionsBuilder builder = KernelOptionsBuilderFactory.getBuilder(installType);
+            KernelOptionsList profileOpts = builder.profileOptions(prof);
+            if (!profileOpts.isEmpty()) {
+                KernelOptionsList opts = prof.getKernelOptions()
+                        .map(KernelOptionsList::new)
+                        .orElseGet(KernelOptionsList::new);
+                opts.addMissingOptions(profileOpts);
+                prof.setKernelOptions(Optional.of(opts.toString()));
+            }
+        });
 
         if (KickstartDetailsEditAction.canSaveVirtOptions(ksdata, form)) {
             prof.setVirtRam(Optional.of((Integer) form.get(VIRT_MEMORY)));
