@@ -399,36 +399,150 @@ def generate_repository_name(repo_url)
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
 end
 
+# Get the channel a spacewalk-repo-sync process is synchronizing
+#
+# @param process [String] A line of the output of "ps axo pid,cmd"
+# @return [String, nil] The label of the channel, or nil if the line synchronizes no channel
+def reposync_channel(process)
+  process[/\s(?:--channel|-c)[ =](\S+)/, 1]
+end
+
 # Kill spacewalk-repo-sync execution for a given channel
 #
 # @param channel [String] The channel label of the channel to kill reposync execution
 def kill_reposync_for_channel(channel)
   time_spent = 0
   checking_rate = 5
+  node = get_target('server')
+  killed_pid = nil
   repeat_until_timeout(timeout: 60, message: 'Some reposync processes were not killed properly', dont_raise: true) do
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', verbose: true, check_errors: false)
-    process = command_output.split("\n")[0]
-    channel_synchronizing = process.split[5].strip
+    command_output, _code = node.run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', verbose: true, check_errors: false)
+    processes = command_output.split("\n").reject { |line| line.strip.empty? }
+    process = processes.find { |line| reposync_channel(line) == channel }
     if process.nil?
+      other_channels = processes.map { |line| reposync_channel(line) }.compact
+      log "Warning: Repo-sync processes running for the channels #{other_channels.join(', ')}." unless other_channels.empty?
       log "#{time_spent / 60} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
       next
-    elsif channel_synchronizing == channel
-      pid = process.split[0]
-      node = get_target('server')
-      node.run("kill #{pid}", verbose: true, check_errors: false)
-      # Even if spacewalk-repo-sync is killed, it is possible that zypper
-      # is still running for some moments while refreshing metadata.
-      # If there is another execution of spacewalk-repo-sync again while
-      # zypper is still running, then the reposync will fail.
-      # We need to wait until zypper is finished
-      node.wait_while_process_running('zypper')
-      log "Reposync of channel #{channel} killed"
-      break
-    else
-      log "Warning: Repo-sync process for channel '#{channel_synchronizing}' running."
     end
+
+    killed_pid = process.split[0]
+    node.run("kill #{killed_pid}", verbose: true, check_errors: false)
+    break
   end
+  return if killed_pid.nil?
+
+  # The wait is done outside of the loop above on purpose: that loop swallows any error,
+  # while a zypp lock that is never released has to fail the scenario
+  wait_for_reposync_termination(node, killed_pid)
+  log "Reposync of channel #{channel} killed"
+end
+
+# Wait until a killed spacewalk-repo-sync and the zypper it spawned are really gone
+#
+# Killing spacewalk-repo-sync only signals the Python process: the zypper it spawned to
+# refresh the metadata keeps running for some moments and keeps the zypp lock. A new
+# spacewalk-repo-sync started while that lock is held dies immediately with
+# "RepoMDError: Cannot access repository", which leaves the channel empty.
+#
+# @param node [RemoteNode] The server node
+# @param pid [String] The PID of the spacewalk-repo-sync process that was killed
+def wait_for_reposync_termination(node, pid)
+  repeat_until_timeout(timeout: 120, message: "The spacewalk-repo-sync process #{pid} is still running after being killed") do
+    _output, code = node.run("kill -0 #{pid}", check_errors: false)
+    break if code.nonzero?
+
+    sleep 2
+  end
+  wait_for_zypp_lock_release(node)
+end
+
+# Wait until no zypper is running on a node and the zypp lock is free
+#
+# The zypper spawned by a reposync can still be starting up when we look, so the node has
+# to come back idle several times in a row before we conclude the lock is free.
+#
+# @param node [RemoteNode] The node to check
+def wait_for_zypp_lock_release(node)
+  settled_checks = 0
+  repeat_until_timeout(timeout: 300, message: 'The zypp lock is still held, a new reposync would fail immediately') do
+    settled_checks = zypp_locked?(node) ? 0 : settled_checks + 1
+    break if settled_checks >= 3
+
+    sleep 2
+  end
+end
+
+# Check whether zypper is running on a node, or the zypp lock is held by a process still alive
+#
+# The reposync uses its own zypper root, so its lock file is not the system one.
+#
+# @param node [RemoteNode] The node to check
+# @return [Boolean] Whether the zypp lock is taken
+def zypp_locked?(node)
+  _output, code = node.run('pgrep -x zypper > /dev/null', check_errors: false)
+  return true if code.zero?
+
+  ZYPP_LOCK_FILES.any? { |lock_file| zypp_lock_file_held?(node, lock_file) }
+end
+
+# Check whether a zypp lock file holds the PID of a process that is still alive
+#
+# A lock file left behind holds a PID that is already gone, and its first line is not
+# necessarily a PID at all, so its content is validated before being used. Zero is rejected
+# along with the rest: "kill -0 0" signals our own process group and would always succeed.
+#
+# @param node [RemoteNode] The node to check
+# @param lock_file [String] The path of the zypp lock file
+# @return [Boolean] Whether the lock file is held
+def zypp_lock_file_held?(node, lock_file)
+  content, code = node.run("head -n 1 #{lock_file}", check_errors: false)
+  pid = content.to_s.strip
+  return false unless code.zero? && pid.match?(/\A[1-9]\d*\z/)
+
+  _output, alive = node.run("kill -0 #{pid}", check_errors: false)
+  alive.zero?
+end
+
+# Check whether a failed synchronization was blocked by the zypp lock
+#
+# The lock is the reason to retry, so the lock state is what decides. The output is only
+# looked at as well to cover the window where the lock is released between the failure and
+# the check.
+#
+# @param node [RemoteNode] The node the synchronization ran on
+# @param output [String] The output of the failed synchronization
+# @return [Boolean] Whether the synchronization is worth retrying
+def blocked_by_zypp_lock?(node, output)
+  zypp_locked?(node) || ZYPP_LOCK_FAILURE_MARKERS.any? { |marker| output.to_s.include?(marker) }
+end
+
+# Synchronize a channel with spacewalk-repo-sync, restricted to a list of packages
+#
+# A synchronization blocked by the zypp lock fails in no time, so it is worth retrying.
+# Any other failure is raised: a channel that stays empty makes every scenario using its
+# packages fail much later, with a symptom that says nothing about the synchronization.
+#
+# @param channel [String] The label of the channel to synchronize
+# @param packages [Array<String>] The packages to include in the synchronization
+# @return [String] The output of the synchronization
+def sync_channel_including_packages(channel, packages)
+  raise ScriptError, "No package to include in the synchronization of channel #{channel}" if packages.nil? || packages.empty?
+
+  node = get_target('server')
+  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
+  output = nil
+  3.times do |attempt|
+    output, code = node.run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+    return output if code.zero?
+
+    raise ScriptError, "Synchronization of channel #{channel} failed:\n#{output}" unless blocked_by_zypp_lock?(node, output)
+
+    log "Attempt #{attempt + 1} to synchronize #{channel} found the zypp lock held, waiting for it to be released"
+    wait_for_zypp_lock_release(node)
+  end
+  raise ScriptError, "Synchronization of channel #{channel} lost the race for the zypp lock on every attempt:\n#{output}"
 end
 
 # Update the URL for a given repository
@@ -834,6 +948,10 @@ def channel_packages_are_downloaded?(channel_name)
       log "DEBUG: Found a different channel header before completion for #{channel_name} at line #{i + 1}."
       break
     end
+
+    # spacewalk-repo-sync logs the completion message whatever the outcome of the
+    # synchronization, so an error here still counts as completed
+    log "WARN: Error while synchronizing #{channel_name} at line #{i + 1}: #{line.strip}" if line.include?('ERROR') || line.include?('RepoMDError')
 
     next unless line.include?('Sync of channel completed.')
 

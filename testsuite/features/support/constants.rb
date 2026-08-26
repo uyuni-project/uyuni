@@ -1562,6 +1562,21 @@ CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
   ]
 }.freeze
 
+# Lock files of the zypp instances a reposync can be blocked by:
+# the one of its own zypper root, and the system one
+ZYPP_LOCK_FILES = %w[
+  /var/lib/spacewalk/reposync/root/run/zypp.pid
+  /var/lib/spacewalk/reposync/root/var/run/zypp.pid
+  /run/zypp.pid
+].freeze
+
+# Errors of a reposync that lost the race for the zypp lock. Only what zypper says about
+# the lock itself belongs here: a metadata error like RepoMDError is just as often a
+# repository that is really broken, and retrying it hides the actual reason
+ZYPP_LOCK_FAILURE_MARKERS = [
+  'System management is locked'
+].freeze
+
 # The timeouts are determining experimentally, by looking at the files in /var/log/rhn/reposync on the server
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
 # Please keep this list sorted alphabetically
