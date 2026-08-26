@@ -625,6 +625,7 @@
       </trans-unit>
       <trans-unit id="Spacewalk" xml:space="preserve">
         <source>@@PRODUCT_NAME@@</source>
+        <target state="translated">@@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
