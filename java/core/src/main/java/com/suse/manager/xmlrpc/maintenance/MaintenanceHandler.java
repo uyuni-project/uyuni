@@ -423,7 +423,7 @@ public class MaintenanceHandler extends BaseHandler implements MaintenanceHandle
      *                   #item_desc("Cancel", "cancel actions which are outside the maintenance windows")
      *                   #item_desc("Fail", "let assignment fail. No operation will be performed")
      *                 #options_end()
-     * @apidoc.returntype #array_single("int", "number of involved systems")
+     * @apidoc.returntype #param("int", "number of involved systems")
      */
     public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> sids,
             List<String> rescheduleStrategy) {
@@ -456,7 +456,7 @@ public class MaintenanceHandler extends BaseHandler implements MaintenanceHandle
      * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
      * @apidoc.param #session_key()
      * @apidoc.param #array_single_desc("int", "sids", "system IDs")
-     * @apidoc.returntype #array_single("int", "number of involved systems")
+     * @apidoc.returntype #param("int", "number of involved systems")
      */
     public Integer retractScheduleFromSystems(User loggedInUser, List<Integer> sids) {
         ensureOrgAdmin(loggedInUser);

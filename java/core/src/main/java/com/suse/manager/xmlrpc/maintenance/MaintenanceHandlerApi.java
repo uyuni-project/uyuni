@@ -237,8 +237,8 @@ public interface MaintenanceHandlerApi {
     @ApiEndpointDoc(
         summary = "Assign schedule with given name to systems with given IDs.",
         requestClass = AssignScheduleRequest.class,
-        responseClass = IntegerListResponse.class,
-        responseDescription = "number of involved systems"
+        responseClass = SystemCountResponse.class,
+        legacyDocResponse = @LegacyDocResponse(type = "int", name = "number of involved systems")
     )
     Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> sids,
         List<String> rescheduleStrategy);
@@ -253,8 +253,8 @@ public interface MaintenanceHandlerApi {
     @ApiEndpointDoc(
         summary = "Retract schedule with given name from systems with given IDs",
         requestClass = SystemIdsRequest.class,
-        responseClass = IntegerListResponse.class,
-        responseDescription = "number of involved systems"
+        responseClass = SystemCountResponse.class,
+        legacyDocResponse = @LegacyDocResponse(type = "int", name = "number of involved systems")
     )
     Integer retractScheduleFromSystems(User loggedInUser, List<Integer> sids);
 
@@ -278,6 +278,9 @@ public interface MaintenanceHandlerApi {
 
     @Schema(name = "ApiResponseIntegerList")
     interface IntegerListResponse extends ApiResponseWrapper<List<Integer>> { }
+
+    @Schema(name = "ApiResponseMaintenanceSystemCount")
+    interface SystemCountResponse extends ApiResponseWrapper<Integer> { }
 
     @Schema(name = "ApiResponseMaintenanceSchedule")
     interface MaintenanceScheduleResponse extends ApiResponseWrapper<MaintenanceScheduleDoc> { }
