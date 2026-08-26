@@ -31,7 +31,7 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,8 +45,10 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     private static final String TAG_NAME = "before-upgrade";
     private static final String START_DATE = "2026-01-01T00:00:00Z";
     private static final String END_DATE = "2026-12-31T23:59:59Z";
-    private static final String DATE_DETAILS =
-            "{\"startDate\":\"" + START_DATE + "\",\"endDate\":\"" + END_DATE + "\"}";
+    private static final Date START = Date.from(Instant.parse(START_DATE));
+    private static final Date END = Date.from(Instant.parse(END_DATE));
+    private static final Map<String, Object> DATE_DETAILS =
+            Map.of("startDate", START_DATE, "endDate", END_DATE);
 
     @Override
     protected String getApiNamespace() {
@@ -60,20 +62,6 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
 
     private SnapshotHandler handler() {
         return (SnapshotHandler) handlerMock;
-    }
-
-    /**
-     * Sets an identifier that the domain class only exposes to its own package.
-     *
-     * @param entity the entity to set the identifier on
-     * @param declaringClass the class declaring the setter
-     * @param id the id to set
-     * @throws Exception if the setter cannot be invoked
-     */
-    private void setId(Object entity, Class<?> declaringClass, Long id) throws Exception {
-        Method setter = declaringClass.getDeclaredMethod("setId", Long.class);
-        setter.setAccessible(true);
-        setter.invoke(entity, id);
     }
 
     /**
@@ -215,8 +203,7 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     @Test
     public void testListSnapshots() throws Exception {
         context.checking(new Expectations() {{
-            oneOf(handler()).listSnapshots(with(mockUser), with(SID), with(any(Date.class)),
-                    with(any(Date.class)));
+            oneOf(handler()).listSnapshots(with(mockUser), with(SID), with(START), with(END));
             will(returnValue(List.of(snapshot())));
         }});
 
@@ -264,7 +251,7 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     @Test
     public void testDeleteSnapshotsByDate() throws Exception {
         context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(any(Date.class)), with(any(Date.class)));
+            oneOf(handler()).deleteSnapshots(with(mockUser), with(START), with(END));
             will(returnValue(1));
         }});
 
@@ -280,8 +267,7 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     @Test
     public void testDeleteSnapshotsBySystemAndDate() throws Exception {
         context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(SID), with(any(Date.class)),
-                    with(any(Date.class)));
+            oneOf(handler()).deleteSnapshots(with(mockUser), with(SID), with(START), with(END));
             will(returnValue(1));
         }});
 
@@ -298,33 +284,32 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     @Test
     public void testDeleteSnapshotsByDateDetails() throws Exception {
         context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(any(Map.class)));
+            oneOf(handler()).deleteSnapshots(with(mockUser), with(DATE_DETAILS));
             will(returnValue(1));
         }});
 
-        Map<String, Object> dateDetails = new LinkedHashMap<>();
-        dateDetails.put("startDate", START_DATE);
-        dateDetails.put("endDate", END_DATE);
-
         validateApiContract("/system.provisioning.snapshot/deleteSnapshots", "POST")
-                .withBody(Map.of("dateDetails", dateDetails))
+                .withBody(Map.of("dateDetails", DATE_DETAILS))
                 .onHandlerMethod("deleteSnapshots", User.class, Map.class);
     }
 
+    /**
+     * The router parses a struct parameter into the raw JSON values, so the dates reach the
+     * handler as strings even though the parameter is declared as a map of dates.
+     */
     @Test
+    @SuppressWarnings("unchecked")
     public void testDeleteSnapshotsBySystemAndDateDetails() throws Exception {
+        Map<String, Date> received = (Map<String, Date>) (Map<String, ?>) DATE_DETAILS;
+
         context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(SID), with(any(Map.class)));
+            oneOf(handler()).deleteSnapshots(with(mockUser), with(SID), with(received));
             will(returnValue(1));
         }});
 
-        Map<String, Object> dateDetails = new LinkedHashMap<>();
-        dateDetails.put("startDate", START_DATE);
-        dateDetails.put("endDate", END_DATE);
-
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("sid", SID);
-        body.put("dateDetails", dateDetails);
+        body.put("dateDetails", DATE_DETAILS);
 
         validateApiContract("/system.provisioning.snapshot/deleteSnapshots", "POST")
                 .withBody(body)

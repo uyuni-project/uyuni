@@ -29,6 +29,7 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
     private static final String OSCAP_PARAMS = "--profile Default";
     private static final String OVAL_FILES = "/usr/share/openscap/oval.xml";
     private static final String SCAN_DATE = "2026-06-01T10:00:00Z";
+    private static final Date SCHEDULED_AT = Date.from(Instant.parse(SCAN_DATE));
     private static final List<Integer> SIDS = List.of(1000010000, 1000010001);
 
     @Override
@@ -284,7 +286,7 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         body.put("oscapParams", OSCAP_PARAMS);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(any(List.class)), with(XCCDF_PATH),
+            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(SIDS), with(XCCDF_PATH),
                     with(OSCAP_PARAMS));
             will(returnValue(1));
         }});
@@ -303,8 +305,8 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         body.put("date", SCAN_DATE);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(any(List.class)), with(XCCDF_PATH),
-                    with(OSCAP_PARAMS), with(any(Date.class)));
+            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(SIDS), with(XCCDF_PATH),
+                    with(OSCAP_PARAMS), with(SCHEDULED_AT));
             will(returnValue(1));
         }});
 
@@ -324,8 +326,8 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         body.put("date", SCAN_DATE);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(any(List.class)), with(XCCDF_PATH),
-                    with(OSCAP_PARAMS), with(OVAL_FILES), with(any(Date.class)));
+            oneOf(handler()).scheduleXccdfScan(with(mockUser), with(SIDS), with(XCCDF_PATH),
+                    with(OSCAP_PARAMS), with(OVAL_FILES), with(SCHEDULED_AT));
             will(returnValue(1));
         }});
 
@@ -362,7 +364,7 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).scheduleXccdfScan(with(mockUser), with(SID), with(XCCDF_PATH), with(OSCAP_PARAMS),
-                    with(any(Date.class)));
+                    with(SCHEDULED_AT));
             will(returnValue(1));
         }});
 
@@ -381,7 +383,7 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).scheduleBetaXccdfScanWithPolicy(with(mockUser), with(SIDS), with(3),
-                    with(any(Date.class)));
+                    with(SCHEDULED_AT));
             will(returnValue(1L));
         }});
 
@@ -406,8 +408,8 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         body.put("date", SCAN_DATE);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).scheduleBetaXccdfScanCustom(with(mockUser), with(SIDS), with(any(Map.class)),
-                    with(any(Date.class)));
+            oneOf(handler()).scheduleBetaXccdfScanCustom(with(mockUser), with(SIDS), with(params),
+                    with(SCHEDULED_AT));
             will(returnValue(1L));
         }});
 

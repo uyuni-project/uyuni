@@ -16,6 +16,7 @@ import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
 import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ActionChainHandlerContractTest extends BaseOpenApiTest {
     private static final List<Integer> ERRATA_IDS = List.of(100, 101);
     private static final List<Integer> PACKAGE_IDS = List.of(200, 201);
     private static final String SCHEDULE_DATE = "2026-06-01T10:00:00Z";
+    private static final Date SCHEDULED_AT = Date.from(Instant.parse(SCHEDULE_DATE));
 
     @Override
     protected String getApiNamespace() {
@@ -156,7 +158,7 @@ public class ActionChainHandlerContractTest extends BaseOpenApiTest {
         body.put("date", SCHEDULE_DATE);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).scheduleChain(with(mockUser), with(CHAIN_LABEL), with(any(Date.class)));
+            oneOf(handler()).scheduleChain(with(mockUser), with(CHAIN_LABEL), with(SCHEDULED_AT));
             will(returnValue(1));
         }});
 
@@ -381,7 +383,7 @@ public class ActionChainHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).addConfigurationDeployment(with(mockUser), with(CHAIN_LABEL), with(SID),
-                    with(any(List.class)));
+                    with(List.of(specifier)));
             will(returnValue(ACTION_ID));
         }});
 

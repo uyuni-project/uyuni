@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
     private static final String INVENTORY_PATH = "/etc/ansible/hosts";
     private static final String ACTION_CHAIN_LABEL = "test-chain";
     private static final String EARLIEST = "2026-06-01T10:00:00Z";
+    private static final Date EARLIEST_AT = Date.from(Instant.parse(EARLIEST));
 
     @Override
     protected String getApiNamespace() {
@@ -106,7 +108,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
         props.put("path", PLAYBOOK_PATH);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).createAnsiblePath(with(mockUser), with(any(Map.class)));
+            oneOf(handler()).createAnsiblePath(with(mockUser), with(props));
             will(returnValue(ansiblePath()));
         }});
 
@@ -125,7 +127,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
         body.put("props", props);
 
         context.checking(new Expectations() {{
-            oneOf(handler()).updateAnsiblePath(with(mockUser), with(PATH_ID), with(any(Map.class)));
+            oneOf(handler()).updateAnsiblePath(with(mockUser), with(PATH_ID), with(props));
             will(returnValue(ansiblePath()));
         }});
 
@@ -173,7 +175,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).schedulePlaybook(with(mockUser), with(PLAYBOOK_PATH), with(INVENTORY_PATH),
-                    with(CONTROL_NODE_ID), with(any(Date.class)), with(ACTION_CHAIN_LABEL));
+                    with(CONTROL_NODE_ID), with(EARLIEST_AT), with(ACTION_CHAIN_LABEL));
             will(returnValue(1L));
         }});
 
@@ -195,7 +197,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).schedulePlaybook(with(mockUser), with(PLAYBOOK_PATH), with(INVENTORY_PATH),
-                    with(CONTROL_NODE_ID), with(any(Date.class)), with(ACTION_CHAIN_LABEL), with(true));
+                    with(CONTROL_NODE_ID), with(EARLIEST_AT), with(ACTION_CHAIN_LABEL), with(true));
             will(returnValue(1L));
         }});
 
@@ -221,7 +223,7 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).schedulePlaybook(with(mockUser), with(PLAYBOOK_PATH), with(INVENTORY_PATH),
-                    with(CONTROL_NODE_ID), with(any(Date.class)), with(ACTION_CHAIN_LABEL), with(any(Map.class)));
+                    with(CONTROL_NODE_ID), with(EARLIEST_AT), with(ACTION_CHAIN_LABEL), with(ansibleArgs));
             will(returnValue(1L));
         }});
 
@@ -248,8 +250,8 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
 
         context.checking(new Expectations() {{
             oneOf(handler()).schedulePlaybook(with(mockUser), with(PLAYBOOK_PATH), with(INVENTORY_PATH),
-                    with(CONTROL_NODE_ID), with(any(Date.class)), with(ACTION_CHAIN_LABEL), with(false),
-                    with(any(Map.class)));
+                    with(CONTROL_NODE_ID), with(EARLIEST_AT), with(ACTION_CHAIN_LABEL), with(false),
+                    with(ansibleArgs));
             will(returnValue(1L));
         }});
 
