@@ -126,7 +126,7 @@ public class KickstartInitiateAction extends KickstartAction {
         KernelOptionsList opts = new KernelOptionsList(sys.getResolvedKernelOptions());
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), opts.toString());
+            LOG.debug("Resolved kernel options for {}: {}", sys.getName(), opts);
         }
 
         // SUSE text -> textmode transform + initrd removal.

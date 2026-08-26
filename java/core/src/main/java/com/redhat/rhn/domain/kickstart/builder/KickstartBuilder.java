@@ -164,7 +164,7 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                log.warn("Unable to parse kickstart command: {}", firstWord);
+                log.warn("Unable to parse kickstart commands for Kickstart profile {}", ksData.getLabel());
                 continue;
             }
 
@@ -174,9 +174,7 @@ public class KickstartBuilder {
                 isReallyKickstartProfile = true;
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
-                log.warn("Using default kickstartable tree URL:");
-                log.warn("   Replaced: {}", currentLine);
-                log.warn("   With: {} {}", firstWord, restOfLine);
+                log.warn("Using default kickstartable tree URL for Kickstart profile {}", ksData.getLabel());
             }
 
             KickstartCommand kc = new KickstartCommand();

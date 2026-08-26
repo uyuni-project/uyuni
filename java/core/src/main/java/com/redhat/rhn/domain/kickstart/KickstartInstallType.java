@@ -49,7 +49,6 @@ public class KickstartInstallType extends BaseDomainHelper {
     // distros
     public static final String FEDORA_PREFIX = "fedora";
     public static final String SLES_PREFIX = "sles";
-    private static final String SLES16 = "sles16generic";
 
     // Cobbler's OS versions
     public static final String GENERIC_OS_VERSION = "virtio26";
