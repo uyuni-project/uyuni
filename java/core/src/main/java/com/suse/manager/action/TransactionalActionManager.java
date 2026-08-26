@@ -18,6 +18,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -48,9 +50,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.Set;
 
 /**
  * Manager for multi-step transactional actions.
@@ -152,7 +154,7 @@ public class TransactionalActionManager {
      * @return progress entries in execution order
      */
     public static List<ProgressEntry> getProgressEntries(Action action, MinionTransactionalActionHistory history) {
-        boolean transactionalApply = !hasAfterRebootState(action);
+        boolean transactionalApply = !hasPostTransactionalState(action);
         return List.of(
                 new ProgressEntry(transactionalApply ? "apply" : "prerequisites",
                         statusKey(history.getPrerequisiteStatus()), history.getPrerequisiteAt(),
@@ -319,6 +321,13 @@ public class TransactionalActionManager {
                 .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
+        if (states.isEmpty()) {
+            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+            addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
+                    minionsByTransactionalUpdate.get(true));
+            return;
+        }
+
         Optional<String> stateToApply = findSingleTransactionalStateToApply(states);
         if (stateToApply.isPresent()) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
@@ -347,6 +356,21 @@ public class TransactionalActionManager {
      */
     public static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
             Action action, List<MinionSummary> minionSummaries) {
+        if (isHighstate(action)) {
+            ApplyStatesActionDetails details = ((ApplyStatesAction) action).getDetails();
+            return Optional.of(Map.of(
+                    withDirectCallExecutor(State.apply(
+                            List.of(
+                                    "ansible",
+                                    "services.docker",
+                                    "services.kiwi-image-server",
+                                    "services.salt-minion"),
+                            details.getPillarsMap(),
+                            Optional.of(true),
+                            details.isTest() ? Optional.of(true) : Optional.empty())),
+                    minionSummaries));
+        }
+
         return getAfterRebootState(action)
                 .map(afterRebootState -> Map.of(
                         withDirectCallExecutor(State.apply(
@@ -363,8 +387,8 @@ public class TransactionalActionManager {
      * @param action action to check
      * @return true when an after-reboot state exists
      */
-    public static boolean hasAfterRebootState(Action action) {
-        return getAfterRebootState(action).isPresent();
+    public static boolean hasPostTransactionalState(Action action) {
+        return isHighstate(action) || getAfterRebootState(action).isPresent();
     }
 
     /**
@@ -381,7 +405,9 @@ public class TransactionalActionManager {
         MinionTransactionalActionHistory history = lookupOrCreateActionHistory(minionServerId, actionId);
         Action action = ActionFactory.lookupById(actionId);
         return handleTransactionalResult(history, action, minionServerId, actionId, jsonResult, failed,
-                TransactionalActionManager::scheduleSnapshotRefresh);
+                TransactionalActionManager::scheduleSnapshotRefresh,
+                (resumeActionId, resumeMinionServerId) -> MessageQueue.publish(
+                        new ResumeTransactionalActionEventMessage(resumeActionId, resumeMinionServerId)));
     }
 
     static TransactionalResult handleTransactionalResult(
@@ -391,12 +417,12 @@ public class TransactionalActionManager {
             Long actionId,
             JsonElement jsonResult,
             boolean failed,
-            BiFunction<Action, Long, Optional<Long>> snapshotRefreshScheduler) {
-        boolean hasAfterRebootState = action != null && hasAfterRebootState(action);
+            BiFunction<Action, Long, Optional<Long>> snapshotRefreshScheduler,
+            BiConsumer<Long, Long> resumePublisher) {
+        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action);
         String formattedResult = formatResult(jsonResult);
-        String prerequisiteResult = hasAfterRebootState ? formattedResult : null;
+        String prerequisiteResult = hasPostTransactionalState ? formattedResult : null;
         boolean hasChanges = hasChanges(jsonResult);
-
         if (failed) {
             history.recordTransactionalApplyFailed(prerequisiteResult);
             if (hasChanges) {
@@ -414,12 +440,15 @@ public class TransactionalActionManager {
         }
 
         history.recordTransactionalStateApplied(prerequisiteResult);
-        if (!hasAfterRebootState && !hasChanges) {
-            history.recordSnapshotReconciliation(false, false);
+        if (!hasChanges) {
+            history.recordSnapshotReconciliation(false, hasPostTransactionalState);
+            if (hasPostTransactionalState) {
+                resumePublisher.accept(actionId, minionServerId);
+            }
             return TransactionalResult.success("Transactional states applied. No changes reported.");
         }
 
-        Optional<Long> refreshActionId = snapshotRefreshScheduler.apply(action, minionServerId);
+        Optional<Long> refreshActionId = scheduleSnapshotRefresh(action, minionServerId);
         if (refreshActionId.isEmpty()) {
             history.recordSnapshotRefreshFailed();
             return TransactionalResult.failed("Transactional states applied. Unable to schedule snapshot refresh.");
@@ -430,6 +459,12 @@ public class TransactionalActionManager {
 
     private static String formatResult(JsonElement jsonResult) {
         return jsonResult == null || jsonResult.isJsonNull() ? null : Json.PRETTY_GSON.toJson(jsonResult);
+    }
+
+    private static boolean isHighstate(Action action) {
+        return action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails() != null &&
+                applyStatesAction.getDetails().getMods().isEmpty();
     }
 
     private static Optional<String> getAfterRebootState(Action action) {
@@ -472,8 +507,8 @@ public class TransactionalActionManager {
                 .ifPresent(history -> {
                     Action action = ActionFactory.lookupById(history.getActionId());
                     reconcileSnapshotRefreshAction(history, action, rebootRequired,
-                            (actionId, serverId) -> MessageQueue.publish(
-                                    new ResumeTransactionalActionEventMessage(actionId, serverId)));
+                            (actionId, serverId) -> MessageQueue.publish(new ResumeTransactionalActionEventMessage(
+                                    actionId, serverId)));
                 });
     }
 
@@ -482,15 +517,14 @@ public class TransactionalActionManager {
             Action action,
             boolean rebootRequired,
             BiConsumer<Long, Long> resumePublisher) {
-        boolean hasAfterRebootState = action != null && hasAfterRebootState(action);
-
-        if (MinionTransactionalActionHistory.ProgressStatus.FAILED.equals(history.getPrerequisiteStatus())) {
-            history.recordFailedSnapshotReconciliation(rebootRequired, hasAfterRebootState);
+        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action);
+        if (ProgressStatus.FAILED.equals(history.getPrerequisiteStatus())) {
+            history.recordFailedSnapshotReconciliation(rebootRequired, hasPostTransactionalState);
             return;
         }
 
-        history.recordSnapshotReconciliation(rebootRequired, hasAfterRebootState);
-        if (!rebootRequired && hasAfterRebootState) {
+        history.recordSnapshotReconciliation(rebootRequired, hasPostTransactionalState);
+        if (!rebootRequired && hasPostTransactionalState) {
             resumePublisher.accept(history.getActionId(), history.getMinionServerId());
         }
     }
@@ -536,6 +570,32 @@ public class TransactionalActionManager {
      */
     public static void recordAfterRebootFailed(Long minionServerId, Long actionId) {
         lookupOrCreateActionHistory(minionServerId, actionId).recordAfterRebootFailed();
+    }
+
+    /**
+     * Record the result of a scheduled post-transactional continuation, if this action is being tracked.
+     *
+     * @param minionServerId minion server id
+     * @param actionId action id
+     * @param failed whether the post-transactional continuation failed
+     */
+    public static void recordPostTransactionalContinuationResult(Long minionServerId, Long actionId, boolean failed) {
+        recordPostTransactionalContinuationResult(findTransactionalActionHistory(minionServerId, actionId), failed);
+    }
+
+    static boolean recordPostTransactionalContinuationResult(
+            Optional<MinionTransactionalActionHistory> history, boolean failed) {
+        if (history.isEmpty() || !ProgressStatus.SCHEDULED.equals(history.get().getAfterRebootStatus())) {
+            return false;
+        }
+
+        if (failed) {
+            history.get().recordAfterRebootFailed();
+        }
+        else {
+            history.get().recordTransactionalApplyFinalized();
+        }
+        return true;
     }
 
     /**
