@@ -547,7 +547,7 @@ public interface SnapshotHandlerApi {
          */
         @Schema(name = "target_path",
                 description = "Symbolic link Target File Path. Present for Symbolic links only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getTargetPath();
 
         /**
@@ -560,14 +560,14 @@ public interface SnapshotHandlerApi {
          * @return the contents of the file
          */
         @Schema(description = "File contents (base64 encoded according to the contents_enc64 attribute)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getContents();
 
         /**
          * @return whether the content is base64 encoded
          */
         @Schema(name = "contents_enc64", description = " Identifies base64 encoded content",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getContentsEnc64();
 
         /**
@@ -594,21 +594,21 @@ public interface SnapshotHandlerApi {
          * @return the owner of the file
          */
         @Schema(description = "File Owner. Present for files or directories only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getOwner();
 
         /**
          * @return the group of the file
          */
         @Schema(description = "File Group. Present for files or directories only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getGroup();
 
         /**
          * @return the permissions of the file
          */
         @Schema(description = "File Permissions (Deprecated). Present for files or directories only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getPermissions();
 
         /**
@@ -616,27 +616,27 @@ public interface SnapshotHandlerApi {
          */
         @Schema(name = "permissions_mode",
                 description = "File Permissions. Present for files or directories only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPermissionsMode();
 
         /**
          * @return the SELinux context
          */
         @Schema(name = "selinux_ctx", description = "SELinux Context (optional).",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getSelinuxCtx();
 
         /**
          * @return whether the file is binary
          */
-        @Schema(description = "true/false , Present for files only.", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "true/false , Present for files only.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Boolean getBinary();
 
         /**
          * @return the sha256 signature of the file
          */
         @Schema(description = "File's sha256 signature. Present for files only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getSha256();
 
         /**
@@ -644,7 +644,7 @@ public interface SnapshotHandlerApi {
          */
         @Schema(name = "macro-start-delimiter",
                 description = "Macro start delimiter for a config file. Present for text files only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getMacroStartDelimiter();
 
         /**
@@ -652,7 +652,7 @@ public interface SnapshotHandlerApi {
          */
         @Schema(name = "macro-end-delimiter",
                 description = "Macro end delimiter for a config file. Present for text files only.",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getMacroEndDelimiter();
     }
 }
