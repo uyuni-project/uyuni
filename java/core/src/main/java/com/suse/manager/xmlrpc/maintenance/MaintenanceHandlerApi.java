@@ -689,7 +689,7 @@ public interface MaintenanceHandlerApi {
          * @return the user that scheduled the action
          */
         @Schema(description = "the user that scheduled the action (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getScheduler();
 
         /**
@@ -704,7 +704,7 @@ public interface MaintenanceHandlerApi {
          * @return the ID of the prerequisite action
          */
         @Schema(description = "ID of the prerequisite action (optional)",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getPrerequisite();
 
         /**
