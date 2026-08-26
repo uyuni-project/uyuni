@@ -156,17 +156,31 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         Profile prof = Profile.lookupById(CobblerXMLRPCHelper.getConnection(
                 ctx.getCurrentUser()), data.getCobblerId());
         if (prof != null) {
-            if (prof.getKernelOptions().isEmpty()) {
+            Optional<?> kernelOptsOpt = prof.getKernelOptions();
+            if (kernelOptsOpt.isEmpty()) {
                 form.set(KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
-                form.set(KERNEL_OPTIONS, prof.convertOptionsMap(prof.getKernelOptions().get()));
+                Object rawValue = kernelOptsOpt.get();
+                if (rawValue instanceof java.util.Map) {
+                    form.set(KERNEL_OPTIONS, prof.convertOptionsMap((java.util.Map<String, Object>) rawValue));
+                }
+                else {
+                    form.set(KERNEL_OPTIONS, String.valueOf(rawValue));
+                }
             }
-            if (prof.getKernelOptionsPost().isEmpty()) {
+            Optional<?> postKernelOptsOpt = prof.getKernelOptionsPost();
+            if (postKernelOptsOpt.isEmpty()) {
                 form.set(POST_KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
-                form.set(POST_KERNEL_OPTIONS, prof.convertOptionsMap(prof.getKernelOptionsPost().get()));
+                Object rawValue = postKernelOptsOpt.get();
+                if (rawValue instanceof java.util.Map) {
+                    form.set(POST_KERNEL_OPTIONS, prof.convertOptionsMap((java.util.Map<String, Object>) rawValue));
+                }
+                else {
+                    form.set(POST_KERNEL_OPTIONS, String.valueOf(rawValue));
+                }
             }
         }
         KickstartVirtualizationType type = data.getKickstartDefaults().
