@@ -1,5 +1,5 @@
-include:
 {%- if not grains.get('transactional', False) %}
+include:
   - ansible.prereq
 {%- endif %}
 

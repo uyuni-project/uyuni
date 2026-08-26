@@ -17,12 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
 import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import org.junit.jupiter.api.Test;
 
@@ -90,92 +96,190 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testFailedTransactionalResultWithChangesSchedulesSnapshotRefresh() {
-        Action action = new Action();
-        ActionType actionType = new ActionType();
-        actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
-        action.setActionType(actionType);
+    public void testHighstateHasPostTransactionalState() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
+
+        assertTrue(TransactionalActionManager.hasPostTransactionalState(action));
+    }
+
+    @Test
+    public void testHighstateProgressUsesPrerequisiteFlowSteps() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
 
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
-        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        history.recordTransactionalStateApplied("transactional highstate result");
+        history.recordSnapshotReconciliation(false, true);
 
-        TransactionalActionManager.TransactionalResult result =
-                TransactionalActionManager.handleTransactionalResult(
-                        history,
-                        action,
-                        history.getMinionServerId(),
-                        history.getActionId(),
-                        JsonParser.parseString("""
-                                {
-                                  "file_|-marker_|-/usr/share/marker_|-managed": {
-                                    "result": false,
-                                    "changes": {"diff": "New file"}
-                                  }
-                                }
-                                """),
-                        true,
-                        (scheduledAction, minionServerId) -> {
-                            snapshotRefreshes.incrementAndGet();
-                            return Optional.of(20L);
-                        });
+        List<TransactionalActionManager.ProgressEntry> entries =
+                TransactionalActionManager.getProgressEntries(action, history);
+
+        assertEquals(3, entries.size());
+        assertEquals("prerequisites", entries.get(0).getStepKey());
+        assertEquals("reboot", entries.get(1).getStepKey());
+        assertEquals("execution", entries.get(2).getStepKey());
+    }
+
+    @Test
+    public void testHighstateContinuationUsesDirectStateApply() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        details.setPillarsMap(Optional.of(Map.of("example", "value")));
+        details.setTest(true);
+        action.setDetails(details);
+
+        MinionSummary transactionalMinion =
+                new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion)).orElseThrow();
+
+        assertEquals(1, calls.size());
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        assertEquals("state.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion"), kwargs.get("mods"));
+        assertEquals(Map.of("example", "value"), kwargs.get("pillar"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(List.of(transactionalMinion), calls.get(call));
+    }
+
+    @Test
+    public void testScheduledPostTransactionalContinuationSuccessCompletesProgress() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+        history.recordAfterRebootScheduled();
+
+        boolean updated = TransactionalActionManager.recordPostTransactionalContinuationResult(
+                Optional.of(history), false);
+
+        assertTrue(updated);
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
+    }
+
+    @Test
+    public void testScheduledPostTransactionalContinuationFailureFailsProgress() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+        history.recordAfterRebootScheduled();
+
+        boolean updated = TransactionalActionManager.recordPostTransactionalContinuationResult(
+                Optional.of(history), true);
+
+        assertTrue(updated);
+        assertEquals(ProgressStatus.FAILED, history.getAfterRebootStatus());
+        assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
+    }
+
+    @Test
+    public void testStateApplyWithoutTransactionalHistoryDoesNotUpdateProgress() {
+        boolean updated = TransactionalActionManager.recordPostTransactionalContinuationResult(
+                Optional.empty(), false);
+
+        assertFalse(updated);
+    }
+
+    @Test
+    public void testFailedTransactionalResultWithChangesSchedulesSnapshotRefreshWithoutContinuation() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "file_|-marker_|-/usr/share/marker_|-managed": {
+                            "result": false,
+                            "changes": {"diff": "New file"}
+                          }
+                        }
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
 
         assertTrue(result.isFailed());
         assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
         assertEquals(20L, history.getSnapshotRefreshActionId());
         assertEquals(1, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
         assertFalse(ProgressStatus.SCHEDULED.equals(history.getAfterRebootStatus()));
     }
 
     @Test
     public void testFailedTransactionalResultWithoutChangesDoesNotScheduleSnapshotRefresh() {
-        Action action = new Action();
-        ActionType actionType = new ActionType();
-        actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
-        action.setActionType(actionType);
-
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
 
-        TransactionalActionManager.TransactionalResult result =
-                TransactionalActionManager.handleTransactionalResult(
-                        history,
-                        action,
-                        history.getMinionServerId(),
-                        history.getActionId(),
-                        JsonParser.parseString("""
-                                {
-                                  "cmd_|-noop_|-true_|-run": {
-                                    "result": false,
-                                    "changes": {}
-                                  }
-                                }
-                                """),
-                        true,
-                        (scheduledAction, minionServerId) -> {
-                            snapshotRefreshes.incrementAndGet();
-                            return Optional.of(20L);
-                        });
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                new Action(),
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "cmd_|-noop_|-true_|-run": {
+                            "result": false,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                true,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
 
         assertTrue(result.isFailed());
         assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getAfterRebootStatus());
         assertEquals(0, snapshotRefreshes.get());
-        assertFalse(ProgressStatus.SCHEDULED.equals(history.getAfterRebootStatus()));
+        assertEquals(0, resumptions.get());
     }
 
     @Test
     public void testFailedTransactionalSnapshotReconciliationDoesNotResumePostState() {
-        Action action = new Action();
-        ActionType actionType = new ActionType();
-        actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
-        action.setActionType(actionType);
-
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         history.recordTransactionalApplyFailed("failed prerequisite");
         AtomicInteger resumptions = new AtomicInteger();
 
         TransactionalActionManager.reconcileSnapshotRefreshAction(
-                history, action, true,
-                (actionId, minionServerId) -> resumptions.incrementAndGet());
+                history, action, true, (actionId, minionServerId) -> resumptions.incrementAndGet());
 
         assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
         assertTrue(history.isRebootRequired());
@@ -448,6 +552,37 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testHighstateUsesTransactionalUpdateByDefaultOnTransactionalSystems() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(regularMinion, transactionalMinion),
+                false);
+
+        assertEquals(2, calls.size());
+        assertTrue(calls.entrySet().stream()
+                .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
+                        entry.getValue().equals(List.of(regularMinion))));
+
+        Optional<LocalCall<?>> transactionalCall = calls.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(List.of(transactionalMinion)))
+                .map(Map.Entry::getKey)
+                .findFirst();
+
+        assertTrue(transactionalCall.isPresent());
+        assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
+        assertFalse(kwargs.containsKey("mods"));
+    }
+
+    @Test
     public void testHighstateUsesTransactionalUpdateWhenRequested() {
         Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
         MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
@@ -474,5 +609,9 @@ public class TransactionalActionManagerTest {
         assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
         Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
         assertFalse(kwargs.containsKey("mods"));
+    }
+
+    private static JsonElement stateResult(String result) {
+        return JsonParser.parseString(result);
     }
 }
