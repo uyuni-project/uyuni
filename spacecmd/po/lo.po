@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-25 22:52+0000\n"
+"PO-Revision-Date: 2026-08-26 15:42+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
 "Language: lo\n"
@@ -485,7 +485,7 @@ msgstr ""
 #: ../src/spacecmd/activationkey.py:1611 ../src/spacecmd/kickstart.py:519
 #: ../src/spacecmd/system.py:3102
 msgid "Activation Keys"
-msgstr "ຄີເປີດໃຊ້ງານ (Activation Keys)"
+msgstr "Activation Keys"
 
 #: ../src/spacecmd/activationkey.py:1617
 #, python-format
@@ -5015,7 +5015,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:643
 msgid "Summary"
-msgstr "ສະຫຼຸບ"
+msgstr "ບົດສະຫຼຸບ"
 
 #: ../src/spacecmd/softwarechannel.py:654
 #, python-format
@@ -5221,7 +5221,7 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1024
 msgid "Architecture"
-msgstr ""
+msgstr "ສະຖາປັດຕະຍະກຳ"
 
 #: ../src/spacecmd/softwarechannel.py:1031
 msgid "Checksum type"
@@ -5463,7 +5463,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:3024
 #: ../src/spacecmd/softwarechannel.py:3270
 msgid "Options:"
-msgstr ""
+msgstr "ຕົວເລືອກ:"
 
 #: ../src/spacecmd/softwarechannel.py:1770
 msgid "        -p/--publish : Publish errata to the channel (don't clone)"
