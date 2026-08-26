@@ -842,13 +842,13 @@ public interface SystemScapHandlerApi {
         /**
          * @return the tailoring file id
          */
-        @Schema(description = "Tailoring file ID (optional)", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Tailoring file ID (optional)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getTailoringFileId();
 
         /**
          * @return the tailoring profile id
          */
-        @Schema(description = "Tailoring profile ID (optional)", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Tailoring profile ID (optional)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getTailoringProfileId();
 
         /**
