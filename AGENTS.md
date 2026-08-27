@@ -6,6 +6,9 @@ These instructions apply to the entire repository. If a subdirectory later
 contains a more specific `AGENTS.md`, follow both files, with the nearer file
 taking precedence for that subtree.
 
+If `AGENTS_CUSTOM.md` exists in the repository root, follow its local
+environment instructions as overrides to this file.
+
 This is a large, long-lived Uyuni/Spacewalk monorepo. Treat code, manifests,
 build files, and CI workflows in the target branch as authoritative.
 
