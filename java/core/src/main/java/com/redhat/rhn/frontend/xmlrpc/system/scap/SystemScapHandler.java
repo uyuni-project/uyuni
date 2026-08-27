@@ -142,7 +142,7 @@ public class SystemScapHandler extends BaseHandler implements SystemScapHandlerA
      * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
      * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
+    public int scheduleXccdfScan(User loggedInUser, List<Integer> sids,
             String xccdfPath, String oscapParams) {
         return scheduleXccdfScan(loggedInUser, sids, xccdfPath,
                 oscapParams, null, new Date());
@@ -166,7 +166,7 @@ public class SystemScapHandler extends BaseHandler implements SystemScapHandlerA
      *                       "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
+    public int scheduleXccdfScan(User loggedInUser, List<Integer> sids,
             String xccdfPath, String oscapParams, Date date) {
         return scheduleXccdfScan(loggedInUser, sids, xccdfPath,
                 oscapParams, null, date);
@@ -192,7 +192,7 @@ public class SystemScapHandler extends BaseHandler implements SystemScapHandlerA
      *                       "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
-    public int scheduleXccdfScan(User loggedInUser, List sids,
+    public int scheduleXccdfScan(User loggedInUser, List<Integer> sids,
              String xccdfPath, String oscapParams, String ovalFiles, Date date) {
         if (sids.isEmpty()) {
             throw new InvalidSystemException();
@@ -261,7 +261,7 @@ public class SystemScapHandler extends BaseHandler implements SystemScapHandlerA
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
             String xccdfPath, String oscapParams, Date date) {
-        List serverIds = new ArrayList<>();
+        List<Integer> serverIds = new ArrayList<>();
         serverIds.add(sid);
         return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, null, date);
     }

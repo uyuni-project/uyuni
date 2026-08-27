@@ -128,7 +128,7 @@ public interface SystemScapHandlerApi {
         responseDescription = "ID if SCAP action created",
         legacyDocResponse = @LegacyDocResponse(name = "id")
     )
-    int scheduleXccdfScan(User loggedInUser, List sids, String xccdfPath, String oscapParams);
+    int scheduleXccdfScan(User loggedInUser, List<Integer> sids, String xccdfPath, String oscapParams);
 
     /**
      * Schedules an OpenSCAP scan on a list of systems at a given time.
@@ -147,7 +147,7 @@ public interface SystemScapHandlerApi {
         responseDescription = "ID if SCAP action created",
         legacyDocResponse = @LegacyDocResponse(name = "id")
     )
-    int scheduleXccdfScan(User loggedInUser, List sids, String xccdfPath, String oscapParams, Date date);
+    int scheduleXccdfScan(User loggedInUser, List<Integer> sids, String xccdfPath, String oscapParams, Date date);
 
     /**
      * Schedules an OpenSCAP scan on a list of systems, with OVAL files, at a given time.
@@ -167,7 +167,7 @@ public interface SystemScapHandlerApi {
         responseDescription = "ID if SCAP action created",
         legacyDocResponse = @LegacyDocResponse(name = "id")
     )
-    int scheduleXccdfScan(User loggedInUser, List sids, String xccdfPath, String oscapParams,
+    int scheduleXccdfScan(User loggedInUser, List<Integer> sids, String xccdfPath, String oscapParams,
             String ovalFiles, Date date);
 
     /**

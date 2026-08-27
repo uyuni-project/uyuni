@@ -284,7 +284,7 @@ public class SnapshotHandler extends BaseHandler implements SnapshotHandlerApi {
      * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
-    public int deleteSnapshots(User loggedInUser, Map dateDetails) {
+    public int deleteSnapshots(User loggedInUser, Map<String, Date> dateDetails) {
         validateDateKeys(dateDetails);
         Date startDate = null;
         Date endDate = null;

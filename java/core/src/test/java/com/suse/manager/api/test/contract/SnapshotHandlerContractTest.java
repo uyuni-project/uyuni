@@ -282,9 +282,12 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testDeleteSnapshotsByDateDetails() throws Exception {
+        Map<String, Date> received = (Map<String, Date>) (Map<String, ?>) DATE_DETAILS;
+
         context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(DATE_DETAILS));
+            oneOf(handler()).deleteSnapshots(with(mockUser), with(received));
             will(returnValue(1));
         }});
 

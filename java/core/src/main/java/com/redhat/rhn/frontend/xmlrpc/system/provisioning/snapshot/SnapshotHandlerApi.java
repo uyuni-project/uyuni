@@ -157,7 +157,7 @@ public interface SnapshotHandlerApi {
         requestClass = DeleteSnapshotsByDateDetailsRequest.class,
         isIntegerResponse = true
     )
-    int deleteSnapshots(User loggedInUser, Map dateDetails);
+    int deleteSnapshots(User loggedInUser, Map<String, Date> dateDetails);
 
     /**
      * Deletes all snapshots of a system based on the given date criteria.
