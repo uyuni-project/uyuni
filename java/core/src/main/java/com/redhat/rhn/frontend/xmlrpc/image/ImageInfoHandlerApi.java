@@ -282,7 +282,19 @@ public interface ImageInfoHandlerApi {
     interface ImageOverviewResponse extends ApiResponseWrapper<ImageOverviewDoc> { }
 
     @Schema(name = "ApiResponseImagePillar")
-    interface ImagePillarResponse extends ApiResponseWrapper<Map<String, Object>> { }
+    interface ImagePillarResponse extends ApiResponseWrapper<Map<String, Object>> {
+
+        /**
+         * The pillar data is keyed by the pillar entries of the image, which carry scalars as
+         * well as nested structures, so the payload is documented as a free form struct.
+         *
+         * @return the pillar data
+         */
+        @Override
+        @Schema(description = "The payload result", requiredMode = Schema.RequiredMode.REQUIRED,
+                additionalProperties = Schema.AdditionalPropertiesValue.TRUE)
+        Map<String, Object> getResult();
+    }
 
     @Schema(name = "ApiResponseImageActionId")
     interface ImageActionIdResponse extends ApiResponseWrapper<Long> { }
