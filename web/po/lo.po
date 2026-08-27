@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-28 09:41+0200\n"
-"PO-Revision-Date: 2026-08-27 05:53+0000\n"
+"PO-Revision-Date: 2026-08-28 08:13+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -2776,7 +2776,7 @@ msgstr "{fqdn} - ລາຍລະອຽດ Peripheral"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr ""
+msgstr "ເຊີເວີ {fqdn} ຖືກລົງທະບຽນເປັນສ່ວນຕໍ່ພ່ວງຂອງ hub ນີ້ໃນຕອນນີ້. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -3626,7 +3626,7 @@ msgstr "ໄຟລ໌ປະຈຸບັນ"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "ແທນທີ່ໄຟລ໌ (ທາງເລືອກ)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4870,19 +4870,19 @@ msgstr "ບໍ່ພົບໜ້າ {currentUrl} ທີ່ທ່ານຮ້ອ�
 
 #: ../html/src/manager/errors/not-found.tsx:10
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr ""
+msgstr "ຫາກທ່ານພິມທີ່ຢູ່ນີ້ໃນບຣາວເຊີ, ກະລຸນາກວດສອບຕົວສະກົດ ແລະ ຕົວພິມໃຫຍ່/ນ້ອຍຄືນໃໝ່."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr ""
+msgstr "ຫາກທ່ານຄລິກລິ້ງມາ, ລິ້ງນັ້ນອາດຈະບໍ່ຖືກຕ້ອງ ຫຼື ເກົ່າເກີນໄປ. ຄລິກປຸ່ມກັບຄືນໃນ "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr ""
+msgstr "ຫາກທ່ານໃຊ້ບຸກມາກ (bookmark), ໜ້ານີ້ອາດຈະຖືກຍ້າຍໄປບ່ອນອື່ນແລ້ວນັບຕັ້ງແຕ່ "
 
 #: ../html/src/manager/errors/not-found.tsx:30
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr ""
+msgstr "ຫາກທ່ານຄິດວ່າເຂົ້າເຖິງໜ້ານີ້ດ້ວຍຂໍ້ຜິດພາດ, ກະລຸນາຕິດຕໍ່ພວກເຮົາພ້ອມລາຍລະອຽດ "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -7314,7 +7314,7 @@ msgstr "ຊື່ຊ່ອງທາງ"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
@@ -8104,4 +8104,4 @@ msgstr "ບໍ່ພົບຊັບພະຍາກອນ."
 
 #: ../html/src/utils/network.ts:106
 msgid "HTTP Error code "
-msgstr ""
+msgstr "ລະຫັດຂໍ້ຜິດພາດ HTTP "
