@@ -28,6 +28,18 @@ public final class HardwareConstants {
     public static final int CPU_CACHE_LENGTH = 16;
     public static final int CPU_MHZ_LENGTH = 16;
 
+    // Smbios record keys
+    public static final String DMI_KEY_VENDOR = "vendor";
+    public static final String DMI_KEY_VERSION = "version";
+    public static final String DMI_KEY_RELEASE_DATE = "release_date";
+    public static final String DMI_KEY_PRODUCT_NAME = "product_name";
+    public static final String DMI_KEY_SERIAL_NUMBER = "serial_number";
+    public static final String DMI_KEY_MANUFACTURER = "manufacturer";
+    public static final String DMI_KEY_ASSET_TAG = "asset_tag";
+
+    // Legacy spacewalk format of the rhnServerDmi.asset column, exposed as-is by the API and the web UI
+    public static final String DMI_ASSET_FORMAT = "(chassis: %s) (chassis: %s) (board: %s) (system: %s)";
+
     // Block device major numbers
     public static final int MAJOR_RAM_DEVICE = 1;
     public static final int MAJOR_VT_DEVICE = 7;

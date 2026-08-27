@@ -13,7 +13,6 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -25,6 +24,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.hardware.cpu.CpuInfoMapper;
 import com.suse.manager.reactor.hardware.device.DeviceSynchronizer;
+import com.suse.manager.reactor.hardware.dmi.DmiMapper;
 import com.suse.manager.reactor.hardware.network.NetworkMapper;
 import com.suse.manager.reactor.hardware.virtualization.VirtualizationMapper;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,6 +58,7 @@ public class HardwareMapper {
     private final List<String> errors = new LinkedList<>();
 
     private final CpuInfoMapper cpuMapper;
+    private final DmiMapper dmiMapper;
     private final NetworkMapper networkMapper;
     private final DeviceSynchronizer deviceSynchronizer;
     private final VirtualizationMapper virtualizationMapper;
@@ -73,6 +73,7 @@ public class HardwareMapper {
         this.server = serverIn;
         this.grains = grainsIn;
         this.cpuMapper = new CpuInfoMapper(serverIn, grains);
+        this.dmiMapper = new DmiMapper(serverIn);
         this.networkMapper = new NetworkMapper(server, grains);
         this.deviceSynchronizer = new DeviceSynchronizer(server);
         this.virtualizationMapper = new VirtualizationMapper(server, grains);
@@ -116,68 +117,18 @@ public class HardwareMapper {
      * @param smbiosRecordsBaseboard smbios records of type "Baseboard"
      * @param smbiosRecordsChassis smbios records of type "Chassis"
      */
-    public void mapDmiInfo(Map<String, Object> smbiosRecordsBios,
+    public void mapDmiInfo(
+            Map<String, Object> smbiosRecordsBios,
             Map<String, Object> smbiosRecordsSystem,
             Map<String, Object> smbiosRecordsBaseboard,
-            Map<String, Object> smbiosRecordsChassis) {
-
-        ValueMap bios = new ValueMap(smbiosRecordsBios);
-        ValueMap system = new ValueMap(smbiosRecordsSystem);
-        ValueMap baseboard = new ValueMap(smbiosRecordsBaseboard);
-        ValueMap chassis = new ValueMap(smbiosRecordsChassis);
-
-        String biosVendor = bios.getOptionalAsString("vendor").orElse(null);
-        String biosVersion = bios.getOptionalAsString("version").orElse(null);
-        String biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
-
-        String productName = system.getOptionalAsString("product_name").orElse(null);
-        String systemVersion = system.getOptionalAsString("version").orElse(null);
-        String systemSerial = system.getOptionalAsString("serial_number").orElse(null);
-
-        String boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
-        String boardName = baseboard.getOptionalAsString("product_name").orElse(null);
-        String boardManufacturer = baseboard.getOptionalAsString("manufacturer").orElse(null);
-
-        String chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
-        String chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
-
-        Dmi dmi = server.getDmi();
-        if (dmi == null) {
-            dmi = new Dmi();
-        }
-        StringBuilder dmiSystem = new StringBuilder();
-        if (StringUtils.isNotBlank(productName)) {
-            dmiSystem.append(productName);
-        }
-        if (StringUtils.isNotBlank(systemVersion)) {
-            if (!dmiSystem.isEmpty()) {
-                dmiSystem.append(" ");
-            }
-            dmiSystem.append(systemVersion);
-        }
-        dmi.setSystem(dmiSystem.isEmpty() ? null : dmiSystem.toString().trim());
-        dmi.setProduct(productName);
-        if (biosVendor != null || biosVersion != null || biosReleseDate != null) {
-            dmi.setBios(biosVendor, biosVersion, biosReleseDate);
-        }
-        dmi.setVendor(biosVendor);
-
-        StringBuilder board = new StringBuilder();
-        if (StringUtils.isNotBlank(boardManufacturer)) {
-            board.append(boardManufacturer.trim());
-            board.append(" ");
-        }
-        if (StringUtils.isNotBlank(boardName)) {
-            board.append(boardName.trim());
-        }
-        dmi.setBoard(board.isEmpty() ? null : board.toString().trim());
-
-        dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
-                Objects.toString(chassisSerial, ""), Objects.toString(chassisTag, ""),
-                Objects.toString(boardSerial, ""), Objects.toString(systemSerial, "")));
-
-        dmi.setServer(server);
-        server.setDmi(dmi);
+            Map<String, Object> smbiosRecordsChassis
+    ) {
+        dmiMapper.mapDmiInfo(
+                smbiosRecordsBios,
+                smbiosRecordsSystem,
+                smbiosRecordsBaseboard,
+                smbiosRecordsChassis
+        ).ifPresent(errors::add);
     }
 
     /**

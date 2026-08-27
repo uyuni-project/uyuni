@@ -13,6 +13,7 @@ package com.suse.manager.reactor.hardware;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
@@ -24,6 +25,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -251,6 +253,27 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
                 Arguments.of("KVM/Linux", "N/A", "z16", "IBM Mainframe z16 3932 00000000000987F6",
                         SERVER_3_DIGITAL_SERVER_ID, SERVER_3_STATE_CHANGES_RET_PROC_SYSINFO)
         );
+    }
+
+    @Test
+    @DisplayName("mapDmiInfo delegates to the DMI mapper without collecting errors")
+    public void mapDmiInfoDelegatesToDmiMapper() {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        HardwareMapper hwMapper = new HardwareMapper(testMinionServer, new ValueMap(new HashMap<String, String>()));
+
+        hwMapper.mapDmiInfo(
+                Map.of("vendor", "SeaBIOS"),
+                Map.of("product_name", "Standard PC"),
+                Map.of("manufacturer", "Intel"),
+                Map.of("asset_tag", "tag-1")
+        );
+
+        assertTrue(hwMapper.getErrors().isEmpty());
+        assertNotNull(testMinionServer.getDmi());
+        assertEquals("Standard PC", testMinionServer.getDmi().getSystem());
+        assertEquals("SeaBIOS", testMinionServer.getDmi().getVendor());
+        assertEquals("Intel", testMinionServer.getDmi().getBoard());
+        assertEquals("(chassis: ) (chassis: tag-1) (board: ) (system: )", testMinionServer.getDmi().getAsset());
     }
 
     @ParameterizedTest
