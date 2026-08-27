@@ -341,7 +341,7 @@ public class ImageInfoHandler extends BaseHandler implements ImageInfoHandlerApi
      * @param external the file is external
      * @return 1 on success
      *
-     * @apidoc.doc Delete image file
+     * @apidoc.doc Add an image file
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "imageId", "ID of the image")
      * @apidoc.param #param_desc("string", "file", "the file name, it must exist in the store")
@@ -496,11 +496,7 @@ public class ImageInfoHandler extends BaseHandler implements ImageInfoHandlerApi
      * @apidoc.doc Get the custom data values defined for the image
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "imageId")
-     * @apidoc.returntype
-     *    #struct_begin("the map of custom labels to custom values")
-     *      #prop("string", "custom info label")
-     *      #prop("string", "value")
-     *    #struct_end()
+     * @apidoc.returntype #param("struct", "the map of custom labels to custom values")
      */
     @ReadOnly
     public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {

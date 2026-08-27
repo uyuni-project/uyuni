@@ -185,7 +185,7 @@ public interface ImageInfoHandlerApi {
      * @return 1 on success
      */
     @ApiEndpointDoc(
-        summary = "Delete image file",
+        summary = "Add an image file",
         requestClass = AddImageFileRequest.class,
         isIntegerResponse = true
     )
@@ -255,7 +255,7 @@ public interface ImageInfoHandlerApi {
         summary = "Get the custom data values defined for the image",
         method = HttpMethod.get,
         responseClass = ImageCustomValuesResponse.class,
-        legacyDocResponse = @LegacyDocResponse(name = "the map of custom labels to custom values")
+        legacyDocResponse = @LegacyDocResponse(type = "struct", name = "the map of custom labels to custom values")
     )
     Map<String, String> getCustomValues(
         @Parameter(hidden = true) User loggedInUser,
@@ -285,7 +285,7 @@ public interface ImageInfoHandlerApi {
     interface ImagePillarResponse extends ApiResponseWrapper<Map<String, Object>> { }
 
     @Schema(name = "ApiResponseImageActionId")
-    interface ImageActionIdResponse extends ApiResponseWrapper<Integer> { }
+    interface ImageActionIdResponse extends ApiResponseWrapper<Long> { }
 
     @Schema(name = "ApiResponseImageErrataList")
     interface ImageErrataListResponse extends ApiResponseWrapper<List<ErrataOverviewDoc>> { }
@@ -294,7 +294,7 @@ public interface ImageInfoHandlerApi {
     interface ImagePackageListResponse extends ApiResponseWrapper<List<ImagePackageDoc>> { }
 
     @Schema(name = "ApiResponseImageCustomValues")
-    interface ImageCustomValuesResponse extends ApiResponseWrapper<ImageCustomValuesDoc> { }
+    interface ImageCustomValuesResponse extends ApiResponseWrapper<Map<String, String>> { }
 
     @Schema(name = "ImageSetPillarRequest")
     @JsonPropertyOrder({"imageId", "pillarData"})
@@ -573,7 +573,7 @@ public interface ImageInfoHandlerApi {
          * @return whether the image is obsolete
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        String getObsolete();
+        Boolean getObsolete();
     }
 
     @Schema(name = "ImageOverviewInformation")
@@ -656,7 +656,7 @@ public interface ImageInfoHandlerApi {
          */
         @Schema(description = "Available if the build is successful. One of:",
                 allowableValues = {"queued", "picked up", "completed", "failed"},
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getInspectStatus();
 
         /**
@@ -696,14 +696,11 @@ public interface ImageInfoHandlerApi {
         Integer getInstalledPackages();
 
         /**
-         * The image files are documented as a free-form struct.
-         *
          * @return the image files
          */
-        @Schema(description = "image files", requiredMode = Schema.RequiredMode.REQUIRED,
-                additionalProperties = Schema.AdditionalPropertiesValue.TRUE)
-        @LegacyDocResponse(type = "struct")
-        Map<String, Object> getFiles();
+        @Schema(description = "image files", requiredMode = Schema.RequiredMode.REQUIRED)
+        @LegacyDocResponse(name = "image information")
+        List<ImageFileDoc> getFiles();
 
         /**
          * @return whether the image has been replaced in the store
@@ -795,6 +792,36 @@ public interface ImageInfoHandlerApi {
         Boolean getRestartSuggested();
     }
 
+    @Schema(name = "ImageFile")
+    @JsonPropertyOrder({"file", "type", "external", "url"})
+    interface ImageFileDoc {
+
+        /**
+         * @return the name of the file
+         */
+        @Schema(description = "file name without path", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getFile();
+
+        /**
+         * @return the type of the file
+         */
+        @Schema(description = "file type", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getType();
+
+        /**
+         * @return whether the file is external
+         */
+        @Schema(description = "true if the file is external, false otherwise",
+                requiredMode = Schema.RequiredMode.REQUIRED)
+        Boolean getExternal();
+
+        /**
+         * @return the URL of the file
+         */
+        @Schema(description = "file url", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getUrl();
+    }
+
     @Schema(name = "ImagePackage")
     @JsonPropertyOrder({"name", "version", "release", "epoch", "arch"})
     interface ImagePackageDoc {
@@ -828,22 +855,5 @@ public interface ImageInfoHandlerApi {
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String getArch();
-    }
-
-    @Schema(name = "ImageCustomValues")
-    @JsonPropertyOrder({"customInfoLabel", "value"})
-    interface ImageCustomValuesDoc {
-
-        /**
-         * @return the custom info label
-         */
-        @Schema(name = "custom info label", requiredMode = Schema.RequiredMode.REQUIRED)
-        String getCustomInfoLabel();
-
-        /**
-         * @return the custom value
-         */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        String getValue();
     }
 }

@@ -35,7 +35,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *          false otherwise")
  *   #prop("string", "storeLabel")
  *   #prop("string", "checksum")
- *   #prop("string", "obsolete")
+ *   #prop("boolean", "obsolete")
  * #struct_end()
  */
 public class ImageInfoSerializer extends ApiResponseSerializer<ImageInfo> {
