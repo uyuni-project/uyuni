@@ -516,7 +516,7 @@ public interface ImageInfoHandlerApi {
     }
 
     @Schema(name = "ImageInformation")
-    @JsonPropertyOrder({"id", "name", "version", "revision", "arch", "external", "storeLabel", "checksum",
+    @JsonPropertyOrder({"id", "name", "type", "version", "revision", "arch", "external", "storeLabel", "checksum",
         "obsolete"})
     interface ImageInfoDoc {
 
@@ -531,6 +531,12 @@ public interface ImageInfoHandlerApi {
          */
         @Schema(description = "image name", requiredMode = Schema.RequiredMode.REQUIRED)
         String getName();
+
+        /**
+         * @return the type of the image
+         */
+        @Schema(description = "image type", requiredMode = Schema.RequiredMode.REQUIRED)
+        String getType();
 
         /**
          * @return the version of the image

@@ -28,6 +28,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * #struct_begin("image information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")
+ *   #prop_desc("string", "type", "image type")
  *   #prop_desc("string", "version", "image tag/version")
  *   #prop_desc("int", "revision", "image build revision number")
  *   #prop_desc("string", "arch", "image architecture")
