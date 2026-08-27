@@ -272,8 +272,10 @@ public interface PackagesHandlerApi {
     @Schema(name = "ApiResponsePackageList")
     interface PackageListResponse extends ApiResponseWrapper<List<PackageDoc>> { }
 
+    // The package file is written to the response as the array of numbers a Java byte array
+    // serializes to, not as the base64 string a Byte element would document.
     @Schema(name = "ApiResponsePackageFile")
-    interface PackageFileResponse extends ApiResponseWrapper<List<Byte>> { }
+    interface PackageFileResponse extends ApiResponseWrapper<List<Integer>> { }
 
     @Schema(name = "PackageIdRequest")
     interface PackageIdRequest {
