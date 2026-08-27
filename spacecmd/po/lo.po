@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-21 10:52+0200\n"
-"PO-Revision-Date: 2026-08-26 18:33+0000\n"
+"PO-Revision-Date: 2026-08-27 05:53+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
 "Language: lo\n"
@@ -317,7 +317,7 @@ msgstr "ວິທີການຕິດຕໍ່:         %s"
 #: ../src/spacecmd/activationkey.py:1041 ../src/spacecmd/kickstart.py:482
 #: ../src/spacecmd/system.py:3107
 msgid "Software Channels"
-msgstr "ຊ່ອງທາງຊອບແວ"
+msgstr "ຊ່ອງທາງຊອບແວ (Software Channels)"
 
 #: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:872
 #: ../src/spacecmd/configchannel.py:992 ../src/spacecmd/system.py:3117
@@ -2862,7 +2862,7 @@ msgstr "kickstart_removescript: ລຶບສະຄຣິບອອກຈາກໂ
 
 #: ../src/spacecmd/kickstart.py:2253
 msgid "usage: kickstart_removescript PROFILE [ID]"
-msgstr "ການນຳໃຊ້: kickstart_removescript PROFILE [ID]"
+msgstr "ວິທີໃຊ້: kickstart_removescript PROFILE [ID]"
 
 #: ../src/spacecmd/kickstart.py:2284 ../src/spacecmd/kickstart.py:2297
 msgid "Invalid script ID"
@@ -2975,7 +2975,7 @@ msgstr "kickstart_import: ນຳເຂົ້າໂປຣໄຟລ໌ kickstart �
 
 #: ../src/spacecmd/kickstart.py:2594
 msgid "usage: kickstart_import <JSONFILES...>"
-msgstr "ການນຳໃຊ້: kickstart_import <JSONFILES...>"
+msgstr "ວິທີໃຊ້: kickstart_import <JSONFILES...>"
 
 #: ../src/spacecmd/kickstart.py:2617
 #, python-format
@@ -3065,7 +3065,7 @@ msgstr "kickstart_diff: ປຽບທຽບຄວາມແຕກຕ່າງຂ�
 
 #: ../src/spacecmd/kickstart.py:2862
 msgid "usage: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
-msgstr "ການນຳໃຊ້: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
+msgstr "ວິທີໃຊ້: kickstart_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
 #: ../src/spacecmd/kickstart.py:2916
 msgid "kickstart_getupdatetype: Get the update type for a kickstart profile(s)"
@@ -3239,7 +3239,7 @@ msgstr "clear_caches: ລຶບລ້າງແຄຊ໌ (Cache) ພາຍໃນ�
 
 #: ../src/spacecmd/misc.py:149
 msgid "usage: clear_caches"
-msgstr "ການນຳໃຊ້: clear_caches"
+msgstr "ວິທີໃຊ້: clear_caches"
 
 #: ../src/spacecmd/misc.py:163
 msgid "get_apiversion: Display the API version of the server"
@@ -3247,7 +3247,7 @@ msgstr "get_apiversion: ສະແດງເວີຊັນ API ຂອງເຊີ
 
 #: ../src/spacecmd/misc.py:164
 msgid "usage: get_apiversion"
-msgstr "ການນຳໃຊ້: get_apiversion"
+msgstr "ວິທີໃຊ້: get_apiversion"
 
 #: ../src/spacecmd/misc.py:176
 msgid "get_serverversion: Display the version of the server"
@@ -3255,7 +3255,7 @@ msgstr "get_serverversion: ສະແດງເວີຊັນຂອງເຊີ�
 
 #: ../src/spacecmd/misc.py:177
 msgid "usage: get_serverversion"
-msgstr "ການນຳໃຊ້: get_serverversion"
+msgstr "ວິທີໃຊ້: get_serverversion"
 
 #: ../src/spacecmd/misc.py:189
 msgid "list_proxies: List the proxies within the user's organization "
@@ -3263,7 +3263,7 @@ msgstr "list_proxies: ສະແດງລາຍຊື່ພຣັອກຊີ (Pr
 
 #: ../src/spacecmd/misc.py:190
 msgid "usage: list_proxies"
-msgstr "ການນຳໃຊ້: list_proxies"
+msgstr "ວິທີໃຊ້: list_proxies"
 
 #: ../src/spacecmd/misc.py:203
 msgid "get_session: Show the current session string"
@@ -3271,7 +3271,7 @@ msgstr "get_session: ສະແດງຂໍ້ຄວາມ Session ປັດຈ�
 
 #: ../src/spacecmd/misc.py:204
 msgid "usage: get_session"
-msgstr "ການນຳໃຊ້: get_session"
+msgstr "ວິທີໃຊ້: get_session"
 
 #: ../src/spacecmd/misc.py:212
 msgid "No session found"
@@ -3589,7 +3589,7 @@ msgstr "org_delete: ລຶບອົງກອນ"
 
 #: ../src/spacecmd/org.py:208
 msgid "usage: org_delete NAME"
-msgstr "ການນຳໃຊ້: org_delete NAME"
+msgstr "ວິທີໃຊ້: org_delete NAME"
 
 #: ../src/spacecmd/org.py:228 ../src/spacecmd/org.py:263
 #: ../src/spacecmd/org.py:299 ../src/spacecmd/org.py:337
@@ -3615,7 +3615,7 @@ msgstr "org_rename: ປ່ຽນຊື່ອົງກອນ"
 
 #: ../src/spacecmd/org.py:243
 msgid "usage: org_rename OLDNAME NEWNAME"
-msgstr "ການນຳໃຊ້: org_rename OLDNAME NEWNAME"
+msgstr "ວິທີໃຊ້: org_rename OLDNAME NEWNAME"
 
 #: ../src/spacecmd/org.py:276
 msgid "org_addtrust: Add a trust between two organizations"
@@ -3623,7 +3623,7 @@ msgstr "org_addtrust: ເພີ່ມຄວາມເຊື່ອຖື (Trust) �
 
 #: ../src/spacecmd/org.py:277
 msgid "usage: org_addtrust YOUR_ORG ORG_TO_TRUST"
-msgstr "ການນຳໃຊ້: org_addtrust YOUR_ORG ORG_TO_TRUST"
+msgstr "ວິທີໃຊ້: org_addtrust YOUR_ORG ORG_TO_TRUST"
 
 #: ../src/spacecmd/org.py:303 ../src/spacecmd/org.py:341
 #, python-format
@@ -3641,7 +3641,7 @@ msgstr "org_removetrust: ຍົກເລີກຄວາມເຊື່ອຖື�
 
 #: ../src/spacecmd/org.py:316
 msgid "usage: org_removetrust YOUR_ORG TRUSTED_ORG"
-msgstr "ການນຳໃຊ້: org_removetrust YOUR_ORG TRUSTED_ORG"
+msgstr "ວິທີໃຊ້: org_removetrust YOUR_ORG TRUSTED_ORG"
 
 #: ../src/spacecmd/org.py:354
 msgid "None"
@@ -3657,7 +3657,7 @@ msgstr "org_trustdetails: ສະແດງລາຍລະອຽດຂອງຄວ
 
 #: ../src/spacecmd/org.py:365
 msgid "usage: org_trustdetails TRUSTED_ORG"
-msgstr "ການນຳໃຊ້: org_trustdetails TRUSTED_ORG"
+msgstr "ວິທີໃຊ້: org_trustdetails TRUSTED_ORG"
 
 #: ../src/spacecmd/org.py:386
 #, python-format
@@ -3703,7 +3703,7 @@ msgstr "org_list: ສະແດງລາຍຊື່ອົງກອນທັງ�
 
 #: ../src/spacecmd/org.py:420
 msgid "usage: org_list"
-msgstr "ການນຳໃຊ້: org_list"
+msgstr "ວິທີໃຊ້: org_list"
 
 #: ../src/spacecmd/org.py:439
 msgid "org_listtrusts: List an organization's trusts"
@@ -3731,7 +3731,7 @@ msgstr "org_details: ສະແດງລາຍລະອຽດຂອງອົງ�
 
 #: ../src/spacecmd/org.py:510
 msgid "usage: org_details NAME"
-msgstr "ການນຳໃຊ້: org_details NAME"
+msgstr "ວິທີໃຊ້: org_details NAME"
 
 #: ../src/spacecmd/org.py:531
 #, python-format
@@ -3889,7 +3889,7 @@ msgstr "package_remove: ລຶບແພັກເກດອອກຈາກ Spacewa
 
 #: ../src/spacecmd/package.py:225
 msgid "usage: package_remove PACKAGE ..."
-msgstr "ການນຳໃຊ້: package_remove PACKAGE ..."
+msgstr "ວິທີໃຊ້: package_remove PACKAGE ..."
 
 #: ../src/spacecmd/package.py:246
 msgid "No packages found to remove"
@@ -3915,7 +3915,7 @@ msgstr "package_listorphans: ສະແດງລາຍຊື່ແພັກເກ
 
 #: ../src/spacecmd/package.py:275
 msgid "usage: package_listorphans"
-msgstr "ການນຳໃຊ້: package_listorphans"
+msgstr "ວິທີໃຊ້: package_listorphans"
 
 #: ../src/spacecmd/package.py:295
 msgid "package_removeorphans: Remove packages that are not in a channel"
@@ -3923,7 +3923,7 @@ msgstr "package_removeorphans: ລຶບແພັກເກດທີ່ບໍ່�
 
 #: ../src/spacecmd/package.py:296
 msgid "usage: package_removeorphans"
-msgstr "ການນຳໃຊ້: package_removeorphans"
+msgstr "ວິທີໃຊ້: package_removeorphans"
 
 #: ../src/spacecmd/package.py:303
 msgid "No orphaned packages has been found"
