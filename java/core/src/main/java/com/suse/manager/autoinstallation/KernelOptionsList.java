@@ -38,6 +38,42 @@ public class KernelOptionsList {
      * @param options The initial kernel options string.
      */
     public KernelOptionsList(String options) {
+        initFromString(options);
+    }
+
+    /**
+     * Constructor that parses options from a map.
+     * Designed for SystemRecord::getResolvedKernelOptions()
+     * Values can be a single String or a List of Strings.
+     *
+     * @param options The map of kernel options.
+     */
+    public KernelOptionsList(Map<String, Object> options) {
+        initFromMap(options);
+    }
+
+    /**
+     * Constructor that parses options from either a String or a Map.
+     *
+     * @param options The kernel options, either as a Map or a String representation.
+     */
+    public KernelOptionsList(Object options) {
+        this();
+        if (options == null) {
+            return;
+        }
+        if (options instanceof Map) {
+            initFromMap((Map<String, Object>) options);
+        }
+        else if (options instanceof CharSequence) {
+            initFromString(options.toString());
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported kernel options type: " + options.getClass().getName());
+        }
+    }
+
+    private void initFromString(String options) {
         if (options == null || options.trim().isEmpty()) {
             return;
         }
@@ -69,14 +105,7 @@ public class KernelOptionsList {
         }
     }
 
-    /**
-     * Constructor that parses options from a map.
-     * Designed for SystemRecord::getResolvedKernelOptions()
-     * Values can be a single String or a List of Strings.
-     *
-     * @param options The map of kernel options.
-     */
-    public KernelOptionsList(Map<String, Object> options) {
+    private void initFromMap(Map<String, Object> options) {
         if (options != null) {
             for (Map.Entry<String, Object> entry : options.entrySet()) {
                 String key = entry.getKey();

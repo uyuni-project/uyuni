@@ -161,26 +161,14 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
                 form.set(KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
-                Object rawValue = kernelOptsOpt.get();
-                if (rawValue instanceof java.util.Map) {
-                    form.set(KERNEL_OPTIONS, prof.convertOptionsMap((java.util.Map<String, Object>) rawValue));
-                }
-                else {
-                    form.set(KERNEL_OPTIONS, String.valueOf(rawValue));
-                }
+                form.set(KERNEL_OPTIONS, new KernelOptionsList(kernelOptsOpt.get()).toString());
             }
             Optional<?> postKernelOptsOpt = prof.getKernelOptionsPost();
             if (postKernelOptsOpt.isEmpty()) {
                 form.set(POST_KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
-                Object rawValue = postKernelOptsOpt.get();
-                if (rawValue instanceof java.util.Map) {
-                    form.set(POST_KERNEL_OPTIONS, prof.convertOptionsMap((java.util.Map<String, Object>) rawValue));
-                }
-                else {
-                    form.set(POST_KERNEL_OPTIONS, String.valueOf(rawValue));
-                }
+                form.set(POST_KERNEL_OPTIONS, new KernelOptionsList(postKernelOptsOpt.get()).toString());
             }
         }
         KickstartVirtualizationType type = data.getKickstartDefaults().

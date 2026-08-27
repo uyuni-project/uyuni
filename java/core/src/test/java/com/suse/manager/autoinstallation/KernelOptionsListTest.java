@@ -58,6 +58,49 @@ public class KernelOptionsListTest {
     }
 
     /**
+     * Tests initialization using the Object constructor with a String.
+     */
+    @Test
+    public void testObjectInitializationWithString() {
+        Object strObj = "foo bar=baz";
+        KernelOptionsList list = new KernelOptionsList(strObj);
+        assertEquals("foo bar=baz", list.toString());
+    }
+
+    /**
+     * Tests initialization using the Object constructor with a Map.
+     */
+    @Test
+    public void testObjectInitializationWithMap() {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("foo", "1");
+        map.put("bar", Arrays.asList("2", "3"));
+        map.put("flag", Collections.emptyList());
+        map.put("nullflag", null);
+        Object mapObj = map;
+
+        KernelOptionsList list = new KernelOptionsList(mapObj);
+        assertEquals("foo=1 bar=2 bar=3 flag nullflag", list.toString());
+    }
+
+    /**
+     * Tests initialization using the Object constructor with null.
+     */
+    @Test
+    public void testObjectInitializationWithNull() {
+        KernelOptionsList list = new KernelOptionsList((Object) null);
+        assertEquals("", list.toString());
+    }
+
+    /**
+     * Tests initialization using the Object constructor with an unsupported type.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testObjectInitializationWithUnsupportedType() {
+        new KernelOptionsList(12345); // Integer is unsupported
+    }
+
+    /**
      * Tests that the order of added options is preserved in the output.
      */
     @Test
