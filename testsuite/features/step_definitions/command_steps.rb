@@ -137,6 +137,16 @@ Then(/^The amount of packages in channel "([^"]*)" should be the same as before$
   end
 end
 
+Then(/^the channel "([^"]*)" should not be empty$/) do |channel_label|
+  channels = $api_test.channel.list_all_channels
+  raise ScriptError, "Channel #{channel_label} does not exist" unless channels.key?(channel_label)
+
+  packages = channels[channel_label]['packages'].to_i
+  raise ScriptError, "Channel #{channel_label} is empty, its synchronization stored no package" if packages.zero?
+
+  log "Channel #{channel_label} contains #{packages} packages"
+end
+
 Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/) do |channel_label|
   add_context('channels', $api_test.channel.list_all_channels)
   if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
@@ -192,14 +202,11 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
 end
 
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
-  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+  $command_output = sync_channel_including_packages(channel, packages.split)
 end
 
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
-  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
-  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+  $command_output = sync_channel_including_packages(channel, CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel])
 end
 
 Then(/^I should get "([^"]*)"$/) do |value|
