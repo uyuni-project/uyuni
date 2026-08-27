@@ -25,6 +25,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
       openssh-server \
       git \
       hostname \
+      createrepo_c \
       apache-ivy \
       ant \
       ant-junit && \
@@ -78,38 +79,22 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
     export RPM_DIR="${RPM_DIR_PREFIX}/${RPM_PATH_SUFFIX}" && \
     mkdir -p "${RPM_DIR}" && \
     cd "${RPM_DIR}" && \
+    echo "Listing ${TUMBLEWEED_REPO}${RPM_PATH_SUFFIX}/..." && \
+    PACKAGE_LIST=$(curl -sSfL --retry 5 --retry-delay 5 --retry-all-errors "${TUMBLEWEED_REPO}${RPM_PATH_SUFFIX}/") && \
     for PACKAGE in openSUSE-release-20 dmidecode libunwind golang-github-prometheus-node_exporter golang-github-lusitaniae-apache_exporter prometheus-postgres_exporter golang-github-QubitProducts-exporter_exporter; do \
         echo "Searching for latest version of ${PACKAGE}..." && \
         FULL_URL=$( \
-            curl -sL "${TUMBLEWEED_REPO}${RPM_PATH_SUFFIX}/" | \
+            echo "${PACKAGE_LIST}" | \
             grep -oP "${PACKAGE}[^\"']+\.rpm" | \
             head -n 1 | \
             awk -v repo="${TUMBLEWEED_REPO}${RPM_PATH_SUFFIX}/" '{print repo $1}' \
         ) && \
         if [ -n "$FULL_URL" ]; then \
             echo "Downloading ${FULL_URL}..." && \
-            curl -L -O "${FULL_URL}"; \
+            { curl -fL --retry 5 --retry-delay 5 --retry-all-errors -O "${FULL_URL}" || exit 1; }; \
         else \
-            echo "Warning: Could not find RPM for ${PACKAGE}. Skipping."; \
+            echo "Could not find the RPM of ${PACKAGE} in ${TUMBLEWEED_REPO}${RPM_PATH_SUFFIX}/." && exit 1; \
         fi \
     done && \
-    export METADATA_DIR="${RPM_DIR_PREFIX}/repodata" && \
-    mkdir -p "${METADATA_DIR}" && \
-    cd "${METADATA_DIR}" && \
-    echo "Downloading repomd.xml..." && \
-    curl -L -O "${TUMBLEWEED_REPO}repodata/repomd.xml" && \
-    for METADATA_TYPE in primary filelists other; do \
-        echo "Searching for latest ${METADATA_TYPE}.xml.zst..." && \
-        FULL_URL=$( \
-            curl -sL "${TUMBLEWEED_REPO}repodata/" | \
-            grep -oP '[0-9a-f]{40}-'"${METADATA_TYPE}"'\.xml\.zst' | \
-            head -n 1 | \
-            awk -v repo="${TUMBLEWEED_REPO}repodata/" '{print repo $1}' \
-        ) && \
-        if [ -n "$FULL_URL" ]; then \
-            echo "Downloading ${FULL_URL}..." && \
-            curl -L -O "${FULL_URL}"; \
-        else \
-            echo "Warning: Could not find ${METADATA_TYPE} metadata. Skipping."; \
-        fi \
-    done
+    echo "Generating the metadata of the mirrored packages..." && \
+    createrepo_c "${RPM_DIR_PREFIX}"
