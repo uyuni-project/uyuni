@@ -718,19 +718,21 @@ public interface OrgHandlerApi {
          * @return the number of active users
          */
         @Schema(name = "active_users", description = "number of active users in the organization",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getActiveUsers();
 
         /**
          * @return the number of systems
          */
-        @Schema(description = "number of systems in the organization", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "number of systems in the organization",
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getSystems();
 
         /**
          * @return the number of trusted organizations
          */
-        @Schema(description = "number of trusted organizations", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "number of trusted organizations",
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer getTrusts();
 
         /**
