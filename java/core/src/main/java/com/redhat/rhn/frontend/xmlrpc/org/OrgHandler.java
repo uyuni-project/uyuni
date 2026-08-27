@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
 import com.redhat.rhn.frontend.dto.OrgDto;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -70,7 +71,7 @@ import java.util.Set;
  * @apidoc.doc Contains methods to access common organization management
  * functions available from the web interface.
  */
-public class OrgHandler extends BaseHandler {
+public class OrgHandler extends BaseHandler implements OrgHandlerApi {
 
     private static final String VALIDATION_XSD =
             "/com/redhat/rhn/frontend/action/multiorg/validation/orgCreateForm.xsd";
@@ -294,7 +295,7 @@ public class OrgHandler extends BaseHandler {
      *   #array_end()
      */
     @ReadOnly
-    public List listUsers(User loggedInUser, Integer orgId) {
+    public List<MultiOrgUserOverview> listUsers(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         verifyOrgExists(orgId);
         return OrgManager.activeUsers(Long.valueOf(orgId));

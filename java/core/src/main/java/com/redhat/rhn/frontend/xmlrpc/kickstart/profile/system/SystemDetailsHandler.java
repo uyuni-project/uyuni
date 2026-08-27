@@ -54,7 +54,7 @@ import java.util.Set;
 * @apidoc.namespace kickstart.profile.system
 * @apidoc.doc Provides methods to set various properties of a kickstart profile.
 */
-public class SystemDetailsHandler extends BaseHandler {
+public class SystemDetailsHandler extends BaseHandler implements SystemDetailsHandlerApi {
 
     /**
       * Check the configuration management status for a kickstart profile

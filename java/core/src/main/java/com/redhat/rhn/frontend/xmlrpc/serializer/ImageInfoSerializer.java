@@ -28,6 +28,7 @@ import com.suse.manager.api.SerializedApiResponse;
  * #struct_begin("image information")
  *   #prop("int", "id")
  *   #prop_desc("string", "name", "image name")
+ *   #prop_desc("string", "type", "image type")
  *   #prop_desc("string", "version", "image tag/version")
  *   #prop_desc("int", "revision", "image build revision number")
  *   #prop_desc("string", "arch", "image architecture")
@@ -35,7 +36,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *          false otherwise")
  *   #prop("string", "storeLabel")
  *   #prop("string", "checksum")
- *   #prop("string", "obsolete")
+ *   #prop("boolean", "obsolete")
  * #struct_end()
  */
 public class ImageInfoSerializer extends ApiResponseSerializer<ImageInfo> {

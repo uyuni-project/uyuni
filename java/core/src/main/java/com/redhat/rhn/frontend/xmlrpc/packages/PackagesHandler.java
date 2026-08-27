@@ -57,7 +57,7 @@ import java.util.Map;
  * @apidoc.doc Methods to retrieve information about the Packages contained
  * within this server.
  */
-public class PackagesHandler extends BaseHandler {
+public class PackagesHandler extends BaseHandler implements PackagesHandlerApi {
 
     private static Logger logger = LogManager.getLogger(PackagesHandler.class);
     private static float freeMemCoeff = 0.9f;
@@ -539,7 +539,9 @@ public class PackagesHandler extends BaseHandler {
         if (arch == null) {
              throw new InvalidPackageArchException(archLabel);
         }
-        if (epoch.equals("")) {
+        // An empty epoch arrives as null over HTTP, because an empty query string value parses
+        // to a JSON null, while XML-RPC delivers the empty string the documentation recommends.
+        if (StringUtils.isEmpty(epoch)) {
             epoch = null;
         }
         return PackageFactory.lookupByNevra(loggedInUser.getOrg(), name, version, release, epoch, arch);

@@ -60,7 +60,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop("int", "enhancementErrata")
  *   #prop("int", "outdatedPackages")
  *   #prop("int", "installedPackages")
- *   #prop_desc("struct", "files", "image files")
+ *   #prop_array_begin_desc("files", "image files")
+ *     $ImageFileSerializer
+ *   #prop_array_end()
  *   #prop_desc("boolean", "obsolete", "true if the image has been replaced in the store")
  * #struct_end()
  */
