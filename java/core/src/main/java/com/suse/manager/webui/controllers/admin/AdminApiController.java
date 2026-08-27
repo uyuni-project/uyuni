@@ -17,7 +17,9 @@ package com.suse.manager.webui.controllers.admin;
 
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.admin.LdapAdminManager;
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.webui.controllers.admin.handlers.LdapApiController;
 import com.suse.manager.webui.controllers.admin.handlers.MonitoringApiController;
 import com.suse.manager.webui.controllers.admin.handlers.PasswordPolicyController;
 import com.suse.manager.webui.controllers.admin.handlers.PaygApiContoller;
@@ -38,6 +40,9 @@ public class AdminApiController {
 
         PaygApiContoller paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticApi));
         paygApiContoller.initRoutes();
+
+        LdapApiController ldapApiController = new LdapApiController(new LdapAdminManager());
+        ldapApiController.initRoutes();
 
         PasswordPolicyController passwordPolicyController = new PasswordPolicyController(new PasswordPolicyService());
         passwordPolicyController.initRoutes();

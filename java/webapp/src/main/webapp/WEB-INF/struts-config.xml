@@ -279,6 +279,7 @@
         <form-bean name="extGroupForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="extGroupLabel" type="java.lang.String"/>
+            <form-property name="ldapServerId" type="java.lang.String"/>
             <form-property name="role_satellite_admin" type="java.lang.Boolean"/>
             <form-property name="role_org_admin" type="java.lang.Boolean"/>
             <form-property name="selected_regular_roles" type="java.lang.String"/>

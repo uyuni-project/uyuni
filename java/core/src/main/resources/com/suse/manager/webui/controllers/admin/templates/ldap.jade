@@ -1,0 +1,25 @@
+include /templates/common.jade
+
+#ldap-server
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+div#init_data_ldap(style="display: none")
+    | #{ldapServer}
+
+div#init_data_orgs(style="display: none")
+    | #{orgs}
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/ldap')
+        .then(function(module) {
+            module.renderer(
+                'ldap-server',
+                {
+                    ldap: document.getElementById('init_data_ldap').textContent,
+                    orgs: document.getElementById('init_data_orgs').textContent,
+                    wasFreshlyCreatedMessage: "#{wasFreshlyCreatedMessage}"
+                }
+            );
+        });

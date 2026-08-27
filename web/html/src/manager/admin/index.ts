@@ -5,6 +5,10 @@ export default {
   "admin/setup/list-payg": () => import("./list-payg/list-payg.renderer"),
   "admin/setup/payg": () => import("./payg/payg.renderer"),
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
+  "admin/setup/list-ldap": () => import("./list-ldap/list-ldap.renderer"),
+  "admin/setup/ldap": () => import("./ldap/ldap.renderer"),
+  "admin/setup/create-ldap": () => import("./create-ldap/create-ldap.renderer"),
+
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
   "admin/access-control": () => import("./access-control/access-group-list.renderer"),
   "admin/create-access-group": () => import("./access-control/access-group-create.renderer"),
