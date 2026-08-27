@@ -11,6 +11,7 @@
 package com.redhat.rhn.frontend.xmlrpc.org;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
 import com.redhat.rhn.frontend.dto.OrgDto;
 
 import com.suse.manager.api.ApiResponseWrapper;
@@ -263,7 +264,7 @@ public interface OrgHandlerApi {
         responseClass = OrgUserListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "user")
     )
-    List listUsers(
+    List<MultiOrgUserOverview> listUsers(
         @Parameter(hidden = true) User loggedInUser,
         @Parameter(name = "orgId", in = ParameterIn.QUERY, required = true) Integer orgId);
 
