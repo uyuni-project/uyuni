@@ -139,7 +139,7 @@ public interface ChannelAppStreamHandlerApi {
     @Schema(name = "SoftwareChannel")
     @JsonPropertyOrder({"id", "name", "label", "archName", "archLabel", "summary", "description",
         "checksumLabel", "lastModified", "maintainerName", "maintainerEmail", "maintainerPhone",
-        "supportPolicy", "gpgKeyUrl", "gpgKeyId", "gpgKeyFp", "yumrepoLastSync", "endOfLife",
+        "supportPolicy", "gpgKeyUrl", "gpgKeyId", "gpgKeyFp", "gpgCheck", "yumrepoLastSync", "endOfLife",
         "parentChannelLabel", "cloneOriginal", "syncStatus", "contentSources"})
     interface ChannelDoc {
 
@@ -238,6 +238,12 @@ public interface ChannelAppStreamHandlerApi {
          */
         @Schema(name = "gpg_key_fp", requiredMode = Schema.RequiredMode.REQUIRED)
         String getGpgKeyFp();
+
+        /**
+         * @return whether the GPG check is enabled
+         */
+        @Schema(name = "gpg_check", requiredMode = Schema.RequiredMode.REQUIRED)
+        Boolean getGpgCheck();
 
         /**
          * @return the last repository synchronisation date

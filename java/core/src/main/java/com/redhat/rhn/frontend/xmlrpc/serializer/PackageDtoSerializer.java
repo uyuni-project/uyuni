@@ -36,6 +36,7 @@ import java.util.Optional;
  *      #prop("int", "id")
  *      #prop("string", "arch_label")
  *      #prop("string", "last_modified_date")
+ *      #prop("boolean", "retracted")
  *      #prop_desc("string", "last_modified", "(deprecated)")
  *  #struct_end()
  *

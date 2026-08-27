@@ -1501,7 +1501,7 @@ public interface ChannelSoftwareHandlerApi {
 
     @Schema(name = "ChannelPackageDto")
     @JsonPropertyOrder({"name", "version", "release", "epoch", "checksum", "checksumType", "id",
-        "archLabel", "lastModifiedDate", "lastModified"})
+        "archLabel", "lastModifiedDate", "retracted", "lastModified"})
     interface PackageDtoDoc {
 
         /**
@@ -1557,6 +1557,12 @@ public interface ChannelSoftwareHandlerApi {
          */
         @Schema(name = "last_modified_date", requiredMode = Schema.RequiredMode.REQUIRED)
         String getLastModifiedDate();
+
+        /**
+         * @return whether the package has been retracted
+         */
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        Boolean getRetracted();
 
         /**
          * @return the last modification date of the package

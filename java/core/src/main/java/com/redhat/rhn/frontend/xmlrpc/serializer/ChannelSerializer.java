@@ -49,6 +49,7 @@ import java.util.List;
  *      #prop("string", "gpg_key_url")
  *      #prop("string", "gpg_key_id")
  *      #prop("string", "gpg_key_fp")
+ *      #prop("boolean", "gpg_check")
  *      #prop_desc("$date", "yumrepo_last_sync", "(optional)")
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
