@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc Provides methods to access and modify many aspects of
  * configuration channels.
  */
-public class ConfigChannelHandler extends BaseHandler {
+public class ConfigChannelHandler extends BaseHandler implements ConfigChannelHandlerApi {
 
     /**
      * Creates a new 'normal' config channel based on the values provided..
@@ -228,7 +228,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * #array_end()
      */
     @ReadOnly
-    public List getFileRevisions(User loggedInUser, String label, String filePath) {
+    public List<ConfigRevision> getFileRevisions(User loggedInUser, String label, String filePath) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel cc = configHelper.lookupGlobal(loggedInUser, label);
         ConfigurationManager cm = ConfigurationManager.getInstance();

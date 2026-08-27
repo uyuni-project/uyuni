@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
@@ -46,7 +47,7 @@ import java.util.List;
  * @apidoc.namespace kickstart
  * @apidoc.doc Provides methods to create kickstart files
  */
-public class KickstartHandler extends BaseHandler {
+public class KickstartHandler extends BaseHandler implements KickstartHandlerApi {
 
     /**
      * List kickstartable channels for the logged in user.
@@ -425,7 +426,7 @@ public class KickstartHandler extends BaseHandler {
      * @apidoc.returntype #return_array_begin() $KickstartDtoSerializer #array_end()
      */
     @ReadOnly
-    public List listKickstarts(User loggedInUser) {
+    public List<KickstartDto> listKickstarts(User loggedInUser) {
         return KickstartLister.getInstance().kickstartsInOrg(loggedInUser.getOrg(), null);
     }
 
@@ -441,7 +442,7 @@ public class KickstartHandler extends BaseHandler {
      *
      */
     @ReadOnly
-    public List listAllIpRanges(User loggedInUser) {
+    public List<KickstartIpRange> listAllIpRanges(User loggedInUser) {
         return KickstartFactory.lookupRangeByOrg(loggedInUser.getOrg());
     }
 

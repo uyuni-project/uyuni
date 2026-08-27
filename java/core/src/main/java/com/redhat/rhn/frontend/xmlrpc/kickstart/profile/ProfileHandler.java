@@ -82,7 +82,7 @@ import java.util.Set;
  * @apidoc.doc Provides methods to access and modify many aspects of
  * a kickstart profile.
  */
-public class ProfileHandler extends BaseHandler {
+public class ProfileHandler extends BaseHandler implements ProfileHandlerApi {
 
     private static final String[] VALIDOPTIONNAMES = {"autostep", "interactive", "install",
             "upgrade", "text", "network", "cdrom", "harddrive", "nfs", "url",
@@ -1023,7 +1023,7 @@ public class ProfileHandler extends BaseHandler {
     *
     */
    @ReadOnly
-   public Set listIpRanges(User loggedInUser, String ksLabel) {
+   public Set<KickstartIpRange> listIpRanges(User loggedInUser, String ksLabel) {
        KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
        return ksdata.getIps();
    }

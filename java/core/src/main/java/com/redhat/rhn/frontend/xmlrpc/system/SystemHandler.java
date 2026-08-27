@@ -243,7 +243,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @apidoc.namespace system
  * @apidoc.doc Provides methods to access and modify registered system.
  */
-public class SystemHandler extends BaseHandler {
+public class SystemHandler extends BaseHandler implements SystemHandlerApi {
 
     private static Logger log = LogManager.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
@@ -416,13 +416,14 @@ public class SystemHandler extends BaseHandler {
      * input. Changes to channel assignments on salt managed systems will take effect
      * at next highstate application.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sidd")
-     * @apidoc.param #array_single_desc("int (deprecated) or string", "channelIdsOrLabels", "channelId (deprecated)
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #array_single_desc("string", "channelIdsOrLabels", "channelId (deprecated)
      * or channelLabel")
      * @apidoc.returntype #return_int_success()
      */
     @Deprecated
-    public int setChildChannels(User loggedInUser, Integer sid, List channelIdsOrLabels) throws FaultException {
+    public int setChildChannels(User loggedInUser, Integer sid, List<Object> channelIdsOrLabels)
+            throws FaultException {
 
         //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
@@ -541,7 +542,7 @@ public class SystemHandler extends BaseHandler {
      * on error")
      */
     public long scheduleChangeChannels(User loggedInUser, Integer sid, String baseChannelLabel,
-                                       List childLabels, Date earliestOccurrence) {
+                                       List<String> childLabels, Date earliestOccurrence) {
         return scheduleChangeChannels(loggedInUser, singletonList(sid), baseChannelLabel, childLabels,
                 earliestOccurrence).stream().findFirst().orElseThrow(NoActionInScheduleException::new);
     }
@@ -580,7 +581,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #array_single("long", "actionIds")
      */
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
-                                             List childLabels, Date earliestOccurrence) {
+                                             List<String> childLabels, Date earliestOccurrence) {
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -1580,7 +1581,7 @@ public class SystemHandler extends BaseHandler {
 
      * @apidoc.doc List current package locks status.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "sid")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("package")
@@ -3310,7 +3311,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Get system name and last check in information for the given system ID.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "sid")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.returntype
      *  #struct_begin("name info")
      *      #prop_desc("int", "id", "Server id")
@@ -3593,9 +3594,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("int", "eid", "ID of the event")
      * @apidoc.returntype
-     *      #return_array_begin()
      *           $SystemEventDetailsDtoSerializer
-     *      #array_end()
     */
     @ReadOnly
     public SystemEventDetailsDto getEventDetails(User loggedInUser, Integer sid, Integer eid) {
@@ -3848,6 +3847,7 @@ public class SystemHandler extends BaseHandler {
      * @param allowModules Allow this API call, despite modular content being present
      * @param onlyRelevant If true not all erratas are applied to all systems.
      *        Systems get only the erratas relevant for them.
+     * @param allowVendorChange Allow vendor change during the errata update
      * @return list of action ids, exception thrown otherwise
      * @since 24
      *
@@ -3861,7 +3861,8 @@ public class SystemHandler extends BaseHandler {
      *          "Allow this API call, despite modular content being present")
      * @apidoc.param #param_desc("boolean", "onlyRelevant",
      *          "If true not all erratas are applied to all systems. Systems get only the erratas relevant for them.")
-     * @param allowVendorChange boolean
+     * @apidoc.param #param_desc("boolean", "allowVendorChange",
+     *          "Allow vendor change during the errata update")
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids, List<Integer> errataIds,
@@ -4010,7 +4011,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedules an action to apply errata updates to a system at a
      * given date/time.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #array_single("int", "sid")
      * @apidoc.param #array_single("int", "errataIds")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
@@ -4548,7 +4549,7 @@ public class SystemHandler extends BaseHandler {
     * @apidoc.param #session_key()
     * @apidoc.param #array_single("int", "sids")
     * @apidoc.param #array_begin("packageNevraList")
-    *                   #struct_begin("Package Nevra")
+    *                   #struct_begin("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
     *                          #prop("string", "package_version")
@@ -4875,7 +4876,7 @@ public class SystemHandler extends BaseHandler {
     *                   #struct_end()
     *               #array_end()
     * @apidoc.param #param("$date", "earliestOccurrence")
-    * @apidoc.returntype #array_single("int", "actionId")
+    * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
     */
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
@@ -4915,7 +4916,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
-     * @apidoc.returntype #array_single("int", "actionId")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int schedulePackageRemoveByNevra(User loggedInUser, final Integer sid, List<Map<String,
             String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
@@ -5481,9 +5482,9 @@ public class SystemHandler extends BaseHandler {
      *          #prop_desc("string" "run_as_user" "Run as user")
      *          #prop_desc("string" "run_as_group" "Run as group")
      *          #prop_desc("int" "timeout" "Timeout in seconds")
-     *          #return_array_begin()
+     *          #prop_array_begin_desc("result", "results of the script run")
      *              $ScriptResultSerializer
-     *          #array_end()
+     *          #prop_array_end()
      *      #struct_end()
      */
     @ReadOnly
@@ -5808,7 +5809,7 @@ public class SystemHandler extends BaseHandler {
      * are quietly ignored.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
-     * @apidoc.param #array_single("string", "entitlements", "one of following:
+     * @apidoc.param #array_single_desc("string", "entitlements", "one of following:
      * virtualization_host, enterprise_entitled")
      * @apidoc.returntype #return_int_success()
      */
@@ -7059,7 +7060,7 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      **/
     @ReadOnly
-    public List listDuplicatesByMac(User loggedInUser) {
+    public List<Map<String, Object>> listDuplicatesByMac(User loggedInUser) {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByMac(loggedInUser, 0L);
         return transformDuplicate(list, "mac");
@@ -7124,13 +7125,13 @@ public class SystemHandler extends BaseHandler {
      *      #return_array_begin()
      *          #struct_begin("system currency")
      *              #prop("int", "sid")
-     *              #prop("int", "critical security errata count")
-     *              #prop("int", "important security errata count")
-     *              #prop("int", "moderate security errata count")
-     *              #prop("int", "low security errata count")
-     *              #prop("int", "bug fix errata count")
-     *              #prop("int", "enhancement errata count")
-     *              #prop("int", "system currency score")
+     *              #prop_desc("int", "crit", "critical security errata count")
+     *              #prop_desc("int", "imp", "important security errata count")
+     *              #prop_desc("int", "mod", "moderate security errata count")
+     *              #prop_desc("int", "low", "low security errata count")
+     *              #prop_desc("int", "bug", "bug fix errata count")
+     *              #prop_desc("int", "enh", "enhancement errata count")
+     *              #prop_desc("int", "score", "system currency score")
      *          #struct_end()
      *      #array_end()
      */
@@ -7405,7 +7406,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc send a ping to a system using OSA
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "serverId")
+     * @apidoc.param #param("int", "sid")
      * @apidoc.returntype #return_int_success()
      */
     public int sendOsaPing(User loggedInUser, Integer sid) {
@@ -7431,7 +7432,7 @@ public class SystemHandler extends BaseHandler {
      * @return details about a ping sent to a system using OSA
      *
      * @apidoc.doc get details about a ping sent to a system using OSA
-     * @apidoc.param #param("User", "loggedInUser")
+     * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.returntype
      *      #struct_begin("osaPing")
@@ -7563,17 +7564,17 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype
      *      #return_array_begin()
      *          #struct_begin("migration target")
-     *              #prop("string", "ident", "Product IDs for the target product set ( e.g. '[1894, 1905]')")
-     *              #prop("string", "friendly", "Friendly name of the target product set")
+     *              #prop_desc("string", "ident", "Product IDs for the target product set ( e.g. '[1894, 1905]')")
+     *              #prop_desc("string", "friendly", "Friendly name of the target product set")
      *              #prop_array_begin("channel_options")
      *                  #struct_begin("channel option")
-     *                      #prop("string", "base_channel_label", "Label of the base channel")
-     *                      #prop("string", "base_channel_name", "Name of the base channel")
+     *                      #prop_desc("string", "base_channel_label", "Label of the base channel")
+     *                      #prop_desc("string", "base_channel_name", "Name of the base channel")
      *                      #prop_array_begin("child_channels")
      *                          #struct_begin("child channel")
-     *                              #prop("string", "label", "Channel label")
-     *                              #prop("string", "name", "Channel name")
-     *                              #prop("boolean", "mandatory", "Whether the channel is mandatory")
+     *                              #prop_desc("string", "label", "Channel label")
+     *                              #prop_desc("string", "name", "Channel name")
+     *                              #prop_desc("boolean", "mandatory", "Whether the channel is mandatory")
      *                          #struct_end()
      *                      #array_end()
      *                  #struct_end()
@@ -8224,7 +8225,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #array_single("string", "channels")
      * @apidoc.param #param("boolean", "dryRun")
      * @apidoc.param #param("$date",  "earliestOccurrence")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
                                     boolean dryRun, Date earliestOccurrence) {
@@ -8259,7 +8260,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param("boolean", "dryRun")
      * @apidoc.param #param("boolean", "allowVendorChange")
      * @apidoc.param #param("$date",  "earliestOccurrence")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
             boolean dryRun, boolean allowVendorChange, Date earliestOccurrence) {
@@ -8330,7 +8331,7 @@ public class SystemHandler extends BaseHandler {
      * the sid cannot be found
      *
      * @apidoc.doc Get a list of installed products for given system
-     * @apidoc.param #param("User", "loggedInUser")
+     * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.returntype
      *      #return_array_begin()
@@ -8700,7 +8701,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test) {
         return scheduleApplyHighstate(loggedInUser, Arrays.asList(sid), earliestOccurrence, test);
@@ -8720,7 +8721,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
@@ -8762,7 +8763,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #array_single("string", "stateNames")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
@@ -8786,7 +8787,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #array_single("string", "stateNames")
      * @apidoc.param #param("$date", "earliestOccurrence")
      * @apidoc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @apidoc.returntype #param("int", "actionId", "The action id of the scheduled action")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
@@ -8952,7 +8953,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Get pillar data of given category for given system
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "minionId")
+     * @apidoc.param #param("string", "minionId")
      * @apidoc.param #param("string", "category")
      * @apidoc.returntype #param("struct", "the pillar data")
      */
@@ -8979,6 +8980,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Set pillar data of a system.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "systemId")
+     * @apidoc.param #param("string", "category")
      * @apidoc.param #param("struct", "pillarData")
      * @apidoc.returntype #return_int_success()
      */
@@ -9009,7 +9011,8 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc Set pillar data of a system.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "systemId")
+     * @apidoc.param #param("string", "minionId")
+     * @apidoc.param #param("string", "category")
      * @apidoc.param #param("struct", "pillarData")
      * @apidoc.returntype #return_int_success()
      */
@@ -9038,8 +9041,9 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc refresh all the pillar data of a list of systems.
      * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
-     * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs to be refreshed. If empty, all
+     * systems will be refreshed")
+     * @apidoc.returntype #array_single_desc("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, List<Integer> sids) {
         return refreshPillar(loggedInUser, null, sids);
@@ -9056,9 +9060,10 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc refresh the pillar data of a list of systems. The subset value represents the pillar to be refreshed
      * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
      * @apidoc.param #session_key()
-     * @apidoc.param #param("string", "subset", "subset of the pillar to refresh.")
-     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
-     * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
+     * @apidoc.param #param_desc("string", "subset", "subset of the pillar to refresh.")
+     * @apidoc.param #array_single_desc("int", "sids", "System IDs to be refreshed. If empty, all
+     * systems will be refreshed")
+     * @apidoc.returntype #array_single_desc("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> sids) {
         List<Integer> skipped = new ArrayList<>();
@@ -9110,7 +9115,7 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param("int", "proxyId")
-     * @apidoc.returntype #array_single("int", "actionIds", "list of scheduled action ids")
+     * @apidoc.returntype #array_single_desc("int", "actionIds", "list of scheduled action ids")
      */
 
     public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {

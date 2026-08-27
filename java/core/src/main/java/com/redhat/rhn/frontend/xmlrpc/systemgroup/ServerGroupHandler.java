@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace systemgroup
  * @apidoc.doc Provides methods to access and modify system groups.
  */
-public class ServerGroupHandler extends BaseHandler {
+public class ServerGroupHandler extends BaseHandler implements ServerGroupHandlerApi {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
     private final ServerGroupManager serverGroupManager;
@@ -208,7 +208,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
-            List serverIds, Boolean add) {
+            List<Integer> serverIds, Boolean add) {
 
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
 
@@ -495,7 +495,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @apidoc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
-                                                                    List errataIds) {
+                                                                    List<Integer> errataIds) {
         return scheduleApplyErrataToActive(loggedInUser, systemGroupName, errataIds, null);
     }
 

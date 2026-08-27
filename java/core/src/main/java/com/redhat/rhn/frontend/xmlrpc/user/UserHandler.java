@@ -72,7 +72,7 @@ import java.util.stream.Stream;
  * @apidoc.doc User namespace contains methods to access common user functions
  * available from the web user interface.
  */
-public class UserHandler extends BaseHandler {
+public class UserHandler extends BaseHandler implements UserHandlerApi {
 
     /**
      * Contains a mapping of details key as submitted by the call to the
