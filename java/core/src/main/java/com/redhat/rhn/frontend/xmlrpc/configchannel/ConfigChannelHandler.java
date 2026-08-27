@@ -496,9 +496,10 @@ public class ConfigChannelHandler extends BaseHandler {
      * @param isDir true if this is a directory path, false if its to be a file path
      * @param pathInfo a map containing properties pertaining to the given path..
      * for directory paths - 'pathInfo' will hold values for -&gt;
-     *  owner, group, permissions
+     *  owner, group, permissions (all required; permissions is a string such as "644")
      * for file paths -  'pathInfo' will hold values for-&gt;
-     *  contents, owner, group, permissions, macro-start-delimiter, macro-end-delimiter
+     *  contents, owner, group, permissions (required),
+     *  macro-start-delimiter, macro-end-delimiter (optional)
      * @return returns the new created or updated config revision..
      * @since 10.2
      *
@@ -513,13 +514,14 @@ public class ConfigChannelHandler extends BaseHandler {
      *  #struct_begin("pathInfo", "the path info")
      *      #prop_desc("string","contents",
      *              "contents of the file (text or base64 encoded if binary or want to preserve
-     *                         control characters like LF, CR etc.)(only for non-directories)")
+     *                         control characters like LF, CR etc.)
+     *                         (required for files, only for non-directories)")
      *      #prop_desc("boolean","contents_enc64", "identifies base64 encoded content
      *                   (default: disabled, only for non-directories)")
-     *      #prop_desc("string", "owner", "owner of the file/directory")
-     *      #prop_desc("string", "group", "group name of the file/directory")
+     *      #prop_desc("string", "owner", "owner of the file/directory (required)")
+     *      #prop_desc("string", "group", "group name of the file/directory (required)")
      *      #prop_desc("string", "permissions",
-     *                              "octal file/directory permissions (eg: 644)")
+     *                              "octal permissions as a string (eg: \"644\"), not an integer (required)")
      *      #prop_desc("string", "selinux_ctx", "SELinux Security context (optional)")
      *      #prop_desc("string", "macro-start-delimiter",
      *                  "config file macro start delimiter. Use null or empty
