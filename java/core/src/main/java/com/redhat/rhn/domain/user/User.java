@@ -99,6 +99,30 @@ public interface User extends Serializable {
     void setUsePamAuthentication(boolean usePamAuthenticationIn);
 
     /**
+     * Gets the authentication backend that validates this user's password.
+     * @return the {@link AuthType}, never {@code null}
+     */
+    AuthType getAuthType();
+
+    /**
+     * Sets the authentication backend that validates this user's password.
+     * @param authTypeIn the new {@link AuthType}
+     */
+    void setAuthType(AuthType authTypeIn);
+
+    /**
+     * Gets the directory that authenticated or provisioned this user.
+     * @return the LDAP server id, or {@code null} if no directory is recorded
+     */
+    Long getLdapServerId();
+
+    /**
+     * Sets the directory that authenticated or provisioned this user.
+     * @param ldapServerIdIn the LDAP server id, or {@code null} to clear it
+     */
+    void setLdapServerId(Long ldapServerIdIn);
+
+    /**
      * Gets the factory to create the {@link PamService}
      * @return an instance of {@link PamServiceFactory}
      */

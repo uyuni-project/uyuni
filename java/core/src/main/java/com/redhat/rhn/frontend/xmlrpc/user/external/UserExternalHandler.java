@@ -232,10 +232,40 @@ public class UserExternalHandler extends BaseHandler {
      */
     public UserExtGroup createExternalGroupToRoleMap(User loggedInUser, String name,
             List<String> roles) {
+        return createExternalGroupToRoleMap(loggedInUser, name, roles, null);
+    }
+
+    /**
+     * Create a new external user group, optionally scoped to one LDAP directory.
+     * @param loggedInUser The current user
+     * @param name The name of the new group
+     * @param roles List of roles to set for this group
+     * @param ldapServerId LDAP directory id, or {@code null} for a server-agnostic mapping
+     * @return the newly created group
+     * @throws PermissionCheckFailureException if the user is not a product admin
+     *
+     * @apidoc.doc Externally authenticated users may be members of external groups. You
+     * can use these groups to assign additional roles to the users when they log in.
+     * Optionally scope the mapping to one LDAP directory. Can only be called by a
+     * #product() Administrator.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "name", "Name of the external group. Must be
+     * unique for the given auth source.")
+     * @apidoc.param #array_single_desc("string", "roles", "role - Can be any of:
+     * satellite_admin, org_admin (implies all other roles except for satellite_admin),
+     * channel_admin, config_admin, system_group_admin, or
+     * activation_key_admin.")
+     * @apidoc.param #param_desc("int", "ldapServerId", "Optional LDAP server id. Omit or
+     * pass null for a server-agnostic mapping.")
+     * @apidoc.returntype $UserExtGroupSerializer
+     */
+    public UserExtGroup createExternalGroupToRoleMap(User loggedInUser, String name,
+            List<String> roles, Number ldapServerId) {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
 
-        if (UserGroupFactory.lookupExtGroupByLabel(name) != null) {
+        Long serverId = ldapServerId == null ? null : ldapServerId.longValue();
+        if (UserGroupFactory.lookupExtGroupByLabelAndServer(name, serverId) != null) {
             throw new ExternalGroupAlreadyExistsException(name);
         }
 
@@ -252,6 +282,7 @@ public class UserExternalHandler extends BaseHandler {
         UserExtGroup group = new UserExtGroup();
         group.setLabel(name);
         group.setRoles(myRoles);
+        group.setLdapServerId(serverId);
         UserGroupFactory.save(group);
         addImpliedRoles(group.getRoles());
         return group;

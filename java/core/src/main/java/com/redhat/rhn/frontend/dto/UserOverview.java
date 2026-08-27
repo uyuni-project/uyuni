@@ -42,6 +42,8 @@ public class UserOverview extends BaseDto {
     private String changedByLastName;
     private String email;
     private boolean selectable;
+    private String authType;
+    private String ldapServerLabel;
 
     /**
      * @return Returns the email address
@@ -330,6 +332,56 @@ public class UserOverview extends BaseDto {
     @Override
     public boolean isSelectable() {
         return selectable;
+    }
+
+    /**
+     * @return authentication backend stored on the user ({@code LOCAL}, {@code PAM}, or {@code LDAP})
+     */
+    public String getAuthType() {
+        return authType;
+    }
+
+    /**
+     * @param authTypeIn authentication backend label from {@code rhnUserInfo.auth_type}
+     */
+    public void setAuthType(String authTypeIn) {
+        this.authType = authTypeIn;
+    }
+
+    /**
+     * @return label of the LDAP directory that authenticated the user, when applicable
+     */
+    public String getLdapServerLabel() {
+        return ldapServerLabel;
+    }
+
+    /**
+     * @param ldapServerLabelIn LDAP server label from {@code suseLdapAuthServer}
+     */
+    public void setLdapServerLabel(String ldapServerLabelIn) {
+        this.ldapServerLabel = ldapServerLabelIn;
+    }
+
+    /**
+     * Human-readable "Authorized by" value for the users list (Satellite-style).
+     *
+     * @return localized authorization source
+     */
+    public String getAuthorizedBy() {
+        LocalizationService ls = LocalizationService.getInstance();
+        if (authType == null || authType.isBlank() || "LOCAL".equalsIgnoreCase(authType)) {
+            return ls.getMessage("userlist.jsp.authorized.internal");
+        }
+        if ("PAM".equalsIgnoreCase(authType)) {
+            return ls.getMessage("userlist.jsp.authorized.pam");
+        }
+        if ("LDAP".equalsIgnoreCase(authType)) {
+            if (ldapServerLabel != null && !ldapServerLabel.isBlank()) {
+                return ls.getMessage("userlist.jsp.authorized.ldap_server", ldapServerLabel);
+            }
+            return ls.getMessage("userlist.jsp.authorized.ldap");
+        }
+        return authType;
     }
 }
 

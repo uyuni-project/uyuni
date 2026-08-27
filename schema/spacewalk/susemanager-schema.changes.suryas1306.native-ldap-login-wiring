@@ -1,0 +1,1 @@
+- Add auth_type to rhnUserInfo and migrate PAM-flagged users to it

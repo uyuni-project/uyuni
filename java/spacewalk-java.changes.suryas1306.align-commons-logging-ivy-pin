@@ -1,0 +1,2 @@
+- Align commons-logging ivy/maven pin with version
+  obs-to-maven deploys (1.4.0)
