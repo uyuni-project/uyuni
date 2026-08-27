@@ -18,9 +18,7 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
@@ -76,26 +74,7 @@ public class CreateUserAction extends RhnAction {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage(err.getKey(), err.getValues()));
         }
-
-        Address addr = UserFactory.createAddress();
-        fillOutAddress(form, addr);
-        command.setAddress(addr);
-
-
-
         return errors;
-    }
-
-    private void fillOutAddress(DynaActionForm form, Address addr) {
-        // Add address information to the user.
-        addr.setAddress1((String)form.get("address1"));
-        addr.setAddress2((String)form.get("address2"));
-        addr.setCity((String)form.get("city"));
-        addr.setState((String)form.get("state"));
-        addr.setZip((String)form.get("zip"));
-        addr.setCountry((String)form.get("country"));
-        addr.setPhone(form.getString("phone"));
-        addr.setFax(form.getString("fax"));
     }
 
     /** {@inheritDoc} */
