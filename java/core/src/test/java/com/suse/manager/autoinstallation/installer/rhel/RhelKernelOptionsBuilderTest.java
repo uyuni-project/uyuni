@@ -34,7 +34,8 @@ import java.util.Optional;
  */
 public class RhelKernelOptionsBuilderTest {
 
-    private MockConnection connection;
+    private org.cobbler.CobblerConnection connection;
+    private final boolean useRealCobbler = true;
     private Distro distro;
     private Profile profile;
     private SystemRecord system;
@@ -42,14 +43,18 @@ public class RhelKernelOptionsBuilderTest {
 
     @BeforeEach
     public void setUp() {
-        connection = new MockConnection("http://localhost", "token");
+        if (useRealCobbler) {
+            connection = com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper.getUncachedAutomatedConnection();
+        }
+        else {
+            connection = new MockConnection("http://localhost", "token");
+        }
         distro = new Distro.Builder<String>()
                 .setName("test-distro")
                 .setKernel("kernel")
                 .setInitrd("initrd")
                 .setKsmeta(Optional.empty())
                 .setBreed("redhat")
-                .setOsVersion("rhel8")
                 .setArch("x86_64")
                 .build(connection);
         profile = Profile.create(connection, "test-profile", distro);
@@ -60,7 +65,14 @@ public class RhelKernelOptionsBuilderTest {
 
     @AfterEach
     public void tearDown() {
-        MockConnection.clear();
+        if (useRealCobbler) {
+            SystemRecord.list(connection).forEach(org.cobbler.CobblerObject::remove);
+            Profile.list(connection).forEach(org.cobbler.CobblerObject::remove);
+            Distro.list(connection).forEach(org.cobbler.CobblerObject::remove);
+        }
+        else {
+            MockConnection.clear();
+        }
     }
 
     @Test

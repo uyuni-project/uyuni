@@ -33,7 +33,8 @@ import java.util.Optional;
  */
 public class KickstartInitiateActionTest {
 
-    private MyMockConnection connection;
+    private org.cobbler.CobblerConnection connection;
+    private final boolean useRealCobbler = true;
 
     private static class MyMockConnection extends MockConnection {
         private Map<String, Object> resolvedKernelOptions = new HashMap<>();
@@ -57,12 +58,24 @@ public class KickstartInitiateActionTest {
 
     @BeforeEach
     public void setUp() {
-        connection = new MyMockConnection("http://localhost", "token");
+        if (useRealCobbler) {
+            connection = com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper.getUncachedAutomatedConnection();
+        }
+        else {
+            connection = new MyMockConnection("http://localhost", "token");
+        }
     }
 
     @AfterEach
     public void tearDown() {
-        MockConnection.clear();
+        if (useRealCobbler) {
+            SystemRecord.list(connection).forEach(org.cobbler.CobblerObject::remove);
+            Profile.list(connection).forEach(org.cobbler.CobblerObject::remove);
+            Distro.list(connection).forEach(org.cobbler.CobblerObject::remove);
+        }
+        else {
+            MockConnection.clear();
+        }
     }
 
     @Test
@@ -84,7 +97,13 @@ public class KickstartInitiateActionTest {
         resolvedOpts.put("text", "");
         resolvedOpts.put("foo", "bar");
         resolvedOpts.put("initrd", "some_initrd");
-        connection.setResolvedKernelOptions(resolvedOpts);
+
+        if (useRealCobbler) {
+            system.setKernelOptions(Optional.of(resolvedOpts));
+        }
+        else {
+            ((MyMockConnection) connection).setResolvedKernelOptions(resolvedOpts);
+        }
 
         // Let's create a mocked tree for SUSE
         KickstartableTree tree = new KickstartableTree() {
@@ -124,7 +143,13 @@ public class KickstartInitiateActionTest {
 
         Map<String, Object> resolvedOpts = new HashMap<>();
         resolvedOpts.put("foo", "bar");
-        connection.setResolvedKernelOptions(resolvedOpts);
+
+        if (useRealCobbler) {
+            system.setKernelOptions(Optional.of(resolvedOpts));
+        }
+        else {
+            ((MyMockConnection) connection).setResolvedKernelOptions(resolvedOpts);
+        }
 
         KickstartableTree tree = new KickstartableTree() {
             @Override
@@ -160,7 +185,13 @@ public class KickstartInitiateActionTest {
 
         Map<String, Object> resolvedOpts = new HashMap<>();
         resolvedOpts.put("foo", "bar");
-        connection.setResolvedKernelOptions(resolvedOpts);
+
+        if (useRealCobbler) {
+            system.setKernelOptions(Optional.of(resolvedOpts));
+        }
+        else {
+            ((MyMockConnection) connection).setResolvedKernelOptions(resolvedOpts);
+        }
 
         // Debian has no tree install type, so we pass null tree to fall back to breed
         String kopts = KickstartInitiateAction.buildKernelOptions(system, null, "uyuni.example.com", true);
