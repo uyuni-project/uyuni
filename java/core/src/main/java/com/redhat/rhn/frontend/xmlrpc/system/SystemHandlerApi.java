@@ -159,7 +159,7 @@ public interface SystemHandlerApi {
         requestClass = SetChildChannelsRequest.class,
         isIntegerResponse = true
     )
-    int setChildChannels(User loggedInUser, Integer sid, List channelIdsOrLabels);
+    int setChildChannels(User loggedInUser, Integer sid, List<Object> channelIdsOrLabels);
 
     /**
      * Assigns the server to a new base channel.
@@ -200,7 +200,7 @@ public interface SystemHandlerApi {
         legacyDocResponse = @LegacyDocResponse(name = "id")
     )
     long scheduleChangeChannels(User loggedInUser, Integer sid, String baseChannelLabel,
-        List childLabels, Date earliestOccurrence);
+        List<String> childLabels, Date earliestOccurrence);
 
     /**
      * Schedules an action to change the channels of several systems.
@@ -231,7 +231,7 @@ public interface SystemHandlerApi {
         legacyDocResponse = @LegacyDocResponse(name = "actionIds")
     )
     List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids,
-        String baseChannelLabel, List childLabels, Date earliestOccurrence);
+        String baseChannelLabel, List<String> childLabels, Date earliestOccurrence);
 
     /**
      * Lists the base channels a server may subscribe to.
@@ -2949,7 +2949,7 @@ public interface SystemHandlerApi {
         responseClass = DuplicateByMacListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "Duplicate Group")
     )
-    List listDuplicatesByMac(@Parameter(hidden = true) User loggedInUser);
+    List<Map<String, Object>> listDuplicatesByMac(@Parameter(hidden = true) User loggedInUser);
 
     /**
      * Lists the systems sharing a hostname.

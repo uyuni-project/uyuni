@@ -10,6 +10,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.activationkey;
 
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandlerApi;
@@ -252,7 +253,7 @@ public interface ActivationKeyHandlerApi {
         requestClass = ServerGroupsRequest.class,
         isIntegerResponse = true
     )
-    int addServerGroups(User loggedInUser, String key, List serverGroupIds);
+    int addServerGroups(User loggedInUser, String key, List<Integer> serverGroupIds);
 
     /**
      * Removes server groups from an activation key.
@@ -267,7 +268,7 @@ public interface ActivationKeyHandlerApi {
         requestClass = ServerGroupsRequest.class,
         isIntegerResponse = true
     )
-    int removeServerGroups(User loggedInUser, String key, List serverGroupIds);
+    int removeServerGroups(User loggedInUser, String key, List<Integer> serverGroupIds);
 
     /**
      * Adds packages to an activation key.
@@ -374,7 +375,7 @@ public interface ActivationKeyHandlerApi {
         responseClass = ServerConfigHandlerApi.ConfigChannelListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "configuration channel information")
     )
-    List listConfigChannels(
+    List<ConfigChannel> listConfigChannels(
         @Parameter(hidden = true) User loggedInUser,
         @Parameter(name = "key", in = ParameterIn.QUERY, required = true) String key);
 

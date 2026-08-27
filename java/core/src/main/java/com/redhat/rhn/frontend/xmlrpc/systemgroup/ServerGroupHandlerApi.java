@@ -128,7 +128,7 @@ public interface ServerGroupHandlerApi {
         requestClass = AddOrRemoveSystemsRequest.class,
         isIntegerResponse = true
     )
-    int addOrRemoveSystems(User loggedInUser, String systemGroupName, List serverIds, Boolean add);
+    int addOrRemoveSystems(User loggedInUser, String systemGroupName, List<Integer> serverIds, Boolean add);
 
     /**
      * Creates a system group.
@@ -309,7 +309,7 @@ public interface ServerGroupHandlerApi {
         responseClass = ActionIdListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "actionId")
     )
-    List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName, List errataIds);
+    List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName, List<Integer> errataIds);
 
     /**
      * Schedules an action applying errata updates to the active systems of a group at a given time.

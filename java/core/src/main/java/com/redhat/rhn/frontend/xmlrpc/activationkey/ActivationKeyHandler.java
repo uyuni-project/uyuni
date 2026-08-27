@@ -674,7 +674,7 @@ public class ActivationKeyHandler extends BaseHandler implements ActivationKeyHa
      * @apidoc.param #array_single("int", "serverGroupIds")
      * @apidoc.returntype #return_int_success()
      */
-    public int addServerGroups(User loggedInUser, String key, List serverGroupIds) {
+    public int addServerGroups(User loggedInUser, String key, List<Integer> serverGroupIds) {
 
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
@@ -711,7 +711,7 @@ public class ActivationKeyHandler extends BaseHandler implements ActivationKeyHa
      * @apidoc.param #array_single("int", "serverGroupIds")
      * @apidoc.returntype #return_int_success()
      */
-    public int removeServerGroups(User loggedInUser, String key, List serverGroupIds) {
+    public int removeServerGroups(User loggedInUser, String key, List<Integer> serverGroupIds) {
 
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         ActivationKey activationKey = lookupKey(key, loggedInUser);
@@ -997,7 +997,7 @@ public class ActivationKeyHandler extends BaseHandler implements ActivationKeyHa
      *   #array_end()
      */
     @ReadOnly
-    public List listConfigChannels(User loggedInUser, String key) {
+    public List<ConfigChannel> listConfigChannels(User loggedInUser, String key) {
         ActivationKey activationKey = lookupKey(key, loggedInUser);
         return activationKey.getConfigChannelsFor(loggedInUser);
     }

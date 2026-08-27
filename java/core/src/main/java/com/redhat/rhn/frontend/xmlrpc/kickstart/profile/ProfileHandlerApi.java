@@ -10,6 +10,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile;
 
+import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
@@ -435,7 +436,7 @@ public interface ProfileHandlerApi {
         responseClass = KickstartHandlerApi.KickstartIpRangeListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "kickstart IP range")
     )
-    Set listIpRanges(
+    Set<KickstartIpRange> listIpRanges(
         @Parameter(hidden = true) User loggedInUser,
         @Parameter(name = "ksLabel", in = ParameterIn.QUERY, required = true,
                 description = "The label of the kickstart") String ksLabel);

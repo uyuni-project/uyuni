@@ -422,7 +422,8 @@ public class SystemHandler extends BaseHandler implements SystemHandlerApi {
      * @apidoc.returntype #return_int_success()
      */
     @Deprecated
-    public int setChildChannels(User loggedInUser, Integer sid, List channelIdsOrLabels) throws FaultException {
+    public int setChildChannels(User loggedInUser, Integer sid, List<Object> channelIdsOrLabels)
+            throws FaultException {
 
         //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
@@ -541,7 +542,7 @@ public class SystemHandler extends BaseHandler implements SystemHandlerApi {
      * on error")
      */
     public long scheduleChangeChannels(User loggedInUser, Integer sid, String baseChannelLabel,
-                                       List childLabels, Date earliestOccurrence) {
+                                       List<String> childLabels, Date earliestOccurrence) {
         return scheduleChangeChannels(loggedInUser, singletonList(sid), baseChannelLabel, childLabels,
                 earliestOccurrence).stream().findFirst().orElseThrow(NoActionInScheduleException::new);
     }
@@ -580,7 +581,7 @@ public class SystemHandler extends BaseHandler implements SystemHandlerApi {
      * @apidoc.returntype #array_single("long", "actionIds")
      */
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
-                                             List childLabels, Date earliestOccurrence) {
+                                             List<String> childLabels, Date earliestOccurrence) {
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -7059,7 +7060,7 @@ public class SystemHandler extends BaseHandler implements SystemHandlerApi {
      *      #array_end()
      **/
     @ReadOnly
-    public List listDuplicatesByMac(User loggedInUser) {
+    public List<Map<String, Object>> listDuplicatesByMac(User loggedInUser) {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByMac(loggedInUser, 0L);
         return transformDuplicate(list, "mac");

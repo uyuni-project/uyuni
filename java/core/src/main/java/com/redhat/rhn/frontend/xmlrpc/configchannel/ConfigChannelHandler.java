@@ -228,7 +228,7 @@ public class ConfigChannelHandler extends BaseHandler implements ConfigChannelHa
      * #array_end()
      */
     @ReadOnly
-    public List getFileRevisions(User loggedInUser, String label, String filePath) {
+    public List<ConfigRevision> getFileRevisions(User loggedInUser, String label, String filePath) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel cc = configHelper.lookupGlobal(loggedInUser, label);
         ConfigurationManager cm = ConfigurationManager.getInstance();

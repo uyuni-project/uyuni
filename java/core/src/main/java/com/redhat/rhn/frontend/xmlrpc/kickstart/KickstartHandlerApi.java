@@ -11,7 +11,9 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.frontend.xmlrpc.channel.appstreams.ChannelAppStreamHandlerApi;
 
 import com.suse.manager.api.ApiResponseWrapper;
@@ -210,7 +212,7 @@ public interface KickstartHandlerApi {
         responseClass = KickstartListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "kickstart")
     )
-    List listKickstarts(@Parameter(hidden = true) User loggedInUser);
+    List<KickstartDto> listKickstarts(@Parameter(hidden = true) User loggedInUser);
 
     /**
      * Lists all IP ranges and their associated kickstarts.
@@ -225,7 +227,7 @@ public interface KickstartHandlerApi {
         responseClass = KickstartIpRangeListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "kickstart IP range")
     )
-    List listAllIpRanges(@Parameter(hidden = true) User loggedInUser);
+    List<KickstartIpRange> listAllIpRanges(@Parameter(hidden = true) User loggedInUser);
 
     /**
      * Finds the kickstart associated with an IP address.

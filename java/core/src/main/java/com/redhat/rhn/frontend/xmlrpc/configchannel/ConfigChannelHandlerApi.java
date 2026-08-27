@@ -132,7 +132,7 @@ public interface ConfigChannelHandlerApi {
         responseClass = ServerConfigHandlerApi.ConfigRevisionListResponse.class,
         legacyDocResponse = @LegacyDocResponse(name = "configuration revision information")
     )
-    List getFileRevisions(
+    List<ConfigRevision> getFileRevisions(
         @Parameter(hidden = true) User loggedInUser,
         @Parameter(name = "label", in = ParameterIn.QUERY, required = true,
                 description = "label of config channel to lookup on") String label,

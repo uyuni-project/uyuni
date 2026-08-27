@@ -1023,7 +1023,7 @@ public class ProfileHandler extends BaseHandler implements ProfileHandlerApi {
     *
     */
    @ReadOnly
-   public Set listIpRanges(User loggedInUser, String ksLabel) {
+   public Set<KickstartIpRange> listIpRanges(User loggedInUser, String ksLabel) {
        KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
        return ksdata.getIps();
    }
