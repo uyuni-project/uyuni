@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * ErrataOverview
@@ -47,7 +46,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
     private Date issueDate;
     private Integer affectedSystemCount;
     private String advisoryLastUpdated;
-    private List cves = new ArrayList<>();
+    private List<String> cves = new ArrayList<>();
     private List<String> packageNames = new ArrayList<>();
     private List<Long> pids = new ArrayList<>();
     private List actionId;
@@ -182,7 +181,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
     /**
      * @return Returns the cves.
      */
-    public List getCves() {
+    public List<String> getCves() {
         return cves;
     }
     /**
@@ -197,7 +196,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
     /**
      * @param p The cves to set.
      */
-    public void setCves(List p) {
+    public void setCves(List<String> p) {
         this.cves = p;
     }
 
@@ -210,7 +209,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
         if (cves == null || cves.isEmpty()) {
             return "";
         }
-        return ((List<?>) cves).stream().map(Object::toString).collect(Collectors.joining(" "));
+        return String.join(" ", cves);
     }
 
     /**
