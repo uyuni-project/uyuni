@@ -301,9 +301,19 @@ Given('a ready server pod is reachable from the benchmark controller') do
   @package_download_pod = ready_pods.first['metadata']['name']
 end
 
+# Check that every configured minion is ready before the measurement:
+# 1. Apply the Salt channels state to update the minion repository configuration.
+# 2. Read the OS family and architecture, then require matching SUSE clients.
+# 3. Verify that the configured Uyuni repository exists and is enabled.
+# 4. Refresh the repository metadata.
+# 5. Verify that every RPM from the initial snapshot is available to every minion.
 Given('the benchmark minions are ready for the configured channel') do
   inputs = @package_download_inputs
   pod = @package_download_pod
+
+  # 1. Run `state.apply channels` so Uyuni updates the assigned software channel
+  # repository configuration on every minion. The later `pkg.*` calls must use
+  # this configuration instead of repository files left by an older run.
   states =
     package_download_run_salt(
       inputs,
@@ -315,6 +325,9 @@ Given('the benchmark minions are ready for the configured channel') do
   failed_states = states.values.flat_map(&:values).reject { |state| state['result'] == true }
   raise 'Channel state preflight failed' unless failed_states.empty?
 
+  # 2. Read the `os_family` and `osarch` Salt grains. This workload uses zypper,
+  # so every target must be a SUSE client. Requiring one architecture also keeps
+  # the visible RPM set and benchmark results comparable across all minions.
   grains =
     package_download_run_salt(
       inputs,
@@ -333,6 +346,9 @@ Given('the benchmark minions are ready for the configured channel') do
   osarches = client_details.map(&:last).uniq
   raise "Package download benchmark requires one client architecture: #{osarches.join(', ')}" unless osarches.length == 1
 
+  # 3. Use `pkg.get_repo` to confirm that `susemanager:<channel>` exists and is
+  # enabled on every minion. Save the common repository name returned by Salt;
+  # `pkg.list_repo_pkgs` uses that name when it checks package availability.
   repos =
     package_download_run_salt(
       inputs,
@@ -352,6 +368,10 @@ Given('the benchmark minions are ready for the configured channel') do
     client_os_family: 'Suse',
     client_osarch: osarches.first
   )
+
+  # 4. Force `pkg.refresh_db` for only the benchmark repository. This makes the
+  # package availability check use current zypper metadata instead of metadata
+  # cached before the benchmark channel was prepared.
   refreshed =
     package_download_run_salt(
       inputs,
@@ -363,6 +383,9 @@ Given('the benchmark minions are ready for the configured channel') do
   refresh_ok = refreshed.values.all? { |repositories| [true, false].include?(repositories[inputs[:repo_name]]) }
   raise 'Repository metadata refresh failed' unless refresh_ok
 
+  # 5. Use `pkg.list_repo_pkgs` to read the package versions each minion can see
+  # in the benchmark repository, then compare them with the initial Uyuni
+  # snapshot. Stop before measurement if any expected RPM is unavailable.
   available =
     package_download_run_salt(
       inputs,
