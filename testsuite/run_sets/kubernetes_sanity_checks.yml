@@ -4,10 +4,12 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Secondary features BEGIN ##
+## Kubernetes sanity checks BEGIN ##
 
 # IDEMPOTENT
 
 - features/kubernetes/srv_rke2_check_installation.feature
 - features/kubernetes/proxy_rke2_install.feature
 - features/kubernetes/srv_rke2_tftpd_sanity.feature
+
+## Kubernetes sanity checks END ##
