@@ -4,8 +4,10 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Secondary features BEGIN ##
+## Kubernetes tests BEGIN ##
 
 # IDEMPOTENT
 
 - features/kubernetes/srv_rke2_external_ca.feature
+
+## Kubernetes tests END ##

@@ -4,8 +4,8 @@
 @transactional_server
 @rke2
 @no_user_creation
-Feature: Install MLM dependencies on RKE2  
-  
+Feature: Install MLM dependencies on RKE2
+
   Scenario: Check the RKE2 configuration
     And the environment variable "CERT_MANAGER_VERSION" is set on "server"
     And the environment variable "CERT_MANAGER_NAMESPACE" is set on "server"
@@ -23,15 +23,14 @@ Feature: Install MLM dependencies on RKE2
   Scenario: Install cert-manager and trust-manager
     When I run "helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version $CERT_MANAGER_VERSION --namespace $CERT_MANAGER_NAMESPACE --create-namespace --set crds.enabled=true --timeout 10m0s --wait" on "server"
     Then I wait until "cert-manager" helm chart is deployed in namespace "cert-manager" on "server"
-    When I run "helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --install --namespace $CERT_MANAGER_NAMESPACE --wait" on "server"
+    When I run "helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --namespace $CERT_MANAGER_NAMESPACE --wait" on "server"
     Then I wait until "trust-manager" helm chart is deployed in namespace "cert-manager" on "server"
 
-## Install Traefik
-
+  ## Install Traefik
   Scenario: Install Traefik
     When I apply the RKE2 YAML file "$TRAEFIK_FILE" on "server"
 
-## Set local-path-provisioner
+  ## Set local-path-provisioner
   Scenario: Install local path provisioner
     When I apply the RKE2 YAML file "$LOCAL_PATH_PROVISIONER_PATH" on "server"
     And I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "server"
