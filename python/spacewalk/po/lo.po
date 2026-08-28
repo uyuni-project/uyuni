@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-28 09:41+0200\n"
-"PO-Revision-Date: 2026-08-28 14:41+0000\n"
+"PO-Revision-Date: 2026-08-28 17:18+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/backend/lo/>\n"
 "Language: lo\n"
@@ -407,6 +407,7 @@ msgstr ""
 "     ກະລຸນາເຂົ້າໄປທີ່ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     ຫຼື ເຂົ້າສູ່ລະບົບທີ່ https://%(hostname)s, ແລະ ຈາກແທັບ \"Overview\",\n"
 "     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້.\n"
+"     "
 
 #: ../common/rhnException.py:85
 msgid "Record not available in the database."
@@ -430,7 +431,8 @@ msgstr ""
 "     ລະບົບນີ້ບໍ່ມີສິດການໃຊ້ງານທີ່ຖືກຕ້ອງສຳລັບ SUSE Multi-Linux Manager.\n"
 "     ກະລຸນາເຂົ້າໄປທີ່ https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     ຫຼື ເຂົ້າສູ່ລະບົບທີ່ https://%(hostname)s, ແລະ ຈາກແທັບ \"Overview\",\n"
-"     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້.\n"
+"     ເລືອກ \"Subscription Management\" ເພື່ອເປີດໃຊ້ບໍລິການສຳລັບລະບົບນີ້. \n"
+"    "
 
 #: ../common/rhnException.py:95
 msgid "Channel error"
@@ -970,7 +972,8 @@ msgstr ""
 "ຂໍ້ຜິດພາດ: ມີບັນຫາໃນການເຂົ້າເຖິງຂໍ້ມູນຊ່ອງທາງຈາກຄັງເກັບຂໍ້ມູນ (repository) ຊົ່ວຄາວຂອງທ່ານ.\n"
 "       ທ່ານໄດ້ຍ້າຍຂໍ້ມູນທັງໝົດຈາກໄຟລ໌ ISO ຂອງຊ່ອງທາງໄປຍັງໂຟນເດີນີ້ແລ້ວຫຼືບໍ່?\n"
 "       ຫາກແມ່ນ, ກະລຸນາກວດສອບໄຟລ໌ ISO ອີກຄັ້ງ, ໃຫ້ແນ່ໃຈວ່າມີຄົບທຸກໄຟລ໌,\n"
-"       ແລ້ວຈຶ່ງທຳການ mount ແລະ ຈັດຕັ້ງຄັງເກັບຂໍ້ມູນຊົ່ວຄາວໃໝ່ (%s).\n"
+"       ແລ້ວຈຶ່ງທຳການ mount ແລະ ຈັດຕັ້ງຄັງເກັບ\n"
+"       ຂໍ້ມູນຊົ່ວຄາວໃໝ່ (%s).\n"
 
 #: ../satellite_tools/messages.py:45
 #, python-format
@@ -1011,7 +1014,8 @@ msgstr ""
 "\n"
 "ຂໍ້ຜິດພາດ: ຊ່ອງທາງຍ່ອຍ (child-channel) ບໍ່ສາມາດຊິງຄ໌ໄດ້ ຫາກຊ່ອງທາງຫຼັກ (parent) ບໍ່ໄດ້ຊິງຄ໌.\n"
 "       ຊ່ອງທາງຫຼັກຕ້ອງ (ກ) ໄດ້ຮັບການຊິງຄ໌ກ່ອນໜ້ານີ້ ຫຼື (ຂ) ຊິງຄ໌ໄປພ້ອມກັບ\n"
-"       ຊ່ອງທາງຍ່ອຍທີ່ຕ້ອງການ. ຊ່ອງທາງຫຼັກທີ່ຫາຍໄປສຳລັບລາຍການນີ້:\n"
+"       ຊ່ອງທາງຍ່ອຍທີ່ຕ້ອງການ. ຊ່ອງທາງຫຼັກທີ່ຫາຍໄປສຳລັບ\n"
+"       ລາຍການນີ້:\n"
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
