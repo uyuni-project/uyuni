@@ -30,6 +30,10 @@ public class DeviceSynchronizer {
 
     private static final Logger LOG = LogManager.getLogger(DeviceSynchronizer.class);
 
+    // Error messages
+    private static final String UDEVDB_EMPTY = "Devices: Salt module 'udev.exportdb' returned an empty list";
+    private static final String DEVICE_MAPPING_FAILED = "Device mapping failed: ";
+
     private final MinionServer server;
 
     /**
@@ -56,9 +60,8 @@ public class DeviceSynchronizer {
             server.getDevices().clear();
 
             if (isAbsent(udevdb)) {
-                String error = "Devices: Salt module 'udev.exportdb' returned an empty list";
-                LOG.error("{} for minion: {}", error, server.getMinionId());
-                return Optional.of(error);
+                LOG.error("{} for minion: {}", UDEVDB_EMPTY, server.getMinionId());
+                return Optional.of(UDEVDB_EMPTY);
             }
 
             udevdb.forEach(dbdev -> {
@@ -75,7 +78,7 @@ public class DeviceSynchronizer {
         }
         catch (Exception e) {
             LOG.error("Failed to map devices for minion {} : {} ", server.getMinionId(), e);
-            return Optional.of("Device mapping failed: " + e.getMessage());
+            return Optional.of(DEVICE_MAPPING_FAILED + e.getMessage());
         }
     }
 

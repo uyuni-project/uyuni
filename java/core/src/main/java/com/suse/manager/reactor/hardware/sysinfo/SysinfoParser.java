@@ -11,10 +11,6 @@
 package com.suse.manager.reactor.hardware.sysinfo;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.S390_DEFAULT_CONTROL_PROGRAM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.S390_UNKNOWN_OS_VERSION;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SYSINFO_KEY_CONTROL_PROGRAM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SYSINFO_KEY_CPUS_TOTAL;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +26,16 @@ import java.util.Map;
 public final class SysinfoParser {
 
     private static final Logger LOG = LogManager.getLogger(SysinfoParser.class);
+
+    // Mainframe sysinfo keys, as returned by the salt module mainframesysinfo.read_values
+    public static final String SYSINFO_KEY_CONTROL_PROGRAM = "control program";
+    public static final String SYSINFO_KEY_CPUS_TOTAL = "CPUs Total";
+    public static final String SYSINFO_KEY_SEQUENCE_CODE = "Sequence Code";
+    public static final String SYSINFO_KEY_TYPE = "Type";
+
+    // Values reported when the sysinfo does not carry one
+    private static final String S390_DEFAULT_CONTROL_PROGRAM = "z/VM";
+    private static final String S390_UNKNOWN_OS_VERSION = "N/A";
 
     private SysinfoParser() {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);

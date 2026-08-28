@@ -10,6 +10,10 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_CPU_ARCH;
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_MEM_TOTAL;
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_SWAP_TOTAL;
+
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.reactor.hardware.cpu.CpuInfoMapper;
@@ -19,7 +23,6 @@ import com.suse.manager.reactor.hardware.network.NetworkMapper;
 import com.suse.manager.reactor.hardware.sysinfo.SysinfoMapper;
 import com.suse.manager.reactor.hardware.virtualization.VirtualizationMapper;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
 
@@ -63,21 +66,21 @@ public class HardwareMapper {
      * @return the value of the `cpuarch` grain
      */
     public String getCpuArch() {
-        return grains.getValueAsString(SaltGrains.CPUARCH.getValue()).toLowerCase();
+        return grains.getValueAsString(GRAIN_CPU_ARCH).toLowerCase();
     }
 
     /**
      * @return the value of the 'mem_total' grain
      */
     public long getTotalMemory() {
-        return grains.getValueAsLong("mem_total").orElse(0L);
+        return grains.getValueAsLong(GRAIN_MEM_TOTAL).orElse(0L);
     }
 
     /**
      * @return the value of the 'swap_total' grain
      */
     public long getTotalSwapMemory() {
-        return grains.getValueAsLong("swap_total").orElse(0L);
+        return grains.getValueAsLong(GRAIN_SWAP_TOTAL).orElse(0L);
     }
 
     /**

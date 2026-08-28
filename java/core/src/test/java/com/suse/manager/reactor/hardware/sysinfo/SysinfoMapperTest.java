@@ -10,6 +10,7 @@
  */
 package com.suse.manager.reactor.hardware.sysinfo;
 
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_CPU_ARCH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,7 +25,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltGrains;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -216,7 +216,7 @@ public class SysinfoMapperTest extends BaseTestCaseWithUser {
     }
 
     private SysinfoMapper mapperWithCpuArch(String cpuArch) {
-        Map<String, String> grains = Map.of(SaltGrains.CPUARCH.getValue(), cpuArch);
+        Map<String, String> grains = Map.of(GRAIN_CPU_ARCH, cpuArch);
         return new SysinfoMapper(testServer, new ValueMap(grains));
     }
 

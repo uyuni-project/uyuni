@@ -10,6 +10,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_CPU_ARCH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,7 +22,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltGrains;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,7 +77,7 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
     @Test
     @DisplayName("mapSysinfo delegates to the mainframe sysinfo mapper without collecting errors")
     public void mapSysinfoDelegatesToSysinfoMapper() {
-        HardwareMapper hwMapper = mapperWithGrains(Map.of(SaltGrains.CPUARCH.getValue(), "s390x"));
+        HardwareMapper hwMapper = mapperWithGrains(Map.of(GRAIN_CPU_ARCH, "s390x"));
 
         hwMapper.mapSysinfo(S390_SYSINFO);
 

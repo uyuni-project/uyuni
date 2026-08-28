@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import com.suse.manager.reactor.hardware.HardwareConstants;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
 
@@ -177,7 +176,7 @@ public class VirtualizationMapperTest extends BaseTestCaseWithUser {
 
         Optional<String> error = getMapVirtualizationInfo(grains, Optional.empty());
 
-        assertEquals(Optional.of(HardwareConstants.GRAIN_VIRTUAL_HAS_NO_VALUE), error);
+        assertEquals(Optional.of(VirtualizationMapper.GRAIN_VIRTUAL_HAS_NO_VALUE), error);
         assertNull(guestInstance());
     }
 
@@ -192,7 +191,7 @@ public class VirtualizationMapperTest extends BaseTestCaseWithUser {
         Optional<String> error = getMapVirtualizationInfo(grains,
                 Optional.of(dmiSystem("HITACHI", "Compute Blade HVM LPAR")));
 
-        assertEquals(Optional.of(HardwareConstants.GRAIN_VIRTUAL_HAS_NO_VALUE), error);
+        assertEquals(Optional.of(VirtualizationMapper.GRAIN_VIRTUAL_HAS_NO_VALUE), error);
         assertEquals(VirtualInstanceFactory.getInstance().getVirtualInstanceType("virtage"),
                 guestInstance().getType());
     }

@@ -37,6 +37,18 @@ public class NetworkMapper {
 
     private static final Logger LOG = LogManager.getLogger(NetworkMapper.class);
 
+    // Grain keys
+    private static final String GRAIN_FQDN = "fqdn";
+
+    // Loopback addresses, never reported as the primary IP of an interface
+    private static final String LOOPBACK_IPV4 = "127.0.0.1";
+    private static final String LOOPBACK_IPV6 = "::1";
+
+    // Error messages
+    private static final String NETWORK_INTERFACES_EMPTY =
+            "Network: Salt module 'network.interfaces' returned an empty value";
+    private static final String NETWORK_MAPPING_FAILED = "Network mapping failed: ";
+
     private final MinionServer server;
     private final ValueMap grains;
 
@@ -69,23 +81,22 @@ public class NetworkMapper {
 
         try {
             if (interfaces.isEmpty()) {
-                String error = "Network: Salt module 'network.interfaces' returned an empty value";
-                LOG.error("{} for minion: {}", error, server.getMinionId());
-                return Optional.of(error);
+                LOG.error("{} for minion: {}", NETWORK_INTERFACES_EMPTY, server.getMinionId());
+                return Optional.of(NETWORK_INTERFACES_EMPTY);
             }
 
             // Extract primary IPs
             Optional<String> primaryIPv4 = primaryIps
                     .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV4)))
                     .map(SumaUtil.IPRoute::getSource)
-                    .filter(addr -> !"127.0.0.1".equals(addr));
+                    .filter(addr -> !LOOPBACK_IPV4.equals(addr));
             Optional<String> primaryIPv6 = primaryIps
                     .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV6)))
                     .map(SumaUtil.IPRoute::getSource)
-                    .filter(addr -> !"::1".equals(addr));
+                    .filter(addr -> !LOOPBACK_IPV6.equals(addr));
 
             // Set hostname and FQDNs
-            server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+            server.setHostname(grains.getOptionalAsString(GRAIN_FQDN).orElse(null));
             setFqdns(server, fqdns);
 
             // Remove interfaces not present in Salt result by name
@@ -109,7 +120,7 @@ public class NetworkMapper {
         }
         catch (Exception e) {
             LOG.error("Failed to map network info for minion {} : {} ", server.getMinionId(), e);
-            return Optional.of("Network mapping failed: " + e.getMessage());
+            return Optional.of(NETWORK_MAPPING_FAILED + e.getMessage());
         }
 
     }

@@ -10,20 +10,10 @@
  */
 package com.suse.manager.reactor.hardware.virtualization;
 
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_MANUFACTURER_HITACHI;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_PRODUCT_HVM_LPAR_SUFFIX;
-import static com.suse.manager.reactor.hardware.HardwareConstants.FLEX_GUEST_UUID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_INSTANCE_ID;
+import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_MANUFACTURER;
+import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_PRODUCT_NAME;
 import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_MEM_TOTAL;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_OSRELEASE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_OS_FAMILY;
 import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_TOTAL_NUM_CPUS;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_UUID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_VIRTUAL;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_VIRTUAL_HAS_NO_VALUE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_VIRTUAL_SUBTYPE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SLE11_OSRELEASE_PREFIX;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_VIRTAGE;
 
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -49,6 +39,29 @@ import java.util.Optional;
 public class VirtualizationMapper {
 
     private static final Logger LOG = LogManager.getLogger(VirtualizationMapper.class);
+
+    /** Reported back to the caller when the 'virtual' grain is missing. */
+    public static final String GRAIN_VIRTUAL_HAS_NO_VALUE = "Virtualization: Grain 'virtual' has no value";
+
+    // Grain keys
+    private static final String GRAIN_INSTANCE_ID = "instance_id";
+    private static final String GRAIN_OSRELEASE = "osrelease";
+    private static final String GRAIN_OS_FAMILY = "os_family";
+    private static final String GRAIN_UUID = "uuid";
+    private static final String GRAIN_VIRTUAL = "virtual";
+    private static final String GRAIN_VIRTUAL_SUBTYPE = "virtual_subtype";
+
+    // Hitachi Virtage (HVM LPAR) detection through DMI
+    private static final String DMI_MANUFACTURER_HITACHI = "HITACHI";
+    private static final String DMI_PRODUCT_HVM_LPAR_SUFFIX = " HVM LPAR";
+    private static final String FLEX_GUEST_UUID = "flex-guest";
+    private static final String VIRT_TYPE_VIRTAGE = "virtage";
+
+    // SLE 11 reports a wrong (big-endian) virtual UUID and needs to be coerced
+    private static final String SLE11_OSRELEASE_PREFIX = "11";
+
+    // Error messages
+    private static final String VIRTUALIZATION_MAPPING_FAILED = "Virtualization mapping failed: ";
 
     private final MinionServer server;
     private final ValueMap grains;
@@ -99,8 +112,8 @@ public class VirtualizationMapper {
             else if (smbiosRecordsSystem.isPresent()) {
                 // there's no DMI on S390 and PPC64
                 ValueMap dmiSystem = new ValueMap(smbiosRecordsSystem.orElse(Collections.emptyMap()));
-                String manufacturer = dmiSystem.getValueAsString("manufacturer");
-                String productName = dmiSystem.getValueAsString("product_name");
+                String manufacturer = dmiSystem.getValueAsString(DMI_KEY_MANUFACTURER);
+                String productName = dmiSystem.getValueAsString(DMI_KEY_PRODUCT_NAME);
                 if (DMI_MANUFACTURER_HITACHI.equalsIgnoreCase(manufacturer) &&
                         productName.endsWith(DMI_PRODUCT_HVM_LPAR_SUFFIX)) {
                     if (StringUtils.isEmpty(virtUuid)) {
@@ -118,7 +131,7 @@ public class VirtualizationMapper {
         }
         catch (Exception e) {
             LOG.error("Failed to map virtualization info for minion {} : {}", server.getMinionId(), e);
-            return Optional.of("Virtualization mapping failed: " + e.getMessage());
+            return Optional.of(VIRTUALIZATION_MAPPING_FAILED + e.getMessage());
         }
     }
 

@@ -10,14 +10,10 @@
  */
 package com.suse.manager.reactor.hardware.sysinfo;
 
-import static com.suse.manager.reactor.hardware.HardwareConstants.CONTACT_METHOD_DEFAULT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.S390_DIGITAL_SERVER_ID_FORMAT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.S390_HOST_DESCRIPTION_FORMAT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.S390_HOST_NAME_FORMAT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SERVER_ARCH_LINUX_SUFFIX;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SERVER_SECRET_LENGTH;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SYSINFO_KEY_SEQUENCE_CODE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SYSINFO_KEY_TYPE;
+import static com.suse.manager.reactor.hardware.HardwareConstants.CPU_MHZ_NOT_APPLICABLE;
+import static com.suse.manager.reactor.hardware.HardwareConstants.GRAIN_CPU_ARCH;
+import static com.suse.manager.reactor.hardware.sysinfo.SysinfoParser.SYSINFO_KEY_SEQUENCE_CODE;
+import static com.suse.manager.reactor.hardware.sysinfo.SysinfoParser.SYSINFO_KEY_TYPE;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -33,7 +29,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltGrains;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +47,23 @@ import java.util.UUID;
 public class SysinfoMapper {
 
     private static final Logger LOG = LogManager.getLogger(SysinfoMapper.class);
+
+    // S390 mainframe host registration
+    private static final String AUTO_UPDATE_DISABLED = "N";
+    private static final String CONTACT_METHOD_DEFAULT = "default";
+    private static final String S390_DIGITAL_SERVER_ID_FORMAT = "Z-%s";
+    private static final String S390_HOST_DESCRIPTION_FORMAT =
+            "Initial Registration Parameters:\nOS: %s\nRelease: %s\nCPU Arch: %s";
+    private static final String S390_HOST_NAME_FORMAT = "IBM Mainframe %s %s %s";
+    private static final long S390_HOST_NR_THREADS = 1L;
+    private static final String SERVER_ARCH_LINUX_SUFFIX = "-redhat-linux";
+    private static final int SERVER_SECRET_LENGTH = 64;
+
+    // Virtual instances created by us are always confirmed
+    private static final long VIRTUAL_INSTANCE_CONFIRMED = 1L;
+
+    // Error messages
+    private static final String SYSINFO_MAPPING_FAILED = "Mainframe sysinfo mapping failed: ";
 
     private final MinionServer server;
     private final ValueMap grains;
@@ -80,7 +92,7 @@ public class SysinfoMapper {
                 return Optional.empty();
             }
 
-            String cpuArch = grains.getValueAsString(SaltGrains.CPUARCH.getValue()).toLowerCase();
+            String cpuArch = grains.getValueAsString(GRAIN_CPU_ARCH).toLowerCase();
             Map<String, String> sysvalues = SysinfoParser.parseSysinfo(readValuesOutput);
             String sequenceCode = sysvalues.get(SYSINFO_KEY_SEQUENCE_CODE);
             String type = sysvalues.get(SYSINFO_KEY_TYPE);
@@ -106,7 +118,7 @@ public class SysinfoMapper {
         }
         catch (Exception e) {
             LOG.error("Failed to map mainframe sysinfo for minion {} : {}", server.getMinionId(), e);
-            return Optional.of("Mainframe sysinfo mapping failed: " + e.getMessage());
+            return Optional.of(SYSINFO_MAPPING_FAILED + e.getMessage());
         }
     }
 
@@ -141,7 +153,7 @@ public class SysinfoMapper {
         zhost.setDigitalServerId(identifier);
         zhost.setOrg(OrgFactory.getSatelliteOrg()); // OLDTODO clarify this
         zhost.setSecret(RandomStringUtils.random(SERVER_SECRET_LENGTH, 0, 0, true, true, null, new SecureRandom()));
-        zhost.setAutoUpdate("N");
+        zhost.setAutoUpdate(AUTO_UPDATE_DISABLED);
         zhost.setContactMethod(ServerFactory.findContactMethodByLabel(CONTACT_METHOD_DEFAULT));
         server.setLastBoot(System.currentTimeMillis() / 1000);
 
@@ -171,13 +183,13 @@ public class SysinfoMapper {
         CPU cpu = Optional.ofNullable(hostCpu).orElseGet(CPU::new);
         cpu.setNrCPU(totalIfls);
         cpu.setVersion(null);
-        cpu.setMHz("0");
+        cpu.setMHz(CPU_MHZ_NOT_APPLICABLE);
         cpu.setCache(null);
         cpu.setFamily(null);
         cpu.setBogomips(null);
         cpu.setNrsocket(totalIfls);
         cpu.setNrCore(totalIfls);
-        cpu.setNrThread(1L);
+        cpu.setNrThread(S390_HOST_NR_THREADS);
         cpu.setArch(ServerFactory.lookupCPUArchByName(cpuArch));
         cpu.setFlags(null);
         cpu.setStepping(null);
@@ -204,7 +216,7 @@ public class SysinfoMapper {
             VirtualInstance vinstHost = new VirtualInstance();
             vinstHost.setHostSystem(zhost);
             vinstHost.setGuestSystem(null);
-            vinstHost.setConfirmed(1L);
+            vinstHost.setConfirmed(VIRTUAL_INSTANCE_CONFIRMED);
             vinstHost.setUuid(null);
             vinstHost.setType(fullVirtType);
             vinstHost.setState(unknownState);
@@ -214,7 +226,7 @@ public class SysinfoMapper {
             VirtualInstance vinstGuest = new VirtualInstance();
             vinstGuest.setHostSystem(zhost);
             vinstGuest.setGuestSystem(server);
-            vinstGuest.setConfirmed(1L);
+            vinstGuest.setConfirmed(VIRTUAL_INSTANCE_CONFIRMED);
             vinstGuest.setUuid(UUID.randomUUID().toString().replace("-", StringUtils.EMPTY));
             vinstGuest.setType(fullVirtType);
             vinstGuest.setState(unknownState);

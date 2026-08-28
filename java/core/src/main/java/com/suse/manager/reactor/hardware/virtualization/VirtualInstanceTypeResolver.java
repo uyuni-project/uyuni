@@ -11,18 +11,6 @@
 package com.suse.manager.reactor.hardware.virtualization;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_KVM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_NITRO;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_QEMU;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_SUBTYPE_AMAZON_EC2_PREFIX;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_SUBTYPE_XEN_PV_DOMU;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRTUAL_XEN;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_AWS;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_AWS_NITRO;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_AWS_XEN;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_FULLY_VIRTUALIZED;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_PARA_VIRTUALIZED;
-import static com.suse.manager.reactor.hardware.HardwareConstants.VIRT_TYPE_QEMU;
 
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
@@ -36,6 +24,24 @@ import org.apache.logging.log4j.Logger;
 public final class VirtualInstanceTypeResolver {
 
     private static final Logger LOG = LogManager.getLogger(VirtualInstanceTypeResolver.class);
+
+    // Values of the 'virtual' grain
+    private static final String VIRTUAL_KVM = "kvm";
+    private static final String VIRTUAL_NITRO = "nitro";
+    private static final String VIRTUAL_QEMU = "qemu";
+    private static final String VIRTUAL_XEN = "xen";
+
+    // Values of the 'virtual_subtype' grain
+    private static final String VIRTUAL_SUBTYPE_AMAZON_EC2_PREFIX = "Amazon EC2";
+    private static final String VIRTUAL_SUBTYPE_XEN_PV_DOMU = "Xen PV DomU";
+
+    // Virtual instance type labels (from rhnVirtualInstanceType table)
+    private static final String VIRT_TYPE_AWS = "aws";
+    private static final String VIRT_TYPE_AWS_NITRO = "aws_nitro";
+    private static final String VIRT_TYPE_AWS_XEN = "aws_xen";
+    private static final String VIRT_TYPE_FULLY_VIRTUALIZED = "fully_virtualized";
+    private static final String VIRT_TYPE_PARA_VIRTUALIZED = "para_virtualized";
+    private static final String VIRT_TYPE_QEMU = "qemu";
 
     /**
      * Look up the virtual instance type for a guest, falling back to the fully virtualized type when

@@ -10,14 +10,8 @@
  */
 package com.suse.manager.reactor.hardware.dmi;
 
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_ASSET_FORMAT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_ASSET_TAG;
 import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_MANUFACTURER;
 import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_PRODUCT_NAME;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_RELEASE_DATE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_SERIAL_NUMBER;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_VENDOR;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DMI_KEY_VERSION;
 import static com.suse.utils.Predicates.allAbsent;
 
 import com.redhat.rhn.domain.server.Dmi;
@@ -41,6 +35,16 @@ import java.util.stream.Stream;
 public class DmiMapper {
 
     private static final Logger LOG = LogManager.getLogger(DmiMapper.class);
+
+    // Smbios record keys
+    private static final String DMI_KEY_ASSET_TAG = "asset_tag";
+    private static final String DMI_KEY_RELEASE_DATE = "release_date";
+    private static final String DMI_KEY_SERIAL_NUMBER = "serial_number";
+    private static final String DMI_KEY_VENDOR = "vendor";
+    private static final String DMI_KEY_VERSION = "version";
+
+    private static final String DMI_ASSET_FORMAT = "(chassis: %s) (chassis: %s) (board: %s) (system: %s)";
+    private static final String DMI_MAPPING_FAILED = "DMI mapping failed: ";
 
     private final MinionServer server;
 
@@ -112,7 +116,7 @@ public class DmiMapper {
         }
         catch (Exception e) {
             LOG.error("Failed to map DMI info for minion {} : {}", server.getMinionId(), e);
-            return Optional.of("DMI mapping failed: " + e.getMessage());
+            return Optional.of(DMI_MAPPING_FAILED + e.getMessage());
         }
     }
 

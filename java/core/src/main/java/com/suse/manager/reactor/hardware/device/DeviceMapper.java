@@ -10,40 +10,6 @@
  */
 package com.suse.manager.reactor.hardware.device;
 
-import static com.suse.manager.reactor.hardware.HardwareConstants.DEVTYPE_PARTITION;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DEVTYPE_SCSI_DEVICE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DEVTYPE_USB_DEVICE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.DEVTYPE_USB_INTERFACE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.ID_TYPE_CD;
-import static com.suse.manager.reactor.hardware.HardwareConstants.MAJOR_RAM_DEVICE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.MAJOR_VT_DEVICE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SCSI_TYPE_CDROM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SCSI_TYPE_DISK;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SCSI_TYPE_RBC;
-import static com.suse.manager.reactor.hardware.HardwareConstants.SCSI_TYPE_TAPE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_ENTRIES;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_EXTRA_ENTRIES;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_DEVPATH;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_DEVTYPE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_DM_NAME;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_DRIVER;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_BUS;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_CDROM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_MODEL;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_MODEL_FROM_DATABASE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_MODEL_ID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_PATH;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_SERIAL;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_TYPE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_VENDOR_FROM_DATABASE;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_ID_VENDOR_ID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_MAJOR;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_PCI_CLASS;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_PCI_ID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_PCI_SUBSYS_ID;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_PRODUCT;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_KEY_SUBSYSTEM;
-import static com.suse.manager.reactor.hardware.HardwareConstants.UDEV_SYSFS_PATH;
 import static com.suse.manager.reactor.hardware.device.PciClassCodes.PCI_CLASS_BRIDGE_CARDBUS;
 import static com.suse.manager.reactor.hardware.device.PciClassCodes.PCI_CLASS_BRIDGE_PCMCIA;
 import static com.suse.manager.reactor.hardware.device.PciClassCodes.PCI_CLASS_COMMUNICATION_MODEM;
@@ -73,14 +39,104 @@ public class DeviceMapper {
     private static final Logger LOG = LogManager.getLogger(DeviceMapper.class);
 
     public static final String BLOCK = "block";
+    public static final String CCW = "ccw";
     public static final String PCI = "pci";
     public static final String PCI_FORMAT = "%s|%s";
     public static final String SCSI = "scsi";
+    public static final String SOUND = "sound";
     public static final String USB = "usb";
     public static final String USB_DEVICE_FORMAT = "%04x";
 
-    private static final Set<String> SCANNABLE_DEVICES_SUBSYSTEM = Set.of(PCI, USB, BLOCK, "ccw", SCSI);
+    // Udev database keys
+    private static final String UDEV_ENTRIES = "E";
+    private static final String UDEV_EXTRA_ENTRIES = "X-Mgr";
+    private static final String UDEV_KEY_DEVTYPE = "DEVTYPE";
+    private static final String UDEV_KEY_DRIVER = "DRIVER";
+    private static final String UDEV_KEY_ID_BUS = "ID_BUS";
+    private static final String UDEV_KEY_ID_MODEL_FROM_DATABASE = "ID_MODEL_FROM_DATABASE";
+    private static final String UDEV_KEY_ID_MODEL_ID = "ID_MODEL_ID";
+    private static final String UDEV_KEY_ID_VENDOR_FROM_DATABASE = "ID_VENDOR_FROM_DATABASE";
+    private static final String UDEV_KEY_ID_VENDOR_ID = "ID_VENDOR_ID";
+    private static final String UDEV_KEY_PCI_ID = "PCI_ID";
+    private static final String UDEV_KEY_PRODUCT = "PRODUCT";
+    private static final String UDEV_KEY_SUBSYSTEM = "SUBSYSTEM";
+    private static final String UDEV_SYSFS_PATH = "P"; // sysfs path without /sys
+
+    // Device type values - DEVTYPE property values
+    private static final String DEVTYPE_PARTITION = "partition";
+    private static final String DEVTYPE_SCSI_DEVICE = "scsi_device";
+    private static final String DEVTYPE_USB_DEVICE = "usb_device";
+    private static final String DEVTYPE_USB_INTERFACE = "usb_interface";
+
+    // Udev property keys - Device identification
+    private static final String UDEV_KEY_ID_CDROM = "ID_CDROM";
+    private static final String UDEV_KEY_ID_MODEL = "ID_MODEL";
+    private static final String UDEV_KEY_ID_PATH = "ID_PATH";
+    private static final String UDEV_KEY_ID_SERIAL = "ID_SERIAL";
+    private static final String UDEV_KEY_ID_TYPE = "ID_TYPE";
+
+    // Udev property keys - PCI specific
+    private static final String UDEV_KEY_PCI_CLASS = "PCI_CLASS";
+    private static final String UDEV_KEY_PCI_SUBSYS_ID = "PCI_SUBSYS_ID";
+
+    // Udev property keys - Block device specific
+    private static final String UDEV_KEY_DEVPATH = "DEVPATH";
+    private static final String UDEV_KEY_DM_NAME = "DM_NAME";
+    private static final String UDEV_KEY_MAJOR = "MAJOR";
+
+    // Udev property keys - SCSI specific, only reported in the extra entries
+    private static final String UDEV_KEY_SCSI_SYS_TYPE = "SCSI_SYS_TYPE";
+
+
+
+
+    // ID_TYPE property values
+    private static final String ID_TYPE_CD = "cd";
+
+    // Block device major numbers
+    private static final int MAJOR_RAM_DEVICE = 1;
+    private static final int MAJOR_VT_DEVICE = 7;
+
+    // SCSI device types (from SCSI specification)
+    private static final int SCSI_TYPE_CDROM = 5;
+    private static final int SCSI_TYPE_DISK = 0;
+    private static final int SCSI_TYPE_RBC = 14;  // Reduced Block Commands
+    private static final int SCSI_TYPE_TAPE = 1;
+    private static final long SCSI_TYPE_UNKNOWN = -1L;
+
+    // Udev driver values and the descriptions we report for them
+    public static final String DRIVER_HUB = "hub";
+    public static final String DRIVER_UNKNOWN = "unknown";
+    public static final String DRIVER_USBHID = "usbhid";
+    public static final String USB_HID_INTERFACE_DESC = "USB HID Interface";
+    public static final String USB_HUB_INTERFACE_DESC = "USB Hub Interface";
+    public static final String USB_INTERFACE_DESC = "USB Interface";
+
+    // Markers looked up in the ID_SERIAL property to classify input devices
+    private static final String ID_SERIAL_KEYBOARD = "keyboard";
+    private static final String ID_SERIAL_MOUSE = "mouse";
+
+    // Devices are always reported as attached, we don't track detached ones
+    private static final long DEVICE_ATTACHED = 0L;
+
+    // The pcitype column tells PCI devices apart from everything else
+    private static final long PCI_TYPE_NOT_PCI = -1L;
+    private static final long PCI_TYPE_PCI = 1L;
+
+    // PCI_CLASS is a hex string, eg. "30000": the base class and the sub class are the two pairs of
+    // digits preceding the programming interface, counted from the end so that leading zeros may be omitted
+    private static final int PCI_BASE_CLASS_BEGIN = -6;
+    private static final int PCI_BASE_CLASS_END = -4;
+    private static final int PCI_SUB_CLASS_BEGIN = -4;
+    private static final int PCI_SUB_CLASS_END = -2;
+
+    // The USB PRODUCT property reports vendor and model ids in hex
+    private static final int USB_PRODUCT_RADIX = 16;
+
+    private static final Set<String> SCANNABLE_DEVICES_SUBSYSTEM = Set.of(PCI, USB, BLOCK, CCW, SCSI);
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
+    private static final Pattern SCSI_ID_PATH_REGEX = Pattern.compile(".*scsi-(\\d+):(\\d+):(\\d+):(\\d+)");
+    private static final Pattern SCSI_DEVPATH_REGEX = Pattern.compile(".*/(\\d+):(\\d+):(\\d+):(\\d+)/block/");
 
     private Device device;
     private String devSysFsPath;
@@ -107,9 +163,9 @@ public class DeviceMapper {
         device = new Device();
 
         device.setBus(subsystem);
-        device.setDriver(StringUtils.defaultIfBlank(props.getValueAsString(UDEV_KEY_DRIVER), "unknown"));
+        device.setDriver(StringUtils.defaultIfBlank(props.getValueAsString(UDEV_KEY_DRIVER), DRIVER_UNKNOWN));
         device.setPcitype(classifyPciType());
-        device.setDetached(0L);
+        device.setDetached(DEVICE_ATTACHED);
         device.setDeviceClass(StringUtils.defaultIfBlank(classifyDeviceClass(dbdev), Device.CLASS_OTHER));
         device.setDescription(getDeviceDesc());
 
@@ -197,21 +253,21 @@ public class DeviceMapper {
         String devType = props.getValueAsString(UDEV_KEY_DEVTYPE);
         if (DEVTYPE_USB_INTERFACE.equals(devType)) {
             String driver = props.getValueAsString(UDEV_KEY_DRIVER);
-            if (driver.equals("usbhid")) {
-                return "USB HID Interface";
+            if (driver.equals(DRIVER_USBHID)) {
+                return USB_HID_INTERFACE_DESC;
             }
-            if (driver.equals("hub")) {
-                return  "USB Hub Interface";
+            if (driver.equals(DRIVER_HUB)) {
+                return  USB_HUB_INTERFACE_DESC;
             }
-            return  "USB Interface";
+            return  USB_INTERFACE_DESC;
         }
 
         if (DEVTYPE_USB_DEVICE.equals(devType) && StringUtils.isNotBlank(product)) {
             String[] p = product.split("/");
             String usbVendorDesc = p.length > 0 ?
-                    String.format(USB_DEVICE_FORMAT, Integer.parseInt(p[0], 16)) : StringUtils.EMPTY;
+                    String.format(USB_DEVICE_FORMAT, Integer.parseInt(p[0], USB_PRODUCT_RADIX)) : StringUtils.EMPTY;
             String usbDeviceDesc = p.length > 1 ?
-                    String.format(USB_DEVICE_FORMAT, Integer.parseInt(p[1], 16)) : StringUtils.EMPTY;
+                    String.format(USB_DEVICE_FORMAT, Integer.parseInt(p[1], USB_PRODUCT_RADIX)) : StringUtils.EMPTY;
 
             // OLDTODO lookup in hwdata
             return String.format(PCI_FORMAT, usbVendorDesc, usbDeviceDesc);
@@ -237,10 +293,10 @@ public class DeviceMapper {
         // USB
         String idSerial = StringUtils.lowerCase(props.getValueAsString(UDEV_KEY_ID_SERIAL));
         if (StringUtils.isNotBlank(idSerial)) {
-            if (idSerial.contains("keyboard")) {
+            if (idSerial.contains(ID_SERIAL_KEYBOARD)) {
                 return Device.CLASS_KEYBOARD;
             }
-            if (idSerial.contains("mouse")) {
+            if (idSerial.contains(ID_SERIAL_MOUSE)) {
                 return Device.CLASS_MOUSE;
             }
         }
@@ -252,7 +308,7 @@ public class DeviceMapper {
 
                 return isCdrom ? Device.CLASS_CDROM : Device.CLASS_HD;
             }
-            case "sound" -> {
+            case SOUND -> {
                 return Device.CLASS_AUDIO;
             }
             case SCSI -> {
@@ -376,10 +432,10 @@ public class DeviceMapper {
             String dpath = props.getValueAsString(UDEV_KEY_DEVPATH);
             Matcher m;
             if (StringUtils.isNotBlank(idpath)) {
-                m = Pattern.compile(".*scsi-(\\d+):(\\d+):(\\d+):(\\d+)").matcher(idpath);
+                m = SCSI_ID_PATH_REGEX.matcher(idpath);
             }
             else {
-                m = Pattern.compile(".*/(\\d+):(\\d+):(\\d+):(\\d+)/block/").matcher(dpath);
+                m = SCSI_DEVPATH_REGEX.matcher(dpath);
             }
             if (m.matches()) {
                 device.setProp1(m.group(1)); // DEV_HOST
@@ -401,7 +457,7 @@ public class DeviceMapper {
         if (!DEVTYPE_SCSI_DEVICE.equals(props.getValueAsString(UDEV_KEY_DEVTYPE))) {
             return null;
         }
-        long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
+        long devType = extraAttrs.getValueAsLong(UDEV_KEY_SCSI_SYS_TYPE).orElse(SCSI_TYPE_UNKNOWN);
 
         if (devType == SCSI_TYPE_DISK || devType == SCSI_TYPE_RBC) {
             return Device.CLASS_HD;
@@ -425,7 +481,7 @@ public class DeviceMapper {
         if (StringUtils.isBlank(pciClass)) {
             return null;
         }
-        return StringUtils.substring(pciClass, -6, -4);
+        return StringUtils.substring(pciClass, PCI_BASE_CLASS_BEGIN, PCI_BASE_CLASS_END);
     }
 
     /**
@@ -437,7 +493,7 @@ public class DeviceMapper {
         if (StringUtils.isBlank(pciClass)) {
             return null;
         }
-        return StringUtils.substring(pciClass, -4, -2);
+        return StringUtils.substring(pciClass, PCI_SUB_CLASS_BEGIN, PCI_SUB_CLASS_END);
     }
 
     /**
@@ -513,7 +569,7 @@ public class DeviceMapper {
     }
 
     protected Long classifyPciType() {
-       return PCI.equals(subsystem) ? 1L : -1L;
+       return PCI.equals(subsystem) ? PCI_TYPE_PCI : PCI_TYPE_NOT_PCI;
     }
 
     public Device getDevice() {

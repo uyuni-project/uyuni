@@ -13,7 +13,6 @@ package com.suse.manager.reactor.hardware.cpu;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.suse.manager.reactor.hardware.HardwareConstants;
 import com.suse.manager.reactor.utils.ValueMap;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,7 +56,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "AuthenticAMD", ""),
             Arguments.of(OTHER_KEY, "AuthenticAMD", ""),
             Arguments.of(TEST_VENDOR_KEY, "AuthenticAMD", "AuthenticAMD"),
-            Arguments.of(TEST_VENDOR_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_VENDOR_LENGTH)),
+            Arguments.of(TEST_VENDOR_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_VENDOR_LENGTH)),
             Arguments.of(TEST_VENDOR_KEY, null, ""),
             Arguments.of(TEST_VENDOR_KEY, "", "")
         );
@@ -78,7 +77,7 @@ public class CpuFieldTruncatorTest {
     private static Stream<Arguments> modelTestData() {
         return Stream.of(
             Arguments.of("QEMU Virtual CPU version 2.5+", "QEMU Virtual CPU version 2.5+"),
-            Arguments.of(TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_MODEL_LENGTH)),
+            Arguments.of(TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_MODEL_LENGTH)),
             Arguments.of(null, null),
             Arguments.of("", "")
         );
@@ -103,7 +102,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "123", ""),
             Arguments.of(OTHER_KEY, "123", ""),
             Arguments.of(TEST_MODEL_KEY, "13", "13"),
-            Arguments.of(TEST_MODEL_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_VERSION_LENGTH)),
+            Arguments.of(TEST_MODEL_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_VERSION_LENGTH)),
             Arguments.of(TEST_MODEL_KEY, null, ""),
             Arguments.of(TEST_MODEL_KEY, "", "")
         );
@@ -128,7 +127,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "123", ""),
             Arguments.of(OTHER_KEY, "123", ""),
             Arguments.of(TEST_CPU_FAMILY_KEY, "6", "6"),
-            Arguments.of(TEST_CPU_FAMILY_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_FAMILY_LENGTH)),
+            Arguments.of(TEST_CPU_FAMILY_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_FAMILY_LENGTH)),
             Arguments.of(TEST_CPU_FAMILY_KEY, null, ""),
             Arguments.of(TEST_CPU_FAMILY_KEY, "", "")
         );
@@ -153,7 +152,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "123", ""),
             Arguments.of(OTHER_KEY, "123", ""),
             Arguments.of(TEST_STEPPING_KEY, "31", "31"),
-            Arguments.of(TEST_STEPPING_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_STEPPING_LENGTH)),
+            Arguments.of(TEST_STEPPING_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_STEPPING_LENGTH)),
             Arguments.of(TEST_STEPPING_KEY, null, ""),
             Arguments.of(TEST_STEPPING_KEY, "", "")
         );
@@ -179,8 +178,8 @@ public class CpuFieldTruncatorTest {
         return Stream.of(
             Arguments.of("fpu vme de pse tsc", "fpu vme de pse tsc", 18),
             Arguments.of("fpu", "fpu", 3),
-            Arguments.of(longFlags, longFlags.substring(0, HardwareConstants.CPU_FLAGS_LENGTH),
-                        HardwareConstants.CPU_FLAGS_LENGTH),
+            Arguments.of(longFlags, longFlags.substring(0, CpuFieldTruncator.CPU_FLAGS_LENGTH),
+                        CpuFieldTruncator.CPU_FLAGS_LENGTH),
             Arguments.of(null, null, null),
             Arguments.of("", "", 0)
         );
@@ -205,7 +204,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "3999.93", ""),
             Arguments.of(OTHER_KEY, "3241.00", ""),
             Arguments.of(TEST_BOGOMIPS_KEY, "4589.35", "4589.35"),
-            Arguments.of(TEST_BOGOMIPS_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_BOGOMIPS_LENGTH)),
+            Arguments.of(TEST_BOGOMIPS_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_BOGOMIPS_LENGTH)),
             Arguments.of(TEST_BOGOMIPS_KEY, null, ""),
             Arguments.of(TEST_BOGOMIPS_KEY, "", "")
         );
@@ -230,7 +229,7 @@ public class CpuFieldTruncatorTest {
             Arguments.of("", "8192 KB", ""),
             Arguments.of(OTHER_KEY, "8192 KB", ""),
             Arguments.of(TEST_CACHE_SIZE_KEY, "8192 KB", "8192 KB"),
-            Arguments.of(TEST_CACHE_SIZE_KEY, TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_CACHE_LENGTH)),
+            Arguments.of(TEST_CACHE_SIZE_KEY, TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_CACHE_LENGTH)),
             Arguments.of(TEST_CACHE_SIZE_KEY, null, ""),
             Arguments.of(TEST_CACHE_SIZE_KEY, "", "")
         );
@@ -251,7 +250,7 @@ public class CpuFieldTruncatorTest {
     private static Stream<Arguments> mhzTestData() {
         return Stream.of(
             Arguments.of("3800.000000", "3800.000000"),
-            Arguments.of(TEST_LONG_STRING, "A".repeat(HardwareConstants.CPU_MHZ_LENGTH)),
+            Arguments.of(TEST_LONG_STRING, "A".repeat(CpuFieldTruncator.CPU_MHZ_LENGTH)),
             Arguments.of(null, null),
             Arguments.of("", "")
         );

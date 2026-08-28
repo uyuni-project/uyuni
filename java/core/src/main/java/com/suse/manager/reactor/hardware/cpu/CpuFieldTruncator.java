@@ -12,7 +12,6 @@ package com.suse.manager.reactor.hardware.cpu;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 
-import com.suse.manager.reactor.hardware.HardwareConstants;
 import com.suse.manager.reactor.utils.ValueMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +22,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class CpuFieldTruncator {
 
+    // CPU field length limits (from rhnCpu table schema)
+    public static final int CPU_BOGOMIPS_LENGTH = 16;
+    public static final int CPU_CACHE_LENGTH = 16;
+    public static final int CPU_FAMILY_LENGTH = 32;
+    public static final int CPU_FLAGS_LENGTH = 2048;
+    public static final int CPU_MHZ_LENGTH = 16;
+    public static final int CPU_MODEL_LENGTH = 32;
+    public static final int CPU_STEPPING_LENGTH = 16;
+    public static final int CPU_VENDOR_LENGTH = 32;
+    public static final int CPU_VERSION_LENGTH = 32;
+
     /**
      * Get CPU vendor and truncate to schema length.
      *
@@ -31,7 +41,7 @@ public final class CpuFieldTruncator {
      * @return truncated vendor string or empty string if not found
      */
     public static String vendor(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_VENDOR_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_VENDOR_LENGTH);
     }
 
     /**
@@ -41,7 +51,7 @@ public final class CpuFieldTruncator {
      * @return truncated model string
      */
     public static String model(String value) {
-        return StringUtils.substring(value, 0, HardwareConstants.CPU_MODEL_LENGTH);
+        return StringUtils.substring(value, 0, CPU_MODEL_LENGTH);
     }
 
     /**
@@ -52,7 +62,7 @@ public final class CpuFieldTruncator {
      * @return truncated version string or empty string if not found
      */
     public static String version(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_VERSION_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_VERSION_LENGTH);
     }
 
     /**
@@ -63,7 +73,7 @@ public final class CpuFieldTruncator {
      * @return truncated family string or empty string if not found
      */
     public static String family(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_FAMILY_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_FAMILY_LENGTH);
     }
 
     /**
@@ -74,7 +84,7 @@ public final class CpuFieldTruncator {
      * @return truncated stepping string or empty string if not found
      */
     public static String stepping(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_STEPPING_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_STEPPING_LENGTH);
     }
 
     /**
@@ -84,7 +94,7 @@ public final class CpuFieldTruncator {
      * @return truncated flags string
      */
     public static String flags(String value) {
-        return StringUtils.substring(value, 0, HardwareConstants.CPU_FLAGS_LENGTH);
+        return StringUtils.substring(value, 0, CPU_FLAGS_LENGTH);
     }
 
     /**
@@ -95,7 +105,7 @@ public final class CpuFieldTruncator {
      * @return truncated bogomips string or empty string if not found
      */
     public static String bogomips(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_BOGOMIPS_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_BOGOMIPS_LENGTH);
     }
 
     /**
@@ -106,7 +116,7 @@ public final class CpuFieldTruncator {
      * @return truncated cache string or empty string if not found
      */
     public static String cache(ValueMap cpuInfo, String key) {
-        return cpuInfo.getValueAsString(key, HardwareConstants.CPU_CACHE_LENGTH);
+        return cpuInfo.getValueAsString(key, CPU_CACHE_LENGTH);
     }
 
     /**
@@ -116,7 +126,7 @@ public final class CpuFieldTruncator {
      * @return truncated MHz string
      */
     public static String mhz(String value) {
-        return StringUtils.substring(value, 0, HardwareConstants.CPU_MHZ_LENGTH);
+        return StringUtils.substring(value, 0, CPU_MHZ_LENGTH);
     }
 
     private CpuFieldTruncator() {
