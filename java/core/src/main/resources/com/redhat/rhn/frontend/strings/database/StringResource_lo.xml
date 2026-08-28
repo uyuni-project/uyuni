@@ -5,14 +5,14 @@
       <!-- Action Statuses -->
       <trans-unit id="Queued" xml:space="preserve">
         <source>Queued</source>
-        <target state="translated">ເຂົ້າຄິວແລ້ວ</target>
+        <target state="translated">ຢູ່ໃນຄິວ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Picked Up" xml:space="preserve">
         <source>Picked Up</source>
-        <target state="translated">ຖືກຮັບໄປແລ້ວ</target>
+        <target state="translated">ຮັບໄປແລ້ວ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
@@ -26,7 +26,7 @@
       </trans-unit>
       <trans-unit id="Failed" xml:space="preserve">
         <source>Failed</source>
-        <target state="translated">ຫຼົ້ມເຫຼວ</target>
+        <target state="translated">ລົ້ມເຫຼວ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/Overview</context>
         </context-group>
@@ -41,14 +41,14 @@
       </trans-unit>
       <trans-unit id="Spacewalk Provisioning Entitled Servers" xml:space="preserve">
         <source>Provisioning</source>
-        <target state="translated">ການຈັດສັນ</target>
+        <target state="translated">ການຈັດສັນລະບົບ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Spacewalk Monitoring Entitled Servers" xml:space="preserve">
         <source>Monitoring</source>
-        <target state="translated">ການຕິດຕາມ</target>
+        <target state="translated">ການເຝົ້າລະວັງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -101,7 +101,7 @@
       </trans-unit>
       <trans-unit id="virtualization_host" xml:space="preserve">
         <source>Virtualization Host</source>
-        <target state="translated">ໂຮສລະບົບສະເໝືອນ</target>
+        <target state="translated">ໂຮສລະບົບສະເມືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected.do</context>
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
@@ -111,14 +111,14 @@
       <!-- TimeZones -->
       <trans-unit id="Australia/Brisbane" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Standard)</source>
-        <target state="translated">(GMT+1000) ອົດສະຕຣາລີ (ເວລາພາກຕາເວັນອອກມາດຕະຖານ)</target>
+        <target state="translated">(GMT+1000) ອົດສະຕຣາລີ (ເວລາstandard ຕາເວັນອອກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Australia/Sydney" xml:space="preserve">
         <source>(GMT+1000) Australia (Eastern Daylight)</source>
-        <target state="translated">(GMT+1000) ອົດສະຕຣາລີ (ເວລາພາກຕາເວັນອອກກາງເວັນ)</target>
+        <target state="translated">(GMT+1000) ອົດສະຕຣາລີ (ເວລາລະດູຮ້ອນ ຕາເວັນອອກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -146,14 +146,14 @@
       </trans-unit>
       <trans-unit id="Australia/Perth" xml:space="preserve">
         <source>(GMT+0800) Australia (Western)</source>
-        <target state="translated">(GMT+0800) ອົດສະຕຣາລີ (ພາກຕາເວັນຕົກ)</target>
+        <target state="translated">(GMT+0800) ອົດສະຕຣາລີ (ຕາເວັນຕົກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Moscow" xml:space="preserve">
         <source>(GMT+0400) Russia (Moscow)</source>
-        <target state="translated">(GMT+0400) ຣັດເຊຍ (ມົສກູ)</target>
+        <target state="translated">(GMT+0400) ລັດເຊຍ (ມົສກູ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -167,21 +167,21 @@
       </trans-unit>
       <trans-unit id="Europe/Bucharest" xml:space="preserve">
         <source>(GMT+0200) Europe (Eastern)</source>
-        <target state="translated">(GMT+0200) ເອີຣົບ (ພາກຕາເວັນອອກ)</target>
+        <target state="translated">(GMT+0200) ເອີຣົບ (ຕາເວັນອອກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Europe/Paris" xml:space="preserve">
         <source>(GMT+0100) Europe (Central)</source>
-        <target state="translated">(GMT+0100) ເອີຣົບ (ພາກກາງ)</target>
+        <target state="translated">(GMT+0100) ເອີຣົບ (ກາງ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="GMT" xml:space="preserve">
         <source>(GMT+0000) Greenwich Mean Time</source>
-        <target state="translated">(GMT+0000) ເວລາສາກົນກຣີນິດ</target>
+        <target state="translated">(GMT+0000) ເວລາstandard ກຣີນິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -202,14 +202,14 @@
       </trans-unit>
       <trans-unit id="America/New_York" xml:space="preserve">
         <source>(GMT-0500) United States (Eastern)</source>
-        <target state="translated">(GMT-0500) ສະຫະລັດອາເມລິກາ (ພາກຕາເວັນອອກ)</target>
+        <target state="translated">(GMT-0500) ສະຫະລັດ (ຕາເວັນອອກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Chicago" xml:space="preserve">
         <source>(GMT-0600) United States (Central)</source>
-        <target state="translated">(GMT-0600) ສະຫະລັດອາເມລິກາ (ພາກກາງ)</target>
+        <target state="translated">(GMT-0600) ສະຫະລັດ (ກາງ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -223,21 +223,21 @@
       </trans-unit>
       <trans-unit id="America/Denver" xml:space="preserve">
         <source>(GMT-0700) United States (Mountain)</source>
-        <target state="translated">(GMT-0700) ສະຫະລັດອາເມລິກາ (ເຂດພູເຂົາ)</target>
+        <target state="translated">(GMT-0700) ສະຫະລັດ (ເມົາເທັນ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Los_Angeles" xml:space="preserve">
         <source>(GMT-0800) United States (Pacific)</source>
-        <target state="translated">(GMT-0800) ສະຫະລັດອາເມລິກາ (ປາຊີຟິກ)</target>
+        <target state="translated">(GMT-0800) ສະຫະລັດ (ປາຊີຟິກ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Anchorage" xml:space="preserve">
         <source>(GMT-0900) United States (Alaska)</source>
-        <target state="translated">(GMT-0900) ສະຫະລັດອາເມລິກາ (ອາລາສກາ)</target>
+        <target state="translated">(GMT-0900) ສະຫະລັດ (ອາລາສະກາ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Honolulu" xml:space="preserve">
         <source>(GMT-1000) United States (Hawaii)</source>
-        <target state="translated">(GMT-1000) ສະຫະລັດອາເມລິກາ (ຮາວາຍ)</target>
+        <target state="translated">(GMT-1000) ສະຫະລັດ (ຮາວາຍ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -279,7 +279,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Norfolk" xml:space="preserve">
         <source>(GMT+1130) Norfolk Island</source>
-        <target state="translated">(GMT+1130) ເກາະນໍຟອດ</target>
+        <target state="translated">(GMT+1130) ເກາະນໍຟອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -293,7 +293,7 @@
       </trans-unit>
       <trans-unit id="Australia/Darwin" xml:space="preserve">
         <source>(GMT+0930) Australia (Central/Darwin)</source>
-        <target state="translated">(GMT+0930) ອົດສະຕຣາລີ (ພາກກາງ/ດາວິນ)</target>
+        <target state="translated">(GMT+0930) ອົດສະຕຣາລີ (ກາງ/ດາວິນ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -349,7 +349,7 @@
       </trans-unit>
       <trans-unit id="Indian/Mauritius" xml:space="preserve">
         <source>(GMT+0400) Russia (Samara)</source>
-        <target state="translated">(GMT+0400) ຣັດເຊຍ (ຊາມາຣາ)</target>
+        <target state="translated">(GMT+0400) ລັດເຊຍ (ຊາມາຣາ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -363,7 +363,7 @@
       </trans-unit>
       <trans-unit id="Atlantic/South_Georgia" xml:space="preserve">
         <source>(GMT-0200) Sandwich Islands</source>
-        <target state="translated">(GMT-0200) ໝູ່ເກາະແຊນວິດ</target>
+        <target state="translated">(GMT-0200) ເກາະແຊນວິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -391,21 +391,21 @@
       </trans-unit>
       <trans-unit id="America/Indianapolis" xml:space="preserve">
         <source>(GMT-0500) United States (Indiana)</source>
-        <target state="translated">(GMT-0500) ສະຫະລັດອາເມລິກາ (ອິນເດຍນາ)</target>
+        <target state="translated">(GMT-0500) ສະຫະລັດ (ອິນເດຍນາ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="America/Phoenix" xml:space="preserve">
         <source>(GMT-0700) United States (Arizona)</source>
-        <target state="translated">(GMT-0700) ສະຫະລັດອາເມລິກາ (ອາຣິໂຊນາ)</target>
+        <target state="translated">(GMT-0700) ສະຫະລັດ (ອາຣິໂຊນາ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Asia/Riyadh" xml:space="preserve">
         <source>(GMT+0300) Saudi Arabia</source>
-        <target state="translated">(GMT+0300) ຊາອຸດິດ ອາຣັບບີ</target>
+        <target state="translated">(GMT+0300) ຊາອຸດິດ ອາຣາເບຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -448,7 +448,7 @@
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
       <trans-unit id="MAIL_MX" xml:space="preserve">
         <source>Local mail exchanger</source>
-        <target state="translated">ເຄື່ອງແລກປ່ຽນເມລພາຍໃນ</target>
+        <target state="translated">ຕົວແລກປ່ຽນເມລພາຍໃນ (Local mail exchanger)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
@@ -498,14 +498,14 @@
       </trans-unit>
       <trans-unit id="Available Space Percent Used Critical if Above" xml:space="preserve">
         <source>Available Space Percent Used Critical if Above</source>
-        <target state="translated">ເປີເຊັນພື້ນທີ່ວ່າງທີ່ໃຊ້ໄປ ວິກິດຖ້າຫາກເກີນ</target>
+        <target state="translated">ເປີເຊັນພື້ນທີ່ວ່າງທີ່ໃຊ້ໄປ ຢູ່ໃນຂັ້ນວິກິດຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Available Space Percent Used Warn if Above" xml:space="preserve">
         <source>Available Space Percent Used Warn if Above</source>
-        <target state="translated">ເປີເຊັນພື້ນທີ່ວ່າງທີ່ໃຊ້ໄປ ເຕືອນຖ້າຫາກເກີນ</target>
+        <target state="translated">ເປີເຊັນພື້ນທີ່ວ່າງທີ່ໃຊ້ໄປ ຢູ່ໃນຂັ້ນເຕືອນຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -547,7 +547,7 @@
       </trans-unit>
       <trans-unit id="Count process groups" xml:space="preserve">
         <source>Count process groups</source>
-        <target state="translated">ນັບກຸ່ມໂປຣເຊສ</target>
+        <target state="translated">ນັບຈຳນວນກຸ່ມໂປຣເຊສ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -582,21 +582,21 @@
       </trans-unit>
       <trans-unit id="Critical Active Locks" xml:space="preserve">
         <source>Critical Active Locks</source>
-        <target state="translated">ການລັອກທີ່ກຳລັງເຮັດວຽກຂັ້ນວິກິດ</target>
+        <target state="translated">ການລັອກທີ່ໃຊ້ງານຢູ່ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Active Sessions" xml:space="preserve">
         <source>Critical Active Sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ກຳລັງເຮັດວຽກຂັ້ນວິກິດ</target>
+        <target state="translated">ເຊດຊັນທີ່ໃຊ້ງານຢູ່ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Avail Sessions Used Pct" xml:space="preserve">
         <source>Critical Avail Sessions Used Pct</source>
-        <target state="translated">ເປີເຊັນເຊດຊັນທີ່ໃຊ້ໄປຂັ້ນວິກິດ</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ເຊດຊັນທີ່ມີຢູ່ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -610,7 +610,7 @@
       </trans-unit>
       <trans-unit id="Critical Blocking Sessions" xml:space="preserve">
         <source>Critical Blocking Sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ກຳລັງບລັອກຂັ້ນວິກິດ</target>
+        <target state="translated">ເຊດຊັນທີ່ບລັອກຢູ່ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -631,21 +631,21 @@
       </trans-unit>
       <trans-unit id="Critical CPU Load 1-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 1-Min Ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU Load 1 ນາທີຂັ້ນວິກິດ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 1 ນາທີຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Load 15-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 15-Min Ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU Load 15 ນາທີຂັ້ນວິກິດ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 15 ນາທີຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical CPU Load 5-Min Ave" xml:space="preserve">
         <source>Critical CPU Load 5-Min Ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU Load 5 ນາທີຂັ້ນວິກິດ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 5 ນາທີຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -715,21 +715,21 @@
       </trans-unit>
       <trans-unit id="Critical Disk Sort Ratio" xml:space="preserve">
         <source>Critical Disk Sort Ratio</source>
-        <target state="translated">ອັດຕາການຮຽງລຳດັບໃນດິສກ໌ຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາການຈັດລຽງໃນດິສກ໌ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical ESTABLISHED Connections" xml:space="preserve">
         <source>Critical ESTABLISHED Connections</source>
-        <target state="translated">ການເຊື່ອມຕໍ່ທີ່ຕັ້ງຂຶ້ນແລ້ວ (ESTABLISHED) ຂັ້ນວິກິດ</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ ESTABLISHED ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Execution Time Moving Ave" xml:space="preserve">
         <source>Critical Execution Time Moving Ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາປະມວນຜົນຂັ້ນວິກິດ</target>
+        <target state="translated">ຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາການເຮັດວຽກຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -750,7 +750,7 @@
       </trans-unit>
       <trans-unit id="Critical Filesystem Pct Used" xml:space="preserve">
         <source>Critical Filesystem Pct Used</source>
-        <target state="translated">ເປີເຊັນການໃຊ້ລະບົບໄຟລ໌ຂັ້ນວິກິດ</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ໄຟລ໌ຊິດເຕັມຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -764,7 +764,7 @@
       </trans-unit>
       <trans-unit id="Critical High Execution Time" xml:space="preserve">
         <source>Critical High Execution Time</source>
-        <target state="translated">ເວລາປະມວນຜົນສູງຂັ້ນວິກິດ</target>
+        <target state="translated">ເວລາການເຮັດວຽກສູງຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -778,7 +778,7 @@
       </trans-unit>
       <trans-unit id="Critical Idle Threads" xml:space="preserve">
         <source>Critical Idle Threads</source>
-        <target state="translated">ເທຣດທີ່ວ່າງຂັ້ນວິກິດ</target>
+        <target state="translated">ເທີຣດທີ່ວ່າງຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -792,14 +792,14 @@
       </trans-unit>
       <trans-unit id="Critical Input Rate" xml:space="preserve">
         <source>Critical Input Rate</source>
-        <target state="translated">ອັດຕາຂາເຂົ້າຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນເຂົ້າຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Latency" xml:space="preserve">
         <source>Critical Latency</source>
-        <target state="translated">ຄວາມໜ່ວງ (Latency) ຂັ້ນວິກິດ</target>
+        <target state="translated">ຄວາມໜ່ວງຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -813,42 +813,42 @@
       </trans-unit>
       <trans-unit id="Critical Line Rate" xml:space="preserve">
         <source>Critical Line Rate</source>
-        <target state="translated">ອັດຕາແຖວຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາບັນທັດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Lines" xml:space="preserve">
         <source>Critical Lines</source>
-        <target state="translated">ແຖວຂັ້ນວິກິດ</target>
+        <target state="translated">ຈຳນວນບັນທັດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Match Rate" xml:space="preserve">
         <source>Critical Match Rate</source>
-        <target state="translated">ອັດຕາການຈັບຄູ່ຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາການກົງກັນຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Matches" xml:space="preserve">
         <source>Critical Matches</source>
-        <target state="translated">ການຈັບຄູ່ຂັ້ນວິກິດ</target>
+        <target state="translated">ຈຳນວນທີ່ກົງກັນຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Number Running Maximum" xml:space="preserve">
         <source>Critical Number Running Maximum</source>
-        <target state="translated">ຈຳນວນທີ່ກຳລັງເຮັດວຽກສູງສຸດຂັ້ນວິກິດ</target>
+        <target state="translated">ຈຳນວນທີ່ເຮັດວຽກຢູ່ສູງສຸດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Number Running Minimum" xml:space="preserve">
         <source>Critical Number Running Minimum</source>
-        <target state="translated">ຈຳນວນທີ່ກຳລັງເຮັດວຽກຕ່ຳສຸດຂັ້ນວິກິດ</target>
+        <target state="translated">ຈຳນວນທີ່ເຮັດວຽກຢູ່ຕ່ຳສຸດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -862,21 +862,21 @@
       </trans-unit>
       <trans-unit id="Critical Opened Tables" xml:space="preserve">
         <source>Critical Opened Tables</source>
-        <target state="translated">ຕາຕະລາງທີ່ຖືກເປີດແລ້ວຂັ້ນວິກິດ</target>
+        <target state="translated">ຕາຕະລາງທີ່ຖືກເປີດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Output Rate" xml:space="preserve">
         <source>Critical Output Rate</source>
-        <target state="translated">ອັດຕາຂາອອກຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນອອກຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Packet Loss Pct" xml:space="preserve">
         <source>Critical Packet Loss Pct</source>
-        <target state="translated">ເປີເຊັນການສູນເສຍແພັກເກັດຂັ້ນວິກິດ</target>
+        <target state="translated">ເປີເຊັນແພັກເກັດເສຍຫາຍຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -890,7 +890,7 @@
       </trans-unit>
       <trans-unit id="Critical Physical Memory Used" xml:space="preserve">
         <source>Critical Physical Memory Used</source>
-        <target state="translated">ໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້ໄປຂັ້ນວິກິດ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -911,21 +911,21 @@
       </trans-unit>
       <trans-unit id="Critical Query Rate" xml:space="preserve">
         <source>Critical Query Rate</source>
-        <target state="translated">ອັດຕາການຄົ້ນຫາ (Query) ຂັ້ນວິກິດ</target>
+        <target state="translated">ອັດຕາການຄວີຣີຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Query Time" xml:space="preserve">
         <source>Critical Query Time</source>
-        <target state="translated">ເວລາຄົ້ນຫາ (Query) ຂັ້ນວິກິດ</target>
+        <target state="translated">ເວລາການຄວີຣີຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Queue Length" xml:space="preserve">
         <source>Critical Queue Length</source>
-        <target state="translated">ຄວາມຍາວຄິວຂັ້ນວິກິດ</target>
+        <target state="translated">ຄວາມຍາວຂອງຄິວຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -974,14 +974,14 @@
       </trans-unit>
       <trans-unit id="Critical Round-trip Ave" xml:space="preserve">
         <source>Critical Round-trip Ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ Round-trip ຂັ້ນວິກິດ</target>
+        <target state="translated">ເວລາໄປ-ກັບສະເລ່ຍຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Round-trip Avg" xml:space="preserve">
         <source>Critical Round-trip Avg</source>
-        <target state="translated">ຄ່າສະເລ່ຍ Round-trip ຂັ້ນວິກິດ</target>
+        <target state="translated">ເວລາໄປ-ກັບສະເລ່ຍຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1044,14 +1044,14 @@
       </trans-unit>
       <trans-unit id="Critical Threads" xml:space="preserve">
         <source>Critical Threads</source>
-        <target state="translated">ເທຣດຂັ້ນວິກິດ</target>
+        <target state="translated">ເທີຣດຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Threads Running" xml:space="preserve">
         <source>Critical Threads Running</source>
-        <target state="translated">ເທຣດທີ່ກຳລັງເຮັດວຽກຂັ້ນວິກິດ</target>
+        <target state="translated">ເທີຣດທີ່ເຮັດວຽກຢູ່ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1065,7 +1065,7 @@
       </trans-unit>
       <trans-unit id="Critical Traffic" xml:space="preserve">
         <source>Critical Traffic</source>
-        <target state="translated">ປະລິມານການຮັບສົ່ງຂໍ້ມູນຂັ້ນວິກິດ</target>
+        <target state="translated">ທຣາຟຟິກຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1100,21 +1100,21 @@
       </trans-unit>
       <trans-unit id="Critical Virtual Mem Pct Free" xml:space="preserve">
         <source>Critical Virtual Mem Pct Free</source>
-        <target state="translated">ເປີເຊັນໜ່ວຍຄວາມຈຳສະເໝືອນວ່າງຂັ້ນວິກິດ</target>
+        <target state="translated">ເປີເຊັນໜ່ວຍຄວາມຈຳສະເມືອນວ່າງຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Virtual Memory Used" xml:space="preserve">
         <source>Critical Virtual Memory Used</source>
-        <target state="translated">ໜ່ວຍຄວາມຈຳສະເໝືອນທີ່ໃຊ້ໄປຂັ້ນວິກິດ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳສະເມືອນທີ່ໃຊ້ຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Critical Waiters" xml:space="preserve">
         <source>Critical Waiters</source>
-        <target state="translated">ຜູ້ທີ່ກຳລັງລໍຖ້າຂັ້ນວິກິດ</target>
+        <target state="translated">ຕົວລໍຖ້າຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1170,7 +1170,7 @@
       </trans-unit>
       <trans-unit id="Expect Header" xml:space="preserve">
         <source>Expect Header</source>
-        <target state="translated">ສ່ວນຫົວທີ່ຄາດຫວັງ</target>
+        <target state="translated">ເຮດເດີທີ່ຄາດຫວັງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1191,7 +1191,7 @@
       </trans-unit>
       <trans-unit id="Filesystem" xml:space="preserve">
         <source>Filesystem</source>
-        <target state="translated">ລະບົບໄຟລ໌</target>
+        <target state="translated">ໄຟລ໌ຊິດເຕັມ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1233,35 +1233,35 @@
       </trans-unit>
       <trans-unit id="Include reclaimable memory" xml:space="preserve">
         <source>Include reclaimable memory</source>
-        <target state="translated">ລວມໜ່ວຍຄວາມຈຳທີ່ສາມາດເອົາຄືນໄດ້</target>
+        <target state="translated">ລວມເອົາໜ່ວຍຄວາມຈຳທີ່ເອົາຄືນໄດ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Name" xml:space="preserve">
         <source>Index Name</source>
-        <target state="translated">ຊື່ດັດຊະນີ (Index)</target>
+        <target state="translated">ຊື່ດັດຊະນີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Index Owner" xml:space="preserve">
         <source>Index Owner</source>
-        <target state="translated">ເຈົ້າຂອງດັດຊະນີ (Index)</target>
+        <target state="translated">ເຈົ້າຂອງດັດຊະນີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Input Traffic Critical" xml:space="preserve">
         <source>Input Traffic Critical</source>
-        <target state="translated">ປະລິມານຂໍ້ມູນຂາເຂົ້າຂັ້ນວິກິດ</target>
+        <target state="translated">ທຣາຟຟິກຂາເຂົ້າຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Interface" xml:space="preserve">
         <source>Interface</source>
-        <target state="translated">ອິນເຕີເຟສ</target>
+        <target state="translated">ອິນເຕີເຟດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1275,21 +1275,21 @@
       </trans-unit>
       <trans-unit id="Local IP address filter pattern list" xml:space="preserve">
         <source>Local IP address filter pattern list</source>
-        <target state="translated">ລາຍການຮູບແບບຕົວກັ່ນຕອງທີ່ຢູ່ IP ພາຍໃນ</target>
+        <target state="translated">ລາຍການຮູບແບບຕົວຕອງທີ່ຢູ່ IP ພາຍໃນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Local port number filter" xml:space="preserve">
         <source>Local port number filter</source>
-        <target state="translated">ຕົວກັ່ນຕອງໝາຍເລກພອດພາຍໃນ</target>
+        <target state="translated">ຕົວຕອງໝາຍເລກພອດພາຍໃນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log file" xml:space="preserve">
         <source>Log file</source>
-        <target state="translated">ໄຟລ໌ບັນທຶກ (Log file)</target>
+        <target state="translated">ໄຟລ໌ລັອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1303,21 +1303,21 @@
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Critical if Above" xml:space="preserve">
         <source>Number of Allocated Extents Critical if Above</source>
-        <target state="translated">ຈຳນວນ Extents ທີ່ຈັດສັນແລ້ວ ວິກິດຖ້າຫາກເກີນ</target>
+        <target state="translated">ຈຳນວນ Extents ທີ່ຈັດສັນ ວິກິດຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Number of Allocated Extents Warn if Above" xml:space="preserve">
         <source>Number of Allocated Extents Warn if Above</source>
-        <target state="translated">ຈຳນວນ Extents ທີ່ຈັດສັນແລ້ວ ເຕືອນຖ້າຫາກເກີນ</target>
+        <target state="translated">ຈຳນວນ Extents ທີ່ຈັດສັນ ເຕືອນຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK Exit Status" xml:space="preserve">
         <source>OK Exit Status</source>
-        <target state="translated">ສະຖານະການອອກແບບປົກກະຕິ (OK)</target>
+        <target state="translated">ສະຖານະອອກແບບປົກກະຕິ (OK)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1366,14 +1366,14 @@
       </trans-unit>
       <trans-unit id="Output Traffic Critical" xml:space="preserve">
         <source>Output Traffic Critical</source>
-        <target state="translated">ປະລິມານຂໍ້ມູນຂາອອກຂັ້ນວິກິດ</target>
+        <target state="translated">ທຣາຟຟິກຂາອອກຂັ້ນວິກິດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PID file (overrides command name)" xml:space="preserve">
         <source>PID file (overrides command name)</source>
-        <target state="translated">ໄຟລ໌ PID (ຈະແທນທີ່ຊື່ຄຳສັ່ງ)</target>
+        <target state="translated">ໄຟລ໌ PID (ແທນທີ່ຊື່ຄຳສັ່ງ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1394,21 +1394,21 @@
       </trans-unit>
       <trans-unit id="Pathname" xml:space="preserve">
         <source>Pathname</source>
-        <target state="translated">ເສັ້ນທາງ (Pathname)</target>
+        <target state="translated">ຊື່ເສັ້ນທາງ (Pathname)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Critical if Above" xml:space="preserve">
         <source>Percent of Available Extents Critical if Above</source>
-        <target state="translated">ເປີເຊັນຂອງ Extents ທີ່ວ່າງຢູ່ ວິກິດຖ້າຫາກເກີນ</target>
+        <target state="translated">ເປີເຊັນຂອງ Extents ທີ່ມີຢູ່ ວິກິດຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Percent of Available Extents Warn if Above" xml:space="preserve">
         <source>Percent of Available Extents Warn if Above</source>
-        <target state="translated">ເປີເຊັນຂອງ Extents ທີ່ວ່າງຢູ່ ເຕືອນຖ້າຫາກເກີນ</target>
+        <target state="translated">ເປີເຊັນຂອງ Extents ທີ່ມີຢູ່ ເຕືອນຖ້າຫາກເກີນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1450,7 +1450,7 @@
       </trans-unit>
       <trans-unit id="SSH banner (number of lines)" xml:space="preserve">
         <source>SSH banner (number of lines)</source>
-        <target state="translated">ປ້າຍ SSH (ຈຳນວນແຖວ)</target>
+        <target state="translated">ແບນເນີ SSH (ຈຳນວນບັນທັດ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1464,14 +1464,14 @@
       </trans-unit>
       <trans-unit id="Remote IP address filter pattern list" xml:space="preserve">
         <source>Remote IP address filter pattern list</source>
-        <target state="translated">ລາຍການຮູບແບບຕົວກັ່ນຕອງທີ່ຢູ່ IP ປາຍທາງ</target>
+        <target state="translated">ລາຍການຮູບແບບຕົວຕອງທີ່ຢູ່ IP ປາຍທາງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote port number filter" xml:space="preserve">
         <source>Remote port number filter</source>
-        <target state="translated">ຕົວກັ່ນຕອງໝາຍເລກພອດປາຍທາງ</target>
+        <target state="translated">ຕົວຕອງໝາຍເລກພອດປາຍທາງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1618,7 +1618,7 @@
       </trans-unit>
       <trans-unit id="Virtual Host" xml:space="preserve">
         <source>Virtual Host</source>
-        <target state="translated">ໂຮສສະເໝືອນ</target>
+        <target state="translated">ໂຮສສະເມືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -1667,525 +1667,525 @@
       </trans-unit>
       <trans-unit id="Warning Accesses" xml:space="preserve">
         <source>Warning Accesses</source>
-        <target state="translated">ເຕືອນການເຂົ້າເຖິງ</target>
+        <target state="translated">ການເຂົ້າເຖິງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Locks" xml:space="preserve">
         <source>Warning Active Locks</source>
-        <target state="translated">ເຕືອນການລັອກທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ການລັອກທີ່ໃຊ້ງານຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Active Sessions" xml:space="preserve">
         <source>Warning Active Sessions</source>
-        <target state="translated">ເຕືອນເຊດຊັນທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ເຊດຊັນທີ່ໃຊ້ງານຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Avail Sessions Used Pct" xml:space="preserve">
         <source>Warning Avail Sessions Used Pct</source>
-        <target state="translated">ເຕືອນເປີເຊັນເຊດຊັນທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ເຊດຊັນທີ່ມີຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocked Process Count" xml:space="preserve">
         <source>Warning Blocked Process Count</source>
-        <target state="translated">ເຕືອນຈຳນວນໂປຣເຊສທີ່ຖືກບລັອກ</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສທີ່ຖືກບລັອກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Blocking Sessions" xml:space="preserve">
         <source>Warning Blocking Sessions</source>
-        <target state="translated">ເຕືອນເຊດຊັນທີ່ກຳລັງບລັອກ</target>
+        <target state="translated">ເຊດຊັນທີ່ບລັອກຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Buffer Cache Hit Ratio" xml:space="preserve">
         <source>Warning Buffer Cache Hit Ratio</source>
-        <target state="translated">ເຕືອນອັດຕາ Buffer Cache Hit</target>
+        <target state="translated">ອັດຕາ Buffer Cache Hit ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CLOSE_WAIT Connections" xml:space="preserve">
         <source>Warning CLOSE_WAIT Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ CLOSE_WAIT</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ CLOSE_WAIT ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 1-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 1-Min Ave</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍ CPU Load 1 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 1 ນາທີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 15-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 15-Min Ave</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍ CPU Load 15 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 15 ນາທີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Load 5-Min Ave" xml:space="preserve">
         <source>Warning CPU Load 5-Min Ave</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍ CPU Load 5 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 5 ນາທີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Pct Used" xml:space="preserve">
         <source>Warning CPU Pct Used</source>
-        <target state="translated">ເຕືອນເປີເຊັນການໃຊ້ CPU</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ CPU ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning CPU Time Rate" xml:space="preserve">
         <source>Warning CPU Time Rate</source>
-        <target state="translated">ເຕືອນອັດຕາເວລາ CPU</target>
+        <target state="translated">ອັດຕາເວລາ CPU ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Count" xml:space="preserve">
         <source>Warning Child Process Count</source>
-        <target state="translated">ເຕືອນຈຳນວນໂປຣເຊສລູກ</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສລູກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Child Process Groups" xml:space="preserve">
         <source>Warning Child Process Groups</source>
-        <target state="translated">ເຕືອນກຸ່ມໂປຣເຊສລູກ</target>
+        <target state="translated">ກຸ່ມໂປຣເຊສລູກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connection Rate" xml:space="preserve">
         <source>Warning Connection Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການເຊື່ອມຕໍ່</target>
+        <target state="translated">ອັດຕາການເຊື່ອມຕໍ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Connections" xml:space="preserve">
         <source>Warning Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Count" xml:space="preserve">
         <source>Warning Count</source>
-        <target state="translated">ເຕືອນຈຳນວນ</target>
+        <target state="translated">ຈຳນວນຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Data Dictionary Hit Ratio" xml:space="preserve">
         <source>Warning Data Dictionary Hit Ratio</source>
-        <target state="translated">ເຕືອນອັດຕາ Data Dictionary Hit</target>
+        <target state="translated">ອັດຕາ Data Dictionary Hit ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Defunct Process Count" xml:space="preserve">
         <source>Warning Defunct Process Count</source>
-        <target state="translated">ເຕືອນຈຳນວນໂປຣເຊສທີ່ຕາຍແລ້ວ (Defunct)</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສທີ່ຕາຍແລ້ວ (Defunct) ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Disk Sort Ratio" xml:space="preserve">
         <source>Warning Disk Sort Ratio</source>
-        <target state="translated">ເຕືອນອັດຕາການຮຽງລຳດັບໃນດິສກ໌</target>
+        <target state="translated">ອັດຕາການຈັດລຽງໃນດິສກ໌ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning ESTABLISHED Connections" xml:space="preserve">
         <source>Warning ESTABLISHED Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ ESTABLISHED</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ ESTABLISHED ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Execution Time Moving Ave" xml:space="preserve">
         <source>Warning Execution Time Moving Ave</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາປະມວນຜົນ</target>
+        <target state="translated">ຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາການເຮັດວຽກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Exit Status" xml:space="preserve">
         <source>Warning Exit Status</source>
-        <target state="translated">ເຕືອນສະຖານະການອອກ</target>
+        <target state="translated">ສະຖານະການອອກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning FIN_WAIT Connections" xml:space="preserve">
         <source>Warning FIN_WAIT Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ FIN_WAIT</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ FIN_WAIT ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Filesystem Pct Used" xml:space="preserve">
         <source>Warning Filesystem Pct Used</source>
-        <target state="translated">ເຕືອນເປີເຊັນການໃຊ້ລະບົບໄຟລ໌</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ໄຟລ໌ຊິດເຕັມຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Heap Free" xml:space="preserve">
         <source>Warning Heap Free</source>
-        <target state="translated">ເຕືອນພື້ນທີ່ Heap ວ່າງ</target>
+        <target state="translated">ພື້ນທີ່ Heap ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning High Execution Time" xml:space="preserve">
         <source>Warning High Execution Time</source>
-        <target state="translated">ເຕືອນເວລາປະມວນຜົນສູງ</target>
+        <target state="translated">ເວລາການເຮັດວຽກສູງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Sessions" xml:space="preserve">
         <source>Warning Idle Sessions</source>
-        <target state="translated">ເຕືອນເຊດຊັນທີ່ວ່າງ</target>
+        <target state="translated">ເຊດຊັນທີ່ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Idle Threads" xml:space="preserve">
         <source>Warning Idle Threads</source>
-        <target state="translated">ເຕືອນເທຣດທີ່ວ່າງ</target>
+        <target state="translated">ເທີຣດທີ່ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Inodes Pct Used" xml:space="preserve">
         <source>Warning Inodes Pct Used</source>
-        <target state="translated">ເຕືອນເປີເຊັນການໃຊ້ Inodes</target>
+        <target state="translated">ເປີເຊັນການໃຊ້ Inodes ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Input Rate" xml:space="preserve">
         <source>Warning Input Rate</source>
-        <target state="translated">ເຕືອນອັດຕາຂາເຂົ້າ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນເຂົ້າຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Latency" xml:space="preserve">
         <source>Warning Latency</source>
-        <target state="translated">ເຕືອນຄວາມໜ່ວງ (Latency)</target>
+        <target state="translated">ຄວາມໜ່ວງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Library Cache Miss Ratio" xml:space="preserve">
         <source>Warning Library Cache Miss Ratio</source>
-        <target state="translated">ເຕືອນອັດຕາ Library Cache Miss</target>
+        <target state="translated">ອັດຕາ Library Cache Miss ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Line Rate" xml:space="preserve">
         <source>Warning Line Rate</source>
-        <target state="translated">ເຕືອນອັດຕາແຖວ</target>
+        <target state="translated">ອັດຕາບັນທັດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Lines" xml:space="preserve">
         <source>Warning Lines</source>
-        <target state="translated">ເຕືອນແຖວ</target>
+        <target state="translated">ຈຳນວນບັນທັດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Match Rate" xml:space="preserve">
         <source>Warning Match Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການຈັບຄູ່</target>
+        <target state="translated">ອັດຕາການກົງກັນຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Matches" xml:space="preserve">
         <source>Warning Matches</source>
-        <target state="translated">ເຕືອນການຈັບຄູ່</target>
+        <target state="translated">ຈຳນວນທີ່ກົງກັນຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Open Tables" xml:space="preserve">
         <source>Warning Open Tables</source>
-        <target state="translated">ເຕືອນຕາຕະລາງທີ່ເປີດຢູ່</target>
+        <target state="translated">ຕາຕະລາງທີ່ເປີດຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Opened Tables" xml:space="preserve">
         <source>Warning Opened Tables</source>
-        <target state="translated">ເຕືອນຕາຕະລາງທີ່ຖືກເປີດແລ້ວ</target>
+        <target state="translated">ຕາຕະລາງທີ່ຖືກເປີດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Output Rate" xml:space="preserve">
         <source>Warning Output Rate</source>
-        <target state="translated">ເຕືອນອັດຕາຂາອອກ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນອອກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Packet Loss Pct" xml:space="preserve">
         <source>Warning Packet Loss Pct</source>
-        <target state="translated">ເຕືອນເປີເຊັນການສູນເສຍແພັກເກັດ</target>
+        <target state="translated">ເປີເຊັນແພັກເກັດເສຍຫາຍຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Physical Memory Used" xml:space="preserve">
         <source>Warning Physical Memory Used</source>
-        <target state="translated">ເຕືອນໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Process Count" xml:space="preserve">
         <source>Warning Process Count</source>
-        <target state="translated">ເຕືອນຈຳນວນໂປຣເຊສ</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Rate" xml:space="preserve">
         <source>Warning Query Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການຄົ້ນຫາ (Query)</target>
+        <target state="translated">ອັດຕາການຄວີຣີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Query Time" xml:space="preserve">
         <source>Warning Query Time</source>
-        <target state="translated">ເຕືອນເວລາຄົ້ນຫາ (Query)</target>
+        <target state="translated">ເວລາການຄວີຣີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Queue Length" xml:space="preserve">
         <source>Warning Queue Length</source>
-        <target state="translated">ເຕືອນຄວາມຍາວຄິວ</target>
+        <target state="translated">ຄວາມຍາວຂອງຄິວຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning RAM Free" xml:space="preserve">
         <source>Warning RAM Free</source>
-        <target state="translated">ເຕືອນ RAM ວ່າງ</target>
+        <target state="translated">RAM ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Read Rate" xml:space="preserve">
         <source>Warning Read Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການອ່ານ</target>
+        <target state="translated">ອັດຕາການອ່ານຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Buffer Allocation Retries" xml:space="preserve">
         <source>Warning Redo Buffer Allocation Retries</source>
-        <target state="translated">ເຕືອນການລອງໃໝ່ໃນການຈັດສັນ Redo Buffer</target>
+        <target state="translated">ການລອງໃໝ່ໃນການຈັດສັນ Redo Buffer ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Redo Log Space Requests" xml:space="preserve">
         <source>Warning Redo Log Space Requests</source>
-        <target state="translated">ເຕືອນການຮ້ອງຂໍພື້ນທີ່ Redo Log</target>
+        <target state="translated">ການຮ້ອງຂໍພື້ນທີ່ Redo Log ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Request Rate" xml:space="preserve">
         <source>Warning Request Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການຮ້ອງຂໍ</target>
+        <target state="translated">ອັດຕາການຮ້ອງຂໍຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Requests" xml:space="preserve">
         <source>Warning Requests</source>
-        <target state="translated">ເຕືອນການຮ້ອງຂໍ</target>
+        <target state="translated">ການຮ້ອງຂໍຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Ave" xml:space="preserve">
         <source>Warning Round-trip Ave</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍ Round-trip</target>
+        <target state="translated">ເວລາໄປ-ກັບສະເລ່ຍຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Round-trip Avg" xml:space="preserve">
         <source>Warning Round-trip Avg</source>
-        <target state="translated">ເຕືອນຄ່າສະເລ່ຍ Round-trip</target>
+        <target state="translated">ເວລາໄປ-ກັບສະເລ່ຍຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning SYN_RCVD Connections" xml:space="preserve">
         <source>Warning SYN_RCVD Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ SYN_RCVD</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ SYN_RCVD ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Seconds" xml:space="preserve">
         <source>Warning Seconds</source>
-        <target state="translated">ເຕືອນວິນາທີ</target>
+        <target state="translated">ວິນາທີຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Size" xml:space="preserve">
         <source>Warning Size</source>
-        <target state="translated">ເຕືອນຂະໜາດ</target>
+        <target state="translated">ຂະໜາດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Available" xml:space="preserve">
         <source>Warning Space Available</source>
-        <target state="translated">ເຕືອນພື້ນທີ່ວ່າງ</target>
+        <target state="translated">ພື້ນທີ່ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Space Used" xml:space="preserve">
         <source>Warning Space Used</source>
-        <target state="translated">ເຕືອນພື້ນທີ່ທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ພື້ນທີ່ທີ່ໃຊ້ໄປຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Stopped Process Count" xml:space="preserve">
         <source>Warning Stopped Process Count</source>
-        <target state="translated">ເຕືອນຈຳນວນໂປຣເຊສທີ່ຢຸດ</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສທີ່ຢຸດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Swap Pct Free" xml:space="preserve">
         <source>Warning Swap Pct Free</source>
-        <target state="translated">ເຕືອນເປີເຊັນ Swap ວ່າງ</target>
+        <target state="translated">ເປີເຊັນ Swap ວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning TIME_WAIT Connections" xml:space="preserve">
         <source>Warning TIME_WAIT Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ TIME_WAIT</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ TIME_WAIT ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads" xml:space="preserve">
         <source>Warning Threads</source>
-        <target state="translated">ເຕືອນເທຣດ</target>
+        <target state="translated">ເທີຣດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Threads Running" xml:space="preserve">
         <source>Warning Threads Running</source>
-        <target state="translated">ເຕືອນເທຣດທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ເທີຣດທີ່ເຮັດວຽກຢູ່ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Total Connections" xml:space="preserve">
         <source>Warning Total Connections</source>
-        <target state="translated">ເຕືອນການເຊື່ອມຕໍ່ທັງໝົດ</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ທັງໝົດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Traffic" xml:space="preserve">
         <source>Warning Traffic</source>
-        <target state="translated">ເຕືອນປະລິມານການຮັບສົ່ງຂໍ້ມູນ</target>
+        <target state="translated">ທຣາຟຟິກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Child" xml:space="preserve">
         <source>Warning Transferred Per Child</source>
-        <target state="translated">ເຕືອນຂໍ້ມູນທີ່ໂອນຕໍ່ໂປຣເຊສລູກ</target>
+        <target state="translated">ຂໍ້ມູນທີ່ໂອນຕໍ່ໂປຣເຊສລູກຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Transferred Per Slot" xml:space="preserve">
         <source>Warning Transferred Per Slot</source>
-        <target state="translated">ເຕືອນຂໍ້ມູນທີ່ໂອນຕໍ່ສະລັອດ</target>
+        <target state="translated">ຂໍ້ມູນທີ່ໂອນຕໍ່ສະລັອດຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Users" xml:space="preserve">
         <source>Warning Users</source>
-        <target state="translated">ເຕືອນຜູ້ໃຊ້</target>
+        <target state="translated">ຜູ້ໃຊ້ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Value" xml:space="preserve">
         <source>Warning Value</source>
-        <target state="translated">ເຕືອນຄ່າ</target>
+        <target state="translated">ຄ່າຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Mem Pct Free" xml:space="preserve">
         <source>Warning Virtual Mem Pct Free</source>
-        <target state="translated">ເຕືອນເປີເຊັນໜ່ວຍຄວາມຈຳສະເໝືອນວ່າງ</target>
+        <target state="translated">ເປີເຊັນໜ່ວຍຄວາມຈຳສະເມືອນວ່າງຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Virtual Memory Used" xml:space="preserve">
         <source>Warning Virtual Memory Used</source>
-        <target state="translated">ເຕືອນໜ່ວຍຄວາມຈຳສະເໝືອນທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳສະເມືອນທີ່ໃຊ້ຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Waiters" xml:space="preserve">
         <source>Warning Waiters</source>
-        <target state="translated">ເຕືອນຜູ້ທີ່ກຳລັງລໍຖ້າ</target>
+        <target state="translated">ຕົວລໍຖ້າຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Warning Write Rate" xml:space="preserve">
         <source>Warning Write Rate</source>
-        <target state="translated">ເຕືອນອັດຕາການຂຽນ</target>
+        <target state="translated">ອັດຕາການຂຽນຂັ້ນເຕືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
@@ -2193,14 +2193,14 @@
       <!-- PROBE METRICS -->
       <trans-unit id="metrics.Active locks" xml:space="preserve">
         <source>Active locks</source>
-        <target state="translated">ການລັອກທີ່ເຮັດວຽກຢູ່</target>
+        <target state="translated">ການລັອກທີ່ໃຊ້ງານຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Active sessions" xml:space="preserve">
         <source>Active sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ເຮັດວຽກຢູ່</target>
+        <target state="translated">ເຊດຊັນທີ່ໃຊ້ງານຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2214,7 +2214,7 @@
       </trans-unit>
       <trans-unit id="metrics.Blocking sessions" xml:space="preserve">
         <source>Blocking sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ກຳລັງບລັອກ</target>
+        <target state="translated">ເຊດຊັນທີ່ບລັອກຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2235,49 +2235,49 @@
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min ave" xml:space="preserve">
         <source>CPU load 1-min ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 1 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 1 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 1-min avg" xml:space="preserve">
         <source>CPU load 1-min avg</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 1 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 1 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min ave" xml:space="preserve">
         <source>CPU load 15-min ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 15 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 15 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 15-min avg" xml:space="preserve">
         <source>CPU load 15-min avg</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 15 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 15 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min ave" xml:space="preserve">
         <source>CPU load 5-min ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 5 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 5 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU load 5-min avg" xml:space="preserve">
         <source>CPU load 5-min avg</source>
-        <target state="translated">ຄ່າສະເລ່ຍ CPU load 5 ນາທີ</target>
+        <target state="translated">ໂຫຼດ CPU ສະເລ່ຍ 5 ນາທີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.CPU pct used" xml:space="preserve">
         <source>CPU pct used</source>
-        <target state="translated">ເປີເຊັນການໃຊ້ CPU</target>
+        <target state="translated">ເປີເຊັນ CPU ທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2319,21 +2319,21 @@
       </trans-unit>
       <trans-unit id="metrics.Consistent get rate" xml:space="preserve">
         <source>Consistent get rate</source>
-        <target state="translated">ອັດຕາການດຶງຂໍ້ມູນທີ່ສອດຄ່ອງກັນ</target>
+        <target state="translated">ອັດຕາ Consistent get</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Current requests" xml:space="preserve">
         <source>Current requests</source>
-        <target state="translated">ຄຳຮ້ອງຂໍປະຈຸບັນ</target>
+        <target state="translated">ການຮ້ອງຂໍປັດຈຸບັນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.DB block get rate" xml:space="preserve">
         <source>DB block get rate</source>
-        <target state="translated">ອັດຕາການດຶງ DB block</target>
+        <target state="translated">ອັດຕາ DB block get</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2354,14 +2354,14 @@
       </trans-unit>
       <trans-unit id="metrics.Disk sort rate" xml:space="preserve">
         <source>Disk sort rate</source>
-        <target state="translated">ອັດຕາການຮຽງລຳດັບໃນດິສກ໌</target>
+        <target state="translated">ອັດຕາການຈັດລຽງໃນດິສກ໌</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Disk sort ratio" xml:space="preserve">
         <source>Disk sort ratio</source>
-        <target state="translated">ອັດຕາສ່ວນການຮຽງລຳດັບໃນດິສກ໌</target>
+        <target state="translated">ອັດຕາສ່ວນການຈັດລຽງໃນດິສກ໌</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2375,21 +2375,21 @@
       </trans-unit>
       <trans-unit id="metrics.Exec time moving ave" xml:space="preserve">
         <source>Exec time moving ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາປະມວນຜົນ</target>
+        <target state="translated">ຄ່າສະເລ່ຍເຄື່ອນທີ່ຂອງເວລາການເຮັດວຽກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution rate" xml:space="preserve">
         <source>Execution rate</source>
-        <target state="translated">ອັດຕາການປະມວນຜົນ</target>
+        <target state="translated">ອັດຕາການເຮັດວຽກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Execution time ave" xml:space="preserve">
         <source>Execution time ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍເວລາປະມວນຜົນ</target>
+        <target state="translated">ເວລາການເຮັດວຽກສະເລ່ຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2403,21 +2403,21 @@
       </trans-unit>
       <trans-unit id="metrics.Filesystem pct used" xml:space="preserve">
         <source>Filesystem pct used</source>
-        <target state="translated">ເປີເຊັນການໃຊ້ລະບົບໄຟລ໌</target>
+        <target state="translated">ເປີເຊັນໄຟລ໌ຊິດເຕັມທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Get rate" xml:space="preserve">
         <source>Get rate</source>
-        <target state="translated">ອັດຕາການ Get</target>
+        <target state="translated">ອັດຕາ Get</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.High exec time" xml:space="preserve">
         <source>High exec time</source>
-        <target state="translated">ເວລາປະມວນຜົນສູງ</target>
+        <target state="translated">ເວລາການເຮັດວຽກສູງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2431,35 +2431,35 @@
       </trans-unit>
       <trans-unit id="metrics.Idle threads" xml:space="preserve">
         <source>Idle threads</source>
-        <target state="translated">ເທຣດທີ່ວ່າງ</target>
+        <target state="translated">ເທີຣດທີ່ວ່າງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Inodes pct used" xml:space="preserve">
         <source>Inodes pct used</source>
-        <target state="translated">ເປີເຊັນການໃຊ້ Inodes</target>
+        <target state="translated">ເປີເຊັນ Inodes ທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Input rate" xml:space="preserve">
         <source>Input rate</source>
-        <target state="translated">ອັດຕາຂາເຂົ້າ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນເຂົ້າ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Invocation rate" xml:space="preserve">
         <source>Invocation rate</source>
-        <target state="translated">ອັດຕາການເອີ້ນໃຊ້ (Invocation)</target>
+        <target state="translated">ອັດຕາການຮ້ອງເອີ້ນ (Invocation)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Latency" xml:space="preserve">
         <source>Latency</source>
-        <target state="translated">ຄວາມໜ່ວງ (Latency)</target>
+        <target state="translated">ຄວາມໜ່ວງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2473,91 +2473,91 @@
       </trans-unit>
       <trans-unit id="metrics.Line rate" xml:space="preserve">
         <source>Line rate</source>
-        <target state="translated">ອັດຕາແຖວ</target>
+        <target state="translated">ອັດຕາບັນທັດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Lines" xml:space="preserve">
         <source>Lines</source>
-        <target state="translated">ແຖວ</target>
+        <target state="translated">ບັນທັດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Low exec time" xml:space="preserve">
         <source>Low exec time</source>
-        <target state="translated">ເວລາປະມວນຜົນຕ່ຳ</target>
+        <target state="translated">ເວລາການເຮັດວຽກຕ່ຳ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per child" xml:space="preserve">
         <source>Max transferred per child</source>
-        <target state="translated">ຂໍ້ມູນສູງສຸດທີ່ໂອນຕໍ່ໂປຣເຊສລູກ</target>
+        <target state="translated">ຂໍ້ມູນໂອນສູງສຸດຕໍ່ໂປຣເຊສລູກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Max transferred per slot" xml:space="preserve">
         <source>Max transferred per slot</source>
-        <target state="translated">ຂໍ້ມູນສູງສຸດທີ່ໂອນຕໍ່ສະລັອດ</target>
+        <target state="translated">ຂໍ້ມູນໂອນສູງສຸດຕໍ່ສະລັອດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Memory sort rate" xml:space="preserve">
         <source>Memory sort rate</source>
-        <target state="translated">ອັດຕາການຮຽງລຳດັບໃນໜ່ວຍຄວາມຈຳ</target>
+        <target state="translated">ອັດຕາການຈັດລຽງໃນໜ່ວຍຄວາມຈຳ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Open objects" xml:space="preserve">
         <source>Open objects</source>
-        <target state="translated">ວັດຖຸທີ່ເປີດຢູ່</target>
+        <target state="translated">ອັອບເຈັກທີ່ເປີດຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Opened objects" xml:space="preserve">
         <source>Opened objects</source>
-        <target state="translated">ວັດຖຸທີ່ຖືກເປີດແລ້ວ</target>
+        <target state="translated">ອັອບເຈັກທີ່ຖືກເປີດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Output rate" xml:space="preserve">
         <source>Output rate</source>
-        <target state="translated">ອັດຕາຂາອອກ</target>
+        <target state="translated">ອັດຕາຂໍ້ມູນອອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Packet loss pct" xml:space="preserve">
         <source>Packet loss pct</source>
-        <target state="translated">ເປີເຊັນການສູນເສຍແພັກເກັດ</target>
+        <target state="translated">ເປີເຊັນແພັກເກັດເສຍຫາຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern match rate" xml:space="preserve">
         <source>Pattern match rate</source>
-        <target state="translated">ອັດຕາການຈັບຄູ່ຮູບແບບ</target>
+        <target state="translated">ອັດຕາການກົງກັນຂອງຮູບແບບ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Pattern matches" xml:space="preserve">
         <source>Pattern matches</source>
-        <target state="translated">ການຈັບຄູ່ຮູບແບບ</target>
+        <target state="translated">ຈຳນວນທີ່ກົງກັບຮູບແບບ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Physical memory used" xml:space="preserve">
         <source>Physical memory used</source>
-        <target state="translated">ໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳຈິງທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2571,21 +2571,21 @@
       </trans-unit>
       <trans-unit id="metrics.Probe exec time ave" xml:space="preserve">
         <source>Probe exec time ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍເວລາປະມວນຜົນການກວດສອບ (Probe)</target>
+        <target state="translated">ເວລາການເຮັດວຽກຂອງ Probe ສະເລ່ຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probe latency ave" xml:space="preserve">
         <source>Probe latency ave</source>
-        <target state="translated">ຄ່າສະເລ່ຍຄວາມໜ່ວງການກວດສອບ (Probe)</target>
+        <target state="translated">ຄວາມໜ່ວງຂອງ Probe ສະເລ່ຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Probes" xml:space="preserve">
         <source>Probes</source>
-        <target state="translated">ການກວດສອບ (Probes)</target>
+        <target state="translated">Probe</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2599,14 +2599,14 @@
       </trans-unit>
       <trans-unit id="metrics.Query rate" xml:space="preserve">
         <source>Query rate</source>
-        <target state="translated">ອັດຕາການຄົ້ນຫາ (Query)</target>
+        <target state="translated">ອັດຕາການຄວີຣີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Query time" xml:space="preserve">
         <source>Query time</source>
-        <target state="translated">ເວລາຄົ້ນຫາ (Query)</target>
+        <target state="translated">ເວລາການຄວີຣີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2662,7 +2662,7 @@
       </trans-unit>
       <trans-unit id="metrics.Round-trip avg" xml:space="preserve">
         <source>Round-trip avg</source>
-        <target state="translated">ຄ່າສະເລ່ຍ Round-trip</target>
+        <target state="translated">ເວລາໄປ-ກັບສະເລ່ຍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2683,7 +2683,7 @@
       </trans-unit>
       <trans-unit id="metrics.Sleeping processes" xml:space="preserve">
         <source>Sleeping processes</source>
-        <target state="translated">ໂປຣເຊສທີ່ກຳລັງຫຼັບ</target>
+        <target state="translated">ໂປຣເຊສທີ່ຫຼັບຢູ່ (Sleeping)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2697,14 +2697,14 @@
       </trans-unit>
       <trans-unit id="metrics.Space used" xml:space="preserve">
         <source>Space used</source>
-        <target state="translated">ພື້ນທີ່ທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ພື້ນທີ່ທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Stopped processes" xml:space="preserve">
         <source>Stopped processes</source>
-        <target state="translated">ໂປຣເຊສທີ່ຢຸດແລ້ວ</target>
+        <target state="translated">ໂປຣເຊສທີ່ຢຸດຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2725,14 +2725,14 @@
       </trans-unit>
       <trans-unit id="metrics.Threads" xml:space="preserve">
         <source>Threads</source>
-        <target state="translated">ເທຣດ</target>
+        <target state="translated">ເທີຣດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Threads running" xml:space="preserve">
         <source>Threads running</source>
-        <target state="translated">ເທຣດທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ເທີຣດທີ່ເຮັດວຽກຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2746,7 +2746,7 @@
       </trans-unit>
       <trans-unit id="metrics.Traffic" xml:space="preserve">
         <source>Traffic</source>
-        <target state="translated">ການຮັບສົ່ງຂໍ້ມູນ</target>
+        <target state="translated">ທຣາຟຟິກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2774,21 +2774,21 @@
       </trans-unit>
       <trans-unit id="metrics.Virtual mem pct free" xml:space="preserve">
         <source>Virtual mem pct free</source>
-        <target state="translated">ເປີເຊັນໜ່ວຍຄວາມຈຳສະເໝືອນວ່າງ</target>
+        <target state="translated">ເປີເຊັນໜ່ວຍຄວາມຈຳສະເມືອນວ່າງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Virtual memory used" xml:space="preserve">
         <source>Virtual memory used</source>
-        <target state="translated">ໜ່ວຍຄວາມຈຳສະເໝືອນທີ່ໃຊ້ໄປ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳສະເມືອນທີ່ໃຊ້</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metrics.Waiters" xml:space="preserve">
         <source>Waiters</source>
-        <target state="translated">ຜູ້ລໍຖ້າ</target>
+        <target state="translated">ຕົວລໍຖ້າ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
@@ -2837,77 +2837,77 @@
       </trans-unit>
       <trans-unit id="CRITICAL" xml:space="preserve">
         <source>CRITICAL</source>
-        <target state="translated">ວິກິດ</target>
+        <target state="translated">ວິກິດ (CRITICAL)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="OK" xml:space="preserve">
         <source>OK</source>
-        <target state="translated">ປົກກະຕິ</target>
+        <target state="translated">ປົກກະຕິ (OK)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="UNKNOWN" xml:space="preserve">
         <source>UNKNOWN</source>
-        <target state="translated">ບໍ່ຮູ້</target>
+        <target state="translated">ບໍ່ຮູ້ (UNKNOWN)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PENDING" xml:space="preserve">
         <source>PENDING</source>
-        <target state="translated">ກຳລັງລໍຖ້າ</target>
+        <target state="translated">ກຳລັງລໍຖ້າ (PENDING)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="WARNING" xml:space="preserve">
         <source>WARNING</source>
-        <target state="translated">ຄຳເຕືອນ</target>
+        <target state="translated">ເຕືອນ (WARNING)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="npunix" xml:space="preserve">
         <source>RHNMD must be running on the monitored host to perform this check.</source>
-        <target state="translated">RHNMD ຕ້ອງກຳລັງເຮັດວຽກຢູ່ໃນໂຮສທີ່ຖືກຕິດຕາມເພື່ອເຮັດການກວດສອບນີ້.</target>
+        <target state="translated">ຕ້ອງເປີດໃຊ້ RHNMD ໃນໂຮສທີ່ຖືກເຝົ້າລະວັງເພື່ອເຮັດການກວດສອບນີ້.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oracle" xml:space="preserve">
         <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target state="translated">ການກວດສອບ Oracle ຕ້ອງມີການຕັ້ງຄ່າຖານຂໍ້ມູນ ແລະ ການເຊື່ອມໂຍງສາທາລະນະໂດຍການລັນ $ORACLE_HOME/rdbms/admin/catalog.sql. ນອກຈາກນັ້ນ, ໃນທຸກໆ Instance ຂອງ Oracle, ຜູ້ໃຊ້ Oracle ທີ່ຖືກຕັ້ງຄ່າໃນການກວດສອບຕ້ອງມີສິດຂັ້ນຕ່ຳແມ່ນ CONNECT ແລະ SELECT_CATALOG_ROLE.</target>
+        <target state="translated">ການກວດສອບ Oracle ຕ້ອງມີການຕັ້ງຄ່າຖານຂໍ້ມູນ ແລະ ການເຊື່ອມໂຍງສາທາລະນະໂດຍການລັນ $ORACLE_HOME/rdbms/admin/catalog.sql. ນອກຈາກນັ້ນ, ໃນທຸກໆອິນສະແຕນຊ໌ຂອງ Oracle, ຜູ້ໃຊ້ Oracle ທີ່ຕັ້ງຄ່າໄວ້ໃນການກວດສອບຕ້ອງມີສິດຂັ້ນຕ່ຳແມ່ນ CONNECT ແລະ SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="snmp" xml:space="preserve">
         <source>SNMP must be running on the monitored host to perform this check.</source>
-        <target state="translated">SNMP ຕ້ອງກຳລັງເຮັດວຽກຢູ່ໃນໂຮສທີ່ຖືກຕິດຕາມເພື່ອເຮັດການກວດສອບນີ້.</target>
+        <target state="translated">ຕ້ອງເປີດໃຊ້ SNMP ໃນໂຮສທີ່ຖືກເຝົ້າລະວັງເພື່ອເຮັດການກວດສອບນີ້.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bea61_snmp" xml:space="preserve">
         <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-        <target state="translated">ການກວດສອບນີ້ອາດຈະຖືກຕັ້ງຄ່າກັບ BEA Managed Server ຖ້າຫາກລະບຸທີ່ຢູ່ IP ຂອງ Domain Admin Server. ຕ້ອງເປີດໃຊ້ SNMP ໃນ Domain Admin Server ເຊິ່ງສາມາດເຮັດໄດ້ຜ່ານ Weblogic Console.</target>
+        <target state="translated">ການກວດສອບນີ້ສາມາດຕັ້ງຄ່າກັບ BEA Managed Server ໄດ້ ຖ້າຫາກລະບຸທີ່ຢູ່ IP ຂອງ Domain Admin Server. ຕ້ອງເປີດໃຊ້ SNMP ໃນ Domain Admin Server ນຳອີກ, ເຊິ່ງສາມາດເຮັດໄດ້ຜ່ານ Weblogic Console.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="npunix_oracle" xml:space="preserve">
         <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-        <target state="translated">RHNMD ຕ້ອງກຳລັງເຮັດວຽກຢູ່ໃນໂຮສທີ່ຖືກຕິດຕາມເພື່ອເຮັດການກວດສອບນີ້. ການກວດສອບ Oracle ຕ້ອງມີການຕັ້ງຄ່າຖານຂໍ້ມູນ ແລະ ການເຊື່ອມໂຍງສາທາລະນະໂດຍການລັນ $ORACLE_HOME/rdbms/admin/catalog.sql. ນອກຈາກນັ້ນ, ໃນທຸກໆ Instance ຂອງ Oracle, ຜູ້ໃຊ້ Oracle ທີ່ຖືກຕັ້ງຄ່າໃນການກວດສອບຕ້ອງມີສິດຂັ້ນຕ່ຳແມ່ນ CONNECT ແລະ SELECT_CATALOG_ROLE.</target>
+        <target state="translated">ຕ້ອງເປີດໃຊ້ RHNMD ໃນໂຮສທີ່ຖືກເຝົ້າລະວັງເພື່ອເຮັດການກວດສອບນີ້. ການກວດສອບ Oracle ຕ້ອງມີການຕັ້ງຄ່າຖານຂໍ້ມູນ ແລະ ການເຊື່ອມໂຍງສາທາລະນະໂດຍການລັນ $ORACLE_HOME/rdbms/admin/catalog.sql. ນອກຈາກນັ້ນ, ໃນທຸກໆອິນສະແຕນຊ໌ຂອງ Oracle, ຜູ້ໃຊ້ Oracle ທີ່ຕັ້ງຄ່າໄວ້ໃນການກວດສອບຕ້ອງມີສິດຂັ້ນຕ່ຳແມ່ນ CONNECT ແລະ SELECT_CATALOG_ROLE.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="apache1_3" xml:space="preserve">
         <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-        <target state="translated">ຄຳສັ່ງ ExtendedStatus ໃນໄຟລ໌ httpd.conf ຂອງເວັບເຊີເວີນີ້ຕ້ອງຖືກຕັ້ງເປັນ On ເພື່ອໃຫ້ການກວດສອບນີ້ເຮັດວຽກໄດ້ຢ່າງຖືກຕ້ອງ.</target>
+        <target state="translated">ຕ້ອງຕັ້ງຄ່າຄຳສັ່ງ ExtendedStatus ໃນໄຟລ໌ httpd.conf ຂອງເວັບເຊີເວີນີ້ເປັນ On ເພື່ອໃຫ້ການກວດສອບນີ້ເຮັດວຽກໄດ້ຢ່າງຖືກຕ້ອງ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2949,7 +2949,7 @@
       </trans-unit>
       <trans-unit id="Log Agent" xml:space="preserve">
         <source>Log Agent</source>
-        <target state="translated">ຕົວແທນບັນທຶກ (Log Agent)</target>
+        <target state="translated">Log Agent</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -2991,21 +2991,21 @@
       </trans-unit>
       <trans-unit id="Active Sessions" xml:space="preserve">
         <source>Active Sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ເຮັດວຽກຢູ່</target>
+        <target state="translated">ເຊດຊັນທີ່ໃຊ້ງານຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Availability" xml:space="preserve">
         <source>Availability</source>
-        <target state="translated">ສະພາບພ້ອມໃຊ້</target>
+        <target state="translated">ຄວາມພ້ອມໃຊ້ງານ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Blocking Sessions" xml:space="preserve">
         <source>Blocking Sessions</source>
-        <target state="translated">ເຊດຊັນທີ່ກຳລັງບລັອກ</target>
+        <target state="translated">ເຊດຊັນທີ່ບລັອກຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3026,7 +3026,7 @@
       </trans-unit>
       <trans-unit id="Check Nothing" xml:space="preserve">
         <source>Check Nothing</source>
-        <target state="translated">ບໍ່ກວດສອບສິ່ງໃດ</target>
+        <target state="translated">ບໍ່ກວດສອບຫຍັງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3061,14 +3061,14 @@
       </trans-unit>
       <trans-unit id="Disk I/O Throughput" xml:space="preserve">
         <source>Disk I/O Throughput</source>
-        <target state="translated">ປະລິມານການຮັບສົ່ງຂໍ້ມູນດິສກ໌ (Disk I/O)</target>
+        <target state="translated">Disk I/O Throughput</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Disk Sort Ratio" xml:space="preserve">
         <source>Disk Sort Ratio</source>
-        <target state="translated">ອັດຕາການຮຽງລຳດັບໃນດິສກ໌</target>
+        <target state="translated">ອັດຕາການຈັດລຽງໃນດິສກ໌</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3089,14 +3089,14 @@
       </trans-unit>
       <trans-unit id="Execute Queue" xml:space="preserve">
         <source>Execute Queue</source>
-        <target state="translated">ຄິວການປະມວນຜົນ</target>
+        <target state="translated">ຄິວການເຮັດວຽກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Execution Time" xml:space="preserve">
         <source>Execution Time</source>
-        <target state="translated">ເວລາປະມວນຜົນ</target>
+        <target state="translated">ເວລາການເຮັດວຽກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3117,7 +3117,7 @@
       </trans-unit>
       <trans-unit id="Host Availability" xml:space="preserve">
         <source>Host Availability</source>
-        <target state="translated">ສະພາບພ້ອມໃຊ້ຂອງໂຮສ</target>
+        <target state="translated">ຄວາມພ້ອມໃຊ້ງານຂອງໂຮສ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3159,7 +3159,7 @@
       </trans-unit>
       <trans-unit id="Interface Traffic" xml:space="preserve">
         <source>Interface Traffic</source>
-        <target state="translated">ການຮັບສົ່ງຂໍ້ມູນຜ່ານອິນເຕີເຟສ</target>
+        <target state="translated">ທຣາຟຟິກອິນເຕີເຟດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3173,7 +3173,7 @@
       </trans-unit>
       <trans-unit id="Latency" xml:space="preserve">
         <source>Latency</source>
-        <target state="translated">ຄວາມໜ່ວງ (Latency)</target>
+        <target state="translated">ຄວາມໜ່ວງ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3187,28 +3187,28 @@
       </trans-unit>
       <trans-unit id="Load" xml:space="preserve">
         <source>Load</source>
-        <target state="translated">ພາລະງານ (Load)</target>
+        <target state="translated">ໂຫຼດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Locks" xml:space="preserve">
         <source>Locks</source>
-        <target state="translated">ການລັອກ (Locks)</target>
+        <target state="translated">ການລັອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log Pattern Match" xml:space="preserve">
         <source>Log Pattern Match</source>
-        <target state="translated">ການຈັບຄູ່ຮູບແບບບັນທຶກ (Log)</target>
+        <target state="translated">ການກົງກັບຮູບແບບໃນລັອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Log Size Growth" xml:space="preserve">
         <source>Log Size Growth</source>
-        <target state="translated">ການເຕີບໂຕຂອງຂະໜາດໄຟລ໌ບັນທຶກ (Log)</target>
+        <target state="translated">ການເຕີບໂຕຂອງຂະໜາດລັອກ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3243,7 +3243,7 @@
       </trans-unit>
       <trans-unit id="Opened Tables" xml:space="preserve">
         <source>Opened Tables</source>
-        <target state="translated">ຕາຕະລາງທີ່ຖືກເປີດແລ້ວ</target>
+        <target state="translated">ຕາຕະລາງທີ່ຖືກເປີດ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3264,7 +3264,7 @@
       </trans-unit>
       <trans-unit id="Probe Count" xml:space="preserve">
         <source>Probe Count</source>
-        <target state="translated">ຈຳນວນການກວດສອບ (Probe)</target>
+        <target state="translated">ຈຳນວນ Probe</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3285,7 +3285,7 @@
       </trans-unit>
       <trans-unit id="Process Counts by State" xml:space="preserve">
         <source>Process Counts by State</source>
-        <target state="translated">ຈຳນວນໂປຣເຊສແບ່ງຕາມສະຖານະ</target>
+        <target state="translated">ຈຳນວນໂປຣເຊສແຍກຕາມສະຖານະ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3299,7 +3299,7 @@
       </trans-unit>
       <trans-unit id="Process Running" xml:space="preserve">
         <source>Process Running</source>
-        <target state="translated">ໂປຣເຊສທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ໂປຣເຊສທີ່ເຮັດວຽກຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3313,7 +3313,7 @@
       </trans-unit>
       <trans-unit id="Query Rate" xml:space="preserve">
         <source>Query Rate</source>
-        <target state="translated">ອັດຕາການຄົ້ນຫາ (Query)</target>
+        <target state="translated">ອັດຕາການຄວີຣີ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3355,7 +3355,7 @@
       </trans-unit>
       <trans-unit id="Requests" xml:space="preserve">
         <source>Requests</source>
-        <target state="translated">ຄຳຮ້ອງຂໍ</target>
+        <target state="translated">ການຮ້ອງຂໍ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3418,7 +3418,7 @@
       </trans-unit>
       <trans-unit id="TCP Connections by State" xml:space="preserve">
         <source>TCP Connections by State</source>
-        <target state="translated">ການເຊື່ອມຕໍ່ TCP ແບ່ງຕາມສະຖານະ</target>
+        <target state="translated">ການເຊື່ອມຕໍ່ TCP ແຍກຕາມສະຖານະ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3446,7 +3446,7 @@
       </trans-unit>
       <trans-unit id="Threads Running" xml:space="preserve">
         <source>Threads Running</source>
-        <target state="translated">ເທຣດທີ່ກຳລັງເຮັດວຽກ</target>
+        <target state="translated">ເທີຣດທີ່ເຮັດວຽກຢູ່</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3460,14 +3460,14 @@
       </trans-unit>
       <trans-unit id="Uptime" xml:space="preserve">
         <source>Uptime</source>
-        <target state="translated">ເວລາທີ່ເຮັດວຽກມາ (Uptime)</target>
+        <target state="translated">ເວລາທີ່ເປີດໃຊ້ງານ (Uptime)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Uptime (SNMP)" xml:space="preserve">
         <source>Uptime (SNMP)</source>
-        <target state="translated">ເວລາທີ່ເຮັດວຽກມາ (SNMP)</target>
+        <target state="translated">Uptime (SNMP)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3481,7 +3481,7 @@
       </trans-unit>
       <trans-unit id="Virtual Memory" xml:space="preserve">
         <source>Virtual Memory</source>
-        <target state="translated">ໜ່ວຍຄວາມຈຳສະເໝືອນ</target>
+        <target state="translated">ໜ່ວຍຄວາມຈຳສະເມືອນ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeCreate.do</context>
         </context-group>
@@ -3516,7 +3516,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.created" xml:space="preserve">
         <source>Autoinstallation session created but has not yet been used.</source>
-        <target state="translated">ເຊດຊັນການຕິດຕັ້ງອັດຕະໂນມັດຖືກສ້າງຂຶ້ນແລ້ວ ແຕ່ຍັງບໍ່ທັນໄດ້ນຳໃຊ້.</target>
+        <target state="translated">ເຊດຊັນການຕິດຕັ້ງອັດຕະໂນມັດຖືກສ້າງຂຶ້ນແລ້ວ ແຕ່ຍັງບໍ່ທັນໄດ້ໃຊ້ງານ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3530,21 +3530,21 @@
       </trans-unit>
       <trans-unit id="kickstart.state.injected" xml:space="preserve">
         <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target state="translated">ການຕັ້ງຄ່າລະບົບຖືກປ່ຽນແປງເພື່ອເລີ່ມການຕິດຕັ້ງອັດຕະໂນມັດເມື່ອບູດເຄື່ອງຄັ້ງຕໍ່ໄປ.</target>
+        <target state="translated">ການຕັ້ງຄ່າລະບົບຖືກປັບປ່ຽນເພື່ອເລີ່ມການຕິດຕັ້ງອັດຕະໂນມັດໃນການບູດຄັ້ງຕໍ່ໄປ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.restarted" xml:space="preserve">
         <source>The system has been restarted in order to begin the autoinstallation process.</source>
-        <target state="translated">ລະບົບຖືກເລີ່ມໃໝ່ເພື່ອເລີ່ມຂະບວນການຕິດຕັ້ງອັດຕະໂນມັດ.</target>
+        <target state="translated">ລະບົບຖືກເລີ່ມໃໝ່ (Restart) ເພື່ອເລີ່ມຂະບວນການຕິດຕັ້ງອັດຕະໂນມັດ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.state.configuration_accessed" xml:space="preserve">
         <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-        <target state="translated">ລະບົບໄດ້ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າການຕິດຕັ້ງອັດຕະໂນມັດຈາກ @@PRODUCT_NAME@@ ແລ້ວ.</target>
+        <target state="translated">ລະບົບໄດ້ດາວໂຫຼດໄຟລ໌ຕັ້ງຄ່າການຕິດຕັ້ງອັດຕະໂນມັດຈາກ @@PRODUCT_NAME@@ ແລ້ວ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3558,7 +3558,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.in_progress" xml:space="preserve">
         <source>The system is downloading the RPMs required to install.</source>
-        <target state="translated">ລະບົບກຳລັງດາວໂຫຼດແພັກເກັດ RPM ທີ່ຈຳເປັນສຳລັບການຕິດຕັ້ງ.</target>
+        <target state="translated">ລະບົບກຳລັງດາວໂຫຼດ RPM ທີ່ຈຳເປັນສຳລັບການຕິດຕັ້ງ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3586,7 +3586,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.configuration_deploy" xml:space="preserve">
         <source>Configuration files are being deployed.</source>
-        <target state="translated">ໄຟລ໌ການຕັ້ງຄ່າກຳລັງຖືກນຳໃຊ້ (Deployed).</target>
+        <target state="translated">ກຳລັງຕິດຕັ້ງ (Deploy) ໄຟລ໌ຕັ້ງຄ່າ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -3600,35 +3600,35 @@
       </trans-unit>
       <trans-unit id="kickstart.state.failed" xml:space="preserve">
         <source>Autoinstallation failed.</source>
-        <target state="translated">ການຕິດຕັ້ງອັດຕະໂນມັດຫຼົ້ມເຫຼວ.</target>
+        <target state="translated">ການຕິດຕັ້ງອັດຕະໂນມັດລົ້ມເຫຼວ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_min" xml:space="preserve">
         <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-        <target state="translated">ການໃຊ້ postgresql {0} ແມ່ນບໍ່ຮອງຮັບ. ເວີຊັນຂັ້ນຕ່ຳທີ່ຕ້ອງການແມ່ນ {1}.</target>
+        <target state="translated">ບໍ່ຮອງຮັບການໃຊ້ postgresql {0}. ເວີຊັນຕ່ຳສຸດທີ່ຕ້ອງການແມ່ນ {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_max" xml:space="preserve">
         <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        <target state="translated">ການໃຊ້ postgresql {0} ແມ່ນບໍ່ຮອງຮັບ. ເວີຊັນສູງສຸດທີ່ອະນຸຍາດແມ່ນ {1}.</target>
+        <target state="translated">ບໍ່ຮອງຮັບການໃຊ້ postgresql {0}. ເວີຊັນສູງສຸດທີ່ອະນຸຍາດແມ່ນ {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_migrate" xml:space="preserve">
         <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        <target state="translated">ການໃຊ້ postgresql {0} ເທິງ {1} ແມ່ນບໍ່ຮອງຮັບ. ກະລຸນາຍ້າຍໄປໃຊ້ postgresql {2}.</target>
+        <target state="translated">ບໍ່ຮອງຮັບການໃຊ້ postgresql {0} ເທິງ {1}. ກະລຸນາໄມເກຣດໄປໃຊ້ postgresql {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unfinished_schema_upgrade" xml:space="preserve">
         <source>Database schema upgrade in progress!</source>
-        <target state="translated">ກຳລັງດຳເນີນການອັບເກຣດ Database schema!</target>
+        <target state="translated">ກຳລັງດຳເນີນການອັບເກຣດສະກີມາ (Schema) ຂອງຖານຂໍ້ມູນ!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
