@@ -12232,13 +12232,13 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
         <target state="translated">Neplatný formát dátumu. Musí byť v súlade s ofsetovým formátom ISO 8601 (napr. 2026-06-04T22:00:00Z).</target>
       </trans-unit>
-    <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
+      <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
         <source>-- Select Country --</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">-- Výber krajiny --</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
