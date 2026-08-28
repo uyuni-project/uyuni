@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/range/Range.tsx:52
+#: ../html/src/components/input/range/Range.tsx:53
+#: ../html/src/components/input/range/Range.tsx:65
+#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 10:52+0200\n"
+"POT-Creation-Date: 2026-08-28 09:41+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
@@ -26,16 +30,6 @@ msgstr "剩余"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
-
-#: ../html/src/components/CoCoScansList.tsx:78
-#: ../html/src/components/package/PackageListActionScheduler.tsx:84
-#: ../html/src/components/product-migration/utils.tsx:95
-#: ../html/src/manager/appstreams/appstreams.tsx:61
-#: ../html/src/manager/state/highstate.tsx:63
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
-msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -94,10 +88,6 @@ msgstr "无扫描记录"
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
-
-#: ../html/src/components/FormulaForm.tsx:134
-msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "检测到多个组公式。每个系统上仅可使用 \"{name}\" 的一个公式！"
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -293,7 +283,7 @@ msgstr "姓氏"
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:107
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:127
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:134
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:179
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:198
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
@@ -312,10 +302,6 @@ msgstr "名称"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 msgid "Attestations"
 msgstr "认证"
-
-#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
-msgid "No attestation report available. Schedule an execution to create one."
-msgstr "无可用认证报告。请安排执行以创建报告。"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -386,7 +372,7 @@ msgstr "认证时间"
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:168
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:133
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:269
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:208
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:227
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:692
@@ -549,7 +535,7 @@ msgstr "选择日程安排"
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:122
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:120
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:218
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:15
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:98
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:33
@@ -617,7 +603,7 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:48
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:205
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
 #: ../html/src/manager/images/image-view-overview.tsx:731
@@ -647,9 +633,9 @@ msgstr "取消"
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:99
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:105
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:92
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:154
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:229
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:243
 #: ../html/src/manager/content-management/project/project.tsx:106
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:211
@@ -948,7 +934,7 @@ msgstr "通道名称"
 #: ../html/src/components/table/nested-data.example.tsx:62
 #: ../html/src/manager/admin/setup/products/products.tsx:605
 #: ../html/src/manager/admin/setup/products/products.tsx:997
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 msgid "Architecture"
@@ -1786,11 +1772,11 @@ msgstr "按软件包名称过滤"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:312
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:158
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:273
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:315
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
@@ -1799,18 +1785,6 @@ msgstr "软件包名称"
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
 msgstr "第 {from} - {to} 项，共 {total} 项"
-
-#: ../html/src/components/pagination.tsx:139
-msgid ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> of # page}\n"
-"            other {<dropdown></dropdown> of # pages}\n"
-"        }"
-msgstr ""
-"{total, plural,\n"
-"            one {第 <dropdown></dropdown> 页，共 # 页}\n"
-"            other {第 <dropdown></dropdown> 页，共 # 页}\n"
-"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1875,10 +1849,6 @@ msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
 msgstr "自定义 Quartz 格式："
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:489
-msgid "e.g. \"0 15 2 ? * 7\""
-msgstr "例如 \"0 15 2 ? * 7\""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
@@ -2240,7 +2210,7 @@ msgid "Peripheral Server"
 msgstr "外围服务器"
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
 msgid "Security Advisory"
 msgstr "安全建议"
 
@@ -2274,7 +2244,7 @@ msgid "not equal to"
 msgstr "不等于"
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
 msgid "Matcher"
 msgstr "匹配器"
 
@@ -2402,18 +2372,6 @@ msgstr "需要此通道"
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "请参见 <link>Format.JS 文档</link>了解消息语法。"
-
-#: ../html/src/core/intl/index.example.tsx:23
-msgid ""
-"Always use plural forms for numbers: {fooCount, plural,\n"
-"            one {only one item}\n"
-"            other {{fooCount} items}\n"
-"          }."
-msgstr ""
-"数字表述统一使用复数形式：{fooCount, plural,\n"
-"            one {仅 1 项}\n"
-"            other {{fooCount} 项}\n"
-"          }。"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2797,13 +2755,13 @@ msgid "Hub Details"
 msgstr "中心详情"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr "此服务器目前未配置 Hub。将此服务器配置为外设后，请刷新此页面以查看 Hub 详细信息"
+msgid "No hub is currently configured for this server. "
+msgstr "目前未为此服务器配置中心。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
 #, fuzzy
 #| msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "此服务器目前注册为中心 {fqdn} 的外围。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2829,7 +2787,7 @@ msgstr "{fqdn} - 外围详细信息"
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 #, fuzzy
 #| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr "服务器 {fqdn} 目前注册为此中心的外围。 "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -2971,6 +2929,10 @@ msgstr "正在编辑属性..."
 msgid "Last Status Update"
 msgstr "上次状态更新"
 
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
+msgid "Edit "
+msgstr "编辑 "
+
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "正在编辑 SSH 连接数据..."
@@ -3061,10 +3023,6 @@ msgstr "以下产品安装失败。请检查日志文件。"
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:271
-msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "\"{product}\" 的下列通道安装失败。请查看日志文件。"
-
 #: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
@@ -3118,6 +3076,18 @@ msgstr "通道"
 #: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
 msgstr "推荐"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:802
+msgid " channels sync failed"
+msgstr " 通道同步失败"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:810
+msgid " channels sync in progress"
+msgstr " 通道同步正在进行"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:818
+msgid " channels synced"
+msgstr " 通道已同步"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "To enable this product, the parent product should be selected first"
@@ -3359,7 +3329,7 @@ msgid "Updating the selection of AppStream modules has been <link>scheduled</lin
 msgstr "<link>已安排</link>更新 AppStream 模块选择。"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:118
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:125
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:74
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:92
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:129
@@ -3399,16 +3369,14 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "受影响，通道中有可用补丁，但未指派"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "客户端存在漏洞且已有对应补丁，但提供该补丁的通道未分配给此客户端。"
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "受影响，产品迁移目标中有可用补丁"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "客户端存在漏洞且已有对应补丁，但应用补丁需要将产品升级至更新版本。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3444,16 +3412,12 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "客户端存在漏洞且对应补丁已发布，但在相关通道中未找到该补丁。"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "受影响，指派的通道中提供了局部补丁"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "客户端存在漏洞且已有对应补丁，但应用该补丁仅能更新部分存在漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3568,6 +3532,10 @@ msgstr "上载 SCAP 内容时发生错误。"
 msgid "An unexpected error occurred."
 msgstr "发生意外错误。"
 
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
+msgid "Edit SCAP Content"
+msgstr "编辑 SCAP 内容"
+
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
 msgstr "SCAP 数据流文件"
@@ -3593,6 +3561,15 @@ msgstr "XCCDF 文件"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr "上载 XCCDF 文件 (*-xccdf.xml)"
+
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
+msgstr "更新"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
 msgid "SCAP Content is required"
@@ -3631,20 +3608,21 @@ msgstr "这需要连接互联网并占用大量内存。在应用前，请确保
 msgid "Back to List"
 msgstr "返回列表"
 
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr "更新"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 msgid "An error occurred while saving the tailoring file."
 msgstr "保存剪裁文件时发生错误。"
 
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
+msgid "Edit Tailoring File"
+msgstr "编辑剪裁文件"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 msgid "Current File"
 msgstr "当前文件"
+
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+msgid "Replace File (optional)"
+msgstr "替换文件（可选）"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4139,65 +4117,75 @@ msgstr "模块名称"
 msgid "Updating the filter..."
 msgstr "正在更新过滤器..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:87
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:101
 msgid "Check the required fields below"
 msgstr "检查以下必填字段"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:96
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:110
 msgid "Filter updated successfully"
 msgstr "已成功更新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:111
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:125
 msgid "Filter created successfully"
 msgstr "已成功创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:136
 msgid "Filter Details"
 msgstr "过滤器细节"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:136
 msgid "Create a new filter"
 msgstr "创建新过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:185
+#, fuzzy
+#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
+msgid "This filter cannot be deleted because it is currently in use by one or more projects"
+msgstr "无法删除此访问令牌。它目前已被外围 {fqdn} 使用"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:192
 msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#, fuzzy
+#| msgid "Use a manual filter"
+msgid "Manual Filter"
+msgstr "使用手动过滤器"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:96
+#, fuzzy
+#| msgid "Use a template"
+msgid "Use Template"
+msgstr "使用模板"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Filter Name"
 msgstr "过滤器名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:94
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
 msgid "Prefix"
 msgstr "前缀"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:121
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr "前缀将附加在通过模板创建的每个过滤器名称的前面"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:111
-msgid "Use a template"
-msgstr "使用模板"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
-msgid "Use a manual filter"
-msgstr "使用手动过滤器"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:131
 msgid "Filter Type"
 msgstr "过滤器类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:176
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
 msgid "Epoch"
 msgstr "纪元"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:179
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:104
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:47
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:79
@@ -4208,37 +4196,37 @@ msgstr "纪元"
 msgid "Version"
 msgstr "版本"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:170
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:180
 msgid "Release"
 msgstr "发行版"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Advisory name"
 msgstr "建议名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:200
 msgid "Bug Fix Advisory"
 msgstr "Bug 修复建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
 msgid "Product Enhancement Advisory"
 msgstr "产品增强建议"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:203
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
 msgid "Advisory Type"
 msgstr "建议类型"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
 msgid "Issued"
 msgstr "颁发日期"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:235
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:237
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:423
@@ -4249,105 +4237,105 @@ msgstr "颁发日期"
 msgid "Build"
 msgstr "构建"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:247
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "摘要"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:257
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:259
 msgid "Reboot Required"
 msgstr "需要重引导"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:258
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:260
 msgid "Package Manager Restart Required"
 msgstr "需要重启软件包管理器"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:263
 msgid "Advisory Keywords"
 msgstr "建议关键字"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:280
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:283
 msgid "Package Provides Name"
 msgstr "软件包提供名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Provides Name"
 msgstr "提供名称"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:302
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
 msgstr "数量"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:324
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:140
 msgid "Deny"
 msgstr "拒绝"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:325
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:328
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:153
 msgid "Allow"
 msgstr "允许"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:330
 msgid "Rule"
 msgstr "规则"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:78
 msgid "Filter has been deleted."
 msgstr "过滤器已删除。"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:94
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "部分选定过滤器已用于项目中，无法删除。"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:103
 msgid "Filter have been deleted."
 msgstr "过滤器已删除。"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Create Filter"
 msgstr "创建过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:149
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:150
 msgid "Select unused"
 msgstr "选择未使用的项"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:161
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 msgid "Content Lifecycle Filters"
 msgstr "内容生命周期过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:189
 msgid "Filter by name or project"
 msgstr "按名称或项目过滤"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:184
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:203
 msgid "Projects in use"
 msgstr "使用中的项目"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:217
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:235
 msgid "Edit Filter"
 msgstr "编辑过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:242
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:256
 msgid "Delete Filter"
 msgstr "删除过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
 msgid "Are you sure you want to delete the filter"
 msgstr "是否确定要删除该过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:268
 msgid "Delete Selected Filter(s)"
 msgstr "删除选定的过滤器"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:272
 msgid "Are you sure you want to delete the selected filter?"
 msgstr "您确定要删除所选的这个过滤器吗？"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:273
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
 msgstr "您确定要删除选定的过滤器吗？（已选择 {count} 个过滤器）"
 
@@ -4695,30 +4683,32 @@ msgid "Create New Filter"
 msgstr "创建新过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-msgid "Edit Filter {name}"
+#, fuzzy
+#| msgid "Edit Filter {name}"
+msgid "Edit {name}"
 msgstr "编辑过滤器 {name}"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:79
 msgid "Filters"
 msgstr "过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:92
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:80
 msgid "Attach/Detach Filters"
 msgstr "关联过滤器/解除过滤器关联"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:109
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:97
 msgid "Filter edited successfully"
 msgstr "已成功编辑过滤器"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:125
 msgid "enabled module streams"
 msgstr "已启用模块流"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:140
 msgid "filter out"
 msgstr "过滤掉"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:154
 msgid "select from the full source even if you have excluded them before with deny"
 msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
 
@@ -4853,15 +4843,15 @@ msgstr "类型"
 msgid "has unsynchronized patches"
 msgstr "具有未同步的补丁"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:105
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:104
 msgid "Sources"
 msgstr "源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:123
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:122
 msgid "Sources edited successfully"
 msgstr "已成功编辑源"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:145
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:144
 #: ../html/src/manager/images/image-build.tsx:312
 msgid "Software Channels"
 msgstr "软件通道"
@@ -4877,23 +4867,23 @@ msgstr "未找到您请求的页面 {currentUrl}。"
 #: ../html/src/manager/errors/not-found.tsx:10
 #, fuzzy
 #| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "如果您是手动在浏览器中输入的地址，请核对拼写和大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
 #| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "如果您是通过链接跳转至此，则表明链接可能不正确或已过期。请单击浏览器的后退按钮 "
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
 
 #: ../html/src/manager/errors/not-found.tsx:30
 #, fuzzy
 #| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "如果您认为误进入此页面，请联系我们并详细说明访问路径 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -5091,6 +5081,10 @@ msgid "Create additional custom info keys"
 msgstr "创建更多自定义信息键"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
+msgid "Edit Image Profile: '"
+msgstr "编辑映像配置文件：'"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -5156,6 +5150,10 @@ msgstr "您确定要删除选定的配置文件吗？（已选择 {count} 个配
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "使用身份凭证"
+
+#: ../html/src/manager/images/image-store-edit.tsx:234
+msgid "Edit Image Store: '"
+msgstr "编辑映像存储区：'"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5239,13 +5237,29 @@ msgstr "已排队"
 msgid "Go to event"
 msgstr "转到事件"
 
+#: ../html/src/manager/images/image-view-overview.tsx:56
+msgid " is queued"
+msgstr " 已排队"
+
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr "正在进行"
 
+#: ../html/src/manager/images/image-view-overview.tsx:68
+msgid " in progress"
+msgstr " 正在进行"
+
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "成功"
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+msgid " is successful"
+msgstr " 成功"
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+msgid " has failed"
+msgstr " 失败"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5265,6 +5279,10 @@ msgstr "无信息"
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
 msgstr "已在外部构建"
+
+#: ../html/src/manager/images/image-view-overview.tsx:134
+msgid " Status"
+msgstr " 状态"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5312,11 +5330,6 @@ msgstr "编辑配置文件"
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "编辑存储区"
-
-#: ../html/src/manager/images/image-view-overview.tsx:469
-#: ../html/src/manager/images/image-view.tsx:759
-msgid "Instance Details for \"{name}\""
-msgstr "\"{name}\" 的实例详细信息"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5767,10 +5780,6 @@ msgstr "搜索系统"
 msgid "Current Schedule"
 msgstr "当前日程安排"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-msgid "Url \"{url}\" is invalid"
-msgstr "URL \"{url}\" 无效"
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "日历数据"
@@ -5858,6 +5867,10 @@ msgstr "以下是当前用户可使用的维护日程安排列表。"
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "以下是当前用户可使用的维护日历列表。"
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
+msgid "schedule"
+msgstr "日程安排"
+
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
@@ -5865,6 +5878,14 @@ msgstr "未创建日程安排。请使用 \"创建\" 添加日程安排。"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除日程安排。"
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
+msgid "successfully"
+msgstr "成功"
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
+msgid "Error when deleting the "
+msgstr "删除以下项时出错： "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -6042,10 +6063,6 @@ msgstr "选择其他剧本"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
 msgid "Save the current Playbook"
 msgstr "保存当前剧本"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-msgid "Playbook \"{name}\""
-msgstr "剧本 \"{name}\""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6446,6 +6463,10 @@ msgstr "高级"
 msgid "Registry URL"
 msgstr "仓库 URL"
 
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
+msgid "e.g., "
+msgstr "例如 "
+
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
 msgstr "容器标记"
@@ -6533,8 +6554,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr "以下程序临时修复 (PTF) 可安装至此系统。此类软件包仅用于解决特定已知问题。请先按照客户支持提供的说明操作，然后再进行安装。"
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6553,8 +6574,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr "该系统目前已安装以下程序临时修复 (PTF)。可选中需要去除的 PTF 并单击下方 \"去除 PTF\" 以安排去除操作。请注意，去除任何非过时的 PTF 将导致安装该 PTF 所包含软件包的最新版本。"
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7261,6 +7282,14 @@ msgstr "正在加载子通道..."
 msgid "Base Channel:"
 msgstr "基础通道："
 
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
+msgid "${defaultChannelName}"
+msgstr "${defaultChannelName}"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+msgid "${this.getDefaultBase().name}"
+msgstr "${this.getDefaultBase().name}"
+
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "子通道："
@@ -7346,6 +7375,10 @@ msgstr "（{count} 个 AppStream）"
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
 msgid "Don't change"
 msgstr "不更改"
+
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
+msgid " (No system to disable)"
+msgstr " （无可禁用的系统）"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -8041,89 +8074,79 @@ msgstr "授权错误，请重新加载页面或重试注销/登录。"
 msgid "Resource not found."
 msgstr "未找到资源。"
 
-#~ msgid "No hub is currently configured for this server. "
-#~ msgstr "目前未为此服务器配置中心。 "
+#: ../html/src/utils/network.ts:106
+msgid "HTTP Error code "
+msgstr "HTTP 错误代码 "
 
-#~ msgid "Edit "
-#~ msgstr "编辑 "
+#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+#~ msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
-#~ msgid " channels sync failed"
-#~ msgstr " 通道同步失败"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+#~ msgstr "检测到多个组公式。每个系统上仅可使用 \"{name}\" 的一个公式！"
 
-#~ msgid " channels sync in progress"
-#~ msgstr " 通道同步正在进行"
+#~ msgid "No attestation report available. Schedule an execution to create one."
+#~ msgstr "无可用认证报告。请安排执行以创建报告。"
 
-#~ msgid " channels synced"
-#~ msgstr " 通道已同步"
+#~ msgid ""
+#~ "{total, plural,\n"
+#~ "            one {<dropdown></dropdown> of # page}\n"
+#~ "            other {<dropdown></dropdown> of # pages}\n"
+#~ "        }"
+#~ msgstr ""
+#~ "{total, plural,\n"
+#~ "            one {第 <dropdown></dropdown> 页，共 # 页}\n"
+#~ "            other {第 <dropdown></dropdown> 页，共 # 页}\n"
+#~ "        }"
 
-#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
-#~ msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+#~ msgid "e.g. \"0 15 2 ? * 7\""
+#~ msgstr "例如 \"0 15 2 ? * 7\""
 
-#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
-#~ msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
+#~ msgid ""
+#~ "Always use plural forms for numbers: {fooCount, plural,\n"
+#~ "            one {only one item}\n"
+#~ "            other {{fooCount} items}\n"
+#~ "          }."
+#~ msgstr ""
+#~ "数字表述统一使用复数形式：{fooCount, plural,\n"
+#~ "            one {仅 1 项}\n"
+#~ "            other {{fooCount} 项}\n"
+#~ "          }。"
 
-#~ msgid "Edit SCAP Content"
-#~ msgstr "编辑 SCAP 内容"
+#~ msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+#~ msgstr "此服务器目前未配置 Hub。将此服务器配置为外设后，请刷新此页面以查看 Hub 详细信息"
 
-#~ msgid "Edit Tailoring File"
-#~ msgstr "编辑剪裁文件"
+#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
+#~ msgstr "\"{product}\" 的下列通道安装失败。请查看日志文件。"
 
-#~ msgid "Replace File (optional)"
-#~ msgstr "替换文件（可选）"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+#~ msgstr "客户端存在漏洞且已有对应补丁，但提供该补丁的通道未分配给此客户端。"
 
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-#~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+#~ msgstr "客户端存在漏洞且已有对应补丁，但应用补丁需要将产品升级至更新版本。"
 
-#~ msgid "Edit Image Profile: '"
-#~ msgstr "编辑映像配置文件：'"
+#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+#~ msgstr "客户端存在漏洞且对应补丁已发布，但在相关通道中未找到该补丁。"
 
-#~ msgid "Edit Image Store: '"
-#~ msgstr "编辑映像存储区：'"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+#~ msgstr "客户端存在漏洞且已有对应补丁，但应用该补丁仅能更新部分存在漏洞的软件包。"
 
-#~ msgid " is queued"
-#~ msgstr " 已排队"
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
 
-#~ msgid " in progress"
-#~ msgstr " 正在进行"
+#~ msgid "Instance Details for \"{name}\""
+#~ msgstr "\"{name}\" 的实例详细信息"
 
-#~ msgid " is successful"
-#~ msgstr " 成功"
+#~ msgid "Url \"{url}\" is invalid"
+#~ msgstr "URL \"{url}\" 无效"
 
-#~ msgid " has failed"
-#~ msgstr " 失败"
+#~ msgid "Playbook \"{name}\""
+#~ msgstr "剧本 \"{name}\""
 
-#~ msgid " Status"
-#~ msgstr " 状态"
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+#~ msgstr "以下程序临时修复 (PTF) 可安装至此系统。此类软件包仅用于解决特定已知问题。请先按照客户支持提供的说明操作，然后再进行安装。"
 
-#~ msgid "schedule"
-#~ msgstr "日程安排"
-
-#~ msgid "successfully"
-#~ msgstr "成功"
-
-#~ msgid "Error when deleting the "
-#~ msgstr "删除以下项时出错： "
-
-#~ msgid "e.g., "
-#~ msgstr "例如 "
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-#~ msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-#~ msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
-
-#~ msgid "${defaultChannelName}"
-#~ msgstr "${defaultChannelName}"
-
-#~ msgid "${this.getDefaultBase().name}"
-#~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid " (No system to disable)"
-#~ msgstr " （无可禁用的系统）"
-
-#~ msgid "HTTP Error code "
-#~ msgstr "HTTP 错误代码 "
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+#~ msgstr "该系统目前已安装以下程序临时修复 (PTF)。可选中需要去除的 PTF 并单击下方 \"去除 PTF\" 以安排去除操作。请注意，去除任何非过时的 PTF 将导致安装该 PTF 所包含软件包的最新版本。"
 
 #~ msgid "Paste a PEM certificate"
 #~ msgstr "粘贴 PEM 证书"

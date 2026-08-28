@@ -310,26 +310,12 @@
         </context-group>
         <target state="final">アドレス</target>
       </trans-unit>
-      <trans-unit approved="yes" id="address type B" xml:space="preserve">
-        <source>Billing Address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target state="final">請求書の送付先</target>
-      </trans-unit>
       <trans-unit approved="yes" id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
         <target state="final">住所 (郵送先)</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="address type S" xml:space="preserve">
-        <source>Shipping Address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target state="final">配送先</target>
       </trans-unit>
       <trans-unit approved="yes" id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
@@ -12241,6 +12227,13 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
         <target state="final">無効な日付形式です。ISO 8601オフセット形式(例: 2026-06-04T22:00:00Z)に従う必要があります。</target>
       </trans-unit>
-    </body>
+    <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
+        <source>-- Select Country --</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/EditAddress</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
