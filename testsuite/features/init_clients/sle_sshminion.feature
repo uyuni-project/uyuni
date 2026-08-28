@@ -21,7 +21,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sshminion", refreshing the page
-    And I wait until onboarding is completed for "sshminion"
+    And I wait at most 300 seconds until onboarding is completed for "sshminion"
 
 @susemanager
   Scenario: Use correct kernel image on the SSH minion
