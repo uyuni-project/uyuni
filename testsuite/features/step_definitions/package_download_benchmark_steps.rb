@@ -213,9 +213,9 @@ rescue ArgumentError
 end
 
 # Prepare a fixed package snapshot before the benchmark:
-# Read the channel packages, subscribed systems, and Salt-to-Uyuni system ID mapping.
-# Keep the binary RPMs and verify that every selected minion is registered and subscribed.
-# Save the package records and their SHA-256 digest for comparison after the download.
+# - Read the channel packages, subscribed systems, and Salt-to-Uyuni system ID mapping.
+# - Keep the binary RPMs and verify that every selected minion is registered and subscribed.
+# - Save the package records and their SHA-256 digest for comparison after the download.
 # If the digest changes, the result is invalid because the tested package set was not stable.
 Given('the initial configured channel package snapshot is valid') do
   inputs = @package_download_inputs
@@ -302,11 +302,11 @@ Given('a ready server pod is reachable from the benchmark controller') do
 end
 
 # Check that every configured minion is ready before the measurement:
-# Apply the Salt channels state to update the minion repository configuration.
-# Read the OS family and architecture, then require matching SUSE clients.
-# Verify that the configured Uyuni repository exists and is enabled.
-# Refresh the repository metadata.
-# Verify that every RPM from the initial snapshot is available to every minion.
+# - Apply the Salt channels state to update the minion repository configuration.
+# - Read the OS family and architecture, then require matching SUSE clients.
+# - Verify that the configured Uyuni repository exists and is enabled.
+# - Refresh the repository metadata.
+# - Verify that every RPM from the initial snapshot is available to every minion.
 Given('the benchmark minions are ready for the configured channel') do
   inputs = @package_download_inputs
   pod = @package_download_pod
