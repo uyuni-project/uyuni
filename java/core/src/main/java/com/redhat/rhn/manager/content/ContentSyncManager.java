@@ -90,6 +90,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -600,7 +601,8 @@ public class ContentSyncManager {
                                                 return Collections.emptyList();
                                             }
                                         });
-                                updateChannelInfo(channelInfo);
+                                TimeUtils.logTime(LOG, Level.DEBUG, "Update Channel Info",
+                                        () -> updateChannelInfo(channelInfo));
                     });
         }
 
