@@ -30,6 +30,9 @@ type BaseProps = {
   className?: string;
   /** Tooltip placement */
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
+
+  /** Tooltip delay */
+  tooltipDelay?: boolean;
 };
 
 type BaseState = Record<string, any>;
@@ -178,6 +181,9 @@ export class Button extends _ButtonBase<ButtonProps> {
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",
+          ...(this.props.tooltipDelay && {
+            "data-bs-delay": JSON.stringify({ show: 500 }),
+          }),
           "aria-label": this.props.title,
           "data-bs-placement": this.props.tooltipPlacement,
         }
