@@ -4,11 +4,11 @@
 require 'digest'
 require 'fileutils'
 require 'json'
-require 'open3'
 require 'shellwords'
 require 'time'
 
 PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_TIMEOUT = 14_400
+PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS = 30
 PACKAGE_DOWNLOAD_BENCHMARK_CACHE_ROOT = '/var/cache/zypp/packages'.freeze
 PACKAGE_DOWNLOAD_BENCHMARK_IDLE_TIMEOUT = 600
 PACKAGE_DOWNLOAD_BENCHMARK_IDLE_POLL_SECONDS = 2
@@ -238,13 +238,9 @@ def package_download_benchmark_snapshot(inputs)
   )
 end
 
-# Run an argv-form command on the testsuite controller.
-def package_download_benchmark_run(argv, timeout:)
-  wrapped_argv = ['timeout', '--signal=TERM', '--kill-after=10s', "#{timeout}s", *argv]
-  stdout, stderr, status = Open3.capture3(*wrapped_argv)
-  exit_code = status.exitstatus
-  exit_code = status.termsig + 128 if exit_code.nil? && status.signaled?
-  [stdout, stderr, exit_code]
+# Build a safely serialized command with a process-level timeout.
+def package_download_benchmark_timeout_command(argv, timeout:)
+  Shellwords.join(['timeout', '--signal=TERM', '--kill-after=10s', "#{timeout}s", *argv])
 end
 
 # Build a kubectl exec command for the Uyuni container.
@@ -254,18 +250,27 @@ end
 
 # Find one ready Uyuni server pod.
 def package_download_benchmark_server_pod
-  stdout, stderr, code = package_download_benchmark_run(
-    [
-      'kubectl',
-      '--namespace',
-      'uyuni',
-      'get',
-      'pods',
-      '--selector',
-      'app.kubernetes.io/component=server',
-      '--output=json'
-    ],
-    timeout: 30
+  timeout = 30
+  command =
+    package_download_benchmark_timeout_command(
+      [
+        'kubectl',
+        '--namespace',
+        'uyuni',
+        'get',
+        'pods',
+        '--selector',
+        'app.kubernetes.io/component=server',
+        '--output=json'
+      ],
+      timeout: timeout
+    )
+  stdout, stderr, code = get_target('localhost').run(
+    command,
+    runs_in_container: false,
+    separated_results: true,
+    check_errors: false,
+    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
   )
   raise "Unable to query the Uyuni server pod: #{stderr}" unless code.zero?
 
@@ -326,9 +331,14 @@ end
 # Run and validate one structured Salt call outside the measurement.
 def package_download_benchmark_salt_call(inputs, pod, function, arguments, context, timeout_seconds: inputs[:timeout_seconds])
   salt = package_download_benchmark_salt(inputs, function, arguments, timeout_seconds: timeout_seconds)
-  stdout, stderr, code = package_download_benchmark_run(
-    package_download_benchmark_kubectl(pod, salt),
-    timeout: timeout_seconds + 60
+  timeout = timeout_seconds + 60
+  command = package_download_benchmark_timeout_command(package_download_benchmark_kubectl(pod, salt), timeout: timeout)
+  stdout, stderr, code = get_target('localhost').run(
+    command,
+    runs_in_container: false,
+    separated_results: true,
+    check_errors: false,
+    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
   )
   raise "#{context} exited with #{code}: #{package_download_benchmark_excerpt(stderr)}" unless code.zero?
 
@@ -517,9 +527,14 @@ def package_download_benchmark_clear_cache(inputs, pod)
       'cmd.run_all',
       [script, 'python_shell=True', "timeout=#{command_timeout}"]
     )
-  stdout, stderr, code = package_download_benchmark_run(
-    package_download_benchmark_kubectl(pod, salt),
-    timeout: inputs[:timeout_seconds] + 60
+  timeout = inputs[:timeout_seconds] + 60
+  command = package_download_benchmark_timeout_command(package_download_benchmark_kubectl(pod, salt), timeout: timeout)
+  stdout, stderr, code = get_target('localhost').run(
+    command,
+    runs_in_container: false,
+    separated_results: true,
+    check_errors: false,
+    timeout: timeout + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
   )
   raise "RPM cache reset exited with #{code}: #{stderr}" unless code.zero?
 
@@ -626,7 +641,14 @@ def package_download_benchmark_workload(inputs, pod)
   code = nil
   exception = nil
   begin
-    stdout, stderr, code = package_download_benchmark_run(argv, timeout: timeout_seconds)
+    command = package_download_benchmark_timeout_command(argv, timeout: timeout_seconds)
+    stdout, stderr, code = get_target('localhost').run(
+      command,
+      runs_in_container: false,
+      separated_results: true,
+      check_errors: false,
+      timeout: timeout_seconds + PACKAGE_DOWNLOAD_BENCHMARK_RUN_GRACE_SECONDS
+    )
   rescue StandardError => e
     exception = "#{e.class}: #{package_download_benchmark_excerpt(e.message)}"
   end

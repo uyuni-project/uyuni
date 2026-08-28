@@ -64,6 +64,17 @@ namespace :cucumber do
       end
       Rake::Task[task_name].enhance([watchdog_task])
     end
+    if filename == :kubernetes_package_download_benchmark
+      # Keep the normal per-scenario watchdog enabled for this benchmark, but allow the configured
+      # package-download timeout plus 30 minutes for preflight, cache reset, and verification.
+      # Invalid timeout values are rejected by the benchmark's first Cucumber step.
+      watchdog_task = :kubernetes_package_download_benchmark_bump_scenario_watchdog
+      task watchdog_task do
+        benchmark_timeout = ENV.fetch('UYUNI_BENCH_TIMEOUT_SECONDS', '14400').to_i
+        ENV['SCENARIO_HARD_LIMIT'] ||= (benchmark_timeout + 1800).to_s
+      end
+      Rake::Task[task_name].enhance([watchdog_task])
+    end
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
     Rake::Task[task_name].enhance do
