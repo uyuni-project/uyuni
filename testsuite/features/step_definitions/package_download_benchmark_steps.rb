@@ -13,22 +13,6 @@ PACKAGE_DOWNLOAD_CACHE_ROOT = '/var/cache/zypp/packages'.freeze
 PACKAGE_DOWNLOAD_IDLE_POLL_SECONDS = 2
 PACKAGE_DOWNLOAD_SOURCE_ARCHES = %w[src nosrc source srcpackage].freeze
 
-# Return an API client for the configured Uyuni server.
-def package_download_api
-  @package_download_api ||=
-    begin
-      host = ENV.fetch('SERVER', '').strip
-      raise 'SERVER must not be empty' if host.empty?
-
-      if $api_test.is_a?(ApiTestXmlrpc)
-        ApiTestXmlrpc.new(host)
-      else
-        ssl_verify = $api_protocol == 'http' ? false : !$is_gh_validation
-        ApiTestHttp.new(host, ssl_verify)
-      end
-    end
-end
-
 # Convert Uyuni API package records into the values used by the benchmark:
 # - exclude source and Debian packages;
 # - build the RPM EVR used for repository checks;
@@ -222,7 +206,7 @@ end
 
 Given('the initial configured channel package snapshot is valid') do
   inputs = @package_download_inputs
-  api = package_download_api
+  api = $api_test
   packages_response =
     api.call(
       'channel.software.listAllPackages',
@@ -530,9 +514,9 @@ When('I execute and record the channel package downloads') do
 
       current_packages =
         package_download_packages(
-          package_download_api.call(
+          $api_test.call(
             'channel.software.listAllPackages',
-            sessionKey: package_download_api.token,
+            sessionKey: $api_test.token,
             channelLabel: inputs[:channel]
           )
         )
