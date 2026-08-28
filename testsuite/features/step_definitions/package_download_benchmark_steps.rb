@@ -175,6 +175,14 @@ Given('the Salt package download benchmark inputs are valid') do
   minions = JSON.parse(ENV.fetch('UYUNI_BENCH_MINIONS', ''))
   raise 'UYUNI_BENCH_MINIONS must be a non-empty JSON array' unless minions.is_a?(Array) && !minions.empty?
 
+  # Salt's --list option accepts minion IDs as one comma-separated value.
+  # Each ID must be a non-empty String without commas, whitespace, control
+  # characters, or a leading hyphen that could look like a CLI option.
+  #
+  # Valid:   ["minion-1.tf.local", "minion-2.tf.local"]
+  # Invalid: ["minion 1"]           # contains whitespace
+  # Invalid: ["minion-1,minion-2"]  # contains Salt's list separator
+  # Invalid: ["-minion-1"]          # starts like a CLI option
   valid_minions =
     minions.all? do |minion|
       minion.is_a?(String) &&
@@ -204,9 +212,16 @@ rescue ArgumentError
   raise 'UYUNI_BENCH_TIMEOUT_SECONDS must be an integer'
 end
 
+# Prepare a fixed package snapshot before the benchmark:
+# 1. Read the channel packages, subscribed systems, and Salt-to-Uyuni system ID mapping.
+# 2. Keep the binary RPMs and verify that every selected minion is registered and subscribed.
+# 3. Save the package records and their SHA-256 digest for comparison after the download.
+# If the digest changes, the result is invalid because the tested package set was not stable.
 Given('the initial configured channel package snapshot is valid') do
   inputs = @package_download_inputs
   api = $api_test
+
+  # 1. Read the current channel state from the Uyuni API.
   packages_response =
     api.call(
       'channel.software.listAllPackages',
@@ -221,6 +236,7 @@ Given('the initial configured channel package snapshot is valid') do
     )
   id_map = api.call('system.getMinionIdMap', sessionKey: api.token)
 
+  # 2. Validate the packages and selected minions.
   packages = package_download_packages(packages_response)
   raise 'The configured channel has no binary RPM packages' if packages.empty?
 
@@ -232,6 +248,7 @@ Given('the initial configured channel package snapshot is valid') do
   missing = system_ids.reject { |_minion, system_id| subscribed_ids.include?(system_id) }
   raise "Minions are not subscribed to #{inputs[:channel]}: #{missing.keys.join(', ')}" unless missing.empty?
 
+  # 3. Save the initial package snapshot for the final comparison.
   snapshot_records =
     packages.map do |package|
       [package[:id], package[:tuple], package[:checksum_type], package[:checksum], package[:retracted]]
