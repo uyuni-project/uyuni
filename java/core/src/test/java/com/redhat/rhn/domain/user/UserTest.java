@@ -26,6 +26,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -120,9 +121,17 @@ public class UserTest extends MockObjectTestCase {
     @Test
     public void testAddAddress() {
         User usr = UserTestUtils.createUser(this);
-        Address addr = UserTestUtils.createTestAddress(usr);
+        Address addr = UserTestUtils.createTestAddress();
+        usr.setAddress(addr);
         UserFactory.save(usr);
-        assertTrue(addr.getId() != 0);
+        TestUtils.flushAndEvict(usr);
+
+        UserImpl reloadedUser = UserFactory.lookupById(usr.getId());
+        Address reloaderUserAddress = reloadedUser.getAddress();
+        assertEquals(usr, reloadedUser);
+        assertEquals(addr, reloadedUser.getAddress());
+        assertEquals(addr.getAddress1(), reloaderUserAddress.getAddress1());
+        assertEquals(addr.getAddress2(), reloaderUserAddress.getAddress2());
     }
 
 
@@ -173,11 +182,12 @@ public class UserTest extends MockObjectTestCase {
         usr.setTitle(foo);
         assertEquals(foo, usr.getTitle());
 
-        usr.setPhone(foo);
-        assertEquals(foo, usr.getPhone());
+        Address address = usr.getAddress();
+        address.setPhone(foo);
+        assertEquals(foo, address.getPhone());
 
-        usr.setFax(foo);
-        assertEquals(foo, usr.getFax());
+        address.setFax(foo);
+        assertEquals(foo, address.getFax());
 
         usr.setEmail(foo);
         assertEquals(foo, usr.getEmail());

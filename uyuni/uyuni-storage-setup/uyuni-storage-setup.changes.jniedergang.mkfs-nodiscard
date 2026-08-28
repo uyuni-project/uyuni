@@ -1,0 +1,3 @@
+- Skip the block discard when creating the XFS filesystems with
+  mgr-storage-server and mgr-storage-proxy, as it can take very
+  long on large, thin-provisioned or SAN backed disks

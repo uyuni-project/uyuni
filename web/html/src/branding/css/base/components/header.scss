@@ -127,8 +127,8 @@
 
   #clear-ssm {
     padding: 4px 6px 4px 4px !important;
-    color: $body-color;
-    background-color: $eos-bc-gray-100;
+    color: $white;
+    background-image: none;
     cursor: pointer;
     border-radius: 2px;
     border-width: 0;
@@ -137,6 +137,10 @@
       background-color: $red;
       color: $white;
       background-image: none;
+
+      &::after {
+        border: 0;
+      }
     }
 
     i {

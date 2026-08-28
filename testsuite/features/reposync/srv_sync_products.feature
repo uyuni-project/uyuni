@@ -80,7 +80,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "opensuse_tumbleweed" with arch "x86_64"
     And I kill running spacewalk-repo-sync for "opensuse_tumbleweed-x86_64" channel
     And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including only client tools dependencies
-    And I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
+    Then the channel "opensuse_tumbleweed-x86_64" should not be empty
+    When I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
     When I wait until all synchronized channels for "tumbleweed" have finished
 
 @containerized_server

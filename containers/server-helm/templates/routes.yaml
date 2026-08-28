@@ -144,7 +144,6 @@ spec:
         - path: { type: PathPrefix, value: /rhn/ty/TinyUrl }
         - path: { type: PathPrefix, value: /rhn/websocket }
         - path: { type: PathPrefix, value: /rhn/metrics }
-        - path: { type: PathPrefix, value: /cobbler_api }
         - path: { type: PathPrefix, value: /cobbler }
         - path: { type: PathPrefix, value: /cblr }
         - path: { type: PathPrefix, value: /httpboot }

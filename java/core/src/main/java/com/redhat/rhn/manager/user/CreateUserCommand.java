@@ -170,7 +170,7 @@ public class CreateUserCommand {
         }
 
         // Add default RBAC role
-        user.addToGroup(AccessGroupFactory.REGULAR_USER);
+        user.addToGroup(AccessGroupFactory.getRegularUser());
         UserManager.storeUser(user); //save the user via hibernate
     }
 
@@ -350,14 +350,14 @@ public class CreateUserCommand {
      * @param phoneIn The phone to set
      */
     public void setPhone(String phoneIn) {
-        user.setPhone(phoneIn);
+        addr.setPhone(phoneIn);
     }
 
     /**
      * @param faxIn The fax to set
      */
     public void setFax(String faxIn) {
-        user.setFax(faxIn);
+        addr.setFax(faxIn);
     }
 
     /**

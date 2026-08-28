@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'digest'
 require 'xmlrpc/client'
 require 'pp'
 
@@ -31,12 +32,33 @@ require 'pp'
 #
 # @attr_reader [XMLRPC::Client] server The XMLRPC::Client object for communicating with the Cobbler server.
 # @attr_reader [String] token The authentication token obtained after successful login.
+# @raise [ScriptError] If the injection of the apache config fails.
+# @raise [SystemCallError] Apache restart fails or if no running server is found
 class CobblerTest
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
-    server_address = get_target('server').full_hostname
+    node = get_target('server')
+    # expose cobbler api to public
+    source = "#{File.dirname(__FILE__)}/../upload_files/zz-cobblerapi.conf"
+    dest = '/etc/apache2/conf.d/zz-cobblerapi.conf'
+    expose_cobbler_api(node, source, dest)
+
+    # check running and connection
+    server_address = node.full_hostname
     @server = XMLRPC::Client.new2("http://#{server_address}/cobbler_api", nil, DEFAULT_TIMEOUT)
-    raise(SystemCallError, "No running server at found at #{server_address}") unless running?
+
+    retries = 10
+    connected = false
+
+    retries.times do
+      if running?
+        connected = true
+        break
+      end
+      sleep 0.5
+    end
+
+    raise(SystemCallError, "No running server at found at #{server_address}") unless connected
   end
 
   # Logs into Cobbler and returns the session token.
@@ -383,5 +405,54 @@ class CobblerTest
       raise(::StandardError, "Distribution with name #{name} not found. #{$ERROR_INFO}")
     end
     system
+  end
+
+  private
+
+  # Path of the lock that serializes the parallel workers while they expose the cobbler API.
+  # It lives in the run directory of the test suite, like the other locks, rather than in a
+  # world writable one.
+  APACHE_CONFIG_LOCK = 'cobbler_apache_config.lock'.freeze
+  private_constant :APACHE_CONFIG_LOCK
+
+  # Puts the cobbler API configuration on the node and restarts Apache, unless it is already
+  # there.
+  #
+  # Apache belongs to the whole environment rather than to this worker, and restarting it
+  # drops the connections every other parallel worker has in flight, so it must happen at
+  # most once. Every worker runs this, so the check and the injection are done under a lock
+  # held on the controller: the first worker in does the work, and the ones that follow
+  # re-check inside the lock and find nothing left to do.
+  #
+  # @param node [Node] The node to configure.
+  # @param source [String] The path of the local configuration file.
+  # @param dest [String] The path the configuration takes on the node.
+  # @raise [ScriptError] If the injection of the configuration fails.
+  # @raise [SystemCallError] If Apache fails to restart.
+  def expose_cobbler_api(node, source, dest)
+    File.open(APACHE_CONFIG_LOCK, File::CREAT | File::RDWR | File::NOFOLLOW, 0o600) do |lock|
+      lock.flock(File::LOCK_EX)
+      unless same_file?(node, source, dest)
+        success = file_inject(node, source, dest)
+        raise(ScriptError, 'Apache config injection failed') unless success
+
+        # restart apache to reload the configuration
+        output, retcode = node.run('systemctl restart apache2')
+        raise(SystemCallError, "Failed to restart apache2 (rc=#{retcode}): #{output}") unless retcode.zero?
+      end
+    end
+  end
+
+  # Returns whether the node already holds a copy of a local file, byte for byte.
+  #
+  # @param node [Node] The node to look at.
+  # @param local_file [String] The path of the local file.
+  # @param remote_file [String] The path of the file on the node.
+  # @return [Boolean] Whether the two files have the same content or not.
+  def same_file?(node, local_file, remote_file)
+    output, retcode = node.run("sha256sum #{remote_file}", check_errors: false)
+    return false unless retcode.zero?
+
+    output.to_s.split.first == Digest::SHA256.file(local_file).hexdigest
   end
 end

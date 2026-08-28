@@ -100,8 +100,8 @@ jobs:
           fi
         done
 
-        # Remove duplicates
-        TEST_TARGETS=$(echo "$TEST_TARGETS" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+        # Remove duplicates and trim whitespace
+        TEST_TARGETS=$(echo "$TEST_TARGETS" | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
 
         if [ -n "$TEST_TARGETS" ]; then
           echo "Running pytest on: $TEST_TARGETS"

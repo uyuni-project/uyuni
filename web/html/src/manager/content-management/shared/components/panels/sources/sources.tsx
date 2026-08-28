@@ -64,9 +64,8 @@ const renderSourceEntry = (source) => {
 
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
-      <div className={`text-success ${styles.attached}`}>
-        <i className="fa fa-plus" />
-        <b>{source.name}</b>
+      <div className={`${styles.attached}`}>
+        {source.name}
         &nbsp;
         {unsyncedPatches}
       </div>

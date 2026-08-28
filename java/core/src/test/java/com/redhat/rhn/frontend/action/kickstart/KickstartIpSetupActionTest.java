@@ -38,7 +38,7 @@ public class KickstartIpSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testKickstartIpList() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         // Create a kickstart and the ranges so the list
         // will return something.

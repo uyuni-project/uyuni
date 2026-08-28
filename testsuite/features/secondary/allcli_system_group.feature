@@ -16,6 +16,8 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I refresh the metadata for "sle_minion"
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
     And I install old package "virgo-dummy-1.0" on this "sle_minion"
+    And I refresh packages list via spacecmd on "sle_minion"
+    And I wait until refresh package list on "sle_minion" is finished
 
   Scenario: Pre-requisite: ensure that fake patches are available
     When I follow the left menu "Admin > Task Schedules"

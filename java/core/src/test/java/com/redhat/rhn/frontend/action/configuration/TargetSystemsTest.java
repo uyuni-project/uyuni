@@ -38,7 +38,7 @@ public class TargetSystemsTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //Need to set the locale and timezone for the datepicker.
         Context ctxt = Context.getCurrentContext();

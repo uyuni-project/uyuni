@@ -38,7 +38,7 @@ public class ConfigListActionTest extends RhnMockStrutsTestCase {
 
     private void doTheTest(String path) {
         //give the user org_admin role.
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         //create the revision, file, and channel.
         ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());

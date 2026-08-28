@@ -31,7 +31,7 @@ public class ChannelFilesListSetupTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecuteNoFiles() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         long ccid = cc.getId();

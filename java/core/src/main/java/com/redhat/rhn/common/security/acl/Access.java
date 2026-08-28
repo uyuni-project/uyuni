@@ -499,7 +499,7 @@ public class Access extends BaseHandler {
         User user = (User) ctx.get("user");
         if (user != null) {
             List<ChannelPerms> chans = UserManager.channelManagement(user, null);
-            return (user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) || !chans.isEmpty();
+            return (user.isMemberOf(AccessGroupFactory.getChannelAdmin())) || !chans.isEmpty();
         }
 
         return false;

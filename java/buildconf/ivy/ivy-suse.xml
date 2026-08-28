@@ -19,8 +19,8 @@
         <dependency org="suse" name="commons-collections" rev="3.2.2" />
         <dependency org="suse" name="commons-digester" rev="2.1" />
         <dependency org="suse" name="commons-discovery" rev="0.5" />
-        <dependency org="suse" name="commons-fileupload2-core" rev="2.0.0~M4" />
-        <dependency org="suse" name="commons-fileupload2-jakarta-servlet6" rev="2.0.0~M4" />
+        <dependency org="suse" name="commons-fileupload2-core" rev="2.0.0~M5" />
+        <dependency org="suse" name="commons-fileupload2-jakarta-servlet6" rev="2.0.0~M5" />
         <dependency org="suse" name="commons-io" rev="2.22.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.20.0" />
@@ -56,7 +56,6 @@
         <dependency org="suse" name="log4j-api" rev="2.20.0" />
         <dependency org="suse" name="log4j-core" rev="2.20.0" />
         <dependency org="suse" name="jsch" rev="0.2.22" />
-        <dependency org="suse" name="jctools-core" rev="4.0.5" />
         <dependency org="suse" name="mchange-commons-java" rev="0.4.0" />
         <dependency org="suse" name="postgresql" rev="42.7.7" />
         <dependency org="suse" name="quartz" rev="2.5.0" />

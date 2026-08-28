@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,286 +42,250 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WEB_USER_SITE_INFO_SEQ")
     @SequenceGenerator(name = "WEB_USER_SITE_INFO_SEQ", sequenceName = "WEB_USER_SITE_INFO_ID_SEQ", allocationSize = 1)
     private Long id;
+
     @Column
+    private String email;
+
+    @Column(nullable = false)
     private String address1;
+
     @Column
     private String address2;
-    @Column
+
+    @Column(nullable = false)
     private String city;
+
     @Column
     private String state;
+
     @Column
     private String zip;
-    @Column
+
+    @Column(nullable = false)
     private String country;
+
     @Column
     private String phone;
+
     @Column
     private String fax;
-    @Column(name = "is_po_box")
-    private String isPoBox;
-    @Column(name = "type")
-    private String privType;
+
+    @Column(name = "is_po_box", nullable = false)
+    private boolean isPoBox = false;
 
     @ManyToOne
     @JoinColumn(name = "web_user_id")
     private UserImpl user;
 
     /**
-     * Protect the constructor
+     * Default constructor
      */
-    protected AddressImpl() {
-        this.address1 = " ";
-        this.address2 = " ";
-        this.city = " ";
-        this.state = " ";
-        this.zip = " ";
-        this.country = " ";
-        this.phone = " ";
-        this.fax = " ";
-        this.isPoBox = "0";
-        this.privType = TYPE_MARKETING;
+    public AddressImpl() {
+        // JPA requires default constructor
     }
 
     /**
-     * {@inheritDoc}
+     * Getter for identifier.
+     *
+     * @return identifier value
      */
     @Override
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     /**
-     * Sets the database id for this address.  This
-     * is the unique id for this address.
-     * @param idIn the in id
+     * Set the identifier.
+     *
+     * @param idIn identifier value
      */
-    protected void setId(Long idIn) {
-        this.id = idIn;
+    public void setId(Long idIn) {
+        id = idIn;
     }
 
     /**
-     * {@inheritDoc}
+     * Getter for email.
+     *
+     * @return email address
      */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Setter for email.
+     *
+     * @param emailIn email address
+     */
+    public void setEmail(String emailIn) {
+        email = emailIn;
+    }
+
+    /** {@inheritDoc} */
     @Override
     public String getAddress1() {
-        if (address1 == null) {
-            address1 = " ";
-        }
-        return this.address1;
+        return address1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setAddress1(String address1In) {
-        this.address1 = address1In;
+        address1 = address1In;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getAddress2() {
-        if (address2 == null) {
-            address2 = " ";
-        }
-        return this.address2;
+        return address2;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setAddress2(String address2In) {
-        this.address2 = address2In;
+        address2 = address2In;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getCity() {
-        if (city == null) {
-            city = " ";
-        }
-        return this.city;
+        return city;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setCity(String cityIn) {
-        this.city = cityIn;
+        city = cityIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getState() {
-        if (state == null) {
-            state = " ";
-        }
-        return this.state;
+        return state;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setState(String stateIn) {
-        this.state = stateIn;
+        state = stateIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getZip() {
-        if (zip == null) {
-            zip = " ";
-        }
-        return this.zip;
+        return zip;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setZip(String zipIn) {
-        this.zip = zipIn;
+        zip = zipIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getCountry() {
-        if (country == null) {
-            country = " ";
-        }
-        return this.country;
+        return country;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setCountry(String countryIn) {
-        this.country = countryIn;
+        country = countryIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getPhone() {
-        if (phone == null) {
-            phone = " ";
-        }
-        return this.phone;
+        return phone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setPhone(String phoneIn) {
-        this.phone = phoneIn;
+        phone = phoneIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getFax() {
-        if (fax == null) {
-            fax = " ";
-        }
-        return this.fax;
+        return fax;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setFax(String faxIn) {
-        this.fax = faxIn;
+        fax = faxIn;
     }
 
     /**
-     * {@inheritDoc}
+     * Getter for isPoBox.
+     *
+     * @return true if this is a PO Box address
      */
     @Override
-    public String getIsPoBox() {
-        if (isPoBox == null) {
-            isPoBox = "0";
-        }
-        return this.isPoBox;
+    public boolean isPoBox() {
+        return isPoBox;
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for isPoBox.
+     *
+     * @param isPoBoxIn true if this is a PO Box address
      */
     @Override
-    public void setIsPoBox(String isPoBoxIn) {
-        this.isPoBox = isPoBoxIn;
+    public void setIsPoBox(boolean isPoBoxIn) {
+        isPoBox = isPoBoxIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public String getType() {
-        if (privType == null || privType.isEmpty()) {
-            return Address.TYPE_MARKETING;
-        }
-        return privType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public User getUser() {
         return user;
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public void setUser(User userIn) {
         user = (UserImpl) userIn;
     }
 
     /**
-     * Output this object to a string
-     * @return String value of AddressImpl object
+     * {@inheritDoc}
      */
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AddressImpl other)) {
+            return false;
+        }
+        return Objects.equals(address1, other.address1) &&
+               Objects.equals(address2, other.address2) &&
+               Objects.equals(city, other.city) &&
+               Objects.equals(state, other.state) &&
+               Objects.equals(zip, other.zip) &&
+               Objects.equals(country, other.country);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(address1, address2, city, state, zip, country);
+    }
+
+    @Override
     public String toString() {
-        return "{ID: " + getId() + ", type: " + getType() + ", created: " + getCreated() +
-                ", modified: " + getModified() + ", address1: " + getAddress1() + "}";
-    }
-
-    // NOTE THIS IS LEGACY REMOVE LATER!!
-    /**
-     * Set the private type of this address
-     * @param pt string to set
-     */
-    public void setPrivType(String pt) {
-        privType = pt;
-    }
-
-    /**
-     * Get the private type.
-     * @return string type
-     */
-    public String getPrivType() {
-        return privType;
+        return new StringJoiner(", ", AddressImpl.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("email='" + email + "'")
+                .add("address1='" + address1 + "'")
+                .add("address2='" + address2 + "'")
+                .add("city='" + city + "'")
+                .add("state='" + state + "'")
+                .add("zip='" + zip + "'")
+                .toString();
     }
 }
-

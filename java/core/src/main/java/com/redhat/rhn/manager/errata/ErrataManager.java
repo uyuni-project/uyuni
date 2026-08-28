@@ -216,22 +216,22 @@ public class ErrataManager extends BaseManager {
             Collection<Long> channelIds, User user) {
         log.debug("addChannelsToErrata");
 
+        Set<Channel> channels = new HashSet<>();
         for (Long channelId : channelIds) {
-            ChannelManager.lookupByIdAndUser(channelId, user);
+            channels.add(ChannelManager.lookupByIdAndUser(channelId, user));
         }
 
         //if we're publishing the errata but not pushing packages
         //  We need to add cache entries for ones that are already in the channel
         //  and associated to the errata
-        ErrataCacheManager.addErrataRefreshing(channelIds, errata.getId());
+        ErrataCacheManager.addErrataRefreshing(channels, errata);
 
 
         //Save the errata
         log.debug("addChannelsToErrata - storing errata");
         ErrataFactory.save(errata);
 
-        errata = HibernateFactory.reload(errata);
-        log.debug("addChannelsToErrata - errata reloaded from DB");
+        log.debug("addChannelsToErrata - errata saved");
         return errata;
     }
 
@@ -1228,8 +1228,8 @@ public class ErrataManager extends BaseManager {
      * @param user the user doing the removing
      */
     public static void removeErratumFromChannel(Errata errata, Channel chan, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         //Since we don't remove the packages, we need to insert those entries
@@ -1240,7 +1240,7 @@ public class ErrataManager extends BaseManager {
         ErrataCacheManager.insertCacheForChannelPackages(chan.getId(), null, pids);
 
         //Remove the errata from the channel
-        chan.getErratas().remove(errata);
+        chan.removeErrata(errata);
         List<Long> eList = new ArrayList<>();
         eList.add(errata.getId());
         //First delete the cache entries
@@ -1281,13 +1281,13 @@ public class ErrataManager extends BaseManager {
      */
     public static void removeErratumAndPackagesFromChannel(Set<Errata> excludedErrata, Set<Errata> includedErrata,
                                                            Channel chan, User user) {
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
 
         //Remove the errata from the channel
-        chan.getErratas().removeAll(excludedErrata);
+        chan.removeErratas(excludedErrata);
         List<Long> eList = excludedErrata.stream().map(Errata::getId).collect(toList());
         //First delete the cache entries
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);
@@ -2163,8 +2163,7 @@ public class ErrataManager extends BaseManager {
         Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
 
         Collection<Long> list = errataToClone;
-        List<Long> cids = new ArrayList<>();
-        cids.add(channel.getId());
+        Set<Channel> channelSet = Set.of(channel);
         // let's avoid deadlocks please
         ChannelFactory.lock(channel);
 
@@ -2173,20 +2172,21 @@ public class ErrataManager extends BaseManager {
                 Errata errata = ErrataFactory.lookupById(eid);
                 // we merge custom errata directly (non Redhat and cloned)
                 if (errata.getOrg() != null) {
-                    ErrataCacheManager.addErrataRefreshing(cids, eid);
+                    ErrataCacheManager.addErrataRefreshing(channelSet, errata);
                 }
                 else {
                     List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), errata);
                     if (clones.isEmpty()) {
                         log.debug("Cloning errata");
                         var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                        ErrataCacheManager.addErrataRefreshing(cids, clonedId);
+                        Errata clonedErrata = ErrataFactory.lookupById(clonedId);
+                        ErrataCacheManager.addErrataRefreshing(channelSet, clonedErrata);
                     }
                     else {
                         log.debug("Re-publishing clone");
                         Errata firstClone = clones.get(0);
 
-                        ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
+                        ErrataCacheManager.addErrataRefreshing(channelSet, firstClone);
                     }
                 }
             }

@@ -1,0 +1,3 @@
+- Fix Hibernate session crash on Errata Sync by
+  dynamically loading default access groups
+  from the active session (bsc#1272298)

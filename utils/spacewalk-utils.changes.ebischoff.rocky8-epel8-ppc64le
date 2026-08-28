@@ -1,0 +1,2 @@
+- Drop ppc64le from the Rocky Linux 8 EPEL channel, as Rocky
+  Linux 8 has no ppc64le build upstream

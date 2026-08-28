@@ -94,7 +94,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         catch (Exception e) {
             //duplicate check successful.
         }
-        regular.removeFromGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.getSystemGroupAdmin());
         try {
 
             handler.create(regular, NAME + "F", DESCRIPTION + "F");
@@ -110,7 +110,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         handler.create(admin, NAME, DESCRIPTION);
         assertNotNull(manager.lookup(NAME, admin));
-        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
         String newDescription = DESCRIPTION + TestUtils.randomString();
         try {
             handler.update(regular, NAME, newDescription);
@@ -125,13 +125,13 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListAdministrators() {
-        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
         ServerGroup group = handler.create(regular, NAME, DESCRIPTION);
         List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(regular));
         assertTrue(admins.contains(admin));
         //now test on permissions
-        regular.removeFromGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.removeFromGroup(AccessGroupFactory.getSystemGroupAdmin());
         try {
             handler.listAdministrators(regular, group.getName());
             fail("Should throw access / permission exception for regular is not a sys admin");
@@ -162,7 +162,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveAdmins(admin, group.getName(),
                 Collections.singletonList(regular.getLogin()), true);
 
-        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
         handler.addOrRemoveAdmins(regular, group.getName(), logins, true);
         List<User> admins = handler.listAdministrators(regular, group.getName());
         assertTrue(admins.contains(newbie));
@@ -260,7 +260,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         logins.add(unpriv.getLogin());
 
         handler.addOrRemoveAdmins(admin, group.getName(), logins, true);
-        regular.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        regular.addToGroup(AccessGroupFactory.getSystemGroupAdmin());
 
         Server server1 = ServerFactoryTest.createTestServer(regular, true);
         Server server2 = ServerFactoryTest.createTestServer(regular, true);

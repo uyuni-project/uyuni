@@ -33,7 +33,7 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateConfigRevision() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(user, AccessGroupFactory.getConfigAdmin());
 
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
 

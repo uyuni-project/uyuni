@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'faraday'
+require_relative 'api_retry'
 
 # When we pass a list of values in the query string of an HTTP request, the defaul encoder will only update the key for that param
 # As an example: sids=1000010027&sids=1000010010&sids=1000010012 maps to params={"sids"=>"1000010012"}
@@ -26,14 +27,7 @@ class HttpClient
   # @param params [Hash] The parameters for the call.
   # @return [Array] An array containing the call type and the URL.
   def prepare_call(name, params)
-    short_name = name.split('.')[-1]
-    call_type =
-      if short_name.start_with?('list', 'get', 'is', 'find') || name.start_with?('system.search.', 'packages.search.') || %w[auth.logout errata.applicableToChannels].include?(name)
-
-        'GET'
-      else
-        'POST'
-      end
+    call_type = ApiRetry.read_only?(name) ? 'GET' : 'POST'
     url = "/rhn/manager/api/#{name.tr('.', '/')}"
     if call_type == 'GET'
       url += '?'
@@ -75,16 +69,18 @@ class HttpClient
     # Call API
     call_type, url = prepare_call(name, params)
     answer =
-      if call_type == 'GET'
-        @http_client.get(url) do |request|
-          request.headers['Content-Type'] = 'application/json'
-          request.headers['Cookie'] = session_cookie unless session_cookie.nil?
-        end
-      else
-        @http_client.post(url) do |request|
-          request.headers['Content-Type'] = 'application/json'
-          request.headers['Cookie'] = session_cookie unless session_cookie.nil?
-          request.body = params.to_json unless params.nil?
+      ApiRetry.with_retries(name) do
+        if call_type == 'GET'
+          @http_client.get(url) do |request|
+            request.headers['Content-Type'] = 'application/json'
+            request.headers['Cookie'] = session_cookie unless session_cookie.nil?
+          end
+        else
+          @http_client.post(url) do |request|
+            request.headers['Content-Type'] = 'application/json'
+            request.headers['Cookie'] = session_cookie unless session_cookie.nil?
+            request.body = params.to_json unless params.nil?
+          end
         end
       end
     unless answer.status == 200

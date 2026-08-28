@@ -1,0 +1,2 @@
+- Fix virtual instance refresh for mixed SSH and regular
+  minions (bsc#1254316)

@@ -1429,8 +1429,8 @@ public class PackageManager extends BaseManager {
      */
     public static void deletePackages(Set<Long> ids, User user) {
 
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
         if (LOG.isInfoEnabled()) {
             // Important for Auditing
@@ -1526,8 +1526,8 @@ public class PackageManager extends BaseManager {
      */
     public static void deleteSourcePackages(Set<Long> ids, User user) {
 
-        if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
-            throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        if (!user.isMemberOf(AccessGroupFactory.getChannelAdmin())) {
+            throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
 
         long start = System.currentTimeMillis();

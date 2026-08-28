@@ -70,7 +70,7 @@ public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
         String syncType = request.getParameter(SYNC_TYPE);
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-              throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+              throw new PermissionException(AccessGroupFactory.getChannelAdmin());
         }
         if (chan.getOrg() == null) {
             throw new PermissionCheckFailureException();

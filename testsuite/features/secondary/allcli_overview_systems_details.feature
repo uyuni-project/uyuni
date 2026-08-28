@@ -107,7 +107,10 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sshminion"
+    When I refresh packages list via spacecmd on "sshminion"
+    And I wait until refresh package list on "sshminion" is finished
 
   @sshminion
   Scenario: SSH-managed minion grains are displayed correctly on the details page

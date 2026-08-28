@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
+require_relative 'api_retry'
 
 # Represents an XMLRPC client object that is used to communicate with the Spacewalk server.
 class XmlrpcClient
@@ -23,7 +24,7 @@ class XmlrpcClient
   # @raise [SystemCallError] If there is an API failure.
   def call(name, params)
     begin
-      @xmlrpc_client.call(name, *params.values)
+      ApiRetry.with_retries(name) { @xmlrpc_client.call(name, *params.values) }
     rescue XMLRPC::FaultException => e
       raise SystemCallError, "API failure: #{e.message}"
     end

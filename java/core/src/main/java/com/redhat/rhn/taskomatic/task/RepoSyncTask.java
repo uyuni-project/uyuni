@@ -72,7 +72,7 @@ public class RepoSyncTask extends RhnJavaJob {
                     new ChannelSyncFailed(null, null, LocalizationService.getInstance()
                             .getMessage("notification.channelsyncfailed.notcompliant")));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Set.of(AccessGroupFactory.CHANNEL_ADMIN));
+                    Set.of(AccessGroupFactory.getChannelAdmin()));
             return;
         }
 
@@ -118,7 +118,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
             UserNotificationFactory.storeNotificationMessageFor(
                 UserNotificationFactory.createNotificationMessage(notificationData),
-                Set.of(AccessGroupFactory.CHANNEL_ADMIN),
+                Set.of(AccessGroupFactory.getChannelAdmin()),
                 Optional.ofNullable(channel.getOrg())
             );
         }

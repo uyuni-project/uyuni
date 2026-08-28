@@ -122,7 +122,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         try {
             var group = ServerGroupTestUtils.createManaged(anotherUser);
             /* Restrict anotherUser from accessing the minion */
-            anotherUser.getAccessGroups().remove(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+            anotherUser.getAccessGroups().remove(AccessGroupFactory.getSystemGroupAdmin());
             var recurringAction = RecurringActionManager.createRecurringAction(
                     GROUP, HIGHSTATE, group.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);

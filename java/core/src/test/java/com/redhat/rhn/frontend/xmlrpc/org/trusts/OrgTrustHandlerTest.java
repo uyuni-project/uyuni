@@ -262,7 +262,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
         Server s = ServerFactoryTest.createTestServer(userB);
         SystemManager.subscribeServerToChannel(userB, s, c);
         TestUtils.flushAndClearSession();
-        addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
+        addAccessGroup(admin, AccessGroupFactory.getChannelAdmin());
         Package pkg = PackageTest.createTestPackage(orgA);
         List<Long> packages = new ArrayList<>();
         packages.add(pkg.getId());
