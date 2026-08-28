@@ -67,11 +67,11 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the p
   end
 end
 
-When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
+When(/^I wait (?:at most (\d+) seconds )?until I see "([^"]*)" (text|regex), refreshing the page$/) do |seconds, text, type|
   text = Regexp.new(text) if type == 'regex'
   next if has_content?(text, wait: 3)
 
-  repeat_until_timeout(message: "Couldn't find text '#{text}'") do
+  repeat_until_timeout(message: "Couldn't find text '#{text}'", timeout: seconds ? seconds.to_i : DEFAULT_TIMEOUT) do
     break if has_content?(text, wait: 3)
 
     refresh_page
