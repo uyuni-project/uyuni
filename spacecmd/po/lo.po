@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 10:52+0200\n"
+"POT-Creation-Date: 2026-08-28 09:41+0200\n"
 "PO-Revision-Date: 2026-08-27 05:53+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/spacecmd/lo/>\n"
@@ -59,8 +59,7 @@ msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
 msgstr "ວິທີໃຊ້: activationkey_addentitlements KEY <ENTITLEMENT ...>"
 
 #: ../src/spacecmd/activationkey.py:264
-msgid ""
-"activationkey_removeentitlements: Remove entitlements from an activation key"
+msgid "activationkey_removeentitlements: Remove entitlements from an activation key"
 msgstr "activationkey_removeentitlements: ລຶບສິດການນຳໃຊ້ອອກຈາກຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:268
@@ -76,9 +75,7 @@ msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: activationkey_addchildchannels KEY <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:365
-msgid ""
-"activationkey_removechildchannels: Remove child channels from an activation "
-"key"
+msgid "activationkey_removechildchannels: Remove child channels from an activation key"
 msgstr "activationkey_removechildchannels: ລຶບຊ່ອງທາງລູກອອກຈາກຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:369
@@ -86,9 +83,7 @@ msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: activationkey_removechildchannels KEY <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:408
-msgid ""
-"activationkey_listchildchannels: List the child channels for an activation "
-"key"
+msgid "activationkey_listchildchannels: List the child channels for an activation key"
 msgstr "activationkey_listchildchannels: ສະແດງລາຍຊື່ຊ່ອງທາງລູກສຳລັບຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:412
@@ -96,8 +91,7 @@ msgid "usage: activationkey_listchildchannels KEY"
 msgstr "ວິທີໃຊ້: activationkey_listchildchannels KEY"
 
 #: ../src/spacecmd/activationkey.py:445
-msgid ""
-"activationkey_listbasechannel: List the base channels for an activation key"
+msgid "activationkey_listbasechannel: List the base channels for an activation key"
 msgstr "activationkey_listbasechannel: ສະແດງລາຍຊື່ຊ່ອງທາງຫຼັກສຳລັບຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:449
@@ -113,8 +107,7 @@ msgid "usage: activationkey_listgroups KEY"
 msgstr "ວິທີໃຊ້: activationkey_listgroups KEY"
 
 #: ../src/spacecmd/activationkey.py:514
-msgid ""
-"activationkey_listentitlements: List the entitlements for an activation key"
+msgid "activationkey_listentitlements: List the entitlements for an activation key"
 msgstr "activationkey_listentitlements: ສະແດງລາຍຊື່ສິດການນຳໃຊ້ສຳລັບຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:518
@@ -130,9 +123,7 @@ msgid "usage: activationkey_listpackages KEY"
 msgstr "ວິທີໃຊ້: activationkey_listpackages KEY"
 
 #: ../src/spacecmd/activationkey.py:589
-msgid ""
-"activationkey_listconfigchannels: List the configuration channels for an "
-"activation key"
+msgid "activationkey_listconfigchannels: List the configuration channels for an activation key"
 msgstr "activationkey_listconfigchannels: ສະແດງລາຍຊື່ຊ່ອງທາງການກຳນົດຄ່າສຳລັບຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:593
@@ -140,8 +131,7 @@ msgid "usage: activationkey_listconfigchannels KEY"
 msgstr "ວິທີໃຊ້: activationkey_listconfigchannels KEY"
 
 #: ../src/spacecmd/activationkey.py:628
-msgid ""
-"activationkey_addconfigchannels: Add config channels to an activation key"
+msgid "activationkey_addconfigchannels: Add config channels to an activation key"
 msgstr "activationkey_addconfigchannels: ເພີ່ມຊ່ອງທາງການກຳນົດຄ່າເຂົ້າໃນຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:634
@@ -159,9 +149,7 @@ msgstr ""
 "  -b ເພີ່ມຊ່ອງທາງໄວ້ລຸ່ມສຸດຂອງລາຍການ"
 
 #: ../src/spacecmd/activationkey.py:693
-msgid ""
-"activationkey_removeconfigchannels: Remove config channels from an "
-"activation key"
+msgid "activationkey_removeconfigchannels: Remove config channels from an activation key"
 msgstr "activationkey_removeconfigchannels: ລຶບຊ່ອງທາງການກຳນົດຄ່າອອກຈາກຄີການເປີດໃຊ້"
 
 #: ../src/spacecmd/activationkey.py:697
@@ -169,9 +157,7 @@ msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: activationkey_removeconfigchannels KEY <CHANNEL ...>"
 
 #: ../src/spacecmd/activationkey.py:740
-msgid ""
-"activationkey_setconfigchannelorder: Set the ranked order of configuration "
-"channels"
+msgid "activationkey_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr "activationkey_setconfigchannelorder: ຈັດລຳດັບຄວາມສຳຄັນຂອງຊ່ອງທາງການກຳນົດຄ່າ"
 
 #: ../src/spacecmd/activationkey.py:744
@@ -349,8 +335,7 @@ msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "ວິທີໃຊ້: activationkey_enableconfigdeployment KEY"
 
 #: ../src/spacecmd/activationkey.py:1122
-msgid ""
-"activationkey_disableconfigdeployment: Disable config channel deployment"
+msgid "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr "activationkey_disableconfigdeployment: ປິດການຕິດຕັ້ງຊ່ອງທາງການກຳນົດຄ່າ"
 
 #: ../src/spacecmd/activationkey.py:1126
@@ -366,9 +351,7 @@ msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "ວິທີໃຊ້: activationkey_setbasechannel KEY CHANNEL"
 
 #: ../src/spacecmd/activationkey.py:1214
-msgid ""
-"activationkey_setusagelimit: Set the usage limit of an activation key, can "
-"be a number or \"unlimited\""
+msgid "activationkey_setusagelimit: Set the usage limit of an activation key, can be a number or \"unlimited\""
 msgstr "activationkey_setusagelimit: ກຳນົດການຈຳກັດການນຳໃຊ້ຂອງຄີການເປີດໃຊ້, ສາມາດເປັນຕົວເລກ ຫຼື \"unlimited\""
 
 #: ../src/spacecmd/activationkey.py:1218
@@ -385,8 +368,7 @@ msgid "Couldn't convert argument %s to an integer"
 msgstr "ບໍ່ສາມາດປ່ຽນ %s ເປັນຕົວເລກຈຳນວນຖ້ວນ"
 
 #: ../src/spacecmd/activationkey.py:1277
-msgid ""
-"activationkey_setuniversaldefault: Set this key as the universal default"
+msgid "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr "activationkey_setuniversaldefault: ກຳນົດຄີນີ້ເປັນຄ່າເລີ່ມຕົ້ນສາກົນ"
 
 #: ../src/spacecmd/activationkey.py:1281
@@ -403,8 +385,7 @@ msgid ""
 "\n"
 "options:\n"
 "    -f outfile.json : specify an output filename, defaults to <KEY>.json\n"
-"                      if exporting a single key, akeys.json for multiple "
-"keys,\n"
+"                      if exporting a single key, akeys.json for multiple keys,\n"
 "                      or akey_all.json if no KEY specified (export ALL)\n"
 "\n"
 "Note : KEY list is optional, default is to export ALL keys "
@@ -445,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ໄຟລ໌ %s ມີຢູ່ແລ້ວ, ຢືນຢັນການຂຽນທັບ? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "ບັນທຶກຄີທີ່ສົ່ງອອກລົງໄຟລ໌ບໍ່ສຳເລັດ: {}"
 
@@ -494,11 +474,9 @@ msgid ""
 "                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
 "\n"
 "options:\n"
-"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for "
-"multiple\n"
+"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for multiple\n"
 "                   keys\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone description, base-channel label, child-channel\n"
 "                   labels, config-channel names "
 msgstr ""
@@ -619,9 +597,7 @@ msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "ວິທີໃຊ້: activationkey_setdescription KEY DESCRIPTION"
 
 #: ../src/spacecmd/activationkey.py:1979
-msgid ""
-"activationkey_setcontactmethod: Set the contact method to use for systems "
-"registered with this key."
+msgid "activationkey_setcontactmethod: Set the contact method to use for systems registered with this key."
 msgstr "activationkey_setcontactmethod: ກຳນົດວິທີການຕິດຕໍ່ເພື່ອໃຊ້ສຳລັບລະບົບທີ່ລົງທະບຽນດ້ວຍຄີນີ້."
 
 #: ../src/spacecmd/activationkey.py:1983 ../src/spacecmd/system.py:4567
@@ -642,8 +618,7 @@ msgid ""
 "usage: api [options] API_STRING)\n"
 "\n"
 "options:\n"
-"  -A, --args  Arguments for the API other than session id in comma "
-"separated\n"
+"  -A, --args  Arguments for the API other than session id in comma separated\n"
 "              strings or JSON expression\n"
 "  -F, --format   Output format\n"
 "  -o, --output   Output file\n"
@@ -1079,14 +1054,12 @@ msgid "Contents not displayed (base64 encoded)"
 msgstr "ບໍ່ສະແດງເນື້ອໃນ (ຖືກເຂົ້າລະຫັດ base64)"
 
 #: ../src/spacecmd/configchannel.py:809
-msgid ""
-"configchannel_addfile/configchannel_updatefile: Create a configuration file"
+msgid "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr "configchannel_addfile/configchannel_updatefile: ສ້າງໄຟລ໌ການກຳນົດຄ່າ"
 
 #: ../src/spacecmd/configchannel.py:813
 msgid ""
-"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
-"LOCAL_FILE_PATH [OPTIONS])\n"
+"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
 "options:\n"
 "  -c CHANNEL\n"
@@ -1104,10 +1077,8 @@ msgid ""
 "  -y automatically proceed with file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
 
@@ -1203,8 +1174,7 @@ msgstr "configchannel_export: ສົ່ງອອກຊ່ອງທາງກາ�
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to "
-"<CHANNEL>.json\n"
+"    -f outfile.json : specify an output filename, defaults to <CHANNEL>.json\n"
 "                      if exporting a single channel, ccs.json for multiple\n"
 "                      channels, or cc_all.json if no CHANNEL specified\n"
 "                      e.g (export ALL)\n"
@@ -1247,9 +1217,7 @@ msgid "Exporting ALL config channels to %s"
 msgstr "ກຳລັງສົ່ງອອກຊ່ອງທາງການກຳນົດຄ່າທັງໝົດໄປຍັງ %s"
 
 #: ../src/spacecmd/configchannel.py:1340
-msgid ""
-"Error, no valid config channel passed, check name is  correct with spacecmd "
-"configchannel_list"
+msgid "Error, no valid config channel passed, check name is  correct with spacecmd configchannel_list"
 msgstr "ຂໍ້ຜິດພາດ, ບໍ່ມີຊ່ອງທາງການກຳນົດຄ່າທີ່ຖືກຕ້ອງ, ກະລຸນາກວດສອບຊື່ໃຫ້ຖືກຕ້ອງດ້ວຍ spacecmd configchannel_list"
 
 #: ../src/spacecmd/configchannel.py:1358
@@ -1258,7 +1226,6 @@ msgid "Exporting cc %s to %s"
 msgstr "ກຳລັງສົ່ງອອກ cc %s ໄປຍັງ %s"
 
 #: ../src/spacecmd/configchannel.py:1366
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ໄຟລ໌ '{}' ມີຢູ່ແລ້ວ, ຢືນຢັນການຂຽນທັບ? (y/n)"
 
@@ -1335,8 +1302,7 @@ msgid ""
 "  -c CLONE_LABEL : name/label of the resulting cc (note does not update\n"
 "                   description, see -x option), treated as a prefix if\n"
 "                   multiple keys are passed\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone name, label and description\n"
 "  Note : If no -c or -x option is specified, interactive is assumed"
 msgstr ""
@@ -1415,8 +1381,7 @@ msgid "files only in target "
 msgstr "ໄຟລ໌ທີ່ມີສະເພາະໃນປາຍທາງ "
 
 #: ../src/spacecmd/configchannel.py:1809
-msgid ""
-"files that are in both channels will be overwritten in the target channel"
+msgid "files that are in both channels will be overwritten in the target channel"
 msgstr "ໄຟລ໌ທີ່ມີຢູ່ໃນທັງສອງຊ່ອງທາງຈະຖືກຂຽນທັບໃນຊ່ອງທາງປາຍທາງ"
 
 #: ../src/spacecmd/configchannel.py:1813
@@ -1563,7 +1528,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "ວິທີໃຊ້: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "ບໍ່ມີຄີໃດກົງກັບ '{}'."
 
@@ -1607,8 +1571,7 @@ msgid ""
 "  -n NAME\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 
 #: ../src/spacecmd/distribution.py:73
@@ -1718,8 +1681,7 @@ msgid ""
 "options:\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 
 #: ../src/spacecmd/errata.py:52
@@ -2222,9 +2184,7 @@ msgid "Members"
 msgstr "ສະມາຊິກ"
 
 #: ../src/spacecmd/group.py:601
-msgid ""
-"group_listconfigchannels: List configuration channels assigned to a system "
-"group"
+msgid "group_listconfigchannels: List configuration channels assigned to a system group"
 msgstr "group_listconfigchannels: ສະແດງລາຍຊື່ຊ່ອງທາງການກຳນົດຄ່າທີ່ມອບໝາຍໃຫ້ກຸ່ມລະບົບ"
 
 #: ../src/spacecmd/group.py:604
@@ -2364,8 +2324,7 @@ msgid "A filename is required"
 msgstr "ຈຳເປັນຕ້ອງລະບຸຊື່ໄຟລ໌"
 
 #: ../src/spacecmd/kickstart.py:364
-msgid ""
-"kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
+msgid "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr "kickstart_import_raw: ນຳເຂົ້າ Kickstart ຫຼື autoyast profile ແບບດິບຈາກໄຟລ໌"
 
 #: ../src/spacecmd/kickstart.py:369
@@ -2484,9 +2443,7 @@ msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr "ວິທີໃຊ້: kickstart_rename OLDNAME NEWNAME"
 
 #: ../src/spacecmd/kickstart.py:657
-msgid ""
-"kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
-"profile"
+msgid "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart profile"
 msgstr "kickstart_listcryptokeys: ສະແດງຄີເຂົ້າລະຫັດທີ່ກ່ຽວຂ້ອງກັບ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:661
@@ -2514,9 +2471,7 @@ msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr "ວິທີໃຊ້: kickstart_removecryptokeys PROFILE <KEY ...>"
 
 #: ../src/spacecmd/kickstart.py:782
-msgid ""
-"kickstart_listactivationkeys: List the activation keys associated with a "
-"Kickstart profile"
+msgid "kickstart_listactivationkeys: List the activation keys associated with a Kickstart profile"
 msgstr "kickstart_listactivationkeys: ສະແດງຄີການເປີດໃຊ້ທີ່ກ່ຽວຂ້ອງກັບ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:786
@@ -2532,9 +2487,7 @@ msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr "ວິທີໃຊ້: kickstart_addactivationkeys PROFILE <KEY ...>"
 
 #: ../src/spacecmd/kickstart.py:873
-msgid ""
-"kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
-"profile"
+msgid "kickstart_removeactivationkeys: Remove activation keys from a Kickstart profile"
 msgstr "kickstart_removeactivationkeys: ລຶບຄີການເປີດໃຊ້ອອກຈາກ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:877
@@ -2546,9 +2499,7 @@ msgid "Remove these keys [y/N]:"
 msgstr "ລຶບຄີເຫຼົ່ານີ້ແທ້ຫຼືບໍ່ [y/N]:"
 
 #: ../src/spacecmd/kickstart.py:923
-msgid ""
-"kickstart_enableconfigmanagement: Enable configuration management on a "
-"Kickstart profile"
+msgid "kickstart_enableconfigmanagement: Enable configuration management on a Kickstart profile"
 msgstr "kickstart_enableconfigmanagement: ເປີດໃຊ້ການຈັດການການກຳນົດຄ່າໃນ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:927
@@ -2556,9 +2507,7 @@ msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr "ວິທີໃຊ້: kickstart_enableconfigmanagement PROFILE"
 
 #: ../src/spacecmd/kickstart.py:962
-msgid ""
-"kickstart_disableconfigmanagement: Disable configuration management on a "
-"Kickstart profile"
+msgid "kickstart_disableconfigmanagement: Disable configuration management on a Kickstart profile"
 msgstr "kickstart_disableconfigmanagement: ປິດການຈັດການການກຳນົດຄ່າໃນ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:966
@@ -2566,8 +2515,7 @@ msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr "ວິທີໃຊ້: kickstart_disableconfigmanagement PROFILE"
 
 #: ../src/spacecmd/kickstart.py:1001
-msgid ""
-"kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
+msgid "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr "kickstart_enableremotecommands: ເປີດໃຊ້ຄຳສັ່ງທາງໄກໃນ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1005
@@ -2575,9 +2523,7 @@ msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr "ວິທີໃຊ້: kickstart_enableremotecommands PROFILE"
 
 #: ../src/spacecmd/kickstart.py:1040
-msgid ""
-"kickstart_disableremotecommands: Disable remote commands on a Kickstart "
-"profile"
+msgid "kickstart_disableremotecommands: Disable remote commands on a Kickstart profile"
 msgstr "kickstart_disableremotecommands: ປິດຄຳສັ່ງທາງໄກໃນ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1044
@@ -2601,8 +2547,7 @@ msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr "ວິທີໃຊ້: kickstart_setselinux PROFILE MODE"
 
 #: ../src/spacecmd/kickstart.py:1157
-msgid ""
-"kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
+msgid "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr "kickstart_setpartitions: ກຳນົດຮູບແບບການແບ່ງພາດທິຊັນ ສຳລັບ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1161
@@ -2687,8 +2632,7 @@ msgid "usage: kickstart_listoptions PROFILE"
 msgstr "ວິທີໃຊ້: kickstart_listoptions PROFILE"
 
 #: ../src/spacecmd/kickstart.py:1616
-msgid ""
-"kickstart_listcustomoptions: List the custom options of a Kickstart profile"
+msgid "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr "kickstart_listcustomoptions: ສະແດງລາຍຊື່ຕົວເລືອກກຳນົດເອງຂອງ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1620
@@ -2712,8 +2656,7 @@ msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 
 #: ../src/spacecmd/kickstart.py:1770
-msgid ""
-"kickstart_removechildchannels: Remove child channels from a Kickstart profile"
+msgid "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr "kickstart_removechildchannels: ລຶບຊ່ອງທາງລູກອອກຈາກ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1774
@@ -2721,8 +2664,7 @@ msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 
 #: ../src/spacecmd/kickstart.py:1818
-msgid ""
-"kickstart_listchildchannels: List the child channels of a Kickstart profile"
+msgid "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr "kickstart_listchildchannels: ສະແດງລາຍຊື່ຊ່ອງທາງລູກຂອງ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1822
@@ -2730,8 +2672,7 @@ msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr "ວິທີໃຊ້: kickstart_listchildchannels PROFILE"
 
 #: ../src/spacecmd/kickstart.py:1862
-msgid ""
-"kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
+msgid "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr "kickstart_addfilepreservations: ເພີ່ມການຮັກສາໄຟລ໌ເຂົ້າໃນ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1866
@@ -2739,9 +2680,7 @@ msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr "ວິທີໃຊ້: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 
 #: ../src/spacecmd/kickstart.py:1906
-msgid ""
-"kickstart_removefilepreservations: Remove file preservations from a "
-"Kickstart profile"
+msgid "kickstart_removefilepreservations: Remove file preservations from a Kickstart profile"
 msgstr "kickstart_removefilepreservations: ລຶບການຮັກສາໄຟລ໌ອອກຈາກ Kickstart profile"
 
 #: ../src/spacecmd/kickstart.py:1910
@@ -2922,10 +2861,8 @@ msgstr "kickstart_export: ສົ່ງອອກໂປຣໄຟລ໌ kickstart �
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to "
-"<KSPROFILE>.json\n"
-"                      if exporting a single kickstart, profiles.json for "
-"multiple\n"
+"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json\n"
+"                      if exporting a single kickstart, profiles.json for multiple\n"
 "                      kickstarts, or ks_all.json if no KSPROFILE specified\n"
 "                      e.g (export ALL)\n"
 "\n"
@@ -2946,9 +2883,7 @@ msgid "Exporting ALL kickstart profiles to %s"
 msgstr "ກຳລັງສົ່ງອອກທັງໝົດໂປຣໄຟລ໌ kickstart ໄປຍັງ %s"
 
 #: ../src/spacecmd/kickstart.py:2545
-msgid ""
-"Error, no valid kickstart profile passed, check name is  correct with "
-"spacecmd kickstart_list"
+msgid "Error, no valid kickstart profile passed, check name is  correct with spacecmd kickstart_list"
 msgstr "ຂໍ້ຜິດພາດ, ບໍ່ມີໂປຣໄຟລ໌ kickstart ທີ່ຖືກຕ້ອງຖືກສົ່ງມາ, ກະລຸນາກວດສອບຊື່ໃຫ້ຖືກຕ້ອງດ້ວຍຄຳສັ່ງ spacecmd kickstart_list"
 
 #: ../src/spacecmd/kickstart.py:2568
@@ -3024,9 +2959,7 @@ msgid "GPG/SSL key %s does not exist on the Spacewalk server, skipping"
 msgstr "GPG/SSL key %s ບໍ່ມີຢູ່ໃນເຊີບເວີ Spacewalk, ກຳລັງຂ້າມໄປ"
 
 #: ../src/spacecmd/kickstart.py:2806
-msgid ""
-"Due to API ommissions, there are some settings which cannot be imported, "
-"please check and fixup manually if necessary"
+msgid "Due to API ommissions, there are some settings which cannot be imported, please check and fixup manually if necessary"
 msgstr "ເນື່ອງຈາກຂໍ້ຈຳກັດຂອງ API, ມີບາງການຕັ້ງຄ່າທີ່ບໍ່ສາມາດນຳເຂົ້າໄດ້, ກະລຸນາກວດສອບ ແລະ ແກ້ໄຂດ້ວຍຕົນເອງຖ້າຈຳເປັນ"
 
 #: ../src/spacecmd/kickstart.py:2810
@@ -3155,14 +3088,11 @@ msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr "kickstart_setsoftwaredetails: ຕັ້ງຄ່າລາຍລະອຽດຊອບແວຂອງໂປຣໄຟລ໌ kickstart."
 
 #: ../src/spacecmd/kickstart.py:3088
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr "ການນຳໃຊ້: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 
 #: ../src/spacecmd/kickstart.py:3092
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
-"KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE KICKSTART_PACKAGES_INFO VALUE"
 msgstr "ການນຳໃຊ້: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE KICKSTART_PACKAGES_INFO VALUE"
 
 #: ../src/spacecmd/kickstart.py:3132
@@ -3601,7 +3531,6 @@ msgstr "ບໍ່ພົບອົງກອນທີ່ຊື່ %s"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "ບໍ່ພົບອົງກອນ '{}'"
 
@@ -3631,7 +3560,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ສຳລັບຊື່ %s"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "ບໍ່ພົບອົງກອນ '{}' ທີ່ຈະສ້າງຄວາມເຊື່ອຖື"
 
@@ -3665,7 +3593,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ສຳລັບຊື່ %s"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "ບໍ່ພົບອົງກອນທີ່ເຊື່ອຖືໄດ້ '{}'"
 
@@ -3875,8 +3802,7 @@ msgid "Advanced Search:"
 msgstr "ການຄົ້ນຫາແບບລະອຽດ:"
 
 #: ../src/spacecmd/package.py:164
-msgid ""
-"Available Fields: name, epoch, version, release, arch, description, summary"
+msgid "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr "ຟິວທີ່ມີໃຫ້: name, epoch, version, release, arch, description, summary"
 
 #: ../src/spacecmd/package.py:166
@@ -3960,38 +3886,51 @@ msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr "Dependency: %s ປະເພດ: %s Modifier: %s"
 
 #: ../src/spacecmd/proxy.py:41
-msgid ""
-"proxy_container_config: create a proxy system and return its configuration "
-"file"
+msgid "proxy_container_config: create a proxy system and return its configuration file"
 msgstr "proxy_container_config: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າຂອງມັນ"
 
 #: ../src/spacecmd/proxy.py:46
+#, fuzzy, python-format
+#| msgid ""
+#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+#| "\n"
+#| "parameters:\n"
+#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
+#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
+#| "  EMAIL       the email of the proxy administrator\n"
+#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
+#| "  CRT         path to the proxy certificate in PEM format\n"
+#| "  KEY         path to the proxy certificate private key in PEM format\n"
+#| "\n"
+#| "options:\n"
+#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
+#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
+#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
+#| "            certicate in PEM format. May be provided multiple times.\n"
+#| "\n"
+#| "examples:\n"
+#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgid ""
-"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL ROOT_CA CRT KEY\n"
+"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "parameters:\n"
 "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
-"  CA          path to the root CA used to sign the proxy certificate in PEM "
-"format\n"
+"  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
 "  CRT         path to the proxy certificate in PEM format\n"
 "  KEY         path to the proxy certificate private key in PEM format\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 "
-"proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
 "ການນຳໃຊ້: proxy_container_config [ຕົວເລືອກ] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4014,32 +3953,41 @@ msgstr ""
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 
 #: ../src/spacecmd/proxy.py:114
-msgid ""
-"proxy_container_config_nossl: create a proxy system and return its "
-"configuration file without SSL certificate"
+msgid "proxy_container_config_nossl: create a proxy system and return its configuration file without SSL certificate"
 msgstr "proxy_container_config_nossl: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າໂດຍບໍ່ໃຊ້ໃບຢັ້ງຢືນ SSL"
 
 #: ../src/spacecmd/proxy.py:119
+#, fuzzy, python-format
+#| msgid ""
+#| "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
+#| "\n"
+#| "parameters:\n"
+#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
+#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
+#| "  EMAIL       the email of the proxy administrator\n"
+#| "\n"
+#| "options:\n"
+#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
+#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
+#| "\n"
+#| "examples:\n"
+#| "  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org\n"
 msgid ""
-"usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN "
-"MAX_CACHE EMAIL\n"
+"usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "parameters:\n"
 "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "\n"
 "examples:\n"
-"  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 "
-"proxy@acme.org\n"
+"  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org\n"
 msgstr ""
 "ການນຳໃຊ້: proxy_container_config_nossl [ຕົວເລືອກ] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4054,54 +4002,38 @@ msgstr ""
 "  -p, --ssh-port ພອດ SSH ຂອງພຣັອກຊີ. ຄ່າເລີ່ມຕົ້ນ: 8022\n"
 
 #: ../src/spacecmd/proxy.py:169
-msgid ""
-"proxy_container_config_generate_cert: create a proxy system and return its "
-"configuration file"
+msgid "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
 msgstr "proxy_container_config_generate_cert: ສ້າງລະບົບພຣັອກຊີ ແລະ ສົ່ງຄືນໄຟລ໌ການຕັ້ງຄ່າຂອງມັນ"
 
 #: ../src/spacecmd/proxy.py:174
+#, python-format
 msgid ""
-"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL\n"
+"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "parameters:\n"
 "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-cert path to the certificate of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-"  --ca-key path to the private key of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-"  --ca-pass path to a file containing the password of the CA private key, "
-"will be prompted if not passed.\n"
-"  --ssl-cname alternate name of the proxy to set in the certificate. Can be "
-"provided multiple times\n"
-"  --ssl-country country code to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-state state name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-city the city name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-org the organization name to set in the certificate. If omitted, "
-"default values from mgr-ssl-tool will be used.\n"
-"  --ssl-org-unit the organization unit name to set in the certificate. If "
-"omitted, default values from mgr-ssl-tool will be used.\n"
-"  --ssl-email the email to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
+"  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
+"  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
+"  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass "
-"password-file\n"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgstr ""
 
 #: ../src/spacecmd/repo.py:51
@@ -4151,7 +4083,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "SSL Client Key ຂອງຄັງເກັບ:         %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "ບໍ່ພົບຄັງເກັບສຳລັບຄຳຄົ້ນຫາ '{}'"
 
@@ -4357,7 +4288,6 @@ msgid "%s  # Systems"
 msgstr "%s  # ລະບົບ"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "ບໍ່ພົບ Errata ສຳລັບ '{}'"
 
@@ -4427,9 +4357,7 @@ msgid "System ID   Last Checkin"
 msgstr "ID ລະບົບ   ການເຊັກອິນຫຼ້າສຸດ"
 
 #: ../src/spacecmd/scap.py:48
-msgid ""
-"scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
-"systems"
+msgid "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems"
 msgstr "scap_listxccdfscans: ສົ່ງຄືນລາຍຊື່ການສະແກນ OpenSCAP ທີ່ສຳເລັດແລ້ວສຳລັບລະບົບທີ່ກຳນົດ"
 
 #: ../src/spacecmd/scap.py:51
@@ -4454,9 +4382,7 @@ msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
 msgstr "XID: %d ໂປຣໄຟລ໌: %s ເສັ້ນທາງ: (%s) ສຳເລັດເມື່ອ: %s"
 
 #: ../src/spacecmd/scap.py:110
-msgid ""
-"scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
-"OpenSCAP XCCDF scan"
+msgid "scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan"
 msgstr "scap_getxccdfscanruleresults: ສົ່ງຄືນລາຍຊື່ RuleResults ທັງໝົດສຳລັບການສະແກນ OpenSCAP XCCDF ທີ່ກຳນົດ"
 
 #: ../src/spacecmd/scap.py:113
@@ -4764,8 +4690,7 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr "ການນຳໃຊ້: schedule_list [BEGINDATE] [ENDDATE]"
 
 #: ../src/spacecmd/schedule.py:495
-msgid ""
-"schedule_deletearchived: Delete all archived actions older than given date."
+msgid "schedule_deletearchived: Delete all archived actions older than given date."
 msgstr "schedule_deletearchived: ລຶບການກະທຳທີ່ເກັບຖາວອນທັງໝົດທີ່ເກົ່າກວ່າວັນທີທີ່ກຳນົດ."
 
 #: ../src/spacecmd/schedule.py:497
@@ -4787,7 +4712,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "ຖ້າບໍ່ລະບຸວັນທີ ມັນຈະລຶບການກະທຳທີ່ເກັບຖາວອນທັງໝົດ"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "ທ່ານຕ້ອງການລຶບ ({}) ການກະທຳທີ່ເກັບຖາວອນຫຼືບໍ່? [y/N]"
 
@@ -4796,9 +4720,7 @@ msgid "No archived actions found."
 msgstr "ບໍ່ພົບການກະທຳທີ່ເກັບຖາວອນ."
 
 #: ../src/spacecmd/schedule.py:576
-msgid ""
-"schedule_archivecompleted: Archive all completed actions older than given "
-"date."
+msgid "schedule_archivecompleted: Archive all completed actions older than given date."
 msgstr "schedule_archivecompleted: ເກັບຖາວອນການກະທຳທີ່ສຳເລັດທັງໝົດທີ່ເກົ່າກວ່າວັນທີທີ່ກຳນົດ."
 
 #: ../src/spacecmd/schedule.py:579
@@ -4810,7 +4732,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "ຖ້າບໍ່ລະບຸວັນທີ ມັນຈະເກັບຖາວອນການກະທຳທີ່ສຳເລັດທັງໝົດ"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "ທ່ານຕ້ອງການເກັບຖາວອນ ({}) ການກະທຳທີ່ສຳເລັດຫຼືບໍ່? [y/N]"
 
@@ -4979,9 +4900,7 @@ msgid "softwarechannel_listchildchannels : List all child channels"
 msgstr "softwarechannel_listchildchannels : ສະແດງລາຍຊື່ຊ່ອງທາງຍ່ອຍທັງໝົດ"
 
 #: ../src/spacecmd/softwarechannel.py:214
-msgid ""
-"softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
-"channel"
+msgid "softwarechannel_listchildchannels CHANNEL : List children for aspecific base channel"
 msgstr "softwarechannel_listchildchannels CHANNEL : ສະແດງລາຍຊື່ຊ່ອງທາງຍ່ອຍສຳລັບຊ່ອງທາງຫຼັກທີ່ລະບຸ"
 
 #: ../src/spacecmd/softwarechannel.py:218
@@ -5023,9 +4942,7 @@ msgid "usage: softwarechannel_listallpackages CHANNEL"
 msgstr "ການນຳໃຊ້: softwarechannel_listallpackages CHANNEL"
 
 #: ../src/spacecmd/softwarechannel.py:386
-msgid ""
-"softwarechannel_listlatestpackages: List the newest version of all packages "
-"in a channel"
+msgid "softwarechannel_listlatestpackages: List the newest version of all packages in a channel"
 msgstr "softwarechannel_listlatestpackages: ສະແດງລາຍຊື່ແພັກເກດເວີຊັນໃໝ່ລ່າສຸດທັງໝົດໃນຊ່ອງທາງ"
 
 #: ../src/spacecmd/softwarechannel.py:389
@@ -5224,8 +5141,7 @@ msgid "                            software channel"
 msgstr "                            ຊ່ອງທາງຊອບແວ"
 
 #: ../src/spacecmd/softwarechannel.py:684
-msgid ""
-"usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+msgid "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr "ການນຳໃຊ້: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 
 #: ../src/spacecmd/softwarechannel.py:750
@@ -5499,16 +5415,14 @@ msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
 msgstr "ຍອມຮັບສະເພາະຄ່າ [yes/no] ສຳລັບ --disable-gpg-check"
 
 #: ../src/spacecmd/softwarechannel.py:1267
-msgid ""
-"softwarechannel_clonetree: Clone a software channel and its child channels"
+msgid "softwarechannel_clonetree: Clone a software channel and its child channels"
 msgstr "softwarechannel_clonetree: ສຳເນົາຊ່ອງທາງຊອບແວ ແລະ ຊ່ອງທາງຍ່ອຍຂອງມັນ"
 
 #: ../src/spacecmd/softwarechannel.py:1271
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "options:\n"
@@ -5565,9 +5479,7 @@ msgid "Add these packages [y/N]:"
 msgstr "ເພີ່ມແພັກເກດເຫຼົ່ານີ້ຫຼືບໍ່ [y/N]:"
 
 #: ../src/spacecmd/softwarechannel.py:1554
-msgid ""
-"softwarechannel_mergepackages: Merge packages from one software channel into "
-"another"
+msgid "softwarechannel_mergepackages: Merge packages from one software channel into another"
 msgstr "softwarechannel_mergepackages: ລວມແພັກເກດຈາກຊ່ອງທາງຊອບແວໜຶ່ງເຂົ້າໄປໃນອີກຊ່ອງທາງໜຶ່ງ"
 
 #: ../src/spacecmd/softwarechannel.py:1557
@@ -5615,15 +5527,11 @@ msgid "No packages to remove"
 msgstr "ບໍ່ມີແພັກເກດທີ່ຈະລຶບ"
 
 #: ../src/spacecmd/softwarechannel.py:1759
-msgid ""
-"softwarechannel_adderratabydate: Add errata from one channel into another "
-"channel based on a date range"
+msgid "softwarechannel_adderratabydate: Add errata from one channel into another channel based on a date range"
 msgstr "softwarechannel_adderratabydate: ເພີ່ມ Errata ຈາກຊ່ອງທາງໜຶ່ງເຂົ້າໃນອີກຊ່ອງທາງໜຶ່ງຕາມຊ່ວງວັນທີ"
 
 #: ../src/spacecmd/softwarechannel.py:1765
-msgid ""
-"usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
-"ENDDATE"
+msgid "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"
 msgstr "ການນຳໃຊ້: softwarechannel_adderratabydate [ຕົວເລືອກ] SOURCE DEST BEGINDATE ENDDATE"
 
 #: ../src/spacecmd/softwarechannel.py:1768
@@ -5661,9 +5569,7 @@ msgid "Publishing errata %s to %s"
 msgstr "ກຳລັງເຜີຍແຜ່ Errata %s ໄປຍັງ %s"
 
 #: ../src/spacecmd/softwarechannel.py:1853
-msgid ""
-"softwarechannel_listerratabydate: list errata from channelbased on a date "
-"range"
+msgid "softwarechannel_listerratabydate: list errata from channelbased on a date range"
 msgstr "softwarechannel_listerratabydate: ສະແດງລາຍຊື່ Errata ຈາກຊ່ອງທາງຕາມຊ່ວງວັນທີ"
 
 #: ../src/spacecmd/softwarechannel.py:1857
@@ -5675,8 +5581,7 @@ msgid "No errata found between the given dates"
 msgstr "ບໍ່ພົບ Errata ໃນຊ່ວງວັນທີທີ່ກຳນົດ"
 
 #: ../src/spacecmd/softwarechannel.py:1916
-msgid ""
-"softwarechannel_adderrata: Add patches from one channel into another channel"
+msgid "softwarechannel_adderrata: Add patches from one channel into another channel"
 msgstr "softwarechannel_adderrata: ເພີ່ມ Patch ຈາກຊ່ອງທາງໜຶ່ງເຂົ້າໃນອີກຊ່ອງທາງໜຶ່ງ"
 
 #: ../src/spacecmd/softwarechannel.py:1920
@@ -5714,14 +5619,11 @@ msgid "Using the old errata.clone function"
 msgstr "ກຳລັງໃຊ້ຟັງຊັນ errata.clone ແບບເກົ່າ"
 
 #: ../src/spacecmd/softwarechannel.py:2052
-msgid ""
-"If you have base channels for multiple OS versions, check no unexpected "
-"packages have been added"
+msgid "If you have base channels for multiple OS versions, check no unexpected packages have been added"
 msgstr "ຖ້າທ່ານມີຊ່ອງທາງຫຼັກ (Base channels) ສຳລັບ OS ຫຼາຍເວີຊັນ, ກະລຸນາກວດສອບວ່າບໍ່ມີແພັກເກດທີ່ບໍ່ຕ້ອງການຖືກເພີ່ມເຂົ້າໄປ"
 
 #: ../src/spacecmd/softwarechannel.py:2069
-msgid ""
-"softwarechannel_getorgaccess: Get the org-access for the software channel"
+msgid "softwarechannel_getorgaccess: Get the org-access for the software channel"
 msgstr "softwarechannel_getorgaccess: ເບິ່ງການເຂົ້າເຖິງອົງກອນ (Org-access) ສຳລັບຊ່ອງທາງຊອບແວ"
 
 #: ../src/spacecmd/softwarechannel.py:2071
@@ -5729,8 +5631,7 @@ msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
 msgstr "ວິທີໃຊ້: softwarechannel_getorgaccess [ຊ່ອງທາງ ...]"
 
 #: ../src/spacecmd/softwarechannel.py:2116
-msgid ""
-"softwarechannel_setorgaccess: Set the org-access for the software channel"
+msgid "softwarechannel_setorgaccess: Set the org-access for the software channel"
 msgstr "softwarechannel_setorgaccess: ກຳນົດການເຂົ້າເຖິງອົງກອນ (Org-access) ສຳລັບຊ່ອງທາງຊອບແວ"
 
 #: ../src/spacecmd/softwarechannel.py:2120
@@ -5738,8 +5639,7 @@ msgid ""
 "usage : softwarechannel_setorgaccess <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 "ວິທີໃຊ້ : softwarechannel_setorgaccess <ຊ່ອງທາງ> [ຕົວເລືອກ])\n"
 "-d,--disable : ປິດການເຂົ້າເຖິງອົງກອນ (ສ່ວນຕົວ, ບໍ່ມີການແບ່ງປັນອົງກອນ)\n"
@@ -5772,9 +5672,7 @@ msgid "Disabling %s access for channel : %s "
 msgstr "ກຳລັງປິດການເຂົ້າເຖິງ %s ສຳລັບຊ່ອງທາງ : %s "
 
 #: ../src/spacecmd/softwarechannel.py:2201
-msgid ""
-"softwarechannel_getorgaccesstree: Get the org-access for a software base "
-"channel and its children"
+msgid "softwarechannel_getorgaccesstree: Get the org-access for a software base channel and its children"
 msgstr "softwarechannel_getorgaccesstree: ເບິ່ງການເຂົ້າເຖິງອົງກອນສຳລັບຊ່ອງທາງຊອບແວຫຼັກ ແລະ ຊ່ອງທາງຍ່ອຍ"
 
 #: ../src/spacecmd/softwarechannel.py:2204
@@ -5782,9 +5680,7 @@ msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
 msgstr "ວິທີໃຊ້: softwarechannel_getorgaccesstree [ຊ່ອງທາງ]"
 
 #: ../src/spacecmd/softwarechannel.py:2243
-msgid ""
-"softwarechannel_setorgaccesstree: set the org-access for a software base "
-"channel and its children"
+msgid "softwarechannel_setorgaccesstree: set the org-access for a software base channel and its children"
 msgstr "softwarechannel_setorgaccesstree: ກຳນົດການເຂົ້າເຖິງອົງກອນສຳລັບຊ່ອງທາງຊອບແວຫຼັກ ແລະ ຊ່ອງທາງຍ່ອຍ"
 
 #: ../src/spacecmd/softwarechannel.py:2248
@@ -5792,8 +5688,7 @@ msgid ""
 "usage: softwarechannel_setorgaccesstree <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 "ວິທີໃຊ້: softwarechannel_setorgaccesstree <ຊ່ອງທາງ> [ຕົວເລືອກ])\n"
 "-d,--disable : ປິດການເຂົ້າເຖິງອົງກອນ (ສ່ວນຕົວ, ບໍ່ມີການແບ່ງປັນອົງກອນ)\n"
@@ -5869,8 +5764,7 @@ msgstr "ຊິງຄ໌ (Sync) ແພັກເກດຂອງສອງຊ່ອ�
 #: ../src/spacecmd/softwarechannel.py:2513
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
-"    -q,--quiet : quiet mode (omits the output of common packages in both "
-"channels)"
+"    -q,--quiet : quiet mode (omits the output of common packages in both channels)"
 msgstr ""
 "ວິທີໃຊ້: softwarechannel_sync ຊ່ອງທາງຕົ້ນທາງ ຊ່ອງທາງປາຍທາງ [ຕົວເລືອກ])\n"
 "    -q,--quiet : ໂໝດງຽບ (ບໍ່ສະແດງລາຍຊື່ແພັກເກດທີ່ມີຄືກັນໃນທັງສອງຊ່ອງທາງ)"
@@ -5996,20 +5890,15 @@ msgid "merge errata of one software channel into another"
 msgstr "ຮວມ Errata ຈາກຊ່ອງທາງຊອບແວໜຶ່ງເຂົ້າໃນອີກຊ່ອງທາງໜຶ່ງ"
 
 #: ../src/spacecmd/softwarechannel.py:2818
-msgid ""
-"usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
-"[FROM_DATE] [TO_DATE]"
+msgid "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]"
 msgstr "ວິທີໃຊ້:   softwarechannel_errata_merge ຊ່ອງທາງຕົ້ນທາງ ຊ່ອງທາງປາຍທາງ [ຈາກວັນທີ] [ຫາວັນທີ]"
 
 #: ../src/spacecmd/softwarechannel.py:2823
-msgid ""
-"example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
-"2018-01-01"
+msgid "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 msgstr "ຕົວຢ່າງ: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 
 #: ../src/spacecmd/softwarechannel.py:2826
-msgid ""
-"note:    Providing only FROM_DATE will merge all errata since that date."
+msgid "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr "ໝາຍເຫດ:    ການລະບຸພຽງ [ຈາກວັນທີ] ຈະຮວມ Errata ທັງໝົດຕັ້ງແຕ່ວັນທີນັ້ນເປັນຕົ້ນມາ."
 
 #: ../src/spacecmd/softwarechannel.py:2827
@@ -6031,12 +5920,10 @@ msgid "merging errata from softwarechannel "
 msgstr "ກຳລັງຮວມ Errata ຈາກຊ່ອງທາງຊອບແວ "
 
 #: ../src/spacecmd/softwarechannel.py:2931
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} ບໍ່ມີ Errata ໃໝ່ທີ່ຍັງບໍ່ມີໃນ {}"
 
 #: ../src/spacecmd/softwarechannel.py:2939
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "errata ທີ່ຈະເພີ່ມເຂົ້າໃນຊ່ອງທາງ {}: "
 
@@ -6050,7 +5937,6 @@ msgid " errata to  "
 msgstr " Errata ໄປຫາ  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "ດຳເນີນການປ່ຽນແປງເຫຼົ່ານີ້ກັບຊ່ອງທາງ {} [y/N]:"
 
@@ -6099,15 +5985,11 @@ msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr "ວິທີໃຊ້: softwarechannel_setsyncschedule <ຊ່ອງທາງ> <ຕາຕະລາງ>"
 
 #: ../src/spacecmd/softwarechannel.py:3032
-msgid ""
-"The schedule is specified in Quartz CronTrigger format without enclosing "
-"quotes."
+msgid "The schedule is specified in Quartz CronTrigger format without enclosing quotes."
 msgstr "ຕາຕະລາງຈະຖືກລະບຸໃນຮູບແບບ Quartz CronTrigger ໂດຍບໍ່ຕ້ອງໃສ່ເຄື່ອງໝາຍຄຳເວົ້າ (\")."
 
 #: ../src/spacecmd/softwarechannel.py:3037
-msgid ""
-"For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
-"1 * * ?"
+msgid "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"
 msgstr "ຕົວຢ່າງ, ເພື່ອກຳນົດຕາຕະລາງທຸກໆມື້ເວລາ 01:00 ໂມງ, <ຕາຕະລາງ> ຈະແມ່ນ 0 0 1 * * ?"
 
 #: ../src/spacecmd/softwarechannel.py:3040
@@ -6127,9 +6009,7 @@ msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr "ວິທີໃຊ້: softwarechannel_removesyncschedule <ຊ່ອງທາງ>"
 
 #: ../src/spacecmd/softwarechannel.py:3114
-msgid ""
-"softwarechannel_listsyncschedule: List sync schedules for all software "
-"channels"
+msgid "softwarechannel_listsyncschedule: List sync schedules for all software channels"
 msgstr "softwarechannel_listsyncschedule: ສະແດງລາຍຊື່ຕາຕະລາງການຊິງຄ໌ສຳລັບທຸກຊ່ອງທາງຊອບແວ"
 
 #: ../src/spacecmd/softwarechannel.py:3118
@@ -6822,10 +6702,8 @@ msgid ""
 "  -f local path to file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
 "ວິທີໃຊ້: system_addconfigfile [ລະບົບ] [ຕົວເລືອກ]\n"
@@ -6893,8 +6771,7 @@ msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
 msgstr "ວິທີໃຊ້: system_removeconfigchannels <ລະບົບ> <ຊ່ອງທາງ ...>"
 
 #: ../src/spacecmd/system.py:1789
-msgid ""
-"system_setconfigchannelorder: Set the ranked order of configuration channels"
+msgid "system_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr "system_setconfigchannelorder: ກຳນົດລຳດັບຄວາມສຳຄັນຂອງຊ່ອງທາງການຕັ້ງຄ່າ"
 
 #: ../src/spacecmd/system.py:1792
@@ -6942,8 +6819,7 @@ msgid ""
 "          -c TYPE - Possible values:\n"
 "             *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,\n"
 "             *  'NO_CLEANUP' - do not cleanup, just delete,\n"
-"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway "
-"in case of error\n"
+"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error\n"
 "    "
 msgstr ""
 "ວິທີໃຊ້: system_delete [ຕົວເລືອກ] <ລະບົບ>\n"
@@ -7136,8 +7012,7 @@ msgid "New Base Channel: %s"
 msgstr "ຊ່ອງທາງຫຼັກໃໝ່: %s"
 
 #: ../src/spacecmd/system.py:2726
-msgid ""
-"system_schedulechangechannels: Schedule changing a system's software channels"
+msgid "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr "system_schedulechangechannels: ກຳນົດຕາຕະລາງການປ່ຽນຊ່ອງທາງຊອບແວຂອງລະບົບ"
 
 #: ../src/spacecmd/system.py:2729
@@ -7303,9 +7178,7 @@ msgid "Could not find system IDs for: %s"
 msgstr "ບໍ່ພົບ System ID ສຳລັບ: %s"
 
 #: ../src/spacecmd/system.py:3301 ../src/spacecmd/system.py:3329
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_listeventhistory instead.\n"
+msgid "This method is deprecated and will be removed in a future API version. Please use system_listeventhistory instead.\n"
 msgstr "ວິທີການນີ້ລ້າສະໄໝແລ້ວ ແລະ ຈະຖືກລົບອອກໃນເວີຊັນ API ໃນອະນາຄົດ. ກະລຸນາໃຊ້ system_listeventhistory ແທນ.\n"
 
 #: ../src/spacecmd/system.py:3306
@@ -7335,12 +7208,9 @@ msgid ""
 "usage: system_listeventhistory <SYSTEMS> [options]\n"
 "\n"
 "options:\n"
-"  -s START_TIME list only the events happened after the specified time. "
-"[Default: returns all events]\n"
-"  -o OFFSET skip the first events. Ignored if -l is not specified as well. "
-"[Default: 0]\n"
-"  -l LIMIT limit the results to the specified number of events. [Default: no "
-"limit]"
+"  -s START_TIME list only the events happened after the specified time. [Default: returns all events]\n"
+"  -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]\n"
+"  -l LIMIT limit the results to the specified number of events. [Default: no limit]"
 msgstr ""
 "ວິທີໃຊ້: system_listeventhistory <ລະບົບ> [ຕົວເລືອກ]\n"
 "\n"
@@ -7553,8 +7423,7 @@ msgid "Created package profile '%s'"
 msgstr "ສ້າງໂປຣໄຟລ໌ແພັກເກດ '%s' ສຳເລັດແລ້ວ"
 
 #: ../src/spacecmd/system.py:3894
-msgid ""
-"system_comparepackageprofile: Compare a system against a package profile"
+msgid "system_comparepackageprofile: Compare a system against a package profile"
 msgstr "system_comparepackageprofile: ປຽບທຽບລະບົບກັບໂປຣໄຟລ໌ແພັກເກດ"
 
 #: ../src/spacecmd/system.py:3895
@@ -7673,8 +7542,7 @@ msgstr ""
 "ລະບົບ: %s"
 
 #: ../src/spacecmd/system.py:4366
-msgid ""
-"system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
+msgid "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
 msgstr "system_schedulehardwarerefresh: ກຳນົດຕາຕະລາງການຣີເຟຣຊຮາດແວໃຫ້ລະບົບ"
 
 #: ../src/spacecmd/system.py:4367
@@ -7690,9 +7558,7 @@ msgstr ""
 "  -s ເວລາເລີ່ມຕົ້ນ (START_TIME)"
 
 #: ../src/spacecmd/system.py:4432
-msgid ""
-"system_schedulepackagerefresh: Schedule a software package refresh for a "
-"system"
+msgid "system_schedulepackagerefresh: Schedule a software package refresh for a system"
 msgstr "system_schedulepackagerefresh: ກຳນົດຕາຕະລາງການຣີເຟຣຊແພັກເກດຊອບແວໃຫ້ລະບົບ"
 
 #: ../src/spacecmd/system.py:4435
@@ -7708,9 +7574,7 @@ msgstr ""
 "  -s ເວລາເລີ່ມຕົ້ນ (START_TIME)"
 
 #: ../src/spacecmd/system.py:4499
-msgid ""
-"system_show_packageversion: Shows version of installed package on given "
-"system(s)"
+msgid "system_show_packageversion: Shows version of installed package on given system(s)"
 msgstr "system_show_packageversion: ສະແດງເວີຊັນຂອງແພັກເກດທີ່ຕິດຕັ້ງໃນລະບົບທີ່ລະບຸ"
 
 #: ../src/spacecmd/system.py:4502
@@ -7730,9 +7594,7 @@ msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr "ວິທີໃຊ້: system_setcontactmethod <ລະບົບ> <ວິທີການຕິດຕໍ່>"
 
 #: ../src/spacecmd/system.py:4621
-msgid ""
-"system_scheduleapplyconfigchannels: Schedule applying the assigned config "
-"channels to the System (Minion only)"
+msgid "system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)"
 msgstr "system_scheduleapplyconfigchannels: ກຳນົດຕາຕະລາງການນຳໃຊ້ຊ່ອງທາງການຕັ້ງຄ່າໃຫ້ລະບົບ (ສຳລັບ Minion ເທົ່ານັ້ນ)"
 
 #: ../src/spacecmd/system.py:4625
@@ -7752,9 +7614,7 @@ msgid "Schedule applying config channels to these systems [y/N]:"
 msgstr "ກຳນົດຕາຕະລາງການນຳໃຊ້ຊ່ອງທາງການຕັ້ງຄ່າໃຫ້ລະບົບເຫຼົ່ານີ້ຫຼືບໍ່ [y/N]:"
 
 #: ../src/spacecmd/system.py:4695
-msgid ""
-"system_listmigrationtargets: List possible migration targets for given "
-"systems."
+msgid "system_listmigrationtargets: List possible migration targets for given systems."
 msgstr "system_listmigrationtargets: ສະແດງລາຍຊື່ປາຍທາງການຍ້າຍລະບົບ (Migration) ທີ່ເປັນໄປໄດ້."
 
 #: ../src/spacecmd/system.py:4698
@@ -7786,9 +7646,7 @@ msgid "    Friendly names: "
 msgstr "    ຊື່ທີ່ເຂົ້າໃຈງ່າຍ: "
 
 #: ../src/spacecmd/system.py:4749 ../src/spacecmd/system.py:4777
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_scheduleproductmigration instead."
+msgid "This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead."
 msgstr "ວິທີການນີ້ລ້າສະໄໝແລ້ວ ແລະ ຈະຖືກລົບອອກໃນເວີຊັນ API ໃນອະນາຄົດ. ກະລຸນາໃຊ້ system_scheduleproductmigration ແທນ."
 
 #: ../src/spacecmd/system.py:4754 ../src/spacecmd/system.py:4782
@@ -7796,22 +7654,18 @@ msgid "This method is deprecated and will be removed in a future API version"
 msgstr "ວິທີການນີ້ລ້າສະໄໝແລ້ວ ແລະ ຈະຖືກລົບອອກໃນເວີຊັນ API ໃນອະນາຄົດ"
 
 #: ../src/spacecmd/system.py:4757
-msgid ""
-"system_schedulespmigration: Schedule a Service Pack migration for systems."
+msgid "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr "system_schedulespmigration: ກຳນົດຕາຕະລາງການຍ້າຍ Service Pack ສຳລັບລະບົບ."
 
 #: ../src/spacecmd/system.py:4761
 msgid ""
-"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
 "ວິທີໃຊ້: system_schedulespmigration <ລະບົບ> <ປ້າຍຊື່ຊ່ອງທາງຫຼັກ> <ປາຍທາງການຍ້າຍ> [ຕົວເລືອກ] \n"
 "    ເບິ່ງລາຍລະອຽດປາຍທາງການຍ້າຍຈາກ system_listmigrationtargets. \n"
@@ -7822,26 +7676,20 @@ msgstr ""
 "        -c CHILD_CHANNELS (ປ້າຍຊື່ຊ່ອງທາງຍ່ອຍ ແຍກດ້ວຍຈຸດ ໂດຍບໍ່ມີຍະຫວ່າງ)"
 
 #: ../src/spacecmd/system.py:4792
-msgid ""
-"system_scheduleproductmigration: Schedule a Product migration for systems."
+msgid "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr "system_scheduleproductmigration: ກຳນົດຕາຕະລາງການຍ້າຍຜະລິດຕະພັນ (Product migration) ສຳລັບລະບົບ."
 
 #: ../src/spacecmd/system.py:4796
 msgid ""
-"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        --allow-vendor-change pass this flag if you want to allow vendor "
-"change \n"
-"        -r pass this flag if you want to remove remove products which have "
-"no successors \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        --allow-vendor-change pass this flag if you want to allow vendor change \n"
+"        -r pass this flag if you want to remove remove products which have no successors \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
 "ວິທີໃຊ້: system_scheduleproductmigration <ລະບົບ> <ປ້າຍຊື່ຊ່ອງທາງຫຼັກ> <ປາຍທາງການຍ້າຍ> [ຕົວເລືອກ] \n"
 "    ເບິ່ງລາຍລະອຽດປາຍທາງການຍ້າຍຈາກ system_listmigrationtargets. \n"
@@ -7874,9 +7722,7 @@ msgid "Scheduled action ID: "
 msgstr "ID ຂອງການດຳເນີນການທີ່ກຳນົດຕາຕະລາງ: "
 
 #: ../src/spacecmd/system.py:4886
-msgid ""
-"system_bootstrap: Bootstrap a system for management via either Salt or Salt "
-"SSH."
+msgid "system_bootstrap: Bootstrap a system for management via either Salt or Salt SSH."
 msgstr "system_bootstrap: ບູດສະແຕຣັບ (Bootstrap) ລະບົບເພື່ອຈັດການຜ່ານ Salt ຫຼື Salt SSH."
 
 #: ../src/spacecmd/system.py:4889
@@ -7969,31 +7815,24 @@ msgstr "ເຊີເວີບໍ່ຮອງຮັບຄີເປີດການ
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4974
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "ກຳລັງບູດສະແຕຣັບ '{}'. ອາດຈະໃຊ້ເວລາບຶດໜຶ່ງ."
 
 #: ../src/spacecmd/system.py:5003
-msgid ""
-"Initial phase successfully finished. Check event history for actions still "
-"running"
+msgid "Initial phase successfully finished. Check event history for actions still running"
 msgstr "ຂັ້ນຕອນເລີ່ມຕົ້ນສຳເລັດແລ້ວ. ກວດສອບປະຫວັດເຫດການສຳລັບການດຳເນີນການທີ່ຍັງເຮັດວຽກຢູ່"
 
 #: ../src/spacecmd/system.py:5015
-msgid ""
-"system_needrebootafterupdate: Shows whether a reboot would be needed if "
-"available patches were applied"
+msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
 msgstr "system_needrebootafterupdate: ສະແດງໃຫ້ເຫັນວ່າຈຳເປັນຕ້ອງຣີບູດຫຼືບໍ່ ຫຼັງຈາກນຳໃຊ້ແພັດທີ່ມີຢູ່"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5064
-#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "ລະບົບ '{}' ຈຳເປັນຕ້ອງຣີບູດຫຼັງຈາກການອັບເດດ"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5073
-#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "ບໍ່ຈຳເປັນຕ້ອງຣີບູດລະບົບ '{}' ຫຼັງຈາກນຳໃຊ້ການອັບເດດທີ່ມີຢູ່"
 
@@ -8345,7 +8184,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "ຂ້າມການໃຊ້ຂໍ້ຄວາມທົ່ວໄປ: ຈຳນວນຂໍ້ຄວາມຍ່ອຍແຕກຕ່າງກັນ"
 
 #: ../src/spacecmd/utils.py:993
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "ພາຣາມິເຕີ {} ບໍ່ແມ່ນປະເພດ String, ແຕ່ແມ່ນ {}."
 
@@ -8366,9 +8204,7 @@ msgid "use this username to connect to the server"
 msgstr "ໃຊ້ຊື່ຜູ້ໃຊ້ນີ້ເພື່ອເຊື່ອມຕໍ່ກັບເຊີເວີ"
 
 #: ../src/bin/spacecmd:119
-msgid ""
-"use this password to connect to the server (insecure). Use config instead or "
-"spacecmd will ask."
+msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
 msgstr "ໃຊ້ລະຫັດຜ່ານນີ້ເພື່ອເຊື່ອມຕໍ່ກັບເຊີເວີ (ບໍ່ປອດໄພ). ແນະນຳໃຫ້ໃຊ້ໄຟລ໌ຄອນຟິກ ຫຼື ໃຫ້ spacecmd ຖາມແທນ."
 
 #: ../src/bin/spacecmd:123
