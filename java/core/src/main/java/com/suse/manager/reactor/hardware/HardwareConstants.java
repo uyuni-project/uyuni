@@ -127,6 +127,23 @@ public final class HardwareConstants {
     // SLE 11 reports a wrong (big-endian) virtual UUID and needs to be coerced
     public static final String SLE11_OSRELEASE_PREFIX = "11";
 
+    // Mainframe sysinfo keys, as returned by the salt module mainframesysinfo.read_values
+    public static final String SYSINFO_KEY_SEQUENCE_CODE = "Sequence Code";
+    public static final String SYSINFO_KEY_TYPE = "Type";
+    public static final String SYSINFO_KEY_CPUS_TOTAL = "CPUs Total";
+    public static final String SYSINFO_KEY_CONTROL_PROGRAM = "control program";
+
+    // S390 mainframe host registration
+    public static final String S390_DEFAULT_CONTROL_PROGRAM = "z/VM";
+    public static final String S390_UNKNOWN_OS_VERSION = "N/A";
+    public static final String S390_DIGITAL_SERVER_ID_FORMAT = "Z-%s";
+    public static final String S390_HOST_NAME_FORMAT = "IBM Mainframe %s %s %s";
+    public static final String S390_HOST_DESCRIPTION_FORMAT =
+            "Initial Registration Parameters:\nOS: %s\nRelease: %s\nCPU Arch: %s";
+    public static final String SERVER_ARCH_LINUX_SUFFIX = "-redhat-linux";
+    public static final String CONTACT_METHOD_DEFAULT = "default";
+    public static final int SERVER_SECRET_LENGTH = 64;
+
     // Error messages
     public static final String GRAIN_VIRTUAL_HAS_NO_VALUE = "Virtualization: Grain 'virtual' has no value";
     public static final String HARDWARE_REFRESH_INCOMPLETE = "Hardware list could not be refreshed completely:\n";
