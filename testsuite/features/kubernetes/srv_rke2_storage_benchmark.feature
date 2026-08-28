@@ -1,4 +1,4 @@
-# Copyright (c) 2026 SUSE LLC
+# Copyright (c) 2026 Akash Kumar <meakash7902@gmail.com>
 # Licensed under the terms of the MIT license.
 #
 
