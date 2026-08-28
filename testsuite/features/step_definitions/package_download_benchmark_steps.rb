@@ -29,11 +29,11 @@ def package_download_api
     end
 end
 
-# Normalize Uyuni channel packages for:
-# - checking available versions on each minion;
-# - comparing the channel snapshot before and after the download;
-# - matching cached RPMs by checksum; and
-# - recording package details in result.json.
+# Convert Uyuni API package records into the values used by the benchmark:
+# - exclude source and Debian packages;
+# - build the RPM EVR used for repository checks;
+# - lowercase checksums used to match zypper cache directories; and
+# - retain stable fields for snapshot comparison and result.json.
 def package_download_packages(records)
   packages =
     records.filter_map do |package|
