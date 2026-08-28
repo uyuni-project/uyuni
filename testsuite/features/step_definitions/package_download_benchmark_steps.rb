@@ -29,7 +29,11 @@ def package_download_api
     end
 end
 
-# Convert Uyuni package records to the RPM identities used by the benchmark.
+# Normalize Uyuni channel packages for:
+# - checking available versions on each minion;
+# - comparing the channel snapshot before and after the download;
+# - matching cached RPMs by checksum; and
+# - recording package details in result.json.
 def package_download_packages(records)
   packages =
     records.filter_map do |package|
