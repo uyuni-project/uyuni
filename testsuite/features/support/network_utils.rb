@@ -28,7 +28,9 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
       end
     end
   rescue Timeout::Error
-    puts "SSH operation timed out after #{timeout} seconds."
+    stderr = "SSH operation timed out after #{timeout} seconds."
+    exit_code = 124
+    puts stderr
   rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET
     puts "Unable to reach the SSH server at #{host}:#{port}"
   rescue Net::SSH::AuthenticationFailed
