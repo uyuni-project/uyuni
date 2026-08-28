@@ -7,9 +7,9 @@ require 'json'
 require 'shellwords'
 require 'time'
 
-PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_TIMEOUT = 14_400
+PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_WORKLOAD_TIMEOUT = 14_400
+PACKAGE_DOWNLOAD_BENCHMARK_CONTROL_TIMEOUT = 600
 PACKAGE_DOWNLOAD_BENCHMARK_CACHE_ROOT = '/var/cache/zypp/packages'.freeze
-PACKAGE_DOWNLOAD_BENCHMARK_IDLE_TIMEOUT = 600
 PACKAGE_DOWNLOAD_BENCHMARK_IDLE_POLL_SECONDS = 2
 PACKAGE_DOWNLOAD_BENCHMARK_SOURCE_ARCHES = %w[src nosrc source srcpackage].freeze
 
@@ -48,9 +48,9 @@ def package_download_benchmark_channel
   channel
 end
 
-# Return the validated Salt command timeout.
-def package_download_benchmark_timeout
-  value = ENV.fetch('UYUNI_BENCH_TIMEOUT_SECONDS', PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_TIMEOUT.to_s)
+# Return the validated package-download workload timeout.
+def package_download_benchmark_workload_timeout
+  value = ENV.fetch('UYUNI_BENCH_TIMEOUT_SECONDS', PACKAGE_DOWNLOAD_BENCHMARK_DEFAULT_WORKLOAD_TIMEOUT.to_s)
   timeout = Integer(value, 10)
   raise 'UYUNI_BENCH_TIMEOUT_SECONDS must be between 1 and 86400' unless timeout.between?(1, 86_400)
 
@@ -76,7 +76,7 @@ def package_download_benchmark_inputs
     minions: package_download_benchmark_minions,
     channel: package_download_benchmark_channel,
     storage_class: package_download_benchmark_storage_class,
-    timeout_seconds: package_download_benchmark_timeout
+    timeout_seconds: package_download_benchmark_workload_timeout
   }
 end
 
@@ -284,8 +284,8 @@ rescue JSON::ParserError, KeyError => e
   raise "Unable to parse the Uyuni server pod response: #{e.message}"
 end
 
-# Build one synchronous Salt list-target command.
-def package_download_benchmark_salt(inputs, function, arguments, timeout_seconds: inputs[:timeout_seconds])
+# Build one synchronous Salt list-target command with an explicit response timeout.
+def package_download_benchmark_salt(inputs, function, arguments, timeout_seconds:)
   [
     'salt',
     '--static',
@@ -319,15 +319,15 @@ def package_download_benchmark_target_errors(output, expected_minions)
 end
 
 # Run and validate one structured Salt call outside the measurement.
-def package_download_benchmark_salt_call(inputs, pod, function, arguments, context, timeout_seconds: inputs[:timeout_seconds])
+def package_download_benchmark_salt_call(inputs, pod, function, arguments, context, timeout_seconds: [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_CONTROL_TIMEOUT].min)
   salt = package_download_benchmark_salt(inputs, function, arguments, timeout_seconds: timeout_seconds)
-  timeout = timeout_seconds + 60
+  remote_timeout = timeout_seconds + 60
   command = package_download_benchmark_kubectl_command(pod, salt)
   stdout, stderr, code = get_target('localhost').run_local(
     command,
     separated_results: true,
     check_errors: false,
-    timeout: timeout
+    timeout: remote_timeout
   )
   raise "#{context} exited with #{code}: #{package_download_benchmark_excerpt(stderr)}" unless code.zero?
 
@@ -474,7 +474,7 @@ end
 
 # Require two consecutive complete observations with no active Salt jobs.
 def package_download_benchmark_wait_for_idle(inputs, pod)
-  wait_seconds = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_IDLE_TIMEOUT].min
+  wait_seconds = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_CONTROL_TIMEOUT].min
   deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + wait_seconds
   idle_observations = 0
   latest = {}
@@ -500,7 +500,8 @@ end
 
 # Clear package payload caches on every benchmark minion outside the measurement.
 def package_download_benchmark_clear_cache(inputs, pod)
-  command_timeout = [inputs[:timeout_seconds] - 15, 1].max
+  control_timeout = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_CONTROL_TIMEOUT].min
+  command_timeout = [control_timeout - 15, 1].max
   script = <<~SH
     cache_root=#{PACKAGE_DOWNLOAD_BENCHMARK_CACHE_ROOT}
     test -d "$cache_root" || { echo "Missing RPM payload cache: $cache_root" >&2; exit 10; }
@@ -514,15 +515,16 @@ def package_download_benchmark_clear_cache(inputs, pod)
     package_download_benchmark_salt(
       inputs,
       'cmd.run_all',
-      [script, 'python_shell=True', "timeout=#{command_timeout}"]
+      [script, 'python_shell=True', "timeout=#{command_timeout}"],
+      timeout_seconds: control_timeout
     )
-  timeout = inputs[:timeout_seconds] + 60
+  remote_timeout = control_timeout + 60
   command = package_download_benchmark_kubectl_command(pod, salt)
   stdout, stderr, code = get_target('localhost').run_local(
     command,
     separated_results: true,
     check_errors: false,
-    timeout: timeout
+    timeout: remote_timeout
   )
   raise "RPM cache reset exited with #{code}: #{stderr}" unless code.zero?
 
@@ -837,8 +839,8 @@ end
 
 # Query and verify the structured downloaded-package inventory after timing.
 def package_download_benchmark_verify(inputs, pod)
-  inventory_timeout = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_IDLE_TIMEOUT].min
-  command_timeout = [inventory_timeout - 15, 1].max
+  control_timeout = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_BENCHMARK_CONTROL_TIMEOUT].min
+  command_timeout = [control_timeout - 15, 1].max
   returns =
     package_download_benchmark_salt_call(
       inputs,
@@ -851,7 +853,7 @@ def package_download_benchmark_verify(inputs, pod)
         "timeout=#{command_timeout}"
       ],
       'Package cache verification',
-      timeout_seconds: inventory_timeout
+      timeout_seconds: control_timeout
     )
   per_minion =
     inputs[:minions].map do |minion|
