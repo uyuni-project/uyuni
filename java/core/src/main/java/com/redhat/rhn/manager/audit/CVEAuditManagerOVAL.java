@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -333,6 +334,7 @@ public class CVEAuditManagerOVAL {
      * Launches the OVAL synchronization process
      * */
     public static void syncOVAL() {
+        Date startDate = new Date();
         Set<OVALOsProduct> osProductsToSync = getProductsToSync();
 
         LOG.debug("Detected {} products eligible for OVAL synchronization: {}",
@@ -347,6 +349,14 @@ public class CVEAuditManagerOVAL {
                 LOG.error("Failed to sync OVAL for OS product '{} {}'",
                         osProduct.getOsFamily().fullname(), osProduct.getOsVersion(), e);
             }
+        }
+
+        LOG.info("Deleting old OVAL metadata older than {}", startDate);
+        try {
+            OVALCachingFactory.deleteOldOVALMetadata(startDate);
+        }
+        catch (Exception e) {
+            LOG.error("Failed to delete old OVAL metadata", e);
         }
     }
 
@@ -366,14 +376,11 @@ public class CVEAuditManagerOVAL {
         LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
         downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
-            // we need this to avoid any conflicts with the previously stored OVAL metadata.
-            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
             extractAndSaveOVALData(osProduct, ovalVulnerabilityFile);
             LOG.debug("Saving Vulnerability OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
 
         downloadResult.getPatchFile().ifPresent(patchFile -> {
-            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
             extractAndSaveOVALData(osProduct, patchFile);
             LOG.debug("Saving Patch OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
