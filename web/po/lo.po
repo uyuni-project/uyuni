@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/range/Range.tsx:52
+#: ../html/src/components/input/range/Range.tsx:53
+#: ../html/src/components/input/range/Range.tsx:65
+#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 10:52+0200\n"
+"POT-Creation-Date: 2026-08-28 09:41+0200\n"
 "PO-Revision-Date: 2026-08-27 05:53+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
@@ -26,16 +30,6 @@ msgstr "ຍັງເຫຼືອ"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "ບໍ່ຮອງຮັບບຣາວເຊີ Internet Explorer. ກະລຸນາລອງໃຊ້ Firefox, Chrome ຫຼື Edge"
-
-#: ../html/src/components/CoCoScansList.tsx:78
-#: ../html/src/components/package/PackageListActionScheduler.tsx:84
-#: ../html/src/components/product-migration/utils.tsx:95
-#: ../html/src/manager/appstreams/appstreams.tsx:61
-#: ../html/src/manager/state/highstate.tsx:63
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
-msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -94,10 +88,6 @@ msgstr "ບໍ່ມີການສະແກນ"
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "ບັນທຶກຟໍມູລາແລ້ວ. ບໍ່ຈຳເປັນຕ້ອງໃຊ້ highstate ສຳລັບຟໍມູລານີ້."
-
-#: ../html/src/components/FormulaForm.tsx:134
-msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -293,7 +283,7 @@ msgstr "ນາມສະກຸນ"
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:107
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:127
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:134
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:179
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:198
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
@@ -312,10 +302,6 @@ msgstr "ຊື່"
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 msgid "Attestations"
 msgstr "ການຢັ້ງຢືນ"
-
-#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
-msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -386,7 +372,7 @@ msgstr "ເວລາການຢັ້ງຢືນ"
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:168
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:133
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:269
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:208
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:227
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:692
@@ -541,7 +527,7 @@ msgstr "ເລືອກຕາຕະລາງ"
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:122
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:120
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:218
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:15
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:98
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:33
@@ -609,7 +595,7 @@ msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການ {acti
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:48
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:205
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
 #: ../html/src/manager/images/image-view-overview.tsx:731
@@ -639,9 +625,9 @@ msgstr "ຍົກເລີກ"
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:99
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:105
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:92
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:154
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:229
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:155
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:243
 #: ../html/src/manager/content-management/project/project.tsx:106
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:211
@@ -940,7 +926,7 @@ msgstr "ຊື່ຊ່ອງທາງ"
 #: ../html/src/components/table/nested-data.example.tsx:62
 #: ../html/src/manager/admin/setup/products/products.tsx:605
 #: ../html/src/manager/admin/setup/products/products.tsx:997
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
 msgid "Architecture"
@@ -1776,11 +1762,11 @@ msgstr "ກັ່ນຕອງດ້ວຍຊື່ແພັກເກດ"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:270
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:312
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:158
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:273
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:315
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
@@ -1789,14 +1775,6 @@ msgstr "ຊື່ແພັກເກດ"
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
 msgstr "ລາຍການ {from} - {to} ຈາກທັງໝົດ {total}"
-
-#: ../html/src/components/pagination.tsx:139
-msgid ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> of # page}\n"
-"            other {<dropdown></dropdown> of # pages}\n"
-"        }"
-msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1861,10 +1839,6 @@ msgstr "ຈຳກັດວັນທີໄວ້ທີ່ 28 ເພື່ອໃ�
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
 msgstr "ຮູບແບບ Quartz ແບບກຳນົດເອງ:"
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:489
-msgid "e.g. \"0 15 2 ? * 7\""
-msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
@@ -2226,7 +2200,7 @@ msgid "Peripheral Server"
 msgstr "ເຊີເວີອຸປະກອນຕໍ່ພ່ວງ"
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
 msgid "Security Advisory"
 msgstr "ຄຳແນະນຳຄວາມປອດໄພ"
 
@@ -2260,7 +2234,7 @@ msgid "not equal to"
 msgstr "ບໍ່ເທົ່າກັບ"
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:142
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:144
 msgid "Matcher"
 msgstr "ຕົວຈັບຄູ່"
 
@@ -2386,14 +2360,6 @@ msgstr "ຕ້ອງການຊ່ອງທາງນີ້"
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "ກະລຸນາເບິ່ງ <link>Format.JS docs</link> ສຳລັບຮູບແບບໄວຍາກອນຂອງຂໍ້ຄວາມ."
-
-#: ../html/src/core/intl/index.example.tsx:23
-msgid ""
-"Always use plural forms for numbers: {fooCount, plural,\n"
-"            one {only one item}\n"
-"            other {{fooCount} items}\n"
-"          }."
-msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2777,12 +2743,16 @@ msgid "Hub Details"
 msgstr "ລາຍລະອຽດຮັບ (Hub)"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+#, fuzzy
+#| msgid "A customized GPG key is currently configured for this hub."
+msgid "No hub is currently configured for this server. "
+msgstr "ກະແຈ GPG ທີ່ກຳນົດເອງຖືກຕັ້ງຄ່າໄວ້ສຳລັບຮັບນີ້ແລ້ວ."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr ""
+#, fuzzy
+#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgstr "ບໍ່ສາມາດລຶບໂທເຄັນການເຂົ້າເຖິງນີ້ໄດ້ ເພາະມັນຖືກໃຊ້ໂດຍ peripheral {fqdn}"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2805,7 +2775,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - ລາຍລະອຽດ Peripheral"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -2947,6 +2917,12 @@ msgstr "ກຳລັງແກ້ໄຂຄຸນສົມບັດ.."
 msgid "Last Status Update"
 msgstr "ການອັບເດດສະຖານະຫຼ້າສຸດ"
 
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit "
+msgstr "ແກ້ໄຂ"
+
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "ກຳລັງແກ້ໄຂຂໍ້ມູນການເຊື່ອມຕໍ່ ssh.."
@@ -3037,10 +3013,6 @@ msgstr "ການຕິດຕັ້ງຜະລິດຕະພັນຕໍ່ໄ
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "ກຳນົດເວລາການຊິງຄ໌ (sync) ຊ່ອງທາງທີ່ເລືອກສຳເລັດແລ້ວ."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:271
-msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr ""
-
 #: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "ກຳລັງໂຫຼດຂໍ້ມູນຜະລິດຕະພັນໃໝ່ໃນພື້ນຫຼັງ. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ."
@@ -3094,6 +3066,24 @@ msgstr "ຊ່ອງທາງ (Channels)"
 #: ../html/src/manager/admin/setup/products/products.tsx:621
 msgid "Recommended"
 msgstr "ແນະນຳ"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:802
+#, fuzzy
+#| msgid "No channels synchronized."
+msgid " channels sync failed"
+msgstr "ບໍ່ມີຊ່ອງທາງທີ່ຊິງຄ໌."
+
+#: ../html/src/manager/admin/setup/products/products.tsx:810
+#, fuzzy
+#| msgid "sync in progress"
+msgid " channels sync in progress"
+msgstr "ກຳລັງຊິງຄ໌"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:818
+#, fuzzy
+#| msgid "No channels synchronized."
+msgid " channels synced"
+msgstr "ບໍ່ມີຊ່ອງທາງທີ່ຊິງຄ໌."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "To enable this product, the parent product should be selected first"
@@ -3335,7 +3325,7 @@ msgid "Updating the selection of AppStream modules has been <link>scheduled</lin
 msgstr "ການອັບເດດການເລືອກໂມດູນ AppStream ຖືກ <link>ກຳນົດເວລາ</link> ແລ້ວ."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:118
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:125
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:74
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:92
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:129
@@ -3375,16 +3365,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "ໄດ້ຮັບຜົນກະທົບ, ມີແພັດໃຫ້ໃຊ້ໃນຊ່ອງທາງທີ່ຍັງບໍ່ໄດ້ມອບໝາຍ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr ""
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+#, fuzzy
+#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr "ໄຄລແອນໄດ້ຮັບຜົນກະທົບຈາກຊ່ອງໂຫວ່ທີ່ຍັງບໍ່ທັນມີແພັດອອກມາ."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "ໄດ້ຮັບຜົນກະທົບ, ມີແພັດໃຫ້ໃຊ້ໃນເປົ້າໝາຍການຍ້າຍຜະລິດຕະພັນ (Product Migration)"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3420,16 +3410,14 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "ໄດ້ຮັບຜົນກະທົບ, ແພັດບໍ່ມີໃນຊ່ອງທາງທີ່ກ່ຽວຂ້ອງ"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr ""
+#, fuzzy
+#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
+msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgstr "ໄຄລແອນໄດ້ຮັບຜົນກະທົບຈາກຊ່ອງໂຫວ່ທີ່ຍັງບໍ່ທັນມີແພັດອອກມາ."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "ໄດ້ຮັບຜົນກະທົບ, ມີແພັດບາງສ່ວນໃນຊ່ອງທາງທີ່ມອບໝາຍແລ້ວ"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3544,6 +3532,12 @@ msgstr "ເກີດຂໍ້ຜິດພາດໃນລະຫວ່າງກາ
 msgid "An unexpected error occurred."
 msgstr "ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຄາດຄິດ."
 
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
+#, fuzzy
+#| msgid "SCAP Content"
+msgid "Edit SCAP Content"
+msgstr "ເນື້ອຫາ SCAP"
+
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
 msgstr "ໄຟລ໌ SCAP Datastream"
@@ -3569,6 +3563,15 @@ msgstr "ໄຟລ໌ XCCDF"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr "ອັບໂຫຼດໄຟລ໌ XCCDF (*-xccdf.xml)"
+
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
+msgstr "ອັບເດດ"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
 msgid "SCAP Content is required"
@@ -3607,20 +3610,23 @@ msgstr "ສິ່ງນີ້ຕ້ອງມີການເຂົ້າເຖິ
 msgid "Back to List"
 msgstr "ກັບຄືນໄປລາຍການ"
 
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr "ອັບເດດ"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 msgid "An error occurred while saving the tailoring file."
 msgstr "ເກີດຂໍ້ຜິດພາດໃນລະຫວ່າງການບັນທຶກໄຟລ໌ປັບແຕ່ງ."
 
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
+#, fuzzy
+#| msgid "Tailoring File"
+msgid "Edit Tailoring File"
+msgstr "ໄຟລ໌ປັບແຕ່ງ (Tailoring File)"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 msgid "Current File"
 msgstr "ໄຟລ໌ປະຈຸບັນ"
+
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+msgid "Replace File (optional)"
+msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4115,65 +4121,75 @@ msgstr "ຊື່ໂມດູນ"
 msgid "Updating the filter..."
 msgstr "ກຳລັງອັບເດດຕົວກັ່ນຕອງ..."
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:87
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:101
 msgid "Check the required fields below"
 msgstr "ກວດສອບຫ້ອງທີ່ຈຳເປັນຂ້າງລຸ່ມ"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:96
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:110
 msgid "Filter updated successfully"
 msgstr "ອັບເດດຕົວກັ່ນຕອງສຳເລັດແລ້ວ"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:111
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:125
 msgid "Filter created successfully"
 msgstr "ສ້າງຕົວກັ່ນຕອງສຳເລັດແລ້ວ"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:136
 msgid "Filter Details"
 msgstr "ລາຍລະອຽດຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:136
 msgid "Create a new filter"
 msgstr "ສ້າງຕົວກັ່ນຕອງໃໝ່"
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:185
+#, fuzzy
+#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
+msgid "This filter cannot be deleted because it is currently in use by one or more projects"
+msgstr "ບໍ່ສາມາດລຶບໂທເຄັນການເຂົ້າເຖິງນີ້ໄດ້ ເພາະມັນຖືກໃຊ້ໂດຍ peripheral {fqdn}"
+
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:192
 msgid "Filter deleted successfully"
 msgstr "ລຶບຕົວກັ່ນຕອງສຳເລັດແລ້ວ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:76
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:78
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr "ກະລຸນາຈື່ໄວ້ວ່າ ໂຄງການທີ່ກ່ຽວຂ້ອງທັງໝົດຕ້ອງຖືກສ້າງໃໝ່ຫຼັງຈາກມີການອັບເດດຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:84
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
+#, fuzzy
+#| msgid "Use a manual filter"
+msgid "Manual Filter"
+msgstr "ໃຊ້ຕົວກັ່ນຕອງແບບກຳນົດເອງ"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:96
+#, fuzzy
+#| msgid "Use a template"
+msgid "Use Template"
+msgstr "ໃຊ້ແທມເພລດ"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Filter Name"
 msgstr "ຊື່ຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:94
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
 msgid "Prefix"
 msgstr "ຄຳນຳໜ້າ (Prefix)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:97
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:121
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr "ຄຳນຳໜ້າຈະຖືກຕື່ມໃສ່ທາງໜ້າຊື່ຂອງທຸກໆຕົວກັ່ນຕອງທີ່ສ້າງໂດຍແທມເພລດ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:111
-msgid "Use a template"
-msgstr "ໃຊ້ແທມເພລດ"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
-msgid "Use a manual filter"
-msgstr "ໃຊ້ຕົວກັ່ນຕອງແບບກຳນົດເອງ"
-
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:131
 msgid "Filter Type"
 msgstr "ປະເພດຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:176
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
 msgid "Epoch"
 msgstr "Epoch"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:177
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:169
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:179
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:104
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:47
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:79
@@ -4184,37 +4200,37 @@ msgstr "Epoch"
 msgid "Version"
 msgstr "ເວີຊັນ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:170
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:180
 msgid "Release"
 msgstr "ການປ່ອຍ (Release)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Advisory name"
 msgstr "ຊື່ແຈ້ງການ (Advisory)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:200
 msgid "Bug Fix Advisory"
 msgstr "ແຈ້ງການແກ້ໄຂບັກ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:199
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
 msgid "Product Enhancement Advisory"
 msgstr "ແຈ້ງການເພີ່ມປະສິດທິພາບຜະລິດຕະພັນ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:201
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:203
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
 msgid "Advisory Type"
 msgstr "ປະເພດແຈ້ງການ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:215
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
 msgstr "ວັນທີອອກທີ່ຈັດເກັບໄວ້ຢູ່ໃນຮູບແບບທີ່ບໍ່ຖືກຕ້ອງ. ກະລຸນາເລືອກວັນທີທີ່ຖືກຕ້ອງ ແລະ ບັນທຶກຕົວຕອງຄືນໃໝ່."
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:224
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
 msgid "Issued"
 msgstr "ອອກໃຫ້ເມື່ອ (Issued)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:235
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:237
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:423
@@ -4225,105 +4241,105 @@ msgstr "ອອກໃຫ້ເມື່ອ (Issued)"
 msgid "Build"
 msgstr "Build"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:247
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "ບົດສະຫຼຸບ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:257
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:259
 msgid "Reboot Required"
 msgstr "ຈຳເປັນຕ້ອງຣີບູດ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:258
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:260
 msgid "Package Manager Restart Required"
 msgstr "ຈຳເປັນຕ້ອງຣີສະຕາດຕົວຈັດການແພັກເກດ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:263
 msgid "Advisory Keywords"
 msgstr "ຄຳສຳຄັນຂອງແຈ້ງການ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:280
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:283
 msgid "Package Provides Name"
 msgstr "Package Provides Name"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Provides Name"
 msgstr "Provides Name"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:302
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
 msgstr "ໝາຍເລກ"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:324
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:140
 msgid "Deny"
 msgstr "ປະຕິເສດ (Deny)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:325
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:328
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:153
 msgid "Allow"
 msgstr "ອະນຸຍາດ (Allow)"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:330
 msgid "Rule"
 msgstr "ກົດເກນ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:78
 msgid "Filter has been deleted."
 msgstr "ຕົວຕອງຖືກລຶບແລ້ວ."
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:94
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "ຕົວກັ່ນຕອງບາງອັນທີ່ເລືອກຖືກໃຊ້ໃນໂຄງການຢູ່ ແລະ ບໍ່ສາມາດລຶບໄດ້."
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:103
 msgid "Filter have been deleted."
 msgstr "ຕົວຕອງທັງໝົດຖືກລຶບແລ້ວ."
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Create Filter"
 msgstr "ສ້າງຕົວຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:149
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:150
 msgid "Select unused"
 msgstr "ເລືອກອັນທີ່ບໍ່ໄດ້ໃຊ້"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:161
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:180
 msgid "Content Lifecycle Filters"
 msgstr "ຕົວກັ່ນຕອງ Content Lifecycle"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:189
 msgid "Filter by name or project"
 msgstr "ກັ່ນຕອງດ້ວຍຊື່ ຫຼື ໂຄງການ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:184
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:203
 msgid "Projects in use"
 msgstr "ໂຄງການທີ່ກຳລັງໃຊ້ງານ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:217
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:235
 msgid "Edit Filter"
 msgstr "ແກ້ໄຂຕົວຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:242
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:256
 msgid "Delete Filter"
 msgstr "ລຶບຕົວຕອງ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
 msgid "Are you sure you want to delete the filter"
 msgstr "ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຕົວຕອງນີ້"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:268
 msgid "Delete Selected Filter(s)"
 msgstr "ລຶບຕົວຕອງທີ່ເລືອກ"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:272
 msgid "Are you sure you want to delete the selected filter?"
 msgstr "ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຕົວຕອງທີ່ເລືອກໄວ້?"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:273
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
 msgstr "ເຈົ້າມັ້ນໃຈບໍ່ວ່າຕ້ອງການລຶບຕົວຕອງທີ່ເລືອກ? (ເລືອກໄວ້ {count} ຕົວຕອງ)"
 
@@ -4671,30 +4687,32 @@ msgid "Create New Filter"
 msgstr "ສ້າງຕົວກັ່ນຕອງໃໝ່"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-msgid "Edit Filter {name}"
+#, fuzzy
+#| msgid "Edit Filter {name}"
+msgid "Edit {name}"
 msgstr "ແກ້ໄຂຕົວກັ່ນຕອງ {name}"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:79
 msgid "Filters"
 msgstr "ຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:92
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:80
 msgid "Attach/Detach Filters"
 msgstr "ຕິດ/ຖອດ ຕົວກັ່ນຕອງ"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:109
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:97
 msgid "Filter edited successfully"
 msgstr "ແກ້ໄຂຕົວກັ່ນຕອງສຳເລັດແລ້ວ"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:125
 msgid "enabled module streams"
 msgstr "ເປີດໃຊ້ module streams"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:140
 msgid "filter out"
 msgstr "ກັ່ນຕອງອອກ"
 
-#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
+#: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:154
 msgid "select from the full source even if you have excluded them before with deny"
 msgstr "ເລືອກຈາກແຫຼ່ງຂໍ້ມູນທັງໝົດ ເຖິງແມ່ນວ່າຈະເຄີຍຍົກເວັ້ນດ້ວຍຄຳສັ່ງ deny ມາກ່ອນ"
 
@@ -4829,15 +4847,15 @@ msgstr "ປະເພດ"
 msgid "has unsynchronized patches"
 msgstr "ມີແພັດທີ່ຍັງບໍ່ໄດ້ຊິງຄ໌"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:105
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:104
 msgid "Sources"
 msgstr "ແຫຼ່ງຂໍ້ມູນ"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:123
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:122
 msgid "Sources edited successfully"
 msgstr "ແກ້ໄຂແຫຼ່ງຂໍ້ມູນສຳເລັດແລ້ວ"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:145
+#: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:144
 #: ../html/src/manager/images/image-build.tsx:312
 msgid "Software Channels"
 msgstr "ຊ່ອງທາງຊອບແວ (Software Channels)"
@@ -4851,19 +4869,19 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "ບໍ່ພົບໜ້າ {currentUrl} ທີ່ທ່ານຮ້ອງຂໍ."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:16
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:30
-msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr ""
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -5061,6 +5079,12 @@ msgid "Create additional custom info keys"
 msgstr "ສ້າງຄີຂໍ້ມູນກຳນົດເອງເພີ່ມເຕີມ"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
+#, fuzzy
+#| msgid "Image Profile"
+msgid "Edit Image Profile: '"
+msgstr "ໂປຣໄຟລ໌ອິເມຈ"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -5126,6 +5150,12 @@ msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶ
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "ໃຊ້ຂໍ້ມູນປະຈຳຕົວ"
+
+#: ../html/src/manager/images/image-store-edit.tsx:234
+#, fuzzy
+#| msgid "Image Store"
+msgid "Edit Image Store: '"
+msgstr "ບ່ອນເກັບອິເມຈ"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5209,13 +5239,37 @@ msgstr "ເຂົ້າຄິວແລ້ວ"
 msgid "Go to event"
 msgstr "ໄປທີ່ເຫດການ"
 
+#: ../html/src/manager/images/image-view-overview.tsx:56
+#, fuzzy
+#| msgid "Queued"
+msgid " is queued"
+msgstr "ເຂົ້າຄິວແລ້ວ"
+
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
+msgstr "ກຳລັງດຳເນີນການ"
+
+#: ../html/src/manager/images/image-view-overview.tsx:68
+#, fuzzy
+#| msgid "In progress"
+msgid " in progress"
 msgstr "ກຳລັງດຳເນີນການ"
 
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "ສຳເລັດ"
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+#, fuzzy
+#| msgid "Successful"
+msgid " is successful"
+msgstr "ສຳເລັດ"
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+#, fuzzy
+#| msgid " failed"
+msgid " has failed"
+msgstr " ຫຼົ້ມເຫຼວ"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5235,6 +5289,12 @@ msgstr "ບໍ່ມີຂໍ້ມູນ"
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
 msgstr "ບິວຈາກພາຍນອກ"
+
+#: ../html/src/manager/images/image-view-overview.tsx:134
+#, fuzzy
+#| msgid "Status"
+msgid " Status"
+msgstr "ສະຖານະ"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5282,11 +5342,6 @@ msgstr "ແກ້ໄຂໂປຣໄຟລ໌"
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "ແກ້ໄຂຮ້ານຄ້າ"
-
-#: ../html/src/manager/images/image-view-overview.tsx:469
-#: ../html/src/manager/images/image-view.tsx:759
-msgid "Instance Details for \"{name}\""
-msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5737,10 +5792,6 @@ msgstr "ຄົ້ນຫາລະບົບ"
 msgid "Current Schedule"
 msgstr "ຕາຕະລາງປະຈຸບັນ"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-msgid "Url \"{url}\" is invalid"
-msgstr ""
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "ຂໍ້ມູນປະຕິທິນ"
@@ -5828,6 +5879,12 @@ msgstr "ລຸ່ມນີ້ແມ່ນລາຍຊື່ຕາຕະລາງ
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "ລຸ່ມນີ້ແມ່ນລາຍຊື່ປະຕິທິນການບຳລຸງຮັກສາທີ່ມີໃຫ້ຜູ້ໃຊ້ປະຈຸບັນ."
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
+#, fuzzy
+#| msgid "scheduled"
+msgid "schedule"
+msgstr "ກຳນົດເວລາແລ້ວ"
+
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "ບໍ່ມີຕາຕະລາງທີ່ຖືກສ້າງ. ໃຊ້ປຸ່ມສ້າງເພື່ອເພີ່ມຕາຕະລາງ."
@@ -5835,6 +5892,18 @@ msgstr "ບໍ່ມີຕາຕະລາງທີ່ຖືກສ້າງ. ໃ�
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "ນີ້ຈະລຶບຕາຕະລາງອອກຈາກທຸກລະບົບທີ່ຖືກກຳນົດໃຫ້ມັນ."
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
+#, fuzzy
+#| msgid "Successful"
+msgid "successfully"
+msgstr "ສຳເລັດ"
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
+#, fuzzy
+#| msgid "Error deregistering server"
+msgid "Error when deleting the "
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການຍົກເລີກການລົງທະບຽນເຊີເວີ"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -6012,10 +6081,6 @@ msgstr "ເລືອກ Playbook ອື່ນ"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
 msgid "Save the current Playbook"
 msgstr "ບັນທຶກ Playbook ປັດຈຸບັນ"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-msgid "Playbook \"{name}\""
-msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6416,6 +6481,12 @@ msgstr "ຂັ້ນສູງ"
 msgid "Registry URL"
 msgstr "URL ຂອງເຣຈິສຕຣີ"
 
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
+#, fuzzy
+#| msgid "e.g., 100"
+msgid "e.g., "
+msgstr "ຕົວຢ່າງ: 100"
+
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
 msgstr "ແທັກຂອງຄອນເທນເນີ"
@@ -6503,8 +6574,10 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "ຕິດຕັ້ງ Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+#, fuzzy
+#| msgid "No Program Temporary Fixes (PTFs) available."
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgstr "ບໍ່ມີ Program Temporary Fixes (PTFs) ໃຫ້ໃຊ້ງານ."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6523,8 +6596,10 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "ລຶບ Program Temporary Fixes (PTFs) ອອກ"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+#, fuzzy
+#| msgid "The following AppStream modules are currently available to the system."
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgstr "ໂມດູນ AppStream ຕໍ່ໄປນີ້ມີໃຫ້ໃຊ້ໃນລະບົບ."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -7231,6 +7306,16 @@ msgstr "ກຳລັງໂຫຼດຊ່ອງທາງລູກ (Child channel
 msgid "Base Channel:"
 msgstr "ຊ່ອງທາງຫຼັກ:"
 
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
+#, fuzzy
+#| msgid "Channel Name"
+msgid "${defaultChannelName}"
+msgstr "ຊື່ຊ່ອງທາງ"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+msgid "${this.getDefaultBase().name}"
+msgstr ""
+
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "ຊ່ອງທາງລູກ:"
@@ -7316,6 +7401,12 @@ msgstr "({count} AppStreams)"
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
 msgid "Don't change"
 msgstr "ບໍ່ຕ້ອງປ່ຽນ"
+
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
+#, fuzzy
+#| msgid " (system default)"
+msgid " (No system to disable)"
+msgstr " (ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -8010,3 +8101,7 @@ msgstr "ເກີດຂໍ້ຜິດພາດໃນການອະນຸຍາ
 #: ../html/src/utils/network.ts:102
 msgid "Resource not found."
 msgstr "ບໍ່ພົບຊັບພະຍາກອນ."
+
+#: ../html/src/utils/network.ts:106
+msgid "HTTP Error code "
+msgstr ""
