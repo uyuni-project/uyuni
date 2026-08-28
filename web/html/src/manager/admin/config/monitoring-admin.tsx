@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 
 import { docsLocale, isUyuni, productName } from "core/user-preferences";
 
@@ -227,7 +227,7 @@ const MonitoringAdmin = () => {
     switch (action) {
       case "checking":
         buttons = (
-          <Fragment>
+          <>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -242,12 +242,12 @@ const MonitoringAdmin = () => {
               icon="fa-stop"
               text={t("Disable")}
             />
-          </Fragment>
+          </>
         );
         break;
       case "enabling":
         buttons = (
-          <Fragment>
+          <>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -262,12 +262,12 @@ const MonitoringAdmin = () => {
               icon="fa-pause"
               text={t("Disable")}
             />
-          </Fragment>
+          </>
         );
         break;
       case "disabling":
         buttons = (
-          <Fragment>
+          <>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -282,7 +282,7 @@ const MonitoringAdmin = () => {
               icon="fa-circle-o-notch fa-spin"
               text={t("Disable")}
             />
-          </Fragment>
+          </>
         );
         break;
       default:
@@ -290,7 +290,7 @@ const MonitoringAdmin = () => {
     }
   } else {
     buttons = (
-      <Fragment>
+      <>
         <AsyncButton
           id="enable-monitoring-btn"
           defaultType="btn-default"
@@ -306,7 +306,7 @@ const MonitoringAdmin = () => {
           text={t("Disable")}
           action={() => changeMonitoringStatus(false)}
         />
-      </Fragment>
+      </>
     );
   }
 

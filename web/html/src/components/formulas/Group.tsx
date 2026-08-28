@@ -1,4 +1,4 @@
-import { type ReactNode, Fragment, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
@@ -56,10 +56,10 @@ const Group = (props: Props) => {
       </SectionToggle>
       <div>
         {visible ? (
-          <Fragment>
+          <>
             {props.help ? <p>{props.help}</p> : null}
             {props.children}
-          </Fragment>
+          </>
         ) : null}
       </div>
     </div>
