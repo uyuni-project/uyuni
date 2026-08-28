@@ -942,18 +942,14 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update Custom Channel details according to the provided channelInfo
-     * @param channelInfo the information about custom channels
+     * Update Channel details according to the provided channelInfo
+     * @param channelInfo the information about channels
      */
     public void updateChannelInfo(List<ChannelInfoDetailsJson> channelInfo) {
         Set<String> syncFinished = new HashSet<>();
         Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
                 .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
         for (ChannelInfoDetailsJson info : channelInfo) {
-            if (info.getPeripheralOrgId() == null) {
-                LOG.warn("updateCustomChannelInfo called with a vendor channel {}", info.getLabel());
-                continue;
-            }
             ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
     }
