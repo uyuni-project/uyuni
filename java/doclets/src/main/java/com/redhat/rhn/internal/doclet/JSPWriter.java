@@ -27,6 +27,7 @@ import java.util.Map;
 public class JSPWriter extends DocWriter {
 
     private static final String[] OTHER_FILES = {"faqs", "scripts"};
+    private static final String CALL_FILE = "call.txt";
 
     /**
      * @param outputIn path to the output folder
@@ -58,13 +59,31 @@ public class JSPWriter extends DocWriter {
         writeFile(output + "index.jsp", generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
-
             writeFile(handlersDir + handler.getClassName() + ".jsp",
                     generateHandler(handler, templates));
+
+            writeCalls(handler);
         }
 
         for (String file : OTHER_FILES) {
             writeFile(output + file + ".jsp", readFile(templates + file + ".txt"));
+        }
+    }
+
+    private void writeCalls(Handler handler) throws IOException {
+        String callsDir = String.format("%s/handlers/%s/", output, handler.getName());
+        File handlerFolder = new File(callsDir);
+        handlerFolder.mkdirs();
+
+        for (ApiCall call: handler.getCalls()) {
+            VelocityHelper vh = new VelocityHelper(templates);
+            vh.addMatch("call", call);
+            String out = vh.renderTemplateFile(CALL_FILE);
+
+            //Now we render the serializers
+            out = serializerRenderer.renderTemplate(out);
+
+            writeFile(callsDir + call.getId() + ".jsp", out);
         }
     }
 }
