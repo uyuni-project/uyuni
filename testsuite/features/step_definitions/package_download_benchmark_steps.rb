@@ -285,16 +285,20 @@ Given('a ready server pod is reachable from the benchmark controller') do
   raise "Unable to query the Uyuni server pod: #{stderr}" unless code.zero?
 
   pods = JSON.parse(stdout)['items']
-  ready =
+  ready_pods =
     pods.select do |pod|
-      conditions = pod.dig('status', 'conditions')
-      pod.dig('status', 'phase') == 'Running' &&
-        conditions.is_a?(Array) &&
-        conditions.any? { |condition| condition['type'] == 'Ready' && condition['status'] == 'True' }
-    end
-  raise "Expected one ready Uyuni server pod, found #{ready.length}" unless ready.length == 1
+      status = pod.fetch('status', {})
+      running = status['phase'] == 'Running'
+      ready =
+        Array(status['conditions']).any? do |condition|
+          condition['type'] == 'Ready' && condition['status'] == 'True'
+        end
 
-  @package_download_pod = ready.first['metadata']['name']
+      running && ready
+    end
+  raise "Expected one ready Uyuni server pod, found #{ready_pods.length}" unless ready_pods.length == 1
+
+  @package_download_pod = ready_pods.first['metadata']['name']
 end
 
 Given('the benchmark minions are ready for the configured channel') do
