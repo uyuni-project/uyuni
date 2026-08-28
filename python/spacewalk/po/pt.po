@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 09:58+0200\n"
+"POT-Creation-Date: 2026-08-28 09:41+0200\n"
 "PO-Revision-Date: 2023-09-21 13:15+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/backend/pt/>\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../server/apacheAuth.py:72
+#: ../server/apacheAuth.py:80
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "Token de autenticação de proxy incompleto: %s"
 
-#: ../server/apacheAuth.py:103
+#: ../server/apacheAuth.py:111
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "Assinatura enviada pelo proxy %s não corresponde ao esperado %s."
 
-#: ../server/apacheAuth.py:142
+#: ../server/apacheAuth.py:150
 msgid "declined proxy authentication"
 msgstr "autenticação de proxy rejeitada"
 
@@ -165,13 +165,13 @@ msgstr ""
 msgid "Service not enabled for system profile: \"%s\""
 msgstr ""
 
-#: ../server/rhnPackage.py:52 ../server/rhnPackage.py:98
-#: ../server/rhnPackage.py:118 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
+#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr ""
 
-#: ../server/rhnPackage.py:124
+#: ../server/rhnPackage.py:123
 msgid "Package not found"
 msgstr ""
 
@@ -199,85 +199,85 @@ msgstr ""
 msgid "Maximum usage count of %s reached"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:869
+#: ../server/rhnServer/server_token.py:866
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:946
+#: ../server/rhnServer/server_token.py:943
 #, python-format
 msgid "Could not find token '%s'"
 msgstr ""
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:979
+#: ../server/rhnServer/server_token.py:976
 msgid "Tokens from mismatching orgs"
 msgstr ""
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:989
+#: ../server/rhnServer/server_token.py:986
 msgid "Kickstart session mismatch"
 msgstr ""
 
-#: ../server/rhnServer/server_token.py:1013
+#: ../server/rhnServer/server_token.py:1010
 msgid "Stacking of re-registration tokens is not supported"
 msgstr ""
 
-#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
+#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
 msgid "Invalid username/password combination"
 msgstr ""
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:527
+#: ../server/rhnUser.py:505
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr ""
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:533
+#: ../server/rhnUser.py:511
 msgid "E-mail address not specified"
 msgstr ""
 
-#: ../server/rhnUser.py:575
+#: ../server/rhnUser.py:553
 #, python-format
 msgid "username should be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:579
+#: ../server/rhnUser.py:557
 #, python-format
 msgid "username should be less than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:593
+#: ../server/rhnUser.py:571
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:614
+#: ../server/rhnUser.py:592
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr ""
 
-#: ../server/rhnUser.py:704
+#: ../server/rhnUser.py:690
 #, python-format
 msgid "password must be at least %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:708
+#: ../server/rhnUser.py:694
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr ""
 
-#: ../server/rhnUser.py:724
+#: ../server/rhnUser.py:710
 #, python-format
 msgid "password contains character `%s'"
 msgstr ""
 
-#: ../server/rhnUser.py:733
+#: ../server/rhnUser.py:719
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr ""
 
-#: ../server/rhnUser.py:744
+#: ../server/rhnUser.py:730
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr ""
@@ -999,16 +999,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:138
+#: ../satellite_tools/reposync.py:148
 msgid "+++ sending log as an email +++"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:141
+#: ../satellite_tools/reposync.py:151
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:161
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 09:58+0200\n"
+"POT-Creation-Date: 2026-08-28 09:41+0200\n"
 "PO-Revision-Date: 2026-04-23 11:04+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/uyuni/backend/sv/>\n"
@@ -23,17 +23,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.17\n"
 
-#: ../server/apacheAuth.py:72
+#: ../server/apacheAuth.py:80
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "ofullständig proxy-autenticeringsnyckel: %s"
 
-#: ../server/apacheAuth.py:103
+#: ../server/apacheAuth.py:111
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "Skickad proxy-signatur %s stämmer inte med våran %s."
 
-#: ../server/apacheAuth.py:142
+#: ../server/apacheAuth.py:150
 msgid "declined proxy authentication"
 msgstr "nekad proxy-autenticering"
 
@@ -196,13 +196,13 @@ msgstr "Vänligen kör rhn_register som root på den här klienten"
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Drift ej aktiverat för systemprofilen: \"%s\""
 
-#: ../server/rhnPackage.py:52 ../server/rhnPackage.py:98
-#: ../server/rhnPackage.py:118 ../server/rhnPackage.py:179
+#: ../server/rhnPackage.py:51 ../server/rhnPackage.py:97
+#: ../server/rhnPackage.py:117 ../server/rhnPackage.py:179
 #, python-format
 msgid "Invalid RPM package %s requested"
 msgstr "Ogiltigt RPM-paket %s begärt"
 
-#: ../server/rhnPackage.py:124
+#: ../server/rhnPackage.py:123
 msgid "Package not found"
 msgstr "Paketet finns inte"
 
@@ -230,85 +230,85 @@ msgstr "Kunde inte lägga till en server till gruppen %s"
 msgid "Maximum usage count of %s reached"
 msgstr "Maximalt antal användingar på %s uppnått"
 
-#: ../server/rhnServer/server_token.py:869
+#: ../server/rhnServer/server_token.py:866
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
 msgstr "Att lägga samman omregistreringsnycklar med olika baskanalrättigheter stöds inte"
 
-#: ../server/rhnServer/server_token.py:946
+#: ../server/rhnServer/server_token.py:943
 #, python-format
 msgid "Could not find token '%s'"
 msgstr "Nyckeln \"%s\" finns inte"
 
 #. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:979
+#: ../server/rhnServer/server_token.py:976
 msgid "Tokens from mismatching orgs"
 msgstr "Nycklar från organisationer som inte stämmer överens"
 
 #. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:989
+#: ../server/rhnServer/server_token.py:986
 msgid "Kickstart session mismatch"
 msgstr "Kickstart-sessioner stämmer inte överens"
 
-#: ../server/rhnServer/server_token.py:1013
+#: ../server/rhnServer/server_token.py:1010
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Att lägga samman omregistreringsnycklar stöds inte"
 
-#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
+#: ../server/rhnUser.py:321 ../server/rhnUser.py:324
 msgid "Invalid username/password combination"
 msgstr "Ogiltigt användarnamn/lösenords-kombination"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:527
+#: ../server/rhnUser.py:505
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Användarnamnet \"%s\" har inte reserverats"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:533
+#: ../server/rhnUser.py:511
 msgid "E-mail address not specified"
 msgstr "E-postadress inte angiven"
 
-#: ../server/rhnUser.py:575
+#: ../server/rhnUser.py:553
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "användarnamn skall vara åtminstone %d tecken"
 
-#: ../server/rhnUser.py:579
+#: ../server/rhnUser.py:557
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "användarman skall vara mindre än %d tecken"
 
-#: ../server/rhnUser.py:593
+#: ../server/rhnUser.py:571
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "användarnamn = \"%s\", otiltigt tecken \"%s\""
 
-#: ../server/rhnUser.py:614
+#: ../server/rhnUser.py:592
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Begränsa din e-postadress till %s tecken"
 
-#: ../server/rhnUser.py:704
+#: ../server/rhnUser.py:690
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "lösenord måste vara åtminstone %d tecken"
 
-#: ../server/rhnUser.py:708
+#: ../server/rhnUser.py:694
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Lösenord måste vara kortare än %d tecken"
 
-#: ../server/rhnUser.py:724
+#: ../server/rhnUser.py:710
 #, python-format
 msgid "password contains character `%s'"
 msgstr "lösenordet innehåller tecknet \"%s\""
 
-#: ../server/rhnUser.py:733
+#: ../server/rhnUser.py:719
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "användarnamn skall vara åtminstone %d tecken långa"
 
-#: ../server/rhnUser.py:744
+#: ../server/rhnUser.py:730
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Det går inte att registrera användarnamn som slutar med %s"
@@ -1117,16 +1117,16 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:138
+#: ../satellite_tools/reposync.py:148
 msgid "+++ sending log as an email +++"
 msgstr "+++ skickar logg som ett e-post +++"
 
-#: ../satellite_tools/reposync.py:141
+#: ../satellite_tools/reposync.py:151
 #, python-format
 msgid "%s sync. report from %s"
 msgstr ""
 
-#: ../satellite_tools/reposync.py:151
+#: ../satellite_tools/reposync.py:161
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ e-postadress begärt, men det finns inget att skicka +++"
 
