@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-28 09:41+0200\n"
-"PO-Revision-Date: 2026-08-28 08:13+0000\n"
+"PO-Revision-Date: 2026-08-28 17:18+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/web/lo/>\n"
 "Language: lo\n"
@@ -3221,7 +3221,7 @@ msgstr "ການເຊື່ອມຕໍ່ PAYG"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
-msgstr "ຕົວຊ່ວຍໃນການຕັ້ງຄ່າ (Setup Wizard)"
+msgstr "Setup Wizard"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:96
 msgid " running"
@@ -6306,7 +6306,7 @@ msgstr "ສະຖານະແພັກເກັດ"
 #: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 msgid "State"
-msgstr "ແຂວງ (State)"
+msgstr "ລັດ/ແຂວງ (State)"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:36
 msgid "Package states have been saved."
@@ -6845,11 +6845,11 @@ msgstr "ລະຫັດປະເທດ 2 ຕົວອັກສອນ"
 
 #: ../html/src/manager/proxy/container-config.tsx:321
 msgid "City"
-msgstr "ເມືອງ (City)"
+msgstr "ເມືອງ/ແຂວງ (City)"
 
 #: ../html/src/manager/proxy/container-config.tsx:323
 msgid "Organization Unit"
-msgstr "Organization Unit"
+msgstr "หน่วยງານໃນອົງກອນ (Organization Unit)"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "The root CA"
