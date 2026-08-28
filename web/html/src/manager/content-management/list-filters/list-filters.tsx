@@ -233,6 +233,7 @@ const ListFilters = (props: Props) => {
                   className="btn-default btn-sm"
                   icon="fa-pencil"
                   title={t("Edit Filter")}
+                  tooltipDelay
                   onClick={() => setEditingFilter(row)}
                 />
               )}
