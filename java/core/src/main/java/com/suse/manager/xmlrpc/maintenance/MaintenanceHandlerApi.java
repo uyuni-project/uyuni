@@ -528,13 +528,13 @@ public interface MaintenanceHandlerApi {
          * @return the new schedule type
          */
         @Schema(description = "new schedule type", allowableValues = {"single", "multi"},
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getType();
 
         /**
          * @return the new calendar label
          */
-        @Schema(description = "new calendar label", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "new calendar label", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getCalendar();
     }
 
@@ -545,13 +545,13 @@ public interface MaintenanceHandlerApi {
         /**
          * @return the new ical calendar data
          */
-        @Schema(description = "new ical calendar data", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "new ical calendar data", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getIcal();
 
         /**
          * @return the new calendar URL
          */
-        @Schema(description = "new calendar URL", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "new calendar URL", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getUrl();
     }
 
@@ -589,7 +589,7 @@ public interface MaintenanceHandlerApi {
          *
          * @return the maintenance calendar of the schedule
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(name = "maintenance calendar information")
         MaintenanceCalendarDoc getCalendar();
     }
@@ -619,7 +619,7 @@ public interface MaintenanceHandlerApi {
         /**
          * @return the URL of the calendar
          */
-        @Schema(description = "calendar url if present", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "calendar url if present", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getUrl();
 
         /**
