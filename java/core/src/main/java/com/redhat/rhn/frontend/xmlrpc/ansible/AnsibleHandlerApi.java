@@ -83,6 +83,49 @@ public interface AnsibleHandlerApi {
                           Date earliestOccurrence, String actionChainLabel, Map<String, Object> ansibleArgs);
 
     /**
+     * Schedules a playbook execution in test mode or not, without additional arguments.
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence the earliest occurrence of the execution command
+     * @param actionChainLabel the label of the action chain to use
+     * @param testMode whether the playbook shall be executed in test mode
+     * @return the execute playbook action id
+     */
+    @ApiEndpointDoc(
+        summary = "Schedule a playbook execution",
+        requestClass = SchedulePlaybookWithTestModeRequest.class,
+        responseClass = ActionIdResponse.class,
+        responseDescription = "ID of the playbook execution action created",
+        legacyDocResponse = @LegacyDocResponse(type = "int", name = "id")
+    )
+    Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+                          Date earliestOccurrence, String actionChainLabel, boolean testMode);
+
+    /**
+     * Schedules a playbook execution without test mode and without additional arguments.
+     *
+     * @param loggedInUser the current user
+     * @param playbookPath the path to the playbook file
+     * @param inventoryPath the path to the inventory file
+     * @param controlNodeId the system ID of the control node
+     * @param earliestOccurrence the earliest occurrence of the execution command
+     * @param actionChainLabel the label of the action chain to use
+     * @return the execute playbook action id
+     */
+    @ApiEndpointDoc(
+        summary = "Schedule a playbook execution",
+        requestClass = SchedulePlaybookBaseRequest.class,
+        responseClass = ActionIdResponse.class,
+        responseDescription = "ID of the playbook execution action created",
+        legacyDocResponse = @LegacyDocResponse(type = "int", name = "id")
+    )
+    Long schedulePlaybook(User loggedInUser, String playbookPath, String inventoryPath, Integer controlNodeId,
+                          Date earliestOccurrence, String actionChainLabel);
+
+    /**
      * Lists the ansible paths of a control node.
      *
      * @param loggedInUser the current user
@@ -232,39 +275,7 @@ public interface AnsibleHandlerApi {
     @Schema(name = "AnsibleSchedulePlaybookRequest")
     @JsonPropertyOrder({"playbookPath", "inventoryPath", "controlNodeId", "earliestOccurrence", "actionChainLabel",
         "testMode", "ansibleArgs"})
-    interface SchedulePlaybookRequest {
-
-        /**
-         * @return the path to the playbook file
-         */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        String getPlaybookPath();
-
-        /**
-         * @return the path to the inventory file
-         */
-        @Schema(description = "path to Ansible inventory or empty", requiredMode = Schema.RequiredMode.REQUIRED)
-        String getInventoryPath();
-
-        /**
-         * @return the system ID of the control node
-         */
-        @Schema(description = "system ID of the control node", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getControlNodeId();
-
-        /**
-         * @return the earliest occurrence of the execution command
-         */
-        @Schema(description = "earliest the execution command can be sent to the control node. ignored when " +
-            "actionChainLabel is used", requiredMode = Schema.RequiredMode.REQUIRED)
-        @LegacyDocResponse(type = "dateTime.iso8601")
-        Date getEarliestOccurrence();
-
-        /**
-         * @return the label of the action chain to use
-         */
-        @Schema(description = "label of an action chain to use, or None", requiredMode = Schema.RequiredMode.REQUIRED)
-        String getActionChainLabel();
+    interface SchedulePlaybookRequest extends SchedulePlaybookBaseRequest {
 
         /**
          * @return whether the playbook shall be executed in test mode
@@ -278,10 +289,34 @@ public interface AnsibleHandlerApi {
         AnsibleArgsDoc getAnsibleArgs();
     }
 
+    @Schema(name = "AnsibleSchedulePlaybookWithTestModeRequest")
+    @JsonPropertyOrder({"playbookPath", "inventoryPath", "controlNodeId", "earliestOccurrence", "actionChainLabel",
+        "testMode"})
+    interface SchedulePlaybookWithTestModeRequest extends SchedulePlaybookBaseRequest {
+
+        /**
+         * @return whether the playbook shall be executed in test mode
+         */
+        @Schema(description = "'true' if the playbook shall be executed in test mode",
+                requiredMode = Schema.RequiredMode.REQUIRED)
+        Boolean getTestMode();
+    }
+
     @Schema(name = "AnsibleSchedulePlaybookWithArgsRequest")
     @JsonPropertyOrder({"playbookPath", "inventoryPath", "controlNodeId", "earliestOccurrence",
         "actionChainLabel", "ansibleArgs"})
-    interface SchedulePlaybookWithArgsRequest {
+    interface SchedulePlaybookWithArgsRequest extends SchedulePlaybookBaseRequest {
+
+        /**
+         * @return the additional arguments to pass to ansiblegate
+         */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        AnsibleArgsDoc getAnsibleArgs();
+    }
+
+    @Schema(name = "AnsibleSchedulePlaybookBaseRequest")
+    @JsonPropertyOrder({"playbookPath", "inventoryPath", "controlNodeId", "earliestOccurrence", "actionChainLabel"})
+    interface SchedulePlaybookBaseRequest {
 
         /**
          * @return the path to the playbook file
@@ -314,12 +349,6 @@ public interface AnsibleHandlerApi {
          */
         @Schema(description = "label of an action chain to use, or None", requiredMode = Schema.RequiredMode.REQUIRED)
         String getActionChainLabel();
-
-        /**
-         * @return the additional arguments to pass to ansiblegate
-         */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        AnsibleArgsDoc getAnsibleArgs();
     }
 
     @Schema(name = "AnsibleArgs")
