@@ -193,6 +193,13 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         return policy;
     }
 
+    private ScapPolicy tailoredScapPolicy() {
+        ScapPolicy policy = scapPolicy();
+        policy.setTailoringFile(tailoringFile());
+        policy.setTailoringProfileId("xccdf_org.ssgproject.content_profile_standard_customized");
+        return policy;
+    }
+
     @Test
     public void testListXccdfScans() throws Exception {
         context.checking(new Expectations() {{
@@ -272,6 +279,21 @@ public class SystemScapHandlerContractTest extends BaseOpenApiTest {
         context.checking(new Expectations() {{
             oneOf(handler()).listPolicies(with(mockUser));
             will(returnValue(List.of(scapPolicy())));
+        }});
+
+        validateApiContract("/system.scap/listPolicies", "GET")
+                .onHandlerMethod("listPolicies", User.class);
+    }
+
+    /**
+     * A policy carrying a tailoring file writes both tailoring properties, the branch of
+     * ScapPolicySerializer the fixture above leaves out.
+     */
+    @Test
+    public void testListPoliciesWithTailoringFile() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).listPolicies(with(mockUser));
+            will(returnValue(List.of(tailoredScapPolicy())));
         }});
 
         validateApiContract("/system.scap/listPolicies", "GET")
