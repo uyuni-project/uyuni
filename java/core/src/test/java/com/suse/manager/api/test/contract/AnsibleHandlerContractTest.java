@@ -262,10 +262,49 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
     }
 
     /*
-     * discoverPlaybooks and introspectInventory have no contract test on purpose: both answer a
-     * free-form map keyed by the discovered playbook or inventory group, while the legacy
-     * documentation sketches that map as a struct with a single fixed property ("playbook" and
-     * "inventoryItem"). The documented schema therefore requires a key that a real response never
-     * carries, and the OpenAPI documentation mirrors the legacy one faithfully.
+     * discoverPlaybooks and introspectInventory answer a free-form map keyed by the discovered
+     * playbook or inventory group, while the legacy documentation sketches that map as a struct
+     * with a single fixed property ("playbook" and "inventoryItem"). The OpenAPI documentation
+     * mirrors the legacy one faithfully, so the fixtures below are keyed the way both documents
+     * describe rather than the way a Salt response really is.
      */
+
+    @Test
+    public void testDiscoverPlaybooks() throws Exception {
+        Map<String, Object> playbook = new LinkedHashMap<>();
+        playbook.put("id", PATH_ID);
+        playbook.put("type", "playbook");
+        playbook.put("server_id", CONTROL_NODE_ID);
+        playbook.put("path", PLAYBOOK_PATH);
+
+        Map<String, Object> discovered = new LinkedHashMap<>();
+        discovered.put("playbook", playbook);
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).discoverPlaybooks(with(mockUser), with(PATH_ID));
+            will(returnValue(discovered));
+        }});
+
+        validateApiContract("/ansible/discoverPlaybooks", "POST")
+                .withBody(Map.of("pathId", PATH_ID))
+                .onHandlerMethod("discoverPlaybooks", User.class, Integer.class);
+    }
+
+    @Test
+    public void testIntrospectInventory() throws Exception {
+        Map<String, Object> inventoryItem = new LinkedHashMap<>();
+        inventoryItem.put("hosts", List.of("minion.example.com"));
+
+        Map<String, Object> inventory = new LinkedHashMap<>();
+        inventory.put("inventoryItem", inventoryItem);
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).introspectInventory(with(mockUser), with(PATH_ID));
+            will(returnValue(inventory));
+        }});
+
+        validateApiContract("/ansible/introspectInventory", "POST")
+                .withBody(Map.of("pathId", PATH_ID))
+                .onHandlerMethod("introspectInventory", User.class, Integer.class);
+    }
 }
