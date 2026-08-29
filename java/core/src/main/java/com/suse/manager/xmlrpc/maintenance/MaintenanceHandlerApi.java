@@ -268,7 +268,7 @@ public interface MaintenanceHandlerApi {
     @ApiEndpointDoc(
         summary = "List IDs of systems that have given schedule assigned",
         requestClass = ScheduleNameOnlyRequest.class,
-        responseClass = IntegerListResponse.class,
+        responseClass = LongListResponse.class,
         responseDescription = "system IDs"
     )
     List<Long> listSystemsWithSchedule(User loggedInUser, String scheduleName);
@@ -276,8 +276,8 @@ public interface MaintenanceHandlerApi {
     @Schema(name = "ApiResponseStringList")
     interface StringListResponse extends ApiResponseWrapper<List<String>> { }
 
-    @Schema(name = "ApiResponseIntegerList")
-    interface IntegerListResponse extends ApiResponseWrapper<List<Integer>> { }
+    @Schema(name = "ApiResponseLongList")
+    interface LongListResponse extends ApiResponseWrapper<List<Long>> { }
 
     @Schema(name = "ApiResponseMaintenanceSystemCount")
     interface SystemCountResponse extends ApiResponseWrapper<Integer> { }
