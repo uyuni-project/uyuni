@@ -80,6 +80,36 @@ public class MaintenanceHandlerContractTest extends BaseOpenApiTest {
     }
 
     /**
+     * MaintenanceScheduleSerializer writes the calendar only when the schedule carries one, so a
+     * schedule without a calendar exercises the branch that leaves the property out.
+     *
+     * @return a maintenance schedule carrying no calendar
+     */
+    private MaintenanceSchedule scheduleWithoutCalendar() {
+        MaintenanceSchedule schedule = new MaintenanceSchedule();
+        schedule.setId(11L);
+        schedule.setOrg(fakeOrg);
+        schedule.setName(SCHEDULE_NAME);
+        schedule.setScheduleType(MaintenanceSchedule.ScheduleType.MULTI);
+        return schedule;
+    }
+
+    /**
+     * MaintenanceCalendarSerializer writes the URL only when the calendar carries one, so an
+     * ical-only calendar exercises the branch that leaves the property out.
+     *
+     * @return a maintenance calendar carrying no URL
+     */
+    private MaintenanceCalendar calendarWithoutUrl() {
+        MaintenanceCalendar maintenanceCalendar = new MaintenanceCalendar();
+        maintenanceCalendar.setId(21L);
+        maintenanceCalendar.setOrg(fakeOrg);
+        maintenanceCalendar.setLabel(CALENDAR_LABEL);
+        maintenanceCalendar.setIcal(ICAL);
+        return maintenanceCalendar;
+    }
+
+    /**
      * @return a reschedule result that affected no action
      */
     private RescheduleResult rescheduleResult() {
@@ -102,6 +132,22 @@ public class MaintenanceHandlerContractTest extends BaseOpenApiTest {
         context.checking(new Expectations() {{
             oneOf(handler()).getScheduleDetails(with(mockUser), with(SCHEDULE_NAME));
             will(returnValue(schedule()));
+        }});
+
+        validateApiContract("/maintenance/getScheduleDetails", "POST")
+                .withBody(Map.of("name", SCHEDULE_NAME))
+                .onHandlerMethod("getScheduleDetails", User.class, String.class);
+    }
+
+    /**
+     * The calendar is documented as optional, so a schedule that carries none still has to
+     * validate against the documented response.
+     */
+    @Test
+    public void testGetScheduleDetailsWithoutCalendar() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).getScheduleDetails(with(mockUser), with(SCHEDULE_NAME));
+            will(returnValue(scheduleWithoutCalendar()));
         }});
 
         validateApiContract("/maintenance/getScheduleDetails", "POST")
@@ -168,6 +214,30 @@ public class MaintenanceHandlerContractTest extends BaseOpenApiTest {
                 .onHandlerMethod("updateSchedule", User.class, String.class, Map.class, List.class);
     }
 
+    /**
+     * Both keys of the schedule details are documented as optional, so an update that carries
+     * only the type has to be accepted too.
+     */
+    @Test
+    public void testUpdateScheduleWithTypeOnly() throws Exception {
+        Map<String, String> details = new LinkedHashMap<>();
+        details.put("type", "single");
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("name", SCHEDULE_NAME);
+        body.put("details", details);
+        body.put("rescheduleStrategy", STRATEGY);
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).updateSchedule(with(mockUser), with(SCHEDULE_NAME), with(details), with(STRATEGY));
+            will(returnValue(rescheduleResult()));
+        }});
+
+        validateApiContract("/maintenance/updateSchedule", "POST")
+                .withBody(body)
+                .onHandlerMethod("updateSchedule", User.class, String.class, Map.class, List.class);
+    }
+
     @Test
     public void testDeleteSchedule() throws Exception {
         context.checking(new Expectations() {{
@@ -196,6 +266,22 @@ public class MaintenanceHandlerContractTest extends BaseOpenApiTest {
         context.checking(new Expectations() {{
             oneOf(handler()).getCalendarDetails(with(mockUser), with(CALENDAR_LABEL));
             will(returnValue(calendar()));
+        }});
+
+        validateApiContract("/maintenance/getCalendarDetails", "POST")
+                .withBody(Map.of("label", CALENDAR_LABEL))
+                .onHandlerMethod("getCalendarDetails", User.class, String.class);
+    }
+
+    /**
+     * The URL is documented as optional, so a calendar that carries none still has to validate
+     * against the documented response.
+     */
+    @Test
+    public void testGetCalendarDetailsWithoutUrl() throws Exception {
+        context.checking(new Expectations() {{
+            oneOf(handler()).getCalendarDetails(with(mockUser), with(CALENDAR_LABEL));
+            will(returnValue(calendarWithoutUrl()));
         }});
 
         validateApiContract("/maintenance/getCalendarDetails", "POST")
@@ -240,6 +326,30 @@ public class MaintenanceHandlerContractTest extends BaseOpenApiTest {
         Map<String, String> details = new LinkedHashMap<>();
         details.put("ical", ICAL);
         details.put("url", CALENDAR_URL);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("label", CALENDAR_LABEL);
+        body.put("details", details);
+        body.put("rescheduleStrategy", STRATEGY);
+
+        context.checking(new Expectations() {{
+            oneOf(handler()).updateCalendar(with(mockUser), with(CALENDAR_LABEL), with(details), with(STRATEGY));
+            will(returnValue(List.of(rescheduleResult())));
+        }});
+
+        validateApiContract("/maintenance/updateCalendar", "POST")
+                .withBody(body)
+                .onHandlerMethod("updateCalendar", User.class, String.class, Map.class, List.class);
+    }
+
+    /**
+     * Both keys of the calendar details are documented as optional, so an update that carries
+     * only the ical data has to be accepted too.
+     */
+    @Test
+    public void testUpdateCalendarWithIcalOnly() throws Exception {
+        Map<String, String> details = new LinkedHashMap<>();
+        details.put("ical", ICAL);
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("label", CALENDAR_LABEL);
