@@ -343,25 +343,25 @@ public interface PowerManagementHandlerApi {
         /**
          * @return the IP address for power management
          */
-        @Schema(description = "IP address for power management", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "IP address for power management", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPowerAddress();
 
         /**
          * @return the username
          */
-        @Schema(description = "The Username", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "The Username", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPowerUsername();
 
         /**
          * @return the password
          */
-        @Schema(description = "The Password", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "The Password", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPowerPassword();
 
         /**
          * @return the identifier
          */
-        @Schema(description = "Identifier", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Identifier", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getPowerId();
     }
 }
