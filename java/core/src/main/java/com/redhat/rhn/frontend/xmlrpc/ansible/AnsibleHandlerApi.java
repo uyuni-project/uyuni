@@ -280,12 +280,14 @@ public interface AnsibleHandlerApi {
         /**
          * @return whether the playbook shall be executed in test mode
          */
-        @Schema(description = "'true' if the playbook shall be executed in test mode")
+        @Schema(description = "'true' if the playbook shall be executed in test mode",
+                requiredMode = Schema.RequiredMode.REQUIRED)
         Boolean getTestMode();
 
         /**
          * @return the additional arguments to pass to ansiblegate
          */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         AnsibleArgsDoc getAnsibleArgs();
     }
 
