@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-28 09:41+0200\n"
-"PO-Revision-Date: 2026-05-22 00:12+0000\n"
+"PO-Revision-Date: 2026-08-29 22:13+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -4298,22 +4298,20 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
-#, fuzzy
-#| msgid "Filter"
 msgid "Manual Filter"
-msgstr "Filter"
+msgstr "Manueller Filter"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:96
 msgid "Use Template"
-msgstr ""
+msgstr "Vorlage verwenden"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Filter Name"
-msgstr ""
+msgstr "Filtername"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:118
 msgid "Prefix"
-msgstr ""
+msgstr "Präfix"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:121
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
@@ -4321,7 +4319,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:131
 msgid "Filter Type"
-msgstr ""
+msgstr "Filtertype"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:178
@@ -4338,7 +4336,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:170
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:180
@@ -4389,11 +4387,11 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:259
 msgid "Reboot Required"
-msgstr ""
+msgstr "Neustart erforderlich"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:260
 msgid "Package Manager Restart Required"
-msgstr ""
+msgstr "Neustart des Paketmanagers erforderlich"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:263
 msgid "Advisory Keywords"
@@ -4411,25 +4409,25 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
-msgstr ""
+msgstr "Zahl"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:327
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:140
 msgid "Deny"
-msgstr ""
+msgstr "Verweigern"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:328
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:153
 msgid "Allow"
-msgstr ""
+msgstr "Zulassen"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:330
 msgid "Rule"
-msgstr ""
+msgstr "Regel"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:78
 msgid "Filter has been deleted."
-msgstr ""
+msgstr "Filter wurde gelöscht."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:94
 msgid "Some of the selected filters are used in projects and can not be deleted."
@@ -4453,7 +4451,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:189
 msgid "Filter by name or project"
-msgstr ""
+msgstr "Nach Name oder Projekt filtern"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:203
 msgid "Projects in use"
@@ -4464,31 +4462,24 @@ msgid "Edit Filter"
 msgstr "Filter bearbeiten"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:256
-#, fuzzy
-#| msgid "Create Filter"
 msgid "Delete Filter"
-msgstr "Filter erstellen"
+msgstr "Filter löschen"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
-#, fuzzy
 msgid "Are you sure you want to delete the filter"
-msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+msgstr "Sind Sie sicher, dass Sie den Filter löschen möchten"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:268
-#, fuzzy
-#| msgid "Select a filter"
 msgid "Delete Selected Filter(s)"
-msgstr "Filter auswählen"
+msgstr "Ausgewählte(n) Filter löschen"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:272
-#, fuzzy
 msgid "Are you sure you want to delete the selected filter?"
-msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+msgstr "Sind Sie sicher, dass Sie den ausgewählten Filter löschen möchten"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:273
-#, fuzzy
 msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
-msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
+msgstr "Sind Sie sicher, dass Sie die ausgewählten Filter löschen möchten? ({count} Filter ausgewählt)"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4500,23 +4491,23 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
-msgstr ""
+msgstr "AppStream-Module mit Standardwerten"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
 msgid "Template"
-msgstr ""
+msgstr "Vorlage"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:127
 msgid "Kernel"
-msgstr ""
+msgstr "Kernel"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:134
 msgid "latest"
-msgstr ""
+msgstr "neueste"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:73
 msgid "Create a new content lifecycle project"
@@ -4524,7 +4515,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:74
 msgid "Create Project"
-msgstr ""
+msgstr "Projekt erstellen"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:83
 msgid "Content Lifecycle Projects"
@@ -4549,7 +4540,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/project/project.tsx:113
 msgid "Delete Project"
-msgstr ""
+msgstr "Projekt löschen"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Are you sure you want to delete project"
@@ -4558,11 +4549,11 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:27
 #: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
-msgstr ""
+msgstr "Paket"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:31
 msgid "Patch"
-msgstr ""
+msgstr "Patch"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:39
 msgid "Product Temporary Fix"
@@ -4570,7 +4561,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "contains"
-msgstr ""
+msgstr "enthält"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
 msgid "containing"
