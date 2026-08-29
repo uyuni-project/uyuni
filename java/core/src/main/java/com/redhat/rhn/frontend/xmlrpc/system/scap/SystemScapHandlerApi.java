@@ -599,7 +599,7 @@ public interface SystemScapHandlerApi {
         /**
          * @return the optional OVAL files
          */
-        @Schema(description = "optional OVAL files", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "optional OVAL files", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getOvalfiles();
 
         /**
@@ -643,7 +643,7 @@ public interface SystemScapHandlerApi {
         /**
          * @return the optional OVAL files
          */
-        @Schema(description = "optional OVAL files", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "optional OVAL files", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getOvalfiles();
 
         /**
