@@ -22,7 +22,7 @@ public class ClmDiff extends RhnQueueJob<ClmDiffDriver> {
 
     @Override
     public String getConfigNamespace() {
-        return "clm_diff";
+        return DISPLAY_NAME;
     }
 
     @Override

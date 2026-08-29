@@ -61,6 +61,6 @@ public class ClmChannelDiff extends RhnJavaJob {
                         .forEach(clmDiffInsert::executeUpdates);
             }
         }
-        log.info("Calculating differences for the environments of {} projects", cntProjects);
+        log.info("Queued CLM diff tasks for the environments of {} projects", cntProjects);
     }
 }

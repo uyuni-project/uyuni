@@ -346,7 +346,7 @@ public class ContentManager {
     public int removeEnvironment(String envLabel, String projectLabel, User user) {
         ensureOrgAdmin(user);
         return lookupEnvironment(envLabel, projectLabel, user)
-                .map((env) -> {
+                .map(env -> {
                     ContentProjectFactory.removeEnvironment(env);
                     return 1;
                 })
@@ -705,10 +705,10 @@ public class ContentManager {
     public void diffProject(ContentProject project) {
 
         project.getEnvironmentsStream()
-                .forEach(environment -> {
+                .forEach(environment ->
                     TimeUtils.logTime(LOG, "Creating diff for Environment " + environment.getLabel(),
-                            () -> diffEnvironment(project, environment));
-                });
+                            () -> diffEnvironment(project, environment))
+                );
     }
 
     /**
@@ -780,10 +780,8 @@ public class ContentManager {
                     throw new ContentManagementException("Channel is not a cloned channel: %s"
                             .formatted(channel.getLabel()));
                 }
-                long start = System.nanoTime();
-                diffEnvironmentChannel(project, currentEnv, channel, result.getFilters());
-                LOG.info("{} took {} seconds.", "Creating diff for Channel " + channel,
-                        (System.nanoTime() - start) / 1e9);
+                TimeUtils.logTime(LOG, "Creating diff for Channel " + channel,
+                        () -> diffEnvironmentChannel(project, currentEnv, channel, result.getFilters()));
             }
         }
         catch (DependencyResolutionException e) {
