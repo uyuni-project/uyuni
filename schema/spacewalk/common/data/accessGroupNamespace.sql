@@ -288,7 +288,9 @@ INSERT INTO access.accessGroupNamespace
     FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
         'api.audit.list_images_by_patch_status',
-        'api.audit.list_systems_by_patch_status'
+        'api.audit.list_systems_by_patch_status',
+        'api.audit.list_affected_systems',
+        'api.audit.list_affected_systems_by_cve'
     )
     ON CONFLICT DO NOTHING;
 

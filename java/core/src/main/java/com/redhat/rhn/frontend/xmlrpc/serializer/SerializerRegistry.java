@@ -175,6 +175,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(AccessGroupSerializer.class);
         SERIALIZER_CLASSES.add(NamespaceSerializer.class);
         SERIALIZER_CLASSES.add(ServerInfoJsonSerializer.class);
+        SERIALIZER_CLASSES.add(CVEAffectedPackageSerializer.class);
+        SERIALIZER_CLASSES.add(CVEAffectedServerSerializer.class);
     }
 
     /**
