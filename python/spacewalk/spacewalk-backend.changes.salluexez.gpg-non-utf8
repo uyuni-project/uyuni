@@ -1,0 +1,2 @@
+- Handle non-UTF-8 bytes in GPG status output during Debian
+  repository sync
