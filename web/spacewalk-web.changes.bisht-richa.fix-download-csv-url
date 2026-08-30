@@ -1,0 +1,2 @@
+- Fixed the Download CSV button on the Systems List page
+  redirecting to the Systems Overview page. (bsc#1271972)
