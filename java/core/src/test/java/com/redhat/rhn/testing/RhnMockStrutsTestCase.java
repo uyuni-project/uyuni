@@ -46,13 +46,12 @@ import java.util.TimeZone;
  * Struts Actions use a User.
  */
 @ExtendWith(SaltTestCaseExtension.class)
-@ExtendWith(UserForTestCaseExtension.class)
 public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
-    @UserForTest(userName = TestStatics.TEST_USER, orgName = TestStatics.TEST_ORG)
+    @UserForTest
     protected User user;
 
     /**
@@ -81,16 +80,6 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
         pxtDelegate.updateWebUserId(request, response, user.getId());
         KickstartTestUtils.setupTestConfiguration(user);
-    }
-
-    @Override
-    protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
-    }
-
-    @Override
-    protected void afterCleanupDatabaseCommits() {
-        user = null;
     }
 
     /**
