@@ -15,14 +15,11 @@
  */
 package com.redhat.rhn.taskomatic;
 
-import static org.quartz.TriggerKey.triggerKey;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
@@ -31,8 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.quartz.impl.matchers.GroupMatcher;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -194,7 +189,7 @@ public class TaskoXmlRpcHandler {
                 .findFirst()
                 .orElseThrow(() -> new NoSuchBunchTaskException("No compatible schedule found for bunch"));
 
-        if (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel, null)) != null) {
+        if (TaskoQuartzHelper.hasTrigger(jobLabel)) {
             // remove the old Job
             TaskoQuartzHelper.destroyJob(null, jobLabel);
         }
@@ -287,25 +282,8 @@ public class TaskoXmlRpcHandler {
     public Integer unscheduleBunch(Integer orgId, String jobLabel) {
         // one or none shall be returned
         List<TaskoSchedule> scheduleList = TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel);
-        TriggerKey triggerKey;
-        Trigger trigger;
-        try {
-            triggerKey = triggerKey(jobLabel, TaskoQuartzHelper.getGroupName(orgId));
-            trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey);
+        Trigger trigger = TaskoQuartzHelper.getTriggerIncludingRetries(jobLabel, orgId);
 
-            // Try to find retry triggers as fallback
-            if (trigger == null) {
-                triggerKey = SchedulerKernel.getScheduler()
-                    .getTriggerKeys(GroupMatcher.anyGroup()).stream()
-                    .filter(it -> it.getName().startsWith(jobLabel + "-retry"))
-                    .findFirst().orElse(null);
-                trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey);
-            }
-        }
-        catch (SchedulerException e) {
-            trigger = null;
-            triggerKey = null;
-        }
         // check for inconsistencies
         // quartz unschedules job after trigger end time
         // so better handle quartz and schedules separately
@@ -317,7 +295,7 @@ public class TaskoXmlRpcHandler {
             schedule.unschedule();
         }
         if (trigger != null) {
-            TaskoQuartzHelper.destroyJob(triggerKey);
+            TaskoQuartzHelper.destroyJob(trigger.getKey());
         }
         return 1;
     }
@@ -653,8 +631,7 @@ public class TaskoXmlRpcHandler {
     private void isAlreadyScheduled(Integer orgId, String jobLabel) throws SchedulerException, InvalidParamException {
 
         if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
-                        TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+                TaskoQuartzHelper.hasTrigger(jobLabel, orgId)) {
             throw new InvalidParamException("jobLabel already in use");
         }
     }
