@@ -56,6 +56,41 @@ Then(/^it should be possible to reach the test packages$/) do
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
+def mirror_repo_locally(server, base_url, dest)
+  _out, rc = server.run("test -f #{dest}/repodata/repomd.xml", check_errors: false)
+  return if rc.zero?
+
+  server.run("mkdir -p #{dest}/repodata")
+  server.run("curl -sLf #{base_url}/repodata/repomd.xml -o #{dest}/repodata/repomd.xml")
+  repomd_xml, = server.run("cat #{dest}/repodata/repomd.xml")
+  repomd_xml.scan(/href="([^"]+)"/).flatten.each do |href|
+    server.run("curl -sLf #{base_url}/#{href} -o #{dest}/#{href}")
+  end
+  primary_href = repomd_xml.match(/href="(repodata\/[^"]*primary[^"]*\.xml\.gz)"/)[1]
+  rpm_hrefs, = server.run("gzip -dc #{dest}/#{primary_href} | grep -o 'href=\"[^\"]*\\.rpm\"' | sed 's/href=\"//;s/\"//'")
+  rpm_hrefs.split("\n").each do |href|
+    server.run("mkdir -p #{dest}/#{File.dirname(href)}")
+    server.run("curl -sLf #{base_url}/#{href} -o #{dest}/#{href}")
+  end
+end
+
+Given(/^I mirror the RPM test packages locally$/) do
+  mirror_repo_locally(
+    get_target('server'),
+    'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm',
+    '/srv/www/htdocs/pub/TestRepoRpmUpdates'
+  )
+  get_target('server').run("ln -sfn /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/AnotherRepo")
+end
+
+Given(/^I mirror the AppStream test packages locally$/) do
+  mirror_repo_locally(
+    get_target('server'),
+    'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Appstream/rhlike',
+    '/srv/www/htdocs/pub/TestRepoAppStream'
+  )
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&
