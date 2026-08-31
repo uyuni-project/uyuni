@@ -11,6 +11,10 @@ Faraday::Utils.default_params_encoder = Faraday::FlatParamsEncoder
 
 # Wrapper class for HTTP client library (Faraday)
 class HttpClient
+  # Number of characters of a non-JSON response body kept in the error message.
+  MAX_ERROR_BODY_LENGTH = 200
+  private_constant :MAX_ERROR_BODY_LENGTH
+
   # Creates a new HTTP client using the Faraday library.
   #
   # @param host [String] The host to connect to.
@@ -84,10 +88,9 @@ class HttpClient
         end
       end
     unless answer.status == 200
-      raise ScriptError, "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
+      raise ScriptError, "Unexpected HTTP status code #{answer.status} for #{call_type} #{url}" if answer.body.empty?
 
-      json_body = JSON.parse(answer.body)
-      raise ScriptError, "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
+      raise ScriptError, "Unexpected HTTP status code #{answer.status} for #{call_type} #{url}, message: #{error_message(answer.body)}"
     end
 
     # Return either new session cookie or HTTP body
@@ -107,5 +110,19 @@ class HttpClient
 
       json_body['result']
     end
+  end
+
+  private
+
+  # Extracts the failure message from a response body, falling back to a summary of the
+  # body itself when it is not the JSON the API contract promises.
+  #
+  # @param body [String] The body of the HTTP response.
+  # @return [String] The message describing the failure.
+  def error_message(body)
+    JSON.parse(body)['message']
+  rescue JSON::ParserError
+    summary = body.scrub.gsub(/\s+/, ' ').strip
+    summary.length > MAX_ERROR_BODY_LENGTH ? "#{summary[0, MAX_ERROR_BODY_LENGTH]}..." : summary
   end
 end
