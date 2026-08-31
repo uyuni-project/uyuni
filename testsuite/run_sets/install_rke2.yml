@@ -4,10 +4,10 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Kubernetes tests BEGIN ##
+## Install RKE2 BEGIN ##
 
 # IDEMPOTENT
 
-- features/kubernetes/srv_rke2_external_ca.feature
+- features/kubernetes/srv_install_rke2.feature
 
-## Kubernetes tests END ##
+## Install RKE2 END ##

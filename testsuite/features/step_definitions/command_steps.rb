@@ -1746,7 +1746,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 
   # Reset the API client to take the new CA into account
   log 'Resetting the API client'
-  $api_test = new_api_client
+  $api_test = new_api_client unless ENV.key?('UYUNI_NOT_INSTALLED') && ENV['UYUNI_NOT_INSTALLED'] == 'true'
 
   raise SystemCallError, 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise ScriptError, 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
