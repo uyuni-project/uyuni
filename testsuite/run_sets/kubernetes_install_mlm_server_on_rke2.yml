@@ -4,10 +4,12 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Install RKE2 BEGIN ##
+## Install MLM server on RKE2 BEGIN ##
 
 # IDEMPOTENT
 
-- features/kubernetes/srv_install_rke2.feature
+- features/kubernetes/srv_rke2_install_mlm_dependencies.feature
+- features/kubernetes/srv_install_mlm_on_rke2.feature
+- features/kubernetes/srv_rke2_check_installation.feature
 
-## Install RKE2 END ##
+## Install MLM server on RKE2 END ##

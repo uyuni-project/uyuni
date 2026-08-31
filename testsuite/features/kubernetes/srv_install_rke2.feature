@@ -4,7 +4,7 @@
 @transactional_server
 @rke2
 @no_user_creation
-Feature: Install RKE2 on transactional systems
+Feature: Install RKE2 server on a transactional system
 
   Scenario: Reboot the server to activate everything before starting
     When I reboot the "server" host through SSH, waiting until it comes back
