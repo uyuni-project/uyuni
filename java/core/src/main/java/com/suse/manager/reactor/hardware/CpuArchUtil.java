@@ -14,12 +14,22 @@
  */
 package com.suse.manager.reactor.hardware;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Utility for CPU architectures.
  */
 public class CpuArchUtil {
+
+    // CPU architectures, as reported by the 'cpuarch' grain
+    public static final String ARCH_AARCH64 = "aarch64";
+    public static final String ARCH_ARM64 = "arm64";
+    public static final String ARCH_I386 = "i386";
+    public static final String ARCH_PPC64 = "ppc64";
+    public static final String ARCH_PPC64LE = "ppc64le";
+    public static final String ARCH_S390 = "s390";
+    public static final String ARCH_S390X = "s390x";
+    public static final String ARCH_X86_32_PREFIX = "i";
+    public static final String ARCH_X86_32_SUFFIX = "86";
+    public static final String ARCH_X86_64 = "x86_64";
 
     private CpuArchUtil() { }
 
@@ -28,7 +38,7 @@ public class CpuArchUtil {
      * @return true if the given cpuarch is PPC64.
      */
     public static boolean isPPC64(String cpuarch) {
-        return "ppc64".equals(cpuarch) || "ppc64le".equals(cpuarch);
+        return ARCH_PPC64.equals(cpuarch) || ARCH_PPC64LE.equals(cpuarch);
     }
 
     /**
@@ -36,7 +46,7 @@ public class CpuArchUtil {
      * @return true if the given cpuarch is S390.
      */
     public static boolean isS390(String cpuarch) {
-        return "s390".equals(cpuarch) || "s390x".equals(cpuarch);
+        return ARCH_S390.equals(cpuarch) || ARCH_S390X.equals(cpuarch);
     }
 
     /**
@@ -44,7 +54,7 @@ public class CpuArchUtil {
      * @return true if the given cpuarch is AArch64.
      */
     public static boolean isAarch64(String cpuarch) {
-        return "aarch64".equals(cpuarch) || "arm64".equals(cpuarch);
+        return ARCH_AARCH64.equals(cpuarch) || ARCH_ARM64.equals(cpuarch);
     }
 
     /**
@@ -53,9 +63,8 @@ public class CpuArchUtil {
      * @return Check if the given cpuarch is X86 (32 or 64 bit)
      */
     public static boolean isX86(String cpuarch) {
-        return (cpuarch.startsWith("i") &&
-                StringUtils.substring(cpuarch, -2, cpuarch.length()).equals("86")) ||
-                "x86_64".equals(cpuarch);
+        return (cpuarch.startsWith(ARCH_X86_32_PREFIX) && cpuarch.endsWith(ARCH_X86_32_SUFFIX)) ||
+                ARCH_X86_64.equals(cpuarch);
     }
 
     /**
