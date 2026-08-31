@@ -42,6 +42,7 @@ MANAGER_TRANSACTIONAL_TOP = [
     "ansible.prereq",
     "channels",
     "certs",
+    "formulas_transactional",
     "services.docker_prereqs",
     "services.kiwi-image-server_prereqs",
     "services.salt-minion_prereqs",

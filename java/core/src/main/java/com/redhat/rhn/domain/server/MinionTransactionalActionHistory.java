@@ -10,8 +10,12 @@
  */
 package com.redhat.rhn.domain.server;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -70,6 +74,10 @@ public class MinionTransactionalActionHistory implements Serializable {
 
     @Column(name = "after_reboot_status_at")
     private Date afterRebootStatusAt;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "post_transactional_formulas", columnDefinition = "jsonb")
+    private List<String> postTransactionalFormulas;
 
     /**
      * Default constructor required by Hibernate.
@@ -183,6 +191,28 @@ public class MinionTransactionalActionHistory implements Serializable {
      */
     public Date getAfterRebootStatusAt() {
         return afterRebootStatusAt;
+    }
+
+    /**
+     * Return the formulas frozen for this action/minion at the time the transactional phase ran, that must be
+     * executed in full, live, in the post-transactional pass (immediately when no reboot is needed, or after
+     * reboot otherwise). This is a snapshot: it must not be recomputed later, since minion/group formula
+     * assignments can change while the action is waiting for reboot.
+     *
+     * @return the frozen list of post-transactional formulas, or an empty list when none were frozen
+     */
+    public List<String> getPostTransactionalFormulaList() {
+        return postTransactionalFormulas == null ? List.of() : List.copyOf(postTransactionalFormulas);
+    }
+
+    /**
+     * Freeze the formulas that must be executed in full, live, in the post-transactional pass for this
+     * action/minion.
+     *
+     * @param formulas the formulas to freeze, typically {@code FormulaTransactionalPlan.postTransactionalFormulas()}
+     */
+    public void setPostTransactionalFormulaList(List<String> formulas) {
+        postTransactionalFormulas = formulas == null || formulas.isEmpty() ? null : List.copyOf(formulas);
     }
 
     /**
@@ -333,6 +363,12 @@ public class MinionTransactionalActionHistory implements Serializable {
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
             rebootAt = now;
+        }
+        else if (!rebootRequired) {
+            if (ProgressStatus.PENDING.equals(rebootStatus)) {
+                rebootStatus = ProgressStatus.NOT_NEEDED;
+            }
+            rebootAt = null;
         }
     }
 
