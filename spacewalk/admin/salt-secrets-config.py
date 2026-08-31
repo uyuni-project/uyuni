@@ -8,6 +8,7 @@ import os
 import os.path
 import pwd
 import shutil
+import subprocess
 import yaml
 import hashlib
 
@@ -28,7 +29,7 @@ with cfg_component("java") as CFG:
         pass
 
 # To be moved into a config file in future
-cert_location = "/etc/pki/trust/anchors"
+cert_location = "/etc/rhn/ca"
 if not os.path.isdir(cert_location):
     cert_location = "/etc/pki/ca-trust/source/anchors"
 
@@ -142,7 +143,7 @@ if not all(
         os.path.isfile(f)
         for f in [
             "/etc/salt/pki/api/salt-api.crt",
-            "/etc/pki/trust/anchors/salt-api.crt",
+            f"{cert_location}/salt-api.crt",
             "/etc/salt/pki/api/salt-api.key",
         ]
     ]
@@ -163,4 +164,10 @@ if not all(
     )
     os.chmod("/etc/salt/pki/api/salt-api.key", 0o600)
     shutil.copyfile("/etc/salt/pki/api/salt-api.crt", cert_location + "/salt-api.crt")
-    os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
+    subprocess.run(
+        "/usr/share/rhn/certs/update-ca-cert-trust.sh",
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+        shell=True,
+    )
