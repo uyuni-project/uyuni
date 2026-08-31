@@ -7,7 +7,7 @@
 Feature: Install MLM dependencies on RKE2
 
   Scenario: Check the RKE2 configuration
-    And the environment variable "CERT_MANAGER_VERSION" is set on "server"
+    Then the environment variable "CERT_MANAGER_VERSION" is set on "server"
     And the environment variable "CERT_MANAGER_NAMESPACE" is set on "server"
     And the environment variable "TRAEFIK_FILE" is set on "server"
     And the environment variable "LOCAL_PATH_PROVISIONER_PATH" is set on "server"
@@ -18,7 +18,7 @@ Feature: Install MLM dependencies on RKE2
 
   ## Install helm
   Scenario: Install Helm
-    When I run "set -o pipefail; curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
+    When I run "set -o pipefail; curl -sfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
 
   Scenario: Install cert-manager and trust-manager
     When I run "helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version $CERT_MANAGER_VERSION --namespace $CERT_MANAGER_NAMESPACE --create-namespace --set crds.enabled=true --timeout 10m0s --wait" on "server"

@@ -44,12 +44,19 @@ def count_table_items
   items_label.split('of ')[1].strip
 end
 
+# Tells whether the run happens before the server has been deployed.
+#
+# @return [Boolean] True if the UYUNI_NOT_INSTALLED environment variable is set to 'true'.
+def uyuni_not_installed?
+  ENV['UYUNI_NOT_INSTALLED'] == 'true'
+end
+
 # Determines the product type (Uyuni or SUSE Manager) based on installed patterns, raises error if undetermined.
 #
 # @return [String, nil] The product name, or nil when UYUNI_NOT_INSTALLED is set.
 def product
   return $product unless $product.nil?
-  return if ENV.key?('UYUNI_NOT_INSTALLED') && ENV['UYUNI_NOT_INSTALLED'] == 'true'
+  return if uyuni_not_installed?
 
   patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
   server = get_target('server')
