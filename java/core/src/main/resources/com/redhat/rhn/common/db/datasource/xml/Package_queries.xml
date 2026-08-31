@@ -1166,7 +1166,18 @@ SELECT  COUNT(pn.id) AS COUNT
 
 <mode name="system_upgradable_package_list" class="com.redhat.rhn.frontend.dto.UpgradablePackageListItem">
   <query params="sid">
-SELECT  n.id AS id,
+  WITH highest_id_packages AS (
+      SELECT p.name_id, p.evr_id, p.package_arch_id, max(p.id) AS id
+        FROM rhnServerPackage sp
+              INNER JOIN rhnServer s ON sp.server_id = s.id
+              INNER JOIN rhnServerChannel sc on sc.server_id = s.id
+              INNER JOIN rhnChannelPackage cp on cp.channel_id = sc.channel_id
+              INNER JOIN rhnPackage p
+              ON sp.name_id = p.name_id AND sp.package_arch_id = p.package_arch_id AND p.id = cp.package_id
+        WHERE sp.server_id = :sid AND (p.org_id = s.org_id or p.org_id is null)
+      GROUP BY p.name_id, p.evr_id, p.package_arch_id
+  )
+  SELECT  n.id AS id,
         n.id AS name_id,
         lookup_evr(((latest.evr)).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
         latest.package_arch_id AS arch_id,
@@ -1203,15 +1214,15 @@ SELECT  n.id AS id,
   join rhnPackageUpgradeArchCompat puac
     on puac.package_arch_id = sp.package_arch_id
    and puac.package_upgrade_arch_id = latest.package_arch_id
-  LEFT JOIN rhnPackage p ON p.name_id = latest.package_name_id
-     AND p.evr_id = latest.package_evr_id
-     AND p.package_arch_id = latest.package_arch_id
-       LEFT JOIN (
+  LEFT JOIN highest_id_packages hp ON hp.name_id = latest.package_name_id
+      AND hp.evr_id = latest.package_evr_id
+      AND hp.package_arch_id = latest.package_arch_id
+  LEFT JOIN (
          select a.name as name, a.stream as stream, ap.package_id as package_id
          from suseAppStreamPackage ap
          inner join suseAppStream a on a.id = ap.module_id
          inner join rhnServerChannel sc on sc.channel_id = a.channel_id and sc.server_id = :sid
-       ) appStream on appStream.package_id = p.id
+       ) appStream on appStream.package_id = hp.id
  where sp.server_id = :sid
  order by upper(n.name)
   </query>
