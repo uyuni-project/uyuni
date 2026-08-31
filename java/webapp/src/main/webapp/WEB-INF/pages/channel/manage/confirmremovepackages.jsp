@@ -26,7 +26,7 @@
                 <rl:csv dataset="pageList"
                     name="packageList"
                     exportColumns="id, nvrea, summary, provider"/>
-                <button type="submit" name="confirm" class="btn btn-danger">
+                <button type="submit" name="confirm" class="btn btn-danger" value="confirmremove">
                     <bean:message key='channel.jsp.package.confirmbutton'/>
                 </button>
             </div>

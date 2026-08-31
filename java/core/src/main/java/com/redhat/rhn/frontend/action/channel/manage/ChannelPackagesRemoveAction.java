@@ -87,7 +87,7 @@ public class ChannelPackagesRemoveAction extends RhnAction {
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
         String confirm = request.getParameter("confirm");
-        if (confirm != null && confirm.equals("removepackages") && !set.isEmpty()) {
+        if (confirm != null && confirm.equals("confirmremove") && !set.isEmpty()) {
             removePackages(user, chan, set);
             ActionMessages msg = new ActionMessages();
             String[] actionParams = {set.size() + "", chan.getName()};

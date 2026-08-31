@@ -56,7 +56,7 @@
       <button type="button" onClick="location.href='${parentUrl}'" class="btn btn-default">
          ${rhn:localize('org.trust.cancel')}
       </button>
-      <button type="submit" name ="dispatch" class="btn btn-default">
+      <button type="submit" name ="dispatch" value="dispatch" class="btn btn-default">
          ${rhn:localize('confirm')}
       </button>
    </div>
