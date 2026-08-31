@@ -48,7 +48,6 @@ RUN set -euo pipefail; \
         habootstrap-formula \
         inter-server-sync \
         ipmitool \
-        javamail \
         locale-formula \
         postgresql18 \
         prometheus-exporters-formula \
