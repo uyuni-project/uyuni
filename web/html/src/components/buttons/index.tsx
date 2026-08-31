@@ -220,7 +220,7 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+    const cssClasses = `btn ${this.props.className ?? "btn-default"}${this.props.disabled ? " disabled" : ""}`;
     const tooltipProps = this.props.title
       ? {
           "data-bs-toggle": "tooltip",

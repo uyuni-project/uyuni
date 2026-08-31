@@ -22,21 +22,21 @@
 }
 
 .changed {
-  background-color: #f5f3c4;
+  background-color: $eos-bc-yellow-100;
 }
 
 .oldfile .deleted {
-  background-color: #f5c4c4;
+  background-color: $eos-bc-red-100;
 }
 
 .newfile .deleted {
-  background-color: #d4d4d4;
+  background-color: $eos-bc-gray-100;
 }
 
 .oldfile .inserted {
-  background-color: #d4d4d4;
+  background-color: $eos-bc-gray-100;
 }
 
 .newfile .inserted {
-  background-color: #c5f4c4;
+  background-color: $eos-bc-green-100;
 }

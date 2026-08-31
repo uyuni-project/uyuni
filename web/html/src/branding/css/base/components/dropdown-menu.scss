@@ -3,8 +3,8 @@
   min-width: 160px;
   padding: 5px 0;
   font-size: 14px;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: $dropdown-bg;
+  border: 1px solid $dropdown-border;
   box-shadow: 0 6px 12px $box-shadow;
   
   .dropdown-item,
@@ -18,7 +18,7 @@
     width: 100%;
 
     &:hover {
-      background-color: $eos-bc-gray-50;
+      background-color: $dropdown-hover-bg;
       text-decoration: none;
     }
   }
