@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   type SingleCoCoSettingsResponse,
   getSystemCoCoSettings,
+  normalizeSingleCoCoSettingsResponse,
   saveSystemCoCoSettings,
 } from "components/coco-attestation/api";
 import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
@@ -50,7 +51,11 @@ export const CoCoSettings: React.FC<Props> = ({
     if (!result.success) {
       setMessages(MessagesUtils.error(result.messages));
       setLoading(false);
-    } else if (!result.data.supported) {
+      return;
+    }
+
+    const response = normalizeSingleCoCoSettingsResponse(result.data);
+    if (!response.supported) {
       setSupported(false);
       setMessages(MessagesUtils.warning(result.messages));
       setSettings(emptySettings);
@@ -58,7 +63,7 @@ export const CoCoSettings: React.FC<Props> = ({
     } else {
       setMessages(MessagesUtils.success(result.messages));
       setSupported(true);
-      setSettings(result.data.settings);
+      setSettings(response.settings);
       setLoading(false);
     }
   }
