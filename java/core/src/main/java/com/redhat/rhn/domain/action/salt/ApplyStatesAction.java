@@ -127,7 +127,8 @@ public class ApplyStatesAction extends Action {
                 Optional.of(true),
                 details.isTest() ? Optional.of(details.isTest()) : Optional.empty(),
                 minionSummaries,
-                details.isUseTransactionalUpdate());
+                details.isUseTransactionalUpdate(),
+                getId());
         return ret;
     }
 
