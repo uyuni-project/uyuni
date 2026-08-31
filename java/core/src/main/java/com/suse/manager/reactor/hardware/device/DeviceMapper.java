@@ -281,7 +281,7 @@ public class DeviceMapper {
      * @param dbdev the udev device entry
      * @return device class or null if it cannot be determined
      */
-    @SuppressWarnings({"java:S131", "unchecked"})
+    @SuppressWarnings("unchecked")
     protected String classifyDeviceClass(Map<String, Object> dbdev) {
         // PCI devices
         String pciClass = props.getValueAsString(UDEV_KEY_PCI_CLASS);
