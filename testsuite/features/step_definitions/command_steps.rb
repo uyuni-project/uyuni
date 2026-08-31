@@ -545,9 +545,24 @@ Then(/^the log messages should not contain out of memory errors$/) do
 end
 
 Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
-  cmd = "cat /var/log/rhn/rhn_web_ui.log | grep -i 'Exception' | grep -i '#{component}'"
-  output, code = get_target('server').run(cmd, check_errors: false)
-  raise ScriptError, "Error related to \"#{component}\" found!\n#{output}" if code.zero?
+  log_file = '/var/log/rhn/rhn_web_ui.log'
+  output, _code = get_target('server').run("cat #{log_file}")
+
+  records = []
+  output.each_line do |line|
+    if records.empty? || line.match?(/\A\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}/)
+      records << line
+    else
+      records.last << line
+    end
+  end
+
+  errors = records.select { |record| record.match?(/exception/i) && record.match?(/#{Regexp.escape(component)}/i) }
+  unless errors.empty?
+    details = errors.take(5)
+    details << "... and #{errors.size - details.size} more" if errors.size > details.size
+    raise ScriptError, "#{errors.size} error(s) related to \"#{component}\" found in #{log_file}!\n#{details.join("\n")}"
+  end
 end
 
 When(/^I restart the spacewalk service$/) do
