@@ -44,7 +44,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * View: suseImageOverview
@@ -54,42 +53,133 @@ import jakarta.persistence.Transient;
 @Immutable
 public class ImageOverview {
 
+
+    @Id
+    @Column(name = "image_id")
     private Long id;
+
+    @Column(name = "image_name")
     private String name;
+
+    @Column(name = "image_version")
     private String version;
+
+    @Column(name = "image_type")
     private String imageType;
+
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
+
+    @Column(name = "image_arch_name")
     private String arch;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     private ImageProfile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
     private ImageStore store;
+
+    @ManyToOne
+    @JoinColumn(name = "build_server_id")
     private MinionServer buildServer;
+
+    @Column(name = "curr_revision_num")
     private Integer currRevisionNum;
+
+    @ManyToOne
+    @JoinColumn(name = "build_action_id", referencedColumnName = "id", insertable = false,
+            updatable = false)
     private Action buildAction;
+
+    @ManyToOne
+    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id", insertable = false,
+            updatable = false)
     private Action inspectAction;
+
+    @Column(name = "external_image")
+    @Convert(converter = YesNoConverter.class)
     private boolean externalImage;
+
+    @Column(name = "obsolete")
+    @Convert(converter = YesNoConverter.class)
     private boolean obsolete;
+
+    @Column(name = "built")
+    @Convert(converter = YesNoConverter.class)
     private boolean built;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     private Set<ImageInfoCustomDataValue> customDataValues;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseImageInfoChannel",
+        joinColumns = {
+            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = "channel_id", nullable = false, insertable = false, updatable = false)}
+    )
     private Set<Channel> channels;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseImageInfoInstalledProduct",
+        joinColumns = {
+            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = "installed_product_id", nullable = false, insertable = false, updatable = false)
+    })
     private Set<InstalledProduct> installedProducts;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     private Set<ImagePackage> packages;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnImageNeededErrataCache",
+            joinColumns = {@JoinColumn(name = "image_id")},
+            inverseJoinColumns = {@JoinColumn(name = "errata_id")}
+    )
     private Set<Errata> patches;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     private Set<ImageFile> imageFiles;
+
+    @ManyToOne
     private Org org;
+
+    @Column(name = "security_errata")
     private Integer securityErrata;
+
+    @Column(name = "bug_errata")
     private Integer bugErrata;
+
+    @Column(name = "enhancement_errata")
     private Integer enhancementErrata;
+
+    @Column(name = "outdated_packages")
     private Integer outdatedPackages;
+
+    @Column(name = "installed_packages")
     private Integer installedPackages;
+
+    @Column(name = "modified")
     private Date modified;
+
+    @OneToMany
+    @JoinColumn(name = "source_image_id")
     private Set<DeltaImageInfo> deltaSourceFor;
+
+    @OneToMany
+    @JoinColumn(name = "target_image_id")
     private Set<DeltaImageInfo> deltaTargetFor;
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "image_id")
     public Long getId() {
         return id;
     }
@@ -97,7 +187,6 @@ public class ImageOverview {
     /**
      * @return the org
      */
-    @ManyToOne
     public Org getOrg() {
         return org;
     }
@@ -106,7 +195,6 @@ public class ImageOverview {
     /**
      * @return the name
      */
-    @Column(name = "image_name")
     public String getName() {
         return name;
     }
@@ -114,7 +202,6 @@ public class ImageOverview {
     /**
      * @return the version
      */
-    @Column(name = "image_version")
     public String getVersion() {
         return version;
     }
@@ -122,7 +209,6 @@ public class ImageOverview {
     /**
      * @return the image type
      */
-    @Column(name = "image_type")
     public String getImageType() {
         return imageType;
     }
@@ -130,8 +216,6 @@ public class ImageOverview {
     /**
      * @return the checksum
      */
-    @ManyToOne
-    @JoinColumn(name = "checksum_id")
     public Checksum getChecksum() {
         return checksum;
     }
@@ -140,8 +224,6 @@ public class ImageOverview {
     /**
      * @return the image profile
      */
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
     public ImageProfile getProfile() {
         return profile;
     }
@@ -149,8 +231,6 @@ public class ImageOverview {
     /**
      * @return the image store
      */
-    @ManyToOne
-    @JoinColumn(name = "store_id")
     public ImageStore getStore() {
         return store;
     }
@@ -158,8 +238,6 @@ public class ImageOverview {
     /**
      * @return the build server
      */
-    @ManyToOne
-    @JoinColumn(name = "build_server_id")
     public MinionServer getBuildServer() {
         return buildServer;
     }
@@ -167,7 +245,6 @@ public class ImageOverview {
     /**
      * @return the current revision number
      */
-    @Column(name = "curr_revision_num")
     public Integer getCurrRevisionNum() {
         return currRevisionNum;
     }
@@ -175,9 +252,6 @@ public class ImageOverview {
     /**
      * @return the build action
      */
-    @ManyToOne
-    @JoinColumn(name = "build_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
     public Action getBuildAction() {
         return buildAction;
     }
@@ -185,9 +259,6 @@ public class ImageOverview {
     /**
      * @return the inspect action
      */
-    @ManyToOne
-    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
     public Action getInspectAction() {
         return inspectAction;
     }
@@ -195,8 +266,6 @@ public class ImageOverview {
     /**
      * @return true if the image has been built outside SUSE Manager
      */
-    @Column(name = "external_image")
-    @Convert(converter = YesNoConverter.class)
     public boolean isExternalImage() {
         return externalImage;
     }
@@ -204,8 +273,6 @@ public class ImageOverview {
     /**
      * @return true if the image is obsolete (has been replaced in the store)
      */
-    @Column(name = "obsolete")
-    @Convert(converter = YesNoConverter.class)
     public boolean isObsolete() {
         return obsolete;
     }
@@ -213,8 +280,6 @@ public class ImageOverview {
     /**
      * @return true if the image has been successfully built
      */
-    @Column(name = "built")
-    @Convert(converter = YesNoConverter.class)
     public boolean isBuilt() {
         return built;
     }
@@ -222,8 +287,6 @@ public class ImageOverview {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -231,13 +294,6 @@ public class ImageOverview {
     /**
      * @return the channels
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "suseImageInfoChannel",
-        joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
-        inverseJoinColumns = {
-            @JoinColumn(name = "channel_id", nullable = false, insertable = false, updatable = false)}
-    )
     public Set<Channel> getChannels() {
         return channels;
     }
@@ -245,13 +301,6 @@ public class ImageOverview {
     /**
      * @return the installed products
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "suseImageInfoInstalledProduct",
-        joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
-        inverseJoinColumns = {
-            @JoinColumn(name = "installed_product_id", nullable = false, insertable = false, updatable = false)
-    })
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;
     }
@@ -259,8 +308,6 @@ public class ImageOverview {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImagePackage> getPackages() {
         return packages;
     }
@@ -268,11 +315,6 @@ public class ImageOverview {
     /**
      * @return the patches
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "rhnImageNeededErrataCache",
-            joinColumns = {@JoinColumn(name = "image_id")},
-            inverseJoinColumns = {@JoinColumn(name = "errata_id")}
-    )
     public Set<Errata> getPatches() {
         return patches;
     }
@@ -280,8 +322,6 @@ public class ImageOverview {
     /**
      * @return the files
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImageFile> getImageFiles() {
         return imageFiles;
     }
@@ -289,7 +329,6 @@ public class ImageOverview {
     /**
      * @return the arch string
      */
-    @Column(name = "image_arch_name")
     public String getArch() {
         return arch;
     }
@@ -297,7 +336,6 @@ public class ImageOverview {
     /**
      * @return the security errata
      */
-    @Column(name = "security_errata")
     public Integer getSecurityErrata() {
         return securityErrata;
     }
@@ -305,7 +343,6 @@ public class ImageOverview {
     /**
      * @return the bug errata count
      */
-    @Column(name = "bug_errata")
     public Integer getBugErrata() {
         return bugErrata;
     }
@@ -313,7 +350,6 @@ public class ImageOverview {
     /**
      * @return the enhancement errata count
      */
-    @Column(name = "enhancement_errata")
     public Integer getEnhancementErrata() {
         return enhancementErrata;
     }
@@ -321,7 +357,6 @@ public class ImageOverview {
     /**
      * @return the outdated package count
      */
-    @Column(name = "outdated_packages")
     public Integer getOutdatedPackages() {
         return outdatedPackages;
     }
@@ -329,7 +364,6 @@ public class ImageOverview {
     /**
      * @return the installed package count
      */
-    @Column(name = "installed_packages")
     public Integer getInstalledPackages() {
         return installedPackages;
     }
@@ -337,7 +371,6 @@ public class ImageOverview {
     /**
      * @return the modified date
      */
-    @Column(name = "modified")
     public Date getModified() {
         return modified;
     }
@@ -347,7 +380,6 @@ public class ImageOverview {
      *
      * @return the build server action
      */
-    @Transient
     public Optional<ServerAction> getBuildServerAction() {
         return getServerAction(getBuildAction());
     }
@@ -357,7 +389,6 @@ public class ImageOverview {
      *
      * @return the inspect server action
      */
-    @Transient
     public Optional<ServerAction> getInspectServerAction() {
         return getServerAction(getInspectAction());
     }
@@ -371,14 +402,10 @@ public class ImageOverview {
                 .filter(sa -> sa.getServer().equals(getBuildServer())).findAny();
     }
 
-    @OneToMany
-    @JoinColumn(name = "source_image_id")
     public Set<DeltaImageInfo> getDeltaSourceFor() {
         return deltaSourceFor;
     }
 
-    @OneToMany
-    @JoinColumn(name = "target_image_id")
     public Set<DeltaImageInfo> getDeltaTargetFor() {
         return deltaTargetFor;
     }

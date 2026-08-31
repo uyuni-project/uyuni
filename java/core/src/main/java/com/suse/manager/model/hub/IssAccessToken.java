@@ -30,22 +30,36 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSAccessToken")
 public class IssAccessToken extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Column(name = "token")
     private String token;
 
+
+    @Column(name = "type")
+    @Type(value = com.suse.manager.model.hub.TokenTypeEnumType.class)
     private TokenType type;
 
+
+    @Column(name = "server_fqdn")
     private String serverFqdn;
 
+
+    @Column(name = "expiration_date")
     private Date expirationDate;
 
+
+    @Column(name = "valid")
     private boolean valid;
 
     /**
@@ -91,9 +105,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.valid = true;
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -102,7 +113,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.id = idIn;
     }
 
-    @Column(name = "token")
     public String getToken() {
         return token;
     }
@@ -111,8 +121,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.token = tokenIn;
     }
 
-    @Column(name = "type")
-    @Type(value = com.suse.manager.model.hub.TokenTypeEnumType.class)
     public TokenType getType() {
         return type;
     }
@@ -121,7 +129,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.type = typeIn;
     }
 
-    @Column(name = "server_fqdn")
     public String getServerFqdn() {
         return serverFqdn;
     }
@@ -130,7 +137,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.serverFqdn = serverFqdnIn;
     }
 
-    @Column(name = "expiration_date")
     public Date getExpirationDate() {
         return expirationDate;
     }
@@ -139,7 +145,6 @@ public class IssAccessToken extends BaseDomainHelper {
         this.expirationDate = expirationDateIn;
     }
 
-    @Column(name = "valid")
     public boolean isValid() {
         return valid;
     }
@@ -152,7 +157,6 @@ public class IssAccessToken extends BaseDomainHelper {
      * Checks if the current instance is expired.
      * @return true if the current date is after the expiration date
      */
-    @Transient
     public boolean isExpired() {
         if (expirationDate == null) {
             return false;
@@ -166,7 +170,6 @@ public class IssAccessToken extends BaseDomainHelper {
      * @return the parsed token
      * @throws TokenParsingException if parsing the serialized value fails
      */
-    @Transient
     public Token getParsedToken() throws TokenParsingException {
         return new TokenParser()
             .usingServerSecret()

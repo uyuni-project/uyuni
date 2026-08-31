@@ -29,10 +29,24 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "suseCloudRmtHost")
 public class CloudRmtHost extends BaseDomainHelper {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cloudRmtHost_seq")
+    @SequenceGenerator(name = "cloudRmtHost_seq", sequenceName = "susecloudrmthost_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "hostname")
     private String host;
+
+    @Column(name = "ip_address")
     private String ip;
+
+    @Column(name = "ssl_cert")
     private String sslCert;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payg_ssh_data_id", referencedColumnName = "id")
     private PaygSshData paygSshData;
 
 
@@ -40,10 +54,6 @@ public class CloudRmtHost extends BaseDomainHelper {
      * Gets the id.
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cloudRmtHost_seq")
-    @SequenceGenerator(name = "cloudRmtHost_seq", sequenceName = "susecloudrmthost_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -56,7 +66,6 @@ public class CloudRmtHost extends BaseDomainHelper {
         id = idIn;
     }
 
-    @Column(name = "hostname")
     public String getHost() {
         return host;
     }
@@ -65,7 +74,6 @@ public class CloudRmtHost extends BaseDomainHelper {
         this.host = h;
     }
 
-    @Column(name = "ip_address")
     public String getIp() {
         return ip;
     }
@@ -74,7 +82,6 @@ public class CloudRmtHost extends BaseDomainHelper {
         this.ip = ipIn;
     }
 
-    @Column(name = "ssl_cert")
     public String getSslCert() {
         return sslCert;
     }
@@ -83,8 +90,6 @@ public class CloudRmtHost extends BaseDomainHelper {
         this.sslCert = sslC;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payg_ssh_data_id", referencedColumnName = "id")
     public PaygSshData getPaygSshData() {
         return paygSshData;
     }

@@ -44,24 +44,48 @@ import jakarta.persistence.Table;
 @Table(name = "suseServerCoCoAttestationReport")
 public class ServerCoCoAttestationReport extends BaseDomainHelper implements Serializable {
     private static final long serialVersionUID = 8161461482693316376L;
-    private Long id;
-    private Server server;
-    private Action action;
-    private CoCoEnvironmentType environmentType;
-    private CoCoReportStatus status;
-    private Map<String, Object> configData = new TreeMap<>();
-    private Map<String, Object> inData = new TreeMap<>();
-    private Map<String, Object> outData = new TreeMap<>();
-    private List<CoCoAttestationResult> results = new ArrayList<>();
 
-    /**
-     * @return return the ID
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_cocoatt_report_seq")
     @SequenceGenerator(
             name = "server_cocoatt_report_seq", sequenceName = "suse_srvcocoatt_rep_id_seq", allocationSize = 1
     )
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private Server server;
+
+    @ManyToOne
+    @JoinColumn(name = "action_id")
+    private Action action;
+
+    @Column(name = "env_type")
+    @Convert(converter = CoCoEnvironmentTypeConverter.class)
+    private CoCoEnvironmentType environmentType;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private CoCoReportStatus status;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "config_data")
+    private Map<String, Object> configData = new TreeMap<>();
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "in_data")
+    private Map<String, Object> inData = new TreeMap<>();
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "out_data")
+    private Map<String, Object> outData = new TreeMap<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    private List<CoCoAttestationResult> results = new ArrayList<>();
+
+    /**
+     * @return return the ID
+     */
     public Long getId() {
         return id;
     }
@@ -69,14 +93,10 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     /**
      * @return return the server
      */
-    @ManyToOne
-    @JoinColumn(name = "server_id")
     public Server getServer() {
         return server;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "action_id")
     public Action getAction() {
         return action;
     }
@@ -84,37 +104,26 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     /**
      * @return return the selected environment type
      */
-    @Column(name = "env_type")
-    @Convert(converter = CoCoEnvironmentTypeConverter.class)
     public CoCoEnvironmentType getEnvironmentType() {
         return environmentType;
     }
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
     public CoCoReportStatus getStatus() {
         return status;
     }
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", name = "config_data")
     public Map<String, Object> getConfigData() {
         return configData;
     }
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", name = "in_data")
     public Map<String, Object> getInData() {
         return inData;
     }
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", name = "out_data")
     public Map<String, Object> getOutData() {
         return outData;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
     public List<CoCoAttestationResult> getResults() {
         return results;
     }

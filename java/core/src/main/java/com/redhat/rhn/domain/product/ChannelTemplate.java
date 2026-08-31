@@ -29,7 +29,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 
 /**
@@ -40,25 +39,51 @@ import jakarta.persistence.UniqueConstraint;
 @UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
 public class ChannelTemplate extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private SUSEProduct product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "root_product_id", nullable = false)
     private SUSEProduct rootProduct;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repo_id", nullable = false)
     private SCCRepository repository;
+
+    @Column(name = "channel_label")
     private String channelLabel;
+
+    @Column(name = "parent_channel_label")
     private String parentChannelLabel;
+
+    @Column(name = "channel_name")
     private String channelName;
+
+    @Column(name = "mandatory")
     private boolean mandatory;
+
+    @Column(name = "update_tag")
     private String updateTag;
+
+    @Column(name = "gpg_key_url")
     private String gpgKeyUrl;
+
+    @Column(name = "gpg_key_id")
     private String gpgKeyId;
+
+    @Column(name = "gpg_key_fp")
     private String gpgKeyFingerprint;
 
     /**
      * @return Returns the id.
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -66,8 +91,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the product.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
     public SUSEProduct getProduct() {
         return product;
     }
@@ -75,8 +98,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the root product.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "root_product_id", nullable = false)
     public SUSEProduct getRootProduct() {
         return rootProduct;
     }
@@ -84,8 +105,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the repoId.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repo_id", nullable = false)
     public SCCRepository getRepository() {
         return repository;
     }
@@ -93,7 +112,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the channelLabel.
      */
-    @Column(name = "channel_label")
     public String getChannelLabel() {
         return channelLabel;
     }
@@ -101,7 +119,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the parentChannelLabel.
      */
-    @Column(name = "parent_channel_label")
     public String getParentChannelLabel() {
         return parentChannelLabel;
     }
@@ -109,7 +126,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the channelName.
      */
-    @Column(name = "channel_name")
     public String getChannelName() {
         return channelName;
     }
@@ -117,7 +133,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the mandatory.
      */
-    @Column(name = "mandatory")
     public boolean isMandatory() {
         return mandatory;
     }
@@ -125,7 +140,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the updateTag.
      */
-    @Column(name = "update_tag")
     public String getUpdateTag() {
         return updateTag;
     }
@@ -133,7 +147,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the GPG key URL
      */
-    @Column(name = "gpg_key_url")
     public String getGpgKeyUrl() {
         return gpgKeyUrl;
     }
@@ -141,7 +154,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the GPG key id
      */
-    @Column(name = "gpg_key_id")
     public String getGpgKeyId() {
         return gpgKeyId;
     }
@@ -149,7 +161,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return Returns the GPG Key Fingerprint
      */
-    @Column(name = "gpg_key_fp")
     public String getGpgKeyFingerprint() {
         return gpgKeyFingerprint;
     }
@@ -220,7 +231,6 @@ public class ChannelTemplate extends BaseDomainHelper {
     /**
      * @return true of this item represents a root item
      */
-    @Transient
     public boolean isRoot() {
         return getParentChannelLabel() == null;
     }

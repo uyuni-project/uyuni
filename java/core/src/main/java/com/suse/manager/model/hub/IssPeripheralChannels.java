@@ -31,9 +31,21 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "suseISSPeripheralChannels")
 public class IssPeripheralChannels extends BaseDomainHelper {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "peripheral_id")
     private IssPeripheral peripheral;
+
+    @Column(name = "peripheral_org_id")
     private Long peripheralOrgId;
+
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     protected IssPeripheralChannels() {
@@ -66,9 +78,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -77,8 +86,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * Get the Peripheral Server.
      * @return the peripheral server
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "peripheral_id")
     public IssPeripheral getPeripheral() {
         return peripheral;
     }
@@ -87,8 +94,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * Get the Channel
      * @return return the Channel
      */
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
     public Channel getChannel() {
         return channel;
     }
@@ -98,7 +103,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * Vendor Channels will have NULL here
      * @return the peripheral organization id or NULL
      */
-    @Column(name = "peripheral_org_id")
     public Long getPeripheralOrgId() {
         return peripheralOrgId;
     }

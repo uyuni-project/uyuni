@@ -21,19 +21,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
 
 @MappedSuperclass
 public abstract class PasswordBasedCredentials extends BaseCredentials {
 
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String encodedPassword;
 
     /**
      * Return the decoded password.
      * @return the password
      */
-    @Transient
     public String getPassword() {
         if (this.encodedPassword != null) {
             return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
@@ -41,7 +43,6 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
         return null;
     }
 
-    @Column(name = "password")
     protected String getEncodedPassword() {
         return this.encodedPassword;
     }
@@ -67,7 +68,6 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
      * Return the username
      * @return username
      */
-    @Column(name = "username")
     public String getUsername() {
         return username;
     }
