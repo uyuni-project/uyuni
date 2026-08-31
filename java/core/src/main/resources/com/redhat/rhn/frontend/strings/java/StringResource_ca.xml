@@ -12174,7 +12174,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="coco.status.requested.description" xml:space="preserve">
         <source>Requested</source>
-        <target state="translated">Demanat</target>
+        <target state="translated">Sol·licitat</target>
       </trans-unit>
       <trans-unit id="coco.status.queued.description" xml:space="preserve">
         <source>Queued</source>
@@ -12186,7 +12186,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="coco.attestation.ibm.missing_input_data" xml:space="preserve">
         <source>The mandatory input data is missing</source>
-        <target state="translated">Falten les dades d'entrada obligatòries</target>
+        <target state="translated">Falten les dades d'entrada obligatòries.</target>
       </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing" xml:space="preserve">
         <source>The secure execution header is missing.</source>
@@ -12194,7 +12194,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format" xml:space="preserve">
         <source>The secure execution header is not a valid Base64 string.</source>
-        <target state="translated">La capçalera d'execució segura no és una cadena de Base64 vàlida.</target>
+        <target state="translated">La capçalera d'execució segura no és una cadena Base64 vàlida.</target>
       </trans-unit>
       <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty" xml:space="preserve">
         <source>The secure execution header is empty.</source>
@@ -12232,13 +12232,13 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Invalid date format. It must follow ISO 8601 offset format (e.g. 2026-06-04T22:00:00Z).</source>
         <target state="translated">Format de data no vàlid. Ha de seguir el format de desplaçament ISO 8601 (per exemple, 2026-06-04T22:00:00Z).</target>
       </trans-unit>
-    <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
+      <trans-unit id="edit_address.jsp.country.select" xml:space="preserve">
         <source>-- Select Country --</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">-- Seleccioneu l'estat --</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
