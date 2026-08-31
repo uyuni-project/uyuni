@@ -60,6 +60,8 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -354,5 +356,9 @@ public class MessageQueue {
         // Handle changes of channel assignments on minions
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(saltApi),
                 ChannelsChangedEventMessage.class);
+
+        // Salt state apply - moved from SaltReactor as we need it also in taskomatic
+        MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
+                ApplyStatesEventMessage.class);
     }
 }

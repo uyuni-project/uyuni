@@ -698,7 +698,9 @@ where snc.errata_id = :errata_id
 
 <mode name="ssh_push_find_rebooting_minions" class="com.redhat.rhn.taskomatic.task.checkin.SystemSummary">
   <query>
-SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
+SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id,
+      CASE WHEN at.label = 'reboot.reboot' THEN 1 ELSE 0 END AS rebooting,
+      CASE WHEN at.label = 'distupgrade.upgrade' THEN 1 ELSE 0 END AS distupgrade
   FROM rhnServer s
   JOIN rhnServerAction sa ON sa.server_id = s.id
   JOIN rhnAction a ON sa.action_id = a.id
@@ -706,7 +708,7 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
   JOIN rhnActionType at on a.action_type = at.id
   JOIN suseMinionInfo smi ON smi.server_id = s.id
  WHERE sa.status = 1
-   AND at.label = 'reboot.reboot'
+   AND at.label IN ('reboot.reboot', 'distupgrade.upgrade')
    AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
    AND sa.pickup_time + numtodsinterval(4, 'minute') &lt;= current_timestamp
   </query>

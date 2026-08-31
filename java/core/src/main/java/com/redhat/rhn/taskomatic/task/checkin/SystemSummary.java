@@ -16,6 +16,9 @@ package com.redhat.rhn.taskomatic.task.checkin;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +35,7 @@ public class SystemSummary {
     private String name;
     private String minionId;
     private boolean rebooting;
+    private boolean distupgrade;
 
     /**
      * No arg constructor needed for instantiation.
@@ -177,43 +181,42 @@ public class SystemSummary {
     }
 
     /**
-     * {@inheritDoc}
+     * @return when distupgrade is running
      */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public boolean isDistupgrade() {
+        return distupgrade;
     }
 
     /**
-     * {@inheritDoc}
+     * @param distupgradeIn to set
      */
+    public void setDistupgrade(boolean distupgradeIn) {
+        this.distupgrade = distupgradeIn;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
             return true;
         }
-        if (obj == null) {
+
+        if (!(oIn instanceof SystemSummary that)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SystemSummary other = (SystemSummary) obj;
-        if (id != other.id) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        }
-        else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+
+        return new EqualsBuilder()
+                .append(getId(), that.getId())
+                .append(getName(), that.getName())
+                .append(getMinionId(), that.getMinionId())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getId())
+                .append(getName())
+                .append(getMinionId())
+                .toHashCode();
     }
 }
