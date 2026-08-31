@@ -32,6 +32,7 @@ CREATE TABLE suseTransactionalActionHistory
     reboot_at        TIMESTAMPTZ,
     after_reboot_status    VARCHAR(32) NOT NULL,
     after_reboot_status_at TIMESTAMPTZ,
+    post_transactional_formulas VARCHAR(1024),
 
     CONSTRAINT suse_transactional_action_history_pk PRIMARY KEY (minion_server_id, action_id),
     CONSTRAINT suse_transactional_action_history_refresh_uq UNIQUE (snapshot_refresh_action_id)

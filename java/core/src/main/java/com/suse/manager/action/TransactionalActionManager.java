@@ -44,15 +44,19 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Manager for multi-step transactional actions.
@@ -62,6 +66,12 @@ public class TransactionalActionManager {
     private static final Logger LOG = LogManager.getLogger(TransactionalActionManager.class);
 
     private static final List<String> DIRECT_CALL_EXECUTOR = List.of("direct_call");
+
+    private static final List<String> HIGHSTATE_POST_TRANSACTIONAL_STATES = List.of(
+            "ansible",
+            "services.docker",
+            "services.kiwi-image-server",
+            "services.salt-minion");
 
     private static final Map<String, String> PREREQUISITE_STATE_BY_STATE = Map.of(
             ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ);
@@ -308,6 +318,8 @@ public class TransactionalActionManager {
      * @param minionSummaries target minions
      * @param useTransactionalUpdate whether transactional minions should execute the states through
      * transactional-update
+     * @param actionId id of the action these calls are being prepared for, used to freeze the
+     * per-minion {@link FormulaTransactionalPlan#postTransactionalFormulas()} for the highstate transactional path
      */
     public static void addOptionalTransactionalApplyCalls(
             Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
@@ -316,15 +328,48 @@ public class TransactionalActionManager {
             Optional<Boolean> queue,
             Optional<Boolean> test,
             List<MinionSummary> minionSummaries,
-            boolean useTransactionalUpdate) {
+            boolean useTransactionalUpdate,
+            Long actionId) {
+        Map<Long, MinionTransactionalActionHistory> histories = lookupOrCreateActionHistories(
+                getTransactionalFormulaMinionServerIds(states, minionSummaries),
+                actionId);
+        addOptionalTransactionalApplyCalls(
+                calls,
+                states,
+                pillar,
+                queue,
+                test,
+                minionSummaries,
+                useTransactionalUpdate,
+                TransactionalActionManager::getFormulaTransactionalPlan,
+                (minion, plan) -> histories.get(minion.getServerId())
+                        .setPostTransactionalFormulaList(plan.postTransactionalFormulas()));
+    }
+
+    static void addOptionalTransactionalApplyCalls(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            List<String> states,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test,
+            List<MinionSummary> minionSummaries,
+            boolean useTransactionalUpdate,
+            Function<MinionSummary, FormulaTransactionalPlan> planProvider,
+            BiConsumer<MinionSummary, FormulaTransactionalPlan> postTransactionalFormulaHistoryUpdater) {
         Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minionSummaries.stream()
                 .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
         if (states.isEmpty()) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
-                    minionsByTransactionalUpdate.get(true));
+            addTransactionalHighstateCalls(
+                    calls,
+                    pillar,
+                    queue,
+                    test,
+                    minionsByTransactionalUpdate.get(true),
+                    planProvider,
+                    postTransactionalFormulaHistoryUpdater);
             return;
         }
 
@@ -347,6 +392,36 @@ public class TransactionalActionManager {
         addCall(calls, withDirectCallExecutor(stateApply), minionsByTransactionalUpdate.get(true));
     }
 
+    static void addTransactionalHighstateCalls(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test,
+            List<MinionSummary> minions,
+            Function<MinionSummary, FormulaTransactionalPlan> planProvider,
+            BiConsumer<MinionSummary, FormulaTransactionalPlan> postTransactionalFormulaHistoryUpdater) {
+        Map<FormulaTransactionalPlan, List<MinionSummary>> minionsByPlan = new LinkedHashMap<>();
+        for (MinionSummary minion : minions) {
+            FormulaTransactionalPlan plan = planProvider.apply(minion);
+            minionsByPlan.computeIfAbsent(plan, ignored -> new ArrayList<>()).add(minion);
+        }
+
+        minionsByPlan.forEach((plan, groupedMinions) -> {
+            addCall(
+                    calls,
+                    TransactionalUpdateCalls.apply(
+                            List.of(),
+                            mergeTransactionalFormulaPillar(pillar, plan),
+                            queue,
+                            test,
+                            plan.liveStateIds()),
+                    groupedMinions);
+            // Freeze the same plan used above for this minion/action: it must not be recomputed later,
+            // since formula assignments may change while the action is waiting for a reboot.
+            groupedMinions.forEach(minion -> postTransactionalFormulaHistoryUpdater.accept(minion, plan));
+        });
+    }
+
     /**
      * Build Salt calls that continue this action after reboot.
      *
@@ -356,29 +431,59 @@ public class TransactionalActionManager {
      */
     public static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
             Action action, List<MinionSummary> minionSummaries) {
+        Map<Long, MinionTransactionalActionHistory> histories = findTransactionalActionHistories(
+                getMinionServerIds(minionSummaries),
+                action.getId());
+        return getAfterRebootSaltCalls(
+                action,
+                minionSummaries,
+                minion -> Optional.ofNullable(histories.get(minion.getServerId()))
+                        .map(MinionTransactionalActionHistory::getPostTransactionalFormulaList)
+                        .orElseThrow(() -> new IllegalStateException("Transactional action history not found for " +
+                                "action " + action.getId() + " and server " + minion.getServerId())));
+    }
+
+    static Optional<Map<LocalCall<?>, List<MinionSummary>>> getAfterRebootSaltCalls(
+            Action action,
+            List<MinionSummary> minionSummaries,
+            Function<MinionSummary, List<String>> postTransactionalFormulaProvider) {
+        List<String> staticStates = getPostTransactionalStates(action);
+        Map<List<String>, List<MinionSummary>> minionsByStates = new LinkedHashMap<>();
+        for (MinionSummary minion : minionSummaries) {
+            List<String> states = new ArrayList<>(staticStates);
+            states.addAll(postTransactionalFormulaProvider.apply(minion));
+            if (!states.isEmpty()) {
+                minionsByStates.computeIfAbsent(List.copyOf(states), ignored -> new ArrayList<>()).add(minion);
+            }
+        }
+        if (minionsByStates.isEmpty()) {
+            return Optional.empty();
+        }
+
         if (isHighstate(action)) {
             ApplyStatesActionDetails details = ((ApplyStatesAction) action).getDetails();
-            return Optional.of(Map.of(
+            Map<LocalCall<?>, List<MinionSummary>> calls = new LinkedHashMap<>();
+            minionsByStates.forEach((states, minions) -> addAnyCall(
+                    calls,
                     withDirectCallExecutor(State.apply(
-                            List.of(
-                                    "ansible",
-                                    "services.docker",
-                                    "services.kiwi-image-server",
-                                    "services.salt-minion"),
+                            states,
                             details.getPillarsMap(),
                             Optional.of(true),
                             details.isTest() ? Optional.of(true) : Optional.empty())),
-                    minionSummaries));
+                    minions));
+            return Optional.of(calls);
         }
 
-        return getAfterRebootState(action)
-                .map(afterRebootState -> Map.of(
-                        withDirectCallExecutor(State.apply(
-                                List.of(afterRebootState),
-                                Optional.empty(),
-                                Optional.of(true),
-                                Optional.empty())),
-                        minionSummaries));
+        Map<LocalCall<?>, List<MinionSummary>> calls = new LinkedHashMap<>();
+        minionsByStates.forEach((states, minions) -> addAnyCall(
+                calls,
+                withDirectCallExecutor(State.apply(
+                        states,
+                        Optional.empty(),
+                        Optional.of(true),
+                        Optional.empty())),
+                minions));
+        return Optional.of(calls);
     }
 
     /**
@@ -389,6 +494,17 @@ public class TransactionalActionManager {
      */
     public static boolean hasPostTransactionalState(Action action) {
         return isHighstate(action) || getAfterRebootState(action).isPresent();
+    }
+
+    /**
+     * Check whether an action has post-transactional work for a minion history.
+     *
+     * @param action action to check
+     * @param history minion transactional history that may contain frozen post-transactional formulas
+     * @return true when a post-transactional state or frozen formula exists
+     */
+    public static boolean hasPostTransactionalState(Action action, MinionTransactionalActionHistory history) {
+        return hasPostTransactionalState(action) || !history.getPostTransactionalFormulaList().isEmpty();
     }
 
     /**
@@ -419,7 +535,7 @@ public class TransactionalActionManager {
             boolean failed,
             BiFunction<Action, Long, Optional<Long>> snapshotRefreshScheduler,
             BiConsumer<Long, Long> resumePublisher) {
-        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action);
+        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action, history);
         String formattedResult = formatResult(jsonResult);
         String prerequisiteResult = hasPostTransactionalState ? formattedResult : null;
         boolean hasChanges = hasChanges(jsonResult);
@@ -473,6 +589,15 @@ public class TransactionalActionManager {
                 .map(type -> ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE);
     }
 
+    private static List<String> getPostTransactionalStates(Action action) {
+        if (isHighstate(action)) {
+            return HIGHSTATE_POST_TRANSACTIONAL_STATES;
+        }
+        return getAfterRebootState(action)
+                .map(List::of)
+                .orElseGet(List::of);
+    }
+
     private static String statusKey(MinionTransactionalActionHistory.ProgressStatus status) {
         return switch (status) {
             case COMPLETED -> "completed";
@@ -517,7 +642,7 @@ public class TransactionalActionManager {
             Action action,
             boolean rebootRequired,
             BiConsumer<Long, Long> resumePublisher) {
-        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action);
+        boolean hasPostTransactionalState = action != null && hasPostTransactionalState(action, history);
         if (ProgressStatus.FAILED.equals(history.getPrerequisiteStatus())) {
             history.recordFailedSnapshotReconciliation(rebootRequired, hasPostTransactionalState);
             return;
@@ -623,6 +748,62 @@ public class TransactionalActionManager {
         return history;
     }
 
+    private static Map<Long, MinionTransactionalActionHistory> lookupOrCreateActionHistories(
+            Collection<Long> minionServerIds, Long actionId) {
+        if (minionServerIds.isEmpty()) {
+            return Map.of();
+        }
+        if (actionId == null || minionServerIds.stream().anyMatch(id -> id == null)) {
+            throw new IllegalArgumentException("minionServerIds and actionId are required");
+        }
+
+        Map<Long, MinionTransactionalActionHistory> histories = findTransactionalActionHistories(
+                minionServerIds,
+                actionId);
+        minionServerIds.forEach(minionServerId -> histories.computeIfAbsent(minionServerId, id -> {
+            MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(id, actionId);
+            HibernateFactory.getSession().persist(history);
+            return history;
+        }));
+        return histories;
+    }
+
+    private static Map<Long, MinionTransactionalActionHistory> findTransactionalActionHistories(
+            Collection<Long> minionServerIds, Long actionId) {
+        if (minionServerIds.isEmpty()) {
+            return Map.of();
+        }
+
+        return HibernateFactory.getSession().createQuery("""
+                FROM MinionTransactionalActionHistory history
+                 WHERE history.actionId = :actionId
+                   AND history.minionServerId in (:minionServerIds)
+                """, MinionTransactionalActionHistory.class)
+                .setParameter("actionId", actionId)
+                .setParameterList("minionServerIds", minionServerIds)
+                .getResultStream()
+                .collect(LinkedHashMap::new, (histories, history) ->
+                        histories.put(history.getMinionServerId(), history), Map::putAll);
+    }
+
+    private static Collection<Long> getTransactionalFormulaMinionServerIds(
+            List<String> states, List<MinionSummary> minionSummaries) {
+        if (!states.isEmpty() && !states.contains("formulas")) {
+            return List.of();
+        }
+
+        return minionSummaries.stream()
+                .filter(MinionSummary::isTransactionalUpdate)
+                .map(MinionSummary::getServerId)
+                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+    }
+
+    private static Collection<Long> getMinionServerIds(List<MinionSummary> minionSummaries) {
+        return minionSummaries.stream()
+                .map(MinionSummary::getServerId)
+                .collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+    }
+
     private static boolean hasChanges(JsonElement jsonResult) {
         Map<String, State.ApplyResult> results = Json.GSON.fromJson(
                 jsonResult,
@@ -649,6 +830,35 @@ public class TransactionalActionManager {
                     action.getId(), minionServerId, e);
             return Optional.empty();
         }
+    }
+
+    private static FormulaTransactionalPlan getFormulaTransactionalPlan(MinionSummary minionSummary) {
+        return MinionServerFactory.lookupById(minionSummary.getServerId())
+                .map(FormulaTransactionalPlan::fromMinion)
+                .orElseThrow();
+    }
+
+    private static Optional<Map<String, Object>> mergeTransactionalFormulaPillar(
+            Optional<Map<String, Object>> pillar, FormulaTransactionalPlan plan) {
+        boolean planEmpty = plan.transactionalFormulas().isEmpty() && plan.unsupportedFormulas().isEmpty();
+        boolean pillarHasReservedKeys = pillar
+                .map(p -> p.containsKey("transactional_formulas") ||
+                        p.containsKey("transactional_unsupported_formulas"))
+                .orElse(false);
+        if (planEmpty && !pillarHasReservedKeys) {
+            return pillar;
+        }
+
+        Map<String, Object> merged = new HashMap<>(pillar.orElseGet(Map::of));
+        merged.remove("transactional_formulas");
+        merged.remove("transactional_unsupported_formulas");
+        if (!plan.transactionalFormulas().isEmpty()) {
+            merged.put("transactional_formulas", plan.transactionalFormulas());
+        }
+        if (!plan.unsupportedFormulas().isEmpty()) {
+            merged.put("transactional_unsupported_formulas", plan.unsupportedFormulas());
+        }
+        return Optional.of(merged);
     }
 
     private static Optional<String> findSingleTransactionalStateToApply(List<String> states) {

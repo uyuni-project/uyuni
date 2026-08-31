@@ -40,7 +40,7 @@ public class TransactionalUpdateCalls {
      */
     public static LocalCall<Map<String, State.ApplyResult>> apply(
             List<String> mods, Optional<Map<String, Object>> pillar) {
-        return apply(mods, pillar, Optional.empty(), Optional.empty());
+        return apply(mods, pillar, Optional.empty(), Optional.empty(), List.of());
     }
 
     /**
@@ -54,8 +54,31 @@ public class TransactionalUpdateCalls {
      */
     public static LocalCall<Map<String, State.ApplyResult>> apply(
             List<String> mods, Optional<Map<String, Object>> pillar, Optional<Boolean> queue, Optional<Boolean> test) {
+        return apply(mods, pillar, queue, test, List.of());
+    }
+
+    /**
+     * Apply states using {@code transactional_update.apply}, optionally passing pillar data, execution flags,
+     * and state IDs to exclude.
+     *
+     * @param mods       list of SLS state names to apply. Salt applies the highstate when an empty list is given
+     * @param pillar     optional pillar override map; use {@link Optional#empty()} to omit
+     * @param queue      optional queue flag
+     * @param test       optional test mode flag
+     * @param excludeIds state IDs to exclude; use an empty list to omit
+     * @return a {@link LocalCall} ready to be dispatched via the Salt API
+     */
+    public static LocalCall<Map<String, State.ApplyResult>> apply(
+            List<String> mods,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test,
+            List<String> excludeIds) {
         if (mods == null) {
             throw new IllegalArgumentException("State list must not be null");
+        }
+        if (excludeIds == null) {
+            throw new IllegalArgumentException("Excluded state ID list must not be null");
         }
         Map<String, Object> kwargs = new LinkedHashMap<>();
         if (!mods.isEmpty()) {
@@ -64,6 +87,9 @@ public class TransactionalUpdateCalls {
         pillar.ifPresent(p -> kwargs.put("pillar", p));
         queue.ifPresent(q -> kwargs.put("queue", q));
         test.ifPresent(t -> kwargs.put("test", t));
+        if (!excludeIds.isEmpty()) {
+            kwargs.put("exclude", excludeIds.stream().map(id -> Map.of("id", id)).toList());
+        }
         return new LocalCall<>(APPLY_FUNCTION, Optional.empty(), Optional.of(kwargs),
                 new TypeToken<Map<String, State.ApplyResult>>() { });
     }

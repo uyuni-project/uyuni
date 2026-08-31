@@ -44,6 +44,7 @@ TEST_MANAGER_TRANSACTIONAL_TOP = {
         "ansible.prereq",
         "channels",
         "certs",
+        "formulas_transactional",
         "services.docker_prereqs",
         "services.kiwi-image-server_prereqs",
         "services.salt-minion_prereqs",
@@ -91,6 +92,19 @@ def test_top_transactional_saltenv_from_opts_grains():
     """
     kwargs = {"opts": {"environment": "base", "grains": {"transactional": True}}}
     assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_TRANSACTIONAL_TOP
+
+
+def test_top_static_saltenv_uses_normal_formulas_state():
+    kwargs = {"opts": {"environment": "base"}}
+    assert "formulas" in mgr_master_tops.top(**kwargs)["base"]
+
+
+def test_top_transactional_saltenv_uses_transactional_formulas_state():
+    kwargs = {"opts": {"environment": "base"}, "grains": {"transactional": True}}
+    top = mgr_master_tops.top(**kwargs)["base"]
+
+    assert "formulas_transactional" in top
+    assert "formulas" not in top
 
 
 def test_top_unknown_saltenv():

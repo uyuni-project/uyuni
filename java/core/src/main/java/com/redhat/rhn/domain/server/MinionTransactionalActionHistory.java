@@ -11,8 +11,12 @@
 package com.redhat.rhn.domain.server;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -70,6 +74,9 @@ public class MinionTransactionalActionHistory implements Serializable {
 
     @Column(name = "after_reboot_status_at")
     private Date afterRebootStatusAt;
+
+    @Column(name = "post_transactional_formulas")
+    private String postTransactionalFormulas;
 
     /**
      * Default constructor required by Hibernate.
@@ -183,6 +190,50 @@ public class MinionTransactionalActionHistory implements Serializable {
      */
     public Date getAfterRebootStatusAt() {
         return afterRebootStatusAt;
+    }
+
+    /**
+     * Only for Hibernate, please use {@link #getPostTransactionalFormulaList()} instead.
+     *
+     * @return comma-separated formulas frozen for the post-transactional live pass, or null when there are none
+     */
+    public String getPostTransactionalFormulas() {
+        return postTransactionalFormulas;
+    }
+
+    /**
+     * Only for Hibernate, please use {@link #setPostTransactionalFormulaList(List)} instead.
+     *
+     * @param postTransactionalFormulasIn comma-separated formulas to freeze for the post-transactional live pass
+     */
+    public void setPostTransactionalFormulas(String postTransactionalFormulasIn) {
+        postTransactionalFormulas = postTransactionalFormulasIn;
+    }
+
+    /**
+     * Return the formulas frozen for this action/minion at the time the transactional phase ran, that must be
+     * executed in full, live, in the post-transactional pass (immediately when no reboot is needed, or after
+     * reboot otherwise). This is a snapshot: it must not be recomputed later, since minion/group formula
+     * assignments can change while the action is waiting for reboot.
+     *
+     * @return the frozen list of post-transactional formulas, or an empty list when none were frozen
+     */
+    public List<String> getPostTransactionalFormulaList() {
+        if (postTransactionalFormulas != null && !postTransactionalFormulas.isEmpty()) {
+            return Arrays.asList(postTransactionalFormulas.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Freeze the formulas that must be executed in full, live, in the post-transactional pass for this
+     * action/minion.
+     *
+     * @param formulas the formulas to freeze, typically {@code FormulaTransactionalPlan.postTransactionalFormulas()}
+     */
+    public void setPostTransactionalFormulaList(List<String> formulas) {
+        postTransactionalFormulas = formulas != null && !formulas.isEmpty() ?
+                formulas.stream().collect(Collectors.joining(",")) : null;
     }
 
     /**
@@ -333,6 +384,12 @@ public class MinionTransactionalActionHistory implements Serializable {
         if (isWaitingForReboot()) {
             rebootStatus = ProgressStatus.COMPLETED;
             rebootAt = now;
+        }
+        else if (!rebootRequired) {
+            if (ProgressStatus.PENDING.equals(rebootStatus)) {
+                rebootStatus = ProgressStatus.NOT_NEEDED;
+            }
+            rebootAt = null;
         }
     }
 

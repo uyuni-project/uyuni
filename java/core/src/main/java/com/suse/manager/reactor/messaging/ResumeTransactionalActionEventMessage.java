@@ -10,17 +10,20 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.Transaction;
 
 /**
  * Requests after-reboot processing for an existing transactional action.
  */
-public class ResumeTransactionalActionEventMessage implements EventMessage {
+public class ResumeTransactionalActionEventMessage implements EventDatabaseMessage {
 
     private final Long actionId;
     private final Long serverId;
+    private final Transaction transaction;
 
     /**
      * Standard constructor.
@@ -31,6 +34,7 @@ public class ResumeTransactionalActionEventMessage implements EventMessage {
     public ResumeTransactionalActionEventMessage(Long actionIdIn, Long serverIdIn) {
         actionId = actionIdIn;
         serverId = serverIdIn;
+        transaction = HibernateFactory.getSession().getTransaction();
     }
 
     public Long getActionId() {
@@ -39,6 +43,11 @@ public class ResumeTransactionalActionEventMessage implements EventMessage {
 
     public Long getServerId() {
         return serverId;
+    }
+
+    @Override
+    public Transaction getTransaction() {
+        return transaction;
     }
 
     @Override

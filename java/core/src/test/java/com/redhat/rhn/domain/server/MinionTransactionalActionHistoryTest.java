@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressSta
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 /**
  * Tests for {@link MinionTransactionalActionHistory}.
  */
@@ -58,6 +60,33 @@ public class MinionTransactionalActionHistoryTest {
         assertFalse(history.isWaitingForReboot());
         assertNull(history.getRebootPendingSince());
         assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
+        assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testAfterRebootScheduledKeepsNoRebootStatusNotNeeded() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+
+        history.recordAfterRebootScheduled();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testAfterRebootScheduledNormalizesStaleNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+
+        history.recordAfterRebootScheduled();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
         assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
     }
 
@@ -158,6 +187,72 @@ public class MinionTransactionalActionHistoryTest {
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertTrue(history.getRebootAt().getTime() >= history.getPrerequisiteAt().getTime());
         assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
+    }
+
+    @Test
+    void testTransactionalApplyFinalizedPreservesNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+        history.recordAfterRebootScheduled();
+
+        history.recordTransactionalApplyFinalized();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testTransactionalApplyFinalizedNormalizesStaleNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+
+        history.recordTransactionalApplyFinalized();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListDefaultsToEmpty() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+        assertNull(history.getPostTransactionalFormulas());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListRoundTrips() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        history.setPostTransactionalFormulaList(List.of("locale", "bind"));
+
+        assertEquals(List.of("locale", "bind"), history.getPostTransactionalFormulaList());
+        assertEquals("locale,bind", history.getPostTransactionalFormulas());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListEmptyIsStoredAsNull() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        history.setPostTransactionalFormulaList(List.of("locale"));
+        history.setPostTransactionalFormulaList(List.of());
+
+        assertNull(history.getPostTransactionalFormulas());
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListTreatsEmptyStringAsEmptyList() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        history.setPostTransactionalFormulas("");
+
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
     }
 
 }

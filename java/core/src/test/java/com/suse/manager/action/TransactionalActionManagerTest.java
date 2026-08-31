@@ -12,6 +12,7 @@ package com.suse.manager.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
@@ -32,13 +33,18 @@ import com.google.gson.JsonParser;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 public class TransactionalActionManagerTest {
+
+    private static final BiConsumer<MinionSummary, FormulaTransactionalPlan> NO_OP_HISTORY_UPDATER =
+            (minion, plan) -> { };
 
     @Test
     public void testPrerequisiteProgressEntriesAreReturnedInExecutionOrder() {
@@ -139,7 +145,7 @@ public class TransactionalActionManagerTest {
 
         Map<LocalCall<?>, List<MinionSummary>> calls =
                 TransactionalActionManager.getAfterRebootSaltCalls(
-                        action, List.of(transactionalMinion)).orElseThrow();
+                        action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow();
 
         assertEquals(1, calls.size());
 
@@ -159,6 +165,158 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testHighstateContinuationWithEmptyFrozenFormulasIsUnchanged() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow();
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion"), kwargs.get("mods"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+        assertEquals(List.of(transactionalMinion), calls.get(call));
+    }
+
+    @Test
+    public void testHighstateContinuationIncludesFrozenFormulaWithDirectCall() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of("locale")).orElseThrow();
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion",
+                "locale"), kwargs.get("mods"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+    }
+
+    @Test
+    public void testHighstateContinuationGroupsMinionsWithSameFrozenFormulas() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary firstMinion = transactionalMinion(1L, "first");
+        MinionSummary secondMinion = transactionalMinion(2L, "second");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(firstMinion, secondMinion), ignored -> List.of("locale")).orElseThrow();
+
+        assertEquals(1, calls.size());
+        assertEquals(List.of(firstMinion, secondMinion), calls.values().iterator().next());
+    }
+
+    @Test
+    public void testHighstateContinuationUsesSeparateCallsForDifferentFrozenFormulas() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary localeMinion = transactionalMinion(1L, "locale-minion");
+        MinionSummary bindMinion = transactionalMinion(2L, "bind-minion");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action,
+                        List.of(localeMinion, bindMinion),
+                        minion -> minion.getServerId().equals(localeMinion.getServerId()) ?
+                                List.of("locale") : List.of("bind")).orElseThrow();
+
+        assertEquals(2, calls.size());
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion",
+                "locale"), statesForMinion(calls, localeMinion));
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion",
+                "bind"), statesForMinion(calls, bindMinion));
+    }
+
+    @Test
+    public void testHighstateContinuationUsesFrozenFormulasOnly() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        AtomicInteger providerCalls = new AtomicInteger();
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action,
+                        List.of(transactionalMinion),
+                        ignored -> {
+                            providerCalls.incrementAndGet();
+                            return List.of("locale");
+                        }).orElseThrow();
+
+        assertEquals(1, providerCalls.get());
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion",
+                "locale"), statesForMinion(calls, transactionalMinion));
+    }
+
+    @Test
+    public void testFrozenFormulaAloneCountsAsPostTransactionalWork() {
+        Action action = new Action();
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(List.of("locale"));
+
+        assertTrue(TransactionalActionManager.hasPostTransactionalState(action, history));
+    }
+
+    @Test
+    public void testContinuationCanContainOnlyFrozenFormula() {
+        Action action = new Action();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of("locale")).orElseThrow();
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = calls.keySet().iterator().next();
+        assertEquals("state.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+        assertEquals(List.of("locale"), ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+        assertEquals(List.of(transactionalMinion), calls.get(call));
+    }
+
+    @Test
+    public void testFrozenFormulaOrderIsPreservedInContinuation() {
+        ApplyStatesAction action = highstateAction();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of("locale", "bind")).orElseThrow();
+
+        assertEquals(List.of(
+                "ansible",
+                "services.docker",
+                "services.kiwi-image-server",
+                "services.salt-minion",
+                "locale",
+                "bind"), statesForMinion(calls, transactionalMinion));
+    }
+
+    @Test
     public void testScheduledPostTransactionalContinuationSuccessCompletesProgress() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
         history.recordTransactionalStateApplied();
@@ -169,6 +327,8 @@ public class TransactionalActionManagerTest {
                 Optional.of(history), false);
 
         assertTrue(updated);
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
     }
@@ -184,8 +344,40 @@ public class TransactionalActionManagerTest {
                 Optional.of(history), true);
 
         assertTrue(updated);
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
         assertEquals(ProgressStatus.FAILED, history.getAfterRebootStatus());
         assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
+    }
+
+    @Test
+    public void testStaleNoRebootContinuationResultDoesNotRestorePendingRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordAfterRebootScheduled();
+
+        boolean updated = TransactionalActionManager.recordPostTransactionalContinuationResult(
+                Optional.of(history), false);
+
+        assertTrue(updated);
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    public void testRebootContinuationResultPreservesCompletedRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(true, true);
+        history.recordAfterRebootScheduled();
+
+        boolean updated = TransactionalActionManager.recordPostTransactionalContinuationResult(
+                Optional.of(history), false);
+
+        assertTrue(updated);
+        assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
     }
 
     @Test
@@ -466,7 +658,8 @@ public class TransactionalActionManagerTest {
                 Optional.of(true),
                 Optional.empty(),
                 List.of(regularMinion, transactionalMinion),
-                false);
+                false,
+                1L);
 
         assertEquals(2, calls.size());
         assertTrue(calls.entrySet().stream()
@@ -490,7 +683,8 @@ public class TransactionalActionManagerTest {
                 Optional.empty(),
                 Optional.empty(),
                 List.of(transactionalMinion),
-                true);
+                true,
+                1L);
 
         assertEquals(1, calls.size());
         LocalCall<?> transactionalCall = calls.keySet().iterator().next();
@@ -513,7 +707,8 @@ public class TransactionalActionManagerTest {
                 Optional.of(true),
                 Optional.of(true),
                 List.of(regularMinion, transactionalMinion),
-                true);
+                true,
+                1L);
 
         assertEquals(2, calls.size());
         assertTrue(calls.entrySet().stream()
@@ -543,7 +738,8 @@ public class TransactionalActionManagerTest {
                 Optional.empty(),
                 Optional.empty(),
                 List.of(transactionalMinion),
-                false);
+                false,
+                1L);
 
         assertEquals(1, calls.size());
         Map<String, Object> payload = calls.keySet().iterator().next().getPayload();
@@ -556,6 +752,7 @@ public class TransactionalActionManagerTest {
         Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
         MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
         MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+        AtomicInteger planCalls = new AtomicInteger();
 
         TransactionalActionManager.addOptionalTransactionalApplyCalls(
                 calls,
@@ -564,9 +761,15 @@ public class TransactionalActionManagerTest {
                 Optional.empty(),
                 Optional.empty(),
                 List.of(regularMinion, transactionalMinion),
-                false);
+                false,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return emptyFormulaPlan();
+                },
+                NO_OP_HISTORY_UPDATER);
 
         assertEquals(2, calls.size());
+        assertEquals(1, planCalls.get());
         assertTrue(calls.entrySet().stream()
                 .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
                         entry.getValue().equals(List.of(regularMinion))));
@@ -595,7 +798,9 @@ public class TransactionalActionManagerTest {
                 Optional.empty(),
                 Optional.empty(),
                 List.of(regularMinion, transactionalMinion),
-                true);
+                true,
+                ignored -> emptyFormulaPlan(),
+                NO_OP_HISTORY_UPDATER);
 
         assertEquals(2, calls.size());
         assertTrue(calls.entrySet().stream()
@@ -609,6 +814,514 @@ public class TransactionalActionManagerTest {
         assertEquals("transactional_update.apply", transactionalCall.get().getPayload().get("fun"));
         Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.get().getPayload().get("kwarg");
         assertFalse(kwargs.containsKey("mods"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanWithoutFormulasUsesEmptyTransactionalCall() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = emptyFormulaPlan();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = calls.keySet().iterator().next();
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertFalse(kwargs.containsKey("mods"));
+        assertFalse(kwargs.containsKey("pillar"));
+        assertFalse(kwargs.containsKey("exclude"));
+        assertEquals(List.of(transactionalMinion), calls.get(call));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanIncludesLocaleAndExcludes() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_timezone_setting", "mgr_kb_settings", "mgr_language_settings"),
+                List.of());
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of("transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(List.of(
+                Map.of("id", "mgr_timezone_setting"),
+                Map.of("id", "mgr_kb_settings"),
+                Map.of("id", "mgr_language_settings")), kwargs.get("exclude"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanIncludesUnsupportedFormulas() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("bind", "dhcpd"));
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of("transactional_unsupported_formulas", List.of("bind", "dhcpd")),
+                kwargs.get("pillar"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlansGroupMinionsWithEqualPlans() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary firstMinion = transactionalMinion(1L, "first");
+        MinionSummary secondMinion = transactionalMinion(2L, "second");
+        FormulaTransactionalPlan plan = emptyFormulaPlan();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(firstMinion, secondMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(1, calls.size());
+        assertEquals(List.of(firstMinion, secondMinion), calls.values().iterator().next());
+    }
+
+    @Test
+    public void testHighstateTransactionalPlansUseSeparateCallsForDifferentPlans() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary localeMinion = transactionalMinion(1L, "locale-minion");
+        MinionSummary unsupportedMinion = transactionalMinion(2L, "unsupported-minion");
+        FormulaTransactionalPlan localePlan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_timezone_setting"),
+                List.of());
+        FormulaTransactionalPlan unsupportedPlan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("bind"));
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(localeMinion, unsupportedMinion),
+                minion -> minion.getServerId().equals(localeMinion.getServerId()) ? localePlan : unsupportedPlan,
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(2, calls.size());
+        assertTrue(calls.values().stream().anyMatch(minions -> minions.equals(List.of(localeMinion))));
+        assertTrue(calls.values().stream().anyMatch(minions -> minions.equals(List.of(unsupportedMinion))));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanMergesPillarWithoutMutatingOriginal() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        Map<String, Object> originalPillar = new HashMap<>(Map.of("example", "value"));
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.of(originalPillar),
+                Optional.of(true),
+                Optional.of(false),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(Map.of("example", "value"), originalPillar);
+        assertEquals(true, kwargs.get("queue"));
+        assertEquals(false, kwargs.get("test"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanDropsStaleTransactionalFormulasWhenPlanEmpty() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        Map<String, Object> originalPillar = new HashMap<>(Map.of("transactional_formulas", List.of("bind")));
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = emptyFormulaPlan();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.of(originalPillar),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        Map<?, ?> pillar = (Map<?, ?>) kwargs.get("pillar");
+        assertFalse(pillar.containsKey("transactional_formulas"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanReplacesStaleTransactionalUnsupportedFormulas() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        Map<String, Object> originalPillar =
+                new HashMap<>(Map.of("transactional_unsupported_formulas", List.of("bind")));
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.of(originalPillar),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of("transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanPreservesOtherPillarEntriesWhileSanitizingReservedKeys() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        Map<String, Object> originalPillar = new HashMap<>(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("bind"),
+                "transactional_unsupported_formulas", List.of("dhcpd")));
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.of(originalPillar),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("bind"),
+                "transactional_unsupported_formulas", List.of("dhcpd")), originalPillar);
+    }
+
+    @Test
+    public void testNonHighstateApplyStatesDoNotUseFormulaPlans() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.of(Map.of("example", "value")),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                1L);
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("custom"), kwargs.get("mods"));
+        assertEquals(Map.of("example", "value"), kwargs.get("pillar"));
+        assertFalse(kwargs.containsKey("exclude"));
+    }
+
+    @Test
+    public void testHighstateTransactionalPersistsPlanFormulasToActionHistory() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testHighstateTransactionalPersistsSamePlanToAllMinionsSharingIt() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary firstMinion = transactionalMinion(1L, "first");
+        MinionSummary secondMinion = transactionalMinion(2L, "second");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(firstMinion, secondMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        assertEquals(List.of("locale"), persistedFormulas.get(firstMinion));
+        assertEquals(List.of("locale"), persistedFormulas.get(secondMinion));
+    }
+
+    @Test
+    public void testHighstateTransactionalPersistsDifferentFormulasPerMinionPlan() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary localeMinion = transactionalMinion(1L, "locale-minion");
+        MinionSummary bindMinion = transactionalMinion(2L, "bind-minion");
+        FormulaTransactionalPlan localePlan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+        FormulaTransactionalPlan bindPlan = new FormulaTransactionalPlan(
+                List.of("bind"),
+                List.of(),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(localeMinion, bindMinion),
+                minion -> minion.getServerId().equals(localeMinion.getServerId()) ? localePlan : bindPlan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        assertEquals(List.of("locale"), persistedFormulas.get(localeMinion));
+        assertTrue(persistedFormulas.get(bindMinion).isEmpty());
+    }
+
+    @Test
+    public void testHighstateTransactionalNeverPersistsUnsupportedFormulas() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("bind"));
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        assertTrue(persistedFormulas.get(transactionalMinion).isEmpty());
+    }
+
+    @Test
+    public void testHighstateTransactionalEmptyPlanOverwritesStaleHistoryValue() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = emptyFormulaPlan();
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(List.of("locale"));
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> history.setPostTransactionalFormulaList(groupPlan.postTransactionalFormulas()));
+
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+    }
+
+    @Test
+    public void testNonHighstateApplyStatesDoNotPersistFormulaHistory() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        AtomicInteger historyUpdaterCalls = new AtomicInteger();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.of(Map.of("example", "value")),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> emptyFormulaPlan(),
+                (minion, groupPlan) -> historyUpdaterCalls.incrementAndGet());
+
+        assertEquals(0, historyUpdaterCalls.get());
+    }
+
+    @Test
+    public void testHighstateTransactionalPlanProviderIsCalledOnceAndReused() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+        AtomicInteger planCalls = new AtomicInteger();
+        List<FormulaTransactionalPlan> persistedPlans = new ArrayList<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return plan;
+                },
+                (minion, groupPlan) -> persistedPlans.add(groupPlan));
+
+        assertEquals(1, planCalls.get());
+        assertEquals(1, persistedPlans.size());
+        assertTrue(plan == persistedPlans.get(0));
+    }
+
+    @Test
+    public void testLiveOnlyFormulaIsAbsentFromFirstPassAndFrozenForContinuation() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of("live-formula"),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = calls.keySet().iterator().next();
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertFalse(kwargs.containsKey("pillar"));
+        assertFalse(kwargs.containsKey("exclude"));
+        assertEquals(List.of("live-formula"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testHighstateTransactionalPersistsOnlyPostTransactionalFormulas() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("bind", "locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addTransactionalHighstateCalls(
+                calls,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+    }
+
+    private static FormulaTransactionalPlan emptyFormulaPlan() {
+        return new FormulaTransactionalPlan(List.of(), List.of(), List.of(), List.of());
+    }
+
+    private static ApplyStatesAction highstateAction() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of());
+        action.setDetails(details);
+        return action;
+    }
+
+    private static MinionSummary transactionalMinion(Long id, String name) {
+        return new MinionSummary(id, name, null, null, null, "SLES", true);
+    }
+
+    private static List<?> statesForMinion(Map<LocalCall<?>, List<MinionSummary>> calls, MinionSummary minion) {
+        LocalCall<?> call = calls.entrySet().stream()
+                .filter(entry -> entry.getValue().contains(minion))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow();
+        return (List<?>) ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods");
     }
 
     private static JsonElement stateResult(String result) {
