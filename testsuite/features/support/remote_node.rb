@@ -35,6 +35,9 @@ class RemoteNode
     $named_nodes[host] = @hostname
     uyuni_not_installed = false
     if @host == 'server'
+      # The server runs either as a Kubernetes deployment or as a podman container. A bare host
+      # has neither, and mgrctl alone does not tell them apart because the binary already ships
+      # in the base image of a transactional server, with nothing to exec into yet.
       uyuni_not_installed = !ssh('kubectl get deployment uyuni -n uyuni', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
 
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed

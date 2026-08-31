@@ -153,7 +153,8 @@ $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 World(MiniTest::Assertions)
 
 # Initialize the API client
-$api_test = new_api_client unless ENV.key?('UYUNI_NOT_INSTALLED') && ENV['UYUNI_NOT_INSTALLED'] == 'true'
+$api_test = new_api_client unless uyuni_not_installed?
+
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new if $code_coverage_mode
 
@@ -295,8 +296,12 @@ end
 After('@install_mlm_on_rke2') do |scenario|
   next unless scenario.passed?
 
+  # Rewrite the line rather than substituting it, so the flag is cleared whatever the
+  # controller put there, and also when it put nothing at all.
   bashrc_file = '/root/.bashrc'
-  get_target('localhost').run("sed -i 's/export UYUNI_NOT_INSTALLED=true/export UYUNI_NOT_INSTALLED=false/g' #{bashrc_file}")
+  localhost = get_target('localhost')
+  localhost.run("sed -i '/^export UYUNI_NOT_INSTALLED=/d' #{bashrc_file}")
+  localhost.run("echo 'export UYUNI_NOT_INSTALLED=false' >> #{bashrc_file}")
 end
 
 # get the Cobbler log output when it fails
