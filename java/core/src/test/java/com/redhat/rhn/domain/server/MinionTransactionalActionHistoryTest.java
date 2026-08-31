@@ -13,11 +13,16 @@ package com.redhat.rhn.domain.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Tests for {@link MinionTransactionalActionHistory}.
@@ -58,6 +63,33 @@ public class MinionTransactionalActionHistoryTest {
         assertFalse(history.isWaitingForReboot());
         assertNull(history.getRebootPendingSince());
         assertEquals(ProgressStatus.COMPLETED, history.getRebootStatus());
+        assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testAfterRebootScheduledKeepsNoRebootStatusNotNeeded() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+
+        history.recordAfterRebootScheduled();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testAfterRebootScheduledNormalizesStaleNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+
+        history.recordAfterRebootScheduled();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
         assertEquals(ProgressStatus.SCHEDULED, history.getAfterRebootStatus());
     }
 
@@ -158,6 +190,92 @@ public class MinionTransactionalActionHistoryTest {
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertTrue(history.getRebootAt().getTime() >= history.getPrerequisiteAt().getTime());
         assertTrue(history.getAfterRebootStatusAt().getTime() >= history.getPrerequisiteAt().getTime());
+    }
+
+    @Test
+    void testTransactionalApplyFinalizedPreservesNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+        history.recordSnapshotReconciliation(false, true);
+        history.recordAfterRebootScheduled();
+
+        history.recordTransactionalApplyFinalized();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testTransactionalApplyFinalizedNormalizesStaleNoRebootStatus() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied();
+
+        history.recordTransactionalApplyFinalized();
+
+        assertFalse(history.isWaitingForReboot());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertNull(history.getRebootAt());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListDefaultsToEmpty() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListPreservesSpecialCharacters() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        List<String> formulas = List.of("locale,custom", "formula with spaces", "formula\"quoted", "formulá-日");
+
+        history.setPostTransactionalFormulaList(formulas);
+
+        assertEquals(formulas, history.getPostTransactionalFormulaList());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListPreservesOrderAndDuplicates() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        List<String> formulas = List.of("zzz", "aaa", "zzz");
+
+        history.setPostTransactionalFormulaList(formulas);
+
+        assertEquals(formulas, history.getPostTransactionalFormulaList());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListNullAndEmptyAreEmpty() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        history.setPostTransactionalFormulaList(null);
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+
+        history.setPostTransactionalFormulaList(List.of());
+        assertTrue(history.getPostTransactionalFormulaList().isEmpty());
+    }
+
+    @Test
+    void testPostTransactionalFormulaListRejectsNullElements() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        assertThrows(NullPointerException.class,
+                () -> history.setPostTransactionalFormulaList(Arrays.asList("locale", null)));
+    }
+
+    @Test
+    void testPostTransactionalFormulaListIsImmutable() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        List<String> formulas = new ArrayList<>(List.of("locale"));
+        history.setPostTransactionalFormulaList(formulas);
+        formulas.set(0, "bind");
+
+        assertEquals(List.of("locale"), history.getPostTransactionalFormulaList());
+        assertThrows(UnsupportedOperationException.class,
+                () -> history.getPostTransactionalFormulaList().add("bind"));
     }
 
 }

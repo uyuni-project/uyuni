@@ -193,7 +193,8 @@ public class ScriptRunAction extends ScriptAction {
                     Optional.empty(),
                     Optional.empty(),
                     minions,
-                    getScriptActionDetails().isUseTransactionalUpdate());
+                    getScriptActionDetails().isUseTransactionalUpdate(),
+                    getId());
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
