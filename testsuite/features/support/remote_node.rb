@@ -32,11 +32,11 @@ class RemoteNode
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
-    # A Bare Host has no container to exec into, even though the mgrctl binary ships in the base image.
-    uyuni_not_installed = !ssh('kubectl get deployment uyuni -n uyuni', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
-
     $named_nodes[host] = @hostname
+    uyuni_not_installed = false
     if @host == 'server'
+      uyuni_not_installed = !ssh('kubectl get deployment uyuni -n uyuni', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
+
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
@@ -48,10 +48,6 @@ class RemoteNode
     else
       out, _err, code = ssh('hostname -f', host: @target)
     end
-    @full_hostname = out.strip
-    raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?
-
-    $stdout.puts "Host '#{@host}' is alive with determined hostname #{@hostname} and FQDN #{@full_hostname}" unless $build_validation
 
     # Determine OS version and OS family both inside the container and on the local host
     # in the case of non-containerized systems, both fields will be identical:
@@ -62,6 +58,11 @@ class RemoteNode
     else
       @os_version, @os_family = get_os_version
     end
+
+    @full_hostname = out.strip
+    raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?
+
+    $stdout.puts "Host '#{@host}' is alive with determined hostname #{@hostname} and FQDN #{@full_hostname}" unless $build_validation
 
     if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]

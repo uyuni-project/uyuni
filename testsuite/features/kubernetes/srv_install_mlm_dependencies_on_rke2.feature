@@ -18,7 +18,7 @@ Feature: Install MLM dependencies on RKE2
 
   ## Install helm
   Scenario: Install Helm
-    When I run "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
+    When I run "set -o pipefail; curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
 
   Scenario: Install cert-manager and trust-manager
     When I run "helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version $CERT_MANAGER_VERSION --namespace $CERT_MANAGER_NAMESPACE --create-namespace --set crds.enabled=true --timeout 10m0s --wait" on "server"

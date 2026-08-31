@@ -14,7 +14,7 @@ Feature: Install RKE2 on transactional systems
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
   Scenario: Install RKE2 via RPM method
-    When I run "curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=rpm sh -" on "server"
+    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=rpm sh -" on "server"
 
   Scenario: Reboot the server to activate the transaction with the RKE2 content
     When I reboot the "server" host through SSH, waiting until it comes back
