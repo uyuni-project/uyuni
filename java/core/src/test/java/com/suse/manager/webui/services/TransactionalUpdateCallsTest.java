@@ -63,6 +63,7 @@ public class TransactionalUpdateCallsTest {
         Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
         assertNotNull(kwargs);
         assertFalse(kwargs.containsKey("pillar"), "pillar should be absent when Optional.empty()");
+        assertFalse(kwargs.containsKey("exclude"), "exclude should be absent when no IDs are provided");
     }
 
     @Test
@@ -71,6 +72,67 @@ public class TransactionalUpdateCallsTest {
         Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
         assertNotNull(kwargs);
         assertFalse(kwargs.containsKey("mods"), "mods should be absent when applying highstate");
+        assertFalse(kwargs.containsKey("exclude"), "exclude should be absent when no IDs are provided");
+    }
+
+    @Test
+    public void testApplyIncludesSingleExcludedId() {
+        LocalCall<Map<String, State.ApplyResult>> call = TransactionalUpdateCalls.apply(
+                List.of(TRANSACTIONAL_PREREQ),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of("mgr_timezone_setting"));
+        Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
+
+        assertEquals(List.of(Map.of("id", "mgr_timezone_setting")), kwargs.get("exclude"));
+    }
+
+    @Test
+    public void testApplyIncludesMultipleExcludedIdsInInputOrder() {
+        List<String> excludeIds = List.of(
+                "mgr_timezone_setting",
+                "mgr_kb_settings",
+                "mgr_language_settings");
+        LocalCall<Map<String, State.ApplyResult>> call = TransactionalUpdateCalls.apply(
+                List.of(TRANSACTIONAL_PREREQ),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                excludeIds);
+        Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
+
+        assertEquals(List.of(
+                Map.of("id", "mgr_timezone_setting"),
+                Map.of("id", "mgr_kb_settings"),
+                Map.of("id", "mgr_language_settings")), kwargs.get("exclude"));
+    }
+
+    @Test
+    public void testHighstateIncludesExcludedIds() {
+        LocalCall<Map<String, State.ApplyResult>> call = TransactionalUpdateCalls.apply(
+                List.of(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of("mgr_timezone_setting"));
+        Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
+
+        assertFalse(kwargs.containsKey("mods"));
+        assertEquals(List.of(Map.of("id", "mgr_timezone_setting")), kwargs.get("exclude"));
+    }
+
+    @Test
+    public void testApplyWithEmptyExcludeOmitsExcludeFromKwargs() {
+        LocalCall<Map<String, State.ApplyResult>> call = TransactionalUpdateCalls.apply(
+                List.of(TRANSACTIONAL_PREREQ),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of());
+        Map<String, Object> kwargs = (Map<String, Object>) call.getPayload().get("kwarg");
+
+        assertFalse(kwargs.containsKey("exclude"), "exclude should be absent for an empty ID list");
     }
 
     @Test
