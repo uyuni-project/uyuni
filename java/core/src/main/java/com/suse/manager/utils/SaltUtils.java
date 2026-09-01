@@ -480,10 +480,12 @@ public class SaltUtils {
 
         Action action = HibernateFactory.unproxy(serverAction.getParentAction());
         boolean transactionalResult = TransactionalUpdateCalls.isApplyFunction(function);
+        boolean hasPostTransactionalState = hasPostTransactionalStateForResult(
+                action, serverAction, transactionalResult);
 
         if (transactionalResult &&
                 action instanceof ApplyStatesAction applyStatesAction &&
-                !TransactionalActionManager.hasPostTransactionalState(action)) {
+                !hasPostTransactionalState) {
             applyStatesAction.storeApplyStatesResult(serverAction, jsonResult, retcode);
         }
 
@@ -528,7 +530,7 @@ public class SaltUtils {
                 serverAction.setCompletionTime(completionTime);
                 serverAction.setStatusFailed();
             }
-            else if (TransactionalActionManager.hasPostTransactionalState(action)) {
+            else if (hasPostTransactionalState) {
                 serverAction.setCompletionTime(null);
             }
             else {
@@ -1072,6 +1074,18 @@ public class SaltUtils {
         );
 
         return new SaltBootstrapError(message, standardOuput, standardError, resultText);
+    }
+
+    static boolean hasPostTransactionalStateForResult(
+            Action action, ServerAction serverAction, boolean transactionalResult) {
+        return transactionalResult && hasPostTransactionalState(action, serverAction);
+    }
+
+    private static boolean hasPostTransactionalState(Action action, ServerAction serverAction) {
+        return TransactionalActionManager.findTransactionalActionHistory(
+                        serverAction.getServer().getId(), action.getId())
+                .map(history -> TransactionalActionManager.hasPostTransactionalState(action, history))
+                .orElseGet(() -> TransactionalActionManager.hasPostTransactionalState(action));
     }
 
     /**

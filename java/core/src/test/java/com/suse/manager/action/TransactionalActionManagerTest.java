@@ -165,6 +165,54 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testApplyStatesFormulasContinuationPreservesPillarAndTestMode() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of("custom-before", "formulas", "custom-after"));
+        details.setPillarsMap(Optional.of(Map.of("example", "value")));
+        details.setTest(true);
+        details.setUseTransactionalUpdate(false);
+        action.setDetails(details);
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of("locale")).orElseThrow();
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("custom-before", "locale", "custom-after"), kwargs.get("mods"));
+        assertEquals(Map.of("example", "value"), kwargs.get("pillar"));
+        assertEquals(true, kwargs.get("test"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+    }
+
+    @Test
+    public void testHardwareRefreshContinuationKeepsEmptyPillarAndTestMode() {
+        ApplyStatesAction action = new ApplyStatesAction();
+        ActionType actionType = new ActionType();
+        actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
+        action.setActionType(actionType);
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ));
+        details.setPillarsMap(Optional.of(Map.of("example", "value")));
+        details.setTest(true);
+        action.setDetails(details);
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of()).orElseThrow();
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE), kwargs.get("mods"));
+        assertFalse(kwargs.containsKey("pillar"));
+        assertFalse(kwargs.containsKey("test"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+    }
+
+    @Test
     public void testHighstateContinuationWithEmptyFrozenFormulasIsUnchanged() {
         ApplyStatesAction action = highstateAction();
         MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
@@ -461,6 +509,79 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
+    public void testSuccessfulTransactionalResultWithFrozenFormulaWaitsForContinuation() {
+        ApplyStatesAction action = applyStatesAction(List.of("formulas"), true);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(List.of("locale"));
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "cmd_|-noop_|-true_|-run": {
+                            "result": true,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertTrue(TransactionalActionManager.getPrerequisiteResult(history).isPresent());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.PENDING, history.getAfterRebootStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(1, resumptions.get());
+    }
+
+    @Test
+    public void testSuccessfulTransactionalResultWithoutPostTransactionalWorkFinalizesImmediately() {
+        ApplyStatesAction action = applyStatesAction(List.of("formulas"), false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(List.of());
+        AtomicInteger snapshotRefreshes = new AtomicInteger();
+        AtomicInteger resumptions = new AtomicInteger();
+
+        TransactionalActionManager.TransactionalResult result = TransactionalActionManager.handleTransactionalResult(
+                history,
+                action,
+                history.getMinionServerId(),
+                history.getActionId(),
+                stateResult("""
+                        {
+                          "cmd_|-noop_|-true_|-run": {
+                            "result": true,
+                            "changes": {}
+                          }
+                        }
+                        """),
+                false,
+                (scheduledAction, minionServerId) -> {
+                    snapshotRefreshes.incrementAndGet();
+                    return Optional.of(20L);
+                },
+                (actionId, minionServerId) -> resumptions.incrementAndGet());
+
+        assertFalse(result.isFailed());
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(ProgressStatus.NOT_NEEDED, history.getRebootStatus());
+        assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
+        assertEquals(0, snapshotRefreshes.get());
+        assertEquals(0, resumptions.get());
+    }
+
+    @Test
     public void testFailedTransactionalSnapshotReconciliationDoesNotResumePostState() {
         ApplyStatesAction action = new ApplyStatesAction();
         ApplyStatesActionDetails details = new ApplyStatesActionDetails();
@@ -745,6 +866,535 @@ public class TransactionalActionManagerTest {
         Map<String, Object> payload = calls.keySet().iterator().next().getPayload();
         assertEquals("state.apply", payload.get("fun"));
         assertEquals(List.of("direct_call"), payload.get("module_executors"));
+    }
+
+    @Test
+    public void testFormulasStateApplyRunsNormallyOnTraditionalMinions() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        AtomicInteger planCalls = new AtomicInteger();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(regularMinion),
+                true,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return emptyFormulaPlan();
+                },
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(1, calls.size());
+        LocalCall<?> call = callForMinion(calls, regularMinion);
+        assertEquals("state.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas"), ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+        assertFalse(call.getPayload().containsKey("module_executors"));
+        assertEquals(0, planCalls.get());
+    }
+
+    @Test
+    public void testFormulasStateApplyUsesTransactionalWrapperForTransactionalFormulas() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("bind"),
+                List.of(),
+                List.of(),
+                List.of());
+        Map<MinionSummary, FormulaTransactionalPlan> persistedPlans = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                persistedPlans::put);
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_formulas", List.of("bind")), kwargs.get("pillar"));
+        assertFalse(kwargs.containsKey("exclude"));
+        assertTrue(plan == persistedPlans.get(transactionalMinion));
+    }
+
+    @Test
+    public void testFormulasStateApplyFreezesLiveOnlyFormulaForContinuation() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of("live-formula"),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertFalse(kwargs.containsKey("pillar"));
+        assertFalse(kwargs.containsKey("exclude"));
+        assertEquals(List.of("live-formula"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testFormulasStateApplyUsesExcludeAndFreezeForTransactionalThenLiveFormula() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_timezone_setting", "mgr_language_settings"),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(List.of(
+                Map.of("id", "mgr_timezone_setting"),
+                Map.of("id", "mgr_language_settings")), kwargs.get("exclude"));
+        assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testFormulasStateApplyPassesUnsupportedFormulasToWrapper() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("unsupported-formula"));
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_unsupported_formulas", List.of("unsupported-formula")),
+                kwargs.get("pillar"));
+        assertTrue(persistedFormulas.get(transactionalMinion).isEmpty());
+    }
+
+    @Test
+    public void testFormulasStateApplyGroupsMinionsWithEqualPlans() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary firstMinion = transactionalMinion(1L, "first");
+        MinionSummary secondMinion = transactionalMinion(2L, "second");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("bind"),
+                List.of(),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(firstMinion, secondMinion),
+                true,
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(1, calls.size());
+        assertEquals(List.of(firstMinion, secondMinion), calls.values().iterator().next());
+    }
+
+    @Test
+    public void testFormulasStateApplySeparatesMinionsWithDifferentPlans() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary bindMinion = transactionalMinion(1L, "bind");
+        MinionSummary localeMinion = transactionalMinion(2L, "locale");
+        FormulaTransactionalPlan bindPlan = new FormulaTransactionalPlan(
+                List.of("bind"),
+                List.of(),
+                List.of(),
+                List.of());
+        FormulaTransactionalPlan localePlan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(bindMinion, localeMinion),
+                true,
+                minion -> minion.getServerId().equals(bindMinion.getServerId()) ? bindPlan : localePlan,
+                NO_OP_HISTORY_UPDATER);
+
+        assertEquals(2, calls.size());
+        assertTrue(calls.values().stream().anyMatch(minions -> minions.equals(List.of(bindMinion))));
+        assertTrue(calls.values().stream().anyMatch(minions -> minions.equals(List.of(localeMinion))));
+    }
+
+    @Test
+    public void testFormulasStateApplyPlanProviderIsCalledOncePerTransactionalMinionAndReused() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary firstMinion = transactionalMinion(1L, "first");
+        MinionSummary secondMinion = transactionalMinion(2L, "second");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+        AtomicInteger planCalls = new AtomicInteger();
+        List<FormulaTransactionalPlan> persistedPlans = new ArrayList<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(firstMinion, secondMinion),
+                true,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return plan;
+                },
+                (minion, groupPlan) -> persistedPlans.add(groupPlan));
+
+        assertEquals(2, planCalls.get());
+        assertEquals(2, persistedPlans.size());
+        assertTrue(persistedPlans.stream().allMatch(persistedPlan -> plan == persistedPlan));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateRunsOnlyFormulaWrapperFirst() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        AtomicInteger planCalls = new AtomicInteger();
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("bind"),
+                List.of(),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return plan;
+                },
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas_transactional"), ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+        assertEquals(1, planCalls.get());
+        assertTrue(persistedFormulas.get(transactionalMinion).isEmpty());
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateFreezesLiveFormulaForContinuation() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of("live-formula"),
+                List.of(),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertFalse(kwargs.containsKey("pillar"));
+        assertEquals(List.of("live-formula"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithTransactionalUpdateRunsOtherStatesTransactionally() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom-before", "formulas", "custom-after"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("custom-before", "formulas_transactional", "custom-after"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(List.of(Map.of("id", "mgr_language_settings")), kwargs.get("exclude"));
+        assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateDefersOtherStatesToContinuation() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of("mgr_language_settings"),
+                List.of());
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom-before", "formulas", "custom-after"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(List.of(Map.of("id", "mgr_language_settings")), kwargs.get("exclude"));
+        assertEquals(List.of("locale"), persistedFormulas.get(transactionalMinion));
+
+        ApplyStatesAction action = applyStatesAction(List.of("custom-before", "formulas", "custom-after"), false);
+        Map<LocalCall<?>, List<MinionSummary>> continuationCalls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> persistedFormulas.get(transactionalMinion))
+                        .orElseThrow();
+
+        LocalCall<?> continuationCall = callForMinion(continuationCalls, transactionalMinion);
+        assertEquals("state.apply", continuationCall.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
+        assertEquals(List.of("custom-before", "locale", "custom-after"),
+                ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithTransactionalUpdateContinuesOnlyFrozenFormulas() {
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        ApplyStatesAction action = applyStatesAction(List.of("custom-before", "formulas", "custom-after"), true);
+
+        Map<LocalCall<?>, List<MinionSummary>> continuationCalls =
+                TransactionalActionManager.getAfterRebootSaltCalls(
+                        action, List.of(transactionalMinion), ignored -> List.of("locale")).orElseThrow();
+
+        LocalCall<?> continuationCall = callForMinion(continuationCalls, transactionalMinion);
+        assertEquals(List.of("locale"), ((Map<?, ?>) continuationCall.getPayload().get("kwarg")).get("mods"));
+        assertEquals(List.of("direct_call"), continuationCall.getPayload().get("module_executors"));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateAndUnsupportedPlanHasDeferredWorkButNoFrozenFormula() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of("unsupported-formula"));
+        Map<MinionSummary, List<String>> persistedFormulas = new HashMap<>();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom-before", "formulas", "custom-after"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> plan,
+                (minion, groupPlan) -> persistedFormulas.put(minion, groupPlan.postTransactionalFormulas()));
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(List.of("formulas_transactional"), kwargs.get("mods"));
+        assertEquals(Map.of("transactional_unsupported_formulas", List.of("unsupported-formula")),
+                kwargs.get("pillar"));
+        assertTrue(persistedFormulas.get(transactionalMinion).isEmpty());
+
+        ApplyStatesAction action = applyStatesAction(List.of("custom-before", "formulas", "custom-after"), false);
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(persistedFormulas.get(transactionalMinion));
+        assertTrue(TransactionalActionManager.hasPostTransactionalState(action, history));
+    }
+
+    @Test
+    public void testFormulasStateApplyWithoutTransactionalUpdateAndNoOtherStateHasNoContinuationForTransactionalPlan() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.setPostTransactionalFormulaList(List.of());
+
+        assertFalse(TransactionalActionManager.hasPostTransactionalState(applyStatesAction(List.of("formulas"), false),
+                history));
+    }
+
+    @Test
+    public void testActionsWithoutFormulasRemainDirectCallWhenTransactionalUpdateIsFalse() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        AtomicInteger planCalls = new AtomicInteger();
+        AtomicInteger historyUpdaterCalls = new AtomicInteger();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                false,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return emptyFormulaPlan();
+                },
+                (minion, plan) -> historyUpdaterCalls.incrementAndGet());
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("state.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+        assertEquals(List.of("custom"), ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+        assertEquals(0, planCalls.get());
+        assertEquals(0, historyUpdaterCalls.get());
+    }
+
+    @Test
+    public void testActionsWithoutFormulasRemainTransactionalWhenTransactionalUpdateIsTrue() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        AtomicInteger planCalls = new AtomicInteger();
+        AtomicInteger historyUpdaterCalls = new AtomicInteger();
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("custom"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> {
+                    planCalls.incrementAndGet();
+                    return emptyFormulaPlan();
+                },
+                (minion, plan) -> historyUpdaterCalls.incrementAndGet());
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        assertEquals("transactional_update.apply", call.getPayload().get("fun"));
+        assertEquals(List.of("custom"), ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods"));
+        assertEquals(0, planCalls.get());
+        assertEquals(0, historyUpdaterCalls.get());
+    }
+
+    @Test
+    public void testFormulasStateApplyRecalculatesReservedPillarKeys() {
+        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+        MinionSummary transactionalMinion = transactionalMinion(1L, "transactional");
+        Map<String, Object> originalPillar = new HashMap<>(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("stale-formula"),
+                "transactional_unsupported_formulas", List.of("stale-unsupported")));
+        FormulaTransactionalPlan plan = new FormulaTransactionalPlan(
+                List.of("locale"),
+                List.of("locale"),
+                List.of(),
+                List.of());
+
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(
+                calls,
+                List.of("formulas"),
+                Optional.of(originalPillar),
+                Optional.empty(),
+                Optional.empty(),
+                List.of(transactionalMinion),
+                true,
+                ignored -> plan,
+                NO_OP_HISTORY_UPDATER);
+
+        LocalCall<?> call = callForMinion(calls, transactionalMinion);
+        Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("locale")), kwargs.get("pillar"));
+        assertEquals(Map.of(
+                "example", "value",
+                "transactional_formulas", List.of("stale-formula"),
+                "transactional_unsupported_formulas", List.of("stale-unsupported")), originalPillar);
     }
 
     @Test
@@ -1304,9 +1954,22 @@ public class TransactionalActionManagerTest {
     }
 
     private static ApplyStatesAction highstateAction() {
+        return applyStatesAction(List.of(), false);
+    }
+
+    private static Action hardwareRefreshAction() {
+        Action action = new Action();
+        ActionType actionType = new ActionType();
+        actionType.setLabel(ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST.getLabel());
+        action.setActionType(actionType);
+        return action;
+    }
+
+    private static ApplyStatesAction applyStatesAction(List<String> states, boolean useTransactionalUpdate) {
         ApplyStatesAction action = new ApplyStatesAction();
         ApplyStatesActionDetails details = new ApplyStatesActionDetails();
-        details.setMods(List.of());
+        details.setMods(states);
+        details.setUseTransactionalUpdate(useTransactionalUpdate);
         action.setDetails(details);
         return action;
     }
@@ -1315,12 +1978,16 @@ public class TransactionalActionManagerTest {
         return new MinionSummary(id, name, null, null, null, "SLES", true);
     }
 
-    private static List<?> statesForMinion(Map<LocalCall<?>, List<MinionSummary>> calls, MinionSummary minion) {
-        LocalCall<?> call = calls.entrySet().stream()
+    private static LocalCall<?> callForMinion(Map<LocalCall<?>, List<MinionSummary>> calls, MinionSummary minion) {
+        return calls.entrySet().stream()
                 .filter(entry -> entry.getValue().contains(minion))
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElseThrow();
+    }
+
+    private static List<?> statesForMinion(Map<LocalCall<?>, List<MinionSummary>> calls, MinionSummary minion) {
+        LocalCall<?> call = callForMinion(calls, minion);
         return (List<?>) ((Map<?, ?>) call.getPayload().get("kwarg")).get("mods");
     }
 

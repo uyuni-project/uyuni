@@ -101,8 +101,18 @@ public class RecurringActionController {
 
     private static final Logger LOG = LogManager.getLogger(RecurringActionController.class);
     private static final Gson GSON = new GsonBuilder().create();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private RecurringActionController() { }
+
+    /**
+     * Set taskomatic API instance.
+     *
+     * @param taskomaticApiIn taskomatic API instance
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
@@ -474,7 +484,7 @@ public class RecurringActionController {
                     false,
                     json.getDetails().isUseTransactionalUpdate());
             ActionFactory.save(a);
-            new TaskomaticApi().scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Rolling back transaction because of Taskomatic exception", e);

@@ -57,6 +57,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Manager for multi-step transactional actions.
@@ -164,7 +165,7 @@ public class TransactionalActionManager {
      * @return progress entries in execution order
      */
     public static List<ProgressEntry> getProgressEntries(Action action, MinionTransactionalActionHistory history) {
-        boolean transactionalApply = !hasPostTransactionalState(action);
+        boolean transactionalApply = !hasPostTransactionalState(action, history);
         return List.of(
                 new ProgressEntry(transactionalApply ? "apply" : "prerequisites",
                         statusKey(history.getPrerequisiteStatus()), history.getPrerequisiteAt(),
@@ -362,8 +363,23 @@ public class TransactionalActionManager {
 
         if (states.isEmpty()) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addTransactionalHighstateCalls(
+            addTransactionalFormulaCalls(
                     calls,
+                    List.of(),
+                    pillar,
+                    queue,
+                    test,
+                    minionsByTransactionalUpdate.get(true),
+                    planProvider,
+                    postTransactionalFormulaHistoryUpdater);
+            return;
+        }
+
+        if (states.contains("formulas")) {
+            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
+            addTransactionalFormulaCalls(
+                    calls,
+                    useTransactionalUpdate ? replaceFormulasState(states) : List.of("formulas_transactional"),
                     pillar,
                     queue,
                     test,
@@ -400,6 +416,26 @@ public class TransactionalActionManager {
             List<MinionSummary> minions,
             Function<MinionSummary, FormulaTransactionalPlan> planProvider,
             BiConsumer<MinionSummary, FormulaTransactionalPlan> postTransactionalFormulaHistoryUpdater) {
+        addTransactionalFormulaCalls(
+                calls,
+                List.of(),
+                pillar,
+                queue,
+                test,
+                minions,
+                planProvider,
+                postTransactionalFormulaHistoryUpdater);
+    }
+
+    private static void addTransactionalFormulaCalls(
+            Map<? super LocalCall<Map<String, State.ApplyResult>>, List<MinionSummary>> calls,
+            List<String> states,
+            Optional<Map<String, Object>> pillar,
+            Optional<Boolean> queue,
+            Optional<Boolean> test,
+            List<MinionSummary> minions,
+            Function<MinionSummary, FormulaTransactionalPlan> planProvider,
+            BiConsumer<MinionSummary, FormulaTransactionalPlan> postTransactionalFormulaHistoryUpdater) {
         Map<FormulaTransactionalPlan, List<MinionSummary>> minionsByPlan = new LinkedHashMap<>();
         for (MinionSummary minion : minions) {
             FormulaTransactionalPlan plan = planProvider.apply(minion);
@@ -410,7 +446,7 @@ public class TransactionalActionManager {
             addCall(
                     calls,
                     TransactionalUpdateCalls.apply(
-                            List.of(),
+                            states,
                             mergeTransactionalFormulaPillar(pillar, plan),
                             queue,
                             test,
@@ -447,11 +483,9 @@ public class TransactionalActionManager {
             Action action,
             List<MinionSummary> minionSummaries,
             Function<MinionSummary, List<String>> postTransactionalFormulaProvider) {
-        List<String> staticStates = getPostTransactionalStates(action);
         Map<List<String>, List<MinionSummary>> minionsByStates = new LinkedHashMap<>();
         for (MinionSummary minion : minionSummaries) {
-            List<String> states = new ArrayList<>(staticStates);
-            states.addAll(postTransactionalFormulaProvider.apply(minion));
+            List<String> states = getPostTransactionalStates(action, postTransactionalFormulaProvider.apply(minion));
             if (!states.isEmpty()) {
                 minionsByStates.computeIfAbsent(List.copyOf(states), ignored -> new ArrayList<>()).add(minion);
             }
@@ -460,28 +494,25 @@ public class TransactionalActionManager {
             return Optional.empty();
         }
 
-        if (isHighstate(action)) {
-            ApplyStatesActionDetails details = ((ApplyStatesAction) action).getDetails();
-            Map<LocalCall<?>, List<MinionSummary>> calls = new LinkedHashMap<>();
-            minionsByStates.forEach((states, minions) -> addAnyCall(
-                    calls,
-                    withDirectCallExecutor(State.apply(
-                            states,
-                            details.getPillarsMap(),
-                            Optional.of(true),
-                            details.isTest() ? Optional.of(true) : Optional.empty())),
-                    minions));
-            return Optional.of(calls);
+        Optional<Map<String, Object>> continuationPillar = Optional.empty();
+        Optional<Boolean> continuationTest = Optional.empty();
+        if (shouldPreserveApplyStatesContinuationDetails(action)) {
+            ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
+            ApplyStatesActionDetails details = applyStatesAction.getDetails();
+            continuationPillar = details.getPillarsMap();
+            continuationTest = details.isTest() ? Optional.of(true) : Optional.empty();
         }
+        Optional<Map<String, Object>> pillarForContinuation = continuationPillar;
+        Optional<Boolean> testForContinuation = continuationTest;
 
         Map<LocalCall<?>, List<MinionSummary>> calls = new LinkedHashMap<>();
         minionsByStates.forEach((states, minions) -> addAnyCall(
                 calls,
                 withDirectCallExecutor(State.apply(
                         states,
-                        Optional.empty(),
+                        pillarForContinuation,
                         Optional.of(true),
-                        Optional.empty())),
+                        testForContinuation)),
                 minions));
         return Optional.of(calls);
     }
@@ -493,7 +524,7 @@ public class TransactionalActionManager {
      * @return true when an after-reboot state exists
      */
     public static boolean hasPostTransactionalState(Action action) {
-        return isHighstate(action) || getAfterRebootState(action).isPresent();
+        return !getPostTransactionalStates(action).isEmpty();
     }
 
     /**
@@ -504,7 +535,7 @@ public class TransactionalActionManager {
      * @return true when a post-transactional state or frozen formula exists
      */
     public static boolean hasPostTransactionalState(Action action, MinionTransactionalActionHistory history) {
-        return hasPostTransactionalState(action) || !history.getPostTransactionalFormulaList().isEmpty();
+        return !getPostTransactionalStates(action, history.getPostTransactionalFormulaList()).isEmpty();
     }
 
     /**
@@ -590,12 +621,36 @@ public class TransactionalActionManager {
     }
 
     private static List<String> getPostTransactionalStates(Action action) {
+        return getPostTransactionalStates(action, List.of());
+    }
+
+    private static boolean shouldPreserveApplyStatesContinuationDetails(Action action) {
+        return action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails() != null &&
+                (isHighstate(applyStatesAction) || applyStatesAction.getDetails().getMods().contains("formulas"));
+    }
+
+    private static List<String> getPostTransactionalStates(Action action, List<String> postTransactionalFormulas) {
         if (isHighstate(action)) {
-            return HIGHSTATE_POST_TRANSACTIONAL_STATES;
+            List<String> states = new ArrayList<>(HIGHSTATE_POST_TRANSACTIONAL_STATES);
+            states.addAll(postTransactionalFormulas);
+            return List.copyOf(states);
         }
-        return getAfterRebootState(action)
+        if (action instanceof ApplyStatesAction applyStatesAction &&
+                applyStatesAction.getDetails() != null &&
+                !applyStatesAction.getDetails().isUseTransactionalUpdate() &&
+                applyStatesAction.getDetails().getMods().contains("formulas")) {
+            return expandFormulasState(applyStatesAction.getDetails().getMods(), postTransactionalFormulas);
+        }
+        List<String> states = getAfterRebootState(action)
                 .map(List::of)
                 .orElseGet(List::of);
+        if (postTransactionalFormulas.isEmpty()) {
+            return states;
+        }
+        List<String> withFormulas = new ArrayList<>(states);
+        withFormulas.addAll(postTransactionalFormulas);
+        return List.copyOf(withFormulas);
     }
 
     private static String statusKey(MinionTransactionalActionHistory.ProgressStatus status) {
@@ -863,6 +918,18 @@ public class TransactionalActionManager {
 
     private static Optional<String> findSingleTransactionalStateToApply(List<String> states) {
         return states.size() == 1 ? getTransactionalStateToApply(states.get(0)) : Optional.empty();
+    }
+
+    private static List<String> replaceFormulasState(List<String> states) {
+        return states.stream()
+                .map(state -> "formulas".equals(state) ? "formulas_transactional" : state)
+                .toList();
+    }
+
+    private static List<String> expandFormulasState(List<String> states, List<String> postTransactionalFormulas) {
+        return states.stream()
+                .flatMap(state -> "formulas".equals(state) ? postTransactionalFormulas.stream() : Stream.of(state))
+                .toList();
     }
 
     private static Optional<List<String>> getStatesFromFunctionArg(Object arg) {
