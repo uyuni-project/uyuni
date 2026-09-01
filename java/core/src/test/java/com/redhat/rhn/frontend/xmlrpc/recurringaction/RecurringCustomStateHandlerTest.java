@@ -94,6 +94,41 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testCreateFormulasInternalStatePreservesTransactionalUpdate() {
+        int actionId = handler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action-formulas",
+                "cron_expr", TEST_CRON_EXPR,
+                "states", List.of("formulas")
+        ));
+        RecurringState state =
+                (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
+
+        assertFalse(state.isUseTransactionalUpdate());
+        assertEquals(1, state.getStateConfig().size());
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "formulas".equals(s.getStateName())));
+    }
+
+    @Test
+    public void testCreateFormulasInternalStateCanBeCombined() {
+        int actionId = handler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action-formulas",
+                "cron_expr", TEST_CRON_EXPR,
+                "states", List.of("formulas", "channels")
+        ));
+
+        RecurringState state =
+                (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
+
+        assertEquals(2, state.getStateConfig().size());
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "formulas".equals(s.getStateName())));
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "channels".equals(s.getStateName())));
+    }
+
+    @Test
     public void testCreateNonExistingStates() {
         NoSuchStateException e = assertThrows(NoSuchStateException.class, () -> handler.create(user, Map.of(
                 "entity_id", user.getOrg().getId().intValue(),
@@ -198,6 +233,50 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testUpdateFormulasInternalStatePreservesTransactionalUpdate() {
+        int actionId = handler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action-update-formulas",
+                "cron_expr", TEST_CRON_EXPR,
+                "states", List.of("channels")
+        ));
+
+        handler.update(user, Map.of(
+                "id", actionId,
+                "states", List.of("formulas")
+        ));
+
+        RecurringState state =
+                (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
+        assertFalse(state.isUseTransactionalUpdate());
+        assertEquals(1, state.getStateConfig().size());
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "formulas".equals(s.getStateName())));
+    }
+
+    @Test
+    public void testUpdateFormulasInternalStateCanBeCombined() {
+        int actionId = handler.create(user, Map.of(
+                "entity_id", user.getOrg().getId().intValue(),
+                "entity_type", "org",
+                "name", "test-action-update-formulas",
+                "cron_expr", TEST_CRON_EXPR,
+                "states", List.of("channels")
+        ));
+
+        handler.update(user, Map.of(
+                "id", actionId,
+                "states", List.of("formulas", "channels")
+        ));
+
+        RecurringState state =
+                (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
+        assertEquals(2, state.getStateConfig().size());
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "formulas".equals(s.getStateName())));
+        assertTrue(state.getStateConfig().stream().anyMatch(s -> "channels".equals(s.getStateName())));
+    }
+
+    @Test
     public void testListAvailable() {
         ConfigTestUtils.createConfigChannel(user.getOrg(), "My channel", "my-channel");
 
@@ -209,6 +288,7 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
         List<String> availableStates = handler.listAvailable(user);
 
         assertTrue(availableStates.contains("certs"));
+        assertTrue(availableStates.contains("formulas"));
         assertTrue(availableStates.contains("my-channel"));
         assertFalse(availableStates.contains("not-my-channel"));
     }
