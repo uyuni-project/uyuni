@@ -9598,6 +9598,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
       </trans-unit>
+      <trans-unit id="internal_state.formulas" xml:space="preserve">
+        <source>Apply formulas assigned to the target system</source>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
       </trans-unit>
