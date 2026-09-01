@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
@@ -292,13 +293,16 @@ public class SaltSSHService {
                 MinionServerFactory.findByMinionId(mid).ifPresentOrElse(minion -> {
                     List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(), Optional.empty());
                     String contactMethodLabel = minion.getContactMethod().getLabel();
+                    String host = Optional.ofNullable(minion.findPrimaryFqdn())
+                            .map(ServerFQDN::getName)
+                            .orElse(minion.getMinionId());
 
-                    roster.addHost(mid, getSSHUser(), Optional.empty(),
+                    roster.addHost(mid, host, getSSHUser(), Optional.empty(),
                             Opt.wrapFirstNonNull(minion.getSSHPushPort(), SSH_PUSH_PORT),
                             remotePortForwarding(proxyPath, contactMethodLabel),
                             sshProxyCommandOption(proxyPath,
                                 contactMethodLabel,
-                                minion.getMinionId(),
+                                host,
                                 Optional.ofNullable(minion.getSSHPushPort()).orElse(SSH_PUSH_PORT)),
                             sshTimeout,
                             minionOpts(mid, contactMethodLabel)
@@ -394,7 +398,10 @@ public class SaltSSHService {
                 .map(ProxyInfo::getSshPort)
                 .map(p -> ":" + p)
                 .orElse("");
-        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname() + port));
+        String proxyHostname = Optional.ofNullable(proxy.findPrimaryFqdn())
+                .map(ServerFQDN::getName)
+                .orElse(proxy.getHostname());
+        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxyHostname + port));
     }
 
     /**
@@ -423,7 +430,11 @@ public class SaltSSHService {
                     if (port.isEmpty()) {
                         LOG.warn("Unable to identify port for proxy path {}. Using default.", path);
                     }
-                    return path.getHostname() + port;
+                    String proxyHostname = Optional.ofNullable(path.getId().getProxyServer())
+                            .map(Server::findPrimaryFqdn)
+                            .map(ServerFQDN::getName)
+                            .orElse(path.getHostname());
+                    return proxyHostname + port;
                 }).collect(Collectors.toList());
 
         lastProxy.ifPresent(hostnamePath::add);
@@ -489,14 +500,18 @@ public class SaltSSHService {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         minions.forEach(minion -> {
             List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(), Optional.empty());
+            String host = Optional.ofNullable(minion.findPrimaryFqdn())
+                    .map(ServerFQDN::getName)
+                    .orElse(minion.getMinionId());
             roster.addHost(minion.getMinionId(),
+                    host,
                     getSSHUser(),
                     Optional.empty(),
                     Opt.wrapFirstNonNull(minion.getSSHPushPort(), SSH_PUSH_PORT),
                     remotePortForwarding(proxyPath, minion.getContactMethod().getLabel()),
                     sshProxyCommandOption(proxyPath,
                         minion.getContactMethod().getLabel(),
-                        minion.getMinionId(),
+                        host,
                         Optional.ofNullable(minion.getSSHPushPort()).orElse(SSH_PUSH_PORT)),
                     getSshPushTimeout(),
                     minionOpts(minion.getMinionId(), minion.getContactMethod().getLabel()));
@@ -1054,7 +1069,9 @@ public class SaltSSHService {
         if (server == null || server.getServerPaths().isEmpty()) {
             return true;
         }
-        String hostname = server.getHostname();
+        String hostname = Optional.ofNullable(server.findPrimaryFqdn())
+                .map(ServerFQDN::getName)
+                .orElse(server.getHostname());
         List<ServerPath> paths = sortServerPaths(server.getServerPaths());
         ServerPath last = paths.get(paths.size() - 1);
         Server proxy = last.getId().getProxyServer();
