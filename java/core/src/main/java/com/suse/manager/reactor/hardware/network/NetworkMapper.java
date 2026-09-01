@@ -142,6 +142,13 @@ public class NetworkMapper {
                 .toList();
         serverFQDNs.retainAll(srvFqdnsObj);
         serverFQDNs.addAll(srvFqdnsObj);
+
+        if (serverFQDNs.stream().noneMatch(ServerFQDN::isPrimary)) {
+            String minionId = serverIn.getMinionId();
+            if (fqdns.contains(minionId)) {
+                serverIn.setPrimaryFQDNWithName(minionId);
+            }
+        }
     }
 
     /**
@@ -169,7 +176,7 @@ public class NetworkMapper {
 
         // Update interface properties
         networkInterface.setHwaddr(saltInterface.getHWAddr());
-        networkInterface.setModule(netModules.get(name).orElse(null));
+        networkInterface.setModule(netModules.getOrDefault(name, Optional.empty()).orElse(null));
 
         // Persist to get ID for IP address syncing
         networkInterface = ServerFactory.saveNetworkInterface(networkInterface);
