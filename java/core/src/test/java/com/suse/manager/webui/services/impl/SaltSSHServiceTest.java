@@ -22,6 +22,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
@@ -152,5 +153,34 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(Collections.emptyList(),
                 SaltSSHService.proxyPathToHostnames(Collections.emptySet(), Optional.empty()));
+    }
+
+    @Test
+    public void testProxyPathToHostnamesChainWithPrimaryFqdn() throws Exception {
+        Server proxy0 = createTestProxyMinimal("proxy0-internal.local", 8022);
+        Server proxy1 = createTestProxyMinimal("proxy1-internal.local", 22);
+
+        // Add Primary FQDN to proxy0
+        ServerFQDN primaryFqdn0 = new ServerFQDN(proxy0, "proxy0-external.com");
+        primaryFqdn0.setPrimary(true);
+        proxy0.getFqdns().add(primaryFqdn0);
+        ServerFactory.save(proxy0);
+
+        // Add Primary FQDN to proxy1
+        ServerFQDN primaryFqdn1 = new ServerFQDN(proxy1, "proxy1-external.com");
+        primaryFqdn1.setPrimary(true);
+        proxy1.getFqdns().add(primaryFqdn1);
+        ServerFactory.save(proxy1);
+
+        // Chain proxy0 and proxy1
+        final Set<ServerPath> serverPaths = Set.of(
+                new ServerPath(new ServerPathId(proxy0, proxy1), 0L, "proxy1-internal.local")
+        );
+        proxy0.setServerPaths(serverPaths);
+
+        // Since both proxy0 and proxy1 have Primary FQDNs, the returned path should prioritize their Primary FQDNs.
+        // proxyPathToHostnames(proxy0) should return ["proxy1-external.com:22", "proxy0-external.com:8022"]
+        assertEquals(List.of("proxy1-external.com:22", "proxy0-external.com:8022"),
+                SaltSSHService.proxyPathToHostnames(proxy0));
     }
 }
