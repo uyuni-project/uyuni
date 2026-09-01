@@ -14,10 +14,14 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.db.datasource.RowCallback;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import java.util.Optional;
 /**
  * ErrataOverview
  */
-public class ErrataOverview extends BaseDto {
+public class ErrataOverview extends BaseDto implements RowCallback {
     private Long id;
     private String advisory;
     private String advisoryName;
@@ -42,7 +46,7 @@ public class ErrataOverview extends BaseDto {
     private Date issueDate;
     private Integer affectedSystemCount;
     private String advisoryLastUpdated;
-    private List cves = new ArrayList<>();
+    private List<String> cves = new ArrayList<>();
     private List<String> packageNames = new ArrayList<>();
     private List<Long> pids = new ArrayList<>();
     private List actionId;
@@ -177,7 +181,7 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return Returns the cves.
      */
-    public List getCves() {
+    public List<String> getCves() {
         return cves;
     }
     /**
@@ -192,8 +196,20 @@ public class ErrataOverview extends BaseDto {
     /**
      * @param p The cves to set.
      */
-    public void setCves(List p) {
+    public void setCves(List<String> p) {
         this.cves = p;
+    }
+
+    /**
+     * This method is only used for CSV export.
+     * @return the CVE names joined by a single space, or an empty string
+     *         when no CVEs are associated with this erratum.
+     */
+    public String getCveNames() {
+        if (cves == null || cves.isEmpty()) {
+            return "";
+        }
+        return String.join(" ", cves);
     }
 
     /**
@@ -603,5 +619,53 @@ public class ErrataOverview extends BaseDto {
      */
     public void setRights(String rightsIn) {
         this.rights = rightsIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * The {@code cve} column is populated through {@link #addCve(String)} by
+     * {@link #callback(ResultSet)} during elaboration, so the generic
+     * reflection-based mapping must skip it (it would otherwise look for a
+     * {@code setCve} method that does not exist on this DTO).
+     */
+    @Override
+    public List<String> getCallBackColumns() {
+        return List.of("cve");
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Picks up CVE names yielded by the {@code errata_cves_elab} elaborator
+     * and feeds them into {@link #addCve(String)}. Other elaborators are
+     * left untouched.
+     */
+    @Override
+    public void callback(ResultSet rs) {
+        if (rs == null) {
+            return;
+        }
+        try {
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnCount = meta.getColumnCount();
+            // errata_cves_elab returns only (id, cve); skip other elaborators
+            // to avoid scanning unrelated result sets.
+            if (columnCount >= 3) {
+                return;
+            }
+            for (int i = 1; i <= columnCount; i++) {
+                if ("cve".equalsIgnoreCase(meta.getColumnLabel(i))) {
+                    String cve = rs.getString(i);
+                    if (cve != null) {
+                        addCve(cve);
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+            // intentionally ignored: a missing CVE column simply means this
+            // elaborator is not the CVE one.
+        }
     }
 }

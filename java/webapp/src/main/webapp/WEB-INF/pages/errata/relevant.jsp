@@ -19,6 +19,8 @@
 <p><bean:message key="errata.overview.jsp.summary"/></p>
 
 <c:set var="emptyListKey" value="erratalist.jsp.norelevanterrata"/>
+<c:set var="errataExportColumns"
+       value="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate,cveNames"/>
 <%@ include file="/WEB-INF/pages/common/fragments/errata/relevant-errata-list.jspf" %>
 
 </body>
