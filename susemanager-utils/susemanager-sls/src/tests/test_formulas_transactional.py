@@ -4,6 +4,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+"""Tests for the transactional formula wrapper state."""
+
 from pathlib import Path
 
 import pytest
