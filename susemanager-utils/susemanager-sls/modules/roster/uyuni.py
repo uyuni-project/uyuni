@@ -165,7 +165,9 @@ class UyuniRoster:
         tunnel=False,
         user=None,
         ssh_push_port=SSH_PUSH_PORT,
+        host=None,
     ):
+        target_host = host or minion_id
         proxy_command = []
         i = 0
         for proxy in proxies:
@@ -177,7 +179,7 @@ class UyuniRoster:
                     ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
                     ssh_push_user=PROXY_SSH_PUSH_USER,
                     in_out_forward=(
-                        f"-W {minion_id}:{ssh_push_port}"
+                        f"-W {target_host}:{ssh_push_port}"
                         if not tunnel and i == len(proxies) - 1
                         else ""
                     ),
@@ -196,7 +198,7 @@ class UyuniRoster:
                     pushPort=self.ssh_push_port_https,
                     proxy="localhost",
                     sslPort=SSL_PORT,
-                    minion=minion_id,
+                    minion=target_host,
                     # pylint: disable-next=consider-using-f-string
                     ownKey="{}{}".format(
                         # pylint: disable-next=consider-using-f-string
@@ -212,10 +214,15 @@ class UyuniRoster:
 
     # pylint: disable-next=dangerous-default-value
     def _get_ssh_minion(
-        self, minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT
+        self,
+        minion_id=None,
+        proxies=[],
+        tunnel=False,
+        ssh_push_port=SSH_PUSH_PORT,
+        host=None,
     ):
         minion = {
-            "host": minion_id,
+            "host": host or minion_id,
             "user": self.ssh_push_sudo_user,
             "port": ssh_push_port,
             "timeout": self.ssh_connect_timeout,
@@ -242,6 +249,7 @@ class UyuniRoster:
                         tunnel=tunnel,
                         user=self.ssh_push_sudo_user,
                         ssh_push_port=ssh_push_port,
+                        host=host,
                     )
                 }
             )
@@ -260,14 +268,16 @@ class UyuniRoster:
         cache_data = self.cache.fetch("roster/uyuni", "minions")
         cache_fp = cache_data.get("fp", None)
         query = """
-            SELECT ENCODE(SHA256(FORMAT('%s|%s|%s|%s|%s|%s|%s',
+            SELECT ENCODE(SHA256(FORMAT('%s|%s|%s|%s|%s|%s|%s|%s|%s',
                           EXTRACT(EPOCH FROM MAX(S.modified)),
                           COUNT(S.id),
                           EXTRACT(EPOCH FROM MAX(SP.modified)),
                           COUNT(SP.proxy_server_id),
                           EXTRACT(EPOCH FROM MAX(SMI.modified)),
                           COUNT(SMI.server_id),
-                          EXTRACT(EPOCH FROM MAX(PI.modified))
+                          EXTRACT(EPOCH FROM MAX(PI.modified)),
+                          EXTRACT(EPOCH FROM MAX(F.modified)),
+                          COUNT(F.id)
                    )::bytea), 'hex') AS fp
                    FROM rhnServer AS S
                    INNER JOIN suseMinionInfo AS SMI ON
@@ -276,6 +286,8 @@ class UyuniRoster:
                         (SP.server_id=S.id)
                    LEFT JOIN rhnProxyInfo as PI ON
                         (SP.proxy_server_id = PI.server_id)
+                   LEFT JOIN rhnServerFQDN AS F ON
+                        (F.server_id = S.id OR F.server_id = SP.proxy_server_id)
                    WHERE S.contact_method_id IN (
                              SELECT SSCM.id
                              FROM suseServerContactMethod AS SSCM
@@ -312,8 +324,9 @@ class UyuniRoster:
                    SMI.minion_id AS minion_id,
                    SMI.ssh_push_port AS ssh_push_port,
                    SSCM.label='ssh-push-tunnel' AS tunnel,
-                   SP.hostname AS proxy_hostname,
-                   PI.ssh_port AS ssh_port
+                   COALESCE(PF.name, SP.hostname) AS proxy_hostname,
+                   PI.ssh_port AS ssh_port,
+                   COALESCE(MF.name, SMI.minion_id) AS minion_fqdn
             FROM rhnServer AS S
             INNER JOIN suseServerContactMethod AS SSCM ON
                   (SSCM.id=S.contact_method_id)
@@ -321,8 +334,12 @@ class UyuniRoster:
                   (SMI.server_id=S.id)
             LEFT JOIN rhnServerPath AS SP ON
                  (SP.server_id=S.id)
+            LEFT JOIN rhnServerFQDN AS PF ON
+                 (SP.proxy_server_id = PF.server_id AND PF.is_primary = 'Y')
             LEFT JOIN rhnProxyInfo as PI ON
                  (SP.proxy_server_id = PI.server_id)
+            LEFT JOIN rhnServerFQDN AS MF ON
+                 (S.id = MF.server_id AND MF.is_primary = 'Y')
             WHERE SSCM.label IN ('ssh-push', 'ssh-push-tunnel')
             ORDER BY S.id, SP.position DESC
         """
@@ -340,6 +357,7 @@ class UyuniRoster:
                     proxies=proxies,
                     tunnel=prow.tunnel,
                     ssh_push_port=int(prow.ssh_push_port or SSH_PUSH_PORT),
+                    host=prow.minion_fqdn,
                 )
             proxies = []
             if row is None:
