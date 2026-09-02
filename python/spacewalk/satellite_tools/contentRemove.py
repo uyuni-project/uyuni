@@ -327,13 +327,11 @@ def delete_channels(
         _delete_files(rpms_paths + srpms_paths)
 
     # Get the channel ids
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         select id, parent_channel
         from rhnChannel
         where label = :label
-        order by parent_channel"""
-    )
+        order by parent_channel""")
     channel_ids = []
     for label in channelLabels:
         h.execute(label=label)
@@ -350,13 +348,11 @@ def delete_channels(
     if not channel_ids:
         return
 
-    clp = rhnSQL.prepare(
-        """
+    clp = rhnSQL.prepare("""
        select id
        from susecontentenvironmenttarget
        where channel_id = :cid
-       """
-    )
+       """)
 
     for cid in channel_ids:
         clp.execute(cid=cid)
@@ -549,13 +545,11 @@ def _delete_srpms(srcPackageIds):
     if not srcPackageIds:
         return
     # nuke the rhnPackageSource entry
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         delete
         from rhnPackageSource
         where id = :id
-    """
-    )
+    """)
     h.executemany(id=srcPackageIds)
 
 

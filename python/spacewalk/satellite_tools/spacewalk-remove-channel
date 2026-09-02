@@ -140,7 +140,7 @@ def main():
     global options_table
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     if args:
         for arg in args:
@@ -221,7 +221,8 @@ def main():
             if children:
                 print(
                     # pylint: disable-next=consider-using-f-string
-                    "Error: cannot remove channel %s: subchannel(s) exist: " % (channel)
+                    "Error: cannot remove channel %s: subchannel(s) exist: "
+                    % (channel)
                 )
                 for child in children:
                     print("\t\t\t" + child)
@@ -237,7 +238,8 @@ def main():
         if clones_not_deleted:
             print(
                 # pylint: disable-next=consider-using-f-string
-                "Error: cannot remove channel %s: clone channel(s) exist: " % (channel)
+                "Error: cannot remove channel %s: clone channel(s) exist: "
+                % (channel)
             )
             for clone_channel_error in clones_not_deleted:
                 print("\t\t\t" + clone_channel_error)
