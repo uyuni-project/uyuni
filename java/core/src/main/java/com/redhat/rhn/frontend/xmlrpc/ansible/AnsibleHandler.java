@@ -385,9 +385,8 @@ public class AnsibleHandler extends BaseHandler implements AnsibleHandlerApi {
      * @apidoc.param #param_desc("int", "pathId", "path id")
      * @apidoc.returntype
      * #struct_begin("playbooks")
-     *     #struct_begin("playbook")
-     *         $AnsiblePathSerializer
-     *     #struct_end()
+     *     #prop("string", "fullpath")
+     *     #prop("string", "custom_inventory")
      * #struct_end()
      */
     public Map<String, Map<String, AnsiblePlaybookSlsResult>> discoverPlaybooks(User loggedInUser, Integer pathId) {
@@ -418,7 +417,6 @@ public class AnsibleHandler extends BaseHandler implements AnsibleHandlerApi {
      * @apidoc.param #param_desc("int", "pathId", "path id")
      * @apidoc.returntype
      * #struct_begin("Inventory in a nested structure")
-     *   #prop_desc("object", "Inventory item", "Inventory item (can be nested)")
      * #struct_end()
      */
     public Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId) {

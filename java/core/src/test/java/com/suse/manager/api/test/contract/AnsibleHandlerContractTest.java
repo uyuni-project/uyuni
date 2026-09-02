@@ -262,23 +262,23 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
     }
 
     /*
-     * discoverPlaybooks and introspectInventory answer a free-form map keyed by the discovered
-     * playbook or inventory group, while the legacy documentation sketches that map as a struct
-     * with a single fixed property ("playbook" and "inventoryItem"). The OpenAPI documentation
-     * mirrors the legacy one faithfully, so the fixtures below are keyed the way both documents
-     * describe rather than the way a Salt response really is.
+     * discoverPlaybooks and introspectInventory both answer a map keyed dynamically by what the
+     * control node reports, so the fixtures below are shaped the way a Salt response really is:
+     * the playbooks arrive keyed by path and then by playbook name, and the inventory arrives
+     * keyed by inventory group, holding whatever the inventory file nests under it.
      */
 
     @Test
     public void testDiscoverPlaybooks() throws Exception {
         Map<String, Object> playbook = new LinkedHashMap<>();
-        playbook.put("id", PATH_ID);
-        playbook.put("type", "playbook");
-        playbook.put("server_id", CONTROL_NODE_ID);
-        playbook.put("path", PLAYBOOK_PATH);
+        playbook.put("fullpath", PLAYBOOK_PATH);
+        playbook.put("custom_inventory", INVENTORY_PATH);
+
+        Map<String, Object> byName = new LinkedHashMap<>();
+        byName.put("site.yml", playbook);
 
         Map<String, Object> discovered = new LinkedHashMap<>();
-        discovered.put("playbook", playbook);
+        discovered.put("/etc/ansible/playbooks", byName);
 
         context.checking(new Expectations() {{
             oneOf(handler()).discoverPlaybooks(with(mockUser), with(PATH_ID));
@@ -292,11 +292,11 @@ public class AnsibleHandlerContractTest extends BaseOpenApiTest {
 
     @Test
     public void testIntrospectInventory() throws Exception {
-        Map<String, Object> inventoryItem = new LinkedHashMap<>();
-        inventoryItem.put("hosts", List.of("minion.example.com"));
+        Map<String, Object> group = new LinkedHashMap<>();
+        group.put("hosts", List.of("minion.example.com"));
 
         Map<String, Object> inventory = new LinkedHashMap<>();
-        inventory.put("inventoryItem", inventoryItem);
+        inventory.put("all", group);
 
         context.checking(new Expectations() {{
             oneOf(handler()).introspectInventory(with(mockUser), with(PATH_ID));

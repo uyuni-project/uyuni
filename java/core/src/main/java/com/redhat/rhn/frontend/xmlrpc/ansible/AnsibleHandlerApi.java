@@ -267,10 +267,10 @@ public interface AnsibleHandlerApi {
     interface PlaybookContentsResponse extends ApiResponseWrapper<String> { }
 
     @Schema(name = "ApiResponseAnsiblePlaybooks")
-    interface DiscoveredPlaybooksResponse extends ApiResponseWrapper<DiscoveredPlaybooksDoc> { }
+    interface DiscoveredPlaybooksResponse extends ApiResponseWrapper<Map<String, Map<String, AnsiblePlaybookDoc>>> { }
 
     @Schema(name = "ApiResponseAnsibleInventory")
-    interface InventoryResponse extends ApiResponseWrapper<InventoryDoc> { }
+    interface InventoryResponse extends ApiResponseWrapper<Map<String, Object>> { }
 
     @Schema(name = "AnsibleSchedulePlaybookRequest")
     @JsonPropertyOrder({"playbookPath", "inventoryPath", "controlNodeId", "earliestOccurrence", "actionChainLabel",
@@ -492,25 +492,20 @@ public interface AnsibleHandlerApi {
         String getPath();
     }
 
-    @Schema(name = "AnsibleDiscoveredPlaybooks", description = "playbooks")
-    interface DiscoveredPlaybooksDoc {
+    @Schema(name = "AnsiblePlaybook", description = "playbook")
+    @JsonPropertyOrder({"fullpath", "customInventory"})
+    interface AnsiblePlaybookDoc {
 
         /**
-         * @return the discovered playbooks keyed by playbook name
+         * @return the full path to the playbook
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        @LegacyDocResponse(name = "playbook")
-        AnsiblePathDoc getPlaybook();
-    }
-
-    @Schema(name = "AnsibleInventory", description = "Inventory in a nested structure")
-    interface InventoryDoc {
+        String getFullpath();
 
         /**
-         * @return the inventory item
+         * @return the custom inventory the playbook is bound to
          */
-        @Schema(description = "Inventory item (can be nested)", requiredMode = Schema.RequiredMode.REQUIRED)
-        @LegacyDocResponse(type = "object", name = "Inventory item")
-        Object getInventoryItem();
+        @Schema(name = "custom_inventory", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        String getCustomInventory();
     }
 }
