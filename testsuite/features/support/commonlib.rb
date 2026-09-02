@@ -712,6 +712,16 @@ def get_gpg_keys(node, target = get_target('server'))
   gpg_keys.lines.map(&:strip)
 end
 
+# Obtains a reactivation key for a given host.
+#
+# @param host [String] The name of the host.
+# @return [String] The reactivation key of the host.
+def get_reactivation_key(host)
+  system_name = get_system_name(host)
+  node_id = $api_test.system.retrieve_server_id(system_name)
+  $api_test.system.obtain_reactivation_key(node_id)
+end
+
 # Retrieves the value associated within the current feature scope context.
 #
 # @param key [Symbol] The key to retrieve the value for.
@@ -1280,4 +1290,18 @@ end
 def get_env_var_with_fallback(host_key, fallback_var)
   env_var_name = ENV_VAR_BY_HOST[host_key]
   ENV.key?(env_var_name) ? env_var_name : fallback_var
+end
+
+# Define or replace an environment variable on the given host
+#
+# @param host [String] The name of the host
+# @param key [String] The name of the environment variable
+# @param value [String] The value to be associated with the key
+def set_env_var(host, key, value)
+  node = get_target(host)
+  node.run(
+    "sed -i '/^#{key}=/d' /etc/environment && echo '#{key}=#{value}' >> /etc/environment",
+    runs_in_container: false,
+    check_errors: true
+  )
 end
