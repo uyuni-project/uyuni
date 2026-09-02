@@ -59,15 +59,11 @@ CHECKSUM = ["sha1", "sha256", "sha384", "sha512"]
 
 def help_softwarechannel_list(self):
     print(_("softwarechannel_list: List all available software channels"))
-    print(
-        _(
-            """usage: softwarechannel_list [options]')
+    print(_("""usage: softwarechannel_list [options]')
 options:
   -v verbose (display label and summary)
   -t tree view (pretty-print(child-channels))
-"""
-        )
-    )
+"""))
 
 
 def do_softwarechannel_list(self, args, doreturn=False):
@@ -123,13 +119,9 @@ def do_softwarechannel_list(self, args, doreturn=False):
 def help_softwarechannel_listmanageablechannels(self):
     print(_("softwarechannel_listmanageablechannels: List all software channels"))
     print(_("                                        manageable by current user"))
-    print(
-        _(
-            """usage: softwarechannel_listmanageablechannels [options]
+    print(_("""usage: softwarechannel_listmanageablechannels [options]
 options:
-  -v verbose (display label and summary)"""
-        )
-    )
+  -v verbose (display label and summary)"""))
 
 
 def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
@@ -172,20 +164,16 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
 
 def help_softwarechannel_listbasechannels(self):
     print(_("softwarechannel_listbasechannels: List all base software channels"))
-    print(
-        _(
-            """usage: softwarechannel_listbasechannels [options])
+    print(_("""usage: softwarechannel_listbasechannels [options])
 options:
-  -v verbose (display label and summary)"""
-        )
-    )
+  -v verbose (display label and summary)"""))
 
 
 def do_softwarechannel_listbasechannels(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-v", "--verbose", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     channels = self.list_base_channels()
 
@@ -430,9 +418,7 @@ def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
 
 def help_softwarechannel_setdetails(self):
     print(_("softwarechannel_setdetails: Modify details of a software channel"))
-    print(
-        _(
-            """usage: softwarechannel_setdetails [options] <CHANNEL ...>)
+    print(_("""usage: softwarechannel_setdetails [options] <CHANNEL ...>)
 
 options, at least one of which must be given:
   -n NAME
@@ -444,10 +430,7 @@ options, at least one of which must be given:
   -p MAINTAINER_PHONE
   -u GPG_URL
   -i GPG_ID
-  -f GPG_FINGERPRINT"""
-        )
-        % CHECKSUM
-    )
+  -f GPG_FINGERPRINT""") % CHECKSUM)
 
 
 def complete_softwarechannel_setdetails(self, text, line, beg, end):
@@ -468,7 +451,7 @@ def do_softwarechannel_setdetails(self, args):
     arg_parser.add_argument("-i", "--gpg_id")
     arg_parser.add_argument("-f", "--gpg_fingerprint")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_setdetails()
@@ -605,7 +588,7 @@ def do_softwarechannel_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_details()
@@ -694,7 +677,7 @@ def do_softwarechannel_listerrata(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listerrata()
@@ -758,7 +741,7 @@ def do_softwarechannel_listarches(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-v", "--verbose", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     arches = self.client.channel.software.listArches(self.session)
 
@@ -789,7 +772,7 @@ def do_softwarechannel_delete(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_delete()
@@ -849,9 +832,7 @@ def do_softwarechannel_delete(self, args):
 
 def help_softwarechannel_update(self):
     print(_("softwarechannel_update: Update a software channel"))
-    print(
-        _(
-            """usage: softwarechannel_update LABEL(To identify the channel) [options]
+    print(_("""usage: softwarechannel_update LABEL(To identify the channel) [options]
 options:
   -l LABEL(Required)
   -n NAME
@@ -861,10 +842,7 @@ options:
   -u GPG-URL
   -i GPG-ID
   -f GPG-FINGERPRINT
-  -g DISABLE-GPG-CHECK"""
-            % CHECKSUM
-        )
-    )
+  -g DISABLE-GPG-CHECK""" % CHECKSUM))
 
 
 def do_softwarechannel_update(self, args):
@@ -879,7 +857,7 @@ def do_softwarechannel_update(self, args):
     arg_parser.add_argument("-f", "--gpg_fingerprint")
     arg_parser.add_argument("-g", "--disable_gpg_check")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     vendor_channel = False
 
@@ -984,9 +962,7 @@ def do_softwarechannel_update(self, args):
 
 def help_softwarechannel_create(self):
     print(_("softwarechannel_create: Create a software channel"))
-    print(
-        _(
-            """usage: softwarechannel_create [options])
+    print(_("""usage: softwarechannel_create [options])
 
 options:
   -n NAME
@@ -998,10 +974,7 @@ options:
   -u GPG_URL
   -i GPG_ID
   -f GPG_FINGERPRINT
-  -g DISABLE_GPG_CHECK"""
-            % CHECKSUM
-        )
-    )
+  -g DISABLE_GPG_CHECK""" % CHECKSUM))
 
 
 def do_softwarechannel_create(self, args):
@@ -1019,7 +992,7 @@ def do_softwarechannel_create(self, args):
     arg_parser.add_argument("-f", "--gpg_fingerprint")
     arg_parser.add_argument("-g", "--disable_gpg_check", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user(_("Channel Name:"), noblank=True)
@@ -1173,9 +1146,7 @@ def softwarechannel_check_existing(self, name, label):
 
 def help_softwarechannel_clone(self):
     print(_("softwarechannel_clone: Clone a software channel"))
-    print(
-        _(
-            """usage: softwarechannel_clone [options])
+    print(_("""usage: softwarechannel_clone [options])
 
 options:
   -s SOURCE_CHANNEL
@@ -1189,9 +1160,7 @@ options:
   --disable-gpg-check DISABLE_GPG_CHECK
   -o do not clone any patches
   --regex/-x "s/foo/bar" : Optional regex replacement,
-        replaces foo with bar in the clone name and label"""
-        )
-    )
+        replaces foo with bar in the clone name and label"""))
 
 
 def do_softwarechannel_clone(self, args):
@@ -1208,7 +1177,7 @@ def do_softwarechannel_clone(self, args):
     arg_parser.add_argument("--gpg-fingerprint")
     arg_parser.add_argument("--disable-gpg-check")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         print(_("Source Channels:"))
@@ -1281,9 +1250,7 @@ def help_softwarechannel_clonetree(self):
     print(
         _("softwarechannel_clonetree: Clone a software channel and its child channels")
     )
-    print(
-        _(
-            """usage: softwarechannel_clonetree [options])
+    print(_("""usage: softwarechannel_clonetree [options])
              e.g    softwarechannel_clonetree foobasechannel -p "my_"
                     softwarechannel_clonetree foobasechannel -x "s/foo/bar"
                     softwarechannel_clonetree foobasechannel -x "s/^/my_"
@@ -1298,9 +1265,7 @@ options:
   --disable-gpg-check DISABLE_GPG_CHECK(applied to all channels)
   -o do not clone any errata
   --regex/-x "s/foo/bar" : Optional regex replacement,
-        replaces foo with bar in the clone name, label and description"""
-        )
-    )
+        replaces foo with bar in the clone name, label and description"""))
 
 
 def do_softwarechannel_clonetree(
@@ -1317,7 +1282,7 @@ def do_softwarechannel_clonetree(
     arg_parser.add_argument("--gpg-fingerprint")
     arg_parser.add_argument("--disable-gpg-check")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         print(_("Source Channels:"))
@@ -1523,7 +1488,7 @@ def do_softwarechannel_addpackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_addpackages()
@@ -1617,7 +1582,7 @@ def do_softwarechannel_removeerrata(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_removeerrata()
@@ -1727,7 +1692,7 @@ def do_softwarechannel_removepackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_removepackages()
@@ -1798,7 +1763,7 @@ def do_softwarechannel_adderratabydate(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-p", "--publish", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 4:
         self.help_softwarechannel_adderratabydate()
@@ -1886,7 +1851,7 @@ def do_softwarechannel_listerratabydate(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 3:
         self.help_softwarechannel_listerratabydate()
@@ -1954,7 +1919,7 @@ def do_softwarechannel_adderrata(self, args):
     arg_parser.add_argument("-q", "--quick", action="store_true")
     arg_parser.add_argument("-s", "--skip", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_softwarechannel_adderrata()
@@ -2096,7 +2061,7 @@ def do_softwarechannel_getorgaccess(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     # If no args are passed, we dump the org access for all channels
     if not args:
@@ -2156,7 +2121,7 @@ def do_softwarechannel_setorgaccess(self, args, options=None):
         arg_parser.add_argument("-d", "--disable", action="store_true")
         arg_parser.add_argument("-p", "--protected", action="append")
 
-        (args, options) = parse_command_arguments(args, arg_parser)
+        args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_setorgaccess()
@@ -2227,7 +2192,7 @@ def do_softwarechannel_getorgaccesstree(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     # If no args are passed, we dump the org access for all base channels
     if not args:
@@ -2278,7 +2243,7 @@ def do_softwarechannel_setorgaccesstree(self, args):
     arg_parser.add_argument("-d", "--disable", action="store_true")
     arg_parser.add_argument("-p", "--protected", action="append")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args or not (options.enable or options.disable or options.protected):
         self.help_softwarechannel_setorgaccesstree()
@@ -2325,15 +2290,11 @@ def help_softwarechannel_regenerateyumcache(self):
     print(_("softwarechannel_regenerateyumcache: "))
     print(_("Regenerate the YUM cache for a software channel"))
     print("")
-    print(
-        _(
-            """usage: softwarechannel_regenerateyumcache [options] <CHANNEL ...>
+    print(_("""usage: softwarechannel_regenerateyumcache [options] <CHANNEL ...>
 
     options:
       -f force cache regeneration
-    """
-        )
-    )
+    """))
     print("")
 
 
@@ -2346,7 +2307,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
 
     arg_parser.add_argument("-f", "--force", action="store_true")
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_regenerateyumcache()
@@ -2420,7 +2381,7 @@ def do_softwarechannel_diff(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_diff()
@@ -2489,7 +2450,7 @@ def do_softwarechannel_errata_diff(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_diff()
@@ -2523,12 +2484,8 @@ def help_softwarechannel_sync(self):
     print(_("softwarechannel_sync: "))
     print(_("sync the packages of two software channels"))
     print("")
-    print(
-        _(
-            """usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])
-    -q,--quiet : quiet mode (omits the output of common packages in both channels)"""
-        )
-    )
+    print(_("""usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])
+    -q,--quiet : quiet mode (omits the output of common packages in both channels)"""))
 
 
 def complete_softwarechannel_sync(self, text, line, beg, end):
@@ -2548,7 +2505,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-q", "--quiet", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         # pylint: disable-next=expression-not-assigned
@@ -2708,7 +2665,7 @@ def do_softwarechannel_errata_sync(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_sync()
@@ -2861,7 +2818,7 @@ def do_softwarechannel_errata_merge(
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     FROM_DATE = datetime.strptime("1970-01-01", "%Y-%m-%d")
     TO_DATE = datetime.now() + timedelta(1)  # tomorrow
@@ -3006,7 +2963,7 @@ def do_softwarechannel_syncrepos(self, args):
     )
     arg_parser.add_argument("-l", "--latest", action="store_true", default=False)
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     params = dict(
         (i.replace("_", "-"), getattr(options, i))
@@ -3070,7 +3027,7 @@ def do_softwarechannel_setsyncschedule(self, args):
     arg_parser.add_argument("-l", "--latest", action="store_true", default=False)
 
     # Set glob = false, otherwise this will generate a com.redhat.rhn.taskomatic.InvalidParamException: Cron trigger.
-    (args, options) = parse_command_arguments(args, arg_parser, glob=False)
+    args, options = parse_command_arguments(args, arg_parser, glob=False)
 
     params = dict(
         (i.replace("_", "-"), getattr(options, i))
@@ -3107,7 +3064,7 @@ def do_softwarechannel_removesyncschedule(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not len(args) == 1:
         self.help_softwarechannel_removesyncschedule()
@@ -3186,7 +3143,7 @@ def do_softwarechannel_addrepo(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_addrepo()
@@ -3229,7 +3186,7 @@ def do_softwarechannel_removerepo(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_removerepo()
@@ -3259,7 +3216,7 @@ def do_softwarechannel_listrepos(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listrepos()
@@ -3294,7 +3251,7 @@ def do_softwarechannel_mirrorpackages(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-l", "--latest", action="store_true")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_mirrorpackages()
