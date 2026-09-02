@@ -73,9 +73,27 @@ tbody tr td .modal-link {
 .selected-row-details {
   background-color: $selected-row-details-bg;
   padding: 0px 15px;
+  opacity: 0;
+  overflow: hidden;
+  height: 0;
+  transition:
+    opacity 50ms ease,
+    height 200ms ease;
 
   .btn {
     padding: 4px 6px;
+  }
+
+  &.show-details {
+    opacity: 1;
+    height: 38px;
+    padding: 0 15px;
+  }
+
+  &.hide-details {
+    opacity: 0;
+    height: 0;
+    padding: 0 15px;
   }
 }
 
