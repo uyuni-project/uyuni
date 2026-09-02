@@ -294,7 +294,7 @@ public class AnsibleHandler extends BaseHandler {
      * @param props the props with the path properties
      * @return updated path
      *
-     * @apidoc.doc Create ansible path
+     * @apidoc.doc Update ansible path
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "pathId", "path id")
      * @apidoc.param
@@ -318,14 +318,14 @@ public class AnsibleHandler extends BaseHandler {
     }
 
     /**
-     * Update ansible path
+     * Remove ansible path
      *
      * @param loggedInUser the logged in user
      * @param pathId the path id
      * @return 1 on success
      * @throws EntityNotExistsFaultException when path not found or not accessible
      *
-     * @apidoc.doc Create ansible path
+     * @apidoc.doc Remove ansible path
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "pathId", "path id")
      * @apidoc.returntype #return_int_success()
