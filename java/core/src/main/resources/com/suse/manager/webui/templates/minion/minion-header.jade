@@ -1,5 +1,9 @@
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
+    if server.isConvertibleToProxy()
+      a.btn.btn-default(href="/rhn/manager/systems/details/proxy-config?sid=#{server.id}")
+          i.fa.fa-arrow-up(title='Convert to Proxy')
+          | #{l.t("Convert to Proxy")}
     a.btn.btn-danger(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
         i.fa.fa-trash-o(title='Delete System')
         | #{l.t("Delete System")}

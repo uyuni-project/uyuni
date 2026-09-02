@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -61,6 +62,8 @@ public class SystemHistoryEventAction extends RhnAction {
 
         RequestContext requestContext = new RequestContext(request);
         Server server = requestContext.lookupAndBindServer();
+        User user = requestContext.getCurrentUser();
+        SdcHelper.ssmCheck(request, server.getId(), user);
         Long aid = requestContext.getRequiredParam("aid");
 
         request.setAttribute("aid", aid);
