@@ -49,7 +49,7 @@ const meta = {
       table: { type: { summary: "ReactNode" } },
     },
     children: {
-      control: "text",
+      control: false,
       description: "Alternative trigger content used when `text` is omitted.",
       table: { type: { summary: "ReactNode" } },
     },

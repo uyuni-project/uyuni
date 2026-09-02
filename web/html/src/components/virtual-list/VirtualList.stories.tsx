@@ -48,7 +48,7 @@ const meta = {
   argTypes: {
     items: {
       control: "object",
-      description: "Ordered data items to display in the virtualized list.",
+      description: "Ordered data items to display. An empty array renders no rows or placeholder.",
       table: { type: { summary: "T[]" } },
     },
     renderItem: {
@@ -74,12 +74,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
-
-export const Empty: Story = {
-  args: {
-    items: [],
-  },
-};
 
 export const ShortCollection: Story = {
   args: {

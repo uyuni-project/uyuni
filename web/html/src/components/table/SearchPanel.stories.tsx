@@ -89,22 +89,22 @@ const meta = {
       table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     onClear: {
-      action: "cleared",
+      control: false,
       description: "Selection-related compatibility callback; it is not rendered directly by `SearchPanel`.",
       table: { type: { summary: "() => void" } },
     },
     onSelectAll: {
-      action: "all selected",
+      control: false,
       description: "Selection-related compatibility callback; it is not rendered directly by `SearchPanel`.",
       table: { type: { summary: "() => void" } },
     },
     selectedCount: {
-      control: { type: "number", min: 0, step: 1 },
+      control: false,
       description: "Selection-related compatibility value; it is not rendered directly by `SearchPanel`.",
       table: { type: { summary: "number" } },
     },
     selectable: {
-      control: "boolean",
+      control: false,
       description: "Selection-related compatibility flag; it is not rendered directly by `SearchPanel`.",
       table: { type: { summary: "boolean" } },
     },

@@ -76,10 +76,3 @@ export const FirstPage: Story = {
 export const LastPage: Story = {
   args: { currentPage: 8 },
 };
-
-export const SinglePage: Story = {
-  args: { currentPage: 1, lastPage: 1 },
-  parameters: {
-    docs: { description: { story: "No pagination controls are rendered when only one page is available." } },
-  },
-};

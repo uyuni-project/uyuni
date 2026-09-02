@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 
@@ -35,7 +36,6 @@ const tooltipPlacementOptions = ["top", "right", "bottom", "left"];
 const meta = {
   title: "Components/Buttons/Button",
   component: Button,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -51,24 +51,57 @@ const meta = {
     icon: "fa-plus",
     tooltipPlacement: "top",
     disabled: false,
+    handler: action("clicked"),
   },
   argTypes: {
     className: {
       control: "select",
       options: buttonClassOptions,
+      description: "Uyuni button variant and optional size classes. The base `btn` class is added automatically.",
+      table: { type: { summary: "string" }, defaultValue: { summary: "btn-default" } },
     },
-    text: { control: "text" },
-    title: { control: "text" },
+    text: {
+      control: "text",
+      description: "Visible button content. `children` can be used instead.",
+      table: { type: { summary: "ReactNode" } },
+    },
+    children: {
+      control: false,
+      description: "Alternative button content used when `text` is omitted.",
+      table: { type: { summary: "ReactNode" } },
+    },
+    id: {
+      control: "text",
+      description: "Optional HTML identifier assigned to the button.",
+      table: { type: { summary: "string" } },
+    },
+    title: {
+      control: "text",
+      description: "Accessible name and native tooltip text.",
+      table: { type: { summary: "string" } },
+    },
     icon: {
       control: "select",
       options: iconOptions,
+      description: "Font Awesome class displayed before the button content.",
+      table: { type: { summary: "string" } },
     },
     tooltipPlacement: {
       control: "select",
       options: tooltipPlacementOptions,
+      description: "Preferred Bootstrap tooltip placement.",
+      table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
-    disabled: { control: "boolean" },
-    handler: { action: "clicked" },
+    disabled: {
+      control: "boolean",
+      description: "Prevents the button from being activated.",
+      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
+    },
+    handler: {
+      action: "clicked",
+      description: "Callback invoked when the button is activated.",
+      table: { type: { summary: "(...args: any[]) => any" } },
+    },
   },
 } satisfies Meta<typeof Button>;
 
