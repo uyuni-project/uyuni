@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 
@@ -37,7 +38,7 @@ const meta = {
     },
   },
   args: {
-    handler: () => undefined,
+    handler: action("toggled"),
     text: "Automatic updates",
     value: true,
     disabled: false,
