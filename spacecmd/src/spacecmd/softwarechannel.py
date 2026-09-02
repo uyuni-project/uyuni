@@ -807,6 +807,10 @@ def do_softwarechannel_delete(self, args):
     print("--------")
     print("\n".join(sorted(to_delete)))
 
+    print(
+        "\nWARNING: If you are removing a Base channel, keep in mind that Activation Keys linked to this base channel will also get removed!"
+    )
+
     if not self.user_confirm(_("Delete these channels [y/N]:")):
         return 1
 

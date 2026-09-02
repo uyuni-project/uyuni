@@ -79,6 +79,14 @@ class RemoteApi:
         self.auth_check()
         self.client.channel.software.applyChannelState(self.auth_token, server_ids)
 
+    def list_activation_keys(self):
+        self.auth_check()
+        return self.client.activationkey.listActivationKeys(self.auth_token)
+
+    def remove_activation_key(self, activation_key):
+        self.auth_check()
+        self.client.activationkey.delete(self.auth_token, activation_key)
+
 
 def __applyChannelState(server_ids, username, password):
     xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
@@ -276,6 +284,15 @@ def delete_outside_channels(org):
     _delete_rpms(rpms_ids)
 
     _delete_files(rpms_paths + srpms_paths)
+
+
+def __remove_activation_keys_linked_to_base_channels(
+    base_channel_labels, username, password
+):
+    xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
+    for ak in xmlrpc.list_activation_keys():
+        if ak["base_channel_label"] in base_channel_labels:
+            xmlrpc.remove_activation_key(ak["key"])
 
 
 def delete_channels(
