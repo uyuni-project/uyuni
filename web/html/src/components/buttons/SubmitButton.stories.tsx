@@ -5,7 +5,6 @@ import { SubmitButton } from "./index";
 const meta = {
   title: "Components/Buttons/SubmitButton",
   component: SubmitButton,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -3,10 +3,18 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
 
+const field = (
+  <>
+    <Label name="System name" htmlFor="form-group-system-name" required className="col-md-3" />
+    <div className="col-md-6">
+      <input id="form-group-system-name" className="form-control" defaultValue="example.example.org" />
+    </div>
+  </>
+);
+
 const meta = {
   title: "Components/Inputs/FormGroup",
   component: FormGroup,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -17,7 +25,7 @@ const meta = {
   args: {
     isError: false,
     className: "",
-    children: "Form field content",
+    children: field,
   },
   argTypes: {
     isError: {
@@ -31,7 +39,7 @@ const meta = {
       table: { type: { summary: "string" } },
     },
     children: {
-      control: "text",
+      control: false,
       description: "Form controls and supporting content rendered inside the row.",
       table: { type: { summary: "ReactNode" } },
     },
@@ -43,20 +51,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
-
-export const WithField: Story = {
-  render: (args) => (
-    <FormGroup {...args}>
-      <Label name="System name" htmlFor="form-group-system-name" required className="col-md-3" />
-      <div className="col-md-6">
-        <input id="form-group-system-name" className="form-control" defaultValue="example.example.org" />
-      </div>
-    </FormGroup>
-  ),
-  args: {
-    children: undefined,
-  },
-  parameters: {
-    docs: { description: { story: "A representative horizontal form row composed with `Label`." } },
-  },
-};

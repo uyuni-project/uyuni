@@ -7,7 +7,6 @@ import { Panel } from "./Panel";
 const meta = {
   title: "Components/Panels/Panel",
   component: Panel,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

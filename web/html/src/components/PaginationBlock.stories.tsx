@@ -30,7 +30,6 @@ const StatefulPaginationBlock = (props: PaginationBlockProps) => {
 const meta = {
   title: "Components/Navigation/PaginationBlock",
   component: PaginationBlock,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

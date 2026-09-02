@@ -5,7 +5,6 @@ import { Highlight } from "./Highlight";
 const meta = {
   title: "Components/Table/Highlight",
   component: Highlight,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -7,7 +7,6 @@ import { Label } from "./Label";
 const meta = {
   title: "Components/Inputs/Label",
   component: Label,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

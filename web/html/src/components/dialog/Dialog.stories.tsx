@@ -32,7 +32,6 @@ const StatefulDialog = (props: DialogProps) => {
 const meta = {
   title: "Components/Dialogs/Dialog",
   component: Dialog,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -42,7 +41,7 @@ const meta = {
     },
   },
   args: {
-    isOpen: true,
+    isOpen: false,
     onClose: action("closed"),
     id: "storybook-dialog",
     title: "Confirm changes",
@@ -106,7 +105,16 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The dialog starts closed so it does not cover the documentation. Use the trigger button or `isOpen` control to open it.",
+      },
+    },
+  },
+};
 
 export const NotClosable: Story = {
   args: {
