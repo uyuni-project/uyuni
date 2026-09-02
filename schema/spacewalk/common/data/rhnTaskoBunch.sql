@@ -153,4 +153,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'compare-task-bunch', 'Sched
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'diskcheck-task-bunch', 'Schedules a disk check on server and DB', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'clm-diff-bunch', 'Generates CLM differences between channels of different environments', null);
+
 commit;

@@ -251,6 +251,69 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
    </query>
 </write-mode>
 
+    <!-- CLMDIFF -->
+    <mode name="clmdiff_driver_query">
+        <query>
+            SELECT project_label, environment_label, channel_label, min(next_action) AS min_next_action
+            FROM suseClmDiffQueue
+            WHERE next_action is not null
+            GROUP BY project_label, environment_label, channel_label
+            ORDER BY min_next_action
+        </query>
+    </mode>
+
+    <mode name="clmdiff_details_query">
+        <query params="project_label, environment_label, channel_label">
+            SELECT id, project_label, environment_label, channel_label, next_action
+            FROM suseClmDiffQueue queue
+            WHERE project_label = :project_label
+            AND environment_label = :environment_label
+            AND channel_label = :channel_label
+            AND next_action is null
+        </query>
+    </mode>
+
+    <write-mode name="clmdiff_unmark_in_progress">
+        <query params="project_label, environment_label, channel_label">
+            UPDATE suseClmDiffQueue SET next_action=current_timestamp
+            WHERE project_label = :project_label
+            AND environment_label = :environment_label
+            AND channel_label = :channel_label
+        </query>
+    </write-mode>
+
+    <write-mode name="clmdiff_mark_in_progress">
+        <query params="project_label, environment_label, channel_label">
+            UPDATE suseClmDiffQueue set next_action=null
+            WHERE project_label = :project_label
+            AND environment_label = :environment_label
+            AND channel_label = :channel_label
+        </query>
+    </write-mode>
+
+    <write-mode name="clmdiff_clear_in_progress">
+        <query params="">
+            UPDATE suseClmDiffQueue set next_action=current_timestamp WHERE next_action is null
+        </query>
+    </write-mode>
+
+    <write-mode name="clmdiff_dequeue">
+        <query params="project_label, environment_label, channel_label">
+            DELETE FROM suseClmDiffQueue
+            WHERE project_label = :project_label
+            AND environment_label = :environment_label
+            AND channel_label = :channel_label
+            AND next_action IS NULL
+        </query>
+    </write-mode>
+
+    <write-mode name="clmdiff_insert_task">
+        <query params="project_label, environment_label, channel_label">
+            INSERT INTO suseClmDiffQueue (project_label, environment_label, channel_label, next_action)
+            VALUES(:project_label, :environment_label, :channel_label, current_timestamp)
+        </query>
+    </write-mode>
+
 <!-- Find all abandoned or old KickStart sessions -->
 <mode name="kickstartcleanup_find_candidates">
    <query params="">

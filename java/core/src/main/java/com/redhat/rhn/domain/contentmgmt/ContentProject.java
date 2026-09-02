@@ -29,8 +29,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -191,6 +193,18 @@ public class ContentProject extends BaseDomainHelper {
     @Transient
     public Optional<ContentEnvironment> getFirstEnvironmentOpt() {
         return Optional.ofNullable(getFirstEnvironment());
+    }
+
+    /**
+     * @return Return a Stream of environments to iterate over all of the available
+     */
+    @Transient
+    public Stream<ContentEnvironment> getEnvironmentsStream() {
+        if (firstEnvironment == null) {
+            return Stream.empty();
+        }
+
+        return Stream.iterate(firstEnvironment, Objects::nonNull, ContentEnvironment::getNextEnvironment);
     }
 
     /**
