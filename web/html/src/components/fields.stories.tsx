@@ -26,7 +26,6 @@ const ControlledTextField = (props: TextFieldProps) => {
 const meta = {
   title: "Components/Inputs/TextField",
   component: TextField,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -30,6 +30,7 @@ const StatefulTableFilter = (props: TableFilterProps) => {
 
   return (
     <TableFilter
+      key={field}
       {...props}
       field={field}
       criteria={criteria}
@@ -49,7 +50,6 @@ const StatefulTableFilter = (props: TableFilterProps) => {
 const meta = {
   title: "Components/Table/TableFilter",
   component: TableFilter,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -112,7 +112,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const TextFilter: Story = {};
+export const Playground: Story = {};
 
 export const NumericFilter: Story = {
   args: {

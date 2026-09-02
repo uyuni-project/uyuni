@@ -7,7 +7,6 @@ import { ComplianceBadge } from "./ComplianceBadge";
 const meta = {
   title: "Components/Feedback/ComplianceBadge",
   component: ComplianceBadge,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

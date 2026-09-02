@@ -40,7 +40,6 @@ const StatefulSearchPanel = (props: SearchPanelProps) => {
 const meta = {
   title: "Components/Table/SearchPanel",
   component: SearchPanel,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

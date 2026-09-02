@@ -27,9 +27,8 @@ const iconOptions = [
 ];
 
 const meta = {
-  title: "Components/Display/IconTag",
+  title: "Components/Data Display/IconTag",
   component: IconTag,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

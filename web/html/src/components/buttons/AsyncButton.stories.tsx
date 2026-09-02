@@ -12,7 +12,6 @@ const rejectAfterDelay = () =>
 const meta = {
   title: "Components/Buttons/AsyncButton",
   component: AsyncButton,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

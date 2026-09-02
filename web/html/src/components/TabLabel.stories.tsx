@@ -5,7 +5,6 @@ import { TabLabel } from "./tab-container";
 const meta = {
   title: "Components/Navigation/TabLabel",
   component: TabLabel,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

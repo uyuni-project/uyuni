@@ -22,6 +22,7 @@ const StatefulSearchField = (props: SearchFieldProps) => {
 
   return (
     <SearchField
+      key={`${field}-${props.options ? "with-options" : "text-only"}`}
       {...props}
       criteria={criteria}
       field={field}
@@ -40,7 +41,6 @@ const StatefulSearchField = (props: SearchFieldProps) => {
 const meta = {
   title: "Components/Table/SearchField",
   component: SearchField,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -108,7 +108,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithFieldSelector: Story = {};
+export const Playground: Story = {};
 
 export const TextOnly: Story = {
   args: {
