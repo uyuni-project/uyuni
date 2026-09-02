@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -91,16 +92,29 @@ public class CVEAuditManagerOVAL {
                 results.stream().collect(Collectors.groupingBy(CVEAuditManager.CVEPatchStatus::getSystemId));
 
         Set<Server> clients = user.getServers();
+        boolean ovalEnabled = ConfigDefaults.get().isOvalEnabledForCveAudit();
+        Set<String> ovalPlatformCpes = ovalEnabled ?
+                OVALCachingFactory.getOVALPlatformCpes() :
+                Collections.emptySet();
+        Set<Long> serversWithErrata = clients.isEmpty() ?
+                Collections.emptySet() :
+                OVALCachingFactory.getServersWithErrata(user.getId());
+        Map<String, Boolean> cpeAvailabilityCache = new HashMap<>();
+
         for (Server clientServer : clients) {
             CVEAuditSystemBuilder auditWithChannelsResult = null;
             CVEAuditSystemBuilder auditWithOVALResult = null;
 
-            if (ConfigDefaults.get().isOvalEnabledForCveAudit() && checkOVALAvailability(clientServer)) {
+            String cpe = clientServer.getCpe();
+            boolean isOvalAvailable = ovalEnabled && cpe != null &&
+                    cpeAvailabilityCache.computeIfAbsent(cpe,
+                    value -> isCpeCoveredByOval(value, ovalPlatformCpes));
+            if (isOvalAvailable) {
                 auditWithOVALResult =
                         doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
             }
 
-            if (checkChannelsErrataAvailability(clientServer)) {
+            if (serversWithErrata.contains(clientServer.getId())) {
                 auditWithChannelsResult =
                         CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
             }
@@ -141,6 +155,10 @@ public class CVEAuditManagerOVAL {
         }
 
         return result;
+    }
+
+    private static boolean isCpeCoveredByOval(String cpe, Set<String> ovalPlatformCpes) {
+        return cpe != null && ovalPlatformCpes.stream().anyMatch(cpe::startsWith);
     }
 
     /**

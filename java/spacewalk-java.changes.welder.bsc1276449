@@ -1,0 +1,2 @@
+- Improve CVE audit performance to avoid timeouts with many systems
+  (bsc#1276449)
