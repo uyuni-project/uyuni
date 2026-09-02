@@ -422,7 +422,7 @@ public class SystemHandler extends BaseHandler implements SystemHandlerApi {
      * @apidoc.returntype #return_int_success()
      */
     @Deprecated
-    public int setChildChannels(User loggedInUser, Integer sid, List<Object> channelIdsOrLabels)
+    public int setChildChannels(User loggedInUser, Integer sid, List<?> channelIdsOrLabels)
             throws FaultException {
 
         //Get the logged in user and server

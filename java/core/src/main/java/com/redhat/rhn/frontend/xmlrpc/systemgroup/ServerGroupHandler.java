@@ -208,7 +208,7 @@ public class ServerGroupHandler extends BaseHandler implements ServerGroupHandle
      * @apidoc.returntype #return_int_success()
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
-            List<Integer> serverIds, Boolean add) {
+            List<? extends Number> serverIds, Boolean add) {
 
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
 

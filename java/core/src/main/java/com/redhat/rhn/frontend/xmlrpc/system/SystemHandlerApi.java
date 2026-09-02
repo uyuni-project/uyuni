@@ -159,7 +159,7 @@ public interface SystemHandlerApi {
         requestClass = SetChildChannelsRequest.class,
         isIntegerResponse = true
     )
-    int setChildChannels(User loggedInUser, Integer sid, List<Object> channelIdsOrLabels);
+    int setChildChannels(User loggedInUser, Integer sid, List<?> channelIdsOrLabels);
 
     /**
      * Assigns the server to a new base channel.

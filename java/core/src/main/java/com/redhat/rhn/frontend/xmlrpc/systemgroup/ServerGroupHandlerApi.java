@@ -128,7 +128,7 @@ public interface ServerGroupHandlerApi {
         requestClass = AddOrRemoveSystemsRequest.class,
         isIntegerResponse = true
     )
-    int addOrRemoveSystems(User loggedInUser, String systemGroupName, List<Integer> serverIds, Boolean add);
+    int addOrRemoveSystems(User loggedInUser, String systemGroupName, List<? extends Number> serverIds, Boolean add);
 
     /**
      * Creates a system group.
