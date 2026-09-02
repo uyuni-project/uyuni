@@ -96,6 +96,7 @@ type StorybookGlobal = typeof globalThis & {
   t: typeof t;
   jQuery: JQueryStatic;
   Loggerhead: Loggerhead;
+  handleSst: (...args: any[]) => void;
 };
 
 const storybookWindow = window as StorybookWindow;
@@ -117,6 +118,9 @@ storybookWindow.$ = jQuery;
 
 storybookGlobal.t = t;
 storybookGlobal.jQuery = jQuery;
+// The application shell installs the sticky section-toolbar handler. Storybook has no sticky page shell,
+// but components should still be able to run their normal mount effect.
+storybookGlobal.handleSst ??= () => undefined;
 
 const loggerHead = new Loggerhead("", (headers) => headers);
 loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");
