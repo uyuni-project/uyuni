@@ -21,7 +21,7 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   begin
     Timeout.timeout(timeout) do # Enforce timeout on the entire SSH operation
       Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
-        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: timeout)
+        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: DEFAULT_TIMEOUT)
       end
     end
   rescue Timeout::Error
