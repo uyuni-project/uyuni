@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -72,6 +73,9 @@ public class DeleteChannelAction extends RhnAction {
         // Load the number of systems subscribed through a trust relationship to the channel
         request.setAttribute("trustedSystemsCount",
                 SystemManager.countSubscribedToChannelWithoutOrg(channel.getOrg().getId(), channelId));
+
+        // Load the number of activation keys with this channel as base class
+        request.setAttribute("activationKeysCount", ActivationKeyFactory.countActivationKeysWithBaseChannel(channelId));
 
         if (context.isSubmitted()) {
             if ((request.getParameter("unsubscribeSystems") != null) || subscribedSystemsCount == 0) {
