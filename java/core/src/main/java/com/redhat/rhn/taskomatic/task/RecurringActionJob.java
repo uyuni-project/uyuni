@@ -118,12 +118,7 @@ public class RecurringActionJob extends RhnJavaJob {
                 );
             }
             else if (actionType instanceof RecurringScapPolicy scapPolicyType) {
-                if (!action.getCreator().getBetaFeaturesEnabled()) {
-                    log.warn("RecurringScapPolicy {} execution skipped because creator does not have" +
-                        " beta features enabled",
-                            action.getId());
-                }
-                else if (scapPolicyType.getScapPolicy() != null) {
+                if (scapPolicyType.getScapPolicy() != null) {
                     // Build parameters for SCAP scan
                     String parameters = "--profile " + scapPolicyType.getScapPolicy().getXccdfProfileId();
                     if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
