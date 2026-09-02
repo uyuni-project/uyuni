@@ -199,6 +199,20 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the installer type is SLES 16
+     */
+    public boolean isSLES16() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "16");
+    }
+
+    /**
+     * @return if this installer type is SLES 16 or greater (for SLES 16+)
+     */
+    public boolean isSLES16OrGreater() {
+        return (isSLES15OrGreater() && !isSLES15());
+    }
+
+    /**
      * @return if this installer type is SLES 12 or greater (for SLES 15)
      */
     public boolean isSLES12OrGreater() {
@@ -209,15 +223,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return if this installer type is SLES 11 or greater (for SLES 12)
      */
     public boolean isSLES11OrGreater() {
-        return (isSLES10OrGreater() && !isSLES10());
-    }
-
-    /**
-     * @return if this installer type is SLES 10 or greater (for SLES 11)
-     */
-    public boolean isSLES10OrGreater() {
-        // we need to reverse logic here
-        return (!isRhel() && !isFedora() && !isGeneric() && isSLES());
+        return (isSLES() && !isSLES10());
     }
 
     /**
@@ -289,16 +295,13 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
-        String breed = REDHAT_BREED;
-
-        if (getLabel().equals(GENERIC_RPM)) {
-            breed = GENERIC_BREED;
+        if (isGeneric() || isSLES16OrGreater()) {
+            return GENERIC_BREED;
         }
-        else if (isSUSE()) {
-            breed = SUSE_BREED;
+        if (isSUSE()) {
+            return SUSE_BREED;
         }
-
-        return breed;
+        return REDHAT_BREED;
     }
 
     /**
