@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 03 00:00:00 UTC 2026 - dushyantacharya873@gmail.com
+
+- Fix maxsplit positional argument deprecation
+
+-------------------------------------------------------------------
 Wed Aug 05 16:44:08 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0
