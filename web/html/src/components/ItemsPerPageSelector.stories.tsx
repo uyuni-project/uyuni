@@ -27,7 +27,6 @@ const StatefulItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
 const meta = {
   title: "Components/Navigation/ItemsPerPageSelector",
   component: ItemsPerPageSelector,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -7,7 +7,6 @@ import { DateTime, HumanDateTime } from "./DateTime";
 const meta = {
   title: "Components/DateTime/DateTime",
   component: DateTime,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

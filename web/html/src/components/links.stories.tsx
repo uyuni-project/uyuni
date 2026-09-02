@@ -15,7 +15,6 @@ import {
 const meta = {
   title: "Components/Navigation/Links",
   component: ChannelLink,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -64,7 +63,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ChannelPlayground: Story = {};
+export const Playground: Story = {};
 
 export const EntityLinks: Story = {
   render: () => (

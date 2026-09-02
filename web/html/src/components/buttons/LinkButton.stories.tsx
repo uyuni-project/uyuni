@@ -7,7 +7,6 @@ import { LinkButton } from "./index";
 const meta = {
   title: "Components/Buttons/LinkButton",
   component: LinkButton,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

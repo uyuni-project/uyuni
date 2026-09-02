@@ -6,7 +6,6 @@ import { NumericSearchField } from "./NumericSearchField";
 const meta = {
   title: "Components/Table/NumericSearchField",
   component: NumericSearchField,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

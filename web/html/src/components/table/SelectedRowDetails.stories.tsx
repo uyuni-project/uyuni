@@ -31,7 +31,6 @@ const StatefulSelectedRowDetails = (props: SelectedRowDetailsProps) => {
 const meta = {
   title: "Components/Table/SelectedRowDetails",
   component: SelectedRowDetails,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -81,7 +80,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const PartialSelection: Story = {};
+export const Playground: Story = {};
 
 export const AllSelected: Story = {
   args: {

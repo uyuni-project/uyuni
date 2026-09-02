@@ -7,7 +7,6 @@ import { ProgressBar } from "./progressbar";
 const meta = {
   title: "Components/Feedback/ProgressBar",
   component: ProgressBar,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
