@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -59,26 +58,6 @@ public interface SnapshotHandlerApi {
         @Parameter(name = "sid", in = ParameterIn.QUERY, required = true) Integer sid,
         @Parameter(name = "startDate", in = ParameterIn.QUERY, required = true) Date startDate,
         @Parameter(name = "endDate", in = ParameterIn.QUERY, required = true) Date endDate);
-
-    /**
-     * Lists the snapshots of a given system.
-     *
-     * @param loggedInUser the current user
-     * @param sid the system id
-     * @param dateDetails the dates narrowing the snapshots to list
-     * @return the snapshots of the system
-     */
-    @ApiEndpointDoc(
-        summary = "List snapshots for a given system.",
-        method = HttpMethod.get,
-        responseClass = ServerSnapshotListResponse.class,
-        legacyDocResponse = @LegacyDocResponse(name = "server snapshot")
-    )
-    List<ServerSnapshot> listSnapshots(
-        @Parameter(hidden = true) User loggedInUser,
-        @Parameter(name = "sid", in = ParameterIn.QUERY, required = true) Integer sid,
-        @Parameter(name = "dateDetails", in = ParameterIn.QUERY, required = true,
-            schema = @Schema(implementation = DateDetailsDoc.class)) Map<String, Date> dateDetails);
 
     /**
      * Lists the packages associated with a snapshot.
@@ -144,35 +123,6 @@ public interface SnapshotHandlerApi {
         isIntegerResponse = true
     )
     int deleteSnapshots(User loggedInUser, Integer sid, Date startDate, Date endDate);
-
-    /**
-     * Deletes all snapshots across multiple systems based on the given date criteria.
-     *
-     * @param loggedInUser the current user
-     * @param dateDetails the dates narrowing the snapshots to delete
-     * @return 1 on success
-     */
-    @ApiEndpointDoc(
-        summary = "Deletes all snapshots across multiple systems based on the given date criteria.",
-        requestClass = DeleteSnapshotsByDateDetailsRequest.class,
-        isIntegerResponse = true
-    )
-    int deleteSnapshots(User loggedInUser, Map<String, Date> dateDetails);
-
-    /**
-     * Deletes all snapshots of a system based on the given date criteria.
-     *
-     * @param loggedInUser the current user
-     * @param sid the system id
-     * @param dateDetails the dates narrowing the snapshots to delete
-     * @return 1 on success
-     */
-    @ApiEndpointDoc(
-        summary = "Deletes all snapshots for a given system based on the date criteria.",
-        requestClass = DeleteSnapshotsBySystemAndDateDetailsRequest.class,
-        isIntegerResponse = true
-    )
-    int deleteSnapshots(User loggedInUser, Integer sid, Map<String, Date> dateDetails);
 
     /**
      * Deletes a snapshot with the given snapshot id.
@@ -307,53 +257,6 @@ public interface SnapshotHandlerApi {
          * @return the end date
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        @LegacyDocResponse(type = "dateTime.iso8601")
-        Date getEndDate();
-    }
-
-    @Schema(name = "SnapshotDeleteByDateDetailsRequest")
-    interface DeleteSnapshotsByDateDetailsRequest {
-
-        /**
-         * @return the dates narrowing the snapshots to delete
-         */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        DateDetailsDoc getDateDetails();
-    }
-
-    @Schema(name = "SnapshotDeleteBySystemAndDateDetailsRequest")
-    @JsonPropertyOrder({"sid", "dateDetails"})
-    interface DeleteSnapshotsBySystemAndDateDetailsRequest {
-
-        /**
-         * @return the system id
-         */
-        @Schema(description = "ID of system to delete snapshots for",
-                requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSid();
-
-        /**
-         * @return the dates narrowing the snapshots to delete
-         */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        DateDetailsDoc getDateDetails();
-    }
-
-    @Schema(name = "SnapshotDateDetails")
-    @JsonPropertyOrder({"startDate", "endDate"})
-    interface DateDetailsDoc {
-
-        /**
-         * @return the start date
-         */
-        @Schema(description = "Optional, unless endDate\nis provided.")
-        @LegacyDocResponse(type = "dateTime.iso8601")
-        Date getStartDate();
-
-        /**
-         * @return the end date
-         */
-        @Schema(description = "Optional.")
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getEndDate();
     }

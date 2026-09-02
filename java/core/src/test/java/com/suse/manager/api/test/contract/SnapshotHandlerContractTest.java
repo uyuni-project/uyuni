@@ -47,8 +47,6 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     private static final String END_DATE = "2026-12-31T23:59:59Z";
     private static final Date START = Date.from(Instant.parse(START_DATE));
     private static final Date END = Date.from(Instant.parse(END_DATE));
-    private static final Map<String, Object> DATE_DETAILS =
-            Map.of("startDate", START_DATE, "endDate", END_DATE);
 
     @Override
     protected String getApiNamespace() {
@@ -218,10 +216,10 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
     }
 
     /*
-     * listSnapshots(sid, dateDetails) has no contract test on purpose: the legacy documentation
-     * declares the overload as an HTTP GET, and ApiRequestParser rejects a struct in a query
-     * string with "Complex types are not allowed in query string", so the documented call cannot
-     * be made over HTTP at all.
+     * listSnapshots(sid, dateDetails) has no contract test either: besides being annotated with
+     * @ApiIgnore(ApiType.HTTP), the legacy documentation declares the overload as an HTTP GET,
+     * and ApiRequestParser rejects a struct in a query string with "Complex types are not allowed
+     * in query string", so the call could not be made over HTTP even if it were registered.
      */
 
     @Test
@@ -281,43 +279,11 @@ public class SnapshotHandlerContractTest extends BaseOpenApiTest {
                 .onHandlerMethod("deleteSnapshots", User.class, Integer.class, Date.class, Date.class);
     }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testDeleteSnapshotsByDateDetails() throws Exception {
-        Map<String, Date> received = (Map<String, Date>) (Map<String, ?>) DATE_DETAILS;
-
-        context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(received));
-            will(returnValue(1));
-        }});
-
-        validateApiContract("/system.provisioning.snapshot/deleteSnapshots", "POST")
-                .withBody(Map.of("dateDetails", DATE_DETAILS))
-                .onHandlerMethod("deleteSnapshots", User.class, Map.class);
-    }
-
-    /**
-     * The router parses a struct parameter into the raw JSON values, so the dates reach the
-     * handler as strings even though the parameter is declared as a map of dates.
+    /*
+     * The deleteSnapshots overloads taking a dateDetails struct have no contract test: they are
+     * annotated with @ApiIgnore(ApiType.HTTP), so HttpApiRegistry never registers a route for
+     * them and the HTTP API does not document them either.
      */
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testDeleteSnapshotsBySystemAndDateDetails() throws Exception {
-        Map<String, Date> received = (Map<String, Date>) (Map<String, ?>) DATE_DETAILS;
-
-        context.checking(new Expectations() {{
-            oneOf(handler()).deleteSnapshots(with(mockUser), with(SID), with(received));
-            will(returnValue(1));
-        }});
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("sid", SID);
-        body.put("dateDetails", DATE_DETAILS);
-
-        validateApiContract("/system.provisioning.snapshot/deleteSnapshots", "POST")
-                .withBody(body)
-                .onHandlerMethod("deleteSnapshots", User.class, Integer.class, Map.class);
-    }
 
     @Test
     public void testDeleteSnapshot() throws Exception {
