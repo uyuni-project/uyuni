@@ -690,7 +690,7 @@ public interface SystemScapHandlerApi {
          * @return the client machine time of the scan start
          */
         @Schema(name = "start_time", description = "client machine time of scan start",
-                requiredMode = Schema.RequiredMode.REQUIRED)
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getStartTime();
 
@@ -759,7 +759,7 @@ public interface SystemScapHandlerApi {
         /**
          * @return the SCAP content description
          */
-        @Schema(description = "SCAP content description", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "SCAP content description", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getDescription();
 
         /**
@@ -824,7 +824,7 @@ public interface SystemScapHandlerApi {
         /**
          * @return the policy description
          */
-        @Schema(description = "Policy description", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Policy description", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getDescription();
 
         /**
@@ -854,13 +854,13 @@ public interface SystemScapHandlerApi {
         /**
          * @return the OVAL files
          */
-        @Schema(description = "OVAL files", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "OVAL files", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getOvalFiles();
 
         /**
          * @return the advanced arguments
          */
-        @Schema(description = "Advanced arguments", requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = "Advanced arguments", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         String getAdvancedArgs();
 
         /**

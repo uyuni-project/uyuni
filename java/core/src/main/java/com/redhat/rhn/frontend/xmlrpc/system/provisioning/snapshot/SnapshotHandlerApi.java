@@ -223,14 +223,14 @@ public interface SnapshotHandlerApi {
         /**
          * @return the start date
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getStartDate();
 
         /**
          * @return the end date
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getEndDate();
     }
@@ -249,14 +249,14 @@ public interface SnapshotHandlerApi {
         /**
          * @return the start date
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getStartDate();
 
         /**
          * @return the end date
          */
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @LegacyDocResponse(type = "dateTime.iso8601")
         Date getEndDate();
     }
