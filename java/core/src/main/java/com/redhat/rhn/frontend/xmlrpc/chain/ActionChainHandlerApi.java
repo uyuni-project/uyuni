@@ -711,7 +711,7 @@ public interface ActionChainHandlerApi {
          * @return the action id
          */
         @Schema(description = "Action ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the label of the action

@@ -255,7 +255,7 @@ public interface AnsibleHandlerApi {
     Map<String, Map<String, Object>> introspectInventory(User loggedInUser, Integer pathId);
 
     @Schema(name = "ApiResponseAnsibleActionId")
-    interface ActionIdResponse extends ApiResponseWrapper<Integer> { }
+    interface ActionIdResponse extends ApiResponseWrapper<Long> { }
 
     @Schema(name = "ApiResponseAnsiblePath")
     interface AnsiblePathResponse extends ApiResponseWrapper<AnsiblePathDoc> { }
@@ -468,7 +468,7 @@ public interface AnsibleHandlerApi {
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "path id")
-        Integer getId();
+        Long getId();
 
         /**
          * @return the type label

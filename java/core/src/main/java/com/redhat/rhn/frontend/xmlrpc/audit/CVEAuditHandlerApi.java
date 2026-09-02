@@ -112,7 +112,7 @@ public interface CVEAuditHandlerApi {
          * @return the system id
          */
         @Schema(name = "system_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSystemId();
+        Long getSystemId();
 
         /**
          * @return the patch status
@@ -165,7 +165,7 @@ public interface CVEAuditHandlerApi {
          * @return the image id
          */
         @Schema(name = "image_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getImageId();
+        Long getImageId();
 
         /**
          * @return the patch status

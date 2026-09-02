@@ -116,7 +116,7 @@ public interface RecurringActionHandlerApi {
          * @return the ID of the action
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the action
@@ -128,7 +128,7 @@ public interface RecurringActionHandlerApi {
          * @return the ID of the target entity
          */
         @Schema(name = "entity_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getEntityId();
+        Long getEntityId();
 
         /**
          * @return the type of the target entity

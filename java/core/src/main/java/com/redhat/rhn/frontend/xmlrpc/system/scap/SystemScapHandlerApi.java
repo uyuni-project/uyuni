@@ -582,7 +582,7 @@ public interface SystemScapHandlerApi {
          * @return the XCCDF TestResult id
          */
         @Schema(description = "XCCDF TestResult ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getXid();
+        Long getXid();
 
         /**
          * @return the XCCDF profile
@@ -619,20 +619,20 @@ public interface SystemScapHandlerApi {
          * @return the XCCDF TestResult id
          */
         @Schema(description = "XCCDF TestResult ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getXid();
+        Long getXid();
 
         /**
          * @return the server id
          */
         @Schema(description = "serverId", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSid();
+        Long getSid();
 
         /**
          * @return the id of the parent action
          */
         @Schema(name = "action_id", description = "ID of the parent action",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getActionId();
+        Long getActionId();
 
         /**
          * @return the path to the XCCDF document
@@ -748,7 +748,7 @@ public interface SystemScapHandlerApi {
          * @return the SCAP content id
          */
         @Schema(description = "SCAP content ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the SCAP content name
@@ -783,7 +783,7 @@ public interface SystemScapHandlerApi {
          * @return the tailoring file id
          */
         @Schema(description = "Tailoring file ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the tailoring file name
@@ -801,7 +801,7 @@ public interface SystemScapHandlerApi {
          * @return the organization id
          */
         @Schema(description = "Organization ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
     }
 
     @Schema(name = "ScapPolicyInfo", description = "SCAP policy information")
@@ -831,7 +831,7 @@ public interface SystemScapHandlerApi {
          * @return the SCAP content id
          */
         @Schema(description = "SCAP content ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getScapContentId();
+        Long getScapContentId();
 
         /**
          * @return the XCCDF profile id
@@ -843,7 +843,7 @@ public interface SystemScapHandlerApi {
          * @return the tailoring file id
          */
         @Schema(description = "Tailoring file ID (optional)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        Integer getTailoringFileId();
+        Long getTailoringFileId();
 
         /**
          * @return the tailoring profile id

@@ -428,7 +428,7 @@ public interface SnapshotHandlerApi {
          * @return the snapshot id
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the reason for the snapshot's existence
@@ -574,7 +574,7 @@ public interface SnapshotHandlerApi {
          * @return the revision number
          */
         @Schema(description = "File Revision", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getRevision();
+        Long getRevision();
 
         /**
          * @return the creation date

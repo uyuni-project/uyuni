@@ -563,13 +563,13 @@ public interface MaintenanceHandlerApi {
          * @return the ID of the schedule
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the ID of the organization
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the name of the schedule
@@ -602,13 +602,13 @@ public interface MaintenanceHandlerApi {
          * @return the ID of the calendar
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the ID of the organization
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the label of the calendar
@@ -674,7 +674,7 @@ public interface MaintenanceHandlerApi {
          * @return the ID of the action
          */
         @Schema(description = "action ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the action
@@ -708,14 +708,14 @@ public interface MaintenanceHandlerApi {
          */
         @Schema(description = "ID of the prerequisite action (optional)",
                 requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        Integer getPrerequisite();
+        Long getPrerequisite();
 
         /**
          * @return the affected system IDs
          */
         @Schema(name = "affected_system_ids", requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "affected system IDs")
-        List<Integer> getAffectedSystemIds();
+        List<Long> getAffectedSystemIds();
 
         /**
          * @return the details of the action
