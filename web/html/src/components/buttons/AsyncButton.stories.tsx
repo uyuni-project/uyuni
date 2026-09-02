@@ -43,7 +43,7 @@ const meta = {
       table: { type: { summary: "ReactNode" } },
     },
     children: {
-      control: "text",
+      control: false,
       description: "Alternative button content used when `text` is omitted.",
       table: { type: { summary: "ReactNode" } },
     },
@@ -93,6 +93,7 @@ const meta = {
       table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
+  render: (args) => <AsyncButton key={args.initialValue} {...args} />,
 } satisfies Meta<typeof AsyncButton>;
 
 export default meta;

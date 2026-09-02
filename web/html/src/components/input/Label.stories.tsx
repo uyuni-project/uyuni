@@ -57,12 +57,11 @@ export const States: Story = {
       <StoryRow>
         <Label name="Optional field" />
         <Label name="Required field" required />
-        <Label required />
       </StoryRow>
     </StripedStorySection>
   ),
   parameters: {
     controls: { disable: true },
-    docs: { description: { story: "Optional, required, and marker-only label states." } },
+    docs: { description: { story: "Optional and required label states." } },
   },
 };

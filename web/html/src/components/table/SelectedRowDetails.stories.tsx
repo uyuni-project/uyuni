@@ -87,12 +87,3 @@ export const AllSelected: Story = {
     selectedCount: 25,
   },
 };
-
-export const NoSelection: Story = {
-  args: {
-    selectedCount: 0,
-  },
-  parameters: {
-    docs: { description: { story: "The component intentionally renders nothing when no rows are selected." } },
-  },
-};

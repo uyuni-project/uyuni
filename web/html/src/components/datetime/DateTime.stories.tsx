@@ -25,7 +25,7 @@ const meta = {
       table: { type: { summary: "string | moment.Moment" } },
     },
     children: {
-      control: "text",
+      control: false,
       description: "Alternative string timestamp used when `value` is omitted.",
       table: { type: { summary: "string" } },
     },

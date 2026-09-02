@@ -14,16 +14,24 @@ const StatefulDialog = (props: DialogProps) => {
 
   useEffect(() => setIsOpen(props.isOpen), [props.isOpen]);
 
+  const closeDialog = () => {
+    setIsOpen(false);
+    props.onClose?.();
+  };
+
   return (
     <>
       <Button className="btn-primary" text="Open dialog" handler={() => setIsOpen(true)} />
       <Dialog
         {...props}
         isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-          props.onClose?.();
-        }}
+        onClose={closeDialog}
+        footer={
+          <>
+            {props.footer}
+            <Button className="btn-default" text="Close" handler={closeDialog} />
+          </>
+        }
       />
     </>
   );
@@ -119,8 +127,15 @@ export const Playground: Story = {
 export const NotClosable: Story = {
   args: {
     title: "Operation in progress",
-    content: "This dialog remains open until the operation completes.",
+    content: "Escape, the overlay, and the header close control are disabled for this dialog.",
     closableModal: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Non-closable dialogs still need an explicit footer action controlled by their parent.",
+      },
+    },
   },
 };
 
