@@ -360,9 +360,9 @@ public class ServerFactory extends HibernateFactory {
                 Server parentProxyServer = parentPath.getId().getProxyServer();
                 ServerPath newPath = new ServerPath();
                 newPath.setId(new ServerPathId(server, parentProxyServer));
-                newPath.setHostname(parentPath.getHostname());
                 return newPath;
             });
+            path.setHostname(parentPath.getHostname());
             path.setPosition(parentPath.getPosition() + 1);
             paths.add(path);
 
@@ -370,11 +370,11 @@ public class ServerFactory extends HibernateFactory {
         ServerPath path = findServerPath(server, proxyServer).orElseGet(() -> {
             ServerPath newPath = new ServerPath();
             newPath.setId(new ServerPathId(server, proxyServer));
-            // the first proxy is the one to which
-            // the server connects directly
-            newPath.setHostname(proxyHostname);
             return newPath;
         });
+        // the first proxy is the one to which
+        // the server connects directly
+        path.setHostname(proxyHostname);
         path.setPosition(0L);
         paths.add(path);
         return paths;
