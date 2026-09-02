@@ -1196,7 +1196,6 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
-        <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -4936,7 +4935,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.scap">
-          <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
+          <source>&lt;a href="/rhn/manager/systems/ssm/audit/schedule-scap-scan"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -7075,18 +7074,6 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message.xccdfeval" xml:space="preserve">
-        <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
-        <source>XCCDF scan has been scheduled successfully.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
         <context-group name="ctx">
@@ -7095,12 +7082,6 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="message.entitlement.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} system type.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
-        <source>Action was not scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
@@ -12439,76 +12420,10 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Manage Errata Pages</context>
         </context-group>
         </trans-unit>
-      <trans-unit id="system.audit.schedulexccdf.jsp.schedule">
-          <source>Schedule New XCCDF Scan</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.button">
-          <source>Schedule</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.confirmschedulexccdf.jsp.button">
-          <source>Confirm</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.command">
-          <source>Command</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.arguments">
+      <trans-unit id="system.audit.schedulexccdf.jsp.arguments">
           <source>Command-line Arguments</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.path">
-          <source>Path to XCCDF document</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles">
-        <source>Optional OVAL Files (comma separated)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.xccdfEval">
-          <source>/usr/bin/oscap xccdf eval</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.tooltip">
-          <source>Certain versions of OpenSCAP may require the --profile command-line argument. --profile specifies a particular profile from the XCCDF document.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
-          <source>Earliest</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
-        </context-group>
-        </trans-unit>
-      <trans-unit id="ssm.audit.xccdf.targetedsystems">
-          <source>Targeted Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="ssm.audit.xccdf.capability">
-          <source>OpenSCAP Scan Capability</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.overview">
@@ -12783,12 +12698,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.audit.xccdfdetails.jsp.nodiff">
           <source>No comparable scan was found.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="system.audit.xccdfdetails.jsp.reschedule">
-          <source>reschedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
