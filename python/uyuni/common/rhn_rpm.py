@@ -102,7 +102,12 @@ class RPM_Header:
         del self.hdr[name]
 
     def __getattr__(self, name):
-        item = getattr(self.hdr, name)
+        try:
+            hdr = object.__getattribute__(self, "hdr")
+        except AttributeError as exc:
+            raise AttributeError(name) from exc
+
+        item = getattr(hdr, name)
         if isinstance(item, bytes):
             item = sstr(item)
         elif isinstance(item, list):
