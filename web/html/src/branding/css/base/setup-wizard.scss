@@ -222,15 +222,6 @@ ul.product-list {
     overflow: auto;
     border-bottom: 1px solid $tb-border-color;
     .product-details-wrapper {
-      .recommended-tag {
-        color: $text-dark-color;
-        @extend .recommended-tag-base;
-      }
-      .text-muted {
-        .recommended-tag {
-          background-color: $gray-light;
-        }
-      }
       .product-hover:hover {
         color: $text-warning-color;
       }
@@ -242,10 +233,6 @@ ul.product-list {
       .product-description {
         color: $product-installed-color;
       }
-      .recommended-tag {
-        background-color: $gray-light;
-        color: $gray-dark;
-      }
     }
     .col {
       display: inline-block;
@@ -254,7 +241,6 @@ ul.product-list {
       float: none;
       * {
         vertical-align: middle;
-        font-weight: normal;
         margin: 0;
       }
       > * {

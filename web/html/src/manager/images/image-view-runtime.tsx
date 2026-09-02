@@ -67,13 +67,20 @@ class PodInfo extends Component<PodInfoProps> {
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
+          data-bs-toggle="tooltip"
           title={t("Instance is consistent with {productName}", { productName })}
         />
       );
     } else if (statusId === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is outdated")} />;
+      icon = (
+        <i
+          className="fa fa-exclamation-triangle fa-1-5x text-warning"
+          data-bs-toggle="tooltip"
+          title={t("Instance is outdated")}
+        />
+      );
     } else {
       icon = <span>-</span>;
     }
@@ -107,13 +114,20 @@ class ClusterInfo extends Component<ClusterInfoProps> {
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
+          data-bs-toggle="tooltip"
           title={t("Cluster is consistent with {productName", { productName })}
         />
       );
     } else if (statusId === 2) {
-      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
+      icon = <i className="fa fa-question-circle fa-1-5x" data-bs-toggle="tooltip" title={t("No information")} />;
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is outdated")} />;
+      icon = (
+        <i
+          className="fa fa-exclamation-triangle fa-1-5x text-warning"
+          data-bs-toggle="tooltip"
+          title={t("Cluster is outdated")}
+        />
+      );
     }
 
     return icon ? (

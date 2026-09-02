@@ -48,11 +48,8 @@ function StatusIcon(props: StatusIconProps) {
   if (action?.status === 0) {
     return (
       <span>
-        <i className="fa fa-clock-o fa-1-5x" title={t("Queued")} />
-        <a
-          title={t("Go to event")}
-          href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
-        >
+        <i className="fa fa-clock-o fa-1-5x" />
+        <a href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>
           {t(props.name + " is queued")}
         </a>
       </span>
@@ -60,11 +57,8 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 1) {
     return (
       <span>
-        <i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")} />
-        <a
-          title={t("Go to event")}
-          href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
-        >
+        <i className="fa fa-exchange fa-1-5x text-info" />
+        <a href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>
           {t(props.name + " in progress")}
         </a>
       </span>
@@ -72,11 +66,8 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 2) {
     return (
       <span>
-        <i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")} />
-        <a
-          title={t("Go to event")}
-          href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
-        >
+        <i className="fa fa-check-circle fa-1-5x text-success" />
+        <a href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>
           {t(props.name + " is successful")}
         </a>
       </span>
@@ -84,11 +75,8 @@ function StatusIcon(props: StatusIconProps) {
   } else if (action?.status === 3) {
     return (
       <span>
-        <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />
-        <a
-          title={t("Go to event")}
-          href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}
-        >
+        <i className="fa fa-times-circle-o fa-1-5x text-danger" />
+        <a href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>
           {t(props.name + " has failed")}
         </a>
       </span>
@@ -96,7 +84,7 @@ function StatusIcon(props: StatusIconProps) {
   } else {
     return (
       <span>
-        <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+        <i className="fa fa-question-circle fa-1-5x" />
         {t("No information")}
       </span>
     );
@@ -108,7 +96,7 @@ function BuildStatus(props) {
   if (props.data.external) {
     status = (
       <span>
-        <i className="fa fa-minus-circle fa-1-5x text-muted" title={t("Built externally")} />
+        <i className="fa fa-minus-circle fa-1-5x text-muted" />
         {t("Built externally")}
       </span>
     );
@@ -200,7 +188,13 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
 
   renderInstances(data) {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />;
+      return (
+        <i
+          className="fa fa-circle-o-notch fa-spin fa-1-5x"
+          data-bs-toggle="tooltip"
+          title={t("Waiting for update ...")}
+        />
+      );
     }
 
     let totalCount = 0;
@@ -237,7 +231,11 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
     if (!this.props.gotRuntimeInfo) {
       return (
         <span>
-          <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")} />
+          <i
+            className="fa fa-circle-o-notch fa-spin fa-1-5x"
+            data-bs-toggle="tooltip"
+            title={t("Waiting for update ...")}
+          />
         </span>
       );
     }
@@ -246,24 +244,21 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
     if (data.runtimeStatus === 1) {
       elm = (
         <span>
-          <i
-            className="fa fa-check-circle fa-1-5x text-success"
-            title={t("All instances are consistent with {productName}", { productName })}
-          />
+          <i className="fa fa-check-circle fa-1-5x text-success" />
           <a href={"#/runtime/" + data.id}>{t("All instances are consistent with {productName}", { productName })}</a>
         </span>
       );
     } else if (data.runtimeStatus === 2) {
       elm = (
         <span>
-          <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+          <i className="fa fa-question-circle fa-1-5x" />
           <a href={"#/runtime/" + data.id}>{t("No information")}</a>
         </span>
       );
     } else if (data.runtimeStatus === 3) {
       elm = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")} />
+          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" />
           <a href={"#/runtime/" + data.id}>{t("Outdated instances found")}</a>
         </span>
       );
@@ -393,10 +388,7 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul className="list-unstyled">
                     <li>
-                      <a
-                        href={"/rhn/channels/ChannelDetail.do?cid=" + data.channels.base.id}
-                        title={data.channels.base.name}
-                      >
+                      <a href={"/rhn/channels/ChannelDetail.do?cid=" + data.channels.base.id}>
                         {data.channels.base.name}
                       </a>
                     </li>
@@ -404,9 +396,7 @@ class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
                       <ul>
                         {data.channels.children.map((ch) => (
                           <li key={ch.id}>
-                            <a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>
-                              {ch.name}
-                            </a>
+                            <a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id}>{ch.name}</a>
                           </li>
                         ))}
                       </ul>
@@ -514,35 +504,35 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
     if (!row.patches || row.installedPackages === 0) {
       status = (
         <span>
-          <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
+          <i className="fa fa-question-circle fa-1-5x" />
           {t("No information")}{" "}
         </span>
       );
     } else if (row.patches.security > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")} />
+          <i className="fa fa-exclamation-circle fa-1-5x text-danger" />
           {t("Critical updates available")}{" "}
         </span>
       );
     } else if (row.patches.bugs + row.patches.enhancement > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Non-critical updates available")} />
+          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" />
           {t("Non-critical updates available")}{" "}
         </span>
       );
     } else if (row.packages > 0) {
       status = (
         <span>
-          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Package updates available")} />
+          <i className="fa fa-exclamation-triangle fa-1-5x text-warning" />
           {t("Package updates available")}{" "}
         </span>
       );
     } else {
       status = (
         <span>
-          <i className="fa fa-check-circle fa-1-5x text-success" title={t("Image is up to date")} />
+          <i className="fa fa-check-circle fa-1-5x text-success" />
           {t("Image is up to date")}{" "}
         </span>
       );
