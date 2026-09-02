@@ -108,8 +108,8 @@ public interface RecurringActionHandlerApi {
     }
 
     @Schema(name = "RecurringActionInfo")
-    @JsonPropertyOrder({"id", "name", "entityId", "entityType", "cronExpr", "created", "creator", "test", "states",
-        "extraVars", "flushCache", "inventoryPath", "playbookPath", "active"})
+    @JsonPropertyOrder({"id", "type", "name", "entityId", "entityType", "cronExpr", "created", "creator", "test",
+        "states", "extraVars", "flushCache", "inventoryPath", "playbookPath", "active"})
     interface RecurringActionDoc {
 
         /**
@@ -117,6 +117,12 @@ public interface RecurringActionHandlerApi {
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         Long getId();
+
+        /**
+         * @return the type of the action
+         */
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        String getType();
 
         /**
          * @return the name of the action
