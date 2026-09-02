@@ -744,7 +744,7 @@ public interface ProxyHandlerApi {
          * @return the system id
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the system name

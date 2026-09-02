@@ -861,7 +861,7 @@ public interface UserHandlerApi {
          * @return the ID of the user
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the login name of the user
@@ -941,7 +941,7 @@ public interface UserHandlerApi {
          * @return the ID of the organization
          */
         @Schema(name = "org_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the name of the organization
@@ -1005,7 +1005,7 @@ public interface UserHandlerApi {
          * @return the ID of the system group
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system group
@@ -1030,6 +1030,6 @@ public interface UserHandlerApi {
          */
         @Schema(name = "org_id", description = "Organization ID for this system group.",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
     }
 }

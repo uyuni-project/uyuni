@@ -598,7 +598,7 @@ public interface ServerGroupHandlerApi {
          * @return the id of the system group
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system group
@@ -616,7 +616,7 @@ public interface ServerGroupHandlerApi {
          * @return the id of the organization
          */
         @Schema(name = "org_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the number of systems in the group
@@ -656,7 +656,7 @@ public interface ServerGroupHandlerApi {
          * @return the system id
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the system name
@@ -713,7 +713,7 @@ public interface ServerGroupHandlerApi {
          * @return the system id
          */
         @Schema(description = "system ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the profile name

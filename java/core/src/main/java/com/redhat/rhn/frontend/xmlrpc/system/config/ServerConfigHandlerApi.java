@@ -786,13 +786,13 @@ public interface ServerConfigHandlerApi {
          * @return the ID of the channel
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the ID of the organization
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the label of the channel
@@ -828,7 +828,7 @@ public interface ServerConfigHandlerApi {
          * @return the ID of the channel type
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the label of the channel type

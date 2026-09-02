@@ -902,7 +902,7 @@ public interface ActivationKeyHandlerApi {
          * @return the system id
          */
         @Schema(description = "System id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the hostname

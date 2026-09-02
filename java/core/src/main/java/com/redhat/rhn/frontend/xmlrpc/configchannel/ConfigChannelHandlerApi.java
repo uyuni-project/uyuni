@@ -1102,13 +1102,13 @@ public interface ConfigChannelHandlerApi {
          * @return the ID of the channel
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the ID of the organization
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getOrgId();
+        Long getOrgId();
 
         /**
          * @return the label of the channel
@@ -1175,7 +1175,7 @@ public interface ConfigChannelHandlerApi {
          * @return the ID of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system

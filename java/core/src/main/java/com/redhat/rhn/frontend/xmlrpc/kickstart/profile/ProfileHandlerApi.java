@@ -1204,7 +1204,7 @@ public interface ProfileHandlerApi {
          * @return the id of the script
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the script
@@ -1287,7 +1287,7 @@ public interface ProfileHandlerApi {
          * @return the id of the option
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the arguments of the option

@@ -4250,7 +4250,7 @@ public interface SystemHandlerApi {
          * @return the id of the base channel
          */
         @Schema(description = "Base Channel ID.", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the channel
@@ -4280,7 +4280,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system
@@ -4346,7 +4346,7 @@ public interface SystemHandlerApi {
          * @return the id of the server
          */
         @Schema(description = "The server's id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the server
@@ -4431,7 +4431,7 @@ public interface SystemHandlerApi {
                 description = "List of virtual guest system ids for active guests",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         @LegacyDocResponse(name = "guest_id")
-        List<Integer> getActiveGuestSystemIds();
+        List<Long> getActiveGuestSystemIds();
     }
 
     @Schema(name = "SystemSubscribedChannelDoc")
@@ -4443,7 +4443,7 @@ public interface SystemHandlerApi {
          */
         @Schema(name = "channel_id", description = "The channel id.",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getChannelId();
+        Long getChannelId();
 
         /**
          * @return the label of the channel
@@ -4715,7 +4715,7 @@ public interface SystemHandlerApi {
          * @return the id of the channel
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the channel
@@ -4845,7 +4845,7 @@ public interface SystemHandlerApi {
          * @return the id of the package
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the architecture label of the package
@@ -4862,7 +4862,7 @@ public interface SystemHandlerApi {
          * @return the id of the server
          */
         @Schema(description = "server ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the server
@@ -4887,7 +4887,7 @@ public interface SystemHandlerApi {
          * @return the id of the package
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the architecture of the package
@@ -4926,7 +4926,7 @@ public interface SystemHandlerApi {
                 description = "PackageID, -1 if package is installed but not available in " +
                     "subscribed channels",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getPackageId();
+        Long getPackageId();
 
         /**
          * @return the name of the package
@@ -5174,7 +5174,7 @@ public interface SystemHandlerApi {
                 description = "PackageID, -1 if package is locked but not available in " +
                     "subscribed channels",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getPackageId();
+        Long getPackageId();
 
         /**
          * @return the name of the package
@@ -5247,7 +5247,7 @@ public interface SystemHandlerApi {
          */
         @Schema(name = "system_id", description = "ID of the system",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSystemId();
+        Long getSystemId();
 
         /**
          * @return the IPv4 address of the system
@@ -5283,7 +5283,7 @@ public interface SystemHandlerApi {
          * @return the id of the server group
          */
         @Schema(description = "server group id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return whether the server is subscribed to this group
@@ -5406,7 +5406,7 @@ public interface SystemHandlerApi {
          * @return the id of this action
          */
         @Schema(description = "Id of this action.", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the version of the action
@@ -5724,7 +5724,7 @@ public interface SystemHandlerApi {
          * @return the id of the server
          */
         @Schema(description = "Server id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the server
@@ -5775,7 +5775,7 @@ public interface SystemHandlerApi {
          * @return the id of the event
          */
         @Schema(description = "ID of the event", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the type of the history event
@@ -6000,7 +6000,7 @@ public interface SystemHandlerApi {
          * @return the id of the event
          */
         @Schema(description = "ID of the event", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the type of the history event
@@ -6092,7 +6092,7 @@ public interface SystemHandlerApi {
          * @return the id of the erratum
          */
         @Schema(description = "errata ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the date the erratum was updated
@@ -6197,7 +6197,7 @@ public interface SystemHandlerApi {
          * @return the id of the erratum
          */
         @Schema(description = "errata ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the date the erratum was created
@@ -6244,7 +6244,7 @@ public interface SystemHandlerApi {
          * @return the id of the package name
          */
         @Schema(name = "package_name_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getPackageNameId();
+        Long getPackageNameId();
 
         /**
          * @return the name of the package
@@ -6581,7 +6581,7 @@ public interface SystemHandlerApi {
          * @return the id of the note
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the subject of the note
@@ -6601,7 +6601,7 @@ public interface SystemHandlerApi {
         @Schema(name = "system_id",
                 description = "the ID of the system associated with the note",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSystemId();
+        Long getSystemId();
 
         /**
          * @return the creator of the note
@@ -7138,7 +7138,7 @@ public interface SystemHandlerApi {
          */
         @Schema(name = "system_id", description = "the ID of the system",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSystemId();
+        Long getSystemId();
     }
 
     @Schema(name = "SystemScriptResultDoc")
@@ -7151,7 +7151,7 @@ public interface SystemHandlerApi {
          */
         @Schema(description = "ID of the server the script runs on",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getServerId();
+        Long getServerId();
 
         /**
          * @return the time the script began execution
@@ -7200,7 +7200,7 @@ public interface SystemHandlerApi {
          * @return the id of the action
          */
         @Schema(description = "action id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the content of the script
@@ -7248,7 +7248,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(description = "system ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the profile name of the system
@@ -7414,7 +7414,7 @@ public interface SystemHandlerApi {
          * @return the id of the profile
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the profile
@@ -8226,7 +8226,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system
@@ -8274,7 +8274,7 @@ public interface SystemHandlerApi {
          * @return the id of the proxy system
          */
         @Schema(description = "proxy system ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the hostname of the proxy
@@ -8363,7 +8363,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSystemId();
+        Long getSystemId();
 
         /**
          * @return the name of the system
@@ -8389,7 +8389,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getSid();
+        Long getSid();
 
         /**
          * @return the number of critical security errata
@@ -8449,7 +8449,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(description = "System ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the profile name of the system
@@ -8565,7 +8565,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system
@@ -8628,7 +8628,7 @@ public interface SystemHandlerApi {
          * @return the id of the package state
          */
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the package
@@ -8641,7 +8641,7 @@ public interface SystemHandlerApi {
          */
         @Schema(name = "state_revision_id", description = "state revision ID",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getStateRevisionId();
+        Long getStateRevisionId();
 
         /**
          * @return the package state type
@@ -8666,7 +8666,7 @@ public interface SystemHandlerApi {
          * @return the id of the system
          */
         @Schema(description = "system ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the groups the system belongs to
@@ -8684,7 +8684,7 @@ public interface SystemHandlerApi {
          * @return the id of the system group
          */
         @Schema(description = "system group ID", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getId();
+        Long getId();
 
         /**
          * @return the name of the system group
@@ -8703,7 +8703,7 @@ public interface SystemHandlerApi {
          * @return the id of the report
          */
         @Schema(name = "report_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getReportId();
+        Long getReportId();
 
         /**
          * @return the status of the report
@@ -8742,7 +8742,7 @@ public interface SystemHandlerApi {
          * @return the id of the result
          */
         @Schema(name = "result_id", requiredMode = Schema.RequiredMode.REQUIRED)
-        Integer getResultId();
+        Long getResultId();
 
         /**
          * @return the type of the result
