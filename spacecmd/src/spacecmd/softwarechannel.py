@@ -807,6 +807,10 @@ def do_softwarechannel_delete(self, args):
     print("--------")
     print("\n".join(sorted(to_delete)))
 
+    print(
+        "\nWARNING: If you are removing a Base channel, keep in mind that Activation Keys linked to this base channel will also get removed!"
+    )
+
     if not self.user_confirm(_("Delete these channels [y/N]:")):
         return 1
 
@@ -822,6 +826,17 @@ def do_softwarechannel_delete(self, args):
                 children.append(channel.get("label"))
             else:
                 parents.append(channel.get("label"))
+
+    # We need to remove AK that refers to the removed parents
+    # before removing the parent channels
+    if parents:
+        for ak in self.client.activationkey.listActivationKeys(self.session):
+            ak_key = ak.get("key")
+            if not ak_key:
+                continue
+            ak_base_channel = ak.get("base_channel_label")
+            if ak_base_channel in parents:
+                self.client.activationkey.delete(self.session, ak_key)
 
     for channel in children + parents:
         self.client.channel.software.delete(self.session, channel)
