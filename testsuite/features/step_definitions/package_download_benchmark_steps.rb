@@ -503,7 +503,6 @@ When('I execute and record the channel package downloads') do
     status: workload_errors.empty? ? 'passed' : 'failed',
     command: zypper,
     timeout_seconds: timeout,
-    timed_out: workload_error.to_s.include?('exited with 124'),
     uncertain_completion: !workload_error.nil?,
     started_at: started_at.iso8601(6),
     finished_at: finished_at.iso8601(6),
