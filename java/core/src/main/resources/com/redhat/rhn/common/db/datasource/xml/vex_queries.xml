@@ -1,0 +1,53 @@
+<datasource_modes>
+
+    <mode name="get_vulnerable_packages">
+        <query params="cve_name, product_cpe">
+            SELECT
+                pn.name AS vulnerablepkgname,
+                a.fix_version AS vulnerablepkgfixversion
+            FROM suseVEXAnnotations a
+            JOIN suseOVALPlatform p ON p.id = a.platform_id
+            JOIN rhnPackageName pn ON pn.id = a.package_name
+            JOIN rhnCve c ON c.id = a.cve_id
+            WHERE p.cpe = :product_cpe
+              AND c.name = :cve_name
+        </query>
+    </mode>
+
+    <mode name="can_audit_cve">
+        <query params="cve_name">
+            SELECT 1
+            FROM suseVEXAnnotations a
+            JOIN rhnCve c ON c.id = a.cve_id
+            WHERE c.name = :cve_name
+            LIMIT 1
+        </query>
+    </mode>
+
+    <mode name="check_vex_availability">
+        <query params="cpe">
+            SELECT 1
+            FROM suseVEXAnnotations a
+            JOIN suseOVALPlatform p ON p.id = a.platform_id
+            WHERE p.cpe = :cpe
+            LIMIT 1
+        </query>
+    </mode>
+
+    <mode name="check_errata_availability">
+        <query params="server_id">
+            SELECT 1
+            FROM suseCVEServerChannel,
+                 rhnChannelErrata
+            WHERE suseCVEServerChannel.channel_id = rhnChannelErrata.channel_id
+              AND server_id = :server_id
+        </query>
+    </mode>
+
+    <write-mode name="clear_oval_metadata_by_platform">
+        <query params="cpe">
+            DELETE FROM suseOVALPlatformVulnerablePackage pvp WHERE pvp.platform_id = (SELECT id FROM suseOVALPlatform plat WHERE plat.cpe = :cpe);
+            DELETE FROM suseOVALPlatform plat where plat.cpe = :cpe;
+        </query>
+    </write-mode>
+</datasource_modes>
