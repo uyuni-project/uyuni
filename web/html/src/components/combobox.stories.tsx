@@ -33,7 +33,6 @@ const StatefulCombobox = (props: ComboboxProps) => {
 const meta = {
   title: "Components/Inputs/Combobox",
   component: Combobox,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

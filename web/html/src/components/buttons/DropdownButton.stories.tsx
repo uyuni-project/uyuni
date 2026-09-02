@@ -17,7 +17,6 @@ const dropdownItems = [
 const meta = {
   title: "Components/Buttons/DropdownButton",
   component: DropdownButton,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

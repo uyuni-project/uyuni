@@ -32,7 +32,6 @@ const StatefulDangerDialog = (props: DangerDialogProps) => {
 const meta = {
   title: "Components/Dialogs/DangerDialog",
   component: DangerDialog,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -42,7 +41,7 @@ const meta = {
     },
   },
   args: {
-    isOpen: true,
+    isOpen: false,
     id: "storybook-danger-dialog",
     title: "Delete system",
     content: "This operation cannot be undone. Do you want to continue?",
@@ -134,7 +133,16 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The dialog starts closed so it does not cover the documentation. Use the trigger button or `isOpen` control to open it.",
+      },
+    },
+  },
+};
 
 export const PrimaryConfirmation: Story = {
   args: {

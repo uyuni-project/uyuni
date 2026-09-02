@@ -8,7 +8,6 @@ const tabHashes = ["#overview", "#systems", "#activity"];
 const meta = {
   title: "Components/Navigation/TabContainer",
   component: TabContainer,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

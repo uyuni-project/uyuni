@@ -12,7 +12,6 @@ const options = [
 const meta = {
   title: "Components/Table/SelectSearchField",
   component: SelectSearchField,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

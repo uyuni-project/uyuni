@@ -5,7 +5,6 @@ import { CustomDiv } from "./custom-objects";
 const meta = {
   title: "Components/Layout/CustomDiv",
   component: CustomDiv,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

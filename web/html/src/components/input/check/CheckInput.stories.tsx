@@ -28,7 +28,6 @@ const ControlledCheckInput = (props: CheckInputProps) => {
 const meta = {
   title: "Components/Inputs/CheckInput",
   component: CheckInput,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

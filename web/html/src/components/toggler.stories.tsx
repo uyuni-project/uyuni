@@ -28,7 +28,6 @@ const ControlledToggler = (props: TogglerProps) => {
 const meta = {
   title: "Components/Inputs/Toggler",
   component: Toggler,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
