@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * @apidoc.doc
  * #struct_begin("recurring action information (some fields may be absent for some action types)")
  *   #prop("int", "id")
+ *   #prop("string", "type")
  *   #prop("string", "name")
  *   #prop("int", "entity_id")
  *   #prop("string", "entity_type")

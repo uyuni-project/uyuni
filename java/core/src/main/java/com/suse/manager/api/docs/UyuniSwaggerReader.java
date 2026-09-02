@@ -12,6 +12,9 @@ package com.suse.manager.api.docs;
 
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -179,6 +182,12 @@ public class UyuniSwaggerReader {
     private void applyOverloadArities(Class<?> cls, Method method, Operation operation) {
         List<Integer> arities = Arrays.stream(cls.getMethods())
                 .filter(candidate -> candidate.getName().equals(method.getName()))
+                .filter(UyuniSwaggerReader::isExposedOverHttp)
+                // An overload documented in its own right is read as an operation of its own and
+                // folded in afterwards, so it describes its call itself rather than lending its
+                // parameter count to the overload being read.
+                .filter(candidate -> candidate.equals(method) ||
+                        findMethodAnnotation(candidate, ApiEndpointDoc.class) == null)
                 .filter(candidate -> candidate.getParameterCount() > 0 &&
                         User.class.equals(candidate.getParameterTypes()[0]))
                 .map(candidate -> candidate.getParameterCount() - 1)
@@ -189,6 +198,19 @@ public class UyuniSwaggerReader {
         if (arities.size() > 1) {
             operation.addExtension(DOC_OVERLOAD_ARITIES_EXTENSION, arities);
         }
+    }
+
+    /**
+     * Tells whether the HTTP API exposes an overload. An overload annotated with
+     * {@code @ApiIgnore(ApiType.HTTP)} is never registered as a route, so it stands for no
+     * documented call and must not lend its parameter count to the ones that are exposed.
+     *
+     * @param method the overload to test
+     * @return whether the HTTP API exposes the overload
+     */
+    private static boolean isExposedOverHttp(Method method) {
+        ApiIgnore ignored = method.getAnnotation(ApiIgnore.class);
+        return ignored == null || !Arrays.asList(ignored.value()).contains(ApiType.HTTP);
     }
 
     private List<String> documentedParameters(Operation operation) {

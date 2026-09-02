@@ -45,7 +45,7 @@ import java.util.Map;
  * @apidoc.namespace recurring
  * @apidoc.doc Provides methods to handle recurring actions for minions, system groups and organizations.
  */
-public class RecurringActionHandler extends BaseHandler {
+public class RecurringActionHandler extends BaseHandler implements RecurringActionHandlerApi {
 
     /* helper method */
     private RecurringAction.TargetType getEntityType(String entityType) {
@@ -68,7 +68,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @apidoc.doc Return a list of recurring actions for a given entity.
      * @apidoc.param #session_key()
      * @apidoc.param
-     *   #prop_desc("string", "type", "the type of the target entity. One of the following:")
+     *   #param_desc("string", "type", "the type of the target entity. One of the following:")
      *     #options()
      *       #item("minion")
      *       #item("group")

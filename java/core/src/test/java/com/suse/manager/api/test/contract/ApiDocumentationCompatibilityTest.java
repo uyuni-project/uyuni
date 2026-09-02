@@ -15,6 +15,8 @@ import com.redhat.rhn.internal.doclet.AsciidocWriter;
 import com.redhat.rhn.internal.doclet.DocBookDoclet;
 import com.redhat.rhn.internal.doclet.DocBookWriter;
 
+import com.suse.manager.api.ApiIgnore;
+import com.suse.manager.api.ApiType;
 import com.suse.manager.api.OpenApiConfig;
 import com.suse.manager.api.docs.OpenApiToAsciidocParser;
 import com.suse.manager.api.docs.OpenApiToDocBookParser;
@@ -27,14 +29,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.tools.Diagnostic;
@@ -76,7 +81,7 @@ public class ApiDocumentationCompatibilityTest {
         Map<String, String> openApiDocs = generateOpenApiAsciidoc();
 
         List<String> differences = new ArrayList<>();
-        OpenApiConfig.getHandlerClasses().keySet().forEach(namespace -> {
+        OpenApiConfig.getHandlerClasses().forEach((namespace, handlerClass) -> {
             String legacy = legacyDocs.get(namespace + ".adoc");
             String openApi = openApiDocs.get(namespace);
             if (legacy == null) {
@@ -87,7 +92,7 @@ public class ApiDocumentationCompatibilityTest {
                 differences.add("Missing OpenAPI AsciiDoc output for namespace: " + namespace);
                 return;
             }
-            differences.addAll(compare(namespace, parse(legacy), parse(openApi)));
+            differences.addAll(compare(namespace, handlerClass, parse(legacy), parse(openApi)));
         });
 
         if (!differences.isEmpty()) {
@@ -113,7 +118,7 @@ public class ApiDocumentationCompatibilityTest {
                 differences.add("Missing OpenAPI DocBook output for namespace: " + namespace);
                 return;
             }
-            differences.addAll(compare(namespace, parseDocBook(legacy), parseDocBook(openApi)));
+            differences.addAll(compare(namespace, handlerClass, parseDocBook(legacy), parseDocBook(openApi)));
         });
 
         if (!differences.isEmpty()) {
@@ -253,12 +258,14 @@ public class ApiDocumentationCompatibilityTest {
                 .orElse("No diagnostics reported.");
     }
 
-    private List<String> compare(String namespace, Map<MethodKey, ApiMethodDoc> expected,
+    private List<String> compare(String namespace, Class<?> handlerClass, Map<MethodKey, ApiMethodDoc> expected,
                                  Map<MethodKey, ApiMethodDoc> actual) {
         List<String> differences = new ArrayList<>();
+        Set<String> httpIgnored = httpIgnoredMethods(handlerClass);
 
         expected.keySet().stream()
                 .filter(key -> !actual.containsKey(key))
+                .filter(key -> !httpIgnored.contains(documentedSignature(key)))
                 .sorted(Comparator.comparing(MethodKey::toString))
                 .forEach(key -> differences.add("[%s] Missing method: %s".formatted(namespace, key)));
 
@@ -623,6 +630,36 @@ public class ApiDocumentationCompatibilityTest {
         }
 
         return Optional.of(new ApiMethodDoc(method, httpMethod, parameters, returns));
+    }
+
+    /**
+     * Collects the methods the HTTP API leaves unexposed, keyed by name and documented parameter
+     * count. A method annotated with {@code @ApiIgnore(ApiType.HTTP)} is never routed, so the
+     * OpenAPI specification deliberately omits it, while the legacy doclet still describes it
+     * because it remains part of the XML-RPC API.
+     *
+     * @param handlerClass the handler serving the namespace
+     * @return the signature of every method the HTTP API ignores
+     */
+    private Set<String> httpIgnoredMethods(Class<?> handlerClass) {
+        return Arrays.stream(handlerClass.getMethods())
+                .filter(method -> method.isAnnotationPresent(ApiIgnore.class))
+                .filter(method -> Arrays.asList(method.getAnnotation(ApiIgnore.class).value()).contains(ApiType.HTTP))
+                .map(method -> method.getName() + "/" + method.getParameterCount())
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Builds the signature of a documented method. The session key takes the place of the user the
+     * handler receives, so the documented parameters count is the parameter count of the method,
+     * once the properties nested below a struct parameter are left out.
+     *
+     * @param key the parsed method
+     * @return the name and documented parameter count of the method
+     */
+    private String documentedSignature(MethodKey key) {
+        int topLevel = key.parameters().stream().mapToInt(DocItem::level).min().orElse(0);
+        return key.method() + "/" + key.parameters().stream().filter(item -> item.level() == topLevel).count();
     }
 
     private String normalizeLabel(String value) {

@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  * @apidoc.namespace recurring.custom
  * @apidoc.doc Provides methods to handle recurring custom states for minions, system groups and organizations.
  */
-public class RecurringCustomStateHandler extends BaseHandler {
+public class RecurringCustomStateHandler extends BaseHandler implements RecurringCustomStateHandlerApi {
     private final ConfigurationManager configManager = ConfigurationManager.getInstance();
     private final StateConfigFactory stateConfigFactory = new StateConfigFactory(configManager);
     private final RecurringActionHandler actionHandler = new RecurringActionHandler();
