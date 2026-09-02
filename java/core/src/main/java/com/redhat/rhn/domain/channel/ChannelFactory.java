@@ -2262,10 +2262,7 @@ public class ChannelFactory extends HibernateFactory {
             }
         }
         else {
-            // clone appstreams
-            if (AppStreamsManager.listChannelAppStreams(to.getId()).isEmpty()) {
-                AppStreamsManager.cloneAppStreams(to, from);
-            }
+            AppStreamsManager.cloneAppStreams(to, from);
             if (!to.isModular()) {
                 Modules modules = new Modules();
                 modules.setChannel(to);
