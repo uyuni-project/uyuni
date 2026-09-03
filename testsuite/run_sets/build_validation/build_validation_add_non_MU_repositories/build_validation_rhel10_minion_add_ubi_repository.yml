@@ -1,0 +1,5 @@
+## Add non MU repositories for rhel10 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/rhel10_minion_add_ubi_repository.feature
+
+## Add non MU repositories END ###

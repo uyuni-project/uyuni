@@ -79,7 +79,7 @@ end
 
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
-  interface, code = node.run("ip -6 address show #{node.public_interface}")
+  interface, code = node.run("ip -6 address show #{node.public_interface}", runs_in_container: false)
   raise RuntimeError unless code.zero?
 
   lines = interface.lines
