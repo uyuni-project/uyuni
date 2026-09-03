@@ -30,4 +30,3 @@ Feature: Install RKE2 on transactional systems
     When I run "ln -sf /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl" on "server"
     And I run "ln -sf /var/lib/rancher/rke2/bin/crictl /usr/local/bin/crictl" on "server"
     And I run "ln -sf /var/lib/rancher/rke2/bin/ctr /usr/local/bin/ctr" on "server"
-
