@@ -1,8 +1,8 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
 
 @rke2
+@no_user_creation
 Feature: RKE2 Proxy Deployment
   In order to use a proxy deployed on RKE2
   As the system administrator

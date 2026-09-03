@@ -4,12 +4,13 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Kubernetes sanity checks BEGIN ##
+## Install MLM proxy on RKE2 BEGIN ##
 
 # IDEMPOTENT
 
-- features/kubernetes/srv_rke2_check_installation.feature
+- features/kubernetes/proxy_rke2_install_mlm_dependencies.feature
+- features/kubernetes/proxy_rke2_set_up_proxy_certs.feature
+- features/kubernetes/proxy_rke2_install_mlm_proxy_on_rke2.feature
 - features/kubernetes/proxy_rke2_check_installation.feature
-- features/kubernetes/srv_rke2_tftpd_sanity.feature
 
-## Kubernetes sanity checks END ##
+## Install MLM proxy on RKE2 END ##

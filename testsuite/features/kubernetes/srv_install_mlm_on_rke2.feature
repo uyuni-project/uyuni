@@ -12,6 +12,10 @@ Feature: Install MLM on RKE2
     And the environment variable "HELM_CHART_URL" is set on "server"
     And the environment variable "HELM_CHART_NAME" is set on "server"
     And the environment variable "SELF_SIGNED_PATH" is set on "server"
+    And the environment variable "VALUES_YAML_PATH" is set on "server"
+    And the environment variable "HELM_CHART_NAME" is set on "server"
+    And the environment variable "HELM_CHART_URL" is set on "server"
+    And the environment variable "SERVER_NAMESPACE" is set on "server"
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
   Scenario: Update OCI app version
@@ -19,6 +23,6 @@ Feature: Install MLM on RKE2
 
   @install_mlm_on_rke2
   Scenario: Install Uyuni
-    When I run "kubectl create namespace uyuni --dry-run=client -o yaml | kubectl apply -f -" on "server"
+    And I run "kubectl create namespace $SERVER_NAMESPACE --dry-run=client -o yaml | kubectl apply -f -" on "server"
     And I run "cd $SELF_SIGNED_PATH && helm dependencies build" on "server"
-    And I run "cd $HELM_CHART_DIRECTORY && helm upgrade --install uyuni ./selfsigned -f ./selfsigned/values.yaml -n uyuni" on "server"
+    And I run "helm upgrade --install uyuni $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $SERVER_NAMESPACE" on "server"

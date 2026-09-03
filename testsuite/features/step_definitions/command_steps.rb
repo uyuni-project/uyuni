@@ -825,6 +825,11 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I run "([^"]*)" on "([^"]*)" outside the container$/) do |cmd, host|
+  node = get_target(host)
+  node.run(cmd, runs_in_container: false)
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
@@ -1096,8 +1101,16 @@ end
 When(/I copy "([^"]*)" from "([^"]*)" to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
   node_origin = get_target(origin)
   node_dest = get_target(dest)
-  dest_hostname = node_dest.hostname
+  dest_hostname = node_dest.full_hostname
   _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}")
+  raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
+end
+
+When(/I copy "([^"]*)" from "([^"]*)" outside the container to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
+  node_origin = get_target(origin)
+  node_dest = get_target(dest)
+  dest_hostname = node_dest.full_hostname
+  _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}", runs_in_container: false)
   raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
 end
 
