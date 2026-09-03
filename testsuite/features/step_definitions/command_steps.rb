@@ -2007,3 +2007,21 @@ When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node.run('rm -rf /root/server-supportconfig')
   node.run('rm -rf /root/server-supportconfig.tar.gz')
 end
+
+When(/^I set the "([^"]*)" environment variable to "([^"]*)" on this "([^"]*)"$/) do |key, value, host|
+  set_env_var(host, key, value)
+end
+
+When(/^I set a reactivation key as environment variable on this "([^"]*)"$/) do |host|
+  react_key = get_reactivation_key(host)
+  log "Reactivation Key for #{host}: #{react_key}"
+  set_env_var(host, "REACTIVATION_KEY", react_key)
+end
+
+When(/^I execute the "([^"]*)" bootstrap script on this "([^"]*)"$/) do |script_name, host|
+  server_fqdn = get_target('server').full_hostname
+  cmd = "curl -Sks https://#{server_fqdn}/pub/bootstrap/#{script_name} | /bin/bash"
+
+  _output, code = get_target(host).run_local(cmd, check_errors: true)
+  raise ScriptError, "Bootstrap script for host #{host} failed with code: #{code}" unless code.zero?
+end

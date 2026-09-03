@@ -172,9 +172,7 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  node_id = $api_test.system.retrieve_server_id(system_name)
-  react_key = $api_test.system.obtain_reactivation_key(node_id)
-  log "Reactivation Key: #{react_key}"
+  react_key = get_reactivation_key(host)
+  log "Reactivation Key for #{host}: #{react_key}"
   step %(I enter "#{react_key}" as "reactivationKey")
 end
