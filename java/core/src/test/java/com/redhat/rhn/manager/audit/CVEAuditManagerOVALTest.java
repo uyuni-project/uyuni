@@ -26,7 +26,9 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Cve;
@@ -48,6 +50,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -563,6 +566,26 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         TestUtils.assertNotEmpty(auditServer.getChannels());
         TestUtils.assertNotEmpty(auditServer.getErratas());
         assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, auditServer.getPatchStatus());
+    }
+
+    @Test
+    void testDeleteOldOVALMetadata() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+
+        // Use a date 2 seconds in the past to ensure it is older than any newly inserted records
+        Date beforeSync = new Date(System.currentTimeMillis() - 2000);
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        // If we call deleteOldOVALMetadata with a date in the past, nothing should be deleted.
+        OVALCachingFactory.deleteOldOVALMetadata(beforeSync);
+        assertTrue(OVALCachingFactory.canAuditCVE("CVE-2022-2991"));
+
+        // If we call deleteOldOVALMetadata with a date in the future, it should delete the records.
+        Date afterSync = new Date(System.currentTimeMillis() + 10000); // 10 seconds in the future
+        OVALCachingFactory.deleteOldOVALMetadata(afterSync);
+        assertFalse(OVALCachingFactory.canAuditCVE("CVE-2022-2991"));
     }
 
     private static void extractAndSaveVulnerablePackages(OvalRootType rootType) {

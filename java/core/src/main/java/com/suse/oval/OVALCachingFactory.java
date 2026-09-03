@@ -38,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,17 @@ public class OVALCachingFactory extends HibernateFactory {
         Map<String, String> params = new HashMap<>();
         params.put("os_product_family", osProduct.getOsFamily().toString());
         params.put("os_product_version", osProduct.getOsVersion());
+        mode.executeUpdate(params);
+    }
+
+    /**
+     * Delete all OVAL metadata older than the given start date.
+     * @param startDate the starting date of the process.
+     */
+    public static void deleteOldOVALMetadata(Date startDate) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "delete_old_oval_metadata");
+        Map<String, Object> params = new HashMap<>();
+        params.put("start_date", new java.sql.Timestamp(startDate.getTime()));
         mode.executeUpdate(params);
     }
 

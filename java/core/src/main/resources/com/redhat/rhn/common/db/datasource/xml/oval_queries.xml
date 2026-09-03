@@ -70,4 +70,14 @@
         </query>
     </write-mode>
 
+    <write-mode name="delete_old_oval_metadata">
+        <query params="start_date">
+            DELETE FROM suseOVALVulnerablePackage
+            WHERE last_modified &lt; :start_date;
+
+            DELETE FROM suseOVALPlatformVulnerable
+            WHERE last_modified &lt; :start_date;
+        </query>
+    </write-mode>
+
 </datasource_modes>
