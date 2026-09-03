@@ -88,4 +88,4 @@ tests:
             value: 1
     asserts:
       - failedTemplate:
-          errorPattern: "got number, want string"
+          errorPattern: "got number, want null or string"

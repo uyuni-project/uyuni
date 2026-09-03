@@ -35,32 +35,13 @@ The following persistent volume claims will be created and will need to be bound
 
 | Volume Key | Default Size |
 | ---------- | ------------ |
-| `var-pgsql` | `"50Gi"` |
-| `var-spacewalk` | `"100Gi"` |
-| `var-cache` | `"10Gi"` |
-| `var-log` | `"2Gi"` |
-| `srv-www` | `"100Gi"` |
-| `srv-tftpboot` | `"300Mi"` |
-| `ca-certs` | `"10Mi"` |
-| `etc-apache2` | `"1Mi"` |
-| `etc-cobbler` | `"1Mi"` |
-| `etc-postfix` | `"1Mi"` |
-| `etc-rhn` | `"1Mi"` |
-| `etc-salt` | `"1Mi"` |
-| `etc-sssd` | `"1Mi"` |
-| `etc-sysconfig` | `"20Mi"` |
-| `etc-systemd-multi` | `"1Mi"` |
-| `etc-systemd-sockets` | `"1Mi"` |
-| `etc-tomcat` | `"1Mi"` |
-| `run-salt-master` | `"10Mi"` |
-| `srv-formulametadata` | `"10Mi"` |
-| `srv-pillar` | `"10Mi"` |
-| `srv-salt` | `"10Mi"` |
-| `srv-spacewalk` | `"10Mi"` |
-| `srv-susemanager` | `"1Mi"` |
-| `var-cobbler` | `"10Mi"` |
-| `var-salt` | `"10Mi"` |
-| `var-search` | `"10Gi"` |
+{{- range .Values }}
+  {{- if hasPrefix "volumes." .Key }}
+    {{- if hasSuffix ".size" .Key }}
+| `{{ .Key | trimPrefix "volumes." | trimSuffix ".size" }}` | {{ .Default }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 They all are using the `ReadWriteOnce` access mode and can be configured in the values.
 
@@ -140,6 +121,7 @@ db:
 Uyuni requires some TCP and UDP ports to be routed to its services.
 Here is a list of the ports to map:
 
+
 | Protocol | Port  | Service name | Service port |                                                  |
 | -------- | ----- | ------------ | ------------ | ------------------------------------------------ |
 | TCP      | 5432  | reportdb     | 5432         |                                                  |
@@ -149,11 +131,13 @@ Here is a list of the ports to map:
 | TCP      | 8002  | search       | 8002         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8003  | tomcat       | 8003         | Only if installed with `exposeJavaDebug = true`  |
 
+
 #### Exposing TFTP
 
 Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
 Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
+
 
 #### Exposing the report database
 
@@ -173,19 +157,27 @@ Services can be configured with the following values:
 
 | Key | Type | Default | Description |
 | --- | ---- | ------- | ----------- |
-| `type` | string | `"ClusterIP"` | type of all the externally-facing services. Can be overridden on each service. |
-| `annotations` | string | `nil` | annotations to set to all the services. Merged with the service ones. |
+{{- range .Values }}
+  {{- if hasPrefix "services." .Key }}
+    {{- $subKey := .Key | trimPrefix "services." }}
+    {{- if and (not (contains "." $subKey)) (ne "object" .Type) }}
+| `{{ $subKey }}` | {{ .Type}} | {{ .Default }} | {{ .Description }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 Each of the services can be configured with an overriding `type` and `annotations`.
 The list of services supporting this is:
 
 | Service | Comment |
-| `reportdb` |  |
-| `salt` |  |
-| `search` |  |
-| `taskomatic` |  |
-| `tomcat` |  |
-| `tftp` | Cannot override the `type` |
+{{- range .Values }}
+  {{- if hasPrefix "services." .Key }}
+    {{- $subKey := .Key | trimPrefix "services." }}
+    {{- if and (not (contains "." $subKey)) (eq "object" .Type) }}
+| `{{ $subKey }}` | {{ if eq $subKey "tftp" }}Cannot override the `type`{{ end }} |
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 ### Ingress vs Gateway API
 
@@ -251,8 +243,8 @@ profile k8s-systemd-uyuni flags=(attach_disconnected,mediate_deleted) {
 
   # Generic remounts (for general compatibility)
   mount options=(rw, remount) -> **,
-  mount options=(ro, remount) -> **,
- 
+  mount options=(ro, remount) -> **, 
+  
   # Required for the uyuni server container specifically
   /sys/fs/cgroup/** rw,
   /run/** rw,
@@ -295,7 +287,7 @@ require {
     type cgroup_t;
     type tmpfs_t;
     type proc_t;
-   
+    
     class dir { search write add_name create remove_name rmdir setattr getattr mounton };
     class file { create open write append read unlink setattr getattr watch };
     class filesystem { mount getattr relabelfrom relabelto remount unmount };
@@ -341,105 +333,11 @@ semodule -i /root/systemdcontainerpolicy.pp
 
 | Key | Type | Default | Description |
 | --- | ---- | ------- | ----------- |
-| `repository` | string | `"registry.opensuse.org/uyuni"` | The default repository with the path where to find all the images. |
-| `tag` | string | `nil` | The default tag to use for all the images, can be overridden By default the tag will be the appVersion of the Chart. |
-| `pullPolicy` | string | `"IfNotPresent"` | Images pull policy. See: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy |
-| `registrySecret` | string | `""` | name of secret to use to pull the images from the registry with authentication. Leave empty for no authentication. To create the secret, see: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
-| `global` | object | `{"fqdn":null}` | Variables that can be shared with a parent chart |
-| `global.fqdn` | string | `nil` | Fully qualified name the server will answer as. |
-| `timezone` | string | `"Etc/UTC"` | The time zone to set in the containers |
-| `placement` | object | `{}` | Default node placement rules for all pods |
-| `server` | object | `{"affinity":{},"apparmorProfile":"","email":"admin@uyuni.lab.org","extraVolumeMounts":[],"extraVolumes":[],"image":null,"mirror":{"claimName":"","hostPath":""},"nodeName":null,"nodeSelector":{},"sccSecret":"","selinuxType":"","superPrivileged":false,"systemdLogLevel":"","tag":null,"tolerations":[]}` | Server component configuration |
-| `server.image` | string | `nil` | Overrides the default image computed using the repository property. Leave undefined to use the default |
-| `server.tag` | string | `nil` | Overrides the default tag in the tag property. Leave undefined to use the default |
-| `server.email` | string | `"admin@uyuni.lab.org"` | Email used for the notifications sent by the server. |
-| `server.sccSecret` | string | `""` | Name of a basic-auth secret with the organization mirroring credentials to set up on the server. |
-| `server.mirror` | object | `{"claimName":"","hostPath":""}` | Volume or host path to mount in the container as server.susemanager.fromdir value. |
-| `server.mirror.claimName` | string | `""` | Name of the PVC to use for the mirror volume. |
-| `server.mirror.hostPath` | string | `""` | Path on the node to mount as mirror. |
-| `server.extraVolumes` | list | `[]` | Additional Kubernetes volumes for the server pod. |
-| `server.extraVolumeMounts` | list | `[]` | Additional mounts for the server container. |
-| `server.superPrivileged` | bool | `false` | Set to true to run on a cluster with selinux or AppArmor enforced. |
-| `server.systemdLogLevel` | string | `""` | Systemd log level to use for debugging |
-| `server.apparmorProfile` | string | `""` | Name of an AppArmor profile to use for the server pod. |
-| `server.selinuxType` | string | `""` | Name of the SELinux type to use for the server pod. |
-| `server.nodeSelector` | object | `{}` | Node label matching rules. |
-| `server.affinity` | object | `{}` | Advanced scheduling rules. |
-| `server.tolerations` | list | `[]` | Node taint tolerations. |
-| `server.nodeName` | string | `nil` | Specific node assignment. |
-| `exposeJavaDebug` | bool | `false` | Expose ports 8001, 8002, and 8003 for Java debugging if true |
-| `enableMonitoring` | bool | `true` | Create the ingress or gateway routes for Prometheus exporters if true. |
-| `ingress` | object | `{"annotations":{"exporters":{},"hub":{},"nossl":{},"saline":{},"ssl":{},"sslRedirect":{}},"class":"traefik","type":"traefik"}` | Configuration of the ingress rules. Won't be used if gateway is enabled. |
-| `ingress.type` | string | `"traefik"` | Ingress that is used in the cluster. Set to the empty string to use a custom ingress. |
-| `ingress.class` | string | `"traefik"` | Specify the ingress class name to use. |
-| `ingress.annotations` | object | `{"exporters":{},"hub":{},"nossl":{},"saline":{},"ssl":{},"sslRedirect":{}}` | Custom annotations for ingress rules. |
-| `ingress.annotations.ssl` | object | `{}` | annotations for the uyuni-ingress-ssl ingress definition. |
-| `ingress.annotations.sslRedirect` | object | `{}` | annotations for the uyuni-ingress-ssl-redirect ingress definition. |
-| `ingress.annotations.nossl` | object | `{}` | annotations for the uyuni-ingress-nossl ingress definition. |
-| `ingress.annotations.saline` | object | `{}` | annotations for the saline-ingress-ssl ingress definition. |
-| `ingress.annotations.hub` | object | `{}` | annotations for the hubapi-ingress-ssl ingress definition. |
-| `ingress.annotations.exporters` | object | `{}` | annotations for the exporters-ingress-ssl ingress definition. |
-| `gateway` | object | `{"class":"","enable":false,"listeners":{"http":{"name":"web","port":8000},"https":{"name":"websecure","port":8443}},"name":""}` | Configures the Gateway API. |
-| `gateway.enable` | bool | `false` | If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones. Note that TCPRoute is used and is still in alpha2 stage. |
-| `gateway.class` | string | `""` | Name of the gateway class to use. For rke2 with traefik, it is likely to be "traefik". |
-| `gateway.name` | string | `""` | Name of the Gateway to use. If left empty an uyuni-gateway will be created. |
-| `gateway.listeners` | object | `{"http":{"name":"web","port":8000},"https":{"name":"websecure","port":8443}}` | Gateway listeners configuration |
-| `gateway.listeners.http` | object | `{"name":"web","port":8000}` | Configuration of the HTTP listener. The default is adjusted for traefik on rke2 |
-| `gateway.listeners.http.name` | string | `"web"` | Name of the HTTP listener in the Gateway. |
-| `gateway.listeners.http.port` | int | `8000` | Port of the HTTP listener to set in the Gateway. |
-| `gateway.listeners.https` | object | `{"name":"websecure","port":8443}` | Configuration of the HTTPS listener. The default is adjusted for traefik on rke2 |
-| `gateway.listeners.https.name` | string | `"websecure"` | Name of the HTTPS listener in the Gateway. |
-| `gateway.listeners.https.port` | int | `8443` | Port of the HTTPS listener to set in the Gateway. |
-| `tftp` | object | `{"affinity":{},"enable":false,"hostNetwork":false,"image":null,"nodeName":null,"nodeSelector":{},"tag":null,"tolerations":[]}` | TFTP server configuration |
-| `tftp.image` | string | `nil` | Image for the TFTP server container, overwriting the one computed with the `repository` value |
-| `tftp.tag` | string | `nil` | Tag for the TFTP server container, overwriting the global one |
-| `tftp.enable` | bool | `false` | Define a TFTP server deployment with one replica if set to true |
-| `tftp.hostNetwork` | bool | `false` | Use the host network to bypass the Kubernetes network layers. This may be needed if not using a LoadBalancer for the TFTP server. Note that this may be more complex to manage on multi-node clusters. |
-| `tftp.nodeSelector` | object | `{}` | Node label matching rules. |
-| `tftp.affinity` | object | `{}` | Advanced scheduling rules. |
-| `tftp.tolerations` | list | `[]` | Node taint tolerations. |
-| `tftp.nodeName` | string | `nil` | Specific node assignment. |
-| `hubAPI` | object | `{"affinity":{},"enable":false,"image":null,"nodeName":null,"nodeSelector":{},"tag":null,"tolerations":[]}` | hub API component configuration |
-| `hubAPI.image` | string | `nil` | Image for the hub API container, overwriting the one computed with the `repository` value |
-| `hubAPI.tag` | string | `nil` | Image tag for the hub API container, overwriting the global one |
-| `hubAPI.enable` | bool | `false` | Define a hub API deployment with one replica if set to true. |
-| `hubAPI.nodeSelector` | object | `{}` | Node label matching rules. |
-| `hubAPI.affinity` | object | `{}` | Advanced scheduling rules. |
-| `hubAPI.tolerations` | list | `[]` | Node taint tolerations. |
-| `hubAPI.nodeName` | string | `nil` | Specific node assignment. |
-| `coco` | object | `{"affinity":{},"image":null,"nodeName":null,"nodeSelector":{},"replicas":0,"tag":null,"tolerations":[]}` | Confidential computing attestation component configuration |
-| `coco.image` | string | `nil` | Image for the confidential computing containers, overwriting the one computed with the `repository` value |
-| `coco.tag` | string | `nil` | Image tag for the confidential computing containers, overwriting the global one |
-| `coco.replicas` | int | `0` | Number the confidential computing pods replicas |
-| `coco.nodeSelector` | object | `{}` | Node label matching rules. |
-| `coco.affinity` | object | `{}` | Advanced scheduling rules. |
-| `coco.tolerations` | list | `[]` | Node taint tolerations. |
-| `coco.nodeName` | string | `nil` | Specific node assignment. |
-| `saline` | object | `{"affinity":{},"enable":false,"image":null,"nodeName":null,"nodeSelector":{},"tag":null,"tolerations":[]}` | Saline component configuration |
-| `saline.image` | string | `nil` | Image for the Saline container, overwriting the one computed with the `repository` value |
-| `saline.tag` | string | `nil` | Image tag for the Saline container, overwriting the global one |
-| `saline.enable` | bool | `false` | Define a saline deployment with one replica if set to true. |
-| `saline.nodeSelector` | object | `{}` | Node label matching rules. |
-| `saline.affinity` | object | `{}` | Advanced scheduling rules. |
-| `saline.tolerations` | list | `[]` | Node taint tolerations. |
-| `saline.nodeName` | string | `nil` | Specific node assignment. |
-| `db` | object | `{"affinity":{},"enable":true,"image":null,"internal":{"host":null,"name":null,"port":5432},"nodeName":null,"nodeSelector":{},"podsCIDR":"10.42.0.0/16","report":{"host":null,"name":null,"port":5432},"tag":null,"tolerations":[]}` | PostgreSQL database configuration |
-| `db.image` | string | `nil` | Image for the database container, overwriting the one computed with the `repository` value |
-| `db.tag` | string | `nil` | Image tag for the database container, overwriting the global one |
-| `db.enable` | bool | `true` | Deploys the internal dababase if set to true. Setting to false is not supported yet. |
-| `db.podsCIDR` | string | `"10.42.0.0/16"` | Network IP range to allow plain text connections from, usually the cluster pods CIDR The default has been adjusted with rke2's pods CIDR default. |
-| `db.internal` | object | `{"host":null,"name":null,"port":5432}` | Configuration of the internal database connection |
-| `db.internal.host` | string | `nil` | FQDN or IP where to find the internal database (unused for now) |
-| `db.internal.port` | int | `5432` | Port where to find the internal database (unused for now) |
-| `db.internal.name` | string | `nil` | Name of the internal database (unused for now) |
-| `db.report` | object | `{"host":null,"name":null,"port":5432}` | Configuration of the report database connection |
-| `db.report.host` | string | `nil` | FQDN or IP where to find the report database (unused for now) |
-| `db.report.port` | int | `5432` | Port where to find the report database (unused for now) |
-| `db.report.name` | string | `nil` | Name of the report database (unused for now) |
-| `db.nodeSelector` | object | `{}` | Node label matching rules. |
-| `db.affinity` | object | `{}` | Advanced scheduling rules. |
-| `db.tolerations` | list | `[]` | Node taint tolerations. |
-| `db.nodeName` | string | `nil` | Specific node assignment. |
+{{- range .Values }}
+  {{- if and (not (hasPrefix "volumes" .Key)) (not (hasPrefix "services" .Key)) }}
+| `{{ .Key }}` | {{ .Type }} | {{ .Default }} | {{ .Description }} |
+  {{- end }}
+{{- end }}
 
 ## Usage
 
