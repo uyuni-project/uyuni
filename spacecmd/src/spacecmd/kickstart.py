@@ -128,17 +128,13 @@ def do_kickstart_list(self, args, doreturn=False):
 
 def help_kickstart_create(self):
     print(_("kickstart_create: Create a Kickstart profile"))
-    print(
-        _(
-            """usage: kickstart_create [options])
+    print(_("""usage: kickstart_create [options])
 
 options:
   -n NAME
   -d DISTRIBUTION
   -p ROOT_PASSWORD
-  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""
-        )
-    )
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""))
 
 
 def do_kickstart_create(self, args):
@@ -148,7 +144,7 @@ def do_kickstart_create(self, args):
     arg_parser.add_argument("-v", "--virt-type")
     arg_parser.add_argument("-p", "--root-password")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user("Name:", noblank=True)
@@ -265,17 +261,13 @@ def do_kickstart_delete(self, args):
 
 def help_kickstart_import(self):
     print(_("kickstart_import: Import a Kickstart profile from a file"))
-    print(
-        _(
-            """usage: kickstart_import [options])
+    print(_("""usage: kickstart_import [options])
 
 options:
   -f FILE
   -n NAME
   -d DISTRIBUTION
-  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""
-        )
-    )
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""))
 
 
 def do_kickstart_import(self, args):
@@ -289,7 +281,7 @@ def kickstart_import_file(self, raw, args):
     arg_parser.add_argument("-v", "--virt-type")
     arg_parser.add_argument("-f", "--file")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user("Name:", noblank=True)
@@ -364,17 +356,13 @@ def help_kickstart_import_raw(self):
             "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
         )
     )
-    print(
-        _(
-            """usage: kickstart_import_raw [options])
+    print(_("""usage: kickstart_import_raw [options])
 
 options:
   -f FILE
   -n NAME
   -d DISTRIBUTION
-  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""
-        )
-    )
+  -v VIRT_TYPE ['none', 'para_host', 'qemu', 'xenfv', 'xenpv']"""))
 
 
 def do_kickstart_import_raw(self, args):
@@ -400,7 +388,7 @@ def do_kickstart_details(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_kickstart_details()
@@ -594,7 +582,7 @@ def do_kickstart_getcontents(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_getcontents()
@@ -634,7 +622,7 @@ def do_kickstart_rename(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_rename()
@@ -759,7 +747,7 @@ def do_kickstart_removecryptokeys(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removecryptokeys()
@@ -940,7 +928,7 @@ def do_kickstart_enableconfigmanagement(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enableconfigmanagement()
@@ -979,7 +967,7 @@ def do_kickstart_disableconfigmanagement(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_disableconfigmanagement()
@@ -1018,7 +1006,7 @@ def do_kickstart_enableremotecommands(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enableremotecommands()
@@ -1057,7 +1045,7 @@ def do_kickstart_disableremotecommands(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_disableremotecommands()
@@ -1093,7 +1081,7 @@ def do_kickstart_setlocale(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setlocale()
@@ -1134,7 +1122,7 @@ def do_kickstart_setselinux(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setselinux()
@@ -1174,7 +1162,7 @@ def do_kickstart_setpartitions(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_setpartitions()
@@ -1193,7 +1181,7 @@ def do_kickstart_setpartitions(self, args):
         template = ""
 
     # pylint: disable-next=unused-variable
-    (partitions, _ignore) = editor(template=template, delete=True)
+    partitions, _ignore = editor(template=template, delete=True)
 
     print(partitions)
     if not self.user_confirm():
@@ -1236,7 +1224,7 @@ def do_kickstart_setdistribution(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setdistribution()
@@ -1271,7 +1259,7 @@ def do_kickstart_enablelogging(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enablelogging()
@@ -1305,7 +1293,7 @@ def do_kickstart_addvariable(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_kickstart_addvariable()
@@ -1355,7 +1343,7 @@ def do_kickstart_updatevariable(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_kickstart_updatevariable()
@@ -1397,7 +1385,7 @@ def do_kickstart_removevariables(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removevariables()
@@ -1438,7 +1426,7 @@ def do_kickstart_listvariables(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listvariables()
@@ -1478,7 +1466,7 @@ def do_kickstart_addoption(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addoption()
@@ -1547,7 +1535,7 @@ def do_kickstart_removeoptions(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removeoptions()
@@ -1589,7 +1577,7 @@ def complete_kickstart_listoptions(self, text, line, beg, end):
 def do_kickstart_listoptions(self, args):
     arg_parser = get_argument_parser()
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listoptions()
@@ -1632,7 +1620,7 @@ def complete_kickstart_listcustomoptions(self, text, line, beg, end):
 def do_kickstart_listcustomoptions(self, args):
     arg_parser = get_argument_parser()
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listcustomoptions()
@@ -1671,7 +1659,7 @@ def complete_kickstart_setcustomoptions(self, text, line, beg, end):
 def do_kickstart_setcustomoptions(self, args):
     arg_parser = get_argument_parser()
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_setcustomoptions()
@@ -1691,7 +1679,7 @@ def do_kickstart_setcustomoptions(self, args):
 
     # let the user edit the custom options
     # pylint: disable-next=unused-variable
-    (new_options, _ignore) = editor(template=old_options, delete=True)
+    new_options, _ignore = editor(template=old_options, delete=True)
 
     new_options = new_options.split("\n")
 
@@ -1743,7 +1731,7 @@ def do_kickstart_addchildchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addchildchannels()
@@ -1789,7 +1777,7 @@ def do_kickstart_removechildchannels(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removechildchannels()
@@ -1835,7 +1823,7 @@ def do_kickstart_listchildchannels(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listchildchannels()
@@ -1881,7 +1869,7 @@ def do_kickstart_addfilepreservations(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_addfilepreservations()
@@ -1936,7 +1924,7 @@ def do_kickstart_removefilepreservations(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removefilepreservations()
@@ -1968,7 +1956,7 @@ def do_kickstart_listpackages(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listpackages()
@@ -2011,9 +1999,9 @@ def do_kickstart_addpackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
-    if not len(args) >= 2:
+    if len(args) < 2:
         self.help_kickstart_addpackages()
         return 1
 
@@ -2050,7 +2038,7 @@ def do_kickstart_removepackages(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removepackages()
@@ -2123,9 +2111,7 @@ def do_kickstart_listscripts(self, args):
 
 def help_kickstart_addscript(self):
     print(_("kickstart_addscript: Add a script to a Kickstart profile"))
-    print(
-        _(
-            """usage: kickstart_addscript PROFILE [options])
+    print(_("""usage: kickstart_addscript PROFILE [options])
 
 options:
   -p PROFILE
@@ -2133,9 +2119,7 @@ options:
   -i INTERPRETER
   -f FILE
   -c execute in a chroot environment
-  -t ENABLING_TEMPLATING"""
-        )
-    )
+  -t ENABLING_TEMPLATING"""))
 
 
 def complete_kickstart_addscript(self, text, line, beg, end):
@@ -2156,7 +2140,7 @@ def do_kickstart_addscript(self, args):
     arg_parser.add_argument("-i", "--interpreter")
     arg_parser.add_argument("-f", "--file")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         if args:
@@ -2175,7 +2159,7 @@ def do_kickstart_addscript(self, args):
             options.file = prompt_user(_("File:"))
         else:
             # pylint: disable-next=unused-variable
-            (options.contents, _ignore) = editor(delete=True)
+            options.contents, _ignore = editor(delete=True)
 
         # check user input
         if options.interpreter == "":
@@ -2266,7 +2250,7 @@ def do_kickstart_removescript(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_removescript()
@@ -2309,15 +2293,11 @@ def do_kickstart_removescript(self, args):
 
 def help_kickstart_clone(self):
     print(_("kickstart_clone: Clone a Kickstart profile"))
-    print(
-        _(
-            """usage: kickstart_clone [options])
+    print(_("""usage: kickstart_clone [options])
 
 options:
   -n NAME
-  -c CLONE_NAME"""
-        )
-    )
+  -c CLONE_NAME"""))
 
 
 def complete_kickstart_clone(self, text, line, beg, end):
@@ -2370,18 +2350,14 @@ def do_kickstart_clone(self, args):
 
 def help_kickstart_export(self):
     print(_("kickstart_export: export kickstart profile(s) to json format file"))
-    print(
-        _(
-            """usage: kickstart_export <KSPROFILE>... [options])
+    print(_("""usage: kickstart_export <KSPROFILE>... [options])
 options:
     -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json
                       if exporting a single kickstart, profiles.json for multiple
                       kickstarts, or ks_all.json if no KSPROFILE specified
                       e.g (export ALL)
 
-Note : KSPROFILE list is optional, default is to export ALL"""
-        )
-    )
+Note : KSPROFILE list is optional, default is to export ALL"""))
 
 
 def complete_kickstart_export(self, text, line, beg, end):
@@ -2516,7 +2492,7 @@ def do_kickstart_export(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-f", "--file")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     filename = ""
     if options.file is not None:
@@ -2598,7 +2574,7 @@ def do_kickstart_importjson(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if not args:
         logging.error(_N("Error, no filename passed"))
@@ -2731,7 +2707,6 @@ def import_kickstart_fromdetails(self, ksdetails):
                 _N("failed to add ip range %s-%s, continuing") % iprange["min"],
                 iprange["max"],
             )
-            continue
     # File preservations, only if the list exists
     existing_file_preservations = [
         x["name"]
@@ -2879,7 +2854,7 @@ def do_kickstart_diff(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_kickstart_diff()
@@ -2930,7 +2905,7 @@ def do_kickstart_getupdatetype(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_getupdatetype()
@@ -2967,21 +2942,17 @@ def do_kickstart_getupdatetype(self, args):
 
 def help_kickstart_setupdatetype(self):
     print(_("kickstart_setupdatetype: Set the update type for a kickstart profile(s)"))
-    print(
-        _(
-            """usage: kickstart_setupdatetype [options] KS_LABEL)
+    print(_("""usage: kickstart_setupdatetype [options] KS_LABEL)
 
 options:
-    -u UPDATE_TYPE ['red_hat', 'all', 'none']"""
-        )
-    )
+    -u UPDATE_TYPE ['red_hat', 'all', 'none']"""))
 
 
 def do_kickstart_setupdatetype(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-u", "--update-type")
 
-    (args, options) = parse_command_arguments(args, arg_parser)
+    args, options = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
 
@@ -3041,7 +3012,7 @@ def do_kickstart_getsoftwaredetails(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_getsoftwaredetails()
@@ -3119,7 +3090,7 @@ def do_kickstart_setsoftwaredetails(self, args):
     arg_parser = get_argument_parser()
 
     # pylint: disable-next=unused-variable
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    args, _options = parse_command_arguments(args, arg_parser)
     length = len(args)
     kspkginfo = ["noBase", "ignoreMissing"]
     mode = ["True", "False"]

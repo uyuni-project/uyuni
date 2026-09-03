@@ -54,7 +54,7 @@ class DiskSource:
     def _loadFile(self, filename):
         # Look for a gzip file first
         if self.allow_compressed_files:
-            if filename[-3:] == ".gz" and os.path.exists(filename):
+            if filename.endswith(".gz") and os.path.exists(filename):
                 return gzip.open(filename, "rb")
 
             if os.path.exists(filename + ".gz"):

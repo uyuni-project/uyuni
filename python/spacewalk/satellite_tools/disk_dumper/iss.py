@@ -1503,7 +1503,6 @@ def sendMail():
             "Subject": "SUSE Multi-Linux Manager Export report from %s"
             % os.uname()[1],
         }
-        # sndr = CFG.get('traceback_mail', 'rhn-satellite')
         # pylint: disable-next=consider-using-f-string
         sndr = "suse-manager@%s" % os.uname()[1]
         rhnMail.send(headers, body, sender=sndr)
@@ -1731,25 +1730,21 @@ class ExporterMain:
 
         # Grab some info on base channels. Base channels
         # have parent_channel set to null.
-        base_channel_query = rhnSQL.Statement(
-            """
+        base_channel_query = rhnSQL.Statement("""
             select  id, label
             from    rhnChannel
             where   parent_channel is null
-        """
-        )
+        """)
         base_channel_data = rhnSQL.prepare(base_channel_query)
         base_channel_data.execute()
         base_channels = base_channel_data.fetchall_dict()
 
         # Grab some info on child channels.
-        child_channel_query = rhnSQL.Statement(
-            """
+        child_channel_query = rhnSQL.Statement("""
             select  id, label, parent_channel
             from    rhnChannel
             where   parent_channel = :id
-        """
-        )
+        """)
         child_channel_data = rhnSQL.prepare(child_channel_query)
 
         if base_channels:
@@ -1759,7 +1754,7 @@ class ExporterMain:
 
                 # If the base channel isn't in channel_dict yet, create
                 # an empty list for it.
-                if not base_label in channel_dict:
+                if base_label not in channel_dict:
                     channel_dict[base_label] = []
 
                 # grab the child channel information for this base channel.
@@ -1805,12 +1800,10 @@ class ExporterMain:
         """
         Return a list of all orgs.
         """
-        org_query = rhnSQL.Statement(
-            """
+        org_query = rhnSQL.Statement("""
             select  id, name
             from    web_customer
-        """
-        )
+        """)
         org_data = rhnSQL.prepare(org_query)
         org_data.execute()
         return org_data.fetchall_dict()
@@ -1832,7 +1825,7 @@ class ExporterMain:
                 if self.actions[action] != 1:
                     continue
 
-                if not action in self.actionmap:
+                if action not in self.actionmap:
                     # If we get here there's a programming error. It means that self.action_order
                     # contains a action that isn't defined in self.actionmap.
                     # pylint: disable-next=consider-using-f-string
@@ -1871,7 +1864,6 @@ class ExporterMain:
                             compress_file(filepath)
 
             if self.options.make_isos:
-                # iso_output = os.path.join(self.isos_dir, self.dump_dir)
                 iso_output = self.isos_dir
                 if not os.path.exists(iso_output):
                     os.makedirs(iso_output)
