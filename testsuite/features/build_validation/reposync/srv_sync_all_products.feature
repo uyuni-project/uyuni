@@ -666,6 +666,32 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Oracle Linux 10 x86_64" product has been added
     And I wait until all synchronized channels for "oraclelinux10" have finished
 
+@rhel7_minion
+  Scenario: Add RHEL 7
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL7 Base x86_64" as the filtered product description
+    And I select "RHEL7 Base x86_64" as a product
+    Then I should see the "RHEL7 Base x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL7 Base x86_64" product has been added
+    And I wait until all synchronized channels for "el7" have finished
+
+@rhel8_minion
+  Scenario: Add RHEL 8
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 8 Base" product has been added
+    And I wait until all synchronized channels for "el8" have finished
+
 @rhel9_minion
   Scenario: Add RHEL 9
     Given I am authorized for the "Admin" section
@@ -678,6 +704,19 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "RHEL and Liberty 9 Base" product has been added
     And I wait until all synchronized channels for "el9" have finished
+
+@rhel10_minion
+  Scenario: Add RHEL 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 10 Base" as the filtered product description
+    And I select "RHEL and Liberty 10 Base" as a product
+    Then I should see the "RHEL and Liberty 10 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 10 Base" product has been added
+    And I wait until all synchronized channels for "el10" have finished
 
 @susemanager
 @rocky8_minion
