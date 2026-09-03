@@ -1,0 +1,4 @@
+- Remove traditional stack leftover in dist migration
+  and allow the API to proceed product migration
+  even if there are outstanding management
+  stack updates (bsc#1275215)
