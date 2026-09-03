@@ -551,6 +551,33 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
     }
 
     @Test
+    void testListSystemsByPatchStatusMatchesCpeInEitherDirection() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        String cveName = setTestCveName(ovalRoot);
+        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
+        Cve cve = createTestCve(cveName);
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+        Server longerCpeServer = createTestServer(user);
+        longerCpeServer.setCpe(CPE_OPENSUSE_LEAP_15_4 + ":server");
+        Server shorterCpeServer = createTestServer(user);
+        shorterCpeServer.setCpe("cpe:/o:opensuse:leap");
+
+        List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+                user, cve.getName(), EnumSet.allOf(PatchStatus.class));
+
+        for (Server server : List.of(longerCpeServer, shorterCpeServer)) {
+            CVEAuditServer auditServer = auditServers.stream()
+                    .filter(result -> result.getId() == server.getId())
+                    .findFirst()
+                    .orElseThrow();
+            assertEquals(Set.of(ScanDataSource.OVAL), auditServer.getScanDataSources());
+        }
+    }
+
+    @Test
     void testListSystemsByPatchStatusReturnsUnknownWithoutAvailableDataSource() throws Exception {
         OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));

@@ -158,7 +158,8 @@ public class CVEAuditManagerOVAL {
     }
 
     private static boolean isCpeCoveredByOval(String cpe, Set<String> ovalPlatformCpes) {
-        return cpe != null && ovalPlatformCpes.stream().anyMatch(cpe::startsWith);
+        return cpe != null && ovalPlatformCpes.stream()
+                .anyMatch(ovalCpe -> cpe.startsWith(ovalCpe) || ovalCpe.startsWith(cpe));
     }
 
     /**
