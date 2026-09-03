@@ -1016,3 +1016,296 @@ def test_softwarechannel_removepackages(shell):
     # It's not good to check output, but the actual call includes so many mocked
     # functions that it's close to meaningless to check those
     assert call("emacs-42.0-9.x86_64") in mprint.call_args_list
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_noargs(shell):
+    """
+    Test do_softwarechannel_delete without arguments.
+
+    :param shell:
+    :return:
+    """
+    shell.help_softwarechannel_delete = MagicMock()
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    res = spacecmd.softwarechannel.do_softwarechannel_delete(shell, "")
+
+    assert res == 1
+    assert shell.help_softwarechannel_delete.called
+    assert not shell.client.activationkey.delete.called
+    assert not shell.client.channel.software.delete.called
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_not_found(shell):
+    """
+    Test do_softwarechannel_delete when channel is not found.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(return_value=["channel1", "channel2"])
+    shell.user_confirm = MagicMock()
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    res = spacecmd.softwarechannel.do_softwarechannel_delete(shell, "nonexistent")
+
+    assert res == 1
+    assert not shell.user_confirm.called
+    assert not shell.client.activationkey.delete.called
+    assert not shell.client.channel.software.delete.called
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_no_confirm(shell):
+    """
+    Test do_softwarechannel_delete when user cancels confirmation.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(return_value=["base-channel-1"])
+    shell.user_confirm = MagicMock(return_value=False)
+    shell.client.activationkey.listActivationKeys = MagicMock()
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "base-channel-1"
+        )
+
+    assert res == 1
+    assert shell.user_confirm.called
+    assert not shell.client.activationkey.listActivationKeys.called
+    assert not shell.client.activationkey.delete.called
+    assert not shell.client.channel.software.delete.called
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_base_channel_deletes_activation_keys(shell):
+    """
+    Test do_softwarechannel_delete deletes activation keys linked to base channel.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(
+        return_value=["base-channel-1", "base-channel-2"]
+    )
+    shell.user_confirm = MagicMock(return_value=True)
+    shell.client.channel.listSoftwareChannels = MagicMock(
+        return_value=[
+            {"label": "base-channel-1", "parent_label": ""},
+            {"label": "base-channel-2", "parent_label": ""},
+        ]
+    )
+    shell.client.activationkey.listActivationKeys = MagicMock(
+        return_value=[
+            {"key": "1-ak-linked-1", "base_channel_label": "base-channel-1"},
+            {"key": "1-ak-other", "base_channel_label": "base-channel-2"},
+            {"key": "1-ak-linked-2", "base_channel_label": "base-channel-1"},
+            {"key": "1-ak-no-base", "base_channel_label": None},
+            {"base_channel_label": "base-channel-1"},
+        ]
+    )
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "base-channel-1"
+        )
+
+    assert res == 0
+    assert shell.client.activationkey.delete.call_count == 2
+    shell.client.activationkey.delete.assert_has_calls(
+        [
+            call(shell.session, "1-ak-linked-1"),
+            call(shell.session, "1-ak-linked-2"),
+        ],
+        any_order=False,
+    )
+    assert shell.client.channel.software.delete.call_count == 1
+    shell.client.channel.software.delete.assert_called_once_with(
+        shell.session, "base-channel-1"
+    )
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_multiple_base_channels_activation_keys(shell):
+    """
+    Test do_softwarechannel_delete deletes activation keys for multiple base channels.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(
+        return_value=["base-channel-1", "base-channel-2", "base-channel-3"]
+    )
+    shell.user_confirm = MagicMock(return_value=True)
+    shell.client.channel.listSoftwareChannels = MagicMock(
+        return_value=[
+            {"label": "base-channel-1", "parent_label": ""},
+            {"label": "base-channel-2", "parent_label": ""},
+            {"label": "base-channel-3", "parent_label": ""},
+        ]
+    )
+    shell.client.activationkey.listActivationKeys = MagicMock(
+        return_value=[
+            {"key": "1-ak-base-1", "base_channel_label": "base-channel-1"},
+            {"key": "1-ak-base-2", "base_channel_label": "base-channel-2"},
+            {"key": "1-ak-base-3", "base_channel_label": "base-channel-3"},
+        ]
+    )
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "base-channel-1 base-channel-2"
+        )
+
+    assert res == 0
+    assert shell.client.activationkey.delete.call_count == 2
+    shell.client.activationkey.delete.assert_has_calls(
+        [
+            call(shell.session, "1-ak-base-1"),
+            call(shell.session, "1-ak-base-2"),
+        ],
+        any_order=False,
+    )
+    assert shell.client.channel.software.delete.call_count == 2
+    shell.client.channel.software.delete.assert_has_calls(
+        [
+            call(shell.session, "base-channel-1"),
+            call(shell.session, "base-channel-2"),
+        ],
+        any_order=False,
+    )
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_base_and_child_channels_with_activation_keys(shell):
+    """
+    Test do_softwarechannel_delete with base and child channels and activation keys.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(
+        return_value=["base-channel-1", "child-channel-1"]
+    )
+    shell.user_confirm = MagicMock(return_value=True)
+    shell.client.channel.listSoftwareChannels = MagicMock(
+        return_value=[
+            {"label": "base-channel-1", "parent_label": ""},
+            {"label": "child-channel-1", "parent_label": "base-channel-1"},
+        ]
+    )
+    shell.client.activationkey.listActivationKeys = MagicMock(
+        return_value=[
+            {"key": "1-ak-base", "base_channel_label": "base-channel-1"},
+            {"key": "1-ak-child", "base_channel_label": "child-channel-1"},
+        ]
+    )
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "base-channel-1 child-channel-1"
+        )
+
+    assert res == 0
+    assert shell.client.activationkey.delete.call_count == 1
+    shell.client.activationkey.delete.assert_called_once_with(
+        shell.session, "1-ak-base"
+    )
+    assert shell.client.channel.software.delete.call_count == 2
+    shell.client.channel.software.delete.assert_has_calls(
+        [
+            call(shell.session, "child-channel-1"),
+            call(shell.session, "base-channel-1"),
+        ],
+        any_order=False,
+    )
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_child_channel_only(shell):
+    """
+    Test do_softwarechannel_delete for child channel only does not delete activation keys.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(return_value=["child-channel-1"])
+    shell.user_confirm = MagicMock(return_value=True)
+    shell.client.channel.listSoftwareChannels = MagicMock(
+        return_value=[
+            {"label": "child-channel-1", "parent_label": "base-channel-1"},
+        ]
+    )
+    shell.client.activationkey.listActivationKeys = MagicMock()
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "child-channel-1"
+        )
+
+    assert res == 0
+    assert not shell.client.activationkey.listActivationKeys.called
+    assert not shell.client.activationkey.delete.called
+    assert shell.client.channel.software.delete.call_count == 1
+    shell.client.channel.software.delete.assert_called_once_with(
+        shell.session, "child-channel-1"
+    )
+
+
+# pylint: disable-next=redefined-outer-name
+def test_softwarechannel_delete_base_channel_no_matching_activation_keys(shell):
+    """
+    Test do_softwarechannel_delete base channel when no activation keys match.
+
+    :param shell:
+    :return:
+    """
+    shell.do_softwarechannel_list = MagicMock(return_value=["base-channel-1"])
+    shell.user_confirm = MagicMock(return_value=True)
+    shell.client.channel.listSoftwareChannels = MagicMock(
+        return_value=[
+            {"label": "base-channel-1", "parent_label": ""},
+        ]
+    )
+    shell.client.activationkey.listActivationKeys = MagicMock(
+        return_value=[
+            {"key": "1-ak-other", "base_channel_label": "base-channel-2"},
+        ]
+    )
+    shell.client.activationkey.delete = MagicMock()
+    shell.client.channel.software.delete = MagicMock()
+
+    mprint = MagicMock()
+    with patch("spacecmd.softwarechannel.print", mprint):
+        res = spacecmd.softwarechannel.do_softwarechannel_delete(
+            shell, "base-channel-1"
+        )
+
+    assert res == 0
+    assert shell.client.activationkey.listActivationKeys.called
+    assert not shell.client.activationkey.delete.called
+    assert shell.client.channel.software.delete.call_count == 1
+    shell.client.channel.software.delete.assert_called_once_with(
+        shell.session, "base-channel-1"
+    )
