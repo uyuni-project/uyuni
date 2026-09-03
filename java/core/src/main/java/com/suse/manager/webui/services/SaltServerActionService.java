@@ -971,7 +971,8 @@ public class SaltServerActionService {
         /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
          *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
          */
-        if (!ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType())) {
+        if (!(ActionTypeEnum.TYPE_REBOOT.equalsType(action.getActionType()) ||
+                isSLES15To16Migration(Optional.of(action)))) {
             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
                     Optional.of(Xor.right(function)), null);
         }
@@ -988,8 +989,11 @@ public class SaltServerActionService {
         minion.updateServerInfo();
 
         // Perform a package profile update in the end if necessary
-        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
-                Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
+        if (!isSLES15To16Migration(Optional.of(action)) &&
+                (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
+                        Optional.of(Xor.right(function)), Optional.of(jsonResult)) ||
+                        isMajorMigrationVerifyJob(action, function))) {
+            // not when returning from migration job, but after the verify job we need to
             LOG.info("Scheduling a package profile update");
 
             try {
@@ -1374,6 +1378,19 @@ public class SaltServerActionService {
             return apAction.getDetails().getMods().contains(ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY);
         }
         return false;
+    }
+
+    /**
+     * Checks if the action is an DistUpgradeAction for SLES15 to SLES16 migration
+     * @param actionIn the action
+     * @return true when this is a SLES15 to SLES16 migration action
+     */
+    public boolean isSLES15To16Migration(Optional<Action> actionIn) {
+        return actionIn
+                .filter(DistUpgradeAction.class::isInstance)
+                .map(DistUpgradeAction.class::cast)
+                .map(DistUpgradeAction::isSles15To16Migration)
+                .orElse(false);
     }
 
     /**
