@@ -249,6 +249,19 @@ public class ContentSyncManager {
                 new Tuple2<>(3053L, 3249L), // mlm-client-tools-15.ppc64le => mlm-client-tools-16.ppc64le
                 new Tuple2<>(3054L, 3248L), // mlm-client-tools-15.s390x => mlm-client-tools-16.s390x
                 new Tuple2<>(3055L, 3246L), // mlm-client-tools-15.x86_64 => mlm-client-tools-16.x86_64
+                // define client tools 5 to 6.0 as migration possibility for Micro (no ppc64le)
+                new Tuple2<>(3064L, 3112L), // mlm-client-tools-micro-5.5.aarch64 => mlm-client-tools-micro-6.aarch64
+                new Tuple2<>(3065L, 3113L), // mlm-client-tools-micro-5.5.s390x => mlm-client-tools-micro-6.s390x
+                new Tuple2<>(3066L, 3111L), // mlm-client-tools-micro-5.5.x86_64 => mlm-client-tools-micro-6.x86_64
+                // define client tools 5 to 16 as migration possibility for Micro (no ppc64le)
+                new Tuple2<>(3064L, 3247L), // mlm-client-tools-micro-5.5.aarch64 => mlm-client-tools-16.aarch64
+                new Tuple2<>(3065L, 3248L), // mlm-client-tools-micro-5.5.s390x => mlm-client-tools-16.s390x
+                new Tuple2<>(3066L, 3246L), // mlm-client-tools-micro-5.5.x86_64 => mlm-client-tools-16.x86_64
+                // define client tools 6.0 to 16-6.1 as migration possibility for Micro
+                new Tuple2<>(3112L, 3247L), // mlm-client-tools-micro-6.aarch64 => mlm-client-tools-16.aarch64
+                new Tuple2<>(3114L, 3249L), // mlm-client-tools-micro-6.ppc64le => mlm-client-tools-16.ppc64le
+                new Tuple2<>(3113L, 3248L), // mlm-client-tools-micro-6.s390x => mlm-client-tools-16.s390x
+                new Tuple2<>(3111L, 3246L), // mlm-client-tools-micro-6.x86_64 => mlm-client-tools-16.x86_64
                 // SLES 15 SP7 => SLES 16.1 upgrade paths
                 new Tuple2<>(2793L, 3231L), // SLES-15.7-None.x86_64 => SLES-16.1-None.x86_64
                 new Tuple2<>(2792L, 3233L), // SLES-15.7-None.s390x => SLES-16.1-None.s390x
