@@ -240,7 +240,38 @@ public class ContentSyncManager {
                 new Tuple2<>(2793L, 2930L), // SLES-15.7-None.x86_64 => SLES-16.0-None.x86_64
                 new Tuple2<>(2792L, 2932L), // SLES-15.7-None.s390x => SLES-16.0-None.s390x
                 new Tuple2<>(2791L, 2933L), // SLES-15.7-None.ppc64le => SLES-16.0-None.ppc64le
-                new Tuple2<>(2790L, 2931L)  // SLES-15.7-None.aarch64 => SLES-16.0-None.aarch64
+                new Tuple2<>(2790L, 2931L), // SLES-15.7-None.aarch64 => SLES-16.0-None.aarch64
+                // define client tools 15 to 16 as migration possibility
+                new Tuple2<>(3052L, 3247L), // mlm-client-tools-15.aarch64 => mlm-client-tools-16.aarch64
+                new Tuple2<>(3053L, 3249L), // mlm-client-tools-15.ppc64le => mlm-client-tools-16.ppc64le
+                new Tuple2<>(3054L, 3248L), // mlm-client-tools-15.s390x => mlm-client-tools-16.s390x
+                new Tuple2<>(3055L, 3246L), // mlm-client-tools-15.x86_64 => mlm-client-tools-16.x86_64
+                // SLES 15 SP7 => SLES 16.1 upgrade paths
+                new Tuple2<>(2793L, 3231L), // SLES-15.7-None.x86_64 => SLES-16.1-None.x86_64
+                new Tuple2<>(2792L, 3233L), // SLES-15.7-None.s390x => SLES-16.1-None.s390x
+                new Tuple2<>(2791L, 3234L), // SLES-15.7-None.ppc64le => SLES-16.1-None.ppc64le
+                new Tuple2<>(2790L, 3232L), // SLES-15.7-None.aarch64 => SLES-16.1-None.aarch64
+                // SLES 15 SP6 => SLES 16.1 upgrade paths
+                new Tuple2<>(2609L, 3231L), // SLES-15.6-None.x86_64 => SLES-16.1-None.x86_64
+                new Tuple2<>(2608L, 3233L), // SLES-15.6-None.s390x => SLES-16.1-None.s390x
+                new Tuple2<>(2607L, 3234L), // SLES-15.6-None.ppc64le => SLES-16.1-None.ppc64le
+                new Tuple2<>(2606L, 3232L), // SLES-15.6-None.aarch64 => SLES-16.1-None.aarch64
+                // SLES 15 SP5 => SLES 16.1 upgrade paths
+                new Tuple2<>(2465L, 3231L), // SLES-15.5-None.x86_64 => SLES-16.1-None.x86_64
+                new Tuple2<>(2464L, 3233L), // SLES-15.5-None.s390x => SLES-16.1-None.s390x
+                new Tuple2<>(2463L, 3234L), // SLES-15.5-None.ppc64le => SLES-16.1-None.ppc64le
+                new Tuple2<>(2462L, 3232L), // SLES-15.5-None.aarch64 => SLES-16.1-None.aarch64
+                // SLE-RT 15 SP7 => SLES 16.1 upgrade paths
+                new Tuple2<>(2926L, 3231L), // SLE-RT-15.7-None.x86_64 => SLES-16.1-None.x86_64
+                // SLES-for-SAP 15 SP5 => SLES-for-SAP 16.1 upgrade paths
+                new Tuple2<>(2467L, 3235L), // SLES_SAP-15.5-None.x86_64 => SLES_SAP-16.1-None.x86_64
+                new Tuple2<>(2466L, 3236L), // SLES_SAP-15.5-None.ppc64le => SLES_SAP-16.1-None.ppc64le
+                // SLES-for-SAP 15 SP6 => SLES-for-SAP 16.1 upgrade paths
+                new Tuple2<>(2611L, 3235L), // SLES_SAP-15.6-None.x86_64 => SLES_SAP-16.1-None.x86_64
+                new Tuple2<>(2610L, 3236L), // SLES_SAP-15.6-None.ppc64le => SLES_SAP-16.1-None.ppc64le
+                // SLES-for-SAP 15 SP7 => SLES-for-SAP 16.1 upgrade paths
+                new Tuple2<>(2795L, 3235L), // SLES_SAP-15.7-None.x86_64 => SLES_SAP-16.1-None.x86_64
+                new Tuple2<>(2794L, 3236L) // SLES_SAP-15.7-None.ppc64le => SLES_SAP-16.1-None.ppc64le
         );
         return upgradePaths.stream();
     }

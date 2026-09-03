@@ -490,7 +490,7 @@ public class SPMigrationAction extends RhnAction {
         boolean isSLES16Target = targetProducts.stream()
                 .map(SUSEProductSet::getBaseProduct)
                 .anyMatch(p -> p != null && p.isSles16());
-        // Skip the successors warning for specific SLES 15 -> 16 migrations, show the pre-flight checklist instead
+        // Skip the successors warning for specific SLES 15.x -> 16.y migrations, show the pre-flight checklist instead
         if (isSLES15Source && isSLES16Target) {
             request.setAttribute("hasSLES16Target", true);
         }
