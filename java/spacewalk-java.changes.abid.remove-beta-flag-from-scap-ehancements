@@ -1,1 +1,4 @@
 - Make OpenSCAP scan scheduling generally available
+- Removed the API methods scheduleXccdfScan,
+  scheduleBetaXccdfScan* from system.scap namespace
+- Change API version to 30
