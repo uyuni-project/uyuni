@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -48,6 +49,7 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchUserException;
@@ -998,6 +1000,59 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         mergeResult = handler.mergeErrata(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel(), "2006-09-30", "2007-10-30");
         assertEquals(mergeResult.length, 0);
+    }
+
+    /**
+     * Tests mergeErrata handles legacy date (and datetime) formats date strings over to PostgreSQL to_timestamp
+     */
+    @Test
+    public void testMergeErrataByDateAcceptsLegacyFormats() {
+        Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
+
+        Map<String, Object> errataInfo = new HashMap<>();
+        errataInfo.put("synopsis", TestUtils.randomString());
+        errataInfo.put("advisory_name", TestUtils.randomString());
+        errataInfo.put("advisory_release", 2);
+        errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("advisory_status", AdvisoryStatus.FINAL.getMetadataValue());
+        errataInfo.put("product", TestUtils.randomString());
+        errataInfo.put("topic", TestUtils.randomString());
+        errataInfo.put("description", TestUtils.randomString());
+        errataInfo.put("solution", TestUtils.randomString());
+        errataInfo.put("references", TestUtils.randomString());
+        errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "unspecified");
+
+        Errata errata = errataHandler.create(admin, errataInfo, new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), List.of(mergeFrom.getLabel()));
+        TestUtils.flushAndEvict(errata);
+
+        // every one of these was accepted by to_timestamp(value, 'YYYY-MM-DD HH24:MI:SS')
+        List<String> startBounds = List.of(
+                "2021-06-25",
+                "2021-6-25",
+                "2021-6-25 00:56",
+                "2021-6-25 00:56:00",
+                "2021-6-25 00:00:00.123",
+                "2021-6-25 00:00:00.123456789"
+        );
+
+        for (String startBound : startBounds) {
+            Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
+            Object[] mergeResult = handler.mergeErrata(admin, mergeFrom.getLabel(), mergeTo.getLabel(),
+                    startBound, "2030-09-30 23:59:59");
+            assertEquals(1, mergeResult.length, "no errata merged for start date '" + startBound + "'");
+        }
+
+        Channel rejectTo = ChannelFactoryTest.createTestChannel(admin);
+        assertThrows(InvalidParameterException.class, () -> handler.mergeErrata(admin, mergeFrom.getLabel(),
+                rejectTo.getLabel(), "not-a-date", "2030-09-30"));
+        assertThrows(InvalidParameterException.class, () -> handler.mergeErrata(admin, mergeFrom.getLabel(),
+                rejectTo.getLabel(), "2008-09-30", ""));
+        assertThrows(InvalidParameterException.class, () -> handler.mergeErrata(admin, mergeFrom.getLabel(),
+                rejectTo.getLabel(), "2008-09-30", null));
+        assertThrows(InvalidParameterException.class, () -> handler.mergeErrata(admin, mergeFrom.getLabel(),
+                rejectTo.getLabel(), "2008-09-30T00:00:00", null));
     }
 
 

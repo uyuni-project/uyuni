@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
+import static com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareDoc.ChannelSoftwareService.SyncErrataWithPackages.ADVISORY_NAMES;
+import static com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareDoc.ChannelSoftwareService.SyncErrataWithPackages.ALIGN_MODULES;
+import static com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareDoc.ChannelSoftwareService.SyncErrataWithPackages.END_DATE;
+import static com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareDoc.ChannelSoftwareService.SyncErrataWithPackages.START_DATE;
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
@@ -65,6 +69,7 @@ import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
+import com.redhat.rhn.frontend.xmlrpc.channel.software.dto.SyncErrataWithPackagesResponse;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.channel.ChannelEditor;
@@ -85,6 +90,16 @@ import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.channel.software.SyncFromOriginalService;
+import com.suse.manager.channel.software.SyncFromOriginalServiceImpl;
+import com.suse.manager.channel.software.SyncFromSourceService;
+import com.suse.manager.channel.software.SyncFromSourceServiceImpl;
+import com.suse.manager.channel.software.SyncFromVendorService;
+import com.suse.manager.channel.software.SyncFromVendorServiceImpl;
+import com.suse.manager.channel.software.dto.ErrataCriteria;
+import com.suse.manager.channel.software.dto.SyncOperation;
+import com.suse.manager.channel.software.dto.SyncRequest;
+import com.suse.manager.channel.software.dto.SyncResponse;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -94,6 +109,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -116,8 +139,41 @@ import jakarta.persistence.NoResultException;
 public class ChannelSoftwareHandler extends BaseHandler {
 
     private static Logger log = LogManager.getLogger(ChannelSoftwareHandler.class);
+
+    /**
+     * Date formats accepted by the deprecated {@code mergeErrata} overload for filtering errata by date.
+     *
+     * The original API accepted the date as a {@code String} without documenting its expected format.
+     * In practice, parsing was delegated to PostgreSQL via {@code to_timestamp(value, 'YYYY-MM-DD HH24:MI:SS')}.
+     *
+     * To standardize the API and avoid ambiguous inputs, we agreed to support a subset of date/time formats
+     * that we know are accepted by that {@code to_timestamp} and can consider standard:
+     * - u-M-d
+     * - u-M-d H:m
+     * - u-M-d H:m:s
+     * - u-M-d H:m:s.SSSSSSSSS (up tp 9 fractional second digits)
+     */
+    private static final DateTimeFormatter LEGACY_MERGE_DATE_FORMAT =
+            new DateTimeFormatterBuilder()
+                    .appendPattern("u-M-d")
+                    .optionalStart()
+                        .appendLiteral(' ')
+                        .appendPattern("H:m")
+                        .optionalStart()
+                            .appendLiteral(':')
+                            .appendPattern("s")
+                            .optionalStart()
+                                .appendFraction(ChronoField.NANO_OF_SECOND, 1, 9, true)
+                            .optionalEnd()
+                        .optionalEnd()
+                    .optionalEnd()
+                .toFormatter();
+
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
+    private final SyncFromSourceService syncFromSourceService;
+    private final SyncFromOriginalService syncFromOriginalService;
+    private final SyncFromVendorService syncFromVendorService;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
@@ -128,6 +184,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        syncFromSourceService = new SyncFromSourceServiceImpl();
+        syncFromOriginalService = new SyncFromOriginalServiceImpl();
+        syncFromVendorService = new SyncFromVendorServiceImpl();
     }
 
     /**
@@ -1711,21 +1770,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
+     * @deprecated Use syncErrataWithPackagesFromSource instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel) {
-
-        Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
-        Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
-
-        if (!UserManager.verifyChannelAdmin(loggedInUser, mergeTo)) {
-            throw new PermissionCheckFailureException();
-        }
-
-        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, new HashSet<>(mergeFrom
-                .getErratas()), mergeTo, mergeFrom);
-
-        return mergedErrata.toArray();
+        SyncErrataWithPackagesResponse response = syncErrataWithPackagesFromSource(
+                loggedInUser, mergeFromLabel, mergeToLabel, "ERRATA_ONLY", false, true,
+                Collections.emptyMap(), Collections.emptyMap()
+        );
+        return response.erratas().toArray();
     }
 
     /**
@@ -1734,8 +1788,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param mergeFromLabel the label of the channel to pull the errata from
      * @param mergeToLabel the label of the channel to push errata into
-     * @param startDate begin date
-     * @param endDate end date
+     * @param startDateStr begin date
+     * @param endDateStr end date
      * @return A list of errata that were merged.
      *
      * @apidoc.doc Merges all errata from one channel into another based upon a
@@ -1751,24 +1805,48 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
+     * @deprecated Use syncErrataWithPackagesFromSource instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
-            String mergeToLabel, String startDate, String endDate) {
+            String mergeToLabel, String startDateStr, String endDateStr) {
+        Map<String, Object> errataFilter = Map.of(
+                START_DATE, parseLegacyMergeDate(startDateStr),
+                END_DATE, parseLegacyMergeDate(endDateStr)
+        );
 
-        Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
-        Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
+        SyncErrataWithPackagesResponse response = syncErrataWithPackagesFromSource(
+                loggedInUser, mergeFromLabel, mergeToLabel, "ERRATA_ONLY", false, true,
+                errataFilter, Collections.emptyMap()
+        );
+        return response.erratas().toArray();
+    }
 
-        if (!UserManager.verifyChannelAdmin(loggedInUser, mergeTo)) {
-            throw new PermissionCheckFailureException();
+    /**
+     * Parses a date boundary of the deprecated "generic" date strings.
+     * A value without a time part is resolved to midnight. This mimics the behaviour the previous implementation
+     * when delegating the parsing to PostgreSQL using {@code to_timestamp(value, 'YYYY-MM-DD HH24:MI:SS')}.
+     *
+     * @param dateStr the date to parse
+     * @return the parsed date
+     * @throws InvalidParameterException if the value is missing or cannot be parsed
+     */
+    private static Date parseLegacyMergeDate(String dateStr) {
+        if (StringUtils.isBlank(dateStr)) {
+            throw new InvalidParameterException("startDate and endDate might not be empty");
         }
 
-        List<Errata> fromErrata = ErrataFactory.lookupByChannelBetweenDates(
-                loggedInUser.getOrg(), mergeFrom, startDate, endDate);
-
-        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser,
-                new HashSet<>(fromErrata), mergeTo, mergeFrom);
-
-        return mergedErrata.toArray();
+        String trimmed = dateStr.trim();
+        try {
+            TemporalAccessor parsed = LEGACY_MERGE_DATE_FORMAT.parseBest(trimmed, LocalDateTime::from, LocalDate::from);
+            LocalDateTime dateTime = parsed instanceof LocalDateTime local ?
+                    local : LocalDate.from(parsed).atStartOfDay();
+            return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+        }
+        catch (DateTimeParseException e) {
+            log.debug("Unable to parse '{}' as a merge date boundary", trimmed, e);
+            throw new InvalidParameterException("Unable to parse '" + trimmed + "' as a merge date boundary");
+        }
     }
 
     /**
@@ -1793,35 +1871,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #return_array_begin()
      *          $ErrataSerializer
      *      #array_end()
+     * @deprecated Use syncErrataWithPackagesFromSource instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] mergeErrata(User loggedInUser, String mergeFromLabel,
             String mergeToLabel, List<String> errataNames) {
 
-        Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
-        Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
+        SyncErrataWithPackagesResponse response = syncErrataWithPackagesFromSource(
+                loggedInUser, mergeFromLabel, mergeToLabel, "ERRATA_ONLY", false, true,
+                Map.of(ADVISORY_NAMES, errataNames), Collections.emptyMap()
+        );
 
-        if (!UserManager.verifyChannelAdmin(loggedInUser, mergeTo)) {
-            throw new PermissionCheckFailureException();
-        }
-
-        Set<Errata> sourceErrata = mergeFrom.getErratas();
-        Set<Errata> errataToMerge = new HashSet<>();
-
-        // make sure our errata exist in the "from" channel
-        for (String erratumName : errataNames) {
-            Errata toMerge = ErrataManager.lookupByAdvisoryAndOrg(erratumName,
-                    mergeFrom.getOrg());
-
-            for (Errata erratum : sourceErrata) {
-                if (erratum.getAdvisoryName().equals(toMerge.getAdvisoryName())) {
-                    errataToMerge.add(toMerge);
-                    break;
-                }
-            }
-        }
-
-        Set<Errata> mergedErrata = ErrataManager.mergeErrataToChannel(loggedInUser, errataToMerge, mergeTo, mergeFrom);
-        return mergedErrata.toArray();
+        return response.erratas().toArray();
     }
 
     /**
@@ -1841,7 +1902,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #return_array_begin()
      *          $PackageSerializer
      *      #array_end()
+     * @deprecated Use syncErrataWithPackagesFromSource instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
             String mergeToLabel) {
         return mergePackages(loggedInUser, mergeFromLabel, mergeToLabel, false);
@@ -1867,40 +1930,216 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #return_array_begin()
      *          $PackageSerializer
      *      #array_end()
+     * @deprecated Use syncErrataWithPackagesFromSource instead
      */
+    @Deprecated(since = "2026.06")
     public Object[] mergePackages(User loggedInUser, String mergeFromLabel,
             String mergeToLabel, boolean alignModules) {
+        SyncErrataWithPackagesResponse response = syncErrataWithPackagesFromSource(
+                loggedInUser, mergeFromLabel, mergeToLabel, "PACKAGES_ONLY", false, true,
+                Collections.emptyMap(), Map.of(ALIGN_MODULES, alignModules)
+        );
 
-        Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
-        Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
+        return response.packages().toArray();
+    }
 
-        if (!UserManager.verifyChannelAdmin(loggedInUser, mergeTo)) {
-            throw new PermissionCheckFailureException();
+    /**
+     * Syncs erratas and/or packages from an explicit source channel to a target channel.
+     *
+     * @param user The current user
+     * @param sourceChannelLabel Label of the source channel (required)
+     * @param targetChannelLabel Label of the target channel
+     * @param filters Map containing filter criteria (advisoryNames, startDate, endDate)
+     * @param operation Type of sync operation
+     * @param async Execute asynchronously
+     * @param forceRefresh Force regenerating repodata and refreshing package cache
+     * @param options Additional options (alignPackageModules)
+     * @return Set of errata and packages that were synced
+     *
+     * @apidoc.doc Syncs erratas and/or packages from an explicit source channel to a target channel.
+     *
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "sourceChannelLabel", "Label of source channel (required)")
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "Label of target channel")
+     * @apidoc.param #param_desc("string", "operation", "Type of sync operation: 'ERRATA_ONLY', 'PACKAGES_ONLY', or
+     *                  'ERRATA_AND_PACKAGES' (default: 'ERRATA_AND_PACKAGES')")
+     * @apidoc.param #param_desc("boolean", "async", "Execute asynchronously (default: true)")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "Force regenerating repodata and/or refreshing package cache
+     *          (default: false)")
+     * @apidoc.param
+     *      #struct_begin("filters")
+     *          #prop_desc("array of strings", "advisoryNames", "Filter by specific advisory names (optional)")
+     *          #prop_desc("$date", "startDate", "Filter errata issued on or after this date (optional)")
+     *          #prop_desc("$date", "endDate", "Filter errata issued on or before this date (optional)")
+     *      #struct_end()
+     * @apidoc.param
+     *      #struct_begin("options")
+     *          #prop_desc("boolean", "alignPackageModules", "Align package modular data from source to target (RHEL 8+,
+     *          default: false, only applicable when syncing packages)")
+     *      #struct_end()
+     * @apidoc.returntype $SyncErrataWithPackagesResponseSerializer
+     */
+    public SyncErrataWithPackagesResponse syncErrataWithPackagesFromSource(
+            User user,
+            String sourceChannelLabel,
+            String targetChannelLabel,
+            String operation,
+            Boolean async,
+            Boolean forceRefresh,
+            Map<String, Object> filters,
+            Map<String, Object> options
+    ) {
+        // Validate options structure if provided
+        if (options != null) {
+            Set<String> validKeys = Set.of(ALIGN_MODULES);
+            validateMap(validKeys, options);
         }
 
-        List<Package> differentPackages = new ArrayList<>();
+        // Build request
+        ErrataCriteria criteria = new ErrataCriteria(
+                filters != null ? (List<String>) filters.get(ADVISORY_NAMES) : null,
+                filters != null ? (Date) filters.get(START_DATE) : null,
+                filters != null ? (Date) filters.get(END_DATE) : null
+        );
+        SyncRequest request = new SyncRequest(
+                criteria,
+                parseSyncOperation(operation),
+                async == null || async,
+                options != null && (Boolean) options.getOrDefault(ALIGN_MODULES, false),
+                forceRefresh != null && forceRefresh
+        );
 
-        Set<Package> toPacks = mergeTo.getPackages();
-        Set<Package> fromPacks = mergeFrom.getPackages();
-        List<Long> pids = new ArrayList<>();
-        for (Package pack : fromPacks) {
-            if (!toPacks.contains(pack)) {
-                pids.add(pack.getId());
-                differentPackages.add(pack);
-            }
+        SyncResponse response = syncFromSourceService.sync(user, sourceChannelLabel, targetChannelLabel, request);
+        return new SyncErrataWithPackagesResponse(response.erratas(), response.packages());
+    }
+
+    /**
+     * Syncs erratas and/or packages to a cloned channel by walking up the clone hierarchy.
+     * Gets ALL packages associated with each errata from the original channel.
+     *
+     * @param user The current user
+     * @param targetChannelLabel Label of the target channel (must be a cloned channel)
+     * @param filters Map containing filter criteria (advisoryNames, startDate, endDate)
+     * @param operation Type of sync operation
+     * @param async Execute asynchronously
+     * @param forceRefresh Force regenerating repodata and refreshing package cache
+     * @return Set of errata and packages that were synced
+     *
+     * @apidoc.doc Syncs erratas and/or packages to a cloned channel according to the original erratas.
+     *
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "Label of target channel (must be a cloned channel)")
+     * @apidoc.param #param_desc("string", "operation", "Type of sync operation: 'ERRATA_ONLY', 'PACKAGES_ONLY', or
+     *                  'ERRATA_AND_PACKAGES' (default: 'ERRATA_AND_PACKAGES')")
+     * @apidoc.param #param_desc("boolean", "async", "Execute asynchronously (default: true)")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "Force regenerating repodata and/or refreshing package cache
+     *          (default: false)")
+     * @apidoc.param
+     *      #struct_begin("filters")
+     *          #prop_desc("array of strings", "advisoryNames", "Filter by specific advisory names (optional)")
+     *          #prop_desc("$date", "startDate", "Filter errata issued on or after this date (optional)")
+     *          #prop_desc("$date", "endDate", "Filter errata issued on or before this date (optional)")
+     *      #struct_end()
+     * @apidoc.returntype $SyncErrataWithPackagesResponseSerializer
+     */
+    public SyncErrataWithPackagesResponse syncErrataWithPackagesFromOriginal(
+            User user,
+            String targetChannelLabel,
+            String operation,
+            Boolean async,
+            Boolean forceRefresh,
+            Map<String, Object> filters
+    ) {
+        // Build request
+        ErrataCriteria criteria = new ErrataCriteria(
+                filters != null ? (List<String>) filters.get(ADVISORY_NAMES) : null,
+                filters != null ? (Date) filters.get(START_DATE) : null,
+                filters != null ? (Date) filters.get(END_DATE) : null
+        );
+        SyncRequest request = new SyncRequest(
+                criteria,
+                parseSyncOperation(operation),
+                async == null || async,
+                false, // NA for cloning
+                forceRefresh != null && forceRefresh
+        );
+
+        SyncResponse response = syncFromOriginalService.sync(user, targetChannelLabel, request);
+        return new SyncErrataWithPackagesResponse(response.erratas(), response.packages());
         }
-        mergeTo.addPackages(differentPackages);
-        ChannelFactory.save(mergeTo);
-        ChannelManager.refreshWithNewestPackages(mergeTo, "java::mergePackages");
 
-        if (alignModules) {
-            mergeTo.cloneModulesFrom(mergeFrom);
+    /**
+     * Sync erratas and/or packages to a cloned channel from its original vendor channel
+     * It only considers erratas and packages that are newer than the ones already present in the destination channel
+     *
+     * @param user The current user
+     * @param targetChannelLabel Label of the target channel
+     * @param filters Map containing filter criteria (advisoryNames, startDate, endDate)
+     * @param operation Type of sync operation
+     * @param async Execute asynchronously
+     * @param forceRefresh Force regenerating repodata and refreshing package cache
+     * @return Set of errata and packages that were synced
+     *
+     * @apidoc.doc Syncs erratas and/or packages to a cloned channel from its original vendor channel.
+     * Only considers erratas and packages that are newer than the ones already present in the destination channel.
+     *
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "targetChannelLabel", "Label of target channel")
+     * @apidoc.param #param_desc("string", "operation", "Type of sync operation: 'ERRATA_ONLY', 'PACKAGES_ONLY', or
+     *                  'ERRATA_AND_PACKAGES' (default: 'ERRATA_AND_PACKAGES')")
+     * @apidoc.param #param_desc("boolean", "async", "Execute asynchronously (default: true)")
+     * @apidoc.param #param_desc("boolean", "forceRefresh", "Force regenerating repodata and/or refreshing package cache
+     *          (default: false)")
+     * @apidoc.param
+     *      #struct_begin("filters")
+     *          #prop_desc("array of strings", "advisoryNames", "Filter by specific advisory names (optional)")
+     *          #prop_desc("$date", "startDate", "Filter errata issued on or after this date (optional)")
+     *          #prop_desc("$date", "endDate", "Filter errata issued on or before this date (optional)")
+     *      #struct_end()
+     * @apidoc.returntype $SyncErrataWithPackagesResponseSerializer
+     */
+    public SyncErrataWithPackagesResponse syncErrataWithPackagesFromVendor(
+            User user,
+            String targetChannelLabel,
+            String operation,
+            Boolean async,
+            Boolean forceRefresh,
+            Map<String, Object> filters
+    ) {
+        // Build request
+        ErrataCriteria criteria = new ErrataCriteria(
+                filters != null ? (List<String>) filters.get(ADVISORY_NAMES) : null,
+                filters != null ? (Date) filters.get(START_DATE) : null,
+                filters != null ? (Date) filters.get(END_DATE) : null
+        );
+        SyncRequest request = new SyncRequest(
+                criteria,
+                parseSyncOperation(operation),
+                async == null || async,
+                false, // NA for cloning
+                forceRefresh != null && forceRefresh
+        );
+
+        SyncResponse response = syncFromVendorService.sync(user, targetChannelLabel, request);
+        return new SyncErrataWithPackagesResponse(response.erratas(), response.packages());
         }
 
-        List<Long> cids = new ArrayList<>();
-        cids.add(mergeTo.getId());
-        ErrataCacheManager.insertCacheForChannelPackagesAsync(cids, pids);
-        return differentPackages.toArray();
+    /**
+     * Helper method to parse SyncOperation from operation string.
+     */
+    private SyncOperation parseSyncOperation(String operationStr) {
+        if (operationStr == null) {
+            return SyncOperation.ERRATA_AND_PACKAGES;
+        }
+        try {
+            return SyncOperation.valueOf(operationStr.toUpperCase());
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException(
+                    "Invalid operation: " + operationStr +
+                    ". Must be one of: ERRATA_ONLY, PACKAGES_ONLY, ERRATA_AND_PACKAGES"
+            );
+        }
     }
 
     /**
