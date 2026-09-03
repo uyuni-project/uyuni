@@ -24,10 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
-import com.redhat.rhn.manager.MissingCapabilityException;
-import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -35,9 +32,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.utils.ScapUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -250,7 +245,6 @@ public class SystemScapHandler extends BaseHandler {
         }
     }
 
-   
     /**
      * Schedule SCAP scan with custom parameters.
      * @param loggedInUser The current user
