@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
@@ -717,6 +718,11 @@ public class ChannelManager extends BaseManager {
                                 environmentInUse.getContentEnvironment().getContentProject().getName(),
                                 environmentInUse.getContentEnvironment().getName())
         );
+
+        //remove all activation keys that have this as a base channel
+        if (toRemove.isBaseChannel()) {
+            ActivationKeyFactory.deleteActivationKeysWithBaseChannel(toRemove.getId());
+        }
 
         ChannelManager.queueChannelChange(label, user.getLogin(), "java::deleteChannel");
         ChannelFactory.remove(toRemove);

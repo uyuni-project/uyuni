@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -322,5 +323,74 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static ActivationKey lookupById(Long id, Org org) {
         return ActivationKeyFactory.lookupByToken(TokenFactory.lookup(id, org));
+    }
+
+    /**
+     * Gets a list of activation keys referring to a base channel
+     * @param channelId the base channel id
+     * @return a list of activation keys referring to a base channel
+     */
+    public static List<ActivationKey> lookupByBaseChannelId(long channelId) {
+        //rhnRegTokenChannels has no correspondent object, so we need a native query
+        return getSession().createNativeQuery(
+                        """
+                        SELECT ak.*
+                        FROM rhnActivationKey ak
+                            JOIN rhnRegToken rt ON rt.id = ak.reg_token_id
+                            JOIN rhnRegTokenChannels rtc ON rtc.token_id = ak.reg_token_id
+                            JOIN rhnChannel rc ON rc.id = rtc.channel_id
+                        WHERE rc.parent_channel IS NULL
+                        AND rc.id = :channelId
+                        """, ActivationKey.class)
+                .setParameter("channelId", channelId)
+                .addSynchronizedEntityClass(Token.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .getResultList();
+    }
+
+    /**
+     * Counts the activation keys referring to a base channel
+     * @param channelId the base channel id
+     * @return the activation keys count
+     */
+    public static long countActivationKeysWithBaseChannel(long channelId) {
+        //rhnRegTokenChannels has no correspondent object, so we need a native query
+        return getSession().createNativeQuery(
+                        """
+                        SELECT COUNT(*)
+                        FROM rhnActivationKey ak
+                            JOIN rhnRegToken rt ON rt.id = ak.reg_token_id
+                            JOIN rhnRegTokenChannels rtc ON rtc.token_id = ak.reg_token_id
+                            JOIN rhnChannel rc ON rc.id = rtc.channel_id
+                        WHERE rc.parent_channel IS NULL
+                        AND rc.id = :channelId
+                        """, Long.class)
+                .setParameter("channelId", channelId, StandardBasicTypes.LONG)
+                .addSynchronizedEntityClass(Token.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .uniqueResult();
+    }
+
+    /**
+     * Deletes the activation keys referring to a base channel
+     * @param channelId the base channel id
+     */
+    public static void deleteActivationKeysWithBaseChannel(long channelId) {
+        //rhnRegTokenChannels has no correspondent object, so we need a native query
+        getSession().createNativeMutationQuery(
+                        """
+                        DELETE FROM rhnActivationKey WHERE token IN
+                        (
+                            SELECT ak.token
+                            FROM rhnActivationKey ak
+                                JOIN rhnRegToken rt ON rt.id = ak.reg_token_id
+                                JOIN rhnRegTokenChannels rtc ON rtc.token_id = ak.reg_token_id
+                                JOIN rhnChannel rc ON rc.id = rtc.channel_id
+                            WHERE rc.parent_channel IS NULL
+                            AND rc.id = :channelId
+                        )
+                        """)
+                .setParameter("channelId", channelId, StandardBasicTypes.LONG)
+                .executeUpdate();
     }
 }

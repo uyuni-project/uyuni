@@ -23291,6 +23291,25 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
+        <source>Activation Keys</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+        <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
+        <source>Channel deletion will remove any Activation Key that has {0} as a base channel.
+         </source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
+        <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
+        <source>Activation Keys Affected:</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubheader" xml:space="preserve">
         <source>Unsubscribe Systems</source>
         <context-group name="ctx">
