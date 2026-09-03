@@ -137,6 +137,7 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a transactional system
 
 @skip_for_transactional_minion
+@skip_for_rhel_container
   Scenario: Reboot the <client> and wait until reboot is completed
     Given I am on the Systems overview page of this "<client>"
     When I follow first "Schedule System Reboot"

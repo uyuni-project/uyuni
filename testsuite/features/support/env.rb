@@ -547,12 +547,36 @@ Before('@oracle10_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_sshminion']
 end
 
+Before('@rhel7_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel7_minion']
+end
+
+Before('@rhel7_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel7_sshminion']
+end
+
+Before('@rhel8_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel8_minion']
+end
+
+Before('@rhel8_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel8_sshminion']
+end
+
 Before('@rhel9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_minion']
 end
 
 Before('@rhel9_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_sshminion']
+end
+
+Before('@rhel10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel10_minion']
+end
+
+Before('@rhel10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel10_sshminion']
 end
 
 Before('@rocky8_minion') do
@@ -805,8 +829,14 @@ Before('@skip_for_transactional_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include?('slemicro') || scenario.location.file.include?('slmicro')
 end
 
+# The RHEL clients are UBI containers. They have no CAP_SYS_BOOT, so anything
+# that reboots the client cannot work on them.
+Before('@skip_for_rhel_container') do |scenario|
+  skip_this_scenario if scenario.location.file.match?(/rhel\d+_(ssh)?minion/)
+end
+
 Before('@skip_for_rhel10_like') do |scenario|
-  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rocky10_minion @rocky10_sshminion]
+  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rhel10_minion @rhel10_sshminion @rocky10_minion @rocky10_sshminion]
   skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 
