@@ -48,15 +48,17 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public void execute(EventMessage msgIn) {
         ContentManager contentManager = new ContentManager();
         AlignSoftwareTargetMsg msg = (AlignSoftwareTargetMsg) msgIn;
-        Channel sourceChannel = ChannelFactory.lookupById(msg.getSource().getId());
         Long targetId = msg.getTarget().getId();
-        SoftwareEnvironmentTarget target = ContentProjectFactory
-                .lookupSwEnvironmentTargetById(targetId)
-                .orElseThrow(() -> new EntityNotExistsException(targetId));
-        Channel targetChannel = target.getChannel();
         List<ContentFilter> filters = msg.getFilters();
 
+        SoftwareEnvironmentTarget target = null;
         try {
+            Channel sourceChannel = ChannelFactory.lookupById(msg.getSource().getId());
+            target = ContentProjectFactory
+                    .lookupSwEnvironmentTargetById(targetId)
+                    .orElseThrow(() -> new EntityNotExistsException(targetId));
+            Channel targetChannel = target.getChannel();
+
             if (!UserManager.verifyChannelAdmin(msg.getUser(), targetChannel)) {
                 throw new PermissionException("User " + msg.getUser().getLogin() + " has no permission for channel " +
                         targetChannel.getLabel());
@@ -82,9 +84,15 @@ public class AlignSoftwareTargetAction implements MessageAction {
     public Consumer<Exception> getExceptionHandler() {
         return (e) -> {
             if (e instanceof AlignSoftwareTargetException exc) {
-                LOG.error("Error aligning target {}", exc.getTarget().getId(), e);
-                exc.getTarget().setStatus(Status.FAILED);
-                ContentProjectFactory.save(exc.getTarget());
+                SoftwareEnvironmentTarget target = exc.getTarget();
+                if (target == null) {
+                    LOG.error("Error aligning target: target does not exist", e);
+                    return;
+                }
+
+                LOG.error("Error aligning target {}", target.getId(), e);
+                target.setStatus(Status.FAILED);
+                ContentProjectFactory.save(target);
             }
         };
     }
