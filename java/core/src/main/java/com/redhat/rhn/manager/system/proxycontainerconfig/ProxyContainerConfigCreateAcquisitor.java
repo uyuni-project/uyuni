@@ -100,9 +100,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
         }
 
-        if (context.getAdditionalFqdns() != null) {
-            fqdns.addAll(context.getAdditionalFqdns());
-        }
+        fqdns.addAll(context.getAdditionalFqdns());
 
         Server proxySystem = getOrCreateProxySystem(
                 context.getSystemEntitlementManager(),
@@ -194,14 +192,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
             systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
 
-            if (parentProxy.isPresent()) {
-                Set<ServerPath> paths = ServerFactory.createServerPaths(server, parentProxy.get(), parentFqdn);
-                server.getServerPaths().clear();
-                server.getServerPaths().addAll(paths);
-            }
-            else {
-                server.getServerPaths().clear();
-            }
+            setParentPath(server, parentProxy, parentFqdn);
 
             ServerFactory.save(server);
             server.setPrimaryFQDNWithName(proxyName);
@@ -229,14 +220,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         server.updateServerInfo();
 
-        if (parentProxy.isPresent()) {
-            Set<ServerPath> paths = ServerFactory.createServerPaths(server, parentProxy.get(), parentFqdn);
-            server.getServerPaths().clear();
-            server.getServerPaths().addAll(paths);
-        }
-        else {
-            server.getServerPaths().clear();
-        }
+        setParentPath(server, parentProxy, parentFqdn);
 
         ServerFactory.save(server);
 
@@ -252,6 +236,20 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
         server.setPrimaryFQDNWithName(proxyName);
         return server;
+    }
+
+    /**
+     * Reset the proxy server's paths to reflect its parent. If the parent is another proxy the path
+     * chain leading to it is rebuilt, otherwise (direct connection to the server) the paths are cleared.
+     *
+     * @param server      the proxy server whose paths are updated
+     * @param parentProxy the parent proxy, or empty when connecting directly to the server
+     * @param parentFqdn  the FQDN used to reach the parent
+     */
+    private void setParentPath(Server server, Optional<Server> parentProxy, String parentFqdn) {
+        server.getServerPaths().clear();
+        parentProxy.ifPresent(parent ->
+                server.getServerPaths().addAll(ServerFactory.createServerPaths(server, parent, parentFqdn)));
     }
 
     /**

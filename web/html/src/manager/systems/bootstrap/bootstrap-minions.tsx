@@ -10,7 +10,8 @@ import { Messages, MessageType, Utils as MessagesUtils } from "components/messag
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
-import { ProxyOptions } from "../proxy";
+
+import { parseProxySelection, ProxyOptions } from "../proxy";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
@@ -267,8 +268,7 @@ class BootstrapMinions extends Component<Props, State> {
 
   proxyChanged = (event) => {
     const val = event.target.value;
-    const parts = val.split(":");
-    const proxyId = parts[0] ? parseInt(parts[0], 10) : NaN;
+    const { proxyId } = parseProxySelection(val);
     const proxy = this.props.proxies.find((p) => p.id === proxyId);
     const showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
@@ -311,10 +311,10 @@ class BootstrapMinions extends Component<Props, State> {
       formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
     if (this.state.proxy) {
-      const parts = this.state.proxy.split(":");
-      formData["proxy"] = parseInt(parts[0], 10);
-      if (parts.length > 1) {
-        formData["proxyFqdn"] = parts[1];
+      const { proxyId, proxyFqdn } = parseProxySelection(this.state.proxy);
+      formData["proxy"] = proxyId;
+      if (proxyFqdn) {
+        formData["proxyFqdn"] = proxyFqdn;
       }
     }
 

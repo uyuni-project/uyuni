@@ -16,9 +16,26 @@ type ProxyType = {
   additionalFqdns?: string[];
 };
 
+export type ProxySelection = { proxyId: number; proxyFqdn?: string };
+
+/**
+ * A proxy selection is encoded in a single <option> value as "<id>:<fqdn>" so that a proxy with
+ * several FQDNs can be offered as distinct choices. This parses that value back into its parts.
+ */
+export function parseProxySelection(value?: string): ProxySelection {
+  if (!value || value === "0") {
+    return { proxyId: 0 };
+  }
+  const sep = value.indexOf(":");
+  if (sep < 0) {
+    return { proxyId: parseInt(value, 10) };
+  }
+  return { proxyId: parseInt(value.slice(0, sep), 10), proxyFqdn: value.slice(sep + 1) };
+}
+
 export function ProxyOptions({ proxies }: { proxies: ProxyType[] }) {
   const arrow = " \u2192 ";
-  const optionsList: any[] = [];
+  const optionsList: JSX.Element[] = [];
   proxies.forEach((p) => {
     const primary = p.primaryFqdn || p.name;
     const primaryValue = `${p.id}:${primary}`;
@@ -73,7 +90,7 @@ class Proxy extends Component<Props, State> {
     let initialProxy = "0";
     if (props.currentProxy) {
       const p = props.proxies.find((px) => px.id === props.currentProxy);
-      const primary = p ? (p.primaryFqdn || p.name) : "";
+      const primary = p ? p.primaryFqdn || p.name : "";
       initialProxy = p ? `${props.currentProxy}:${primary}` : String(props.currentProxy);
     }
 
@@ -90,15 +107,7 @@ class Proxy extends Component<Props, State> {
   };
 
   onSet = () => {
-    let proxyId = 0;
-    let proxyFqdn = "";
-    if (this.state.proxy && this.state.proxy !== "0") {
-      const parts = String(this.state.proxy).split(":");
-      proxyId = parseInt(parts[0], 10);
-      if (parts.length > 1) {
-        proxyFqdn = parts[1];
-      }
-    }
+    const { proxyId, proxyFqdn } = parseProxySelection(this.state.proxy);
 
     const request = Network.post("/rhn/manager/api/systems/proxy", {
       proxy: proxyId,

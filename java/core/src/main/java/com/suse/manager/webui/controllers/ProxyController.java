@@ -27,7 +27,6 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -52,7 +51,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -84,6 +82,23 @@ public class ProxyController {
         @Override
         public int compareTo(ParentRepresentation o) {
             return this.primaryFqdn.compareTo(o.primaryFqdn);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            ParentRepresentation other = (ParentRepresentation) obj;
+            return java.util.Objects.equals(this.primaryFqdn, other.primaryFqdn);
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(primaryFqdn);
         }
     }
 
@@ -143,15 +158,7 @@ public class ProxyController {
         }
 
         for (Server proxy : proxies) {
-            String primaryFqdn = Optional.ofNullable(proxy.findPrimaryFqdn())
-                    .map(ServerFQDN::getName)
-                    .orElseGet(proxy::getHostname);
-            List<String> additional = proxy.getFqdns().stream()
-                    .map(ServerFQDN::getName)
-                    .filter(name -> !name.equals(primaryFqdn))
-                    .sorted()
-                    .toList();
-            parentReps.add(new ParentRepresentation(primaryFqdn, additional));
+            parentReps.add(new ParentRepresentation(proxy.getPrimaryFqdnName(), proxy.getAdditionalFqdnNames()));
         }
 
         Collections.sort(parentReps);

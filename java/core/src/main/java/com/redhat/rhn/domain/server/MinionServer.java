@@ -110,6 +110,20 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * Return the name of the primary FQDN, falling back to the minion id if none is known.
+     *
+     * This is used for connection from proxy to minion for Salt SSH
+     *
+     * @return the primary FQDN name or the minion id
+     */
+    @Override
+    public String getPrimaryFqdnName() {
+        return Optional.ofNullable(findPrimaryFqdn())
+                .map(ServerFQDN::getName)
+                .orElseGet(this::getMinionId);
+    }
+
+    /**
      * Gets kernel live version.
      *
      * @return the kernel live version

@@ -2131,12 +2131,13 @@ public class ActionManager extends BaseManager {
             });
         }
         Optional<Long> proxyIdOpt = proxy.map(Server::getId);
+        boolean hasProxyFqdn = proxyFqdn != null && !proxyFqdn.isEmpty();
 
         List<Long> sshIds = minions.stream()
                 .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
                 .map(minion -> {
                     // handle SSH minions
-                    if (proxyFqdn != null && !proxyFqdn.isEmpty()) {
+                    if (hasProxyFqdn) {
                         minion.updateServerPaths(proxyFqdn);
                     }
                     else {
@@ -2168,7 +2169,7 @@ public class ActionManager extends BaseManager {
         if (!normalIds.isEmpty()) {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
-            String mgrServer = (proxyFqdn != null && !proxyFqdn.isEmpty()) ? proxyFqdn :
+            String mgrServer = hasProxyFqdn ? proxyFqdn :
                     proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname());
             pillar.put("mgr_server", mgrServer);
 
