@@ -293,9 +293,7 @@ public class SaltSSHService {
                 MinionServerFactory.findByMinionId(mid).ifPresentOrElse(minion -> {
                     List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(), Optional.empty());
                     String contactMethodLabel = minion.getContactMethod().getLabel();
-                    String host = Optional.ofNullable(minion.findPrimaryFqdn())
-                            .map(ServerFQDN::getName)
-                            .orElse(minion.getMinionId());
+                    String host = minion.getPrimaryFqdnName();
 
                     roster.addHost(mid, host, getSSHUser(), Optional.empty(),
                             Opt.wrapFirstNonNull(minion.getSSHPushPort(), SSH_PUSH_PORT),
@@ -398,10 +396,7 @@ public class SaltSSHService {
                 .map(ProxyInfo::getSshPort)
                 .map(p -> ":" + p)
                 .orElse("");
-        String proxyHostname = Optional.ofNullable(proxy.findPrimaryFqdn())
-                .map(ServerFQDN::getName)
-                .orElse(proxy.getHostname());
-        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxyHostname + port));
+        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getPrimaryFqdnName() + port));
     }
 
     /**
@@ -500,9 +495,7 @@ public class SaltSSHService {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         minions.forEach(minion -> {
             List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(), Optional.empty());
-            String host = Optional.ofNullable(minion.findPrimaryFqdn())
-                    .map(ServerFQDN::getName)
-                    .orElse(minion.getMinionId());
+            String host = minion.getPrimaryFqdnName();
             roster.addHost(minion.getMinionId(),
                     host,
                     getSSHUser(),
@@ -1069,9 +1062,7 @@ public class SaltSSHService {
         if (server == null || server.getServerPaths().isEmpty()) {
             return true;
         }
-        String hostname = Optional.ofNullable(server.findPrimaryFqdn())
-                .map(ServerFQDN::getName)
-                .orElse(server.getHostname());
+        String hostname = server.getPrimaryFqdnName();
         List<ServerPath> paths = sortServerPaths(server.getServerPaths());
         ServerPath last = paths.get(paths.size() - 1);
         Server proxy = last.getId().getProxyServer();

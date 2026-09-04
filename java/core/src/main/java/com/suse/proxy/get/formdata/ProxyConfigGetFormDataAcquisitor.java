@@ -30,6 +30,8 @@ import com.suse.proxy.model.ProxyConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -57,9 +59,9 @@ public class ProxyConfigGetFormDataAcquisitor implements ProxyConfigGetFormDataC
      * @param context the context
      */
     private void retrieveElectableParentsFqdn(ProxyConfigGetFormDataContext context) {
-        Set<String> parentFqdns = new java.util.HashSet<>();
+        Set<String> parentFqdns = new HashSet<>();
 
-        java.util.Optional<ServerPath> parentPath = context.getServer().getFirstServerPath();
+        Optional<ServerPath> parentPath = context.getServer().getFirstServerPath();
         if (parentPath.isPresent()) {
             Server parentProxy = parentPath.get().getId().getProxyServer();
             if (parentProxy != null) {

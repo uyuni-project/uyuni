@@ -346,11 +346,9 @@ public class ProxyHandler extends BaseHandler {
                 throw new InvalidParameterException("Both proxyCrt and proxyKey need to be provided");
             }
 
-            List<String> fqdns = additionalFqdns != null ? additionalFqdns : List.of();
-
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
                     maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null,
-                    new SSLCertManager(), fqdns);
+                    new SSLCertManager(), additionalFqdns);
         }
         catch (SSLCertGenerationException e) {
             LOG.error("Failed to generate SSL certificate", e);
@@ -409,9 +407,8 @@ public class ProxyHandler extends BaseHandler {
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
                                   Integer maxCache, String email, List<String> additionalFqdns) {
-        List<String> fqdns = additionalFqdns != null ? additionalFqdns : List.of();
         return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                maxCache.longValue(), email, fqdns);
+                maxCache.longValue(), email, additionalFqdns);
     }
 
     /**
@@ -469,11 +466,9 @@ public class ProxyHandler extends BaseHandler {
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
 
-            List<String> fqdns = cnames != null ? cnames : List.of();
-
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
                     maxCache.longValue(), email, null, List.of(), null, caCrtKey, caPassword, certData,
-                    new SSLCertManager(), fqdns);
+                    new SSLCertManager(), cnames);
         }
         catch (SSLCertGenerationException e) {
             LOG.error("Failed to generate SSL certificate", e);

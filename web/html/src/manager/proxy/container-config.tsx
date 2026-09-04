@@ -22,7 +22,9 @@ enum SSLMode {
   CreateSSL = "create-ssl",
 }
 
-export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: any[] }) {
+export type ParentOption = { value: string; label: string };
+
+export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: ParentOption[] }) {
   const initialModel = {
     caCertificate: "",
     caKey: "",
