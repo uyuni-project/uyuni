@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 SUSE LLC.
+# Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -13,8 +13,9 @@ class RemoteNode
   #
   # @param host [String] The hostname of the remote node.
   # @param port [Integer] The port to use for the SSH connection.
+  #   Defaults to the port declared for the host in SSH_PORT_BY_HOST, or 22.
   # @return [RemoteNode] The remote node.
-  def initialize(host, port: 22)
+  def initialize(host, port: SSH_PORT_BY_HOST.fetch(host, 22))
     @host = host
     @port = port
     puts "Initializing a remote node for '#{@host}'."

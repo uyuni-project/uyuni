@@ -1,47 +1,47 @@
-# Copyright (c) 2022-2026 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#  1) bootstrap a new RHEL 9 minion
+#  1) bootstrap a new RHEL 8 minion
 #  2) subscribe it to a base channel for testing
 #
-#  The client is a UBI container running on an EL 9 host. Its sshd listens on
+#  The client is a UBI container running on an EL 8 host. Its sshd listens on
 #  port 2222, because the host sshd already uses port 22.
 
-@rhel9_minion
-Feature: Bootstrap a RHEL 9 Salt minion
+@rhel8_minion
+Feature: Bootstrap a RHEL 8 Salt minion
 
-  Scenario: Clean up sumaform leftovers on a RHEL 9 Salt minion
-    When I perform a full salt minion cleanup on "rhel9_minion"
+  Scenario: Clean up sumaform leftovers on a RHEL 8 Salt minion
+    When I perform a full salt minion cleanup on "rhel8_minion"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap a RHEL 9 Salt minion
+  Scenario: Bootstrap a RHEL 8 Salt minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
-    When I enter the hostname of "rhel9_minion" as "hostname"
+    When I enter the hostname of "rhel8_minion" as "hostname"
     And I enter "2222" as "port"
     And I enter "linux" as "password"
-    And I select "1-rhel9_minion_key" from "activationKeys"
+    And I select "1-rhel8_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
-    And I wait until onboarding is completed for "rhel9_minion"
+    And I wait until onboarding is completed for "rhel8_minion"
 
 @proxy
-  Scenario: Check connection from RHEL 9 Salt minion to proxy
-    Given I am on the Systems overview page of this "rhel9_minion"
+  Scenario: Check connection from RHEL 8 Salt minion to proxy
+    Given I am on the Systems overview page of this "rhel8_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
 @proxy
-  Scenario: Check registration on proxy of RHEL 9 Salt minion
+  Scenario: Check registration on proxy of RHEL 8 Salt minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
-    Then I should see "rhel9_minion" hostname
+    Then I should see "rhel8_minion" hostname
 
-  Scenario: Check events history for failures on RHEL 9 Salt minion
-    Given I am on the Systems overview page of this "rhel9_minion"
+  Scenario: Check events history for failures on RHEL 8 Salt minion
+    Given I am on the Systems overview page of this "rhel8_minion"
     Then I check for failed events on history event page
