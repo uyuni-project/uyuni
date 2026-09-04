@@ -47,11 +47,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -62,6 +63,29 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for proxy specific pages.
  */
 public class ProxyController {
+
+    private static class ParentRepresentation implements Comparable<ParentRepresentation> {
+        private final String primaryFqdn;
+        private final List<String> additionalFqdns;
+
+        ParentRepresentation(String primaryFqdnIn, List<String> additionalFqdnsIn) {
+            this.primaryFqdn = primaryFqdnIn;
+            this.additionalFqdns = additionalFqdnsIn;
+        }
+
+        String getPrimaryFqdn() {
+            return primaryFqdn;
+        }
+
+        List<String> getAdditionalFqdns() {
+            return additionalFqdns;
+        }
+
+        @Override
+        public int compareTo(ParentRepresentation o) {
+            return this.primaryFqdn.compareTo(o.primaryFqdn);
+        }
+    }
 
     private final SystemManager systemManager;
 
@@ -109,20 +133,45 @@ public class ProxyController {
 
         String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(userIn);
-        Set<String> electableParents = proxies.stream()
-                .flatMap(s -> s.getFqdns().stream())
-                .map(ServerFQDN::getName)
-                .collect(Collectors.toSet());
 
+        List<ParentRepresentation> parentReps = new ArrayList<>();
         if (localManagerFqdn != null && !localManagerFqdn.isEmpty()) {
-            electableParents.add(localManagerFqdn);
+            parentReps.add(new ParentRepresentation(localManagerFqdn, Collections.emptyList()));
         }
         else {
             LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
         }
 
-        List<String> sortedParents = electableParents.stream().sorted().toList();
-        data.put("parents", GSON.toJson(sortedParents));
+        for (Server proxy : proxies) {
+            String primaryFqdn = Optional.ofNullable(proxy.findPrimaryFqdn())
+                    .map(ServerFQDN::getName)
+                    .orElseGet(proxy::getHostname);
+            List<String> additional = proxy.getFqdns().stream()
+                    .map(ServerFQDN::getName)
+                    .filter(name -> !name.equals(primaryFqdn))
+                    .sorted()
+                    .toList();
+            parentReps.add(new ParentRepresentation(primaryFqdn, additional));
+        }
+
+        Collections.sort(parentReps);
+
+        List<Map<String, String>> parentOptions = new ArrayList<>();
+        for (ParentRepresentation rep : parentReps) {
+            Map<String, String> primaryOpt = new HashMap<>();
+            primaryOpt.put("value", rep.getPrimaryFqdn());
+            primaryOpt.put("label", rep.getPrimaryFqdn());
+            parentOptions.add(primaryOpt);
+
+            for (String addFqdn : rep.getAdditionalFqdns()) {
+                Map<String, String> addOpt = new HashMap<>();
+                addOpt.put("value", addFqdn);
+                addOpt.put("label", "\u00A0\u00A0\u00A0\u00A0" + addFqdn);
+                parentOptions.add(addOpt);
+            }
+        }
+
+        data.put("parents", GSON.toJson(parentOptions));
 
         return new ModelAndView(data, "templates/proxy/container-config.jade");
     }

@@ -10,6 +10,7 @@ import { Messages, MessageType, Utils as MessagesUtils } from "components/messag
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
+import { ProxyOptions } from "../proxy";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
@@ -265,11 +266,13 @@ class BootstrapMinions extends Component<Props, State> {
   };
 
   proxyChanged = (event) => {
-    const proxyId = parseInt(event.target.value, 10);
+    const val = event.target.value;
+    const parts = val.split(":");
+    const proxyId = parts[0] ? parseInt(parts[0], 10) : NaN;
     const proxy = this.props.proxies.find((p) => p.id === proxyId);
     const showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
-      proxy: event.target.value,
+      proxy: val,
       showProxyHostnameWarn: showWarn,
     });
   };
@@ -308,7 +311,11 @@ class BootstrapMinions extends Component<Props, State> {
       formData["ansibleInventoryId"] = this.props.ansibleInventoryId;
     }
     if (this.state.proxy) {
-      formData["proxy"] = this.state.proxy;
+      const parts = this.state.proxy.split(":");
+      formData["proxy"] = parseInt(parts[0], 10);
+      if (parts.length > 1) {
+        formData["proxyFqdn"] = parts[1];
+      }
     }
 
     const request = Network.post(
@@ -622,15 +629,7 @@ class BootstrapMinions extends Component<Props, State> {
                 <option key="none" value="">
                   {t("None")}
                 </option>
-                {this.props.proxies.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                    {p.path.reduce(
-                      (acc, val, idx) => acc + "\u2192 " + val + (idx === p.path.length - 1 ? "" : " "),
-                      ""
-                    )}
-                  </option>
-                ))}
+                <ProxyOptions proxies={this.props.proxies} />
               </select>
               <div>
                 <i

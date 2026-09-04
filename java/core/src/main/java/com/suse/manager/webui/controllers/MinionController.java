@@ -520,6 +520,19 @@ public class MinionController {
                             .map(ServerPath::getHostname)
                             .collect(Collectors.toList());
                     entry.put("path", path);
+
+                    String primaryFqdn = java.util.Optional.ofNullable(proxy.findPrimaryFqdn())
+                            .map(com.redhat.rhn.domain.server.ServerFQDN::getName)
+                            .orElseGet(proxy::getHostname);
+                    entry.put("primaryFqdn", primaryFqdn);
+
+                    List<String> additional = proxy.getFqdns().stream()
+                            .map(com.redhat.rhn.domain.server.ServerFQDN::getName)
+                            .filter(name -> !name.equals(primaryFqdn))
+                            .sorted()
+                            .toList();
+                    entry.put("additionalFqdns", additional);
+
                     return entry; })
                 .collect(Collectors.toList());
         model.put("proxies", Json.GSON.toJson(proxies));
