@@ -11826,7 +11826,6 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
         <target>ARMHF Debian</target>
-        <target state="new"/>
       </trans-unit>
       <trans-unit id="diskcheckwarning" xml:space="preserve">
         <source>Disk Check</source>
