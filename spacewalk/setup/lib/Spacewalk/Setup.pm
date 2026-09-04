@@ -55,12 +55,6 @@ use constant DEFAULT_PROXY_CONF_LOCATION =>
 use constant DEFAULT_PROXYAUTH_CONF_LOCATION =>
   '/root/.curlrc';
 
-use constant DEFAULT_SATCON_DICT =>
-  '/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf';
-
-use constant DEFAULT_RHN_SATCON_TREE =>
-  '/var/lib/rhn/rhn-satellite-prep/etc';
-
 use constant DEFAULT_BACKUP_DIR =>
    '/etc/sysconfig/rhn/backup-' . `date +%F-%R`;
 
@@ -606,36 +600,6 @@ sub get_dbh {
         return $dbh;
 }
 
-sub generate_satcon_dict {
-        my %params = validate(@_, { conf_file => { default => DEFAULT_SATCON_DICT },
-                tree => { default => DEFAULT_RHN_SATCON_TREE },});
-
-        system_or_exit([ "/usr/bin/satcon-build-dictionary.pl",
-                "--tree=" . $params{tree},
-                "--target=" . $params{conf_file} ],
-                28,
-                'There was a problem building the satcon dictionary.');
-
-        return 1;
-}
-
-sub satcon_deploy {
-        my %params = validate(@_, { conf_file => { default => DEFAULT_SATCON_DICT },
-                                tree => { default => DEFAULT_RHN_SATCON_TREE },
-                                dest => { default => '/etc' },
-                                backup => { default => DEFAULT_BACKUP_DIR },
-                                });
-
-        $params{backup} =~ s/\s+$//;
-        my @opts = ("--source=" . $params{tree}, "--dest=" . $params{dest},
-                "--conf=" . $params{conf_file}, "--backupdir=" . $params{backup});
-
-        system_or_exit([ "/usr/bin/satcon-deploy-tree.pl", @opts ],     30,
-                'There was a problem deploying the satellite configuration.');
-
-        return 1;
-}
-
 sub backup_file {
     my $dir = shift;
     my $file = shift;
@@ -666,7 +630,6 @@ sub write_rhn_conf {
         }
 
         write_config(\%config, DEFAULT_RHN_CONF_LOCATION);
-        write_config(\%config, Spacewalk::Setup::DEFAULT_SATCON_DICT);
 }
 
 =head1 DESCRIPTION
