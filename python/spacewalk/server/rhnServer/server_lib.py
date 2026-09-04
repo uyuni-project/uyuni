@@ -17,40 +17,17 @@
 # implements a bunch of functions needed by rhnServer modules
 #
 
-import os
-import hashlib
-import time
-
 from functools import reduce
 
 # pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnLog import log_debug, log_error
 
 # pylint: disable-next=wrong-import-position
-from spacewalk.common.rhnException import rhnException
-
-# pylint: disable-next=wrong-import-position
-from spacewalk.common.rhnConfig import CFG
-
-# pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
-
-# pylint: disable-next=wrong-import-position
-from rhn.stringutils import bstr
 
 # Do not import server.apacheAuth in this module, or the secret generation
 # script will traceback - since it would try to import rhnSecret which doesn't
 # exist
-
-
-# pylint: disable-next=invalid-name
-class rhnSystemEntitlementException(rhnException):
-    pass
-
-
-# pylint: disable-next=invalid-name
-class rhnNoSystemEntitlementsException(rhnSystemEntitlementException):
-    pass
 
 
 # pylint: disable-next=invalid-name,dangerous-default-value
@@ -159,89 +136,14 @@ def getServerSecret(server):
 ###############################
 
 
-# pylint: disable-next=invalid-name
-def __create_server_group(group_label, org_id):
-    """create the initial server groups for a new server"""
-    # Add this new server to the pending group
-    h = rhnSQL.prepare(
-        """
-    select sg.id, sg.current_members
-    from rhnServerGroup sg
-    where sg.group_type = ( select id from rhnServerGroupType
-                            where label = :group_label )
-    and sg.org_id = :org_id
-    """
-    )
-    h.execute(org_id=org_id, group_label=group_label)
-    data = h.fetchone_dict()
-    if not data:
-        # create the requested group
-        ret_id = rhnSQL.Sequence("rhn_server_group_id_seq")()
-        h = rhnSQL.prepare(
-            """
-        insert into rhnServerGroup
-        ( id, name, description,
-          group_type, org_id)
-        select
-            :new_id, sgt.name, sgt.name,
-            sgt.id, :org_id
-        from rhnServerGroupType sgt
-        where sgt.label = :group_label
-        """
-        )
-        rownum = h.execute(new_id=ret_id, org_id=org_id, group_label=group_label)
-        if rownum == 0:
-            # No rows were created, probably invalid label
-            raise rhnException(
-                # pylint: disable-next=consider-using-f-string
-                "Could not create new group for org=`%s'" % org_id,
-                group_label,
-            )
-    else:
-        ret_id = data["id"]
-    return ret_id
-
-
-def join_server_group(server_id, server_group_id):
-    """Adds a server to a server group"""
-    # avoid useless reparses caused by different arg types
-    server_id = str(server_id)
-    server_group_id = str(server_group_id)
-
-    insert_call = rhnSQL.Function(
-        "rhn_server.insert_into_servergroup_maybe", rhnSQL.types.NUMBER()
-    )
-    ret = insert_call(server_id, server_group_id)
-    # return the number of rows inserted - feel free to ignore
-    return ret
-
-
-# pylint: disable-next=unused-argument
-def create_server_setup(server_id, org_id):
-    """This function inserts a row in rhnServerInfo."""
-    # create the rhnServerInfo record
-    h = rhnSQL.prepare(
-        """
-    insert into rhnServerInfo (server_id, checkin, checkin_counter)
-                       values (:server_id, current_timestamp, :checkin_counter)
-    """
-    )
-    h.execute(server_id=server_id, checkin_counter=0)
-
-    # Do not entitle the server yet
-    return 1
-
-
 def checkin(server_id, commit=1):
     """checkin - update the last checkin time"""
     log_debug(3, server_id)
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     update rhnServerInfo
     set checkin = current_timestamp, checkin_counter = checkin_counter + 1
     where server_id = :server_id
-    """
-    )
+    """)
     h.execute(server_id=server_id)
     if commit:
         rhnSQL.commit()
@@ -267,17 +169,6 @@ def throttle(server):
     #    # We don't throttle anybody
     #    return
     return
-
-
-# pylint: disable-next=unused-argument
-def join_rhn(org_id):
-    """Stub"""
-    return
-
-
-def snapshot_server(server_id, reason):
-    if CFG.ENABLE_SNAPSHOTS:
-        return rhnSQL.Procedure("rhn_server.snapshot_server")(server_id, reason)
 
 
 def check_entitlement(server_id, want_array=False):
@@ -309,127 +200,10 @@ def check_entitlement(server_id, want_array=False):
 
 
 def check_entitlement_by_machine_id(machine_id):
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
     select e.label from rhnServer s, rhnServerEntitlementView e
     where s.machine_id=:machine_id and s.id=e.server_id
-    """
-    )
+    """)
     h.execute(machine_id=machine_id)
     rows = h.fetchall_dict()
     return [row["label"] for row in rows] if rows else []
-
-
-# Push client related
-# XXX should be moved to a different file?
-_query_update_push_client_registration = rhnSQL.Statement(
-    """
-    update rhnPushClient
-       set name = :name_in,
-           shared_key = :shared_key_in,
-           state_id = :state_id_in,
-           next_action_time = NULL,
-           last_ping_time = NULL
-     where server_id = :server_id_in
-"""
-)
-_query_insert_push_client_registration = rhnSQL.Statement(
-    """
-        insert into rhnPushClient
-           (id, server_id, name, shared_key, state_id)
-        values (sequence_nextval('rhn_pclient_id_seq'), :server_id_in, :name_in,
-            :shared_key_in, :state_id_in)
-"""
-)
-
-
-def update_push_client_registration(server_id):
-    # Generate a new a new client name and shared key
-    client_name = generate_random_string(16)
-    shared_key = generate_random_string(40)
-    t = rhnSQL.Table("rhnPushClientState", "label")
-    row = t["offline"]
-    assert row is not None
-    state_id = row["id"]
-
-    h = rhnSQL.prepare(_query_update_push_client_registration)
-    rowcount = h.execute(
-        server_id_in=server_id,
-        name_in=client_name,
-        shared_key_in=shared_key,
-        state_id_in=state_id,
-    )
-    if not rowcount:
-        h = rhnSQL.prepare(_query_insert_push_client_registration)
-        h.execute(
-            server_id_in=server_id,
-            name_in=client_name,
-            shared_key_in=shared_key,
-            state_id_in=state_id,
-        )
-
-    # Get the server's (database) time
-    # XXX
-    timestamp = int(time.time())
-    rhnSQL.commit()
-    return timestamp, client_name, shared_key
-
-
-_query_delete_duplicate_client_jids = rhnSQL.Statement(
-    """
-    update rhnPushClient
-       set jabber_id = null
-     where jabber_id = :jid and
-           server_id <> :server_id
-"""
-)
-
-_query_update_push_client_jid = rhnSQL.Statement(
-    """
-    update rhnPushClient
-       set jabber_id = :jid,
-           next_action_time = NULL,
-           last_ping_time = NULL
-     where server_id = :server_id
-"""
-)
-
-
-def update_push_client_jid(server_id, jid):
-    h1 = rhnSQL.prepare(_query_delete_duplicate_client_jids)
-    h1.execute(server_id=server_id, jid=jid)
-    h2 = rhnSQL.prepare(_query_update_push_client_jid)
-    h2.execute(server_id=server_id, jid=jid)
-    rhnSQL.commit()
-    return jid
-
-
-def generate_random_string(length=20):
-    if not length:
-        return ""
-    random_bytes = 16
-    length = int(length)
-    s = hashlib.new("sha256")
-    # pylint: disable-next=consider-using-f-string
-    s.update(bstr("%.8f" % time.time()))
-    s.update(bstr(str(os.getpid())))
-    devrandom = open("/dev/urandom", mode="rb")
-    result = []
-    cur_length = 0
-    while 1:
-        s.update(bstr(devrandom.read(random_bytes)))
-        buf = s.hexdigest()
-        result.append(buf)
-        cur_length = cur_length + len(buf)
-        if cur_length >= length:
-            break
-
-    devrandom.close()
-
-    result = "".join(result)[:length]
-    return result.lower()
-
-
-if __name__ == "__main__":
-    rhnSQL.initDB()
-    print((update_push_client_registration(1000102174)))
