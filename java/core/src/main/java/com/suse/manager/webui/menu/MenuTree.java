@@ -44,6 +44,8 @@ import spark.utils.SparkUtils;
 public class MenuTree {
 
     private final AclFactory aclFactory;
+    // Reserved for future beta features - use with .withVisibility(betaEnabled) on menu items
+    @SuppressWarnings("unused")
     private boolean betaEnabled;
 
 
