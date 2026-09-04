@@ -61,7 +61,6 @@ Requires:       spacewalk-backend-tools
 Requires:       spacewalk-backend-xml-export-libs
 Requires:       spacewalk-backend-xmlrpc
 
-Requires:       spacewalk-base
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
 Requires:       spacewalk-html
