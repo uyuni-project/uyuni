@@ -789,23 +789,6 @@
            <form-property name="submitted" type="java.lang.Boolean"/>
        </form-bean>
 
-    <!-- Audit forms -->
-    <form-bean name="scheduleXccdfForm"
-        type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-        <form-property name="params" type="java.lang.String"/>
-        <form-property name="path" type="java.lang.String"/>
-        <form-property name="ovalfiles" type="java.lang.String"/>
-        <form-property name="submitted" type="java.lang.Boolean"/>
-        <!-- fields needed by datePicker -->
-        <form-property name="schedule_type" type="java.lang.String"/>
-        <form-property name="date_year" type="java.lang.Integer"/>
-        <form-property name="date_month" type="java.lang.Integer"/>
-        <form-property name="date_day" type="java.lang.Integer"/>
-        <form-property name="date_hour" type="java.lang.Integer"/>
-        <form-property name="date_minute" type="java.lang.Integer"/>
-        <form-property name="date_am_pm" type="java.lang.Integer"/>
-    </form-bean>
-
     <!-- ConfigChannel forms -->
     <form-bean name="channelOverviewForm"
       type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
@@ -2702,21 +2685,6 @@
             path="/systems/details/audit/ListScap.do" redirect="true"/>
     </action>
 
-    <action path="/systems/details/audit/ScheduleXccdf"
-        scope="request"
-        name="scheduleXccdfForm"
-        input="/WEB-INF/pages/systems/details/audit/schedulexccdf.jsp"
-        type="com.redhat.rhn.frontend.action.systems.audit.ScheduleXccdfAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="system_has_management_entitlement() or system_has_salt_entitlement()"/>
-        <forward name="default"
-            path="/WEB-INF/pages/systems/details/audit/schedulexccdf.jsp"/>
-        <forward name="error"
-            path="/WEB-INF/pages/systems/details/audit/schedulexccdf.jsp"/>
-        <forward name="submit" redirect="true"
-            path="/systems/details/audit/ListScap.do"/>
-    </action>
-
     <action path="/systems/details/audit/XccdfDetails"
         scope="request"
         input="/WEB-INF/pages/systems/details/audit/xccdfdetails.jsp"
@@ -4566,43 +4534,6 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/ssm/systems/misc/setcustomvalue.jsp" />
         <forward name="updated" path="/systems/ssm/misc/Index.do" redirect="true"/>
-    </action>
-
-    <action path="/systems/ssm/audit/ScheduleXccdf"
-        scope="request"
-        name="scheduleXccdfForm"
-        input="/WEB-INF/pages/audit/ssm/ssmschedulexccdf.jsp"
-        type="com.redhat.rhn.frontend.action.audit.ssm.SsmScheduleXccdfAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <forward name="default"
-            path="/WEB-INF/pages/audit/ssm/ssmschedulexccdf.jsp"/>
-        <forward name="error"
-            path="/WEB-INF/pages/audit/ssm/ssmschedulexccdf.jsp"/>
-        <forward name="submit"
-            path="/systems/ssm/audit/ScheduleXccdfSubmit.do"/>
-    </action>
-
-    <action path="/systems/ssm/audit/ScheduleXccdfSubmit"
-        scope="request"
-        name="scheduleXccdfForm"
-        input="/WEB-INF/pages/audit/ssm/ssmschedulexccdf-submit.jsp"
-        type="com.redhat.rhn.frontend.action.audit.ssm.SsmScheduleXccdfSubmitAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequired" value="true"/>
-        <forward name="default"
-            path="/WEB-INF/pages/audit/ssm/ssmschedulexccdf-submit.jsp"/>
-    </action>
-
-    <action path="/systems/ssm/audit/ScheduleXccdfConfirm"
-        scope="request"
-        name="scheduleXccdfForm"
-        type="com.redhat.rhn.frontend.action.audit.ssm.SsmScheduleXccdfConfirmAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequired" value="true"/>
-        <forward name="default"
-            path="/schedule/InProgressSystems.do"/>
-        <forward name="error"
-            path="/systems/ssm/audit/ScheduleXccdf.do"/>
     </action>
 
     <!-- ===== END SSM ===== -->

@@ -21,10 +21,6 @@
     </a>
   </c:if>
 
-  <a href="/rhn/systems/details/audit/ScheduleXccdf.do?sid=${param.sid}&path=${testResult.scapActionDetails.path}&params=${testResult.scapActionDetails.parametersContents}&ovalfiles=${testResult.scapActionDetails.ovalfiles}">
-    <rhn:icon type="header-refresh" title="system.audit.xccdfdetails.jsp.reschedule" />
-    <bean:message key="system.audit.xccdfdetails.jsp.reschedule"/>
-  </a>
 </div>
 
 <h2><bean:message key="system.audit.xccdfdetails.jsp.header"/></h2>

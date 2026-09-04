@@ -139,7 +139,7 @@ class RecurringActionsEdit extends Component<Props, State> {
 
   getTypes = () => {
     let types = ["Highstate", "Custom state"];
-    if (window.betaEnabled && window.entityType === "MINION") {
+    if (window.entityType === "MINION") {
       types.push("Scap Policy");
     }
     if (window.isControlNode) {
