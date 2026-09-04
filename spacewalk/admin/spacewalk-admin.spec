@@ -46,7 +46,6 @@ Requires:       postfix
 Requires:       procps
 Requires:       python3
 Requires:       spacewalk-backend-tools >= 2.2.27
-Requires:       spacewalk-base
 Requires:       spacewalk-certs-tools
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
 Requires:       susemanager-schema-utility

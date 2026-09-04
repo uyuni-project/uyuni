@@ -10,7 +10,7 @@ PREFIX	=
 export PREFIX
 
 # what are we building...
-SUBDIRS	= html modules
+SUBDIRS	= html
 
 # macros and stuff
 include Makefile.defs
