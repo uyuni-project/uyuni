@@ -114,7 +114,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         String[] cmdArgs = configCommand.getCommandArguments();
         assertEquals(9, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
-        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[1]);
+        assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[1]);
         assertTrue(cmdArgs[2].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy=%s".formatted(TEST_HOSTNAME), cmdArgs[3]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[4]);
@@ -151,7 +151,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         assertEquals(10, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
-        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[2]);
+        assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
         assertTrue(cmdArgs[3].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy=%s".formatted(TEST_HOSTNAME), cmdArgs[4]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[5]);
@@ -172,7 +172,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         String[] cmdArgs = configCommand.getCommandArguments();
         assertEquals(8, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
-        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[1]);
+        assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[1]);
         assertTrue(cmdArgs[2].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy=", cmdArgs[3]);
         assertEquals("--option=server.satellite.http_proxy_username=%s".formatted(TEST_USERNAME), cmdArgs[4]);
@@ -190,7 +190,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         assertEquals(8, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
-        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[2]);
+        assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
         assertTrue(cmdArgs[3].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[4]);
         assertEquals("2>&1", cmdArgs[5]);
@@ -211,7 +211,7 @@ public class ProxySettingsManagerTest extends BaseTestCase {
         assertEquals(8, cmdArgs.length);
         assertEquals("/usr/bin/sudo", cmdArgs[0]);
         assertEquals("-E", cmdArgs[1]);
-        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[2]);
+        assertEquals("/usr/bin/rhn-config-satellite", cmdArgs[2]);
         assertTrue(cmdArgs[3].startsWith("--target="));
         assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[4]);
         assertEquals("2>&1", cmdArgs[5]);
