@@ -1125,6 +1125,72 @@ When(/I generate a supportconfig for the server$/) do
   node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
 end
 
+Given(/^the "([^"]*)" command is available on the host$/) do |command|
+  node = get_target('server')
+  _result, return_code = node.run("command -v #{command}", runs_in_container: false, check_errors: false)
+  raise ScriptError, "#{command} command not found" unless return_code.zero?
+end
+
+Then(/^the argument "([^"]*)" is valid in mgradm$/) do |arg|
+  node = get_target('server')
+  cmd = "mgradm #{arg} --help"
+
+  output, return_code = node.run(cmd, runs_in_container: false, check_errors: false)
+  raise ScriptError, "#{cmd} argument is unknown or not found" unless return_code.zero?
+  raise ScriptError, "#{cmd} one of parameters supplied is invalid" if output.include?('for more information')
+end
+
+When(/^I apply a Program Temporary Fix to the containerized server$/) do
+  ptf_id = ENV['SCC_PTF_ID']
+  ptf_username = ENV['SCC_PTF_USER']
+  ptf_password = ENV['SCC_PTF_PASSWORD']
+  raise ScriptError, 'SCC_PTF_ID environment variable not set' if ptf_id.nil? || ptf_id.empty?
+  raise ScriptError, 'SCC_PTF_USER environment variable not set' if ptf_username.nil? || ptf_username.empty?
+  raise ScriptError, 'SCC_PTF_PASSWORD environment variable not set' if ptf_password.nil? || ptf_password.empty?
+
+  node = get_target('server')
+  # mgradm builds its own authentication file to pull the PTF image and never reads the one
+  # 'podman login' writes, so the DUMMY Sanity Check Account credentials are passed to it directly.
+  cmd = "mgradm support ptf podman --ptf #{ptf_id} --user a127499 --scc-user '#{ptf_username}' --scc-password '#{ptf_password}'"
+  # The command carries the password, so it is kept out of the error and only the output is reported.
+  output, return_code = node.run(cmd, timeout: 180, runs_in_container: false, check_errors: false)
+  raise ScriptError, "Failed to apply the Program Temporary Fix #{ptf_id}:\n#{output}" unless return_code.zero?
+end
+
+Then(/^I expect "([^"]*)" container to be healthy within (\d+) seconds$/) do |container, timeout|
+  node = get_target('server')
+  healthcheck_cmd = "podman inspect #{container} --format '{{.State.Health.Status}}'"
+
+  repeat_until_timeout(timeout: timeout.to_i, message: "Timeout after #{timeout} seconds: container '#{container}' is not healthy") do
+    output, _code = node.run(healthcheck_cmd, runs_in_container: false, check_errors: false)
+    status = output.strip
+    break if status == "healthy"
+    sleep 5
+  end
+end
+
+Then(/^I expect "([^"]*)" container to( not)? run the PTF image$/) do |container, negated|
+  ptf_id = ENV['SCC_PTF_ID']
+  raise ScriptError, 'SCC_PTF_ID environment variable not set' if ptf_id.nil? || ptf_id.empty?
+
+  node = get_target('server')
+  output, _code = node.run("podman inspect #{container} --format '{{.ImageName}}'", runs_in_container: false)
+  image = output.strip
+  ptf_tag_suffix = "-ptf-#{ptf_id}"
+
+  if negated
+    raise ScriptError, "Container '#{container}' still runs the PTF image #{image}" if image.end_with?(ptf_tag_suffix)
+  else
+    raise ScriptError, "Container '#{container}' runs #{image}, expected an image tagged #{ptf_tag_suffix}" unless image.end_with?(ptf_tag_suffix)
+  end
+end
+
+When(/^I redeploy the original server container$/) do
+  node = get_target('server')
+  original_container_repository, _code = node.run("venv-salt-call --local grains.get container_repository | cut -d':' -f2 | xargs", runs_in_container: false)
+  node.run("mgradm upgrade podman --registry #{original_container_repository}", timeout: 180, runs_in_container: false)
+end
+
 When(/I obtain and extract the supportconfig from the server$/) do
   supportconfig_path = '/root/server-supportconfig.tar.gz'
   test_runner_file = '/root/server-supportconfig.tar.gz'
