@@ -1,4 +1,6 @@
+{%- if not grains.get('transactional', False) %}
 {% include 'bootstrap/remove_traditional_stack.sls' %}
+{%- endif %}
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
 {# Use venv-salt-minion if the state applied with it #}
@@ -9,11 +11,6 @@
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 
-mgr_salt_minion_inst:
-  pkg.installed:
-    - name: {{ salt_minion_name }}
-    - order: last
-
 {{ susemanager_minion_config }}:
   file.managed:
     - source:
@@ -21,8 +18,10 @@ mgr_salt_minion_inst:
     - template: jinja
     - mode: 644
     - order: last
+{%- if not grains.get('transactional', False) %}
     - require:
       - pkg: mgr_salt_minion_inst
+{%- endif %}
 
 mgr_salt_minion_run:
   service.running:
@@ -57,3 +56,7 @@ logrotate_configuration:
     - mode: 0640
     - makedirs: True
     - replace: False
+
+{%- if not grains.get('transactional', False) %}
+{% include 'services/salt-minion_prereqs.sls' %}
+{%- endif %}

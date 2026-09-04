@@ -6,8 +6,9 @@ import { Messages, MessageType } from "./messages/messages";
 
 type ConfigChannelsProps = {
   matchUrl: (filter?: string) => any;
-  applyRequest: (component: ConfigChannels) => any;
+  applyRequest: (component: ConfigChannels, useTransactionalUpdate: boolean) => any;
   saveRequest: (channels: any[]) => any;
+  showTransactionalUpdate?: boolean;
 };
 
 class ConfigChannelsState {
@@ -23,8 +24,8 @@ class ConfigChannels extends Component<ConfigChannelsProps, ConfigChannelsState>
     });
   };
 
-  applyRequest = () => {
-    this.props.applyRequest(this);
+  applyRequest = (_systems, useTransactionalUpdate) => {
+    this.props.applyRequest(this, useTransactionalUpdate);
   };
 
   render() {
@@ -43,6 +44,7 @@ class ConfigChannels extends Component<ConfigChannelsProps, ConfigChannelsState>
           saveRequest={this.props.saveRequest}
           applyRequest={this.applyRequest}
           messages={this.setMessages}
+          showTransactionalUpdate={this.props.showTransactionalUpdate}
         />
       </span>
     );

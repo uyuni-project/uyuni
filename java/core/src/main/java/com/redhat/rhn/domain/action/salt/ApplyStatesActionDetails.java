@@ -72,6 +72,10 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
     @Convert(converter = YesNoConverter.class)
     private boolean direct = false;
 
+    @Column(name = "use_transactional_update")
+    @Convert(converter = YesNoConverter.class)
+    private boolean useTransactionalUpdate = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
     private Action parentAction;
@@ -244,6 +248,21 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
      */
     public void setDirect(boolean directIn) {
         direct = directIn;
+    }
+
+    /**
+     * @return true when transactional systems should execute these states through transactional-update
+     */
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
+     * @param useTransactionalUpdateIn whether transactional systems should execute these states through
+     * transactional-update
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**

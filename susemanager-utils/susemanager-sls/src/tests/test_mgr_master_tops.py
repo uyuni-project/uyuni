@@ -10,14 +10,14 @@
 
 # pylint: disable-next=unused-import
 from unittest.mock import MagicMock, patch
+from pathlib import Path
+import sys
+
 from . import mockery
 
 mockery.setup_environment()
 
-# pylint: disable-next=wrong-import-position
-import sys
-
-sys.path.append("../../modules/tops")
+sys.path.append(str(Path(__file__).resolve().parents[2] / "modules" / "tops"))
 
 # pylint: disable-next=wrong-import-position
 import mgr_master_tops
@@ -35,6 +35,19 @@ TEST_MANAGER_STATIC_TOP = {
         "services.docker",
         "services.kiwi-image-server",
         "ansible",
+        "switch_to_bundle.mgr_switch_to_venv_minion",
+    ]
+}
+
+TEST_MANAGER_TRANSACTIONAL_TOP = {
+    "base": [
+        "ansible.prereq",
+        "channels",
+        "certs",
+        "formulas_transactional",
+        "services.docker_prereqs",
+        "services.kiwi-image-server_prereqs",
+        "services.salt-minion_prereqs",
         "switch_to_bundle.mgr_switch_to_venv_minion",
     ]
 }
@@ -63,6 +76,35 @@ def test_top_base_saltenv():
     """
     kwargs = {"opts": {"environment": "base"}}
     assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
+
+
+def test_top_transactional_saltenv():
+    """
+    Test if top function excludes live-only states for transactional minions.
+    """
+    kwargs = {"opts": {"environment": "base"}, "grains": {"transactional": True}}
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_TRANSACTIONAL_TOP
+
+
+def test_top_transactional_saltenv_from_opts_grains():
+    """
+    Test if top function detects transactional minions from opts grains.
+    """
+    kwargs = {"opts": {"environment": "base", "grains": {"transactional": True}}}
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_TRANSACTIONAL_TOP
+
+
+def test_top_static_saltenv_uses_normal_formulas_state():
+    kwargs = {"opts": {"environment": "base"}}
+    assert "formulas" in mgr_master_tops.top(**kwargs)["base"]
+
+
+def test_top_transactional_saltenv_uses_transactional_formulas_state():
+    kwargs = {"opts": {"environment": "base"}, "grains": {"transactional": True}}
+    top = mgr_master_tops.top(**kwargs)["base"]
+
+    assert "formulas_transactional" in top
+    assert "formulas" not in top
 
 
 def test_top_unknown_saltenv():

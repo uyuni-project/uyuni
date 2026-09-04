@@ -70,6 +70,11 @@
                             ${current.historyStatus}
                         </c:otherwise>
                     </c:choose>
+                    <c:if test="${current.pendingRebootAction}">
+                        <span class="label label-warning">
+                            <bean:message key="system.event.history.waitingForReboot" />
+                        </span>
+                    </c:if>
                 </rl:column>
                 <rl:column headerkey="system.event.history.summary">
                     <c:choose>

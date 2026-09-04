@@ -29,6 +29,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -75,6 +77,9 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Column(name = "os_family")
     private String osFamily;
+
+    @OneToOne(mappedBy = "minionServer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    private transient MinionTransactionalInfo transactionalInfo;
 
 
     /**
@@ -417,6 +422,69 @@ public class MinionServer extends Server implements SaltConfigurable {
     @Override
     public void setOsFamilySuse() {
         this.osFamily = ServerConstants.OS_FAMILY_SUSE;
+    }
+
+    /**
+     * @return the number of the currently active (booted) Btrfs snapshot, or null
+     */
+    public Long getActiveSnapshot() {
+        return transactionalInfo != null ? transactionalInfo.getActiveSnapshot() : null;
+    }
+
+    /**
+     * @param activeSnapshotIn the active snapshot number to set
+     */
+    public void setActiveSnapshot(Long activeSnapshotIn) {
+        getOrCreateTransactionalInfo().setActiveSnapshot(activeSnapshotIn);
+    }
+
+    /**
+     * @return the number of the default (next-boot) Btrfs snapshot, or null
+     */
+    public Long getDefaultSnapshot() {
+        return transactionalInfo != null ? transactionalInfo.getDefaultSnapshot() : null;
+    }
+
+    /**
+     * @param defaultSnapshotIn the default snapshot number to set
+     */
+    public void setDefaultSnapshot(Long defaultSnapshotIn) {
+        getOrCreateTransactionalInfo().setDefaultSnapshot(defaultSnapshotIn);
+    }
+
+    /**
+     * @return snapshot detail objects, or null when not available
+     */
+    public List<Map<String, Object>> getSnapshotDetails() {
+        return transactionalInfo != null ? transactionalInfo.getSnapshotDetails() : null;
+    }
+
+    /**
+     * @param snapshotDetailsIn snapshot detail objects, or null to clear
+     */
+    public void setSnapshotDetails(List<Map<String, Object>> snapshotDetailsIn) {
+        getOrCreateTransactionalInfo().setSnapshotDetails(snapshotDetailsIn);
+    }
+
+    /**
+     * @return when the Btrfs snapshot information was last updated, or null
+     */
+    public Date getSnapshotUpdated() {
+        return transactionalInfo != null ? transactionalInfo.getSnapshotUpdated() : null;
+    }
+
+    /**
+     * @param snapshotUpdatedIn when the Btrfs snapshot information was last updated
+     */
+    public void setSnapshotUpdated(Date snapshotUpdatedIn) {
+        getOrCreateTransactionalInfo().setSnapshotUpdated(snapshotUpdatedIn);
+    }
+
+    private MinionTransactionalInfo getOrCreateTransactionalInfo() {
+        if (transactionalInfo == null) {
+            transactionalInfo = new MinionTransactionalInfo(this);
+        }
+        return transactionalInfo;
     }
 
 }

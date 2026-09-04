@@ -19,11 +19,14 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
+import org.hibernate.type.YesNoConverter;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -58,6 +61,10 @@ public class ScriptActionDetails extends BaseDomainHelper {
 
     @Column
     private Long timeout;
+
+    @Column(name = "use_transactional_update")
+    @Convert(converter = YesNoConverter.class)
+    private boolean useTransactionalUpdate = false;
 
     @OneToMany(mappedBy = "parentScriptActionDetails", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ScriptResult> results = new HashSet<>();
@@ -107,6 +114,21 @@ public class ScriptActionDetails extends BaseDomainHelper {
      */
     public void setTimeout(Long t) {
         this.timeout = t;
+    }
+
+    /**
+     * @return true when transactional systems should execute this script through transactional-update
+     */
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
+     * @param useTransactionalUpdateIn whether transactional systems should execute this script through
+     * transactional-update
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**

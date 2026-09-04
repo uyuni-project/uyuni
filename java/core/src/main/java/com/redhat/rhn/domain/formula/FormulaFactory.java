@@ -77,9 +77,9 @@ public class FormulaFactory {
     // Logger for this class
     private static final Logger LOG = LogManager.getLogger(FormulaFactory.class);
 
+    private static String metadataDirStandaloneSalt = "/usr/share/salt-formulas/metadata/";
     private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";
-    private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
-    private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
+    private static String metadataDirCustom = "/srv/formula_metadata/";
     private static final String LAYOUT_FILE = "form.yml";
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
@@ -90,12 +90,37 @@ public class FormulaFactory {
     private FormulaFactory() { }
 
     /**
+     * Origin of the metadata effectively selected for a formula.
+     */
+    public enum MetadataOrigin {
+        STANDALONE,
+        MANAGER,
+        CUSTOM,
+        NONE
+    }
+
+    /**
      * Setter for metadata directory, used for testing.
      * @param metadataDirPath base path where to read metadata files from
      */
     public static void setMetadataDirOfficial(String metadataDirPath) {
-        FormulaFactory.metadataDirManager =
-                metadataDirPath.endsWith(File.separator) ? metadataDirPath : metadataDirPath + File.separator;
+        FormulaFactory.metadataDirManager = normalizeMetadataDir(metadataDirPath);
+    }
+
+    /**
+     * Setter for standalone Salt metadata directory, used for testing.
+     * @param metadataDirPath base path where to read metadata files from
+     */
+    public static void setMetadataDirStandaloneSalt(String metadataDirPath) {
+        FormulaFactory.metadataDirStandaloneSalt = normalizeMetadataDir(metadataDirPath);
+    }
+
+    /**
+     * Setter for custom metadata directory, used for testing.
+     * @param metadataDirPath base path where to read metadata files from
+     */
+    public static void setMetadataDirCustom(String metadataDirPath) {
+        FormulaFactory.metadataDirCustom = normalizeMetadataDir(metadataDirPath);
     }
 
     /**
@@ -106,6 +131,10 @@ public class FormulaFactory {
         systemEntitlementManager = mgr;
     }
 
+    private static String normalizeMetadataDir(String metadataDirPath) {
+        return metadataDirPath.endsWith(File.separator) ? metadataDirPath : metadataDirPath + File.separator;
+    }
+
     /**
      * Return a warning message in case some folder doesn't exist or have wrong access level.
      * @return a warning message if cannot access one folder. NULL if all folder are ok.
@@ -113,16 +142,16 @@ public class FormulaFactory {
     public static String getWarningMessageAccessFormulaFolders() {
         String message = "";
         boolean error = false;
-        if (!new File(METADATA_DIR_STANDALONE_SALT).canRead()) {
-            message += " '" + METADATA_DIR_STANDALONE_SALT + "'";
+        if (!new File(metadataDirStandaloneSalt).canRead()) {
+            message += " '" + metadataDirStandaloneSalt + "'";
             error = true;
         }
         if (!new File(metadataDirManager).canRead()) {
             message += (error ? " and '" : " '") + metadataDirManager + "'";
             error = true;
         }
-        if (!new File(METADATA_DIR_CUSTOM).canRead()) {
-            message += (error ? " and '" : " '") + METADATA_DIR_CUSTOM + "'";
+        if (!new File(metadataDirCustom).canRead()) {
+            message += (error ? " and '" : " '") + metadataDirCustom + "'";
             error = true;
         }
         return error ? new ValidatorError("formula.folders.unreachable", message).getLocalizedMessage() : null;
@@ -133,9 +162,9 @@ public class FormulaFactory {
      * @return the names of all currently installed formulas.
      */
     public static List<String> listFormulaNames() {
-        File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
+        File standaloneDir = new File(metadataDirStandaloneSalt);
         File managerDir = new File(metadataDirManager);
-        File customDir = new File(METADATA_DIR_CUSTOM);
+        File customDir = new File(metadataDirCustom);
         List<File> files = new LinkedList<>();
         files.addAll(getFormulasFiles(standaloneDir));
         files.addAll(getFormulasFiles(managerDir));
@@ -325,9 +354,9 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
         String layoutFilePath = name + File.separator + LAYOUT_FILE;
-        File layoutFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + layoutFilePath);
+        File layoutFileStandalone = new File(metadataDirStandaloneSalt + layoutFilePath);
         File layoutFileManager = new File(metadataDirManager + layoutFilePath);
-        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
+        File layoutFileCustom = new File(metadataDirCustom + layoutFilePath);
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
@@ -609,21 +638,15 @@ public class FormulaFactory {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> getMetadata(String name) {
-        String metadataFilePath = name + File.separator + METADATA_FILE;
-        File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
-        File metadataFileManager = new File(metadataDirManager + metadataFilePath);
-        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
+        Optional<MetadataFile> metadataFile = getFormulaMetadataFile(name);
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
-            if (metadataFileStandalone.isFile()) {
-                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileStandalone));
-            }
-            else if (metadataFileManager.isFile()) {
-                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileManager));
-            }
-            else if (metadataFileCustom.isFile()) {
-                return (Map<String, Object>) yaml.load(new FileInputStream(metadataFileCustom));
+            if (metadataFile.isPresent()) {
+                try (FileInputStream input = new FileInputStream(metadataFile.get().file())) {
+                    Map<String, Object> metadata = (Map<String, Object>) yaml.load(input);
+                    return Optional.ofNullable(metadata).orElseGet(Collections::emptyMap);
+                }
             }
             else {
                 return Collections.emptyMap();
@@ -642,6 +665,46 @@ public class FormulaFactory {
             return Collections.emptyMap();
         }
     }
+
+    /**
+     * Returns the origin of the metadata effectively selected for a formula.
+     * @param name the name of the formula
+     * @return the selected metadata origin
+     */
+    public static MetadataOrigin getMetadataOrigin(String name) {
+        return getFormulaMetadataFile(name)
+                .map(MetadataFile::origin)
+                .orElse(MetadataOrigin.NONE);
+    }
+
+    /**
+     * Returns true when the effective metadata for a formula comes from the custom formula metadata directory.
+     * @param name the name of the formula
+     * @return true if the selected metadata is custom
+     */
+    public static boolean isCustomFormula(String name) {
+        return getMetadataOrigin(name) == MetadataOrigin.CUSTOM;
+    }
+
+    private static Optional<MetadataFile> getFormulaMetadataFile(String name) {
+        String metadataFilePath = name + File.separator + METADATA_FILE;
+        File metadataFileStandalone = new File(metadataDirStandaloneSalt + metadataFilePath);
+        File metadataFileManager = new File(metadataDirManager + metadataFilePath);
+        File metadataFileCustom = new File(metadataDirCustom + metadataFilePath);
+
+        if (metadataFileStandalone.isFile()) {
+            return Optional.of(new MetadataFile(metadataFileStandalone, MetadataOrigin.STANDALONE));
+        }
+        else if (metadataFileManager.isFile()) {
+            return Optional.of(new MetadataFile(metadataFileManager, MetadataOrigin.MANAGER));
+        }
+        else if (metadataFileCustom.isFile()) {
+            return Optional.of(new MetadataFile(metadataFileCustom, MetadataOrigin.CUSTOM));
+        }
+        return Optional.empty();
+    }
+
+    private record MetadataFile(File file, MetadataOrigin origin) { }
 
     /**
      * Returns a given metadata value of a formula.
@@ -663,9 +726,9 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Map<String, Object> getPillarExample(String name) {
         String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
-        File pillarExampleFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + pillarExamplePath);
+        File pillarExampleFileStandalone = new File(metadataDirStandaloneSalt + pillarExamplePath);
         File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
-        File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
+        File pillarExampleFileCustom = new File(metadataDirCustom + pillarExamplePath);
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
