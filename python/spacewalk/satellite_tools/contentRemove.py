@@ -278,6 +278,18 @@ def delete_outside_channels(org):
     _delete_files(rpms_paths + srpms_paths)
 
 
+def __remove_activation_keys_linked_to_channels(channel_ids):
+    query = """
+        delete from rhnActivationKey
+        where reg_token_id in (
+            select token_id from rhnRegTokenChannels
+            where channel_id = :channel_id
+        )
+    """
+    h = rhnSQL.prepare(query)
+    h.executemany(channel_id=channel_ids)
+
+
 def delete_channels(
     channelLabels,
     force=0,
@@ -310,14 +322,13 @@ def delete_channels(
         _delete_files(rpms_paths + srpms_paths)
 
     # Get the channel ids
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         select id, parent_channel
         from rhnChannel
         where label = :label
-        order by parent_channel"""
-    )
+        order by parent_channel""")
     channel_ids = []
+    parent_channels_to_remove = []
     for label in channelLabels:
         h.execute(label=label)
         row = h.fetchone_dict()
@@ -328,18 +339,17 @@ def delete_channels(
             # Subchannel, we have to remove it first
             channel_ids.insert(0, channel_id)
         else:
+            parent_channels_to_remove.append(channel_id)
             channel_ids.append(channel_id)
 
     if not channel_ids:
         return
 
-    clp = rhnSQL.prepare(
-        """
+    clp = rhnSQL.prepare("""
        select id
        from susecontentenvironmenttarget
        where channel_id = :cid
-       """
-    )
+       """)
 
     for cid in channel_ids:
         clp.execute(cid=cid)
@@ -369,6 +379,11 @@ def delete_channels(
         }
         h = rhnSQL.prepare(query % args)
         h.executemany(channel_id=channel_ids)
+
+    # Remove any activation key that is referencing any of the
+    # base channels we are removing.
+    if parent_channels_to_remove:
+        __remove_activation_keys_linked_to_channels(parent_channels_to_remove)
 
     tables = [
         ["rhnErrataFileChannel", "channel_id"],
@@ -532,13 +547,11 @@ def _delete_srpms(srcPackageIds):
     if not srcPackageIds:
         return
     # nuke the rhnPackageSource entry
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         delete
         from rhnPackageSource
         where id = :id
-    """
-    )
+    """)
     h.executemany(id=srcPackageIds)
 
 
