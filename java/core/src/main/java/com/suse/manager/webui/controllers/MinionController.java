@@ -520,6 +520,10 @@ public class MinionController {
                             .map(ServerPath::getHostname)
                             .collect(Collectors.toList());
                     entry.put("path", path);
+
+                    entry.put("primaryFqdn", proxy.getPrimaryFqdnName());
+                    entry.put("additionalFqdns", proxy.getAdditionalFqdnNames());
+
                     return entry; })
                 .collect(Collectors.toList());
         model.put("proxies", Json.GSON.toJson(proxies));
