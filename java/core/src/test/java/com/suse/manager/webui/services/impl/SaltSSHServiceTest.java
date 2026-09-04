@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -121,6 +122,9 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
     private Server createTestProxyMinimal(String hostname, Integer sshPort) throws Exception {
         Server srv = ServerTestUtils.createTestSystem();
         srv.setHostname(hostname);
+        if (srv instanceof MinionServer) {
+            ((MinionServer) srv).setMinionId(hostname);
+        }
         ProxyInfo info = new ProxyInfo();
         info.setServer(srv);
         info.setSshPort(sshPort);
