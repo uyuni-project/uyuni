@@ -74,7 +74,7 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
 
         List<String> argList = new LinkedList<>();
         argList.add("/usr/bin/sudo");
-        argList.add("/usr/bin/rhn-config-satellite.pl");
+        argList.add("/usr/bin/rhn-config-satellite");
         argList.add("--target=" + configFilePath);
         for (Map.Entry<String, String> entry : optionMap.entrySet()) {
             // We don't want to put the actual string 'null' in rhn.conf.  See bz: 189600
