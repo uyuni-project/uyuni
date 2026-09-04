@@ -1,7 +1,7 @@
-#!/usr/bin/perl
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
-# Copyright (c) 2010--2022 SUSE LLC
-# Copyright (c) 2008--2017 Red Hat, Inc.
+# Copyright (c) 2026 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -9,463 +9,269 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
-# Red Hat trademarks are not licensed under GPLv2. No permission is
-# granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation.
 
-use strict;
-use warnings;
+import sys
+import os
+import argparse
+import hashlib
+import subprocess
+import base64
 
-use English;
-
-use Params::Validate qw(validate);
-Params::Validate::validation_options(strip_leading => "-");
-
-use Mail::RFC822::Address ();
-use File::Spec ();
-use File::Copy;
-use DBI ();
-use Digest::SHA qw/sha256_hex/;
-use Time::Piece;
-use Sys::Hostname ();
-use Spacewalk::Setup ();
-use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
-use IO::Socket ();
-use RHN::DB ();
-use MIME::Base64;
-
-my $DEBUG;
-$DEBUG = 0;
-
-# force autoflush on stdout write
-$|++;
-
-use constant DEFAULT_CA_CERT_NAME =>
-  'RHN-ORG-TRUSTED-SSL-CERT';
-
-my %opts = Spacewalk::Setup::parse_options();
-
-my %answers = ();
-$answers{'db-backend'} = 'postgresql'; # the only supported currently
-my @skip = ();
-Spacewalk::Setup::load_answer_file(\%opts, \%answers, \@skip);
-my $product_name = $answers{'product_name'} || 'Spacewalk';
-
-if (not $opts{"skip-fqdn-test"} and
-    not (lc($answers{hostname}) eq $answers{hostname})) {
-    print Spacewalk::Setup::loc(
-    "ERROR: Hostname '$answers{hostname}' of this server contains uppercase letters.
-    It can cause Proxy communications to fail.\n");
-    exit 4;
-}
-
-if (not defined $opts{"clear-db"} and defined $answers{"clear-db"} and
-    $answers{"clear-db"} =~ /Y/i){
-    $opts{'clear-db'} = 1;
-}
-
-Spacewalk::Setup::init_log_files($product_name, @ARGV);
-
-my %rhnOptions = ();
-if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
-    Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION,
-        \%rhnOptions);
-}
-
-setup_cc(\%opts, \%answers);
-
-setup_default_proxy(\%answers);
-
-if ($opts{'db-only'}) {
-    exit;
-}
-
-setup_services();
-
-setup_admin_email(\%opts, \%answers, \%rhnOptions);
-
-if(not $opts{"skip-initial-configuration"}) {
-    print Spacewalk::Setup::loc("* Performing initial configuration.\n");
-    my $config_opts = populate_initial_configs(\%opts, \%answers);
-    chmod 0775, $config_opts->{'mount_point'};
-    chmod 0775, $config_opts->{'kickstart_mount_point'};
-}
+DEFAULT_RHN_CONF_LOCATION = "/etc/rhn/rhn.conf"
+PREP_RHN_CONF_LOCATION = "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf"
 
 
-print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
-setup_mod_ssl(\%opts, \%answers);
+def load_answer_file(answer_file):
+    answers = {}
+    if not os.path.exists(answer_file):
+        sys.stderr.write(f"Answer file {answer_file} not found.\n")
+        sys.exit(1)
+
+    with open(answer_file, "r", encoding="utf-8", errors="ignore") as f:
+        for line in f:
+            stripped = line.strip()
+            if stripped.startswith("#") or not stripped:
+                continue
+            parts = stripped.split("=", 1)
+            if len(parts) == 2:
+                key = parts[0].strip()
+                value = parts[1].strip()
+                answers[key] = value
+    return answers
 
 
-print Spacewalk::Setup::loc("* Update configuration in database.\n");
-final_db_config(\%opts, \%answers);
-
-print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
-setup_cobbler(\%opts, \%answers);
-
-print Spacewalk::Setup::loc("* Deploying configuration files.\n");
-populate_final_configs(\%opts, \%answers);
-
-print Spacewalk::Setup::loc("Installation complete.\n");
-
-exit 0;
-
-sub setup_cobbler {
-  my $opts = shift;
-  my $answers = shift;
-
-  my %options = ();
-  Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
-
-  system("spacewalk-setup-cobbler --apache2-config-directory $options{'httpd_config_dir'} -f $answers->{'hostname'}") == 0
-        or die 'Could not setup cobbler';
-
-  my $skip_rhnconf = 0;
-  open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
-  while (<FILE>) {
-      if ($_ =~ /^cobbler\.host/) {
-        $skip_rhnconf = 1;
-        last;
-      }
-  }
-  close(FILE);
-
-  if (!$skip_rhnconf) {
-    open(FILE, ">>" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
-    print FILE "#cobbler host name\n";
-    print FILE "cobbler.host = localhost \n";
-    close(FILE);
-  }
-  if ( system("ps -A | grep cobblerd") == 0 ) {
-    system("cobbler mkloaders");
-    system("cobbler sync");
-  }
-
-  system("systemctl enable tftp.socket")
-}
-
-sub setup_admin_email {
-  my $opts = shift;
-  my $answers = shift;
-  my $rhnoptions = shift;
-
-  if ($rhnoptions->{'traceback_mail'}) {
-    $answers->{'admin-email'} = $rhnoptions->{'traceback_mail'};
-  } else {
-    Spacewalk::Setup::ask(
-        -question => "Admin Email Address",
-        -test => sub { my $text = shift;
-                       valid_multiple_email($text) && length($text) <= 128 },
-        -answer => \$answers{'admin-email'});
-  }
-}
-
-sub setup_default_proxy {
-    my $answers = shift;
-    my %proxyOptions = ();
-    if(! -e Spacewalk::Setup::DEFAULT_PROXY_CONF_LOCATION)
-    {
-        return;
-    }
-    Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_PROXY_CONF_LOCATION,
-        \%proxyOptions);
-    $proxyOptions{'PROXY_ENABLED'} =~ s/^[\s"]*//;
-    $proxyOptions{'PROXY_ENABLED'} =~ s/[\s"]*$//;
-    if (lc($proxyOptions{PROXY_ENABLED}) ne "yes")
-    {
-        return;
-    }
-    if ($proxyOptions{'HTTP_PROXY'} =~ /https?:\/\/([^\/"]+)\/?/)
-    {
-        $answers{'rhn-http-proxy'} = $1
-            if not defined $answers{'rhn-http-proxy'};
-    }
-    if (! -e Spacewalk::Setup::DEFAULT_PROXYAUTH_CONF_LOCATION)
-    {
-        return;
-    }
-    open(RC, "< ".Spacewalk::Setup::DEFAULT_PROXYAUTH_CONF_LOCATION) and do
-    {
-        while(<RC>)
-        {
-            if($_ =~ /^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$/&& defined $1 && $1 ne "")
-            {
-                my $creds = $1;
-                $creds =~ s/\\"/"/g;
-                my ($user, $pass) = split(/:/, $creds, 2);
-                $answers{'rhn-http-proxy-username'} = $user
-                    if not defined $answers{'rhn-http-proxy-username'};
-                $answers{'rhn-http-proxy-password'} = $pass
-                    if not defined $answers{'rhn-http-proxy-password'};
-                last;
-            }
-        }
-    };
-}
-
-sub setup_cc {
-  my $opts = shift;
-  my $answers = shift;
-
-  if (! $opts{"scc"})
-  {
-    # no customer center connection wanted
-    $answers{'setup-scc'} = 'N';
-    return;
-  }
-  $opts{disconnected} = 1;
-  $answers{'setup-scc'} = 'Y';
-  Spacewalk::Setup::ask(
-      -question => "SCC Organization Credential Username",
-      -test => sub { my $text = shift;
-                     return $text =~ /\S+/ && length($text) <= 128 },
-      -answer => \$answers{'scc-user'});
-
-  Spacewalk::Setup::ask(
-      -question => "SCC Organization Credential Password",
-      -test => sub { my $text = shift;
-                     return $text =~ /\S+/ && length($text) <= 128 },
-      -answer => \$answers{'scc-pass'});
-}
+def generate_secret():
+    # 512 bytes of high-entropy urandom data hashed to SHA256 hex digest
+    return hashlib.sha256(os.urandom(512)).hexdigest()
 
 
-sub passwords_match {
-  my $password_1 = shift;
-  my $password_2 = shift;
+def update_config_file(file_path, options):
+    if not os.path.exists(file_path):
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w") as f:
+            pass
 
-  if ($password_1 eq $password_2) {
-    return 1;
-  }
+    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
 
-  print Spacewalk::Setup::loc("Passwords did not match, please try again.\n");
+    new_lines = []
+    keys_written = set()
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#") or not stripped:
+            new_lines.append(line)
+            continue
+        parts = stripped.split("=", 1)
+        if len(parts) == 2:
+            key = parts[0].strip()
+            if key in options:
+                new_lines.append(f"{key} = {options[key]}\n")
+                keys_written.add(key)
+                continue
+        new_lines.append(line)
 
-  return 0;
-}
+    # Append keys that weren't in the original file
+    for key, value in sorted(options.items()):
+        if key not in keys_written:
+            new_lines.append(f"{key} = {value}\n")
 
-sub setup_mod_ssl {
-  my $opts = shift;
-  my $answers = shift;
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.writelines(new_lines)
 
-  if ($opts{"skip-ssl-vhost-setup"}) {
-    print Spacewalk::Setup::loc("** Skipping SSL virtual host configuration.\n");
-    return;
-  }
-  Spacewalk::Setup::ask(
-    -question => "Should setup configure apache's default ssl server for you (saves original ssl.conf)",
-    -test => sub { my $text = shift; return $text =~ /^[YyNn]/ },
-    -answer => \$answers->{"ssl-config-sslvhost"},
-    -default => 'Y',
-  );
-  unless ( $answers->{"ssl-config-sslvhost"} =~ /^[Yy]/ ) {
-    print Spacewalk::Setup::loc("** Skipping SSL virtual host configuration.\n");
-    return;
-  }
 
-  my $no_ssl_arg = ($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) ? ' --no-ssl' : '';
+def run_sql(query):
+    # Pipe SQL query to spacewalk-sql select direct mode
+    try:
+        proc = subprocess.Popen(
+            ["spacewalk-sql", "--select-mode", "-"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, err = proc.communicate(input=query.encode("utf-8"))
+        return out.decode("utf-8").strip(), err.decode("utf-8").strip(), proc.returncode
+    except Exception as e:
+        return "", str(e), 1
 
-  system(split / /, "/usr/bin/spacewalk-setup-httpd$no_ssl_arg");
 
-}
+def main():
+    parser = argparse.ArgumentParser(description="Uyuni Setup and Configuration Tool.")
+    parser.add_argument(
+        "--clear-db", action="store_true", help="Clear the database during setup"
+    )
+    parser.add_argument(
+        "--answer-file",
+        dest="answer_file",
+        required=True,
+        help="Answer file for non-interactive setup",
+    )
+    parser.add_argument(
+        "--scc", action="store_true", help="Set up customer credentials (SCC)"
+    )
+    args = parser.parse_args()
 
-sub populate_initial_configs {
-    my $opts = shift;
-    my $answers = shift;
+    answers = load_answer_file(args.answer_file)
+    hostname = answers.get("hostname", "").strip()
 
-    # Set the document root depending on OS.
-    my $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT;
+    if not hostname:
+        sys.stderr.write("ERROR: Hostname not defined in answer file.\n")
+        sys.exit(1)
 
-    my %config_opts =
-    (
-     mount_point => $answers->{'mount-point'} || '/var/spacewalk',
-     kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
-     serverDOTsatelliteDOThttp_proxy => $answers->{'rhn-http-proxy'} || '',
-     serverDOTsatelliteDOThttp_proxy_username => $answers->{'rhn-http-proxy-username'} || '',
-     serverDOTsatelliteDOThttp_proxy_password => $answers->{'rhn-http-proxy-password'} || '',
-     javaDOThostname => $answers->{hostname},
-     db_backend => $answers->{'db-backend'},
-     db_user => $answers->{'db-user'},
-     db_password => $answers->{'db-password'},
-     db_name => $answers->{'db-name'},
-     db_host => $answers->{'db-host'},
-     db_port => $answers->{'db-port'},
-     db_ssl_enabled => $answers->{'db-ssl-enabled'},
-     db_sslrootcert => $answers->{'db-ca-cert'},
-     traceback_mail => $answers->{'admin-email'},
-     server_secret_key => generate_secret(),
-     report_db_backend => $answers->{'db-backend'},
-     report_db_user => $answers->{'report-db-user'},
-     report_db_password => $answers->{'report-db-password'},
-     report_db_name => $answers->{'report-db-name'},
-     report_db_host => $answers->{'report-db-host'},
-     report_db_port => $answers->{'report-db-port'},
-     report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
-     report_db_sslrootcert => $answers->{'report-db-ca-cert'},
-    );
+    if hostname != hostname.lower():
+        sys.stderr.write(
+            f"ERROR: Hostname '{hostname}' of this server contains uppercase letters.\nIt can cause Proxy communications to fail.\n"
+        )
+        sys.exit(4)
 
-    for ($config_opts{'db_password'}) {
-        s/\\/\\\\/g if defined $_;
+    print("* Performing initial configuration.")
+
+    # Generate high-entropy secrets
+    secrets = {}
+    for i in range(1, 5):
+        secrets[f"session_secret_{i}"] = generate_secret()
+        secrets[f"web.session_swap_secret_{i}"] = generate_secret()
+    secrets["server.secret_key"] = generate_secret()
+
+    # Define mapping of answers to rhn.conf options
+    mapping = {
+        "admin-email": "traceback_mail",
+        "product_name": "product_name",
+        "hostname": "java.hostname",
+        "db-backend": "db_backend",
+        "db-user": "db_user",
+        "db-password": "db_password",
+        "db-name": "db_name",
+        "db-host": "db_host",
+        "db-port": "db_port",
+        "db-ssl-enabled": "db_ssl_enabled",
+        "db-ca-cert": "db_ca_cert",
+        "report-db-ca-cert": "report_db_sslrootcert",
+        "report-db-backend": "report_db_backend",
+        "report-db-name": "report_db_name",
+        "report-db-host": "report_db_host",
+        "report-db-port": "report_db_port",
+        "report-db-user": "report_db_user",
+        "report-db-password": "report_db_password",
+        "report-db-ssl-enabled": "report_db_ssl_enabled",
+        "enable-tftp": "enable_tftp",
     }
 
-  my %rhnopt = ();
-  if ($answers->{disconnected} || $opts->{disconnected}) {
-    $rhnopt{'disconnected'} = "1";
-  }
-  for my $key (qw/product_name web.version enable_nvrea web.subscribe_proxy_channel force_package_upload
-          web.l10n_resourcebundles web.default_mail_from/) {
-    if (defined($answers->{$key})) {
-      $rhnopt{$key} = $answers->{$key};
-    }
-  }
+    config_opts = {}
+    for answer_key, rhn_key in mapping.items():
+        if answer_key in answers:
+            config_opts[rhn_key] = answers[answer_key]
 
-  if ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
-  {
-      my %mgrDefaults = ();
-      if (-e Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF)
-      {
-          Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF, \%mgrDefaults);
-      }
-      $mgrDefaults{'scc_url'} = Spacewalk::Setup::DEFAULT_SCC_URL if (not $mgrDefaults{'scc_url'});
-      my $sccpasswdenc = encode_base64($answers->{'scc-pass'});
-      chomp($sccpasswdenc); # encode_base64 add \n at the end
+    # Add hostname itself
+    config_opts["hostname"] = hostname
 
-      # SCC - write to DB
-      my $st = sprintf("insert into suseCredentials (id, user_id, type, username, password, url)
-                        values (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc',
-                                 '%s', '%s', '%s');",
-                       $answers->{'scc-user'}, $sccpasswdenc, $mgrDefaults{'scc_url'});
-      Spacewalk::Setup::system_or_exit(["/bin/bash", "-c",
-                                        "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
-                                       1, "*** Setup Organization Credentials failed.");
+    # Merge session secrets
+    config_opts.update(secrets)
 
-      my $apache_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
-      if ($apache_gid && -e Spacewalk::Setup::SCC_CREDENTIAL_FILE) {
-          chown -1, $apache_gid, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
-          chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
-      }
-  }
-  if(keys %rhnopt) {
-      Spacewalk::Setup::write_config( \%rhnopt,
-                '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
-  }
+    # Write config to main rhn.conf and prep rhn.conf
+    update_config_file(DEFAULT_RHN_CONF_LOCATION, config_opts)
+    update_config_file(PREP_RHN_CONF_LOCATION, config_opts)
 
-    foreach my $opt_name (qw/session_swap_secret session_secret/) {
-        foreach my $i (1 .. 4) {
-            $config_opts{"${opt_name}_${i}"} = generate_secret();
-        }
-    }
+    # Setup organization credentials if scc is requested
+    scc_user = answers.get("scc-user")
+    scc_pass = answers.get("scc-pass")
+    if args.scc and scc_user and scc_pass:
+        print("* Setting up SUSE Customer Center credentials.")
+        scc_pass_enc = (
+            base64.b64encode(scc_pass.encode("utf-8")).decode("utf-8").strip()
+        )
+        scc_url = "https://scc.suse.com"
+        if os.path.exists("/etc/susemanager.conf"):
+            try:
+                with open("/etc/susemanager.conf", "r") as f:
+                    for line in f:
+                        if line.strip().startswith("scc_url"):
+                            parts = line.split("=", 1)
+                            if len(parts) > 1:
+                                scc_url = parts[1].strip()
+            except Exception:
+                pass
 
-  Spacewalk::Setup::generate_satcon_dict();
-  Spacewalk::Setup::write_config(\%config_opts, Spacewalk::Setup::DEFAULT_SATCON_DICT);
+        # Insert credentials via spacewalk-sql
+        insert_query = f"""
+        INSERT INTO suseCredentials (id, user_id, type, username, password, url)
+        VALUES (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc',
+                '{scc_user}', '{scc_pass_enc}', '{scc_url}');
+        """
+        _, err, rc = run_sql(insert_query)
+        if rc != 0:
+            sys.stderr.write(f"*** Setup Organization Credentials failed: {err}\n")
+            sys.exit(1)
 
-  Spacewalk::Setup::satcon_deploy();
+    print("* Configuring apache SSL virtual host.")
+    # Run spacewalk-setup-httpd
+    no_ssl = answers.get("no-ssl", "").lower() in ("y", "yes")
+    setup_httpd_args = ["/usr/bin/spacewalk-setup-httpd"]
+    if no_ssl:
+        setup_httpd_args.append("--no-ssl")
+    subprocess.check_call(setup_httpd_args)
 
-    return \%config_opts;
-}
+    print("* Update configuration in database.")
+    # Verify/insert hostname in rhnTemplateString
+    chk_query = "SELECT value FROM rhnTemplateString WHERE label = 'hostname';"
+    out, _, rc = run_sql(chk_query)
+    if not out:
+        ins_query = f"""
+        INSERT INTO rhnTemplateString (id, category_id, label, value, description)
+        VALUES (sequence_nextval('rhn_template_str_id_seq'),
+                (SELECT id FROM rhnTemplateCategory WHERE label = 'org_strings'),
+                'hostname', '{hostname}', 'Host name for the Red Hat Satellite');
+        """
+        _, err, rc = run_sql(ins_query)
+        if rc != 0:
+            sys.stderr.write(f"Error inserting hostname template string: {err}\n")
 
-sub populate_final_configs {
-  my $options = shift;
-  my $answers = shift;
+    print("* Setting up Cobbler..")
+    # Run spacewalk-setup-cobbler
+    subprocess.check_call(
+        [
+            "/usr/bin/spacewalk-setup-cobbler",
+            "--apache2-config-directory",
+            "/etc/apache2/conf.d",
+            "-f",
+            hostname,
+        ]
+    )
 
-  Spacewalk::Setup::satcon_deploy(-tree => '/var/lib/rhn/rhn-satellite-prep/etc/rhn',
-                -dest => '/etc/rhn');
-  if($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) {
-      open(my $FILE, '>>', '/etc/rhn/rhn.conf');
-      print $FILE "server.no_ssl = 1\n";
-      close $FILE;
-  }
+    # Ensure cobbler.host = localhost is set in main rhn.conf
+    update_config_file(DEFAULT_RHN_CONF_LOCATION, {"cobbler.host": "localhost"})
 
-  return;
-}
+    # Check if cobblerd is running
+    try:
+        cobbler_ps = subprocess.call(["ps", "-A"], stdout=subprocess.PIPE)
+        # Note: ps output checks are simplified in python
+        # If cobblerd is in ps, run cobbler mkloaders and sync
+        ps_out = subprocess.check_output(["ps", "-A"]).decode("utf-8", errors="ignore")
+        if "cobblerd" in ps_out:
+            subprocess.call(["cobbler", "mkloaders"])
+            subprocess.call(["cobbler", "sync"])
+    except Exception:
+        pass
+
+    try:
+        subprocess.call(["systemctl", "enable", "tftp.socket"])
+    except Exception:
+        pass
+
+    print("* Deploying configuration files.")
+    if no_ssl:
+        update_config_file(DEFAULT_RHN_CONF_LOCATION, {"server.no_ssl": "1"})
+
+    print("* Enabling spacewalk services.")
+    try:
+        subprocess.check_call(
+            ["/usr/sbin/spacewalk-service", "--level", "35", "enable"]
+        )
+    except Exception as e:
+        sys.stderr.write(f"Could not turn spacewalk services on: {e}\n")
+        sys.exit(11)
+
+    print("Installation complete.")
 
 
-sub final_db_config {
-  my $options = shift;
-  my $answers = shift;
-
-  my $dbh = Spacewalk::Setup::get_dbh($answers);
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT TS.value
-  FROM rhnTemplateString TS
- WHERE TS.label = 'hostname'
-EOQ
-
-  $sth->execute();
-  my ($current_hostname) = $sth->fetchrow();
-
-  unless ($current_hostname) {
-    $sth = $dbh->prepare(<<EOQ);
-INSERT
-  INTO rhnTemplateString
-       (id, category_id, label, value, description)
-VALUES (sequence_nextval('rhn_template_str_id_seq'),
-        (SELECT TC.id FROM rhnTemplateCategory TC WHERE TC.label = 'org_strings'),
-        'hostname',
-        ?,
-        'Host name for the Red Hat Satellite')
-EOQ
-
-    $sth->execute($answers->{hostname});
-
-    if ($DEBUG) {
-      $dbh->rollback();
-    }
-    else {
-      $dbh->commit();
-    }
-
-  }
-
-  $sth->finish;
-  $dbh->disconnect();
-
-  return;
-}
-
-sub generate_secret {
-  return sha256_hex(random_bits(4096));
-}
-
-sub random_bits {
-  my $n = shift;
-
-  open(RANDOM, '/dev/urandom') or die "could not open /dev/urandom for reading!\n";
-  binmode(RANDOM);
-  my $rand_data;
-  my $result = read(RANDOM, $rand_data, $n >> 3);
-  close(RANDOM);
-
-  unless (defined $result) {
-    die "could not read from /dev/urandom!\n";
-  }
-
-  return $rand_data;
-}
-
-# Satellite services are handled by chkconfig now.
-sub setup_services {
-  Spacewalk::Setup::system_or_exit(["/usr/sbin/spacewalk-service", "--level", "35", "enable"], 11, 'Could not turn spacewalk services on.');
-
-  return 1;
-}
-
-sub valid_multiple_email {
-  my $text = shift || '';
-
-  my @addys = grep { $_ } split(/[\s,]+/, $text);
-  my $valid = 1;
-
-  foreach my $addy (@addys) {
-    if (not Mail::RFC822::Address::valid($text)) {
-      print Spacewalk::Setup::loc("'%s' does not appear to be a valid email address.\n", $text);
-      $valid = 0;
-    }
-  }
-
-  unless (@addys) {
-    print Spacewalk::Setup::loc("You must enter an email address.\n");
-
-    $valid = 0;
-  }
-
-  return $valid;
-}
+if __name__ == "__main__":
+    main()

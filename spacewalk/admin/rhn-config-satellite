@@ -1,0 +1,155 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2026 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+
+import sys
+import os
+import argparse
+import time
+import shutil
+import re
+import subprocess
+
+ALLOWED_TARGETS = [
+    "/etc/rhn/rhn.conf",
+    "/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf",
+    "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf",
+]
+
+
+def get_apache_group():
+    try:
+        # Match getgrnam logic
+        ret = subprocess.check_output(
+            'grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf',
+            shell=True,
+        )
+        group = ret.decode("utf-8").strip()
+        if group:
+            return group
+    except Exception:
+        pass
+    return None
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate config files for Spacewalk/Uyuni server."
+    )
+    parser.add_argument(
+        "--target", required=True, help="Target configuration file path"
+    )
+    parser.add_argument(
+        "--option", action="append", default=[], help="Options in key=value format"
+    )
+    parser.add_argument("--remove", action="append", default=[], help="Keys to remove")
+    args = parser.parse_args()
+
+    target = args.target
+    if target not in ALLOWED_TARGETS:
+        sys.stderr.write(
+            f"Cannot modify a file that is not a spacewalk config file: {target}\n"
+        )
+        sys.exit(1)
+
+    options = {}
+    for opt in args.option:
+        parts = opt.split("=", 1)
+        if len(parts) == 2:
+            key, val = parts[0].strip(), parts[1].strip()
+            # Handle UYUNICFG_* env override logic
+            if re.match(r"^[A-Z0-9_]+$", val):
+                env_key = f"UYUNICFG_{val}"
+                if env_key in os.environ:
+                    val = os.environ[env_key]
+            options[key] = val
+
+    removals = set(args.remove)
+
+    # Backup original target file if it exists
+    if os.path.exists(target):
+        # Precise time representation matching gmtime strftime YYYY-MM-DD_HH:MM:SS.microsec
+        t = time.time()
+        micro = int((t - int(t)) * 1000000)
+        curr_time = time.strftime("%Y-%m-%d_%H:%M:%S", time.gmtime(t)) + f".{micro:06d}"
+        backup_path = f"{target}.{curr_time}"
+        try:
+            shutil.copy(target, backup_path)
+        except Exception as e:
+            sys.stderr.write(f"Could not copy {target} to {backup_path}: {e}\n")
+            sys.exit(1)
+
+    tmpfile = f"{target}.bak.{os.getpid()}"
+    if os.path.exists(tmpfile):
+        os.unlink(tmpfile)
+
+    # Create temp file and set permission/group
+    os.umask(0o027)
+    with open(tmpfile, "w", encoding="utf-8") as tmp_f:
+        pass
+
+    if tmpfile.startswith("/etc/rhn/"):
+        apache_group = get_apache_group()
+        if apache_group:
+            try:
+                import shutil
+
+                shutil.chown(tmpfile, user="root", group=apache_group)
+            except Exception:
+                pass
+
+    # Read and process target lines
+    lines = []
+    if os.path.exists(target):
+        with open(target, "r", encoding="utf-8", errors="ignore") as f:
+            lines = f.readlines()
+
+    written_lines = []
+    keys_written = set()
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#") or "[prompt]" in line:
+            written_lines.append(line)
+            continue
+
+        parts = stripped.split("=", 1)
+        if len(parts) == 2:
+            key = parts[0].strip()
+            if key in options:
+                val = options[key]
+                written_lines.append(f"{key} = {val}\n")
+                keys_written.add(key)
+                continue
+            if key in removals:
+                continue
+
+        written_lines.append(line)
+
+    # Append new options that didn't exist in original file
+    for key, val in options.items():
+        if key not in keys_written:
+            written_lines.append("#option generated from rhn-config-satellite\n")
+            written_lines.append(f"{key}={val}\n\n")
+
+    # Write temp file and rename
+    with open(tmpfile, "w", encoding="utf-8") as tmp_f:
+        tmp_f.writelines(written_lines)
+
+    try:
+        os.rename(tmpfile, target)
+    except Exception as e:
+        sys.stderr.write(f"Could not rename {tmpfile} to {target}: {e}\n")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

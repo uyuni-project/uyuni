@@ -48,52 +48,29 @@ URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  tomcat11
-BuildRequires:  perl(ExtUtils::MakeMaker)
 Requires:       curl
-Requires:       perl-Mail-RFC822-Address
-Requires:       perl-Params-Validate
-Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
-Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       spacewalk-schema
 Requires:       uyuni-setup-reportdb
-Requires:       perl(DBD::Pg)
 Requires(post): cobbler
 Requires(post): tomcat11
 Conflicts:      salt-formulas-configuration
 
 Provides:       salt-formulas-configuration
 BuildArch:      noarch
-%if 0%{?fedora}
-BuildRequires:  perl-interpreter
-%else
-BuildRequires:  perl
-%endif
 %if 0%{?suse_version}
 BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
-## non-core
-#BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
-#BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
 
-%if 0%{?fedora}
-Requires:       perl-interpreter
-%else
-Requires:       perl
-%endif
 %if 0%{?suse_version}
-BuildRequires:  perl-libwww-perl
 Requires:       curl
 Requires:       patch
-Requires:       perl-XML-LibXML
-Requires:       perl-XML-SAX
-Requires:       perl-libwww-perl
 Requires:       policycoreutils
 # to have /etc/salt/master.d
 Requires(pre):  salt-master
@@ -112,11 +89,6 @@ Requires:       (python3-PyYAML or python3-pyyaml)
 Requires:       (python-PyYAML or PyYAML)
 %endif
 %if 0%{?rhel}
-Requires:       perl-Net-LibIDN2
-%else
-Requires:       perl-Net-LibIDN
-%endif
-%if 0%{?rhel}
 Requires(post): libxslt-devel
 %else
 Requires(post): libxslt-tools
@@ -130,31 +102,14 @@ setup tasks, re-installation, and upgrades.
 %setup -q
 
 %build
-perl Makefile.PL INSTALLDIRS=vendor
-%make_build
-
-# Fixing shebang for Python 3
-%if 0%{?build_py3}
-for i in $(find . -type f);
-do
-    sed -i '1s=^#!%{_bindir}/\(python\|env python\)[0-9.]*=#!%{_bindir}/python3=' $i;
-done
-# timestamp of Makefile must always be newer than Makefile.PL, else build will fail
-touch Makefile
-%endif
-
-# Fix python executable in Perl code
-%if 0%{?build_py3}
-sed -i "s/'python'/'python3'/g" lib/Spacewalk/Setup.pm
-%endif
-
 # Build RST manpages
 sphinx-build -b man doc/ out/
 
 %install
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
-find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
-find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
+install -d -m 755 %{buildroot}%{_bindir}/
+install -m 0755 bin/spacewalk-setup %{buildroot}%{_bindir}/spacewalk-setup
+install -m 0755 bin/spacewalk-setup-httpd %{buildroot}%{_bindir}/spacewalk-setup-httpd
+install -m 0755 bin/spacewalk-setup-cobbler %{buildroot}%{_bindir}/spacewalk-setup-cobbler
 
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/setup/
@@ -178,8 +133,7 @@ install -m 0644 salt/salt-ssh-logging.conf %{buildroot}%{_sysconfdir}/salt/maste
 # create a directory for misc. Spacewalk things
 install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
-mkdir -p %{buildroot}%{_mandir}/man8
-%{_bindir}/pod2man --section=1 %{buildroot}%{_bindir}/spacewalk-setup-httpd | gzip > %{buildroot}%{_mandir}/man1/spacewalk-setup-httpd.1.gz
+mkdir -p %{buildroot}%{_mandir}/man1
 # Sphinx built manpage
 %define SPHINX_BASE_DIR %(echo %{SOURCE0}| sed -e 's/\.tar\.gz//' | sed 's@.*/@@')
 install -m 0644 %{_builddir}/%{SPHINX_BASE_DIR}/out/spacewalk-cobbler-setup.1 %{buildroot}%{_mandir}/man1/spacewalk-setup-cobbler.1
@@ -218,9 +172,6 @@ fi
 
 exit 0
 
-%check
-%make_build test
-
 %files
 %doc Changes README answers.txt
 %config %{_sysconfdir}/salt/master.d/susemanager.conf
@@ -229,7 +180,6 @@ exit 0
 %if 0%{?suse_version}
 %config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts_suse.conf
 %endif
-%{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-setup-cobbler

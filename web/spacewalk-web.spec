@@ -96,51 +96,12 @@ Requires:       spacewalk-html
 %description -n spacewalk-html-debug
 This package contains the debug files for spacewalk-html.
 
-%package -n spacewalk-base
-Summary:        Programs which need to be installed for the Spacewalk Web base classes
-License:        GPL-2.0-only
-# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
-Group:          Applications/Internet
-Requires:       httpd
-Requires:       python3-PyJWT
-Requires:       python3-numpy
-Requires:       sudo
-Requires:       perl(Params::Validate)
-Requires:       perl(XML::LibXML)
-Provides:       spacewalk(spacewalk-base) = %{version}-%{release}
-Obsoletes:      rhn-base < 5.3.0
-Obsoletes:      spacewalk-grail < %{version}
-Obsoletes:      spacewalk-pxt < %{version}
-Obsoletes:      spacewalk-sniglets < %{version}
-Provides:       rhn-base = 5.3.0
-
-%description -n spacewalk-base
-This package includes the core RHN:: packages necessary to manipulate the
-database.  This includes RHN::* and RHN::DB::*.
-
-%package -n spacewalk-base-minimal
-Summary:        Core of Perl modules for %{name} package
-License:        GPL-2.0-only
-# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
-Group:          Applications/Internet
-Requires:       perl(DBI)
-Requires:       perl(Params::Validate)
-Provides:       spacewalk(spacewalk-base-minimal) = %{version}-%{release}
-Obsoletes:      rhn-base-minimal < 5.3.0
-Provides:       rhn-base-minimal = 5.3.0
-
-%description -n spacewalk-base-minimal
-Independent Perl modules in the RHN:: name-space.
-These are very basic modules needed to handle configuration files, database,
-sessions and exceptions.
-
 %package -n spacewalk-base-minimal-config
 Summary:        Configuration for %{name} package
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
-Requires:       spacewalk-base-minimal = %{version}-%{release}
 Provides:       spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 
 %description -n spacewalk-base-minimal-config
@@ -159,7 +120,6 @@ rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
 %install
-make -C modules install DESTDIR=%{buildroot} PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=%{buildroot} INSTALL_DEST=%{www_path}
 make -C po install PREFIX=%{buildroot}
 
@@ -200,23 +160,6 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = suse-light/' %{buildroo
 %endif
 
 %find_lang spacewalk-web
-
-%files -n spacewalk-base
-%defattr(644,root,root,755)
-%dir %{perl_vendorlib}/RHN
-%{perl_vendorlib}/RHN.pm
-
-%files -n spacewalk-base-minimal
-%defattr(644,root,root,755)
-%dir %{perl_vendorlib}/RHN
-%dir %{perl_vendorlib}/PXT
-%{perl_vendorlib}/RHN/SimpleStruct.pm
-%{perl_vendorlib}/RHN/Exception.pm
-%{perl_vendorlib}/RHN/DB.pm
-%{perl_vendorlib}/RHN/DBI.pm
-%{perl_vendorlib}/PXT/Config.pm
-%{_sysconfdir}/*-release
-%license LICENSE
 
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
