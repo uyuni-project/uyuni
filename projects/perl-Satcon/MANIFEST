@@ -1,8 +1,0 @@
-Makefile.PL
-MANIFEST
-README
-test.pl
-bin/satcon-build-dictionary.pl
-bin/satcon-deploy-tree.pl
-lib/Satcon.pm
-META.yml                                Module meta-data in YAML

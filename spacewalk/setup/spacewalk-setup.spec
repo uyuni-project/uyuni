@@ -52,10 +52,8 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 Requires:       curl
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-Params-Validate
-Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
-Requires:       spacewalk-base-minimal
 Requires:       spacewalk-base-minimal-config
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-java-lib >= 2.4.5
