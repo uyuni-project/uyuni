@@ -71,9 +71,7 @@ make -f Makefile.admin install PREFIX=%{buildroot}
 mkdir -p %{buildroot}%{_mandir}/man8/
 %{_bindir}/pod2man --section=8 man/spacewalk-service.pod > %{buildroot}%{_mandir}/man8/spacewalk-service.8
 %{_bindir}/pod2man --section=8 man/rhn-sat-restart-silent.pod > %{buildroot}%{_mandir}/man8/rhn-sat-restart-silent.8
-%{_bindir}/pod2man --section=8 rhn-config-satellite.pl > %{buildroot}%{_mandir}/man8/rhn-config-satellite.pl.8
-%{_bindir}/pod2man --section=8 man/rhn-deploy-ca-cert.pl.pod > %{buildroot}%{_mandir}/man8/rhn-deploy-ca-cert.pl.8
-%{_bindir}/pod2man --section=8 man/rhn-install-ssl-cert.pl.pod > %{buildroot}%{_mandir}/man8/rhn-install-ssl-cert.pl.8
+%{_bindir}/pod2man --section=8 man/rhn-config-satellite.pod > %{buildroot}%{_mandir}/man8/rhn-config-satellite.8
 chmod 0644 %{buildroot}%{_mandir}/man8/*.8*
 
 %post
@@ -87,18 +85,14 @@ fi
 %{_sbindir}/spacewalk-service
 %{_sbindir}/uyuni-update-config
 %{_sbindir}/import-suma-build-keys
-%{_bindir}/rhn-config-satellite.pl
-%{_bindir}/rhn-deploy-ca-cert.pl
-%{_bindir}/rhn-install-ssl-cert.pl
+%{_bindir}/rhn-config-satellite
 %{_bindir}/salt-secrets-config.py
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
 %{_mandir}/man8/spacewalk-service.8%{?ext_man}
 %{_mandir}/man8/rhn-sat-restart-silent.8%{?ext_man}
-%{_mandir}/man8/rhn-config-satellite.pl.8%{?ext_man}
-%{_mandir}/man8/rhn-deploy-ca-cert.pl.8%{?ext_man}
-%{_mandir}/man8/rhn-install-ssl-cert.pl.8%{?ext_man}
+%{_mandir}/man8/rhn-config-satellite.8%{?ext_man}
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
 %{_unitdir}/spacewalk-wait-for-salt.service

@@ -90,7 +90,6 @@ $PODMAN_CMD exec uyuni-db bash -c "echo host all all all scram-sha-256 > /var/li
 $PODMAN_CMD exec uyuni-db su postgres -c "/usr/bin/pg_ctl reload"
 
 # Run the setup container
-setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
 certs_py_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
 python_path=${certs_py_path%%certs*}
 
@@ -141,7 +140,6 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
     -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
     -v ${src_dir}/spacewalk/setup/bin/spacewalk-setup:/usr/bin/spacewalk-setup \
-    -v ${src_dir}/spacewalk/setup/lib/Spacewalk/Setup.pm:${setup_pm_path} \
     -v ${src_dir}/spacewalk/certs-tools/mgr_ssl_cert_setup.py:${python_path}/certs/mgr_ssl_cert_setup.py \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
