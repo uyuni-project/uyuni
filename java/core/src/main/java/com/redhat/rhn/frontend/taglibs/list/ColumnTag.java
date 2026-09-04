@@ -314,7 +314,7 @@ public class ColumnTag extends BodyTagSupport {
                         "You are probably using bound=true without an attr." +
                         " Either have both bound = true with " +
                             "an attr OR set bound=false.", headerKey);
-            throw new RuntimeException(msg);
+            throw new IllegalStateException(msg);
         }
     }
 
