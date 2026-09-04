@@ -2185,6 +2185,21 @@ public class ActionManager extends BaseManager {
      */
     public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId)
             throws TaskomaticApiException {
+        return changeProxy(loggedInUser, sysids, proxyId, null);
+    }
+
+    /**
+     * Connect given systems to another proxy.
+     *
+     * @param loggedInUser The current user
+     * @param sysids       A list of systems ids
+     * @param proxyId      Id of the proxy or 0 for direct connection to SUMA server
+     * @param proxyFqdn    Optional specific FQDN of the proxy to use
+     * @return Returns a list of scheduled action ids
+     *
+     */
+    public static List<Long> changeProxy(User loggedInUser, List<Long> sysids, Long proxyId, String proxyFqdn)
+            throws TaskomaticApiException {
         List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
                 .map(Server::getId).collect(toList());
         if (!visible.containsAll(sysids)) {
@@ -2216,7 +2231,12 @@ public class ActionManager extends BaseManager {
                 .filter(minion -> ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod()))
                 .map(minion -> {
                     // handle SSH minions
-                    minion.updateServerPaths(proxyIdOpt);
+                    if (proxyFqdn != null && !proxyFqdn.isEmpty()) {
+                        minion.updateServerPaths(proxyFqdn);
+                    }
+                    else {
+                        minion.updateServerPaths(proxyIdOpt);
+                    }
                     ServerFactory.save(minion);
 
                     MinionPillarManager.INSTANCE.generatePillar(minion);
@@ -2243,7 +2263,9 @@ public class ActionManager extends BaseManager {
         if (!normalIds.isEmpty()) {
             // action for normal minions - update salt master, the channels will be updated after minion restart
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("mgr_server", proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname()));
+            String mgrServer = (proxyFqdn != null && !proxyFqdn.isEmpty()) ? proxyFqdn :
+                    proxy.map(Server::getHostname).orElse(ConfigDefaults.get().getJavaHostname());
+            pillar.put("mgr_server", mgrServer);
 
             Action a = scheduleApplyStates(loggedInUser, normalIds,
                     Collections.singletonList(ApplyStatesEventMessage.SET_PROXY),
