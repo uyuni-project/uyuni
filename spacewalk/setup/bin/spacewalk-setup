@@ -354,11 +354,6 @@ sub populate_initial_configs {
         }
     }
 
-  Spacewalk::Setup::generate_satcon_dict();
-  Spacewalk::Setup::write_config(\%config_opts, Spacewalk::Setup::DEFAULT_SATCON_DICT);
-
-  Spacewalk::Setup::satcon_deploy();
-
     return \%config_opts;
 }
 
@@ -366,8 +361,6 @@ sub populate_final_configs {
   my $options = shift;
   my $answers = shift;
 
-  Spacewalk::Setup::satcon_deploy(-tree => '/var/lib/rhn/rhn-satellite-prep/etc/rhn',
-                -dest => '/etc/rhn');
   if($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) {
       open(my $FILE, '>>', '/etc/rhn/rhn.conf');
       print $FILE "server.no_ssl = 1\n";
