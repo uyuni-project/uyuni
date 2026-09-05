@@ -35,16 +35,25 @@ import java.util.List;
  *     #prop("int", "image_id")
  *     #prop("string", "patch_status")
  *         #options()
+ *             #item_desc ("AFFECTED_PATCH_UNAVAILABLE",
+ *                "affected, patch is unavailable anywhere")
+ *             #item_desc ("AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI",
+ *                "affected, patch is unavailable in any of the synced channels")
  *             #item_desc ("AFFECTED_PATCH_INAPPLICABLE",
  *                "affected, patch available in unassigned channel")
- *             #item_desc ("AFFECTED_PATCH_APPLICABLE",
- *                "affected, patch available in assigned channel")
+ *             #item_desc ("AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT",
+ *                "affected, patch available in a Product Migration target")
+ *             #item_desc ("AFFECTED_PARTIAL_PATCH_APPLICABLE",
+ *                "affected, partial patch available in assigned channel")
+ *             #item_desc ("AFFECTED_FULL_PATCH_APPLICABLE",
+ *                "affected, full patch available in assigned channel")
  *             #item_desc ("NOT_AFFECTED", "not affected")
  *             #item_desc ("PATCHED", "patched")
+ *             #item_desc ("UNKNOWN", "unknown, CVE metadata not available")
  *         #options_end()
- *     #prop_array("string", "channel_labels",
+ *     #prop_array("channel_labels", "string",
  *         "labels of channels that contain an unapplied patch")
- *     #prop_array("string", "errata_advisories",
+ *     #prop_array("errata_advisories", "string",
  *         "advisories of erratas that patch the specified vulnerability")
  * #struct_end()
  */

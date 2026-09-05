@@ -37,7 +37,7 @@ import java.util.List;
  * @apidoc.namespace audit
  * @apidoc.doc Methods to audit systems.
  */
-public class CVEAuditHandler extends BaseHandler {
+public class CVEAuditHandler extends BaseHandler implements CVEAuditHandlerApi {
     /**
      * List visible systems with their patch status regarding a given CVE
      * identifier.

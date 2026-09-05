@@ -442,13 +442,15 @@ public class OpenApiToDocBookParser {
     }
 
     private String getAdditionalPropertiesLabel(Schema<?> inner, String label) {
+        // The label the response declares names the map, as it does in the AsciiDoc renderer.
+        // Only a map that declares none is named after the schema describing its values.
+        if (!label.isEmpty()) {
+            return label;
+        }
         if (inner.get$ref() != null) {
             return extractRefName(inner.get$ref());
         }
-        if (label.isEmpty()) {
-            return "map";
-        }
-        return label;
+        return "map";
     }
 
     private Schema<?> resolveSchemaReference(Schema<?> schema) {

@@ -128,6 +128,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(XccdfTestResultDtoSerializer.class);
         SERIALIZER_CLASSES.add(XccdfTestResultSerializer.class);
         SERIALIZER_CLASSES.add(XccdfRuleResultDtoSerializer.class);
+        SERIALIZER_CLASSES.add(ScapContentSerializer.class);
+        SERIALIZER_CLASSES.add(TailoringFileSerializer.class);
+        SERIALIZER_CLASSES.add(ScapPolicySerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditServerSerializer.class);
         SERIALIZER_CLASSES.add(CVEAuditImageSerializer.class);
         SERIALIZER_CLASSES.add(UserExtGroupSerializer.class);

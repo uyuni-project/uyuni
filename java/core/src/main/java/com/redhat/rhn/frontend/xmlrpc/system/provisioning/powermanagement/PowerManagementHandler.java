@@ -54,7 +54,7 @@ import java.util.Map;
  * from the own organization. Additionally Org Admin permissions are required to
  * call these functions.
  */
-public class PowerManagementHandler extends BaseHandler {
+public class PowerManagementHandler extends BaseHandler implements PowerManagementHandlerApi {
     private static final Logger LOG = LogManager.getLogger(PowerManagementHandler.class);
 
     /**

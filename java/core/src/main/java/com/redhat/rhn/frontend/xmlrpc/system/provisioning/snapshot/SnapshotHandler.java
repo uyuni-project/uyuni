@@ -49,7 +49,7 @@ import java.util.Set;
  * @apidoc.namespace system.provisioning.snapshot
  * @apidoc.doc Provides methods to access and delete system snapshots.
  */
-public class SnapshotHandler extends BaseHandler {
+public class SnapshotHandler extends BaseHandler implements SnapshotHandlerApi {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
@@ -284,7 +284,7 @@ public class SnapshotHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
-    public int deleteSnapshots(User loggedInUser, Map dateDetails) {
+    public int deleteSnapshots(User loggedInUser, Map<String, Date> dateDetails) {
         validateDateKeys(dateDetails);
         Date startDate = null;
         Date endDate = null;
