@@ -1,9 +1,13 @@
-import HighstateSummary from "manager/state/highstate-summary";
+import HighstateSummary, { StateSource } from "manager/state/highstate-summary";
 
-import { click, render, screen, server, waitForElementToBeRemoved, within } from "utils/test-utils";
+import { Cancelable } from "utils/functions";
+import Network from "utils/network";
+import { act, click, render, screen, server, waitForElementToBeRemoved, within } from "utils/test-utils";
 
 const API_SUMMARY = "/rhn/manager/api/states/summary?sid=1000";
 const API_HIGHSTATE = "/rhn/manager/api/states/highstate?sid=1000";
+
+afterEach(() => jest.restoreAllMocks());
 
 describe("Highstate summary", () => {
   test("Render summary table", async () => {
@@ -76,6 +80,52 @@ describe("Highstate summary", () => {
     within(rows[3]).getByRole("link", { name: "My config channel" });
     within(rows[3]).getByText("Config channel");
     within(rows[3]).getByRole("link", { name: "My org" });
+  });
+
+  test("ignores a stale response after the requested minion changes", async () => {
+    type RawStateSource = Omit<StateSource, "typeName">;
+
+    let resolveFirstRequest: (data: RawStateSource[]) => void = () => undefined;
+    const firstRequest = new Promise<RawStateSource[]>((resolve) => {
+      resolveFirstRequest = resolve;
+    });
+    jest.spyOn(Network, "get").mockImplementation((url) => {
+      if (url.includes("sid=1000")) {
+        return firstRequest as unknown as Cancelable<StateSource[]>;
+      }
+      return Promise.resolve([
+        {
+          id: 2,
+          name: "Current state",
+          type: "STATE",
+          sourceId: 2,
+          sourceName: "Current system",
+          sourceType: "SYSTEM",
+        },
+      ] as RawStateSource[]) as unknown as Cancelable<StateSource[]>;
+    });
+
+    const { rerender } = render(<HighstateSummary minionId={1000} />);
+    rerender(<HighstateSummary minionId={2000} />);
+
+    await screen.findByText("Current state");
+
+    await act(async () => {
+      resolveFirstRequest([
+        {
+          id: 1,
+          name: "Stale state",
+          type: "STATE",
+          sourceId: 1,
+          sourceName: "Old system",
+          sourceType: "SYSTEM",
+        },
+      ]);
+      await firstRequest;
+    });
+
+    expect(screen.queryByText("Stale state")).toBeNull();
+    screen.getByText("Current state");
   });
 });
 
