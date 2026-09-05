@@ -36,6 +36,8 @@ type State = {
 
 class RecurringActionsList extends Component<Props, State> {
   tableRef: RefObject<any>;
+  private isComponentMounted = false;
+
   constructor(props) {
     super(props);
     this.tableRef = createRef();
@@ -46,6 +48,8 @@ class RecurringActionsList extends Component<Props, State> {
   }
 
   componentDidMount = () => {
+    this.isComponentMounted = true;
+
     const { isFilteredList } = this.props;
     // only fetch data if it is a filtered list, otherwise the Table component will fetch the data.
     if (isFilteredList) {
@@ -53,11 +57,19 @@ class RecurringActionsList extends Component<Props, State> {
     }
   };
 
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
+
   getRecurringScheduleList = () => {
     const entityParams = inferEntityParams();
     const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
     return Network.get(endpoint)
       .then((schedules) => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
         this.setState({
           schedules: schedules,
         });
@@ -68,9 +80,13 @@ class RecurringActionsList extends Component<Props, State> {
   deleteSchedule = (item, tableRef) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
       .then(() => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.getRecurringScheduleList();
-        if (tableRef) {
+        if (tableRef?.current) {
           tableRef.current.refresh();
         }
       })
@@ -81,6 +97,10 @@ class RecurringActionsList extends Component<Props, State> {
     Object.assign(schedule, { active: !schedule.active });
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
       .then(() => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
         this.props.onSetMessages(MessagesUtils.info(t("Schedule successfully updated.")));
       })
       .catch(this.props.onError);
@@ -116,20 +136,14 @@ class RecurringActionsList extends Component<Props, State> {
           {t(" Recurring Actions ")}
           <HelpLink url="reference/schedule/recurring-actions.html" />
         </h1>
-        <p>
-          {
-            <>
-              <p>{t("The following recurring actions have been created.")}</p>
-              {disableCreate ? (
-                <p>
-                  {t(
-                    "To create new recurring actions head to the system, group or organization you want to create the action for."
-                  )}
-                </p>
-              ) : null}
-            </>
-          }
-        </p>
+        <p>{t("The following recurring actions have been created.")}</p>
+        {disableCreate ? (
+          <p>
+            {t(
+              "To create new recurring actions head to the system, group or organization you want to create the action for."
+            )}
+          </p>
+        ) : null}
         {/* We only want to display the help icon in the 'Schedule > Recurring Actions' page so we use disableCreate as */}
         {/* an indicator whether we currently render this page */}
         <div className="pull-right btn-group">{disableCreate ? [] : buttons}</div>
