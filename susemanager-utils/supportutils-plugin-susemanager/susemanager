@@ -6,7 +6,7 @@
 # License:     GPLv2
 # Author:      Stefan Bogner <sbogner@suse.com>
 #              Michael Calmer <mc@suse.com>
-# Modified:    2026 March 16
+# Modified:    2026 April 18
 #############################################################
 
 SVER=5.2.0
@@ -57,11 +57,67 @@ log_cmd $OF "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
 
 log_entry $OF note "SSL Configuration"
 
-conf_files $OF $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
-            /etc/pki/tls/certs/spacewalk.crt
+DOCUMENTROOT=$(spacewalk-cfg-get documentroot)
+ROOT_CA_CERT="/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+DB_ROOT_CA_CERT="/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT"
+SERVER_CERT="/etc/pki/tls/certs/spacewalk.crt"
+
+conf_files $OF $DOCUMENTROOT/pub/RHN-ORG-TRUSTED-SSL-CERT \
+            $ROOT_CA_CERT \
+            $DB_ROOT_CA_CERT \
+            $SERVER_CERT
 log_cmd $OF "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-log_cmd $OF "/bin/ls -l --time-style=long-iso $(spacewalk-cfg-get documentroot)/pub/ | grep -i trusted"
+log_cmd $OF "/bin/ls -l --time-style=long-iso $DOCUMENTROOT/pub/ | grep -i trusted"
+
+log_entry $OF note "SSL Certificate Details"
+
+log_certificate_details() {
+    CERT_LABEL="$1"
+    CERT_PATH="$2"
+    log_write $OF "--- $CERT_LABEL ($CERT_PATH) ---"
+
+    if [ ! -f "$CERT_PATH" ]; then
+        log_write $OF "Certificate file not found"
+        return
+    fi
+
+    CERT_INDEX=1
+    exec 3< "$CERT_PATH"
+    while CERT_PEM=$(openssl x509 <&3 2>/dev/null); do
+        log_write $OF "Certificate $CERT_INDEX:"
+        log_cmd $OF "echo \"$CERT_PEM\" | openssl x509 -noout -subject -issuer -dates -fingerprint -sha256 -ext basicConstraints"
+        if echo "$CERT_PEM" | openssl x509 -checkend 0 > /dev/null 2>&1; then
+            if ! echo "$CERT_PEM" | openssl x509 -checkend 2592000 > /dev/null 2>&1; then
+                log_write $OF "*** WARNING: Certificate $CERT_INDEX expires within 30 days ***"
+            fi
+        else
+            log_write $OF "*** WARNING: CERTIFICATE $CERT_INDEX IS EXPIRED ***"
+        fi
+        CERT_INDEX=$((CERT_INDEX + 1))
+    done
+    exec 3<&-
+}
+
+log_certificate_details "Root CA" "$ROOT_CA_CERT"
+log_certificate_details "DB Root CA" "$DB_ROOT_CA_CERT"
+log_certificate_details "Server Certificate" "$SERVER_CERT"
+
+log_entry $OF note "SSL Certificate Chain & FQDN Validation"
+
+FQDN=$(sed -n 's/^[[:space:]]*java\.hostname[[:space:]]*=[[:space:]]*//p' /etc/rhn/rhn.conf 2>/dev/null | sed 's/[[:space:]]*$//' | tail -1)
+log_write $OF "Configured FQDN (from rhn.conf): $FQDN"
+
+if [ -f "$ROOT_CA_CERT" ] && [ -f "$SERVER_CERT" ]; then
+    if [ -n "$FQDN" ]; then
+        log_cmd $OF "openssl verify -CAfile $ROOT_CA_CERT -untrusted $SERVER_CERT -verify_hostname $FQDN $SERVER_CERT"
+    else
+        log_write $OF "*** WARNING: Could not determine configured FQDN from /etc/rhn/rhn.conf ***"
+        log_cmd $OF "openssl verify -CAfile $ROOT_CA_CERT -untrusted $SERVER_CERT $SERVER_CERT"
+    fi
+else
+    log_write $OF "Cannot validate chain: one or more certificate files missing"
+fi
 
 log_entry $OF note "Crypto Policy"
 
@@ -107,4 +163,3 @@ fi
 
 log_cmd $OF "/sbin/supportconfig-sumalog $LOG"
 log_cmd $OF "cp /var/log/zypper.log $LOG"
-
