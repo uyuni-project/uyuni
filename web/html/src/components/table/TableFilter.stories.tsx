@@ -121,9 +121,23 @@ export const NumericFilter: Story = {
   },
 };
 
+export const EmptyNumericFilter: Story = {
+  args: {
+    field: "packages",
+    criteria: "",
+  },
+};
+
 export const SelectFilter: Story = {
   args: {
     field: "status",
     criteria: "active",
+  },
+};
+
+export const AllValuesSelectFilter: Story = {
+  args: {
+    field: "status",
+    criteria: "",
   },
 };
