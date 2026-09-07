@@ -32,6 +32,7 @@
         <dependency org="suse" name="cache-api" rev="1.1.1" />
         <dependency org="suse" name="geronimo-jta_1.1_spec" rev="1.2" />
         <dependency org="suse" name="gson" rev="2.8.9" />
+        <dependency org="com.unboundid" name="unboundid-ldapsdk" rev="7.0.4" />
         <dependency org="suse" name="hibernate-c3p0" rev="7.1.6" />
         <dependency org="suse" name="hibernate-models" rev="1.0.1" />
         <dependency org="suse" name="hibernate-core" rev="7.1.6" />
