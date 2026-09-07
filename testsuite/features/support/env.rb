@@ -423,7 +423,7 @@ Before('not @no_user_creation') do |scenario|
   next if get_context('user_created') == true
 
   # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
-  unless feature_path.match?(/core|reposync|finishing|build_validation/)
+  unless feature_path.match?(/reposync|finishing|build_validation/)
     step %(I create a user with name "#{$feature_filename}" and password "linux")
     add_context('user_created', true)
   end
