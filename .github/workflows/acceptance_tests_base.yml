@@ -40,6 +40,7 @@ jobs:
       web: ${{ steps.filter.outputs.web }}
       testsuite: ${{ steps.filter.outputs.testsuite }}
       controller_dockerfile: ${{ steps.filter.outputs.controller_dockerfile }}
+      test_server_dockerfile: ${{ steps.filter.outputs.test_server_dockerfile }}
       not_bv_validation: ${{ steps.bv_filter.outputs.not_build_validation }}
       require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || ( steps.filter.outputs.testsuite == 'true' && steps.bv_filter.outputs.not_build_validation == 'true' ) }}
     steps:
@@ -60,6 +61,23 @@ jobs:
               - 'testsuite/**'
             controller_dockerfile:
               - 'testsuite/dockerfiles/controller-dev/**'
+            test_server_dockerfile:
+              - 'testsuite/dockerfiles/server-all-in-one-dev/**'
+            schema:
+              - 'schema/**'
+            branding:
+              - 'branding/**'
+            setup:
+              - 'spacewalk/setup/**'
+              - 'spacewalk/admin/spacewalk-startup-helper'
+              - 'spacewalk/certs-tools/**'
+            containers:
+              - 'containers/server-image/**'
+            salt:
+              - 'susemanager-utils/susemanager-sls/**'
+              - 'susemanager/src/**'
+            client:
+              - 'client/**'
       - uses: dorny/paths-filter@9d7afb8d214ad99e78fbd4247752c4caed2b6e4c # v4.0.0
         id: bv_filter
         with:
@@ -132,50 +150,6 @@ jobs:
         with:
           node-version: 22.x
 
-      - name: Cache jar files (Java/Ivy Dependencies)
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
-        id: cache-ivy
-        with:
-          path: java/buildconf/ivy/repository/
-          key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-cache-uyuni-jars-
-
-      - name: Cache obs-to-maven files
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
-        with:
-          path: java/.obs-to-maven-cache
-          key: ${{ runner.os }}-build-cache-uyuni-obs-to-maven-${{ hashFiles('**/java/buildconf/ivy/obs-maven-config.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-cache-uyuni-obs-to-maven-
-
-      # See https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching
-      - name: Use cached NPM dependencies
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        id: cache-node-modules
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: web/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('web/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      - name: Install NPM dependencies on Host (For Cache Save/Restore)
-        # Runs only if the cache misses, ensuring node_modules is created on the host for future caching
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        run: |
-          echo "Cache miss detected, installing node_modules on host to create the directory for future runs."
-          npm --prefix web ci --ignore-scripts --save=false --omit=dev
-
-      - name: List cache misses
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        continue-on-error: true
-        run: npm --prefix web list
-
       - name: Create temporary directories
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
@@ -233,20 +207,47 @@ jobs:
           else
             echo "Skipping flaky test collection: GH_TOKEN_GALAXY_CI is not available for this workflow run."
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
+
+      - name: Download PR Payload
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        uses: actions/download-artifact@9bc31d5cb31d46d3e3ee3d6c1b3f9ff48e24c084 #v4.1.7
+        with:
+          name: pr-changes-payload
+          path: .build
+
+      - name: Extract PR Payload
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          mkdir -p .build/pr-changes-payload
+          tar -xzf .build/pr-changes-payload.tar.gz -C .build/pr-changes-payload
+
+      - name: Build thin PR image
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          mkdir -p .build/server-pr-context/.build
+          cp ./testsuite/dockerfiles/server-pr/Dockerfile .build/server-pr-context/
+          mv .build/acceptance-server-root .build/server-pr-context/.build/
+          sudo podman build \
+            --build-arg BASE_IMAGE=""${TEST_IMAGE}:${UYUNI_VERSION}"" \
+            -t ghcr.io/${UYUNI_PROJECT}/uyuni/ci-test-server-pr:${UYUNI_VERSION} \
+            -f .build/server-pr-context/Dockerfile \
+            .build/server-pr-context
+          echo "TEST_IMAGE=ghcr.io/${UYUNI_PROJECT}/uyuni/ci-test-server-pr" >> $GITHUB_ENV
+
+      - name: Log image digests
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        run: |
+          sudo podman images --digests
 
       - name: Setup server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         timeout-minutes: 45
-        run: ./testsuite/podman_runner/07_server_setup.sh
-        env:
-          USE_IVY_CACHE: ${{ steps.cache-ivy.outputs.cache-hit }}
+        run: ./testsuite/podman_runner/08_server_setup.sh
 
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         timeout-minutes: 20
-        run: ./testsuite/podman_runner/08_start_server.sh
+        run: ./testsuite/podman_runner/09_start_server.sh
 
       #- name: Run SSH minion container
       #  if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
