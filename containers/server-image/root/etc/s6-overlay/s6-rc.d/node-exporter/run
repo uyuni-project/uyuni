@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -a
+[ -f /etc/sysconfig/prometheus-node_exporter ] && . /etc/sysconfig/prometheus-node_exporter
+set +a
+
+/usr/bin/node_exporter $ARGS

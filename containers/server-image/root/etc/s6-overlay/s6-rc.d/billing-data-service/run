@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+if [ "$ISPAYG" != "1" ]; then
+    echo "ISPAYG is not set to 1. Skipping execution of PAYG billing data service."
+    exit 0
+fi
+
+exec /srv/billing-data-service/billing-data-service

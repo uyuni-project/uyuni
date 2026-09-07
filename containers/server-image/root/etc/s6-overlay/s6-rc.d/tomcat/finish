@@ -1,0 +1,17 @@
+#!/bin/bash
+
+s6-setuidgid tomcat /usr/libexec/tomcat/server stop
+
+exit_code=$1
+
+# Systemd counts 143 (SIGTERM exit) as a success.
+# 0 is a standard clean exit.
+if [ "$exit_code" -eq 0 ] || [ "$exit_code" -eq 143 ]; then
+    echo "Tomcat exited cleanly (status $exit_code). Stopping supervisor loop."
+    # Tell s6 to keep this service down instead of auto-restarting
+    s6-svc -O .
+else
+    echo "Tomcat crashed with exit code $exit_code. Restarting..."
+fi
+
+exit 0

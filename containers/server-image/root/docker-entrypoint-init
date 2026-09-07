@@ -47,4 +47,5 @@ unset MANAGER_ENABLE_TFTP
 rm -f /var/run/uyuni-init-pending
 
 # This needs to be last for systemd to become PID1
-exec /usr/lib/systemd/systemd
+#exec /usr/lib/systemd/systemd
+exec /init

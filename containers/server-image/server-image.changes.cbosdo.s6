@@ -1,0 +1,1 @@
+- Switch from systemd to s6 to manage processes

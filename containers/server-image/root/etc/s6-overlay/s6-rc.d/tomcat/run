@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -a
+[ -f /etc/tomcat/tomcat.conf ] && . /etc/tomcat/tomcat.conf
+[ -f /etc/sysconfig/tomcat ] && . /etc/sysconfig/tomcat
+[ -f /etc/sysconfig/taskomatic/systemd/jmx.conf ] && . /etc/sysconfig/taskomatic/systemd/jmx.conf
+set +a
+
+export NAME=""
+
+# Max file descriptors (LimitNOFILE=8192)
+ulimit -n 8192
+
+# Max user processes / threads (TasksMax=576)
+ulimit -u 576
+
+# s6-setuidgid drops privileges to the tomcat user and group automatically
+exec s6-setuidgid tomcat /usr/libexec/tomcat/server start

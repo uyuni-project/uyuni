@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Stopping mail service (Postfix)..."
+
+/usr/sbin/postfix stop
+
+/usr/lib/postfix/systemd/cond_slp deregister
+
+exit 0
