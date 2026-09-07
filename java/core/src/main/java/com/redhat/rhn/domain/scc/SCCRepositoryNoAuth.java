@@ -23,7 +23,6 @@ import java.util.function.Function;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -36,7 +35,6 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
      * @return the URL including authentication info
      */
     @Override
-    @Transient
     public String getUrl() {
         if (ConfigDefaults.get().isOfflineMirrorSetup()) {
             return MgrSyncUtils.urlToFSPath(getRepo().getUrl(), getRepo().getName()).toString();

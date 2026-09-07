@@ -37,20 +37,34 @@ import jakarta.persistence.Table;
 @Table(name = "suseImageFile")
 public class ImageFile extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgfile_seq")
+    @SequenceGenerator(name = "imgfile_seq", sequenceName = "suse_image_file_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", nullable = false)
     private ImageInfo imageInfo;
+
+    @Column(name = "file")
     private String file;
+
+    @Column(name = "type")
     private String type;
+
+    @Column(name = "external")
+    @Convert(converter = YesNoConverter.class)
     private boolean external;
+
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgfile_seq")
-    @SequenceGenerator(name = "imgfile_seq", sequenceName = "suse_image_file_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -65,8 +79,6 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return the image info
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id", nullable = false)
     public ImageInfo getImageInfo() {
         return imageInfo;
     }
@@ -82,7 +94,6 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return the file
      */
-    @Column(name = "file")
     public String getFile() {
         return file;
     }
@@ -97,7 +108,6 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return the type
      */
-    @Column(name = "type")
     public String getType() {
         return type;
     }
@@ -113,8 +123,6 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return true if the file is not managed
      */
-    @Column(name = "external")
-    @Convert(converter = YesNoConverter.class)
     public boolean isExternal() {
         return external;
     }
@@ -130,8 +138,6 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return the checksum of the file
      */
-    @ManyToOne
-    @JoinColumn(name = "checksum_id")
     public Checksum getChecksum() {
         return checksum;
     }

@@ -26,20 +26,39 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseSccProxy")
 public class SCCProxyRecord extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "proxy_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proxyId;
+
+    @Column(name = "peripheral_fqdn")
     private String peripheralFqdn;
+
+    @Column(name = "scc_login")
     private String sccLogin;
+
+    @Column(name = "scc_passwd")
     private String sccPasswd;
+
+    @Column(name = "scc_creation_json")
     private String sccCreationJson;
+
+    @Column(name = "scc_id")
     private Long sccId;
+
+    @Column(name = "scc_regerror_timestamp")
     private Date sccRegistrationErrorTime;
+
+    @Column(name = "last_seen_at")
     private Date lastSeenAt;
+
+    @Type(value = com.suse.scc.proxy.SccProxyStatusEnumType.class)
     private SccProxyStatus status;
 
     /**
@@ -90,9 +109,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         status = statusIn;
     }
 
-    @Id
-    @Column(name = "proxy_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getProxyId() {
         return proxyId;
     }
@@ -101,7 +117,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         proxyId = proxyIdIn;
     }
 
-    @Column(name = "peripheral_fqdn")
     public String getPeripheralFqdn() {
         return peripheralFqdn;
     }
@@ -110,7 +125,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         peripheralFqdn = peripheralFqdnIn;
     }
 
-    @Column(name = "scc_login")
     public String getSccLogin() {
         return sccLogin;
     }
@@ -119,7 +133,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccLogin = sccLoginIn;
     }
 
-    @Column(name = "scc_passwd")
     public String getSccPasswd() {
         return sccPasswd;
     }
@@ -128,7 +141,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccPasswd = sccPasswdIn;
     }
 
-    @Column(name = "scc_creation_json")
     public String getSccCreationJson() {
         return sccCreationJson;
     }
@@ -137,7 +149,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccCreationJson = sccCreationJsonIn;
     }
 
-    @Column(name = "scc_id")
     public Long getSccId() {
         return sccId;
     }
@@ -149,7 +160,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
     /**
      * @return Returns the SCC ID when this system was registered already
      */
-    @Transient
     public Optional<Long> getOptSccId() {
         return ofNullable(sccId);
     }
@@ -157,7 +167,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
     /**
      * @return the time when the last registration failed
      */
-    @Column(name = "scc_regerror_timestamp")
     public Date getSccRegistrationErrorTime() {
         return sccRegistrationErrorTime;
     }
@@ -166,7 +175,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
         sccRegistrationErrorTime = sccRegistrationErrorTimeIn;
     }
 
-    @Transient
     public Optional<Date> getOptSccRegistrationErrorTime() {
         return ofNullable(sccRegistrationErrorTime);
     }
@@ -174,7 +182,6 @@ public class SCCProxyRecord extends BaseDomainHelper {
     /**
      * @return the time when the system has been seen
      */
-    @Column(name = "last_seen_at")
     public Date getLastSeenAt() {
         return lastSeenAt;
     }
@@ -183,13 +190,11 @@ public class SCCProxyRecord extends BaseDomainHelper {
         lastSeenAt = lastSeenAtIn;
     }
 
-    @Transient
     public Optional<Date> getOptLastSeenAt() {
         return ofNullable(lastSeenAt);
     }
 
 
-    @Type(value = com.suse.scc.proxy.SccProxyStatusEnumType.class)
     public SccProxyStatus getStatus() {
         return status;
     }

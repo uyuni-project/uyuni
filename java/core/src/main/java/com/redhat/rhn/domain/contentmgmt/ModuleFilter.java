@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 /**
  * This filter must be applied on {@link Module} objects. In order to apply the filtering on
@@ -58,14 +57,12 @@ public class ModuleFilter extends ContentFilter {
      * Get the value of this filter as a {@link Module} instance
      * @return the module instance
      */
-    @Transient
     public Module getModule() {
         String[] nameStreamPair = getCriteria().getValue().split(":", 2);
         return new Module(nameStreamPair[0], nameStreamPair.length > 1 ? nameStreamPair[1] : null);
     }
 
     @Override
-    @Transient
     public EntityType getEntityType() {
         return EntityType.MODULE;
     }

@@ -38,10 +38,25 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "suseusernotification", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "message_id"})})
 public class UserNotification {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unsg_seq")
+    @SequenceGenerator(name = "unsg_seq", sequenceName = "suse_user_notif_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "message_id", insertable = false, updatable = false)
     private Long messageId;
+
+    @Convert(converter = YesNoConverter.class)
+    @Column(name = "read")
     private boolean read = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "message_id", referencedColumnName = "id")
     private NotificationMessage message;
 
     /**
@@ -64,10 +79,6 @@ public class UserNotification {
     /**
      * @return Returns the id.
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unsg_seq")
-    @SequenceGenerator(name = "unsg_seq", sequenceName = "suse_user_notif_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -82,7 +93,6 @@ public class UserNotification {
     /**
      * @return Returns the user id.
      */
-    @Column(name = "user_id")
     public Long getUserId() {
         return userId;
     }
@@ -97,7 +107,6 @@ public class UserNotification {
     /**
      * @return Returns the message id.
      */
-    @Column(name = "message_id", insertable = false, updatable = false)
     public Long getMessageId() {
         return messageId;
     }
@@ -112,8 +121,6 @@ public class UserNotification {
     /**
      * @return Returns the read.
      */
-    @Convert(converter = YesNoConverter.class)
-    @Column(name = "read")
     public boolean getRead() {
         return read;
     }
@@ -130,8 +137,6 @@ public class UserNotification {
      *
      * @return the referenced message
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "message_id", referencedColumnName = "id")
     public NotificationMessage getMessage() {
         return message;
     }

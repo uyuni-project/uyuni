@@ -26,7 +26,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action Type base class
@@ -35,7 +34,13 @@ import jakarta.persistence.Transient;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class RecurringActionType implements Serializable {
 
+
+    @Id
     private Long id;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "rec_id")
+    @MapsId
     private RecurringAction recurringAction;
 
     public enum ActionType {
@@ -63,7 +68,6 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @return recurring action type
      */
-    @Transient
     public abstract ActionType getActionType();
 
     /**
@@ -71,7 +75,6 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @return recurring action id
      */
-    @Id
     public Long getId() {
         return id;
     }
@@ -90,9 +93,6 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @return RecurringAction object
      */
-    @OneToOne(optional = false)
-    @JoinColumn(name = "rec_id")
-    @MapsId
     public RecurringAction getRecurringAction() {
         return this.recurringAction;
     }

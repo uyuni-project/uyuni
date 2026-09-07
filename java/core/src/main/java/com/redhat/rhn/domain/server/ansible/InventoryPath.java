@@ -31,7 +31,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 
 /**
  * Ansible Inventory Path
@@ -40,6 +39,12 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("inventory")
 public class InventoryPath extends AnsiblePath {
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseAnsibleInventoryServers",
+            joinColumns = @JoinColumn(name = "inventory_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id")
+    )
     private Set<Server> inventoryServers;
 
     /**
@@ -71,7 +76,6 @@ public class InventoryPath extends AnsiblePath {
     }
 
     @Override
-    @Transient
     public Type getEntityType() {
         return Type.INVENTORY;
     }
@@ -81,12 +85,6 @@ public class InventoryPath extends AnsiblePath {
      *
      * @return the inventory servers
      */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "suseAnsibleInventoryServers",
-            joinColumns = @JoinColumn(name = "inventory_id"),
-            inverseJoinColumns = @JoinColumn(name = "server_id")
-    )
     public Set<Server> getInventoryServers() {
         return inventoryServers;
     }

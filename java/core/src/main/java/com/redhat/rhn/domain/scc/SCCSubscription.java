@@ -44,26 +44,50 @@ import jakarta.persistence.Table;
 @Table(name = "suseSCCSubscription")
 public class SCCSubscription extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
+    @SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "scc_id")
     private long sccId;
+
+    @ManyToOne(targetEntity = BaseCredentials.class)
     private Credentials credentials;
 
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "starts_at")
     private Date startsAt;
+
+    @Column(name = "expires_at")
     private Date expiresAt;
+
+    @Column(name = "status")
     private String status;
+
+    @Column(name = "regcode")
     private String regcode;
+
+    @Column(name = "subtype")
     private String type;
+
+    @Column(name = "system_limit")
     private Long systemLimit;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "suseSCCSubscriptionProduct",
+        joinColumns = @JoinColumn(name = "subscription_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<SUSEProduct> products = new HashSet<>();
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
-    @SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -71,7 +95,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the sccId
      */
-    @Column(name = "scc_id")
     public Long getSccId() {
         return sccId;
     }
@@ -80,7 +103,6 @@ public class SCCSubscription extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne(targetEntity = BaseCredentials.class)
     public Credentials getCredentials() {
         return credentials;
     }
@@ -88,7 +110,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the regcode
      */
-    @Column(name = "regcode")
     public String getRegcode() {
         return regcode;
     }
@@ -96,7 +117,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -104,7 +124,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the type
      */
-    @Column(name = "subtype")
     public String getType() {
         return type;
     }
@@ -112,7 +131,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the status
      */
-    @Column(name = "status")
     public String getStatus() {
         return status;
     }
@@ -120,7 +138,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the startsAt
      */
-    @Column(name = "starts_at")
     public Date getStartsAt() {
         return startsAt;
     }
@@ -128,7 +145,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the expiresAt
      */
-    @Column(name = "expires_at")
     public Date getExpiresAt() {
         return expiresAt;
     }
@@ -136,7 +152,6 @@ public class SCCSubscription extends BaseDomainHelper {
     /**
      * @return the systemLimit
      */
-    @Column(name = "system_limit")
     public Long getSystemLimit() {
         return systemLimit;
     }
@@ -145,10 +160,6 @@ public class SCCSubscription extends BaseDomainHelper {
      * Get the SUSE Products
      * @return the SUSE Products
      */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "suseSCCSubscriptionProduct",
-        joinColumns = @JoinColumn(name = "subscription_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"))
     public Set<SUSEProduct> getProducts() {
         return products;
     }

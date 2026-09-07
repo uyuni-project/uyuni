@@ -36,6 +36,7 @@ public class PackageFilter extends ContentFilter {
 
     public static final String BUILD_DATE = "build_date";
 
+    @Transient
     private Pattern pattern;
 
     @Override
@@ -145,7 +146,6 @@ public class PackageFilter extends ContentFilter {
     }
 
     @Override
-    @Transient
     public EntityType getEntityType() {
         return EntityType.PACKAGE;
     }

@@ -46,7 +46,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * A Content Project
@@ -55,14 +54,36 @@ import jakarta.persistence.Transient;
 @Table(name = "suseContentProject")
 public class ContentProject extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_seq")
+    @SequenceGenerator(name = "content_project_seq", sequenceName = "suse_ct_project_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne
     private Org org;
+
+    @Column
     private String label;
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "first_env_id")
     private ContentEnvironment firstEnvironment;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
+    @OrderBy("position")
     private List<ProjectSource> sources = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     private List<ContentProjectFilter> filters = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contentProject")
     private List<ContentProjectHistoryEntry> historyEntries = new ArrayList<>();
 
     /**
@@ -91,9 +112,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_seq")
-    @SequenceGenerator(name = "content_project_seq", sequenceName = "suse_ct_project_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -112,7 +130,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return org
      */
-    @ManyToOne
     public Org getOrg() {
         return org;
     }
@@ -131,7 +148,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return label
      */
-    @Column
     public String getLabel() {
         return label;
     }
@@ -150,7 +166,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return name
      */
-    @Column
     public String getName() {
         return name;
     }
@@ -169,7 +184,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return description
      */
-    @Column
     public String getDescription() {
         return description;
     }
@@ -177,8 +191,6 @@ public class ContentProject extends BaseDomainHelper {
     /**
      * @return the firstEnvironment
      */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "first_env_id")
     protected ContentEnvironment getFirstEnvironment() {
         return firstEnvironment;
     }
@@ -188,7 +200,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return optional of the first environment
      */
-    @Transient
     public Optional<ContentEnvironment> getFirstEnvironmentOpt() {
         return Optional.ofNullable(getFirstEnvironment());
     }
@@ -214,8 +225,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return sources
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contentProject", orphanRemoval = true)
-    @OrderBy("position")
     public List<ProjectSource> getSources() {
         return sources;
     }
@@ -225,7 +234,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return the active project sources
      */
-    @Transient
     public List<ProjectSource> getActiveSources() {
         return sources.stream()
                 .filter(s -> !ProjectSource.State.DETACHED.equals(s.getState()))
@@ -307,7 +315,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return filters
      */
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     public List<ContentProjectFilter> getProjectFilters() {
         return filters;
     }
@@ -317,7 +324,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return the active Project Filters
      */
-    @Transient
     public List<ContentFilter> getActiveFilters() {
         return getProjectFilters().stream()
                 .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)
@@ -394,7 +400,6 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @return historyEntries
      */
-    @OneToMany(mappedBy = "contentProject")
     public List<ContentProjectHistoryEntry> getHistoryEntries() {
         return historyEntries;
     }

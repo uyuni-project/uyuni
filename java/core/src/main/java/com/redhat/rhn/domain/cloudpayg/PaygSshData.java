@@ -29,27 +29,64 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "susePaygSshData")
 public class PaygSshData extends BaseDomainHelper {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygSshData_seq")
+    @SequenceGenerator(name = "susePaygSshData_seq", sequenceName = "susePaygSshData_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "host")
     private String host;
+
+    @Column(name = "port")
     private Integer port;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "key")
     private String key;
+
+    @Column(name = "key_password")
     private String keyPassword;
+
+    @Column(name = "bastion_host")
     private String bastionHost;
+
+    @Column(name = "bastion_port")
     private Integer bastionPort;
+
+    @Column(name = "bastion_username")
     private String bastionUsername;
+
+    @Column(name = "bastion_password")
     private String bastionPassword;
+
+    @Column(name = "bastion_key")
     private String bastionKey;
+
+    @Column(name = "bastion_key_password")
     private String bastionKeyPassword;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(name = "error_message")
     private String errorMessage;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "paygSshData", cascade = CascadeType.ALL)
     private CloudRmtHost rmtHosts;
 
     /**
@@ -126,10 +163,6 @@ public class PaygSshData extends BaseDomainHelper {
      * Gets the id.
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygSshData_seq")
-    @SequenceGenerator(name = "susePaygSshData_seq", sequenceName = "susePaygSshData_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -142,7 +175,6 @@ public class PaygSshData extends BaseDomainHelper {
         id = idIn;
     }
 
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -151,7 +183,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.description = descriptionIn;
     }
 
-    @Column(name = "host")
     public String getHost() {
         return host;
     }
@@ -160,7 +191,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.host = hostIn;
     }
 
-    @Column(name = "port")
     public Integer getPort() {
         return port;
     }
@@ -169,7 +199,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.port = portIn;
     }
 
-    @Column(name = "username")
     public String getUsername() {
         return username;
     }
@@ -178,7 +207,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.username = usernameIn;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -187,7 +215,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.password = passwordIn;
     }
 
-    @Column(name = "key")
     public String getKey() {
         return key;
     }
@@ -196,7 +223,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.key = keyIn;
     }
 
-    @Column(name = "key_password")
     public String getKeyPassword() {
         return keyPassword;
     }
@@ -205,7 +231,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.keyPassword = keyPasswordIn;
     }
 
-    @Column(name = "bastion_host")
     public String getBastionHost() {
         return bastionHost;
     }
@@ -214,7 +239,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionHost = bastionHostIn;
     }
 
-    @Column(name = "bastion_port")
     public Integer getBastionPort() {
         return bastionPort;
     }
@@ -223,7 +247,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionPort = bastionPortIn;
     }
 
-    @Column(name = "bastion_username")
     public String getBastionUsername() {
         return bastionUsername;
     }
@@ -232,7 +255,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionUsername = bastionUsernameIn;
     }
 
-    @Column(name = "bastion_password")
     public String getBastionPassword() {
         return bastionPassword;
     }
@@ -241,7 +263,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionPassword = bastionPasswordIn;
     }
 
-    @Column(name = "bastion_key")
     public String getBastionKey() {
         return bastionKey;
     }
@@ -250,7 +271,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionKey = bastionKeyIn;
     }
 
-    @Column(name = "bastion_key_password")
     public String getBastionKeyPassword() {
         return bastionKeyPassword;
     }
@@ -259,8 +279,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.bastionKeyPassword = bastionKeyPasswordIn;
     }
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
     public Status getStatus() {
         return status;
     }
@@ -269,7 +287,6 @@ public class PaygSshData extends BaseDomainHelper {
         this.status = statusIn;
     }
 
-    @Column(name = "error_message")
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -278,12 +295,10 @@ public class PaygSshData extends BaseDomainHelper {
         this.errorMessage = errorMessageIn;
     }
 
-    @Transient
     public CloudCredentials getCredentials() {
         return PaygSshDataFactory.lookupCloudCredentials(this).orElse(null);
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "paygSshData", cascade = CascadeType.ALL)
     public CloudRmtHost getRmtHosts() {
         return rmtHosts;
     }
@@ -296,7 +311,6 @@ public class PaygSshData extends BaseDomainHelper {
      * Identifies a connection for SUSE Manager PAYG
      * @return true if this SSH data refers to a SUSE Manager PAYG connection.
      */
-    @Transient
     public boolean isSUSEManagerPayg() {
         return "localhost".equals(host);
     }

@@ -70,8 +70,15 @@ import jakarta.persistence.Enumerated;
 @Embeddable
 public class FilterCriteria {
 
+
+    @Column(name = "matcher")
+    @Enumerated(EnumType.STRING)
     private Matcher matcher;
+
+    @Column(name = "field")
     private String field;
+
+    @Column(name = "value")
     private String value;
 
     private static final Set<Triple<ContentFilter.EntityType, Matcher, String>> VALID_COMBINATIONS = Set.of(
@@ -235,8 +242,6 @@ public class FilterCriteria {
      *
      * @return type
      */
-    @Column(name = "matcher")
-    @Enumerated(EnumType.STRING)
     public Matcher getMatcher() {
         return matcher;
     }
@@ -255,7 +260,6 @@ public class FilterCriteria {
      *
      * @return field
      */
-    @Column(name = "field")
     public String getField() {
         return field;
     }
@@ -274,7 +278,6 @@ public class FilterCriteria {
      *
      * @return value
      */
-    @Column(name = "value")
     public String getValue() {
         return value;
     }

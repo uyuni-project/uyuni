@@ -27,7 +27,6 @@ import java.util.function.Predicate;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("ptf")
@@ -106,7 +105,6 @@ public class PtfFilter extends ContentFilter {
     }
 
     @Override
-    @Transient
     public EntityType getEntityType() {
         return EntityType.PTF;
     }

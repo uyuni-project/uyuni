@@ -35,11 +35,31 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "suseServerCoCoAttestationConfig")
 public class ServerCoCoAttestationConfig implements Serializable  {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_srvcocoatt_cnf_seq")
+    @SequenceGenerator(
+            name = "suse_srvcocoatt_cnf_seq", sequenceName = "suse_srvcocoatt_cnf_id_seq", allocationSize = 1
+    )
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Column(name = "enabled")
     private boolean enabled;
+
+    @Column(name = "env_type")
+    @Convert(converter = CoCoEnvironmentTypeConverter.class)
     private CoCoEnvironmentType environmentType;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "in_data")
     private Map<String, Object> inData = new TreeMap<>();
+
+    @Column(name = "attest_on_boot")
     private boolean attestOnBoot;
 
     // Default empty constructor for hibernate
@@ -63,12 +83,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_srvcocoatt_cnf_seq")
-    @SequenceGenerator(
-            name = "suse_srvcocoatt_cnf_seq", sequenceName = "suse_srvcocoatt_cnf_id_seq", allocationSize = 1
-    )
     public Long getId() {
         return id;
     }
@@ -76,8 +90,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return return the server
      */
-    @ManyToOne
-    @JoinColumn(name = "server_id")
     public Server getServer() {
         return server;
     }
@@ -85,7 +97,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return return if enabled
      */
-    @Column(name = "enabled")
     public boolean isEnabled() {
         return enabled;
     }
@@ -93,8 +104,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return return the selected environment type
      */
-    @Column(name = "env_type")
-    @Convert(converter = CoCoEnvironmentTypeConverter.class)
     public CoCoEnvironmentType getEnvironmentType() {
         return environmentType;
     }
@@ -102,8 +111,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return returns the input data
      */
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", name = "in_data")
     public Map<String, Object> getInData() {
         return inData;
     }
@@ -111,7 +118,6 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     /**
      * @return returns true attest on boot flag is set
      */
-    @Column(name = "attest_on_boot")
     public boolean isAttestOnBoot() {
         return attestOnBoot;
     }
