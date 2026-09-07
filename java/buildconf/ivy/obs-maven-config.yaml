@@ -4,6 +4,9 @@ repositories:
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_16.0
+  Uyuni_Jakarta:
+    project: home:RMestre:branches:systemsmanagement:Uyuni:Master:jakarta
+    repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: antlr4-runtime
     package: antlr4-java
@@ -85,7 +88,7 @@ artifacts:
   - artifact: hibernate-c3p0
     package: hibernate-c3p0
     jar: hibernate-c3p0
-    repository: Uyuni
+    repository: Uyuni_Jakarta
   - artifact: jackson-annotations
     repository: Leap
   - artifact: jackson-core
@@ -94,13 +97,13 @@ artifacts:
     repository: Leap
   - artifact: hibernate-models
     package: hibernate-models
-    repository: Uyuni
+    repository: Uyuni_Jakarta
   - artifact: hibernate-core
     package: hibernate-core
-    repository: Uyuni
+    repository: Uyuni_Jakarta
   - artifact: hibernate-jcache
     package: hibernate-jcache
-    repository: Uyuni
+    repository: Uyuni_Jakarta
   - artifact: ehcache
     jar: ehcache-jakarta
     repository: Uyuni
