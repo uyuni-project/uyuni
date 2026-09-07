@@ -858,8 +858,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el9-updates-x86_64
         managertools-beta-el9-pool-x86_64
         managertools-beta-el9-updates-x86_64
-        managertools-el9-pool-x86_64-rocky
-        managertools-el9-updates-x86_64-rocky
       ],
     'rockylinux8' => # CHECKED
       %w[
