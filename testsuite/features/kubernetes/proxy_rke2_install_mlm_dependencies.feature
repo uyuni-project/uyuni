@@ -25,6 +25,7 @@ Feature: Install MLM dependencies on RKE2
     Then I wait until "cert-manager" helm chart is deployed in namespace "cert-manager" on "proxy"
     When I run "helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --namespace $CERT_MANAGER_NAMESPACE --wait" on "proxy"
     Then I wait until "trust-manager" helm chart is deployed in namespace "cert-manager" on "proxy"
+    
 
   ## Install Traefik
   Scenario: Install Traefik
