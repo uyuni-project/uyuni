@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
-import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -340,13 +339,8 @@ public class JobReturnEventMessageAction implements MessageAction {
             executionTime = Instant.now().plusSeconds(30);
         }
 
-        boolean isSles15To16Migration = action
-                .filter(a -> a instanceof DistUpgradeAction)
-                .map(a -> (DistUpgradeAction) a)
-                .map(DistUpgradeAction::isSles15To16Migration)
-                .orElse(false);
         // No package refresh needed for SLES 15 -> 16 migration
-        if (!isSles15To16Migration) {
+        if (!saltServerActionService.isSLES15To16Migration(action)) {
             schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), Date.from(executionTime));
         }
     }
