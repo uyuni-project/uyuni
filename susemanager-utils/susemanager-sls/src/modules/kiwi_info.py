@@ -247,10 +247,11 @@ def _disk_format_types():
         ".qcow2",
         ".ova",
         ".vmdk",
-        ".vdi",
+        ".vmx",
         ".vhd",
-        ".vhdfixed",
         ".vhdx",
+        ".vhdfixed",
+        ".vdi",
         ".vagrant.libvirt.box",
         ".vagrant.virtualbox.box",
     ]
