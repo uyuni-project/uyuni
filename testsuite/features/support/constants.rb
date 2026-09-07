@@ -303,8 +303,12 @@ BASE_CHANNEL_BY_CLIENT = {
     'amazon2023_sshminion' => 'amazonlinux2023 for x86_64',
     'centos7_minion' => 'RES-7-LTSS-Updates for x86_64',
     'centos7_sshminion' => 'RES-7-LTSS-Updates for x86_64',
+    'liberty8_minion' => 'RHEL8-Pool for x86_64',
+    'liberty8_sshminion' => 'RHEL8-Pool for x86_64',
     'liberty9_minion' => 'EL9-Pool for x86_64',
     'liberty9_sshminion' => 'EL9-Pool for x86_64',
+    'liberty10_minion' => 'EL10-Pool for x86_64',
+    'liberty10_sshminion' => 'EL10-Pool for x86_64',
     'oracle9_minion' => 'oraclelinux9 for x86_64',
     'oracle9_sshminion' => 'oraclelinux9 for x86_64',
     'oracle10_minion' => 'oraclelinux10 for x86_64',
@@ -449,7 +453,9 @@ LABEL_BY_BASE_CHANNEL = {
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'RES-7-LTSS-Updates for x86_64' => 'res-7-ltss-updates-x86_64',
+    'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
+    'EL10-Pool for x86_64' => 'el10-pool-x86_64',
     'oraclelinux9 for x86_64' => 'oraclelinux9-x86_64',
     'oraclelinux10 for x86_64' => 'oraclelinux10-x86_64',
     'oraclelinux10-appstream for x86_64' => 'oraclelinux10-appstream-x86_64',
@@ -845,11 +851,23 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el7-pool-x86_64-lbt7
         managertools-el7-updates-x86_64-lbt7
       ],
+    'sll-8' =>
+      %w[
+        res-cb-8-updates-x86_64
+        res-as-8-updates-x86_64
+        res-8-updates-x86_64
+      ],
     'sll-9' => # CHECKED
       %w[
         sll-cb-9-updates-x86_64
         sll-as-9-updates-x86_64
         sll-9-updates-x86_64
+      ],
+    'sll-10' =>
+      %w[
+        sll-cb-10-updates-x86_64
+        sll-as-10-updates-x86_64
+        sll-10-updates-x86_64
       ],
     'el9' => # CHECKED
       %w[
@@ -858,8 +876,14 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el9-updates-x86_64
         managertools-beta-el9-pool-x86_64
         managertools-beta-el9-updates-x86_64
-        managertools-el9-pool-x86_64-rocky
-        managertools-el9-updates-x86_64-rocky
+      ],
+    'el10' =>
+      %w[
+        el10-pool-x86_64
+        managertools-el10-pool-x86_64
+        managertools-el10-updates-x86_64
+        managertools-beta-el10-pool-x86_64
+        managertools-beta-el10-updates-x86_64
       ],
     'rockylinux8' => # CHECKED
       %w[
@@ -1255,11 +1279,23 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-12-amd64-main-security-uyuni
         debian-12-amd64-uyuni-client-devel
       ],
-    'sll-9' =>
+    'sll-8' =>
       %w[
-        sll-9-updates-x86_64
-        sll-as-9-updates-x86_64
+        res-cb-8-updates-x86_64
+        res-as-8-updates-x86_64
+        res-8-updates-x86_64
+      ],
+    'sll-9' => # CHECKED
+      %w[
         sll-cb-9-updates-x86_64
+        sll-as-9-updates-x86_64
+        sll-9-updates-x86_64
+      ],
+    'sll-10' =>
+      %w[
+        sll-cb-10-updates-x86_64
+        sll-as-10-updates-x86_64
+        sll-10-updates-x86_64
       ],
     'el9' =>
       %w[
@@ -1614,6 +1650,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'devel-rh-like-channel' => 120,
   'devel-suse-channel' => 120,
   'el9-pool-x86_64' => 60,
+  'el10-pool-x86_64' => 60,
   'fake-base-channel-appstream' => 360,
   'fake-base-channel-debian-like' => 300,
   'fake-base-channel-rh-like' => 360,
@@ -1629,9 +1666,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-beta-el9-updates-x86_64' => 60,
   'managertools-beta-el9-updates-x86_64-alma' => 60,
   'managertools-beta-el9-updates-x86_64-amazon' => 60,
+  'managertools-beta-el10-pool-x86_64' => 60,
   'managertools-beta-el10-pool-x86_64-alma' => 60,
   'managertools-beta-el10-pool-x86_64-ol10' => 60,
   'managertools-beta-el10-pool-x86_64-rocky' => 60,
+  'managertools-beta-el10-updates-x86_64' => 60,
   'managertools-beta-el10-updates-x86_64-alma' => 60,
   'managertools-beta-el10-updates-x86_64-ol10' => 60,
   'managertools-beta-el10-updates-x86_64-rocky' => 60,
@@ -1659,9 +1698,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-el9-updates-x86_64-alma' => 60,
   'managertools-el9-updates-x86_64-amazon' => 60,
   'managertools-el9-updates-x86_64-rocky' => 60,
+  'managertools-el10-pool-x86_64' => 60,
   'managertools-el10-pool-x86_64-alma' => 60,
   'managertools-el10-pool-x86_64-ol10' => 60,
   'managertools-el10-pool-x86_64-rocky' => 60,
+  'managertools-el10-updates-x86_64' => 60,
   'managertools-el10-updates-x86_64-alma' => 60,
   'managertools-el10-updates-x86_64-ol10' => 60,
   'managertools-el10-updates-x86_64-rocky' => 60,
@@ -1846,9 +1887,15 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
   'sles15-sp7-devel-uyuni-client-x86_64' => 120,
   'sles16-devel-uyuni-client-x86_64' => 120,
+  'sll-8-updates-x86_64' => 2580,
+  'sll-as-8-updates-x86_64' => 2460,
+  'sll-cb-8-updates-x86_64' => 2160,
   'sll-9-updates-x86_64' => 2580,
   'sll-as-9-updates-x86_64' => 2460,
   'sll-cb-9-updates-x86_64' => 2160,
+  'sll-10-updates-x86_64' => 2580,
+  'sll-as-10-updates-x86_64' => 2460,
+  'sll-cb-10-updates-x86_64' => 2160,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.0-pool-x86_64' => 1200,
   'managertools-sl-micro-6.0-x86_64' => 60,

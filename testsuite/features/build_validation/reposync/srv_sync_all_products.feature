@@ -601,6 +601,40 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "centos7" channels with arch "x86_64"
     And I wait until all synchronized channels for "sll-7-ltss" have finished
 
+# needed to test Alma 8 to SLL 8 migrations in BV
+@susemanager
+@alma8_minion
+  Scenario: Add Liberty Linux 8 Base product
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 8 Base" product has been added
+    And I wait until all synchronized channels for "el8" have finished
+
+# needed to test Alma 8 to SLL 8 migrations in BV
+@susemanager
+@alma8_minion
+  Scenario: Add Liberty Linux 8
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 8 Base"
+    And I select "SUSE Liberty Linux 8 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 8 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux 8 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-8" have finished
+
+
 @susemanager
 @liberty9_minion
   Scenario: Add Liberty Linux 9 Base product
@@ -631,6 +665,39 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Liberty Linux 9 x86_64" product has been added
     And I wait until all synchronized channels for "sll-9" have finished
+
+# needed to test Alma 10 to SLL 10 migrations in BV
+@susemanager
+@alma10_minion
+  Scenario: Add Liberty Linux 10 Base product
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 10 Base" as the filtered product description
+    And I select "RHEL and Liberty 10 Base" as a product
+    Then I should see the "RHEL and Liberty 10 Base" selected
+    When I click the Add Product button
+    And I wait until I see "RHEL and Liberty 10 Base" product has been added
+    And I wait until all synchronized channels for "el10" have finished
+
+# needed to test Alma 10 to SLL 10 migrations in BV
+@susemanager
+@alma10_minion
+  Scenario: Add Liberty Linux 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 10 Base" as the filtered product description
+    And I select "RHEL and Liberty 10 Base" as a product
+    Then I should see the "RHEL and Liberty 10 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 10 Base"
+    And I select "SUSE Liberty Linux 10 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-10" have finished
 
 @susemanager
 @oracle9_minion
