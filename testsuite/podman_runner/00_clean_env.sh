@@ -25,19 +25,19 @@ if [[ "$(uname)" == "Darwin" ]]; then
   podman machine rm --force ||:
 else
   echo "Killing old containers"
-  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion sle_minion server controller uyuni-db"  # opensusessh --- IGNORE ---
+  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion sle_minion server controller uyuni-db ssl-generator opensusessh"
   for i in ${containers};do
-      $PODMAN_CMD kill ${i}
+      $PODMAN_CMD kill "${i}"
   done
 
   echo "Wait for the containers to stop"
   for i in ${containers};do
-      $PODMAN_CMD wait ${i}
+      $PODMAN_CMD wait "${i}"
   done
 
   echo "Force remove containers"
   for i in ${containers};do
-      $PODMAN_CMD rm ${i}
+      $PODMAN_CMD rm "${i}"
   done
 
   echo "Remove volumes"
@@ -76,9 +76,9 @@ else
 
   echo "Remove secrets"
   for secret in $($PODMAN_CMD secret ls --format '{{.Name}}' | grep '^uyuni-'); do
-      $PODMAN_CMD secret rm $secret
+      $PODMAN_CMD secret rm "$secret"
   done
 
   echo "Remove custom images"
-  $PODMAN_CMD rmi -f "uyuni-server-built:${UYUNI_VERSION}" uyuni-server-built
+  $PODMAN_CMD rmi -f "ghcr.io/${UYUNI_PROJECT}/uyuni/ci-test-server-pr:${UYUNI_VERSION}" ghcr.io/"${UYUNI_PROJECT}"/uyuni/ci-test-server-pr
 fi

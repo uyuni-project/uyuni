@@ -26,8 +26,8 @@ mkdir -p "${PAYLOAD_DIR}"
 mkdir -p "${PAYLOAD_DIR}/usr/share/susemanager/www/tomcat/webapps/rhn"
 mkdir -p "${PAYLOAD_DIR}/usr/share/rhn/lib"
 mkdir -p "${PAYLOAD_DIR}/usr/share/spacewalk/taskomatic"
-SPACEWALK_JAVA_VERSION=$(cat java/pom.xml | grep -m 1 "<version>" | sed -e 's/<[^>]*>//g' -e 's/^[ \t]*//')
-BRANDING_VERSION=$(cat branding/pom.xml | grep -m 1 "<version>" | sed -e 's/<[^>]*>//g' -e 's/^[ \t]*//')
+SPACEWALK_JAVA_VERSION=$(grep -m 1 "<version>" java/pom.xml | sed -e 's/<[^>]*>//g' -e 's/^[ \t]*//')
+BRANDING_VERSION=$(grep -m 1 "<version>" branding/pom.xml | sed -e 's/<[^>]*>//g' -e 's/^[ \t]*//')
 
 rsync -a "java/webapp/target/webapp-${SPACEWALK_JAVA_VERSION}/" "${PAYLOAD_DIR}/usr/share/susemanager/www/tomcat/webapps/rhn/"
 
