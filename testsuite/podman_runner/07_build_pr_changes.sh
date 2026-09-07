@@ -15,6 +15,7 @@ mvn -f branding/ install
 
 echo "Building Java..."
 mvn -f java initialize
+mvn -f java package
 
 echo "Building Frontend..."
 npm --prefix web ci --ignore-scripts --save=false --omit=dev

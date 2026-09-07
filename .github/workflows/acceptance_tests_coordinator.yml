@@ -74,14 +74,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Use Node.js 22.x
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
         with:
           node-version: 22.x
@@ -89,7 +87,6 @@ jobs:
           cache-dependency-path: 'web/package-lock.json'
 
       - name: Cache Maven repository
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
         id: cache-maven
         with:
@@ -102,16 +99,13 @@ jobs:
             ${{ runner.os }}-maven-v1-
 
       - name: Install Python dependencies and obs-to-maven
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         run: |
           pip install git+https://github.com/uyuni-project/obs-to-maven.git@v1.1.13
 
       - name: Build payload
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         run: bash ./testsuite/podman_runner/07_build_pr_changes.sh
 
       - name: Upload Payload
-        if: ${{ needs.determine_tests.outputs.require_acceptance_tests == 'true' }}
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: pr-changes-payload
