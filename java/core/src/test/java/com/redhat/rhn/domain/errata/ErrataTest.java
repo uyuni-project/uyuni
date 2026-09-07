@@ -577,4 +577,5 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertFalse(finalChannel1.getErratas().contains(finalErrata));
         assertFalse(finalChannel2.getErratas().contains(finalErrata));
     }
+
 }
