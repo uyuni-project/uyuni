@@ -175,7 +175,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 // Cobbler kernel and post kernel options
                 CobblerConnection con = CobblerXMLRPCHelper.getConnection(admin);
                 SystemRecord rec =  SystemRecord.lookupById(con, server.getCobblerId());
-                assertEquals(" console=tty0", rec.getKernelOptions().get());
+                assertEquals("console=tty0", rec.getKernelOptions().get());
                 assertEquals("console=tty1", rec.getKernelOptionsPost().get());
         }
 

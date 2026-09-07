@@ -121,14 +121,16 @@ public class KickstartBuilder {
 
         boolean isReallyKickstartProfile = false;
         for (String currentLine : lines) {
-            if (currentLine.startsWith("#") || currentLine.equals("")) {
+            if (currentLine.startsWith("#") || currentLine.isEmpty()) {
                 continue;
             }
             if (!isReallyKickstartProfile &&
                     (currentLine.trim().startsWith("<?xml") ||
                      currentLine.trim().startsWith("<!DOCTYPE") ||
                      currentLine.trim().startsWith("<!--") ||
-                     currentLine.trim().startsWith("<profile"))) {
+                     currentLine.trim().startsWith("<profile") ||
+                     currentLine.trim().startsWith("{") ||
+                     currentLine.trim().startsWith("//"))) {
                 break;
             }
 
@@ -162,7 +164,7 @@ public class KickstartBuilder {
             // Note: this may in fact never happen. See above, authconfig
             // is an alias to auth.
             if (!commandNames.containsKey(firstWord)) {
-                log.warn("Unable to parse kickstart command: {}", firstWord);
+                log.warn("Unable to parse kickstart commands for Kickstart profile {}", ksData.getLabel());
                 continue;
             }
 
@@ -172,9 +174,7 @@ public class KickstartBuilder {
                 isReallyKickstartProfile = true;
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
-                log.warn("Using default kickstartable tree URL:");
-                log.warn("   Replaced: {}", currentLine);
-                log.warn("   With: {} {}", firstWord, restOfLine);
+                log.warn("Using default kickstartable tree URL for Kickstart profile {}", ksData.getLabel());
             }
 
             KickstartCommand kc = new KickstartCommand();

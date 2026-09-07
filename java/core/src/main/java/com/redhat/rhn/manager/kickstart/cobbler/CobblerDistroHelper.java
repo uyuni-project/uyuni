@@ -153,7 +153,7 @@ public class CobblerDistroHelper {
             ksmeta.put("org", tree.getOrgId().toString());
         }
 
-        if (tree.getInstallType().isSUSE()) {
+        if (tree.getInstallType().isSUSE() && !tree.getInstallType().isSLES16OrGreater()) {
             ksmeta.put("autoyast", "true");
         }
 

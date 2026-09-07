@@ -15,18 +15,20 @@
 package com.redhat.rhn.manager.kickstart.tree;
 
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 
+import com.suse.manager.autoinstallation.KernelOptionsList;
+import com.suse.manager.autoinstallation.builder.AbstractKernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilder;
+import com.suse.manager.autoinstallation.builder.KernelOptionsBuilderFactory;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * TreeCreateCommand
@@ -65,37 +67,18 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             return new ValidatorError("distribution.tree.exists", existingTree.getLabel());
         }
 
-        String kopts = this.tree.getKernelOptions();
-        StringJoiner kOptsJoiner = new StringJoiner(" ");
-        kOptsJoiner.add(kopts);
-
-        if (this.tree.getInstallType().isSUSE()) {
-            if (!kopts.contains("install=")) {
-                kOptsJoiner.add("install=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
-            }
-            // Configure URL for YaST self update or disable it
-            if (!kopts.contains("self_update=")) {
-                Optional<Channel> installerUpdates = tree.getChannel()
-                        .getAccessibleChildrenFor(getUser())
-                        .stream()
-                        .filter(Channel::isInstallerUpdates)
-                        .findFirst();
-                if (installerUpdates.isPresent()) {
-                    kOptsJoiner.add("self_update=http://" + getServerFqdn() + "/ks/dist/child/" +
-                            installerUpdates.get().getLabel() + "/" + this.tree.getLabel());
-                }
-                else {
-                    kOptsJoiner.add("self_update=0");
-                }
-            }
-        }
-        else if (this.tree.getInstallType().isRhel8OrGreater() && !kopts.contains("inst.repo=")) {
-            kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
+        KernelOptionsBuilder builder =
+                KernelOptionsBuilderFactory.getBuilder(this.tree.getInstallType());
+        if (builder instanceof AbstractKernelOptionsBuilder abstractBuilder) {
+            abstractBuilder.setServerFqdn(getServerFqdn());
+            abstractBuilder.setUser(this.getUser());
         }
 
-        this.tree.setKernelOptions(kOptsJoiner.toString());
+        KernelOptionsList options = new KernelOptionsList(this.tree.getKernelOptions());
+        options.addMissingOptions(builder.distroOptions(this.tree));
+        this.tree.setKernelOptions(options.toString());
+
         return super.store();
-
     }
 
     private String getServerFqdn() {
