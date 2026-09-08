@@ -22,7 +22,7 @@
             JOIN suseovalplatform platform
               ON platform.id = platVulnerable.platform_id
             JOIN rhnServer s
-              ON s.cpe = platform.cpe
+              ON (starts_with(s.cpe, platform.cpe) OR starts_with(platform.cpe, s.cpe))
                 AND s.id = :server_id
             JOIN suseovalvulnerablepackage vulnerablePkg
               ON vulnerablePkg.plat_vuln_id = platVulnerable.id
@@ -48,7 +48,7 @@
 
     <mode name="check_oval_availability">
         <query params="cpe">
-            SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe);
+            SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe) OR starts_with(plat.cpe, :cpe);
         </query>
     </mode>
 
