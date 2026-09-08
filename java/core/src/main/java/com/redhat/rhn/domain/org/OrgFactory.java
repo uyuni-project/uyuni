@@ -108,6 +108,9 @@ public class OrgFactory extends HibernateFactory {
      */
     public static void deleteOrg(Long oid, User user) {
         Org org = OrgFactory.lookupById(oid);
+        if (org == null) {
+            return;
+        }
 
         // delete kickstart profiles (to clean up cobbler profiles)
         DataResult<KickstartDto> results = KickstartLister.getInstance()

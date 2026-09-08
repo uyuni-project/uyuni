@@ -24,7 +24,6 @@ import java.nio.file.Path;
 /**
  * Basic test class with a User
  */
-@ExtendWith(UserForTestCaseExtension.class)
 @ExtendWith(SaltTestCaseExtension.class)
 public abstract class JMockBaseTestCaseWithUser extends MockObjectTestCase {
 
@@ -33,15 +32,4 @@ public abstract class JMockBaseTestCaseWithUser extends MockObjectTestCase {
 
     @SaltTestRootPath
     protected Path tmpSaltRoot;
-
-    @Override
-    protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
-        TestUtils.deleteAllAccessTokens();
-    }
-
-    @Override
-    protected void afterCleanupDatabaseCommits() {
-        user = null;
-    }
 }

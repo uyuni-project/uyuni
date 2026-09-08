@@ -15,74 +15,46 @@
  */
 package com.redhat.rhn.frontend.xmlrpc;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.kickstart.KickstartTestUtils;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.TestStatics;
-import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTest.UserRole;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(SaltTestCaseExtension.class)
+@ExtendWith({SaltTestCaseExtension.class, UserForTestCaseExtension.class})
 public class BaseHandlerTestCase extends BaseTestCase {
-    /*
-     * admin - Org Admin
-     * regular - regular user
-     * adminKey/regularKey - session keys for respective users
-     */
 
-    protected User admin;
+    @UserForTest
     protected User regular;
+
+    @UserForTest(userName = TestStatics.TEST_ADMIN_USER, role = UserRole.ORG_ADMIN)
+    protected User admin;
+
+    @UserForTest(userName = TestStatics.TEST_SAT_USER, role = UserRole.SAT_ADMIN)
     protected User satAdmin;
+
     protected String adminKey;
+
     protected String regularKey;
+
     protected String satAdminKey;
 
     @BeforeEach
     public void setUpBaseHandlerTestCase() throws Exception {
-        admin = new UserTestUtils.UserBuilder()
-                .userName(TestStatics.TEST_ADMIN_USER)
-                .orgAdmin(true)
-                .build();
-        regular = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
-        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, admin.getOrg().getId());
-        satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
-        UserFactory.save(satAdmin);
-
-        assertTrue(admin.hasRole(RoleFactory.ORG_ADMIN));
-        assertFalse(regular.hasRole(RoleFactory.ORG_ADMIN));
-        assertTrue(satAdmin.hasRole(RoleFactory.SAT_ADMIN));
-
         //setup session keys
         adminKey = XmlRpcTestUtils.getSessionKey(admin);
         regularKey = XmlRpcTestUtils.getSessionKey(regular);
         satAdminKey = XmlRpcTestUtils.getSessionKey(satAdmin);
 
-        //make sure the test org has the channel admin role
-        Org org = admin.getOrg();
-        org.addRole(RoleFactory.CHANNEL_ADMIN);
-        org.addRole(RoleFactory.SYSTEM_GROUP_ADMIN);
-
         // Setup configuration for kickstart tests (mock cobbler etc.)
         KickstartTestUtils.setupTestConfiguration(admin);
-    }
-
-    @Override
-    protected void cleanupDatabaseCommits() {
-        UserFactory.deleteUser(regular.getId());
-        UserFactory.deleteUser(satAdmin.getId());
-        TestUtils.deleteOrgOfUser(admin);
-        TestUtils.deleteAllAccessTokens();
     }
 
     protected void addAccessGroup(User user, AccessGroup group) {
