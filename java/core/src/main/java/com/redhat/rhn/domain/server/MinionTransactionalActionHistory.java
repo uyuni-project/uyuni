@@ -255,6 +255,20 @@ public class MinionTransactionalActionHistory implements Serializable {
     }
 
     /**
+     * Confirm the prerequisite from a valid post-transactional continuation.
+     *
+     * <p>This repairs bookkeeping when a valid continuation finds the prerequisite still pending.</p>
+     */
+    public void confirmPrerequisiteFromContinuation() {
+        if (ProgressStatus.PENDING.equals(prerequisiteStatus)) {
+            prerequisiteStatus = ProgressStatus.COMPLETED;
+            if (prerequisiteAt == null) {
+                prerequisiteAt = new Date();
+            }
+        }
+    }
+
+    /**
      * Record the snapshot refresh action scheduled to reconcile this transactional action.
      *
      * @param snapshotRefreshActionIdIn snapshot refresh action id

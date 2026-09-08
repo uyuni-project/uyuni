@@ -221,6 +221,42 @@ public class MinionTransactionalActionHistoryTest {
     }
 
     @Test
+    void testContinuationConfirmsPendingPrerequisite() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+
+        history.confirmPrerequisiteFromContinuation();
+
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertTrue(history.getPrerequisiteAt() != null);
+    }
+
+    @Test
+    void testContinuationConfirmationPreservesExistingPrerequisiteData() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalStateApplied("salt result");
+        var prerequisiteAt = history.getPrerequisiteAt();
+
+        history.confirmPrerequisiteFromContinuation();
+
+        assertEquals(ProgressStatus.COMPLETED, history.getPrerequisiteStatus());
+        assertEquals(prerequisiteAt, history.getPrerequisiteAt());
+        assertEquals("salt result", history.getPrerequisiteResult());
+    }
+
+    @Test
+    void testContinuationConfirmationDoesNotChangeFailedPrerequisite() {
+        MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
+        history.recordTransactionalApplyFailed("salt failure");
+        var prerequisiteAt = history.getPrerequisiteAt();
+
+        history.confirmPrerequisiteFromContinuation();
+
+        assertEquals(ProgressStatus.FAILED, history.getPrerequisiteStatus());
+        assertEquals(prerequisiteAt, history.getPrerequisiteAt());
+        assertEquals("salt failure", history.getPrerequisiteResult());
+    }
+
+    @Test
     void testPostTransactionalFormulaListDefaultsToEmpty() {
         MinionTransactionalActionHistory history = MinionTransactionalActionHistory.create(1L, 10L);
 
