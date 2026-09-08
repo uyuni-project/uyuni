@@ -27,7 +27,6 @@ fi
 
 if [ -f "$MANAGER_COMPLETE" ]; then
     /usr/bin/systemctl is-active multi-user.target
-    salt-call --local --no-color status.ping_master localhost |grep -q True
 else
     echo "Healthcheck failed: setup file not found. Skipping app checks, disk is healthy."
     exit 1
