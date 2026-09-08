@@ -54,10 +54,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -113,11 +116,18 @@ public class FilterApiController {
                                 new NoSuchElementException("No content project found with label: " + projectLabel));
 
 
-        List<Long> filterIdsToDetach = dbContentProject.getProjectFilters()
+        // Use only active filters to avoid treating previously detached filters as still attached
+        Set<Long> activeFilterIdsSet = dbContentProject.getActiveFilters()
                 .stream()
-                .map(pf -> pf.getFilter().getId())
-                .filter(filterId -> !filtersIdToUpdate.contains(filterId))
-                .toList();
+                .map(ContentFilter::getId)
+                .collect(Collectors.toSet());
+
+        Set<Long> filtersIdToUpdateSet = new HashSet<>(filtersIdToUpdate);
+
+        List<Long> filterIdsToDetach = activeFilterIdsSet
+                .stream()
+                .filter(filterId -> !filtersIdToUpdateSet.contains(filterId))
+                .collect(Collectors.toList());
         filterIdsToDetach.forEach(filterId -> CONTENT_MGR.detachFilter(
                 projectLabel,
                 filterId,
@@ -126,12 +136,9 @@ public class FilterApiController {
 
         List<Long> filterIdsToAttach = filtersIdToUpdate
                 .stream()
-                .filter(filterId ->
-                        dbContentProject.getProjectFilters()
-                                .stream()
-                                .noneMatch(pf -> pf.getFilter().getId().equals(filterId))
-                )
-                .toList();
+                .distinct()
+                .filter(filterId -> !activeFilterIdsSet.contains(filterId))
+                .collect(Collectors.toList());
         filterIdsToAttach
                 .forEach(filterId ->
                         CONTENT_MGR.attachFilter(
