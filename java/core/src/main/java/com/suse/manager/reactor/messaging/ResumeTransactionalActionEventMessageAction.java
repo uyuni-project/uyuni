@@ -82,6 +82,14 @@ public class ResumeTransactionalActionEventMessageAction implements MessageActio
             return;
         }
 
+        if (history.get().getPrerequisiteStatus() == ProgressStatus.FAILED) {
+            LOG.warn("Unable to resume transactional action {} for server {}: prerequisite failed",
+                    message.getActionId(), message.getServerId());
+            return;
+        }
+
+        history.get().confirmPrerequisiteFromContinuation();
+
         List<MinionSummary> minions =
                 MinionServerFactory.findAllMinionSummaries(message.getActionId());
 

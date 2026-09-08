@@ -43,6 +43,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -557,8 +559,11 @@ public class TransactionalActionManager {
         Action action = ActionFactory.lookupById(actionId);
         return handleTransactionalResult(history, action, minionServerId, actionId, jsonResult, failed,
                 TransactionalActionManager::scheduleSnapshotRefresh,
-                (resumeActionId, resumeMinionServerId) -> MessageQueue.publish(
-                        new ResumeTransactionalActionEventMessage(resumeActionId, resumeMinionServerId)));
+                (resumeActionId, resumeMinionServerId) -> scheduleResumeAfterCommit(
+                        resumeActionId,
+                        resumeMinionServerId,
+                        (actionIdIn, serverIdIn) -> MessageQueue.publish(
+                                new ResumeTransactionalActionEventMessage(actionIdIn, serverIdIn))));
     }
 
     static TransactionalResult handleTransactionalResult(
@@ -691,8 +696,11 @@ public class TransactionalActionManager {
                 .ifPresent(history -> {
                     Action action = ActionFactory.lookupById(history.getActionId());
                     reconcileSnapshotRefreshAction(history, action, rebootRequired,
-                            (actionId, serverId) -> MessageQueue.publish(new ResumeTransactionalActionEventMessage(
-                                    actionId, serverId)));
+                            (actionId, serverId) -> scheduleResumeAfterCommit(
+                                    actionId,
+                                    serverId,
+                                    (actionIdIn, serverIdIn) -> MessageQueue.publish(
+                                            new ResumeTransactionalActionEventMessage(actionIdIn, serverIdIn))));
                 });
     }
 
@@ -711,6 +719,36 @@ public class TransactionalActionManager {
         if (!rebootRequired && hasPostTransactionalState) {
             resumePublisher.accept(history.getActionId(), history.getMinionServerId());
         }
+    }
+
+    private static void scheduleResumeAfterCommit(Long actionId, Long serverId,
+                                                   BiConsumer<Long, Long> resumePublisher) {
+        Transaction transaction = HibernateFactory.getSessionIfPresent()
+                .map(session -> session.getTransaction())
+                .filter(Transaction::isActive)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Cannot schedule transactional action continuation without an active Hibernate transaction " +
+                                "for action " + actionId + " and server " + serverId));
+        scheduleResumeAfterCommit(transaction, actionId, serverId, resumePublisher);
+    }
+
+    static void scheduleResumeAfterCommit(Transaction transaction, Long actionId, Long serverId,
+                                           BiConsumer<Long, Long> resumePublisher) {
+        if (transaction == null || !transaction.isActive()) {
+            throw new IllegalStateException(
+                    "Cannot schedule transactional action continuation without an active Hibernate transaction " +
+                            "for action " + actionId + " and server " + serverId);
+        }
+
+        transaction.runAfterCompletion(status -> {
+            if (status == TransactionStatus.COMMITTED) {
+                resumePublisher.accept(actionId, serverId);
+            }
+            else {
+                LOG.warn("Skipping transactional action continuation for action {} and server {} because " +
+                                "the Hibernate transaction completed with status {}", actionId, serverId, status);
+            }
+        });
     }
 
     /**
