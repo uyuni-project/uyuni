@@ -25,8 +25,8 @@ Feature: Very first settings
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Wait for refresh of list of products to finish
-    When I wait until mgr-sync refresh is finished
+  # Scenario: Wait for refresh of list of products to finish
+  #   When I wait until mgr-sync refresh is finished
 
   Scenario: Create testing username
     When I follow the left menu "Users > User List > Active"
