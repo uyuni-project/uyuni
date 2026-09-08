@@ -8,6 +8,14 @@ export const applyOverrides = (name, version, license) => {
   }
 
   /**
+   * pwstrength-bootstrap uses the deprecated SPDX identifier GPL-3.0, which
+   * SPDX defines as GPL-3.0-only. Keep generated license metadata explicit.
+   */
+  if (name === "pwstrength-bootstrap" && version === "1.2.6" && license === "(GPL-3.0 OR MIT)") {
+    return "(GPL-3.0-only OR MIT)";
+  }
+
+  /**
    * These packages delcare "BSD" without any other info in the package.json, but the license text in the repo is actually BSD-3-Clause
    *
    * Schema: [NPM package name, version number]
