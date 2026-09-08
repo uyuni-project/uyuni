@@ -77,6 +77,19 @@ public class OsReleasePairTest {
         assertTrue(productOpt.isPresent());
         assertEquals(OsFamily.SUSE_LIBERTY_LINUX, productOpt.get().getOsFamily());
         assertEquals("9", productOpt.get().getOsVersion());
+
+        // Test SL-Micro and SLE-Micro (hyphen and space normalization)
+        OsReleasePair slMicro = new OsReleasePair("SL-Micro", "6.2");
+        productOpt = slMicro.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, productOpt.get().getOsFamily());
+        assertEquals("6.2", productOpt.get().getOsVersion());
+
+        OsReleasePair sleMicro = new OsReleasePair("SLE-Micro", "5.5");
+        productOpt = sleMicro.toOVALOsProduct();
+        assertTrue(productOpt.isPresent());
+        assertEquals(OsFamily.SUSE_LINUX_ENTERPRISE_MICRO, productOpt.get().getOsFamily());
+        assertEquals("5.5", productOpt.get().getOsVersion());
     }
 
     @Test

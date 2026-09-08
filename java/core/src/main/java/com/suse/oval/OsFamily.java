@@ -93,6 +93,16 @@ public enum OsFamily {
      * @return the os family that correspond to the given os name.
      * */
     public static Optional<OsFamily> fromOsName(String osName) {
-        return Arrays.stream(values()).filter(osFamily -> osFamily.os.equalsIgnoreCase(osName)).findFirst();
+        if (osName == null) {
+            return Optional.empty();
+        }
+        String normalizedInput = osName.toLowerCase().replaceAll("[\\s\\-_]", "");
+        if (normalizedInput.equals("slmicro")) {
+            return Optional.of(SUSE_LINUX_ENTERPRISE_MICRO);
+        }
+        return Arrays.stream(values()).filter(osFamily -> {
+            String normalizedOs = osFamily.os.toLowerCase().replaceAll("[\\s\\-_]", "");
+            return normalizedOs.equals(normalizedInput);
+        }).findFirst();
     }
 }
