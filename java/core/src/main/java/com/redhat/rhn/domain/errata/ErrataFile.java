@@ -74,7 +74,7 @@ public class ErrataFile extends BaseDomainHelper {
             name = "rhnErrataFilePackage",
             joinColumns = @JoinColumn(name = "errata_file_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
-    @OrderBy("package_id asc")
+    @OrderBy("id asc")
     private Set<Package> packages;
 
     /**
