@@ -12,6 +12,10 @@ let passwordPolicy = {
   upperCharFlag: false,
 };
 
+const hasUppercase = (value) => /\p{Lu}/u.test(value);
+const hasLowercase = (value) => /\p{Ll}/u.test(value);
+const hasDigit = (value) => /\p{Nd}/u.test(value);
+
 function validatePassword(password) {
   if (/\s/.test(password)) {
      return false;
@@ -25,15 +29,15 @@ function validatePassword(password) {
     return false;
   }
 
-  if (passwordPolicy.upperCharFlag && !/[A-Z]/.test(password)) {
+  if (passwordPolicy.upperCharFlag && !hasUppercase(password)) {
     return false;
   }
 
-  if (passwordPolicy.lowerCharFlag && !/[a-z]/.test(password)) {
+  if (passwordPolicy.lowerCharFlag && !hasLowercase(password)) {
     return false;
   }
 
-  if (passwordPolicy.digitFlag && !/\d/.test(password)) {
+  if (passwordPolicy.digitFlag && !hasDigit(password)) {
     return false;
   }
 
@@ -108,17 +112,17 @@ function updateTickIcon() {
 
     // Uppercase
     if (passwordPolicy.upperCharFlag) {
-      items.push(`${/[A-Z]/.test(password) ? "✓" : "-"} Uppercase character`);
+      items.push(`${hasUppercase(password) ? "✓" : "-"} Uppercase character`);
     }
 
     // Lowercase
     if (passwordPolicy.lowerCharFlag) {
-      items.push(`${/[a-z]/.test(password) ? "✓" : "-"} Lowercase character`);
+      items.push(`${hasLowercase(password) ? "✓" : "-"} Lowercase character`);
     }
 
     // Digit
     if (passwordPolicy.digitFlag) {
-      items.push(`${/\d/.test(password) ? "✓" : "-"} Digit`);
+      items.push(`${hasDigit(password) ? "✓" : "-"} Digit`);
     }
 
     // Special character
@@ -190,8 +194,10 @@ function updateTickIcon() {
         updateTooltip("#confirmtick", "Confirm the password");
       } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
         success(jQuery("#confirmtick"));
+        updateTooltip("#confirmtick", "Password match");
       } else {
         danger(jQuery("#confirmtick"));
+        updateTooltip("#confirmtick", "Password do not match");
       }
     }
   }
@@ -215,14 +221,17 @@ function updateTickIcon() {
       updateTooltip("#confirmtick", "Confirm the password");
     } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
       success(jQuery("#confirmtick"));
+       updateTooltip("#confirmtick", "Password match");
     } else {
       danger(jQuery("#confirmtick"));
+      updateTooltip("#confirmtick", "Password do not match");
     }
   }
 }
 
 // document ready handler
 jQuery(document).ready(function () {
+  jQuery('input[name="desiredpassword"], #confirmpass').on("input", updateTickIcon);
   jQuery
     .getJSON("/rhn/manager/api/admin/config/password-policy")
     .done(function (response) {
