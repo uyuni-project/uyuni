@@ -600,7 +600,7 @@ def extract_logs_from_node(node, host)
     raise ScriptError, 'Download log archive failed' unless success
   rescue Errno::ECONNRESET
     $stdout.puts "⚠️ WARN: Skipping log extraction for node #{host} due to connection reset."
-  rescue RuntimeError => e
+  rescue RuntimeError, ScriptError => e
     $stdout.puts e.message
   end
 end

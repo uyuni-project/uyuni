@@ -240,6 +240,8 @@ class RemoteNode
   # @param remote_node_file [String] The path in the destination.
   # @return [Integer] The exit code.
   def inject(test_runner_file, remote_node_file)
+    raise ScriptError, "Local file #{test_runner_file} does not exist on the controller" unless File.file?(test_runner_file)
+
     if @has_mgrctl
       tmp_file = File.join('/tmp/', File.basename(test_runner_file))
       success = get_target('localhost').scp_upload(test_runner_file, tmp_file, host: @full_hostname)
@@ -259,6 +261,8 @@ class RemoteNode
   # @param test_runner_file [String] The path to the file to copy.
   # @return [Integer] The exit code.
   def extract(remote_node_file, test_runner_file)
+    raise ScriptError, "Remote file #{remote_node_file} does not exist on #{@host}" unless file_exists?(remote_node_file)
+
     if @has_mgrctl
       tmp_file = File.join('/tmp/', File.basename(remote_node_file))
       _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
