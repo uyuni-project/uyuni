@@ -96,7 +96,7 @@ public abstract class BaseManager {
 
     /**
      * Returns a DataResult for the given SelectMode with no bounds.  This
-     * can be usefull if you want a list without pagination controls.
+     * can be useful if you want a list without pagination controls.
      *
      * @param <T> the DataResults type
      * @param queryParams Named parameters for the driving query.
