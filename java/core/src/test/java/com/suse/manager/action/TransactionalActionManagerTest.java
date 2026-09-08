@@ -34,6 +34,8 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class TransactionalActionManagerTest {
 
@@ -582,6 +585,48 @@ public class TransactionalActionManagerTest {
         assertEquals(ProgressStatus.COMPLETED, history.getAfterRebootStatus());
         assertEquals(0, snapshotRefreshes.get());
         assertEquals(0, resumptions.get());
+    }
+
+    @Test
+    public void testResumeIsPublishedAfterCommitOnly() {
+        TestTransaction transaction = new TestTransaction();
+        AtomicInteger publications = new AtomicInteger();
+
+        TransactionalActionManager.scheduleResumeAfterCommit(
+                transaction, 10L, 20L, (actionId, serverId) -> publications.incrementAndGet());
+
+        assertEquals(0, publications.get());
+        transaction.complete(TransactionStatus.COMMITTED);
+        assertEquals(1, publications.get());
+    }
+
+    @Test
+    public void testResumeIsNotPublishedAfterNonCommittedCompletion() {
+        for (TransactionStatus status : List.of(
+                TransactionStatus.ROLLED_BACK,
+                TransactionStatus.MARKED_ROLLBACK,
+                TransactionStatus.FAILED_COMMIT)) {
+            TestTransaction transaction = new TestTransaction();
+            AtomicInteger publications = new AtomicInteger();
+
+            TransactionalActionManager.scheduleResumeAfterCommit(
+                    transaction, 10L, 20L, (actionId, serverId) -> publications.incrementAndGet());
+
+            transaction.complete(status);
+            assertEquals(0, publications.get(), status.toString());
+        }
+    }
+
+    @Test
+    public void testResumeWithoutActiveTransactionFailsClearly() {
+        TestTransaction transaction = new TestTransaction(TransactionStatus.NOT_ACTIVE);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> TransactionalActionManager.scheduleResumeAfterCommit(
+                        transaction, 10L, 20L, (actionId, serverId) -> { }));
+
+        assertTrue(exception.getMessage().contains("action 10"));
+        assertTrue(exception.getMessage().contains("server 20"));
     }
 
     @Test
@@ -2041,5 +2086,88 @@ public class TransactionalActionManagerTest {
 
     private static JsonElement stateResult(String result) {
         return JsonParser.parseString(result);
+    }
+
+    private static final class TestTransaction implements Transaction {
+        private TransactionStatus status;
+        private Consumer<TransactionStatus> afterCompletion;
+
+        private TestTransaction() {
+            this(TransactionStatus.ACTIVE);
+        }
+
+        private TestTransaction(TransactionStatus statusIn) {
+            status = statusIn;
+        }
+
+        private void complete(TransactionStatus statusIn) {
+            status = statusIn;
+            afterCompletion.accept(statusIn);
+        }
+
+        @Override
+        public TransactionStatus getStatus() {
+            return status;
+        }
+
+        @Override
+        public void runAfterCompletion(Consumer<TransactionStatus> action) {
+            afterCompletion = action;
+        }
+
+        @Override
+        public void registerSynchronization(jakarta.transaction.Synchronization synchronization) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setTimeout(int seconds) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setTimeout(Integer seconds) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Integer getTimeout() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void begin() {
+            status = TransactionStatus.ACTIVE;
+        }
+
+        @Override
+        public void commit() {
+            complete(TransactionStatus.COMMITTED);
+        }
+
+        @Override
+        public void rollback() {
+            complete(TransactionStatus.ROLLED_BACK);
+        }
+
+        @Override
+        public void setRollbackOnly() {
+            status = TransactionStatus.MARKED_ROLLBACK;
+        }
+
+        @Override
+        public void markRollbackOnly() {
+            status = TransactionStatus.MARKED_ROLLBACK;
+        }
+
+        @Override
+        public boolean getRollbackOnly() {
+            return status == TransactionStatus.MARKED_ROLLBACK;
+        }
+
+        @Override
+        public boolean isActive() {
+            return status.isActive();
+        }
     }
 }
