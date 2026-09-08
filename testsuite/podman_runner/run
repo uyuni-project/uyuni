@@ -6,6 +6,7 @@ export NO_AUTH_REGISTRY=noauthregistry.lab
 export AUTH_REGISTRY_CREDENTIALS="cucutest|cucutest"
 export AUTH_REGISTRY=authregistry.lab
 export PUBLISH_CUCUMBER_REPORT=false
+export TEST_IMAGE=ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev
 
 set -x
 set -e
@@ -16,18 +17,46 @@ else
   PODMAN_CMD="sudo -i podman"
 fi
 
+check_prerequisites() {
+    local missing=()
+    for tool in java mvn node npm python3 pip make rsync tar podman perl obs-to-maven; do
+        if ! command -v "$tool" &>/dev/null; then
+            missing+=("$tool")
+        fi
+    done
+
+    if [ ${#missing[@]} -ne 0 ]; then
+        echo "ERROR: The following required host tools are missing: ${missing[*]}"
+        echo "Please install them before running the testsuite locally."
+        exit 1
+    fi
+}
+
+check_prerequisites
+
 # Disable firewall so we can connect to debug
 if command -v ufw &>/dev/null; then
     sudo ufw disable
 fi
 
-# make sure docker is installed because we need the socket
-if ! command -v docker &>/dev/null; then
-    curl -fsSL https://get.docker.com | sudo sh
-fi
-
 ./00_clean_env.sh
 ./01_setup_tmp_dirs.sh
+
+echo "Building PR changes..."
+./build_pr_changes.sh
+
+echo "Building thin PR image locally..."
+mkdir -p ../../.build/server-pr-context/.build
+cp ../dockerfiles/server-pr/Dockerfile ../../.build/server-pr-context/
+rsync -a ../../.build/acceptance-server-root/ ../../.build/server-pr-context/.build/acceptance-server-root/
+$PODMAN_CMD build \
+  --build-arg BASE_IMAGE=${TEST_IMAGE}:${UYUNI_VERSION} \
+  -t ghcr.io/${UYUNI_PROJECT}/uyuni/ci-test-server-pr:${UYUNI_VERSION} \
+  -f ../../.build/server-pr-context/Dockerfile \
+  ../../.build/server-pr-context
+
+export TEST_IMAGE=ghcr.io/${UYUNI_PROJECT}/uyuni/ci-test-server-pr
+
 ./02_setup_network.sh
 if [[ "$(uname)" == "Darwin" ]]; then
   ./03_run_controller_and_registry_and_buildhost_darwin.sh
@@ -39,7 +68,6 @@ fi
 ./06_collect_and_tag_flaky_tests_in_controller.sh
 ./07_server_setup.sh
 ./08_start_server.sh
-./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
 ./12_run_salt_sle_minion.sh
@@ -53,5 +81,5 @@ fi
 for i in 1 2 3 4 5;do
   ./22_run_secondary_parallelizable_tests_subset.sh ${i}
 done
-./24_get_client_logs.sh
+./24_get_server_logs.sh "local-run"
 ./25_get_client_logs.sh

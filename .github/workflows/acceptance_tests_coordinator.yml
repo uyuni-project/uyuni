@@ -68,8 +68,53 @@ jobs:
       recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
       run_full_testsuite: ${{ steps.determine_running_full_testsuite.outputs.run_full_testsuite }}
 
-  recommended-tests:
+  build_payload:
     needs: determine_tests
+    name: Build PR Payload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: Cache Maven repository
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
+        id: cache-maven
+        with:
+          path: |
+            ~/.m2/repository
+            java/repository
+            java/.obs-to-maven-cache
+          key: ${{ runner.os }}-maven-v1-${{ hashFiles('**/pom.xml', '**/java/buildconf/ivy/obs-maven-config.yaml', '**/java/scripts/maven/**') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-v1-
+
+      - name: Install Python dependencies and obs-to-maven
+        run: |
+          pip install git+https://github.com/uyuni-project/obs-to-maven.git@v1.1.13
+
+      - name: Build payload
+        run: bash ./testsuite/podman_runner/07_build_pr_changes.sh
+
+      - name: Upload Payload
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        with:
+          name: pr-changes-payload
+          path: .build/pr-changes-payload.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+  recommended-tests:
+    needs: [determine_tests, build_payload]
     name: Recommended
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
@@ -81,7 +126,7 @@ jobs:
       GH_TOKEN_GALAXY_CI: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
   acceptance-tests:
-    needs: determine_tests
+    needs: [determine_tests, build_payload]
     name: Acceptance
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
@@ -92,7 +137,7 @@ jobs:
       GH_TOKEN_GALAXY_CI: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
   additional-tests:
-    needs: determine_tests
+    needs: [determine_tests, build_payload]
     name: (${{ matrix.set }}) Additional
     uses: ./.github/workflows/acceptance_tests_base.yml
     strategy:
