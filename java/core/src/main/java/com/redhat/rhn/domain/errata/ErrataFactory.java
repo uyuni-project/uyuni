@@ -45,8 +45,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 
-import com.suse.utils.Opt;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -257,8 +255,7 @@ public class ErrataFactory extends HibernateFactory {
 
             for (PackageOverview packOver : packs) {
                 //lookup the Package object
-                Package pack = PackageFactory.lookupByIdAndUser(
-                        packOver.getId(), user);
+                Package pack = PackageFactory.lookupByIdAndUser(packOver.getId(), user);
                 packagesToPush.add(pack);
             }
 
@@ -305,12 +302,11 @@ public class ErrataFactory extends HibernateFactory {
                     " has NULL path, please run spacewalk-data-fsck");
             }
 
-            Optional<ErrataFile> fileOpt =
-                    ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath());
+            ErrataFile errataFile = ErrataFactory.lookupErrataFile(errata.getId(), pack.getPath())
+                .map(ef -> addErrataFile(ef, pack, chan))
+                .orElseGet(() -> createErrataFile(pack, errata, chan));
 
-            singleton.saveObject(Opt.fold(fileOpt, () -> createErrataFile(pack, errata, chan),
-                    ef -> addErrataFile(ef, pack, chan)));
-
+            singleton.saveObject(errataFile);
         }
         ChannelFactory.save(chan);
 
