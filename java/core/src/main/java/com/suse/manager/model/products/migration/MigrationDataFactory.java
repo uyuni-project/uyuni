@@ -256,7 +256,7 @@ public class MigrationDataFactory {
             return false;
         }
         // 3. Block SLES 15 -> 16 major jump (DMS is destructive, dry-run is technically impossible)
-        return !(sourceBase.isSles15() && targetBase.isSles16());
+        return !(sourceBase.isSle15() && targetBase.isSle16());
     }
 
     /**

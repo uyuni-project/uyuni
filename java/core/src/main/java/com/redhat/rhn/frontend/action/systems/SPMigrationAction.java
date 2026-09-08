@@ -485,11 +485,11 @@ public class SPMigrationAction extends RhnAction {
         boolean isSLES15Source = sourceProducts
                 .map(SUSEProductSet::getBaseProduct)
                 .filter(Objects::nonNull)
-                .map(SUSEProduct::isSles15)
+                .map(SUSEProduct::isSle15)
                 .orElse(false);
         boolean isSLES16Target = targetProducts.stream()
                 .map(SUSEProductSet::getBaseProduct)
-                .anyMatch(p -> p != null && p.isSles16());
+                .anyMatch(p -> p != null && p.isSle16());
         // Skip the successors warning for specific SLES 15.x -> 16.y migrations, show the pre-flight checklist instead
         if (isSLES15Source && isSLES16Target) {
             request.setAttribute("hasSLES16Target", true);
