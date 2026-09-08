@@ -22,6 +22,7 @@ import static com.suse.utils.Predicates.isAbsent;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -184,6 +185,13 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             }
             info.setSshPort(port);
             info.setSshPublicKey(sshPublicKey.getBytes());
+
+            // For a foreign proxy, clear existing FQDNs before adding the newly specified ones.
+            // For standard Salt minion proxies (represented by MinionServer), we do not delete
+            // anything here because FQDNs are managed primarily by NetworkMapper during grains sync.
+            if (!(server instanceof MinionServer)) {
+                server.getFqdns().clear();
+            }
 
             // Add the FQDNs as some may not be already known
             server.getFqdns().addAll(fqdns.stream()
