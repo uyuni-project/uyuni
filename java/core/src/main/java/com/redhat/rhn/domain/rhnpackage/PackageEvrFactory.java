@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * PackageEvrFactory
  */
@@ -95,10 +97,15 @@ public class PackageEvrFactory {
      * @return the PackageEvr found
      */
     public static PackageEvr lookupPackageEvrById(Long id) {
-        return HibernateFactory.getSession()
-                .createQuery("FROM PackageEvr e WHERE e.id = :id ", PackageEvr.class)
-                .setParameter("id", id)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession()
+                    .createQuery("FROM PackageEvr e WHERE e.id = :id ", PackageEvr.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

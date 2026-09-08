@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
  * ConfigFile, ConfigRevision, ConfigFileState, ConfigContent, and ConfigInfo.
@@ -322,16 +324,21 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label,
                                                             Org org,
                                                           ConfigChannelType cct) {
-        return  getSession().createQuery("""
-                                      FROM ConfigChannel cc
-                                      WHERE cc.label = :label
-                                      AND cc.org.id = :orgId
-                                      AND cc.configChannelType.id = :typeId
-                                      """, ConfigChannel.class)
-                .setParameter("label", label)
-                .setParameter("orgId", org.getId())
-                .setParameter("typeId", cct.getId())
-                .uniqueResult();
+        try {
+            return getSession().createQuery("""
+                                          FROM ConfigChannel cc
+                                          WHERE cc.label = :label
+                                          AND cc.org.id = :orgId
+                                          AND cc.configChannelType.id = :typeId
+                                          """, ConfigChannel.class)
+                    .setParameter("label", label)
+                    .setParameter("orgId", org.getId())
+                    .setParameter("typeId", cct.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -375,15 +382,20 @@ public class ConfigurationFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static ConfigFile lookupConfigFileByChannelAndName(Long channel, Long name) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("""
-                                FROM ConfigFile as c
-                                WHERE c.configChannel.id = :channel_id
-                                AND c.configFileName.id = :name_id
-                                AND c.configFileState.id = :state_id""", ConfigFile.class)
-                    .setParameter("channel_id", channel, StandardBasicTypes.LONG)
-                    .setParameter("name_id", name, StandardBasicTypes.LONG)
-                    .setParameter("state_id", ConfigFileState.normal().getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return session.createQuery("""
+                                    FROM ConfigFile as c
+                                    WHERE c.configChannel.id = :channel_id
+                                    AND c.configFileName.id = :name_id
+                                    AND c.configFileState.id = :state_id""", ConfigFile.class)
+                        .setParameter("channel_id", channel, StandardBasicTypes.LONG)
+                        .setParameter("name_id", name, StandardBasicTypes.LONG)
+                        .setParameter("state_id", ConfigFileState.normal().getId(), StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -406,11 +418,16 @@ public class ConfigurationFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ConfigRevision AS cr WHERE cr.revision = :rev AND cr.configFile = :cf",
-                        ConfigRevision.class)
-                .setParameter("rev", revId, StandardBasicTypes.LONG)
-                .setParameter("cf", cf)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ConfigRevision AS cr WHERE cr.revision = :rev AND cr.configFile = :cf",
+                            ConfigRevision.class)
+                    .setParameter("rev", revId, StandardBasicTypes.LONG)
+                    .setParameter("cf", cf)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -458,11 +475,16 @@ public class ConfigurationFactory extends HibernateFactory {
      */
      static ConfigChannelType lookupConfigChannelTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label", ConfigChannelType.class)
-                                        .setParameter("label", label, StandardBasicTypes.STRING)
-                                        //Retrieve from cache if there
-                                        .setCacheable(true)
-                                        .uniqueResult();
+        try {
+            return session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label", ConfigChannelType.class)
+                                            .setParameter("label", label, StandardBasicTypes.STRING)
+                                            //Retrieve from cache if there
+                                            .setCacheable(true)
+                                            .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -475,11 +497,16 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     static ConfigFileState lookupConfigFileStateByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ConfigFileState AS s WHERE s.label = :label", ConfigFileState.class)
-                                       .setParameter("label", label, StandardBasicTypes.STRING)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        try {
+            return session.createQuery("FROM ConfigFileState AS s WHERE s.label = :label", ConfigFileState.class)
+                                           .setParameter("label", label, StandardBasicTypes.STRING)
+                                           //Retrieve from cache if there
+                                           .setCacheable(true)
+                                           .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 
@@ -630,11 +631,16 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageSource lookupPackageSourceByIdAndOrg(Long psid, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM PackageSource AS ps WHERE ps.id = :id AND ps.org = :org",
-                        PackageSource.class)
-                .setParameter("id", psid)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM PackageSource AS ps WHERE ps.id = :id AND ps.org = :org",
+                            PackageSource.class)
+                    .setParameter("id", psid)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

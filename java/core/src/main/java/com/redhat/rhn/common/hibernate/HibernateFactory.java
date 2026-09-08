@@ -50,6 +50,7 @@ import java.util.stream.IntStream;
 
 import jakarta.persistence.FlushModeType;
 import jakarta.persistence.LockModeType;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
@@ -158,7 +159,10 @@ public abstract class HibernateFactory {
             return session.createQuery(query, objClass) //NOSONAR dynamically formatted SQL query is safe here
                     .setParameter("param", Objects.requireNonNull(paramValue, "null value is not supported"))
                     .setCacheable(cacheable)
-                    .uniqueResult();
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
         }
         catch (NonUniqueResultException e) {
             throw new HibernateRuntimeException(

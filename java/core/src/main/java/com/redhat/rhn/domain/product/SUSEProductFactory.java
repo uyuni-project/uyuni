@@ -37,6 +37,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.NoResultException;
+
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -104,8 +106,13 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return return true if any products are available, otherwise false
      */
     public static boolean hasProducts() {
-        return getSession().createQuery("SELECT count(p) > 0 FROM SUSEProduct p", Boolean.class)
-            .uniqueResult();
+        try {
+            return getSession().createQuery("SELECT count(p) > 0 FROM SUSEProduct p", Boolean.class)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return false;
+        }
     }
 
     /**
@@ -488,9 +495,14 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE product for given productId
      */
     public static SUSEProduct lookupByProductId(long productId) {
-        return getSession().createQuery("FROM SUSEProduct sp WHERE sp.productId = :product", SUSEProduct.class)
-                .setParameter("product", productId)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM SUSEProduct sp WHERE sp.productId = :product", SUSEProduct.class)
+                    .setParameter("product", productId)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 
 /**
@@ -244,15 +245,20 @@ public class AccessGroupFactory extends HibernateFactory {
         // relationship with Namespace, which would require cascading cache annotations.
         // Also, since the DB can be modified by independent processes L2 cache could become outdated,
         // causing "ghost" permissions in Tomcat.
-        Long id = LABEL_TO_ID.computeIfAbsent(label, l ->
-            Optional.ofNullable(getSession()
-                    .createQuery("SELECT a FROM AccessGroup a WHERE a.label = :label AND a.org IS NULL",
-                            AccessGroup.class)
-                    .setParameter("label", l)
-                    .uniqueResult())
-                    .map(AccessGroup::getId)
-                    .orElse(null)
-        );
+        Long id = LABEL_TO_ID.computeIfAbsent(label, l -> {
+            try {
+                return Optional.ofNullable(getSession()
+                        .createQuery("SELECT a FROM AccessGroup a WHERE a.label = :label AND a.org IS NULL",
+                                AccessGroup.class)
+                        .setParameter("label", l)
+                        .getSingleResult())
+                        .map(AccessGroup::getId)
+                        .orElse(null);
+            }
+            catch (NoResultException e) {
+                return null;
+            }
+        });
 
         return Optional.ofNullable(id)
                        .map(i -> getSession().find(AccessGroup.class, i))

@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -610,7 +611,13 @@ public class ImageInfoFactory extends HibernateFactory {
         query.where(builder.and(builder.equal(root.get("name"), image.getName()),
                                 builder.equal(root.get("version"), image.getVersion())))
                 .orderBy(builder.desc(root.get("revisionNumber")));
-        ImageInfo found = getSession().createQuery(query).setMaxResults(1).uniqueResult();
+        ImageInfo found;
+        try {
+            found = getSession().createQuery(query).setMaxResults(1).getSingleResult();
+        }
+        catch (NoResultException e) {
+            found = null;
+        }
 
         if (found != image) {
             /* we have found previous revision - increase the number */

@@ -26,6 +26,8 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * TokenFactory
  */
@@ -46,7 +48,10 @@ public class ChecksumFactory extends HibernateFactory {
                     .setParameter("id", idIn)
                     //Retrieve from cache if there
                     .setCacheable(true)
-                    .uniqueResult();
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());

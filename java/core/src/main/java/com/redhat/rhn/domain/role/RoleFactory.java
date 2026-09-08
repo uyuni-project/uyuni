@@ -20,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * RoleFactory
  */
@@ -55,10 +57,15 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM RoleImpl r where r.id = :id", RoleImpl.class)
-                .setParameter("id", id)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM RoleImpl r where r.id = :id", RoleImpl.class)
+                    .setParameter("id", id)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -68,10 +75,15 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM RoleImpl r where r.label = :label", RoleImpl.class)
-                .setParameter("label", name)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM RoleImpl r where r.label = :label", RoleImpl.class)
+                    .setParameter("label", name)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

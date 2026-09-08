@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
 
 /**
  * Creates Action Chain related objects.
@@ -65,18 +66,23 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, String label) {
         LOG.debug("Looking up Action Chain with label {}", label);
-        return getSession().createQuery("""
-                        SELECT         chain
-                        FROM           ActionChain chain
-                        WHERE          chain.label = :label
-                        AND            chain.user = :user
-                        AND NOT EXISTS (SELECT entry
-                                        FROM   chain.entries entry
-                                        JOIN   ServerAction action ON entry.action = action.parentAction)
-                        """, ActionChain.class)
-                .setParameter("user", requestor)
-                .setParameter("label", label)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("""
+                            SELECT         chain
+                            FROM           ActionChain chain
+                            WHERE          chain.label = :label
+                            AND            chain.user = :user
+                            AND NOT EXISTS (SELECT entry
+                                            FROM   chain.entries entry
+                                            JOIN   ServerAction action ON entry.action = action.parentAction)
+                            """, ActionChain.class)
+                    .setParameter("user", requestor)
+                    .setParameter("label", label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -92,18 +98,24 @@ public class ActionChainFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        ActionChain ac = getSession().createQuery("""
-                SELECT         chain
-                FROM           ActionChain chain
-                WHERE          chain.id = :id
-                AND            chain.user = :user
-                AND NOT EXISTS (SELECT entry
-                                FROM chain.entries entry
-                                JOIN ServerAction action ON entry.action = action.parentAction)
-                """, ActionChain.class)
-                .setParameter("user", requestor)
-                .setParameter("id", id)
-                .uniqueResult();
+        ActionChain ac;
+        try {
+            ac = getSession().createQuery("""
+                    SELECT         chain
+                    FROM           ActionChain chain
+                    WHERE          chain.id = :id
+                    AND            chain.user = :user
+                    AND NOT EXISTS (SELECT entry
+                                    FROM chain.entries entry
+                                    JOIN ServerAction action ON entry.action = action.parentAction)
+                    """, ActionChain.class)
+                    .setParameter("user", requestor)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            ac = null;
+        }
         if (ac == null) {
             throw new ObjectNotFoundException(ActionChain.class,
                             "ActionChain Id " + id + " not found for User " + requestor.getLogin());

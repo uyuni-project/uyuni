@@ -127,23 +127,28 @@ public class ChannelFactory extends HibernateFactory {
         if (id == null || userIn == null) {
             return null;
         }
-        return getSession().createNativeQuery("""
-                SELECT          c.*, cl.original_id,
-                                CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
-                FROM            rhnChannel c
-                LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
-                WHERE           c.id = :cid
-                AND EXISTS      (SELECT 1
-                                 FROM   suseChannelUserRoleView scur
-                                 WHERE  scur.channel_id = c.id
-                                 AND    scur.user_id = :userId
-                                 AND    deny_reason IS NULL)
-                """, Channel.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ClonedChannel.class)
-                .setParameter("cid", id)
-                .setParameter("userId", userIn.getId())
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                    SELECT          c.*, cl.original_id,
+                                    CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                    FROM            rhnChannel c
+                    LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
+                    WHERE           c.id = :cid
+                    AND EXISTS      (SELECT 1
+                                     FROM   suseChannelUserRoleView scur
+                                     WHERE  scur.channel_id = c.id
+                                     AND    scur.user_id = :userId
+                                     AND    deny_reason IS NULL)
+                    """, Channel.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ClonedChannel.class)
+                    .setParameter("cid", id)
+                    .setParameter("userId", userIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -157,23 +162,28 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null || userIn == null) {
             return null;
         }
-        return getSession().createNativeQuery("""
-                SELECT          c.*, cl.original_id,
-                                CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
-                FROM            rhnChannel c
-                LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
-                WHERE           c.label = :label
-                AND EXISTS      (SELECT 1
-                                 FROM   suseChannelUserRoleView scur
-                                 WHERE  scur.channel_id = c.id
-                                 AND    scur.user_id = :userId
-                                 AND    deny_reason IS NULL)
-                """, Channel.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ClonedChannel.class)
-                .setParameter(LABEL, label)
-                .setParameter("userId", userIn.getId())
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                    SELECT          c.*, cl.original_id,
+                                    CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                    FROM            rhnChannel c
+                    LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
+                    WHERE           c.label = :label
+                    AND EXISTS      (SELECT 1
+                                     FROM   suseChannelUserRoleView scur
+                                     WHERE  scur.channel_id = c.id
+                                     AND    scur.user_id = :userId
+                                     AND    deny_reason IS NULL)
+                    """, Channel.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ClonedChannel.class)
+                    .setParameter(LABEL, label)
+                    .setParameter("userId", userIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -184,9 +194,14 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ContentSourceType lookupContentSourceType(String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ContentSourceType AS c WHERE c.label = :label", ContentSourceType.class)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ContentSourceType AS c WHERE c.label = :label", ContentSourceType.class)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -357,11 +372,16 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ContentSource lookupContentSourceByOrgAndLabel(Org org, String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ContentSource AS c WHERE c.org = :org AND c.label = :label",
-                        ContentSource.class)
-                .setParameter("org", org)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ContentSource AS c WHERE c.org = :org AND c.label = :label",
+                            ContentSource.class)
+                    .setParameter("org", org)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -372,10 +392,15 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ContentSource lookupVendorContentSourceByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ContentSource AS c WHERE c.org is NULL AND c.label = :label",
-                        ContentSource.class)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ContentSource AS c WHERE c.org is NULL AND c.label = :label",
+                            ContentSource.class)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -410,10 +435,16 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ContentSource lookupContentSource(Long id, Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ContentSource AS c WHERE c.id = :id AND c.org = :org", ContentSource.class)
-                .setParameter("id", id)
-                .setParameter("org", orgIn)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ContentSource AS c WHERE c.id = :id AND c.org = :org",
+                            ContentSource.class)
+                    .setParameter("id", id)
+                    .setParameter("org", orgIn)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -539,20 +570,25 @@ public class ChannelFactory extends HibernateFactory {
      * @return Base Channel for the given server id.
      */
     public static Channel getBaseChannel(Long sid) {
-        return getSession().createNativeQuery("""
-                SELECT          c.*, cl.original_id,
-                                CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
-                FROM            rhnServerChannel sc, rhnChannel c
-                LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
-                WHERE           sc.server_id = :sid
-                AND             sc.channel_id = c.id
-                AND             c.parent_channel IS NULL
-                """, Channel.class)
-                .addSynchronizedEntityClass(Server.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ClonedChannel.class)
-                .setParameter("sid", sid)
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                    SELECT          c.*, cl.original_id,
+                                    CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                    FROM            rhnServerChannel sc, rhnChannel c
+                    LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
+                    WHERE           sc.server_id = :sid
+                    AND             sc.channel_id = c.id
+                    AND             c.parent_channel IS NULL
+                    """, Channel.class)
+                    .addSynchronizedEntityClass(Server.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ClonedChannel.class)
+                    .setParameter("sid", sid)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -746,9 +782,14 @@ public class ChannelFactory extends HibernateFactory {
      * @return a ChannelArch by label
      */
     public static ChannelArch findArchByLabel(String label) {
-        return getSession().createQuery("FROM ChannelArch WHERE label = :label", ChannelArch.class)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ChannelArch WHERE label = :label", ChannelArch.class)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -759,23 +800,28 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Channel whose label matches the given label.
      */
     public static Channel lookupByLabel(Org org, String label) {
-        return getSession().createNativeQuery("""
-                SELECT          c.*, cl.original_id,
-                                CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
-                FROM            rhnChannel c
-                LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
-                WHERE c.label = :label
-                AND (rhn_channel.get_org_access(c.id, :orgId) = 1
-                     OR EXISTS (SELECT id
-                                FROM   rhnSharedChannelView scv
-                                WHERE  scv.label = :label
-                                AND    scv.org_trust_id = :orgId))
-                """, Channel.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ClonedChannel.class)
-                .setParameter(LABEL, label)
-                .setParameter("orgId", org.getId())
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                    SELECT          c.*, cl.original_id,
+                                    CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                    FROM            rhnChannel c
+                    LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
+                    WHERE c.label = :label
+                    AND (rhn_channel.get_org_access(c.id, :orgId) = 1
+                         OR EXISTS (SELECT id
+                                    FROM   rhnSharedChannelView scv
+                                    WHERE  scv.label = :label
+                                    AND    scv.org_trust_id = :orgId))
+                    """, Channel.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ClonedChannel.class)
+                    .setParameter(LABEL, label)
+                    .setParameter("orgId", org.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -798,11 +844,16 @@ public class ChannelFactory extends HibernateFactory {
                 FROM rhnChannel c
                 LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
                 WHERE c.label = :label""";
-        return session.createNativeQuery(sql, Channel.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ClonedChannel.class)
-                .setParameter(LABEL, label, StandardBasicTypes.STRING)
-                .uniqueResult();
+        try {
+            return session.createNativeQuery(sql, Channel.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ClonedChannel.class)
+                    .setParameter(LABEL, label, StandardBasicTypes.STRING)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -951,10 +1002,16 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null) {
             return false;
         }
-        String s = getSession().createQuery("SELECT label FROM Channel WHERE label = :label", String.class)
-                .setParameter(LABEL, label)
-                .setCacheable(false)
-                .uniqueResult();
+        String s;
+        try {
+            s = getSession().createQuery("SELECT label FROM Channel WHERE label = :label", String.class)
+                    .setParameter(LABEL, label)
+                    .setCacheable(false)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            s = null;
+        }
         return (s != null);
     }
 
@@ -968,10 +1025,16 @@ public class ChannelFactory extends HibernateFactory {
         if (name == null) {
             return false;
         }
-        String s = getSession().createQuery("SELECT name FROM Channel WHERE name = :name", String.class)
-                .setParameter("name", name)
-                .setCacheable(false)
-                .uniqueResult();
+        String s;
+        try {
+            s = getSession().createQuery("SELECT name FROM Channel WHERE name = :name", String.class)
+                    .setParameter("name", name)
+                    .setCacheable(false)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            s = null;
+        }
         return (s != null);
     }
 
@@ -1104,10 +1167,15 @@ public class ChannelFactory extends HibernateFactory {
         if (checksum == null) {
             return null;
         }
-        return getSession().createQuery("FROM ChecksumType AS t WHERE t.label = :label", ChecksumType.class)
-                .setParameter(LABEL, checksum)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ChecksumType AS t WHERE t.label = :label", ChecksumType.class)
+                    .setParameter(LABEL, checksum)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1277,10 +1345,15 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelSyncFlag object containing all flag settings for a specfic channel
      */
     public static ChannelSyncFlag lookupChannelReposyncFlag(Channel channel) {
-        return getSession()
-                .createQuery("FROM ChannelSyncFlag c WHERE c.id = :channelId", ChannelSyncFlag.class)
-                .setParameter("channelId", channel.getId())
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM ChannelSyncFlag c WHERE c.id = :channelId", ChannelSyncFlag.class)
+                    .setParameter("channelId", channel.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1344,23 +1417,28 @@ public class ChannelFactory extends HibernateFactory {
     public static DistChannelMap lookupDistChannelMapByPnReleaseArch(
             Org org, String productName, String release, ChannelArch channelArch) {
         Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                        SELECT dcm.*
-                        FROM rhnOrgDistChannelMap dcm
-                        JOIN rhnChannel chan on chan.id = dcm.channel_id
-                        LEFT JOIN rhnProductName pn on pn.id = chan.product_name_id
-                        WHERE dcm.release = :release
-                        AND dcm.channel_arch_id = :channel_arch_id
-                        AND dcm.for_org_id = :for_org_id
-                        AND pn.label = :product_name
-                        """, DistChannelMap.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .addSynchronizedEntityClass(ProductName.class)
-                .setParameter("for_org_id", org.getId())
-                .setParameter("product_name", productName)
-                .setParameter("release", release)
-                .setParameter("channel_arch_id", channelArch.getId())
-                .uniqueResult();
+        try {
+            return session.createNativeQuery("""
+                            SELECT dcm.*
+                            FROM rhnOrgDistChannelMap dcm
+                            JOIN rhnChannel chan on chan.id = dcm.channel_id
+                            LEFT JOIN rhnProductName pn on pn.id = chan.product_name_id
+                            WHERE dcm.release = :release
+                            AND dcm.channel_arch_id = :channel_arch_id
+                            AND dcm.for_org_id = :for_org_id
+                            AND pn.label = :product_name
+                            """, DistChannelMap.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .addSynchronizedEntityClass(ProductName.class)
+                    .setParameter("for_org_id", org.getId())
+                    .setParameter("product_name", productName)
+                    .setParameter("release", release)
+                    .setParameter("channel_arch_id", channelArch.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1375,17 +1453,22 @@ public class ChannelFactory extends HibernateFactory {
     public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org, String release,
                                                                       ChannelArch channelArch) {
         Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                        SELECT dcm.id, dcm.org_id, dcm.os, dcm.release, dcm.channel_arch_id, dcm.channel_id
-                        FROM rhnOrgDistChannelMap dcm
-                        WHERE dcm.org_id = :org_id
-                        AND dcm.release = :release
-                        AND dcm.channel_arch_id = :channel_arch_id
-                        """, DistChannelMap.class)
-                .setParameter(ORG_ID, org.getId())
-                .setParameter("release", release)
-                .setParameter("channel_arch_id", channelArch.getId())
-                .uniqueResult();
+        try {
+            return session.createNativeQuery("""
+                            SELECT dcm.id, dcm.org_id, dcm.os, dcm.release, dcm.channel_arch_id, dcm.channel_id
+                            FROM rhnOrgDistChannelMap dcm
+                            WHERE dcm.org_id = :org_id
+                            AND dcm.release = :release
+                            AND dcm.channel_arch_id = :channel_arch_id
+                            """, DistChannelMap.class)
+                    .setParameter(ORG_ID, org.getId())
+                    .setParameter("release", release)
+                    .setParameter("channel_arch_id", channelArch.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1758,10 +1841,15 @@ public class ChannelFactory extends HibernateFactory {
      * @return The channel that was cloned, null if none
      */
     public static Channel lookupOriginalChannel(Channel chan) {
-        return getSession()
-                .createQuery("SELECT c.original FROM ClonedChannel AS c WHERE c.id = :cloneId", Channel.class)
-                .setParameter("cloneId", chan.getId())
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("SELECT c.original FROM ClonedChannel AS c WHERE c.id = :cloneId", Channel.class)
+                    .setParameter("cloneId", chan.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1775,9 +1863,14 @@ public class ChannelFactory extends HibernateFactory {
             return null;
         }
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ProductName AS p WHERE p.label = :label", ProductName.class)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ProductName AS p WHERE p.label = :label", ProductName.class)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -2155,7 +2248,8 @@ public class ChannelFactory extends HibernateFactory {
         TypedQuery<ContentSource> query = getSession().createQuery(cq);
         ContentSource contentSource;
         try {
-            contentSource = query.getSingleResult();
+            contentSource = query
+                    .getSingleResult();
         }
         catch (NoResultException e) {
             contentSource = null;
@@ -2173,11 +2267,16 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
         Session session = getSession();
-        return session.createQuery("FROM ChannelProduct cp WHERE cp.product = :product AND cp.version = :version",
-                        ChannelProduct.class)
-                .setParameter("product", product)
-                .setParameter("version", version)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ChannelProduct cp WHERE cp.product = :product AND cp.version = :version",
+                            ChannelProduct.class)
+                    .setParameter("product", product)
+                    .setParameter("version", version)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -2475,6 +2574,7 @@ public class ChannelFactory extends HibernateFactory {
         channel.setMaintainerEmail(channelInfo.getMaintainerEmail());
         channel.setMaintainerPhone(channelInfo.getMaintainerPhone());
         channel.setSupportPolicy(channelInfo.getSupportPolicy());
+        
         channel.setUpdateTag(channelInfo.getUpdateTag());
         channel.setInstallerUpdates(channelInfo.isInstallerUpdates());
         if (org != null) {

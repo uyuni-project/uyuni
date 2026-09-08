@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 
 public class ServerActionFactory extends HibernateFactory {
@@ -402,14 +403,19 @@ public class ServerActionFactory extends HibernateFactory {
      * @return the count
      */
     public static long getServerActionCountByStatus(Action action, ActionStatus status) {
-        return getSession()
-                .createQuery("""
-                        SELECT COUNT(sa.server.id)
-                        FROM ServerAction sa
-                        WHERE sa.parentAction.id = :aid AND sa.status.id = :stid""", Long.class)
-                .setParameter("aid", action.getId())
-                .setParameter("stid", status.getId())
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("""
+                            SELECT COUNT(sa.server.id)
+                            FROM ServerAction sa
+                            WHERE sa.parentAction.id = :aid AND sa.status.id = :stid""", Long.class)
+                    .setParameter("aid", action.getId())
+                    .setParameter("stid", status.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**
@@ -445,12 +451,17 @@ public class ServerActionFactory extends HibernateFactory {
         }
 
         Session session = HibernateFactory.getSession();
-        return session.createQuery("""
-                        FROM ServerAction AS sa
-                        WHERE sa.server = :server AND sa.parentAction = :action""", ServerAction.class)
-                .setParameter("server", serverIn)
-                .setParameter("action", actionIn)
-                .uniqueResult();
+        try {
+            return session.createQuery("""
+                            FROM ServerAction AS sa
+                            WHERE sa.server = :server AND sa.parentAction = :action""", ServerAction.class)
+                    .setParameter("server", serverIn)
+                    .setParameter("action", actionIn)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

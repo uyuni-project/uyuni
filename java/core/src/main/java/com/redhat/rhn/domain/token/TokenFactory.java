@@ -29,6 +29,8 @@ import org.hibernate.Session;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * TokenFactory
  */
@@ -79,7 +81,10 @@ public class TokenFactory extends HibernateFactory {
                     .setParameter("org", org)
                     //Retrieve from cache if there
                     .setCacheable(true)
-                    .uniqueResult();
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            t = null;
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());

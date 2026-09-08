@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.persistence.FlushModeType;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Tuple;
 
@@ -347,8 +348,11 @@ public class PagedSqlQueryBuilder {
 
         DataResult<T> dr = new DataResult<>(rows != null ? rows : List.of());
         try {
-            int count = countQuery.uniqueResult().get(0, Number.class).intValue();
+            int count = countQuery.getSingleResult().get(0, Number.class).intValue();
             dr.setTotalSize(count);
+        }
+        catch (NoResultException e) {
+            LOG.debug("No total count returned", e);
         }
         catch (PersistenceException e) {
             // Ignore since it would already be reported in the previous error

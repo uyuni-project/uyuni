@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 
 /**
@@ -75,12 +76,17 @@ public class VirtualInstanceFactory extends HibernateFactory {
      */
     public VirtualInstance lookupByGuestId(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("""
-                        FROM VirtualInstance guest
-                        WHERE guest.guestSystem.id = :sid
-                """, VirtualInstance.class)
-                .setParameter("sid", id, StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return session.createQuery("""
+                            FROM VirtualInstance guest
+                            WHERE guest.guestSystem.id = :sid
+                    """, VirtualInstance.class)
+                    .setParameter("sid", id, StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -227,11 +233,16 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The type or null
      */
     public VirtualInstanceType getVirtualInstanceType(String label) {
-        return getSession().createQuery("FROM VirtualInstanceType AS vit WHERE vit.label = :label",
-                        VirtualInstanceType.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM VirtualInstanceType AS vit WHERE vit.label = :label",
+                            VirtualInstanceType.class)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -313,14 +324,19 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstance linked to the host with given id
      */
     public VirtualInstance lookupHostVirtInstanceByHostId(Long hostId) {
-        return getSession()
-                .createQuery("""
-                        FROM  VirtualInstance hostVI
-                        WHERE hostVI.uuid IS NULL
-                        AND   hostVI.hostSystem.id = :hostId
-                        """, VirtualInstance.class)
-                .setParameter("hostId", hostId, StandardBasicTypes.LONG)
-            .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("""
+                            FROM  VirtualInstance hostVI
+                            WHERE hostVI.uuid IS NULL
+                            AND   hostVI.hostSystem.id = :hostId
+                            """, VirtualInstance.class)
+                    .setParameter("hostId", hostId, StandardBasicTypes.LONG)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -330,14 +346,19 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstance with uuid running on host matching hostId
      */
     public VirtualInstance lookupVirtualInstanceByHostIdAndUuid(Long hostId, String uuid) {
-        return getSession()
-                .createQuery("""
-                        FROM  VirtualInstance guestVI
-                        WHERE guestVI.uuid = :uuid
-                        AND   guestVI.hostSystem.id = :hostId
-                        """, VirtualInstance.class)
-                .setParameter("hostId", hostId, StandardBasicTypes.LONG)
-                .setParameter("uuid", uuid, StandardBasicTypes.STRING)
-            .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("""
+                            FROM  VirtualInstance guestVI
+                            WHERE guestVI.uuid = :uuid
+                            AND   guestVI.hostSystem.id = :hostId
+                            """, VirtualInstance.class)
+                    .setParameter("hostId", hostId, StandardBasicTypes.LONG)
+                    .setParameter("uuid", uuid, StandardBasicTypes.STRING)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }

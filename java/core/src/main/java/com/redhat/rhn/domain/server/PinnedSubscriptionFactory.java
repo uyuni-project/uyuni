@@ -23,6 +23,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * A factory for creating PinnedSubscription objects.
  */
@@ -113,10 +115,15 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @return PinnedSubscription object
      */
     public PinnedSubscription lookupById(Long id) {
-        return getSession()
-                .createQuery("FROM PinnedSubscription p WHERE p.id = :id", PinnedSubscription.class)
-                .setParameter("id", id)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM PinnedSubscription p WHERE p.id = :id", PinnedSubscription.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -126,12 +133,17 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @return PinnedSubscription object
      */
     public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId, Long subscriptionId) {
-        return getSession().createQuery("""
-                        FROM PinnedSubscription p
-                        WHERE p.systemId = :systemId AND p.subscriptionId = :subscriptionId
-                        """, PinnedSubscription.class)
-                .setParameter("systemId", systemId)
-                .setParameter("subscriptionId", subscriptionId)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("""
+                            FROM PinnedSubscription p
+                            WHERE p.systemId = :systemId AND p.subscriptionId = :subscriptionId
+                            """, PinnedSubscription.class)
+                    .setParameter("systemId", systemId)
+                    .setParameter("subscriptionId", subscriptionId)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }

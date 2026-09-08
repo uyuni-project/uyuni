@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
+import jakarta.persistence.NoResultException;
+
 public class ErrataAdvisoryMapFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(ErrataAdvisoryMapFactory.class);
@@ -65,9 +67,14 @@ public class ErrataAdvisoryMapFactory extends HibernateFactory {
      * @return the current number of table entries
      */
     public long count() {
-        return getSession()
-                .createQuery("SELECT COUNT(*) FROM ErrataAdvisoryMap k", Long.class)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("SELECT COUNT(*) FROM ErrataAdvisoryMap k", Long.class)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**

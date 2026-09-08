@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ActivationKeyFactory
  */
@@ -72,13 +74,18 @@ public class ActivationKeyFactory extends HibernateFactory {
         if (tokenIn == null) {
             return null;
         }
-        return getSession().createQuery("""
-                FROM  com.redhat.rhn.domain.token.ActivationKey AS ak
-                WHERE ak.token = :token
-                AND   kickstartSession IS NULL
-                """, ActivationKey.class)
-                .setParameter("token", tokenIn)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("""
+                    FROM  com.redhat.rhn.domain.token.ActivationKey AS ak
+                    WHERE ak.token = :token
+                    AND   kickstartSession IS NULL
+                    """, ActivationKey.class)
+                    .setParameter("token", tokenIn)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
 
@@ -355,20 +362,25 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static long countActivationKeysWithBaseChannel(long channelId) {
         //rhnRegTokenChannels has no correspondent object, so we need a native query
-        return getSession().createNativeQuery(
-                        """
-                        SELECT COUNT(*)
-                        FROM rhnActivationKey ak
-                            JOIN rhnRegToken rt ON rt.id = ak.reg_token_id
-                            JOIN rhnRegTokenChannels rtc ON rtc.token_id = ak.reg_token_id
-                            JOIN rhnChannel rc ON rc.id = rtc.channel_id
-                        WHERE rc.parent_channel IS NULL
-                        AND rc.id = :channelId
-                        """, Long.class)
-                .setParameter("channelId", channelId, StandardBasicTypes.LONG)
-                .addSynchronizedEntityClass(Token.class)
-                .addSynchronizedEntityClass(Channel.class)
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery(
+                            """
+                            SELECT COUNT(*)
+                            FROM rhnActivationKey ak
+                                JOIN rhnRegToken rt ON rt.id = ak.reg_token_id
+                                JOIN rhnRegTokenChannels rtc ON rtc.token_id = ak.reg_token_id
+                                JOIN rhnChannel rc ON rc.id = rtc.channel_id
+                            WHERE rc.parent_channel IS NULL
+                            AND rc.id = :channelId
+                            """, Long.class)
+                    .setParameter("channelId", channelId, StandardBasicTypes.LONG)
+                    .addSynchronizedEntityClass(Token.class)
+                    .addSynchronizedEntityClass(Channel.class)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**

@@ -66,6 +66,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ActionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.action.Action objects from the
@@ -253,10 +255,15 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM Action AS a where a.id = :aid AND a.org.id = :orgId", Action.class)
-                .setParameter("aid", id)
-                .setParameter("orgId", user.getOrg().getId())
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM Action AS a where a.id = :aid AND a.org.id = :orgId", Action.class)
+                    .setParameter("aid", id)
+                    .setParameter("orgId", user.getOrg().getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -272,29 +279,33 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Action lookupLastCompletedAction(User user, ActionTypeEnum typeEnum, Server server) {
         ActionType type = ActionFactory.lookupActionTypeByEnum(typeEnum);
-        return getSession().createNativeQuery("""
-                SELECT *
-                FROM   rhnAction a
-                WHERE  a.id = (SELECT     MAX(rA.id)
-                               FROM       rhnAction rA
-                               inner join rhnServerAction rsa ON rsa.action_id = rA.id
-                               inner join rhnActionStatus ras ON ras.id = rsa.status
-                               inner join rhnUserServerPerms usp ON usp.server_id = rsa.server_id
-                               WHERE      usp.user_id = :userId
-                               AND        rsa.server_id = :serverId
-                               AND        ras.name IN ('Completed', 'Failed')
-                               AND        rA.action_type = :actionTypeId
-                              )
-                """, Action.class)
-                .addSynchronizedEntityClass(Action.class)
-                .addSynchronizedEntityClass(Server.class)
-                .addSynchronizedEntityClass(ServerAction.class)
-                .addSynchronizedEntityClass(ActionStatus.class)
-                .addSynchronizedEntityClass(UserImpl.class)
-                .setParameter("userId", user.getId())
-                .setParameter("actionTypeId", type.getId())
-                .setParameter("serverId", server.getId())
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                    SELECT *
+                    FROM   rhnAction a
+                    WHERE  a.id = (SELECT MAX(rA.id)
+                                   FROM rhnAction rA
+                                   INNER JOIN rhnServerAction rsa ON rsa.action_id = rA.id
+                                   INNER JOIN rhnActionStatus ras ON ras.id = rsa.status
+                                   INNER JOIN rhnUserServerPerms usp ON usp.server_id = rsa.server_id
+                                   WHERE usp.user_id = :userId
+                                   AND rsa.server_id = :serverId
+                                   AND ras.name IN ('Completed', 'Failed')
+                                   AND rA.action_type = :actionTypeId)
+                    """, Action.class)
+                    .addSynchronizedEntityClass(Action.class)
+                    .addSynchronizedEntityClass(Server.class)
+                    .addSynchronizedEntityClass(ServerAction.class)
+                    .addSynchronizedEntityClass(ActionStatus.class)
+                    .addSynchronizedEntityClass(UserImpl.class)
+                    .setParameter("userId", user.getId())
+                    .setParameter("actionTypeId", type.getId())
+                    .setParameter("serverId", server.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
 
@@ -385,12 +396,16 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ApplyStatesActionDetails WHERE parentAction.id = :action_id",
-                        ApplyStatesActionDetails.class)
-                .setParameter("action_id", actionId)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM ApplyStatesActionDetails WHERE parentAction.id = :action_id",
+                            ApplyStatesActionDetails.class)
+                    .setParameter("action_id", actionId)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -526,10 +541,14 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ServerHistoryEvent AS s WHERE s.id = :id", ServerHistoryEvent.class)
-                .setParameter("id", aid)
-                .uniqueResult();
-
+        try {
+            return session.createQuery("FROM ServerHistoryEvent AS s WHERE s.id = :id", ServerHistoryEvent.class)
+                    .setParameter("id", aid)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

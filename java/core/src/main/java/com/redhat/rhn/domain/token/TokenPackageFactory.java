@@ -25,6 +25,8 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * TokenPackageFactory
  */
@@ -125,7 +127,10 @@ public class TokenPackageFactory extends HibernateFactory {
                     .setParameter("arch", archIn)
                     //Retrieve from cache if there
                     .setCacheable(true)
-                    .uniqueResult();
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            retval = null;
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());

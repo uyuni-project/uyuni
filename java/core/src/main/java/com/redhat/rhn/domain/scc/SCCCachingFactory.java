@@ -51,6 +51,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * Factory class for populating and reading from SCC caching tables.
  */public class SCCCachingFactory extends HibernateFactory {
@@ -178,9 +180,14 @@ import java.util.stream.Stream;
         if (id == null) {
             return null;
         }
-        return getSession().createQuery("FROM SCCSubscription s WHERE s.sccId = :scc", SCCSubscription.class)
-                .setParameter("scc", id)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM SCCSubscription s WHERE s.sccId = :scc", SCCSubscription.class)
+                    .setParameter("scc", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

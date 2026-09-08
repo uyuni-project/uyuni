@@ -25,6 +25,8 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ProfileFactory
  */
@@ -72,12 +74,17 @@ public class ProfileFactory extends HibernateFactory {
      */
     public static Profile lookupByIdAndOrg(Long id, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND p.org.id = :org_id", Profile.class)
-                .setParameter("id", id)
-                .setParameter("org_id", org.getId())
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM Profile AS p WHERE p.id = :id AND p.org.id = :org_id", Profile.class)
+                    .setParameter("id", id)
+                    .setParameter("org_id", org.getId())
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
 
     }
 
@@ -148,12 +155,18 @@ public class ProfileFactory extends HibernateFactory {
      * given org, or null if none found.
      */
     public static Profile findByNameAndOrgId(String name, Long orgid) {
-        return getSession().createQuery("FROM Profile p WHERE p.name = :name AND p.org.id = :org_id", Profile.class)
-                .setParameter("name", name)
-                .setParameter("org_id", orgid)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM Profile p WHERE p.name = :name AND p.org.id = :org_id",
+                            Profile.class)
+                    .setParameter("name", name)
+                    .setParameter("org_id", orgid)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
 }

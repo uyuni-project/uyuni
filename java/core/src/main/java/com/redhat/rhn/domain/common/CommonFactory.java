@@ -28,6 +28,8 @@ import org.hibernate.type.StandardBasicTypes;
 import java.util.Calendar;
 import java.util.Date;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * CommonFactory
  */
@@ -87,11 +89,16 @@ public class CommonFactory extends HibernateFactory {
      * @return FileList if found.
      */
     public static FileList lookupFileList(Long idIn, Org org) {
-        return HibernateFactory.getSession()
-                .createQuery("FROM FileList f WHERE f.id = :id AND f.org.id = :orgId", FileList.class)
-                .setParameter("id", idIn)
-                .setParameter("orgId", org.getId())
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession()
+                    .createQuery("FROM FileList f WHERE f.id = :id AND f.org.id = :orgId", FileList.class)
+                    .setParameter("id", idIn)
+                    .setParameter("orgId", org.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -101,11 +108,16 @@ public class CommonFactory extends HibernateFactory {
      * @return FileList if found.
      */
     public static FileList lookupFileList(String labelIn, Org org) {
-        return getSession()
-                .createQuery("FROM FileList f WHERE f.label = :label AND f.org = :org", FileList.class)
-                .setParameter("label", labelIn)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM FileList f WHERE f.label = :label AND f.org = :org", FileList.class)
+                    .setParameter("label", labelIn)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -152,8 +164,13 @@ public class CommonFactory extends HibernateFactory {
      */
     public static TinyUrl lookupTinyUrl(String tokenIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM TinyUrl AS t WHERE t.token = :token", TinyUrl.class)
-                .setParameter("token", tokenIn, StandardBasicTypes.STRING)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM TinyUrl AS t WHERE t.token = :token", TinyUrl.class)
+                    .setParameter("token", tokenIn, StandardBasicTypes.STRING)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }

@@ -46,6 +46,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * Singleton representing Virtual Host Manager hibernate factory.
  */
@@ -100,9 +102,15 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label", VirtualHostManager.class)
-                .setParameter("label", label)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label",
+                            VirtualHostManager.class)
+                    .setParameter("label", label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -123,11 +131,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        return getSession().createQuery("FROM VirtualHostManager v WHERE v.id = :id AND v.org.id = :orgId",
-                        VirtualHostManager.class)
-                .setParameter("orgId", org.getId())
-                .setParameter("id", id)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM VirtualHostManager v WHERE v.id = :id AND v.org.id = :orgId",
+                            VirtualHostManager.class)
+                    .setParameter("orgId", org.getId())
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -153,11 +166,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
-        return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label AND org.id = :orgId",
-                        VirtualHostManager.class)
-                .setParameter("label", label)
-                .setParameter("orgId", org.getId())
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label AND org.id = :orgId",
+                            VirtualHostManager.class)
+                    .setParameter("label", label)
+                    .setParameter("orgId", org.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

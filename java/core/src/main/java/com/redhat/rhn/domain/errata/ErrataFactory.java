@@ -66,6 +66,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 
 /**
@@ -502,15 +503,20 @@ public class ErrataFactory extends HibernateFactory {
      * @return Returns the errata corresponding to the passed in advisory name.
      */
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
-        return HibernateFactory.getSession()
-                .createQuery("""
-                       FROM Errata AS e
-                       WHERE e.advisoryName = :advisory
-                       AND ((:org is NOT null AND e.org = :org) OR (:org is null AND e.org is null))
-                       """, Errata.class)
-                .setParameter("advisory", advisory, StandardBasicTypes.STRING)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession()
+                    .createQuery("""
+                           FROM Errata AS e
+                           WHERE e.advisoryName = :advisory
+                           AND ((:org is NOT null AND e.org = :org) OR (:org is null AND e.org is null))
+                           """, Errata.class)
+                    .setParameter("advisory", advisory, StandardBasicTypes.STRING)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -28,6 +28,8 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * UserGroupFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.org.usergroup.UserGroup objects from the
@@ -109,9 +111,14 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static UserExtGroup lookupExtGroupById(Long gidIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM UserExtGroup WHERE id = :gid", UserExtGroup.class)
-                .setParameter("gid", gidIn)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM UserExtGroup WHERE id = :gid", UserExtGroup.class)
+                    .setParameter("gid", gidIn)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -122,11 +129,16 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM OrgUserExtGroup WHERE id = :gid AND org.id = :org_id",
-                        OrgUserExtGroup.class)
-                .setParameter("gid", gidIn)
-                .setParameter("org_id", orgIn.getId())
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM OrgUserExtGroup WHERE id = :gid AND org.id = :org_id",
+                            OrgUserExtGroup.class)
+                    .setParameter("gid", gidIn)
+                    .setParameter("org_id", orgIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -164,9 +176,14 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static UserExtGroup lookupExtGroupByLabel(String labelIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM UserExtGroup WHERE label = :label", UserExtGroup.class)
-                .setParameter("label", labelIn)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM UserExtGroup WHERE label = :label", UserExtGroup.class)
+                    .setParameter("label", labelIn)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -177,11 +194,16 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn, Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM OrgUserExtGroup WHERE label = :label AND org.id = :org_id",
-                        OrgUserExtGroup.class)
-                .setParameter("label", labelIn)
-                .setParameter("org_id", orgIn.getId())
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM OrgUserExtGroup WHERE label = :label AND org.id = :org_id",
+                            OrgUserExtGroup.class)
+                    .setParameter("label", labelIn)
+                    .setParameter("org_id", orgIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

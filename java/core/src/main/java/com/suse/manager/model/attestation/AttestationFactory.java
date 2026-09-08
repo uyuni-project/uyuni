@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.persistence.NoResultException;
+
 public class AttestationFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(AttestationFactory.class);
@@ -228,13 +230,18 @@ public class AttestationFactory extends HibernateFactory {
      * @return returns a list or reports
      */
     public long countCoCoAttestationReportsForUser(User user) {
-        return getSession()
-            .createQuery("SELECT COUNT(r.id) FROM UserImpl u " +
-                "JOIN u.servers s " +
-                "JOIN ServerCoCoAttestationReport r ON r.server = s " +
-                "WHERE u = :user", Long.class)
-            .setParameter("user", user)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("SELECT COUNT(r.id) FROM UserImpl u " +
+                    "JOIN u.servers s " +
+                    "JOIN ServerCoCoAttestationReport r ON r.server = s " +
+                    "WHERE u = :user", Long.class)
+                .setParameter("user", user)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**
@@ -243,10 +250,16 @@ public class AttestationFactory extends HibernateFactory {
      * @return returns a list or reports
      */
     public long countCoCoAttestationReportsForServer(Server serverIn) {
-        return getSession()
-            .createQuery("SELECT COUNT(*) FROM ServerCoCoAttestationReport r WHERE r.server = :server", Long.class)
-            .setParameter("server", serverIn)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("SELECT COUNT(*) FROM ServerCoCoAttestationReport r WHERE r.server = :server",
+                    Long.class)
+                .setParameter("server", serverIn)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**

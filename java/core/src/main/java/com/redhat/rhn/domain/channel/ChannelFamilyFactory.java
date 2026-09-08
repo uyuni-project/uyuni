@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ChannelFamilyFactory
  */
@@ -102,9 +104,16 @@ public class ChannelFamilyFactory extends HibernateFactory {
      */
     public static ChannelFamily lookupByOrg(Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ChannelFamily AS cfam WHERE cfam.org.id = :orgId", ChannelFamily.class)
-                .setParameter("orgId", orgIn.getId())
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                            "FROM ChannelFamily AS cfam WHERE cfam.org.id = :orgId",
+                            ChannelFamily.class)
+                    .setParameter("orgId", orgIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

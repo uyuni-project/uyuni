@@ -53,6 +53,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * UserFactory  - the singleton class used to fetch and store
  * com.redhat.rhn.domain.user.User objects from the
@@ -221,14 +223,20 @@ public class UserFactory extends HibernateFactory {
      * @return the user found
      */
     public static User lookupById(User user, Long id) {
-        User returnedUser  = getSession().createQuery("""
-                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
-                WHERE u.id = :uid
-                AND u.org.id = :orgId
-                """, UserImpl.class)
-                .setParameter("uid", id)
-                .setParameter("orgId", user.getOrg().getId())
-                .uniqueResult();
+        User returnedUser;
+        try {
+            returnedUser = getSession().createQuery("""
+                    FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                    WHERE u.id = :uid
+                    AND u.org.id = :orgId
+                    """, UserImpl.class)
+                    .setParameter("uid", id)
+                    .setParameter("orgId", user.getOrg().getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            returnedUser = null;
+        }
         if (returnedUser == null || !user.getOrg().equals(returnedUser.getOrg())) {
             throw getNoUserException(id.toString());
         }
@@ -264,14 +272,20 @@ public class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(User user, String login) {
-        User returnedUser  = getSession().createQuery("""
-                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
-                WHERE u.loginUc = :loginUc
-                AND u.org.id = :orgId
-                """, UserImpl.class)
-                .setParameter("orgId", user.getOrg().getId())
-                .setParameter(LOGIN_UC, login.toUpperCase())
-                .uniqueResult();
+        User returnedUser;
+        try {
+            returnedUser = getSession().createQuery("""
+                    FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                    WHERE u.loginUc = :loginUc
+                    AND u.org.id = :orgId
+                    """, UserImpl.class)
+                    .setParameter("orgId", user.getOrg().getId())
+                    .setParameter(LOGIN_UC, login.toUpperCase())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            returnedUser = null;
+        }
 
         if (returnedUser == null) {
             throw getNoUserException(login);
@@ -443,11 +457,16 @@ public class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(int id) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM RhnTimeZone AS t WHERE t.timeZoneId = :tid", RhnTimeZone.class)
-                .setParameter("tid", id, StandardBasicTypes.INTEGER)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM RhnTimeZone AS t WHERE t.timeZoneId = :tid", RhnTimeZone.class)
+                    .setParameter("tid", id, StandardBasicTypes.INTEGER)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -457,11 +476,16 @@ public class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(String olsonName) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM RhnTimeZone AS t WHERE t.olsonName = :ton", RhnTimeZone.class)
-                .setParameter("ton", olsonName, StandardBasicTypes.STRING)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM RhnTimeZone AS t WHERE t.olsonName = :ton", RhnTimeZone.class)
+                    .setParameter("ton", olsonName, StandardBasicTypes.STRING)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

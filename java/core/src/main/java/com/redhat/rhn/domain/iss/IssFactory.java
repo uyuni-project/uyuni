@@ -24,6 +24,8 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * IssSlaveFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.IssSlave objects from the database.
@@ -102,7 +104,13 @@ public class IssFactory extends HibernateFactory {
      */
     public static IssMaster getCurrentMaster() {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM IssMaster where isCurrentMaster = 'Y'", IssMaster.class).uniqueResult();
+        try {
+            return session.createQuery("FROM IssMaster where isCurrentMaster = 'Y'", IssMaster.class)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

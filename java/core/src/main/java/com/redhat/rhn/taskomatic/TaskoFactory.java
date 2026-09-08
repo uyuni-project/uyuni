@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * TaskoFactory
  */
@@ -58,13 +60,18 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupOrgBunchByName(String bunchName) {
-        return getSession()
-                .createQuery("""
-                        FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
-                        WHERE orgBunch IS NOT NULL
-                        AND name = :name""", TaskoBunch.class)
-                .setParameter("name", bunchName)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("""
+                            FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
+                            WHERE orgBunch IS NOT NULL
+                            AND name = :name""", TaskoBunch.class)
+                    .setParameter("name", bunchName)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -73,13 +80,18 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupSatBunchByName(String bunchName) {
-        return getSession()
-                .createQuery("""
-                        FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
-                        WHERE orgBunch IS NULL
-                        AND name = :name""", TaskoBunch.class)
-                .setParameter("name", bunchName)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("""
+                            FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
+                            WHERE orgBunch IS NULL
+                            AND name = :name""", TaskoBunch.class)
+                    .setParameter("name", bunchName)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -395,11 +407,16 @@ public class TaskoFactory extends HibernateFactory {
      * @return schedule
      */
     public static TaskoSchedule lookupScheduleById(Long scheduleId) {
-        return getSession()
-                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE id = :schedule_id",
-                        TaskoSchedule.class)
-                .setParameter("schedule_id", scheduleId)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE id = :schedule_id",
+                            TaskoSchedule.class)
+                    .setParameter("schedule_id", scheduleId)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -422,10 +439,16 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupBunchByName(String bunchName) {
-        return getSession()
-                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name", TaskoBunch.class)
-                .setParameter("name", bunchName)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name",
+                            TaskoBunch.class)
+                    .setParameter("name", bunchName)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -542,17 +565,22 @@ public class TaskoFactory extends HibernateFactory {
             """;
 
         // Create the native query
-        return getSession().createNativeQuery(sql, TaskoRun.class)
-                .addSynchronizedEntityClass(TaskoRun.class)
-                .addSynchronizedEntityClass(TaskoTemplate.class)
-                .addSynchronizedEntityClass(TaskoBunch.class)
-                // Set the parameters for bunchName and status
-                .setParameter("bunchName", bunchName)
-                .setParameter("status1", TaskoRun.STATUS_RUNNING)
-                .setParameter("status2", TaskoRun.STATUS_FINISHED)
-                .setParameter("status3", TaskoRun.STATUS_INTERRUPTED)
-                // Execute the query and return the result (or null if no result is found)
-                .uniqueResult();
+        try {
+            return getSession().createNativeQuery(sql, TaskoRun.class)
+                    .addSynchronizedEntityClass(TaskoRun.class)
+                    .addSynchronizedEntityClass(TaskoTemplate.class)
+                    .addSynchronizedEntityClass(TaskoBunch.class)
+                    // Set the parameters for bunchName and status
+                    .setParameter("bunchName", bunchName)
+                    .setParameter("status1", TaskoRun.STATUS_RUNNING)
+                    .setParameter("status2", TaskoRun.STATUS_FINISHED)
+                    .setParameter("status3", TaskoRun.STATUS_INTERRUPTED)
+                    // Execute the query and return the result (or null if no result is found)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

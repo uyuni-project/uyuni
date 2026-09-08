@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -167,7 +168,12 @@ public class HubFactory extends HibernateFactory {
      * @return a number of peripherals
      */
     public long countPeripherals() {
-        return getSession().createQuery("SELECT count(*) FROM IssPeripheral", Long.class).uniqueResult();
+        try {
+            return getSession().createQuery("SELECT count(*) FROM IssPeripheral", Long.class).getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**
@@ -181,7 +187,12 @@ public class HubFactory extends HibernateFactory {
             return countPeripherals();
         }
 
-        return buildCountQueryFromPageControl(IssPeripheral.class, pc).uniqueResult();
+        try {
+            return buildCountQueryFromPageControl(IssPeripheral.class, pc).getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**
@@ -288,11 +299,16 @@ public class HubFactory extends HibernateFactory {
      * @return the issued token, if present
      */
     public IssAccessToken lookupIssuedToken(String token) {
-        return getSession()
-            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.token = :token", IssAccessToken.class)
-            .setParameter("type", TokenType.ISSUED)
-            .setParameter("token", token)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.token = :token", IssAccessToken.class)
+                .setParameter("type", TokenType.ISSUED)
+                .setParameter("token", token)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -301,11 +317,17 @@ public class HubFactory extends HibernateFactory {
      * @return the access token associated to the entity, if present
      */
     public IssAccessToken lookupAccessTokenFor(String fqdn) {
-        return getSession()
-            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn", IssAccessToken.class)
-            .setParameter("type", TokenType.CONSUMED)
-            .setParameter("fqdn", fqdn)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn",
+                    IssAccessToken.class)
+                .setParameter("type", TokenType.CONSUMED)
+                .setParameter("fqdn", fqdn)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -315,11 +337,17 @@ public class HubFactory extends HibernateFactory {
      * @return the access token associated to the entity, if present
      */
     public IssAccessToken lookupAccessTokenByFqdnAndType(String fqdn, TokenType type) {
-        return getSession()
-            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn", IssAccessToken.class)
-            .setParameter("type", type)
-            .setParameter("fqdn", fqdn)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn",
+                    IssAccessToken.class)
+                .setParameter("type", type)
+                .setParameter("fqdn", fqdn)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -377,9 +405,14 @@ public class HubFactory extends HibernateFactory {
      * @return the current number of access tokens
      */
     public long countAccessToken() {
-        return getSession()
-            .createQuery("SELECT COUNT(*) FROM IssAccessToken k", Long.class)
-            .uniqueResult();
+        try {
+            return getSession()
+                .createQuery("SELECT COUNT(*) FROM IssAccessToken k", Long.class)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return 0L;
+        }
     }
 
     /**

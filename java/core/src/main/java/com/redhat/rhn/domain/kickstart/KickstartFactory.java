@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -184,11 +185,17 @@ public class KickstartFactory extends HibernateFactory {
      * @return Kickstart Data object by ksid
      */
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
-        return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org.id = :org_id", KickstartData.class)
-                .setParameter("id", ksid, StandardBasicTypes.LONG)
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession()
+                    .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org.id = :org_id",
+                            KickstartData.class)
+                    .setParameter("id", ksid, StandardBasicTypes.LONG)
+                    .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -197,12 +204,17 @@ public class KickstartFactory extends HibernateFactory {
      * @return Kickstart Data object by cobbler id
      */
     public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn, String cobblerId) {
-        return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org.id = :org_id",
-                        KickstartData.class)
-                .setParameter("id", cobblerId)
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession()
+                    .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org.id = :org_id",
+                            KickstartData.class)
+                    .setParameter("id", cobblerId)
+                    .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -215,12 +227,17 @@ public class KickstartFactory extends HibernateFactory {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
-        return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org.id = :org_id",
-                        KickstartData.class)
-                .setParameter(LABEL, label)
-                .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession().
+                    createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org.id = :org_id",
+                            KickstartData.class)
+                    .setParameter(LABEL, label)
+                    .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -234,12 +251,17 @@ public class KickstartFactory extends HibernateFactory {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
-        return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org.id = :org_id",
-                        KickstartData.class)
-                .setParameter(LABEL, label)
-                .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return HibernateFactory.getSession().
+                    createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org.id = :org_id",
+                            KickstartData.class)
+                    .setParameter(LABEL, label)
+                    .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -260,12 +282,17 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("""
-                        FROM KickstartableTree AS k
-                        WHERE k.cobblerId = :cid OR k.cobblerXenId = :cid
-                        ORDER BY k.label""", KickstartableTree.class)
-                .setParameter("cid", cobblerId)
-                .uniqueResult();
+        try {
+            return session.createQuery("""
+                            FROM KickstartableTree AS k
+                            WHERE k.cobblerId = :cid OR k.cobblerXenId = :cid
+                            ORDER BY k.label""", KickstartableTree.class)
+                    .setParameter("cid", cobblerId)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     private static List<KickstartCommandName> lookupKickstartCommandNames(boolean onlyAdvancedOptions) {
@@ -466,20 +493,25 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static CryptoKey lookupCryptoKey(String description, Org org) {
         Session session = HibernateFactory.getSession();
-        if (org != null) {
-            return session.createQuery(
-                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org = :org_id",
-                            CryptoKey.class)
-                    .setParameter("description", description, StandardBasicTypes.STRING)
-                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                    .uniqueResult();
+        try {
+            if (org != null) {
+                return session.createQuery(
+                                "FROM CryptoKey AS c WHERE c.description = :description AND c.org = :org_id",
+                                CryptoKey.class)
+                        .setParameter("description", description, StandardBasicTypes.STRING)
+                        .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                        .getSingleResult();
+            }
+            else {
+                return session.createQuery(
+                                "FROM CryptoKey AS c WHERE c.description = :description AND c.org IS NULL",
+                                CryptoKey.class)
+                        .setParameter("description", description, StandardBasicTypes.STRING)
+                        .getSingleResult();
+            }
         }
-        else {
-            return session.createQuery(
-                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org IS NULL",
-                            CryptoKey.class)
-                    .setParameter("description", description, StandardBasicTypes.STRING)
-                    .uniqueResult();
+        catch (NoResultException e) {
+            return null;
         }
     }
 
@@ -520,11 +552,16 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org.id = :org_id",
-                        CryptoKey.class)
-                .setParameter("key_id", keyId, StandardBasicTypes.LONG)
-                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org.id = :org_id",
+                            CryptoKey.class)
+                    .setParameter("key_id", keyId, StandardBasicTypes.LONG)
+                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -536,11 +573,16 @@ public class KickstartFactory extends HibernateFactory {
     public static SslCryptoKey lookupSslCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery(
-                        "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id", SslCryptoKey.class)
-                .setParameter("key_id", keyId, StandardBasicTypes.LONG)
-                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                            "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id", SslCryptoKey.class)
+                    .setParameter("key_id", keyId, StandardBasicTypes.LONG)
+                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -566,21 +608,32 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label, Org org) {
         Session session = HibernateFactory.getSession();
-        KickstartableTree retval = session
-            .createQuery(
-                "FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id", KickstartableTree.class
-            )
-            .setParameter(LABEL, label, StandardBasicTypes.STRING)
-            .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-            .uniqueResult();
+        KickstartableTree retval;
+        try {
+            retval = session
+                .createQuery(
+                    "FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id", KickstartableTree.class
+                )
+                .setParameter(LABEL, label, StandardBasicTypes.STRING)
+                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            retval = null;
+        }
         // If we don't find by label + org then
         // we try by label and NULL org (RHN owned channel)
         if (retval == null) {
-            retval = session.createQuery(
-                    "FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL", KickstartableTree.class
-                )
-                .setParameter(LABEL, label)
-                .uniqueResult();
+            try {
+                retval = session.createQuery(
+                        "FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL", KickstartableTree.class
+                    )
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+            }
+            catch (NoResultException e) {
+                retval = null;
+            }
         }
         return retval;
     }
@@ -593,10 +646,15 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label",
-                        KickstartableTree.class)
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        try {
+            return session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label",
+                            KickstartableTree.class)
+                    .setParameter(LABEL, label)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
 
@@ -727,14 +785,20 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartableTree lookupKickstartTreeByIdAndOrg(Long treeId, Org org) {
         if (treeId != null && org != null) {
             Session session = HibernateFactory.getSession();
-            return session.createQuery("""
-                            FROM KickstartableTree AS k
-                            WHERE k.id = :tree_id AND (k.org = :org_id OR k.org IS NULL)""", KickstartableTree.class)
-                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                    .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
-                    //Retrieve from cache if there
-                    .setCacheable(true)
-                    .uniqueResult();
+            try {
+                return session.createQuery("""
+                                FROM KickstartableTree AS k
+                                WHERE k.id = :tree_id AND (k.org = :org_id OR k.org IS NULL)""",
+                                KickstartableTree.class)
+                        .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                        .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
+                        //Retrieve from cache if there
+                        .setCacheable(true)
+                        .getSingleResult();
+            }
+            catch (NoResultException e) {
+                return null;
+            }
         }
         return null;
     }
@@ -844,15 +908,21 @@ public class KickstartFactory extends HibernateFactory {
     public static boolean verifyTreeAssignment(Long channelId, Long orgId, Long treeId) {
         if (channelId != null && orgId != null && treeId != null) {
             Session session = HibernateFactory.getSession();
-            KickstartableTree tree = session.createQuery("""
-                            FROM KickstartableTree AS k
-                            WHERE (k.org IS NULL OR k.org = :org_id) AND
-                            k.channel.id = :channel_id AND
-                            k.id = :tree_id""", KickstartableTree.class)
-                    .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
-                    .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
-                    .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
-                    .uniqueResult();
+            KickstartableTree tree;
+            try {
+                tree = session.createQuery("""
+                                FROM KickstartableTree AS k
+                                WHERE (k.org IS NULL OR k.org = :org_id) AND
+                                k.channel.id = :channel_id AND
+                                k.id = :tree_id""", KickstartableTree.class)
+                        .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
+                        .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
+                        .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
+                        .getSingleResult();
+            }
+            catch (NoResultException e) {
+                tree = null;
+            }
 
             return tree != null;
         }
@@ -960,12 +1030,17 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupOrgDefault(Org org) {
         Session session = HibernateFactory.getSession();
-        return session
-                .createQuery("FROM KickstartData AS t WHERE t.isOrgDefault = :isOrgDefault AND t.org = :org",
-                        KickstartData.class)
-                .setParameter("org", org)
-                .setParameter("isOrgDefault", "Y", StandardBasicTypes.STRING)
-                .uniqueResult();
+        try {
+            return session
+                    .createQuery("FROM KickstartData AS t WHERE t.isOrgDefault = :isOrgDefault AND t.org = :org",
+                            KickstartData.class)
+                    .setParameter("org", org)
+                    .setParameter("isOrgDefault", "Y", StandardBasicTypes.STRING)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

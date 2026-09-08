@@ -21,6 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * Factory to store and retrieve {@link PaygDimensionComputation}
  */
@@ -39,10 +41,15 @@ public class PaygDimensionFactory extends HibernateFactory {
      * @return the computation result if present, or null
      */
     public PaygDimensionComputation lookupById(Long id) {
-        return getSession().createQuery("FROM PaygDimensionComputation AS c WHERE c.id = :id",
-                        PaygDimensionComputation.class)
-                .setParameter("id", id)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM PaygDimensionComputation AS c WHERE c.id = :id",
+                            PaygDimensionComputation.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -60,10 +67,15 @@ public class PaygDimensionFactory extends HibernateFactory {
      */
     public PaygDimensionComputation getLatestSuccessfulComputation() {
         Session session = getSession();
-        return session.createQuery(
-                        "FROM PaygDimensionComputation AS c WHERE c.success = true ORDER BY c.timestamp DESC",
-                        PaygDimensionComputation.class)
-                .setMaxResults(1)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                            "FROM PaygDimensionComputation AS c WHERE c.success = true ORDER BY c.timestamp DESC",
+                            PaygDimensionComputation.class)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }

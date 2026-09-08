@@ -83,6 +83,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 
 /**
@@ -113,12 +114,17 @@ public class ServerFactory extends HibernateFactory {
             return null;
         }
 
-        return getSession().createQuery("FROM CustomDataValue AS c WHERE c.server = :server AND c.key = :key",
-                        CustomDataValue.class)
-                .setParameter("server", server)
-                .setParameter("key", key)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM CustomDataValue AS c WHERE c.server = :server AND c.key = :key",
+                            CustomDataValue.class)
+                    .setParameter("server", server)
+                    .setParameter("key", key)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -693,17 +699,23 @@ public class ServerFactory extends HibernateFactory {
         }
 
         if (ServerConstants.SLES.equals(server.getOs())) {
-            PackageEvr zypperEvr = getSession()
-                    .createQuery("""
-                            SELECT p.evr
-                            FROM   com.redhat.rhn.domain.server.InstalledPackage as p
-                            JOIN   p.name as n
-                            JOIN   p.server as s
-                            WHERE  s.id = :sid
-                            AND    n.name = 'zypper'
-                            """, PackageEvr.class)
-                    .setParameter("sid", server.getId())
-                    .uniqueResult();
+            PackageEvr zypperEvr;
+            try {
+                zypperEvr = getSession()
+                        .createQuery("""
+                                SELECT p.evr
+                                FROM   com.redhat.rhn.domain.server.InstalledPackage as p
+                                JOIN   p.name as n
+                                JOIN   p.server as s
+                                WHERE  s.id = :sid
+                                AND    n.name = 'zypper'
+                                """, PackageEvr.class)
+                        .setParameter("sid", server.getId())
+                        .getSingleResult();
+            }
+            catch (NoResultException e) {
+                zypperEvr = null;
+            }
             if (zypperEvr == null) {
                 return false;
             }
@@ -733,10 +745,15 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
-                .setParameter("sid", id)
-                .setParameter("orgId", orgIn.getId())
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
+                    .setParameter("sid", id)
+                    .setParameter("orgId", orgIn.getId())
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -926,10 +943,15 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerGroupType
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
-        return getSession().createQuery("FROM ServerGroupType AS s WHERE s.label = :label", ServerGroupType.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ServerGroupType AS s WHERE s.label = :label", ServerGroupType.class)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1034,10 +1056,15 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerArch
      */
     public static ServerArch lookupServerArchByLabel(String label) {
-        return getSession().createQuery("FROM ServerArch AS s WHERE s.label = :label", ServerArch.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ServerArch AS s WHERE s.label = :label", ServerArch.class)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1063,9 +1090,14 @@ public class ServerFactory extends HibernateFactory {
      * @return The CPUArch
      */
     public static CPUArch lookupCPUArchByName(String name) {
-        return getSession().createQuery("FROM CPUArch AS t WHERE LOWER(t.name) = LOWER(:name)", CPUArch.class)
-                .setParameter("name", name, StandardBasicTypes.STRING)
-                .setCacheable(true).uniqueResult();
+        try {
+            return getSession().createQuery("FROM CPUArch AS t WHERE LOWER(t.name) = LOWER(:name)", CPUArch.class)
+                    .setParameter("name", name, StandardBasicTypes.STRING)
+                    .setCacheable(true).getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1106,13 +1138,18 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        return getSession().createQuery("""
-                                    FROM ChannelArch a JOIN a.compatibleServerArches ca
-                                    WHERE ca.id = :serverArchId
-                                    """, ChannelArch.class)
-                .setParameter("serverArchId", serverArch.getId())
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("""
+                                        FROM ChannelArch a JOIN a.compatibleServerArches ca
+                                        WHERE ca.id = :serverArchId
+                                        """, ChannelArch.class)
+                    .setParameter("serverArchId", serverArch.getId())
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1443,13 +1480,18 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerSnapshot lookupLatestForServer(Server server) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("""
-                       FROM ServerSnapshot AS s
-                       WHERE s.server = :sid AND
-                       s.created = (SELECT max(s1.created) FROM ServerSnapshot AS s1 WHERE s1.server = :sid)
-                       """, ServerSnapshot.class)
-                .setParameter("sid", server)
-                .uniqueResult();
+        try {
+            return session.createQuery("""
+                           FROM ServerSnapshot AS s
+                           WHERE s.server = :sid AND
+                           s.created = (SELECT max(s1.created) FROM ServerSnapshot AS s1 WHERE s1.server = :sid)
+                           """, ServerSnapshot.class)
+                    .setParameter("sid", server)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1643,11 +1685,16 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot tag
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
-        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.name.name = :tag_name", SnapshotTag.class)
-                .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
-                // Do not use setCacheable(true), as tag deletion will
-                // usually end up making this query's output out of date
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM SnapshotTag AS st WHERE st.name.name = :tag_name", SnapshotTag.class)
+                    .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
+                    // Do not use setCacheable(true), as tag deletion will
+                    // usually end up making this query's output out of date
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1655,11 +1702,16 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot Tag
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
-        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.id = :id", SnapshotTag.class)
-                .setParameter("id", tagId, StandardBasicTypes.LONG)
-                // Do not use setCacheable(true), as tag deletion will
-                // usually end up making this query's output out of date
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM SnapshotTag AS st WHERE st.id = :id", SnapshotTag.class)
+                    .setParameter("id", tagId, StandardBasicTypes.LONG)
+                    // Do not use setCacheable(true), as tag deletion will
+                    // usually end up making this query's output out of date
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1679,11 +1731,16 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        return getSession().createQuery("FROM ContactMethod AS cm WHERE cm.id = :id", ContactMethod.class)
-                .setParameter("id", id)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ContactMethod AS cm WHERE cm.id = :id", ContactMethod.class)
+                    .setParameter("id", id)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1692,9 +1749,14 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method with the given label
      */
     public static ContactMethod findContactMethodByLabel(String label) {
-        return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .uniqueResult();
+        try {
+            return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

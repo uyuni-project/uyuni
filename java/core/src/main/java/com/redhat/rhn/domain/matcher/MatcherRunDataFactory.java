@@ -20,6 +20,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * MatcherRunData hibernate factory.
  */
@@ -48,9 +50,14 @@ public class MatcherRunDataFactory extends HibernateFactory {
 //                .createCriteria(MatcherRunData.class)
 //                .uniqueResult();
 
-        return getSession()
-                .createQuery("FROM MatcherRunData", MatcherRunData.class)
-                .uniqueResult();
+        try {
+            return getSession()
+                    .createQuery("FROM MatcherRunData", MatcherRunData.class)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

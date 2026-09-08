@@ -48,6 +48,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -174,12 +175,17 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static ManagedServerGroup lookupByIdAndOrg(Long id, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery(
-                    "FROM ManagedServerGroup AS s WHERE s.id = :id AND s.org = :org AND (s.groupType IS NULL)",
-                        ManagedServerGroup.class)
-                .setParameter("id", id)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                        "FROM ManagedServerGroup AS s WHERE s.id = :id AND s.org = :org AND (s.groupType IS NULL)",
+                            ManagedServerGroup.class)
+                    .setParameter("id", id)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -205,12 +211,17 @@ public class ServerGroupFactory extends HibernateFactory {
 
     public static ManagedServerGroup lookupByNameAndOrg(String name, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery(
-                        "FROM ManagedServerGroup AS s WHERE s.name = :name AND s.org = :org AND (s.groupType IS NULL)",
-                        ManagedServerGroup.class)
-                .setParameter("name", name)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                    "FROM ManagedServerGroup AS s WHERE s.name = :name AND s.org = :org AND (s.groupType IS NULL)",
+                            ManagedServerGroup.class)
+                    .setParameter("name", name)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
     /**
      * Returns an EntitlementServerGroup for the given org
@@ -227,11 +238,17 @@ public class ServerGroupFactory extends HibernateFactory {
             throw new IllegalArgumentException(msg);
         }
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM EntitlementServerGroup AS s WHERE s.groupType = :groupType AND s.org = :org",
-                        EntitlementServerGroup.class)
-                .setParameter("groupType", typeIn)
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                            "FROM EntitlementServerGroup AS s WHERE s.groupType = :groupType AND s.org = :org",
+                            EntitlementServerGroup.class)
+                    .setParameter("groupType", typeIn)
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -242,12 +259,17 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static EntitlementServerGroup lookupEntitled(Entitlement ent, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery(
-                        "FROM EntitlementServerGroup AS s WHERE s.groupType.label = :label AND s.org = :org",
-                        EntitlementServerGroup.class)
-                .setParameter("label", ent.getLabel())
-                .setParameter("org", org)
-                .uniqueResult();
+        try {
+            return session.createQuery(
+                            "FROM EntitlementServerGroup AS s WHERE s.groupType.label = :label AND s.org = :org",
+                            EntitlementServerGroup.class)
+                    .setParameter("label", ent.getLabel())
+                    .setParameter("org", org)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -427,12 +449,18 @@ public class ServerGroupFactory extends HibernateFactory {
      */
     public static Long getCurrentMembers(ServerGroup sg) {
         Session session = HibernateFactory.getSession();
-        Tuple members = session.createNativeQuery(
-                        "SELECT current_members FROM rhnServerGroup WHERE id = :sgid", Tuple.class)
-                .addSynchronizedEntityClass(ServerGroup.class)
-                .setParameter("sgid", sg.getId())
-                .addScalar("current_members", StandardBasicTypes.LONG)
-                .uniqueResult();
+        Tuple members;
+        try {
+            members = session.createNativeQuery(
+                            "SELECT current_members FROM rhnServerGroup WHERE id = :sgid", Tuple.class)
+                    .addSynchronizedEntityClass(ServerGroup.class)
+                    .setParameter("sgid", sg.getId())
+                    .addScalar("current_members", StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            members = null;
+        }
 
         if (members == null) {
            return 0L;
