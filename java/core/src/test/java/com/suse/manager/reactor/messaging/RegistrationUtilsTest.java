@@ -85,6 +85,7 @@ class RegistrationUtilsTest extends BaseTestCaseWithUser {
     @AfterEach
     void deregisterMessageAction() {
         MessageQueue.deRegisterAction(countingMessageAction, ApplyStatesEventMessage.class);
+        MessageQueue.stopMessaging();
     }
 
     /**
