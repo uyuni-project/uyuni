@@ -238,11 +238,7 @@ When(/^I update the uyuni-ca configmap on "(.*)" with the external CA$/) do |tar
   ca_dir = get_context(:external_ca_dir)
 
   # Copy the external CA cert to the proxy node
-  success = file_extract(get_target('server'), "#{ca_dir}/ca.crt", '/tmp/external-ca.crt')
-  raise ScriptError, 'Failed to extract external CA cert from server' unless success
-
-  success = file_inject(get_target(target), '/tmp/external-ca.crt', '/tmp/external-ca.crt')
-  raise ScriptError, 'Failed to inject external CA cert into proxy' unless success
+  step %(I copy "#{ca_dir}/ca.crt" from "server" outside the container to "#{target}" via scp in the path "/tmp/external-ca.crt")
 
   # Replace the uyuni-ca configmap on the proxy cluster
   _out, code = get_target(target).run_local(
