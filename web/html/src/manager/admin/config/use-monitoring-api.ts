@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { MessageType } from "components/messages/messages";
 
@@ -14,13 +14,24 @@ function isRestartNeeded(data: ExportersResultType) {
 }
 
 const useMonitoringApi = () => {
+  const isMounted = useRef(true);
   const [action, setAction] = useState<null | "checking" | "enabling" | "disabling">(null);
   const [exportersStatus, setExportersStatus] = useState<Record<string, boolean> | null | undefined>(null);
   const [exportersMessages, setExportersMessages] = useState<Record<string, string>>({});
   const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   const handleResponseError = (jqXHR: JQueryXHR): any => {
+    if (!isMounted.current) {
+      return;
+    }
+
     const msg = Network.responseErrorMessage(jqXHR);
     setMessages(msg);
   };
@@ -29,14 +40,19 @@ const useMonitoringApi = () => {
     setAction("checking");
     return Network.get("/rhn/manager/api/admin/config/monitoring")
       .then((data: JsonResult<ExportersResultType>) => {
-        setExportersStatus(data.data.exporters);
-        setExportersMessages(data.data.messages);
-        setRestartNeeded(isRestartNeeded(data.data));
+        if (isMounted.current) {
+          setExportersStatus(data.data.exporters);
+          setExportersMessages(data.data.messages);
+          setRestartNeeded(isRestartNeeded(data.data));
+        }
+
         return data.data.exporters;
       })
       .catch(handleResponseError)
       .finally(() => {
-        setAction(null);
+        if (isMounted.current) {
+          setAction(null);
+        }
       });
   };
 
@@ -44,6 +60,10 @@ const useMonitoringApi = () => {
     setAction(toEnable ? "enabling" : "disabling");
     return Network.post("/rhn/manager/api/admin/config/monitoring", { enable: toEnable })
       .then((data: JsonResult<ExportersResultType>) => {
+        if (!isMounted.current) {
+          return;
+        }
+
         if (data.data.exporters) {
           setExportersStatus(data.data.exporters);
           setExportersMessages(data.data.messages);
@@ -92,7 +112,9 @@ const useMonitoringApi = () => {
       })
       .catch(handleResponseError)
       .finally(() => {
-        setAction(null);
+        if (isMounted.current) {
+          setAction(null);
+        }
       });
   };
 
