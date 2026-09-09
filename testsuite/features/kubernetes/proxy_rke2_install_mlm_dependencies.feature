@@ -1,7 +1,6 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@transactional_server
 @rke2
 @no_user_creation
 Feature: Install MLM dependencies on RKE2
@@ -16,7 +15,7 @@ Feature: Install MLM dependencies on RKE2
     And the environment variable "LOCAL_PATH_NAMESPACE" is set on "proxy"
     And file "/etc/rancher/rke2/config.yaml" should exist on "proxy"
 
-  ## Install helm
+  @skip_if_external_cluster
   Scenario: Install Helm
     When I run "set -o pipefail; curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "proxy"
 
@@ -31,9 +30,14 @@ Feature: Install MLM dependencies on RKE2
     When I apply the RKE2 YAML file "$TRAEFIK_FILE" on "proxy"
 
   ## Set local-path-provisioner
-  Scenario: Install local path provisioner
+  Scenario: Apply local path provisioner
     When I apply the RKE2 YAML file "$LOCAL_PATH_PROVISIONER_PATH" on "proxy"
-    And I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "proxy"
-    And I run "mkdir -p $LOCAL_PATH" on "proxy"
+
+  @default_local_path_class
+  Scenario: Configure local-path-provisioner
+    When I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "proxy"
+
+  Scenario: Set directories for local-path-provisioner
+    When I run "mkdir -p $LOCAL_PATH" on "proxy"
     And I run "restorecon -R -v $LOCAL_PATH" on "proxy"
     And I run "kubectl delete pods --all -n $LOCAL_PATH_NAMESPACE" on "proxy"

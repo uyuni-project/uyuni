@@ -1,7 +1,6 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@transactional_server
 @rke2
 @no_user_creation
 Feature: Install MLM dependencies on RKE2
@@ -14,9 +13,26 @@ Feature: Install MLM dependencies on RKE2
     And the environment variable "LOCAL_PATH_PROVISIONER_STORAGE_CLASS" is set on "server"
     And the environment variable "LOCAL_PATH" is set on "server"
     And the environment variable "LOCAL_PATH_NAMESPACE" is set on "server"
+    And the environment variable "SERVER_NAMESPACE" is set on "server"
+    And the environment variable "SCC_SECRET_NAME" is set on "server"
+    And the environment variable "CC_USERNAME" is set on "server"
+    And the environment variable "CC_PASSWORD" is set on "server"
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
-  ## Install helm
+  Scenario: Create server namespace
+    When I run "kubectl create namespace $SERVER_NAMESPACE --dry-run=client -o yaml | kubectl apply -f -" on "server"
+
+@create_spacewalk_pv
+  Scenario: Create the spacewalk PV
+    When the environment variable "SPACEWALK_PV_FILE" is set on "server"
+    And I run "kubectl apply -f $SPACEWALK_PV_FILE" on "server"
+
+@create_pgsql_pv
+  Scenario: Create the PostgreSQL PV
+    When the environment variable "PGSQL_PV_FILE" is set on "server"
+    And I run "kubectl apply -f $PGSQL_PV_FILE" on "server"
+
+@skip_if_external_cluster
   Scenario: Install Helm
     When I run "set -o pipefail; curl -sfL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash" on "server"
 
@@ -31,9 +47,18 @@ Feature: Install MLM dependencies on RKE2
     When I apply the RKE2 YAML file "$TRAEFIK_FILE" on "server"
 
   ## Set local-path-provisioner
-  Scenario: Install local path provisioner
+  Scenario: Apply local path provisioner
     When I apply the RKE2 YAML file "$LOCAL_PATH_PROVISIONER_PATH" on "server"
-    And I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "server"
-    And I run "mkdir -p $LOCAL_PATH" on "server"
+
+  @default_local_path_class
+  Scenario: Configure local-path-provisioner
+    When I set "$LOCAL_PATH_PROVISIONER_STORAGE_CLASS" storage class as default on "server"
+
+  Scenario: Set directories for local-path-provisioner
+    When I run "mkdir -p $LOCAL_PATH" on "server"
     And I run "restorecon -R -v $LOCAL_PATH" on "server"
     And I run "kubectl delete pods --all -n $LOCAL_PATH_NAMESPACE" on "server"
+
+  ## Set up secret with scc credentials
+  Scenario: Set up SCC credentials
+    When I run "kubectl create secret generic -n $SERVER_NAMESPACE --type 'kubernetes.io/basic-auth' --from-literal=username=$CC_USERNAME --from-literal=password=$CC_PASSWORD $SCC_SECRET_NAME  --dry-run=client -o yaml | kubectl apply -f -" on "server"
