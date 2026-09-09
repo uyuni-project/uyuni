@@ -19,8 +19,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.Bug;
 import com.redhat.rhn.frontend.dto.CVE;
@@ -44,7 +42,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.net.URI;
-import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -69,7 +66,6 @@ public class ErrataDetailsSetupAction extends RhnAction {
 
         User user = requestContext.getCurrentUser();
         Errata errata = ErrataManager.lookupErrata(eid, user);
-        String ovalFile = findOvalFile(errata.getId());
         DataResult<Channel> channels = ErrataManager.affectedChannels(user, eid);
         DataResult<Bug> fixed = ErrataManager.bugsFixed(eid);
         DataResult<CVE> cve = ErrataManager.errataCVEs(eid);
@@ -101,7 +97,6 @@ public class ErrataDetailsSetupAction extends RhnAction {
         request.setAttribute("fixed", fixed);
         request.setAttribute("cve", cve);
         request.setAttribute("keywords", keywordsDisplay);
-        request.setAttribute("ovalFile", ovalFile);
         request.setAttribute("errataFrom", errata.getErrataFrom());
         request.setAttribute("advisoryStatus", LocalizationService.getInstance()
                 .getMessage("details.jsp.advisorystatus." + errata.getAdvisoryStatus().getMetadataValue()));
@@ -110,24 +105,6 @@ public class ErrataDetailsSetupAction extends RhnAction {
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 request.getParameterMap());
-    }
-
-    private String findOvalFile(Long errataId) {
-        String retval = null;
-        List<ErrataFile> files =
-            ErrataFactory.lookupErrataFilesByErrataAndFileType(errataId, "oval");
-        if (files == null || files.isEmpty()) {
-            return null;
-        }
-        ErrataFile ef = files.get(0);
-        StringBuilder buf = new StringBuilder();
-        buf.append("<a href=\"/rhn/oval?errata=").append(errataId).append("\">");
-        String name = ef.getOwningErrata().getAdvisoryName().toLowerCase();
-        name = name.replace(":", "");
-        buf.append("com.redhat.").append(name).append(".xml");
-        buf.append("</a>");
-        retval = buf.toString();
-        return retval;
     }
 
     private String buildVendorAdvisoryLink(Errata errata) {
