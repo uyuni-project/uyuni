@@ -137,6 +137,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('home.account.deactivate', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('home.account.password_policy', 'R', NULL)
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('home.account.preferences', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
