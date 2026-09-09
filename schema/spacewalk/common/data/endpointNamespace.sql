@@ -898,6 +898,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'home.account.password_policy' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/admin/config/password-policy' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'home.account.preferences' AND ns.access_mode = 'R'
     AND ep.endpoint = '/account/UserPreferences.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
