@@ -15540,7 +15540,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: nanoid@3.3.8
+Package: nanoid@3.3.18
 License text:
 
 The MIT License (MIT)
