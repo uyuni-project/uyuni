@@ -476,11 +476,11 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
             this.setVisible(i, !collapsed);
           }}
           header={
-            <div className="group-heading">
+            <h4 className="group-heading">
               {this.props.element.$itemName
                 ? this.generateItemName(i)
                 : `${this.props.element.$name}-${parseInt(i, 10) + 1}`}
-            </div>
+            </h4>
           }
           buttons={
             <Button

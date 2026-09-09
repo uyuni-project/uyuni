@@ -18,15 +18,28 @@ type Props = {
 export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
 
-  // header takes precedence over title
-  const headerContent =
-    props.header ??
-    (props.title ? (
-      <>
-        {props.icon && <i className={`fa ${props.icon}`} />}
-        {props.title}
-      </>
-    ) : null);
+  const hasTitle = !!props.title;
+  const hasHeader = !!props.header;
+
+  const titleContent = hasTitle ? (
+    <HeadingLevel style={{ width: "85%" }}>
+      {props.icon && <i className={`fa ${props.icon}`} />}
+      {props.title}
+    </HeadingLevel>
+  ) : null;
+
+  const headerContent = hasHeader ? (
+    <>
+      {props.header}
+    </>
+  ) : null;
+
+  const header = (
+    <>
+      {titleContent}
+      {headerContent}
+    </>
+  );
 
   const bodyContent = (
     <>
@@ -64,54 +77,67 @@ export const Panel = (props: Props) => {
     };
   }, [props.onCollapsedChange]);
 
-  return (
-    <div className={"panel " + (props.className ?? "panel-default")}>
-      {(headerContent || props.buttons) && (
+  const panelHeader = (titleContent || headerContent || props.buttons) && (
+    <div
+      className="panel-heading"
+      style={{
+        position: "relative",
+      }}
+    >
+      {props.buttons && (
         <div
-          className="panel-heading"
+          className="pull-right btn-group"
           style={{
-            position: "relative",
+            position: "absolute",
+            right: "15px",
+            top: "50%",
+            transform: "translateY(-50%)",
           }}
         >
-          {props.buttons && (
-            <div
-              className="pull-right btn-group"
-              style={{
-                position: "absolute",
-                right: "15px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            >
-              {props.buttons}
-            </div>
-          )}
-
-          <HeadingLevel style={{ width: "85%" }}>
-            {props.collapseId ? (
-              <div
-                data-bs-toggle="collapse"
-                data-bs-target={`#${props.collapseId}-panel-closable`}
-                className={`accordion-toggle d-flex align-items-center ${props.collapsClose ? "collapsed" : ""}`}
-                aria-expanded={!props.collapsClose}
-              >
-                <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ?? ""}`} />
-                <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ?? ""}`} />
-
-                {headerContent}
-              </div>
-            ) : (
-              headerContent
-            )}
-          </HeadingLevel>
+          {props.buttons}
         </div>
       )}
 
       {props.collapseId ? (
         <div
+          data-bs-toggle="collapse"
+          data-bs-target={`#${props.collapseId}-panel-closable`}
+          className={`accordion-toggle d-flex align-items-center ${
+            props.collapsClose ? "collapsed" : ""
+          }`}
+          aria-expanded={!props.collapsClose}
+        >
+          <i
+            className={`fa fa-chevron-down show-on-collapsed ${
+              props.customIconClass ?? ""
+            }`}
+          />
+          <i
+            className={`fa fa-chevron-right hide-on-collapsed ${
+              props.customIconClass ?? ""
+            }`}
+          />
+
+          {header}
+        </div>
+      ) : (
+        header
+      )}
+      
+    </div>
+  );
+
+  return (
+    <div className={"panel " + (props.className ?? "panel-default")}>
+      {panelHeader}
+
+      {props.collapseId ? (
+        <div
           ref={collapseRef}
           id={`${props.collapseId}-panel-closable`}
-          className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
+          className={`panel-collapse collapse ${
+            props.collapsClose ? "" : "show"
+          }`}
         >
           {bodyContent}
         </div>
