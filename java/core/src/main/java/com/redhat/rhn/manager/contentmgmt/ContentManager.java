@@ -31,6 +31,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTED;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -1163,7 +1164,15 @@ public class ContentManager {
 
         AlignSoftwareTargetMsg msg = new AlignSoftwareTargetMsg(src, tgt, filters, user);
         if (async) {
-            MessageQueue.publish(msg);
+            msg.getTransaction().runAfterCompletion(status -> {
+                if (status == COMMITTED) {
+                    MessageQueue.publish(msg);
+                }
+                else {
+                    LOG.warn("Skipping alignment for target {}: transaction completed with status {}",
+                        tgt.getId(), status);
+                }
+            });
         }
         else {
             new AlignSoftwareTargetAction().execute(msg);
