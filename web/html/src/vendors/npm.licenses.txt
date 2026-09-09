@@ -14529,7 +14529,7 @@ terms above.
 
 --------------------------------------------------------------------------------
 
-Package: lodash-es@4.17.21
+Package: lodash-es@4.18.1
 License text:
 
 Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
