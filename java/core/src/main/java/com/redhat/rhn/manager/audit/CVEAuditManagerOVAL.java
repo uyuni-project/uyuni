@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
+import com.suse.oval.config.OVALConfig;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
@@ -100,6 +101,7 @@ public class CVEAuditManagerOVAL {
                 Collections.emptySet() :
                 OVALCachingFactory.getServersWithErrata(user.getId());
         Map<String, Boolean> cpeAvailabilityCache = new HashMap<>();
+        OVALConfig config = null;
 
         for (Server clientServer : clients) {
             CVEAuditSystemBuilder auditWithChannelsResult = null;
@@ -109,6 +111,19 @@ public class CVEAuditManagerOVAL {
             boolean isOvalAvailable = ovalEnabled && cpe != null &&
                     cpeAvailabilityCache.computeIfAbsent(cpe,
                     value -> isCpeCoveredByOval(value, ovalPlatformCpes));
+
+            Optional<OVALOsProduct> productOpt = new OsReleasePair(
+                    clientServer.getOs(), clientServer.getRelease()).toOVALOsProduct();
+            boolean isOvalSupported = false;
+            if (productOpt.isPresent()) {
+                OVALOsProduct product = productOpt.get();
+                if (config == null) {
+                    config = OVALConfigLoader.loadDefaultConfig();
+                }
+                isOvalSupported = config.lookupSourceInfo(
+                        product.getOsFamily(), product.getOsVersion()).isPresent();
+            }
+
             if (isOvalAvailable) {
                 auditWithOVALResult =
                         doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
@@ -133,7 +148,13 @@ public class CVEAuditManagerOVAL {
                 auditResult = auditWithOVALResult;
             }
             else if (auditWithChannelsResult != null) {
-                auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                if (isOvalSupported) {
+                    auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                }
+                else {
+                    auditWithChannelsResult.setScanDataSources(
+                            ScanDataSource.CHANNELS, ScanDataSource.OVAL_UNSUPPORTED);
+                }
                 auditResult = auditWithChannelsResult;
             }
             else {
@@ -141,6 +162,9 @@ public class CVEAuditManagerOVAL {
                 auditResult.setPatchStatus(PatchStatus.UNKNOWN);
                 auditResult.setSystemID(clientServer.getId());
                 auditResult.setSystemName(clientServer.getName());
+                if (!isOvalSupported) {
+                    auditResult.setScanDataSources(ScanDataSource.OVAL_UNSUPPORTED);
+                }
             }
 
             if (patchStatuses.contains(auditResult.getPatchStatus())) {
