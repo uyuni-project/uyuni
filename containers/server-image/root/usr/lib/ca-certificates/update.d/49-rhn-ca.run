@@ -1,0 +1,12 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-Only
+
+# Copy dynamic CAs from /etc/rhn/ca to the standard p11-kit trust
+# source directory. Runs before 50java.run so the standard hooks
+# pick up certs from both /etc/pki/trust/anchors/ (projected
+# volume) and /usr/share/pki/trust/anchors/ (this hook).
+
+[ -d "$statedir" ]
+cp -u /etc/rhn/ca/* /usr/share/pki/trust/anchors/ 2>/dev/null || true
