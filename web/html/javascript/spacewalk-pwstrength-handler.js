@@ -15,6 +15,8 @@ let passwordPolicy = {
 const hasUppercase = (value) => /\p{Lu}/u.test(value);
 const hasLowercase = (value) => /\p{Ll}/u.test(value);
 const hasDigit = (value) => /\p{Nd}/u.test(value);
+const hasSpecialCharacter = (value) =>
+  [...value].some((char) => passwordPolicy.specialChars.includes(char));
 
 function validatePassword(password) {
   if (/\s/.test(password)) {
@@ -41,15 +43,12 @@ function validatePassword(password) {
     return false;
   }
 
-  if (passwordPolicy.specialCharFlag) {
-    const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-    // Must contain at least one configured special character
-    const allowedRegex = new RegExp("[" + escaped + "]");
-    if (!allowedRegex.test(password)) {
-      return false;
-    }
+  if (passwordPolicy.specialCharFlag) {
+  if (!hasSpecialCharacter(password)) {
+    return false;
   }
+}
 
   // Restrict Consecutive Characters
   if (passwordPolicy.consecutiveCharsFlag) {
@@ -71,7 +70,7 @@ function validatePassword(password) {
       }
     }
   }
-
+ 
   return true;
 }
 
@@ -127,13 +126,9 @@ function updateTickIcon() {
 
     // Special character
     if (passwordPolicy.specialCharFlag) {
-      const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
       // Must contain at least one configured special character
-      const allowedRegex = new RegExp("[" + escaped + "]");
-
       items.push(
-        `${allowedRegex.test(password) ? "✓" : "-"} Special character: ${passwordPolicy.specialChars}`
+        `${hasSpecialCharacter(password) ? "✓" : "-"} ${t("Special Characters")}: ${passwordPolicy.specialChars}`
       );
     }
 
