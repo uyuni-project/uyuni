@@ -235,7 +235,6 @@ tests:
             annotation1: search1
             annotation2: search2
         tftp:
-          type: ClusterIP
           annotations:
             annotation1: tftp1
             annotation2: tftp2

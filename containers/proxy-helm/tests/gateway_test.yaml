@@ -84,7 +84,6 @@ tests:
       gateway:
         enable: true
         name: "test-gw"
-      exposeJavaDebug: true
     asserts:
       - hasDocuments:
           count: 0
@@ -118,7 +117,6 @@ tests:
       global.ssh: "ssh_content: test ssh"
       gateway:
         enable: true
-      exposeJavaDebug: true
     release:
       namespace: myns
     asserts:
