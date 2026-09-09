@@ -1,7 +1,6 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@transactional_server
 @rke2
 @no_user_creation
 Feature: Install MLM dependencies on RKE2
@@ -14,6 +13,11 @@ Feature: Install MLM dependencies on RKE2
     And the environment variable "LOCAL_PATH_PROVISIONER_STORAGE_CLASS" is set on "server"
     And the environment variable "LOCAL_PATH" is set on "server"
     And the environment variable "LOCAL_PATH_NAMESPACE" is set on "server"
+    And the environment variable "SERVER_NAMESPACE" is set on "server"
+    And the environment variable "SCC_SECRET_NAME" is set on "server"
+    And the environment variable "CC_USERNAME" is set on "server"
+    And the environment variable "CC_PASSWORD" is set on "server"
+    And the environment variable "SERVER_NAMESPACE" is set on "server"
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
   ## Install helm
@@ -37,3 +41,10 @@ Feature: Install MLM dependencies on RKE2
     And I run "mkdir -p $LOCAL_PATH" on "server"
     And I run "restorecon -R -v $LOCAL_PATH" on "server"
     And I run "kubectl delete pods --all -n $LOCAL_PATH_NAMESPACE" on "server"
+
+  Scenario: Set up namespace
+    And I run "kubectl create namespace $SERVER_NAMESPACE --dry-run=client -o yaml | kubectl apply -f -" on "server"
+
+  ## Set up secret with scc credentials
+  Scenario: Set up SCC credentials
+    When I run "kubectl create secret generic -n $SERVER_NAMESPACE --type 'kubernetes.io/basic-auth' --from-literal=username=$CC_USERNAME --from-literal=password=$CC_PASSWORD $SCC_SECRET_NAME  --dry-run=client -o yaml | kubectl apply -f -" on "server"

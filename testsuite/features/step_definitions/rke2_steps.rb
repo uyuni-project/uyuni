@@ -271,6 +271,38 @@ Given(/^I create a sanity-check file in the TFTP boot root on "(.*)"$/) do |targ
   )
 end
 
+When(/^I configure the certificate in the controller$/) do
+  # server = get_target('server')
+  # controller = get_target('localhost')
+  # remote_file = '/tmp/tls.crt'
+  # local_file = '/etc/pki/trust/anchors/tls.crt'
+  # server.run("kubectl get cm -n $SERVER_NAMESPACE uyuni-ca -o 'jsonpath={.data.ca\\.crt}' > #{remote_file}")
+  # file_extract(server, remote_file, local_file)
+  # controller.run('update-ca-certificates')
+  server = get_target('server')
+  controller = get_target('localhost')
+  remote_file = '/tmp/tls.crt'
+  local_file = '/etc/pki/trust/anchors/tls.crt'
+  nssdb = 'sql:/root/.pki/nssdb'
+  nickname = 'susemanager'
+
+  repeat_until_timeout(timeout: 300, message: 'uyuni-ca configmap was not populated') do
+    server.run("kubectl get cm -n $SERVER_NAMESPACE uyuni-ca -o 'jsonpath={.data.ca\\.crt}' > #{remote_file}", check_errors: false)
+    out, _code = server.run("test -s #{remote_file} && echo present", check_errors: false)
+    break if out.strip == 'present'
+
+    sleep 5
+  end
+
+  file_extract(server, remote_file, local_file)
+  raise ScriptError, 'Failed to update CA certificates' unless system('update-ca-certificates')
+
+  # Chrome/Selenium reads the NSS db, not the system OpenSSL bundle - import there too.
+  controller.run("certutil -d #{nssdb} -t TC -n \"#{nickname}\" -D", check_errors: false)
+  _out, code = controller.run("certutil -d #{nssdb} -A -t TC -n \"#{nickname}\" -i #{local_file}")
+  raise ScriptError, 'Failed to import CA certificate into browser NSS database' unless code.zero?
+end
+
 # Uses curl with the tftp:// scheme
 # Tests the full path: server node -> NodePort -> tftp pod -> HTTP -> uyuni pod -> /srv/tftpboot.
 When(/^I download the sanity-check file via TFTP from "(.*)"$/) do |target|

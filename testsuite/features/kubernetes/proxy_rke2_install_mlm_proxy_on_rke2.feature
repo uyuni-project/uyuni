@@ -3,7 +3,6 @@
 
 @rke2
 @no_user_creation
-@transactional_server
 Feature: Install MLM proxy on RKE2
 
   Scenario: Check the RKE2 proxy configuration
@@ -31,4 +30,4 @@ Feature: Install MLM proxy on RKE2
     And I run "tar -xf $HELM_CHART_DIRECTORY/config.tar.gz -C $HELM_CHART_DIRECTORY/" on "proxy"
 
   Scenario: Install uyuni proxy on Kubernetes
-    When I run "helm upgrade --install uyuni-proxy $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $PROXY_NAMESPACE --set-file global.ssh=$HELM_CHART_DIRECTORY/ssh.yaml --set-file global.config=$HELM_CHART_DIRECTORY/config.yaml --set-file global.httpd=$HELM_CHART_DIRECTORY/httpd.yaml" on "proxy"
+		When I run "helm upgrade --install uyuni-proxy $SELF_SIGNED_PATH -f $VALUES_YAML_PATH -n $PROXY_NAMESPACE --set-file global.ssh=$HELM_CHART_DIRECTORY/ssh.yaml --set-file global.config=$HELM_CHART_DIRECTORY/config.yaml --set-file global.httpd=$HELM_CHART_DIRECTORY/httpd.yaml" on "proxy"

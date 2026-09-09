@@ -1,7 +1,6 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@transactional_server
 @rke2
 @no_user_creation
 Feature: Install MLM dependencies on RKE2
