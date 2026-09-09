@@ -1,4 +1,4 @@
-import { ChannelTreeType, ChannelType } from "core/channels/type/channels.type";
+import { ChannelTreeType, ChannelType, isChildChannel } from "core/channels/type/channels.type";
 
 import { asyncIdleCallback } from "utils";
 import produce from "utils/produce";
@@ -137,6 +137,31 @@ export class ChannelProcessor {
       const channel = this.getChannelById(id);
       return channel.label;
     });
+  }
+
+  /**
+   * Retrieves the base channels, other than the currently selected one, that own at least one of the given channels.
+   * Channels belonging to those base channels can only be used as sources combined with the selected base channel.
+   *
+   * @param channelIds the ids of the channels to inspect, usually the currently selected ones
+   * @returns the base channels of the given channels, excluding the currently selected base channel
+   */
+  public getForeignBaseChannels(channelIds: Iterable<number>): ChannelType[] {
+    const foreignBaseChannelIds = new Set<number>();
+    for (const channelId of channelIds) {
+      const channel = this.state.channelsMap.get(channelId);
+      if (!channel) {
+        continue;
+      }
+      const baseChannelId = isChildChannel(channel) ? channel.parentId : channel.id;
+      if (baseChannelId !== this.state.selectedBaseChannelId) {
+        foreignBaseChannelIds.add(baseChannelId);
+      }
+    }
+
+    return Array.from(foreignBaseChannelIds)
+      .map((baseChannelId) => this.state.channelsMap.get(baseChannelId))
+      .filter((channel): channel is ChannelType => Boolean(channel));
   }
 
   /**
