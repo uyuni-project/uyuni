@@ -60,7 +60,46 @@ run_sql() {
         PORT="${REPORT_DB_PORT}"
     fi
 
-    PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" > /dev/null 2>&1
+    # If -t (tuples only) is requested to capture stdout in subshells, only suppress stderr.
+    # Otherwise, suppress both stdout and stderr to keep container setup logs clean.
+    if [[ " ${*} " =~ " -t " ]]; then
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" 2> /dev/null
+    else
+        PGPASSWORD="${PASS}" psql -U "${USER}" -h "${HOST}" -p "${PORT}" -d "${DBNAME}" -v ON_STOP_ERROR=ON "${@}" > /dev/null 2>&1
+    fi
+}
+
+# Helper to generate high-entropy sha256 secrets
+generate_secret() {
+    head -c 512 /dev/urandom | sha256sum | cut -d' ' -f1
+}
+
+# Helper to write configuration settings to both main and prep rhn.conf
+update_rhn_conf() {
+    local key="${1}"
+    local value="${2}"
+    local files=("/etc/rhn/rhn.conf" "/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf")
+
+    # Escape special characters for sed replacement to prevent syntax issues:
+    # 1. Backslashes: \ -> \\
+    local escaped_val="${value//\\/\\\\}"
+    # 2. Ampersands:  & -> \&
+    escaped_val="${escaped_val//&/\\&}"
+    # 3. Pipe (our chosen sed delimiter): | -> \|
+    escaped_val="${escaped_val//|/\\|}"
+
+    for file in "${files[@]}"; do
+        mkdir -p "$(dirname "${file}")"
+        touch "${file}"
+
+        if grep -q "^[[:space:]]*${key}[[:space:]]*=" "${file}"; then
+            # Replace the existing key line (matching optional spaces around '=')
+            sed -i "s|^[[:space:]]*${key}[[:space:]]*=.*|${key} = ${escaped_val}|" "${file}"
+        else
+            # Append the key-value pair if it doesn't exist
+            echo "${key} = ${value}" >> "${file}"
+        fi
+    done
 }
 
 setup_reportdb() {
@@ -127,65 +166,127 @@ EOF
 
 setup_spacewalk() {
     # Deploy the SSL certificates
+    local no_ssl=""
     if [ "${container:="unknown"}" = "oci" ]; then
         /usr/bin/spacewalk-setup-httpd --no-ssl
+        no_ssl="y"
     else
         /usr/bin/spacewalk-setup-httpd
     fi
     /usr/sbin/update-ca-certificates
 
-    echo "admin-email = ${MANAGER_ADMIN_EMAIL}
-ssl-config-sslvhost = Y
-db-backend=postgresql
-db-user=${MANAGER_USER}
-db-password=${MANAGER_PASS}
-db-name=${MANAGER_DB_NAME}
-db-host=${MANAGER_DB_HOST}
-db-port=${MANAGER_DB_PORT}
-db-ssl-enabled=${MANAGER_DB_SSL_ENABLED}
-db-ca-cert=${MANAGER_DB_CA_CERT}
-report-db-ca-cert=${REPORT_DB_CA_CERT}
-externaldb-provider=${EXTERNALDB_PROVIDER}
-report-db-backend=postgresql
-report-db-name=${REPORT_DB_NAME}
-report-db-host=${REPORT_DB_HOST}
-report-db-port=${REPORT_DB_PORT}
-report-db-user=${REPORT_DB_USER}
-report-db-password=${REPORT_DB_PASS}
-report-db-ssl-enabled=${REPORT_DB_SSL_ENABLED}
-enable-tftp=${MANAGER_ENABLE_TFTP}
-product_name=${PRODUCT_NAME}
-hostname=${UYUNI_HOSTNAME}
-" > /root/spacewalk-answers
-
-    if [ -n "${SCC_USER}" ]; then
-        echo "scc-user = ${SCC_USER}
-scc-pass = ${SCC_PASS}
-" >> /root/spacewalk-answers
-        PARAM_CC="--scc"
+    # Validate hostname is lowercase
+    if [ "${UYUNI_HOSTNAME}" != "$(echo "${UYUNI_HOSTNAME}" | tr '[:upper:]' '[:lower:]')" ]; then
+        echo "ERROR: Hostname '${UYUNI_HOSTNAME}' contains uppercase letters." >&2
+        echo "It can cause Proxy communications to fail." >&2
+        exit 4
     fi
 
-    if [ "${container}" = "oci" ]; then
-        echo "no-ssl = Y
-" >> /root/spacewalk-answers
+    echo "Configuring Spacewalk..."
+
+    # Write configs using update_rhn_conf in consistent order
+    update_rhn_conf "db_backend" "postgresql"
+    update_rhn_conf "db_host" "${MANAGER_DB_HOST}"
+    update_rhn_conf "db_port" "${MANAGER_DB_PORT}"
+    update_rhn_conf "db_name" "${MANAGER_DB_NAME}"
+    update_rhn_conf "db_user" "${MANAGER_USER}"
+    update_rhn_conf "db_password" "${MANAGER_PASS}"
+    update_rhn_conf "db_ssl_enabled" "${MANAGER_DB_SSL_ENABLED}"
+
+    update_rhn_conf "report_db_backend" "postgresql"
+    update_rhn_conf "report_db_host" "${REPORT_DB_HOST}"
+    update_rhn_conf "report_db_port" "${REPORT_DB_PORT}"
+    update_rhn_conf "report_db_name" "${REPORT_DB_NAME}"
+    update_rhn_conf "report_db_user" "${REPORT_DB_USER}"
+    update_rhn_conf "report_db_password" "${REPORT_DB_PASS}"
+    update_rhn_conf "report_db_ssl_enabled" "${REPORT_DB_SSL_ENABLED}"
+    update_rhn_conf "report_db_sslrootcert" "${REPORT_DB_CA_CERT}"
+
+    update_rhn_conf "traceback_mail" "${MANAGER_ADMIN_EMAIL}"
+    update_rhn_conf "java.hostname" "${UYUNI_HOSTNAME}"
+    update_rhn_conf "hostname" "${UYUNI_HOSTNAME}"
+    update_rhn_conf "db_ca_cert" "${MANAGER_DB_CA_CERT}"
+    update_rhn_conf "enable_tftp" "${MANAGER_ENABLE_TFTP}"
+    update_rhn_conf "product_name" "${PRODUCT_NAME}"
+
+    update_rhn_conf "mount_point" "/var/spacewalk"
+    update_rhn_conf "kickstart_mount_point" "/var/spacewalk"
+    update_rhn_conf "repomd_cache_mount_point" "/var/cache"
+    update_rhn_conf "server.satellite.http_proxy" ""
+    update_rhn_conf "server.satellite.http_proxy_username" ""
+    update_rhn_conf "server.satellite.http_proxy_password" ""
+    update_rhn_conf "server.satellite.no_proxy" ""
+    update_rhn_conf "disable_iss" "0"
+    update_rhn_conf "server.nls_lang" "english.UTF8"
+    update_rhn_conf "web.satellite" "1"
+    update_rhn_conf "web.satellite_install" ""
+    update_rhn_conf "encrypted_passwords" "1"
+    update_rhn_conf "web.restrict_mail_domains" ""
+    update_rhn_conf "enable_snapshots" "1"
+    update_rhn_conf "pam_auth_service" "susemanager"
+    update_rhn_conf "server.satellite.reposync_nevra_filter" "0"
+
+    # Generate high-entropy secrets
+    for i in {1..4}; do
+        update_rhn_conf "session_secret_${i}" "$(generate_secret)"
+        update_rhn_conf "web.session_swap_secret_${i}" "$(generate_secret)"
+    done
+    update_rhn_conf "server.secret_key" "$(generate_secret)"
+
+    # Set up organization credentials if scc is requested
+    if [ -n "${SCC_USER:-}" ] && [ -n "${SCC_PASS:-}" ]; then
+        echo "Setting up SUSE Customer Center credentials..."
+        local scc_pass_enc
+        scc_pass_enc=$(echo -n "${SCC_PASS}" | base64 | tr -d '\n')
+        local scc_url="https://scc.suse.com"
+        if [ -f /etc/susemanager.conf ]; then
+            local url_val
+            url_val=$(grep "^scc_url" /etc/susemanager.conf | cut -d'=' -f2 | xargs)
+            if [ -n "${url_val}" ]; then
+                scc_url="${url_val}"
+            fi
+        fi
+
+        # Insert credentials via database
+        local insert_query="INSERT INTO suseCredentials (id, user_id, type, username, password, url) VALUES (sequence_nextval('suse_credentials_id_seq'), NULL, 'scc', '${SCC_USER}', '${scc_pass_enc}', '${scc_url}');"
+        echo "${insert_query}" | run_sql "${MANAGER_DB_NAME}"
+    fi
+
+    # Update template hostname in database
+    local chk_query="SELECT value FROM rhnTemplateString WHERE label = 'hostname';"
+    local chk_val
+    chk_val=$(echo "${chk_query}" | run_sql "${MANAGER_DB_NAME}" -t || true)
+    if [ -z "${chk_val}" ]; then
+        local ins_query="INSERT INTO rhnTemplateString (id, category_id, label, value, description) VALUES (sequence_nextval('rhn_template_str_id_seq'), (SELECT id FROM rhnTemplateCategory WHERE label = 'org_strings'), 'hostname', '${UYUNI_HOSTNAME}', 'Host name for the Red Hat Satellite');"
+        echo "${ins_query}" | run_sql "${MANAGER_DB_NAME}"
+    fi
+
+    # Configure Cobbler
+    /usr/bin/spacewalk-setup-cobbler --apache2-config-directory "/etc/apache2/conf.d" -f "${UYUNI_HOSTNAME}"
+
+    # Ensure cobbler.host = localhost is set in main rhn.conf
+    update_rhn_conf "cobbler.host" "localhost"
+
+    # Check if cobblerd is running
+    if pgrep -f cobblerd > /dev/null; then
+        cobbler mkloaders
+        cobbler sync
+    fi
+
+    if [ "${no_ssl}" = "y" ]; then
+        update_rhn_conf "server.no_ssl" "1"
         sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
-        echo "server.no_ssl = 1" >> /etc/rhn/rhn.conf
         sed '/<IfDefine SSL/,/<\/IfDefine SSL/d' -i /etc/apache2/listen.conf
-    fi
-
-    /usr/bin/spacewalk-setup --clear-db ${PARAM_CC:-} --answer-file=/root/spacewalk-answers
-    SWRET="${?}"
-    # rm /root/spacewalk-answers
-    if [ "${SWRET}" != "0" ]; then
-        echo "ERROR: spacewalk-setup failed" >&2
-        exit 1
     fi
 
     if [ -z "${MANAGER_MAIL_FROM}" ]; then
         MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_HOSTNAME}) <root@${UYUNI_HOSTNAME}>"
     fi
-    if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
-        echo "web.default_mail_from = ${MANAGER_MAIL_FROM}" >> /etc/rhn/rhn.conf
+    update_rhn_conf "web.default_mail_from" "${MANAGER_MAIL_FROM}"
+
+    # Enable Spacewalk services if command is available
+    if [ -x /usr/sbin/spacewalk-service ]; then
+        /usr/sbin/spacewalk-service --level 35 enable || echo "Warning: spacewalk-service enable failed"
     fi
 
     # The CA needs to be added to the database for Kickstart use.
