@@ -1,14 +1,14 @@
 #  pylint: disable=missing-module-docstring,unused-import
 
-# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+# SPDX-FileCopyrightText: 2018-2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
 import salt.exceptions
 import logging
 import os
+import pickle
 import re
-import json
 
 log = logging.getLogger(__name__)
 
@@ -26,108 +26,70 @@ KIWI_ARCH_REGEX = r"(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6h
 KIWI_NAME_REGEX = r"[a-zA-Z0-9_\-\.]+"
 
 
-def parse_profile(chroot):
-    ret = {}
-    path = os.path.join(chroot, "image", ".profile")
-    if __salt__["file.file_exists"](path):
-        profile = __salt__["cp.get_file_str"](path)
-        pattern = re.compile(r"^(?P<name>[^=]+?)='(?P<val>.*)'")
-        for line in profile.splitlines():
-            match = pattern.match(line)
-            if match:
-                ret[match.group("name")] = match.group("val")
-    return ret
-
-
-def parse_buildinfo(dest):
-    ret = {}
-    path = os.path.join(dest, "kiwi.buildinfo")
-    if __salt__["file.file_exists"](path):
-        profile = __salt__["cp.get_file_str"](path)
-        pattern_group = re.compile(r"^\[(?P<name>.*)\]")
-        pattern_val = re.compile(r"^(?P<name>.*?)=(?P<val>.*)")
-
-        group = ret
-        for line in profile.splitlines():
-            match = pattern_group.match(line)
-            if match:
-                group = {}
-                ret[match.group("name")] = group
-
-            match = pattern_val.match(line)
-            if match:
-                group[match.group("name")] = match.group("val")
-    return ret
-
-
-# fallback for SLES11 Kiwi and for Kiwi NG that does not create the buildinfo file
+# Kiwi NG does not create the buildinfo file
 def guess_buildinfo(dest):
-    ret = {"main": {}}
+    ret = {}
     files = __salt__["file.readdir"](dest)
 
     pattern_basename = re.compile(r"^(?P<basename>.*)\.packages$")
-    pattern_pxe_initrd = re.compile(r"^initrd-netboot.*")
-    pattern_pxe_kiwi_ng_initrd = re.compile(r".*\.initrd\..*")
-    pattern_pxe_kernel = re.compile(r".*\.kernel\..*")
-    pattern_pxe_kiwi_ng_kernel = re.compile(r".*\.kernel$")
+    pattern_pxe_initrd = re.compile(r".*\.initrd$")
+    pattern_pxe_kernel = re.compile(r".*\.kernel$")
     have_kernel = False
     have_initrd = False
 
     for f in files:
         match = pattern_basename.match(f)
         if match:
-            ret["main"]["image.basename"] = match.group("basename")
+            ret["basename"] = match.group("basename")
 
-        match = pattern_pxe_initrd.match(f) or pattern_pxe_kiwi_ng_initrd.match(f)
+        match = pattern_pxe_initrd.match(f)
         if match:
             have_initrd = True
 
-        match = pattern_pxe_kernel.match(f) or pattern_pxe_kiwi_ng_kernel.match(f)
+        match = pattern_pxe_kernel.match(f)
         if match:
             have_kernel = True
 
     if have_kernel and have_initrd:
-        ret["main"]["image.type"] = "pxe"
+        ret["type"] = "pxe"
     return ret
 
 
-# Kiwi NG
-_kiwi_result_script = """
-import sys
-import pickle
-import json
-ret = {}
-with open(sys.argv[1], 'rb') as f:
-    result = pickle.load(f)
-    ret['arch'] = result.xml_state.host_architecture
-    ret['basename'] = result.xml_state.xml_data.name
-    ret['type'] = result.xml_state.build_type.image
-    ret['filesystem'] = result.xml_state.build_type.filesystem
-    ret['initrd_system'] = result.xml_state.build_type.initrd_system
-    print(json.dumps(ret))
-"""
+class _KiwiResultObject:
+    def __new__(cls, *args, **kwargs):
+        return object.__new__(cls)
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
+
+class KiwiResultUnpickler(pickle.Unpickler):
+    """Load KIWI result objects without requiring KIWI to be installed."""
+
+    def find_class(self, module, name):
+        if module == "kiwi" or module.startswith("kiwi."):
+            return _KiwiResultObject
+        return super().find_class(module, name)
 
 
 def parse_kiwi_result(dest):
     path = os.path.join(dest, "kiwi.result")
     ret = {}
     if __salt__["file.file_exists"](path):
-        # pickle depends on availability of python kiwi modules
-        # which are not under our control so there is certain risk of failure
-        # also, the kiwi libraries may not be available in salt bundle
-        # -> parse the file via wrapper script using system python3
-        #
-        # return empty dict on failure
-        # the caller should handle all values as optional
-        for python in ["/usr/bin/python3.11", "/usr/bin/python3"]:
-            if __salt__["file.file_exists"](python):
-                result = __salt__["cmd.exec_code_all"](
-                    python, _kiwi_result_script, args=[path]
-                )
-                if result["retcode"] == 0:
-                    ret = json.loads(result["stdout"])
-                    break
-        # else return empty dict
+        try:
+            with open(path, "rb") as result_file:
+                result = KiwiResultUnpickler(result_file).load()
+            ret = {
+                "name": getattr(result.xml_state.xml_data, "name", None),
+                "type": getattr(result.xml_state.build_type, "image", None),
+                "filesystem": getattr(result.xml_state.build_type, "filesystem", None),
+            }
+        except Exception:  # pylint: disable=broad-exception-caught
+            # kiwi.result is optional, and an unreadable result must not fail inspection.
+            log.exception("Loading kiwi.result")
 
     return ret
 
@@ -274,13 +236,11 @@ def image_details(dest, bundle_dest=None):
     Gather detailed information about system image.
     """
     res = {}
-    buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
+    buildinfo = guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
 
-    basename = buildinfo.get("main", {}).get("image.basename", "")
-    image_type = kiwiresult.get("type") or buildinfo.get("main", {}).get(
-        "image.type", "unknown"
-    )
+    basename = buildinfo.get("basename", "")
+    image_type = kiwiresult.get("type") or buildinfo.get("type", "unknown")
     fstype = kiwiresult.get("filesystem")
 
     pattern = re.compile(
@@ -290,12 +250,13 @@ def image_details(dest, bundle_dest=None):
         )
     )
     match = pattern.match(basename)
-    if match:
-        name = match.group("name")
-        arch = match.group("arch")
-        version = match.group("version")
-    else:
+    if not match:
+        log.error("Unable to match Kiwi results")
         return None
+
+    name = match.group("name")
+    arch = match.group("arch")
+    version = match.group("version")
 
     filename = None
     filepath = None
@@ -371,15 +332,9 @@ def inspect_image(dest, build_id, bundle_dest=None):
     basename = res["image"]["basename"]
     image_type = res["image"]["type"]
 
-    for fstype in ["ext2", "ext3", "ext4", "btrfs", "xfs"]:
-        path = os.path.join(dest, basename + "." + fstype)
-        if __salt__["file.file_exists"](path) or __salt__["file.is_link"](path):
-            res["image"]["fstype"] = fstype
-            break
-
     res["packages"] = parse_packages(os.path.join(dest, basename + ".packages"))
 
-    if image_type == "pxe":
+    if image_type == "pxe" or image_type == "kis":
         res["boot_image"] = inspect_boot_image(dest)
 
     return res
@@ -393,20 +348,11 @@ def inspect_boot_image(dest):
     res = None
     files = __salt__["file.readdir"](dest)
 
-    pattern = re.compile(
-        # pylint: disable-next=consider-using-f-string
-        r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})\.kernel\.(?P<kernelversion>.*)\.md5$".format(
-            KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX
-        )
-    )
-    pattern_kiwi_ng = re.compile(
-        # pylint: disable-next=consider-using-f-string
-        r"^(?P<name>{})\.(?P<arch>{})-(?P<version>{})-(?P<kernelversion>.*)\.kernel$".format(
-            KIWI_NAME_REGEX, KIWI_ARCH_REGEX, KIWI_VERSION_REGEX
-        )
+    pattern_kernel = re.compile(
+        rf"^(?P<name>{KIWI_NAME_REGEX})\.(?P<arch>{KIWI_ARCH_REGEX})-(?P<version>{KIWI_VERSION_REGEX})-(?P<kernelversion>.*)\.kernel$"
     )
     for f in files:
-        match = pattern.match(f)
+        match = pattern_kernel.match(f)
         if match:
             basename = (
                 match.group("name")
@@ -421,25 +367,6 @@ def inspect_boot_image(dest):
                 "basename": basename,
                 "initrd": {"version": match.group("version")},
                 "kernel": {"version": match.group("kernelversion")},
-                "kiwi_ng": False,
-            }
-            break
-        match = pattern_kiwi_ng.match(f)
-        if match:
-            basename = (
-                match.group("name")
-                + "."
-                + match.group("arch")
-                + "-"
-                + match.group("version")
-            )
-            res = {
-                "name": match.group("name"),
-                "arch": match.group("arch"),
-                "basename": basename,
-                "initrd": {"version": match.group("version")},
-                "kernel": {"version": match.group("kernelversion")},
-                "kiwi_ng": True,
             }
             break
 
@@ -447,37 +374,20 @@ def inspect_boot_image(dest):
         return None
 
     for c in _compression_types:
-        if res["kiwi_ng"]:
-            file = basename + ".initrd" + c
-        else:
-            file = basename + c
+        file = basename + ".initrd" + c
         filepath = os.path.join(dest, file)
         if __salt__["file.file_exists"](filepath):
             res["initrd"]["filename"] = file
             res["initrd"]["filepath"] = filepath
-            if res["kiwi_ng"]:
-                res["initrd"].update(get_md5(filepath))
-            else:
-                res["initrd"].update(
-                    parse_kiwi_hash(os.path.join(dest, basename + ".md5"))
-                )
+            res["initrd"].update(get_md5(filepath))
             break
 
-    if res["kiwi_ng"]:
-        file = basename + "-" + res["kernel"]["version"] + ".kernel"
-        filepath = os.path.join(dest, file)
-        if __salt__["file.file_exists"](filepath):
-            res["kernel"]["filename"] = file
-            res["kernel"]["filepath"] = filepath
-            res["kernel"].update(get_md5(filepath))
-    else:
-        file = basename + ".kernel." + res["kernel"]["version"]
-        filepath = os.path.join(dest, file)
-        if __salt__["file.file_exists"](filepath):
-            res["kernel"]["filename"] = file
-            res["kernel"]["filepath"] = filepath
-            res["kernel"].update(parse_kiwi_hash(filepath + ".md5"))
-
+    file = basename + "-" + res["kernel"]["version"] + ".kernel"
+    filepath = os.path.join(dest, file)
+    if __salt__["file.file_exists"](filepath):
+        res["kernel"]["filename"] = file
+        res["kernel"]["filepath"] = filepath
+        res["kernel"].update(get_md5(filepath))
     return res
 
 
@@ -527,12 +437,10 @@ def build_info(dest, build_id, bundle_dest=None):
     Generates basic build info for image collection. Skips package inspection.
     """
     res = {}
-    buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
+    buildinfo = guess_buildinfo(dest)
     kiwiresult = parse_kiwi_result(dest)
-    basename = buildinfo.get("main", {}).get("image.basename", "")
-    image_type = kiwiresult.get("type") or buildinfo.get("main", {}).get(
-        "image.type", "unknown"
-    )
+    basename = buildinfo.get("basename", "")
+    image_type = kiwiresult.get("type") or buildinfo.get("type", "unknown")
 
     pattern = re.compile(
         # pylint: disable-next=consider-using-f-string
