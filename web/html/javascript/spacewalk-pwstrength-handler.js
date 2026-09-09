@@ -15,6 +15,8 @@ let passwordPolicy = {
 const hasUppercase = (value) => /\p{Lu}/u.test(value);
 const hasLowercase = (value) => /\p{Ll}/u.test(value);
 const hasDigit = (value) => /\p{Nd}/u.test(value);
+const hasSpecialCharacter = (value) =>
+  [...value].some((char) => passwordPolicy.specialChars.includes(char));
 
 function validatePassword(password) {
   if (/\s/.test(password)) {
@@ -42,14 +44,10 @@ function validatePassword(password) {
   }
 
   if (passwordPolicy.specialCharFlag) {
-    const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-    // Must contain at least one configured special character
-    const allowedRegex = new RegExp("[" + escaped + "]");
-    if (!allowedRegex.test(password)) {
-      return false;
-    }
+  if (!hasSpecialCharacter(password)) {
+    return false;
   }
+}
 
   // Restrict Consecutive Characters
   if (passwordPolicy.consecutiveCharsFlag) {
@@ -71,7 +69,7 @@ function validatePassword(password) {
       }
     }
   }
-
+ 
   return true;
 }
 
@@ -102,38 +100,34 @@ function updateTickIcon() {
     const items = [];
 
     // Whitespace
-    items.push(`${!/\s/.test(password) ? "✓" : "-"} No spaces, tabs, or newlines`);
+    items.push(`${!/\s/.test(password) ? "✓" : "-"} ${t("No spaces, tabs, or newlines")}`);
 
     // Minimum length
-    items.push(`${password.length >= passwordPolicy.minLength ? "✓" : "-"} Minimum length ${passwordPolicy.minLength}`);
+    items.push(`${password.length >= passwordPolicy.minLength ? "✓" : "-"} ${t("Minimum length")} ${passwordPolicy.minLength}`);
 
     // Maximum length
-    items.push(`${password.length <= passwordPolicy.maxLength ? "✓" : "-"} Maximum length ${passwordPolicy.maxLength}`);
+    items.push(`${password.length <= passwordPolicy.maxLength ? "✓" : "-"} ${t("Maximum length")} ${passwordPolicy.maxLength}`);
 
     // Uppercase
     if (passwordPolicy.upperCharFlag) {
-      items.push(`${hasUppercase(password) ? "✓" : "-"} Uppercase character`);
+      items.push(`${hasUppercase(password) ? "✓" : "-"} ${t("Uppercase character")}`);
     }
 
     // Lowercase
     if (passwordPolicy.lowerCharFlag) {
-      items.push(`${hasLowercase(password) ? "✓" : "-"} Lowercase character`);
+      items.push(`${hasLowercase(password) ? "✓" : "-"} ${t("Lowercase character")}`);
     }
 
     // Digit
     if (passwordPolicy.digitFlag) {
-      items.push(`${hasDigit(password) ? "✓" : "-"} Digit`);
+      items.push(`${hasDigit(password) ? "✓" : "-"} ${t("Digit")}`);
     }
 
     // Special character
     if (passwordPolicy.specialCharFlag) {
-      const escaped = passwordPolicy.specialChars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
       // Must contain at least one configured special character
-      const allowedRegex = new RegExp("[" + escaped + "]");
-
       items.push(
-        `${allowedRegex.test(password) ? "✓" : "-"} Special character: ${passwordPolicy.specialChars}`
+        `${hasSpecialCharacter(password) ? "✓" : "-"} ${t("Special Characters")}: ${passwordPolicy.specialChars}`
       );
     }
 
@@ -151,14 +145,16 @@ function updateTickIcon() {
         }
       }
 
-      items.push(`${valid ? "✓" : "-"} Maximum ${passwordPolicy.maxCharacterOccurrence} occurrences per character`);
-    }
+      items.push( `${valid ? "✓" : "-"} ${t("Maximum {{count}} occurrences per character", {
+          count: passwordPolicy.maxCharacterOccurrence,
+        })}`,);
+      }
 
     // Restrict consecutive characters
     if (passwordPolicy.consecutiveCharsFlag) {
       const valid = !/(.)\1/.test(password);
 
-      items.push(`${valid ? "✓" : "-"} No consecutive identical characters`);
+      items.push(`${valid ? "✓" : "-"} ${t("No consecutive identical characters")}`);
     }
 
     return items.join("\n");
@@ -177,8 +173,8 @@ function updateTickIcon() {
       neutral(jQuery("#desiredtick"));
       neutral(jQuery("#confirmtick"));
 
-       updateTooltip("#desiredtick", "Leave blank to keep your current password.");
-       updateTooltip("#confirmtick", "Confirm the password");
+       updateTooltip("#desiredtick", t("Leave blank to keep your current password."));
+       updateTooltip("#confirmtick", t("Confirm the password"));
     }
     // Password entered
     else {
@@ -191,13 +187,13 @@ function updateTickIcon() {
 
       if (!desiredpassConfirmVal) {
         neutral(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", "Confirm the password");
+        updateTooltip("#confirmtick", t("Confirm the password"));
       } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
         success(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", "Password match");
+        updateTooltip("#confirmtick", t("Password match"));
       } else {
         danger(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", "Password do not match");
+        updateTooltip("#confirmtick", t("Password do not match"));
       }
     }
   }
@@ -209,7 +205,7 @@ function updateTickIcon() {
       updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
     } else if (validatePassword(desiredpassVal)) {
       success(jQuery("#desiredtick"));
-      updateTooltip("#desiredtick", "Password meets all requirements");
+      updateTooltip("#desiredtick", t("Password meets all requirements"));
     } else {
       danger(jQuery("#desiredtick"));
       updateTooltip("#desiredtick", getPasswordValidationMessage(desiredpassVal));
@@ -218,13 +214,13 @@ function updateTickIcon() {
     // Confirm password icon
     if (!desiredpassConfirmVal) {
       neutral(jQuery("#confirmtick"));
-      updateTooltip("#confirmtick", "Confirm the password");
+      updateTooltip("#confirmtick", t("Confirm the password"));
     } else if (validatePassword(desiredpassVal) && desiredpassVal === desiredpassConfirmVal) {
       success(jQuery("#confirmtick"));
-       updateTooltip("#confirmtick", "Password match");
+       updateTooltip("#confirmtick", t("Password match"));
     } else {
       danger(jQuery("#confirmtick"));
-      updateTooltip("#confirmtick", "Password do not match");
+      updateTooltip("#confirmtick", t("Password do not match"));
     }
   }
 }
