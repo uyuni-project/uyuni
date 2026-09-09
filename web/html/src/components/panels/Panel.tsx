@@ -18,20 +18,23 @@ type Props = {
 export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
 
-  // header takes precedence over title
-  const headerContent =
-    props.header ??
-    (props.title ? (
-      <>
-        {props.icon && <i className={`fa ${props.icon}`} />}
-        {props.title}
-      </>
-    ) : null);
+  const titleContent = props.title && (
+    <HeadingLevel>
+      {props.icon && <i className={`fa ${props.icon}`} />}
+      {props.title}
+    </HeadingLevel>
+  );
+
+  const panelHeaderContent = (
+    <div>
+      {titleContent}
+      {props.header}
+    </div>
+  );
 
   const bodyContent = (
     <>
       <div className="panel-body">{props.children}</div>
-
       {props.footer && <div className="panel-footer">{props.footer}</div>}
     </>
   );
@@ -65,13 +68,13 @@ export const Panel = (props: Props) => {
   }, [props.onCollapsedChange]);
 
   return (
-    <div className={"panel " + (props.className ?? "panel-default")}>
-      {(headerContent || props.buttons) && (
+    <div className={"panel " + (props.className ? props.className : "panel-default")}>
+      {(props.title || props.header || props.buttons) && (
         <div
-          className="panel-heading"
           style={{
             position: "relative",
           }}
+          className="panel-heading accordion-toggle"
         >
           {props.buttons && (
             <div
@@ -86,24 +89,33 @@ export const Panel = (props: Props) => {
               {props.buttons}
             </div>
           )}
-
-          <HeadingLevel style={{ width: "85%" }}>
-            {props.collapseId ? (
-              <div
-                data-bs-toggle="collapse"
-                data-bs-target={`#${props.collapseId}-panel-closable`}
-                className={`accordion-toggle d-flex align-items-center ${props.collapsClose ? "collapsed" : ""}`}
-                aria-expanded={!props.collapsClose}
-              >
-                <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ?? ""}`} />
-                <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ?? ""}`} />
-
-                {headerContent}
-              </div>
-            ) : (
-              headerContent
-            )}
-          </HeadingLevel>
+          {
+            <>
+              {props.collapseId ? (
+                <div
+                  data-bs-toggle="collapse"
+                  data-bs-target={`#${props.collapseId}-panel-closable`}
+                  className="accordion-toggle d-flex align-items-baseline"
+                  aria-expanded="false"
+                  style={{ width: "80%" }}
+                >
+                  <i
+                    className={`fa fa-chevron-down show-on-collapsed ${
+                      props.customIconClass ? props.customIconClass : ""
+                    }`}
+                  />
+                  <i
+                    className={`fa fa-chevron-right hide-on-collapsed ${
+                      props.customIconClass ? props.customIconClass : ""
+                    }`}
+                  />
+                  {panelHeaderContent}
+                </div>
+              ) : (
+                panelHeaderContent
+              )}
+            </>
+          }
         </div>
       )}
 

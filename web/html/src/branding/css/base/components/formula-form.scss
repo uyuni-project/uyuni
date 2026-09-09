@@ -48,8 +48,8 @@
 
 .formula-content-section {
   margin-left: 0;
-  border-left: 2px solid $eos-bc-gray-100;
-  border-top: 1px solid $eos-bc-gray-100;
+  border-left: 2px solid $formula-form-border;
+  border-top: 1px solid $formula-form-border;
   padding-left: 8px;
   background-color: transparent !important;
   margin-bottom: 0 !important;
@@ -76,7 +76,7 @@
 
 .form-add-button {
   margin-left: 4px !important;
-  border-top: 1px solid $eos-bc-gray-300;
+  border-top: 1px solid $add-button-border;
   padding-top: 15px;
   margin-top: 11px !important;
 }

@@ -29,7 +29,6 @@ const Group = (props: Props) => {
   return props.isVisibleByCriteria?.() ? (
     <Panel
       key={props.id}
-      headingLevel="h4"
       className="formula-content-section"
       collapseId={props.id.replace(/[.#\s]/g, "-")}
       collapsClose={!visible}
@@ -39,7 +38,7 @@ const Group = (props: Props) => {
       }}
       header={
         <div className="group-heading">
-          <span id={props.id}>
+          <h4 id={props.id}>
             {isFiltered(props.criteria) ? (
               <Highlight
                 enabled={isFiltered(props.criteria)}
@@ -49,7 +48,7 @@ const Group = (props: Props) => {
             ) : (
               props.header
             )}
-          </span>
+          </h4>
         </div>
       }
     >
