@@ -16,6 +16,7 @@ internal API available from within the instance.
 Author: Pablo Suárez Hernández <psuarezhernandez@suse.com>
 Based on: https://docs.saltstack.com/en/latest/ref/grains/all/salt.grains.metadata.html
 """
+
 from __future__ import absolute_import, print_function, unicode_literals
 
 # Import python libs
@@ -150,9 +151,9 @@ def __virtual__():
 
 
 def _is_valid_endpoint(response, tag):
-    if not response.get("status", 0) == 200:
+    if response.get("status", 0) != 200:
         return False
-    elif not tag in response.get("body", ""):
+    elif tag not in response.get("body", ""):
         return False
     elif " " in response.get("body", ""):
         return False

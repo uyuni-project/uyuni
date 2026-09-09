@@ -51,7 +51,6 @@ from .backendLib import (
     TableInsert,
 )
 
-
 sequences = {
     "rhnPackageCapability": "rhn_pkg_capability_id_seq",
     "rhnPackage": "rhn_package_id_seq",
@@ -466,21 +465,17 @@ class Backend:
             updates[0].append(aid)
             updates[1].append(name)
         if inserts[0]:
-            h = self.dbmodule.prepare(
-                """
+            h = self.dbmodule.prepare("""
                     insert into rhnArchType (id, label, name)
                     values (:id, :label, :name)
-            """
-            )
+            """)
             h.executemany(id=inserts[0], label=inserts[1], name=inserts[2])
         if updates[0]:
-            h = self.dbmodule.prepare(
-                """
+            h = self.dbmodule.prepare("""
                     update rhnArchType
                        set name = :name
                      where id = :id
-            """
-            )
+            """)
             h.executemany(id=updates[0], name=updates[1])
 
         # Finally, update the hash
@@ -488,13 +483,11 @@ class Backend:
 
     # pylint: disable-next=invalid-name
     def lookupPackageArchType(self, pkg_arch_id):
-        h = self.dbmodule.prepare(
-            """
+        h = self.dbmodule.prepare("""
                 select at.label
                   from rhnPackageArch pa
                   join rhnArchType at on pa.arch_type_id = at.id
-                 where pa.id = :pkg_arch_id"""
-        )
+                 where pa.id = :pkg_arch_id""")
         h.execute(pkg_arch_id=pkg_arch_id)
         row = h.fetchone_dict()
         if row:
@@ -896,8 +889,7 @@ class Backend:
 
     # pylint: disable-next=invalid-name
     def lookupPackageKeyId(self, header):
-        lookup_keyid_sql = rhnSQL.prepare(
-            """
+        lookup_keyid_sql = rhnSQL.prepare("""
            select pk.id
              from rhnPackagekey pk,
                   rhnPackageKeyType pkt,
@@ -905,8 +897,7 @@ class Backend:
             where pk.key_id = :key_id
               and pk.key_type_id = pkt.id
               and pk.provider_id = pp.id
-        """
-        )
+        """)
         sigkeys = rhn_rpm.RPM_Header(header).signatures
         key_id = None  # _key_ids(sigkeys)[0]
         for sig in sigkeys:
@@ -998,7 +989,6 @@ class Backend:
             result[label] = row_id
             if row["name"] != name:
                 to_update.append((label, name))
-                continue
             # Entry found in the table - nothing more to do
 
         if to_insert:
@@ -1211,13 +1201,11 @@ class Backend:
 
         # Get affected channels
         affected_channel_ids = {}
-        h = self.dbmodule.prepare(
-            """
+        h = self.dbmodule.prepare("""
             select channel_id
               from rhnChannelErrata
              where errata_id = :errata_id
-        """
-        )
+        """)
         for errata_id in list(affected_errata_ids.keys()):
             h.execute(errata_id=errata_id)
 
@@ -1232,11 +1220,9 @@ class Backend:
 
         for channel_id in list(affected_channel_ids.keys()):
             update_channel(channel_id, invalidate_ss)
-            h = self.dbmodule.prepare(
-                """
+            h = self.dbmodule.prepare("""
                 select advisory from rhnErrata where id = :errata_id
-            """
-            )
+            """)
             h.execute(errata_id=affected_channel_ids[channel_id])
             advisory = h.fetchone()[0]
 
@@ -1286,18 +1272,14 @@ class Backend:
             # Nothing to do
             return
 
-        hdel = self.dbmodule.prepare(
-            """
+        hdel = self.dbmodule.prepare("""
             delete from rhnErrataQueue where errata_id = :errata_id
-        """
-        )
+        """)
 
-        h = self.dbmodule.prepare(
-            """
+        h = self.dbmodule.prepare("""
             insert into rhnErrataQueue (errata_id, channel_id, next_action)
             values (:errata_id, :channel_id, current_timestamp + numtodsinterval(:timeout, 'second'))
-        """
-        )
+        """)
         errata_ids = [x[0] for x in errata_channel_ids]
         channel_ids = [x[1] for x in errata_channel_ids]
         timeouts = [timeout] * len(errata_ids)
@@ -1379,13 +1361,11 @@ class Backend:
     # pylint: disable-next=invalid-name
     def processChannelFamilyMembers(self, channel_families):
         # Channel families now contain channel memberships too
-        h_lookup_cfid = self.dbmodule.prepare(
-            """
+        h_lookup_cfid = self.dbmodule.prepare("""
             select channel_family_id
               from rhnChannelFamilyMembers
              where channel_id = :channel_id
-        """
-        )
+        """)
         cf_ids = []
         c_ids = []
         for cf in channel_families:
@@ -1409,18 +1389,14 @@ class Backend:
             # We're done
             return
 
-        hdel = self.dbmodule.prepare(
-            """
+        hdel = self.dbmodule.prepare("""
             delete from rhnChannelFamilyMembers
              where channel_id = :channel_id
-        """
-        )
-        hins = self.dbmodule.prepare(
-            """
+        """)
+        hins = self.dbmodule.prepare("""
             insert into rhnChannelFamilyMembers (channel_id, channel_family_id)
             values (:channel_id, :channel_family_id)
-        """
-        )
+        """)
         hdel.executemany(channel_id=c_ids)
         hins.executemany(channel_family_id=cf_ids, channel_id=c_ids)
 
@@ -1435,11 +1411,9 @@ class Backend:
             if "private-channel-family" not in cf["label"]
         ]
 
-        h_public_sel = self.dbmodule.prepare(
-            """
+        h_public_sel = self.dbmodule.prepare("""
             select channel_family_id from rhnPublicChannelFamily
-        """
-        )
+        """)
         h_public_sel.execute()
 
         public_cf_in_db = [
@@ -1447,12 +1421,10 @@ class Backend:
         ]
         public_cf_to_insert = [x for x in cf_ids if x not in public_cf_in_db]
 
-        h_public_ins = self.dbmodule.prepare(
-            """
+        h_public_ins = self.dbmodule.prepare("""
             insert into rhnPublicChannelFamily (channel_family_id)
             values (:channel_family_id)
-        """
-        )
+        """)
         h_public_ins.executemany(channel_family_id=public_cf_to_insert)
 
     # pylint: disable-next=invalid-name
@@ -1490,15 +1462,13 @@ class Backend:
         if not channel["channel_product_id"]:
             # If no channel product dont update
             return
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             UPDATE rhnChannel
                SET channel_product_id = :channel_product_id
              WHERE id = :id
                AND (channel_product_id is NULL
                 OR channel_product_id <> :channel_product_id)
-        """
-        )
+        """)
 
         statement.execute(
             id=channel.id, channel_product_id=channel["channel_product_id"]
@@ -1509,12 +1479,10 @@ class Backend:
         """Associate content sources with channel"""
 
         # Which content sources are assigned to this channel
-        select_sql = self.dbmodule.prepare(
-            """
+        select_sql = self.dbmodule.prepare("""
             select source_id from rhnChannelContentSource
             where channel_id = :channel_id
-        """
-        )
+        """)
 
         select_sql.execute(channel_id=channel.id)
         sources_in_db = [x["source_id"] for x in select_sql.fetchall_dict() or []]
@@ -1529,21 +1497,17 @@ class Backend:
         sources_to_delete = [x for x in sources_in_db if x not in sources_needed]
         sources_to_insert = [x for x in sources_needed if x not in sources_in_db]
 
-        delete_sql = self.dbmodule.prepare(
-            """
+        delete_sql = self.dbmodule.prepare("""
             delete from rhnChannelContentSource
             where source_id = :source_id
             and channel_id = :channel_id
-        """
-        )
+        """)
 
-        insert_sql = self.dbmodule.prepare(
-            """
+        insert_sql = self.dbmodule.prepare("""
            insert into rhnChannelContentSource
            (source_id, channel_id)
            values (:source_id, :channel_id)
-        """
-        )
+        """)
 
         for source_id in sources_to_delete:
             delete_sql.execute(source_id=source_id, channel_id=channel.id)
@@ -1556,14 +1520,12 @@ class Backend:
         """Check if ProductName for channel in batch is already in DB.
         If not add it there.
         """
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             insert into rhnProductName
                  (id, label, name)
               values (sequence_nextval('rhn_productname_id_seq'),
                       :product_label, :product_name)
-        """
-        )
+        """)
 
         for channel in batch:
             if not self.lookupProductNames(channel["label"]):
@@ -1591,11 +1553,9 @@ class Backend:
     def lookupContentSource(self, label):
         """Get id for given content source"""
 
-        sql = self.dbmodule.prepare(
-            """
+        sql = self.dbmodule.prepare("""
             select id from rhnContentSource where label = :label and org_id is null
-        """
-        )
+        """)
 
         sql.execute(label=label)
 
@@ -1604,17 +1564,13 @@ class Backend:
         if content_source:
             return content_source["id"]
 
-        return
-
     # pylint: disable-next=invalid-name
     def lookupContentSourceType(self, label):
         """Get id for given content type label"""
 
-        sql = self.dbmodule.prepare(
-            """
+        sql = self.dbmodule.prepare("""
             select id from rhnContentSourceType where label = :label
-        """
-        )
+        """)
 
         sql.execute(label=label)
 
@@ -1623,20 +1579,16 @@ class Backend:
         if source_type:
             return source_type["id"]
 
-        return
-
     # pylint: disable-next=invalid-name
     def lookupProductNames(self, label):
         """For given label of product return its id.
         If product do not exist return None
         """
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             SELECT id
               FROM rhnProductName
              WHERE label = :label
-        """
-        )
+        """)
 
         statement.execute(label=label)
 
@@ -1645,34 +1597,26 @@ class Backend:
         if product:
             return product["id"]
 
-        return
-
     # pylint: disable-next=invalid-name
     def processSupportInformation(self, batch):
         """Check if SupportInformation is already in DB.
         If not, add it
         """
-        insert_support_info = self.dbmodule.prepare(
-            """
+        insert_support_info = self.dbmodule.prepare("""
             INSERT INTO suseMdData (channel_id, package_id, keyword_id)
             VALUES (:channel_id, :package_id, :keyword_id)
-        """
-        )
-        delete_support_info = self.dbmodule.prepare(
-            """
+        """)
+        delete_support_info = self.dbmodule.prepare("""
             DELETE FROM suseMdData
             WHERE channel_id = :channel_id
               AND package_id = :package_id
               AND keyword_id = :keyword_id
-        """
-        )
+        """)
         # pylint: disable-next=invalid-name
-        _query_keywords = self.dbmodule.prepare(
-            """
+        _query_keywords = self.dbmodule.prepare("""
             SELECT channel_id, package_id, keyword_id
               FROM suseMdData
-        """
-        )
+        """)
         _query_keywords.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -1713,19 +1657,14 @@ class Backend:
         """Check if SUSE Product is already in DB.
         If yes, update it, if not add it.
         """
-        insert_product = self.dbmodule.prepare(
-            """
+        insert_product = self.dbmodule.prepare("""
             INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_id, free, base, release_stage, channel_family_id)
             VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_id, :free, :base, :release_stage, :channel_family_id)
-            """
-        )
-        delete_product = self.dbmodule.prepare(
-            """
+            """)
+        delete_product = self.dbmodule.prepare("""
             DELETE FROM suseProducts WHERE product_id = :product_id
-            """
-        )
-        update_product = self.dbmodule.prepare(
-            """
+            """)
+        update_product = self.dbmodule.prepare("""
             UPDATE suseProducts
                SET name = :name,
                    version = :version,
@@ -1737,14 +1676,11 @@ class Backend:
                    release_stage = :release_stage,
                    channel_family_id = :channel_family_id
              WHERE product_id = :product_id
-             """
-        )
+             """)
         # pylint: disable-next=invalid-name
-        _query_product = self.dbmodule.prepare(
-            """
+        _query_product = self.dbmodule.prepare("""
             SELECT product_id FROM suseProducts
-            """
-        )
+            """)
         _query_product.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -1821,27 +1757,21 @@ class Backend:
         If yes, update it, if not add it. We get only "mandatory" product channels
         This is jut to update this flag.
         """
-        insert_pc = self.dbmodule.prepare(
-            """
+        insert_pc = self.dbmodule.prepare("""
             INSERT INTO suseProductChannel
                    (id, product_id, channel_id, mandatory)
             VALUES (sequence_nextval('suse_product_channel_id_seq'), :pid, :cid, 'Y')
-            """
-        )
-        update_pc = self.dbmodule.prepare(
-            """
+            """)
+        update_pc = self.dbmodule.prepare("""
             UPDATE suseProductChannel
                SET mandatory = :mand
              WHERE product_id = :pid
                AND channel_id = :cid
-             """
-        )
+             """)
         # pylint: disable-next=invalid-name
-        _query_pc = self.dbmodule.prepare(
-            """
+        _query_pc = self.dbmodule.prepare("""
             SELECT product_id, channel_id FROM suseProductChannel
-            """
-        )
+            """)
         _query_pc.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -1876,26 +1806,20 @@ class Backend:
         """Check if the SUSE Upgrade Paths are already in DB.
         If not add it.
         """
-        insert_up = self.dbmodule.prepare(
-            """
+        insert_up = self.dbmodule.prepare("""
             INSERT INTO suseUpgradePath
                    (from_pdid, to_pdid)
             VALUES (:from_pdid, :to_pdid)
-            """
-        )
-        delete_up = self.dbmodule.prepare(
-            """
+            """)
+        delete_up = self.dbmodule.prepare("""
             DELETE FROM suseUpgradePath
              WHERE from_pdid = :from_pdid
                AND to_pdid = :to_pdid
-            """
-        )
+            """)
         # pylint: disable-next=invalid-name
-        _query_up = self.dbmodule.prepare(
-            """
+        _query_up = self.dbmodule.prepare("""
             SELECT from_pdid, to_pdid FROM suseUpgradePath
-            """
-        )
+            """)
         _query_up.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -1926,36 +1850,28 @@ class Backend:
         """Check if the SUSE Extensions are already in DB.
         If not add it.
         """
-        insert_pe = self.dbmodule.prepare(
-            """
+        insert_pe = self.dbmodule.prepare("""
             INSERT INTO suseProductExtension
                    (base_pdid, root_pdid, ext_pdid, recommended)
             VALUES (:product_id, :root_id, :ext_id, :recommended)
-            """
-        )
-        delete_pe = self.dbmodule.prepare(
-            """
+            """)
+        delete_pe = self.dbmodule.prepare("""
             DELETE FROM suseProductExtension
              WHERE base_pdid = :product_id
                AND root_pdid = :root_id
                AND ext_pdid = :ext_id
-            """
-        )
-        update_pe = self.dbmodule.prepare(
-            """
+            """)
+        update_pe = self.dbmodule.prepare("""
             UPDATE suseProductExtension
                SET recommended = :recommended
              WHERE base_pdid = :product_id
                AND root_pdid = :root_id
                AND ext_pdid = :ext_id
-        """
-        )
+        """)
         # pylint: disable-next=invalid-name
-        _query_pe = self.dbmodule.prepare(
-            """
+        _query_pe = self.dbmodule.prepare("""
             SELECT base_pdid, root_pdid, ext_pdid FROM suseProductExtension
-            """
-        )
+            """)
         _query_pe.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -2012,25 +1928,20 @@ class Backend:
         """Check if the SUSE Product Repositories are already in DB.
         If not add it.
         """
-        insert_pr = self.dbmodule.prepare(
-            """
+        insert_pr = self.dbmodule.prepare("""
             INSERT INTO suseChannelTemplate
                    (product_id, root_product_id, repo_id, channel_label, parent_channel_label,
                     channel_name, mandatory, update_tag)
             VALUES (:product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
                     :channel_name, :mandatory, :update_tag)
-            """
-        )
-        delete_pr = self.dbmodule.prepare(
-            """
+            """)
+        delete_pr = self.dbmodule.prepare("""
             DELETE FROM suseChannelTemplate
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
-            """
-        )
-        update_pr = self.dbmodule.prepare(
-            """
+            """)
+        update_pr = self.dbmodule.prepare("""
             UPDATE suseChannelTemplate
                SET channel_label = :channel_label,
                    parent_channel_label = :parent_channel_label,
@@ -2040,14 +1951,11 @@ class Backend:
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
-        """
-        )
+        """)
         # pylint: disable-next=invalid-name
-        _query_pr = self.dbmodule.prepare(
-            """
+        _query_pr = self.dbmodule.prepare("""
             SELECT product_id, root_product_id, repo_id FROM suseChannelTemplate
-            """
-        )
+            """)
         _query_pr.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -2121,24 +2029,17 @@ class Backend:
         If yes, update it, if not add it.
         """
         # suseSCCRepositoryAuth should be empty in ISS case
-        self.dbmodule.prepare(
-            """
+        self.dbmodule.prepare("""
             DELETE FROM suseSCCRepositoryAuth
-        """
-        ).execute()
-        insert_repo = self.dbmodule.prepare(
-            """
+        """).execute()
+        insert_repo = self.dbmodule.prepare("""
             INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed, installer_updates)
             VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed, :installer_updates)
-            """
-        )
-        delete_repo = self.dbmodule.prepare(
-            """
+            """)
+        delete_repo = self.dbmodule.prepare("""
             DELETE FROM suseSCCRepository WHERE scc_id = :sccid
-            """
-        )
-        update_repo = self.dbmodule.prepare(
-            """
+            """)
+        update_repo = self.dbmodule.prepare("""
             UPDATE suseSCCRepository
                SET name = :name,
                    autorefresh = :autorefresh,
@@ -2148,14 +2049,11 @@ class Backend:
                    signed = :signed,
                    installer_updates = :installer_updates
              WHERE scc_id = :sccid
-             """
-        )
+             """)
         # pylint: disable-next=invalid-name
-        _query_repo = self.dbmodule.prepare(
-            """
+        _query_repo = self.dbmodule.prepare("""
             SELECT scc_id FROM suseSCCRepository
-            """
-        )
+            """)
         _query_repo.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -2221,26 +2119,20 @@ class Backend:
         """Check if cloned channel info is already in DB.
         If not add it.
         """
-        insert_cc = self.dbmodule.prepare(
-            """
+        insert_cc = self.dbmodule.prepare("""
             INSERT INTO rhnChannelCloned
                    (original_id, id)
             VALUES (:orig_id, :id)
-            """
-        )
-        delete_cc = self.dbmodule.prepare(
-            """
+            """)
+        delete_cc = self.dbmodule.prepare("""
             DELETE FROM rhnChannelCloned
              WHERE original_id = :orig_id
                AND id = :id
-            """
-        )
+            """)
         # pylint: disable-next=invalid-name
-        _query_cc = self.dbmodule.prepare(
-            """
+        _query_cc = self.dbmodule.prepare("""
             SELECT original_id orig_id, id FROM rhnChannelCloned
-            """
-        )
+            """)
         _query_cc.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -2271,19 +2163,15 @@ class Backend:
         """Check if the Subscriptions are already in DB.
         If yes, update it, if not add it.
         """
-        insert_pcf = self.dbmodule.prepare(
-            """
+        insert_pcf = self.dbmodule.prepare("""
             INSERT INTO rhnPrivateChannelFamily
                    (channel_family_id, org_id)
             VALUES (:cfid, :org_id)
-            """
-        )
+            """)
         # pylint: disable-next=invalid-name
-        _query_pcf = self.dbmodule.prepare(
-            """
+        _query_pcf = self.dbmodule.prepare("""
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
-            """
-        )
+            """)
         _query_pcf.execute()
         existing_data = [
             # pylint: disable-next=consider-using-f-string
@@ -2312,8 +2200,7 @@ class Backend:
                 # pylint: disable-next=used-before-assignment
                 % str(type(package))
             )
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             SELECT p.id
               FROM rhnPackage p
               JOIN rhnPackageName pn ON p.name_id = pn.id
@@ -2329,8 +2216,7 @@ class Backend:
                AND pa.label = :arch
                AND cv.checksum = :checksum
                AND cv.checksum_type = :checksum_type
-        """
-        )
+        """)
 
         # pylint: disable-next=redefined-builtin
         for type, chksum in list(package["checksums"].items()):
@@ -2353,11 +2239,9 @@ class Backend:
     # pylint: disable-next=invalid-name
     def lookupSuseProductIdByProductId(self, pid):
         # pylint: disable-next=invalid-name
-        _query = self.dbmodule.prepare(
-            """
+        _query = self.dbmodule.prepare("""
             SELECT id FROM suseProducts WHERE product_id = :pid
-        """
-        )
+        """)
         _query.execute(pid=pid)
         res = _query.fetchone_dict()
         if res:
@@ -2367,11 +2251,9 @@ class Backend:
     # pylint: disable-next=invalid-name
     def lookupRepoIdBySCCRepoId(self, rid):
         # pylint: disable-next=invalid-name
-        _query = self.dbmodule.prepare(
-            """
+        _query = self.dbmodule.prepare("""
             SELECT id FROM suseSCCRepository WHERE scc_id = :rid
-        """
-        )
+        """)
         _query.execute(rid=rid)
         res = _query.fetchone_dict()
         if res:
@@ -2380,25 +2262,21 @@ class Backend:
 
     # pylint: disable-next=invalid-name
     def lookupKeyword(self, keyword):
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             SELECT id
               FROM suseMdKeyword
              WHERE label = :label
-        """
-        )
+        """)
         statement.execute(label=keyword)
         kid = statement.fetchone_dict()
 
         if kid:
             return kid["id"]
         kid = self.sequences["suseMdKeyword"].next()
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             INSERT INTO suseMdKeyword (id, label)
             VALUES (:kid, :label)
-        """
-        )
+        """)
         statement.execute(kid=kid, label=keyword)
         return kid
 
@@ -2408,13 +2286,11 @@ class Backend:
         """For given label of channel return its org_id.
         If channel with given label does not exist or is NULL, return None.
         """
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             SELECT org_id
               FROM rhnChannel
              WHERE label = :label
-        """
-        )
+        """)
 
         statement.execute(label=label)
         org_id = statement.fetchone_dict()
@@ -2422,19 +2298,15 @@ class Backend:
         if org_id:
             return org_id
 
-        return
-
     # pylint: disable-next=invalid-name
     def lookupChannelProduct(self, channel):
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             SELECT id
               FROM rhnChannelProduct
              WHERE product = :product
                AND version = :version
                AND beta = :beta
-        """
-        )
+        """)
 
         statement.execute(
             product=channel["channel_product"],
@@ -2454,14 +2326,12 @@ class Backend:
         # pylint: disable-next=redefined-builtin
         id = self.sequences["rhnChannelProduct"].next()
 
-        statement = self.dbmodule.prepare(
-            """
+        statement = self.dbmodule.prepare("""
             INSERT
               INTO rhnChannelProduct
                    (id, product, version, beta)
             VALUES (:id, :product, :version, :beta)
-        """
-        )
+        """)
 
         statement.execute(
             id=id,
@@ -3046,7 +2916,6 @@ class Backend:
         # pylint: disable-next=invalid-name
         insertObj = TableInsert(tab, self.dbmodule)
         insertObj.query(hash)
-        return
 
     # pylint: disable-next=invalid-name,redefined-builtin
     def __doDelete(self, hash, tables):
@@ -3093,7 +2962,6 @@ class Backend:
         # pylint: disable-next=invalid-name
         updateObj = TableUpdate(tab, self.dbmodule)
         updateObj.query(hash)
-        return
 
     # pylint: disable-next=invalid-name
     def __lookupObjectCollection(self, objColl, tableName, ignore_missing=0):

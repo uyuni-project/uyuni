@@ -227,7 +227,7 @@ def filter_results(items, patterns, search=False):
 
 def editor(template="", delete=False):
     # create a temporary file
-    (descriptor, file_name) = mkstemp(prefix="spacecmd.")
+    descriptor, file_name = mkstemp(prefix="spacecmd.")
 
     if template and descriptor:
         try:
@@ -476,7 +476,7 @@ def build_package_name(package):
     arch_label = package.get("arch_label", "").strip()
     if arch:
         # system.listPackages uses AMD64 instead of x86_64
-        arch = re.sub("amd64", "x86_64", arch.lower())
+        arch = arch.lower().replace("amd64", "x86_64")
         # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch)
     elif arch_label:
@@ -551,7 +551,6 @@ def print_errata_list(errata):
             logging.warning(
                 _N("%s is an unknown errata type"), erratum.get("advisory_name")
             )
-            continue
 
     if not errata:
         return
