@@ -107,7 +107,6 @@ sphinx-build -b man doc/ out/
 
 %install
 install -d -m 755 %{buildroot}%{_bindir}/
-install -m 0755 bin/spacewalk-setup %{buildroot}%{_bindir}/spacewalk-setup
 install -m 0755 bin/spacewalk-setup-httpd %{buildroot}%{_bindir}/spacewalk-setup-httpd
 install -m 0755 bin/spacewalk-setup-cobbler %{buildroot}%{_bindir}/spacewalk-setup-cobbler
 
@@ -180,7 +179,6 @@ exit 0
 %if 0%{?suse_version}
 %config %{_sysconfdir}/tomcat/conf.d/tomcat_java_opts_suse.conf
 %endif
-%{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-setup-cobbler
 %{_mandir}/man[13]/*.[13]*
