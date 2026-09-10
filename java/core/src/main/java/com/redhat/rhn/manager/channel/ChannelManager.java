@@ -85,6 +85,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -721,7 +722,8 @@ public class ChannelManager extends BaseManager {
 
         //remove all activation keys that have this as a base channel
         if (toRemove.isBaseChannel()) {
-            ActivationKeyFactory.deleteActivationKeysWithBaseChannel(toRemove.getId());
+            ActivationKeyFactory.lookupByBaseChannelId(toRemove.getId())
+                                        .forEach(ak -> ActivationKeyManager.getInstance().remove(ak, user));
         }
 
         ChannelManager.queueChannelChange(label, user.getLogin(), "java::deleteChannel");
