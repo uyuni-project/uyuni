@@ -127,7 +127,7 @@
       <html:hidden name="kickstartScriptOrderForm" property="rankedPostValues" styleId="rankedPostValues"/>
       <div align="right">
             <button type="submit" name="dispatcher" class="btn btn-primary"
-                   onclick="handle_ranking('preRanksWidget','rankedPreValues','kickstartScriptOrderForm'); handle_ranking_dispatch('postRanksWidget','rankedPostValues','kickstartScriptOrderForm');">
+                   onclick="return handle_ranking('preRanksWidget','rankedPreValues') &amp;&amp; handle_ranking_dispatch('postRanksWidget','rankedPostValues');">
                    ${rhn:localize('kickstartscript.order.update')}
             </button>
       </div>
