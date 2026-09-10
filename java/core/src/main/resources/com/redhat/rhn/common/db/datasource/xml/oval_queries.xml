@@ -52,6 +52,13 @@
         </query>
     </mode>
 
+    <mode name="list_oval_platform_cpes">
+        <query>
+            SELECT plat.cpe AS cpe
+            FROM suseOVALPlatform plat;
+        </query>
+    </mode>
+
     <mode name="check_errata_availability">
         <query params="server_id">
             SELECT 1
@@ -59,6 +66,21 @@
                  rhnChannelErrata
             WHERE suseCVEServerChannel.channel_id = rhnChannelErrata.channel_id
               AND server_id = :server_id
+        </query>
+    </mode>
+
+    <mode name="list_servers_with_errata">
+        <query params="user_id">
+            SELECT userServerPerms.server_id AS server_id
+            FROM rhnUserServerPerms userServerPerms
+            WHERE userServerPerms.user_id = :user_id
+              AND EXISTS (
+                  SELECT 1
+                  FROM suseCVEServerChannel cveServerChannel
+                  JOIN rhnChannelErrata channelErrata
+                    ON cveServerChannel.channel_id = channelErrata.channel_id
+                  WHERE cveServerChannel.server_id = userServerPerms.server_id
+              );
         </query>
     </mode>
 
