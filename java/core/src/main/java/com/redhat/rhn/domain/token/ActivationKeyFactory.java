@@ -290,6 +290,9 @@ public class ActivationKeyFactory extends HibernateFactory {
      * Remove an ActivationKey
      * @param key to remove
      */
+    // WARNING!
+    // when removing an activation key, do use instead ActivationKeyManager::remove(ActivationKey key, User user),
+    // since it takes care of removing also cobbler profiles
     public static void removeKey(ActivationKey key) {
         if (key != null) {
             WriteMode m = ModeFactory.getWriteMode("System_queries",

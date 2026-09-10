@@ -682,7 +682,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 log.debug("** Removing old tokens");
                 for (ActivationKey oldkey : oldkeys) {
                     log.debug("removing key.");
-                    ActivationKeyFactory.removeKey(oldkey);
+                    ActivationKeyManager.getInstance().remove(oldkey, user);
                 }
             }
         }
