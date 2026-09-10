@@ -38,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,30 +147,50 @@ public class OVALCachingFactory extends HibernateFactory {
      * @return the list of vulnerable packages
      * */
     public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(Long serverId, String cve) {
+        return getVulnerablePackagesByProductAndCve(Set.of(serverId), cve)
+                .getOrDefault(serverId, Collections.emptyList());
+    }
+
+    /**
+     * Lookup vulnerable packages for multiple servers by their CPE and CVE.
+     *
+     * @param serverIds the server ids
+     * @param cve the cve
+     * @return vulnerable packages grouped by server id
+     */
+    public static Map<Long, List<VulnerablePackage>> getVulnerablePackagesByProductAndCve(
+            Set<Long> serverIds, String cve) {
+        if (serverIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
         SelectMode mode = ModeFactory.getMode("oval_queries", "get_vulnerable_packages");
 
         Map<String, Object> params = new HashMap<>();
         params.put("cve_name", cve);
-        params.put("server_id", serverId);
 
-        DataResult<Row> result = mode.execute(params);
+        DataResult<Row> result = mode.execute(params, new ArrayList<>(serverIds));
 
-        return result.stream().map(row -> {
-            VulnerablePackage vulnerablePackage = new VulnerablePackage();
-            vulnerablePackage.setName((String) row.get("package_name"));
-            vulnerablePackage.setFixVersion(
-                    Optional.ofNullable((String) row.get("fix_version"))
-                            .map(v -> new PackageEvr(
-                                    (String) row.get("fix_epoch"),
-                                    v,
-                                    (String) row.get("fix_release"),
-                                    (String) row.get("fix_type")
-                            ))
-                            .orElse(null)
-            );
-            vulnerablePackage.setAffected((Boolean) row.get("affected"));
-            return vulnerablePackage;
-        }).collect(Collectors.toList());
+        return result.stream().collect(Collectors.groupingBy(
+                row -> (Long) row.get("server_id"),
+                Collectors.mapping(OVALCachingFactory::toVulnerablePackage, Collectors.toList())));
+    }
+
+    private static VulnerablePackage toVulnerablePackage(Row row) {
+        VulnerablePackage vulnerablePackage = new VulnerablePackage();
+        vulnerablePackage.setName((String) row.get("package_name"));
+        vulnerablePackage.setFixVersion(
+                Optional.ofNullable((String) row.get("fix_version"))
+                        .map(v -> new PackageEvr(
+                                (String) row.get("fix_epoch"),
+                                v,
+                                (String) row.get("fix_release"),
+                                (String) row.get("fix_type")
+                        ))
+                        .orElse(null)
+        );
+        vulnerablePackage.setAffected((Boolean) row.get("affected"));
+        return vulnerablePackage;
     }
 
     /**

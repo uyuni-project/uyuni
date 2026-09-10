@@ -6,8 +6,9 @@
     </callable-mode>
 
     <mode name="get_vulnerable_packages">
-        <query params="cve_name, server_id">
-            SELECT cve.name,
+        <query params="cve_name">
+            SELECT s.id AS server_id,
+                cve.name,
                 vulnerablePkg.name AS package_name,
                 (vulnerablePkg.fix_version).epoch AS fix_epoch,
                 (vulnerablePkg.fix_version).version AS fix_version,
@@ -23,7 +24,7 @@
               ON platform.id = platVulnerable.platform_id
             JOIN rhnServer s
               ON s.cpe = platform.cpe
-                AND s.id = :server_id
+                AND s.id IN (%s)
             JOIN suseovalvulnerablepackage vulnerablePkg
               ON vulnerablePkg.plat_vuln_id = platVulnerable.id
             JOIN rhnPackageName pn
@@ -32,7 +33,8 @@
               ON sp.server_id = s.id
                 AND sp.name_id = pn.id
             JOIN rhnPackageEVR pe
-              ON pe.id = sp.evr_id;
+              ON pe.id = sp.evr_id
+            ORDER BY s.id, vulnerablePkg.name;
         </query>
     </mode>
 

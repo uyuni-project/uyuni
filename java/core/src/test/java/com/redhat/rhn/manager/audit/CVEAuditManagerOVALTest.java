@@ -47,6 +47,7 @@ import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.parser.OvalTestUtils;
+import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -548,6 +549,40 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         assertEquals(Set.of(serverWithErrata.getId()), expectedServersWithErrata);
         assertEquals(expectedServersWithErrata, OVALCachingFactory.getServersWithErrata(user.getId()));
         assertTrue(OVALCachingFactory.getOVALPlatformCpes().contains(CPE_OPENSUSE_LEAP_15_4));
+    }
+
+    @Test
+    void testBatchVulnerablePackagesAreGroupedByServer() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+        Server firstServer = createTestServer(user);
+        firstServer.setCpe(CPE_OPENSUSE_LEAP_15_4);
+        Server secondServer = createTestServer(user);
+        secondServer.setCpe(CPE_OPENSUSE_LEAP_15_4);
+
+        Channel channel = createTestChannel(user);
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
+        Package installedPackage = createLaterTestPackage(user, null, channel, unpatched,
+                "0", "4.12.14", "150100.197.137.2");
+        createTestInstalledPackage(installedPackage, firstServer);
+        Package unrelatedPackage = createTestPackage(user, channel, "noarch");
+        unrelatedPackage.setPackageName(createTestPackageName("unrelated-package"));
+        createTestInstalledPackage(unrelatedPackage, secondServer);
+        TestUtils.flushSession();
+
+        Map<Long, List<VulnerablePackage>> packagesByServer =
+                OVALCachingFactory.getVulnerablePackagesByProductAndCve(
+                        Set.of(firstServer.getId(), secondServer.getId()), "CVE-2022-2991");
+
+        assertEquals(1, packagesByServer.size());
+        assertTrue(packagesByServer.containsKey(firstServer.getId()));
+        assertFalse(packagesByServer.containsKey(secondServer.getId()));
+        assertEquals(List.of("kernel-debug-base"), packagesByServer.get(firstServer.getId()).stream()
+                .map(VulnerablePackage::getName).toList());
     }
 
     @Test
