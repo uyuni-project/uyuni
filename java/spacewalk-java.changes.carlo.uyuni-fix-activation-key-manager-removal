@@ -1,0 +1,3 @@
+- Substitute uses of "ActivationKeyFactory.removeKey()" with
+  "ActivationKeyManager.remove()" to take care of cobbler
+  when removing activation keys
