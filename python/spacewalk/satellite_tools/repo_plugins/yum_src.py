@@ -76,7 +76,6 @@ from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
 
-
 # namespace prefix to parse patches.xml file
 PATCHES_XML = "{http://novell.com/package/metadata/suse/patches}"
 REPO_XML = "{http://linux.duke.edu/metadata/repo}"
@@ -94,6 +93,10 @@ REPOSYNC_ZYPPER_CONF = "/etc/rhn/spacewalk-repo-sync/zypper.conf"
 REPOSYNC_EXTRA_HTTP_HEADERS_CONF = "/etc/rhn/spacewalk-repo-sync/extra_headers.conf"
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r"^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)")
+
+ZYPP_PLUGINS_PATH = "usr/lib/zypp/plugins"
+HOST_ZYPP_PLUGINS_PATH = os.path.join("/", ZYPP_PLUGINS_PATH)
+REPOSYNC_ZYPPER_PLUGINS_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, ZYPP_PLUGINS_PATH)
 
 # possible urlgrabber errno
 NO_MORE_MIRRORS_TO_TRY = 256
@@ -130,6 +133,19 @@ class ZyppoSync:
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
             raise
+
+        try:
+            # Plugins installed in the host are made available in the
+            # chrooted environment
+            self.__link_host_plugins()
+        except Exception as exc:
+            # pylint: disable-next=consider-using-f-string
+            msg = "Unable to link the host Zypper plugins into {}: {}".format(
+                REPOSYNC_ZYPPER_PLUGINS_PATH, exc
+            )
+            rhnLog.log_clean(0, msg)
+            sys.stderr.write(str(msg) + "\n")
+
         try:
             # Synchronize new GPG keys that come from the Spacewalk GPG keyring
             self.__synchronize_gpg_keys()
@@ -139,6 +155,40 @@ class ZyppoSync:
             msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
+
+    def __link_host_plugins(self):
+        """
+        Make the Zypper plugins installed in the host system available inside the
+        reposync Zypper root
+
+        """
+        if not os.path.isdir(HOST_ZYPP_PLUGINS_PATH):
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "No Zypper plugins to link from {}".format(HOST_ZYPP_PLUGINS_PATH),
+            )
+            return
+        self.__link_missing_entries(
+            HOST_ZYPP_PLUGINS_PATH, REPOSYNC_ZYPPER_PLUGINS_PATH
+        )
+
+    def __link_missing_entries(self, src_dir, dst_dir):
+        """
+        Symlink every entry of 'src_dir' that is missing in 'dst_dir'
+
+        """
+        if not os.path.isdir(dst_dir):
+            os.makedirs(dst_dir)
+        for entry in os.listdir(src_dir):
+            src = os.path.join(src_dir, entry)
+            dst = os.path.join(dst_dir, entry)
+            if not os.path.lexists(dst):
+                os.symlink(src, dst)
+                # pylint: disable-next=consider-using-f-string
+                log(3, "Linked Zypper plugin {} to {}".format(src, dst))
+            elif os.path.isdir(src) and os.path.isdir(dst) and not os.path.islink(dst):
+                self.__link_missing_entries(src, dst)
 
     def __synchronize_gpg_keys(self):
         """
@@ -613,7 +663,7 @@ class ContentSource:
 
         # keep authtokens for mirroring
         # pylint: disable-next=invalid-name,unused-variable
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        _scheme, _netloc, _path, query, _fragid = urlsplit(url)
         if query:
             self.authtoken = query
 
@@ -796,7 +846,7 @@ class ContentSource:
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
-                    (s, b, p, q, f, o) = urlparse(url)
+                    s, b, p, q, f, o = urlparse(url)
                     if p[-1] != "/":
                         p = p + "/"
                 # pylint: disable-next=unused-variable
@@ -881,6 +931,20 @@ class ContentSource:
             repo.baseurl = mirrorlist
         repo.urls = repo.baseurl
 
+        # If the repository provides a PQC (Post-Quantum Cryptography) signature
+        # for its metadata (a 'repomd.xml.p7s' file), instruct Zypper to validate
+        # the repository metadata using the PQC verification plugin.
+        pqc_sigcheck = ""
+        if self._has_pqc_signature():
+            pqc_sigcheck = "repo_sigcheck_plugin=pqcverification\n"
+            log(
+                0,
+                # pylint: disable-next=consider-using-f-string
+                "PQC signature (repomd.xml.p7s) found for repository '{}'. "
+                "Enabling 'repo_sigcheck_plugin=pqcverification' for metadata "
+                "validation.".format(self.channel_label or self.reponame),
+            )
+
         # Manually call Zypper
         repo_cfg = """[{reponame}]
 enabled=1
@@ -889,7 +953,7 @@ autorefresh=0
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
-"""
+{pqc_sigcheck}"""
         if uln_repo:
             # pylint: disable-next=invalid-name,consider-using-f-string
             _url = "plugin:spacewalk-uln-resolver?url={}".format(zypp_repo_url)
@@ -940,6 +1004,7 @@ type=rpm-md
                     repo_url=_repo_url,
                     url=_url,
                     gpgcheck="0" if self.insecure else "1",
+                    pqc_sigcheck=pqc_sigcheck,
                 )
             )
         zypper_cmd = "zypper"
@@ -977,6 +1042,29 @@ type=rpm-md
             )
 
         repo.is_configured = True
+
+    def _has_pqc_signature(self):
+        """
+        Check whether the repository provides a PQC (Post-Quantum Cryptography)
+        signature for its metadata.
+
+        This is determined by the presence of a 'repodata/repomd.xml.p7s' file
+        in the repository.
+
+        :returns: bool
+        """
+        try:
+            return self.get_file("repodata/repomd.xml.p7s") is not None
+        # pylint: disable-next=broad-exception-caught
+        except Exception as exc:
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "Could not check for PQC signature on repository {}: {}".format(
+                    self.name, exc
+                ),
+            )
+            return False
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
