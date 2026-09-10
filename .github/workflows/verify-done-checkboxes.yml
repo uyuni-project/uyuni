@@ -2,7 +2,7 @@ name: Verify DONE checkboxes
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
@@ -11,6 +11,7 @@ permissions:
 jobs:
   check-done-checkboxes:
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
 
     steps:
       - name: Verify all DONE checkboxes are checked in a PR description
@@ -27,7 +28,7 @@ jobs:
                repo: context.repo.repo,
                pull_number: prNumber
             });
- 
+
             const description = pr.body ?? "";
             console.log(description)
 
