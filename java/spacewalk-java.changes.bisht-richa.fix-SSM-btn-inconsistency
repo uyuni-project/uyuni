@@ -1,0 +1,2 @@
+- Fixed inconsistent SSM and Convert to Proxy buttons state on the
+  System Details tabs. (bsc#1268632)

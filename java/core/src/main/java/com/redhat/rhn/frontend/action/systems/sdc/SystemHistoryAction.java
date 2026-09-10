@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -48,6 +49,8 @@ public class SystemHistoryAction extends RhnAction implements Listable<SystemEve
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         Server server = context.lookupAndBindServer();
+        User user = context.getCurrentUser();
+        SdcHelper.ssmCheck(request, sid, user);
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
