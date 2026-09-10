@@ -5,10 +5,29 @@ import type { Settings } from "./Utils";
 
 export const COCO_ATTESTATION_ACTION_TYPE = "coco.attestation";
 
-export type SingleCoCoSettingsResponse = {
+type CurrentSingleCoCoSettingsResponse = {
   supported: boolean;
   settings: Settings;
 };
+
+type LegacySingleCoCoSettingsResponse = Pick<Settings, "enabled" | "environmentType" | "attestOnBoot"> & {
+  supported: boolean;
+  attestOnSchedule?: Settings["attestOnSchedule"];
+  inputData?: Settings["inputData"];
+};
+
+export type SingleCoCoSettingsResponse = CurrentSingleCoCoSettingsResponse | LegacySingleCoCoSettingsResponse;
+
+export function normalizeSingleCoCoSettingsResponse(
+  response: SingleCoCoSettingsResponse
+): CurrentSingleCoCoSettingsResponse {
+  if ("settings" in response) {
+    return response;
+  }
+
+  const { supported, attestOnSchedule, inputData = {}, ...settings } = response;
+  return { supported, settings: { ...settings, attestOnSchedule, inputData } };
+}
 
 export type CoCoScheduleRequest = {
   actionType: typeof COCO_ATTESTATION_ACTION_TYPE;
