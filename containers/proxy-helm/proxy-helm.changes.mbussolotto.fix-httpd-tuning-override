@@ -1,0 +1,3 @@
+- Mount user apache_tuning conf as zz_apache_tuning conf so it
+  overrides the vendor spacewalk-proxy conf MPM settings
+  (bsc#1277719)
