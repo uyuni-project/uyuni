@@ -100,19 +100,17 @@ class report:
             self.column_indexes = {}
             self.column_types = {}
             self.column_descriptions = {}
-            # pylint: disable-next=anomalous-backslash-in-string,anomalous-backslash-in-string
-            lines = filter(None, re.split("\s*\n\s*", value))
+            lines = filter(None, re.split(r"\s*\n\s*", value))
             i = 0
             for l in lines:
                 description = None
                 try:
-                    # pylint: disable-next=anomalous-backslash-in-string
-                    (c, description) = re.split("\s+", l, 1)
+                    c, description = re.split(r"\s+", l, maxsplit=1)
                 # pylint: disable-next=bare-except
                 except:
                     c = l
                 try:
-                    (c, t) = re.split(":", c, 1)
+                    c, t = re.split(":", c, maxsplit=1)
                 # pylint: disable-next=bare-except
                 except:
                     t = "s"
@@ -124,18 +122,15 @@ class report:
                     self.column_descriptions[c] = description
                 i = i + 1
         elif tag == "params":
-            # pylint: disable-next=anomalous-backslash-in-string,anomalous-backslash-in-string
-            lines = filter(None, re.split("\s*\n\s*", value))
+            lines = filter(None, re.split(r"\s*\n\s*", value))
             for l in lines:
-                # pylint: disable-next=anomalous-backslash-in-string
-                (p, v) = re.split("\s+", l, 1)
+                p, v = re.split(r"\s+", l, maxsplit=1)
                 value = v
                 if p in self.params_values:
                     value = self.params_values[p]
                 else:
                     try:
-                        # pylint: disable-next=anomalous-backslash-in-string
-                        (component, option) = re.split("\.", v, 1)
+                        component, option = re.split(r"\.", v, maxsplit=1)
                         cfg = RHNOptions(component)
                         cfg.parse()
                         value = str(cfg.get(option))
@@ -157,7 +152,7 @@ class report:
                 # pylint: disable-next=singleton-comparison
                 if m == None:
                     continue
-                (col, id_col) = (m.group(1), m.group(3))
+                col, id_col = (m.group(1), m.group(3))
                 # pylint: disable-next=singleton-comparison
                 if col != None:
                     self.multival_column_names[col] = id_col
