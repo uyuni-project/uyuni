@@ -103,6 +103,24 @@ jobs:
         # Remove duplicates and trim whitespace
         TEST_TARGETS=$(echo "$TEST_TARGETS" | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
 
+        # Exclude tests that run on dedicated containers triggered by other jobs
+        EXCLUDED_DIRS=(
+            "client/tools/mgr-push/test/"
+            "python/billingdataservice/tests/"
+            "python/spacewalk/server/importlib/test/"
+            "python/spacewalk/server/test/"
+            "python/test/unit/"
+            "spacecmd/tests/"
+            "spacewalk/setup/share/tests/"
+            "susemanager/src/test/"
+            "susemanager-utils/mgr-libmod/tests/"
+            "susemanager-utils/susemanager-sls/test/"
+            "utils/tests/"
+        )
+        RAW_EXCLUDE=$(printf "|%s" "${EXCLUDED_DIRS[@]}"); EXCLUDE_PATTERN="^(${RAW_EXCLUDE:1})"
+
+        TEST_TARGETS=$(echo "$TEST_TARGETS" | tr ' ' '\n' | grep -vE "$EXCLUDE_PATTERN" | xargs || true)
+
         if [ -n "$TEST_TARGETS" ]; then
           echo "Running pytest on: $TEST_TARGETS"
           pytest $TEST_TARGETS
