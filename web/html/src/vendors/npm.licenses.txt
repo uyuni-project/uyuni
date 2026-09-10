@@ -8525,7 +8525,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: brace-expansion@1.1.12
+Package: brace-expansion@1.1.18
 License text:
 
 MIT License
