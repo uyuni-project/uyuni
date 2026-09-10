@@ -59,6 +59,7 @@ options:
   -p, --ssh-port SSH port the proxy listens one. Default: 8022
   -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy
             certicate in PEM format. May be provided multiple times.
+  --additional-fqdn  additional FQDN of the proxy. Can be provided multiple times.
 
 examples:
   proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key
@@ -75,6 +76,9 @@ def do_proxy_container_config(self, args):
     arg_parser.add_argument("-k", "--key", default="")
     arg_parser.add_argument("-o", "--output", default="config.tar.gz")
     arg_parser.add_argument("-p", "--ssh-port", type=int, default=8022)
+    arg_parser.add_argument(
+        "--additional-fqdn", dest="additional_fqdns", action="append", default=[]
+    )
 
     args, options = parse_command_arguments(args, arg_parser)
 
@@ -100,6 +104,7 @@ def do_proxy_container_config(self, args):
         intermediate_cas,
         cert,
         key,
+        options.additional_fqdns,
     )
 
     with open(options.output, "wb") as fd:
@@ -127,6 +132,7 @@ parameters:
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
   -p, --ssh-port SSH port the proxy listens one. Default: 8022
+  --additional-fqdn  additional FQDN of the proxy. Can be provided multiple times.
 
 examples:
   proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org
@@ -139,13 +145,16 @@ def do_proxy_container_config_nossl(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument("-o", "--output", default="config.tar.gz")
     arg_parser.add_argument("-p", "--ssh-port", type=int, default=8022)
+    arg_parser.add_argument(
+        "--additional-fqdn", dest="additional_fqdns", action="append", default=[]
+    )
 
     args, options = parse_command_arguments(args, arg_parser)
 
     try:
         proxy_fqdn, server_fqdn, max_cache, email = args
     except ValueError:
-        self.help_proxy_container_config()
+        self.help_proxy_container_config_nossl()
         return
 
     config = self.client.proxy.container_config(
@@ -155,6 +164,7 @@ def do_proxy_container_config_nossl(self, args):
         server_fqdn,
         int(max_cache),
         email,
+        options.additional_fqdns,
     )
 
     with open(options.output, "wb") as fd:

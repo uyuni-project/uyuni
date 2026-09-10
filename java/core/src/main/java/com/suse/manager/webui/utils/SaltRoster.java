@@ -41,6 +41,7 @@ public class SaltRoster {
     /**
      * Add host data to this roster.
      *
+     * @param minionId The minion ID/key in the roster
      * @param host The IP address or DNS name of the remote host
      * @param user The user to login as
      * @param passwd The password to login with
@@ -54,7 +55,7 @@ public class SaltRoster {
      * @param sshPreflightScriptPath The path to salt-ssh pre flight script
      * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
      */
-    public void addHost(String host, String user, Optional<String> passwd,
+    public void addHost(String minionId, String host, String user, Optional<String> passwd,
             Optional<String> privKeyPath, Optional<String> privKeyPasswd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
             Optional<List<String>> sshOption, Optional<Integer> timeout,
@@ -78,7 +79,55 @@ public class SaltRoster {
         if (sshPreflightScriptPath.isPresent()) {
             sshPreflightScriptArgs.ifPresent(value -> hostData.put("ssh_pre_flight_args", value));
         }
-        data.put(host, hostData);
+        data.put(minionId, hostData);
+    }
+
+    /**
+     * Add host data to this roster.
+     *
+     * @param host The IP address or DNS name of the remote host
+     * @param user The user to login as
+     * @param passwd The password to login with
+     * @param privKeyPath SSH private key absolute file path
+     * @param privKeyPasswd SSH private key passphrase
+     * @param port The target system's ssh port number
+     * @param remotePortForwarding SSH tunneling options
+     * @param sshOption Additional SSH option to pass to salt-ssh
+     * @param timeout SSH connect timeout
+     * @param minionOpts Minion configuration parameters
+     * @param sshPreflightScriptPath The path to salt-ssh pre flight script
+     * @param sshPreflightScriptArgs The list of arguments for salt-ssh pre flight script
+     */
+    public void addHost(String host, String user, Optional<String> passwd,
+            Optional<String> privKeyPath, Optional<String> privKeyPasswd,
+            Optional<Integer> port, Optional<String> remotePortForwarding,
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts,
+            Optional<String> sshPreflightScriptPath,
+            Optional<List<Object>> sshPreflightScriptArgs) {
+        addHost(host, host, user, passwd, privKeyPath, privKeyPasswd, port, remotePortForwarding, sshOption, timeout,
+                minionOpts, sshPreflightScriptPath, sshPreflightScriptArgs);
+    }
+
+    /**
+     * Add host data to this roster.
+     *
+     * @param minionId The minion ID/key in the roster
+     * @param host The IP address or DNS name of the remote host
+     * @param user The user to login as
+     * @param passwd The password to login with
+     * @param port The target system's ssh port number
+     * @param remotePortForwarding SSH tunneling options
+     * @param sshOption Additional SSH option to pass to salt-ssh
+     * @param timeout SSH connect timeout
+     * @param minionOpts Minion configuration parameters
+     */
+    public void addHost(String minionId, String host, String user, Optional<String> passwd,
+            Optional<Integer> port, Optional<String> remotePortForwarding,
+            Optional<List<String>> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts) {
+        addHost(minionId, host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding,
+                sshOption, timeout, minionOpts, Optional.empty(), Optional.empty());
     }
 
     /**
@@ -97,8 +146,7 @@ public class SaltRoster {
             Optional<Integer> port, Optional<String> remotePortForwarding,
             Optional<List<String>> sshOption, Optional<Integer> timeout,
             Optional<Map<String, Object>> minionOpts) {
-        addHost(host, user, passwd, Optional.empty(), Optional.empty(), port, remotePortForwarding, sshOption, timeout,
-                minionOpts, Optional.empty(), Optional.empty());
+        addHost(host, host, user, passwd, port, remotePortForwarding, sshOption, timeout, minionOpts);
     }
 
     /**

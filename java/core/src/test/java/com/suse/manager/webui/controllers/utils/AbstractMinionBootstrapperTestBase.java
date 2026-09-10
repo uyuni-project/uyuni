@@ -115,6 +115,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(true));
             allowing(input).getProxy();
             will(returnValue(null));
+            allowing(input).maybeGetProxyFqdn();
+            will(returnValue(empty()));
         }});
         return input;
     }

@@ -599,7 +599,20 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             ServerFactory.save(minion);
 
             if (isSaltSSH) {
-                minion.updateServerPaths(saltSSHProxyId);
+                Optional<String> customProxyFqdn = MinionPendingRegistrationService.get(minionId)
+                        .flatMap(MinionPendingRegistrationService.PendingMinion::getProxyFqdn);
+                if (customProxyFqdn.isPresent()) {
+                    LOG.debug("RegisterMinionEventMessageAction: updating server path for minion {} " +
+                                    "with custom proxy FQDN {}",
+                            minionId, customProxyFqdn.get());
+                    minion.updateServerPaths(customProxyFqdn.get());
+                }
+                else {
+                    LOG.debug("RegisterMinionEventMessageAction: updating server path for minion {} " +
+                                    "with saltSSHProxyId: {}",
+                            minionId, saltSSHProxyId);
+                    minion.updateServerPaths(saltSSHProxyId);
+                }
                 minion.setSSHPushPort(sshPort.orElse(SaltSSHService.SSH_PUSH_PORT));
             }
             else {

@@ -159,7 +159,7 @@ export function ProxyConfig({
             labelClass="col-md-3"
             divClass="col-md-6"
             options={parents}
-            isClearable={true}
+            isClearable={false}
           />
           <Text
             name="proxyPort"

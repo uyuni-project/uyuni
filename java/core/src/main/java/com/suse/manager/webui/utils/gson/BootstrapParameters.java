@@ -41,6 +41,7 @@ public class BootstrapParameters {
     private Optional<String> reactivationKey;
     private boolean ignoreHostKeys;
     private Optional<Long> proxyId;
+    private Optional<String> proxyFqdn = empty();
 
     /**
      * Create {@link BootstrapParameters} for password authentication.
@@ -127,23 +128,29 @@ public class BootstrapParameters {
      */
     public static BootstrapParameters createFromJson(BootstrapHostsJson json) {
         final BootstrapHostsJson.AuthMethod authMethod = json.maybeGetAuthMethod().orElse(AuthMethod.PASSWORD);
+        BootstrapParameters params;
         switch (authMethod) {
             case PASSWORD:
-                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                params = new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
                         json.maybeGetPassword(), json.getActivationKeys(), json.maybeGetReactivationKey(),
                         json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
+                break;
             case SSH_KEY:
-                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                params = new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
                         json.getPrivKey(), json.maybeGetPrivKeyPwd(), json.getActivationKeys(),
                         json.maybeGetReactivationKey(), json.getIgnoreHostKeys(),
                         Optional.ofNullable(json.getProxy()));
+                break;
             case ANSIBLE_PREAUTH:
-                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                params = new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
                         json.getAnsibleInventoryId(), json.getActivationKeys(), json.maybeGetReactivationKey(),
                         json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
+                break;
             default:
                 throw new UnsupportedOperationException("Unsupported auth method " + authMethod);
         }
+        params.setProxyFqdn(json.maybeGetProxyFqdn());
+        return params;
     }
 
     /**
@@ -319,6 +326,24 @@ public class BootstrapParameters {
      */
     public Optional<Long> getProxyId() {
         return proxyId;
+    }
+
+    /**
+     * Gets the proxy FQDN.
+     *
+     * @return proxyFqdn
+     */
+    public Optional<String> getProxyFqdn() {
+        return proxyFqdn;
+    }
+
+    /**
+     * Sets the proxy FQDN.
+     *
+     * @param proxyFqdnIn proxy FQDN
+     */
+    public void setProxyFqdn(Optional<String> proxyFqdnIn) {
+        this.proxyFqdn = proxyFqdnIn;
     }
 
     /**

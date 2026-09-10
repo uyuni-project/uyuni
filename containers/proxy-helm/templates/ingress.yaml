@@ -32,8 +32,27 @@ spec:
               number: 80
         path: /
         pathType: Prefix
+  {{- if hasKey $config "additional_fqdns" }}
+  {{- range $config.additional_fqdns }}
+  - host: {{ . }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: web
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  {{- end }}
+  {{- end }}
   tls:
   - hosts:
     - {{ $config.proxy_fqdn }}
+    {{- if hasKey $config "additional_fqdns" }}
+    {{- range $config.additional_fqdns }}
+    - {{ . }}
+    {{- end }}
+    {{- end }}
     secretName: proxy-cert
 {{- end }}

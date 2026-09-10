@@ -8612,6 +8612,48 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use Proxy FQDN instead of ID.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param proxyFqdn FQDN of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @apidoc.doc Bootstrap a system for management via either Salt or Salt SSH. Use proxy FQDN instead of ID.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @apidoc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @apidoc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @apidoc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @apidoc.param #param_desc("string", "activationKey", "Activation key")
+     * @apidoc.param #param_desc("string", "proxyFqdn", "FQDN of proxy to use")
+     * @apidoc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapByProxyFqdn(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String proxyFqdn, Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(proxyFqdn);
+        if (proxy.isEmpty()) {
+            throw new NoSuchSystemException("Proxy not found: " + proxyFqdn);
+        }
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                empty(), true, of(proxy.get().getId()));
+        params.setProxyFqdn(of(proxyFqdn));
+        log.debug("bootstrapByProxyFqdn called: {}", params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
      * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
@@ -8647,6 +8689,51 @@ public class SystemHandler extends BaseHandler {
         BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
                 maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxyId.longValue()));
         log.debug("bootstrapWithPrivateSshKey called with proxyId: {}", params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication. Use Proxy FQDN instead of ID.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param proxyFqdn FQDN of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @apidoc.doc Bootstrap a system for management via either Salt or Salt SSH. Use proxy FQDN instead of ID.
+     * Use SSH private key for authentication.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @apidoc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @apidoc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @apidoc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @apidoc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @apidoc.param #param_desc("string", "activationKey", "Activation key")
+     * @apidoc.param #param_desc("string", "proxyFqdn", "FQDN of proxy to use")
+     * @apidoc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKeyByProxyFqdn(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String proxyFqdn, Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(proxyFqdn);
+        if (proxy.isEmpty()) {
+            throw new NoSuchSystemException("Proxy not found: " + proxyFqdn);
+        }
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, empty(), true, of(proxy.get().getId()));
+        params.setProxyFqdn(of(proxyFqdn));
+        log.debug("bootstrapWithPrivateSshKeyByProxyFqdn called: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -8767,6 +8854,50 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH. Use proxy FQDN instead of ID.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyFqdn FQDN of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @apidoc.doc Bootstrap a system for management via either Salt or Salt SSH. Use proxy FQDN instead of ID.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @apidoc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @apidoc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @apidoc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @apidoc.param #param_desc("string", "activationKey", "Activation key")
+     * @apidoc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @apidoc.param #param_desc("string", "proxyFqdn", "FQDN of proxy to use")
+     * @apidoc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapByProxyFqdn(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, String reactivationKey, String proxyFqdn,
+            Boolean saltSSH) {
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(proxyFqdn);
+        if (proxy.isEmpty()) {
+            throw new NoSuchSystemException("Proxy not found: " + proxyFqdn);
+        }
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                maybeString(reactivationKey), true, of(proxy.get().getId()));
+        params.setProxyFqdn(of(proxyFqdn));
+        log.debug("bootstrapByProxyFqdn called with reactivationKey: {}", params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      * Use SSH private key for authentication.
      *
@@ -8807,6 +8938,55 @@ public class SystemHandler extends BaseHandler {
                 maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
                 of(proxyId.longValue()));
         log.debug("bootstrapWithPrivateSshKey called with reactivation key and proxyId: {}", params);
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     * Use SSH private key for authentication. Use Proxy FQDN instead of ID.
+     *
+     * NOTE: Arguments contain sensitive data, which is hidden from logging in {@link XmlRpcLoggingInvocationProcessor}
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPrivKey SSH private key as a string in PEM format
+     * @param sshPrivKeyPass SSH passphrase for the key (use empty string for no passphrase)
+     * @param activationKey activation key to be used for registration
+     * @param reactivationKey reactivation key to be used for registration
+     * @param proxyFqdn FQDN of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @apidoc.doc Bootstrap a system for management via either Salt or Salt SSH. Use proxy FQDN instead of ID.
+     * Use SSH private key for authentication.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @apidoc.param #param_desc("int", "sshPort", "SSH port on target machine")
+     * @apidoc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @apidoc.param #param_desc("string", "sshPrivKey", "SSH private key as a string in PEM format")
+     * @apidoc.param #param_desc("string", "sshPrivKeyPass",
+     * "SSH passphrase for the key (use empty string for no passphrase)")
+     * @apidoc.param #param_desc("string", "activationKey", "Activation key")
+     * @apidoc.param #param_desc("string", "reactivationKey", "Reactivation key")
+     * @apidoc.param #param_desc("string", "proxyFqdn", "FQDN of proxy to use")
+     * @apidoc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int bootstrapWithPrivateSshKeyByProxyFqdn(User user, String host, Integer sshPort, String sshUser,
+            String sshPrivKey, String sshPrivKeyPass, String activationKey, String reactivationKey,
+            String proxyFqdn, Boolean saltSSH) {
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        Optional<Server> proxy = ServerFactory.lookupProxyServer(proxyFqdn);
+        if (proxy.isEmpty()) {
+            throw new NoSuchSystemException("Proxy not found: " + proxyFqdn);
+        }
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, maybeString(reactivationKey), true,
+                of(proxy.get().getId()));
+        params.setProxyFqdn(of(proxyFqdn));
+        log.debug("bootstrapWithPrivateSshKeyByProxyFqdn called with reactivation key and proxyFqdn: {}", params);
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 

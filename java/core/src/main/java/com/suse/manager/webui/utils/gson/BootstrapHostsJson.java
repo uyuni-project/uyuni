@@ -41,6 +41,7 @@ public class BootstrapHostsJson {
     private String reactivationKey;
     private boolean ignoreHostKeys;
     private Long proxy;
+    private String proxyFqdn;
 
     /**
      * Authentication method for bootstrapping:
@@ -155,6 +156,20 @@ public class BootstrapHostsJson {
      */
     public Long getProxy() {
         return proxy;
+    }
+
+    /**
+     * @return the specific FQDN of the proxy
+     */
+    public String getProxyFqdn() {
+        return proxyFqdn;
+    }
+
+    /**
+     * @return an optional of the proxy FQDN
+     */
+    public Optional<String> maybeGetProxyFqdn() {
+        return ofNullable(proxyFqdn);
     }
 
     /**

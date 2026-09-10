@@ -141,7 +141,8 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     public void getFormDataWithWhenNewProxyConfiguration() throws Exception {
         final String expectedCurrentConfig = "{\"sourceMode\":\"rpm\",\"registryMode\":\"simple\"," +
                 "\"registryBaseTag\":\"99.98.97\",\"registryBaseURL\":" +
-                "\"registry.suse.com/suse/multi-linux-manager/99.98/x86_64\"}";
+                "\"registry.suse.com/suse/multi-linux-manager/99.98/x86_64\"," +
+                "\"parentFQDN\":\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"}";
         final String expectedParents = "[\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"]";
 
         Server server = ServerFactoryTest.createTestServer(user, false,

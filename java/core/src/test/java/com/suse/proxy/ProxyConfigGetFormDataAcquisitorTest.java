@@ -31,8 +31,12 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataAcquisitor;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
@@ -88,19 +92,25 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
         Server proxyA = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
+        proxyA.getFqdns().add(new ServerFQDN(proxyA, proxyA.getName()));
+        proxyA = ServerFactory.save(proxyA);
 
         Server proxyB = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
+        proxyB.getFqdns().add(new ServerFQDN(proxyB, proxyB.getName()));
+        proxyB = ServerFactory.save(proxyB);
 
         ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_NORMAL);
 
+        Set<ServerPath> paths = ServerFactory.createServerPaths(testMinionServer, proxyA, proxyA.getName());
+        testMinionServer.getServerPaths().addAll(paths);
+        testMinionServer = TestUtils.saveAndFlush(testMinionServer);
+
         final String[] expectedElectableParentsFqdn = new String[]{
-                Config.get().getString(ConfigDefaults.SERVER_HOSTNAME),
                 proxyA.getName(),
-                proxyB.getName(),
         };
 
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
@@ -118,6 +128,7 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
         Set<String> actualElectableParentsFqdn = new HashSet<>(proxyConfigGetFormDataContext.getElectableParentsFqdn());
         assertEquals(expectedElectableParentsFqdn.length, actualElectableParentsFqdn.size());
         assertTrue(actualElectableParentsFqdn.containsAll(Set.of(expectedElectableParentsFqdn)));
+        assertFalse(actualElectableParentsFqdn.contains(proxyB.getName()));
     }
 
 }

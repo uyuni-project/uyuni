@@ -300,6 +300,46 @@ public class ProxyHandler extends BaseHandler {
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
                                   Integer maxCache, String email,
                                   String rootCA, List<String> intermediateCAs, String proxyCrt, String proxyKey) {
+        return containerConfig(loggedInUser, proxyName, proxyPort, server, maxCache, email,
+                rootCA, intermediateCAs, proxyCrt, proxyKey, List.of());
+    }
+
+    /**
+     * Create and provide proxy container configuration.
+     *
+     * @param loggedInUser the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param proxyPort the SSH port the proxy listens on
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param rootCA the root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCrt proxy CRT content in PEM format
+     * @param proxyKey proxy SSL private key in PEM format
+     * @param additionalFqdns additional FQDNs of the proxy
+     *
+     * @return the configuration file
+     *
+     * @apidoc.doc Compute and download the configuration for proxy containers
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param_desc("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param_desc("string", "email", "The proxy admin email")
+     * @apidoc.param #param_desc("string", "rootCA", "The root CA used to sign the SSL certificate in PEM format")
+     * @apidoc.param #array_single_desc("string", "intermediateCAs",
+     *                                  "intermediate CAs used to sign the SSL certificate in PEM format")
+     * @apidoc.param #param_desc("string", "proxyCrt", "proxy CRT content in PEM format")
+     * @apidoc.param #param_desc("string", "proxyKey", "proxy SSL private key in PEM format")
+     * @apidoc.param #array_single_desc("string", "additionalFqdns", "Additional FQDNs of the proxy")
+     *  @apidoc.returntype #array_single("byte", "binary object - package file")
+     */
+    public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
+                                  Integer maxCache, String email,
+                                  String rootCA, List<String> intermediateCAs, String proxyCrt, String proxyKey,
+                                  List<String> additionalFqdns) {
         try {
             SSLCertPair proxyCrtKey = new SSLCertPair(proxyCrt, proxyKey);
             if (proxyCrtKey.isInvalid()) {
@@ -308,7 +348,7 @@ public class ProxyHandler extends BaseHandler {
 
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
                     maxCache.longValue(), email, rootCA, intermediateCAs, proxyCrtKey, null, null, null,
-                    new SSLCertManager());
+                    new SSLCertManager(), additionalFqdns);
         }
         catch (SSLCertGenerationException e) {
             LOG.error("Failed to generate SSL certificate", e);
@@ -339,8 +379,36 @@ public class ProxyHandler extends BaseHandler {
      */
     public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
                                   Integer maxCache, String email) {
+        return containerConfig(loggedInUser, proxyName, proxyPort, server, maxCache, email, List.of());
+    }
+
+    /**
+     * Create and provide proxy container configuration without any SSL certificate and key, with additional FQDNs.
+     *
+     * @param loggedInUser the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param proxyPort the SSH port the proxy listens on
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @param additionalFqdns additional FQDNs of the proxy
+     * @return the configuration file
+     *
+     * @apidoc.doc Compute and download the configuration for proxy containers without adding the TLS certificate
+     *   for Apache. In such a case, the certificate files need to be deployed to the proxy in a different way.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param_desc("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param_desc("string", "email", "The proxy admin email")
+     * @apidoc.param #array_single_desc("string", "additionalFqdns", "Additional FQDNs of the proxy")
+     * @apidoc.returntype #array_single("byte", "binary object - package file")
+     */
+    public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
+                                  Integer maxCache, String email, List<String> additionalFqdns) {
         return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
-                maxCache.longValue(), email);
+                maxCache.longValue(), email, additionalFqdns);
     }
 
     /**
@@ -397,9 +465,10 @@ public class ProxyHandler extends BaseHandler {
 
             SSLCertData certData = new SSLCertData(nullable(proxyName), cnames, nullable(country),
                     nullable(state), nullable(city), nullable(org), nullable(orgUnit), nullable(sslEmail));
+
             return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
                     maxCache.longValue(), email, null, List.of(), null, caCrtKey, caPassword, certData,
-                    new SSLCertManager());
+                    new SSLCertManager(), cnames);
         }
         catch (SSLCertGenerationException e) {
             LOG.error("Failed to generate SSL certificate", e);
