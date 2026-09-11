@@ -245,10 +245,11 @@ When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshin
   end
 end
 
-When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$/) do |seconds, host|
+When(/^I wait (?:at most (\d+) seconds )?until onboarding is completed for "([^"]*)"$/) do |seconds, host|
+  seconds ||= DEFAULT_TIMEOUT
   steps %(
     When I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "#{host}", refreshing the page
+    And I wait at most #{seconds} seconds until I see the name of "#{host}", refreshing the page
     And I follow this "#{host}" link
     And I wait until I see "System Status" text
     And I wait at most #{seconds} seconds until the event "Apply states" is picked up
@@ -258,10 +259,6 @@ When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$
     And I wait at most #{seconds} seconds until the event "Package List Refresh" is picked up
     And I wait at most #{seconds} seconds until the event "Package List Refresh" is completed in the history
   )
-end
-
-When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
-  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until onboarding is completed for "#{host}")
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|

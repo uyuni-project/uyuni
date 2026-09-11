@@ -140,7 +140,7 @@ Style/Copyright:
   AutocorrectNotice: |
     # Copyright (c) 2024 SUSE LLC.
     # Licensed under the terms of the MIT license.
-  Notice: '.*Copyright.*SUSE LLC.*'
+  Notice: '.*Copyright.*'
 
 Style/DisableCopsWithinSourceCodeDirective:
   Enabled: false

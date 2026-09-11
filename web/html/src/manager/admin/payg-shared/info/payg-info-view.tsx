@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 import { PaygFullType } from "manager/admin/payg/payg";
 import PaygStatus from "manager/admin/payg-shared/common/payg-status";
 
@@ -9,7 +7,7 @@ type Props = {
 
 const PaygInfoView = (props: Props) => {
   return (
-    <Fragment>
+    <>
       <dl className="row">
         <dt className="col-2">{t("Description")}</dt>
         <dd className="col-10">{props.payg.properties.description}</dd>
@@ -24,7 +22,7 @@ const PaygInfoView = (props: Props) => {
         <dt className="col-2">{t("Last Status Update")}</dt>
         <dd className="col-10">{props.payg.lastChange}</dd>
       </dl>
-    </Fragment>
+    </>
   );
 };
 

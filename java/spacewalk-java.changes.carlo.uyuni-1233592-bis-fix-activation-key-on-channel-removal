@@ -1,0 +1,2 @@
+- Fix on removing activation keys when a base channel
+  is deleted (bsc#1233592)

@@ -50,15 +50,15 @@ begin
       fix_version_evrt := evr_t(fix_epoch_in, fix_version_in, fix_release_in, fix_type_in);
     END IF;
 
-    INSERT INTO suseOVALPlatformVulnerable(platform_id, product_os_id, cve_id)
-    VALUES (product_cpe_id_val, product_os_id_val, cve_id_val)
+    INSERT INTO suseOVALPlatformVulnerable(platform_id, product_os_id, cve_id, last_modified)
+    VALUES (product_cpe_id_val, product_os_id_val, cve_id_val, current_timestamp)
     ON CONFLICT (platform_id, product_os_id, cve_id) DO
-    UPDATE SET platform_id = suseOVALPlatformVulnerable.platform_id
+    UPDATE SET last_modified = current_timestamp
     RETURNING id INTO platform_vulnerable_id_val;
 
-    INSERT INTO suseOVALVulnerablePackage(plat_vuln_id, name, fix_version)
-    VALUES (platform_vulnerable_id_val, package_name_in, fix_version_evrt)
+    INSERT INTO suseOVALVulnerablePackage(plat_vuln_id, name, fix_version, last_modified)
+    VALUES (platform_vulnerable_id_val, package_name_in, fix_version_evrt, current_timestamp)
     ON CONFLICT(plat_vuln_id, name) DO
-      UPDATE SET fix_version = EXCLUDED.fix_version;
+      UPDATE SET fix_version = EXCLUDED.fix_version, last_modified = current_timestamp;
 end;
 $$ language plpgsql;

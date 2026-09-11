@@ -14,7 +14,7 @@
   position: sticky;
   top: 0;
   padding: 15px 0 10px 0;
-  background-color: $white;
+  background-color: $body-background;
   z-index: 10;
 
   .steps {
@@ -27,21 +27,21 @@
       width: 18px;
       height: 18px;
       border-radius: 10px;
-      border: 2px solid $eos-bc-gray-500;
+      border: 2px solid $progress-step-circle;
       text-align: center;
       font-size: 11px;
       line-height: 14px;
     }
     .step-title {
       font-weight: bold;
-      color: $eos-bc-gray-500;
+      color: $progress-step-circle;
       text-align: left;
       width: max-content;
     }
     .step-line {
       flex-grow: 1;
       height: 2px;
-      background-color: $eos-bc-gray-300;
+      background-color: $progress-step-line;
       span {
         height: 2px;
         width: 0;
@@ -51,15 +51,15 @@
 
     &.active {
       .step-circle {
-        border: 2px solid $eos-bc-gray-900;
-        background: radial-gradient(circle, $eos-bc-gray-900 50%, transparent 11%);
+        border: 2px solid $progress-step-circle-active;
+        background: radial-gradient(circle, $progress-step-circle-active 50%, transparent 11%);
         transition: all 0.5s ease-in;
       }
       .step-title {
-        color: $eos-bc-gray-1000;
+        color: $body-color;
       }
       .step-line span {
-        background-color: $eos-bc-green-500;
+        background-color: $progress-step-line-active;
         width: 0;
         transition: width 0.5s linear;
       }
@@ -67,8 +67,8 @@
 
     &.completed {
       .step-circle {
-        background-color: $eos-bc-green-500;
-        border-color: $eos-bc-green-500;
+        background-color: $progress-step-line-active;
+        border-color: $progress-step-line-active;
         color: $white;
 
         i {
@@ -76,10 +76,10 @@
         }
       }
       .step-title {
-        color: $eos-bc-gray-1000;
+        color: $body-color;
       }
       .step-line span {
-        background-color: $eos-bc-green-500;
+        background-color: $progress-step-line-active;
         width: 100%;
         transition: width 0.5s linear;
       }
@@ -95,10 +95,10 @@
   position: sticky;
   bottom: -4em;
   width: 100%;
-  background: $white;
+  background: $body-background;
   padding: 10px 0;
   justify-content: space-between;
-  border-top: 1px solid $eos-bc-gray-300;
+  border-top: 1px solid $progress-step-line;
 }
 
 .main-content {

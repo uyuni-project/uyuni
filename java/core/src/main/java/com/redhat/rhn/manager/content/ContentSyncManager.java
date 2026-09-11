@@ -90,6 +90,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -600,7 +601,8 @@ public class ContentSyncManager {
                                                 return Collections.emptyList();
                                             }
                                         });
-                                updateChannelInfo(channelInfo);
+                                TimeUtils.logTime(LOG, Level.DEBUG, "Update Channel Info",
+                                        () -> updateChannelInfo(channelInfo));
                     });
         }
 
@@ -942,18 +944,14 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update Custom Channel details according to the provided channelInfo
-     * @param channelInfo the information about custom channels
+     * Update Channel details according to the provided channelInfo
+     * @param channelInfo the information about channels
      */
     public void updateChannelInfo(List<ChannelInfoDetailsJson> channelInfo) {
         Set<String> syncFinished = new HashSet<>();
         Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
                 .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
         for (ChannelInfoDetailsJson info : channelInfo) {
-            if (info.getPeripheralOrgId() == null) {
-                LOG.warn("updateCustomChannelInfo called with a vendor channel {}", info.getLabel());
-                continue;
-            }
             ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
     }

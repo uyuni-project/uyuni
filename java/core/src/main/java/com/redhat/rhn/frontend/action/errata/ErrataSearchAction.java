@@ -303,7 +303,7 @@ public class ErrataSearchAction extends BaseSearchAction {
             // small number of Errata to operate on.
             for (ErrataOverview eo : unsorted) {
                 DataResult<CVE> dr = ErrataManager.errataCVEs(eo.getId());
-                eo.setCves(dr);
+                eo.setCves(dr.stream().map(CVE::getName).toList());
             }
         }
         List<ErrataOverview> filtered = new ArrayList<>();

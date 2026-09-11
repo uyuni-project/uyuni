@@ -29,7 +29,7 @@ Feature: Bootstrap a Salt minion via the GUI
     Then I should see a "accepted" text
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
-    And I wait until onboarding is completed for "sle_minion"
+    And I wait at most 300 seconds until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
     And I report the onboarding duration for "sle_minion"
 

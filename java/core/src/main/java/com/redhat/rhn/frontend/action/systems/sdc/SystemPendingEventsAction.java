@@ -55,6 +55,7 @@ public class SystemPendingEventsAction extends RhnAction {
         Long sid = context.getRequiredParam("sid");
         Server server = context.lookupAndBindServer();
         User user = context.getCurrentUser();
+        SdcHelper.ssmCheck(request, sid, user);
 
         Map<String, Object> params = makeParamMap(request);
         params.put("sid", server.getId());

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
@@ -69,7 +69,7 @@ const FilterForm = (props: Props) => {
         props.onChange(model);
       }}
     >
-      <Fragment>
+      <>
         <MessagesContainer containerId="filter-modal-errors" />
         {props.editing && (
           <Messages
@@ -125,7 +125,7 @@ const FilterForm = (props: Props) => {
         )}
 
         {filterBy === FilterBy.Type ? (
-          <Fragment>
+          <>
             <DEPRECATED_Select
               name="type"
               label={t("Filter Type")}
@@ -332,11 +332,11 @@ const FilterForm = (props: Props) => {
                 divClass="col-md-8"
               />
             )}
-          </Fragment>
+          </>
         ) : null}
 
         {filterBy === FilterBy.Template ? <TemplatesForm {...props} /> : null}
-      </Fragment>
+      </>
     </Form>
   );
 };

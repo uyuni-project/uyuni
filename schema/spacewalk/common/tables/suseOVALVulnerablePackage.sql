@@ -23,6 +23,7 @@ CREATE TABLE suseOVALVulnerablePackage
                       ON DELETE CASCADE,
     name           VARCHAR NOT NULL,
     fix_version    evr_t,
+    last_modified  TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
                    CONSTRAINT plat_vuln_id_name_uq UNIQUE (plat_vuln_id, name)
 );
 

@@ -221,6 +221,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```gherkin
   When I wait until I see "Software Updates Available" text, refreshing the page
+  When I wait at most 300 seconds until I see "Software Updates Available" text, refreshing the page
   When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
   When I wait until I see the name of "sle_minion", refreshing the page
   When I wait until I do not see the name of "sle_minion", refreshing the page
@@ -521,12 +522,14 @@ Note that the text area variant handles the new lines characters while the other
 
 ```gherkin
   When I wait until onboarding is completed for "rhlike_minion"
+  When I wait at most 300 seconds until onboarding is completed for "rhlike_minion"
   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
 ```
 
 Both of the above give the event `DEFAULT_TIMEOUT` seconds to leave the pending
 list and `DEFAULT_TIMEOUT` seconds again to reach Completed, so the total wait can
-be twice that.
+be twice that. Onboarding takes an explicit budget in place of the default, and
+gives each of the events it waits for that budget per phase.
 When that phase can take longer than the execution itself — an action chain that
 reboots the system, or anything on a Salt SSH minion, where the chain resumes
 only on the next `ssh-service-default` push — wait for each phase on its own

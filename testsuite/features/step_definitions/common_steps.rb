@@ -165,7 +165,7 @@ When(/^I wait at most (\d+) seconds until the event "([^"]*)" is completed in th
   steps %(
     When I follow "History"
     And I wait until I see "System History" text
-    And I wait until I see "#{event}" text, refreshing the page
+    And I wait at most #{timeout} seconds until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
     And I wait until I see "This action will be executed after" text
     And I wait until I see "#{event}" text

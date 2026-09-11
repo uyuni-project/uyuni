@@ -1,0 +1,1 @@
+- Fix ssh connection after migration to SLES16 (bsc#1268463)

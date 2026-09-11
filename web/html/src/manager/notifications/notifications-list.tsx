@@ -218,7 +218,7 @@ export class NotificationList extends Component<Props, State> {
         {stringToReact(data.summary)}
         {data.details && (
           <LinkButton
-            className="btn-link px-2 py-0"
+            className="px-2 py-0"
             handler={() => this.setState({ popupItem: data })}
             text={"[" + t("show details") + "]"}
           />
@@ -247,7 +247,7 @@ export class NotificationList extends Component<Props, State> {
       <div className="btn-group">
         <AsyncButton
           id="updateReadStatus"
-          icon={(row.read ? "spacewalk-icon-envelope-open-o" : "fa-envelope text-primary") + " fa-1-5x"}
+          icon={row.read ? "spacewalk-icon-envelope-open-o" : "fa-envelope"}
           title={row.read ? t("Flag as Unread") : t("Flag as Read")}
           action={() => this.updateReadStatus([row.id], !row.read)}
         />

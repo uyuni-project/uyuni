@@ -666,10 +666,10 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.activation_keys.delete', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('systems.profiles', 'R', NULL)
+    VALUES ('systems.profiles', 'R', 'View/compare package profiles')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('systems.profiles', 'W', NULL)
+    VALUES ('systems.profiles', 'W', 'Create/edit package profiles')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.custom_data', 'R', NULL)
@@ -2746,6 +2746,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.list_systems', 'R', 'Returns a list of all servers visible to the user.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.list_systems_filtered', 'R', 'List systems using a filter.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.list_systems_with_entitlement', 'R', 'Lists the systems that have the given entitlement')

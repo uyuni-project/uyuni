@@ -1,0 +1,2 @@
+- Remove activation keys when a base channel is deleted
+  (bsc#1233592)

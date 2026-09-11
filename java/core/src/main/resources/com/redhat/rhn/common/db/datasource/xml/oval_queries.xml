@@ -52,6 +52,13 @@
         </query>
     </mode>
 
+    <mode name="list_oval_platform_cpes">
+        <query>
+            SELECT plat.cpe AS cpe
+            FROM suseOVALPlatform plat;
+        </query>
+    </mode>
+
     <mode name="check_errata_availability">
         <query params="server_id">
             SELECT 1
@@ -62,11 +69,36 @@
         </query>
     </mode>
 
+    <mode name="list_servers_with_errata">
+        <query params="user_id">
+            SELECT userServerPerms.server_id AS server_id
+            FROM rhnUserServerPerms userServerPerms
+            WHERE userServerPerms.user_id = :user_id
+              AND EXISTS (
+                  SELECT 1
+                  FROM suseCVEServerChannel cveServerChannel
+                  JOIN rhnChannelErrata channelErrata
+                    ON cveServerChannel.channel_id = channelErrata.channel_id
+                  WHERE cveServerChannel.server_id = userServerPerms.server_id
+              );
+        </query>
+    </mode>
+
     <write-mode name="clear_oval_metadata_by_os_product">
         <query params="os_product_family, os_product_version">
             DELETE FROM suseOVALOsProduct osProduct
             WHERE osProduct.os_family = :os_product_family
               AND osProduct.version = :os_product_version;
+        </query>
+    </write-mode>
+
+    <write-mode name="delete_old_oval_metadata">
+        <query params="start_date">
+            DELETE FROM suseOVALVulnerablePackage
+            WHERE last_modified &lt; :start_date;
+
+            DELETE FROM suseOVALPlatformVulnerable
+            WHERE last_modified &lt; :start_date;
         </query>
     </write-mode>
 

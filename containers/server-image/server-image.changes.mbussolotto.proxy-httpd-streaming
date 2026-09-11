@@ -1,0 +1,1 @@
+- Remove salt-call from server image healthcheck (bsc#1276498)

@@ -232,7 +232,7 @@ class TaskoTop extends Component<Props> {
                 cell={(row) => this.decodeStatus(row["status"])}
               />
               <Column
-                columnKey="data" // comparator={this.sortByText}
+                columnKey="data"
                 header={t("Data")}
                 cell={(row) => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>)}
               />

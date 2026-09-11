@@ -9,7 +9,7 @@ const ProgressBar = (props: Props) => {
   const progressStyle = { width: props.progress + "%" };
   return (
     <div
-      className={"progress-bar-wrapper progress progress-striped " + (props.progress < 100 ? "active" : "")}
+      className={"progressbar-wrapper progress progress-striped " + (props.progress < 100 ? "active" : "")}
       title={props.title}
       style={wrapperWidth}
     >

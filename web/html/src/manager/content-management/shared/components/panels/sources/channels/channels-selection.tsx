@@ -1,4 +1,4 @@
-import { Fragment, memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
@@ -169,7 +169,7 @@ const ChannelsSelection = (props: PropsType) => {
     : undefined;
 
   return (
-    <Fragment>
+    <>
       <div className="row">
         <DEPRECATED_Select
           data-testid="selectedBaseChannel"
@@ -241,7 +241,7 @@ const ChannelsSelection = (props: PropsType) => {
           <VirtualList items={rows} renderItem={Row} defaultItemHeight={29} itemKey={(row) => row.base.id} />
         </div>
       )}
-    </Fragment>
+    </>
   );
 };
 

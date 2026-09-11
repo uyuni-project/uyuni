@@ -138,6 +138,22 @@
                     </div>
                 </div>
 
+                <!-- Activation Keys -->
+                <h2><bean:message key="channel.delete.jsp.actkeysheader"/></h2>
+                <p><bean:message key="channel.delete.jsp.actkeysparagraph" arg0="<strong>${channel.name}</strong>"/></p>
+
+                <!-- Activation Keys Affected -->
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">
+                        <bean:message key="channel.delete.jsp.actkeysaffected"/>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="well well-sm">
+                            <c:out value="${activationKeysCount}"/>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Unsubscribe Option -->
                 <h2><bean:message key="channel.delete.jsp.unsubheader"/></h2>
                 <p><bean:message key="channel.delete.jsp.unsubparagraph" arg0="<strong>${channel.name}</strong>"/></p>

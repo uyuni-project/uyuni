@@ -429,7 +429,7 @@ public class DistUpgradeAction extends Action {
         ServerFactory.save(minion);
         if (scheduleStateApply) {
             MessageQueue.publish(new ChannelsChangedEventMessage(minion.getId()));
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), false, ApplyStatesEventMessage.CHANNELS));
+            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, ApplyStatesEventMessage.CHANNELS));
         }
     }
 

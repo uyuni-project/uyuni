@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @rke2
+@no_user_creation
 Feature: RKE2 TFTP container sanity checks on the server
   In order to provision systems via PXE boot
   As the system administrator

@@ -48,7 +48,6 @@ RUN set -euo pipefail; \
         habootstrap-formula \
         inter-server-sync \
         ipmitool \
-        javamail \
         locale-formula \
         postgresql18 \
         prometheus-exporters-formula \
@@ -103,7 +102,7 @@ RUN set -euo pipefail; \
     ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
     ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
     ln -sf /dev/null /etc/systemd/system/console-getty.service && \
-    zypper --non-interactive removerepo --all; \
+    zypper --non-interactive removerepo --all && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /

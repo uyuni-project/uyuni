@@ -38,10 +38,12 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -66,6 +68,17 @@ public class OVALCachingFactory extends HibernateFactory {
         Map<String, String> params = new HashMap<>();
         params.put("os_product_family", osProduct.getOsFamily().toString());
         params.put("os_product_version", osProduct.getOsVersion());
+        mode.executeUpdate(params);
+    }
+
+    /**
+     * Delete all OVAL metadata older than the given start date.
+     * @param startDate the starting date of the process.
+     */
+    public static void deleteOldOVALMetadata(Date startDate) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "delete_old_oval_metadata");
+        Map<String, Object> params = new HashMap<>();
+        params.put("start_date", new java.sql.Timestamp(startDate.getTime()));
         mode.executeUpdate(params);
     }
 
@@ -193,6 +206,19 @@ public class OVALCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Returns the CPEs for which OVAL platform data is available.
+     *
+     * @return the available OVAL platform CPEs
+     */
+    public static Set<String> getOVALPlatformCpes() {
+        SelectMode m = ModeFactory.getMode("oval_queries", "list_oval_platform_cpes");
+        DataResult<Row> result = m.execute();
+        return result.stream()
+                .map(row -> (String) row.get("cpe"))
+                .collect(Collectors.toSet());
+    }
+
+    /**
      * Check if we have any erratas assigned to the client's CVE channels.
      *
      * @param serverId the id of the client to check for
@@ -206,6 +232,22 @@ public class OVALCachingFactory extends HibernateFactory {
         DataResult<Integer> result = m.execute(params);
 
         return !result.isEmpty();
+    }
+
+    /**
+     * Returns the servers having at least one errata in their CVE channels.
+     *
+     * @param userId the user whose visible servers should be checked
+     * @return the server IDs with available channel errata
+     */
+    public static Set<Long> getServersWithErrata(Long userId) {
+        SelectMode m = ModeFactory.getMode("oval_queries", "list_servers_with_errata");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", userId);
+        DataResult<Row> result = m.execute(params);
+        return result.stream()
+                .map(row -> (Long) row.get("server_id"))
+                .collect(Collectors.toSet());
     }
 
     @Override

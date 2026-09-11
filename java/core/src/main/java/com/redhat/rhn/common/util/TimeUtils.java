@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.util;
 
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
@@ -44,10 +45,7 @@ public class TimeUtils {
      * @param fun the code to time
      */
     public static void logTime(Logger log, String name, Runnable fun) {
-        long start = System.nanoTime();
-        fun.run();
-        long end = System.nanoTime();
-        log.info("{} took {} seconds.", name, (end - start) / 1e9);
+        logTime(log, Level.INFO, name, fun);
     }
 
     /**
@@ -59,10 +57,39 @@ public class TimeUtils {
      * @return returns whatever fun returns
      */
     public static <T> T logTime(Logger log, String name, Supplier<T> fun) {
+        return logTime(log, Level.INFO, name, fun);
+    }
+
+    /**
+     * Helper for logging the time some code took to execute.
+     * @param log logger to use.
+     * @param logLevel the log level
+     * @param name a name/tag to describe whats being executed
+     * @param fun the code to time
+     */
+    public static void logTime(Logger log, Level logLevel, String name, Runnable fun) {
+        long start = System.nanoTime();
+        fun.run();
+        long end = System.nanoTime();
+        log.log(logLevel, "{} took {} seconds.", name, (end - start) / 1e9);
+    }
+
+    /**
+     * Helper for logging the time some code took to execute.
+     * @param log logger to use.
+     * @param logLevel the log level
+     * @param name a name/tag to describe whats being executed
+     * @param fun the code to time
+     * @param <T> type of return value
+     * @return returns whatever fun returns
+     */
+    public static <T> T logTime(Logger log, Level logLevel, String name, Supplier<T> fun) {
         long start = System.nanoTime();
         T result = fun.get();
         long end = System.nanoTime();
-        log.info("{} took {} seconds.", name, (end - start) / 1e9);
+        log.log(logLevel, "{} took {} seconds.", name, (end - start) / 1e9);
         return result;
     }
+
+
 }

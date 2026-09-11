@@ -1,4 +1,4 @@
-import { type ReactNode, Component, createContext, createRef, Fragment } from "react";
+import { type ReactNode, Component, createContext, createRef } from "react";
 
 import { default as Jexl } from "jexl";
 
@@ -414,10 +414,10 @@ function defaultWrapper(elementName, required, element, help = null) {
   return wrapFormGroupWithLabel(
     elementName,
     required,
-    <Fragment>
+    <>
       <div className="col-lg-6">{element}</div>
       <HelpIcon text={help} />
-    </Fragment>
+    </>
   );
 }
 

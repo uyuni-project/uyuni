@@ -79,6 +79,14 @@ class RemoteApi:
         self.auth_check()
         self.client.channel.software.applyChannelState(self.auth_token, server_ids)
 
+    def list_activation_keys(self):
+        self.auth_check()
+        return self.client.activationkey.listActivationKeys(self.auth_token)
+
+    def remove_activation_key(self, activation_key):
+        self.auth_check()
+        self.client.activationkey.delete(self.auth_token, activation_key)
+
 
 def __applyChannelState(server_ids, username, password):
     xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
@@ -278,6 +286,15 @@ def delete_outside_channels(org):
     _delete_files(rpms_paths + srpms_paths)
 
 
+def __remove_activation_keys_linked_to_base_channels(
+    base_channel_labels, username, password
+):
+    xmlrpc = RemoteApi("http://localhost/rpc/api", username, password)
+    for ak in xmlrpc.list_activation_keys():
+        if ak["base_channel_label"] in base_channel_labels:
+            xmlrpc.remove_activation_key(ak["key"])
+
+
 def delete_channels(
     channelLabels,
     force=0,
@@ -310,13 +327,11 @@ def delete_channels(
         _delete_files(rpms_paths + srpms_paths)
 
     # Get the channel ids
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         select id, parent_channel
         from rhnChannel
         where label = :label
-        order by parent_channel"""
-    )
+        order by parent_channel""")
     channel_ids = []
     for label in channelLabels:
         h.execute(label=label)
@@ -333,13 +348,11 @@ def delete_channels(
     if not channel_ids:
         return
 
-    clp = rhnSQL.prepare(
-        """
+    clp = rhnSQL.prepare("""
        select id
        from susecontentenvironmenttarget
        where channel_id = :cid
-       """
-    )
+       """)
 
     for cid in channel_ids:
         clp.execute(cid=cid)
@@ -532,13 +545,11 @@ def _delete_srpms(srcPackageIds):
     if not srcPackageIds:
         return
     # nuke the rhnPackageSource entry
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         delete
         from rhnPackageSource
         where id = :id
-    """
-    )
+    """)
     h.executemany(id=srcPackageIds)
 
 

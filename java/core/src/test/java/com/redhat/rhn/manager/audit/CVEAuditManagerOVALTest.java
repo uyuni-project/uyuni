@@ -26,8 +26,12 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -48,6 +52,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -518,11 +523,92 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
     }
 
     @Test
+    void testBatchAvailabilityMatchesIndividualChecks() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+        Cve cve = createTestCve("CVE-2099-" + TestUtils.randomNumeric(7));
+        Errata errata = createTestErrata(user, Set.of(cve));
+        Channel channel = createTestChannel(user, errata);
+
+        Server serverWithErrata = createTestServer(user, Set.of(channel));
+        serverWithErrata.setCpe(CPE_OPENSUSE_LEAP_15_4);
+        Server serverWithoutErrata = createTestServer(user);
+        serverWithoutErrata.setCpe("cpe:/o:opensuse:leap:15.5");
+
+        CVEAuditManager.populateCVEChannels();
+
+        Set<Long> expectedServersWithErrata = user.getServers().stream()
+                .filter(server -> OVALCachingFactory.checkChannelsErrataAvailability(server.getId()))
+                .map(Server::getId)
+                .collect(Collectors.toSet());
+
+        assertEquals(Set.of(serverWithErrata.getId()), expectedServersWithErrata);
+        assertEquals(expectedServersWithErrata, OVALCachingFactory.getServersWithErrata(user.getId()));
+        assertTrue(OVALCachingFactory.getOVALPlatformCpes().contains(CPE_OPENSUSE_LEAP_15_4));
+    }
+
+    @Test
+    void testListSystemsByPatchStatusMatchesCpeInEitherDirection() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        String cveName = setTestCveName(ovalRoot);
+        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
+        Cve cve = createTestCve(cveName);
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+        Server longerCpeServer = createTestServer(user);
+        longerCpeServer.setCpe(CPE_OPENSUSE_LEAP_15_4 + ":server");
+        Server shorterCpeServer = createTestServer(user);
+        shorterCpeServer.setCpe("cpe:/o:opensuse:leap");
+
+        List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+                user, cve.getName(), EnumSet.allOf(PatchStatus.class));
+
+        for (Server server : List.of(longerCpeServer, shorterCpeServer)) {
+            CVEAuditServer auditServer = auditServers.stream()
+                    .filter(result -> result.getId() == server.getId())
+                    .findFirst()
+                    .orElseThrow();
+            assertEquals(Set.of(ScanDataSource.OVAL), auditServer.getScanDataSources());
+        }
+    }
+
+    @Test
+    void testListSystemsByPatchStatusReturnsUnknownWithoutAvailableDataSource() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        String cveName = setTestCveName(ovalRoot);
+        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "false");
+        Cve cve = createTestCve(cveName);
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+        Server server = createTestServer(user);
+        server.setCpe("cpe:/o:opensuse:leap:15.5");
+
+        List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+                user, cve.getName(), EnumSet.allOf(PatchStatus.class));
+
+        CVEAuditServer auditServer = auditServers.stream()
+                .filter(result -> result.getId() == server.getId())
+                .findFirst()
+                .orElseThrow();
+
+        assertEquals(PatchStatus.UNKNOWN, auditServer.getPatchStatus());
+        assertTrue(auditServer.getScanDataSources().isEmpty());
+    }
+
+    @Test
     public void testListSystemsByPatchStatusAffectedPatchInapplicable() throws Exception {
         OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+        String cveName = setTestCveName(ovalRoot);
 
-        Cve cve = createTestCve("CVE-2022-2991");
+        Cve cve = createTestCve(cveName);
 
         extractAndSaveVulnerablePackages(ovalRoot);
 
@@ -556,6 +642,7 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
         TestUtils.flushSession();
 
+        Config.get().setString(ConfigDefaults.CVE_AUDIT_ENABLE_OVAL_METADATA, "true");
         List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(user, cve.getName(),
                 EnumSet.allOf(PatchStatus.class));
         CVEAuditServer auditServer = auditServers.stream().findAny().get();
@@ -563,6 +650,28 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         TestUtils.assertNotEmpty(auditServer.getChannels());
         TestUtils.assertNotEmpty(auditServer.getErratas());
         assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, auditServer.getPatchStatus());
+        assertEquals(Set.of(ScanDataSource.OVAL, ScanDataSource.CHANNELS),
+                auditServer.getScanDataSources());
+    }
+
+    @Test
+    void testDeleteOldOVALMetadata() throws Exception {
+        OvalRootType ovalRoot = OvalTestUtils.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+
+        // Use a date 2 seconds in the past to ensure it is older than any newly inserted records
+        Date beforeSync = new Date(System.currentTimeMillis() - 2000);
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        // If we call deleteOldOVALMetadata with a date in the past, nothing should be deleted.
+        OVALCachingFactory.deleteOldOVALMetadata(beforeSync);
+        assertTrue(OVALCachingFactory.canAuditCVE("CVE-2022-2991"));
+
+        // If we call deleteOldOVALMetadata with a date in the future, it should delete the records.
+        Date afterSync = new Date(System.currentTimeMillis() + 10000); // 10 seconds in the future
+        OVALCachingFactory.deleteOldOVALMetadata(afterSync);
+        assertFalse(OVALCachingFactory.canAuditCVE("CVE-2022-2991"));
     }
 
     private static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
@@ -572,5 +681,13 @@ public class CVEAuditManagerOVALTest extends BaseTestCase {
         OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
 
         TestUtils.flushSession();
+    }
+
+    private static String setTestCveName(OvalRootType rootType) {
+        String cveName = "CVE-2099-" + TestUtils.randomNumeric(7);
+        rootType.getDefinitions().forEach(definition -> definition.getMetadata().getAdvisory()
+                .ifPresent(advisory -> advisory.getCveList()
+                        .forEach(cve -> cve.setCve(cveName))));
+        return cveName;
     }
 }

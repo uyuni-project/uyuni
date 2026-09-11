@@ -10,15 +10,15 @@ describe("usePrevious", () => {
 
   test("yields undefined on first render", () => {
     render(<TestComponent value="1" />);
-    screen.getByText("undefined");
+    expect(screen.getByText("undefined")).toBeDefined();
   });
 
   test("yields previous value on rerenders", () => {
     const { rerender } = render(<TestComponent value="1" />);
     rerender(<TestComponent value="2" />);
-    screen.getByText("1");
+    expect(screen.getByText("1")).toBeDefined();
 
     rerender(<TestComponent value="3" />);
-    screen.getByText("2");
+    expect(screen.getByText("2")).toBeDefined();
   });
 });

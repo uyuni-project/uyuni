@@ -339,7 +339,7 @@ class CVEAudit extends Component<Props, State> {
                   this.state.statuses
                 }
                 text={t("Download CSV")}
-                data-senna-off="true"
+                disableSenna
                 className="btn btn-default"
                 icon="spacewalk-icon-download-csv"
               />

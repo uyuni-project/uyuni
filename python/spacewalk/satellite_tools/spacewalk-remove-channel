@@ -37,8 +37,10 @@ except:
 
 # pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnLog import initLOG
+
 # pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnConfig import initCFG
+
 # pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
 
@@ -52,6 +54,7 @@ from spacewalk.satellite_tools.contentRemove import (
     __getMinionsByChannel,
     __applyChannelState,
     __clonnedChannels,
+    __remove_activation_keys_linked_to_base_channels,
 )
 
 options_table = [
@@ -62,14 +65,14 @@ options_table = [
         "--channel",
         action="append",
         default=[],
-        help="Delete this channel (can be present multiple times)",
+        help="Delete this channel (can be present multiple times). Note: Credentials are needed in case of base channels",
     ),
     Option(
         "-a",
         "--channel-with-children",
         action="append",
         default=[],
-        help="Delete this channel and its child channels (can be present multiple times)",
+        help="Delete this channel and its child channels (can be present multiple times). Note: Credentials are needed in case of base channels",
     ),
     Option(
         "-u",
@@ -104,6 +107,11 @@ options_table = [
         help="Remove only the kickstart trees for the channels specified.",
     ),
     Option(
+        "--skip-activation-keys",
+        action="store_true",
+        help="Do not remove associated activation keys when removing a base channel (Not Recommended).",
+    ),
+    Option(
         "--skip-channels",
         action="store_true",
         help="Remove only packages from channel not the channel itself.",
@@ -116,6 +124,14 @@ LOCK = []
 LOCK_DIR = "/run"
 
 
+def __ask_credentials(username, password):
+    if not username:
+        raise UserError("Username not specified")
+    if not password:
+        password = getpass.getpass()
+    return username, password
+
+
 def main():
 
     # pylint: disable-next=global-variable-not-assigned
@@ -124,7 +140,7 @@ def main():
     global options_table
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     if args:
         for arg in args:
@@ -205,7 +221,8 @@ def main():
             if children:
                 print(
                     # pylint: disable-next=consider-using-f-string
-                    "Error: cannot remove channel %s: subchannel(s) exist: " % (channel)
+                    "Error: cannot remove channel %s: subchannel(s) exist: "
+                    % (channel)
                 )
                 for child in children:
                     print("\t\t\t" + child)
@@ -221,18 +238,28 @@ def main():
         if clones_not_deleted:
             print(
                 # pylint: disable-next=consider-using-f-string
-                "Error: cannot remove channel %s: clone channel(s) exist: " % (channel)
+                "Error: cannot remove channel %s: clone channel(s) exist: "
+                % (channel)
             )
             for clone_channel_error in clones_not_deleted:
                 print("\t\t\t" + clone_channel_error)
 
+    base_channels_to_remove = []
+    for channel in list(channels.keys()):
+        if channel in dict_parents:
+            base_channels_to_remove.append(channel)
+
+    if base_channels_to_remove and not options.skip_activation_keys:
+        options.username, options.password = __ask_credentials(
+            options.username, options.password
+        )
+
     if child_test_fail or clone_test_fail:
         sys.exit(-1)
     if options.unsubscribe:
-        if not options.username:
-            raise UserError("Username not specified")
-        if not options.password:
-            options.password = getpass.getpass()
+        options.username, options.password = __ask_credentials(
+            options.username, options.password
+        )
         affected_minions = __getMinionsByChannel(list(channels.keys()))
 
     if not options.skip_channels and not options.just_kickstart_trees:
@@ -243,6 +270,11 @@ def main():
             sys.exit(-1)
 
     try:
+        if base_channels_to_remove and not options.skip_activation_keys:
+            __remove_activation_keys_linked_to_base_channels(
+                base_channels_to_remove, options.username, options.password
+            )
+
         delete_channels(
             list(channels.keys()),
             force=options.force,

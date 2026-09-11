@@ -1,0 +1,1 @@
+- Handle distupgrade to SLE16 for SSH minions (bsc#1268463)

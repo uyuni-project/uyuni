@@ -19,6 +19,16 @@
 <p><bean:message key="errata.all.jsp.summary"/></p>
 
 <c:set var="emptyListKey" value="erratalist.jsp.noerrata"/>
+<c:choose>
+  <c:when test="${displayCves}">
+    <c:set var="errataExportColumns"
+           value="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate,cveNames"/>
+  </c:when>
+  <c:otherwise>
+    <c:set var="errataExportColumns"
+           value="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate"/>
+  </c:otherwise>
+</c:choose>
 <%@ include file="/WEB-INF/pages/common/fragments/errata/relevant-errata-list.jspf" %>
 
 </body>

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import _xor from "lodash/xor";
 
@@ -36,7 +36,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   }
 
   return (
-    <Fragment>
+    <>
       <LinkButton
         id={`create-new-filter-link`}
         icon="fa-plus"
@@ -66,7 +66,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
             </label>
           </div>
         ))}
-    </Fragment>
+    </>
   );
 };
 

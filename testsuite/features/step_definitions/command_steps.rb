@@ -545,9 +545,24 @@ Then(/^the log messages should not contain out of memory errors$/) do
 end
 
 Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
-  cmd = "cat /var/log/rhn/rhn_web_ui.log | grep -i 'Exception' | grep -i '#{component}'"
-  output, code = get_target('server').run(cmd, check_errors: false)
-  raise ScriptError, "Error related to \"#{component}\" found!\n#{output}" if code.zero?
+  log_file = '/var/log/rhn/rhn_web_ui.log'
+  output, _code = get_target('server').run("cat #{log_file}")
+
+  records = []
+  output.each_line do |line|
+    if records.empty? || line.match?(/\A\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}/)
+      records << line
+    else
+      records.last << line
+    end
+  end
+
+  errors = records.select { |record| record.match?(/exception/i) && record.match?(/#{Regexp.escape(component)}/i) }
+  unless errors.empty?
+    details = errors.take(5)
+    details << "... and #{errors.size - details.size} more" if errors.size > details.size
+    raise ScriptError, "#{errors.size} error(s) related to \"#{component}\" found in #{log_file}!\n#{details.join("\n")}"
+  end
 end
 
 When(/^I restart the spacewalk service$/) do
@@ -808,6 +823,11 @@ end
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd)
+end
+
+When(/^I run "([^"]*)" on "([^"]*)" outside the container$/) do |cmd, host|
+  node = get_target(host)
+  node.run(cmd, runs_in_container: false)
 end
 
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
@@ -1081,8 +1101,16 @@ end
 When(/I copy "([^"]*)" from "([^"]*)" to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
   node_origin = get_target(origin)
   node_dest = get_target(dest)
-  dest_hostname = node_dest.hostname
+  dest_hostname = node_dest.full_hostname
   _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}")
+  raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
+end
+
+When(/I copy "([^"]*)" from "([^"]*)" outside the container to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
+  node_origin = get_target(origin)
+  node_dest = get_target(dest)
+  dest_hostname = node_dest.full_hostname
+  _command_output, return_code = node_origin.run("/usr/bin/scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r #{file} root@#{dest_hostname}:#{dest_folder}", runs_in_container: false)
   raise StandardError, "File could not be sent from #{origin} to #{dest}" unless return_code.zero?
 end
 
@@ -1746,7 +1774,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
 
   # Reset the API client to take the new CA into account
   log 'Resetting the API client'
-  $api_test = new_api_client
+  $api_test = new_api_client unless uyuni_not_installed?
 
   raise SystemCallError, 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise ScriptError, 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'

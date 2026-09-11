@@ -30,7 +30,6 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.download.DownloadManager;
-import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -54,8 +53,6 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class SyncRepositoriesAction extends RhnAction implements Listable<ContentSource> {
 
-    private static final String REPOSYNC_LOCKFILE = "/run/spacewalk-repo-sync.pid";
-
   /**
    *
    * {@inheritDoc}
@@ -77,7 +74,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
         ChannelSyncFlag csf = chan.getChannelSyncFlag();
 
 
-        boolean inProgress = isSyncInProgress(chan);
+        boolean inProgress = ChannelFactory.isSyncInProgress(chan.getLabel());
         if (inProgress) {
             addMessage(request, "message.syncinprogress");
             request.setAttribute("in_progress", true);
@@ -183,22 +180,6 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
         request.setAttribute("fail", csf.isQuitOnError());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-    }
-
-    private boolean isSyncInProgress(Channel chan) {
-        String pid;
-        try {
-            pid = FileUtils.readStringFromFile(REPOSYNC_LOCKFILE).trim();
-        }
-        catch (RuntimeException e) {
-            return false;
-        }
-
-        // Is this PID running?
-        String[] cmd = {"/usr/bin/ps", "-o", "args", "-p", pid};
-        SystemCommandExecutor ce = new SystemCommandExecutor();
-        ce.execute(cmd);
-        return ce.getLastCommandOutput().contains(" " + chan.getLabel() + " ");
     }
 
     private String getLastSyncLog(Channel chan) {

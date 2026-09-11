@@ -4,7 +4,7 @@
         <div class="action-button-wrapper">
             <rl:csv
                 name="errataList"
-                exportColumns="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate"
+                exportColumns="${errataExportColumns}"
                 header="${system.name}"/>
         </div>
     </div>

@@ -23,6 +23,7 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.RegistrationUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -102,6 +103,10 @@ public class SSHServiceWorker implements QueueWorker {
                 log.info("Executing actions for minion: {}", m.getMinionId());
 
                 boolean checkinNeeded = true;
+                if (system.isDistupgrade()) {
+                    RegistrationUtils.scheduleSLES16VerificationIfNeeded(m);
+                }
+
                 if (system.isRebooting()) {
                     // System is rebooting, check if there's an action chain execution pending and resume it.
                     // If the action chain resumes it also checks in the system.
@@ -347,9 +352,11 @@ public class SSHServiceWorker implements QueueWorker {
                     State.apply(List.of(ApplyStatesEventMessage.SYSTEM_INFO),
                     Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
-            systemInfoMap.forEach((key, value) -> value.result().ifPresent(si -> {
-                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(key);
-                minionServer.ifPresent(minion -> saltUtils.updateSystemInfo(si, minion));
+            systemInfoMap
+                    .forEach((key, value) ->
+                            value.result().ifPresent(si -> {
+                                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(key);
+                                minionServer.ifPresent(minion -> saltUtils.updateSystemInfo(si, minion));
             }));
         }
         catch (SaltException ex) {

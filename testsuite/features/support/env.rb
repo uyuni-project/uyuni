@@ -10,8 +10,8 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'cucumber'
 # require 'simplecov'
-require 'minitest/autorun'
-require 'minitest/unit'
+require 'minitest'
+require 'minitest/assertions'
 require 'securerandom'
 require 'capybara/playwright'
 require 'multi_test'
@@ -150,10 +150,10 @@ Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
-World(MiniTest::Assertions)
+World(Minitest::Assertions)
 
 # Initialize the API client
-$api_test = new_api_client
+$api_test = new_api_client unless uyuni_not_installed?
 
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new if $code_coverage_mode
@@ -293,6 +293,15 @@ AfterAll do
   process_code_coverage
 end
 
+After('@install_mlm_on_rke2') do |scenario|
+  next unless scenario.passed?
+
+  bashrc_file = '/root/.bashrc'
+  localhost = get_target('localhost')
+  localhost.run("sed -i '/^export UYUNI_NOT_INSTALLED=/d' #{bashrc_file}")
+  localhost.run("echo 'export UYUNI_NOT_INSTALLED=false' >> #{bashrc_file}")
+end
+
 # get the Cobbler log output when it fails
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
@@ -408,7 +417,7 @@ Before('@skip_known_issue') do
 end
 
 # Create a user for each feature
-Before do |scenario|
+Before('not @no_user_creation') do |scenario|
   feature_path = scenario.location.file
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
@@ -449,8 +458,8 @@ Before('@run_if_proxy_transactional_or_slmicro62_minion') do
   skip_this_scenario unless suse_proxy_transactional? || ENV.key?(ENV_VAR_BY_HOST['slmicro62_minion'])
 end
 
-Before('@run_if_proxy_not_transactional_or_sles15sp7_minion') do
-  skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sles15sp7_minion'])
+Before('@run_if_proxy_not_transactional_or_sles15sp7_minion_or_monitoring_server') do
+  skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sles15sp7_minion']) || ENV.key?(ENV_VAR_BY_HOST['monitoring_server'])
 end
 
 Before('@sle_minion') do

@@ -63,7 +63,7 @@
       <rhn-tab name="pkg.lock.menu" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_lock)">
         <rhn-tab-url>/rhn/systems/details/packages/LockPackages.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Profiles" acl="authorized_for(systems.software.packages.profiles); system_feature(ftr_profile_compare)">
+      <rhn-tab name="Profiles" acl="authorized_for(systems.profiles); system_feature(ftr_profile_compare)">
         <rhn-tab-url>/rhn/systems/details/packages/profiles/ShowProfiles.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/Create.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/CompareSystems.do</rhn-tab-url>

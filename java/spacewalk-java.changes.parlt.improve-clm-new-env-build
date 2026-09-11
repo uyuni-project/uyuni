@@ -1,0 +1,2 @@
+- Optimize cloned channel sync queries in
+  `Errata_queries.xml` to avoid nested loops (bsc#1273071)

@@ -3,7 +3,7 @@
 
 ### This file contains the definitions for all steps concerning Cobbler.
 
-$cobbler_test = CobblerTest.new
+$cobbler_test = CobblerTest.new unless uyuni_not_installed?
 
 # cobbler daemon
 Given(/^cobblerd is running$/) do

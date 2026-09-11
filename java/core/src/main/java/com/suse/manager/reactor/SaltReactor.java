@@ -29,8 +29,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessage;
 import com.suse.manager.reactor.messaging.BatchStartedEventMessageAction;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
@@ -132,8 +130,6 @@ public class SaltReactor {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr, attestationMgr),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
-                ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
@@ -151,6 +147,11 @@ public class SaltReactor {
         MessageQueue.registerAction(new PXEEventMessageAction(),
                 PXEEventMessage.class);
         MessageQueue.registerAction(new ProxyBackupEventAction(saltApi), ProxyBackupEventMessage.class);
+
+        /*
+         * ApplyStatesEventMessage => ApplyStatesEventMessageAction() is registered in
+         * MessageQueue.configureDefaultActions as it is also used in taskomatic.
+         */
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
