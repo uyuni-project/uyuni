@@ -29804,6 +29804,35 @@ given channel.</source>
         <source> Disabled </source>
         <target state="final"> 已禁用 </target>
       </trans-unit>
-    </body>
+    <trans-unit id="exportcolumn.cveNames" xml:space="preserve">
+          <source>CVEs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="channel.delete.jsp.actkeysheader" xml:space="preserve">
+        <source>Activation Keys</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+        <trans-unit id="channel.delete.jsp.actkeysparagraph" xml:space="preserve">
+        <source>Channel deletion will remove any Activation Key that has {0} as a base channel.
+         </source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+        <trans-unit id="channel.delete.jsp.actkeysaffected" xml:space="preserve">
+        <source>Activation Keys Affected:</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
