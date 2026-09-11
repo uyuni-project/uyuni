@@ -97,6 +97,34 @@ class MockSubprocessCompletedProcess:
         self.stderr = stderr
 
 
+def test_run_replaces_non_utf8_status_output(monkeypatch):
+    status_output = (
+        b"[GNUPG:] GOODSIG E6266D4AC0962C7D Datadog, Inc. APT key\n"
+        b"[GNUPG:] NOTATION_DATA \xef\xa4%0B\xa2%00\n"
+    )
+
+    def mock_run(*_args, **kwargs):
+        stdout = status_output.decode(kwargs["encoding"], errors=kwargs["errors"])
+        return MockSubprocessCompletedProcess(stdout=stdout)
+
+    monkeypatch.setattr(gpgverify.subprocess, "run", mock_run)
+
+    # pylint: disable-next=protected-access
+    completed = gpgverify._run(
+        signed_file="signed-file", signature_file=None, keyring=None
+    )
+
+    assert "\ufffd" in completed.stdout
+    assert gpgverify.parse_signatures(completed.stdout) == [
+        gpgverify.Signature(
+            keyid="E6266D4AC0962C7D",
+            fingerprint="",
+            status="GOOD",
+            username="Datadog, Inc. APT key",
+        )
+    ]
+
+
 @pytest.mark.parametrize("short_circuit,expected", [(True, True), (False, False)])
 def test_verify_file_short_circuit(
     short_circuit, expected, gpg_verify_output, monkeypatch
