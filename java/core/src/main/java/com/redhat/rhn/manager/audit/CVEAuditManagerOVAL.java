@@ -187,16 +187,6 @@ public class CVEAuditManagerOVAL {
     }
 
     /**
-     * Check if we have any OVAL vulnerability records for the given client OS in the database.
-     *
-     * @param clientServer the server to check
-     * @return {@code True}
-     * */
-    public static boolean checkOVALAvailability(Server clientServer) {
-        return OVALCachingFactory.checkOVALAvailability(clientServer.getCpe());
-    }
-
-    /**
      * Check if we have any erratas assigned to the client's CVE channels.
      *
      * @param clientServer the server to check

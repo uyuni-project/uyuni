@@ -46,12 +46,6 @@
         </query>
     </mode>
 
-    <mode name="check_oval_availability">
-        <query params="cpe">
-            SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe) OR starts_with(plat.cpe, :cpe);
-        </query>
-    </mode>
-
     <mode name="list_oval_platform_cpes">
         <query>
             SELECT plat.cpe AS cpe
