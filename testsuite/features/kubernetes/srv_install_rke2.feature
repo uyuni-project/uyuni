@@ -1,21 +1,27 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@transactional_server
 @rke2
 @no_user_creation
 Feature: Install RKE2 server on a transactional system
 
+@transactional_server
   Scenario: Reboot the server to activate everything before starting
     When I reboot the "server" host through SSH, waiting until it comes back
 
   Scenario: Check the RKE2 configuration
     Then the environment variable "RKE2_VERSION" is set on "server"
+    And the environment variable "RKE2_INSTALL_METHOD" is set on "server"
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
-  Scenario: Install RKE2 via RPM method
-    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=rpm sh -" on "server"
+  Scenario: Install RKE2
+    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "server"
 
+@skip_if_transactional_server
+  Scenario: Install selinux package
+    When I install packages "rke2-selinux" on this "server"
+
+@transactional_server
   Scenario: Reboot the server to activate the transaction with the RKE2 content
     When I reboot the "server" host through SSH, waiting until it comes back
 

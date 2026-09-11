@@ -8,6 +8,8 @@
 
 # IDEMPOTENT
 
+
+- features/kubernetes/srv_rke2_tftpd_sanity.feature
 - features/kubernetes/srv_rke2_external_ca.feature
 
 ## Kubernetes tests END ##
