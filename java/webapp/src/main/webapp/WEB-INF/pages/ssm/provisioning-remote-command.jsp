@@ -59,6 +59,17 @@
 </textarea>
                                 </div>
                             </div>
+                            <c:if test="${requestScope.has_transactional_update}">
+                                <div class="row">
+                                    <div class="col-md-offset-3 offset-md-3 col-md-6">
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="use_transactional_update" value="true"
+                                                <c:if test="${fv.useTransactionalUpdate}">checked</c:if> />
+                                            <bean:message key="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </c:if>
                     <html:hidden property="submitted" value="true"/>
                     <div class="spacewalk-section-toolbar">
                         <div class="action-button-wrapper">

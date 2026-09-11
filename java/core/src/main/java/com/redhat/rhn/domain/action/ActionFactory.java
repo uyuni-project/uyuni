@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -206,11 +207,27 @@ public class ActionFactory extends HibernateFactory {
      */
     public static ScriptActionDetails createScriptActionDetails(String username,
             String groupname, Long timeout, String script) {
+        return createScriptActionDetails(username, groupname, timeout, script, false);
+    }
+
+    /**
+     * Creates a ScriptActionDetails which contains an arbitrary script to be
+     * run by a ScriptRunAction.
+     * @param username Username of script
+     * @param groupname Group script runs as
+     * @param timeout script timeout
+     * @param script Script contents
+     * @param useTransactionalUpdate execute through transactional-update on transactional systems
+     * @return ScriptActionDetails containing script to be run by ScriptRunAction
+     */
+    public static ScriptActionDetails createScriptActionDetails(String username,
+            String groupname, Long timeout, String script, boolean useTransactionalUpdate) {
         ScriptActionDetails sad = new ScriptActionDetails();
         sad.setUsername(username);
         sad.setGroupname(groupname);
         sad.setTimeout(timeout);
         sad.setScript(script.getBytes(StandardCharsets.UTF_8));
+        sad.setUseTransactionalUpdate(useTransactionalUpdate);
 
         return sad;
     }
@@ -501,22 +518,33 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Returns all pending actions that contain minions
-     * @return list of pending minions that contain minions
+     * Returns pending ServerActions for minions, excluding transactional actions waiting for reboot.
+     *
+     * @return pending ServerActions for minions that are eligible for cleanup
      */
-    public static List<Action> pendingMinionServerActions() {
+    public static List<ServerAction> pendingMinionServerActions() {
         return getSession().createNativeQuery("""
-                SELECT *
-                FROM   rhnAction
-                WHERE  id IN (SELECT     DISTINCT ac.id
-                              FROM       rhnAction ac
-                              INNER JOIN rhnServerAction sa on ac.id = sa.action_id
-                              INNER JOIN suseMinionInfo mi on sa.server_id = mi.server_id
-                              WHERE      sa.status in (0, 1))
-                """, Action.class)
+                SELECT sa.*
+                FROM   rhnServerAction sa
+                INNER JOIN suseMinionInfo mi ON sa.server_id = mi.server_id
+                WHERE  sa.status IN (:queued_status, :picked_up_status)
+                  AND NOT EXISTS (
+                      SELECT 1
+                      FROM suseTransactionalActionHistory history
+                      WHERE history.action_id = sa.action_id
+                        AND history.minion_server_id = sa.server_id
+                        AND history.prereq_status = 'COMPLETED'
+                        AND history.reboot_required = true
+                        AND history.reboot_status = 'PENDING'
+                        AND history.after_reboot_status = 'PENDING'
+                  )
+                """, ServerAction.class)
+                .setParameter("queued_status", STATUS_QUEUED.getId())
+                .setParameter("picked_up_status", STATUS_PICKED_UP.getId())
                 .addSynchronizedEntityClass(Action.class)
                 .addSynchronizedEntityClass(ServerAction.class)
                 .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(MinionTransactionalActionHistory.class)
                 .list();
     }
 

@@ -34,6 +34,9 @@ public class ServerApplyStatesJson {
     /** The earliest execution date */
     private Optional<LocalDateTime> earliest = Optional.empty();
 
+    /** Execute through transactional-update on transactional systems */
+    private boolean useTransactionalUpdate;
+
     /**
      * @return the server id
      */
@@ -60,5 +63,12 @@ public class ServerApplyStatesJson {
      */
     public Optional<LocalDateTime> getEarliest() {
         return earliest;
+    }
+
+    /**
+     * @return true when transactional systems should execute through transactional-update
+     */
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
     }
 }

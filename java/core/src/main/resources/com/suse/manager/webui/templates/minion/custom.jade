@@ -5,6 +5,7 @@ include ./minion-header.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.serverId = "#{server.id}";
+    window.hasTransactionalSystems = #{hasTransactionalSystems};
 
 script(src='/javascript/legacy/jquery-ui.js?cb=#{webBuildtimestamp}')
 

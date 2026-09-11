@@ -65,6 +65,7 @@ import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SaltbootController;
 import com.suse.manager.webui.controllers.ScapAuditController;
 import com.suse.manager.webui.controllers.SetController;
+import com.suse.manager.webui.controllers.SnapshotsController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.StorybookController;
@@ -206,6 +207,8 @@ public class Router implements SparkApplication {
         PackageController.initRoutes(jade);
 
         AppStreamsController.initRoutes(jade);
+
+        SnapshotsController.initRoutes(jade);
 
         // Proxy
         proxyController.initRoutes(proxyController, jade);

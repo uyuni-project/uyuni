@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -122,9 +123,12 @@ public class ApplyStatesAction extends Action {
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
 
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(details.getMods(), details.getPillarsMap(),
+        TransactionalActionManager.addOptionalTransactionalApplyCalls(ret, details.getMods(), details.getPillarsMap(),
                 Optional.of(true),
-                details.isTest() ? Optional.of(details.isTest()) : Optional.empty()), minionSummaries);
+                details.isTest() ? Optional.of(details.isTest()) : Optional.empty(),
+                minionSummaries,
+                details.isUseTransactionalUpdate(),
+                getId());
         return ret;
     }
 
@@ -139,21 +143,7 @@ public class ApplyStatesAction extends Action {
             serverAction.setStatusCompleted();
         }
 
-        ApplyStatesActionResult statesResult = Optional.ofNullable(
-                        details.getResults())
-                .orElse(Collections.emptySet())
-                .stream()
-                .filter(result ->
-                        serverAction.getServerId().equals(result.getServerId()))
-                .findFirst()
-                .orElse(new ApplyStatesActionResult());
-        details.addResult(statesResult);
-        statesResult.setActionApplyStatesId(details.getId());
-        statesResult.setServerId(serverAction.getServerId());
-        statesResult.setReturnCode(auxArgs.getRetcode());
-
-        // Set the output to the result
-        statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
+        storeApplyStatesResult(serverAction, jsonResult, auxArgs.getRetcode());
 
         // Create the result message depending on the action status
         String states = details.getMods().isEmpty() ?
@@ -180,6 +170,28 @@ public class ApplyStatesAction extends Action {
                 auxArgs.getSaltUtils().updateSystemInfo(jsonResult, minion);
             }
         });
+    }
+
+    /**
+     * Stores the Salt state application result for a server.
+     *
+     * @param serverAction the server action
+     * @param jsonResult the Salt result
+     * @param returnCode the Salt return code
+     */
+    public void storeApplyStatesResult(ServerAction serverAction, JsonElement jsonResult, long returnCode) {
+        ApplyStatesActionResult statesResult = Optional.ofNullable(details.getResults())
+                .orElse(Collections.emptySet())
+                .stream()
+                .filter(result -> serverAction.getServerId().equals(result.getServerId()))
+                .findFirst()
+                .orElse(new ApplyStatesActionResult());
+
+        details.addResult(statesResult);
+        statesResult.setActionApplyStatesId(details.getId());
+        statesResult.setServerId(serverAction.getServerId());
+        statesResult.setReturnCode(returnCode);
+        statesResult.setOutput(SaltUtils.getJsonResultWithPrettyPrint(jsonResult).getBytes());
     }
 
     /**
