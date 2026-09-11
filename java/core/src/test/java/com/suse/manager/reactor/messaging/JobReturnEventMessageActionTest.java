@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2021 SUSE LLC
+ * Copyright (c) 2016--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -1718,6 +1718,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build129/images.build/POS_Image_JeOS7.x86_64-7.0.0.spdx.json")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0",
@@ -1732,6 +1737,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-5.3.18-150300.59.54-default.kernel",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
+                                    "POS_Image_JeOS7.x86_64-7.0.0.spdx.json",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
@@ -1764,6 +1775,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             file = info.getImageFiles().stream().filter(f -> f.getType().equals("image")).findFirst().get();
             assertEquals("7057ea9a15784f469e03f2de045d3c73", file.getChecksum().getChecksum());
             assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
+            // check SPDX SBOM
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
+            assertEquals("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    file.getChecksum().getChecksum());
+            assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0.spdx.json", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();
@@ -1787,10 +1803,22 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
                             user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
+            allowing(saltServiceMock).collectKiwiImage(with(equal(server)),
+                    with(equal("/var/lib/Kiwi/build137/images/" +
+                            "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json")),
+                    with(equal(String.format("/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/",
+                            user.getOrg().getId()))));
+            will(returnValue(Optional.of(mockResult)));
             allowing(saltServiceMock).removeFile(
                     with(equal(Paths.get(String.format(
                             "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0" +
                                     "-build129.tar.xz",
+                            user.getOrg().getId())))));
+            will(returnValue(Optional.of(true)));
+            allowing(saltServiceMock).removeFile(
+                    with(equal(Paths.get(String.format(
+                            "/srv/www/os-images/%d/POS_Image_JeOS7-7.0.0-1/" +
+                                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json",
                             user.getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltServiceMock).copyFile(with(any(Path.class)), with(any(Path.class)));
@@ -1809,10 +1837,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(info.getChecksum());
             assertEquals("7057ea9a15784f469e03f2de045d3c73",
                     info.getChecksum().getChecksum());
+            ImageFile file = info.getImageFiles().stream()
+                    .filter(f -> f.getType().equals("bundle")).findFirst().get();
             assertEquals("93321bc25fe417787f311cdcfa67dfde470e2a1e7481d4c5f8e55a6684576029",
-                    info.getImageFiles().stream().findFirst().get().getChecksum().getChecksum());
+                    file.getChecksum().getChecksum());
             assertEquals("POS_Image_JeOS7-7.0.0-1/POS_Image_JeOS7.x86_64-7.0.0-build129.tar.xz",
-                    info.getImageFiles().stream().findFirst().get().getFile());
+                    file.getFile());
+            file = info.getImageFiles().stream().filter(f -> f.getType().equals("sbom")).findFirst().get();
+            assertEquals("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    file.getChecksum().getChecksum());
+            assertEquals("POS_Image_JeOS7-7.0.0-1/" +
+                    "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
         TestUtils.flushSession();
