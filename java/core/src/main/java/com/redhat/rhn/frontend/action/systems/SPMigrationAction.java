@@ -81,8 +81,6 @@ public class SPMigrationAction extends RhnAction {
     private static Logger logger = LogManager.getLogger(SPMigrationAction.class);
 
     // Request attributes
-    private static final String UPGRADE_SUPPORTED = "upgradeSupported";
-    private static final String ZYPP_INSTALLED = "zyppPluginInstalled";
     private static final String MIGRATION_SCHEDULED = "migrationScheduled";
     private static final String LATEST_SP = "latestServicePack";
     private static final String MISSING_SUCCESSOR_EXTENSIONS = "missingSuccessorExtensions";
@@ -149,10 +147,7 @@ public class SPMigrationAction extends RhnAction {
         setGeneralAttributes(request, ctx, server, minion, parHolder);
 
         // Check if there is already a migration in the schedule
-        Action migration = null;
-        if (parHolder.isTradCliUpgradesViaCapabilitySupported()) {
-            migration = ServerActionFactory.isMigrationScheduledForServer(server.getId());
-        }
+        Action migration = ServerActionFactory.isMigrationScheduledForServer(server.getId());
         request.setAttribute(MIGRATION_SCHEDULED, migration);
 
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
@@ -176,8 +171,7 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, parHolder.isGoBack());
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) && parHolder.isTradCliUpgradesViaCapabilitySupported() &&
-                migration == null) {
+        if (forward.getName().equals(TARGET) && migration == null) {
 
             boolean mustReturn = handleTargetForward(request, ctx, server);
             if (mustReturn) {
@@ -228,21 +222,7 @@ public class SPMigrationAction extends RhnAction {
         request.setAttribute(IS_SALT_UP_TO_DATE, parHolder.isSaltPackageUpToDateOnMinion());
         request.setAttribute(SALT_PACKAGE, parHolder.getSaltPackageOnMinion());
 
-        // Check if this server supports distribution upgrades via capabilities
-        // (for traditional clients only)
-        parHolder.setTradCliUpgradesViaCapabilitySupported(parHolder.isSuseMinion() || parHolder.isRedHatMinion() ||
-                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser()));
-        logger.debug("Upgrade supported for '{}'? {}", server.getName(),
-                parHolder.isTradCliUpgradesViaCapabilitySupported());
-        request.setAttribute(UPGRADE_SUPPORTED, parHolder.isTradCliUpgradesViaCapabilitySupported());
-
-        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
-        parHolder.setTradCliZyppPluginInstalled(PackageFactory.
-                lookupByNameAndServer("zypp-plugin-spacewalk", server) != null);
-        logger.debug("zypp plugin installed? {}", parHolder.isTradCliZyppPluginInstalled());
-        request.setAttribute(ZYPP_INSTALLED, parHolder.isTradCliZyppPluginInstalled());
-
-        // Check if the newest update stack is installed (for traditional clients only)
+        // Check if the newest update stack is installed (unconditional warning banner)
         parHolder.setTradCliUpdateStackUpdateNeeded(ErrataManager
                 .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
         logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());

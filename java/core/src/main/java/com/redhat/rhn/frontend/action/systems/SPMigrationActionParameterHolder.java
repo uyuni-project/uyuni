@@ -19,8 +19,6 @@ class SPMigrationActionParameterHolder {
     private boolean isRedHatMinion;
     private String saltPackageOnMinion;
     private boolean isSaltPackageUpToDateOnMinion;
-    private boolean isTradCliUpgradesViaCapabilitySupported;
-    private boolean isTradCliZyppPluginInstalled;
     private boolean isTradCliUpdateStackUpdateNeeded;
 
     // request parameters
@@ -40,8 +38,6 @@ class SPMigrationActionParameterHolder {
         isRedHatMinion = false;
         saltPackageOnMinion = "";
         isSaltPackageUpToDateOnMinion = false;
-        isTradCliUpgradesViaCapabilitySupported = false;
-        isTradCliZyppPluginInstalled = false;
         isTradCliUpdateStackUpdateNeeded = false;
 
         targetBaseProduct = null;
@@ -93,22 +89,6 @@ class SPMigrationActionParameterHolder {
 
     public void setSaltPackageUpToDateOnMinion(boolean saltPackageUpToDateOnMinionIn) {
         isSaltPackageUpToDateOnMinion = saltPackageUpToDateOnMinionIn;
-    }
-
-    public boolean isTradCliUpgradesViaCapabilitySupported() {
-        return isTradCliUpgradesViaCapabilitySupported;
-    }
-
-    public void setTradCliUpgradesViaCapabilitySupported(boolean tradCliUpgradesViaCapabilitySupportedIn) {
-        isTradCliUpgradesViaCapabilitySupported = tradCliUpgradesViaCapabilitySupportedIn;
-    }
-
-    public boolean isTradCliZyppPluginInstalled() {
-        return isTradCliZyppPluginInstalled;
-    }
-
-    public void setTradCliZyppPluginInstalled(boolean tradCliZyppPluginInstalledIn) {
-        isTradCliZyppPluginInstalled = tradCliZyppPluginInstalledIn;
     }
 
     public boolean isTradCliUpdateStackUpdateNeeded() {
