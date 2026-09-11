@@ -273,22 +273,6 @@ EOF
     fi
     update_rhn_conf "web.default_mail_from" "${MANAGER_MAIL_FROM}"
 
-    # Also update report db configuration in satellite-local-rules.conf (legacy fallback)
-    mkdir -p /var/lib/rhn/rhn-satellite-prep
-    cat > /var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf << EOF
-# SPDX-FileCopyrightText: 2026 SUSE LLC
-#
-# SPDX-License-Identifier: GPL-2.0-only
-
-report_db_backend=postgresql
-report_db_host=${REPORT_DB_HOST}
-report_db_port=${REPORT_DB_PORT}
-report_db_name=${REPORT_DB_NAME}
-report_db_user=${REPORT_DB_USER}
-report_db_password=${REPORT_DB_PASS}
-report_db_ssl_enabled=${REPORT_DB_SSL_ENABLED}
-report_db_sslrootcert=${REPORT_DB_CA_CERT}
-EOF
 }
 
 setup_reportdb() {
