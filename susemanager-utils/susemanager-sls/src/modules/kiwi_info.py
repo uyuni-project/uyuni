@@ -1,6 +1,6 @@
 #  pylint: disable=missing-module-docstring,unused-import
 
-# SPDX-FileCopyrightText: 2018-2025 SUSE LLC
+# SPDX-FileCopyrightText: 2018-2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import json
+import subprocess
 
 log = logging.getLogger(__name__)
 
@@ -24,6 +25,8 @@ KIWI_VERSION_REGEX = r"\d+\.\d+(\.\d+)?"
 KIWI_ARCH_REGEX = r"(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6hl|armv6l|armv7hl|armv7l|ppc|ppc64|ppc64le|s390|s390x|riscv64)"
 # Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L26
 KIWI_NAME_REGEX = r"[a-zA-Z0-9_\-\.]+"
+# Path to the SBOM generator to use
+SBOM_GENERATOR = "/usr/lib/build/generate_sbom"
 
 
 def parse_profile(chroot):
@@ -162,6 +165,77 @@ def get_md5(path):
     res["hash"] = "md5:" + __salt__["file.get_hash"](path, form="md5")
     res["size"] = __salt__["file.stats"](path).get("size")
     return res
+
+
+def get_sha256(path):
+    res = {}
+    if not __salt__["file.file_exists"](path):
+        return res
+
+    res["hash"] = "sha256:" + __salt__["file.get_hash"](path, form="sha256")
+    res["size"] = __salt__["file.stats"](path).get("size")
+    return res
+
+
+def get_sbom_path(dest, basename, build_id, bundle_dest=None):
+    if bundle_dest is not None:
+        filename = f"{basename}-{build_id}.spdx.json"
+        return filename, os.path.join(bundle_dest, filename)
+
+    filename = f"{basename}.spdx.json"
+    return filename, os.path.join(dest, filename)
+
+
+def inspect_sbom(dest, basename, build_id, bundle_dest=None):
+    filename, filepath = get_sbom_path(dest, basename, build_id, bundle_dest)
+
+    if not __salt__["file.file_exists"](filepath):
+        return None
+
+    res = {"filename": filename, "filepath": filepath}
+    res.update(get_sha256(filepath))
+    return res
+
+
+def generate_sbom(root, dest, build_id, bundle_dest=None):
+    buildinfo = parse_buildinfo(dest) or guess_buildinfo(dest)
+    basename = buildinfo.get("main", {}).get("image.basename", "")
+    if not basename:
+        raise salt.exceptions.CommandExecutionError(
+            "Unable to determine the Kiwi image basename for SBOM generation"
+        )
+
+    existing_sbom = inspect_sbom(dest, basename, build_id, bundle_dest)
+    if existing_sbom is not None:
+        return existing_sbom
+
+    if not os.path.isfile(SBOM_GENERATOR):
+        raise salt.exceptions.CommandExecutionError(
+            f"SBOM generator not found at {SBOM_GENERATOR}. Install the build package."
+        )
+
+    _, filepath = get_sbom_path(dest, basename, build_id, bundle_dest)
+    try:
+        with open(filepath, "w", encoding="utf-8") as sbom_file:
+            result = subprocess.run(
+                [SBOM_GENERATOR, "--format", "spdx", "--dir", root],
+                check=False,
+                stderr=subprocess.PIPE,
+                stdout=sbom_file,
+                text=True,
+            )
+    except OSError as error:
+        raise salt.exceptions.CommandExecutionError(
+            f"Failed to run the SBOM generator: {error}"
+        ) from error
+
+    if result.returncode != 0:
+        os.unlink(filepath)
+        raise salt.exceptions.CommandExecutionError(
+            f"SBOM generation failed: {result.stderr.strip()}"
+        )
+
+    return inspect_sbom(dest, basename, build_id, bundle_dest)
 
 
 def get_decompressed_md5(path, decompress_cmd):
@@ -589,6 +663,10 @@ def build_info(dest, build_id, bundle_dest=None):
     # Kiwi creates checksum for filesystem image when image type is PXE(or KIS), however if image is compressed, this
     # checksum is of uncompressed image. Other image types do not have checksum created at all.
     res["image"].update(get_md5(image_filepath))
+
+    sbom = inspect_sbom(dest, basename, build_id, bundle_dest)
+    if sbom is not None:
+        res["sbom"] = sbom
 
     if bundle_dest is not None:
         res["bundles"] = inspect_bundles(bundle_dest, basename)
