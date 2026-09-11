@@ -661,7 +661,7 @@ def complete_group_addconfigchannels(self, text, line, beg, end):
     parts = line.split(" ")
 
     if len(parts) == 2:
-        return self.tab_completer(self.do_group_list("", True), text)
+        return tab_completer(self.do_group_list("", True), text)
     elif len(parts) > 2:
         return tab_completer(self.do_configchannel_list("", True), text)
     return None
@@ -699,7 +699,7 @@ def complete_group_removeconfigchannels(self, text, line, beg, end):
     parts = line.split(" ")
 
     if len(parts) == 2:
-        return self.tab_completer(self.do_group_list("", True), text)
+        return tab_completer(self.do_group_list("", True), text)
     elif len(parts) > 2:
         return tab_completer(self.do_configchannel_list("", True), text)
     return None
