@@ -1,0 +1,68 @@
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-query', {
+    category: 'Uyuni',
+    color: '#2BD3A0',
+    defaults: {
+      name: { value: '' },
+      server: { value: '', type: 'uyuni-api-config', required: true },
+      queryType: { value: 'listActiveSystems' }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'search.svg',
+    paletteLabel: 'uyuni query',
+    label: function () {
+      const queries = {
+        'listActiveSystems': 'list systems',
+        'getSystemDetails': 'get details',
+        'listErrata': 'list errata',
+        'listSystemPackages': 'list packages'
+      };
+      return this.name || queries[this.queryType] || 'uyuni query';
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-query">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> API Server</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-queryType"><i class="fa fa-search"></i> Query</label>
+    <select id="node-input-queryType">
+      <option value="listActiveSystems">List Active Systems</option>
+      <option value="getSystemDetails">Get System Details (requires systemId)</option>
+      <option value="listErrata">List Relevant Errata/Patches (requires systemId)</option>
+      <option value="listSystemPackages">List Installed Packages (requires systemId)</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="uyuni-query">
+  <p>Queries information from the Uyuni server via XML-RPC API.</p>
+  
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload.systemId <span class="property-type">number</span></dt>
+    <dd>The ID of the target system (e.g. 10001) - required for system-specific queries.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object | array</span></dt>
+    <dd>The query result data (e.g. array of active systems or relevant errata details).</dd>
+  </dl>
+
+  <h3>Queries</h3>
+  <ul>
+    <li><b>List Active Systems</b> — retrieves all registered and active systems.</li>
+    <li><b>Get System Details</b> — fetches hardware, OS, IP/MAC address information for a specific system ID.</li>
+    <li><b>List Relevant Errata/Patches</b> — lists critical patches and bug fixes applicable to the target system.</li>
+    <li><b>List Installed Packages</b> — lists all software packages installed on the target system.</li>
+  </ul>
+</script>

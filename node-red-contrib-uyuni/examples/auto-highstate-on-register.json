@@ -1,0 +1,74 @@
+[
+  {
+    "id": "flow_auto_highstate",
+    "type": "tab",
+    "label": "Auto Highstate on Minion Register",
+    "disabled": false,
+    "info": "Automatically applies Salt Highstate via XML-RPC action whenever a new minion registers."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "api_conf_1",
+    "type": "uyuni-api-config",
+    "name": "Uyuni API Server",
+    "url": "https://uyuni-server/rpc/api"
+  },
+  {
+    "id": "evt_reg_2",
+    "type": "uyuni-events",
+    "z": "flow_auto_highstate",
+    "name": "Listen Minion Registered",
+    "server": "mqtt_conf_1",
+    "eventCategory": "systems/registered",
+    "x": 170,
+    "y": 140,
+    "wires": [["prep_action_1"]]
+  },
+  {
+    "id": "prep_action_1",
+    "type": "function",
+    "z": "flow_auto_highstate",
+    "name": "Extract System ID",
+    "func": "// Extract minionId or serverId from registration payload\nmsg.systemId = msg.payload.minionId || msg.payload.machineId;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 420,
+    "y": 140,
+    "wires": [["act_highstate_1"]]
+  },
+  {
+    "id": "act_highstate_1",
+    "type": "uyuni-action",
+    "z": "flow_auto_highstate",
+    "name": "Apply Highstate",
+    "server": "api_conf_1",
+    "actionType": "applyHighstate",
+    "x": 650,
+    "y": 140,
+    "wires": [["dbg_res_1"]]
+  },
+  {
+    "id": "dbg_res_1",
+    "type": "debug",
+    "z": "flow_auto_highstate",
+    "name": "Action Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 840,
+    "y": 140,
+    "wires": []
+  }
+]

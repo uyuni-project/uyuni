@@ -1,0 +1,7 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Test coverage output
+.nyc_output/
+coverage/

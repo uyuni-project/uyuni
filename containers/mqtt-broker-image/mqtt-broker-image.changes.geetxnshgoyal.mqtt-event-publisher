@@ -1,0 +1,2 @@
+- Initial Mosquitto broker image for Uyuni MQTT publishing
+- Add authenticated access with publisher and subscriber roles
