@@ -39,6 +39,27 @@ class TestSCActivationKey:
             assert call_id == "do_activation_list"
             assert ret_text == text
 
+    # pylint: disable-next=redefined-outer-name
+    def test_completer_ak_removegroups(self, shell):
+        """
+        Test tab completer for activationkey_removegroups.
+        """
+        text = "g"
+        shell.client.activationkey.getDetails.return_value = {
+            "server_group_ids": [101]
+        }
+        shell.client.systemgroup.getDetails.return_value = {"name": "group_a"}
+
+        completer = MagicMock()
+        with patch("spacecmd.activationkey.tab_completer", completer):
+            spacecmd.activationkey.complete_activationkey_removegroups(
+                shell, text, "activationkey_removegroups 1-key g", None, None
+            )
+            shell.client.activationkey.getDetails.assert_called_once_with(
+                shell.session, "1-key"
+            )
+            assert completer.called
+
 
 class TestSCActivationKeyMethods:
     """
