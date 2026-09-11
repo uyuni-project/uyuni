@@ -149,7 +149,7 @@ db_name =
 db_user =
 db_password =
 db_ssl_enabled =
-db_ca_cert =
+db_sslrootcert =
 
 # Report Database Configuration
 report_db_backend = postgresql
@@ -218,7 +218,7 @@ EOF
     update_rhn_conf "db_user" "${MANAGER_USER}"
     update_rhn_conf "db_password" "${MANAGER_PASS}"
     update_rhn_conf "db_ssl_enabled" "${MANAGER_DB_SSL_ENABLED}"
-    update_rhn_conf "db_ca_cert" "${MANAGER_DB_CA_CERT}"
+    update_rhn_conf "db_sslrootcert" "${MANAGER_DB_CA_CERT}"
 
     update_rhn_conf "report_db_backend" "postgresql"
     update_rhn_conf "report_db_host" "${REPORT_DB_HOST}"
