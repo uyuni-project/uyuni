@@ -1127,7 +1127,6 @@ INSERT INTO access.accessGroupNamespace
         'api.system.scap.get_xccdf_scan_details',
         'api.system.scap.get_xccdf_scan_rule_results',
         'api.system.scap.list_xccdf_scans',
-        'api.system.scap.schedule_xccdf_scan',
         'api.system.search.device_description',
         'api.system.search.device_driver',
         'api.system.search.device_id',
@@ -1301,8 +1300,8 @@ ON CONFLICT (group_id, namespace_id) DO NOTHING;
 INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
     SELECT ag.id, ns.id FROM access.accessGroup ag, access.namespace ns
     WHERE ns.namespace IN (
-        'api.system.scap.schedule_beta_xccdf_scan_custom',
-        'api.system.scap.schedule_beta_xccdf_scan_with_policy'
+        'api.system.scap.schedule_xccdf_scan_with_policy',
+        'api.system.scap.schedule_xccdf_scan_custom'
     )
     AND ns.access_mode = 'W'
 ON CONFLICT (group_id, namespace_id) DO NOTHING;
