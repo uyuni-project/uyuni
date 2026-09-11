@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content.ubuntu;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
@@ -230,7 +231,7 @@ public class UbuntuErrataManager {
     }
 
     private static Map<String, UbuntuErrataInfo> getUbuntuErrataInfo() throws IOException {
-        String jsonDBUrl = "https://usn.ubuntu.com/usn-db/database.json";
+        String jsonDBUrl = ConfigDefaults.get().getUbuntuErrataDbDownloadUrl();
         if (isFromDir()) {
             URI uri = MgrSyncUtils.urlToFSPath(jsonDBUrl, "");
             try (
