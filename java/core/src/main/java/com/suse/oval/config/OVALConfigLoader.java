@@ -20,6 +20,9 @@ import static com.suse.utils.Json.GSON;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class OVALConfigLoader {
@@ -49,9 +52,20 @@ public class OVALConfigLoader {
      * @return A configuration object that corresponds to {@code oval.config.json}
      * */
     public OVALConfig load() {
-        File jsonConfigFile;
+        File jsonConfigFile = new File(configPath);
+        if (!jsonConfigFile.exists()) {
+            // Fallback to loading from classpath (e.g. during tests)
+            InputStream is = OVALConfigLoader.class.getResourceAsStream("oval.config.json");
+            if (is != null) {
+                try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+                    return GSON.fromJson(reader, OVALConfig.class);
+                }
+                catch (IOException e) {
+                    throw new RuntimeException("Failed to load OVAL config file from classpath", e);
+                }
+            }
+        }
         try {
-            jsonConfigFile = new File(configPath);
             return GSON.fromJson(new FileReader(jsonConfigFile), OVALConfig.class);
         }
         catch (IOException e) {
