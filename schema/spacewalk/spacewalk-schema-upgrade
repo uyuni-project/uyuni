@@ -1,617 +1,617 @@
-#!/usr/bin/perl
-
-use strict;
-use warnings FATAL => 'all';
-
-use Spacewalk::Setup ();
-use IPC::Open3 ();
-use File::Basename;
-use Getopt::Long ();
-use Pod::Usage ();
-
-my $MIN_PG_DB_VERSION = 140001;
-my $MAX_PG_DB_VERSION = 189999;
-my $MIN_PG_DB_VERSION_STRING = "14";
-my $MAX_PG_DB_VERSION_STRING = "18";
-
-my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
-
-my ($skip_confirm, $reportdb, $help);
-
-$skip_confirm = 0;
-if (not Getopt::Long::GetOptions(
-    'yes'      => \$skip_confirm,
-    'reportdb' => \$reportdb,
-    'help'     => => \$help
-)) {
-    Pod::Usage::pod2usage(0);
-}
-
-Pod::Usage::pod2usage(-verbose => 2) if $help;
-
-if (not -e $config_file) {
-        die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
-}
-
-# Load the correct module for the type of database
-my $db_specific = $reportdb ? "Spacewalk::SchemaUpgrade::ReportDb" : "Spacewalk::SchemaUpgrade::MainDb";
-
-eval {
-    (my $file = "$db_specific.pm") =~ s|::|/|g;
-    require $file;
-    $db_specific->import();
-    1;
-} or do {
-    my $error = $@;
-    die "Unable to import required module: $error";
-};
-
-my $SCHEMA_DIR = "/usr/share/susemanager/db/" . $db_specific->DB_NAME;
-my $SCHEMA_UPGRADE_DIR = "/usr/share/susemanager/db/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
-my $SCHEMA_UPGRADE_LOGDIR = "/var/log/spacewalk/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
-
-my %options;
-Spacewalk::Setup::read_config($config_file, \%options);
-if (not defined $options{$db_specific->BACKEND_PROPERTY}) {
-        die "Config file [$config_file] does not seem to have database backend info (" . $db_specific->BACKEND_PROPERTY . ") set.\n";
-}
-
-$ENV{NLS_LANG} = 'AMERICAN_AMERICA.UTF8';
-$ENV{NLS_NUMERIC_CHARACTERS} = '.';
-
-my $test = run_query("select '1' || '2' || '3' as testing from dual;");
-if (not defined $test) {
-        die "Connect to database was not successful.\n";
-}
-if ($test ne '123') {
-        die "Test select from database did not give expected results.\n";
-}
-
-my $default_tablespace;
-my $server_version = 0;
-my $pg_version = "";
-my $os_version = 0.0;
-my $os_name = "";
-my $isUyuni = 0;
-$server_version = run_query("show server_version_num;");
-$pg_version = run_query("show server_version;");
-
-open(my $fh, '<:encoding(UTF-8)', "/etc/os-release") or die "Could not open file '/etc/os-release' $!";
-while (my $row = <$fh>) {
-    chomp $row;
-    # Skip empty rows.
-    if ($row eq "") {
-        next;
-    }
-    my ($k,$v) = split(/=/, $row, 2);
-    if ($k eq "VERSION_ID") {
-        if ($v =~ /(\d+\.\d+)/) {
-            $os_version = $1;
-        }
-    }
-    elsif ($k eq "PRETTY_NAME") {
-        $os_name = $v;
-    }
-    elsif ($k eq "ID" && $v =~ m/opensuse/) {
-        $isUyuni = 1;
-    }
-}
-close $fh;
-if ($server_version < $MIN_PG_DB_VERSION) {
-    print "\nRunning postgresql $pg_version is not supported. Minimal required version is $MIN_PG_DB_VERSION_STRING.\n\n";
-    exit 1;
-}
-elsif($server_version > $MAX_PG_DB_VERSION) {
-    print "\nRunning postgresql $pg_version is not supported. Maximal allowed version is $MAX_PG_DB_VERSION_STRING.\n\n";
-    exit 1;
-}
-
-my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/main.sql`;
-my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
-if (not defined $my_schema_release) {
-        die "Failed to retrieve our schema package name and version.\n";
-}
-
-if ($ENV{SUMA_TEST_SCHEMA_VERSION}) {
-    $my_schema_version = $ENV{SUMA_TEST_SCHEMA_VERSION};
-}
-
-my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
-(my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
-
-my $schema_version = run_query($db_specific->get_schema_version_query());
-
-if (not defined $schema_version) {
-    my $migrationdir = run_query($db_specific->get_migration_dir_query());
-    if (! defined $migrationdir or ! -d "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
-        die "No existing schema version info found in rhnVersionInfo.\n";
-    }
-    my @logfiles = sort {$b cmp $a} map { glob } "$SCHEMA_UPGRADE_LOGDIR/$migrationdir-to-*.log";
-    my $lname = ((scalar(@logfiles) >= 1)?basename($logfiles[0]):"$migrationdir.log");
-    print "Found unfinished schema migration\n";
-    print "Try to continue schema migration\n";
-    run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
-
-    exit;
-}
-
-my $regex = "^(uyuni|susemanager|spacewalk|satellite|rhn-satellite)-" . $db_specific->UPGRADE_PREFIX . "-";
-if (not $schema_version =~ /$regex/) {
-    die "Unknown schema name [$schema_version] found.\n";
-}
-
-my $start_schema = $schema_version;
-(my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*-[a-zA-Z0-9]*)(\..*)*$!$1!;
-
-print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
-if ($start_schema eq $target_schema) {
-    warn "Your database schema already matches the schema package version [$target_schema].\n";
-    exit;
-}
-
-my $foundtarget = 0;
-my $retried = 0;
-RETRY:
-
-if (!$foundtarget) {
-    print "Searching for upgrade path to: [$target_schema_norm]\n";
-}
-
-my %upgrade_path;
-my @queue = ( $target_schema_norm );
-while (@queue) {
-    my $t = shift @queue;
-    my @lookup = glob "$SCHEMA_UPGRADE_DIR/*-to-$t";
-    for (@lookup) {
-        $foundtarget = 1;
-        s!^\Q$SCHEMA_UPGRADE_DIR/\E!!;
-        s!-to-\Q$t\E$!!;
-        ## print "  [$_] -> [$t]\n";
-        if ($_ eq $start_schema_norm) {
-            ## print "    -> start found.\n";
-        }
-        $upgrade_path{$_}{$t} = $upgrade_path{$t};
-        push @queue, $_;
-    }
-}
-
-if (!$foundtarget) {
-    if (not $retried) {
-        if ($target_schema_norm =~ s!^(.+-.+)-[a-zA-Z0-9]+(\.\d+)*$!$1!) {
-            $retried++;
-            goto RETRY;
-        }
-    }
-    if ($retried) {
-        my $trunc_version = 0;
-        if ($target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
-            $trunc_version = 1;
-        }
-        if ($trunc_version) {
-            goto RETRY;
-        }
-    }
-    die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
-}
-
-$retried = 0;
-RETRYSOURCE:
-
-if ($start_schema eq $target_schema) {
-    warn "Your database schema already matches the schema package version [$target_schema].\n";
-    exit;
-}
-if ($start_schema_norm eq $target_schema_norm) {
-    print "The schema version is the same, except for the dist tag.\n";
-    $upgrade_path{$target_schema_norm} = undef;
-}
-
-print "Searching for start path:  [$start_schema_norm]\n";
-
-if (not exists $upgrade_path{$start_schema_norm}) {
-    if (not $retried) {
-        if ($start_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
-            $retried++;
-            goto RETRYSOURCE;
-        }
-    }
-    if ($retried) {
-        my $trunc_version = 0;
-        if (! $foundtarget && $target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
-            $trunc_version = 1;
-        }
-        if ($trunc_version) {
-            goto RETRYSOURCE;
-        }
-    }
-    die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
-}
-
-
-my @path = get_shortest_path($upgrade_path{$start_schema_norm}, $target_schema_norm);
-print "The path: ", (join " -> ", map "[$_]", $start_schema_norm, @path), "\n";
-
-mkdir "/var/log/spacewalk", 0755;
-mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
-if (not -e $SCHEMA_UPGRADE_LOGDIR) {
-        die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
-}
-system("restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
-
-my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
-my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
-        $hour, $min, $sec;
-
-my $start = $start_schema_norm;
-my $migrationdir = "schema-from-$stamp";
-my $in = $db_specific->update_migration_dir($migrationdir);
-mkdir "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0755;
-if (not -e "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
-    die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR/$migrationdir]: $!\n";
-}
-open(INIT, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/00_0000-upgrade-start.sql") or
-     rmdir_and_die("Cannot create upgrade-start file: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-print INIT $in."\n";
-close INIT;
-
-my $prenum = 0;
-while (@path) {
-    my $t = shift @path;
-    my $dir = "$start-to-$t";
-    if (not -e "$SCHEMA_UPGRADE_DIR/$dir") {
-        rmdir_and_die("Directory [$SCHEMA_UPGRADE_DIR/$dir] was seen but is lost now.\n",
-                      "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-    }
-    if( $prenum > 98 )
-    {
-        # prevent overrun
-        rmdir_and_die("Overrun: too many migrations", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-    }
-
-    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.ref", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}");
-    for (my $i = 0; $i < @files; $i++) {
-        if ($files[$i] =~ /\.ref(\.$options{$db_specific->BACKEND_PROPERTY})?$/) {
-            my @subfiles;
-            local *REF;
-            open REF, $files[$i] or rmdir_and_die("Error reading [$files[$i]]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-            while (<REF>) {
-                chomp;
-                next if /^\s*(#|$)/;
-                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{$db_specific->BACKEND_PROPERTY}");
-                if (not @newsubfiles) {
-                    rmdir_and_die("Could not find any files matching [$_] from [$files[$i]]\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-                }
-                push @subfiles, @newsubfiles;
-            }
-            close REF;
-            splice @files, $i, 1, @subfiles;
-            $i--;
-        }
-    }
-
-    for my $fullname (@files) {
-        (my $name = $fullname) =~ s!^.*/!!;
-        my $linkname = sprintf("%02d_%s", $prenum, $name);
-        if( ! symlink("$fullname", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir/$linkname") )
-        {
-            rmdir_and_die("Cannot create symlink: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-        }
-    }
-    # print $in;
-    $start = $t;
-    $prenum++;
-}
-
-my $endfile = "$SCHEMA_DIR/upgrade-end.sql";
-$in = "";
-local * END;
-open END, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-{
-local $/ = undef;
-$in .= join '', <END>;
-}
-close END;
-
-$in .= $db_specific->insert_version_info($my_schema_name, $my_schema_version, $my_schema_release);
-
-local *SQL;
-open SQL, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql" or rmdir_and_die(
-          "Error writing [$SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql]: $!.\n",
-          "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-print SQL $in;
-close SQL;
-
-my $lname = "$migrationdir-to-$start.log";
-run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
-
-exit;
-
-sub run_schema_upgrade
-{
-    my $dir = shift;
-    my $logfilename = shift;
-    my $target_schema = shift;
-    my $default_tablespace = shift;
-    my $skip_confirm = shift;
-
-    die "Migration directory [$dir] does not exist." if(! -d "$dir");
-
-    print "Planning to run schema upgrade with dir '$dir'\n";
-    if (not $skip_confirm) {
-        local $| = 1;
-        READ_ENTER:
-        print "Hit Enter to continue or Ctrl+C to interrupt: ";
-        my $in = <STDIN>;
-        chomp $in;
-        if ($in ne '') {
-                goto READ_ENTER;
-        }
-    }
-
-    my $logfile = $SCHEMA_UPGRADE_LOGDIR . "/$logfilename";
-
-    my $log;
-    open $log, '>>', $logfile or die "Error writing logfile [$logfile]: $!\n";
-
-    system("restorecon $logfile 2>&1 > /dev/null");
-
-    my ($s, $m, $h, $md, $mo, $y, $wd, $yd, $isds) = localtime(time);
-    my $now = sprintf "%04d-%02d-%02d %02d:%02d:%02d", $y + 1900, $mo + 1, $md,
-                      $h, $m, $s;
-
-    print $log "================== started: $now ==================\n";
-    print "Executing spacewalk-sql, the log is in [$logfile].\n";
-
-    my @migrationfiles = sort map { glob } "$dir/*";
-    my $filecount = scalar(@migrationfiles);
-    my $counter = 0;
-    $| = 1;
-    foreach my $migfile (@migrationfiles) {
-        $counter++;
-        my $link = readlink($migfile);
-        $link = $migfile if(! $link);
-        my $fn = basename($link);
-        my $td = basename(dirname($link));
-
-        print STDOUT "($counter/$filecount) apply upgrade [$td/$fn]        ", "\r";
-        my $ret = run_query_direkt("$td/$fn", $migfile, $log, $default_tablespace);
-        if ($ret != 0)
-        {
-            print "\n";
-            die "Upgrade failed, please see log [$logfile].\nYou can fix the failed migration in [$dir]\nand run spacewalk-schema-upgrade again\n";
-        }
-        unlink ($migfile);
-    }
-    print "\n";
-
-    my $new_schema_version = run_query($db_specific->get_schema_version_query());
-    if (not defined $new_schema_version) {
-        die "Upgrade seems to have run OK yet new schema version is not in rhnVersionInfo.\n";
-    }
-    if ($new_schema_version ne $target_schema) {
-        die <<EOF;
-        Upgrade seems to have run OK yet new schema version is
-        [$new_schema_version], not [$target_schema].
-        Please run schema upgrade again.
-EOF
-    }
-    rmdir "$dir";
-    print "The database schema was upgraded to version [$target_schema].\n";
-}
-
-sub run_query {
-    my ($command) = @_;
-    $ENV{'LANG'} = 'C';
-
-    my @params = ('--select-mode');
-    push @params, '--reportdb' if $reportdb;
-    push @params, '-';
-
-    my $pid = IPC::Open3::open3(my $wfh, my $rfh, '>&STDERR',
-                                'spacewalk-sql', @params) or return;
-
-    print $wfh $command;
-    print $wfh "\n";
-    close $wfh;
-
-    my $out;
-    my $seen_dashes = 0;
-    while (<$rfh>) {
-        if (not defined $out and $seen_dashes) {
-            $out = $_;
-            last;
-        }
-        if (/---/) {
-            $seen_dashes = 1;
-        }
-    }
-    close $rfh;
-    waitpid $pid, 0;
-    if ($?) {
-        return;
-    }
-
-    $out =~ s/^\s+|\s+$//g if defined $out;
-    # psql print '----' even if no rows were selected
-    $out = undef if defined $out && $out =~ /^\(0 rows\)$/;
-    return $out;
-}
-
-sub run_query_direkt {
-    my ($msg, $file, $log, $default_tablespace) = @_;
-
-    my $sql = <<EOF;
-    select '$msg' from dual;
-EOF
-    open(F, "< $file") or die "Cannot open file '$file': $!";
-    my $f_in;
-    {
-        local $/ = undef;
-        $f_in = <F>;
-    }
-    close F;
-    $f_in =~ s!^--.*\n!!gm;
-    $f_in =~ s!\[\[.*?\]\]|__.*?__!$default_tablespace!g if defined $default_tablespace;
-    $sql .= $f_in;
-    $sql .= <<EOF;
-    commit;
-EOF
-    print $log "SQL> ";
-    print $log "$sql\n";
-
-    my @params = ('--select-mode-direct');
-    push @params, '--reportdb' if $reportdb;
-    push @params, '-';
-
-
-    my $rfh;
-    my $pid = IPC::Open3::open3(my $wfh, $rfh, $rfh,
-              'spacewalk-sql', @params) or die "Cannot execute spacewalk-sql: $!";
-    print $wfh $sql;
-    print $wfh "\n";
-    close $wfh;
-
-    while (<$rfh>) {
-        #print "$out";
-        print $log $_;
-    }
-    close $rfh;
-    waitpid $pid, 0;
-    return ($? >> 8);
-}
-
-sub get_shortest_path {
-    my ($hash, $target) = @_;
-    my @out;
-    for my $k (keys %$hash) {
-        if ($k eq $target) {
-            return $k;
-        }
-        my @k_out = ($k, get_shortest_path($hash->{$k}, $target));
-        if (not @out || (@k_out and @k_out < @out)) {
-            @out = @k_out;
-        }
-    }
-    @out;
-}
-
-sub match_overrides {
-    return sort map {-e "$_.override" ? "$_.override" : $_} grep { -e $_ } map { glob } @_;
-}
-
-sub rmdir_and_die {
-    my $msg = shift || "Error";
-    my $dir = shift || undef;
-
-    if ($dir && -d $dir ) {
-        opendir(DIR, $dir) and do {
-            while( my $file = readdir(DIR) ) {
-                next if ($file eq "." or $file eq "..");
-                unlink($file);
-            }
-            closedir DIR;
-        };
-        unlink($dir);
-    }
-    die "$msg";
-}
-
-1;
-
-=head1 NAME
-
-spacewalk-schema-upgrade - utility for Spacewalk / Satellite schema upgrade
-
-=head1 SYNOPSIS
-
-B<spacewalk-schema-upgrade>
-[B<-y>] [B<--reportdb>]
-
-=head1 OPTIONS
-
-=over 5
-
-=item B<-y>
-
-Proceed without asking for confirmation.
-
-=item B<--reportdb>
-
-Upgrade the local reporting database instead of the application database.
-
-=back
-
-=head1 DESCRIPTION
-
-B<spacewalk-schema-upgrade> is utility for Spacewalk and Satellite database
-schema upgrade. It can update both the application and the reporting
-database.
-
-Let's assume you're upgrading your Satellite or Spacewalk installation
-from an earlier version and you are done with the package upgrade part
-plus any other steps that were required for your installation to be ready
-for schema upgrade. What B<spacewalk-schema-upgrade> will do for you at this
-point is:
-
-=over 5
-
-=item
-
-Read the database connection string from existing config file.
-
-=item
-
-Read the version of your current (i.e. old) schema from database.
-
-=item
-
-Find the schema version you are about to upgrade to (using an rpm query
-command).
-
-=item
-
-Find shortest upgrade path between said schema versions.
-
-=item
-
-Ask the user for confirmation to proceed with the upgrade (can be overriden
-with B<-y> switch).
-
-=item
-
-Proceed with the schema upgrade following the upgrade path found, putting
-the output from executed sql scripts (including errors if any)
-into F</var/log/spacewalk/schema-upgrade> (or into
-F</var/log/spacewalk/schema-reportdb-upgrade> in case of the reporting
-database). For this step it is important that you have spacewalk-sql
-command in your PATH.
-
-=back
-
-=head1 FILES
-
-=over 5
-
-=item F</usr/share/susemanager/db/schema-upgrade>,
-F</usr/share/susemanager/db/schema-reportdb-upgrade>
-
-Directory containing directories with schema upgrade scripts (one directory for
-every major upgrade step).
-
-=item F</etc/rhn/rhn.conf>
-
-Default configuration file containing database connection information.
-
-=item F</var/log/spacewalk/schema-upgrade>,
-F</var/log/spacewalk/schema-reportdb-upgrade>
-
-
-Directory containing output from sql upgrade scripts.
-
-=back
-
-=head1 AUTHORS
-
-Jan Pazdziora
-
-=cut
+#!/usr/bin/env python3
+import sys
+import os
+import re
+import glob
+import argparse
+import subprocess
+import datetime
+
+# PostgreSQL compatibility limits
+MIN_PG_DB_VERSION = 140001;
+MAX_PG_DB_VERSION = 189999;
+MIN_PG_DB_VERSION_STRING = "14";
+MAX_PG_DB_VERSION_STRING = "18";
+
+CONFIG_FILE = "/etc/rhn/rhn.conf"
+
+class MainDb:
+    DB_NAME = 'postgres'
+    UPGRADE_PREFIX = 'schema'
+    BACKEND_PROPERTY = 'db_backend'
+    
+    @staticmethod
+    def get_schema_version_query():
+        return """
+     SELECT pn.name || '-' || (pe.evr).version || '-' || (pe.evr).release
+       FROM rhnVersionInfo vi
+               INNER JOIN rhnPackageName pn ON vi.name_id = pn.id
+               INNER JOIN rhnPackageEVR pe ON vi.evr_id = pe.id
+      WHERE vi.label = 'schema';
+"""
+
+    @staticmethod
+    def get_migration_dir_query():
+        return """
+     SELECT label
+       FROM rhnVersionInfo
+      WHERE label LIKE 'schema-from%'
+   ORDER BY label DESC;
+"""
+
+    @staticmethod
+    def update_migration_dir(migration_dir):
+        return f"""
+     UPDATE rhnVersionInfo
+        SET label = '{migration_dir}'
+                , modified = current_timestamp
+      WHERE label = 'schema';
+"""
+
+    @staticmethod
+    def insert_version_info(schema_name, schema_version, schema_release):
+        return f"""
+INSERT INTO rhnVersionInfo( label, name_id, evr_id, created, modified )
+     VALUES ('schema'
+                , lookup_package_name('{schema_name}')
+                , lookup_evr(null, '{schema_version}' , '{schema_release}', 'rpm' )
+                , current_timestamp
+                , current_timestamp
+            );
+     COMMIT;
+"""
+
+
+class ReportDb:
+    DB_NAME = 'reportdb'
+    UPGRADE_PREFIX = 'reportdb-schema'
+    BACKEND_PROPERTY = 'report_db_backend'
+    
+    @staticmethod
+    def get_schema_version_query():
+        return """
+     SELECT name || '-' || version || '-' || release
+       FROM versioninfo
+      WHERE label = 'schema';
+"""
+
+    @staticmethod
+    def get_migration_dir_query():
+        return """
+     SELECT label
+       FROM versioninfo
+      WHERE label LIKE 'schema-from%'
+   ORDER BY label DESC;
+"""
+
+    @staticmethod
+    def update_migration_dir(migration_dir):
+        return f"""
+     UPDATE versioninfo
+        SET label = '{migration_dir}'
+                , modified = current_timestamp
+      WHERE label = 'schema';
+"""
+
+    @staticmethod
+    def insert_version_info(schema_name, schema_version, schema_release):
+        return f"""
+INSERT INTO versioninfo( label, name, version, release )
+     VALUES ('schema'
+                , '{schema_name}'
+                , '{schema_version}'
+                , '{schema_release}'
+            );
+     COMMIT;
+"""
+
+
+def is_true(val):
+    if val is None:
+        return False
+    return str(val).lower() in ('1', 'y', 'true', 'yes', 'on')
+
+
+def read_config(config_file):
+    options = {}
+    try:
+        with open(config_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#') or '[comment]' in line:
+                    continue
+                if '=' in line:
+                    key, val = line.split('=', 1)
+                    options[key.strip()] = val.strip()
+    except Exception as e:
+        sys.stderr.write(f"Could not open {config_file}: {e}\n")
+        sys.exit(1)
+    return options
+
+
+def run_query(command, reportdb=False):
+    args = ['spacewalk-sql', '--select-mode']
+    if reportdb:
+        args.append('--reportdb')
+    args.append('-')
+    
+    env = os.environ.copy()
+    env['LANG'] = 'C'
+    
+    try:
+        proc = subprocess.Popen(
+            args,
+            env=env,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        out_data, _ = proc.communicate(input=command + "\n")
+    except Exception:
+        return None
+        
+    if proc.returncode != 0:
+        return None
+        
+    lines = out_data.splitlines()
+    out = None
+    seen_dashes = False
+    for line in lines:
+        if seen_dashes:
+            out = line
+            break
+        if '---' in line:
+            seen_dashes = True
+            
+    if out is not None:
+        out = out.strip()
+        if out == '(0 rows)':
+            out = None
+    return out
+
+
+def run_query_direct(msg, file_path, log_file, reportdb=False, default_tablespace=None):
+    sql = f"select '{msg}' from dual;\n"
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            f_in = f.read()
+    except Exception as e:
+        sys.stderr.write(f"Cannot open file '{file_path}': {e}\n")
+        sys.exit(1)
+        
+    f_in = re.sub(r'^--.*\n', '', f_in, flags=re.M)
+    if default_tablespace:
+        f_in = re.sub(r'\[\[.*?\]\]|__.*?__', default_tablespace, f_in)
+        
+    sql += f_in
+    sql += "\ncommit;\n"
+    
+    log_file.write("SQL> ")
+    log_file.write(sql + "\n")
+    log_file.flush()
+    
+    args = ['spacewalk-sql', '--select-mode-direct']
+    if reportdb:
+        args.append('--reportdb')
+    args.append('-')
+    
+    try:
+        proc = subprocess.Popen(
+            args,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        stdout_data, stderr_data = proc.communicate(input=sql + "\n")
+    except Exception as e:
+        sys.stderr.write(f"Cannot execute spacewalk-sql: {e}\n")
+        sys.exit(1)
+        
+    log_file.write(stdout_data)
+    log_file.write(stderr_data)
+    log_file.flush()
+    
+    return proc.returncode
+
+
+def build_graph(upgrade_dir):
+    edges = []
+    for f in glob.glob(os.path.join(upgrade_dir, "*-to-*")):
+        base = os.path.basename(f)
+        if "-to-" in base:
+            src, dest = base.rsplit("-to-", 1)
+            edges.append((src, dest))
+    return edges
+
+
+def get_bfs_path(start, target, edges):
+    from collections import deque
+    queue = deque([[start]])
+    visited = {start}
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+        if node == target:
+            return path[1:]
+        for src, dest in edges:
+            if src == node and dest not in visited:
+                visited.add(dest)
+                queue.append(path + [dest])
+    return None
+
+
+def match_overrides(*patterns):
+    files = []
+    for pat in patterns:
+        files.extend(glob.glob(pat))
+    files = list(set(files))
+    files = [f for f in files if os.path.exists(f)]
+    result = []
+    for f in files:
+        override = f + ".override"
+        if os.path.exists(override):
+            result.append(override)
+        else:
+            result.append(f)
+    result.sort()
+    return result
+
+
+def rmdir_and_die(msg, directory=None):
+    if directory and os.path.isdir(directory):
+        for f in os.listdir(directory):
+            try:
+                os.unlink(os.path.join(directory, f))
+            except Exception:
+                pass
+        try:
+            os.rmdir(directory)
+        except Exception:
+            pass
+    sys.stderr.write(msg + "\n")
+    sys.exit(1)
+
+
+def expand_files(fullname, backend, upgrade_dir, migration_log_dir):
+    if fullname.endswith('.ref') or fullname.endswith(f'.ref.{backend}'):
+        subfiles = []
+        try:
+            with open(fullname, 'r', encoding='utf-8') as ref_f:
+                for line in ref_f:
+                    line = line.strip()
+                    if not line or line.startswith('#'):
+                        continue
+                    pat1 = os.path.join(upgrade_dir, line)
+                    pat2 = os.path.join(upgrade_dir, f"{line}.{backend}")
+                    new_sub = match_overrides(pat1, pat2)
+                    if not new_sub:
+                        rmdir_and_die(f"Could not find any files matching [{line}] from [{fullname}]", migration_log_dir)
+                    for ns in new_sub:
+                        subfiles.extend(expand_files(ns, backend, upgrade_dir, migration_log_dir))
+        except Exception as e:
+            rmdir_and_die(f"Error reading [{fullname}]: {e}\n", migration_log_dir)
+        return subfiles
+    else:
+        return [fullname]
+
+
+def run_schema_upgrade(directory, logfilename, target_schema, default_tablespace, skip_confirm, db_name, reportdb=False):
+    if not os.path.isdir(directory):
+        sys.stderr.write(f"Migration directory [{directory}] does not exist.\n")
+        sys.exit(1)
+        
+    print(f"Planning to run schema upgrade with dir '{directory}'")
+    if not skip_confirm:
+        while True:
+            try:
+                val = input("Hit Enter to continue or Ctrl+C to interrupt: ")
+                if val == '':
+                    break
+            except KeyboardInterrupt:
+                print("\nInterrupted.")
+                sys.exit(1)
+                
+    log_dir = os.path.dirname(directory)
+    logfile = os.path.join(log_dir, logfilename)
+    
+    try:
+        log_f = open(logfile, 'a', encoding='utf-8')
+    except Exception as e:
+        sys.stderr.write(f"Error writing logfile [{logfile}]: {e}\n")
+        sys.exit(1)
+        
+    # Execute restorecon if available
+    try:
+        subprocess.run(f"restorecon {logfile}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+        
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_f.write(f"================== started: {now} ==================\n")
+    print(f"Executing spacewalk-sql, the log is in [{logfile}].")
+    
+    migrationfiles = sorted(glob.glob(os.path.join(directory, "*")))
+    filecount = len(migrationfiles)
+    counter = 0
+    
+    for migfile in migrationfiles:
+        counter += 1
+        link = migfile
+        if os.path.islink(migfile):
+            try:
+                link = os.readlink(migfile)
+            except Exception:
+                pass
+        fn = os.path.basename(link)
+        td = os.path.basename(os.path.dirname(link))
+        
+        sys.stdout.write(f"({counter}/{filecount}) apply upgrade [{td}/{fn}]        \r")
+        sys.stdout.flush()
+        
+        ret = run_query_direct(f"{td}/{fn}", migfile, log_f, reportdb=reportdb, default_tablespace=default_tablespace)
+        if ret != 0:
+            print("\n")
+            log_f.close()
+            sys.stderr.write(f"Upgrade failed, please see log [{logfile}].\nYou can fix the failed migration in [{directory}]\nand run spacewalk-schema-upgrade again\n")
+            sys.exit(1)
+        try:
+            os.unlink(migfile)
+        except Exception:
+            pass
+            
+    print("\n")
+    log_f.close()
+    
+    db_spec = ReportDb if reportdb else MainDb
+    new_schema_version = run_query(db_spec.get_schema_version_query(), reportdb=reportdb)
+    if not new_schema_version:
+        sys.stderr.write("Upgrade seems to have run OK yet new schema version is not in rhnVersionInfo.\n")
+        sys.exit(1)
+    if new_schema_version != target_schema:
+        sys.stderr.write(f"Upgrade seems to have run OK yet new schema version is\n[{new_schema_version}], not [{target_schema}].\nPlease run schema upgrade again.\n")
+        sys.exit(1)
+        
+    try:
+        os.rmdir(directory)
+    except Exception:
+        pass
+    print(f"The database schema was upgraded to version [{target_schema}].")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="utility for Spacewalk / Satellite schema upgrade")
+    parser.add_argument('-y', '--yes', action='store_true', help="Proceed without asking for confirmation.")
+    parser.add_argument('--reportdb', action='store_true', help="Upgrade the local reporting database instead of the application database.")
+    args = parser.parse_args()
+    
+    if not os.path.exists(CONFIG_FILE):
+        sys.stderr.write(f"The config file [{CONFIG_FILE}] does not seem to exist. Was Spacewalk configured yet?\n")
+        sys.exit(1)
+        
+    db_specific = ReportDb if args.reportdb else MainDb
+    
+    SCHEMA_DIR = f"/usr/share/susemanager/db/{db_specific.DB_NAME}"
+    SCHEMA_UPGRADE_DIR = f"/usr/share/susemanager/db/{db_specific.UPGRADE_PREFIX}-upgrade"
+    SCHEMA_UPGRADE_LOGDIR = f"/var/log/spacewalk/{db_specific.UPGRADE_PREFIX}-upgrade"
+    
+    options = read_config(CONFIG_FILE)
+    if db_specific.BACKEND_PROPERTY not in options:
+        sys.stderr.write(f"Config file [{CONFIG_FILE}] does not seem to have database backend info ({db_specific.BACKEND_PROPERTY}) set.\n")
+        sys.exit(1)
+        
+    os.environ['NLS_LANG'] = 'AMERICAN_AMERICA.UTF8'
+    os.environ['NLS_NUMERIC_CHARACTERS'] = '.'
+    
+    test_res = run_query("select '1' || '2' || '3' as testing from dual;", reportdb=args.reportdb)
+    if not test_res:
+        sys.stderr.write("Connect to database was not successful.\n")
+        sys.exit(1)
+    if test_res != '123':
+        sys.stderr.write("Test select from database did not give expected results.\n")
+        sys.exit(1)
+        
+    default_tablespace = None
+    server_version_str = run_query("show server_version_num;", reportdb=args.reportdb)
+    pg_version_str = run_query("show server_version;", reportdb=args.reportdb)
+    
+    server_version = int(server_version_str) if server_version_str else 0
+    if server_version < MIN_PG_DB_VERSION:
+        sys.stderr.write(f"\nRunning postgresql {pg_version_str} is not supported. Minimal required version is {MIN_PG_DB_VERSION_STRING}.\n\n")
+        sys.exit(1)
+    elif server_version > MAX_PG_DB_VERSION:
+        sys.stderr.write(f"\nRunning postgresql {pg_version_str} is not supported. Maximal allowed version is {MAX_PG_DB_VERSION_STRING}.\n\n")
+        sys.exit(1)
+        
+    # Get local package schema version
+    # Since this query runs on the main.sql file, let's use subprocess to run rpm
+    rpm_cmd = f"rpm -qf --qf '%{{name}} %{{version}} %{{release}}\\n' {SCHEMA_DIR}/main.sql"
+    try:
+        rpm_out = subprocess.check_output(rpm_cmd, shell=True, text=True).strip()
+    except subprocess.CalledProcessError:
+        sys.stderr.write("Failed to retrieve our schema package name and version via RPM.\n")
+        sys.exit(1)
+        
+    m = re.match(r'^(\S+)\s(\S+)\s(\S+)$', rpm_out)
+    if not m:
+        sys.stderr.write("Failed to parse RPM schema info.\n")
+        sys.exit(1)
+        
+    my_schema_name, my_schema_version, my_schema_release = m.groups()
+    
+    if os.environ.get('SUMA_TEST_SCHEMA_VERSION'):
+        my_schema_version = os.environ['SUMA_TEST_SCHEMA_VERSION']
+        
+    target_schema = f"{my_schema_name}-{my_schema_version}-{my_schema_release}"
+    target_schema_norm = re.sub(r'^(.+-\d+(?:\.\d+)*-[a-zA-Z0-9]*)(?:\..*)*$', r'\1', target_schema)
+    
+    schema_version = run_query(db_specific.get_schema_version_query(), reportdb=args.reportdb)
+    
+    if not schema_version:
+        migrationdir = run_query(db_specific.get_migration_dir_query(), reportdb=args.reportdb)
+        migrationdir_path = os.path.join(SCHEMA_UPGRADE_LOGDIR, migrationdir) if migrationdir else ""
+        if not migrationdir or not os.path.isdir(migrationdir_path):
+            sys.stderr.write("No existing schema version info found in rhnVersionInfo.\n")
+            sys.exit(1)
+            
+        logfiles = sorted(glob.glob(os.path.join(SCHEMA_UPGRADE_LOGDIR, f"{migrationdir}-to-*.log")), reverse=True)
+        lname = os.path.basename(logfiles[0]) if logfiles else f"{migrationdir}.log"
+        print("Found unfinished schema migration")
+        print("Try to continue schema migration")
+        run_schema_upgrade(migrationdir_path, lname, target_schema, default_tablespace, args.yes, db_specific.DB_NAME, reportdb=args.reportdb)
+        sys.exit(0)
+        
+    regex = "^(uyuni|susemanager|spacewalk|satellite|rhn-satellite)-" + db_specific.UPGRADE_PREFIX + "-"
+    if not re.search(regex, schema_version):
+        sys.stderr.write(f"Unknown schema name [{schema_version}] found.\n")
+        sys.exit(1)
+        
+    start_schema = schema_version
+    start_schema_norm = re.sub(r'^(.+-\d+(?:\.\d+)*-[a-zA-Z0-9]*)(?:\..*)*$', r'\1', start_schema)
+    
+    print(f"Schema upgrade: [{start_schema}] -> [{target_schema}]")
+    if start_schema == target_schema:
+        print(f"Your database schema already matches the schema package version [{target_schema}].")
+        sys.exit(0)
+        
+    edges = build_graph(SCHEMA_UPGRADE_DIR)
+    
+    found_target = False
+    for src, dest in edges:
+        if dest == target_schema_norm:
+            found_target = True
+            break
+            
+    if not found_target:
+        # Strip dist tag / suffix
+        m = re.match(r'^(.+-.+)-[a-zA-Z0-9]+(?:\.\d+)*$', target_schema_norm)
+        if m:
+            target_schema_norm = m.group(1)
+            for src, dest in edges:
+                if dest == target_schema_norm:
+                    found_target = True
+                    break
+                    
+    if not found_target:
+        m = re.match(r'^(.+-.+\..+)\.[^.-]+$', target_schema_norm)
+        if m:
+            target_schema_norm = m.group(1)
+            for src, dest in edges:
+                if dest == target_schema_norm:
+                    found_target = True
+                    break
+                    
+    if not found_target:
+        sys.stderr.write(f"Was not able to find upgrade path in directory [{SCHEMA_UPGRADE_DIR}].\n")
+        sys.exit(1)
+        
+    if start_schema_norm == target_schema_norm:
+        print("The schema version is the same, except for the dist tag.")
+        path = []
+    else:
+        all_nodes = set(src for src, dest in edges) | set(dest for src, dest in edges)
+        
+        if start_schema_norm not in all_nodes:
+            m = re.match(r'^(.+-.+)-\d+(?:\.\d+)*$', start_schema_norm)
+            if m:
+                start_schema_norm = m.group(1)
+                
+        if start_schema_norm not in all_nodes:
+            m = re.match(r'^(.+-.+\..+)\.[^.-]+$', start_schema_norm)
+            if m:
+                start_schema_norm = m.group(1)
+                
+        if start_schema_norm not in all_nodes:
+            sys.stderr.write(f"Was not able to find upgrade path in directory [{SCHEMA_UPGRADE_DIR}].\n")
+            sys.exit(1)
+            
+        path = get_bfs_path(start_schema_norm, target_schema_norm, edges)
+        if path is None:
+            sys.stderr.write(f"Was not able to find upgrade path in directory [{SCHEMA_UPGRADE_DIR}].\n")
+            sys.exit(1)
+            
+    print("The path: " + " -> ".join(f"[{x}]" for x in [start_schema_norm] + path))
+    
+    os.makedirs("/var/log/spacewalk", mode=0o755, exist_ok=True)
+    os.makedirs(SCHEMA_UPGRADE_LOGDIR, mode=0o755, exist_ok=True)
+    
+    try:
+        subprocess.run(f"restorecon {SCHEMA_UPGRADE_LOGDIR}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+        
+    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    start = start_schema_norm
+    migrationdir = f"schema-from-{stamp}"
+    
+    # Update migration dir in database
+    update_sql = db_specific.update_migration_dir(migrationdir)
+    run_q_res = run_query(update_sql, reportdb=args.reportdb)
+    
+    migrationdir_path = os.path.join(SCHEMA_UPGRADE_LOGDIR, migrationdir)
+    os.makedirs(migrationdir_path, mode=0o755, exist_ok=True)
+    
+    init_sql_path = os.path.join(migrationdir_path, "00_0000-upgrade-start.sql")
+    try:
+        with open(init_sql_path, 'w', encoding='utf-8') as init_f:
+            init_f.write(update_sql + "\n")
+    except Exception as e:
+        rmdir_and_die(f"Cannot create upgrade-start file: {e}", migrationdir_path)
+        
+    prenum = 0
+    backend = options[db_specific.BACKEND_PROPERTY]
+    
+    for t in path:
+        transition_dir_name = f"{start}-to-{t}"
+        transition_dir = os.path.join(SCHEMA_UPGRADE_DIR, transition_dir_name)
+        if not os.path.exists(transition_dir):
+            rmdir_and_die(f"Directory [{transition_dir}] was seen but is lost now.", migrationdir_path)
+            
+        if prenum > 98:
+            rmdir_and_die("Overrun: too many migrations", migrationdir_path)
+            
+        files_pat1 = os.path.join(transition_dir, "*.ref")
+        files_pat2 = os.path.join(transition_dir, f"*.sql.{backend}")
+        files_pat3 = os.path.join(transition_dir, f"*.ref.{backend}")
+        
+        files = match_overrides(files_pat1, files_pat2, files_pat3)
+        expanded = []
+        for f in files:
+            expanded.extend(expand_files(f, backend, SCHEMA_UPGRADE_DIR, migrationdir_path))
+            
+        for fullname in expanded:
+            name = os.path.basename(fullname)
+            linkname = f"{prenum:02d}_{name}"
+            link_path = os.path.join(migrationdir_path, linkname)
+            try:
+                os.symlink(fullname, link_path)
+            except Exception as e:
+                rmdir_and_die(f"Cannot create symlink {link_path} -> {fullname}: {e}", migrationdir_path)
+                
+        start = t
+        prenum += 1
+        
+    # Prepare upgrade-end.sql
+    endfile = os.path.join(SCHEMA_DIR, "upgrade-end.sql")
+    try:
+        with open(endfile, 'r', encoding='utf-8') as end_f:
+            end_in = end_f.read()
+    except Exception as e:
+        rmdir_and_die(f"Error reading [{endfile}]: {e}", migrationdir_path)
+        
+    end_in += db_specific.insert_version_info(my_schema_name, my_schema_version, my_schema_release)
+    
+    end_sql_path = os.path.join(migrationdir_path, "99_9999-upgrade-end.sql")
+    try:
+        with open(end_sql_path, 'w', encoding='utf-8') as end_sql_f:
+            end_sql_f.write(end_in)
+    except Exception as e:
+        rmdir_and_die(f"Error writing [{end_sql_path}]: {e}", migrationdir_path)
+        
+    lname = f"{migrationdir}-to-{start}.log"
+    run_schema_upgrade(migrationdir_path, lname, target_schema, default_tablespace, args.yes, db_specific.DB_NAME, reportdb=args.reportdb)
+
+
+if __name__ == '__main__':
+    main()
