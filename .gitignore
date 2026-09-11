@@ -116,3 +116,6 @@ schema/reportdb/postgres/tables/common/
 schema/reportdb/postgres/views/common/
 # Charts
 .debug
+
+# Local agent instructions
+AGENTS_CUSTOM.md
