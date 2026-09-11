@@ -106,6 +106,27 @@ class RepoSyncTest(unittest.TestCase):
         importlib.reload(spacewalk.satellite_tools.reposync)
         importlib.reload(spacewalk.satellite_tools.appstreams)
 
+    def test_fix_notice_uses_integer_version_for_dotted_versions(self):
+        test_cases = [
+            ("1.2", "SUSE-2024-001", 102, "SUSE-2024-001"),
+            ("10.12", "SUSE-2024-002", 1012, "SUSE-2024-002-1012"),
+            ("2.0", "res5-PATCH-1234", 200, "res5-PATCH-1234-200"),
+        ]
+
+        for version, update_id, expected_version, expected_update_id in test_cases:
+            notice = {
+                "version": version,
+                "update_id": update_id,
+                "from": "security@suse.de",
+            }
+
+            self.reposync.RepoSync.fix_notice(notice)
+
+            self.assertEqual(notice["version"], expected_version)
+            self.assertIs(type(notice["version"]), int)
+            self.assertEqual(notice["update_id"], expected_update_id)
+            self.assertNotIn(".0", notice["update_id"])
+
     def test_init_succeeds_with_correct_attributes(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE)
 
