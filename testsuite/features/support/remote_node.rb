@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 SUSE LLC.
+# Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -14,7 +14,7 @@ class RemoteNode
   # @param host [String] The hostname of the remote node.
   # @param port [Integer] The port to use for the SSH connection.
   # @return [RemoteNode] The remote node.
-  def initialize(host, port: 22)
+  def initialize(host, port: SSH_PORT_BY_HOST.fetch(host, HOST_SSH_PORT))
     @host = host
     @port = port
     puts "Initializing a remote node for '#{@host}'."
@@ -68,7 +68,7 @@ class RemoteNode
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
       @private_interface = nil
       %w[eth1 ens4].each do |dev|
-        _output, code = run_local("ip address show dev #{dev}", check_errors: false)
+        _output, code = run_local("ip address show dev #{dev}", port: HOST_SSH_PORT, check_errors: false)
 
         if code.zero?
           @private_interface = dev
@@ -126,7 +126,7 @@ class RemoteNode
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
-    run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    run_local(cmd_prefixed, port: runs_in_container ? @port : HOST_SSH_PORT, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
   # Runs a command that contains commands chained by pipes in it and returns the output, error, and exit code of all the commands chained. Just for debugging purpouses.
@@ -151,8 +151,9 @@ class RemoteNode
       cmd_read_codes = "mgrctl exec #{exec_option} '#{cmd_read_codes.gsub('\'', '\'"\'"\'')}'"
     end
 
-    out, initial_code = run_local(cmd, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
-    stderr_of_commands, _code = run_local(cmd_read_codes)
+    port = runs_in_container ? @port : HOST_SSH_PORT
+    out, initial_code = run_local(cmd, port: port, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    stderr_of_commands, _code = run_local(cmd_read_codes, port: port)
 
     stderr_of_commands_array = stderr_of_commands.split.map(&:to_i)
     raise "Expected the number of expected pipestatus codes does not match the number of commands chained by pipes. Expected stderr:#{expected_pipestatus_codes}, current stderr:#{stderr_of_commands_array}" if expected_pipestatus_codes.length != stderr_of_commands_array.length
@@ -168,6 +169,7 @@ class RemoteNode
   # Runs a command locally and returns the output, error, and exit code.
   #
   # @param cmd [String] The command to run.
+  # @param port [Integer] The port to use for the SSH connection.
   # @param separated_results [Boolean] Whether the results should be stored separately.
   # @param check_errors [Boolean] Whether to check for errors or not.
   # @param timeout [Integer] The timeout to be used, in seconds.
@@ -175,8 +177,8 @@ class RemoteNode
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, Integer>] The output, error, and exit code.
-  def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
-    out, err, code = ssh_command(cmd, @target, timeout: timeout, buffer_size: buffer_size)
+  def run_local(cmd, port: @port, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
+    out, err, code = ssh_command(cmd, @target, port: port, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
     raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
 
@@ -367,7 +369,7 @@ class RemoteNode
   def client_public_ip
     if @os_family == 'macOS'
       %w[en0 en1 en2 en3 en4 en5 en6 en7].each do |dev|
-        output, code = run_local("ipconfig getifaddr #{dev}", check_errors: false)
+        output, code = run_local("ipconfig getifaddr #{dev}", port: HOST_SSH_PORT, check_errors: false)
 
         next unless code.zero?
 
@@ -378,7 +380,7 @@ class RemoteNode
       end
     else
       %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
-        output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
+        output, code = run_local("ip address show dev #{dev} | grep 'inet '", port: HOST_SSH_PORT, check_errors: false)
 
         next unless code.zero?
 
