@@ -62,6 +62,12 @@
                             "name": "POS_Image_JeOS7",
                             "size": 1907359744,
                             "version": "7.0.0"
+                        },
+                        "sbom": {
+                            "filename": "POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json",
+                            "filepath": "/var/lib/Kiwi/build137/images/POS_Image_JeOS7.x86_64-7.0.0-build129.spdx.json",
+                            "hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                            "size": 23456
                         }
                     }
                 },
