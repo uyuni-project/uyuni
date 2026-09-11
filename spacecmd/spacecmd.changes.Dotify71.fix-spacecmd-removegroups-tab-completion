@@ -1,0 +1,2 @@
+- Fix spacecmd tab autocompletion for activationkey_removegroups
+  (gh#uyuni-project/uyuni#12601)
