@@ -77,12 +77,14 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         SSLCertPair proxyPair = context.getProxyCertKey();
         String rootCaCert = context.getRootCA();
         if (ConfigDefaults.get().isSsl() && (proxyPair == null || !proxyPair.isComplete())) {
-            proxyPair = context.getCertManager().generateCertificate(
-                    context.getCaPair(),
-                    context.getCaPassword(),
-                    context.getCertData()
-            );
-            rootCaCert = context.getCaPair().getCertificate();
+            if (context.getCaPair() != null) {
+                proxyPair = context.getCertManager().generateCertificate(
+                        context.getCaPair(),
+                        context.getCaPassword(),
+                        context.getCertData()
+                );
+                rootCaCert = context.getCaPair().getCertificate();
+            }
         }
         context.setProxyPair(proxyPair);
         context.setRootCaCert(rootCaCert);

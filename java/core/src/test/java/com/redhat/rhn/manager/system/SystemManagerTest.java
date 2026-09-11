@@ -2018,6 +2018,54 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testCreateProxyContainerConfigWithoutCerts() throws InstantiationException, IOException {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        String proxyName = "pxy.test.lab";
+        String serverName = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
+        long maxCache = 4096;
+        String email = "admin@test.lab";
+        String sshKey = "testSshKey";
+        String sshPubKey = "testSshPubKey";
+        String sshPushKey = "testSshPushKey";
+        String sshPushPubKey = "testSshPushPubKey";
+
+        SSLCertManager certManager = mock(SSLCertManager.class);
+
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
+                    with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshKey, sshPubKey))));
+            allowing(saltServiceMock).generateSSHKey(with(aNull(String.class)), with(aNull(String.class)));
+            will(returnValue(Optional.of(new MgrUtilRunner.SshKeygenResult(sshPushKey, sshPushPubKey))));
+        }});
+
+        byte[] actual = systemManager.createProxyContainerConfig(user, proxyName, 8022, serverName, maxCache, email,
+                null, null, new SSLCertPair(null, null), null, null, null, certManager);
+        Map<String, String> content = readTarData(actual);
+
+        Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
+        assertEquals(serverName, configYaml.get("server"));
+        assertEquals(maxCache, Long.valueOf((int) configYaml.get("max_cache_size_mb")));
+        assertEquals(email, configYaml.get("email"));
+        assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
+        assertEquals(proxyName, configYaml.get("proxy_fqdn"));
+        assertFalse(configYaml.containsKey("ca_crt"));
+
+        Map<String, Map<String, Object>> httpdRootYaml = new Yaml().load(content.get("httpd.yaml"));
+        Map<String, Object> httpdYaml = httpdRootYaml.get("httpd");
+        assertFalse(httpdYaml.containsKey("server_crt"));
+        assertFalse(httpdYaml.containsKey("server_key"));
+        assertTrue(httpdYaml.containsKey("system_id"));
+
+        Map<String, Map<String, Object>> sshRootYaml = new Yaml().load(content.get("ssh.yaml"));
+        Map<String, Object> sshYaml = sshRootYaml.get("ssh");
+        assertEquals(sshPushKey, sshYaml.get("server_ssh_push"));
+        assertEquals(sshPushPubKey, sshYaml.get("server_ssh_push_pub"));
+        assertEquals(sshPubKey, sshYaml.get("server_ssh_key_pub"));
+    }
+
+    @Test
     public void testCreateProxyContainerConfigExisting() throws InstantiationException, IOException {
         // For some reason duplicating the ORG_ADMIN role setting is required
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

@@ -129,11 +129,10 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 "proxy container configuration did not generate required entry: max_cache_size_mb",
                 "proxy container configuration did not generate required entry: ssh",
                 "proxy container configuration did not generate required entry: proxy_fqdn",
-                "proxy container configuration did not generate required entry: ca_crt",
                 "proxy container configuration did not generate required entry: server",
-                "proxy container configuration did not generate required entry: httpd",
                 "proxy container configuration did not generate required entry: email",
-                "proxy container configuration did not generate required entry: replace_fqdns"
+                "proxy container configuration did not generate required entry: replace_fqdns",
+                "proxy container configuration did not generate required entry: httpd"
         };
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext();
@@ -163,13 +162,11 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
     public void testWhenCreateFilesReturnsUnexpectedValues() {
         final String[] expectedErrorMessages = {
                 "proxy container configuration generated an unexpected value for entry: server",
-                "proxy container configuration generated an unexpected value for entry: ca_crt",
                 "proxy container configuration did not generate required entry: proxy_fqdn",
                 "proxy container configuration did not generate required entry: max_cache_size_mb",
                 "proxy container configuration did not generate required entry: server_version",
                 "proxy container configuration did not generate required entry: email",
                 "proxy container configuration did not generate required entry: httpd.system_id",
-                "proxy container configuration generated an unexpected value for entry: httpd.server_key",
                 "proxy container configuration generated an unexpected value for entry: ssh"
         };
 
