@@ -49,6 +49,7 @@ eval {
 my $SCHEMA_DIR = "/usr/share/susemanager/db/" . $db_specific->DB_NAME;
 my $SCHEMA_UPGRADE_DIR = "/usr/share/susemanager/db/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
 my $SCHEMA_UPGRADE_LOGDIR = "/var/log/spacewalk/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
+my $NEXT_UPGRADE_DIR = "$SCHEMA_UPGRADE_DIR/next";
 
 my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
@@ -145,6 +146,7 @@ my $start_schema = $schema_version;
 
 print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
 if ($start_schema eq $target_schema) {
+    exit if apply_next_migrations_if_pending($target_schema, $default_tablespace, $skip_confirm);
     warn "Your database schema already matches the schema package version [$target_schema].\n";
     exit;
 }
@@ -197,10 +199,6 @@ if (!$foundtarget) {
 $retried = 0;
 RETRYSOURCE:
 
-if ($start_schema eq $target_schema) {
-    warn "Your database schema already matches the schema package version [$target_schema].\n";
-    exit;
-}
 if ($start_schema_norm eq $target_schema_norm) {
     print "The schema version is the same, except for the dist tag.\n";
     $upgrade_path{$target_schema_norm} = undef;
@@ -231,29 +229,9 @@ if (not exists $upgrade_path{$start_schema_norm}) {
 my @path = get_shortest_path($upgrade_path{$start_schema_norm}, $target_schema_norm);
 print "The path: ", (join " -> ", map "[$_]", $start_schema_norm, @path), "\n";
 
-mkdir "/var/log/spacewalk", 0755;
-mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
-if (not -e $SCHEMA_UPGRADE_LOGDIR) {
-        die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
-}
-system("restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
-
-my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
-my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
-        $hour, $min, $sec;
+my $migrationdir = create_migration_dir(1);
 
 my $start = $start_schema_norm;
-my $migrationdir = "schema-from-$stamp";
-my $in = $db_specific->update_migration_dir($migrationdir);
-mkdir "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0755;
-if (not -e "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
-    die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR/$migrationdir]: $!\n";
-}
-open(INIT, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/00_0000-upgrade-start.sql") or
-     rmdir_and_die("Cannot create upgrade-start file: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-print INIT $in."\n";
-close INIT;
-
 my $prenum = 0;
 while (@path) {
     my $t = shift @path;
@@ -268,61 +246,18 @@ while (@path) {
         rmdir_and_die("Overrun: too many migrations", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
     }
 
-    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.ref", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}");
-    for (my $i = 0; $i < @files; $i++) {
-        if ($files[$i] =~ /\.ref(\.$options{$db_specific->BACKEND_PROPERTY})?$/) {
-            my @subfiles;
-            local *REF;
-            open REF, $files[$i] or rmdir_and_die("Error reading [$files[$i]]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-            while (<REF>) {
-                chomp;
-                next if /^\s*(#|$)/;
-                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{$db_specific->BACKEND_PROPERTY}");
-                if (not @newsubfiles) {
-                    rmdir_and_die("Could not find any files matching [$_] from [$files[$i]]\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-                }
-                push @subfiles, @newsubfiles;
-            }
-            close REF;
-            splice @files, $i, 1, @subfiles;
-            $i--;
-        }
-    }
+    stage_migration_files("$SCHEMA_UPGRADE_DIR/$dir", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $prenum);
 
-    for my $fullname (@files) {
-        (my $name = $fullname) =~ s!^.*/!!;
-        my $linkname = sprintf("%02d_%s", $prenum, $name);
-        if( ! symlink("$fullname", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir/$linkname") )
-        {
-            rmdir_and_die("Cannot create symlink: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-        }
-    }
-    # print $in;
     $start = $t;
     $prenum++;
 }
 
-my $endfile = "$SCHEMA_DIR/upgrade-end.sql";
-$in = "";
-local * END;
-open END, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-{
-local $/ = undef;
-$in .= join '', <END>;
+if (has_next_migrations()) {
+    print "Applying pending migrations from [$NEXT_UPGRADE_DIR].\n";
+    stage_migration_files($NEXT_UPGRADE_DIR, "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $prenum);
 }
-close END;
 
-$in .= $db_specific->insert_version_info($my_schema_name, $my_schema_version, $my_schema_release);
-
-local *SQL;
-open SQL, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql" or rmdir_and_die(
-          "Error writing [$SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql]: $!.\n",
-          "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
-print SQL $in;
-close SQL;
-
-my $lname = "$migrationdir-to-$start.log";
-run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
+finish_migration($migrationdir, "$migrationdir-to-$start.log", $target_schema, $default_tablespace, $skip_confirm, 1);
 
 exit;
 
@@ -497,6 +432,122 @@ sub get_shortest_path {
 
 sub match_overrides {
     return sort map {-e "$_.override" ? "$_.override" : $_} grep { -e $_ } map { glob } @_;
+}
+
+sub create_migration_dir {
+    my $full_mig = shift;
+
+    mkdir "/var/log/spacewalk", 0755;
+    mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
+    if (not -e $SCHEMA_UPGRADE_LOGDIR) {
+            die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
+    }
+    system("restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
+
+    my $stamp = "next";
+    if ($full_mig) {
+        my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
+        $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
+                $hour, $min, $sec;
+    }
+
+    my $migrationdir = "schema-from-$stamp";
+    mkdir "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0755;
+    if (not -e "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
+        die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR/$migrationdir]: $!\n";
+    }
+    if ($full_mig) {
+        my $in = $db_specific->update_migration_dir($migrationdir);
+        open(INIT, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/00_0000-upgrade-start.sql") or
+             rmdir_and_die("Cannot create upgrade-start file: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+        print INIT $in."\n";
+        close INIT;
+    }
+    else {
+        # When migrating only next/ we do not change the schema entry in the DB.
+        # So we need to cleanup leftovers in case of an abort happened earlier.
+        unlink glob "$SCHEMA_UPGRADE_LOGDIR/$migrationdir/*";
+    }
+    return $migrationdir;
+}
+
+sub stage_migration_files {
+    my ($srcdir, $logdir, $prenum) = @_;
+
+    my @files = match_overrides("$srcdir/*.ref", "$srcdir/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}");
+    for (my $i = 0; $i < @files; $i++) {
+        if ($files[$i] =~ /\.ref(\.$options{$db_specific->BACKEND_PROPERTY})?$/) {
+            my @subfiles;
+            local *REF;
+            open REF, $files[$i] or rmdir_and_die("Error reading [$files[$i]]: $!\n", $logdir);
+            while (<REF>) {
+                chomp;
+                next if /^\s*(#|$)/;
+                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{$db_specific->BACKEND_PROPERTY}");
+                if (not @newsubfiles) {
+                    rmdir_and_die("Could not find any files matching [$_] from [$files[$i]]\n", $logdir);
+                }
+                push @subfiles, @newsubfiles;
+            }
+            close REF;
+            splice @files, $i, 1, @subfiles;
+            $i--;
+        }
+    }
+
+    for my $fullname (@files) {
+        (my $name = $fullname) =~ s!^.*/!!;
+        my $linkname = sprintf("%02d_%s", $prenum, $name);
+        if( ! symlink("$fullname", "$logdir/$linkname") )
+        {
+            rmdir_and_die("Cannot create symlink: $!", $logdir);
+        }
+    }
+}
+
+sub has_next_migrations {
+    return 0 unless -d $NEXT_UPGRADE_DIR;
+    return scalar(() = match_overrides("$NEXT_UPGRADE_DIR/*.ref", "$NEXT_UPGRADE_DIR/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}")) > 0;
+}
+
+sub finish_migration {
+    my ($migrationdir, $lname, $target_schema, $default_tablespace, $skip_confirm, $full_mig) = @_;
+
+    my $endfile = "$SCHEMA_DIR/upgrade-end.sql";
+    my $in = "";
+    local *ENDF;
+    open ENDF, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+    {
+        local $/ = undef;
+        $in .= join '', <ENDF>;
+    }
+    close ENDF;
+
+    if ($full_mig) {
+        $in .= $db_specific->insert_version_info($my_schema_name, $my_schema_version, $my_schema_release);
+    }
+
+    local *SQLF;
+    open SQLF, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql" or rmdir_and_die(
+              "Error writing [$SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql]: $!.\n",
+              "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+    print SQLF $in;
+    close SQLF;
+
+    run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace, $skip_confirm);
+}
+
+sub apply_next_migrations_if_pending {
+    my ($target_schema, $default_tablespace, $skip_confirm) = @_;
+
+    return 0 unless has_next_migrations();
+
+    print "Applying pending migrations from [$NEXT_UPGRADE_DIR].\n";
+    my $migrationdir = create_migration_dir(0);
+    stage_migration_files($NEXT_UPGRADE_DIR, "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0);
+    finish_migration($migrationdir, "$migrationdir-to-$target_schema.log", $target_schema, $default_tablespace, $skip_confirm, 0);
+
+    return 1;
 }
 
 sub rmdir_and_die {
