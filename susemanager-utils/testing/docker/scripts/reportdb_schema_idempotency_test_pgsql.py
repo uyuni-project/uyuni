@@ -24,7 +24,9 @@ def get_all_files_from_pr(pr_file, schema_path):
         for file in files:
             filename = str(file["filename"])
             if not re.search(
-                r"^schema\/reportdb\/upgrade\/uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*\/[^\/]+$",
+                r"^schema\/reportdb\/upgrade\/"
+                r"(uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*|next)"
+                r"\/[^\/]+$",
                 filename,
             ):
                 continue
@@ -56,6 +58,11 @@ def get_all_files_since(version, schema_path):
             for sql_file in sorted(os.listdir(base_path)):
                 if re.search(r"^.*\.(sql|sql\.postgresql)$", sql_file):
                     files.append(base_path + "/" + sql_file)
+    next_path = schema_path + "/next"
+    if os.path.isdir(next_path):
+        for sql_file in sorted(os.listdir(next_path)):
+            if re.search(r"^.*\.(sql|sql\.postgresql)$", sql_file):
+                files.append(next_path + "/" + sql_file)
     return files
 
 
