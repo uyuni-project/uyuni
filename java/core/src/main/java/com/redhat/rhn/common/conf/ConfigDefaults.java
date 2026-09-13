@@ -24,6 +24,9 @@ import com.suse.utils.CertificateUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -430,6 +433,11 @@ public class ConfigDefaults {
      * url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
      */
     private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
+
+    /**
+     * url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     */
+    private static final String UBUNTU_ERRATA_DB_DOWNLOAD_URL = "java.ubuntu_errata_db_download_url";
 
     /**
      * OpenID Connect authorization parameters
@@ -1383,6 +1391,28 @@ public class ConfigDefaults {
     public String getErrataAdvisoryMapCsvDownloadUrl() {
         return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
                 "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+    }
+
+    /**
+     * Return the url to download the Ubuntu USN database, the source of the Ubuntu errata information
+     *
+     * @return the url to download the Ubuntu USN database from
+     * @throws IOException in case the configured url is not a http(s) url
+     */
+    public String getUbuntuErrataDbDownloadUrl() throws IOException {
+        String jsonDBUrl = Config.get().getString(UBUNTU_ERRATA_DB_DOWNLOAD_URL,
+                "https://usn.ubuntu.com/usn-db/database.json");
+        String scheme;
+        try {
+            scheme = new URI(jsonDBUrl).getScheme();
+        }
+        catch (URISyntaxException e) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl, e);
+        }
+        if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+            throw new IOException(UBUNTU_ERRATA_DB_DOWNLOAD_URL + " must be a http(s) url: " + jsonDBUrl);
+        }
+        return jsonDBUrl;
     }
 
     /**
