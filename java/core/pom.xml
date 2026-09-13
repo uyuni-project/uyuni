@@ -146,11 +146,11 @@
             <artifactId>jade4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>java-saml</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.suse</groupId>
+            <groupId>org.uyuni-project.dependencies</groupId>
             <artifactId>java-saml-core</artifactId>
         </dependency>
         <dependency>

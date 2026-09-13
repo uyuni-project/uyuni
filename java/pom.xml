@@ -434,12 +434,12 @@
                 <version>3.2.0</version>
             </dependency>
             <dependency>
-                <groupId>com.suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>java-saml</artifactId>
                 <version>2.9.0</version>
             </dependency>
             <dependency>
-                <groupId>com.suse</groupId>
+                <groupId>org.uyuni-project.dependencies</groupId>
                 <artifactId>java-saml-core</artifactId>
                 <version>2.9.0</version>
             </dependency>
