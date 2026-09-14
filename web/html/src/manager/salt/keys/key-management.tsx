@@ -98,6 +98,8 @@ type State = {
 };
 
 class KeyManagement extends Component<Props, State> {
+  private isComponentMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -105,12 +107,27 @@ class KeyManagement extends Component<Props, State> {
       isOrgAdmin: false,
       loading: true,
     };
+  }
+
+  componentDidMount() {
+    this.isComponentMounted = true;
     this.reloadKeys();
   }
 
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
+
   reloadKeys = () => {
-    this.setState({ loading: true });
+    if (this.isComponentMounted) {
+      this.setState({ loading: true });
+    }
+
     return listKeys().then((data) => {
+      if (!this.isComponentMounted) {
+        return;
+      }
+
       this.setState({
         keys: data["minions"],
         isOrgAdmin: data["isOrgAdmin"],
