@@ -603,7 +603,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: @babel/helper-plugin-utils@7.27.1
+Package: @babel/helper-plugin-utils@7.29.7
 License text:
 
 MIT License
@@ -2420,7 +2420,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: @babel/plugin-transform-modules-systemjs@7.27.1
+Package: @babel/plugin-transform-modules-systemjs@7.29.8
 License text:
 
 MIT License
