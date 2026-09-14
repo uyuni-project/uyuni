@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import salt.exceptions
 import logging
 import os
 import pickle
@@ -56,12 +55,6 @@ def guess_buildinfo(dest):
 
 
 class _KiwiResultObject:
-    def __new__(cls, *args, **kwargs):
-        return object.__new__(cls)
-
-    def __init__(self, *args, **kwargs):
-        pass
-
     def __setstate__(self, state):
         self.__dict__.update(state)
 
@@ -72,7 +65,7 @@ class KiwiResultUnpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if module == "kiwi" or module.startswith("kiwi."):
             return _KiwiResultObject
-        return super().find_class(module, name)
+        raise pickle.UnpicklingError(f"Rejected pickle global: {module}.{name}")
 
 
 def parse_kiwi_result(dest):
@@ -82,15 +75,18 @@ def parse_kiwi_result(dest):
         try:
             with open(path, "rb") as result_file:
                 result = KiwiResultUnpickler(result_file).load()
+            xml_state = result.xml_state
             ret = {
-                "name": getattr(result.xml_state.xml_data, "name", None),
-                "type": getattr(result.xml_state.build_type, "image", None),
-                "filesystem": getattr(result.xml_state.build_type, "filesystem", None),
+                "name": getattr(xml_state.xml_data, "name", None),
+                "type": getattr(xml_state.build_type, "image", None),
+                "filesystem": getattr(xml_state.build_type, "filesystem", None),
             }
-        except Exception:  # pylint: disable=broad-exception-caught
-            # kiwi.result is optional, and an unreadable result must not fail inspection.
-            log.exception("Loading kiwi.result")
-
+            if not all(
+                value is None or isinstance(value, str) for value in ret.values()
+            ):
+                raise ValueError("Invalid metadata")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            log.error("Parsing kiwi results %s: %s", path, e)
     return ret
 
 
