@@ -13804,7 +13804,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: js-yaml@4.1.1
+Package: js-yaml@4.3.2
 License text:
 
 (The MIT License)
