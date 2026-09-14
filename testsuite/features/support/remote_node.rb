@@ -34,7 +34,7 @@ class RemoteNode
 
     $named_nodes[host] = @hostname
     uyuni_not_installed = false
-    if @host == 'server'
+    if %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
       uyuni_not_installed = !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
 
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
