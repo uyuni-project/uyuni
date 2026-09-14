@@ -16,7 +16,7 @@ Feature: Hub ISSv3 channel synchronization to peripheral2
     When I configure hub to sync all "sl-micro-6.2" channels to "peripheral2"
 
   Scenario: Sync the Rocky Linux 10 channels from hub to peripheral2 for minion bootstrap
-    When I configure hub to sync all "rockylinux10" channels to "peripheral2"
+    When I configure hub to sync all "rockylinux-10" channels to "peripheral2"
 
   Scenario: Trigger channel sync from hub to peripheral2
     Given I am authorized for the "Admin" section on "peripheral2"
