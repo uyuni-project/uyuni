@@ -15730,7 +15730,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: picomatch@2.3.1
+Package: picomatch@2.3.2
 License text:
 
 The MIT License (MIT)
@@ -15757,7 +15757,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: picomatch@4.0.3
+Package: picomatch@4.0.7
 License text:
 
 The MIT License (MIT)
@@ -16282,7 +16282,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: qs@6.14.1
+Package: qs@6.16.0
 License text:
 
 BSD 3-Clause License
@@ -19439,7 +19439,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 
-Package: side-channel@1.1.0
+Package: side-channel@1.1.1
 License text:
 
 MIT License
@@ -19466,7 +19466,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: side-channel-list@1.0.0
+Package: side-channel-list@1.0.1
 License text:
 
 MIT License
