@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,62 +7,44 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules;
 
-import static org.jmock.AbstractExpectations.returnValue;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockAddonProduct;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockBaseProduct;
+import static com.redhat.rhn.taskomatic.task.payg.dimensions.rules.DimensionRuleTestUtils.mockServer;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.SaltTestCaseExtension;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-@ExtendWith(SaltTestCaseExtension.class)
-public class AddonProductRuleTest extends MockObjectTestCase {
+class AddonProductRuleTest extends MockObjectTestCase {
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Test
-    public void canExcludeWithAnAllRequirement() {
-        SUSEProductSet productSet = mock(SUSEProductSet.class);
-        Server server = mock(Server.class);
+    void canExcludeWithAnAllRequirement() {
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles"),
+            mockAddonProduct(context, "sle-module-server-applications"),
+            mockAddonProduct(context, "sle-module-containers")
+        );
 
-        checking(expectations -> {
-            // mock a server with the following addons
-            expectations.allowing(productSet).getAddonProducts();
-            expectations.will(returnValue(List.of(
-                new SUSEProduct("sle-module-server-applications"),
-                new SUSEProduct("sle-module-containers")
-            )));
-
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(productSet)));
-        });
+        Server server = mockServer(context, productSet, Set.of());
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new AddonProductRule(RuleType.INCLUDE, RequirementType.ALL, Set.of(
@@ -77,26 +59,16 @@ public class AddonProductRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canIncludeWithAnAllRequirement() {
-        SUSEProductSet productSet = mock(SUSEProductSet.class);
-        Server server = mock(Server.class);
+    void canIncludeWithAnAllRequirement() {
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles"),
+            mockAddonProduct(context, "sle-module-server-applications"),
+            mockAddonProduct(context, "sle-module-containers"),
+            mockAddonProduct(context, "sle-module-web-scripting"),
+            mockAddonProduct(context, "sle-module-development-tools")
+        );
 
-        checking(expectations -> {
-            // mock a server with the following addons
-            expectations.allowing(productSet).getAddonProducts();
-            expectations.will(returnValue(List.of(
-                new SUSEProduct("sle-module-server-applications"),
-                new SUSEProduct("sle-module-containers"),
-                new SUSEProduct("sle-module-web-scripting"),
-                new SUSEProduct("sle-module-development-tools")
-            )));
-
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(productSet)));
-        });
+        Server server = mockServer(context, productSet, Set.of());
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new AddonProductRule(RuleType.INCLUDE, RequirementType.ALL, Set.of(
@@ -111,24 +83,14 @@ public class AddonProductRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canIncludeWithAnAnyRequirement() {
-        SUSEProductSet productSet = mock(SUSEProductSet.class);
-        Server server = mock(Server.class);
+    void canIncludeWithAnAnyRequirement() {
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles"),
+            mockAddonProduct(context, "sle-module-server-applications"),
+            mockAddonProduct(context, "sle-module-containers")
+        );
 
-        checking(expectations -> {
-            // mock a server with the following addons: sle-module-server-applications, sle-module-containers
-            expectations.allowing(productSet).getAddonProducts();
-            expectations.will(returnValue(List.of(
-                new SUSEProduct("sle-module-server-applications"),
-                new SUSEProduct("sle-module-containers")
-            )));
-
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(productSet)));
-        });
+        Server server = mockServer(context, productSet, Set.of());
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new AddonProductRule(RuleType.INCLUDE, RequirementType.ANY, Set.of(
@@ -143,23 +105,13 @@ public class AddonProductRuleTest extends MockObjectTestCase {
     }
 
     @Test
-    public void canExcludeWithAnAnyRequirement() {
-        SUSEProductSet productSet = mock(SUSEProductSet.class);
-        Server server = mock(Server.class);
+    void canExcludeWithAnAnyRequirement() {
+        Set<InstalledProduct> productSet = Set.of(
+            mockBaseProduct(context, "sles"),
+            mockAddonProduct(context, "sle-module-server-applications")
+        );
 
-        checking(expectations -> {
-            // mock a server with the following addons: sle-module-server-applications, sle-module-containers
-            expectations.allowing(productSet).getAddonProducts();
-            expectations.will(returnValue(List.of(
-                new SUSEProduct("sle-module-server-applications")
-            )));
-
-            expectations.allowing(server).isPayg();
-            expectations.will(returnValue(true));
-
-            expectations.allowing(server).getInstalledProductSet();
-            expectations.will(returnValue(Optional.of(productSet)));
-        });
+        Server server = mockServer(context, productSet, Set.of());
 
         // Create a rule that requires ALL the following addons
         DimensionRule rule = new AddonProductRule(RuleType.INCLUDE, RequirementType.ANY, Set.of(
