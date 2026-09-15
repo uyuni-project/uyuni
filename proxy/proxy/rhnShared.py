@@ -48,6 +48,28 @@ from .responseContext import ResponseContext
 PRODUCT_NAME = "SUSE Multi-Linux Manager"
 
 
+class ContextCloser:
+    """Wraps the output iterable to defer closing of the response context
+    until the WSGI server calls close() on the iterator."""
+
+    def __init__(self, output, context):
+        self.output = output
+        self.context = context
+        self._iter = None
+
+    def __iter__(self):
+        self._iter = iter(self.output)
+        return self
+
+    def __next__(self):
+        return next(self._iter)
+
+    def close(self):
+        if hasattr(self.output, "close"):
+            self.output.close()
+        self.context.clear()
+
+
 class SharedHandler:
     """Shared handler class (between rhnBroker and rhnRedirect.
     *** only inherited ***
@@ -355,8 +377,12 @@ class SharedHandler:
             Traceback("SharedHandler._clientCommo", self.req, mail=0)
             return apache.HTTP_SERVICE_UNAVAILABLE
 
-        # Close all open response contexts.
-        self.responseContext.clear()
+        output = getattr(self.req, "output", None)
+        if output:
+            self.req.output = ContextCloser(output, self.responseContext)
+        else:
+            # Close all open response contexts.
+            self.responseContext.clear()
 
         return status
 
@@ -573,18 +599,9 @@ class SharedHandler:
 
         # read content if there is some or the size is unknown
         if (size > 0 or size == -1) and (toRequest.method != "HEAD"):
-            tfile = SmartIO(max_mem_size=CFG.MAX_MEM_FILE_SIZE)
-            buf = fromResponse.read(CFG.BUFFER_SIZE)
-            while buf:
-                try:
-                    tfile.write(buf)
-                    buf = fromResponse.read(CFG.BUFFER_SIZE)
-                except IOError:
-                    buf = 0
-            tfile.seek(0)
             if "wsgi.file_wrapper" in toRequest.headers_in:
                 toRequest.output = toRequest.headers_in["wsgi.file_wrapper"](
-                    tfile, CFG.BUFFER_SIZE
+                    fromResponse, CFG.BUFFER_SIZE
                 )
             else:
-                toRequest.output = iter(lambda: tfile.read(CFG.BUFFER_SIZE), "")
+                toRequest.output = iter(lambda: fromResponse.read(CFG.BUFFER_SIZE), b"")
