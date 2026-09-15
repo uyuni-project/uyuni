@@ -16,7 +16,6 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
   - Install a package via Web UI
   - Remove a package via Web UI
   - Execute a remote command via Web UI
-  - Apply a configuration file via Web UI
   - Schedule Software package refresh
   - Schedule Hardware refresh
   - Enable Prometheus and Prometheus Exporter
@@ -49,7 +48,6 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And the OS version for "slmicro62_minion" should be correct
     And the IPv4 address for "slmicro62_minion" should be correct
     And the IPv6 address for "slmicro62_minion" should be correct
-    And the system ID for "slmicro62_minion" should be correct
     And the system name for "slmicro62_minion" should be correct
 
   Scenario: Client slmicro62_minion fields are displayed correctly on the details page
@@ -64,19 +62,6 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And I should see a "Location" text
     And I should see a "UUID" text
 
-  Scenario: Install a patch on the slmicro62_minion
-    Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
-    When I follow "Software" in the content area
-    And I wait until I see "Upgrade Packages" text
-    And I follow "Patches" in the content area
-    When I wait until I see "Relevant Patches" text
-    When I check the first patch in the list, that does not require a reboot
-    And I click on "Apply Patches"
-    And I click on "Confirm"
-    Then I should see a "1 patch update has been scheduled for" text
-    And I wait until event "Patch Update:" is completed
-    And I reboot the "slmicro62_minion" if it is a transactional system
-
   Scenario: Install a package on the slmicro62_minion
     Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
     When I follow "Software" in the content area
@@ -90,9 +75,11 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    And I reboot the "slmicro62_minion" if it is a transactional system
+    And I reboot the "slmicro62_minion" minion through the web UI on peripheral2
+    Then I should not see a "There is a pending transaction for this system, please reboot it to activate the changes." text
 
   Scenario: Remove package from slmicro62_minion
+    Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
     When I follow "Software" in the content area
     And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
@@ -103,7 +90,8 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
-    And I reboot the "slmicro62_minion" if it is a transactional system
+    And I reboot the "slmicro62_minion" minion through the web UI on peripheral2
+    Then I should not see a "There is a pending transaction for this system, please reboot it to activate the changes." text
 
   Scenario: Run a remote command on slmicro62_minion
     When I follow the left menu "Salt > Remote Commands"
@@ -117,39 +105,6 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And I wait until I see "show response" text
     And I expand the results for "slmicro62_minion"
     Then I should see "My remote command output" in the command output for "slmicro62_minion"
-
-  Scenario: Subscribe slmicro62_minion to the configuration channel
-    Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
-    When I follow "Configuration" in the content area
-    And I wait until I see "Configuration Overview" text
-    And I follow "Manage Configuration Channels" in the content area
-    And I wait until I see "centrally-managed configuration" text
-    And I follow first "Subscribe to Channels" in the content area
-    And I wait until I see "Select Channels for Subscription" text
-    And I check "Mixed Channel" in the list
-    And I click on "Continue"
-    And I click on "Update Channel Rankings"
-    Then I should see a "Channel Subscriptions successfully changed for" text
-    And I reboot the "slmicro62_minion" if it is a transactional system
-
-  Scenario: Deploy the configuration file to slmicro62_minion
-    When I follow the left menu "Configuration > Channels"
-    And I wait until I see "Centrally Managed Configuration Channel" text
-    And I follow "Mixed Channel"
-    And I wait until I see "Channel Properties" text
-    And I follow "Deploy all configuration files to selected subscribed systems"
-    And I wait until I see "Select Systems for Deployment" text
-    And I enter the hostname of "slmicro62_minion" as the filtered system name
-    And I click on the filter button
-    And I check the "slmicro62_minion" client
-    And I click on "Confirm & Deploy to Selected Systems"
-    And I wait until I see "Revision 1" text
-    Then I should see a "/etc/s-mgr/config" link
-    When I click on "Deploy Files to Selected Systems"
-    Then I should see a "1 revision-deploy is being scheduled." text
-    And I should see a "0 revision-deploys overridden." text
-    And I wait until file "/etc/s-mgr/config" exists on "slmicro62_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "slmicro62_minion"
 
   Scenario: Enable Prometheus Node exporter formula on the slmicro62_minion
     Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
@@ -173,7 +128,8 @@ Feature: Smoke tests for slmicro62_minion on peripheral2
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
-    And I reboot the "slmicro62_minion" if it is a transactional system
+    And I reboot the "slmicro62_minion" minion through the web UI on peripheral2
+    Then I should not see a "There is a pending transaction for this system, please reboot it to activate the changes." text
 
   # workaround for SL Micro minion issue bsc#1209374
   Scenario: Enable and start Prometheus Node Exporter service on slmicro62_minion

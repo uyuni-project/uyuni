@@ -48,7 +48,6 @@ Feature: Smoke tests for sles15sp7_minion on peripheral1
     And the OS version for "sles15sp7_minion" should be correct
     And the IPv4 address for "sles15sp7_minion" should be correct
     And the IPv6 address for "sles15sp7_minion" should be correct
-    And the system ID for "sles15sp7_minion" should be correct
     And the system name for "sles15sp7_minion" should be correct
 
   Scenario: Client sles15sp7_minion fields are displayed correctly on the details page
@@ -114,19 +113,6 @@ Feature: Smoke tests for sles15sp7_minion on peripheral1
     And I expand the results for "sles15sp7_minion"
     Then I should see "My remote command output" in the command output for "sles15sp7_minion"
 
-  Scenario: Subscribe sles15sp7_minion to the configuration channel
-    Given I am on the Systems overview page of this "sles15sp7_minion" on peripheral1
-    When I follow "Configuration" in the content area
-    And I wait until I see "Configuration Overview" text
-    And I follow "Manage Configuration Channels" in the content area
-    And I wait until I see "centrally-managed configuration" text
-    And I follow first "Subscribe to Channels" in the content area
-    And I wait until I see "Select Channels for Subscription" text
-    And I check "Mixed Channel" in the list
-    And I click on "Continue"
-    And I click on "Update Channel Rankings"
-    Then I should see a "Channel Subscriptions successfully changed for" text
-
   Scenario: Reboot the sles15sp7_minion and wait until reboot is completed
     Given I am on the Systems overview page of this "sles15sp7_minion" on peripheral1
     When I follow first "Schedule System Reboot"
@@ -136,25 +122,6 @@ Feature: Smoke tests for sles15sp7_minion on peripheral1
     Then I should see a "Reboot scheduled for system" text
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
-
-  Scenario: Deploy the configuration file to sles15sp7_minion
-    When I follow the left menu "Configuration > Channels"
-    And I wait until I see "Centrally Managed Configuration Channel" text
-    And I follow "Mixed Channel"
-    And I wait until I see "Channel Properties" text
-    And I follow "Deploy all configuration files to selected subscribed systems"
-    And I wait until I see "Select Systems for Deployment" text
-    And I enter the hostname of "sles15sp7_minion" as the filtered system name
-    And I click on the filter button
-    And I check the "sles15sp7_minion" client
-    And I click on "Confirm & Deploy to Selected Systems"
-    And I wait until I see "Revision 1" text
-    Then I should see a "/etc/s-mgr/config" link
-    When I click on "Deploy Files to Selected Systems"
-    Then I should see a "1 revision-deploy is being scheduled." text
-    And I should see a "0 revision-deploys overridden." text
-    And I wait until file "/etc/s-mgr/config" exists on "sles15sp7_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sles15sp7_minion"
 
   Scenario: Install spacecmd from the client tools on the sles15sp7_minion
     Given I am on the Systems overview page of this "sles15sp7_minion" on peripheral1

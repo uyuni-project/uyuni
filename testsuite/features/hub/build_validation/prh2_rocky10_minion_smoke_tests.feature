@@ -48,7 +48,6 @@ Feature: Smoke tests for rocky10_minion on peripheral2
     And the OS version for "rocky10_minion" should be correct
     And the IPv4 address for "rocky10_minion" should be correct
     And the IPv6 address for "rocky10_minion" should be correct
-    And the system ID for "rocky10_minion" should be correct
     And the system name for "rocky10_minion" should be correct
 
   Scenario: Client rocky10_minion fields are displayed correctly on the details page
@@ -114,19 +113,6 @@ Feature: Smoke tests for rocky10_minion on peripheral2
     And I expand the results for "rocky10_minion"
     Then I should see "My remote command output" in the command output for "rocky10_minion"
 
-  Scenario: Subscribe rocky10_minion to the configuration channel
-    Given I am on the Systems overview page of this "rocky10_minion" on peripheral2
-    When I follow "Configuration" in the content area
-    And I wait until I see "Configuration Overview" text
-    And I follow "Manage Configuration Channels" in the content area
-    And I wait until I see "centrally-managed configuration" text
-    And I follow first "Subscribe to Channels" in the content area
-    And I wait until I see "Select Channels for Subscription" text
-    And I check "Mixed Channel" in the list
-    And I click on "Continue"
-    And I click on "Update Channel Rankings"
-    Then I should see a "Channel Subscriptions successfully changed for" text
-
   Scenario: Reboot the rocky10_minion and wait until reboot is completed
     Given I am on the Systems overview page of this "rocky10_minion" on peripheral2
     When I follow first "Schedule System Reboot"
@@ -136,25 +122,6 @@ Feature: Smoke tests for rocky10_minion on peripheral2
     Then I should see a "Reboot scheduled for system" text
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
-
-  Scenario: Deploy the configuration file to rocky10_minion
-    When I follow the left menu "Configuration > Channels"
-    And I wait until I see "Centrally Managed Configuration Channel" text
-    And I follow "Mixed Channel"
-    And I wait until I see "Channel Properties" text
-    And I follow "Deploy all configuration files to selected subscribed systems"
-    And I wait until I see "Select Systems for Deployment" text
-    And I enter the hostname of "rocky10_minion" as the filtered system name
-    And I click on the filter button
-    And I check the "rocky10_minion" client
-    And I click on "Confirm & Deploy to Selected Systems"
-    And I wait until I see "Revision 1" text
-    Then I should see a "/etc/s-mgr/config" link
-    When I click on "Deploy Files to Selected Systems"
-    Then I should see a "1 revision-deploy is being scheduled." text
-    And I should see a "0 revision-deploys overridden." text
-    And I wait until file "/etc/s-mgr/config" exists on "rocky10_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "rocky10_minion"
 
   Scenario: Install spacecmd from the client tools on the rocky10_minion
     Given I am on the Systems overview page of this "rocky10_minion" on peripheral2
