@@ -13,14 +13,19 @@
 - features/hub/srv_hub_token_registration.feature
 - features/hub/srv_hub_token_lifecycle.feature
 
-# B-01..B-04: proxy + minion bootstrapped onto server2 peripheral.
-# Placed here deliberately: this is the only gap in the run set where server2 is
-# deregistered (srv_hub_token_lifecycle.feature deregisters it in its own cleanup)
-# so this feature's own "register server2" prerequisite succeeds instead of hitting
-# a duplicate-registration error, and its own "deregister server2" cleanup restores
-# the deregistered state that srv_hub_channel_synchronization.feature expects before
-# it registers server2 again. The sle_minion it bootstraps is registered directly to
-# server2 and is unaffected by later hub-peripheral register/deregister cycles, so it
+# B-01: peripheral-as-hub-minion bootstrap ordering.
+# Placed here because srv_hub_token_lifecycle.feature deregisters peripheral1 in its
+# cleanup, giving this feature a clean deregistered state for its prerequisite register.
+# Its own cleanup (delete system + unregister) restores the deregistered state needed by
+# srv_hub_minion_on_peripheral.feature's prerequisite register immediately below.
+- features/hub/srv_hub_peripheral_as_minion.feature
+
+# B-03..B-04: minion bootstrapped onto peripheral1.
+# Placed here deliberately: this is the only gap in the run set where peripheral1 is
+# deregistered (srv_hub_peripheral_as_minion.feature deregisters it in its own cleanup)
+# so this feature's own "register peripheral1" prerequisite succeeds instead of hitting
+# a duplicate-registration error. The sle_minion it bootstraps is registered directly to
+# peripheral1 and is unaffected by later hub-peripheral register/deregister cycles, so it
 # is still present and reporting when srv_hub_reporting.feature (C-01) runs below.
 - features/hub/srv_hub_minion_on_peripheral.feature
 

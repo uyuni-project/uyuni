@@ -6,7 +6,7 @@
 # - features/hub/srv_hub_grafana_data_validation.feature
 
 @scope_hub
-@hub_server_to_server
+@hub_full_topology
 @peripheral1
 Feature: Hub reportdb aggregation from peripheral servers
   In order to get a consolidated view of all managed systems

@@ -700,6 +700,18 @@ When(/^I unregister "([^"]*)" from hub$/) do |host|
   refresh_page
 end
 
+When(/^I unregister "([^"]*)" from hub if registered$/) do |host|
+  fqdn = get_target(host).full_hostname
+  step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
+  row_xpath = "//tr[.//a[contains(., '#{fqdn}')]]"
+  next unless page.has_xpath?("#{row_xpath}//button[contains(., 'Deregister')]", wait: 5)
+
+  find(:xpath, "#{row_xpath}//button[contains(., 'Deregister')]").click
+  step %(I click on "Deregister" in "Confirm deregistration" modal)
+  step %(I wait until I see "#{fqdn} has been successfully deregistered" text)
+  refresh_page
+end
+
 # Hub deployment depth checks (A-01)
 
 Then(/^the uyuni-hub-xmlrpc-0 container should be running on "([^"]*)"$/) do |host|

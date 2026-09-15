@@ -26,8 +26,10 @@
 # A-09: ISSv2 CLI export/import
 - features/hub/srv_hub_issv2_export_import.feature
 
-# C-01: Hub reportdb aggregation from peripherals
-- features/hub/srv_hub_reporting.feature
+# C-01: srv_hub_reporting.feature is NOT listed here — it requires a managed minion
+# behind peripheral1 (sle_minion bootstrapped via srv_hub_minion_on_peripheral.feature)
+# to populate the hub reportdb. Without it the "one row per peripheral" check finds
+# 0 distinct mgm_id rows. Reporting runs in hub_full_topology.yml where that minion exists.
 
 # A-10: Peripheral deregistration and state cleanup
 - features/hub/srv_hub_verification_cleanup.feature

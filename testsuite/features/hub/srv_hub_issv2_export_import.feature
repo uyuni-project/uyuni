@@ -1,8 +1,10 @@
 # Copyright (c) 2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# Prerequisites: srv_hub_setup_registration.feature and srv_hub_channel_synchronization.feature
-# must have completed successfully (channels must exist on the peripheral to export).
+# Prerequisites: srv_hub_setup_registration.feature must have completed successfully
+# (peripheral1 host must be accessible for SSH-based ISS v2 file transfer).
+# This feature creates its own channel on hub — it does not depend on channels previously
+# synced to the peripheral.
 
 @scope_hub
 @hub_server_to_server

@@ -106,6 +106,7 @@ Feature: Hub full topology - minion managed via peripheral server
   # comment), so andromeda-dummy is no longer synced to peripheral1 and these scenarios have no
   # package to act on. Left as-is pending a follow-up decision on what real (or newly-synced
   # custom) package/channel these should use.
+  @test_issue
   Scenario: Install a package on sle_minion from hub-synced channel on peripheral1 (B-04)
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -119,6 +120,7 @@ Feature: Hub full topology - minion managed via peripheral server
     Then I should see a "1 package install has been scheduled" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
+  @test_issue
   Scenario: Verify andromeda-dummy is installed on sle_minion (B-04)
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -128,6 +130,7 @@ Feature: Hub full topology - minion managed via peripheral server
     And I click on the filter button
     Then I should see a "andromeda-dummy" link
 
+  @test_issue
   Scenario: Downgrade andromeda-dummy to old version on sle_minion for errata test (B-04)
     When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion" without error control
@@ -135,10 +138,12 @@ Feature: Hub full topology - minion managed via peripheral server
     And I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished
 
+  @test_issue
   Scenario: Apply errata andromeda-dummy-6789 on sle_minion via peripheral1 peripheral API (B-04)
     When I apply erratum "andromeda-dummy-6789" on "sle_minion" via "peripheral1" peripheral API
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
+  @test_issue
   Scenario: Verify andromeda-dummy is updated to patched version on sle_minion (B-04)
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
@@ -148,13 +153,16 @@ Feature: Hub full topology - minion managed via peripheral server
     And I click on the filter button
     Then I should see a "andromeda-dummy-2.0-1.1" link
 
+  @test_issue
   Scenario: Run a remote command on sle_minion via peripheral1 peripheral (B-04)
     When I run a remote command "hostname" on "sle_minion" via "peripheral1"
     Then the remote command should complete on "sle_minion"
 
+  @test_issue
   Scenario: Verify package checksum on sle_minion matches hub content (B-04)
     Then the package "andromeda-dummy" checksum on "sle_minion" should match the same package on hub
 
+  @test_issue
   Scenario: Cleanup - remove andromeda-dummy from sle_minion
     Given I am authorized for the "Admin" section on "peripheral1"
     And I am on the Systems overview page of this "sle_minion" on peripheral1
