@@ -1,0 +1,76 @@
+<!--
+  Uyuni Events Node — Editor HTML
+  The drag-and-drop node that sysadmins see in the Node-RED palette
+-->
+<script type="text/javascript">
+  RED.nodes.registerType('uyuni-events', {
+    category: 'Uyuni',
+    color: '#2BD3A0',
+    defaults: {
+      name: { value: '' },
+      server: { value: '', type: 'uyuni-config', required: true },
+      eventCategory: { value: '#' },
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: 'feed.svg',
+    paletteLabel: 'uyuni events',
+    label: function () {
+      const categories = {
+        '#': 'all events',
+        'systems/registered': 'system registered',
+        'jobs/returned': 'job returned',
+        'states/applied': 'state applied',
+        'images/deployed': 'image deployed',
+        'batches/started': 'batch started',
+        'users/created': 'user created',
+        'orgs/created': 'org created',
+        'clm/#': 'clm events'
+      };
+      return this.name || categories[this.eventCategory] || 'uyuni events';
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="uyuni-events">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Broker</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-eventCategory"><i class="fa fa-filter"></i> Category</label>
+    <select id="node-input-eventCategory">
+      <option value="#">All Events</option>
+      <option value="systems/registered">System Registration (systems/registered)</option>
+      <option value="jobs/returned">Job Execution Returns (jobs/returned)</option>
+      <option value="states/applied">States Applied (states/applied)</option>
+      <option value="images/deployed">Image Deployment (images/deployed)</option>
+      <option value="batches/started">Batch Jobs Started (batches/started)</option>
+      <option value="users/created">User Administration (users/created)</option>
+      <option value="orgs/created">Organization Administration (orgs/created)</option>
+      <option value="clm/#">Content Lifecycle Management (clm/*)</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="uyuni-events">
+  <p>Subscribes to real-time events from an Uyuni server via MQTT.</p>
+  
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The event data (minion info, job result, package list, etc.)</dd>
+    <dt>topic <span class="property-type">string</span></dt>
+    <dd>The full MQTT topic (e.g. <code>uyuni/server-fqdn/systems/registered</code>)</dd>
+    <dt>uyuni <span class="property-type">object</span></dt>
+    <dd>Metadata: <code>eventId</code>, <code>timestamp</code>, <code>category</code>, <code>eventType</code></dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>Configure the MQTT broker connection in the <b>Uyuni Config</b> node.
+  Select an event category/action to filter, or choose <b>All Events</b> to receive everything.</p>
+</script>
