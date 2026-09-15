@@ -1751,9 +1751,10 @@ When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) d
   node.wait_until_online
 end
 
-When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
+When(/^I reboot the "([^"]*)" minion through the web UI(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, mgr_server|
+  on_server = mgr_server ? " on #{mgr_server}" : ''
   steps %(
-    Given I am on the Systems overview page of this "#{host}"
+    Given I am on the Systems overview page of this "#{host}"#{on_server}
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button

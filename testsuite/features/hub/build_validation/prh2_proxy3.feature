@@ -38,7 +38,7 @@ Feature: Setup containerized proxy3 on peripheral2
 
 @transactional_proxy3
   Scenario: Reboot the proxy3 host
-    When I reboot the "proxy3" minion through the web UI
+    When I reboot the "proxy3" minion through the web UI on peripheral2
 
   Scenario: Wait until the proxy3 host appears
     When I wait until onboarding is completed for "proxy3"
@@ -48,7 +48,7 @@ Feature: Setup containerized proxy3 on peripheral2
 
 @transactional_proxy3
   Scenario: Reboot after mgrpxy upgrade
-    When I reboot the "proxy3" minion through the web UI
+    When I reboot the "proxy3" minion through the web UI on peripheral2
 
   Scenario: Generate containerized proxy3 configuration
     When I generate the configuration "/tmp/proxy3_container_config.tar.gz" of containerized proxy3 on the peripheral2
