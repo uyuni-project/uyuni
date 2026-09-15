@@ -28,7 +28,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name="confirm" class="btn btn-primary" ${empty pageList ? 'disabled="disabled"' : ''}>
+                <button type="submit" name="confirm" class="btn btn-primary" ${empty pageList ? 'disabled="disabled"' : ''} value="addpackages">
                     <bean:message key='channel.jsp.package.addbutton'/>
                 </button>
             </div>

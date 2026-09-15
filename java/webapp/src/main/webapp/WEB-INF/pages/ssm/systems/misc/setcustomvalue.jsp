@@ -38,10 +38,10 @@
 
     <div class="text-right">
 
-      <button class="btn btn-default" type="submit" name="set">
+      <button class="btn btn-default" type="submit" name="set" value="set">
         <bean:message key='ssm.misc.setcustom.setvalues'/>
       </button>
-      <button class="btn btn-default" type="submit" name="remove">
+      <button class="btn btn-default" type="submit" name="remove" value="remove">
         <bean:message key='ssm.misc.setcustom.removevalues'/>
       </button>
       <rhn:submitted/>
