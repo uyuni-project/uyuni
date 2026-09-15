@@ -522,6 +522,7 @@ end
 # access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, mgr_server|
   mgr_server ||= 'server'
+  switch_to_server(mgr_server) unless mgr_server == 'server'
   node = get_target(host)
   system_id = get_system_id(node, mgr_server: mgr_server)
   overview_page = "/rhn/systems/details/Overview.do?sid=#{system_id}"
