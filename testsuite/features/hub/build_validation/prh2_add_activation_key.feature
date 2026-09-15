@@ -9,7 +9,7 @@ Feature: Create an activation key for peripheral2
   I want to use activation keys
 
   Scenario: Create an activation key with the channel and child channels for proxy3
-    When I create an activation key including custom channels for "proxy3" via API on peripheral2
+    When I create an activation key including custom channels for "proxy" via API on peripheral2
 
   Scenario: Create an activation key with the channel and child channels for slmicro62
     When I create an activation key including custom channels for "slmicro62_minion" via API on peripheral2

@@ -12,7 +12,7 @@ Feature: Create an activation key for sles15sp7, ubuntu2404, and proxy on periph
     When I create an activation key including custom channels for "sles15sp7_minion" via API on peripheral1
 
   Scenario: Create an activation key with the channel and child channels for proxy
-    When I create an activation key including custom channels for "proxy2" via API on peripheral1
+    When I create an activation key including custom channels for "proxy" via API on peripheral1
 
   Scenario: Create an activation key with the channel and child channels for ubuntu2404
     When I create an activation key including custom channels for "ubuntu2404_minion" via API on peripheral1
