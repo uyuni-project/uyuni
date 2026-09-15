@@ -70,6 +70,9 @@ def _run(
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         encoding="utf-8",
+        # GPG status output may include arbitrary bytes in NOTATION_DATA records.
+        # Those records are ignored by the parser, so replace undecodable bytes.
+        errors="replace",
         check=False,  # checked by caller
     )
 
