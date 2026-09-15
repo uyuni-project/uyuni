@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 COMMENT ON TABLE SystemNetAddressV4
   IS 'The list of IPv4 address associated to a system';
