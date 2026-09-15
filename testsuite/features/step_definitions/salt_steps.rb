@@ -587,7 +587,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", check_errors: false)
 
   # Package removal using the existing step
-  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}")
+  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)
 
   # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
