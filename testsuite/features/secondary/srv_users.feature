@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2023 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 #  1) check users page
 #  2) create and delete users

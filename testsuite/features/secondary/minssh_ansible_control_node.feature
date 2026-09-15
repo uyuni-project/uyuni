@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_ansible
 @scope_salt_ssh

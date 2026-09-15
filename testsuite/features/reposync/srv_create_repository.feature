@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If the fake-rpm-repo fails to be created:

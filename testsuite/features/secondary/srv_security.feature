@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_tomcat
 Feature: Basic web security measures and recommendations
