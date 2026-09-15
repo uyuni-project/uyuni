@@ -1,0 +1,2 @@
+- Remove obsolete Perl modules
+- Drop spacewalk-base and spacewalk-base-minimal subpackages
