@@ -5,6 +5,7 @@
 # provided one on both the server and proxy RKE2 clusters.
 
 @rke2
+@no_user_creation
 Feature: RKE2 External CA Replacement
 
   Scenario: Pre-requisite: Back up CA certificates before external CA replacement

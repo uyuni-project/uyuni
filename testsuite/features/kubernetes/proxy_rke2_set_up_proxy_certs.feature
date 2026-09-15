@@ -3,7 +3,6 @@
 
 @rke2
 @no_user_creation
-@transactional_server
 Feature: Install MLM proxy on RKE2
 
   Scenario: Create uyuni namespace in proxy
