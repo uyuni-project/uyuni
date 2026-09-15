@@ -45,9 +45,7 @@ class TestSCActivationKey:
         Test tab completer for activationkey_removegroups.
         """
         text = "g"
-        shell.client.activationkey.getDetails.return_value = {
-            "server_group_ids": [101]
-        }
+        shell.client.activationkey.getDetails.return_value = {"server_group_ids": [101]}
         shell.client.systemgroup.getDetails.return_value = {"name": "group_a"}
 
         completer = MagicMock()
