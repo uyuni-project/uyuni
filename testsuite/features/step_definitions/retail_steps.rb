@@ -443,7 +443,7 @@ Then(/^I should see the image for "([^"]*)" is built$/) do |host|
 
   begin
     tr = find('tr', text: name)
-    tr.find('i[title="Built"]')
+    tr.find('i[title="Built"], i[aria-label="Built"]')
   rescue Capybara::ElementNotFound
     raise ScriptError, "Image #{name} is not present or not marked as built"
   end
