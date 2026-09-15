@@ -346,8 +346,9 @@ public class DistUpgradeManager extends BaseManager {
                 .collect(toList());
         if (compatibleExtensionSuccessors.isEmpty()) {
             LOG.warn("No extension successors for base successor {}", baseSucc.getFriendlyName());
+            LOG.debug("-----------------------");
         }
-        if (LOG.isDebugEnabled()) {
+        else if (LOG.isDebugEnabled()) {
             LOG.debug("Found extension successors for base successor {}:",
                     baseSucc.getFriendlyName());
             // let's print out list of list with friendly names
