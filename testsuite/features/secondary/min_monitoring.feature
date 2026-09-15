@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 # This feature depends on:
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature depends on:
 # empty content in all the UI pages, so it depends on almost all our features

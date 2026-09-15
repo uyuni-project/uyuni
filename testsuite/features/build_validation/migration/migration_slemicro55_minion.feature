@@ -1,5 +1,5 @@
 # Copyright (c) 2025-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @slemicro55_minion
 # SL Micro 6.2 is reposynched even if there is no SL Micro 6.2 minion deployed

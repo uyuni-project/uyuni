@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2023 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature depends on:
 # - features/secondary/min_docker_api.feature

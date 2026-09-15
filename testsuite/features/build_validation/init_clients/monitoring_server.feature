@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2023 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @monitoring_server
 Feature: Bootstrap the monitoring server

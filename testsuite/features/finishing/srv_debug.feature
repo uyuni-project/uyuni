@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Debug the server after the testsuite has run
 

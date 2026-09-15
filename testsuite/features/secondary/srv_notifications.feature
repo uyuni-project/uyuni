@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_notification_message
 Feature: Test the notification/notification-messages feature
