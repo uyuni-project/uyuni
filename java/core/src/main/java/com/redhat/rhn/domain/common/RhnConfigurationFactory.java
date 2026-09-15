@@ -87,7 +87,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      * @return the configurations
      */
     public List<RhnConfiguration> getConfiguration(List<RhnConfiguration.KEYS> keysIn) {
-        return getSession().byMultipleIds(RhnConfiguration.class).multiLoad(keysIn);
+        return getSession().findMultiple(RhnConfiguration.class, keysIn);
     }
 
     /**
@@ -97,7 +97,6 @@ public class RhnConfigurationFactory extends HibernateFactory {
      * @return the configuration
      */
     public RhnConfiguration getConfiguration(RhnConfiguration.KEYS keyIn) {
-        //return getSession().byId(RhnConfiguration.class).load(keyIn);
         return getSession().find(RhnConfiguration.class, keyIn);
     }
 
