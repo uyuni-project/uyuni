@@ -1,0 +1,2 @@
+- Integrate spacewalk-setup into 00-mgrSetup.sh
+- Convert spacewalk-setup-httpd from Perl to Python
