@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Beware: After altering the system e.g. package installation/removal, the system
 #         has to be rebooted to take effect due to the nature of SLE Micro.

@@ -1,5 +1,5 @@
 # Copyright (c) 2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # To create the custom repositories and create the bootstrap repository, the feature depends on sles15sp6_minion client steps
 

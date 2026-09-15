@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 TASKOMATIC_LOG_PATH = '/var/log/rhn/rhn_taskomatic_daemon.log'.freeze
 

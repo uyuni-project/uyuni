@@ -1,5 +1,5 @@
 # Copyright (c) 2013-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'cucumber/formatter/pretty'
 require_relative 'custom_formatter'

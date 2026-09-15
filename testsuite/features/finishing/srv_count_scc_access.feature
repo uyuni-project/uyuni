@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @srv_scc_access_logging
 Feature: Test for excessive SCC accesses

@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 require 'xmlrpc/client'
 require_relative '../xmlrpc_ssl_helper'

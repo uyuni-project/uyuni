@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Prerequisites: srv_hub_setup_registration.feature must have completed successfully
 # (peripheral1 host must be accessible for SSH-based ISS v2 file transfer).

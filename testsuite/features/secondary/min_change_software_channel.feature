@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in the following features:
 # - features/secondary/allcli_software_channels.feature
