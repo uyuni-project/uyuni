@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @opensuse156arm_minion
 Feature: Bootstrap a openSUSE 15.6 ARM Salt minion

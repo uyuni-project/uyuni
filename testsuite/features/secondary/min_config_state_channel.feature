@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2025 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in the following features when running in sequential:
 # - features/secondary/min_config_state_channel_subscriptions.feature

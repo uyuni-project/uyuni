@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @opensuse160arm_sshminion
 Feature: Migrate an OpenSUSE Leap 16.0 aarch64 Salt SSH minion to SLE 16.0

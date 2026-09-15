@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # Verifies that MLM supports replacing the self-signed CA with an externally
 # provided one on both the server and proxy RKE2 clusters.

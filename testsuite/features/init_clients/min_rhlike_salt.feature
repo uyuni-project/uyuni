@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 #  1) bootstrap a new Red Hat-like minion via salt
 #  2) subscribe it to a base channel for testing

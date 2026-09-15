@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
