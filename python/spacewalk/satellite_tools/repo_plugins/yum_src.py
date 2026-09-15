@@ -95,24 +95,18 @@ REPOSYNC_EXTRA_HTTP_HEADERS_CONF = "/etc/rhn/spacewalk-repo-sync/extra_headers.c
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r"^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)")
 
-# Post-Quantum Cryptography (PQC) signature of the repository master index and the
-# Zypper sigcheck plugin that is able to verify it
+# Post-Quantum Cryptography signature of the repository metadata
 PQC_SIGNATURE_PATH = "repodata/repomd.xml.p7s"
+# Plugin name and path to verify the PQC repository signature
 PQC_SIGCHECK_PLUGIN = "pqcverification"
 PQC_SIGCHECK_PLUGIN_PATH = os.path.join(
     "/usr/lib/zypp/plugins/sigcheck", PQC_SIGCHECK_PLUGIN
 )
-# Directory the sigcheck plugin reads its trusted X.509 certificates from. The path is
-# hardcoded in the plugin, so the certificates of the channel are copied into it for the
-# time of the verification (see ContentSource._install_pqc_certificates)
+# The path the PQC sigcheck plugin reads keys from is hardcoded
 PQC_KEYRING_PATH = "/usr/lib/rpm/pqkeys"
-# Certificates Uyuni holds, either common to every channel (top level) or specific to a
-# single channel (in a directory named after the channel label)
 SPACEWALK_PQC_KEYS_PATH = os.path.join(SPACEWALK_LIB, "pqkeys")
 PQC_CERTIFICATE_GLOBS = ("*.pem", "*.crt")
-# Prefix of the certificates temporarily copied into the keyring directory of the plugin.
-# It carries the process identifier so that channels being synchronized at the same time
-# do not remove each other's certificates
+# Prefix of the certificates temporarily copied into the PQC keys path
 PQC_TEMPORARY_CERTIFICATE_PREFIX = "reposync-"
 
 # possible urlgrabber errno
@@ -966,7 +960,7 @@ type=rpm-md
             )
             
         # Zypper is not able to run a sigcheck plugin chrooted into the reposync root,
-        # so the PQC signature of the metadata, if any, is verified upfront by a Zypper
+        # so the PQC signature of the metadata is verified by a Zypper
         # run that is not chrooted and only refreshes the metadata.
         if self._has_pqc_signature():
             self._verify_pqc_signature(
@@ -974,36 +968,18 @@ type=rpm-md
                     reponame=self.channel_label or self.reponame,
                     repo_url=_repo_url,
                     url=_url,
-                    # The GPG signature is checked by the chrooted run below, against
-                    # the keys imported into the reposync RPM database
                     gpgcheck="0",
                     # pylint: disable-next=consider-using-f-string
                     sigcheck="repo_sigcheck_plugin={}\n".format(PQC_SIGCHECK_PLUGIN),
                 )
             )
             
-        zypper_cmd = "zypper"
-        if not self.interactive:
-            # pylint: disable-next=consider-using-f-string
-            zypper_cmd = "{} -n".format(zypper_cmd)
-        # pylint: disable-next=consider-using-f-string
-        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
-            zypper_cmd,
-            REPOSYNC_ZYPPER_ROOT,
-            os.path.join(repo.root, "etc/zypp/repos.d/"),
-            REPOSYNC_ZYPPER_RPMDB_PATH,
-            os.path.join(repo.root, "var/cache/zypp/raw/"),
-            os.path.join(repo.root, "var/cache/zypp/solv/"),
-        )
-        # libzypp older Curl backend does not set Proxy-Authorization reliably.
-        # The new Curl2 backend does not have the same problem.
-        # See https://bugzilla.suse.com/show_bug.cgi?id=1245222 and
-        # https://bugzilla.suse.com/show_bug.cgi?id=1245221
-        zypper_env = os.environ.copy()
-        zypper_env["ZYPP_CURL2"] = "1"
-        # pylint: disable-next=subprocess-run-check
-        process = subprocess.run(
-            zypper_cmd.split(" "), stderr=subprocess.PIPE, env=zypper_env
+        process = self._run_zypper_ref(
+            reposd_dir=os.path.join(repo.root, "etc/zypp/repos.d/"),
+            cache_dir=REPOSYNC_ZYPPER_RPMDB_PATH,
+            raw_cache_dir=os.path.join(repo.root, "var/cache/zypp/raw/"),
+            solv_cache_dir=os.path.join(repo.root, "var/cache/zypp/solv/"),
+            root=REPOSYNC_ZYPPER_ROOT,
         )
  
         if process.returncode:
@@ -1018,6 +994,50 @@ type=rpm-md
 
         repo.is_configured = True
 
+    def _run_zypper_ref(
+        self,
+        reposd_dir,
+        cache_dir,
+        raw_cache_dir,
+        solv_cache_dir,
+        root=None,
+    ):
+        """
+        Construct and execute a Zypper 'ref' command with the specified paths.
+
+        :param reposd_dir: path to the Zypper repos.d directory
+        :param cache_dir: path to the Zypper cache directory
+        :param raw_cache_dir: path to the Zypper raw-cache directory
+        :param solv_cache_dir: path to the Zypper solv-cache directory
+        :param root: optional chroot directory to run under (for '--root')
+        :returns: subprocess.CompletedProcess
+        """
+        zypper_cmd = ["zypper"]
+        if not self.interactive:
+            zypper_cmd.append("-n")
+
+        if root is not None:
+            zypper_cmd += ["--root", root]
+
+        zypper_cmd += [
+            "--reposd-dir", reposd_dir,
+            "--cache-dir", cache_dir,
+            "--raw-cache-dir", raw_cache_dir,
+            "--solv-cache-dir", solv_cache_dir,
+            "ref",
+        ]
+
+        log(2, " ".join([sh_quote(x) for x in zypper_cmd]))
+
+        # libzypp older Curl backend does not set Proxy-Authorization reliably.
+        # The new Curl2 backend does not have the same problem.
+        # See https://bugzilla.suse.com/show_bug.cgi?id=1245222 and
+        # https://bugzilla.suse.com/show_bug.cgi?id=1245221
+        zypper_env = os.environ.copy()
+        zypper_env["ZYPP_CURL2"] = "1"
+
+        # pylint: disable-next=subprocess-run-check
+        return subprocess.run(zypper_cmd, stderr=subprocess.PIPE, env=zypper_env)
 
     def _has_pqc_signature(self):
         """
@@ -1073,27 +1093,13 @@ type=rpm-md
             ) as repo_conf_file:
                 repo_conf_file.write(repo_config)
 
-            zypper_cmd = ["zypper"]
-            if not self.interactive:
-                zypper_cmd.append("-n")
-            zypper_cmd += [
-                "--reposd-dir",
-                reposd_dir,
-                "--cache-dir",
-                os.path.join(tmp_dir, "cache"),
-                "--raw-cache-dir",
-                os.path.join(tmp_dir, "raw"),
-                "--solv-cache-dir",
-                os.path.join(tmp_dir, "solv"),
-                "ref",
-            ]
             certificates = self._install_pqc_certificates()
             try:
-                zypper_env = os.environ.copy()
-                zypper_env["ZYPP_CURL2"] = "1"
-                # pylint: disable-next=subprocess-run-check 
-                process = subprocess.run(
-                    zypper_cmd, stderr=subprocess.PIPE, env=zypper_env
+                process = self._run_zypper_ref(
+                    reposd_dir=reposd_dir,
+                    cache_dir=os.path.join(tmp_dir, "cache"),
+                    raw_cache_dir=os.path.join(tmp_dir, "raw"),
+                    solv_cache_dir=os.path.join(tmp_dir, "solv"),
                 )
             finally:
                 self._remove_pqc_certificates(certificates)
@@ -1142,8 +1148,8 @@ type=rpm-md
 
     def _install_pqc_certificates(self):
         """
-        Copy the certificates Uyuni holds for this channel into the keyring directory
-        the sigcheck plugin reads, so that the plugin trusts them.
+        Copy the certificates Uyuni holds for this channel into the PQCkeys
+        directory the sigcheck plugin reads
 
         :returns: list of the paths written, to be removed after the verification
         :raises RepoMDError: if the certificates cannot be copied
@@ -1204,7 +1210,7 @@ type=rpm-md
     @staticmethod
     def _remove_pqc_certificates(certificates):
         """
-        Remove the certificates copied into the keyring directory of the sigcheck plugin
+        Remove the certificates copied into the PQC keys directory
         """
         for certificate in certificates:
             try:
