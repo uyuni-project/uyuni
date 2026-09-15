@@ -32,7 +32,7 @@ Feature: Setup containerized proxy2 on peripheral1
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "1-proxy2_key" from "activationKeys"
+    And I select "1-proxy_key" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
