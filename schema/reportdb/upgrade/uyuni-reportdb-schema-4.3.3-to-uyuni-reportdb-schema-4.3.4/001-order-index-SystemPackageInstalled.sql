@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 CREATE INDEX IF NOT EXISTS systempackageinstalled_order_idx
   on SystemPackageInstalled (mgm_id, system_id, name, epoch, version, release, arch, type);
