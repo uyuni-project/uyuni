@@ -730,6 +730,25 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Checks if this server is a transactional system (SLE Micro, Leap Micro, openSUSE MicroOS).
+     * Transactional systems have the 'transactional' grain set to true.
+     * @param ctx the acl context
+     * @param params the parameters for the acl (unused)
+     * @return true if the server is a transactional minion with Btrfs snapshots
+     */
+    public boolean aclSystemIsTransactional(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return server.doesOsSupportsTransactionalUpdate();
+    }
+
+    /**
      * Checks if this server is a hub
      * @param ctx the acl context
      * @param params the parameters for the acl
