@@ -1229,7 +1229,6 @@ class UyuniActivationKeys:
             t for t in new_packages_normalized if t not in current_packages_normalized
         ]
         if add_packages:
-            pass
             __salt__["uyuni.activation_key_add_packages"](
                 key,
                 UyuniActivationKeys._format_packages_data(add_packages),
@@ -1241,7 +1240,6 @@ class UyuniActivationKeys:
             t for t in current_packages_normalized if t not in new_packages_normalized
         ]
         if remove_packages:
-            pass
             __salt__["uyuni.activation_key_remove_packages"](
                 key,
                 UyuniActivationKeys._format_packages_data(remove_packages),

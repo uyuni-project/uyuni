@@ -93,13 +93,13 @@ class ByteRangeTests(unittest.TestCase):
         # pylint: disable-next=undefined-variable
         start, end = server.byterange.parse_byteranges("bytes=12-")
         self.assertEqual(12, start)
-        self.assertEqual(None, end)
+        self.assertIsNone(end)
 
     def testSuffixRange(self):
         # pylint: disable-next=undefined-variable
         start, end = server.byterange.parse_byteranges("bytes=-30")
         self.assertEqual(-30, start)
-        self.assertEqual(None, end)
+        self.assertIsNone(end)
 
     def testMultipleRanges(self):
         try:

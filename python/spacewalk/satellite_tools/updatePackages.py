@@ -75,7 +75,7 @@ def main():
     global debug, verbose
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    options, args = parser.parse_args()
 
     if args:
         for arg in args:
@@ -294,7 +294,6 @@ def process_package_data():
             # pylint: disable-next=consider-using-f-string
             (" There were %s packages found in the correct location" % len(new_ok_list))
         )
-    return
 
 
 def process_kickstart_trees():
@@ -679,7 +678,7 @@ def process_package_files():
 
                 caps = pkg_caps[f["name"]]
 
-                if not caps["checksum"] == f["checksum"]:
+                if caps["checksum"] != f["checksum"]:
                     # Package file exists, but its checksum in the DB is incorrect
                     update_packagefile_checksum_h.execute(
                         ctype=f["checksum_type"],

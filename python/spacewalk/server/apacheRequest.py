@@ -488,7 +488,7 @@ class apachePOST(apacheRequest):
         # Execute the right function (from xml-rpc request) in the right class.
         # NOTE: All functions should do their own logging
         log_debug(3, self.server, method)
-        if method[-8:] == ".__str__":
+        if method.endswith(".__str__"):
             # Ignore these, they are just some code trying to stringify an
             # XML-RPC function
             log_error("Ignoring call for method", method)
