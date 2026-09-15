@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- Grant again the privileges on the given views which were stored with
 -- backup_view_acls(), and remove them from the backup. The backup table is
