@@ -20,7 +20,7 @@ Feature: Setup containerized proxy3 on peripheral2
 
 @transactional_proxy3
   Scenario: Reboot after clean up
-    When I reboot the "proxy3" host through SSH, waiting until it comes back
+    When I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section on "peripheral2"
