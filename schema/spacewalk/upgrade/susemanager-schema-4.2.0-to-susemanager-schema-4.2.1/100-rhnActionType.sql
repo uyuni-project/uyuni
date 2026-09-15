@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 alter table rhnActionType drop CONSTRAINT if exists rhn_action_type_mtmode_ck;
 alter table rhnActionType add column if not exists
