@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { memo, useCallback, useEffect, useState } from "react";
 
 import debounce from "lodash/debounce";

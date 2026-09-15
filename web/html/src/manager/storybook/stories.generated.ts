@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.

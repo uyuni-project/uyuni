@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { ProjectHistoryEntry } from "../../../type";
 
 export function getVersionMessage(historyEntry: ProjectHistoryEntry): string {

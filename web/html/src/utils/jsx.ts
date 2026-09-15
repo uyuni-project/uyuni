@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /**
  * Flatten `input` into a valid `className` string for JSX after removing falsy values.
  * Useful when you have numerous conditional classes.

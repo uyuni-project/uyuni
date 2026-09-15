@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 const DefaultJsError = () => (
   <div className="container-fluid">
     <h1>Something wrong happened.</h1>

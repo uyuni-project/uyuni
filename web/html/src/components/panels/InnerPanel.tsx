@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type ReactNode, Children } from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";

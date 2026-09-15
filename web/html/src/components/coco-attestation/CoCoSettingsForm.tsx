@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { useEffect, useRef, useState } from "react";
 
 import { AsyncButton, Button, LinkButton } from "components/buttons";

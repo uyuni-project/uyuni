@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type InputHTMLAttributes, type KeyboardEvent, Component } from "react";
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;

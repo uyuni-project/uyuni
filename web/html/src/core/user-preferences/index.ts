@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 export const pageSize: number = window.userPrefPageSize || 15;
 export const docsLocale: string = window.docsLocale || "en";
 export const preferredLocale: string = window.preferredLocale || "en_US";

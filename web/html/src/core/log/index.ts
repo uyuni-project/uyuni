@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 // This import is renamed to avoid a conflict with the global name
 import LoggerheadInstance from "./loggerhead";
 

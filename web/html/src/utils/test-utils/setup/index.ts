@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /**
  * Test env setup
  * For global variables such as time zones see web/html/src/jest.config.js

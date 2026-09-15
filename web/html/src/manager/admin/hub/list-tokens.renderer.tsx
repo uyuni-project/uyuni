@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { TokenList } from "manager/admin/hub/list-tokens";
 
 import { RolesProvider } from "core/auth/roles-context";

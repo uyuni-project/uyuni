@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 import { click, render, screen, within } from "utils/test-utils";

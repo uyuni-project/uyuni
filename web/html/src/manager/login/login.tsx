@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { isUyuni } from "core/user-preferences";
 
 import withPageWrapper from "components/general/with-page-wrapper";

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { DEPRECATED_Select, Form, Text } from "components/input";
 
 import { ProjectEnvironmentType } from "../../../type";

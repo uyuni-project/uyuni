@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { useState } from "react";
 
 import { BaseChannelType, ChannelTreeType, ChannelType } from "core/channels/type/channels.type";

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type FC, type ReactNode, useState } from "react";
 
 import { SubmitButton } from "components/buttons";

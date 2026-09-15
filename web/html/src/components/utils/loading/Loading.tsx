@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 type LoadingProps = {
   /** Text to be displayed with the loading spinner */
   text?: string;

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { PagedData } from "./index";
 import PageControl from "./page-control";
 import PagedDataEndpoint from "./paged-data-endpoint";

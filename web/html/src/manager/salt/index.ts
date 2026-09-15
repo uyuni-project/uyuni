@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 export default {
   "salt/cmd/remote-commands": () => import("./cmd/remote-commands"),
   "salt/formula-catalog/org-formula-catalog": () => import("./formula-catalog/org-formula-catalog.renderer"),

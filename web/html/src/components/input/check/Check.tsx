@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import styles from "./Check.module.scss";
 import { type CheckInputProps, CheckInput } from "./CheckInput";
 

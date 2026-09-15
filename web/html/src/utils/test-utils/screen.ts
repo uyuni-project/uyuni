@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { getDefaultNormalizer, queryHelpers, Screen, screen as rawScreen } from "@testing-library/react";
 
 // Utility type, if a function TargetFunction returns a Promise, return an intersection with Promise<T>, otherwise with T

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type ReactNode, useEffect, useRef } from "react";
 
 import { Button, DropdownButton } from "components/buttons";

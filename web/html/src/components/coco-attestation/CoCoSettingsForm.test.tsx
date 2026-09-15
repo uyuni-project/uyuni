@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { click, render, screen, selectOptions, type, upload, waitFor } from "utils/test-utils";
 
 import { CoCoSettingsForm } from "./CoCoSettingsForm";

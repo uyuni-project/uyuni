@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import HighstateSummary from "manager/state/highstate-summary";
 
 import { click, render, screen, server, waitForElementToBeRemoved, within } from "utils/test-utils";

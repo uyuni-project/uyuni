@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type ReactNode, type RefObject, Component, createRef } from "react";
 
 import { pageSize } from "core/user-preferences";

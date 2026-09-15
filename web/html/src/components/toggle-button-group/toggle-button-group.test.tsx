@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { fireEvent, render } from "@testing-library/react";
 
 import { ToggleButtonGroup, ToggleButtonOption } from "./toggle-button-group";

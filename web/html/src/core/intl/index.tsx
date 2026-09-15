@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { createIntl, createIntlCache } from "@formatjs/intl";
 
 import Gettext from "core/intl/node-gettext";

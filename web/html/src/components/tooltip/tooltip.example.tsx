@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";

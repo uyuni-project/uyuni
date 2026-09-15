@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { LinkButton } from "components/buttons";
 
 const ToolTip = (props) => <span title={props.title}>{props.content}</span>;

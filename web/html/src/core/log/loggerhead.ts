@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /* eslint-disable no-console */
 // This file is allowed to use console, everyone else is not
 

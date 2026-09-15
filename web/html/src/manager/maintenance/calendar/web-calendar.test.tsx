@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 // TODO: This should eventually be localizedMoment instead
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment";

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { queryHelpers, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as selectEvent from "react-select-event";

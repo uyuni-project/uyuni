@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 export default {
   "groups/formula/group-formula": () => import("./formula/group-formula.renderer"),
   "groups/formula/group-formula-selection": () => import("./formula/group-formula-selection.renderer"),

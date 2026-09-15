@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /** Usually options have the shape `{ value: string; label: string }`, but the consumer can define any shape */
 export type OptionType = { value: string; label: string } | Record<string, unknown>;
 

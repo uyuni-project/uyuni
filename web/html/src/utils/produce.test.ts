@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /**
  * This suite tests measurable functionality of the `immer` dependency to ensure we don't break things when upgrading from 3.1.1 to 8.0.1
  */

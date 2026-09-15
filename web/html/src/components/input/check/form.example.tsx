@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { SubmitButton } from "components/buttons";
 import { Field, Form, OnSubmit } from "components/formik";
 

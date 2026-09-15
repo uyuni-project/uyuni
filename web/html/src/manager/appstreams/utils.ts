@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { AppStreamModule, Channel, ChannelAppStream } from "./appstreams.type";
 
 export const getStreamName = (module: AppStreamModule) => `${module.name}:${module.stream}`;

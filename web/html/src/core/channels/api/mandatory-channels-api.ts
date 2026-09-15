@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import useMandatoryChannelsApi, { UseMandatoryChannelsApiReturnType } from "./use-mandatory-channels-api";
 
 type Props = {

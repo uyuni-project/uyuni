@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type ChangeEvent, Component } from "react";
 
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";

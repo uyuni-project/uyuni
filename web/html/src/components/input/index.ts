@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 export * from "./check/Check";
 export * from "./check/CheckInput";
 export * from "./check/DEPRECATED_Check";

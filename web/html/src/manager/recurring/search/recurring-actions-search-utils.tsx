@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { FilterOptionType } from "components/table/TableFilter";
 
 // Value options for filtering by Target Type in recurring actions list

@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 /* eslint-disable local-rules/no-raw-date */
 import moment from "moment-timezone";
 

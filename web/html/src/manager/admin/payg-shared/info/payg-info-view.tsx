@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { PaygFullType } from "manager/admin/payg/payg";
 import PaygStatus from "manager/admin/payg-shared/common/payg-status";
 

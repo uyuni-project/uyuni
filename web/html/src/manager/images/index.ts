@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 export default {
   "images/image-build": () => import("./image-build"),
   "images/image-import": () => import("./image-import"),

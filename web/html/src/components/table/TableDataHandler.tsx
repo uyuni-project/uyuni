@@ -1,3 +1,7 @@
+/*
+  SPDX-License-Identifier: GPL-2.0-Only
+  SPDX-FileCopyrightText: 2026 SUSE LLC
+*/
 import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component, createRef } from "react";
 
 import _isEqual from "lodash/isEqual";
