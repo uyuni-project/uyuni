@@ -1641,7 +1641,6 @@ class TestSCGroup:
             ],
         )
 
-
     # pylint: disable-next=redefined-outer-name
     def test_completer_group_addconfigchannels(self, shell):
         """
