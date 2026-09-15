@@ -36,6 +36,10 @@ Feature: Setup containerized proxy3 on peripheral2
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
+  Scenario: Wait until the proxy3 host is visible on peripheral2
+    When I follow the left menu "Systems > System List > All"
+    And I wait at most 600 seconds until I see the name of "proxy3", refreshing the page
+
 @transactional_proxy3
   Scenario: Reboot the proxy3 host
     When I reboot the "proxy3" minion through the web UI on peripheral2
