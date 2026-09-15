@@ -501,7 +501,7 @@ sub stage_migration_files {
 
 sub has_next_migrations {
     return 0 unless -d $NEXT_UPGRADE_DIR;
-    return scalar(match_overrides("$NEXT_UPGRADE_DIR/*.ref", "$NEXT_UPGRADE_DIR/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}") || 0) > 0;
+    return scalar(() = match_overrides("$NEXT_UPGRADE_DIR/*.ref", "$NEXT_UPGRADE_DIR/*.{sql,ref}.$options{$db_specific->BACKEND_PROPERTY}")) > 0;
 }
 
 sub finish_migration {
