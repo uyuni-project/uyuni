@@ -12,7 +12,51 @@ type ProxyType = {
   id: number;
   name: string;
   path: string[];
+  primaryFqdn?: string;
+  additionalFqdns?: string[];
 };
+
+export type ProxySelection = { proxyId: number; proxyFqdn?: string };
+
+/**
+ * A proxy selection is encoded in a single <option> value as "<id>:<fqdn>" so that a proxy with
+ * several FQDNs can be offered as distinct choices. This parses that value back into its parts.
+ */
+export function parseProxySelection(value?: string): ProxySelection {
+  if (!value || value === "0") {
+    return { proxyId: 0 };
+  }
+  const sep = value.indexOf(":");
+  if (sep < 0) {
+    return { proxyId: parseInt(value, 10) };
+  }
+  return { proxyId: parseInt(value.slice(0, sep), 10), proxyFqdn: value.slice(sep + 1) };
+}
+
+export function ProxyOptions({ proxies }: { proxies: ProxyType[] }) {
+  const arrow = " \u2192 ";
+  const optionsList: JSX.Element[] = [];
+  proxies.forEach((p) => {
+    const primary = p.primaryFqdn || p.name;
+    const primaryValue = `${p.id}:${primary}`;
+    optionsList.push(
+      <option key={primaryValue} value={primaryValue}>
+        {[primary].concat(p.path).join(arrow)}
+      </option>
+    );
+    if (p.additionalFqdns && p.additionalFqdns.length > 0) {
+      p.additionalFqdns.forEach((add) => {
+        const addValue = `${p.id}:${add}`;
+        optionsList.push(
+          <option key={addValue} value={addValue}>
+            {"\u00A0\u00A0\u00A0\u00A0" + [add].concat(p.path).join(arrow)}
+          </option>
+        );
+      });
+    }
+  });
+  return <>{optionsList}</>;
+}
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/proxy.jade
 declare global {
@@ -30,7 +74,7 @@ type Props = {
 
 type State = {
   messages: MessageType[];
-  proxy: number;
+  proxy: string;
 };
 
 class Proxy extends Component<Props, State> {
@@ -43,9 +87,16 @@ class Proxy extends Component<Props, State> {
           <span>{t("Please select a list of minions (not proxies or traditional clients).")}</span>
         );
 
+    let initialProxy = "0";
+    if (props.currentProxy) {
+      const p = props.proxies.find((px) => px.id === props.currentProxy);
+      const primary = p ? p.primaryFqdn || p.name : "";
+      initialProxy = p ? `${props.currentProxy}:${primary}` : String(props.currentProxy);
+    }
+
     this.state = {
       messages: msg,
-      proxy: props.currentProxy || 0,
+      proxy: initialProxy,
     };
   }
 
@@ -56,8 +107,11 @@ class Proxy extends Component<Props, State> {
   };
 
   onSet = () => {
+    const { proxyId, proxyFqdn } = parseProxySelection(this.state.proxy);
+
     const request = Network.post("/rhn/manager/api/systems/proxy", {
-      proxy: this.state.proxy ? this.state.proxy : 0,
+      proxy: proxyId,
+      proxyFqdn: proxyFqdn || undefined,
       ids: window.minions?.map((m) => m.id),
     })
       .then((data) => {
@@ -104,13 +158,6 @@ class Proxy extends Component<Props, State> {
       />,
     ];
 
-    const arrow = " \u2192 ";
-    const proxies = this.props.proxies.map((p) => (
-      <option key={p.id} value={p.id}>
-        {[p.name].concat(p.path).join(arrow)}
-      </option>
-    ));
-
     return (
       <div>
         {messages}
@@ -123,7 +170,7 @@ class Proxy extends Component<Props, State> {
                   <option key="none" value="0">
                     {t("None")}
                   </option>
-                  {proxies}
+                  <ProxyOptions proxies={this.props.proxies} />
                 </select>
               </div>
             </div>
