@@ -38,6 +38,9 @@ class RemoteNode
 
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
+    elsif %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
+      @has_mgrctl = ssh('which mgrctl', host: @target).last.zero?
+      @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
 
     if @host == 'server' && !@has_kubectl && !uyuni_not_installed
