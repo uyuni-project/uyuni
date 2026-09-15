@@ -132,9 +132,6 @@ public class PasswordPolicyController {
      * @return an OK string or Validation Errors
      */
     public String getPasswordPolicy(Request request, Response response, User user) {
-        if (!user.hasRole(SAT_ADMIN)) {
-            throw new PermissionException(SAT_ADMIN);
-        }
         try {
             PasswordPolicy passwordPolicyProperties = PasswordPolicy.buildFromFactory();
             return json(GSON, response, ResultJson.success(
