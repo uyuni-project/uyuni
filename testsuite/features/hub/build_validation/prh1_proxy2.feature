@@ -48,7 +48,7 @@ Feature: Setup containerized proxy2 on peripheral1
 
 @transactional_proxy2
   Scenario: Reboot after mgrpxy upgrade
-    When I reboot the "proxy2" minion through the web UI
+    When I reboot the "proxy2" minion through the web UI on peripheral1
 
   Scenario: Generate containerized proxy2 configuration
     When I generate the configuration "/tmp/proxy2_container_config.tar.gz" of containerized proxy2 on the peripheral1
