@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test hub API deployment
 templates:
   - hub.yaml

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- $config := .Values.global.config | fromYaml }}
 apiVersion: v1
 kind: ConfigMap

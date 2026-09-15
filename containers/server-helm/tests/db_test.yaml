@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test database deployment
 templates:
   - db.yaml

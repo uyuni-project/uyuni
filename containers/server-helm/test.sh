@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 #!/bin/sh
 
 HELM_UNITTEST=helm-unittest

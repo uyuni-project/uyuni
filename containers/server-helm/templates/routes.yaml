@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if .Values.gateway.enable }}
 {{- $fqdn := required "global.fqdn is needed!" .Values.global.fqdn -}}
 {{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}

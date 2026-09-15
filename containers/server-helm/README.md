@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 # server-helm
 
 This chart installs [Uyuni server](https://uyuni-project.org).

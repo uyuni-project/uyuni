@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 Squid server for use within the Uyuni proxy.
 
 This image cannot be used independently.

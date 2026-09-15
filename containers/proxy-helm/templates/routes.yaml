@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if .Values.gateway.enable }}
 {{- $config := .Values.global.config | fromYaml }}
 {{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}

@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 # kubectl mlm-supportconfig
 
 A `kubectl` plugin that collects a complete support bundle for SUSE

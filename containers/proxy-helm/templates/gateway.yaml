@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if and .Values.gateway.enable (eq .Values.gateway.name "") }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway

@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 Salt prometheus exporter image.
 
 This image is meant to be used with Uyuni server but may work with another Salt master.

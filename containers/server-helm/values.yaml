@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 # yaml-language-server: $schema=values.schema.json
 # @schema
 # $schema: "https://json-schema.org/draft-07/schema#"

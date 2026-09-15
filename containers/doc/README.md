@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 # Prerequisites
 
 The following assumes you have either a single-node RKE2 or K3s cluster ready or a server with Podman installed and enough resources for the Uyuni server.

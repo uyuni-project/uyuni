@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test TFTP deployment
 templates:
   - templates/tftp.yaml

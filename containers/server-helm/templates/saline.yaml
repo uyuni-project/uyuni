@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if default .Values.saline.enable false }}
 apiVersion: apps/v1
 kind: Deployment

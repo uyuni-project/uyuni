@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test server security options
 templates:
   - server.yaml

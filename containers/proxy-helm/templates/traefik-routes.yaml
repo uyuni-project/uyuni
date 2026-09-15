@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
   {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
 apiVersion: traefik.io/v1alpha1

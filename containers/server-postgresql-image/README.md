@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 Postgresql server image for Uyuni.
 This image adds init scripts that are specific to Uyuni.
 

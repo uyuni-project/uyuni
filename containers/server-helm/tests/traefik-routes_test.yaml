@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test ingress providers
 templates:
   - traefik-routes.yaml

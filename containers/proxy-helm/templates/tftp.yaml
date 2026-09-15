@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 apiVersion: apps/v1
 kind: Deployment
 metadata:

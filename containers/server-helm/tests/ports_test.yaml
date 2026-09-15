@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test monitoring and debug ports
 templates:
   - server.yaml

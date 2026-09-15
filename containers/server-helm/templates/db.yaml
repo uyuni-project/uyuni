@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 {{- if .Values.db.enable }}
 apiVersion: apps/v1
 kind: Deployment

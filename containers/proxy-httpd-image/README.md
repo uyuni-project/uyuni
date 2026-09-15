@@ -1,3 +1,7 @@
+<!--
+ SPDX-License-Identifier: MIT
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+-->
 Apache server with python code to proxy an Uyuni server.
 
 This image cannot be used independently.

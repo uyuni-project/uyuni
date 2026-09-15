@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test persistent volume claims
 templates:
   - pvcs.yaml

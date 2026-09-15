@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 suite: test pod dnsConfig passthrough
 templates:
   - templates/deployment.yaml
