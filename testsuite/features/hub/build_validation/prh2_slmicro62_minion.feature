@@ -9,6 +9,7 @@ Feature: Bootstrap a SL Micro 6.2 Salt minion on peripheral2
 
   Scenario: Clean up sumaform leftovers on a SL Micro 6.2 Salt minion
     When I perform a full salt minion cleanup on "slmicro62_minion"
+    And I reboot the "slmicro62_minion" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section on "peripheral2"
@@ -24,12 +25,26 @@ Feature: Bootstrap a SL Micro 6.2 Salt minion on peripheral2
     And I select the hostname of "proxy3" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
-    And I wait until onboarding is completed for "slmicro62_minion"
+
+  Scenario: Reboot the SL Micro 6.2 minion through SSH
+    When I reboot the "slmicro62_minion" host through SSH, waiting until it comes back
+    Then service "venv-salt-minion" is active on "slmicro62_minion"
 
   Scenario: Check the new bootstrapped SL Micro 6.2 minion in System Overview page
-    When I follow the left menu "Salt > Keys"
+    When I wait until onboarding is completed for "slmicro62_minion"
+    And I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
     And the Salt master can reach "slmicro62_minion" on peripheral2
+
+  Scenario: Reboot the SL Micro 6.2 minion and wait until reboot is completed
+    Given I am on the Systems overview page of this "slmicro62_minion" on peripheral2
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    When I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
+    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    Then I should see a "Reboot completed." text
 
 @proxy3
   Scenario: Check connection from SL Micro 6.2 minion to proxy
