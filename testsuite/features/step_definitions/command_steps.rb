@@ -155,7 +155,7 @@ Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/
 end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
-  channels_cmd = 'spacewalk-remove-channel '
+  channels_cmd = 'spacewalk-remove-channel --username admin --password admin'
   table.raw.each { |x| channels_cmd = "#{channels_cmd} -c #{x[0]}" }
   $command_output, _return_code = get_target('server').run(channels_cmd, check_errors: false)
 end
