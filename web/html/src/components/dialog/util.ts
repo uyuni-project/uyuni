@@ -1,8 +1,23 @@
+function getBootstrapModal(dialogId: string): JQuery | null {
+  const element = document.getElementById(dialogId);
+
+  if (!element?.classList.contains("modal")) {
+    return null;
+  }
+
+  return jQuery(element);
+}
+
 export function showDialog(dialogId: string) {
   // The base event is "hide.bs.modal", we only want to remove the listener we added so we add a namespace, see https://api.jquery.com/event.namespace/
   const namespacedEventName = "hide.bs.modal.namespace-dialog-util";
+  const bootstrapModal = getBootstrapModal(dialogId);
 
-  const dialog = jQuery("#" + dialogId)
+  if (!bootstrapModal) {
+    return;
+  }
+
+  const dialog = bootstrapModal
     .modal("show")
     // Here and below, these manual handlers offer compatibility between Bootstrap 3 and 5, we can drop these after the migration is complete
     .addClass("show")
@@ -19,5 +34,5 @@ export function showDialog(dialogId: string) {
 }
 
 export function hideDialog(dialogId: string) {
-  jQuery("#" + dialogId).modal("hide");
+  getBootstrapModal(dialogId)?.modal("hide");
 }

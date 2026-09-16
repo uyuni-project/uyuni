@@ -1,4 +1,4 @@
-import { type ReactNode, Component } from "react";
+import { type ReactNode, Component, isValidElement } from "react";
 export type Severity = "info" | "success" | "warning" | "error";
 
 export type ServerMessageType = {
@@ -134,8 +134,8 @@ function msg(severityIn: Severity, textIn: ReactNode, listMultiple: boolean, hea
             <>
               {header && <p>{header}</p>}
               <ul>
-                {textIn.map((msg) => (
-                  <li key={msg}>{msg}</li>
+                {textIn.map((msg, index) => (
+                  <li key={isValidElement(msg) && msg.key !== null ? msg.key : index}>{msg}</li>
                 ))}
               </ul>
             </>
