@@ -1255,7 +1255,7 @@ When(/^I generate hub-signed SSL certificates for "([^"]*)" on "([^"]*)"$/) do |
     log "Hub-signed certificate for #{fqdn} already present on #{hub}, skipping generation"
   else
     hub_node.run(
-      "rhn-ssl-tool --gen-server --dir=#{HUB_SSL_BUILD_DIR} --set-hostname=#{fqdn} " \
+      "flock #{HUB_SSL_BUILD_DIR}/.gen-lock rhn-ssl-tool --gen-server --dir=#{HUB_SSL_BUILD_DIR} --set-hostname=#{fqdn} " \
       '--set-cname=reportdb --set-cname=db --password=spacewalk'
     )
   end

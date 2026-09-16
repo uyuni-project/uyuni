@@ -136,6 +136,18 @@ end
 # register the Playwright driver
 $capybara_driver = capybara_register_driver
 Capybara.default_driver = :playwright
+
+# When the watchdog kills the Playwright Node process, the gem's own teardown calls browser.close
+# through the dead connection, which crashes with NoMethodError (nil.value!). Silence it: there is
+# nothing left to close and the run should continue to the next scenario.
+module PlaywrightQuitGuard
+  def quit
+    super
+  rescue NoMethodError
+    nil
+  end
+end
+Capybara::Playwright::Driver.prepend(PlaywrightQuitGuard)
 Capybara.javascript_driver = :playwright
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
@@ -335,6 +347,8 @@ AfterStep do
   # has_no_css? returns immediately when the spinner is absent (the common case) and otherwise polls
   # until it disappears, so this both replaces the old wait: 0 gate and adds ~no per-step overhead.
   log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+rescue NoMethodError
+  # Playwright connection gone (browser crashed or closed mid-scenario)
 end
 
 Before do
