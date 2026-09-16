@@ -21,11 +21,12 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   begin
     Timeout.timeout(timeout) do # Enforce timeout on the entire SSH operation
       Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
-        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: DEFAULT_TIMEOUT)
+        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: timeout)
       end
     end
   rescue Timeout::Error
-    puts "SSH operation timed out after #{timeout} seconds."
+    stderr = "SSH operation timed out after #{timeout} seconds."
+    puts stderr
   rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET
     puts "Unable to reach the SSH server at #{host}:#{port}"
   rescue Net::SSH::AuthenticationFailed
