@@ -3,7 +3,7 @@
 
 ### This file contains all steps concerning diskcheck and the following actions required
 
-When(/^I (:?un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
+When(/^I (un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
   error_msg = ""
   code = -1
   node = get_target(host)
@@ -15,10 +15,10 @@ When(/^I (:?un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
     error_msg = "return code: #{code};  stdout: #{res_out};  stderr: #{res_err}"
   # deployment
   else
-    for script_file in script_files
+    script_files.each do |script_file|
       src = "#{File.dirname(__FILE__)}/../upload_files/#{script_file}"
       dst = "/root/#{script_file}"
-      success = get_target(host).scp_upload(src, dst)
+      success = node.scp_upload(src, dst)
       if ! success
         error_msg = "File \"#{src}\" upload failed."
         break
@@ -28,7 +28,7 @@ When(/^I (:?un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
     code = 0
   end
 
-  raise ScriptError, "#{error_msg}" unless code.zero?
+  raise ScriptError, error_msg unless code.zero?
 end
 
 When(/^I change the disk space check schedule to (run every minute|defaults)$/) do |settings|
@@ -49,18 +49,16 @@ When(/^I wait for the diskcheck alert notification$/) do
   step 'I wait for "62" seconds'
 end
 
-When(/^I fill disk space in "([^"]*)" up to "([0-9]+\%)" on "([^"]*)"$/) do |directory, percentage, host|
+When(/^I fill disk space in "([^"]*)" up to "([0-9]+)%" on "([^"]*)"$/) do |directory, percentage, host|
   node = get_target(host)
   script = '/root/diskcheck_space_mgmt.sh'
-  percentage.gsub!('%', '')
   result, code = node.run("bash #{script} -p #{percentage} -d #{directory}", check_errors: false, runs_in_container: false, timeout: 600)
 
   raise ScriptError, "Server space filled: #{result}" unless code.zero?
 end
 
-When(/^I create a "([0-9]+MB)" disk image in "([^"]*)" and mount it to "([^"]*)" on "([^"]*)"$/) do |disk_size, directory, mountpoint, host|
+When(/^I create a "([0-9]+)MB" disk image in "([^"]*)" and mount it to "([^"]*)" on "([^"]*)"$/) do |disk_size, directory, mountpoint, host|
   node = get_target(host)
-  disk_size.gsub!('MB', '')
   script = '/root/diskcheck_custom_mount.sh'
   result, code = node.run("bash #{script} -s #{disk_size} -d #{directory} -m #{mountpoint} up", check_errors: false, runs_in_container: false, timeout: 600)
 
@@ -75,11 +73,9 @@ When(/^I unmount "([^"]*)" and remove the disk image in "([^"]*)" on "([^"]*)"$/
   raise ScriptError, "Disk image removal failed: #{result}" unless code.zero?
 end
 
-When(/^I configure the uyuni server to watch the "([^"]*)" directory with alert set to "([0-9]+\%)" and threshold set to "([0-9]+\%)"$/) do |directory, alert, threshold|
+When(/^I configure the uyuni server to watch the "([^"]*)" directory with alert set to "([0-9]+)%" and threshold set to "([0-9]+)%"$/) do |directory, alert, threshold|
   node = get_target('server')
   script = '/root/diskcheck_uyuni_service_mgmt.sh'
-  alert.gsub!('%', '')
-  threshold.gsub!('%', '')
   result, code = node.run("bash #{script} -d #{directory} -a #{alert} -t #{threshold} up", runs_in_container: false, check_errors: false)
 
   raise ScriptError, "Server diskcheck custom directory setup failed: #{result}" unless code.zero?
@@ -93,7 +89,7 @@ When(/^I configure the uyuni server to watch the "([^"]*)" directory set in the 
   raise ScriptError, "Server diskcheck custom directory setup via rhn.conf failed: #{result}" unless code.zero?
 end
 
-When(/^I configure the uyuni server to watch the default directories(:?, cleaning the rhn config file)?$/) do |rhn_setup|
+When(/^I configure the uyuni server to watch the default directories(, cleaning the rhn config file)?$/) do |rhn_setup|
   node = get_target('server')
   script = '/root/diskcheck_uyuni_service_mgmt.sh'
   if rhn_setup

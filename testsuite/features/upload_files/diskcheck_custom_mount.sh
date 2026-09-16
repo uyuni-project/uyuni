@@ -7,10 +7,6 @@ DSKCHK_IMAGE_DIR=/root
 DSKCHK_IMAGE_FILE=diskcheck_disk.img
 DSKCHK_IMAGE_SIZE=4000
 DSKCHK_MOUNT=/root/mnt-diskcheck
-DSKCHK_SELINUX_MOD_NAME="diskcheck"
-DSKCHK_SELINUX_TE=/root/${DSKCHK_SELINUX_MOD_NAME}.te
-DSKCHK_SELINUX_MOD=/root/${DSKCHK_SELINUX_MOD_NAME}.mod
-DSKCHK_SELINUX_PP=/root/${DSKCHK_SELINUX_MOD_NAME}.pp
 # 0 - down, 1 - up, 255 - default undefined
 DSKCHK_ACTION=255
 
@@ -107,5 +103,12 @@ function parse_args() {
 # arguments
 parse_args "$@"
 # up -> setup ; down -> cleanup
-((${DSKCHK_ACTION})) && setup || cleanup
+if [ ${DSKCHK_ACTION} -eq 1 ]; then
+    setup
+elif [ ${DSKCHK_ACTION} -eq 0 ]; then
+    cleanup
+else
+    # should have not ended up here
+    false
+fi
 exit $?

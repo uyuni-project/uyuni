@@ -2,9 +2,12 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause server stop that would prevent running the following features.
-# This feature must NOT run in parallel because it restarts server what would break the parallel tasks!
+# This feature can cause the server to stop and prevent it from starting. That would block all the following features.
+# This feature must NOT run in parallel because it restarts the server and that would break other features running at the same time.
 
 @scope_diskcheck
+@containerized_server
+@skip_if_github_validation
 Feature: Space monitoring via Diskcheck
   In order to be warned before the server runs out of disk space
   As an administrator
@@ -25,13 +28,13 @@ Feature: Space monitoring via Diskcheck
   Scenario: Default settings with more than 95% disk space filled and server running for more than 10 minutes
     Given I am not authorized
     When I wait for the "uyuni-server" container to be running for more than "600" seconds on "server"
-    Then I fill disk space in "/root/diskcheck" up to "96%" on "server"
-    And I check the uyuni server has stopped
+    And I fill disk space in "/root/diskcheck" up to "96%" on "server"
+    Then I check the uyuni server has stopped
 
   Scenario: Default settings disk space freed
     When I release the space in "/root/diskcheck" on "server"
-    Then I start the uyuni server
-    And I check the uyuni server has started
+    And I start the uyuni server
+    Then I check the uyuni server has started
 
   Scenario: Default settings with less than 90% disk space filled
     Given I am not authorized
@@ -60,8 +63,8 @@ Feature: Space monitoring via Diskcheck
     And I should not see the "The available disk space for the server is low" alert warning
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround
-    #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
-    #   - if fixed, remove 2 lines below and uncoment the line with "server has stopped"
+    #   - when the test starts failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
+    #   - if fixed, remove the 2 lines below and uncomment the line with "server has stopped"
     And I wait for "10" seconds
     And I check the uyuni server is running
     # /workaround
@@ -69,8 +72,8 @@ Feature: Space monitoring via Diskcheck
 
   Scenario: Default settings disk space cleanup
     When I cleanup the "/root/diskcheck" on "server"
-    Then I start the uyuni server
-    And I check the uyuni server has started
+    And I start the uyuni server
+    Then I check the uyuni server has started
 
   Scenario: Custom settings without fillings
     When I create a "1000MB" disk image in "/root" and mount it to "/root/mnt-diskcheck" on "server"
@@ -103,8 +106,8 @@ Feature: Space monitoring via Diskcheck
     And I should not see the "The available disk space for the server is low" alert warning
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround
-    #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
-    #   - if fixed, remove 2 lines below and uncoment the line with "server has stopped"
+    #   - when the test starts failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
+    #   - if fixed, remove the 2 lines below and uncomment the line with "server has stopped"
     And I wait for "10" seconds
     And I check the uyuni server is running
     # /workaround
@@ -113,8 +116,8 @@ Feature: Space monitoring via Diskcheck
   Scenario: Custom settings cleanup
     When I cleanup the "/root/mnt-diskcheck" on "server"
     And I configure the uyuni server to watch the default directories
-    And I check the uyuni server has started
-    Then I am not authorized
+    Then I check the uyuni server has started
+    And I am not authorized
     And I go to the home page
     And I should not see the "The available disk space for the server is critically low" alert danger
     And I should not see the "The available disk space for the server is low" alert warning
@@ -122,8 +125,8 @@ Feature: Space monitoring via Diskcheck
   Scenario: Custom settings in rhn.conf and without fillings
     When I create a "1000MB" disk image in "/root" and mount it to "/root/mnt-diskcheck" on "server"
     And I configure the uyuni server to watch the "/root/mnt-diskcheck" directory set in the rhn config file
-    And I check the uyuni server is running
-    Then I am not authorized
+    Then I check the uyuni server is running
+    And I am not authorized
     And I go to the home page
 
   Scenario: Custom settings in rhn.conf with less than 90% disk space filled
@@ -145,7 +148,7 @@ Feature: Space monitoring via Diskcheck
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround
     #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
-    #   - if fixed, remove 2 lines below and uncoment the line with "server has stopped"
+    #   - if fixed, remove the 2 lines below and uncomment the line with "server has stopped"
     And I wait for "10" seconds
     And I check the uyuni server is running
     # /workaround
@@ -156,7 +159,7 @@ Feature: Space monitoring via Diskcheck
     And I start the uyuni server
     And I configure the uyuni server to watch the default directories, cleaning the rhn config file
     And I unmount "/root/mnt-diskcheck" and remove the disk image in "/root" on "server"
-    And I check the uyuni server is running
+    Then I check the uyuni server is running
     And I go to the home page
 
   Scenario: Cleanup of diskcheck scripts and server schedules

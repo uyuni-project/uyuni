@@ -29,11 +29,12 @@ function print_help() {
 
 function setup() {
     echo "Setup:"
+    mkdir -p "$(dirname ${DSKCHK_SERVICE_FILE})"
     [ -f ${DSKCHK_SERVICE_FILE} ] && cp ${DSKCHK_SERVICE_FILE} ${DSKCHK_BACKUP_SERVICE_FILE}
     if [ ${DSKCHK_RHN_FLAG} -eq 0 ]; then
         cat <<EOF >${DSKCHK_SERVICE_FILE}
 [Unit]
-RequiresMountsFor=${DSKCHK_DIR} ${DSKCHK_DIR}
+RequiresMountsFor=${DSKCHK_DIR}
 
 [Service]
 Environment="PODMAN_EXTRA_ARGS=--env DISKCHECKDIRS=${DSKCHK_DIR} --env DISKCHECKALERT=${DSKCHK_ALERT} --env DISKTHRESHOLD=${DSKCHK_THRESHOLD} -v ${DSKCHK_DIR}:${DSKCHK_DIR}"
@@ -45,7 +46,7 @@ EOF
 Environment="PODMAN_EXTRA_ARGS=-v ${DSKCHK_DIR}:${DSKCHK_DIR}"
 EOF
         # rhn.conf - need to run inside container and the uyuni server needs to restart from outside
-        which -q mgrctl &>/dev/null || return 1
+        command -v mgrctl >/dev/null || return 1
         mgrctl exec -- "[ -f ${DSKCHK_RHN_CONF} ]" || return 1
         mgrctl exec -- "grep -q '^spacecheck_dirs' ${DSKCHK_RHN_CONF} && sed -i 's|^spacecheck_dirs\(.*\)$|#spacecheck_dirs\1|' ${DSKCHK_RHN_CONF}"
         mgrctl exec -- "echo 'spacecheck_dirs = ${DSKCHK_DIR}' >>${DSKCHK_RHN_CONF}"
@@ -75,7 +76,7 @@ function cleanup() {
     if [ ${DSKCHK_RHN_FLAG} -eq 1 ]; then
         # rhn.conf - need to run inside container and the uyuni server needs to restart from outside
         reload=1
-        which -q mgrctl &>/dev/null && \
+        command -v mgrctl >/dev/null && \
         mgrctl exec -- "[ -f ${DSKCHK_RHN_CONF} ]" && \
         mgrctl exec -- "grep -q '^spacecheck_dirs' ${DSKCHK_RHN_CONF} && sed -i '/^spacecheck_dirs.*$/d' ${DSKCHK_RHN_CONF}" && \
         mgrctl exec -- "grep -q '^#spacecheck_dirs' ${DSKCHK_RHN_CONF} && sed -i 's|^#spacecheck_dirs\(.*\)$|spacecheck_dirs\1|' ${DSKCHK_RHN_CONF}"
@@ -150,5 +151,12 @@ function parse_args() {
 # arguments
 parse_args "$@"
 # up -> setup ; down -> cleanup
-((${DSKCHK_ACTION})) && setup || cleanup
+if [ ${DSKCHK_ACTION} -eq 1 ]; then
+    setup
+elif [ ${DSKCHK_ACTION} -eq 0 ]; then
+    cleanup
+else
+    # should have not ended up here
+    false
+fi
 exit $?
