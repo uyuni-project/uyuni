@@ -11,15 +11,20 @@ let passwordPolicy = {
   specialChars: "!$%&()*+,./:;<=>?[]^_{|}~",
   upperCharFlag: false,
 };
+let passwordPolicyLoaded = false;
+let passwordPolicyLoadFailed = false;
 
 const hasUppercase = (value) => /\p{Uppercase}/u.test(value);
 const hasLowercase = (value) => /\p{Lowercase}/u.test(value);
 const hasDigit = (value) => /\p{Nd}/u.test(value);
 const hasSpecialCharacter = (value) =>
   [...value].some((char) => passwordPolicy.specialChars.includes(char));
+const hasJavaWhitespace = (value) =>
+  /[\t\n\u000B\f\r\u001C-\u001F\u0020\u1680\u2000-\u2006\u2008-\u200A\u2028\u2029\u205F\u3000]/u.test(value);
+
 
 function validatePassword(password) {
-  if (/\s/.test(password)) {
+  if (hasJavaWhitespace(password)) {
      return false;
    }
 
@@ -100,7 +105,7 @@ function updateTickIcon() {
     const items = [];
 
     // Whitespace
-    items.push(`${!/\s/.test(password) ? "✓" : "-"} ${t("No spaces, tabs, or newlines")}`);
+    items.push(`${!hasJavaWhitespace(password) ? "✓" : "-"} ${t("No spaces, tabs, or newlines")}`);
 
     // Minimum length
     items.push(`${password.length >= passwordPolicy.minLength ? "✓" : "-"} ${t("Minimum length")} ${passwordPolicy.minLength}`);
@@ -168,6 +173,22 @@ function updateTickIcon() {
       .attr("title", message)
       .attr("data-bs-original-title", message);
   }
+
+  if (passwordPolicyLoadFailed) {
+    neutral(jQuery("#desiredtick"));
+    neutral(jQuery("#confirmtick"));
+    updateTooltip("#desiredtick", t("Password requirements could not be loaded."));
+    updateTooltip("#confirmtick", t("Password requirements could not be loaded."));
+    return;
+  }
+
+  if (!passwordPolicyLoaded) {
+    neutral(jQuery("#desiredtick"));
+    neutral(jQuery("#confirmtick"));
+    updateTooltip("#desiredtick", t("Loading password requirements."));
+    updateTooltip("#confirmtick", t("Loading password requirements."));
+    return;
+  }
   
   // on the edit user page
   if (typeof placeholderAttr !== "undefined" && placeholderAttr !== false) {
@@ -196,7 +217,7 @@ function updateTickIcon() {
         updateTooltip("#confirmtick", t("Password match"));
       } else {
         danger(jQuery("#confirmtick"));
-        updateTooltip("#confirmtick", t("Password do not match"));
+        updateTooltip("#confirmtick", t("Passwords do not match"));
       }
     }
   }
@@ -223,7 +244,7 @@ function updateTickIcon() {
        updateTooltip("#confirmtick", t("Password match"));
     } else {
       danger(jQuery("#confirmtick"));
-      updateTooltip("#confirmtick", t("Password do not match"));
+      updateTooltip("#confirmtick", t("Passwords do not match"));
     }
   }
 }
@@ -236,13 +257,14 @@ jQuery(document).ready(function () {
     .done(function (response) {
       try {
         passwordPolicy = JSON.parse(response.data);
+        passwordPolicyLoaded = true;
       } catch (e) {
-        // Keep defaults if backend response is unexpected
+        passwordPolicyLoadFailed = true;
       }
       updateTickIcon();
   })
     .fail(function () {
-      // Keep defaults if policy fetch fails
+      passwordPolicyLoadFailed = true;
       updateTickIcon();
   });
 });
