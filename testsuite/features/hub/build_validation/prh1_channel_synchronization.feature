@@ -23,9 +23,11 @@ Feature: Hub ISSv3 channel synchronization to peripheral1
     When I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
+  @long_running
   Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on peripheral1
     And I wait until all synchronized channels for "sles15-sp7" have finished on peripheral1
 
+  @long_running
   Scenario: Wait for Ubuntu 24.04 channels to be synchronized on peripheral1
     And I wait until all synchronized channels for "ubuntu-2404" have finished on peripheral1
 
