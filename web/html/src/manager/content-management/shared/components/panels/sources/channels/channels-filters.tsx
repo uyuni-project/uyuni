@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { memo } from "react";
 
 import { channelsFiltersAvailableValues, FilterType } from "./channels-filters-state";

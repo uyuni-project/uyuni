@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export const placeholderData = {
   channelSyncData: {
     peripheralOrgs: [{ orgId: 1, orgName: "SUSE Test" }],

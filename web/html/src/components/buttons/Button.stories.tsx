@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { StoryRow, StripedStorySection } from "manager/storybook/layout";

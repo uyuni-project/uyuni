@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type FC, type ReactNode, useMemo, useState } from "react";
 
 import BaseChannel from "manager/content-management/shared/components/panels/sources/channels/base-channel";

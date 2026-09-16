@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 IMAGE_COLLAPSED_PATH = '/img/list-expand.gif';
 IMAGE_EXPANDED_PATH  = '/img/list-collapse.gif';
 IMAGE_CHILDLESS_PATH  = '/img/rhn-bullet-parentchannel.gif';

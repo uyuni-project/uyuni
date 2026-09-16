@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 // Humanize dates for `FormatDateTag.java` the same way we do in frontend code
 
 import ReactDOM from "react-dom";

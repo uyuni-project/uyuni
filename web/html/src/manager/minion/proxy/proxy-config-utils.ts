@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { ProxyConfigModel, RegistryMode, SourceMode, UseCertsMode } from "./proxy-config-types";
 
 export const modelDefaults: ProxyConfigModel = {

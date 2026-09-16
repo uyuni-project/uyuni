@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 # `spacewalk-web`
 
 The `web` subdirectory contains the modern web UI for Uyuni. It includes reusable components, stylesheets, assets such as fonts and images, translations, etc.  

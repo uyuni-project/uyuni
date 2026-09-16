@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 function blockEnter(evt) {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode :((evt.which) ? evt.which : evt.keyCode);
