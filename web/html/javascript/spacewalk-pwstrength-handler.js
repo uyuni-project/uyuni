@@ -12,8 +12,8 @@ let passwordPolicy = {
   upperCharFlag: false,
 };
 
-const hasUppercase = (value) => /\p{Lu}/u.test(value);
-const hasLowercase = (value) => /\p{Ll}/u.test(value);
+const hasUppercase = (value) => /\p{Uppercase}/u.test(value);
+const hasLowercase = (value) => /\p{Lowercase}/u.test(value);
 const hasDigit = (value) => /\p{Nd}/u.test(value);
 const hasSpecialCharacter = (value) =>
   [...value].some((char) => passwordPolicy.specialChars.includes(char));
