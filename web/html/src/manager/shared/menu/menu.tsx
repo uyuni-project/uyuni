@@ -3,6 +3,7 @@ import { type MouseEvent, type ReactNode, Component } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
+import { Badge } from "components/badge/Badge";
 import { MessagesContainer } from "components/toastr/toastr";
 import { DEPRECATED_onClick } from "components/utils";
 
@@ -51,7 +52,7 @@ class Node extends Component<NodeProps> {
   };
 
   render() {
-    const betaBadge = this.props.isBeta ? <span className="menu-beta-badge">BETA</span> : null;
+    const betaBadge = this.props.isBeta ? <Badge text={t("BETA")} small color="yellow" variant="special" /> : null;
 
     return (
       <div

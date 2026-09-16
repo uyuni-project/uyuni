@@ -4,12 +4,22 @@ import { CounterBadge } from "./CounterBadge";
 
 describe("CounterBadge Component", () => {
   test("renders the counter badge with the correct count", () => {
-    render(<CounterBadge count="1" />);
+    render(<CounterBadge count={1} />);
     expect(screen.getByText("1")).toBeTruthy();
   });
 
+  test.each([
+    [-1, "0"],
+    [0, "0"],
+    [999, "999"],
+    [1000, "999+"],
+  ])("renders count %s as %s", (count, expected) => {
+    render(<CounterBadge count={count} />);
+    expect(screen.getByText(expected)).toBeTruthy();
+  });
+
   test("uses the default status class", () => {
-    render(<CounterBadge count="1" />);
+    render(<CounterBadge count={1} />);
     const badge = screen.getByText("1");
 
     expect(badge.className).toContain("badge");
@@ -18,8 +28,8 @@ describe("CounterBadge Component", () => {
   });
 
   test("applies the highlight status class", () => {
-    render(<CounterBadge count="999+" status="highlight" />);
-    const badge = screen.getByText("999+");
+    render(<CounterBadge count={999} status="highlight" />);
+    const badge = screen.getByText("999");
 
     expect(badge.className).toContain("badge");
     expect(badge.className).toContain("counter-badge");

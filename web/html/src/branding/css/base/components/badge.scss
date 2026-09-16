@@ -3,10 +3,25 @@
   border-radius: 4px;
   margin: 2px;
   font-weight: 600;
+  align-self: center;
 
+  &:empty {
+    display: block;
+  }
   i {
     margin-right: 4px;
     font-size: 11px;
+  }
+
+  &--sm {
+    padding: 3px 6px;
+    font-size: 11px;
+    border-radius: 3px;
+
+    i {
+      margin-right: 3px;
+      font-size: 10px;
+    }
   }
 
   &--status {
@@ -44,7 +59,7 @@
     }
     &.badge--yellow {
       background: $eos-bc-yellow-500;
-      color: $eos-bc-gray-1000;
+      color: darken($eos-bc-yellow-900, 35%);
     }
     &.badge--red {
       background: $eos-bc-red-900;
@@ -64,11 +79,14 @@
 
 // CounterBadge style
 .counter-badge {
-  border-radius: 11px;
-  padding: 5px 8px;
+  border-radius: 10px;
+  padding: 4px 4px;
   font-weight: 700;
   background: $eos-bc-gray-100;
   color: $eos-bc-gray-1000;
+  min-width: 20px;
+  min-height: 18px;
+  font-size: 11px;
 
   &.badge--highlight {
     background: $eos-bc-persimmon-500;

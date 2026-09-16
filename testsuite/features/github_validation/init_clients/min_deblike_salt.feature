@@ -14,7 +14,7 @@ Feature: Bootstrap a Debian-like minion
     When I follow the left menu "Salt > Keys"
     And I accept "deblike_minion" key in the Salt master
     And I wait until I do not see "Loading..." text
-    Then I should see a "accepted" text
+    Then I should see a "Accepted" text
     When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "deblike_minion", refreshing the page
     And I query latest Salt changes on Debian-like system "deblike_minion"

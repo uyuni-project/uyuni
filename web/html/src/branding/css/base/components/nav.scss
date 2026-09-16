@@ -1,7 +1,5 @@
 $nav-tabs-offset: 30px;
 
-
-
 .nav-tabs {
   margin-bottom: 0.25rem;
   border-bottom: 1px solid $tabs-border-color;
@@ -35,10 +33,10 @@ $nav-tabs-offset: 30px;
         color: $body-color;
         background: transparent;
       }
-  
+
       // TODO: Check disabled states
     }
-  
+
     &.active {
       a {
         &, &:hover, &:active, &:focus {
