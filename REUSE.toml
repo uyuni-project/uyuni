@@ -55,7 +55,11 @@ SPDX-FileCopyrightText = "2016, Contributing Member(s) of Distributed Management
 SPDX-License-Identifier = "BSD-3-Clause"
 
 [[annotations]]
-path = ["java/licenses/*"]
+path = [
+    "java/licenses/*",
+    "web/html/src/vendors/npm.licenses.txt",
+    "web/html/src/vendors/npm.licenses*"
+]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
@@ -63,7 +67,11 @@ SPDX-License-Identifier = "CC0-1.0"
 [[annotations]]
 path = [
   "testsuite/ext-tools/predictive-test-selection/readme_resources/**",
-  "testsuite/*.json"
+  "testsuite/*.json",
+  "web/**/*.gif",
+  "web/**/*.png",
+  "web/**/*.jpg",
+  "web/**/*.ico"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 SUSE LLC"

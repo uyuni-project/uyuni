@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export function showDialog(dialogId: string) {
   // The base event is "hide.bs.modal", we only want to remove the listener we added so we add a namespace, see https://api.jquery.com/event.namespace/
   const namespacedEventName = "hide.bs.modal.namespace-dialog-util";

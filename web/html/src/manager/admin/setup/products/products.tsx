@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type ReactNode, Component, useEffect, useState } from "react";
 
 import _partition from "lodash/partition";

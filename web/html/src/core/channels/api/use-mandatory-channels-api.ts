@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { useState } from "react";
 
 import { Channel } from "manager/systems/activation-key/activation-key-channels-api";
