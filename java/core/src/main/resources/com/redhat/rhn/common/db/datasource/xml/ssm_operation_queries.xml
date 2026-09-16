@@ -1,4 +1,11 @@
 <!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
+<!--
    Queries in this file are related to the storing, maintaining, and retrieving of
    log information on asynchronous SSM operations.
 -->

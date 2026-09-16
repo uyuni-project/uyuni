@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 
 <!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
+<!--
   Spacewalk build file, please indent 2 spaces. NO TABS!
 -->
 <project name="RHN" basedir=".">

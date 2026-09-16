@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # quick shell script to make our life easier in rhn400 until brisbane and US docs team converts their tool chain 
 # to an xml based system. in other words...the goal is to replace this as soon as we can. many dirs are hard coded
 # so they need to be changed if someone else needs to run this (mmccune?) but wanted to stick this in svn just in case

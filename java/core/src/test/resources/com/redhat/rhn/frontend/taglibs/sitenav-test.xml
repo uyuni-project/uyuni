@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav_unauth" title-depth="0">
   <rhn-tab name="Create First User" url="/rhn/newlogin/CreateFirstUser.do" acl="need_first_user()">
   </rhn-tab>

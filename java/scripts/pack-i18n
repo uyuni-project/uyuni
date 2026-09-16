@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 GIT_ROOT="$( git -c alias.a='!pwd' a )"
 
 pushd $GIT_ROOT/java/core/src/main/resources/com/redhat/rhn/frontend/

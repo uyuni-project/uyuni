@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <profiles version="2">
 <profile kind="CleanUpProfile" name="galaxy" version="2">
 <setting id="cleanup.format_source_code" value="true"/>
