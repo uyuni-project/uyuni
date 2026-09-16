@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE OR REPLACE VIEW SystemExtraPackagesReport AS
   WITH packages_from_channels AS (

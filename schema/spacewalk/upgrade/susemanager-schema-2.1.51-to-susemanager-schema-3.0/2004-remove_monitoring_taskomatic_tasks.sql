@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 delete from rhnTaskoRun where template_id in
        (select ttemp.id
 	  from rhnTaskoTemplate ttemp,

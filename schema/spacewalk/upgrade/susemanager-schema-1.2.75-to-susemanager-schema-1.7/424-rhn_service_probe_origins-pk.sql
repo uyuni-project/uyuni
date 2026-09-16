@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhn_service_probe_origins disable constraint rhn_srvpo_serv_pr_id_orig_uq;
 drop index rhn_srvpo_serv_pr_id_orig_uq;
 drop index rhn_srvpo_serv_orig_pr_id_uq;

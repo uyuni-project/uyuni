@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'api.system.list_systems_filtered', 'R', 'List systems using a filter.'
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'api.system.list_systems_filtered' AND access_mode = 'R');

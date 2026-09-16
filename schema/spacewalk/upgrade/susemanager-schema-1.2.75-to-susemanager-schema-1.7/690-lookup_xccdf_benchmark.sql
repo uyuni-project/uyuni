@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE OR REPLACE FUNCTION
 lookup_xccdf_benchmark(identifier_in IN VARCHAR2, version_in IN VARCHAR2)

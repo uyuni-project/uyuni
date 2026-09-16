@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 UPDATE rhnChannel
 SET label = 'oes24.4-sle-manager-tools15-debuginfo-updates-x86_64',
 name = 'OES24.4-SLE-Manager-Tools15-Debuginfo-Updates for x86_64',

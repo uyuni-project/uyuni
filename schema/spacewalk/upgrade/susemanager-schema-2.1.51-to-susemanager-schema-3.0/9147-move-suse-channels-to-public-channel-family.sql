@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnPublicChannelFamily(channel_family_id)
   SELECT channel_family_id
     FROM rhnPrivateChannelFamily

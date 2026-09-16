@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE TABLE IF NOT EXISTS suseServerAppstream(
     id  NUMERIC NOT NULL
             CONSTRAINT suse_as_servermodule_id_pk PRIMARY KEY,

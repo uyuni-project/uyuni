@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 ALTER TABLE rhnActionApplyStatesResult DROP CONSTRAINT rhn_apply_states_result_aasid_fk;
 ALTER TABLE rhnActionApplyStatesResult ADD CONSTRAINT rhn_apply_states_result_aid_fk FOREIGN KEY (action_apply_states_id) REFERENCES rhnActionApplyStates (id) ON DELETE CASCADE;

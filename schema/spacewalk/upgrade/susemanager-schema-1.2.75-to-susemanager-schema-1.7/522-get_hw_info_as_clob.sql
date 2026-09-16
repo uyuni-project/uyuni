@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 create or replace function get_hw_info_as_clob(
 	sid in rhnserver.id%TYPE,

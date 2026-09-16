@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE rhnProxyInfo
     ADD COLUMN IF NOT EXISTS ssh_port NUMERIC,
     ADD COLUMN IF NOT EXISTS created  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE TABLE suseSystemOverview (
     id                          NUMERIC NOT NULL CONSTRAINT suseSystemOverview_id_pk PRIMARY KEY,
     server_name                 VARCHAR(128),

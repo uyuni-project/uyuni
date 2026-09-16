@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 update suseSCCRegCache
    set server_id = NULL
  where server_id in (select s.id
