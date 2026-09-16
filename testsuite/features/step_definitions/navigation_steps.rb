@@ -1242,6 +1242,11 @@ When(/^I check the blackbox exporter$/) do
   step 'I check "prometheus#blackbox_exporter#enabled"'
 end
 
+# Check the reinstall packages option in the Liberate formula
+When(/^I check the reinstall packages option of the liberate formula$/) do
+  step 'I check "liberate#reinstall_packages"'
+end
+
 # Navigate to a service endpoint
 When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)

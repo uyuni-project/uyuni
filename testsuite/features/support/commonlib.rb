@@ -1429,3 +1429,11 @@ end
 def env_var_for_host(host)
   DEFAULT_HOST_BY_ROLE.key?(host) ? get_env_var_with_fallback(host) : ENV_VAR_BY_HOST[host]
 end
+
+# Checks whether at least one of the given hosts takes part in the current run
+#
+# @param host_keys [Array<String>] The keys in ENV_VAR_BY_HOST (e.g., ['liberty9_minion', 'rhel9_minion'])
+# @return [Boolean] true if any of the hosts has its environment variable set
+def any_host_configured?(host_keys)
+  host_keys.any? { |host_key| ENV_VAR_BY_HOST.key?(host_key) && ENV.key?(ENV_VAR_BY_HOST[host_key]) }
+end
