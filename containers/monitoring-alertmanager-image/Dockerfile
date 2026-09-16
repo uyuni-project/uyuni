@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 
 #!BuildTag: uyuni/monitoring-alertmanager:latest uyuni/monitoring-alertmanager:%%alertmanager_patch_version%%
 

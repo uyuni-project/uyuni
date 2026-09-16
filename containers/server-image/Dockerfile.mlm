@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/server:latest
 
 ARG INIT_BASE=registry.suse.com/bci/bci-init:15.7

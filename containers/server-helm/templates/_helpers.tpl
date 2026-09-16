@@ -1,3 +1,6 @@
+{{/* SPDX-FileCopyrightText: 2026 SUSE LLC */}}
+{{/* SPDX-License-Identifier: MIT */}}
+
 {{/* uyuni.image computes the image URL out of the global registry and tag as well as overridden values. */}}
 {{/*   "name", the image name */}}
 {{/*   "global", the root object */}}
