@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - Disable internal DB SSL on every container start
   (bsc#1260806, bsc#1277589)

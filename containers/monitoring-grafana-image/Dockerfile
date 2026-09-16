@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 
 #!BuildTag: uyuni/monitoring-grafana:latest uyuni/monitoring-grafana:%%grafana_patch_version%%
 

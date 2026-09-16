@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Adjust postgresql.conf for Uyuni
 # This is run automatically at the first start of the container
 # or it can be run manually later.

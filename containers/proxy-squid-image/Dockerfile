@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #!BuildTag: uyuni/proxy-squid:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0

@@ -1,4 +1,9 @@
 #!/bin/bash -fue
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -- $SSH_ORIGINAL_COMMAND
 cmd="$1"
 shift
