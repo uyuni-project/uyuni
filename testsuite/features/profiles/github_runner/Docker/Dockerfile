@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 FROM localhost:5002/opensuse/leap:15.6
 
 ARG repo

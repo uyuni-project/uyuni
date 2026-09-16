@@ -1,5 +1,9 @@
 #!/bin/bash -ex
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 if [ $# -ne 1 ];
 then
     echo "Usage: $0 <schema_name>"

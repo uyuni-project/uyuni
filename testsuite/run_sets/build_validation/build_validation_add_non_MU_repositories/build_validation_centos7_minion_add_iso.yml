@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 ## Add non MU repositories for centos7 BEGIN ###
 
 - features/build_validation/add_non_MU_repositories/centos7_minion_add_iso.feature

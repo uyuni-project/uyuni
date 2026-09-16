@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 server=$1
 activation_key=$2
 echo "master: $1" >> /etc/venv-salt-minion/minion

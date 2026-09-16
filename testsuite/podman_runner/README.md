@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Podman Test Runner
 
 This directory contains scripts for running the Uyuni test suite inside Podman containers.

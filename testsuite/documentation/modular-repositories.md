@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Setting up and using a modular repository
 
 This document explains how AppStream / modular repositories work, how to build one with

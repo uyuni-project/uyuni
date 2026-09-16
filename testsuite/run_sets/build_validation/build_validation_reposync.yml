@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # This file describes the order of features in a Build Validation test suite run.
 
 ## Product synchronization features BEGIN ###

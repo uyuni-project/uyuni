@@ -59,4 +59,21 @@ path = ["java/licenses/*"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
+  
+[[annotations]]
+path = [
+  "testsuite/ext-tools/predictive-test-selection/readme_resources/**",
+  "testsuite/*.json"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 SUSE LLC"
+SPDX-License-Identifier = "Apache-2.0"
 
+[[annotations]]
+path = [
+  "testsuite/features/upload_files/**",
+  "testsuite/dockerfiles/server-all-in-one-dev/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 SUSE LLC"
+SPDX-License-Identifier = "MIT"
