@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Uyuni configuration modules (`uyuni_config`) documentation
 
 These execution and state modules allow to configure organizations, users, user permissions on channels and system groups on an Uyuni or SUSE Multi-Linux Manager Server.

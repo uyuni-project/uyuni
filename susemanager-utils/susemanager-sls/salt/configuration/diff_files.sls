@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {% if pillar.get('param_files', []) %}
 {%- for file in pillar.get('param_files') %}
 

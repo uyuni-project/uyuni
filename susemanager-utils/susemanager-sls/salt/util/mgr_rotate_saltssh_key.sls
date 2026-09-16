@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {% set mgr_sudo_user = salt['pillar.get']('mgr_sudo_user') or 'root' %}
 
 {% if salt['cp.list_master'](prefix='salt_ssh/new_mgr_ssh_id.pub') %}

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 mgr_ca_cert:
   file.managed:
     - name: /usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt

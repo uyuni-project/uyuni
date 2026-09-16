@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {# SLES 16 Migration using Distribution Migration System (DMS) #}
 
 {% if grains['osfullname']|upper == 'SLES' and grains['osrelease'] == '15.7' %}

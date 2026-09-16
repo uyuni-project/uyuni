@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Applies custom Salt state content for SCAP remediation
 
 {%- set remediation_content = pillar.get('scap_remediation_state') -%}

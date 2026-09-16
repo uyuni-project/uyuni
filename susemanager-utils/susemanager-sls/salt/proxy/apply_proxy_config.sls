@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set mgrpxy_installed = salt['pkg.version']('mgrpxy') %}
 {%- set mgrpxy_status_output = salt['cmd.run']('mgrpxy status 2>&1', python_shell=True) %}
 {%- set mgrpxy_operation = 'install' if not mgrpxy_installed or 'Error: no installed proxy detected' in mgrpxy_status_output else 'upgrade' %}
