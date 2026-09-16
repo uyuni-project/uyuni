@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 function getBootstrapModal(dialogId: string): JQuery | null {
   const element = document.getElementById(dialogId);
 

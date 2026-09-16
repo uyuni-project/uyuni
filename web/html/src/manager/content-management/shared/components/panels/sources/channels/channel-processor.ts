@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { ChannelTreeType, ChannelType } from "core/channels/type/channels.type";
 
 import { asyncIdleCallback } from "utils";

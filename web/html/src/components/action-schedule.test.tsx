@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { localizedMoment } from "utils/datetime";
 import Network from "utils/network";
 import { act, render } from "utils/test-utils";

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 jQuery(function() {
   var actionChainId = jQuery(".action-chain").data("action-chain-id");
   var maintenanceWindowsPresent = jQuery(".action-chain").data("maintenance-windows-present");

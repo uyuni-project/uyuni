@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 // See https://testing-library.com/docs/ecosystem-user-event/#api
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";

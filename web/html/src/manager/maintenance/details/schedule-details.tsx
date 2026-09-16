@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { useEffect, useState } from "react";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
