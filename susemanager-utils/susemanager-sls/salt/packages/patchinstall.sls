@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {% if grains.get('saltversioninfo', []) < [2015, 8, 12] %}
 {{ salt.test.exception("You are running an old version of salt-minion that does not support patching. Please update salt-minion and try again.") }}
 {% endif %}

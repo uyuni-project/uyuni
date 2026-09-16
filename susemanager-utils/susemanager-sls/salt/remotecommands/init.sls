@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {#
     `cwd` defines where the script is written to (temporarily) and from where it's executed.
     Users can define `mgr_remote_cmd_cwd` in pillar data to avoid writing the script to

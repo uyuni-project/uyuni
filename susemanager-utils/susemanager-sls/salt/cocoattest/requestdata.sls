@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 include:
 
 {% for result_type in salt['pillar.get']('attestation_data:result_types', []) %}

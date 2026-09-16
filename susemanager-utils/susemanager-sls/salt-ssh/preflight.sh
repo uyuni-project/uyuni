@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 if [ $# -lt 2 ]; then
     echo "Error: Wrong number of arguments!"
     exit 255

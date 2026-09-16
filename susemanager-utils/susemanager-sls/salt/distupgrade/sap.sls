@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {% set sles_release_installed = (salt['pkg.info_installed']('sles-release', attr='version', failhard=False).get('sles-release', {}).get('version') != None) %}
 {% if sles_release_installed and pillar.get('susemanager:distupgrade:targetbaseproduct:name', '')|lower == 'sles_sap' %}
 
