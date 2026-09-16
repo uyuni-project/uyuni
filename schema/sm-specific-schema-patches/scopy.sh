@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #
 # create a template with the diff command provided by "NEED CHECK:" message
 # pipe it through "| tail -n +3" and store it in the template dir

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DO $$
 BEGIN
   IF EXISTS(SELECT * FROM information_schema.columns WHERE table_name='systemaction' and column_name='scheduled_by')

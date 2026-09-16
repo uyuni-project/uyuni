@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnServerServerGroupArchCompat (server_arch_id, server_group_type) select
 LOOKUP_SERVER_ARCH('aarch64-redhat-linux'), LOOKUP_SG_TYPE('virtualization_host_platform') from dual
 where not exists (select 1 from rhnServerServerGroupArchCompat where server_arch_id = LOOKUP_SERVER_ARCH('aarch64-redhat-linux') and server_group_type = LOOKUP_SG_TYPE('virtualization_host_platform'));

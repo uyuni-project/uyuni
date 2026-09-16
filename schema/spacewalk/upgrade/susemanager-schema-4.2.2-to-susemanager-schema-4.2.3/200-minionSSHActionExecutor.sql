@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 SELECT sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-minion-action-executor-bunch', 'Execute actions on SSH Minions', null
 WHERE NOT EXISTS (

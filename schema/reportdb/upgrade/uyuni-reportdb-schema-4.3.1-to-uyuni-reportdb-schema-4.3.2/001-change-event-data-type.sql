@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DO $$
   BEGIN
     IF (SELECT data_type FROM information_schema.columns WHERE table_name = 'historyreport' AND column_name = 'event_data') != 'text' THEN

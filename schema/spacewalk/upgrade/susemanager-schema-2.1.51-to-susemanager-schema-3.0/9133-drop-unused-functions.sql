@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 drop function if exists rhn_channel.available_chan_subscriptions(channel_id_in IN NUMERIC, org_id_in IN NUMERIC);
 drop function if exists rhn_channel.available_family_subscriptions(channel_family_id_in IN NUMERIC, org_id_in IN NUMERIC);

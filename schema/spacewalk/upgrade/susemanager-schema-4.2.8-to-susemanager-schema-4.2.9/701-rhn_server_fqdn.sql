@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE rhnServerFQDN ADD COLUMN IF NOT EXISTS is_primary CHAR(1) DEFAULT ('N') NOT NULL;
 
 UPDATE rhnServerFQDN f1 SET is_primary = 'Y'

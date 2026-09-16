@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- add missing simprop_triggers table
 -- it was part of 0100-quartz-schema-upgrade.sql but was missing in qrtz.sql

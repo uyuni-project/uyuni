@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Bulk Repair Migration for Admin Roles
 INSERT INTO access.userAccessGroup (user_id, group_id)
 SELECT DISTINCT ugm.user_id, ag.id

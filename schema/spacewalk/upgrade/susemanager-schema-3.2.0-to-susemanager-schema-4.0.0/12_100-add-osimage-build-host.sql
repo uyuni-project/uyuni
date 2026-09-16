@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- osimage_build_host type ----------------------------------------------------
 
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)

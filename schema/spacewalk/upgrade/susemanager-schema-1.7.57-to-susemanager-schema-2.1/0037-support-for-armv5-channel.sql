@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnChannelArch (id, label, name, arch_type_id) values
         (sequence_nextval('rhn_channel_arch_id_seq'), 'channel-arm', 'ARM soft. FP', lookup_arch_type('rpm'));
 

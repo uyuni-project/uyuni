@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnUserGroupType (id, label, name) values (
 	sequence_nextval('rhn_usergroup_type_seq'),
 	'image_admin',

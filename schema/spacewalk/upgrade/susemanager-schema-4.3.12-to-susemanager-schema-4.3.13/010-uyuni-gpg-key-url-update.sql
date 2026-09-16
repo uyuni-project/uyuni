@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 update rhnchannel set
 gpg_key_url = 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial' where

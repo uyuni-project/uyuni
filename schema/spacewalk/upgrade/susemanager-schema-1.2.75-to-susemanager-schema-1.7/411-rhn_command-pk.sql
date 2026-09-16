@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhn_command_param_threshold disable constraint rhn_coptr_cmd_id_cmd_cl_fk;
 alter table rhn_command_parameter disable constraint rhn_cparm_cmd_command_id_fk;
 alter table rhn_os_commands_xref disable constraint rhn_oscxr_cmmnd_commands_id_fk;

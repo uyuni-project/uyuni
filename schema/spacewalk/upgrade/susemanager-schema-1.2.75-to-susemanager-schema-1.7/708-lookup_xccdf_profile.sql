@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace function
 insert_xccdf_profile(identifier_in in varchar2, title_in in varchar2)
 return number
