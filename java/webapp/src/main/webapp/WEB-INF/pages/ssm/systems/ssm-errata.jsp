@@ -1,4 +1,11 @@
 <%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
+<%--
     Document   : ssm-errata
     Created on : Aug 22, 2013, 1:18:24 PM
     Author     : Bo Maryniuk
