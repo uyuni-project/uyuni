@@ -71,6 +71,10 @@ def uyuni_not_installed?
   ENV['UYUNI_NOT_INSTALLED'] == 'true'
 end
 
+def hub_protocol
+  $debug_mode ? 'http://' : 'https://'
+end
+
 # Determines the product type (Uyuni or SUSE Manager) based on installed patterns, raises error if undetermined.
 #
 # @return [String, nil] The product name, or nil when UYUNI_NOT_INSTALLED is set.

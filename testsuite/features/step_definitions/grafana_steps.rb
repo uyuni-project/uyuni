@@ -16,12 +16,12 @@ def grafana_api_get(node, host, path)
     "curl -s -u '#{user}:#{pass}' http://localhost:3000#{path}",
     check_errors: false
   )
-  raise ScriptError, "Grafana API GET #{path} returned exit #{code}" unless code.zero?
-  raise ScriptError, "Grafana API GET #{path} returned empty body" if output.strip.empty?
+  raise StandardError, "Grafana API GET #{path} returned exit #{code}" unless code.zero?
+  raise StandardError, "Grafana API GET #{path} returned empty body" if output.strip.empty?
 
   JSON.parse(output)
 rescue JSON::ParserError => e
-  raise ScriptError, "Grafana API #{path} returned non-JSON: #{output.strip[0..200]}. Error: #{e.message}"
+  raise StandardError, "Grafana API #{path} returned non-JSON: #{output.strip[0..200]}. Error: #{e.message}"
 end
 
 # Polls Grafana until at least one hub reporting dashboard appears; returns the full dashboard list.
@@ -127,7 +127,7 @@ Then(/^the "([^"]*)" service should be stopped on "([^"]*)"$/) do |service, host
   node = get_target(host)
   result, _code = node.run("systemctl is-active #{service}", check_errors: false)
   status = result.strip
-  raise ScriptError, "Service #{service} is still active on #{host} (status: #{status})" if status == 'active'
+  raise StandardError, "Service #{service} is still active on #{host} (status: #{status})" if status == 'active'
 end
 
 # -- Grafana API verification steps --
@@ -157,7 +157,7 @@ Then(/^the Grafana Report DB datasource should target the hub reportdb on "([^"]
       (ds.dig('jsonData', 'database') || ds['database'] || '').include?('reportdb')
     end
   unless report_db_ds
-    raise ScriptError,
+    raise StandardError,
           "No Report DB datasource found; postgresql datasources: #{pg_ds.map { |d| d['name'] }.join(', ')}"
   end
   add_context('grafana_reportdb_ds_uid', report_db_ds['uid'] || report_db_ds['id'].to_s)
@@ -173,7 +173,7 @@ Then(/^there should be exactly one Grafana Report DB datasource on "([^"]*)"$/) 
         (ds.dig('jsonData', 'database') || ds['database'] || '').include?('reportdb')
     end
   count = pg_datasources.length
-  raise ScriptError, "Expected exactly 1 Report DB datasource, found #{count}" unless count == 1
+  raise StandardError, "Expected exactly 1 Report DB datasource, found #{count}" unless count == 1
 
   log 'Idempotency check passed: exactly 1 Report DB datasource provisioned'
 end
@@ -185,7 +185,7 @@ Then(/^the Grafana Reporting folder should contain the hub fleet overview dashbo
   dashboards = grafana_dashboard_search(node, host)
   found = dashboards.find { |d| d['title']&.include?('Fleet Overview') }
   unless found
-    raise ScriptError,
+    raise StandardError,
           "Hub fleet overview dashboard not found; titles: #{dashboards.map { |d| d['title'] }.join(', ')}"
   end
   add_context('grafana_fleet_dashboard_uid', found['uid'])
@@ -197,7 +197,7 @@ Then(/^the Grafana Reporting folder should contain the hub overview dashboard on
   dashboards = grafana_api_get(node, host, '/api/search?query=&type=dash-db')
   found = dashboards.find { |d| d['title']&.include?('Hub Overview') }
   unless found
-    raise ScriptError,
+    raise StandardError,
           "Hub overview dashboard not found; titles: #{dashboards.map { |d| d['title'] }.join(', ')}"
   end
   add_context('grafana_hub_dashboard_uid', found['uid'])
@@ -209,7 +209,7 @@ Then(/^the Grafana Reporting folder should contain the hub reports and history d
   dashboards = grafana_api_get(node, host, '/api/search?query=&type=dash-db')
   found = dashboards.find { |d| d['title']&.include?('Reports') && d['title'].include?('History') }
   unless found
-    raise ScriptError,
+    raise StandardError,
           "Hub reports and history dashboard not found; titles: #{dashboards.map { |d| d['title'] }.join(', ')}"
   end
   add_context('grafana_reports_dashboard_uid', found['uid'])
@@ -223,11 +223,11 @@ Then(/^each hub reporting dashboard should load without errors on "([^"]*)"$/) d
     dashboards.select do |d|
       HUB_DASHBOARD_KEYWORDS.any? { |kw| d['title']&.include?(kw) }
     end
-  raise ScriptError, 'No hub reporting dashboards found to load' if hub_dashboards.empty?
+  raise StandardError, 'No hub reporting dashboards found to load' if hub_dashboards.empty?
 
   hub_dashboards.each do |dashboard|
     detail = grafana_api_get(node, host, "/api/dashboards/uid/#{dashboard['uid']}")
-    raise ScriptError, "Dashboard #{dashboard['title']} has no JSON body" unless detail['dashboard']
+    raise StandardError, "Dashboard #{dashboard['title']} has no JSON body" unless detail['dashboard']
 
     log "Dashboard #{dashboard['title']} loaded without errors"
   end
@@ -237,12 +237,12 @@ Then(/^the hub overview dashboard should declare the Report DB datasource on "([
   node = get_target(host)
   dashboards = grafana_api_get(node, host, '/api/search?query=&type=dash-db')
   hub_dash = dashboards.find { |d| d['title']&.include?('Hub Overview') }
-  raise ScriptError, 'Hub Overview dashboard not found in Grafana' unless hub_dash
+  raise StandardError, 'Hub Overview dashboard not found in Grafana' unless hub_dash
 
   detail = grafana_api_get(node, host, "/api/dashboards/uid/#{hub_dash['uid']}")
   dash_json = detail['dashboard'].to_s
   has_reportdb = dash_json.include?('reportdb') || dash_json.include?('Report DB') || dash_json.include?('PostgreSQL')
-  raise ScriptError, 'Hub Overview dashboard JSON does not reference Report DB datasource' unless has_reportdb
+  raise StandardError, 'Hub Overview dashboard JSON does not reference Report DB datasource' unless has_reportdb
 
   log 'Hub Overview dashboard references Report DB datasource'
 end
@@ -258,14 +258,14 @@ Then(/^the Grafana fleet overview total systems panel should match the reportdb 
     check_errors: false
   )
   db_count = db_count_raw.strip.to_i
-  raise ScriptError, "Could not read system count from hub reportdb (got: '#{db_count_raw.strip}')" if db_count.zero?
+  raise StandardError, "Could not read system count from hub reportdb (got: '#{db_count_raw.strip}')" if db_count.zero?
 
   dashboards = grafana_api_get(node, host, '/api/search?query=&type=dash-db')
   fleet_dash = dashboards.find { |d| d['title']&.include?('Fleet Overview') }
-  raise ScriptError, 'Fleet Overview dashboard not found' unless fleet_dash
+  raise StandardError, 'Fleet Overview dashboard not found' unless fleet_dash
 
   detail = grafana_api_get(node, host, "/api/dashboards/uid/#{fleet_dash['uid']}")
-  raise ScriptError, 'Fleet Overview dashboard body empty or invalid' unless detail['dashboard']
+  raise StandardError, 'Fleet Overview dashboard body empty or invalid' unless detail['dashboard']
 
   log "C-04: reportdb system count = #{db_count}; Fleet Overview dashboard loaded and cross-check reference established"
   add_context('c04_system_count', db_count)
@@ -285,10 +285,10 @@ Then(/^the Fleet Overview systems-by-organization distribution should sum to the
   )
   total = total_raw.strip.to_i
   org_sum = org_sum_raw.strip.to_i
-  raise ScriptError, "Could not read total system count from hub reportdb (got: '#{total_raw.strip}')" if total.zero?
+  raise StandardError, "Could not read total system count from hub reportdb (got: '#{total_raw.strip}')" if total.zero?
 
   unless org_sum == total
-    raise ScriptError,
+    raise StandardError,
           "Organization distribution sum (#{org_sum}) does not equal total system count (#{total})"
   end
 
@@ -308,7 +308,7 @@ Then(/^the Grafana fleet overview channel and patch panels should return non-nul
     check_errors: false
   )
   channel_count = channel_count_raw.strip.to_i
-  raise ScriptError, "reportdb channel count returned empty or zero (got: '#{channel_count_raw.strip}')" if channel_count.zero?
+  raise StandardError, "reportdb channel count returned empty or zero (got: '#{channel_count_raw.strip}')" if channel_count.zero?
 
   log "C-04: channel count = #{channel_count}, outstanding patches query row count = #{patch_count_raw.strip}"
 end
@@ -327,7 +327,7 @@ Then(/^the Grafana hub overview peripheral count should match the number of regi
   add_context('c05_peripheral_count', peripheral_count)
   dashboards = grafana_api_get(node, host, '/api/search?query=&type=dash-db')
   hub_dash = dashboards.find { |d| d['title']&.include?('Hub Overview') }
-  raise ScriptError, 'Hub Overview dashboard not found' unless hub_dash
+  raise StandardError, 'Hub Overview dashboard not found' unless hub_dash
 
   log "C-05: Hub Overview dashboard present; peripheral count from reportdb = #{peripheral_count}"
 end
@@ -340,7 +340,7 @@ Then(/^the Grafana hub overview per-peripheral table should have one row per reg
     check_errors: false
   )
   peripheral_count = result.strip.to_i
-  raise ScriptError, "Expected at least 1 peripheral in reportdb, found #{peripheral_count}" unless peripheral_count >= 1
+  raise StandardError, "Expected at least 1 peripheral in reportdb, found #{peripheral_count}" unless peripheral_count >= 1
 
   log "C-05: #{peripheral_count} peripheral(s) have distinct mgm_id entries in reportdb system table"
 end
@@ -359,8 +359,8 @@ Then(/^the Grafana hub overview system inventory should contain entries managed 
   )
   hub_rows = hub_rows_raw.strip.to_i
   peripheral_rows = peripheral_rows_raw.strip.to_i
-  raise ScriptError, "Expected hub-managed entries (mgm_id=1) > 0, found #{hub_rows}" unless hub_rows >= 1
-  raise ScriptError, "Expected peripheral-managed entries (mgm_id!=1) > 0, found #{peripheral_rows}" unless peripheral_rows >= 1
+  raise StandardError, "Expected hub-managed entries (mgm_id=1) > 0, found #{hub_rows}" unless hub_rows >= 1
+  raise StandardError, "Expected peripheral-managed entries (mgm_id!=1) > 0, found #{peripheral_rows}" unless peripheral_rows >= 1
 
   log "C-05: hub-managed rows=#{hub_rows}, peripheral-managed rows=#{peripheral_rows}"
 end
@@ -375,7 +375,7 @@ When(/^I trigger a fresh highstate action on "([^"]*)"$/) do |host|
   session = client.call('auth.login', *Credentials.for('server'))
   system_name = monitoring_node.full_hostname
   systems = client.call('system.searchByName', session, system_name)
-  raise ScriptError, "#{host} not found on hub via XMLRPC" if systems.empty?
+  raise StandardError, "#{host} not found on hub via XMLRPC" if systems.empty?
 
   system_id = systems.first['id']
   client.call('system.scheduleApplyHighstate', session, system_id, nil, false)
@@ -383,7 +383,7 @@ When(/^I trigger a fresh highstate action on "([^"]*)"$/) do |host|
   client.call('auth.logout', session)
   log "C-06: highstate action scheduled for #{system_name} (id=#{system_id})"
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Failed to schedule highstate on #{host}: #{e.message}"
+  raise StandardError, "Failed to schedule highstate on #{host}: #{e.message}"
 end
 
 Then(/^the hub reportdb latest actions should include a recent action for "([^"]*)"$/) do |_host|
@@ -394,7 +394,7 @@ Then(/^the hub reportdb latest actions should include a recent action for "([^"]
     check_errors: false
   )
   count = result.strip.to_i
-  raise ScriptError, 'No recent actions found in reportdb actionhistory in the last 2 hours' if count.zero?
+  raise StandardError, 'No recent actions found in reportdb actionhistory in the last 2 hours' if count.zero?
 
   log "C-06: #{count} recent action(s) in reportdb actionhistory"
 end
@@ -403,12 +403,12 @@ Then(/^the hub reportdb user accounts table should include the admin user$/) do
   hub = get_target('server')
   user, = Credentials.for('server')
   result, _code = hub.run(
-    "echo \"SELECT count(*) FROM account WHERE login = '#{user}';\" " \
+    "echo \"SELECT count(*) FROM account WHERE login = '#{user.gsub("'", "''")}';\" " \
     "| spacewalk-sql --reportdb --select-mode - 2>/dev/null | grep -E '^\\s+[0-9]+\\s*$' | tr -d ' '",
     check_errors: false
   )
   count = result.strip.to_i
-  raise ScriptError, "Admin user '#{user}' not found in reportdb account table" unless count >= 1
+  raise StandardError, "Admin user '#{user}' not found in reportdb account table" unless count >= 1
 
   log "C-06: admin user '#{user}' confirmed in reportdb account table"
 end

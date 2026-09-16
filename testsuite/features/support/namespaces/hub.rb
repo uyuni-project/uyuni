@@ -26,7 +26,7 @@ class NamespaceHub
   # @param password [String] Admin password
   # @return [Hash] Login response containing SessionKey
   def login_with_autoconnect(username, password)
-    protocol = $debug_mode ? 'http://' : 'https://'
+    protocol = hub_protocol
     @client = build_xmlrpc_client("#{protocol}#{@hub_host}/hub/rpc/api")
     response = @client.call('hub.loginWithAutoconnectMode', username, password)
     @session_key = response['SessionKey']
@@ -77,7 +77,7 @@ class NamespaceHub
   #
   # @return [XMLRPC::Client]
   def direct_api_client
-    protocol = $debug_mode ? 'http://' : 'https://'
+    protocol = hub_protocol
     build_xmlrpc_client("#{protocol}#{@hub_host}/rpc/api")
   end
 
