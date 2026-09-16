@@ -131,8 +131,6 @@ artifacts:
     repository: Uyuni
   - artifact: jboss-logging
     repository: Uyuni
-  - artifact: jdom
-    repository: Leap
   - artifact: jose4j
     repository: Uyuni
   - artifact: log4j-core
