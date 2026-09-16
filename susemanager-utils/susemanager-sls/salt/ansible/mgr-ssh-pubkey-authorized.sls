@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {% set tempdir = salt['temp.dir']('', 'mgr-ssh-pubkey-authorized_') %}
 {% set tempfile = tempdir + '/mgr-ssh-pubkey-authorized.yml' %}
 
