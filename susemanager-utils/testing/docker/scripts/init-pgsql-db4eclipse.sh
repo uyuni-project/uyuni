@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set -e
 
 # Check if the schema package is using the new directory structure, otherwise the upgrade files are in the old

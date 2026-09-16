@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 SCRIPT=$(basename ${0})
 EXECUTOR="${EXECUTOR:=docker}"
 
