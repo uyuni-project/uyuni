@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <rhn:list pageList="${requestScope.pageList}" noDataText="errata.publish.nochannels">
   <rhn:listdisplay set="${requestScope.set}" hiddenvars="${requestScope.newset}"
                    button="errata.publish.packagepush.continue">

@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <div class="spacewalk-section-toolbar">
     <div class="action-button-wrapper">
         <button class="btn btn-danger" type="submit" name="dispatch"
