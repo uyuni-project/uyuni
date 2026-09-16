@@ -4,13 +4,13 @@
 ### This file contains all steps concerning diskcheck and the following actions required
 
 When(/^I (un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
-  error_msg = ""
+  error_msg = ''
   code = -1
   node = get_target(host)
   script_files = ['diskcheck_custom_mount.sh', 'diskcheck_space_mgmt.sh', 'diskcheck_uyuni_service_mgmt.sh']
   # undeployment
   if negative
-    cmd = "rm #{script_files.map { |x| "/root/#{x}" }.join(" ")}"
+    cmd = "rm #{script_files.map { |x| "/root/#{x}" }.join(' ')}"
     res_out, res_err, code = ssh_command(cmd, node.full_hostname)
     error_msg = "return code: #{code};  stdout: #{res_out};  stderr: #{res_err}"
   # deployment
@@ -19,7 +19,7 @@ When(/^I (un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
       src = "#{File.dirname(__FILE__)}/../upload_files/#{script_file}"
       dst = "/root/#{script_file}"
       success = node.scp_upload(src, dst)
-      if ! success
+      unless success
         error_msg = "File \"#{src}\" upload failed."
         break
       end

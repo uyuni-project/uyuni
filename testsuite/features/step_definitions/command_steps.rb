@@ -2030,7 +2030,7 @@ Then(/^I check the uyuni server (has started|is running|has stopped)$/) do |stat
     running, health = res_out.strip.split('|')
     if ['has started', 'is running'].include? status
       break if code.zero? && running == 'true' && health == 'healthy'
-    else
+    elsif status == 'has stopped'
       break if code.nonzero? || running != 'true'
     end
     sleep 6
@@ -2053,7 +2053,7 @@ end
 Then(/^I wait for the "([^"]*)" container to be running for more than "(\d+)" seconds on "([^"]*)"$/) do |container, seconds, host|
   node = get_target(host)
   cmd = "START_STR=$(podman inspect --format='{{.State.StartedAt}}' #{container}) && START=$(date -d \"${START_STR% *}\" +%s) && echo $(($(date +%s) - ${START}))"
-  res_out, res_err, code = ssh_command("#{cmd}", node.full_hostname)
+  res_out, res_err, code = ssh_command(cmd, node.full_hostname)
 
   raise ScriptError, "An error occurred while getting the container runtime: #{res_out}  #{res_err}" unless code.zero?
   seconds_to_wait = seconds.to_i - res_out.to_i
