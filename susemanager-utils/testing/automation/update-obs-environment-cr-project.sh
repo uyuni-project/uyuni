@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 parent_project="systemsmanagement:Uyuni:Master"
 parent_repo_name="openSUSE_Leap_15.3"
 clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \

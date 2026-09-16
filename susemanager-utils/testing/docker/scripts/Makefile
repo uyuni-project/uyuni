@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # If you want to test with the head container, you can do it withç
 # PRODUCT=SUSE-Manager make
 ifeq ($(PRODUCT), SUSE-Manager)
