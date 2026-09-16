@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 for folder in systems packages; do
     mkdir -p /var/spacewalk/${folder}
     chmod 0775 /var/spacewalk/${folder}

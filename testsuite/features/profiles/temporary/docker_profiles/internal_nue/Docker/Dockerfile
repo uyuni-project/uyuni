@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 FROM registry.mgr.suse.de/suse/sle15:15.7
 MAINTAINER Admin User "noemail@example.com"
 
