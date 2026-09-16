@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE INDEX IF NOT EXISTS suse_srvappstream_nsca_sid_idx ON suseServerAppstream (name, stream, arch, context, server_id);
 CREATE INDEX IF NOT EXISTS suse_srvappstream_nsa_sid_idx  ON suseServerAppstream (name, stream, arch, server_id);
 CREATE INDEX IF NOT EXISTS suse_appstream_nsca_idx        ON suseAppStream       (name, stream, arch, context);

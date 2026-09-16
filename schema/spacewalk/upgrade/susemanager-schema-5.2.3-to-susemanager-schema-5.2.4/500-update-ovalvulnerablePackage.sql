@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DROP PROCEDURE IF EXISTS insert_product_vulnerable_packages(character varying, character varying, character varying, character varying);
 
 DROP TABLE IF EXISTS suseOVALPlatformVulnerablePackage;

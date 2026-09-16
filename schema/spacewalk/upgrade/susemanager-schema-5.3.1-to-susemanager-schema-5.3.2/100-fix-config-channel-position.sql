@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- ensure that the position is numbered starting from 1
 -- (re-run of the 5.1.7-to-5.1.8 remediation to clean up any config-channel position
 --  gaps created after that migration by deleting a config channel: the ON DELETE CASCADE

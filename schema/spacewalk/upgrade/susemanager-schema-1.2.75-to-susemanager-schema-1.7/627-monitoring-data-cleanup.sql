@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- delete orphaned data from state_change
 delete from state_change sc where sc.o_id not in (select rp.recid || '' from rhn_probe rp);
 

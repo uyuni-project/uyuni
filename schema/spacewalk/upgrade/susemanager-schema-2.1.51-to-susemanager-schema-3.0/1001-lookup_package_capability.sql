@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 -- Note: intentionally not thread-safe! You must aquire a write lock on the
 -- rhnPackageCapability tabel if you are going to use this proc!

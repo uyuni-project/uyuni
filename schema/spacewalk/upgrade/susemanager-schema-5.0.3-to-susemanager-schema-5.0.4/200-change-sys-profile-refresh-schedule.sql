@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Once a month at the 2nd Saturday at 5am
 UPDATE rhnTaskoSchedule
   SET cron_expr = '0 0 5 ? * SAT#2'

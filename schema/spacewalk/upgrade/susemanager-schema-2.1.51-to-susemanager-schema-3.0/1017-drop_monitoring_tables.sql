@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 drop function rhn_install_org_satellites(numeric, numeric, character varying);
 drop function rhn_prepare_install(character varying, numeric);

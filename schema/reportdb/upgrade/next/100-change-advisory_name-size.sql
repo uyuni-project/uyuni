@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- remember the privileges granted on the views which will be affected by the
 -- change, since dropping a view also removes all its privileges
 SELECT backup_view_acls(ARRAY['ErrataListReport', 'ErrataChannelsReport', 'ErrataSystemsReport']);

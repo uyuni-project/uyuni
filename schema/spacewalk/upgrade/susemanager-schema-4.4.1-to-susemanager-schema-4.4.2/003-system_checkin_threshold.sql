@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 SELECT 'system_checkin_threshold', 'Number of days before reporting a system as inactive', null, 1
 WHERE NOT EXISTS (SELECT 1 FROM rhnConfiguration WHERE key = 'system_checkin_threshold');

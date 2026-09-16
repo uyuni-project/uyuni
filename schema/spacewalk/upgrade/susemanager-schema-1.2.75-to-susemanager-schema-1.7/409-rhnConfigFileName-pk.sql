@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnActionConfigFileName disable constraint rhn_actioncf_name_cfnid_fk;
 alter table rhnConfigFile disable constraint rhn_conffile_cfnid_fk;
 alter table rhnConfigInfo disable constraint rhn_confinfo_symlink_fk;

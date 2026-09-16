@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 SELECT lookup_client_capability('configfiles.base64_enc') FROM dual;
 INSERT INTO rhnClientCapability(server_id, capability_name_id, version) SELECT s.id, (SELECT id FROM rhnClientCapabilityName 

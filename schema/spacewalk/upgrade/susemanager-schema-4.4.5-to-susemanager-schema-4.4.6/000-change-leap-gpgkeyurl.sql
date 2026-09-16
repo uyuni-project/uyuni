@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 UPDATE rhnChannel
    SET gpg_key_url = 'file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-3dbdc284-53674dd4.asc'
  WHERE gpg_key_id = '3DBDC284'

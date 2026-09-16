@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create table rhnIssMasterOrgs (
     id NUMERIC not null constraint rhn_issmasterorgs_id_pk primary key,
     master_id NUMERIC not null
