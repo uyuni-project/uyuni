@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 #  pylint: disable=missing-module-docstring
 from mgrlibmod import mltypes, mlerrcode
 
