@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:choose>
 <c:when test="${not empty requestScope.pageUrl}">

@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="setup_wizard" invisible="1" title-depth="1">
   <rhn-tab name="HTTP Proxy" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/manager/admin/setup/proxy</rhn-tab-url>

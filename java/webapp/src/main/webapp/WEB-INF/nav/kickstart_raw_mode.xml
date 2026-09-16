@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="kickstart_raw_mode" invisible="1" formvar="ksid" title-depth="1"
                                 acl_mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler,com.redhat.rhn.common.security.acl.KickstartAclHandler">
         <rhn-tab name="Details"  acl="authorized_for(systems.autoinstallation)">
