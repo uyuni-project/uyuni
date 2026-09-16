@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 #########################################
 # docker
 # docker run -t -i --privileged --device /dev/mem --rm -v "/path/to/git:/manager" registry.mgr.suse.de/suma-head-salt /bin/bash
