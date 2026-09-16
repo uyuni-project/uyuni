@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="org_trust" formvar="oid" title-depth="1">
   <rhn-tab name="Details" acl="user_role(org_admin)" url="/rhn/multiorg/OrgTrustDetails.do"/>
   <rhn-tab name="Channels Provided" acl="user_role(org_admin)" url="/rhn/multiorg/channels/Provided.do"/>

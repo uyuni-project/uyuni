@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <c:set var="regularKS" value="true"/>
 <c:set var="actionUrl" value="/systems/details/kickstart/ScheduleWizard.do"/>

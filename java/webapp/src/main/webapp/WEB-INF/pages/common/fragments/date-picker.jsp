@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ page
     pageEncoding="iso-8859-1"
     contentType="text/html;charset=utf-8" %>

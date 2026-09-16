@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 

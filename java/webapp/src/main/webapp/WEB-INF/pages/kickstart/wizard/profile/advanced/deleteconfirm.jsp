@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <c:import url="/WEB-INF/pages/common/fragments/kickstart/deleteconfirm.jspf">
         <c:param name = "nav" value="/WEB-INF/nav/kickstart_raw_mode.xml"/>

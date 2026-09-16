@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="duplicate_tabs" invisible="1" title-depth="1"  formvar="inactive_count"
     acl_mixins="com.redhat.rhn.common.security.acl.action.ActionAclHandler">
   <rhn-tab name="duplicate.systems.nav.ips">
