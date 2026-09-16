@@ -104,7 +104,12 @@ PQC_SIGCHECK_PLUGIN_PATH = os.path.join(
 )
 # The path the PQC sigcheck plugin reads keys from is hardcoded
 PQC_KEYRING_PATH = "/usr/lib/rpm/pqkeys"
+# Base path for PQC certificates Uyuni holds in /var/lib/spacewalk/pqkeys:
+# - standard: vendor certificates shipped with uyuni or susemanager build-keys
+# - custom: administrator-provided certificates
 SPACEWALK_PQC_KEYS_PATH = os.path.join(SPACEWALK_LIB, "pqkeys")
+PQC_KEYS_SUBDIRECTORIES = ("standard", "custom")
+PQC_CERTIFICATE_EXTENSIONS = (".pem", ".crt")
 PQC_CERTIFICATE_GLOBS = ("*.pem", "*.crt")
 # Prefix of the certificates temporarily copied into the PQC keys path
 PQC_TEMPORARY_CERTIFICATE_PREFIX = "reposync-"
@@ -1127,10 +1132,23 @@ type=rpm-md
 
         :returns: list of paths
         """
-        directories = [SPACEWALK_PQC_KEYS_PATH]
         reponame = os.path.basename(str(self.channel_label or self.reponame))
-        if reponame and reponame not in (os.curdir, os.pardir):
-            directories.append(os.path.join(SPACEWALK_PQC_KEYS_PATH, reponame))
+        roots = [
+            os.path.join(SPACEWALK_PQC_KEYS_PATH, subdir)
+            for subdir in PQC_KEYS_SUBDIRECTORIES
+        ]
+        # Also include the base path for backwards compatibility
+        roots.append(SPACEWALK_PQC_KEYS_PATH)
+
+        directories = []
+        for root in roots:
+            directories.append(root)
+            if (
+                reponame
+                and reponame not in (os.curdir, os.pardir)
+                and reponame not in PQC_KEYS_SUBDIRECTORIES
+            ):
+                directories.append(os.path.join(root, reponame))
         return self._list_certificates(directories)
 
     @staticmethod
@@ -1140,11 +1158,18 @@ type=rpm-md
 
         :returns: list of paths
         """
-        certificates = []
+        certificates = set()
         for directory in directories:
-            for pattern in PQC_CERTIFICATE_GLOBS:
-                certificates.extend(sorted(glob.glob(os.path.join(directory, pattern))))
-        return certificates
+            try:
+                names = os.listdir(directory)
+            except OSError:
+                continue
+            for name in names:
+                if name.endswith(PQC_CERTIFICATE_EXTENSIONS):
+                    path = os.path.join(directory, name)
+                    if os.path.isfile(path):
+                        certificates.add(path)
+        return sorted(certificates)
 
     def _install_pqc_certificates(self):
         """
