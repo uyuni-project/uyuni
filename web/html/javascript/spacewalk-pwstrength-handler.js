@@ -136,7 +136,8 @@ function updateTickIcon() {
       const counts = {};
       let valid = true;
 
-      for (const c of password) {
+      for (let i = 0; i < password.length; i++) {
+        const c = password[i];
         counts[c] = (counts[c] || 0) + 1;
 
         if (counts[c] > passwordPolicy.maxCharacterOccurrence) {
