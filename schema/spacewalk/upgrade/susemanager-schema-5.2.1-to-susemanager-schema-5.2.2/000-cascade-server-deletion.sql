@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DO $$
   BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.referential_constraints WHERE constraint_name='rhn_actiondup_sid_fk' AND delete_rule='CASCADE') THEN

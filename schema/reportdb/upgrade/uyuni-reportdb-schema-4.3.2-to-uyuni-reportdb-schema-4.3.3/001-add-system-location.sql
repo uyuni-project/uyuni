@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE system
     ADD COLUMN IF NOT EXISTS machine VARCHAR(64),
     ADD COLUMN IF NOT EXISTS rack VARCHAR(64),

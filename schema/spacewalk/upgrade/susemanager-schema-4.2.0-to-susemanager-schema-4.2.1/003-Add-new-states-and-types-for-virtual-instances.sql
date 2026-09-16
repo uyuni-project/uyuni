@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnVirtualInstanceState (id, name, label) SELECT sequence_nextval('rhn_vis_id_seq'), 'Powering On', 'powering_on' from dual WHERE NOT EXISTS (SELECT 1 FROM rhnVirtualInstanceState WHERE label = 'powering_on');
 
 INSERT INTO rhnVirtualInstanceState (id, name, label) SELECT sequence_nextval('rhn_vis_id_seq'), 'Shutting Down', 'shutting_down' from dual WHERE NOT EXISTS (SELECT 1 FROM rhnVirtualInstanceState WHERE label = 'shutting_down');

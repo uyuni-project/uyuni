@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace procedure pxt_session_cleanup (
     bound_in in number,
     commit_interval in number := 100,

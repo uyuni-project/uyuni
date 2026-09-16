@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 alter table rhnerratanotificationqueue drop constraint rhn_enqueue_cid_fk;
 alter table rhnerratanotificationqueue add constraint rhn_enqueue_cid_fk foreign key (channel_id) references rhnchannel(id) on delete cascade;

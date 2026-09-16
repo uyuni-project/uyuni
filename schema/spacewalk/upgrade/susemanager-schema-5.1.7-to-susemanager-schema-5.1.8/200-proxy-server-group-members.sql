@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --------------------------------------------------------------------------------
 -- Ensure existing proxies get the proxy_entitled and update the group count ---
 --------------------------------------------------------------------------------

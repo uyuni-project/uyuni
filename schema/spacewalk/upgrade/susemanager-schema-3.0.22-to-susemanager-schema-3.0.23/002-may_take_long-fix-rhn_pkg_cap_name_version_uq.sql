@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 drop index if exists rhn_pkg_cap_name_version_uq;
 drop index if exists rhn_pkg_cap_name_uq;

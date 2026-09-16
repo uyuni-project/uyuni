@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE rhnTaskQueue ADD COLUMN IF NOT EXISTS id NUMERIC;
 CREATE SEQUENCE IF NOT EXISTS rhn_task_queue_id_seq START WITH 1;
 UPDATE rhnTaskQueue SET id = nextval('rhn_task_queue_id_seq') WHERE id IS NULL;

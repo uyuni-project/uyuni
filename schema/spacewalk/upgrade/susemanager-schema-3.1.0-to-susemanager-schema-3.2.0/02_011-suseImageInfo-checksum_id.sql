@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 drop view suseimageoverview;
 
 alter table suseImageInfo add checksum_id NUMERIC

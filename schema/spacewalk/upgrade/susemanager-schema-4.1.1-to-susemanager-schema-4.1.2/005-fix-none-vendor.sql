@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 delete from rhnpackagerepodata where package_id in (select id from rhnpackage where vendor = 'Not defined');
 
 ALTER TABLE rhnpackage ALTER COLUMN vendor DROP NOT NULL;

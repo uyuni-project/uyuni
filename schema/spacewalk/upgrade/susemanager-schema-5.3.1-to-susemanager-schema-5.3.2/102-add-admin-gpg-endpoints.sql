@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'api.admin.gpg.upload_gpg_key', 'W', 'Upload and add a GPG key to the customer keyring.'
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'api.admin.gpg.upload_gpg_key' AND access_mode = 'W');

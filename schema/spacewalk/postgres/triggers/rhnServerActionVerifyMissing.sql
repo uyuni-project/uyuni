@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 create or replace function rhn_sactionvm_mod_trig_fun() returns trigger as
 $$

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE suseImageInfo RENAME COLUMN action_id TO build_action_id;
 
 ALTER TABLE suseImageInfo ADD inspect_action_id NUMERIC;

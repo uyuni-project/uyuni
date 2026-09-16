@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnServerServerGroupArchCompat (server_arch_id, server_group_type)
     select lookup_server_arch('ppc64le-redhat-linux'),
             lookup_sg_type('monitoring_entitled')

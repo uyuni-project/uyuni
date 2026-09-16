@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnRepoRegenQueue (id, channel_label, reason, force)
 (SELECT sequence_nextval('rhn_repo_regen_queue_id_seq'),
         C.label,

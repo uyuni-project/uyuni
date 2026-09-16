@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 ALTER TABLE rhnDistChannelMap ADD org_id NUMERIC;
 ALTER TABLE rhnDistChannelMap ADD CONSTRAINT rhn_dcm_oid_fk FOREIGN KEY (org_id) REFERENCES web_customer (id) ON DELETE CASCADE;

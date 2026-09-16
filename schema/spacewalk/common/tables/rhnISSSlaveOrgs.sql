@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 create table rhnISSSlaveOrgs (
 	slave_id NUMERIC not null constraint rhn_isssorg_sid_fk references rhnISSSlave(id) on delete cascade,

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnFeature (id, label, name, created, modified)
   select sequence_nextval('rhn_feature_seq'), 'ftr_package_lock', 'Lock Packages',
          current_timestamp, current_timestamp from dual

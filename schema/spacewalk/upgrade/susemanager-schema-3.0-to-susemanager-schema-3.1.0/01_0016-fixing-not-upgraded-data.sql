@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Inserting into rhnPackageKey
 update rhnPackageKey set provider_id = lookup_package_provider('Fedora')
  where key_id = '11adc0948e1431d5';

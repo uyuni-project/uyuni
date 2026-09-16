@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Adding the column 'channel_family_id' to suseProducts
 -- Adding the column 'base' to suseProducts
 

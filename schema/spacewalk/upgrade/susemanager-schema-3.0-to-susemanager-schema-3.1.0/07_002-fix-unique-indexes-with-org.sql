@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 drop index if exists rhn_cs_label_uq;
 CREATE UNIQUE INDEX rhn_cs_label_uq

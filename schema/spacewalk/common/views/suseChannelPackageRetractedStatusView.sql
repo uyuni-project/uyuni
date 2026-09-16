@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- Similar as rhnChannelPackage, but enhanced with the 'is_retracted' status if
 -- given package is part of a retracted patch in the channel.

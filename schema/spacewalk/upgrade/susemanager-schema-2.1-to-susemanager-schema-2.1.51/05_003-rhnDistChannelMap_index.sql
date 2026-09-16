@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 alter table rhnDistChannelMap drop constraint rhn_dcm_release_caid_oid_uq;
 

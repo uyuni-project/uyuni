@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DELETE FROM rhnTaskoRun
     WHERE template_id IN (SELECT id FROM rhnTaskoTemplate
         WHERE bunch_id = (SELECT id FROM rhnTaskoBunch WHERE name = 'custom-gpg-key-import-bunch')
