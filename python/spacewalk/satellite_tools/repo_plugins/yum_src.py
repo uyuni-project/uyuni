@@ -108,10 +108,10 @@ PQC_SIGCHECK_PLUGIN_PATH = os.path.join(
 # The path the PQC sigcheck plugin reads keys from is hardcoded
 PQC_KEYRING_PATH = "/usr/lib/rpm/pqkeys"
 # Base path for PQC certificates Uyuni holds in /var/lib/spacewalk/pqkeys:
-# - standard: vendor certificates shipped with uyuni or susemanager build-keys
-# - custom: administrator-provided certificates
+# - vendored: shipped with uyuni or susemanager build-keys in /var/lib/spacewalk/pqkeys
+# - custom: administrator-provided certificates in /var/lib/spacewalk/pqkeys/custom
 SPACEWALK_PQC_KEYS_PATH = os.path.join(SPACEWALK_LIB, "pqkeys")
-PQC_KEYS_SUBDIRECTORIES = ("standard", "custom")
+PQC_CUSTOM_KEYS_SUBDIRECTORY = "custom"
 PQC_CERTIFICATE_EXTENSIONS = (".pem", ".crt")
 PQC_CERTIFICATE_GLOBS = ("*.pem", "*.crt")
 # Prefix of the certificates temporarily copied into the PQC keys path
@@ -956,7 +956,7 @@ type=rpm-md
                     sigcheck="",
                 )
             )
-            
+
         # Zypper is not able to run a sigcheck plugin chrooted into the reposync root,
         # so the PQC signature of the metadata is verified by a Zypper
         # run that is not chrooted and only refreshes the metadata.
@@ -971,7 +971,7 @@ type=rpm-md
                     sigcheck="repo_sigcheck_plugin={}\n".format(PQC_SIGCHECK_PLUGIN),
                 )
             )
-            
+
         process = self._run_zypper_ref(
             reposd_dir=os.path.join(repo.root, "etc/zypp/repos.d/"),
             cache_dir=REPOSYNC_ZYPPER_RPMDB_PATH,
@@ -979,7 +979,7 @@ type=rpm-md
             solv_cache_dir=os.path.join(repo.root, "var/cache/zypp/solv/"),
             root=REPOSYNC_ZYPPER_ROOT,
         )
- 
+
         if process.returncode:
             if process.stderr:
                 raise RepoMDError(
@@ -1018,10 +1018,14 @@ type=rpm-md
             zypper_cmd += ["--root", root]
 
         zypper_cmd += [
-            "--reposd-dir", reposd_dir,
-            "--cache-dir", cache_dir,
-            "--raw-cache-dir", raw_cache_dir,
-            "--solv-cache-dir", solv_cache_dir,
+            "--reposd-dir",
+            reposd_dir,
+            "--cache-dir",
+            cache_dir,
+            "--raw-cache-dir",
+            raw_cache_dir,
+            "--solv-cache-dir",
+            solv_cache_dir,
             "ref",
         ]
 
@@ -1059,10 +1063,10 @@ type=rpm-md
 
     def _verify_pqc_signature(self, repo_config):
         """
-        Verify the PQC (Post-Quantum Cryptography) signature of the repository metadata.
+         Verify the PQC (Post-Quantum Cryptography) signature of the repository metadata.
 
-       :param repo_config: the Zypper repository configuration to verify with
-        :raises RepoMDError: if the metadata cannot be verified
+        :param repo_config: the Zypper repository configuration to verify with
+         :raises RepoMDError: if the metadata cannot be verified
         """
         reponame = str(self.channel_label or self.reponame)
         log(
@@ -1127,11 +1131,9 @@ type=rpm-md
         """
         reponame = os.path.basename(str(self.channel_label or self.reponame))
         roots = [
-            os.path.join(SPACEWALK_PQC_KEYS_PATH, subdir)
-            for subdir in PQC_KEYS_SUBDIRECTORIES
+            SPACEWALK_PQC_KEYS_PATH,
+            os.path.join(SPACEWALK_PQC_KEYS_PATH, PQC_CUSTOM_KEYS_SUBDIRECTORY),
         ]
-        # Also include the base path for backwards compatibility
-        roots.append(SPACEWALK_PQC_KEYS_PATH)
 
         directories = []
         for root in roots:
@@ -1139,7 +1141,7 @@ type=rpm-md
             if (
                 reponame
                 and reponame not in (os.curdir, os.pardir)
-                and reponame not in PQC_KEYS_SUBDIRECTORIES
+                and reponame != PQC_CUSTOM_KEYS_SUBDIRECTORY
             ):
                 directories.append(os.path.join(root, reponame))
         return self._list_certificates(directories)
@@ -1241,7 +1243,6 @@ type=rpm-md
                         certificate, exc
                     ),
                 )
-
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
