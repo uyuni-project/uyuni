@@ -3,7 +3,7 @@
     "LEAP": {
       "content": {
         "16.0": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.16.0-affected.xml",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.16.0-affected.xml.gz",
           "patch": ""
         }
       }
@@ -19,7 +19,7 @@
           "patch": ""
         },
         "16": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.16-affected.xml",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.16-affected.xml.gz",
           "patch": ""
         }
       }
