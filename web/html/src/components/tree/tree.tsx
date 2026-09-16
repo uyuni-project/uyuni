@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type ChangeEvent, type ReactNode, useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";

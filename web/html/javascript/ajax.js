@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /**
  * This file was created as a temporary solution to make it possible to remove the DWR library quickly.
  * Please, don't use the functions available here in any other scenario.

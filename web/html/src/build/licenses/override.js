@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export const applyOverrides = (name, version, license) => {
   /**
    * If the license is "X OR Y" but doesn't include parentheses, wrap it so it's correct in the aggregate list

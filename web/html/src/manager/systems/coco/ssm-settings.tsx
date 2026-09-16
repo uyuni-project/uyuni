@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { useMemo, useState } from "react";
 
 import { saveSsmCoCoSettings } from "components/coco-attestation/api";

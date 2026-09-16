@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { getClmFilterDescription } from "./filters.enum";
 
 describe("Testing filters enum and descriptions", () => {

@@ -1,4 +1,10 @@
 /*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
+/*
 How to add a new route:
 All the routes exported on the files '<*folder_name*>/index.ts' will be automatically registered.
 Check the file content-management/index.js for an example
