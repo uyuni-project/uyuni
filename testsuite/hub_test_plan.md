@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Hub Support Test Plan — v2
 
 **Product:** SUSE Multi-Linux Manager 5.2 and later / Uyuni

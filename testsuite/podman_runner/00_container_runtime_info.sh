@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Print what the container runtime looks like before any container is started.
 # A hang in a later "podman exec" cannot be explained without knowing which
 # storage driver and mount program podman picked on this runner, so record it

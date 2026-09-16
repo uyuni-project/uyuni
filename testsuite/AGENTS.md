@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Testsuite instructions
 
 Applies to everything under `testsuite/`. The root `AGENTS.md` routes testsuite-only work here. Its repository-wide sections still apply; its subsystem sections do not.

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 CREATE TABLE "test_runs"(
     "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "pr_number" INTEGER NOT NULL,

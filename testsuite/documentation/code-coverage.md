@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Code Coverage of the server components after a full test suite execution
 
 In your test suite you must configure JaCoCo, connected to the java components and run the full test suite, to see which blocks of code are triggered.
