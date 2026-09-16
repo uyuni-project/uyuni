@@ -1,3 +1,7 @@
 #!/usr/bin/sh
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 sha512sum kubectl-mlm_supportconfig >kubectl-mlm_supportconfig.sha512

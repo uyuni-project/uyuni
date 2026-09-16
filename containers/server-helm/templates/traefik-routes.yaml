@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 {{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware

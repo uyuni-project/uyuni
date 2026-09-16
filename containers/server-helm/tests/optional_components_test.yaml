@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 suite: test optional components (hub, coco, saline)
 templates:
   - hub.yaml
