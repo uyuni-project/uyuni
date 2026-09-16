@@ -57,13 +57,14 @@ SPDX-License-Identifier = "BSD-3-Clause"
 [[annotations]]
 path = [
     "java/licenses/*",
+    "search-server/spacewalk-search/licenses/*",
     "web/html/src/vendors/npm.licenses.txt",
     "web/html/src/vendors/npm.licenses*"
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
-  
+
 [[annotations]]
 path = [
   "testsuite/ext-tools/predictive-test-selection/readme_resources/**",
@@ -85,3 +86,13 @@ path = [
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 SUSE LLC"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
+  "**/StringResource_*.xml",
+  "**/*.po",
+  "**/*.pot"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC and contributors"
+SPDX-License-Identifier = "GFDL-1.2-only"
