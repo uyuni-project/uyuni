@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager-mine.conf' %}

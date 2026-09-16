@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {# 
   TU minion SLS execution is inside of a transaction, which means 
   schedule.present does not work. This is an asynchronous approach, where
