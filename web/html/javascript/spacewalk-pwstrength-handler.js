@@ -146,9 +146,11 @@ function updateTickIcon() {
         }
       }
 
-      items.push( `${valid ? "✓" : "-"} ${t("Maximum {{count}} occurrences per character", {
+      items.push(
+        `${valid ? "✓" : "-"} ${t("Maximum {count} occurrences per character", {
           count: passwordPolicy.maxCharacterOccurrence,
-        })}`,);
+        })}`
+      );
       }
 
     // Restrict consecutive characters
