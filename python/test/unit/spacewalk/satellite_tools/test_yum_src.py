@@ -807,14 +807,12 @@ class YumSrcTest(unittest.TestCase):
             cert_file.write(name)
         return path
 
-    def test_pqc_certificates_standard_and_custom(self):
+    def test_pqc_certificates_vendored_and_custom(self):
         cs = self._make_dummy_cs()
         cs.channel_label = "test_repo"
         keys_dir = tempfile.mkdtemp()
         try:
-            standard_cert = self._write_certificate(
-                os.path.join(keys_dir, "standard"), "standard.crt"
-            )
+            vendored_cert = self._write_certificate(keys_dir, "vendored.crt")
             custom_cert = self._write_certificate(
                 os.path.join(keys_dir, "custom"), "custom.pem"
             )
@@ -822,7 +820,7 @@ class YumSrcTest(unittest.TestCase):
             with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
                 # pylint: disable-next=protected-access
                 certs = cs._pqc_certificates()
-                self.assertIn(standard_cert, certs)
+                self.assertIn(vendored_cert, certs)
                 self.assertIn(custom_cert, certs)
         finally:
             shutil.rmtree(keys_dir)
@@ -832,16 +830,14 @@ class YumSrcTest(unittest.TestCase):
         cs.channel_label = "test_repo"
         keys_dir = tempfile.mkdtemp()
         try:
-            std_channel = self._write_certificate(
-                os.path.join(keys_dir, "standard", "test_repo"), "std_channel.crt"
+            vend_channel = self._write_certificate(
+                os.path.join(keys_dir, "test_repo"), "vend_channel.crt"
             )
             cust_channel = self._write_certificate(
                 os.path.join(keys_dir, "custom", "test_repo"), "cust_channel.pem"
             )
             # Other repo certificates should be ignored
-            self._write_certificate(
-                os.path.join(keys_dir, "standard", "other_repo"), "other.crt"
-            )
+            self._write_certificate(os.path.join(keys_dir, "other_repo"), "other.crt")
             self._write_certificate(
                 os.path.join(keys_dir, "custom", "other_repo"), "other2.pem"
             )
@@ -849,25 +845,24 @@ class YumSrcTest(unittest.TestCase):
             with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
                 # pylint: disable-next=protected-access
                 certs = cs._pqc_certificates()
-                self.assertEqual(sorted(certs), sorted([std_channel, cust_channel]))
+                self.assertEqual(sorted(certs), sorted([vend_channel, cust_channel]))
         finally:
             shutil.rmtree(keys_dir)
 
-    def test_pqc_certificates_legacy_root(self):
+    def test_pqc_certificates_channel_named_custom(self):
         cs = self._make_dummy_cs()
-        cs.channel_label = "test_repo"
+        cs.channel_label = "custom"
         keys_dir = tempfile.mkdtemp()
         try:
-            legacy_common = self._write_certificate(keys_dir, "common.pem")
-            legacy_channel = self._write_certificate(
-                os.path.join(keys_dir, "test_repo"), "channel.crt"
+            vend_common = self._write_certificate(keys_dir, "vend_common.crt")
+            cust_common = self._write_certificate(
+                os.path.join(keys_dir, "custom"), "cust_common.pem"
             )
 
             with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
                 # pylint: disable-next=protected-access
                 certs = cs._pqc_certificates()
-                self.assertIn(legacy_common, certs)
-                self.assertIn(legacy_channel, certs)
+                self.assertEqual(sorted(certs), sorted([cust_common, vend_common]))
         finally:
             shutil.rmtree(keys_dir)
 
