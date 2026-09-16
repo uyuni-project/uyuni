@@ -7,7 +7,7 @@ require 'xmlrpc/client'
 
 # Returns an XMLRPC client for a peripheral server with SSL verification disabled for self-signed certs.
 def peripheral_xmlrpc_client(fqdn)
-  protocol = $debug_mode ? 'http://' : 'https://'
+  protocol = hub_protocol
   XmlrpcSslHelper.build_client("#{protocol}#{fqdn}/rpc/api", ssl_verify: false)
 end
 
@@ -101,12 +101,12 @@ Given(/^I am authorized for the "Admin" section on "([^"]*)"$/) do |host|
   visit("#{url_base}/rhn/YourRhn.do")
   next if has_xpath?('//a[@href=\'/rhn/Logout.do\']', wait: 0)
 
-  raise ScriptError, "Login page for #{host} is not correctly loaded (url: #{page.current_url})" unless has_field?('username')
+  raise StandardError, "Login page for #{host} is not correctly loaded (url: #{page.current_url})" unless has_field?('username')
 
   fill_in('username', with: 'admin')
   fill_in('password', with: 'admin')
   click_button_and_wait('Sign In', match: :first)
-  raise ScriptError, "Login on #{host} failed (url: #{page.current_url})" unless
+  raise StandardError, "Login on #{host} failed (url: #{page.current_url})" unless
     has_xpath?('//a[@href=\'/rhn/Logout.do\']', wait: Capybara.default_max_wait_time * 3)
 end
 
@@ -123,26 +123,32 @@ Given(/^I am connected to the hub XMLRPC API$/) do
   hub_host = get_target('server').full_hostname
   $hub_api = NamespaceHub.new(hub_host, ssl_verify: false)
   response = $hub_api.login_with_autoconnect(*Credentials.for('server'))
-  raise ScriptError, 'Hub login failed' if response['SessionKey'].nil?
+  raise StandardError, 'Hub login failed' if response['SessionKey'].nil?
 end
 
 When(/^I call hub\.listServerIds via XMLRPC$/) do
+  raise StandardError, '$hub_api not initialized; run "I am connected to the hub XMLRPC API" first' if $hub_api.nil?
+
   $hub_api.list_server_ids
 end
 
 Then(/^the hub server IDs list should not be empty$/) do
-  raise ScriptError, 'Hub server IDs list is empty' if $hub_api.server_ids.empty?
+  raise StandardError, '$hub_api not initialized; run "I am connected to the hub XMLRPC API" first' if $hub_api.nil?
+  raise StandardError, 'Hub server IDs list is empty' if $hub_api.server_ids.empty?
 
   log "Hub server IDs: #{$hub_api.server_ids}"
 end
 
 When(/^I call multicast\.system\.list_systems via XMLRPC$/) do
+  raise StandardError, '$hub_api not initialized; run "I am connected to the hub XMLRPC API" first' if $hub_api.nil?
+
   $multicast_response = $hub_api.multicast_system_list
 end
 
 Then(/^multicast response should have successful responses$/) do
-  raise ScriptError, 'Multicast response missing Successful key' unless $multicast_response.key?('Successful')
-  raise ScriptError, 'No successful responses' if $multicast_response['Successful']['Responses'].nil?
+  raise StandardError, '$multicast_response not set; run "I call multicast.system.list_systems via XMLRPC" first' if $multicast_response.nil?
+  raise StandardError, 'Multicast response missing Successful key' unless $multicast_response.key?('Successful')
+  raise StandardError, 'No successful responses' if $multicast_response['Successful']['Responses'].nil?
 
   log "Multicast successful responses: #{$multicast_response['Successful']['Responses'].length}"
 end
@@ -150,10 +156,12 @@ end
 Then(/^multicast response should contain systems from "([^"]*)"$/) do |_host|
   successful = $multicast_response['Successful']['Responses']
   system_found = successful.any? { |response| !response.empty? }
-  raise ScriptError, 'No systems found in multicast response' unless system_found
+  raise StandardError, 'No systems found in multicast response' unless system_found
 end
 
 When(/^I logout from hub XMLRPC API$/) do
+  raise StandardError, '$hub_api not initialized; run "I am connected to the hub XMLRPC API" first' if $hub_api.nil?
+
   $hub_api.logout
 end
 
@@ -161,46 +169,46 @@ end
 
 When(/^I login to hub XMLRPC API with standard mode$/) do
   hub_host = get_target('server').full_hostname
-  protocol = $debug_mode ? 'http://' : 'https://'
+  protocol = hub_protocol
   client = XMLRPC::Client.new2("#{protocol}#{hub_host}/hub/rpc/api", nil, DEFAULT_TIMEOUT)
   session_key = client.call('hub.login', *Credentials.for('server'))
   add_context('hub_standard_session', session_key)
-  raise ScriptError, 'hub.login returned no session key' if session_key.nil? || session_key.empty?
+  raise StandardError, 'hub.login returned no session key' if session_key.nil? || session_key.empty?
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "hub.login failed: #{e.message}"
+  raise StandardError, "hub.login failed: #{e.message}"
 end
 
 When(/^I login to hub XMLRPC API with auth relay mode$/) do
   hub_host = get_target('server').full_hostname
-  protocol = $debug_mode ? 'http://' : 'https://'
+  protocol = hub_protocol
   client = XMLRPC::Client.new2("#{protocol}#{hub_host}/hub/rpc/api", nil, DEFAULT_TIMEOUT)
   session_key = client.call('hub.loginWithAuthRelayMode', *Credentials.for('server'))
   add_context('hub_relay_session', session_key)
-  raise ScriptError, 'hub.loginWithAuthRelayMode returned no session key' if session_key.nil? || session_key.empty?
+  raise StandardError, 'hub.loginWithAuthRelayMode returned no session key' if session_key.nil? || session_key.empty?
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "hub.loginWithAuthRelayMode failed: #{e.message}"
+  raise StandardError, "hub.loginWithAuthRelayMode failed: #{e.message}"
 end
 
 Then(/^the hub standard session key should be valid$/) do
   session_key = get_context('hub_standard_session')
-  raise ScriptError, 'No standard session key stored' if session_key.nil? || session_key.empty?
+  raise StandardError, 'No standard session key stored' if session_key.nil? || session_key.empty?
 end
 
 Then(/^the hub relay session key should be valid$/) do
   session_key = get_context('hub_relay_session')
-  raise ScriptError, 'No relay session key stored' if session_key.nil? || session_key.empty?
+  raise StandardError, 'No relay session key stored' if session_key.nil? || session_key.empty?
 end
 
 Then(/^the hub standard session key should be non-empty$/) do
   session_key = get_context('hub_standard_session')
-  raise ScriptError, 'hub.login returned nil or empty session key' if session_key.nil? || session_key.empty?
+  raise StandardError, 'hub.login returned nil or empty session key' if session_key.nil? || session_key.empty?
 
   log "Hub standard session key: #{session_key[0..8]}..."
 end
 
 Then(/^the hub relay session key should be non-empty$/) do
   session_key = get_context('hub_relay_session')
-  raise ScriptError, 'hub.loginWithAuthRelayMode returned nil or empty session key' if session_key.nil? || session_key.empty?
+  raise StandardError, 'hub.loginWithAuthRelayMode returned nil or empty session key' if session_key.nil? || session_key.empty?
 
   log "Hub relay session key: #{session_key[0..8]}..."
 end
@@ -208,17 +216,19 @@ end
 # Hub XMLRPC API: unicast namespace (A-08)
 
 When(/^I call unicast\.system\.list_systems for "([^"]*)" via XMLRPC$/) do |_host|
+  raise StandardError, '$hub_api not initialized; run "I am connected to the hub XMLRPC API" first' if $hub_api.nil?
+
   server_id = $hub_api.server_ids.first
-  raise ScriptError, 'No server IDs available; run hub.listServerIds first' if server_id.nil?
+  raise StandardError, 'No server IDs available; run hub.listServerIds first' if server_id.nil?
 
   log "Calling unicast.system.list_systems for server_id=#{server_id}"
   $unicast_response = $hub_api.unicast_system_list(server_id)
 end
 
 Then(/^unicast response should contain systems from "([^"]*)"$/) do |_host|
-  raise ScriptError, 'No unicast response stored' if $unicast_response.nil?
-  raise ScriptError, 'Unicast response is not an array' unless $unicast_response.is_a?(Array)
-  raise ScriptError, 'Unicast response contains no systems' if $unicast_response.empty?
+  raise StandardError, 'No unicast response stored' if $unicast_response.nil?
+  raise StandardError, 'Unicast response is not an array' unless $unicast_response.is_a?(Array)
+  raise StandardError, 'Unicast response contains no systems' if $unicast_response.empty?
 
   log "Unicast returned #{$unicast_response.length} system(s)"
 end
@@ -231,11 +241,11 @@ When(/^I call system\.list_systems on hub's own XMLRPC endpoint$/) do
   $hub_direct_systems = client.call('system.listSystems', session)
   client.call('auth.logout', session)
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Hub direct API call failed: #{e.message}"
+  raise StandardError, "Hub direct API call failed: #{e.message}"
 end
 
 Then(/^hub's own system list should not be empty$/) do
-  raise ScriptError, 'Hub direct system list is nil or empty' if $hub_direct_systems.nil? || $hub_direct_systems.empty?
+  raise StandardError, 'Hub direct system list is nil or empty' if $hub_direct_systems.nil? || $hub_direct_systems.empty?
 
   log "Hub /rpc/api returned #{$hub_direct_systems.length} system(s)"
 end
@@ -265,7 +275,7 @@ Then(/^I should see "([^"]*)" in peripherals list$/) do |host|
   peripheral_node = get_target(host)
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
-  raise ScriptError, "#{fqdn} not found in peripherals list" unless page.has_content?(fqdn, wait: DEFAULT_TIMEOUT)
+  raise StandardError, "#{fqdn} not found in peripherals list" unless page.has_content?(fqdn, wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I should see "([^"]*)" in the system list with "([^"]*)" system type$/) do |host, expected_type|
@@ -280,7 +290,7 @@ Then(/^I should see "([^"]*)" in the system list with "([^"]*)" system type$/) d
     sleep 5
   end
   system_type = row.find(:xpath, 'td[last()]').text.strip
-  raise ScriptError, "Expected system type '#{expected_type}' for #{fqdn}, got '#{system_type}'" unless system_type == expected_type
+  raise StandardError, "Expected system type '#{expected_type}' for #{fqdn}, got '#{system_type}'" unless system_type == expected_type
 end
 
 # A-02 negative registration helpers
@@ -307,13 +317,13 @@ end
 Then(/^I should see a registration failure error$/) do
   error_shown = page.has_selector?('.alert-danger, .notification-error', wait: DEFAULT_TIMEOUT) ||
                 page.has_content?(/failed|error|unable/i, wait: 5)
-  raise ScriptError, 'No error message shown after failed registration attempt' unless error_shown
+  raise StandardError, 'No error message shown after failed registration attempt' unless error_shown
 end
 
 Then(/^I should not see "([^"]*)" in peripherals list$/) do |host|
   fqdn = get_target(host).full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
-  raise ScriptError, "#{fqdn} found in peripherals list after expected failed registration" if page.has_content?(fqdn, wait: 5)
+  raise StandardError, "#{fqdn} found in peripherals list after expected failed registration" if page.has_content?(fqdn, wait: 5)
 end
 
 When(/^I create a non-admin user "([^"]*)" with password "([^"]*)" on "([^"]*)"$/) do |username, password, host|
@@ -323,7 +333,7 @@ When(/^I create a non-admin user "([^"]*)" with password "([^"]*)" on "([^"]*)"$
   client.call('user.create', session, username, password, username, username, 'testuser@example.com')
   client.call('auth.logout', session)
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Failed to create non-admin user #{username} on #{host}: #{e.message}"
+  raise StandardError, "Failed to create non-admin user #{username} on #{host}: #{e.message}"
 end
 
 When(/^I attempt to register "([^"]*)" as peripheral with username "([^"]*)" and password "([^"]*)"$/) do |host, username, password|
@@ -358,12 +368,12 @@ end
 Then(/^I should see a duplicate peripheral registration error$/) do
   error_shown = page.has_selector?('.alert-danger, .notification-error', wait: DEFAULT_TIMEOUT) ||
                 page.has_content?(/already registered|already exists|only have one hub/i, wait: 5)
-  raise ScriptError, 'No duplicate-registration error shown when re-registering already-registered peripheral' unless error_shown
+  raise StandardError, 'No duplicate-registration error shown when re-registering already-registered peripheral' unless error_shown
 end
 
 Then(/^the Hub Details page on "([^"]*)" should show the hub FQDN$/) do |_host|
   hub_fqdn = get_target('server').full_hostname
-  raise ScriptError, "Hub FQDN #{hub_fqdn} not found on peripheral Hub Details page" unless page.has_content?(hub_fqdn, wait: DEFAULT_TIMEOUT)
+  raise StandardError, "Hub FQDN #{hub_fqdn} not found on peripheral Hub Details page" unless page.has_content?(hub_fqdn, wait: DEFAULT_TIMEOUT)
 end
 
 # Hub peripheral registration: Method 2 - existing token (A-03)
@@ -378,7 +388,7 @@ When(/^I issue a new access token for hub on "([^"]*)"$/) do |host|
     step %(I click on "Issue")
     find('#generated-token', wait: DEFAULT_TIMEOUT)
     token = find('#generated-token').value.strip
-    raise ScriptError, "Empty token returned from #{host}" if token.empty?
+    raise StandardError, "Empty token returned from #{host}" if token.empty?
 
     add_context("#{host}_access_token", token)
   end
@@ -388,7 +398,7 @@ When(/^I add "([^"]*)" as peripheral using its access token$/) do |host|
   peripheral_node = get_target(host)
   token = get_context("#{host}_access_token")
   ca_content = peripheral_root_ca(peripheral_node)
-  raise ScriptError, "No access token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No access token stored for #{host}" if token.nil? || token.empty?
 
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
@@ -408,7 +418,7 @@ end
 When(/^I add "([^"]*)" as peripheral using its access token without root CA$/) do |host|
   peripheral_node = get_target(host)
   token = get_context("#{host}_access_token")
-  raise ScriptError, "No access token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No access token stored for #{host}" if token.nil? || token.empty?
 
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
@@ -431,7 +441,7 @@ When(/^I issue a new access token for wrong FQDN on "([^"]*)"$/) do |host|
     step %(I click on "Issue")
     find('#generated-token', wait: DEFAULT_TIMEOUT)
     token = find('#generated-token').value.strip
-    raise ScriptError, "Empty token returned from #{host}" if token.empty?
+    raise StandardError, "Empty token returned from #{host}" if token.empty?
 
     add_context("#{host}_wrong_fqdn_token", token)
   end
@@ -440,7 +450,7 @@ end
 When(/^I add "([^"]*)" as peripheral using its wrong-FQDN token$/) do |host|
   peripheral_node = get_target(host)
   token = get_context("#{host}_wrong_fqdn_token")
-  raise ScriptError, "No wrong-FQDN token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No wrong-FQDN token stored for #{host}" if token.nil? || token.empty?
 
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
@@ -463,7 +473,7 @@ When(/^I invalidate the token I just issued on "([^"]*)"$/) do |host|
     # no "Confirm access token modification" dialog - confirmed by observing the
     # token's Valid column flip straight to "No" with no modal ever appearing.
     # Waiting on that modal here just hangs until DEFAULT_TIMEOUT.
-    raise ScriptError, "Token for #{hub_fqdn} on #{host} did not become invalid" unless
+    raise StandardError, "Token for #{hub_fqdn} on #{host} did not become invalid" unless
       has_xpath?("#{row_xpath}//button[@aria-label='Validate']", wait: DEFAULT_TIMEOUT)
   end
 end
@@ -471,7 +481,7 @@ end
 When(/^I add "([^"]*)" as peripheral using its invalidated token$/) do |host|
   peripheral_node = get_target(host)
   token = get_context("#{host}_access_token")
-  raise ScriptError, "No access token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No access token stored for #{host}" if token.nil? || token.empty?
 
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
@@ -486,7 +496,7 @@ end
 Then(/^I should see a token rejection error$/) do
   error_shown = page.has_selector?('.alert-danger, .notification-error', wait: DEFAULT_TIMEOUT) ||
                 page.has_content?(/invalid|rejected|failed/i, wait: 5)
-  raise ScriptError, 'No token rejection error shown' unless error_shown
+  raise StandardError, 'No token rejection error shown' unless error_shown
 end
 
 # Hub peripheral registration: Method 3 - token + root CA (A-04)
@@ -494,7 +504,7 @@ end
 When(/^I fetch root CA certificate from "([^"]*)"$/) do |host|
   node = get_target(host)
   ca_content = peripheral_root_ca(node)
-  raise ScriptError, "Could not read root CA certificate from #{host}" if ca_content.empty?
+  raise StandardError, "Could not read root CA certificate from #{host}" if ca_content.empty?
 
   add_context("#{host}_root_ca", ca_content)
 end
@@ -503,8 +513,8 @@ When(/^I add "([^"]*)" as peripheral using its access token and pasted root CA$/
   peripheral_node = get_target(host)
   token = get_context("#{host}_access_token")
   ca_content = get_context("#{host}_root_ca")
-  raise ScriptError, "No access token stored for #{host}" if token.nil? || token.empty?
-  raise ScriptError, "No root CA stored for #{host}" if ca_content.nil? || ca_content.empty?
+  raise StandardError, "No access token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No root CA stored for #{host}" if ca_content.nil? || ca_content.empty?
 
   fqdn = peripheral_node.full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
@@ -520,8 +530,8 @@ end
 When(/^I add "([^"]*)" as peripheral using its access token and uploaded CA file$/) do |host|
   token = get_context("#{host}_access_token")
   ca_content = get_context("#{host}_root_ca")
-  raise ScriptError, "No access token stored for #{host}" if token.nil? || token.empty?
-  raise ScriptError, "No root CA stored for #{host}" if ca_content.nil? || ca_content.empty?
+  raise StandardError, "No access token stored for #{host}" if token.nil? || token.empty?
+  raise StandardError, "No root CA stored for #{host}" if ca_content.nil? || ca_content.empty?
 
   tmp_ca_path = "/tmp/hub_test_#{host}_ca.pem"
   File.write(tmp_ca_path, ca_content)
@@ -569,14 +579,14 @@ Then(/^the access token for "([^"]*)" should be listed as "([^"]*)"$/) do |host,
   row_xpath = "//tr[contains(., '#{fqdn}') and contains(., 'Consumed')]"
   case state
   when 'Invalid'
-    raise ScriptError, "Token for #{host} is not showing as invalid" unless
+    raise StandardError, "Token for #{host} is not showing as invalid" unless
       page.has_xpath?("#{row_xpath}//button[@aria-label='Validate']", wait: DEFAULT_TIMEOUT)
   when 'Valid'
-    raise ScriptError, "Token for #{host} is not showing as valid" unless
+    raise StandardError, "Token for #{host} is not showing as valid" unless
       page.has_xpath?("#{row_xpath}//button[@aria-label='Invalidate']", wait: DEFAULT_TIMEOUT)
   else
     xpath = "#{row_xpath}//td[contains(., '#{state}')]"
-    raise ScriptError, "Token state '#{state}' not found for #{host}" unless page.has_xpath?(xpath, wait: DEFAULT_TIMEOUT)
+    raise StandardError, "Token state '#{state}' not found for #{host}" unless page.has_xpath?(xpath, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -590,7 +600,7 @@ When(/^I regenerate mirror credentials for peripheral "([^"]*)"$/) do |host|
   step %(I follow "#{fqdn}")
   step %(I click on "Regenerate Credentials")
   step %(I click on "Confirm")
-  raise ScriptError, 'Credentials regeneration did not confirm' unless
+  raise StandardError, 'Credentials regeneration did not confirm' unless
     page.has_content?(/regenerated/i, wait: DEFAULT_TIMEOUT)
 end
 
@@ -647,7 +657,7 @@ Then(/^channel sync from peripheral "([^"]*)" should succeed$/) do |host|
   node = get_target(host)
   start_time = get_context("#{host}_taskomatic_check_start_time") || '00:00:00'
   sleep 15
-  raise ScriptError, "RepoMDError present in taskomatic log on #{host} since #{start_time} after token reactivation" if
+  raise StandardError, "RepoMDError present in taskomatic log on #{host} since #{start_time} after token reactivation" if
     recent_taskomatic_repomd_error?(node, start_time)
 end
 
@@ -668,7 +678,7 @@ Then(/^channel "([^"]*)" should exist on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
   user, password = Credentials.for(host)
   _result, code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_list | grep -q '#{channel}'", check_errors: false)
-  raise ScriptError, "Channel #{channel} not found on #{host}" unless code.zero?
+  raise StandardError, "Channel #{channel} not found on #{host}" unless code.zero?
 end
 
 Then(/^channel "([^"]*)" on "([^"]*)" should have "([^"]*)" packages?$/) do |channel, host, pkg_count|
@@ -677,7 +687,7 @@ Then(/^channel "([^"]*)" on "([^"]*)" should have "([^"]*)" packages?$/) do |cha
   output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_listallpackages #{channel} | wc -l")
   actual_count = output.strip.to_i
   expected_count = pkg_count.to_i
-  raise ScriptError, "Expected #{expected_count} packages, found #{actual_count}" unless actual_count >= expected_count
+  raise StandardError, "Expected #{expected_count} packages, found #{actual_count}" unless actual_count >= expected_count
 end
 
 When(/^I remove synced channels from "([^"]*)"$/) do |host|
@@ -719,7 +729,7 @@ Then(/^the uyuni-hub-xmlrpc-0 container should be running on "([^"]*)"$/) do |ho
   _result, code = node.run('podman ps --format "{{.Names}}" | grep -q uyuni-hub-xmlrpc-0',
                            check_errors: false,
                            runs_in_container: false)
-  raise ScriptError, "Container uyuni-hub-xmlrpc-0 not running on #{host}" unless code.zero?
+  raise StandardError, "Container uyuni-hub-xmlrpc-0 not running on #{host}" unless code.zero?
 end
 
 Then(/^the hub\.conf on "([^"]*)" should contain the required configuration keys$/) do |host|
@@ -728,7 +738,7 @@ Then(/^the hub\.conf on "([^"]*)" should contain the required configuration keys
                          check_errors: false,
                          runs_in_container: false)
   %w[HUB_API_URL HUB_CONNECT_TIMEOUT HUB_REQUEST_TIMEOUT HUB_CONNECT_USING_SSL].each do |key|
-    raise ScriptError, "hub.conf missing key: #{key}" unless conf.include?(key)
+    raise StandardError, "hub.conf missing key: #{key}" unless conf.include?(key)
   end
   log 'hub.conf contains all required keys'
 end
@@ -750,7 +760,7 @@ end
 Then(/^the Hub XMLRPC API should be running on "([^"]*)"$/) do |host|
   node = get_target(host)
   result, _code = node.run('curl -k -s -o /dev/null -w "%{http_code}" https://localhost/hub/rpc/api', check_errors: false)
-  raise ScriptError, "Hub XMLRPC API returned unexpected status '#{result.strip}', expected 405" unless result.strip == '405'
+  raise StandardError, "Hub XMLRPC API returned unexpected status '#{result.strip}', expected 405" unless result.strip == '405'
 end
 
 # Channel sync waiting
@@ -817,7 +827,7 @@ end
 When(/^I transfer ISS v2 export from hub to "([^"]*)"$/) do |host|
   peripheral_node = get_target(host)
   export_path = get_context('iss_export_path')
-  raise ScriptError, 'No ISS export path stored' if export_path.nil?
+  raise StandardError, 'No ISS export path stored' if export_path.nil?
 
   hub_node = get_target('server')
   archive_path = "/tmp/iss-export-#{host}.tar.gz"
@@ -827,10 +837,10 @@ When(/^I transfer ISS v2 export from hub to "([^"]*)"$/) do |host|
   hub_node.run("tar czf #{archive_path} -C #{export_path} .", verbose: true)
 
   success = file_extract(hub_node, archive_path, archive_path)
-  raise ScriptError, 'Failed to extract ISS v2 export archive from hub' unless success
+  raise StandardError, 'Failed to extract ISS v2 export archive from hub' unless success
 
   success = file_inject(peripheral_node, archive_path, archive_path)
-  raise ScriptError, 'Failed to inject ISS v2 export archive into peripheral' unless success
+  raise StandardError, 'Failed to inject ISS v2 export archive into peripheral' unless success
 
   peripheral_node.run("mkdir -p #{export_path}", verbose: true)
   peripheral_node.run("tar xzf #{archive_path} -C #{export_path}", verbose: true)
@@ -844,7 +854,7 @@ Then(/^channel "([^"]*)" should be listed in API on "([^"]*)"$/) do |channel, ho
   node = get_target(host)
   user, password = Credentials.for(host)
   output, _code = node.run("spacecmd -u #{user} -p #{password} -- softwarechannel_list", check_errors: false)
-  raise ScriptError, "Channel #{channel} not found via API on #{host}" unless output.include?(channel)
+  raise StandardError, "Channel #{channel} not found via API on #{host}" unless output.include?(channel)
 end
 
 # Hub reporting (C-01)
@@ -858,7 +868,7 @@ When(/^I set the admin page size to "([^"]*)" on "([^"]*)"$/) do |size, host|
     step %(I follow the left menu "Home > My Preferences")
     step %(I select "#{size}" from "pagesize")
     step %(I click on "Save Preferences")
-    raise ScriptError, "Failed to save page size preference on #{host}" unless page.has_content?('Preferences modified', wait: DEFAULT_TIMEOUT)
+    raise StandardError, "Failed to save page size preference on #{host}" unless page.has_content?('Preferences modified', wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -868,7 +878,7 @@ When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
     step %(I follow "update-reporting-hub-default")
     step %(I follow "mgr-update-reporting-hub-bunch")
     step %(I click on "Single Run Schedule")
-    raise ScriptError, 'bunch was not scheduled' unless page.has_content?('bunch was scheduled', wait: DEFAULT_TIMEOUT)
+    raise StandardError, 'bunch was not scheduled' unless page.has_content?('bunch was scheduled', wait: DEFAULT_TIMEOUT)
 
     repeat_until_timeout(timeout: DEFAULT_TIMEOUT,
                          message: 'Hub reporting task did not finish') do
@@ -881,7 +891,7 @@ When(/^I schedule the reporting update task on "([^"]*)"$/) do |host|
       step %(I follow "update-reporting-default")
       step %(I follow "mgr-update-reporting-bunch")
       step %(I click on "Single Run Schedule")
-      raise ScriptError, 'bunch was not scheduled on peripheral' unless page.has_content?('bunch was scheduled', wait: DEFAULT_TIMEOUT)
+      raise StandardError, 'bunch was not scheduled on peripheral' unless page.has_content?('bunch was scheduled', wait: DEFAULT_TIMEOUT)
 
       repeat_until_timeout(timeout: DEFAULT_TIMEOUT,
                            message: 'Peripheral reporting task did not finish') do
@@ -899,7 +909,7 @@ Then(/^the hub reportdb should contain one row per peripheral$/) do
     check_errors: false
   )
   count = result.strip.to_i
-  raise ScriptError, "Expected at least 2 distinct mgm_id rows in hub reportdb, got #{count}" unless count >= 2
+  raise StandardError, "Expected at least 2 distinct mgm_id rows in hub reportdb, got #{count}" unless count >= 2
 end
 
 Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |table|
@@ -908,7 +918,7 @@ Then(/^the hub reportdb "([^"]*)" table should have a recent synced_date$/) do |
     "| grep -E '^\\s+[tf]\\s*$' | tr -d ' '",
     check_errors: false
   )
-  raise ScriptError, "synced_date in #{table} is not recent" unless result.strip == 't'
+  raise StandardError, "synced_date in #{table} is not recent" unless result.strip == 't'
 end
 
 # Hub channel synchronization: organization mapping prerequisite (A-06)
@@ -920,7 +930,7 @@ When(/^I create organization "([^"]*)" on "([^"]*)"$/) do |org_name, host|
   client.call('org.create', session, org_name, 'test_org_admin', 'TestPass123!', 'Mr.', 'Test', 'Admin', 'test_org_admin@example.com', false)
   client.call('auth.logout', session)
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Failed to create organization #{org_name} on #{host}: #{e.message}"
+  raise StandardError, "Failed to create organization #{org_name} on #{host}: #{e.message}"
 end
 
 # Full topology: peripheral-side activation key and minion bootstrap (B-01..B-04)
@@ -934,7 +944,7 @@ When(/^I create an activation key "([^"]*)" on "([^"]*)" with channel "([^"]*)"$
   client.call('auth.logout', session)
   add_context("#{host}_activation_key", key_label)
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Failed to create activation key on #{host}: #{e.message}"
+  raise StandardError, "Failed to create activation key on #{host}: #{e.message}"
 end
 
 When(/^I bootstrap "([^"]*)" to peripheral "([^"]*)" using activation key "([^"]*)"$/) do |minion_host, peripheral_host, key_label|
@@ -946,7 +956,7 @@ When(/^I bootstrap "([^"]*)" to peripheral "([^"]*)" using activation key "([^"]
     step %(I enter "linux" as "password")
     step %(I select "#{key_label}" from "activationKeys")
     step %(I click on "Bootstrap")
-    raise ScriptError, 'Bootstrap process did not initiate' unless page.has_content?('Bootstrap process initiated.', wait: DEFAULT_TIMEOUT)
+    raise StandardError, 'Bootstrap process did not initiate' unless page.has_content?('Bootstrap process initiated.', wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -955,7 +965,7 @@ Then(/^I should see "([^"]*)" registered on "([^"]*)"$/) do |minion_host, periph
   minion_name = get_system_name(minion_host)
   user, password = Credentials.for(peripheral_host)
   _result, code = peripheral_node.run("spacecmd -u #{user} -p #{password} system_list | grep -q '#{minion_name}'", check_errors: false)
-  raise ScriptError, "#{minion_host} not found on peripheral #{peripheral_host}" unless code.zero?
+  raise StandardError, "#{minion_host} not found on peripheral #{peripheral_host}" unless code.zero?
 end
 
 Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
@@ -963,19 +973,19 @@ Then(/^I should not see "([^"]*)" registered on hub$/) do |minion_host|
   minion_name = get_system_name(minion_host)
   user, password = Credentials.for('server')
   _result, code = hub_node.run("spacecmd -u #{user} -p #{password} system_list | grep -q '#{minion_name}'", check_errors: false)
-  raise ScriptError, "#{minion_host} unexpectedly found on hub" if code.zero?
+  raise StandardError, "#{minion_host} unexpectedly found on hub" if code.zero?
 end
 
 # Hub host visibility helpers
 
 Then(/^I should see the name of "([^"]*)"$/) do |host|
   fqdn = get_target(host).full_hostname
-  raise ScriptError, "FQDN #{fqdn} not visible on current page" unless page.has_content?(fqdn, wait: DEFAULT_TIMEOUT)
+  raise StandardError, "FQDN #{fqdn} not visible on current page" unless page.has_content?(fqdn, wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I should not see the name of "([^"]*)"$/) do |host|
   fqdn = get_target(host).full_hostname
-  raise ScriptError, "FQDN #{fqdn} still visible on current page" if page.has_content?(fqdn, wait: 5)
+  raise StandardError, "FQDN #{fqdn} still visible on current page" if page.has_content?(fqdn, wait: 5)
 end
 
 # A-10 peripheral-side deregistration
@@ -991,7 +1001,7 @@ end
 Then(/^the Hub Details page on "([^"]*)" should be empty$/) do |host|
   using_server(host) do
     visit('/rhn/manager/admin/hub/hubDetails')
-    raise ScriptError, 'Hub Details page still shows hub FQDN after deregistration' if
+    raise StandardError, 'Hub Details page still shows hub FQDN after deregistration' if
       page.has_content?(get_target('server').full_hostname, wait: 5)
   end
 end
@@ -1000,7 +1010,7 @@ Then(/^I should not see "([^"]*)" in peripherals list on hub$/) do |host|
   fqdn = get_target(host).full_hostname
   hub_fqdn = get_target('server').full_hostname
   visit("https://#{hub_fqdn}/rhn/manager/admin/hub/peripheralConfigurations")
-  raise ScriptError, "#{fqdn} still appears in hub peripherals list after peripheral-side deregistration" if
+  raise StandardError, "#{fqdn} still appears in hub peripherals list after peripheral-side deregistration" if
     page.has_content?(fqdn, wait: 10)
 end
 
@@ -1014,7 +1024,7 @@ When(/^I bootstrap "([^"]*)" as a Salt minion of hub$/) do |host|
   step %(I enter "root" as "user")
   step %(I enter "linux" as "password")
   step %(I click on "Bootstrap")
-  raise ScriptError, 'Bootstrap did not initiate' unless page.has_content?('Bootstrap process initiated.', wait: DEFAULT_TIMEOUT)
+  raise StandardError, 'Bootstrap did not initiate' unless page.has_content?('Bootstrap process initiated.', wait: DEFAULT_TIMEOUT)
 end
 
 Then(/^I should see "([^"]*)" in hub system list as "([^"]*)" type$/) do |host, _expected_type|
@@ -1042,7 +1052,7 @@ Then(/^there should be exactly one entry for "([^"]*)" in hub system list$/) do 
     check_errors: false
   )
   count = output.strip.to_i
-  raise ScriptError, "Expected 1 entry for #{host} in hub system list, found #{count}" unless count == 1
+  raise StandardError, "Expected 1 entry for #{host} in hub system list, found #{count}" unless count == 1
 end
 
 When(/^I document the two-entries behavior for "([^"]*)" when bootstrapped after peripheral registration$/) do |host|
@@ -1068,7 +1078,7 @@ Then(/^I should see "([^"]*)" in "([^"]*)" system list as proxy type$/) do |prox
     "spacecmd -u #{user} -p #{password} system_list 2>/dev/null",
     check_errors: false
   )
-  raise ScriptError, "Proxy #{proxy_host} (#{proxy_name}) not found in #{peripheral_host} system list" unless output.include?(proxy_name)
+  raise StandardError, "Proxy #{proxy_host} (#{proxy_name}) not found in #{peripheral_host} system list" unless output.include?(proxy_name)
 
   log "Proxy #{proxy_host} confirmed in #{peripheral_host} system list"
 end
@@ -1081,12 +1091,12 @@ When(/^I apply erratum "([^"]*)" on "([^"]*)" via "([^"]*)" peripheral API$/) do
   session = client.call('auth.login', *Credentials.for(peripheral_host))
   minion_name = get_system_name(minion_host)
   systems = client.call('system.searchByName', session, minion_name)
-  raise ScriptError, "#{minion_host} not found on peripheral #{peripheral_host}" if systems.empty?
+  raise StandardError, "#{minion_host} not found on peripheral #{peripheral_host}" if systems.empty?
 
   system_id = systems.first['id']
   errata = client.call('system.getRelevantErrata', session, system_id)
   target = errata.select { |e| e['advisory_name'] == errata_name }
-  raise ScriptError, "Errata #{errata_name} not relevant for #{minion_host} on #{peripheral_host}" if target.empty?
+  raise StandardError, "Errata #{errata_name} not relevant for #{minion_host} on #{peripheral_host}" if target.empty?
 
   errata_ids = target.map { |e| e['id'] }
   client.call('system.scheduleApplyErrata', session, system_id, errata_ids, nil, false)
@@ -1094,7 +1104,7 @@ When(/^I apply erratum "([^"]*)" on "([^"]*)" via "([^"]*)" peripheral API$/) do
   client.call('auth.logout', session)
   log "Errata #{errata_name} scheduled for #{minion_name} (id=#{system_id}) via #{peripheral_host} API"
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Failed to apply errata #{errata_name} on #{minion_host} via #{peripheral_host}: #{e.message}"
+  raise StandardError, "Failed to apply errata #{errata_name} on #{minion_host} via #{peripheral_host}: #{e.message}"
 end
 
 When(/^I run a remote command "([^"]*)" on "([^"]*)" via "([^"]*)"$/) do |cmd, minion_host, peripheral_host|
@@ -1103,7 +1113,7 @@ When(/^I run a remote command "([^"]*)" on "([^"]*)" via "([^"]*)"$/) do |cmd, m
   session = client.call('auth.login', *Credentials.for(peripheral_host))
   minion_name = get_system_name(minion_host)
   systems = client.call('system.searchByName', session, minion_name)
-  raise ScriptError, "#{minion_host} not found on peripheral #{peripheral_host}" if systems.empty?
+  raise StandardError, "#{minion_host} not found on peripheral #{peripheral_host}" if systems.empty?
 
   system_id = systems.first['id']
   client.call('system.scheduleScriptRun', session, system_id, 'root', 'root', 30, "#{cmd}\n", nil)
@@ -1111,7 +1121,7 @@ When(/^I run a remote command "([^"]*)" on "([^"]*)" via "([^"]*)"$/) do |cmd, m
   add_context('last_remote_minion', minion_host)
   client.call('auth.logout', session)
 rescue XMLRPC::FaultException => e
-  raise ScriptError, "Remote command scheduling failed: #{e.message}"
+  raise StandardError, "Remote command scheduling failed: #{e.message}"
 end
 
 Then(/^the remote command should complete on "([^"]*)"$/) do |minion_host|
@@ -1131,7 +1141,7 @@ Then(/^the package "([^"]*)" checksum on "([^"]*)" should match the same package
     "package_search #{package} 2>/dev/null | head -1",
     check_errors: false
   )
-  raise ScriptError, "Package #{package} not found on minion #{minion_host}" if minion_out.strip.empty?
+  raise StandardError, "Package #{package} not found on minion #{minion_host}" if minion_out.strip.empty?
 
   log "Package #{package} checksum on #{minion_host}: #{minion_out.strip}"
   log "Hub spacecmd output: #{hub_out.strip}"
@@ -1172,7 +1182,7 @@ Then(/^I should see a channel sync failure error on "([^"]*)"$/) do |host|
     step %(I click on "Confirm")
     error_shown = page.has_selector?('.alert-danger, .notification-error', wait: 120) ||
                   page.has_content?(/failed|error|unreachable/i, wait: 5)
-    raise ScriptError, 'Expected sync failure error not shown when hub is down' unless error_shown
+    raise StandardError, 'Expected sync failure error not shown when hub is down' unless error_shown
   end
 end
 
@@ -1223,7 +1233,7 @@ def verify_hub_signed_cert_is_served!(peripheral, node, fqdn, paths)
   hub_ca_dn = hub_ca_subject.strip.sub(/^subject=/, '')
   served_dn = served_issuer.strip.sub(/^issuer=/, '')
   unless hub_ca_dn == served_dn
-    raise ScriptError,
+    raise StandardError,
           "Server container already running on #{peripheral} but serving a certificate issued by " \
           "'#{served_dn}', not the hub-signed CA ('#{hub_ca_dn}'). The peripheral must not have a server " \
           'pre-installed before this scenario runs - uninstall the existing server and rerun.'
@@ -1258,7 +1268,7 @@ When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do
   machine_name = fqdn.split('.').first
   cert_dir, = hub_node.run("find #{HUB_SSL_BUILD_DIR} -maxdepth 1 -type d -name '#{machine_name}*' | head -1")
   cert_dir = cert_dir.strip
-  raise ScriptError, "No certificate directory for #{fqdn} found on #{hub} - generate the certificates first" if cert_dir.empty?
+  raise StandardError, "No certificate directory for #{fqdn} found on #{hub} - generate the certificates first" if cert_dir.empty?
 
   paths = hub_signed_cert_paths(fqdn)
   transfers = {
@@ -1273,11 +1283,11 @@ When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do
   peripheral_node.run("mkdir -p #{HUB_SSL_BUILD_DIR}", runs_in_container: false)
   transfers.each do |hub_path, peripheral_path|
     controller_tmp = "/tmp/#{File.basename(peripheral_path)}"
-    raise ScriptError, "Failed to extract #{hub_path} from #{hub}" unless file_extract(hub_node, hub_path, controller_tmp)
+    raise StandardError, "Failed to extract #{hub_path} from #{hub}" unless file_extract(hub_node, hub_path, controller_tmp)
 
     success = get_target('localhost').scp_upload(controller_tmp, peripheral_path, host: peripheral_node.full_hostname)
     FileUtils.rm_f(controller_tmp)
-    raise ScriptError, "Failed to copy #{peripheral_path} to #{peripheral}" unless success
+    raise StandardError, "Failed to copy #{peripheral_path} to #{peripheral}" unless success
   end
   peripheral_node.run("chmod 600 #{paths[:key]}", runs_in_container: false)
 end
