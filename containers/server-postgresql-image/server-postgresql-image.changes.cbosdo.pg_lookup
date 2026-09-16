@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - Avoid reverse lookups from postgresql (bsc#1270038)
 - Use the POD_NETWORK variable as the CIDR for plain connections

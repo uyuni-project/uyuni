@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 {{- $httpd := .Values.global.httpd | fromYaml }}
 {{- $crt := regexFind "(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----" (((($httpd).httpd).server_crt) | default "") }}
 {{- $key := regexFind "(?s)-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----.*?-----END [A-Z0-9 ]*PRIVATE KEY-----" (((($httpd).httpd).server_key) | default "") }}

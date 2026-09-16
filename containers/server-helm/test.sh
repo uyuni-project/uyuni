@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 HELM_UNITTEST=helm-unittest
 command -v $HELM_UNITTEST 2>/dev/null 1>&2
 if test $? -ne 0; then

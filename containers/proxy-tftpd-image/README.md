@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 TFTP server for use with the Uyuni proxy or server.
 This server is serving content from an HTTP API rather than from a local storage.
 
