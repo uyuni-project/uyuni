@@ -1282,7 +1282,8 @@ When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do
   # attempt an mgrctl cp into a non-existent container).
   peripheral_node.run("mkdir -p #{HUB_SSL_BUILD_DIR}", runs_in_container: false)
   transfers.each do |hub_path, peripheral_path|
-    controller_tmp = "/tmp/#{File.basename(peripheral_path)}"
+    # Prefix with machine_name to avoid /tmp collisions when prh1 and prh2 run in parallel.
+    controller_tmp = "/tmp/#{machine_name}-#{File.basename(peripheral_path)}"
     raise StandardError, "Failed to extract #{hub_path} from #{hub}" unless file_extract(hub_node, hub_path, controller_tmp)
 
     success = get_target('localhost').scp_upload(controller_tmp, peripheral_path, host: peripheral_node.full_hostname)
