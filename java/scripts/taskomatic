@@ -1,4 +1,10 @@
 #!/bin/sh
+
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # TaskomaticDaemon start script
 . /etc/rhn/taskomatic.conf
 for conf in /etc/rhn/taskomatic.conf.d/*.conf; do

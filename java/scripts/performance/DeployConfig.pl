@@ -1,4 +1,10 @@
 #!/usr/bin/perl
+
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #
 # This script is used for deploying config files to all systems on a satellite to generate
 #    many config deploy actions.  It also deploys the files spread over a year
