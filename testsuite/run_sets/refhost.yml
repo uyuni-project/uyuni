@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # This file describes the order of features on the reference hosts.
 #
 # If you create new features, please see conventions about naming of the

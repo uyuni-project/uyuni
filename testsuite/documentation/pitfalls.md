@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Pitfalls in the test suite Ruby code
 
 ## Use of DOM elements in the .feature description

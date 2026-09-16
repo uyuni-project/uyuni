@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 default: -f pretty -r features
 action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
