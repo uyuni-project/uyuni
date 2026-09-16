@@ -221,5 +221,26 @@ public class TaskConstants {
     public static final String TASK_QUERY_PKGCLEANUP_FIND_ORPHAN_VENDOR_PACKAGES =
             "pkgcleanup_find_orphan_vendor_packages";
 
+    public static final String TASK_QUERY_CLMDIFF_DRIVER_QUERY =
+            "clmdiff_driver_query";
+
+    public static final String TASK_QUERY_CLMDIFF_DEQUEUE =
+            "clmdiff_dequeue";
+
+    public static final String TASK_QUERY_CLMDIFF_DETAILS_QUERY =
+            "clmdiff_details_query";
+
+    public static final String TASK_QUERY_CLMDIFF_MARK_IN_PROGRESS =
+            "clmdiff_mark_in_progress";
+
+    public static final String TASK_QUERY_CLMDIFF_UNMARK_IN_PROGRESS =
+            "clmdiff_unmark_in_progress";
+
+    public static final String TASK_QUERY_CLMDIFF_CLEAR_IN_PROGRESS =
+            "clmdiff_clear_in_progress";
+
+    public static final String TASK_QUERY_CLMDIFF_INSERT_TASK =
+            "clmdiff_insert_task";
+
     private TaskConstants() { }
 }
