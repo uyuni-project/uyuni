@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # Adds a trailing space to a word if it does not end with a '=' character
 # The resulting word is assigned to the 'opt' variable
 # 1: the word to be appended
