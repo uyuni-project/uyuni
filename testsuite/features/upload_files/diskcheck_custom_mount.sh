@@ -25,18 +25,18 @@ function print_help() {
 
 function setup() {
     echo "Setup:"
-    [ ! -d ${DSKCHK_IMAGE_DIR} ] && mkdir -p ${DSKCHK_IMAGE_DIR}
-    [ ! -d ${DSKCHK_MOUNT} ] && mkdir -p ${DSKCHK_MOUNT}
-    dd if=/dev/zero of=${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE} bs=1M count=${DSKCHK_IMAGE_SIZE} && \
-    mkfs.ext4 ${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE} && \
-    mount -o loop,rw ${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE} ${DSKCHK_MOUNT}
+    [ ! -d "${DSKCHK_IMAGE_DIR}" ] && mkdir -p "${DSKCHK_IMAGE_DIR}"
+    [ ! -d "${DSKCHK_MOUNT}" ] && mkdir -p "${DSKCHK_MOUNT}"
+    dd if=/dev/zero of="${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" bs=1M count=${DSKCHK_IMAGE_SIZE} && \
+    mkfs.ext4 "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" && \
+    mount -o loop,rw "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" "${DSKCHK_MOUNT}"
     return $?
 }
 
 function cleanup() {
     echo "Clean up:"
-    mount | grep -q " ${DSKCHK_MOUNT} " && umount ${DSKCHK_MOUNT} || true
-    [ -f ${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE} ] && rm ${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}
+    mount | grep -q " ${DSKCHK_MOUNT} " && umount "${DSKCHK_MOUNT}" || true
+    [ -f "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" ] && rm "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}"
     return 0
 }
 

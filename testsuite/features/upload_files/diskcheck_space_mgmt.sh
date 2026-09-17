@@ -4,11 +4,11 @@
 
 # default values
 DSKCHK_CLEAN=0
-DSKCHK_DIRECTORY=/root
+DSKCHK_DIRECTORY="/root"
 DSKCHK_FILE_PREFIX="dskchk_space_holder_"
 DSKCHK_MOUNT=/
 DSKCHK_PERCENTAGE=0
-DSKCHK_NEW_DIR_FILE=dskchk_delete_this_dir
+DSKCHK_NEW_DIR_FILE="dskchk_delete_this_dir"
 DSKCHK_FILLINGS=0
 
 function print_help() {
@@ -26,8 +26,8 @@ function print_help() {
 
 function cleanup() {
     echo "Cleanup:"
-    rm ${DSKCHK_DIRECTORY}/${DSKCHK_FILE_PREFIX}*
-    [ -f ${DSKCHK_DIRECTORY}/dskchk_delete_this_dir ] && [ ${DSKCHK_FILLINGS} -eq 0 ] && [ "${DSKCHK_DIRECTORY}" != "/" ] && rm -rf ${DSKCHK_DIRECTORY}
+    ls "${DSKCHK_DIRECTORY}/"${DSKCHK_FILE_PREFIX}* && rm "${DSKCHK_DIRECTORY}/"${DSKCHK_FILE_PREFIX}*
+    [ -f "${DSKCHK_DIRECTORY}/dskchk_delete_this_dir" ] && [ ${DSKCHK_FILLINGS} -eq 0 ] && [ "${DSKCHK_DIRECTORY}" != "/" ] && rm -rf "${DSKCHK_DIRECTORY}"
     # it may happen the files are in the "volumes" directory if run in container - in case this needs to be checked as well
     if [ -d /var/lib/containers/storage/volumes ]; then
         # delete the whole directory if created previously
@@ -101,8 +101,8 @@ if [ ${DSKCHK_PERCENTAGE} -eq 0 ]; then
     echo "ERROR: percentage not given. Nothing to do."
     exit 1
 fi
-if [ ! -d ${DSKCHK_DIRECTORY} ]; then
-    mkdir -p ${DSKCHK_DIRECTORY} && touch ${DSKCHK_DIRECTORY}/dskchk_delete_this_dir
+if [ ! -d "${DSKCHK_DIRECTORY}" ]; then
+    mkdir -p "${DSKCHK_DIRECTORY}" && touch "${DSKCHK_DIRECTORY}/dskchk_delete_this_dir"
 fi
 
 DSKCHK_USED_SPACE_PERCENTAGE=$(df --output=pcent "${DSKCHK_MOUNT}" | tail -1 | tr -dc '0-9')
@@ -115,7 +115,7 @@ DSKCHK_USED_SPACE=$(df -BM "${DSKCHK_MOUNT}" | tail -1 | sed 's/\s\+/ /g' | cut 
 DSKCHK_ENDSTATE_SPACE=$((${DSKCHK_MAX_SPACE} / 100 * ${DSKCHK_PERCENTAGE}))
 DSKCHK_ADD_SPACE=$((${DSKCHK_ENDSTATE_SPACE} - ${DSKCHK_USED_SPACE}))
 
-dd if=/dev/zero of=${DSKCHK_DIRECTORY}/${DSKCHK_FILE_PREFIX}$(date +%Y%m%d%H%M%S) bs=1M count=${DSKCHK_ADD_SPACE}
+dd if=/dev/zero of="${DSKCHK_DIRECTORY}/${DSKCHK_FILE_PREFIX}$(date +%Y%m%d%H%M%S)" bs=1M count=${DSKCHK_ADD_SPACE}
 sync
 echo "Current space:"
 df -BM "${DSKCHK_MOUNT}"

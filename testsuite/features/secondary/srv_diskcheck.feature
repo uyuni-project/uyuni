@@ -33,7 +33,7 @@ Feature: Space monitoring via Diskcheck
 
   Scenario: Default settings disk space freed
     When I release the space in "/root/diskcheck" on "server"
-    And I start the uyuni server
+    And I restart the uyuni server
     Then I check the uyuni server has started
 
   Scenario: Default settings with less than 90% disk space filled
@@ -72,7 +72,7 @@ Feature: Space monitoring via Diskcheck
 
   Scenario: Default settings disk space cleanup
     When I cleanup the "/root/diskcheck" on "server"
-    And I start the uyuni server
+    And I restart the uyuni server
     Then I check the uyuni server has started
 
   Scenario: Custom settings without fillings
@@ -133,11 +133,15 @@ Feature: Space monitoring via Diskcheck
     When I fill disk space in "/root/mnt-diskcheck" up to "80%" on "server"
     Then I wait for the diskcheck alert notification
     And I go to the home page
+    And I should not see the "The available disk space for the server is critically low" alert danger
+    And I should not see the "The available disk space for the server is low" alert warning
 
   Scenario: Custom settings in rhn.conf with more than 90% but less than 95% disk space filled
     When I fill disk space in "/root/mnt-diskcheck" up to "91%" on "server"
     Then I wait for the diskcheck alert notification
     And I go to the home page
+    And I should not see the "The available disk space for the server is critically low" alert danger
+    And I should not see the "The available disk space for the server is low" alert warning
 
   Scenario: Custom settings in rhn.conf with more than 95% disk space filled
     When I restart the uyuni server
@@ -145,6 +149,8 @@ Feature: Space monitoring via Diskcheck
     And I fill disk space in "/root/mnt-diskcheck" up to "96%" on "server"
     Then I wait for the diskcheck alert notification
     And I go to the home page
+    And I should not see the "The available disk space for the server is critically low" alert danger
+    And I should not see the "The available disk space for the server is low" alert warning
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround
     #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/32049
@@ -156,7 +162,7 @@ Feature: Space monitoring via Diskcheck
 
   Scenario: Custom settings in rhn.conf cleanup
     When I release the space in "/root/mnt-diskcheck" on "server"
-    And I start the uyuni server
+    And I restart the uyuni server
     And I configure the uyuni server to watch the default directories, cleaning the rhn config file
     And I unmount "/root/mnt-diskcheck" and remove the disk image in "/root" on "server"
     Then I check the uyuni server is running

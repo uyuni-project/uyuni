@@ -23,10 +23,8 @@ end
 Then(/^I should (not )?see the "(.*)" alert (danger|warning)$/) do |negative, message, alert_type|
   selector = "div.alert.alert-#{alert_type}"
   if negative
-
     raise ScriptError, "Alert #{alert_type} '#{message}' found" unless has_no_css?(selector, text: message)
   else
-
     raise ScriptError, "Alert #{alert_type} '#{message}' not found" unless has_css?(selector, text: message)
   end
 end

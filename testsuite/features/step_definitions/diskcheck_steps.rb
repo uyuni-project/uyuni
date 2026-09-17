@@ -27,7 +27,6 @@ When(/^I (un)?deploy diskcheck scripts on "([^"]*)"$/) do |negative, host|
     # success
     code = 0
   end
-
   raise ScriptError, error_msg unless code.zero?
 end
 
@@ -53,7 +52,6 @@ When(/^I fill disk space in "([^"]*)" up to "([0-9]+)%" on "([^"]*)"$/) do |dire
   node = get_target(host)
   script = '/root/diskcheck_space_mgmt.sh'
   result, code = node.run("bash #{script} -p #{percentage} -d #{directory}", check_errors: false, runs_in_container: false, timeout: 600)
-
   raise ScriptError, "Server space filled: #{result}" unless code.zero?
 end
 
@@ -61,7 +59,6 @@ When(/^I create a "([0-9]+)MB" disk image in "([^"]*)" and mount it to "([^"]*)"
   node = get_target(host)
   script = '/root/diskcheck_custom_mount.sh'
   result, code = node.run("bash #{script} -s #{disk_size} -d #{directory} -m #{mountpoint} up", check_errors: false, runs_in_container: false, timeout: 600)
-
   raise ScriptError, "Disk image creation failed: #{result}" unless code.zero?
 end
 
@@ -69,7 +66,6 @@ When(/^I unmount "([^"]*)" and remove the disk image in "([^"]*)" on "([^"]*)"$/
   node = get_target(host)
   script = '/root/diskcheck_custom_mount.sh'
   result, code = node.run("bash #{script} -d #{directory} -m #{mountpoint} down", check_errors: false, runs_in_container: false, timeout: 600)
-
   raise ScriptError, "Disk image removal failed: #{result}" unless code.zero?
 end
 
@@ -77,7 +73,6 @@ When(/^I configure the uyuni server to watch the "([^"]*)" directory with alert 
   node = get_target('server')
   script = '/root/diskcheck_uyuni_service_mgmt.sh'
   result, code = node.run("bash #{script} -d #{directory} -a #{alert} -t #{threshold} up", runs_in_container: false, check_errors: false)
-
   raise ScriptError, "Server diskcheck custom directory setup failed: #{result}" unless code.zero?
 end
 
@@ -85,7 +80,6 @@ When(/^I configure the uyuni server to watch the "([^"]*)" directory set in the 
   node = get_target('server')
   script = '/root/diskcheck_uyuni_service_mgmt.sh'
   result, code = node.run("bash #{script} -d #{directory} -r up", runs_in_container: false, check_errors: false)
-
   raise ScriptError, "Server diskcheck custom directory setup via rhn.conf failed: #{result}" unless code.zero?
 end
 
@@ -97,7 +91,6 @@ When(/^I configure the uyuni server to watch the default directories(, cleaning 
   else
     result, code = node.run("bash #{script} down", check_errors: false, runs_in_container: false)
   end
-
   raise ScriptError, "Server diskcheck custom directory setup to defaults failed: #{result}" unless code.zero?
 end
 
@@ -105,7 +98,6 @@ When(/^I cleanup the "([^"]*)" on "([^"]*)"$/) do |directory, host|
   node = get_target(host)
   script = '/root/diskcheck_space_mgmt.sh'
   res_out, res_err, code = ssh_command("bash #{script} -c -d #{directory}", node.full_hostname)
-
   raise ScriptError, "Server space cleaned: #{res_out}  #{res_err}" unless code.zero?
 end
 
@@ -113,6 +105,5 @@ When(/^I release the space in "([^"]*)" on "([^"]*)"$/) do |directory, host|
   node = get_target(host)
   script = '/root/diskcheck_space_mgmt.sh'
   res_out, res_err, code = ssh_command("bash #{script} -c -f -d #{directory}", node.full_hostname)
-
   raise ScriptError, "Server space cleaned: #{res_out}  #{res_err}" unless code.zero?
 end
