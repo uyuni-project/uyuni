@@ -389,7 +389,11 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  client = 'proxy_nontransactional' if client == 'proxy' && !suse_proxy_transactional?
+  if client == 'proxy'
+    # In hub BV topologies peripheral1/peripheral2 use proxy2/proxy3, not the generic 'proxy' host.
+    proxy_host = { 'peripheral1' => 'proxy2', 'peripheral2' => 'proxy3' }.fetch(host, 'proxy')
+    client = 'proxy_nontransactional' unless host_transactional?(proxy_host)
+  end
   client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
 
