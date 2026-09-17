@@ -35,6 +35,7 @@ type HighstateState = {
   earliest: moment.Moment;
   test: boolean;
   actionChain?: any;
+  actionDescription?: string;
 };
 
 class Highstate extends Component<HighstateProps, HighstateState> {
@@ -54,6 +55,7 @@ class Highstate extends Component<HighstateProps, HighstateState> {
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       test: this.state.test,
+      actionDescription: this.state.actionDescription,
     })
       .then((data) => {
         this.setState((prevState) => {
@@ -163,6 +165,7 @@ class Highstate extends Component<HighstateProps, HighstateState> {
               actionChains={window.actionChains}
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
+              onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}
               systemIds={window.minions?.map((m) => m.id)}
               actionType="states.apply"
             />

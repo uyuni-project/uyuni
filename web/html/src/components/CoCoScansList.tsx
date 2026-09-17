@@ -34,6 +34,7 @@ type State = {
   showReportDetails: boolean;
   earliest: LocalizedMoment;
   actionChain?: ActionChain;
+  actionDescription?: string;
   reportSelected?: AttestationReport;
   activeTab?: string;
 };
@@ -67,6 +68,7 @@ class CoCoScansList extends Component<Props, State> {
       actionType: COCO_ATTESTATION_ACTION_TYPE,
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+      actionDescription: this.state.actionDescription,
     };
 
     return scheduleSystemCoCoAttestation(this.props.serverId, request)
@@ -153,6 +155,7 @@ class CoCoScansList extends Component<Props, State> {
           actionChains={this.props.actionChains}
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
+          onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}
           systemIds={[this.props.serverId]}
           actionType={COCO_ATTESTATION_ACTION_TYPE}
         />

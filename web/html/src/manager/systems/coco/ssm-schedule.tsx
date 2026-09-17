@@ -26,6 +26,7 @@ type State = {
   messages: MessageType[];
   earliest: LocalizedMoment;
   actionChain?: ActionChain;
+  actionDescription?: string;
 };
 
 class CoCoSSMSchedule extends Component<Props, State> {
@@ -60,6 +61,7 @@ class CoCoSSMSchedule extends Component<Props, State> {
       actionType: COCO_ATTESTATION_ACTION_TYPE,
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
+      actionDescription: this.state.actionDescription,
     };
 
     return scheduleSsmCoCoAttestation(serverIds, request)
@@ -103,6 +105,7 @@ class CoCoSSMSchedule extends Component<Props, State> {
             actionChains={this.props.actionChains}
             onActionChainChanged={this.onActionChainChanged}
             onDateTimeChanged={this.onDateTimeChanged}
+            onActionDescriptionChanged={(desc) => this.setState({ actionDescription: desc })}
             systemIds={this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id)}
             actionType={COCO_ATTESTATION_ACTION_TYPE}
           />

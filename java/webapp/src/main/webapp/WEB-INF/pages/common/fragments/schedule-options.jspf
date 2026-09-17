@@ -66,5 +66,13 @@
             </div>
             <input type="hidden" id="action-chain" name="action_chain" />
         </div>
+        <div class="row">
+            <div class="col-sm-3 control-label">
+                <label for="schedule-action-description"><bean:message key="actions.jsp.action_description"/>:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="schedule_action_description" id="schedule-action-description" placeholder="e.g. Ticket #12345" maxlength="1000"/>
+            </div>
+        </div>
     </div>
 </div>

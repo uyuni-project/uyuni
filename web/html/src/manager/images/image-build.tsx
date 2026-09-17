@@ -203,6 +203,15 @@ class BuildImage extends Component<Props, State> {
     });
   };
 
+  onActionDescriptionChanged = (actionDescription: string) => {
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        actionDescription,
+      });
+      return { model };
+    });
+  };
+
   onBuild = (model) => {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
@@ -412,6 +421,7 @@ class BuildImage extends Component<Props, State> {
               actionType="image.build"
               onActionChainChanged={this.onActionChainChanged}
               onDateTimeChanged={this.onDateTimeChanged}
+              onActionDescriptionChanged={this.onActionDescriptionChanged}
             />
 
             <FormGroup>
