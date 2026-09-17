@@ -43,6 +43,10 @@ CREATE TABLE rhnChannel
     gpg_key_url         VARCHAR(256),
     gpg_key_id          VARCHAR(14),
     gpg_key_fp          VARCHAR(50),
+    pqc_check           CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_channel_pqc_ck
+                                CHECK (pqc_check in ('Y', 'N')),
     end_of_life         TIMESTAMPTZ,
     checksum_type_id    NUMERIC CONSTRAINT rhn_channel_checksum_fk
                                 REFERENCES rhnChecksumType(id),
