@@ -74,6 +74,10 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     @Convert(converter = YesNoConverter.class)
     private boolean metadataSigned;
 
+    @Column(name = "pqc_metadata_signed")
+    @Convert(converter = YesNoConverter.class)
+    private boolean pqcMetadataSigned;
+
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelContentSource", joinColumns = @JoinColumn(name = "source_id"),
                 inverseJoinColumns = @JoinColumn(name = "channel_id"))
@@ -143,6 +147,20 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
      */
     public void setMetadataSigned(boolean md) {
         this.metadataSigned = md;
+    }
+
+    /**
+     * @return Returns true if metadata is PQC signed
+     */
+    public boolean getPqcMetadataSigned() {
+        return this.pqcMetadataSigned;
+    }
+
+    /**
+     * @param md set if metadata is PQC signed
+     */
+    public void setPqcMetadataSigned(boolean md) {
+        this.pqcMetadataSigned = md;
     }
 
     /**
@@ -255,6 +273,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
                 ", type=" + type +
                 ", label='" + label + '\'' +
                 ", metadataSigned=" + metadataSigned +
+                ", pqcMetadataSigned=" + pqcMetadataSigned +
                 '}';
     }
 
