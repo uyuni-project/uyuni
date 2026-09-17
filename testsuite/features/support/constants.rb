@@ -93,6 +93,16 @@ ENV_VAR_BY_HOST = {
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
+# Versioned fallbacks for generic host aliases.
+# Used when MINION/SSHMINION/etc. are not set but the versioned vars are.
+ENV_VAR_FALLBACK_BY_HOST = {
+  'sle_minion'    => 'SLES15SP7_MINION',
+  'sshminion'     => 'SLES15SP7_SSHMINION',
+  'rhlike_minion' => 'ROCKY8_MINION',
+  'deblike_minion' => 'UBUNTU2404_MINION',
+  'build_host'    => 'SLES15SP7_BUILDHOST'
+}.freeze
+
 # TODO: the values for pxeboot_minion, sles15sp6_terminal, sles15sp7_terminal and proxy can now be set in sumaform
 #       remove them from this array when we read them from .bashrc
 PRIVATE_ADDRESSES = {

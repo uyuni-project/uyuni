@@ -20,12 +20,18 @@ class RemoteNode
     puts "Initializing a remote node for '#{@host}'."
     raise(NotImplementedError, "Host #{@host} is not defined as a valid host in the Test Framework.") unless ENV_VAR_BY_HOST.key? @host
 
-    unless ENV.key? ENV_VAR_BY_HOST[@host]
-      warn "Host #{@host} is not defined as environment variable."
-      return
+    env_var_name = ENV_VAR_BY_HOST[@host]
+    unless ENV.key?(env_var_name)
+      fallback = ENV_VAR_FALLBACK_BY_HOST[@host]
+      if fallback && ENV.key?(fallback)
+        env_var_name = fallback
+      else
+        warn "Host #{@host} is not defined as environment variable."
+        return
+      end
     end
 
-    @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
+    @target = ENV.fetch(env_var_name, nil).to_s.strip
     # Remove /etc/motd, or any output from run will contain the content of /etc/motd
     ssh('rm -f /etc/motd && touch /etc/motd', host: @target) unless @host == 'localhost'
     out, _err, _code = ssh('echo $HOSTNAME', host: @target)
