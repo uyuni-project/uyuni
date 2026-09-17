@@ -33,6 +33,10 @@ rhnContentSource
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_cs_ms_ck
                                 CHECK (metadata_signed in ( 'Y' , 'N' )),
+        pqc_metadata_signed CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_cs_pqcms_ck
+                                CHECK (pqc_metadata_signed in ( 'Y' , 'N' )),
         created         TIMESTAMPTZ default(current_timestamp) NOT NULL,
         modified        TIMESTAMPTZ default(current_timestamp) NOT NULL
 )
