@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-database-migration:latest
+#!BuildName: server-database-migration
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

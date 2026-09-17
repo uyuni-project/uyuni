@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-hub-xmlrpc-api:latest
+#!BuildName: server-hub-xmlrpc-api
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

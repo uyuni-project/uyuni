@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 #!BuildTag: uyuni/monitoring-blackbox_exporter:latest uyuni/monitoring-blackbox_exporter:%%blackbox_exporter_patch_version%%
+#!BuildName: monitoring-blackbox_exporter
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-httpd:latest
+#!BuildName: proxy-httpd
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE AS base
