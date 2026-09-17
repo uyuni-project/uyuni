@@ -24826,7 +24826,10 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="repos.jsp.create.metadataSigned" xml:space="preserve">
-        <source>Has Signed Metadata?</source>
+        <source>Has GPG Signed Metadata?</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.create.pqcMetadataSigned" xml:space="preserve">
+        <source>Has PQC Signed Metadata?</source>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.reboot" xml:space="preserve">
         <source>Reboot Required</source>
