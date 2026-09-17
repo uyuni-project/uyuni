@@ -76,6 +76,7 @@ export const ScheduleScapScanForm = ({
   const [xccdfProfiles, setXccdfProfiles] = useState<Profile[]>([]);
   const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
   const [earliest, setEarliest] = useState(initialEarliest || localizedMoment());
+  const [actionDescription, setActionDescription] = useState<string>("");
   const [selectedScapPolicy, setSelectedScapPolicy] = useState<number | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [isInvalid, setIsInvalid] = useState(false);
@@ -138,6 +139,7 @@ export const ScheduleScapScanForm = ({
       ...model,
       earliest,
       selectedScapPolicy,
+      actionDescription,
     };
 
     try {
@@ -341,6 +343,7 @@ export const ScheduleScapScanForm = ({
             <ActionSchedule
               earliest={earliest}
               onDateTimeChanged={setEarliest}
+              onActionDescriptionChanged={setActionDescription}
               systemIds={minions?.map((m) => m.id)}
               actionType="states.apply"
             />

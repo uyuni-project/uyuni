@@ -27,6 +27,7 @@ type ActionScheduleProps = {
   actionChains?: ActionChain[];
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
+  onActionDescriptionChanged: (actionDescription: string) => void;
   systemIds?: (string | number)[];
   actionType?: string;
 };
@@ -305,6 +306,31 @@ class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState>
     );
   };
 
+  onActionDescriptionChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.onActionDescriptionChanged(e.target.value);
+  };
+
+  renderActionDescription = () => {
+    return (
+      <div className="row">
+        <div className="col-sm-3 control-label">
+          <label htmlFor="schedule-action-description">{t("Comment / Reason:")}</label>
+        </div>
+        <div className="col-sm-6">
+          <input
+            type="text"
+            className="form-control"
+            name="schedule_action_description"
+            id="schedule-action-description"
+            placeholder={t("e.g. Ticket #12345")}
+            maxLength={1000}
+            onChange={this.onActionDescriptionChanged}
+          />
+        </div>
+      </div>
+    );
+  };
+
   render() {
     if (this.state.loading) {
       return <Loading text={t("Loading the scheduler...")} />;
@@ -324,6 +350,7 @@ class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState>
         <div className="form-horizontal">
           {pickers}
           {this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()}
+          {this.renderActionDescription()}
         </div>
       </div>
     );

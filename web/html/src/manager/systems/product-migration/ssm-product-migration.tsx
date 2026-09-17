@@ -56,7 +56,12 @@ export const SSMProductMigration: FC<Props> = ({
   const [allowVendorChange, setAllowVendorChange] = useState(false);
   const [migrationOutcomeMessage, setMigrationOutcomeMessage] = useState<MessageType[]>([]);
 
-  async function performMigration(dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain): Promise<void> {
+  async function performMigration(
+    dryRun: boolean,
+    earliest: moment.Moment,
+    actionChain?: ActionChain,
+    actionDescription?: string
+  ): Promise<void> {
     if (selectedTarget === undefined || selectedChannelTree === undefined) {
       throw new Error("Illegal state: performMigration called with selectedTarget or selectedChannelTree undefined");
     }
@@ -69,6 +74,7 @@ export const SSMProductMigration: FC<Props> = ({
         allowVendorChange: allowVendorChange,
         earliest: earliest,
         actionChain: actionChain ? actionChain.text : null,
+        actionDescription: actionDescription,
         dryRun: dryRun,
       };
 

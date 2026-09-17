@@ -65,6 +65,7 @@ type StateType = {
   identifier: string;
   benchmarkId: string;
   earliest: any;
+  actionDescription?: string;
   hasCustomRemediation: boolean;
   isSaving: boolean;
 };
@@ -162,6 +163,10 @@ class RuleResultDetail extends Component<object, StateType> {
 
   onDateTimeChanged = (date: any) => {
     this.setState({ earliest: date });
+  };
+
+  onActionDescriptionChanged = (actionDescription: string) => {
+    this.setState({ actionDescription });
   };
 
   onFormChange = (model: any) => {
@@ -302,6 +307,7 @@ class RuleResultDetail extends Component<object, StateType> {
       remediationContent: remediationToApply,
       saveAsCustom: false, // Don't auto-save, user must explicitly save
       earliest: this.state.earliest,
+      actionDescription: this.state.actionDescription,
     })
       .then((data) => {
         const actionId = data.data?.actionId || data.value;
@@ -483,6 +489,7 @@ class RuleResultDetail extends Component<object, StateType> {
                 <ActionSchedule
                   earliest={this.state.earliest}
                   onDateTimeChanged={this.onDateTimeChanged}
+                  onActionDescriptionChanged={this.onActionDescriptionChanged}
                   systemIds={window.minions?.map((m) => m.id)}
                   actionType="states.apply"
                 />

@@ -38,6 +38,7 @@ type State = {
   confirmAction: boolean;
   earliest: moment.Moment;
   actionChain?: ActionChain;
+  actionDescription?: string;
 };
 
 export class PackageListActionScheduler extends Component<Props, State> {
@@ -72,6 +73,7 @@ export class PackageListActionScheduler extends Component<Props, State> {
       earliest: this.state.earliest,
       actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       selectedPackages: this.state.selectedPackages,
+      actionDescription: this.state.actionDescription,
     };
 
     Network.post(this.props.scheduleActionAPI, requestBody)
@@ -233,6 +235,7 @@ export class PackageListActionScheduler extends Component<Props, State> {
           actionChains={this.props.actionChains}
           onActionChainChanged={this.onActionChainChanged}
           onDateTimeChanged={this.onDateTimeChanged}
+          onActionDescriptionChanged={(actionDescription) => this.setState({ actionDescription })}
           systemIds={[this.props.serverId]}
           actionType={this.props.actionType}
         />
