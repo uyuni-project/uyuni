@@ -101,6 +101,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
@@ -658,6 +659,51 @@ public class SystemHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule an action to change the channels of a client with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param baseChannelLabel The label of the base channel to subscribe to
+     * @param childLabels The list of child channel labels to subscribe to
+     * @param earliestOccurrence Earliest occurrence of the channel change
+     * @param actionDescription Comment / action description
+     * @return an action id
+     */
+    public long scheduleChangeChannels(User loggedInUser, Integer sid, String baseChannelLabel,
+                                       List<String> childLabels, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleChangeChannels(loggedInUser, sid, baseChannelLabel, childLabels, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule an action to change the channels of a list of clients with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids list of IDs of the servers
+     * @param baseChannelLabel The label of the base channel to subscribe to
+     * @param childLabels The list of child channel labels to subscribe to
+     * @param earliestOccurrence Earliest occurrence of the channel change
+     * @param actionDescription Comment / action description
+     * @return list of action ids
+     */
+    public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
+                                             List<String> childLabels, Date earliestOccurrence,
+                                             String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleChangeChannels(loggedInUser, sids, baseChannelLabel, childLabels, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
@@ -4027,8 +4073,49 @@ public class SystemHandler extends BaseHandler {
                                          Date earliestOccurrence, Boolean allowModules, Boolean onlyRelevant) {
         return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence, allowModules,
                 onlyRelevant, false);
+    }
 
-}
+    /**
+     * Schedules an action to apply errata updates to multiple systems at a specified time with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs to apply the errata to (as Integers)
+     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param actionDescription Comment / action description
+     * @return list of action ids
+     */
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> sids,
+            List<Integer> errataIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyErrata(loggedInUser, sids, errataIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedules an action to apply errata updates to a system at a specified time with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * @param actionDescription Comment / action description
+     * @return list of action ids
+     */
+    public List<Long> scheduleApplyErrata(User loggedInUser, Integer sid,
+            List<Integer> errataIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyErrata(loggedInUser, sid, errataIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
     /**
      * Compares the packages installed on two systems.
      *
@@ -4539,6 +4626,68 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule package installation for several systems with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param packageIds List of package IDs to install (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @param actionDescription Comment / action description
+     * @return package action id
+     */
+    public Long[] schedulePackageInstall(User loggedInUser, List<Integer> sids,
+            List<Integer> packageIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageInstall(loggedInUser, sids, packageIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule package installation for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param packageIds List of package IDs to install (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @param actionDescription Comment / action description
+     * @return package action id
+     */
+    public Long schedulePackageInstall(User loggedInUser, final Integer sid,
+            List<Integer> packageIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageInstall(loggedInUser, sid, packageIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule full package update for several systems with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param earliestOccurrence Earliest occurrence of the package install
+     * @param actionDescription Comment / action description
+     * @return package action id
+     */
+    public Long schedulePackageUpdate(User loggedInUser, List<Integer> sids,
+                                        Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageUpdate(loggedInUser, sids, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
     * Schedule package installation for several systems.
     *
     * @param loggedInUser The current user
@@ -4783,6 +4932,48 @@ public class SystemHandler extends BaseHandler {
         return schedulePackagesAction(loggedInUser, sids,
                 packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
                 ActionTypeEnum.TYPE_PACKAGES_REMOVE, allowModules)[0].intValue();
+    }
+
+    /**
+     * Schedule package removal for several systems with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids IDs of the servers
+     * @param packageIds List of package IDs to remove (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package removal
+     * @param actionDescription Comment / action description
+     * @return package action id
+     */
+    public Long[] schedulePackageRemove(User loggedInUser, List<Integer> sids,
+            List<Integer> packageIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageRemove(loggedInUser, sids, packageIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule package removal for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param packageIds List of package IDs to remove (as Integers)
+     * @param earliestOccurrence Earliest occurrence of the package removal
+     * @param actionDescription Comment / action description
+     * @return 1 if successful, exception thrown otherwise
+     */
+    public int schedulePackageRemove(User loggedInUser, Integer sid,
+            List<Integer> packageIds, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageRemove(loggedInUser, sid, packageIds, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
     }
 
     /**
@@ -5142,6 +5333,46 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule a hardware refresh for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param earliestOccurrence Earliest occurrence of the hardware refresh
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleHardwareRefresh(User loggedInUser, Integer sid,
+            Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleHardwareRefresh(loggedInUser, sid, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule a package list refresh for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param earliestOccurrence Earliest occurrence of the refresh
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public int schedulePackageRefresh(User loggedInUser, Integer sid,
+            Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return schedulePackageRefresh(loggedInUser, sid, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
      * Schedule a script to run.
      *
      * @param loggedInUser           The current user
@@ -5250,6 +5481,33 @@ public class SystemHandler extends BaseHandler {
         }
 
         return action.getId().intValue();
+    }
+
+    /**
+     * Schedule a script to run on several systems with a comment / action description.
+     *
+     * @param loggedInUser           The current user
+     * @param label                  The label
+     * @param sids                   IDs of the servers to run the script on.
+     * @param username               User to run script as.
+     * @param groupname              Group to run script as.
+     * @param timeout                Seconds to allow the script to run before timing out.
+     * @param script                 Contents of the script to run.
+     * @param earliestOccurrence     Earliest the script can run.
+     * @param actionDescription      Comment / action description.
+     * @return ID of the new script action.
+     */
+    public Integer scheduleScriptRun(User loggedInUser, String label, List<Integer>
+            sids, String username, String groupname, Integer timeout, String script,
+                                     Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleScriptRun(loggedInUser, label, sids, username, groupname,
+                    timeout, script, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
     }
 
     /**
@@ -5399,6 +5657,26 @@ public class SystemHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule Confidential Compute Attestation Action with an action description.
+     *
+     * @param loggedInUser the current user
+     * @param sid ID of the server
+     * @param earliestOccurrence Earliest the script can run
+     * @param actionDescription Comment / action description
+     * @return ID of the action
+     */
+    public Integer scheduleCoCoAttestation(User loggedInUser, Integer sid, Date earliestOccurrence,
+                                           String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleCoCoAttestation(loggedInUser, sid, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
@@ -5647,6 +5925,33 @@ public class SystemHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule a reboot for a system with a comment / action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param earliestOccurrence Earliest occurrence of the reboot.
+     * @param actionDescription Comment / action description.
+     * @return action id, exception thrown otherwise
+     *
+     * @apidoc.doc Schedule a reboot for a system with a comment / action description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public Long scheduleReboot(User loggedInUser, Integer sid,
+            Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleReboot(loggedInUser, sid, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
@@ -7563,6 +7868,26 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Schedule update of client certificate at given date and time with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid Server Id
+     * @param earliestOccurrence The date of earliest occurrence
+     * @param actionDescription Comment / action description
+     * @return ID of the action
+     */
+    public int scheduleCertificateUpdate(User loggedInUser, Integer sid, Date earliestOccurrence,
+                                         String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleCertificateUpdate(loggedInUser, sid, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
      * send a ping to a system using OSA
      * @param loggedInUser the session key
      * @param sid server id
@@ -8315,6 +8640,31 @@ public class SystemHandler extends BaseHandler {
                 "No target found for Product migration");
     }
 
+    /**
+     * Schedule a Product migration for a system with an action description.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliestOccurrence earliest occurrence of the migration
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleProductMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+                                         List<String> optionalChildChannels, Boolean dryRun, Date earliestOccurrence,
+                                         String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleProductMigration(loggedInUser, sid, baseChannelLabel, optionalChildChannels, dryRun,
+                    earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
     private SUSEProductSet getTargetProducts(String targetIdent, List<SUSEProductSet> targets) {
         SUSEProductSet targetProducts = null;
         if (StringUtils.isBlank(targetIdent)) {
@@ -8464,6 +8814,28 @@ public class SystemHandler extends BaseHandler {
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule a dist upgrade for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param channels Channel labels
+     * @param dryRun Set to true to perform a dry run
+     * @param earliestOccurrence Earliest occurrence of the dist upgrade
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
+                                    boolean dryRun, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleDistUpgrade(loggedInUser, sid, channels, dryRun, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
     /**
@@ -8956,6 +9328,92 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
         return scheduleApplyStatesInternal(loggedInUser, sids, stateNames, earliestOccurrence, test, false);
+    }
+
+    /**
+     * Schedule highstate application for a given system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid The system id of the target system
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, Boolean test,
+                                       String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyHighstate(loggedInUser, sid, earliestOccurrence, test);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule highstate application for a list of systems with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of system id of the target systems
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test,
+                                       String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, test);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule state application for a given system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid The system id of the target system
+     * @param stateNames A list of state names to be applied
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleApplyStates(User loggedInUser, Integer sid, List<String> stateNames,
+            Date earliestOccurrence, Boolean test, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyStates(loggedInUser, sid, stateNames, earliestOccurrence, test);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule state application for a list of systems with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids The list of system id of the target systems
+     * @param stateNames A list of state names to be applied
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only mode
+     * @param actionDescription Comment / action description
+     * @return action id
+     */
+    public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
+            Date earliestOccurrence, Boolean test, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleApplyStates(loggedInUser, sids, stateNames, earliestOccurrence, test);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
     }
 
     /**
@@ -9492,6 +9950,29 @@ public class SystemHandler extends BaseHandler {
         }
         catch (IllegalArgumentException ex) {
             throw new InvalidParameterException("invalid upload geo type " + uploadGeo);
+        }
+    }
+
+    /**
+     * Schedule upload of support data for a system with an action description.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param caseNumber The SCC case number
+     * @param parameter Additional parameters
+     * @param uploadGeo The location of upload server
+     * @param earliestOccurrence Earliest occurrence
+     * @param actionDescription Comment / action description
+     * @return ID of the action
+     */
+    public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
+                                             String uploadGeo, Date earliestOccurrence, String actionDescription) {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleSupportDataUpload(loggedInUser, sid, caseNumber, parameter, uploadGeo, earliestOccurrence);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
         }
     }
 
