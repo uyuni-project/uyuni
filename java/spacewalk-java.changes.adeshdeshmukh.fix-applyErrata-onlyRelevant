@@ -1,0 +1,1 @@
+- Fix onlyRelevant validation in applyErrata to accept errata relevant to at least one selected system (#12627)
