@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -607,5 +608,29 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         ActionFactory.lookupHistoryEventById(0L);
+    }
+
+    @Test
+    public void testActionDescriptionPersisted() throws Exception {
+        Context context = Context.getCurrentContext();
+        String originalDesc = context.getActionDescription();
+        try {
+            String testReason = "My Action Reason: SUMA-446";
+            context.setActionDescription(testReason);
+
+            Action a = createAction(user, ActionTypeEnum.TYPE_HARDWARE_REFRESH_LIST);
+            assertEquals(testReason, a.getActionDescription());
+
+            // Save the action to verify DB mapping works
+            ActionFactory.save(a);
+            TestUtils.flushAndEvict(a);
+
+            Action loaded = ActionFactory.lookupById(a.getId());
+            assertNotNull(loaded);
+            assertEquals(testReason, loaded.getActionDescription());
+        }
+        finally {
+            context.setActionDescription(originalDesc);
+        }
     }
 }
