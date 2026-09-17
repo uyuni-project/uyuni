@@ -7,5 +7,6 @@
 ## Sanity Check BEGIN ###
 
 - features/core/allcli_sanity.feature
+- features/core/srv_uyuni_tools.feature
 
 ## Sanity Check END ###
