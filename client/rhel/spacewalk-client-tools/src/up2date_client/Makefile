@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # The rhn-client-tools Makefiles might not be set up in the smartest way. This
 # Makefile doesn't worry about anything outside of this directory even if these
 # files need them, such as the glade files. Be sure to run make in 
