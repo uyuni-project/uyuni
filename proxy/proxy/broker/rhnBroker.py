@@ -52,6 +52,10 @@ _PROXY_VERSION = "5.5.0"
 #          '4.2.0', '5.0.0', '5.1.0', '5.2.0', '0.1',
 #          '5.3.0', '5.3.1', '5.4.0', '5.5.0'
 
+# bsc#1277719: (channel, token) -> authz expiry time, per apache child
+_AUTHZ_CACHE = {}
+_AUTHZ_CACHE_TTL = 60
+
 
 class BrokerHandler(SharedHandler):
     """Spacewalk Proxy broker specific handler code called by rhnApache.
@@ -356,7 +360,26 @@ class BrokerHandler(SharedHandler):
             if not self.authToken in checkURL:
                 # pylint: disable-next=invalid-name
                 checkURL += "?" + self.authToken
-            if not suseLib.accessible(checkURL):
+            # bsc#1277719: one HEAD to the parent per (channel, token) instead
+            # of one per file request
+            m = re.match(r"^/rhn/manager/download/([^/]+)/", self.req.path_info)
+            channel = m.group(1) if m else None
+            status = 0
+            if channel:
+                exp = _AUTHZ_CACHE.get((channel, self.authToken), 0)
+                if exp > time.time():
+                    status = 200
+            if not status:
+                status = suseLib.accessible(checkURL)
+                if status == 200 and channel:
+                    if len(_AUTHZ_CACHE) > 100000:
+                        _AUTHZ_CACHE.clear()
+                    _AUTHZ_CACHE[(channel, self.authToken)] = (
+                        time.time() + _AUTHZ_CACHE_TTL
+                    )
+            if status == 404:
+                return apache.HTTP_NOT_FOUND
+            if status != 200:
                 return apache.HTTP_FORBIDDEN
         if self.authToken:
             _oto["X-Suse-Auth-Token"] = self.authToken
