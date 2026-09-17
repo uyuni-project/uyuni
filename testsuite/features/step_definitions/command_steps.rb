@@ -457,6 +457,7 @@ end
 When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
   host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
+  add_context('channels_timed_out_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
   accumulated_timeout = get_context('channels_timeout')
   checking_rate = 10
@@ -492,6 +493,10 @@ When(/^I wait until all synchronized channels have solved their dependencies(?: 
 
       sleep checking_rate
     end
+  rescue Timeout::Error => e
+    log "Metadata generation timed out for: #{channels_to_wait_solv_file.join(', ')}. #{e.message}"
+    add_context('channels_timed_out_without_solv_file', get_context('channels_timed_out_without_solv_file') + channels_to_wait_solv_file)
+    raise unless $build_validation
   rescue StandardError => e
     log "These channels were not initialized: #{channels_to_wait_solv_file}. #{e.message}"
     add_context('channels_failed_without_solv_file', get_context('channels_failed_without_solv_file') + channels_to_wait_solv_file)
@@ -503,11 +508,13 @@ end
 Then(/^all channels have been synced without errors$/) do
   channels_failed_downloading = get_context('channels_failed_downloading') || []
   channels_failed_without_solv_file = get_context('channels_failed_without_solv_file') || []
-  next if channels_failed_downloading.empty? && channels_failed_without_solv_file.empty?
+  channels_timed_out_without_solv_file = get_context('channels_timed_out_without_solv_file') || []
+  next if channels_failed_downloading.empty? && channels_failed_without_solv_file.empty? && channels_timed_out_without_solv_file.empty?
 
   error_details = []
   error_details << "Download failed for: #{channels_failed_downloading.join(', ')}" if channels_failed_downloading.any?
   error_details << "Metadata generation failed for: #{channels_failed_without_solv_file.join(', ')}" if channels_failed_without_solv_file.any?
+  error_details << "Metadata generation timed out for: #{channels_timed_out_without_solv_file.join(', ')}" if channels_timed_out_without_solv_file.any?
 
   raise ScriptError, "Synchronization encountered errors:\n* #{error_details.join("\n* ")}"
 end

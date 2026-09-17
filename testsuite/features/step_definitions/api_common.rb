@@ -389,7 +389,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  client = 'proxy_nontransactional' if client == 'proxy' && !suse_proxy_transactional?
   client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
 
