@@ -27,6 +27,7 @@ CREATE TABLE rhnAction
                          CONSTRAINT rhn_action_at_fk
                              REFERENCES rhnActionType (id),
     name             VARCHAR(128),
+    action_description VARCHAR(1024),
     scheduler        NUMERIC
                          CONSTRAINT rhn_action_scheduler_fk
                              REFERENCES web_contact (id)
