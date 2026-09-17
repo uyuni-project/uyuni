@@ -64,6 +64,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScapContentJson;
@@ -875,9 +876,7 @@ public class ScapAuditController {
                 return result(res, ResultJson.error(validationError));
             }
 
-            Date earliest = reqData.getEarliest()
-                    .map(ldt -> Date.from(ldt.atZone(java.time.ZoneId.systemDefault()).toInstant()))
-                    .orElse(new Date());
+            Date earliest = MinionActionUtils.getScheduleDate(reqData);
 
             // Resolve SCAP content filename
             String dataStreamName = reqData.getDataStreamName();

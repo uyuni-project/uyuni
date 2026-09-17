@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs.Info;
@@ -302,6 +303,24 @@ public class MinionActionUtils {
         ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
                 .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
+    }
+
+    /**
+     * Compute the schedule date of an action and extract scheduling reason.
+     *
+     * @param request the scheduled request json, may be <code>null</code>
+     * @return the date to run the action
+     */
+    public static Date getScheduleDate(ScheduledRequestJson request) {
+        if (request != null) {
+            LOG.debug("Request actionDescription is: {}", request.getActionDescription());
+            request.getActionDescription().ifPresent(desc -> {
+                LOG.debug("Setting actionDescription in Context: {}", desc);
+                Context.getCurrentContext().setActionDescription(desc);
+            });
+            return getScheduleDate(request.getEarliest());
+        }
+        return getScheduleDate(Optional.empty());
     }
 
     /**

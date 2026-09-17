@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
@@ -42,6 +41,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsJson;
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsResponse;
 import com.suse.manager.webui.controllers.appstreams.response.SsmAppStreamModuleResponse;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 
 import com.google.gson.Gson;
@@ -53,15 +53,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -122,7 +118,7 @@ public class AppStreamsController {
                 params.getToDisable(),
                 user,
                 params.getActionChainLabel(),
-                params.getEarliest().map(AppStreamsController::getScheduleDate).orElse(new Date())
+                MinionActionUtils.getScheduleDate(params)
             );
 
             return result(response, success(params.getActionChainLabel()
@@ -147,7 +143,7 @@ public class AppStreamsController {
         SsmAppStreamsChangesJson params = GSON.fromJson(request.body(), SsmAppStreamsChangesJson.class);
 
         try {
-            var earliest = params.getEarliest().map(AppStreamsController::getScheduleDate).orElse(new Date());
+            var earliest = MinionActionUtils.getScheduleDate(params);
             Long resultId = AppStreamsManager.scheduleSsmAppStreamsChanges(
                 params.getChannelId(),
                 params.getToEnable(),
@@ -164,12 +160,6 @@ public class AppStreamsController {
             LOG.error(message, e);
             return result(response, error(message), new TypeToken<>() { });
         }
-    }
-
-    private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
-                .orElse(TimeZone.getDefault()).toZoneId();
-        return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 
     /**
