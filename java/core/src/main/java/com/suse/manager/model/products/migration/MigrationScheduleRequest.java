@@ -29,7 +29,8 @@ public record MigrationScheduleRequest(
     boolean dryRun,
     boolean allowVendorChange,
     Optional<LocalDateTime> earliest,
-    Optional<String> actionChain
+    Optional<String> actionChain,
+    Optional<String> actionDescription
 ) {
 
     /**
@@ -37,7 +38,7 @@ public record MigrationScheduleRequest(
      * @return the earliest date of execution if one is associated with this request. "now" is returned otherwise.
      */
     public Date getEarliestDate() {
-        return MinionActionUtils.getScheduleDate(earliest);
+        return MinionActionUtils.getScheduleDate(earliest, actionDescription);
     }
 
     /**
