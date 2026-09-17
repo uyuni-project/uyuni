@@ -1,5 +1,36 @@
 #! /bin/bash
 
+# PQC KEYS
+# there is no such thing as a PQC keyring
+# but we maintain the mechanism of gathering all the keys in one place to be found by zypper/reposync
+# so vendor keys and customer imported keys are simply copied in one place
+# we had to create a subdirectory to avoid possible filename clashes between vendor and imported keys
+
+PQC_VENDOR_KEYS_SRC_DIR="/usr/lib/rpm/pqkeys"
+PQC_CUSTOMER_KEYS_SRC_DIR="/var/spacewalk/pqkeys"
+PQC_VENDOR_KEYS_TARGET_DIR="/var/lib/spacewalk/pqkeys"
+PQC_CUSTOMER_KEYS_TARGET_DIR="/var/lib/spacewalk/pqkeys/custom"
+
+#just in case
+mkdir -p "${PQC_VENDOR_KEYS_TARGET_DIR}"
+mkdir -p "${PQC_CUSTOMER_KEYS_TARGET_DIR}"
+
+echo -n "importing SUSE Multi-Linux Manager PQC keys to target directory... "
+cp -r "${PQC_VENDOR_KEYS_SRC_DIR}"/* "${PQC_VENDOR_KEYS_TARGET_DIR}"
+echo "done."
+
+if [ -d ${PQC_CUSTOMER_KEYS_SRC_DIR} ]; then
+        echo -n "importing Customers PQC keys to target directory... "
+        cp -r "${PQC_CUSTOMER_KEYS_SRC_DIR}"/* "${PQC_CUSTOMER_KEYS_TARGET_DIR}"
+        echo "done."
+    else
+        echo "No customer PQC keys to import"
+fi
+
+
+
+# GPG KEYS
+
 PUBRINGDIR="/var/lib/spacewalk/gpgdir"
 PUBRING="${PUBRINGDIR}/pubring.gpg"
 PRODUCTRING="/usr/lib/susemanager/susemanager-build-keys.gpg"
@@ -153,4 +184,3 @@ else
     echo "to properly sync repositories using spacewalk-repo-sync."
     exit -1
 fi
-
