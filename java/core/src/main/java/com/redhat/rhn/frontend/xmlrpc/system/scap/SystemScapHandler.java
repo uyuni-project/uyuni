@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -342,4 +343,74 @@ public class SystemScapHandler extends BaseHandler {
         }
     }
 
+    /**
+     * Schedule SCAP scan with policy and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param policyId SCAP policy ID
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan based on an existing SCAP policy with an action description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("int", "policyId", "SCAP policy ID")
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
+     */
+    public Long scheduleXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
+                                            Integer policyId, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleXccdfScanWithPolicy(loggedInUser, sids, policyId, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
+
+    /**
+     * Schedule SCAP scan with custom parameters and action description.
+     *
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param params Map of SCAP parameters
+     * @param date The date to schedule the action
+     * @param actionDescription Comment / action description
+     * @return ID of SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan with custom parameters and an action description.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param
+     *   #struct_begin("params")
+     *     #prop_desc("int", "scapContentId", "SCAP content ID (required)")
+     *     #prop_desc("string", "xccdfProfileId", "XCCDF profile ID (required)")
+     *     #prop_desc("int", "tailoringFileId", "Tailoring file ID (optional)")
+     *     #prop_desc("string", "tailoringProfileId", "Tailoring profile ID (optional)")
+     *     #prop_desc("string", "ovalFiles", "OVAL files (optional)")
+     *     #prop_desc("string", "advancedArgs", "Advanced arguments (optional)")
+     *     #prop_desc("boolean", "fetchRemoteResources", "Fetch remote resources (optional, default false)")
+     *   #struct_end()
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.param #param_desc("string", "actionDescription", "Comment / action description")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
+     */
+    public Long scheduleXccdfScanCustom(User loggedInUser, List<Integer> sids,
+                                        Map<String, Object> params, Date date, String actionDescription)
+            throws TaskomaticApiException {
+        Context.getCurrentContext().setActionDescription(actionDescription);
+        try {
+            return scheduleXccdfScanCustom(loggedInUser, sids, params, date);
+        }
+        finally {
+            Context.getCurrentContext().setActionDescription(null);
+        }
+    }
 }
