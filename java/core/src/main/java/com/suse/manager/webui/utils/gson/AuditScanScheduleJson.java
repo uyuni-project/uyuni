@@ -18,21 +18,16 @@ import com.suse.manager.webui.utils.ScapUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 /**
  * JSON DTO for scheduling SCAP audi
  * t scans
  */
-public class AuditScanScheduleJson {
+public class AuditScanScheduleJson extends ScheduledRequestJson {
 
     /** Server IDs */
     private Set<Long> ids;
-
-    /** The earliest execution date */
-    private Optional<LocalDateTime> earliest = Optional.empty();
 
     /** The SCAP xccdf data stream name */
 
@@ -70,13 +65,6 @@ public class AuditScanScheduleJson {
      */
     public Set<Long> getIds() {
         return ids;
-    }
-
-    /**
-     * @return the date of earliest execution
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
     }
 
     /**

@@ -14,14 +14,12 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * JSON representation of a server id with a list of states to be applied.
  */
-public class ServerApplyStatesJson {
+public class ServerApplyStatesJson extends ScheduledRequestJson {
 
     /** Server id */
     private long id;

@@ -91,6 +91,11 @@ public class LocalizedEnvironmentFilter implements Filter {
         else {
             CURRENT_SESSION_ID.remove();
         }
+        String description = request.getParameter("schedule_action_description");
+        if (description == null) {
+            description = request.getParameter("action_description");
+        }
+        current.setActionDescription(description);
     }
 
     private void setTimeZone(Context ctx, User user, HttpServletRequest request) {
