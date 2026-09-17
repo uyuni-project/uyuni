@@ -21,8 +21,6 @@
 
 %define rhnroot %{_datadir}/susemanager/db
 %define postgres %{rhnroot}/postgres
-%define spacewalk_folder Spacewalk
-%define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
 
 Name:           susemanager-schema
 Version:        5.3.1
@@ -56,7 +54,7 @@ susemanager-schema is the SQL schema for the %{productprettyname} server.
 Summary:        Schema source sanity check for %{productprettyname} database scripts
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
-Requires:       perl(Digest::SHA)
+Requires:       python3
 
 %package utility
 Summary:        Utility used by any DB schema in %{productprettyname}
@@ -64,7 +62,7 @@ Summary:        Utility used by any DB schema in %{productprettyname}
 Group:          Applications/Internet
 
 %description sanity
-Provides schema-source-sanity-check.pl script for external usage.
+Provides schema-source-sanity-check.py script for external usage.
 
 %description utility
 Provides spacewalk-schema-upgrade and spacewalk-sql.
@@ -77,8 +75,8 @@ Provides spacewalk-schema-upgrade and spacewalk-sql.
 # disable parallel build
 %define _smp_mflags -j1
 %make_build -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
-pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
-pod2man spacewalk-sql spacewalk-sql.1
+pod2man man/spacewalk-schema-upgrade.pod spacewalk-schema-upgrade.1
+pod2man man/spacewalk-sql.pod spacewalk-sql.1
 
 %install
 install -m 0755 -d %{buildroot}%{rhnroot}
@@ -87,9 +85,6 @@ install -m 0644 postgres/main.sql %{buildroot}%{postgres}
 install -m 0644 postgres/end.sql %{buildroot}%{postgres}/upgrade-end.sql
 install -m 0755 -d %{buildroot}%{_bindir}
 install -m 0755 spacewalk-schema-upgrade %{buildroot}%{_bindir}
-install -m 0755 -d %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
-install -m 0755 lib/%{schema_upgrade_folder}/MainDb.pm %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
-install -m 0755 lib/%{schema_upgrade_folder}/ReportDb.pm %{buildroot}%{perl_vendorlib}/%{schema_upgrade_folder}
 
 install -m 0755 spacewalk-sql %{buildroot}%{_bindir}
 install -m 0755 -d %{buildroot}%{rhnroot}/schema-upgrade
@@ -104,7 +99,7 @@ install -m 0644 update-messages.txt %{buildroot}%{_datadir}/susemanager/
 %fdupes %{buildroot}/%{rhnroot}
 %endif
 
-install -m 755 schema-source-sanity-check.pl %{buildroot}%{_bindir}/schema-source-sanity-check.pl
+install -m 755 schema-source-sanity-check.py %{buildroot}%{_bindir}/schema-source-sanity-check.py
 install -m 755 blend %{buildroot}%{_bindir}/blend
 
 %if 0%{?suse_version}
@@ -135,17 +130,13 @@ systemctl try-restart uyuni-check-database.service ||:
 %endif
 
 %files utility
-%dir %{perl_vendorlib}/%{spacewalk_folder}
-%dir %{perl_vendorlib}/%{schema_upgrade_folder}
-%{perl_vendorlib}/%{schema_upgrade_folder}/MainDb.pm
-%{perl_vendorlib}/%{schema_upgrade_folder}/ReportDb.pm
 %{_bindir}/spacewalk-schema-upgrade
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
 
 %files sanity
-%attr(755,root,root) %{_bindir}/schema-source-sanity-check.pl
+%attr(755,root,root) %{_bindir}/schema-source-sanity-check.py
 %attr(755,root,root) %{_bindir}/blend
 
 %changelog
