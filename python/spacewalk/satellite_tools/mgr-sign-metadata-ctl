@@ -31,9 +31,9 @@ function regenerate_metadata {
     echo
     read_spacecmd_user_pass
     echo "Refreshing pillar data..."
-    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "system_refreshpillar"
+    spacecmd -q -u "$SPACECMD_USER" -p "$SPACECMD_PASS" "system_refreshpillar"
     echo "Scheduling repo metadata regeneration..."
-    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
+    spacecmd -q -u "$SPACECMD_USER" -p "$SPACECMD_PASS" "softwarechannel_regenerateyumcache -f *"
     RETVAL=$?
     if [ $RETVAL -ne 0 ]; then
         echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
@@ -57,15 +57,15 @@ function changed_repo_signing {
 }
 
 function is_signing_enabled {
-    grep --quiet "^sign_metadata.*=.*1\s*$" $RHN_CONF
+    grep --quiet "^sign_metadata.*=.*1\s*$" "$RHN_CONF"
 }
 
 function read_spacecmd_user_pass {
     if [[ -z "$SPACECMD_USER" || -z "$SPACECMD_PASS" ]];then
         echo -n "Server User: ";
-        read SPACECMD_USER
+        read -r SPACECMD_USER
         echo -n "Server Password: ";
-        read -s SPACECMD_PASS
+        read -r -s SPACECMD_PASS
     fi
     echo
 }
@@ -101,7 +101,7 @@ GPG_ARMOR_SALT_EXPORT_FILE="$GPG_SALT_EXPORT_DIR/mgr-gpg-pub.key"
 GPG_PUB_EXPORT_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-gpg-pub.key"
 SIGNING_CONF="/etc/rhn/signing.conf"
 
-if [[ ! -f $SIGNING_CONF ]]; then
+if [[ ! -f "$SIGNING_CONF" ]]; then
     echo "Error. File ${SIGNING_CONF} is missing."
     exit 1
 fi
@@ -126,53 +126,53 @@ if [[  $ACTION = "enable" ]]; then
     # make sure sign_metadata=1 in rhn.conf
     if grep --quiet "^sign_metadata.*=.*0\s*$" $RHN_CONF; then
         # edit rhn.conf to enable signing
-        sed -i 's/sign_metadata.*=.*$/sign_metadata = 1/g' $RHN_CONF
+        sed -i 's/sign_metadata.*=.*$/sign_metadata = 1/g' "$RHN_CONF"
         echo "DONE. Enabled metadata signing in ${RHN_CONF}."
 
     elif grep --quiet "^sign_metadata.*=.*1" $RHN_CONF; then
         echo "OK. Metadata signing is enabled in ${RHN_CONF}."
     else
         # add line to rhn.conf
-        echo "sign_metadata = 1" >> $RHN_CONF
+        echo "sign_metadata = 1" >> "$RHN_CONF"
         echo "DONE. Enabled metadata signing in ${RHN_CONF}."
     fi
 
     # check if key was exported to the salt dir
     EXPORT_SALT_KEY=true
-    if [ -f $GPG_SALT_EXPORT_FILE -a -f $GPG_ARMOR_SALT_EXPORT_FILE ]; then
-        if gpg --no-default-keyring --keyring $GPG_SALT_EXPORT_FILE --list-keys | grep --quiet "$ENABLE_KEYID"; then
+    if [ -f "$GPG_SALT_EXPORT_FILE" -a -f "$GPG_ARMOR_SALT_EXPORT_FILE" ]; then
+        if gpg --no-default-keyring --keyring "$GPG_SALT_EXPORT_FILE" --list-keys | grep --quiet "$ENABLE_KEYID"; then
             echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_SALT_EXPORT_FILE}."
-            if cat $GPG_ARMOR_SALT_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
+            if cat "$GPG_ARMOR_SALT_EXPORT_FILE" | gpg -q --with-colons --import-options show-only --import | grep --quiet "$KEYID"; then
                 echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_ARMOR_SALT_EXPORT_FILE}."
                 EXPORT_SALT_KEY=false
             fi
         fi
     fi
     if [ "$EXPORT_SALT_KEY" = true ]; then
-        rm -f $GPG_SALT_EXPORT_FILE
-        rm -f $GPG_ARMOR_SALT_EXPORT_FILE
-        mkdir -p $GPG_SALT_EXPORT_DIR
-        chown salt:salt $GPG_SALT_EXPORT_DIR
-        chmod 775 $GPG_SALT_EXPORT_DIR
-        gpg --export $ENABLE_KEYID > $GPG_SALT_EXPORT_FILE
+        rm -f "$GPG_SALT_EXPORT_FILE"
+        rm -f "$GPG_ARMOR_SALT_EXPORT_FILE"
+        mkdir -p "$GPG_SALT_EXPORT_DIR"
+        chown salt:salt "$GPG_SALT_EXPORT_DIR"
+        chmod 775 "$GPG_SALT_EXPORT_DIR"
+        gpg --export "$ENABLE_KEYID" > "$GPG_SALT_EXPORT_FILE"
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_SALT_EXPORT_FILE}."
-        chmod 644 $GPG_SALT_EXPORT_FILE
-        gpg --batch --export --armor --output $GPG_ARMOR_SALT_EXPORT_FILE $ENABLE_KEYID
+        chmod 644 "$GPG_SALT_EXPORT_FILE"
+        gpg --batch --export --armor --output "$GPG_ARMOR_SALT_EXPORT_FILE" "$ENABLE_KEYID"
         chmod 644 ${GPG_ARMOR_SALT_EXPORT_FILE}
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_ARMOR_SALT_EXPORT_FILE}."
     fi
 
     # check if key was exported to the http pub dir
     EXPORT_WWW_PUB_KEY=true
-    if [ -f $GPG_PUB_EXPORT_FILE ]; then
-        if cat $GPG_PUB_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $ENABLE_KEYID; then
+    if [ -f "$GPG_PUB_EXPORT_FILE" ]; then
+        if cat "$GPG_PUB_EXPORT_FILE" | gpg -q --with-colons --import-options show-only --import | grep --quiet "$ENABLE_KEYID"; then
             echo "OK. Key ${ENABLE_KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
             EXPORT_WWW_PUB_KEY=false
         fi
     fi
     if [ "$EXPORT_WWW_PUB_KEY" = true ]; then
         rm -f $GPG_PUB_EXPORT_FILE
-        gpg --batch --export --armor --output $GPG_PUB_EXPORT_FILE $ENABLE_KEYID
+        gpg --batch --export --armor --output "$GPG_PUB_EXPORT_FILE" "$ENABLE_KEYID"
         chmod 644 $GPG_PUB_EXPORT_FILE
         echo "DONE. Exported key ${ENABLE_KEYID} to ${GPG_PUB_EXPORT_FILE}."
     fi
@@ -197,7 +197,7 @@ elif [[  $ACTION = "check-config" ]]; then
 
         # check pub key export file
         if [ -f $GPG_SALT_EXPORT_FILE ]; then
-            if gpg --no-default-keyring --keyring $GPG_SALT_EXPORT_FILE --list-keys | grep --quiet $KEYID; then
+            if gpg --no-default-keyring --keyring "$GPG_SALT_EXPORT_FILE" --list-keys | grep --quiet "$KEYID"; then
                 echo "OK. Key ${KEYID} was exported to ${GPG_SALT_EXPORT_FILE}."
             else
                 echo "ERROR. Public key file ${GPG_SALT_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
@@ -206,8 +206,8 @@ elif [[  $ACTION = "check-config" ]]; then
             echo "ERROR. Public key file $GPG_SALT_EXPORT_FILE is missing."
         fi
 
-        if [ -f $GPG_ARMOR_SALT_EXPORT_FILE ]; then
-            if cat $GPG_ARMOR_SALT_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
+        if [ -f "$GPG_ARMOR_SALT_EXPORT_FILE" ]; then
+            if cat $GPG_ARMOR_SALT_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet "$KEYID"; then
                 echo "OK. Key ${KEYID} was exported to ${GPG_ARMOR_SALT_EXPORT_FILE}."
             else
                 echo "ERROR. Public key file ${GPG_ARMOR_SALT_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
@@ -216,8 +216,8 @@ elif [[  $ACTION = "check-config" ]]; then
             echo "ERROR. Public key file $GPG_ARMOR_SALT_EXPORT_FILE is missing."
         fi
 
-        if [ -f $GPG_PUB_EXPORT_FILE ]; then
-            if cat $GPG_PUB_EXPORT_FILE | gpg -q --with-colons --import-options show-only --import | grep --quiet $KEYID; then
+        if [ -f "$GPG_PUB_EXPORT_FILE" ]; then
+            if cat "$GPG_PUB_EXPORT_FILE" | gpg -q --with-colons --import-options show-only --import | grep --quiet "$KEYID"; then
                 echo "OK. Key ${KEYID} was exported to ${GPG_PUB_EXPORT_FILE}."
             else
                 echo "ERROR. Public key file ${GPG_PUB_EXPORT_FILE} exists but it doesn't contain key ${KEYID}."
@@ -237,14 +237,14 @@ elif [[  $ACTION = "check-config" ]]; then
         fi
 
         # check salt key export file
-        if [ -f $GPG_SALT_EXPORT_FILE ]; then
+        if [ -f "$GPG_SALT_EXPORT_FILE" ]; then
             echo "WARNING. Key export file ${GPG_SALT_EXPORT_FILE} is present."
         else
             echo "OK. Key file ${GPG_SALT_EXPORT_FILE} is not present."
         fi
 
         # check http pub key export file
-        if [ -f $GPG_PUB_EXPORT_FILE ]; then
+        if [ -f "$GPG_PUB_EXPORT_FILE" ]; then
             echo "WARNING. Key export file ${GPG_PUB_EXPORT_FILE} is present."
         else
             echo "OK. Key file ${GPG_PUB_EXPORT_FILE} is not present."
@@ -254,14 +254,14 @@ elif [[  $ACTION = "check-config" ]]; then
 elif [[  $ACTION = "disable" ]]; then
     if grep --quiet "^sign_metadata.*=.*$" $RHN_CONF; then
         # edit rhn.conf to disable signing
-        sed -i 's/sign_metadata.*=.*$/sign_metadata = 0/g' $RHN_CONF
+        sed -i 's/sign_metadata.*=.*$/sign_metadata = 0/g' "$RHN_CONF"
     else
         # add line to rhn.conf
-        echo "sign_metadata = 0" >> $RHN_CONF
+        echo "sign_metadata = 0" >> "$RHN_CONF"
     fi
     echo "DONE. Disabled metadata signing in ${RHN_CONF}."
 
-    sed -i "s/KEYID=\".*\"\s*$/KEYID=\"\"/g" $SIGNING_CONF
+    sed -i "s/KEYID=\".*\"\s*$/KEYID=\"\"/g" "$SIGNING_CONF"
     echo "DONE. Unset KEYID in ${SIGNING_CONF}."
 
     if [ -f $GPG_SALT_EXPORT_FILE ]; then
