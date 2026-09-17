@@ -60,6 +60,7 @@ SELECT UAO.id,
 SELECT
     DISTINCT A.id AS id,
     A.earliest_action AS earliest,
+    A.action_description AS action_description,
     AT.name AS type_name,
     COALESCE(A.name, AT.name) AS action_name,
     A.scheduler AS scheduler,
@@ -100,6 +101,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        A.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
         COALESCE(PS.total_systems = PS.failed_systems, FALSE) AS PREREQUISITE_ALL_FAILED,
@@ -143,6 +145,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        A.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
         COALESCE(PS.total_systems = PS.failed_systems, FALSE) AS PREREQUISITE_ALL_FAILED,
@@ -170,6 +173,7 @@ ORDER BY EARLIEST DESC
 WITH actionCounts AS (
     SELECT
         id AS action_id,
+        MAX(action_description) AS action_description,
         MAX(earliest_action) AS earliest_action,
         MAX(type_name) AS type_name,
         MAX(action_name) AS action_name,
@@ -183,6 +187,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        AC.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         AC.type_name,
         (CASE WHEN AC.action_name IS NULL THEN AC.type_name ELSE AC.action_name END) || ' scheduled by ' || (CASE WHEN WC.login IS NULL THEN '(unknown)' ELSE WC.login END) AS ACTION_NAME,
@@ -204,6 +209,7 @@ ORDER BY EARLIEST DESC
 WITH actionCounts AS (
     SELECT
         id AS action_id,
+        MAX(action_description) AS action_description,
         MAX(earliest_action) AS earliest_action,
         MAX(type_name) AS type_name,
         MAX(action_name) AS action_name,
@@ -218,6 +224,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        AC.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         AC.type_name,
         (CASE WHEN AC.action_name IS NULL THEN AC.type_name ELSE AC.action_name END) || ' scheduled by ' || (CASE WHEN WC.login IS NULL THEN '(unknown)' ELSE WC.login END) AS ACTION_NAME,
@@ -240,6 +247,7 @@ ORDER BY EARLIEST DESC
 WITH actionCounts AS (
     SELECT
         id AS action_id,
+        MAX(action_description) AS action_description,
         MAX(earliest_action) AS earliest_action,
         MAX(type_name) AS type_name,
         MAX(action_name) AS action_name,
@@ -254,6 +262,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        AC.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         AC.type_name,
         (CASE WHEN AC.action_name IS NULL THEN AC.type_name ELSE AC.action_name END) || ' scheduled by ' || (CASE WHEN WC.login IS NULL THEN '(unknown)' ELSE WC.login END) AS ACTION_NAME,
@@ -276,6 +285,7 @@ ORDER BY EARLIEST DESC
 WITH actionCounts AS (
     SELECT
         id AS action_id,
+        MAX(action_description) AS action_description,
         MAX(earliest_action) AS earliest_action,
         MAX(type_name) AS type_name,
         MAX(action_name) AS action_name,
@@ -290,6 +300,7 @@ WITH actionCounts AS (
     GROUP BY id
 )
 SELECT  AC.action_id AS ID,
+        AC.action_description AS action_description,
         AC.earliest_action AS EARLIEST,
         AC.type_name,
         (CASE WHEN AC.action_name IS NULL THEN AC.type_name ELSE AC.action_name END) || ' scheduled by ' || (CASE WHEN WC.login IS NULL THEN '(unknown)' ELSE WC.login END) AS ACTION_NAME,
