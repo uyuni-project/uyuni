@@ -29,6 +29,14 @@
                         <c:out value="${current.earliest}" />
                 </rl:column>
 
+                <rl:column sortable="true"
+                           bound="false"
+                           headerkey="actions.jsp.action_description"
+                           sortattr="actionDescription"
+                           >
+                        <c:out value="${current.actionDescription}" />
+                </rl:column>
+
                 <rl:column sortable="false"
                                    bound="false"
                            headerkey="actions.jsp.succeeded"
