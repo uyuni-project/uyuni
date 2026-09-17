@@ -557,7 +557,7 @@ public class MinionsAPI {
     public String schedulePtfAction(Request request, Response response, User user, Server server) {
         PackageActionJson scheduleRequest = GSON.fromJson(request.body(), PackageActionJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
         List<Map<String, Long>> pkgMap = scheduleRequest.getSelectedPackageMap();
 
@@ -685,7 +685,7 @@ public class MinionsAPI {
 
         ScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), ScheduledRequestJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
 
         Long result;
@@ -757,7 +757,7 @@ public class MinionsAPI {
         SystemScheduledRequestJson scheduleRequest = GSON.fromJson(request.body(), SystemScheduledRequestJson.class);
         Long result;
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(scheduleRequest);
         ActionChain chain = MinionActionUtils.getActionChain(scheduleRequest.getActionChain(), user);
 
         try {

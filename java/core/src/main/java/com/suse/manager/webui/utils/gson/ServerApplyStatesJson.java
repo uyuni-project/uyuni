@@ -29,9 +29,6 @@ public class ServerApplyStatesJson extends ScheduledRequestJson {
     /** List of states to be applied */
     private List<String> states;
 
-    /** The earliest execution date */
-    private Optional<LocalDateTime> earliest = Optional.empty();
-
     /** Execute through transactional-update on transactional systems */
     private boolean useTransactionalUpdate;
 
@@ -54,13 +51,6 @@ public class ServerApplyStatesJson extends ScheduledRequestJson {
      */
     public List<String> getStates() {
         return states;
-    }
-
-    /**
-     * @return the date of earliest execution
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
     }
 
     /**

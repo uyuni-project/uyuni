@@ -185,7 +185,7 @@ public class SsmController {
     public static String changeChannels(Request request, Response response, User user) {
         SsmScheduleChannelChangesJson changes = GSON.fromJson(request.body(), SsmScheduleChannelChangesJson.class);
 
-        Date earliestDate = MinionActionUtils.getScheduleDate(changes.getEarliest());
+        Date earliestDate = MinionActionUtils.getScheduleDate(changes);
         ActionChain actionChain = MinionActionUtils.getActionChain(changes.getActionChain(), user);
 
         List<ScheduleChannelChangesResultDto> scheduleResult =
