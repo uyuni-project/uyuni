@@ -41,51 +41,53 @@ export default (env, opts) => {
   pluginsInUse = [
     ...pluginsInUse,
     new CleanWebpackPlugin(["dist"], { root: dist }),
-    new CopyWebpackPlugin([
-      // Legacy scripts
-      { from: path.resolve(web, "./html/javascript"), to: path.resolve(dist, "./javascript") },
-      // Translations
-      { from: path.resolve(web, "./po"), to: path.resolve(dist, "./po") },
-      // Unimported branding assets
-      {
-        from: path.resolve(webHtmlSrc, "./branding/fonts/font-spacewalk"),
-        to: path.resolve(dist, "./fonts/font-spacewalk"),
-      },
-      // TODO: Copy all font licenses too
-      { from: path.resolve(webHtmlSrc, "./branding/img"), to: path.resolve(dist, "./img") },
-      // Any non-compiled CSS files will be compiled by their entry points
-      {
-        from: path.resolve(webHtmlSrc, "./branding/css/*.css"),
-        context: path.resolve(webHtmlSrc, "./branding/css"),
-        to: path.resolve(dist, "./css"),
-      },
-      {
-        from: path.resolve(web, "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
-        to: path.resolve(dist, "./javascript/legacy/bootstrap-webpack.js"),
-      },
-      {
-        from: path.resolve(web, "./node_modules/jquery/dist/jquery.min.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
-      },
-      {
-        from: path.resolve(web, "./node_modules/jquery-ui/dist/jquery-ui.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
-      },
-      // TODO: In the future it would be nice to bundle this instead of copying it
-      {
-        from: path.resolve(web, "./node_modules/font-awesome"),
-        to: path.resolve(dist, "./fonts/font-awesome"),
-      },
-      {
-        from: path.resolve(web, "./node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
-      },
-      // Ace uses a webworker and dynamic imports internally, so in order for all the paths to work out, we serve the whole bundle instead of importing it in AceEditor
-      {
-        from: path.resolve(web, "./node_modules/ace-builds/src-min-noconflict"),
-        to: path.resolve(dist, "./javascript/legacy/ace-editor"),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        // Legacy scripts
+        { from: path.resolve(web, "./html/javascript"), to: path.resolve(dist, "./javascript") },
+        // Translations
+        { from: path.resolve(web, "./po"), to: path.resolve(dist, "./po") },
+        // Unimported branding assets
+        {
+          from: path.resolve(webHtmlSrc, "./branding/fonts/font-spacewalk"),
+          to: path.resolve(dist, "./fonts/font-spacewalk"),
+        },
+        // TODO: Copy all font licenses too
+        { from: path.resolve(webHtmlSrc, "./branding/img"), to: path.resolve(dist, "./img") },
+        // Any non-compiled CSS files will be compiled by their entry points
+        {
+          from: path.resolve(webHtmlSrc, "./branding/css/*.css"),
+          context: path.resolve(webHtmlSrc, "./branding/css"),
+          to: path.resolve(dist, "./css"),
+        },
+        {
+          from: path.resolve(web, "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
+          to: path.resolve(dist, "./javascript/legacy/bootstrap-webpack.js"),
+        },
+        {
+          from: path.resolve(web, "./node_modules/jquery/dist/jquery.min.js"),
+          to: path.resolve(dist, "./javascript/legacy"),
+        },
+        {
+          from: path.resolve(web, "./node_modules/jquery-ui/dist/jquery-ui.js"),
+          to: path.resolve(dist, "./javascript/legacy"),
+        },
+        // TODO: In the future it would be nice to bundle this instead of copying it
+        {
+          from: path.resolve(web, "./node_modules/font-awesome"),
+          to: path.resolve(dist, "./fonts/font-awesome"),
+        },
+        {
+          from: path.resolve(web, "./node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
+          to: path.resolve(dist, "./javascript/legacy"),
+        },
+        // Ace uses a webworker and dynamic imports internally, so in order for all the paths to work out, we serve the whole bundle instead of importing it in AceEditor
+        {
+          from: path.resolve(web, "./node_modules/ace-builds/src-min-noconflict"),
+          to: path.resolve(dist, "./javascript/legacy/ace-editor"),
+        },
+      ],
+    }),
     new MiniCssExtractPlugin({
       chunkFilename: `css/${moduleName}.css`,
       ignoreOrder: isProductionMode ? false : true,

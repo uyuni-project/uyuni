@@ -1,0 +1,1 @@
+- Fix code injection vulnerability in serialize-javascript
