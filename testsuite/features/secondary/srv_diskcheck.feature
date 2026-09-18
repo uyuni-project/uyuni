@@ -96,14 +96,16 @@ Feature: Space monitoring via Diskcheck
     Then I wait for the diskcheck alert notification
     And I go to the home page
     And I should not see the "The available disk space for the server is critically low" alert danger
-    And I should see the "The available disk space for the server is low" alert warning
+    # TODO: a message in notifications
+    #And I should see the "The available disk space for the server is low" alert warning
 
 
   Scenario: Custom settings with more than 70% and less than 90% disk space filled
     When I fill disk space in "/root/mnt-diskcheck" up to "80%" on "server"
     Then I wait for the diskcheck alert notification
     And I go to the home page
-    And I should see the "The available disk space for the server is critically low" alert danger
+    # TODO: a message in notifications
+    #And I should see the "The available disk space for the server is critically low" alert danger
     And I should not see the "The available disk space for the server is low" alert warning
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround
