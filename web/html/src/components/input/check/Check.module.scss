@@ -8,9 +8,12 @@
     gap: 6px;
     white-space: nowrap;
     align-items: center;
+    font-weight: 400;
 
     input {
       --bs-border-width: 1px;
+      border-color: $eos-bc-gray-900;
+      background-color: $eos-bc-white;
     }
   }
 }

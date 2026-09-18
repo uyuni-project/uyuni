@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render } from "utils/test-utils";
 
 import { CheckListItem } from "./products";
-import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
+import { filterProducts, isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 
 const extension = {
   label: "suse base 1 2 asd",
@@ -90,6 +90,7 @@ describe("Testing searchCriteriaInExtension", () => {
   });
 });
 
+
 describe("product request error handling", () => {
   test("ignores cancellation without an error", () => {
     expect(isProductRequestCancellation(undefined)).toBe(true);
@@ -99,6 +100,29 @@ describe("product request error handling", () => {
     const connectionError = { status: 0 } as JQueryXHR;
 
     expect(isProductRequestCancellation(connectionError)).toBe(false);
+  });
+});
+
+describe("Products.filterData", () => {
+  test("filters by architecture and enabled status toggles", () => {
+    const data = [
+      { identifier: "installed", arch: "x86_64", status: "INSTALLED" },
+      { identifier: "selected", arch: "x86_64", status: "AVAILABLE" },
+      { identifier: "other", arch: "aarch64", status: "AVAILABLE" },
+    ];
+
+    expect(
+      filterProducts(data, {
+        archCriteria: ["x86_64"],
+        showInstalledOnly: true,
+        showSelectedOnly: true,
+        selectedItems: [{ identifier: "selected" }],
+      })
+    ).toEqual([
+      { identifier: "installed", arch: "x86_64", status: "INSTALLED" },
+      { identifier: "selected", arch: "x86_64", status: "AVAILABLE" },
+    ]);
+
   });
 });
 
