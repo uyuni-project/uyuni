@@ -1246,19 +1246,16 @@ When(/^I generate hub-signed SSL certificates for "([^"]*)" on "([^"]*)"$/) do |
   hub_node = get_target(hub)
   fqdn = get_target(peripheral).full_hostname
   machine_name = fqdn.split('.').first
-  # Each peripheral gets its own subdirectory so parallel cert generation cannot
-  # interfere. The hub CA files are copied in before rhn-ssl-tool runs.
-  per_dir = "#{HUB_SSL_BUILD_DIR}/#{machine_name}"
-  _out, code = hub_node.run("find #{per_dir} -maxdepth 2 -name server.crt | grep -q .", check_errors: false)
+  _out, code = hub_node.run(
+    "find #{HUB_SSL_BUILD_DIR} -mindepth 2 -maxdepth 2 -name server.crt -path '*/#{machine_name}*' | grep -q .",
+    check_errors: false
+  )
   if code.zero?
     log "Hub-signed certificate for #{fqdn} already present on #{hub}, skipping generation"
   else
     hub_node.run(
-      "mkdir -p #{per_dir} && " \
-      "cp #{HUB_SSL_BUILD_DIR}/RHN-ORG-TRUSTED-SSL-CERT #{per_dir}/ && " \
-      "cp #{HUB_SSL_BUILD_DIR}/RHN-ORG-PRIVATE-SSL-KEY #{per_dir}/ && " \
-      "rhn-ssl-tool --gen-server --dir=#{per_dir} --set-hostname=#{fqdn} " \
-      '--set-cname=reportdb --set-cname=db --password=spacewalk'
+      "rhn-ssl-tool --gen-server --dir=#{HUB_SSL_BUILD_DIR} --set-hostname=#{fqdn} " \
+      "--set-cname=#{fqdn} --set-cname=db --set-cname=reportdb --password=spacewalk"
     )
   end
 end
@@ -1268,14 +1265,15 @@ When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do
   peripheral_node = get_target(peripheral)
   fqdn = peripheral_node.full_hostname
   machine_name = fqdn.split('.').first
-  per_dir = "#{HUB_SSL_BUILD_DIR}/#{machine_name}"
-  cert_dir, = hub_node.run("find #{per_dir} -maxdepth 1 -type d -name '#{machine_name}*' | head -1")
+  cert_dir, = hub_node.run(
+    "find #{HUB_SSL_BUILD_DIR} -mindepth 2 -maxdepth 2 -name server.crt -path '*/#{machine_name}*' -exec dirname {} \\; | head -1"
+  )
   cert_dir = cert_dir.strip
-  raise StandardError, "No certificate directory for #{fqdn} found on #{hub} - generate the certificates first" if cert_dir.empty?
+  raise StandardError, "No certificates for #{fqdn} found on #{hub} - generate them first" if cert_dir.empty?
 
   paths = hub_signed_cert_paths(fqdn)
   transfers = {
-    "#{per_dir}/RHN-ORG-TRUSTED-SSL-CERT" => paths[:ca],
+    "#{HUB_SSL_BUILD_DIR}/RHN-ORG-TRUSTED-SSL-CERT" => paths[:ca],
     "#{cert_dir}/server.crt" => paths[:cert],
     "#{cert_dir}/server.key" => paths[:key]
   }
