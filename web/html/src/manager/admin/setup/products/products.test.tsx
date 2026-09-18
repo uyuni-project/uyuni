@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import { render } from "utils/test-utils";
 
 import { CheckListItem } from "./products";
-import { searchCriteriaInExtension } from "./products.utils";
+import { filterProducts, searchCriteriaInExtension } from "./products.utils";
 
 const extension = {
   label: "suse base 1 2 asd",
@@ -87,6 +87,28 @@ describe("Testing searchCriteriaInExtension", () => {
     expect(searchCriteriaInExtension(extension, criteriaChannel1)).toBeTruthy();
     expect(searchCriteriaInExtension(extension, criteriaChannel2)).toBeTruthy();
     expect(searchCriteriaInExtension(extension, criteriaWrong)).toBeFalsy();
+  });
+});
+
+describe("Products.filterData", () => {
+  test("filters by architecture and enabled status toggles", () => {
+    const data = [
+      { identifier: "installed", arch: "x86_64", status: "INSTALLED" },
+      { identifier: "selected", arch: "x86_64", status: "AVAILABLE" },
+      { identifier: "other", arch: "aarch64", status: "AVAILABLE" },
+    ];
+
+    expect(
+      filterProducts(data, {
+        archCriteria: ["x86_64"],
+        showInstalledOnly: true,
+        showSelectedOnly: true,
+        selectedItems: [{ identifier: "selected" }],
+      })
+    ).toEqual([
+      { identifier: "installed", arch: "x86_64", status: "INSTALLED" },
+      { identifier: "selected", arch: "x86_64", status: "AVAILABLE" },
+    ]);
   });
 });
 
