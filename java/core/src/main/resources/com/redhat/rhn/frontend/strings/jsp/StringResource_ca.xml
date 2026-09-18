@@ -3562,14 +3562,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.oval" xml:space="preserve">
-        <source>OVAL</source>
-        <target state="translated">OVAL</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
-          <context context-type="sourcefile">/rhn/errata/AllErrata</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.systems" xml:space="preserve">
         <source>Systems</source>
         <target>Sistemes</target>
@@ -28453,10 +28445,6 @@ canal indicat.</target>
         <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
         <target state="translated">Les migracions de productes són compatibles només per als sistemes lt;stronggt;SUSElt;/stronggt;.</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
-        <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target state="translated">Les migracions de productes no estan suportades actualment per a aquest sistema, instal·leu l'última versió de lt;stronggt;zypp-plugin-spacewalklt;/stronggt;.</target>
-      </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
         <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
         <target state="translated">Una migració de productes ja és lt;a href."/rhn/systems/details/history/Event.do?sid{0}{0}amp;aid for{1}"gt;scheduledlt;/agt; per a aquest sistema.</target>
@@ -29829,6 +29817,17 @@ lt;/pgt;
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.clm-diff-bunch" xml:space="preserve">
+        <source>Generates differences for CLM channels</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.clm-diff" xml:space="preserve">
+        <source>Calculate CLM Differences</source>
       <target state="new"/>
   </trans-unit>
       </body>
