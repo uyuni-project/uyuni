@@ -27,6 +27,10 @@ CREATE TABLE rhnActionScript
     groupname  VARCHAR(32) NOT NULL,
     script     BYTEA,
     timeout    NUMERIC,
+    use_transactional_update CHAR(1)
+                   DEFAULT ('N') NOT NULL
+                   CONSTRAINT rhn_actscript_use_tu_ck
+                       CHECK (use_transactional_update in ('Y','N')),
     created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
     modified   TIMESTAMPTZ

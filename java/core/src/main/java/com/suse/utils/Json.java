@@ -49,6 +49,10 @@ public class Json {
            .registerTypeAdapterFactory(new RecordTypeAdapterFactory())
            .create();
 
+   public static final Gson PRETTY_GSON = GSON.newBuilder()
+           .setPrettyPrinting()
+           .create();
+
    /**
     * @param element json element
     * @return optional containing the JsonObject if element was one.

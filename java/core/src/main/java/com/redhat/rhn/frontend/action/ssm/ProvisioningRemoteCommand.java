@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionTypeEnum;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
@@ -47,7 +48,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +76,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
         private String gid;
         private Long timeout;
         private String label;
+        private boolean useTransactionalUpdate;
 
         /**
          * Get script body.
@@ -149,6 +151,22 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
         }
 
         /**
+         * @return true when transactional systems should execute through transactional-update
+         */
+        public boolean isUseTransactionalUpdate() {
+            return useTransactionalUpdate;
+        }
+
+        /**
+         * @param useTransactionalUpdateIn whether transactional-update should be used
+         * @return FormValues returns self.
+         */
+        public FormValues setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+            useTransactionalUpdate = useTransactionalUpdateIn;
+            return this;
+        }
+
+        /**
          * Get user ID (UID).
          * @return String get user ID.
          */
@@ -215,18 +233,17 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
             }
 
             if (formValid) {
+                List<SystemOverview> servers = getResult(context);
+                List<Long> serverIds = servers.stream()
+                        .map(SystemOverview::getId)
+                        .collect(toList());
+                boolean useTransactionalUpdate = Boolean.TRUE.equals(form.get("use_transactional_update"));
                 ScriptActionDetails scriptActionDetails = ActionFactory.createScriptActionDetails(
                         form.getString("uid"),
                         form.getString("gid"),
                         form.get("timeout") == null ? 300 : (Long) form.get("timeout"),
-                        form.getString("script_body").trim());
-
-                List<SystemOverview> servers = getResult(context);
-                List<Long> serverIds = new ArrayList<>();
-
-                for (SystemOverview system : servers) {
-                    serverIds.add(system.getId());
-                }
+                        form.getString("script_body").trim(),
+                        useTransactionalUpdate);
 
                 String label = StringUtil.nullIfEmpty(form.getString("lbl"));
                 label = label != null ?
@@ -254,7 +271,8 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
                           .setGid(form.getString("gid"))
                           .setTimeout((Long) form.get("timeout"))
                           .setLabel(form.getString("lbl"))
-                          .setScript(form.getString("script_body"));
+                          .setScript(form.getString("script_body"))
+                          .setUseTransactionalUpdate(Boolean.TRUE.equals(form.get("use_transactional_update")));
             }
 
             form.getMap().clear();
@@ -265,6 +283,8 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
                 "date", this.getStrutsDelegate().prepopulateDatePicker(
                                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
         Set<Long> systemIds = getSystemIds(context);
+        request.setAttribute("has_transactional_update",
+                hasTransactionalSystems(systemIds, context.getCurrentUser()));
         MaintenanceWindowHelper.populateMaintenanceWindows(request, systemIds, ActionTypeEnum.TYPE_SCRIPT_RUN);
         ActionChainHelper.prepopulateActionChains(request);
 
@@ -351,5 +371,11 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
         return getResult(context).stream()
                 .map(SystemOverview::getId)
                 .collect(Collectors.toSet());
+    }
+
+    private static boolean hasTransactionalSystems(Collection<Long> serverIds, User user) {
+        return serverIds.stream()
+                .map(id -> SystemManager.lookupByIdAndUser(id, user))
+                .anyMatch(Server::doesOsSupportsTransactionalUpdate);
     }
 }

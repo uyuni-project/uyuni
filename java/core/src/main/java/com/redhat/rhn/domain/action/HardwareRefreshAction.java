@@ -32,6 +32,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareConstants;
 import com.suse.manager.reactor.hardware.HardwareMapper;
@@ -84,9 +85,21 @@ public class HardwareRefreshAction extends Action {
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
 
+        var partitionByTransactional = minionSummaries.stream()
+                .collect(Collectors.partitioningBy(MinionSummary::isTransactionalUpdate));
+
+        List<MinionSummary> transactionalMinions = partitionByTransactional.get(true);
+        List<MinionSummary> nonTransactionalMinions = partitionByTransactional.get(false);
+
+        if (!transactionalMinions.isEmpty()) {
+            ret.put(TransactionalActionManager.getTransactionalSaltCall(
+                            ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, Optional.empty()),
+                    transactionalMinions);
+        }
+
         // salt-ssh minions in the 'true' partition
         // regular minions in the 'false' partition
-        Map<Boolean, List<MinionSummary>> partitionBySSHPush = minionSummaries.stream()
+        Map<Boolean, List<MinionSummary>> partitionBySSHPush = nonTransactionalMinions.stream()
                 .collect(Collectors.partitioningBy(MinionSummary::isSshPush));
 
         // Separate SSH push minions from regular minions to apply different states

@@ -68,6 +68,17 @@
                                       rows="8" wrap="off" style="width: 100%;">${formData.scriptBody}</textarea>
                         </div>
                     </div>
+                    <c:if test="${requestScope.has_transactional_update}">
+                        <div class="row">
+                            <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="use_transactional_update" value="true"
+                                        <c:if test="${formData.useTransactionalUpdate}">checked</c:if> />
+                                    <bean:message key="ssm.operations.provisioning.remotecommand.form.use_transactional_update.label"/>
+                                </label>
+                            </div>
+                        </div>
+                    </c:if>
                     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                     <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">

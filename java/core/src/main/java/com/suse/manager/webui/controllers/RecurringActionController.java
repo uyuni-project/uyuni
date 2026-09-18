@@ -101,8 +101,18 @@ public class RecurringActionController {
 
     private static final Logger LOG = LogManager.getLogger(RecurringActionController.class);
     private static final Gson GSON = new GsonBuilder().create();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private RecurringActionController() { }
+
+    /**
+     * Set taskomatic API instance.
+     *
+     * @param taskomaticApiIn taskomatic API instance
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
@@ -307,6 +317,8 @@ public class RecurringActionController {
         }
         else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(action.getActionType())) {
             dto.setTest(((RecurringState) action.getRecurringActionType()).isTestMode());
+            dto.setUseTransactionalUpdate(
+                    ((RecurringState) action.getRecurringActionType()).isUseTransactionalUpdate());
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
@@ -468,9 +480,11 @@ public class RecurringActionController {
                     Optional.empty(),
                     new Date(),
                     Optional.of(json.getDetails().isTest()),
-                    true);
+                    true,
+                    false,
+                    json.getDetails().isUseTransactionalUpdate());
             ActionFactory.save(a);
-            new TaskomaticApi().scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
@@ -571,6 +585,7 @@ public class RecurringActionController {
         }
         else if (action.getRecurringActionType() instanceof RecurringState stateType) {
             stateType.setTestMode(details.isTest());
+            stateType.setUseTransactionalUpdate(details.isUseTransactionalUpdate());
             if (json.getRecurringActionId() == null ||
                     (json.getRecurringActionId() != null && details.getStates() != null)) {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());

@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -38,6 +40,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManagerTest;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -50,6 +53,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Tests for {@link ActionChainManager}.
@@ -104,6 +108,20 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
             assertNotNull(retrievedAction);
             assertEquals(action, retrievedAction);
         }
+    }
+
+    @Test
+    public void testScheduleScriptRunsPreservesTransactionalUpdate() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+        ScriptActionDetails script = ActionFactory.createScriptActionDetails(
+                "root", "root", 10L, "#!/bin/sh\necho hello", true);
+
+        Set<Action> actions = ActionChainManager.scheduleScriptRuns(
+                user, List.of(server.getId()), "Run script test", script, new Date(), null);
+
+        ScriptRunAction scheduled = (ScriptRunAction) actions.iterator().next();
+        assertTrue(scheduled.getScriptActionDetails().isUseTransactionalUpdate());
     }
 
     /**

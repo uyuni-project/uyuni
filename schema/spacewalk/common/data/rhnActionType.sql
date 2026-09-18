@@ -74,4 +74,5 @@ insert into rhnActionType values (524, 'appstreams.configure', 'Configure AppStr
 insert into rhnActionType values (525, 'ansible.inventory', 'Refresh Ansible inventories', 'N', 'N', 'N');
 insert into rhnActionType values (526, 'supportdata.get', 'Get supportdata from a system', 'N', 'N', 'N');
 insert into rhnActionType values (527, 'virt.refresh_list', 'Refresh virtual instance information', 'N', 'N', 'N');
+insert into rhnActionType values (528, 'snapshots.refresh_list', 'Refresh Snapshots', 'N', 'N', 'N');
 commit;

@@ -1002,7 +1002,7 @@ master: $HOSTNAME
 server_id_use_crc: adler32
 enable_legacy_startup_events: False
 enable_fqdns_grains: False
-start_event_grains: [machine_id, saltboot_initrd, susemanager]
+start_event_grains: [machine_id, saltboot_initrd, susemanager, boot_time]
 mine_enabled: False
 EOF
     cat <<EOF >> "$SUSEMANAGER_MASTER_FILE"
