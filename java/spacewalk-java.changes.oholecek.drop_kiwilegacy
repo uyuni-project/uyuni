@@ -1,0 +1,2 @@
+- Drop kiwi legacy support and enable containerized
+  kiwi on platforms with podman version 4.9.5+
