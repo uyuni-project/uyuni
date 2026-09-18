@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-18 10:16+0200\n"
-"PO-Revision-Date: 2026-05-21 16:12+0000\n"
+"PO-Revision-Date: 2026-09-18 11:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:425
 msgid "remaining"
@@ -424,7 +424,7 @@ msgstr "Processa la sortida"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
 #: ../html/src/components/large-text-input.tsx:117
 msgid "Unable to retrieve the uploaded file"
-msgstr ""
+msgstr "No s'ha pogut recuperar el fitxer pujat"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
 #: ../html/src/manager/minion/coco/coco-settings.tsx:86
@@ -438,27 +438,25 @@ msgstr "Habilita l'attest"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:221
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:241
 msgid "Secure execution header"
-msgstr ""
+msgstr "Capçalera d'execució segura"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:227
 msgid "Download the current Secure execution header"
-msgstr ""
+msgstr "Baixa la capçalera d'execució segura actual"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:232
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:261
-#, fuzzy
-#| msgid "Changes"
 msgid "Change"
 msgstr "Canvis"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:250
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:272
 msgid "Host key document"
-msgstr ""
+msgstr "Document de la clau de l'amfitrió"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:256
 msgid "Download the current Host Key Document certificate"
-msgstr ""
+msgstr "Descarrega el certificat actual del document de claus de l'amfitrió"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:273
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
@@ -471,8 +469,6 @@ msgid "Certificate file, in PEM format"
 msgstr "Fitxer de certificat, en format PEM"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:275
-#, fuzzy
-#| msgid "PEM Certificate"
 msgid "PEM certificate"
 msgstr "Certificat PEM"
 
@@ -486,14 +482,10 @@ msgid "Executions"
 msgstr "Execucions"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:288
-#, fuzzy
-#| msgid "Peform attestation during the boot process"
 msgid "Perform attestation during the boot process"
 msgstr "Acreditació del Peform durant el procés d'arrencada"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:301
-#, fuzzy
-#| msgid "Peform attestation on a schedule"
 msgid "Perform attestation on a schedule"
 msgstr "Prova de Peform en una planificació"
 
@@ -1761,8 +1753,6 @@ msgid "Confirm Deletion"
 msgstr "Confirma la supressió"
 
 #: ../html/src/components/large-text-input.tsx:61
-#, fuzzy
-#| msgid "Paste the new value"
 msgid "Paste the data"
 msgstr "Enganxa el nou valor"
 
@@ -2336,8 +2326,6 @@ msgid "Item id"
 msgstr "Identificador de l'element"
 
 #: ../html/src/components/table/search.example.tsx:50
-#, fuzzy
-#| msgid "System name"
 msgid "Item name"
 msgstr "Nom del sistema"
 
@@ -2803,10 +2791,8 @@ msgid "No hub is currently configured for this server. Refresh this page after c
 msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. "
+msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2829,10 +2815,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. "
+msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -3475,7 +3459,7 @@ msgstr "Estat del pedaç desconegut"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL audit not supported for this system's OS"
-msgstr ""
+msgstr "Auditoria OVAL no suportada per al SO d'aquest sistema"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4164,8 +4148,6 @@ msgid "Create a new filter"
 msgstr "Crea un filtre nou"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:185
-#, fuzzy
-#| msgid "This access token cannot be deleted. It is currently used by peripheral {fqdn}"
 msgid "This filter cannot be deleted because it is currently in use by one or more projects"
 msgstr "Aquest testimoni d'accés no es pot suprimir. Actualment és utilitzat pel perifèric {fqdn}"
 
@@ -4178,14 +4160,10 @@ msgid "Bear in mind that all the associated projects need to be rebuilt after a 
 msgstr "Tingues en compte que tots els projectes associats necessiten ser reconstruïts després d'una actualització de filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
-#, fuzzy
-#| msgid "Use a manual filter"
 msgid "Manual Filter"
 msgstr "Utilitza un filtre manual"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:96
-#, fuzzy
-#| msgid "Use a template"
 msgid "Use Template"
 msgstr "Utilitza una plantilla"
 
@@ -4246,7 +4224,7 @@ msgstr "Tipus d'assessorament"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 msgid "The stored issue date is in an invalid format. Please select a valid date and save the filter."
-msgstr ""
+msgstr "La data d'emissió emmagatzemada té un format no vàlid. Seleccioneu una data vàlida i deseu el filtre."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
 msgid "Issued"
@@ -4708,8 +4686,6 @@ msgid "Create New Filter"
 msgstr "Crea un filtre nou"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit {name}"
 msgstr "Edita el filtre {name}"
 
@@ -4890,26 +4866,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere "
+msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere"
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut "
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut"
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -5521,8 +5491,6 @@ msgid "Images"
 msgstr "Imatges"
 
 #: ../html/src/manager/images/image-view.tsx:530
-#, fuzzy
-#| msgid "sync failed"
 msgid "Inspect failed"
 msgstr "ha fallat la sincronització"
 
@@ -5531,10 +5499,8 @@ msgid "Building"
 msgstr "Edifici"
 
 #: ../html/src/manager/images/image-view.tsx:544
-#, fuzzy
-#| msgid " failed"
 msgid "Build failed"
-msgstr " ha fallat"
+msgstr "ha fallat"
 
 #: ../html/src/manager/images/image-view.tsx:547
 msgid "Unknown"
