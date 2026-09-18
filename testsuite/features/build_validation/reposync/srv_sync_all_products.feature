@@ -633,6 +633,23 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sll-9" have finished
 
 @susemanager
+@liberty10_minion
+  Scenario: Add Liberty Linux 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 10 Base" as the filtered product description
+    And I select "RHEL and Liberty 10 Base" as a product
+    Then I should see the "RHEL and Liberty 10 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 10 Base"
+    And I select "SUSE Liberty Linux 10 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-10" have finished
+
+@susemanager
 @oracle9_minion
   Scenario: Add Oracle Linux 9
     Given I am authorized for the "Admin" section
@@ -849,6 +866,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Debian 13" product has been added
     And I wait until all synchronized channels for "debian-13" have finished
+
+@susemanager
+@raspios13_minion
+  Scenario: Add Raspberry Pi OS 13
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text, refreshing the page
+    And I wait until I do not see "Loading" text
+    And I enter "Raspberry Pi OS 13" as the filtered product description
+    And I select "Raspberry Pi OS 13" as a product
+    Then I should see the "Raspberry Pi OS 13" selected
+    When I click the Add Product button
+    And I wait until I see "Raspberry Pi OS 13" product has been added
+    And I wait until all synchronized channels for "raspberrypios-13" have finished
 
 @uyuni
 @proxy

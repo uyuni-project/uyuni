@@ -564,6 +564,14 @@ Before('@liberty9_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty9_sshminion']
 end
 
+Before('@liberty10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty10_minion']
+end
+
+Before('@liberty10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['liberty10_sshminion']
+end
+
 Before('@oracle9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle9_minion']
 end
@@ -674,6 +682,14 @@ end
 
 Before('@debian13_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian13_sshminion']
+end
+
+Before('@raspios13_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['raspios13_minion']
+end
+
+Before('@raspios13_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['raspios13_sshminion']
 end
 
 Before('@sles12sp5_minion') do
