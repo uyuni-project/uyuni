@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
-import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -14,6 +13,7 @@ import Validation from "components/validation";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
+import { getProxyOptions, parseProxySelection, ProxyOptions, ProxyType } from "../systems/proxy";
 import { ContainerConfigMessages } from "./container-config-messages";
 
 enum SSLMode {
@@ -22,9 +22,10 @@ enum SSLMode {
   CreateSSL = "create-ssl",
 }
 
-export type ParentOption = { value: string; label: string };
+export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: ProxyType[] }) {
+  // Default to the first parent, which is the Uyuni server itself (direct server connection).
+  const defaultParent = getProxyOptions(parents)[0]?.value ?? "";
 
-export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?: ParentOption[] }) {
   const initialModel = {
     caCertificate: "",
     caKey: "",
@@ -42,7 +43,7 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
     sslMode: noSSL ? SSLMode.NoSSL : SSLMode.CreateSSL,
     maxSquidCacheSize: "",
     proxyFQDN: "",
-    serverFQDN: "",
+    serverFQDN: defaultParent,
     proxyPort: "8022",
   };
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
@@ -91,10 +92,11 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
       })
       .filter((promise) => promise !== undefined);
     Promise.all(fileReaders).then((values) => {
+      const { proxyFqdn } = parseProxySelection(model.serverFQDN);
       const commonData = {
         proxyFQDN: model.proxyFQDN,
         proxyPort: model.proxyPort ? parseInt(model.proxyPort, 10) : 8022,
-        serverFQDN: model.serverFQDN,
+        serverFQDN: proxyFqdn || model.serverFQDN,
         maxSquidCacheSize: parseInt(model.maxSquidCacheSize, 10),
         proxyAdminEmail: model.proxyAdminEmail,
         sslMode: model.sslMode,
@@ -208,17 +210,21 @@ export function ProxyConfig({ noSSL, parents = [] }: { noSSL: boolean; parents?:
           validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
           invalidHint={t("Has to be a valid FQDN address")}
         />
-        <DEPRECATED_Select
-          name="serverFQDN"
-          label={t("Parent FQDN")}
-          required
-          placeholder={t("e.g., server.domain.com")}
-          hint={t("The FQDN of the parent (server or proxy) to connect to.")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          options={parents}
-          isClearable={false}
-        />
+        <div className="form-group row">
+          <label className="col-md-3 control-label" htmlFor="serverFQDN">
+            {t("Parent FQDN")}
+          </label>
+          <div className="col-md-6">
+            <ProxyOptions
+              name="serverFQDN"
+              proxies={parents}
+              value={model.serverFQDN}
+              placeholder={t("e.g., server.domain.com")}
+              onChange={(serverFQDN) => setModel({ ...model, serverFQDN })}
+            />
+            <span className="help-block">{t("The FQDN of the parent (server or proxy) to connect to.")}</span>
+          </div>
+        </div>
         <Text
           name="proxyPort"
           label={t("Proxy SSH port")}

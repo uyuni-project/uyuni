@@ -1,14 +1,14 @@
 import { Component } from "react";
 
 import { AsyncButton } from "components/buttons";
+import { Select } from "components/input";
 import { ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import Network from "utils/network";
 
-type ProxyType = {
-  hostname: string;
+export type ProxyType = {
   id: number;
   name: string;
   path: string[];
@@ -33,29 +33,54 @@ export function parseProxySelection(value?: string): ProxySelection {
   return { proxyId: parseInt(value.slice(0, sep), 10), proxyFqdn: value.slice(sep + 1) };
 }
 
-export function ProxyOptions({ proxies }: { proxies: ProxyType[] }) {
-  const arrow = " \u2192 ";
-  const optionsList: JSX.Element[] = [];
-  proxies.forEach((p) => {
+const ARROW = " \u2192 ";
+const INDENT = "\u00A0\u00A0\u00A0\u00A0";
+
+export type ProxyOption = { value: string; label: string };
+
+/**
+ * Build the {value, label} options for the given proxies.
+ * id 0 is conventionally the Uyuni server itself (direct connection, no proxy in between), always
+ * carrying its own FQDN; it is labelled as such to distinguish it from the actual proxies.
+ */
+export function getProxyOptions(proxies: ProxyType[]): ProxyOption[] {
+  return (proxies || []).flatMap((p) => {
     const primary = p.primaryFqdn || p.name;
-    const primaryValue = `${p.id}:${primary}`;
-    optionsList.push(
-      <option key={primaryValue} value={primaryValue}>
-        {[primary].concat(p.path).join(arrow)}
-      </option>
-    );
-    if (p.additionalFqdns && p.additionalFqdns.length > 0) {
-      p.additionalFqdns.forEach((add) => {
-        const addValue = `${p.id}:${add}`;
-        optionsList.push(
-          <option key={addValue} value={addValue}>
-            {"\u00A0\u00A0\u00A0\u00A0" + [add].concat(p.path).join(arrow)}
-          </option>
-        );
-      });
-    }
+    const path = p.path || [];
+    const primaryLabel = [primary].concat(path).join(ARROW);
+    const mainOption = {
+      value: `${p.id}:${primary}`,
+      label: p.id === 0 ? t("{fqdn} (direct connection)", { fqdn: primaryLabel }) : primaryLabel,
+    };
+
+    const additionalOptions = (p.additionalFqdns || []).map((add) => ({
+      value: `${p.id}:${add}`,
+      label: INDENT + [add].concat(path).join(ARROW),
+    }));
+
+    return [mainOption, ...additionalOptions];
   });
-  return <>{optionsList}</>;
+}
+
+type ProxyOptionsProps = {
+  proxies: ProxyType[];
+  value?: string;
+  onChange: (value: string) => void;
+  name?: string;
+  placeholder?: string;
+};
+
+export function ProxyOptions({ proxies, value, onChange, name = "proxies", placeholder }: ProxyOptionsProps) {
+  return (
+    <Select
+      name={name}
+      value={value}
+      options={getProxyOptions(proxies)}
+      placeholder={placeholder}
+      isClearable={false}
+      onChange={(newValue) => onChange(newValue ?? "")}
+    />
+  );
 }
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/minion/proxy.jade
@@ -87,24 +112,15 @@ class Proxy extends Component<Props, State> {
           <span>{t("Please select a list of minions (not proxies or traditional clients).")}</span>
         );
 
-    let initialProxy = "0";
-    if (props.currentProxy) {
-      const p = props.proxies.find((px) => px.id === props.currentProxy);
-      const primary = p ? p.primaryFqdn || p.name : "";
-      initialProxy = p ? `${props.currentProxy}:${primary}` : String(props.currentProxy);
-    }
+    const currentProxyId = props.currentProxy ?? 0;
+    const p = props.proxies.find((px) => px.id === currentProxyId);
+    const initialProxy = p ? `${currentProxyId}:${p.primaryFqdn || p.name}` : String(currentProxyId);
 
     this.state = {
       messages: msg,
       proxy: initialProxy,
     };
   }
-
-  proxyChanged = (event) => {
-    this.setState({
-      proxy: event.target.value,
-    });
-  };
 
   onSet = () => {
     const { proxyId, proxyFqdn } = parseProxySelection(this.state.proxy);
@@ -166,12 +182,11 @@ class Proxy extends Component<Props, State> {
             <div className="row">
               <label className="col-md-3 control-label">{t("New Proxy")}:</label>
               <div className="col-md-6">
-                <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
-                  <option key="none" value="0">
-                    {t("None")}
-                  </option>
-                  <ProxyOptions proxies={this.props.proxies} />
-                </select>
+                <ProxyOptions
+                  proxies={this.props.proxies}
+                  value={this.state.proxy}
+                  onChange={(proxy) => this.setState({ proxy })}
+                />
               </div>
             </div>
             <div className="row">
