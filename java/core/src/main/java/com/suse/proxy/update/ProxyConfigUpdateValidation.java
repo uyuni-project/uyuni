@@ -120,20 +120,39 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
                 errorReport.register("No current proxy configuration found to keep certificates");
                 return;
             }
-            if (isAbsent(context.getRootCA())) {
-                errorReport.register(String.format(NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, ROOT_CA_FIELD));
-            }
-            if (isAbsent(context.getProxyCert())) {
-                errorReport.register(String.format(NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, PROXY_CERT_FIELD));
-            }
-            if (isAbsent(context.getProxyKey())) {
-                errorReport.register(String.format(NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, PROXY_KEY_FIELD));
+            boolean hasCerts = !isAbsent(context.getRootCA()) ||
+                                        !isAbsent(context.getProxyCert()) ||
+                                        !isAbsent(context.getProxyKey());
+            if (hasCerts) {
+                if (isAbsent(context.getRootCA())) {
+                    errorReport.register(String.format(
+                            NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, ROOT_CA_FIELD)
+                    );
+                }
+                if (isAbsent(context.getProxyCert())) {
+                    errorReport.register(String.format(
+                            NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, PROXY_CERT_FIELD)
+                    );
+                }
+                if (isAbsent(context.getProxyKey())) {
+                    errorReport.register(String.format(
+                            NOT_FOUND_ON_CURRENT_PROXY_CONFIGURATION_MESSAGE, PROXY_KEY_FIELD)
+                    );
+                }
             }
             return;
         }
-        registerIfMissing(context.getRootCA(), ROOT_CA_FIELD);
-        registerIfMissing(context.getProxyCert(), PROXY_CERT_FIELD);
-        registerIfMissing(context.getProxyKey(), PROXY_KEY_FIELD);
+
+        // Certificates are optional, but if one is provided, all must be provided
+        boolean anyProvided = !isAbsent(context.getRootCA()) ||
+                              !isAbsent(context.getProxyCert()) ||
+                              !isAbsent(context.getProxyKey());
+
+        if (anyProvided) {
+            registerIfMissing(context.getRootCA(), ROOT_CA_FIELD);
+            registerIfMissing(context.getProxyCert(), PROXY_CERT_FIELD);
+            registerIfMissing(context.getProxyKey(), PROXY_KEY_FIELD);
+        }
     }
 
     private void validateSourceMode(ProxyConfigUpdateJson request) {
