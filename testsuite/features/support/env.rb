@@ -82,7 +82,7 @@ SCENARIO_HARD_LIMIT = ENV['SCENARIO_HARD_LIMIT'] ? ENV['SCENARIO_HARD_LIMIT'].to
 # Scenarios tagged @long_running (e.g. "Synchronize products" in the Setup Wizard: ~40 min in CI,
 # up to ~13 h in BV) use this instead. It is 0 (watchdog disabled, rely on the external Layer 4
 # job timeout) unless explicitly set, so set it per pipeline: e.g. 3600 in CI, 50400 in BV.
-LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '0').to_i
+LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '9000').to_i
 # Small positive wait for "is it there right now" existence gates. capybara-playwright-driver does
 # NOT support wait: 0 / wait: false: it requires wait > 0, and a 0 maps to Playwright's "disable
 # timeout" which means wait forever. Never use wait: 0 with the Playwright driver - use this instead.
