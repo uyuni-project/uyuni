@@ -16,7 +16,7 @@
 package com.redhat.rhn.manager.audit;
 
 public enum ScanDataSource {
-    OVAL("Oval"), CHANNELS("Channels");
+    OVAL("Oval"), CHANNELS("Channels"), OVAL_UNSUPPORTED("OvalUnsupported");
 
     private final String displayName;
 

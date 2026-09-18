@@ -46,11 +46,11 @@ end
 
 Then(/^"([^"]*)" should communicate with the server using public interface$/) do |host|
   node = get_target(host)
-  _result, return_code = node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
+  _result, return_code = node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", runs_in_container: false, check_errors: false)
   unless return_code.zero?
     sleep 2
     puts 're-try ping'
-    node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
+    node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", runs_in_container: false)
   end
   get_target('server').run("ping -n -c 1 #{node.public_ip}")
 end
@@ -443,7 +443,7 @@ Then(/^I should see the image for "([^"]*)" is built$/) do |host|
 
   begin
     tr = find('tr', text: name)
-    tr.find('i[title="Built"]')
+    tr.find('i[title="Built"], i[aria-label="Built"]')
   rescue Capybara::ElementNotFound
     raise ScriptError, "Image #{name} is not present or not marked as built"
   end

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
+import com.suse.oval.config.OVALConfig;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
@@ -100,18 +101,39 @@ public class CVEAuditManagerOVAL {
                 Collections.emptySet() :
                 OVALCachingFactory.getServersWithErrata(user.getId());
         Map<String, Boolean> cpeAvailabilityCache = new HashMap<>();
+        OVALConfig config = null;
+        Set<Long> ovalServerIds = clients.stream()
+                .filter(clientServer -> {
+                    String cpe = clientServer.getCpe();
+                    return ovalEnabled && cpe != null &&
+                            cpeAvailabilityCache.computeIfAbsent(cpe,
+                                    value -> isCpeCoveredByOval(value, ovalPlatformCpes));
+                })
+                .map(Server::getId)
+                .collect(Collectors.toSet());
+        Map<Long, List<VulnerablePackage>> vulnerablePackagesByServer =
+                OVALCachingFactory.getVulnerablePackagesByProductAndCve(ovalServerIds, cveIdentifier);
 
         for (Server clientServer : clients) {
             CVEAuditSystemBuilder auditWithChannelsResult = null;
             CVEAuditSystemBuilder auditWithOVALResult = null;
 
-            String cpe = clientServer.getCpe();
-            boolean isOvalAvailable = ovalEnabled && cpe != null &&
-                    cpeAvailabilityCache.computeIfAbsent(cpe,
-                    value -> isCpeCoveredByOval(value, ovalPlatformCpes));
-            if (isOvalAvailable) {
-                auditWithOVALResult =
-                        doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()), clientServer);
+            Optional<OVALOsProduct> productOpt = new OsReleasePair(
+                    clientServer.getOs(), clientServer.getRelease()).toOVALOsProduct();
+            boolean isOvalSupported = false;
+            if (productOpt.isPresent()) {
+                OVALOsProduct product = productOpt.get();
+                if (config == null) {
+                    config = OVALConfigLoader.loadDefaultConfig();
+                }
+                isOvalSupported = config.lookupSourceInfo(
+                        product.getOsFamily(), product.getOsVersion()).isPresent();
+            }
+
+            if (ovalServerIds.contains(clientServer.getId())) {
+                auditWithOVALResult = doAuditSystem(resultsBySystem.get(clientServer.getId()),
+                        clientServer, vulnerablePackagesByServer.getOrDefault(clientServer.getId(),
+                                Collections.emptyList()));
             }
 
             if (serversWithErrata.contains(clientServer.getId())) {
@@ -133,7 +155,13 @@ public class CVEAuditManagerOVAL {
                 auditResult = auditWithOVALResult;
             }
             else if (auditWithChannelsResult != null) {
-                auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                if (isOvalSupported) {
+                    auditWithChannelsResult.setScanDataSources(ScanDataSource.CHANNELS);
+                }
+                else {
+                    auditWithChannelsResult.setScanDataSources(
+                            ScanDataSource.CHANNELS, ScanDataSource.OVAL_UNSUPPORTED);
+                }
                 auditResult = auditWithChannelsResult;
             }
             else {
@@ -141,6 +169,9 @@ public class CVEAuditManagerOVAL {
                 auditResult.setPatchStatus(PatchStatus.UNKNOWN);
                 auditResult.setSystemID(clientServer.getId());
                 auditResult.setSystemName(clientServer.getName());
+                if (!isOvalSupported) {
+                    auditResult.setScanDataSources(ScanDataSource.OVAL_UNSUPPORTED);
+                }
             }
 
             if (patchStatuses.contains(auditResult.getPatchStatus())) {
@@ -160,16 +191,6 @@ public class CVEAuditManagerOVAL {
     private static boolean isCpeCoveredByOval(String cpe, Set<String> ovalPlatformCpes) {
         return cpe != null && ovalPlatformCpes.stream()
                 .anyMatch(ovalCpe -> cpe.startsWith(ovalCpe) || ovalCpe.startsWith(cpe));
-    }
-
-    /**
-     * Check if we have any OVAL vulnerability records for the given client OS in the database.
-     *
-     * @param clientServer the server to check
-     * @return {@code True}
-     * */
-    public static boolean checkOVALAvailability(Server clientServer) {
-        return OVALCachingFactory.checkOVALAvailability(clientServer.getCpe());
     }
 
     /**
@@ -199,6 +220,13 @@ public class CVEAuditManagerOVAL {
     public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier,
                                                       List<CVEAuditManager.CVEPatchStatus> results,
                                                       Server clientServer) {
+        return doAuditSystem(results, clientServer,
+                OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getId(), cveIdentifier));
+    }
+
+    private static CVEAuditSystemBuilder doAuditSystem(List<CVEAuditManager.CVEPatchStatus> results,
+                                                      Server clientServer,
+                                                      List<VulnerablePackage> clientProductVulnerablePackages) {
         // It's possible to find more than one patch for a particular package in the available channels. It's NOT
         // necessary to apply all of them because they will have the same outcome i.e. patch the package
         // instead we need to choose only one. To choose the one, we rank patches based on the channel they come
@@ -208,9 +236,6 @@ public class CVEAuditManagerOVAL {
 
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
-
-        List<VulnerablePackage> clientProductVulnerablePackages =
-                OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getId(), cveIdentifier);
 
         LOG.debug("Client vulnerable packages: {}", clientProductVulnerablePackages);
 

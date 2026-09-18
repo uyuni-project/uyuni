@@ -81,16 +81,6 @@ public class OSImageStoreUtils {
     }
 
     /**
-     * Returns an OS Image Store URI relative to the server's domain name for an Org
-     *
-     * @param org the org associated with the Image Store
-     * @return the relative URI for the Org
-     */
-    public static String getOSImageStoreRelativeURI(Org org) {
-        return "/" + osImageWWWDirectory + "/" + org.getId() + "/";
-    }
-
-    /**
      * Returns an OS Image File local path
      *
      * @param file the image file

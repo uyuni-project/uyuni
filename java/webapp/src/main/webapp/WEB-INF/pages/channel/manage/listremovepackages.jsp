@@ -22,7 +22,7 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <rl:csv dataset="pageList" name="packageList" exportColumns="id, nvrea, provider"/>
-                <button type="submit" name="confirm" class="btn btn-default">
+                <button type="submit" name="confirm" class="btn btn-default" value="removepackages">
                     <bean:message key='channel.jsp.package.removebutton'/>
                 </button>
             </div>

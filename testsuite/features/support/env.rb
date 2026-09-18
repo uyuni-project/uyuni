@@ -64,6 +64,10 @@ $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 $current_user = 'admin'
 $current_password = 'admin'
 $use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
+$is_external_cluster = ENV.fetch('IS_EXTERNAL_CLUSTER', false) if ENV['IS_EXTERNAL_CLUSTER']
+$create_spacewalk_pv = ENV.fetch('CREATE_VAR_SPACEWALK_PV', true) if ENV['CREATE_VAR_SPACEWALK_PV']
+$create_pgsql_pv = ENV.fetch('CREATE_VAR_PGSQL_PV', true) if ENV['CREATE_VAR_PGSQL_PV']
+$default_local_storage_class = ENV.fetch('LOCAL_PATH_DEFAULT_CLASS', true) if ENV['LOCAL_PATH_DEFAULT_CLASS']
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -429,6 +433,26 @@ Before('not @no_user_creation') do |scenario|
   end
 end
 
+Before('@skip_if_external_cluster') do
+  skip_this_scenario if $is_external_cluster
+end
+
+Before('@is_external_cluster') do
+  skip_this_scenario unless $is_external_cluster
+end
+
+Before('@create_spacewalk_pv') do
+  skip_this_scenario unless $create_spacewalk_pv
+end
+
+Before('@create_pgsql_pv') do
+  skip_this_scenario unless $create_pgsql_pv
+end
+
+Before('@default_local_path_class') do
+  skip_this_scenario unless $default_local_storage_class
+end
+
 # do some tests only if the corresponding node exists
 Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
@@ -556,12 +580,36 @@ Before('@oracle10_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_sshminion']
 end
 
+Before('@rhel7_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel7_minion']
+end
+
+Before('@rhel7_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel7_sshminion']
+end
+
+Before('@rhel8_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel8_minion']
+end
+
+Before('@rhel8_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel8_sshminion']
+end
+
 Before('@rhel9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_minion']
 end
 
 Before('@rhel9_sshminion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_sshminion']
+end
+
+Before('@rhel10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel10_minion']
+end
+
+Before('@rhel10_sshminion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel10_sshminion']
 end
 
 Before('@rocky8_minion') do
@@ -814,8 +862,28 @@ Before('@skip_for_transactional_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include?('slemicro') || scenario.location.file.include?('slmicro')
 end
 
+Before('@skip_for_rhel_container') do |scenario|
+  skip_this_scenario if scenario.location.file.match?(/rhel\d+_(ssh)?minion/)
+end
+
+Before('@skip_for_rhel7') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'rhel7'
+end
+
+Before('@skip_for_rhel8') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'rhel8'
+end
+
+Before('@skip_for_rhel9') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'rhel9'
+end
+
+Before('@skip_for_rhel10') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'rhel10'
+end
+
 Before('@skip_for_rhel10_like') do |scenario|
-  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rocky10_minion @rocky10_sshminion]
+  rhel10_minion_tags = %w[@alma10_minion @alma10_sshminion @oracle10_minion @oracle10_sshminion @rhel10_minion @rhel10_sshminion @rocky10_minion @rocky10_sshminion]
   skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 

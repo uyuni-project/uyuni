@@ -51,6 +51,7 @@ RUN set -euo pipefail; \
         ipmitool \
         locale-formula \
         postgresql18 \
+        pqcverification-zypp-plugin \
         prometheus-exporters-formula \
         prometheus-formula \
         prometheus-jmx_exporter \

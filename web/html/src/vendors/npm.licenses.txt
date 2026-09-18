@@ -603,7 +603,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: @babel/helper-plugin-utils@7.27.1
+Package: @babel/helper-plugin-utils@7.29.7
 License text:
 
 MIT License
@@ -2420,7 +2420,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: @babel/plugin-transform-modules-systemjs@7.27.1
+Package: @babel/plugin-transform-modules-systemjs@7.29.8
 License text:
 
 MIT License
@@ -8219,7 +8219,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: baseline-browser-mapping@2.8.12
+Package: baseline-browser-mapping@2.11.21
 License text:
 
                                  Apache License
@@ -8579,12 +8579,12 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: browserslist@4.26.3
+Package: browserslist@4.28.9
 License text:
 
 The MIT License (MIT)
 
-Copyright 2014 Andrey Sitnik <andrey@sitnik.ru> and other contributors
+Copyright 2014 Andrey Sitnik <andrey@sitnik.es> and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -8738,7 +8738,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 --------------------------------------------------------------------------------
 
-Package: caniuse-lite@1.0.30001748
+Package: caniuse-lite@1.0.30001810
 License text:
 
 Attribution 4.0 International
@@ -10492,7 +10492,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 --------------------------------------------------------------------------------
 
-Package: electron-to-chromium@1.5.230
+Package: electron-to-chromium@1.5.426
 License text:
 
 Copyright 2018 Kilian Valkhof
@@ -13804,7 +13804,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: js-yaml@4.1.1
+Package: js-yaml@4.3.2
 License text:
 
 (The MIT License)
@@ -14987,7 +14987,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: minimatch@3.0.5
+Package: minimatch@3.1.4
 License text:
 
 The ISC License
@@ -15272,7 +15272,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: node-releases@2.0.23
+Package: node-releases@2.0.55
 License text:
 
 The MIT License
@@ -15730,7 +15730,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: picomatch@2.3.1
+Package: picomatch@2.3.2
 License text:
 
 The MIT License (MIT)
@@ -15757,7 +15757,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: picomatch@4.0.3
+Package: picomatch@4.0.7
 License text:
 
 The MIT License (MIT)
@@ -16282,7 +16282,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: qs@6.14.1
+Package: qs@6.16.0
 License text:
 
 BSD 3-Clause License
@@ -19439,7 +19439,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 
-Package: side-channel@1.1.0
+Package: side-channel@1.1.1
 License text:
 
 MIT License
@@ -19466,7 +19466,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: side-channel-list@1.0.0
+Package: side-channel-list@1.0.1
 License text:
 
 MIT License
@@ -20750,12 +20750,12 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: update-browserslist-db@1.1.3
+Package: update-browserslist-db@1.3.2
 License text:
 
 The MIT License (MIT)
 
-Copyright 2022 Andrey Sitnik <andrey@sitnik.ru> and other contributors
+Copyright 2022 Andrey Sitnik <andrey@sitnik.es> and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
