@@ -18,16 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.salt.netapi.calls.modules.Network;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class HardwareMapperTest extends BaseTestCaseWithUser {
@@ -86,6 +91,27 @@ public class HardwareMapperTest extends BaseTestCaseWithUser {
         assertNotNull(zhost);
         assertEquals("IBM Mainframe z12 2827 0000000000061A23", zhost.getName());
         assertEquals("z/VM", zhost.getOs());
+    }
+
+    @Test
+    public void testMapNetworkInfoSetsPrimaryFqdnFromMinionId() {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        String minionId = testMinionServer.getMinionId();
+        assertNotNull(minionId);
+
+        HardwareMapper hwMapper = new HardwareMapper(testMinionServer, new ValueMap(new HashMap<>()));
+
+        List<String> fqdns = List.of(minionId, "other-fqdn.com");
+
+        Map<String, Network.Interface> interfaces = new HashMap<>();
+        Network.Interface iface = new Network.Interface();
+        interfaces.put("eth0", iface);
+
+        hwMapper.mapNetworkInfo(interfaces, Optional.empty(), new HashMap<>(), fqdns);
+
+        ServerFQDN primaryFqdn = testMinionServer.findPrimaryFqdn();
+        assertNotNull(primaryFqdn);
+        assertEquals(minionId, primaryFqdn.getName());
     }
 
 }
