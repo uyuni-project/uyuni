@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.common.messaging;
 
+import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTING;
+import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLING_BACK;
+
 import com.redhat.rhn.frontend.events.TransactionHelper;
 
 import org.apache.logging.log4j.LogManager;
@@ -53,9 +56,13 @@ class ActionExecutor implements Runnable {
             try {
                 if (msg instanceof EventDatabaseMessage evtdb) {
                     LOG.debug("Got a EventDatabaseMessage");
-                    while (evtdb.getTransaction().isActive()) {
+                    while (evtdb.getTransaction() != null &&
+                            (evtdb.getTransaction().isActive() ||
+                             evtdb.getTransaction().getStatus() == COMMITTING ||
+                             evtdb.getTransaction().getStatus() == ROLLING_BACK)) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("DB message, waiting for txn: active: {}", evtdb.getTransaction().isActive());
+                            LOG.debug("DB message, waiting for txn: active: {}, status: {}",
+                                    evtdb.getTransaction().isActive(), evtdb.getTransaction().getStatus());
                         }
                         Thread.sleep(10);
                     }
