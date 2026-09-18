@@ -57,6 +57,8 @@ ENV_VAR_BY_HOST = {
   'centos7_sshminion' => 'CENTOS7_SSHMINION',
   'liberty9_minion' => 'LIBERTY9_MINION',
   'liberty9_sshminion' => 'LIBERTY9_SSHMINION',
+  'liberty10_minion' => 'LIBERTY10_MINION',
+  'liberty10_sshminion' => 'LIBERTY10_SSHMINION',
   'oracle9_minion' => 'ORACLE9_MINION',
   'oracle9_sshminion' => 'ORACLE9_SSHMINION',
   'oracle10_minion' => 'ORACLE10_MINION',
@@ -85,6 +87,8 @@ ENV_VAR_BY_HOST = {
   'debian12_sshminion' => 'DEBIAN12_SSHMINION',
   'debian13_minion' => 'DEBIAN13_MINION',
   'debian13_sshminion' => 'DEBIAN13_SSHMINION',
+  'raspios13_minion' => 'RASPIOS13_MINION',
+  'raspios13_sshminion' => 'RASPIOS13_SSHMINION',
   'opensuse156arm_minion' => 'OPENSUSE156ARM_MINION',
   'opensuse156arm_sshminion' => 'OPENSUSE156ARM_SSHMINION',
   'opensuse160arm_minion' => 'OPENSUSE160ARM_MINION',
@@ -232,6 +236,8 @@ PACKAGE_BY_CLIENT = {
   'centos7_sshminion' => 'autoconf',
   'liberty9_minion' => 'autoconf',
   'liberty9_sshminion' => 'autoconf',
+  'liberty10_minion' => 'autoconf',
+  'liberty10_sshminion' => 'autoconf',
   'oracle9_minion' => 'autoconf',
   'oracle9_sshminion' => 'autoconf',
   'oracle10_minion' => 'autoconf',
@@ -260,6 +266,8 @@ PACKAGE_BY_CLIENT = {
   'debian12_sshminion' => 'bison',
   'debian13_minion' => 'bison',
   'debian13_sshminion' => 'bison',
+  'raspios13_minion' => 'bison',
+  'raspios13_sshminion' => 'bison',
   'opensuse156arm_minion' => 'bison',
   'opensuse156arm_sshminion' => 'bison',
   'opensuse160arm_minion' => 'bison',
@@ -330,6 +338,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'centos7_sshminion' => 'RES-7-LTSS-Updates for x86_64',
     'liberty9_minion' => 'EL9-Pool for x86_64',
     'liberty9_sshminion' => 'EL9-Pool for x86_64',
+    'liberty10_minion' => 'EL10-Pool for x86_64',
+    'liberty10_sshminion' => 'EL10-Pool for x86_64',
     'oracle9_minion' => 'oraclelinux9 for x86_64',
     'oracle9_sshminion' => 'oraclelinux9 for x86_64',
     'oracle10_minion' => 'oraclelinux10 for x86_64',
@@ -358,6 +368,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'debian12_sshminion' => 'debian-12-pool for amd64',
     'debian13_minion' => 'debian-13-pool for amd64',
     'debian13_sshminion' => 'debian-13-pool for amd64',
+    'raspios13_minion' => ' raspberrypios-13-pool for arm64',
+    'raspios13_sshminion' => 'raspberrypios-13-pool for arm64',
     'opensuse156arm_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse156arm_sshminion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse160arm_minion' => 'openSUSE-Leap-16.0 for aarch64',
@@ -615,6 +627,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
     'debian-13-pool for amd64' => 'debian13-amd64',
+    'raspberrypios-13-pool for arm64' => 'raspberrypios13-arm4',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64',
     'openSUSE-Leap-16.0 for aarch64' => 'openSUSE-Leap-16.0-aarch64'
   },
@@ -651,6 +664,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
+    'Raspberry Pi OS 13 pool for arm64 for Uyuni' => 'raspberrypios13-arm4-uyuni',
     'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni',
     'openSUSE Leap 16.0 (aarch64)' => 'openSUSE-Leap-16.0-aarch64-uyuni'
   }
@@ -782,6 +796,8 @@ PKGARCH_BY_CLIENT = {
   'centos7_sshminion' => 'x86_64',
   'liberty9_minion' => 'x86_64',
   'liberty9_sshminion' => 'x86_64',
+  'liberty10_minion' => 'x86_64',
+  'liberty10_sshminion' => 'x86_64',
   'oracle9_minion' => 'x86_64',
   'oracle9_sshminion' => 'x86_64',
   'oracle10_minion' => 'x86_64',
@@ -810,6 +826,8 @@ PKGARCH_BY_CLIENT = {
   'debian12_sshminion' => 'amd64',
   'debian13_minion' => 'amd64',
   'debian13_sshminion' => 'amd64',
+  'raspios13_minion' => 'arm64',
+  'raspios13_sshminion' => 'arm64',
   'opensuse156arm_minion' => 'aarch64',
   'opensuse156arm_sshminion' => 'aarch64',
   'opensuse160arm_minion' => 'aarch64',
@@ -897,6 +915,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-13-main-security-amd64
         debian-13-main-updates-amd64
         managertools-debian13-updates-amd64
+      ],
+    'raspberrypios-13' =>
+      %w[
+        raspberrypios-13-pool-arm64
+        raspberrypios-13-main-security-arm64
+        raspberrypios-13-main-updates-arm64
+        managertools-debian13-updates-arm64
       ],
     'sll-7-ltss' => # CHECKED
       %w[
