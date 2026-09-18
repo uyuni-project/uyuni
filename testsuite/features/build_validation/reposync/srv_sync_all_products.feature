@@ -580,7 +580,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "amazonlinux2023" have finished
 
 @susemanager
-@centos7_minion
+@run_if_centos7_or_rhel7_client
   Scenario: Add SUSE Liberty Linux 7 LTSS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -602,7 +602,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sll-7-ltss" have finished
 
 @susemanager
-@liberty9_minion
+@run_if_liberty9_or_rhel9_client
   Scenario: Add Liberty Linux 9 Base product
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -616,7 +616,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "el9" have finished
 
 @susemanager
-@liberty9_minion
+@run_if_liberty9_or_rhel9_client
   Scenario: Add Liberty Linux 9
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -667,7 +667,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "oraclelinux10" have finished
 
 @susemanager
-@rhel7_minion
+@run_if_rhel7_client
   Scenario: Add RHEL 7
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -681,7 +681,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "el7" have finished
 
 @susemanager
-@rhel8_minion
+@run_if_rhel8_client
   Scenario: Add RHEL 8
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -695,21 +695,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "el8" have finished
 
 @susemanager
-@rhel9_minion
-  Scenario: Add RHEL 9
+@run_if_rhel8_client
+  Scenario: Add SUSE Liberty Linux 8 as the migration target of RHEL 8
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text, refreshing the page
     And I wait until I do not see "Loading" text
-    And I enter "RHEL and Liberty 9 Base" as the filtered product description
-    And I select "RHEL and Liberty 9 Base" as a product
-    Then I should see the "RHEL and Liberty 9 Base" selected
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 8 Base"
+    And I select "SUSE Liberty Linux 8 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 8 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "RHEL and Liberty 9 Base" product has been added
-    And I wait until all synchronized channels for "el9" have finished
+    And I wait until I see "SUSE Liberty Linux 8 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-8" have finished
 
 @susemanager
-@rhel10_minion
+@run_if_rhel10_client
   Scenario: Add RHEL 10
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -721,6 +724,23 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "RHEL and Liberty 10 Base" product has been added
     And I wait until all synchronized channels for "el10" have finished
+
+@susemanager
+@run_if_rhel10_client
+  Scenario: Add SUSE Liberty Linux 10 as the migration target of RHEL 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "RHEL and Liberty 10 Base" as the filtered product description
+    And I select "RHEL and Liberty 10 Base" as a product
+    Then I should see the "RHEL and Liberty 10 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 10 Base"
+    And I select "SUSE Liberty Linux 10 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Liberty Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "sll-10" have finished
 
 @susemanager
 @rocky8_minion
