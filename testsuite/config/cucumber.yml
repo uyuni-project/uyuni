@@ -12,6 +12,7 @@ content_lifecycle_management: --tags @scope_content_lifecycle_management
 content_staging: --tags @scope_content_staging
 cve_audit: --tags @scope_cve_audit
 deblike: --tags @scope_deblike
+diskcheck: --tags @scope_diskcheck
 formulas: --tags @scope_formulas
 hibernate: --tags @scope_hibernate
 hub: --tags @scope_hub
