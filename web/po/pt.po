@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:52
-#: ../html/src/components/input/range/Range.tsx:53
-#: ../html/src/components/input/range/Range.tsx:65
-#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:35+0200\n"
+"POT-Creation-Date: 2026-09-18 10:16+0200\n"
 "PO-Revision-Date: 2026-08-24 12:13+0000\n"
 "Last-Translator: Ricardo Mestre <ricardo.mestre@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
@@ -30,6 +26,18 @@ msgstr "restante"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "O browser Internet Explorer não é compatível. Experimente usar o Firefox, Chrome ou Edge"
+
+#: ../html/src/components/CoCoScansList.tsx:78
+#: ../html/src/components/package/PackageListActionScheduler.tsx:84
+#: ../html/src/components/product-migration/utils.tsx:95
+#: ../html/src/manager/appstreams/appstreams.tsx:61
+#: ../html/src/manager/state/highstate.tsx:63
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
+#, fuzzy
+#| msgid "Action has been successfully added to the Action Chain "
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr "A ação foi adicionada com sucesso à Cadeia de Ações "
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -89,6 +97,10 @@ msgstr "Sem Análises"
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Fórmula guardada. Não é necessário aplicar o highstate para esta fórmula."
 
+#: ../html/src/components/FormulaForm.tsx:136
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr ""
+
 #: ../html/src/components/FormulaForm.tsx:167
 msgid "Please input required fields: {fields}"
 msgstr "Introduza os campos obrigatórios: {fields}"
@@ -121,27 +133,27 @@ msgstr "Pesquisar por nome de grupo da fórmula"
 msgid "new action chain"
 msgstr "nova cadeia de ações"
 
-#: ../html/src/components/action-schedule.tsx:197
+#: ../html/src/components/action-schedule.tsx:210
 msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
 msgstr "Existem múltiplos calendários de manutenção para os sistemas selecionados. Certifique-se de que os sistemas no conjunto utilizam no máximo 1 calendário de manutenção se pretender agendar por data ou janela de manutenção."
 
-#: ../html/src/components/action-schedule.tsx:204
+#: ../html/src/components/action-schedule.tsx:217
 msgid "No upcoming maintenance windows"
 msgstr "Sem janelas de manutenção futuras"
 
-#: ../html/src/components/action-schedule.tsx:249
+#: ../html/src/components/action-schedule.tsx:262
 msgid "Earliest:"
 msgstr "Mais cedo:"
 
-#: ../html/src/components/action-schedule.tsx:249
+#: ../html/src/components/action-schedule.tsx:262
 msgid "Maintenance Window:"
 msgstr "Janela de Manutenção:"
 
-#: ../html/src/components/action-schedule.tsx:279
+#: ../html/src/components/action-schedule.tsx:292
 msgid "Add to:"
 msgstr "Adicionar a:"
 
-#: ../html/src/components/action-schedule.tsx:297
+#: ../html/src/components/action-schedule.tsx:310
 msgid "Loading the scheduler..."
 msgstr "A carregar o agendador..."
 
@@ -260,6 +272,10 @@ msgstr "Criar Recorrente"
 msgid "Attestations"
 msgstr "Atestações"
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr ""
+
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
 msgstr "Atestação"
@@ -305,12 +321,12 @@ msgstr "Última modificação"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:16
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:231
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:259
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:151
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:57
 #: ../html/src/manager/images/image-view-runtime.tsx:138
-#: ../html/src/manager/images/image-view.tsx:730
+#: ../html/src/manager/images/image-view.tsx:729
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:165
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
 #: ../html/src/manager/systems/virtual-list.tsx:93
@@ -325,7 +341,7 @@ msgstr "Hora de atestação"
 #: ../html/src/components/hub/TokenTable.tsx:105
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:130
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:142
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:426
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:430
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:147
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:168
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:133
@@ -333,7 +349,7 @@ msgstr "Hora de atestação"
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:227
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
-#: ../html/src/manager/images/image-view.tsx:743
+#: ../html/src/manager/images/image-view.tsx:742
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:65
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:47
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:214
@@ -348,11 +364,11 @@ msgstr "Ações"
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:199
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:93
 #: ../html/src/manager/images/image-view-patches.tsx:87
-#: ../html/src/manager/images/image-view.tsx:749
+#: ../html/src/manager/images/image-view.tsx:748
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:70
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:52
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:219
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:387
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:386
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:163
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
@@ -386,7 +402,7 @@ msgid "Attested on"
 msgstr "Atestado em"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
-#: ../html/src/manager/images/image-view.tsx:849
+#: ../html/src/manager/images/image-view.tsx:840
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:53
 msgid "Overview"
 msgstr "Resumo"
@@ -593,9 +609,9 @@ msgstr "Cancelar"
 #: ../html/src/manager/images/image-profiles.tsx:211
 #: ../html/src/manager/images/image-stores.tsx:136
 #: ../html/src/manager/images/image-stores.tsx:205
-#: ../html/src/manager/images/image-view.tsx:356
-#: ../html/src/manager/images/image-view.tsx:366
-#: ../html/src/manager/images/image-view.tsx:758
+#: ../html/src/manager/images/image-view.tsx:355
+#: ../html/src/manager/images/image-view.tsx:365
+#: ../html/src/manager/images/image-view.tsx:757
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:43
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:88
@@ -658,8 +674,8 @@ msgstr "Caixa de seleção"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:99
 #: ../html/src/manager/login/uyuni/login.tsx:97
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:550
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:548
 msgid "Password"
 msgstr "Palavra-passe"
 
@@ -846,8 +862,8 @@ msgstr "Copiar"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:226
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:176
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:102
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:103
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:104
 msgid "Close"
 msgstr "Fechar"
 
@@ -865,7 +881,7 @@ msgid "Select Organization"
 msgstr "Selecionar Organização"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:112
-#: ../html/src/manager/admin/setup/products/products.tsx:505
+#: ../html/src/manager/admin/setup/products/products.tsx:545
 msgid "Filter by architecture"
 msgstr "Filtrar por arquitetura"
 
@@ -878,14 +894,14 @@ msgid "Sync"
 msgstr "Sincronizar"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:134
-#: ../html/src/components/states-picker.tsx:459
+#: ../html/src/components/states-picker.tsx:501
 msgid "Channel Name"
 msgstr "Nome do Canal"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:145
 #: ../html/src/components/table/nested-data.example.tsx:62
-#: ../html/src/manager/admin/setup/products/products.tsx:605
-#: ../html/src/manager/admin/setup/products/products.tsx:997
+#: ../html/src/manager/admin/setup/products/products.tsx:645
+#: ../html/src/manager/admin/setup/products/products.tsx:1037
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:171
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
@@ -990,7 +1006,7 @@ msgid "There are no ISSv1 slaves to migrate."
 msgstr "Não existem slaves ISSv1 para migrar."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:209
-#: ../html/src/components/states-picker.tsx:371
+#: ../html/src/components/states-picker.tsx:408
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
@@ -1207,7 +1223,7 @@ msgstr "Registar"
 #: ../html/src/manager/images/image-store-edit.tsx:201
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:442
 #: ../html/src/manager/proxy/container-config.tsx:384
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:416
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
 msgstr "Limpar campos"
@@ -1354,7 +1370,7 @@ msgstr "Filtrar por Nome"
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:107
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:353
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:177
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:409
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:413
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:103
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:170
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:107
@@ -1366,7 +1382,7 @@ msgstr "Filtrar por Nome"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:26
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:21
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:37
-#: ../html/src/manager/images/image-view.tsx:702
+#: ../html/src/manager/images/image-view.tsx:701
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:32
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:75
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:36
@@ -1395,7 +1411,7 @@ msgstr "Etiqueta"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:235
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
-#: ../html/src/manager/admin/setup/products/products.tsx:607
+#: ../html/src/manager/admin/setup/products/products.tsx:647
 msgid "Arch"
 msgstr "Arquitetura"
 
@@ -1425,9 +1441,9 @@ msgstr "Está prestes a fazer as seguintes alterações:"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:302
 #: ../html/src/components/package/PackageListActionScheduler.tsx:182
-#: ../html/src/components/states-picker.tsx:373
-#: ../html/src/components/states-picker.tsx:570
-#: ../html/src/manager/admin/setup/products/products.tsx:1111
+#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:612
+#: ../html/src/manager/admin/setup/products/products.tsx:1151
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:66
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -1499,7 +1515,7 @@ msgid "Expired"
 msgstr "Expirado"
 
 #: ../html/src/components/hub/TokenTable.tsx:97
-#: ../html/src/manager/images/image-view.tsx:734
+#: ../html/src/manager/images/image-view.tsx:733
 msgid "Last Modified"
 msgstr "Última Modificação"
 
@@ -1670,7 +1686,7 @@ msgid "Both values need to be positive integers"
 msgstr "Ambos os valores precisam ser números inteiros positivos"
 
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
-#: ../html/src/manager/admin/setup/products/products.tsx:343
+#: ../html/src/manager/admin/setup/products/products.tsx:383
 msgid "Clear"
 msgstr "Limpar"
 
@@ -1774,6 +1790,14 @@ msgstr "Nome do Pacote"
 msgid "Items {from} - {to} of {total}"
 msgstr "Itens {from} - {to} de {total}"
 
+#: ../html/src/components/pagination.tsx:139
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
 msgstr "Domingo"
@@ -1838,6 +1862,10 @@ msgstr "Os dias estão limitados a 28 para ter um agendamento recorrente dispon�
 msgid "Custom Quartz format:"
 msgstr "Formato Quartz personalizado:"
 
+#: ../html/src/components/picker/recurring-event-picker.tsx:491
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr ""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:510
 msgid "Select a Schedule"
 msgstr "Selecionar um Agendamento"
@@ -1847,7 +1875,7 @@ msgid "Policy assignment has been saved."
 msgstr "A atribuição de política foi guardada."
 
 #: ../html/src/components/policies-picker.tsx:94
-#: ../html/src/components/states-picker.tsx:176
+#: ../html/src/components/states-picker.tsx:197
 msgid "An error occurred on save."
 msgstr "Ocorreu um erro ao guardar."
 
@@ -1860,7 +1888,7 @@ msgid "Search in SCAP policies"
 msgstr "Pesquisar em políticas SCAP"
 
 #: ../html/src/components/policies-picker.tsx:165
-#: ../html/src/components/states-picker.tsx:428
+#: ../html/src/components/states-picker.tsx:470
 #: ../html/src/components/table/SearchField.tsx:66
 #: ../html/src/manager/header/search/search.tsx:80
 #: ../html/src/manager/header/search/search.tsx:89
@@ -1880,7 +1908,7 @@ msgid "Data Stream"
 msgstr "Fluxo de Dados"
 
 #: ../html/src/components/policies-picker.tsx:177
-#: ../html/src/components/states-picker.tsx:461
+#: ../html/src/components/states-picker.tsx:503
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:120
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:111
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:373
@@ -1906,7 +1934,7 @@ msgid "Description"
 msgstr "Descrição"
 
 #: ../html/src/components/policies-picker.tsx:178
-#: ../html/src/components/states-picker.tsx:462
+#: ../html/src/components/states-picker.tsx:504
 msgid "Assign"
 msgstr "Atribuir"
 
@@ -2055,7 +2083,7 @@ msgid "Normal Configuration Channel"
 msgstr "Canal de Configuração Normal"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:436
+#: ../html/src/components/table/TableDataHandler.tsx:471
 msgid "There are no entries to show."
 msgstr "Não há entradas para mostrar."
 
@@ -2067,101 +2095,101 @@ msgstr "Canal de Configuração: {name}"
 msgid "Edit Configuration Channel"
 msgstr "Editar Canal de Configuração"
 
-#: ../html/src/components/states-picker.tsx:96
+#: ../html/src/components/states-picker.tsx:109
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Existem alterações não guardadas. Quer prosseguir?"
 
-#: ../html/src/components/states-picker.tsx:112
+#: ../html/src/components/states-picker.tsx:125
 msgid "State configuration must not be empty"
 msgstr "A configuração de estado não pode estar vazia"
 
-#: ../html/src/components/states-picker.tsx:126
+#: ../html/src/components/states-picker.tsx:139
 msgid "Reboot state will be put last."
 msgstr "O estado de reinício será colocado por último."
 
-#: ../html/src/components/states-picker.tsx:135
+#: ../html/src/components/states-picker.tsx:148
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr "Os estados 'Reiniciar sistema' e 'Reiniciar sistema, se necessário' não podem ser utilizados em simultâneo."
 
-#: ../html/src/components/states-picker.tsx:158
+#: ../html/src/components/states-picker.tsx:175
 msgid "State assignments have been saved."
 msgstr "As atribuições de estado foram guardadas."
 
-#: ../html/src/components/states-picker.tsx:312
+#: ../html/src/components/states-picker.tsx:341
 msgid "No states assigned. Use search to find and assign states."
 msgstr "Nenhum estado atribuído. Use a pesquisa para encontrar e atribuir estados."
 
-#: ../html/src/components/states-picker.tsx:381
+#: ../html/src/components/states-picker.tsx:418
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "Guardar Alterações"
 
-#: ../html/src/components/states-picker.tsx:396
+#: ../html/src/components/states-picker.tsx:438
 msgid "Reorder"
 msgstr "Reordenar"
 
-#: ../html/src/components/states-picker.tsx:422
+#: ../html/src/components/states-picker.tsx:464
 msgid "Search in states"
 msgstr "Pesquisar em estados"
 
-#: ../html/src/components/states-picker.tsx:422
+#: ../html/src/components/states-picker.tsx:464
 msgid "Search in configuration channels"
 msgstr "Pesquisar em canais de configuração"
 
-#: ../html/src/components/states-picker.tsx:438
+#: ../html/src/components/states-picker.tsx:480
 msgid "Edit State Ranks"
 msgstr "Editar Classificações de Estado"
 
-#: ../html/src/components/states-picker.tsx:438
+#: ../html/src/components/states-picker.tsx:480
 msgid "Edit Channel Ranks"
 msgstr "Editar Classificações de Canais"
 
-#: ../html/src/components/states-picker.tsx:442
+#: ../html/src/components/states-picker.tsx:484
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
 msgstr "Arraste os estados para reordenar. Estão listados da prioridade mais alta para a mais baixa. Os elementos com menor prioridade (mais em baixo) serão aplicados primeiro."
 
-#: ../html/src/components/states-picker.tsx:445
+#: ../html/src/components/states-picker.tsx:487
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
 msgstr "Arraste os canais de configuração para reordenar. Estão listados da prioridade mais alta para a mais baixa. Os ficheiros de um canal específico substituem ficheiros com o mesmo caminho e nome dos canais abaixo. Ou seja, os elementos no fim da lista são aplicados primeiro."
 
-#: ../html/src/components/states-picker.tsx:451
+#: ../html/src/components/states-picker.tsx:493
 msgid "There are no states assigned."
 msgstr "Não há estados atribuídos."
 
-#: ../html/src/components/states-picker.tsx:459
+#: ../html/src/components/states-picker.tsx:501
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
 msgid "State Name"
 msgstr "Nome Estado"
 
-#: ../html/src/components/states-picker.tsx:460
+#: ../html/src/components/states-picker.tsx:502
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
 msgid "State Label"
 msgstr "Etiqueta Estado"
 
-#: ../html/src/components/states-picker.tsx:460
+#: ../html/src/components/states-picker.tsx:502
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
 msgstr "Etiqueta do Canal"
 
-#: ../html/src/components/states-picker.tsx:523
+#: ../html/src/components/states-picker.tsx:565
 msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "Selecione os sistemas a agendar para execução imediata de estado e confirme."
 
-#: ../html/src/components/states-picker.tsx:534
+#: ../html/src/components/states-picker.tsx:576
 msgid "This table is empty"
 msgstr "Esta tabela está vazia"
 
-#: ../html/src/components/states-picker.tsx:541
-#: ../html/src/components/states-picker.tsx:582
+#: ../html/src/components/states-picker.tsx:583
+#: ../html/src/components/states-picker.tsx:624
 msgid "System Name"
 msgstr "Nome Sistema"
 
-#: ../html/src/components/states-picker.tsx:561
+#: ../html/src/components/states-picker.tsx:603
 msgid "Execute States"
 msgstr "Executar Estados"
 
-#: ../html/src/components/states-picker.tsx:566
+#: ../html/src/components/states-picker.tsx:608
 msgid "Select Sytems"
 msgstr "Selecionar Sistemas"
 
@@ -2186,7 +2214,7 @@ msgid "Non-Virtual System"
 msgstr "Sistema Não Virtual"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:619
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:617
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
@@ -2367,6 +2395,14 @@ msgstr "Requerer este canal"
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "Consulte <link>Format.JS docs</link> para a sintaxe da mensagem."
 
+#: ../html/src/core/intl/index.example.tsx:23
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
+msgstr ""
+
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
 msgstr "foo"
@@ -2480,7 +2516,7 @@ msgstr "Reveja e modifique as permissões para este grupo personalizado conforme
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:346
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:383
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:385
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 msgid "Filter by name"
@@ -2749,13 +2785,13 @@ msgid "Hub Details"
 msgstr "Detalhes do Hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. "
-msgstr "Nenhum hub está atualmente configurado para este servidor. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
 #, fuzzy
 #| msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr "Este servidor está atualmente registado como periférico do hub {fqdn}. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2781,7 +2817,7 @@ msgstr "{fqdn} - Detalhes do Periférico"
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
 #, fuzzy
 #| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr "O servidor {fqdn} está atualmente registado como periférico deste hub. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -2816,7 +2852,7 @@ msgstr "Filtrar por qualquer valor"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:68
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:50
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:13
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:486
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:484
 msgid "Host"
 msgstr "Host"
 
@@ -2923,10 +2959,6 @@ msgstr "A editar propriedades.."
 msgid "Last Status Update"
 msgstr "Última Atualização de Estado"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
-msgid "Edit "
-msgstr "Editar "
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "A editar dados de ligação ssh.."
@@ -2937,26 +2969,26 @@ msgstr "Ao editar a ligação SSH todas as credenciais necessárias devem ser fo
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:58
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:17
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:497
 msgid "SSH Port"
 msgstr "Porta SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:69
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:515
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:513
 msgid "User"
 msgstr "Utilizador"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:78
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:442
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:560
 msgid "SSH Private Key"
 msgstr "Chave Privada SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:100
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:37
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
 msgid "SSH Private Key Passphrase"
 msgstr "Frase-passe da Chave Privada SSH"
 
@@ -2983,7 +3015,7 @@ msgstr "Atualizar o catálogo de produtos do SUSE Customer Center"
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:185
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
-#: ../html/src/manager/images/image-view.tsx:380
+#: ../html/src/manager/images/image-view.tsx:379
 #: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Refresh"
 msgstr "Atualizar"
@@ -3001,101 +3033,95 @@ msgstr "Concluído"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operação sem sucesso: Resposta vazia do servidor"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:137
+#: ../html/src/manager/admin/setup/products/products.tsx:159
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgstr "Nenhuma Subscrição SUSE Multi-Linux Manager Server disponível. Produtos que requerem Client Tools Channel não serão mostrados."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:188
+#: ../html/src/manager/admin/setup/products/products.tsx:215
 msgid "The product catalog refresh is running..."
 msgstr "A atualização do catálogo de produtos está a decorrer..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:215
+#: ../html/src/manager/admin/setup/products/products.tsx:245
 msgid "The following product installations failed. Please check log files."
 msgstr "As seguintes instalações de produtos falharam. Verifique os ficheiros de log."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:262
+#: ../html/src/manager/admin/setup/products/products.tsx:298
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Os canais selecionados foram agendados com sucesso para sincronização."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:298
+#: ../html/src/manager/admin/setup/products/products.tsx:307
+#, fuzzy
+#| msgid "The following product installations failed. Please check log files."
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr "As seguintes instalações de produtos falharam. Verifique os ficheiros de log."
+
+#: ../html/src/manager/admin/setup/products/products.tsx:338
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "Uma atualização dos dados de produtos está atualmente a decorrer em segundo plano. Tente novamente mais tarde."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:303
+#: ../html/src/manager/admin/setup/products/products.tsx:343
 msgid "The product catalog is still refreshing, please wait."
 msgstr "O catálogo de produtos ainda está a atualizar, por favor aguarde."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:305
+#: ../html/src/manager/admin/setup/products/products.tsx:345
 msgid "Select some product first."
 msgstr "Selecione algum produto primeiro."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:314
-#: ../html/src/manager/admin/setup/products/products.tsx:323
+#: ../html/src/manager/admin/setup/products/products.tsx:354
+#: ../html/src/manager/admin/setup/products/products.tsx:363
 msgid "Add products"
 msgstr "Adicionar produtos"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:382
 msgid "Clear products selection"
 msgstr "Limpar seleção de produtos"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:386
+#: ../html/src/manager/admin/setup/products/products.tsx:426
 msgid "Why aren't all products displayed in the list?"
 msgstr "Porque é que nem todos os produtos são exibidos na lista?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:389
+#: ../html/src/manager/admin/setup/products/products.tsx:429
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr "Os produtos exibidos nesta lista estão diretamente ligados às suas credenciais de Organização (credenciais de Mirror) bem como às suas subscrições SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:394
+#: ../html/src/manager/admin/setup/products/products.tsx:434
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
 msgstr "Se acredita que faltam produtos, certifique-se de que adicionou as credenciais de Organização corretas no passo anterior do assistente."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:404
+#: ../html/src/manager/admin/setup/products/products.tsx:444
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
 msgstr "Este servidor está configurado como um servidor Periférico numa configuração Hub. Os produtos só podem ser geridos no servidor Hub."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:523
+#: ../html/src/manager/admin/setup/products/products.tsx:563
 msgid "Filter by product Description"
 msgstr "Filtrar por Descrição do produto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:599
+#: ../html/src/manager/admin/setup/products/products.tsx:639
 msgid "Product Description"
 msgstr "Descrição do Produto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:614
+#: ../html/src/manager/admin/setup/products/products.tsx:654
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Canais"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:621
+#: ../html/src/manager/admin/setup/products/products.tsx:661
 msgid "Recommended"
 msgstr "Recomendado"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:802
-msgid " channels sync failed"
-msgstr " sincronização de canais falhou"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:810
-msgid " channels sync in progress"
-msgstr " sincronização de canais em curso"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:818
-msgid " channels synced"
-msgstr " canais sincronizados"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:842
+#: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Para ativar este produto, o produto pai deve ser selecionado primeiro"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:843
+#: ../html/src/manager/admin/setup/products/products.tsx:883
 msgid "Select this product"
 msgstr "Selecionar este produto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:854
+#: ../html/src/manager/admin/setup/products/products.tsx:894
 msgid "This product is mirrored."
 msgstr "Este produto está espelhado."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:886
+#: ../html/src/manager/admin/setup/products/products.tsx:926
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:78
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:494
@@ -3103,55 +3129,55 @@ msgstr "Este produto está espelhado."
 msgid "recommended"
 msgstr "recomendado"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:942
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "SCC product catalog refresh in progress"
 msgstr "Atualização do catálogo de produtos SCC em curso"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:945
+#: ../html/src/manager/admin/setup/products/products.tsx:985
 msgid "Scheduling channels product resync"
 msgstr "A agendar ressincronização de produto de canais"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:948
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "Channels product resync scheduled"
 msgstr "Ressincronização de produto de canais agendada"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:951
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Schedule channels product resync"
 msgstr "Agendar ressincronização de produto de canais"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1011
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Show product's channels"
 msgstr "Mostrar canais do produto"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1084
+#: ../html/src/manager/admin/setup/products/products.tsx:1124
 msgid "Product Channels - "
 msgstr "Canais do Produto - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1089
+#: ../html/src/manager/admin/setup/products/products.tsx:1129
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "Selecione os canais opcionais que deseja adicionar e confirme."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1093
+#: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "Mandatory Channels"
 msgstr "Canais Obrigatórios"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1095
+#: ../html/src/manager/admin/setup/products/products.tsx:1135
 msgid "Optional Channels"
 msgstr "Canais Opcionais"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1130
+#: ../html/src/manager/admin/setup/products/products.tsx:1170
 msgid "not synced"
 msgstr "não sincronizado"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1133
+#: ../html/src/manager/admin/setup/products/products.tsx:1173
 msgid "sync in progress"
 msgstr "sincronização em curso"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1136
+#: ../html/src/manager/admin/setup/products/products.tsx:1176
 msgid "synced"
 msgstr "sincronizado"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1139
+#: ../html/src/manager/admin/setup/products/products.tsx:1179
 msgid "sync failed"
 msgstr "sincronização falhou"
 
@@ -3362,16 +3388,20 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Afetado, patches disponíveis em canais que não estão atribuídos"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 #, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "O cliente é afetado por uma vulnerabilidade para a qual foi lançado um patch,"
+#| msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Afetado, patches disponíveis num destino de Migração de Produto"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#, fuzzy
+#| msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3407,12 +3437,20 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Afetado, patch não disponível nos canais relevantes"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr "O cliente é afetado por uma vulnerabilidade para a qual foi lançado um patch,"
+#, fuzzy
+#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgstr "O cliente é afetado por uma vulnerabilidade para a qual ainda não foi lançado um patch."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Afetado, patch parcial disponível em canal atribuído"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+#, fuzzy
+#| msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3423,7 +3461,7 @@ msgid "It is not possible to scan the client server for CVE vulnerabilities with
 msgstr "Não é possível verificar o servidor cliente para vulnerabilidades CVE sem canais ou metadados OVAL."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:250
 msgid "Error, see console"
 msgstr "Erro, consulte a consola"
 
@@ -3432,81 +3470,85 @@ msgid "Unknown patch status"
 msgstr "Estado de patch desconhecido"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
+msgid "OVAL audit not supported for this system's OS"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
 msgstr "Dados OVAL dessincronizados. Potenciais vulnerabilidades perdidas"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:245
 msgid "Server product channels out of sync; no patch information available"
 msgstr "Canais de produto do servidor dessincronizados; nenhuma informação de patch disponível"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:256
 msgid "CVE Audit"
 msgstr "Auditoria CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:261
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:263
 msgid "CVE"
 msgstr "CVE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:318
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:320
 msgid "Audit Servers"
 msgstr "Auditar Servidores"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:327
 msgid "Audit Images"
 msgstr "Auditar Imagens"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:341
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:11
 #: ../html/src/manager/systems/all-list.tsx:33
 #: ../html/src/manager/systems/virtual-list.tsx:64
 msgid "Download CSV"
 msgstr "Descarregar CSV"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:360
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:362
 msgid "MITRE CVE link"
 msgstr "Link CVE MITRE"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:371
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:373
 msgid "SUSE Security CVE link"
 msgstr "Link CVE SUSE Security"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:437
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:505
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:441
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:509
 msgid "No action required"
 msgstr "Nenhuma ação necessária"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:443
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:447
 msgid "Install a new patch on this system."
 msgstr "Instalar um novo patch neste sistema."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:460
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:464
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr "Patch disponível, mas o sistema precisa ser migrado para um Produto mais recente."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:472
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:476
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr "Patch disponível, mas precisa ser clonado para o Canal."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:484
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:488
 msgid "Install a new partial patch on this system."
 msgstr "Instalar um novo patch parcial neste sistema."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:497
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:528
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:531
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:501
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:532
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:535
 msgid "If you see this report a bug."
 msgstr "Se vir isto reporte um bug."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:512
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:516
 #: ../html/src/manager/images/image-view-overview.tsx:646
 msgid "Rebuild"
 msgstr "Reconstruir"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:520
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
 msgid "Patch available but needs to be cloned into Channel."
 msgstr "Patch disponível mas precisa ser clonado para o Canal."
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:523
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:527
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:33
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:42
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:40
@@ -3514,7 +3556,7 @@ msgstr "Patch disponível mas precisa ser clonado para o Canal."
 msgid "Channel"
 msgstr "Canal"
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:528
 msgid "Errata"
 msgstr "Errata"
 
@@ -3526,10 +3568,6 @@ msgstr "Ocorreu um erro ao carregar o conteúdo SCAP."
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:87
 msgid "An unexpected error occurred."
 msgstr "Ocorreu um erro inesperado."
-
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
-msgid "Edit SCAP Content"
-msgstr "Editar Conteúdo SCAP"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
@@ -3556,15 +3594,6 @@ msgstr "Ficheiro XCCDF"
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
 msgstr "Carregar o ficheiro XCCDF (*-xccdf.xml)"
-
-#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr "Atualizar"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
 msgid "SCAP Content is required"
@@ -3603,21 +3632,20 @@ msgstr "Isto requer acesso à internet e memória significativa. Certifique-se d
 msgid "Back to List"
 msgstr "Voltar à Lista"
 
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
+msgstr "Atualizar"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 msgid "An error occurred while saving the tailoring file."
 msgstr "Ocorreu um erro ao guardar o ficheiro de personalização."
 
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
-msgid "Edit Tailoring File"
-msgstr "Editar Ficheiro de Personalização"
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 msgid "Current File"
 msgstr "Ficheiro atual"
-
-#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
-msgid "Replace File (optional)"
-msgstr "Substituir Ficheiro (opcional)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 msgid "SCAP content has been deleted."
@@ -4185,7 +4213,7 @@ msgstr "Epoch"
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:79
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:391
-#: ../html/src/manager/images/image-view.tsx:703
+#: ../html/src/manager/images/image-view.tsx:702
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
 msgstr "Versão"
@@ -4650,7 +4678,7 @@ msgid "Waiting for repositories data to be generated"
 msgstr "A aguardar que os dados dos repositórios sejam gerados"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
-#: ../html/src/manager/images/image-view.tsx:542
+#: ../html/src/manager/images/image-view.tsx:541
 msgid "Built"
 msgstr "Construído"
 
@@ -4825,7 +4853,7 @@ msgstr "incluir recomendados"
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:36
 #: ../html/src/manager/images/image-stores.tsx:184
 #: ../html/src/manager/images/image-view-patches.tsx:79
-#: ../html/src/manager/images/image-view.tsx:701
+#: ../html/src/manager/images/image-view.tsx:700
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:76
@@ -4860,23 +4888,23 @@ msgstr "A página que solicitou, {currentUrl}, não foi encontrada."
 #: ../html/src/manager/errors/not-found.tsx:10
 #, fuzzy
 #| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "Se digitou este endereço no seu navegador, verifique a ortografia e capitalização."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
 #| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr "Se seguiu um link, o link pode estar incorreto ou desatualizado. Clique no botão voltar no seu "
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr "Se usou um marcador, a página pode ter sido movida para uma localização diferente desde que o marcador foi "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:30
 #, fuzzy
 #| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "Se acha que chegou a esta página por erro, contacte-nos com detalhes de como recebeu "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -4901,16 +4929,16 @@ msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take e
 msgstr "Fórmula guardada. Aplique o <link>Highstate</link> para que as alterações tenham efeito."
 
 #: ../html/src/manager/header/search/search.tsx:14
-#: ../html/src/manager/images/image-view.tsx:726
-#: ../html/src/manager/images/image-view.tsx:851
+#: ../html/src/manager/images/image-view.tsx:725
+#: ../html/src/manager/images/image-view.tsx:842
 #: ../html/src/manager/systems/all-list.tsx:124
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
 msgstr "Pacotes"
 
 #: ../html/src/manager/header/search/search.tsx:18
-#: ../html/src/manager/images/image-view.tsx:713
-#: ../html/src/manager/images/image-view.tsx:850
+#: ../html/src/manager/images/image-view.tsx:712
+#: ../html/src/manager/images/image-view.tsx:841
 #: ../html/src/manager/systems/all-list.tsx:111
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
@@ -4982,7 +5010,7 @@ msgstr "Caminho"
 #: ../html/src/manager/images/image-build.tsx:299
 #: ../html/src/manager/images/image-import.tsx:230
 #: ../html/src/manager/images/image-profile-edit.tsx:398
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:584
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:582
 msgid "Activation Key"
 msgstr "Chave de Ativação"
 
@@ -5037,7 +5065,7 @@ msgid "Image version is required."
 msgstr "A versão da imagem é obrigatória."
 
 #: ../html/src/manager/images/image-import.tsx:306
-#: ../html/src/manager/images/image-view.tsx:375
+#: ../html/src/manager/images/image-view.tsx:374
 msgid "Import"
 msgstr "Importar"
 
@@ -5072,10 +5100,6 @@ msgstr "Valores de Informação Personalizada"
 #: ../html/src/manager/images/image-profile-edit.tsx:469
 msgid "Create additional custom info keys"
 msgstr "Criar chaves de informação personalizada adicionais"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:517
-msgid "Edit Image Profile: '"
-msgstr "Editar perfil da imagem: '"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
@@ -5145,10 +5169,6 @@ msgid "Use credentials"
 msgstr "Usar credenciais"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
-msgid "Edit Image Store: '"
-msgstr "Editar armazenamento de imagens: '"
-
-#: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
 msgstr "Criar Armazenamento de Imagens"
 
@@ -5210,7 +5230,7 @@ msgid "Are you sure you want to delete selected stores? ({count} stores selected
 msgstr "Tem a certeza que quer eliminar os armazenamentos selecionados? ({count} armazenamentos selecionados)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
-#: ../html/src/manager/images/image-view.tsx:852
+#: ../html/src/manager/images/image-view.tsx:843
 msgid "Build Log"
 msgstr "Log de Build"
 
@@ -5219,7 +5239,7 @@ msgid "Build log is not available."
 msgstr "O log de build não está disponível."
 
 #: ../html/src/manager/images/image-view-overview.tsx:51
-#: ../html/src/manager/images/image-view.tsx:538
+#: ../html/src/manager/images/image-view.tsx:537
 msgid "Queued"
 msgstr "Em fila"
 
@@ -5230,29 +5250,13 @@ msgstr "Em fila"
 msgid "Go to event"
 msgstr "Ir para evento"
 
-#: ../html/src/manager/images/image-view-overview.tsx:56
-msgid " is queued"
-msgstr " está em fila"
-
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr "Em curso"
 
-#: ../html/src/manager/images/image-view-overview.tsx:68
-msgid " in progress"
-msgstr " em curso"
-
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "Bem-sucedido"
-
-#: ../html/src/manager/images/image-view-overview.tsx:80
-msgid " is successful"
-msgstr " foi bem-sucedida"
-
-#: ../html/src/manager/images/image-view-overview.tsx:92
-msgid " has failed"
-msgstr " falhou"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5262,57 +5266,53 @@ msgstr " falhou"
 #: ../html/src/manager/images/image-view-overview.tsx:518
 #: ../html/src/manager/images/image-view-runtime.tsx:74
 #: ../html/src/manager/images/image-view-runtime.tsx:114
-#: ../html/src/manager/images/image-view.tsx:487
-#: ../html/src/manager/images/image-view.tsx:575
+#: ../html/src/manager/images/image-view.tsx:486
+#: ../html/src/manager/images/image-view.tsx:574
 msgid "No information"
 msgstr "Sem informação"
 
 #: ../html/src/manager/images/image-view-overview.tsx:111
 #: ../html/src/manager/images/image-view-overview.tsx:112
-#: ../html/src/manager/images/image-view.tsx:535
+#: ../html/src/manager/images/image-view.tsx:534
 msgid "Built externally"
 msgstr "Construído externamente"
-
-#: ../html/src/manager/images/image-view-overview.tsx:134
-msgid " Status"
-msgstr " - Estado"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
 msgstr "Recolhido"
 
 #: ../html/src/manager/images/image-view-overview.tsx:192
-#: ../html/src/manager/images/image-view.tsx:607
+#: ../html/src/manager/images/image-view.tsx:606
 msgid "Cluster"
 msgstr "Cluster"
 
 #: ../html/src/manager/images/image-view-overview.tsx:193
-#: ../html/src/manager/images/image-view.tsx:608
-#: ../html/src/manager/images/image-view.tsx:666
+#: ../html/src/manager/images/image-view.tsx:607
+#: ../html/src/manager/images/image-view.tsx:665
 msgid "Instances"
 msgstr "Instâncias"
 
 #: ../html/src/manager/images/image-view-overview.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:240
-#: ../html/src/manager/images/image-view.tsx:560
-#: ../html/src/manager/images/image-view.tsx:622
+#: ../html/src/manager/images/image-view.tsx:559
+#: ../html/src/manager/images/image-view.tsx:621
 msgid "Waiting for update ..."
 msgstr "A aguardar atualização ..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:220
-#: ../html/src/manager/images/image-view.tsx:641
+#: ../html/src/manager/images/image-view.tsx:640
 msgid "View cluster summary"
 msgstr "Ver resumo do cluster"
 
 #: ../html/src/manager/images/image-view-overview.tsx:251
 #: ../html/src/manager/images/image-view-overview.tsx:253
-#: ../html/src/manager/images/image-view.tsx:571
+#: ../html/src/manager/images/image-view.tsx:570
 msgid "All instances are consistent with {productName}"
 msgstr "Todas as instâncias estão consistentes com {productName}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:266
 #: ../html/src/manager/images/image-view-overview.tsx:267
-#: ../html/src/manager/images/image-view.tsx:581
+#: ../html/src/manager/images/image-view.tsx:580
 msgid "Outdated instances found"
 msgstr "Instâncias desatualizadas encontradas"
 
@@ -5324,28 +5324,35 @@ msgstr "Editar perfil"
 msgid "Edit store"
 msgstr "Editar armazenamento"
 
+#: ../html/src/manager/images/image-view-overview.tsx:469
+#: ../html/src/manager/images/image-view.tsx:801
+#, fuzzy
+#| msgid "Instance is outdated"
+msgid "Instance Details for \"{name}\""
+msgstr "A instância está desatualizada"
+
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
-#: ../html/src/manager/images/image-view.tsx:493
+#: ../html/src/manager/images/image-view.tsx:492
 #: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr "Atualizações críticas disponíveis"
 
 #: ../html/src/manager/images/image-view-overview.tsx:531
 #: ../html/src/manager/images/image-view-overview.tsx:532
-#: ../html/src/manager/images/image-view.tsx:501
+#: ../html/src/manager/images/image-view.tsx:500
 msgid "Non-critical updates available"
 msgstr "Atualizações não críticas disponíveis"
 
 #: ../html/src/manager/images/image-view-overview.tsx:538
 #: ../html/src/manager/images/image-view-overview.tsx:539
-#: ../html/src/manager/images/image-view.tsx:509
+#: ../html/src/manager/images/image-view.tsx:508
 msgid "Package updates available"
 msgstr "Atualizações de pacotes disponíveis"
 
 #: ../html/src/manager/images/image-view-overview.tsx:545
 #: ../html/src/manager/images/image-view-overview.tsx:546
-#: ../html/src/manager/images/image-view.tsx:517
+#: ../html/src/manager/images/image-view.tsx:516
 msgid "Image is up to date"
 msgstr "A imagem está atualizada"
 
@@ -5383,13 +5390,13 @@ msgid "Custom Image Information"
 msgstr "Informação Personalizada da Imagem"
 
 #: ../html/src/manager/images/image-view-overview.tsx:684
-#: ../html/src/manager/images/image-view.tsx:367
-#: ../html/src/manager/images/image-view.tsx:780
+#: ../html/src/manager/images/image-view.tsx:366
+#: ../html/src/manager/images/image-view.tsx:771
 msgid "Delete Image"
 msgstr "Eliminar Imagem"
 
 #: ../html/src/manager/images/image-view-overview.tsx:687
-#: ../html/src/manager/images/image-view.tsx:783
+#: ../html/src/manager/images/image-view.tsx:774
 msgid "Are you sure you want to delete image"
 msgstr "Tem a certeza que quer eliminar a imagem"
 
@@ -5491,79 +5498,79 @@ msgstr "Pod"
 msgid "Namespace"
 msgstr "Namespace"
 
-#: ../html/src/manager/images/image-view.tsx:314
+#: ../html/src/manager/images/image-view.tsx:313
 msgid "Deleted successfully."
 msgstr "Eliminado com sucesso."
 
-#: ../html/src/manager/images/image-view.tsx:326
+#: ../html/src/manager/images/image-view.tsx:325
 msgid "Image inspect has been scheduled."
 msgstr "A inspeção da imagem foi agendada."
 
-#: ../html/src/manager/images/image-view.tsx:342
+#: ../html/src/manager/images/image-view.tsx:341
 msgid "Image build has been scheduled."
 msgstr "O build da imagem foi agendado."
 
-#: ../html/src/manager/images/image-view.tsx:357
+#: ../html/src/manager/images/image-view.tsx:356
 msgid "Delete selected"
 msgstr "Eliminar selecionados"
 
-#: ../html/src/manager/images/image-view.tsx:390
+#: ../html/src/manager/images/image-view.tsx:389
 msgid "Images"
 msgstr "Imagens"
 
-#: ../html/src/manager/images/image-view.tsx:531
+#: ../html/src/manager/images/image-view.tsx:530
 #, fuzzy
 #| msgid "sync failed"
 msgid "Inspect failed"
 msgstr "sincronização falhou"
 
-#: ../html/src/manager/images/image-view.tsx:540
+#: ../html/src/manager/images/image-view.tsx:539
 msgid "Building"
 msgstr "A construir"
 
-#: ../html/src/manager/images/image-view.tsx:545
+#: ../html/src/manager/images/image-view.tsx:544
 #, fuzzy
 #| msgid " failed"
 msgid "Build failed"
 msgstr " falhado"
 
-#: ../html/src/manager/images/image-view.tsx:548
+#: ../html/src/manager/images/image-view.tsx:547
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: ../html/src/manager/images/image-view.tsx:661
-#: ../html/src/manager/images/image-view.tsx:853
+#: ../html/src/manager/images/image-view.tsx:660
+#: ../html/src/manager/images/image-view.tsx:844
 msgid "Runtime"
 msgstr "Runtime"
 
-#: ../html/src/manager/images/image-view.tsx:682
+#: ../html/src/manager/images/image-view.tsx:681
 msgid "Show obsolete"
 msgstr "Mostrar obsoletos"
 
-#: ../html/src/manager/images/image-view.tsx:706
+#: ../html/src/manager/images/image-view.tsx:705
 msgid "Revision"
 msgstr "Revisão"
 
-#: ../html/src/manager/images/image-view.tsx:708
+#: ../html/src/manager/images/image-view.tsx:707
 msgid "(obsolete)"
 msgstr "(obsoleto)"
 
-#: ../html/src/manager/images/image-view.tsx:710
+#: ../html/src/manager/images/image-view.tsx:709
 #: ../html/src/manager/systems/all-list.tsx:100
 #: ../html/src/manager/systems/list-filter.tsx:45
 #: ../html/src/manager/systems/virtual-list.tsx:99
 msgid "Updates"
 msgstr "Atualizações"
 
-#: ../html/src/manager/images/image-view.tsx:796
+#: ../html/src/manager/images/image-view.tsx:787
 msgid "Delete Selected Image(s)"
 msgstr "Eliminar Imagem(ns) Selecionada(s)"
 
-#: ../html/src/manager/images/image-view.tsx:800
+#: ../html/src/manager/images/image-view.tsx:791
 msgid "Are you sure you want to delete the selected image?"
 msgstr "Tem a certeza que quer eliminar a imagem selecionada?"
 
-#: ../html/src/manager/images/image-view.tsx:801
+#: ../html/src/manager/images/image-view.tsx:792
 msgid "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "Tem a certeza que quer eliminar as imagens selecionadas? ({count} imagens selecionadas)"
 
@@ -5785,6 +5792,10 @@ msgstr "Pesquisar sistemas"
 msgid "Current Schedule"
 msgstr "Agendamento Atual"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
+msgid "Url \"{url}\" is invalid"
+msgstr ""
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "Dados do calendário"
@@ -5872,10 +5883,6 @@ msgstr "Abaixo está uma lista de Agendamentos de Manutenção disponíveis para
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "Abaixo está uma lista de Calendários de Manutenção disponíveis para o utilizador atual."
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
-msgid "schedule"
-msgstr "agendar"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "Nenhum agendamento criado. Use Criar para adicionar um agendamento."
@@ -5883,14 +5890,6 @@ msgstr "Nenhum agendamento criado. Use Criar para adicionar um agendamento."
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:86
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "Isto irá remover o agendamento de todos os sistemas atribuídos a ele."
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
-msgid "successfully"
-msgstr "com sucesso"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
-msgid "Error when deleting the "
-msgstr "Erro ao eliminar o "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -6064,6 +6063,12 @@ msgstr "Escolher um Playbook diferente"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
 msgid "Save the current Playbook"
 msgstr "Guardar o Playbook atual"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
+#, fuzzy
+#| msgid "Playbook File Name"
+msgid "Playbook \"{name}\""
+msgstr "Nome do Ficheiro Playbook"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6346,7 +6351,7 @@ msgstr "Porta SSH do proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:167
 #: ../html/src/manager/proxy/container-config.tsx:219
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:508
 msgid "Port range: 1 - 65535"
 msgstr "Intervalo de portas: 1 - 65535"
 
@@ -6464,10 +6469,6 @@ msgstr "Avançado"
 msgid "Registry URL"
 msgstr "URL do Registry"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
-msgid "e.g., "
-msgstr "p. ex., "
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
 msgstr "Tag de Contentores"
@@ -6555,8 +6556,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "Instalar Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão disponíveis para instalação neste sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6575,8 +6576,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "Remover Correções Temporárias do Programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão atualmente instaladas neste sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6681,13 +6682,13 @@ msgstr "Mensagem eliminada com sucesso"
 
 #: ../html/src/manager/notifications/notifications.tsx:45
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:344
-#: ../html/src/manager/shared/websocket/useWebSocket.ts:29
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:36
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Ligação websocket fechada. Atualize a página para tentar novamente."
 
 #: ../html/src/manager/notifications/notifications.tsx:59
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:365
-#: ../html/src/manager/shared/websocket/useWebSocket.ts:35
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:45
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Erro ao conectar ao servidor. Atualize a página para tentar novamente."
 
@@ -7283,14 +7284,6 @@ msgstr "A carregar canais filho.."
 msgid "Base Channel:"
 msgstr "Canal Base:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
-msgid "${defaultChannelName}"
-msgstr "${defaultChannelName}"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
-msgid "${this.getDefaultBase().name}"
-msgstr "${this.getDefaultBase().name}"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "Canais Filho:"
@@ -7377,122 +7370,118 @@ msgstr "({count} AppStreams)"
 msgid "Don't change"
 msgstr "Não alterar"
 
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
-msgid " (No system to disable)"
-msgstr " (Nenhum sistema para desativar)"
-
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
 msgstr "Ativar "
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:41
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:40
 msgid "Error Details"
 msgstr "Detalhes do Erro"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:50
 msgid "Standard Output:"
 msgstr "Saída Padrão:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:66
 msgid "Standard Error:"
 msgstr "Erro Padrão:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:82
 msgid "Result:"
 msgstr "Resultado:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:339
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
 msgstr "Pedido interrompido ou resposta inválida recebida do servidor. Verifique se o seu minion foi inicializado corretamente."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:368
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:367
 msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
 msgstr "Processo de bootstrap iniciado. O seu sistema deverá estar visível na seguinte localização em breve: <link>systems</link>. Se surgirem problemas, receberá uma notificação de erro. Caso esteja a trabalhar com um sistema transacional, efetue um reinício do sistema para completar o processo de registo."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:387
 msgid "Show additional details about this error"
 msgstr "Mostrar detalhes adicionais sobre este erro"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:395
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr "Não foi possível inicializar o host. Ocorreram os seguintes erros:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "O seu sistema está em bootstrap: a aguardar resposta.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:402
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid "Loading SSH Private Key.."
 msgstr "A carregar Chave Privada SSH.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:408
 #: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:432
 msgid "e.g., ••••••••••••"
 msgstr "ex: ••••••••••••"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:448
 msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
 msgstr "O ficheiro será armazenado num ficheiro temporário no servidor e será eliminado após o procedimento de bootstrap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "Leave empty for no passphrase"
 msgstr "Deixe vazio para nenhuma frase-passe"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:475
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:473
 msgid "Bootstrap Minions"
 msgstr "Bootstrap de Minions"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
 msgstr "Pode adicionar sistemas a serem geridos fornecendo apenas credenciais SSH. O {productName} preparará o sistema remotamente e efetuará o registo."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:492
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:490
 msgid "e.g., host.domain.com"
 msgstr "e.g., host.dominio.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:527
 msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr "O utilizador só será utilizado durante o processo de bootstrap. As ligações posteriores serão efetuadas com o utilizador especificado no ficheiro 'rhn.conf'. O utilizador predefinido para a chave 'ssh_push_sudo_user' é 'root'. Este utilizador é definido depois de a chave SSH do {productName} ser instalada durante o processo de bootstrap."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:538
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:536
 msgid "Authentication Method"
 msgstr "Método de Autenticação"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:573
 msgid "Ansible control node"
 msgstr "Nó de controlo Ansible"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:593
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:623
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:591
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:621
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Nenhum"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:606
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:604
 msgid "Reactivation Key"
 msgstr "Chave de Reativação"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:612
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Deixe vazio quando não for desejada reativação"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:641
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:639
 msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
 msgstr "O nome do host do proxy não é totalmente qualificado. Isto pode causar problemas ao aceder aos canais."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:658
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:656
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "Desativar verificação rigorosa de chave de host SSH durante o processo de bootstrap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:674
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:672
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Gerir sistema completamente via SSH (não instalará um agente)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:690
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:688
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Tem a certeza que quer fechar esta página enquanto o bootstrap está em progresso?"
 
@@ -8075,49 +8064,91 @@ msgstr "Erro de autorização, recarregue a página ou tente fazer logout/login 
 msgid "Resource not found."
 msgstr "Recurso não encontrado."
 
-#: ../html/src/utils/network.ts:106
-msgid "HTTP Error code "
-msgstr "Código de erro HTTP "
+#~ msgid "No hub is currently configured for this server. "
+#~ msgstr "Nenhum hub está atualmente configurado para este servidor. "
+
+#~ msgid "Edit "
+#~ msgstr "Editar "
+
+#~ msgid " channels sync failed"
+#~ msgstr " sincronização de canais falhou"
+
+#~ msgid " channels sync in progress"
+#~ msgstr " sincronização de canais em curso"
+
+#~ msgid " channels synced"
+#~ msgstr " canais sincronizados"
 
 #, fuzzy
-#~| msgid "Action has been successfully added to the Action Chain "
-#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-#~ msgstr "A ação foi adicionada com sucesso à Cadeia de Ações "
+#~| msgid "The client is affected by a vulnerability for which a patch has been released,"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
+#~ msgstr "O cliente é afetado por uma vulnerabilidade para a qual foi lançado um patch,"
 
-#, fuzzy
-#~| msgid "The following product installations failed. Please check log files."
-#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
-#~ msgstr "As seguintes instalações de produtos falharam. Verifique os ficheiros de log."
+#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
+#~ msgstr "O cliente é afetado por uma vulnerabilidade para a qual foi lançado um patch,"
 
-#, fuzzy
-#~| msgid "The client is affected by a vulnerability and we have a patch for it,"
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-#~ msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+#~ msgid "Edit SCAP Content"
+#~ msgstr "Editar Conteúdo SCAP"
 
-#, fuzzy
-#~| msgid "The client is affected by a vulnerability and we have a patch for it,"
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-#~ msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+#~ msgid "Edit Tailoring File"
+#~ msgstr "Editar Ficheiro de Personalização"
 
-#, fuzzy
-#~| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
-#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-#~ msgstr "O cliente é afetado por uma vulnerabilidade para a qual ainda não foi lançado um patch."
+#~ msgid "Replace File (optional)"
+#~ msgstr "Substituir Ficheiro (opcional)"
 
-#, fuzzy
-#~| msgid "The client is affected by a vulnerability and we have a patch for it,"
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-#~ msgstr "O cliente é afetado por uma vulnerabilidade e temos um patch para ela,"
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+#~ msgstr "Se usou um marcador, a página pode ter sido movida para uma localização diferente desde que o marcador foi "
 
-#, fuzzy
-#~| msgid "Instance is outdated"
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "A instância está desatualizada"
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "Editar perfil da imagem: '"
 
-#, fuzzy
-#~| msgid "Playbook File Name"
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "Nome do Ficheiro Playbook"
+#~ msgid "Edit Image Store: '"
+#~ msgstr "Editar armazenamento de imagens: '"
+
+#~ msgid " is queued"
+#~ msgstr " está em fila"
+
+#~ msgid " in progress"
+#~ msgstr " em curso"
+
+#~ msgid " is successful"
+#~ msgstr " foi bem-sucedida"
+
+#~ msgid " has failed"
+#~ msgstr " falhou"
+
+#~ msgid " Status"
+#~ msgstr " - Estado"
+
+#~ msgid "schedule"
+#~ msgstr "agendar"
+
+#~ msgid "successfully"
+#~ msgstr "com sucesso"
+
+#~ msgid "Error when deleting the "
+#~ msgstr "Erro ao eliminar o "
+
+#~ msgid "e.g., "
+#~ msgstr "p. ex., "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+#~ msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão disponíveis para instalação neste sistema. "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+#~ msgstr "As seguintes Correções Temporárias de Programa (PTFs) estão atualmente instaladas neste sistema. "
+
+#~ msgid "${defaultChannelName}"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid " (No system to disable)"
+#~ msgstr " (Nenhum sistema para desativar)"
+
+#~ msgid "HTTP Error code "
+#~ msgstr "Código de erro HTTP "
 
 #~ msgid "Paste a PEM certificate"
 #~ msgstr "Colar um certificado PEM"
