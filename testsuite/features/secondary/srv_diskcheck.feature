@@ -42,7 +42,7 @@ Feature: Space monitoring via Diskcheck
     Then I wait for the diskcheck alert notification
     And I go to the home page
     And I should not see the "The available disk space for the server is critically low" alert danger
-    And I should see the "The available disk space for the server is low" alert warning
+    And I should not see the "The available disk space for the server is low" alert warning
 
   Scenario: Default settings with more than 90% and less than 95% of disk space filled
     Given I am not authorized
@@ -98,6 +98,7 @@ Feature: Space monitoring via Diskcheck
     And I should not see the "The available disk space for the server is critically low" alert danger
     And I should see the "The available disk space for the server is low" alert warning
 
+
   Scenario: Custom settings with more than 70% and less than 90% disk space filled
     When I fill disk space in "/root/mnt-diskcheck" up to "80%" on "server"
     Then I wait for the diskcheck alert notification
@@ -114,8 +115,8 @@ Feature: Space monitoring via Diskcheck
     #And I check the uyuni server has stopped
 
   Scenario: Custom settings cleanup
-    When I cleanup the "/root/mnt-diskcheck" on "server"
-    And I configure the uyuni server to watch the default directories
+    When I configure the uyuni server to watch the default directories
+    And I unmount "/root/mnt-diskcheck" and remove the disk image in "/root" on "server"
     Then I check the uyuni server has started
     And I am not authorized
     And I go to the home page
@@ -141,7 +142,12 @@ Feature: Space monitoring via Diskcheck
     Then I wait for the diskcheck alert notification
     And I go to the home page
     And I should not see the "The available disk space for the server is critically low" alert danger
-    And I should not see the "The available disk space for the server is low" alert warning
+    # workaround
+    #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/27788
+    #   - if fixed, remove the 1 line below and uncomment the commented line below the "/workaround"
+    And I should see the "Some important directories are missing. Please contact your system administrator to review the configuration." alert warning
+    # /workaround
+    #And I should see the "The available disk space for the server is low" alert warning
 
   Scenario: Custom settings in rhn.conf with more than 95% disk space filled
     When I restart the uyuni server
@@ -149,7 +155,12 @@ Feature: Space monitoring via Diskcheck
     And I fill disk space in "/root/mnt-diskcheck" up to "96%" on "server"
     Then I wait for the diskcheck alert notification
     And I go to the home page
-    And I should not see the "The available disk space for the server is critically low" alert danger
+    # workaround
+    #   - when the test start failing here, check the issue: https://github.com/SUSE/spacewalk/issues/27788
+    #   - if fixed, remove the 1 line below and uncomment the commented line below the "/workaround"
+    And I should see the "Some important directories are missing. Please contact your system administrator to review the configuration." alert warning
+    # /workaround
+    #And I should see the "The available disk space for the server is critically low" alert danger
     And I should not see the "The available disk space for the server is low" alert warning
     And I trigger the healthcheck of "uyuni-server" container on "server" and expect it to fail
     # workaround

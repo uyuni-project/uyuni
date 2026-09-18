@@ -35,7 +35,7 @@ function setup() {
 
 function cleanup() {
     echo "Clean up:"
-    mount | grep -q " ${DSKCHK_MOUNT} " && umount "${DSKCHK_MOUNT}" || true
+    df "${DSKCHK_MOUNT}" &>/dev/null && umount "${DSKCHK_MOUNT}" || true
     [ -f "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}" ] && rm "${DSKCHK_IMAGE_DIR}/${DSKCHK_IMAGE_FILE}"
     return 0
 }

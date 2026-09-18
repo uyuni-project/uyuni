@@ -6,7 +6,6 @@
 DSKCHK_ALERT=90
 DSKCHK_THRESHOLD=95
 DSKCHK_DIR="/root/mnt-diskcheck"
-DSKCHK_DIR_TO_WATCH="/"
 # 0 - down, 1 - up, 255 - default undefined
 DSKCHK_ACTION=255
 DSKCHK_SERVICE_FILE="/etc/systemd/system/uyuni-server.service.d/diskcheck.conf"
@@ -30,7 +29,6 @@ function print_help() {
 
 function setup() {
     echo "Setup:"
-    mount AAA
     mkdir -p "$(dirname ${DSKCHK_SERVICE_FILE})"
     [ -f "${DSKCHK_SERVICE_FILE}" ] && cp "${DSKCHK_SERVICE_FILE}" "${DSKCHK_BACKUP_SERVICE_FILE}"
     if [ ${DSKCHK_RHN_FLAG} -eq 0 ]; then
