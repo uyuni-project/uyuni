@@ -24,7 +24,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -47,7 +46,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,46 +59,6 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for proxy specific pages.
  */
 public class ProxyController {
-
-    private static class ParentRepresentation implements Comparable<ParentRepresentation> {
-        private final String primaryFqdn;
-        private final List<String> additionalFqdns;
-
-        ParentRepresentation(String primaryFqdnIn, List<String> additionalFqdnsIn) {
-            this.primaryFqdn = primaryFqdnIn;
-            this.additionalFqdns = additionalFqdnsIn;
-        }
-
-        String getPrimaryFqdn() {
-            return primaryFqdn;
-        }
-
-        List<String> getAdditionalFqdns() {
-            return additionalFqdns;
-        }
-
-        @Override
-        public int compareTo(ParentRepresentation o) {
-            return this.primaryFqdn.compareTo(o.primaryFqdn);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            ParentRepresentation other = (ParentRepresentation) obj;
-            return java.util.Objects.equals(this.primaryFqdn, other.primaryFqdn);
-        }
-
-        @Override
-        public int hashCode() {
-            return java.util.Objects.hash(primaryFqdn);
-        }
-    }
 
     private final SystemManager systemManager;
 
@@ -146,37 +104,11 @@ public class ProxyController {
         Map<String, Object> data = new HashMap<>();
         data.put("noSSL", !ConfigDefaults.get().isSsl());
 
-        String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(userIn);
 
-        List<ParentRepresentation> parentReps = new ArrayList<>();
-        if (localManagerFqdn != null && !localManagerFqdn.isEmpty()) {
-            parentReps.add(new ParentRepresentation(localManagerFqdn, Collections.emptyList()));
-        }
-        else {
-            LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
-        }
-
-        for (Server proxy : proxies) {
-            parentReps.add(new ParentRepresentation(proxy.getPrimaryFqdnName(), proxy.getAdditionalFqdnNames()));
-        }
-
-        Collections.sort(parentReps);
-
-        List<Map<String, String>> parentOptions = new ArrayList<>();
-        for (ParentRepresentation rep : parentReps) {
-            Map<String, String> primaryOpt = new HashMap<>();
-            primaryOpt.put("value", rep.getPrimaryFqdn());
-            primaryOpt.put("label", rep.getPrimaryFqdn());
-            parentOptions.add(primaryOpt);
-
-            for (String addFqdn : rep.getAdditionalFqdns()) {
-                Map<String, String> addOpt = new HashMap<>();
-                addOpt.put("value", addFqdn);
-                addOpt.put("label", "\u00A0\u00A0\u00A0\u00A0" + addFqdn);
-                parentOptions.add(addOpt);
-            }
-        }
+        List<Map<String, Object>> parentOptions = new ArrayList<>();
+        parentOptions.add(ProxyListUtils.directConnectionEntry());
+        parentOptions.addAll(ProxyListUtils.proxyEntries(proxies));
 
         data.put("parents", GSON.toJson(parentOptions));
 

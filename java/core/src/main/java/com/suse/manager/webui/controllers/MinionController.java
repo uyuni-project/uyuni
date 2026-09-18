@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
@@ -60,6 +59,7 @@ import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -508,24 +508,9 @@ public class MinionController {
      * @param model the current bootstrap model
      */
     public static void addProxies(User user, Map<String, Object> model) {
-        List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
-                .stream()
-                .map(proxy -> {
-                    Map<String, Object> entry = new HashMap<>();
-                    entry.put("id", proxy.getId());
-                    entry.put("name", proxy.getName());
-                    entry.put("hostname", proxy.getHostname());
-                    List<String> path = proxy.getServerPaths().stream()
-                            .sorted(Comparator.comparingLong(ServerPath::getPosition))
-                            .map(ServerPath::getHostname)
-                            .collect(Collectors.toList());
-                    entry.put("path", path);
-
-                    entry.put("primaryFqdn", proxy.getPrimaryFqdnName());
-                    entry.put("additionalFqdns", proxy.getAdditionalFqdnNames());
-
-                    return entry; })
-                .collect(Collectors.toList());
+        List<Map<String, Object>> proxies = new ArrayList<>();
+        proxies.add(ProxyListUtils.directConnectionEntry());
+        proxies.addAll(ProxyListUtils.proxyEntries(ServerFactory.lookupProxiesByOrg(user)));
         model.put("proxies", Json.GSON.toJson(proxies));
     }
 
