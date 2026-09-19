@@ -49,6 +49,10 @@ class YumSrcTest(unittest.TestCase):
     def _make_dummy_cs(self):
         """Create a dummy ContentSource object that only talks to a mocked yum"""
         real_setup_repo = yum_src.ContentSource.setup_repo
+        real_os_makedirs = yum_src.os.makedirs
+        real_os_isdir = yum_src.os.path.isdir
+        real_os_chmod = yum_src.os.chmod
+        real_fileutils_makedirs = yum_src.fileutils.makedirs
 
         # don't read configs
         patch("spacewalk.common.suseLib.initCFG").start()
@@ -62,24 +66,30 @@ class YumSrcTest(unittest.TestCase):
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.chmod = Mock()
         yum_src.os.makedirs = Mock()
-        yum_src.os.path.isdir = Mock()
+        yum_src.os.path.isdir = Mock(return_value=True)
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org="")
-        # pylint: disable-next=invalid-name
-        mockReturnPackages = MagicMock()
-        mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
-        mockReturnPackages.returnPackages.return_value = []
-        cs.repo.is_configured = True
-        cs.repo.includepkgs = []
-        cs.repo.exclude = []
-        cs.repo.root = os.path.dirname(__file__)
-        cs.channel_label = "."
-
-        yum_src.ContentSource.setup_repo = real_setup_repo
-
-        return cs
+        try:
+            cs = yum_src.ContentSource(
+                "http://example.com/fake_path/", "test_repo", org=""
+            )
+            # pylint: disable-next=invalid-name
+            mockReturnPackages = MagicMock()
+            mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
+            mockReturnPackages.returnPackages.return_value = []
+            cs.repo.is_configured = True
+            cs.repo.includepkgs = []
+            cs.repo.exclude = []
+            cs.repo.root = os.path.dirname(__file__)
+            cs.channel_label = "."
+            return cs
+        finally:
+            yum_src.ContentSource.setup_repo = real_setup_repo
+            yum_src.os.makedirs = real_os_makedirs
+            yum_src.os.path.isdir = real_os_isdir
+            yum_src.os.chmod = real_os_chmod
+            yum_src.fileutils.makedirs = real_fileutils_makedirs
 
     @pytest.fixture(autouse=True)
     def set_temp_path(self, tmpdir):
@@ -384,6 +394,8 @@ class YumSrcTest(unittest.TestCase):
         ), patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.subprocess.run",
             MagicMock(return_value=subprocess_mock),
+        ), patch.object(
+            yum_src.ContentSource, "_has_pqc_signature", Mock(return_value=False)
         ):
             repo = yum_src.ZypperRepo(
                 tempfile.mkdtemp(), "http://example.com/url_with_mirrorlist/", "1"
@@ -782,3 +794,106 @@ class YumSrcTest(unittest.TestCase):
         self.assertEqual(listed_packages[1].name, "n2")
         self.assertEqual(listed_packages[1].version, "2.1")
         self.assertEqual(listed_packages[1].release, "3.4")
+
+    @staticmethod
+    def _write_certificate(directory, name):
+        """
+        Write a fake certificate file, creating its directory when needed
+        """
+        os.makedirs(directory, exist_ok=True)
+        path = os.path.join(directory, name)
+        # pylint: disable-next=unspecified-encoding
+        with open(path, "w") as cert_file:
+            cert_file.write(name)
+        return path
+
+    def test_pqc_certificates_vendored_and_custom(self):
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_repo"
+        keys_dir = tempfile.mkdtemp()
+        try:
+            vendored_cert = self._write_certificate(keys_dir, "vendored.crt")
+            custom_cert = self._write_certificate(
+                os.path.join(keys_dir, "custom"), "custom.pem"
+            )
+
+            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
+                # pylint: disable-next=protected-access
+                certs = cs._pqc_certificates()
+                self.assertIn(vendored_cert, certs)
+                self.assertIn(custom_cert, certs)
+        finally:
+            shutil.rmtree(keys_dir)
+
+    def test_pqc_certificates_channel_specific(self):
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_repo"
+        keys_dir = tempfile.mkdtemp()
+        try:
+            vend_channel = self._write_certificate(
+                os.path.join(keys_dir, "test_repo"), "vend_channel.crt"
+            )
+            cust_channel = self._write_certificate(
+                os.path.join(keys_dir, "custom", "test_repo"), "cust_channel.pem"
+            )
+            # Other repo certificates should be ignored
+            self._write_certificate(os.path.join(keys_dir, "other_repo"), "other.crt")
+            self._write_certificate(
+                os.path.join(keys_dir, "custom", "other_repo"), "other2.pem"
+            )
+
+            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
+                # pylint: disable-next=protected-access
+                certs = cs._pqc_certificates()
+                self.assertEqual(sorted(certs), sorted([vend_channel, cust_channel]))
+        finally:
+            shutil.rmtree(keys_dir)
+
+    def test_pqc_certificates_channel_named_custom(self):
+        cs = self._make_dummy_cs()
+        cs.channel_label = "custom"
+        keys_dir = tempfile.mkdtemp()
+        try:
+            vend_common = self._write_certificate(keys_dir, "vend_common.crt")
+            cust_common = self._write_certificate(
+                os.path.join(keys_dir, "custom"), "cust_common.pem"
+            )
+
+            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
+                # pylint: disable-next=protected-access
+                certs = cs._pqc_certificates()
+                self.assertEqual(sorted(certs), sorted([cust_common, vend_common]))
+        finally:
+            shutil.rmtree(keys_dir)
+
+    def test_list_certificates_deduplication(self):
+        temp_dir = tempfile.mkdtemp()
+        try:
+            cert = self._write_certificate(temp_dir, "dup.crt")
+            # If the same directory is passed twice, cert should not be duplicated
+            # pylint: disable-next=protected-access
+            certs = yum_src.ContentSource._list_certificates([temp_dir, temp_dir])
+            self.assertEqual(certs, [cert])
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_list_certificates_filtering(self):
+        temp_dir = tempfile.mkdtemp()
+        try:
+            cert_pem = self._write_certificate(temp_dir, "b_cert.pem")
+            cert_crt = self._write_certificate(temp_dir, "a_cert.crt")
+            # Ignored non-certificate files
+            self._write_certificate(temp_dir, "readme.txt")
+            self._write_certificate(temp_dir, "key.pub")
+            # Ignored directory named with .pem extension
+            os.makedirs(os.path.join(temp_dir, "subdir.pem"))
+
+            non_existent_dir = os.path.join(temp_dir, "non_existent")
+            # pylint: disable-next=protected-access
+            certs = yum_src.ContentSource._list_certificates(
+                [non_existent_dir, temp_dir]
+            )
+            # Should be sorted and only include valid certificate files
+            self.assertEqual(certs, [cert_crt, cert_pem])
+        finally:
+            shutil.rmtree(temp_dir)
