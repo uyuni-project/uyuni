@@ -463,7 +463,11 @@ sub create_migration_dir {
         print INIT $in."\n";
         close INIT;
     }
-
+    else {
+        # When migrating only next/ we do not change the schema entry in the DB.
+        # So we need to cleanup leftovers in case of an abort happened earlier.
+        unlink glob "$SCHEMA_UPGRADE_LOGDIR/$migrationdir/*";
+    }
     return $migrationdir;
 }
 
