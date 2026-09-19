@@ -18,7 +18,7 @@ SCRIPTS = spacewalk-debug \
 	  rhn-ssl-dbstore update-packages rhn-db-stats rhn-schema-stats \
           spacewalk-repo-sync spacewalk-remove-channel \
 	  spacewalk-update-signatures spacewalk-data-fsck spacewalk-fips-tool \
-	  mgr-sign-metadata mgr-sign-metadata-ctl spacewalk-diskcheck
+	  mgr-sign-metadata mgr-sign-metadata-ctl mgr-pqc-sign-metadata mgr-pqc-sign-metadata-ctl spacewalk-diskcheck
 
 # check if we can build man pages
 DOCBOOK = $(wildcard /usr/bin/docbook2man)

@@ -1,0 +1,233 @@
+#!/bin/bash
+
+set -e
+
+PQC_MIN_OPENSSL_VER="3.5.0"
+PQC_SIGNATURE_EXTENSION="p7s"
+PQC_CUSTOM_KEYS_DIR="/root/.pqkeys"
+PQC_CUSTOM_PRIVATE_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-priv.pem"
+PQC_CUSTOM_PUBLIC_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-pub.pem"
+PQC_CUSTOM_CERTIFICATE_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-cert.pem"
+
+RHN_CONF="/etc/rhn/rhn.conf"
+PQC_CUSTOM_CERTIFICATE_SUBJECT="/CN=Multi-Linux Manager Custom PQC Key/O=Multi-Linux Manager"
+PQC_RHN_CONF_SIGN_ENTRY="sign_pqc_metadata"
+PQC_CUSTOM_SIGNATURE_FILENAME="repomd.xml.$PQC_SIGNATURE_EXTENSION"
+
+
+function check_openssl_available {
+    if command -v /usr/bin/openssl >&2>/dev/null; then
+        #openssl is available
+        :
+    else
+        echo "Error: /usr/bin/openssl is not available"
+        exit 1
+    fi
+}
+
+function check_openssl_min_version {
+    OPENSSL_VER=$(rpm -q --queryformat='%{VERSION}' openssl)
+
+    if { echo "$PQC_MIN_OPENSSL_VER"; echo "$OPENSSL_VER"; } | sort --version-sort --check ; then
+        #version is ok
+        :
+    else
+        echo "Error: /usr/bin/openssl must be at least of version ${PQC_MIN_OPENSSL_VER}"
+        exit 1
+    fi
+}
+
+function remove_old_pqc_keys {
+    rm -f $PQC_CUSTOM_CERTIFICATE_FILE
+    rm -f $PQC_CUSTOM_PUBLIC_KEY_FILE
+    rm -f $PQC_CUSTOM_PRIVATE_KEY_FILE
+    mkdir -p $PQC_CUSTOM_KEYS_DIR
+}
+
+function generate_pqc_key_pair_certificate {
+    #PQC key pair
+    /usr/bin/openssl genpkey -algorithm mldsa87 -out $PQC_CUSTOM_PRIVATE_KEY_FILE -outpubkey $PQC_CUSTOM_PUBLIC_KEY_FILE
+    chmod 400 $PQC_CUSTOM_PRIVATE_KEY_FILE
+    chmod 444 $PQC_CUSTOM_PUBLIC_KEY_FILE
+    echo "Generated PQC private key: ${PQC_CUSTOM_PRIVATE_KEY_FILE}"
+    echo "Generated PQC public key: ${PQC_CUSTOM_PUBLIC_KEY_FILE}"
+
+    #certificate
+    /usr/bin/openssl x509 -new -key $PQC_CUSTOM_PRIVATE_KEY_FILE -subj "${PQC_CUSTOM_CERTIFICATE_SUBJECT}" > $PQC_CUSTOM_CERTIFICATE_FILE
+    chmod 444 $PQC_CUSTOM_CERTIFICATE_FILE
+    echo "Generated PQC certificate: ${PQC_CUSTOM_CERTIFICATE_FILE}"
+}
+
+function do_generate_pqc_key {
+    #check openssl is available
+    check_openssl_available
+
+    #check openssl is at least of version >= 3.5
+    check_openssl_min_version
+
+    #remove old keys and certificate
+    remove_old_pqc_keys
+
+    #create PQC key pair
+    generate_pqc_key_pair_certificate
+}
+
+
+
+function is_pqc_metadata_signing_enabled {
+    grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*1\s*$" $RHN_CONF
+}
+
+function do_enable_pqc_metadata_signing {
+    # make sure PQC sign metadata entry =1 in rhn.conf
+    if grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*0\s*$" $RHN_CONF; then
+        # edit rhn.conf to enable signing
+        sed -i "s/${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$/${PQC_RHN_CONF_SIGN_ENTRY} = 1/g" $RHN_CONF
+        echo "DONE. Enabled PQC metadata signing in ${RHN_CONF}."
+
+    elif grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*1" $RHN_CONF; then
+        echo "OK. PQC Metadata signing is enabled in ${RHN_CONF}."
+    else
+        # add line to rhn.conf
+        echo "${PQC_RHN_CONF_SIGN_ENTRY} = 1" >> $RHN_CONF
+        echo "DONE. Enabled PQC metadata signing in ${RHN_CONF}."
+    fi
+}
+
+
+function do_check_pqc_metadata_signing {
+    # check PQC sign metadata entry in rhn.conf
+    if is_pqc_metadata_signing_enabled; then
+        echo "Metadata PQC signing is enabled in ${RHN_CONF}."
+    else
+        echo "Metadata PQC signing is DISABLED in ${RHN_CONF}."
+    fi
+}
+
+
+function do_disable_pqc_metadata_signing {
+    if grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$" $RHN_CONF; then
+        # edit rhn.conf to disable signing
+        sed -i "s/${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$/${PQC_RHN_CONF_SIGN_ENTRY} = 0/g" $RHN_CONF
+    else
+        # add line to rhn.conf
+        echo "${PQC_RHN_CONF_SIGN_ENTRY} = 0" >> $RHN_CONF
+    fi
+    echo "DONE. Disabled PQC metadata signing in ${RHN_CONF}."
+}
+
+
+function warn_effective_changes {
+    echo
+    echo "NOTE. For the changes to become effective run:"
+    echo "   mgr-pqc-sign-metadata-ctl regen-metadata"
+    echo "and schedule a highstate for all your systems to"
+    echo "apply the new repository configuration."
+    echo
+}
+
+
+
+function read_spacecmd_user_pass {
+    if [[ -z "$SPACECMD_USER" || -z "$SPACECMD_PASS" ]];then
+        echo -n "Server User: ";
+        read -r SPACECMD_USER
+        echo -n "Server Password: ";
+        read -r -s SPACECMD_PASS
+    fi
+    echo
+}
+
+
+function do_check_channels {
+    if is_pqc_metadata_signing_enabled; then
+        read_spacecmd_user_pass
+        CHANNELS=$(spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS softwarechannel_list)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+            exit 1
+        fi
+        REPODATA_DIR=/var/cache/rhn/repodata # TODO get mount point from cfg
+
+        for ch in $CHANNELS; do
+           if [ ! -d "$REPODATA_DIR/$ch" ]; then
+                echo "ERROR. Channel $ch. Cached metadata not generated."
+           else
+               if [[ -f "$REPODATA_DIR/$ch/$PQC_CUSTOM_SIGNATURE_FILENAME" ]]; then
+                    echo "OK. Channel $ch. Cached metadata is PQC-signed."
+               else
+                    echo "ERROR. Channel $ch. Cached metadata is not PQC-signed."
+               fi
+           fi
+        done
+    else
+        echo "No checking done. Metadata PQC signing is disabled."
+    fi
+}
+
+
+
+function do_regenerate_metadata {
+    echo -n "Restarting Tomcat..."
+    systemctl restart tomcat
+    echo "done."
+    echo -n "Restarting Taskomatic..."
+    systemctl restart taskomatic
+    echo "done."
+    echo
+    read_spacecmd_user_pass
+    echo "Refreshing pillar data..."
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "system_refreshpillar"
+    echo "Scheduling repo metadata regeneration..."
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
+        exit 1
+    fi
+    echo "done."
+}
+
+
+
+function usage {
+    echo "Usage: mgr-pqc-sign-metadata-ctl [generate-key | enable | disable | check-channels | check-config | regen-metadata]"
+    echo "  generate-key     Generates PQC keys and certificate."
+    echo "  enable           Enable PQC signing of repository metadata."
+    echo "  disable          Disable PQC signing of repository metadata."
+    echo "  check-channels   Check if the cached channels repodata is signed."
+    echo "  check-config     Check configuration and report any problems. This is the default option."
+    echo "  regen-metadata   Restart services and schedule metadata regeneration."
+}
+
+
+if [ -n "$1" ]; then
+
+    if [[  "$1" = "generate-key" ]]; then
+        do_generate_pqc_key
+    elif [[  "$1" = "enable" ]]; then
+        do_enable_pqc_metadata_signing
+        warn_effective_changes
+    elif [[  "$1" = "disable" ]]; then
+        do_disable_pqc_metadata_signing
+        warn_effective_changes
+    elif [[  "$1" = "check-channels" ]]; then
+        do_check_channels
+    elif [[  "$1" = "check-config" ]]; then
+        do_check_pqc_metadata_signing
+    elif [[  "$1" = "regen-metadata" ]]; then
+        do_regenerate_metadata
+    elif [[ "$1" = "help" || "$1" = "--help" || "$1" = "-h" ]]; then
+        usage
+        exit 0
+    else
+        usage
+        exit 1
+    fi
+
+    exit 0
+else
+    do_check_pqc_metadata_signing
+    exit 0
+fi
+
