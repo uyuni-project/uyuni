@@ -24,7 +24,9 @@ def get_all_files_from_pr(pr_file, schema_path):
         for file in files:
             filename = str(file["filename"])
             if not re.search(
-                r"^schema\/reportdb\/upgrade\/uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*\/[^\/]+$",
+                r"^schema\/reportdb\/upgrade\/"
+                r"(uyuni-reportdb-schema-\d+\.\d+[\d|.]*-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*|next)"
+                r"\/[^\/]+\.(sql|sql\.postgresql)$",
                 filename,
             ):
                 continue
@@ -37,26 +39,6 @@ def get_all_files_from_pr(pr_file, schema_path):
             for copy_file in glob.glob(r"%s/%s*" % (schema_path, filename)):
                 changed_files.append(copy_file)
     return changed_files
-
-
-def get_all_files_since(version, schema_path):
-    """Get all SQL files since a schema version"""
-    files = []
-    for element in sorted(os.listdir(schema_path)):
-        element_ver = re.search(
-            r"^uyuni-reportdb-schema-(\d+\.\d+[\d|.]*)-to-uyuni-reportdb-schema-\d+\.\d+[\d|.]*$",
-            element,
-        )
-        if not element_ver:
-            continue
-        # StrictVersion does not work as we have some migrations with version X.Y.W.Z
-        # https://hg.python.org/cpython/file/tip/Lib/distutils/version.py#l93
-        if DV.LooseVersion(element_ver.group(1)) >= DV.LooseVersion(version):
-            base_path = schema_path + "/" + element
-            for sql_file in sorted(os.listdir(base_path)):
-                if re.search(r"^.*\.(sql|sql\.postgresql)$", sql_file):
-                    files.append(base_path + "/" + sql_file)
-    return files
 
 
 def find_latest_version(schema_path):
@@ -141,6 +123,12 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
         # pylint: disable-next=consider-using-f-string
         print("Creating migration path with all scripts since %s" % version)
         files = get_all_files(version, last_version, schema_path)
+        # when we are at the end, include /next
+        next_path = schema_path + "/next"
+        if os.path.isdir(next_path):
+            for sql_file in sorted(os.listdir(next_path)):
+                if re.search(r"^.*\.(sql|sql\.postgresql)$", sql_file):
+                    files.append(next_path + "/" + sql_file)
     fake_path = (
         schema_path
         # pylint: disable-next=consider-using-f-string
@@ -229,7 +217,7 @@ def dump_database(dump_name, excluded_tables=None):
     else:
         # pylint: disable-next=consider-using-f-string
         raise RuntimeError("Could not dump %s!" % db_name)
-    cleanup_cmd = f"/usr/bin/sed -i 's/^\(\\\\u\?n\?restrict \).*$/\\1/g' {dump_name}"
+    cleanup_cmd = rf"/usr/bin/sed -i 's/^\(\\u\?n\?restrict \).*$/\1/g' {dump_name}"
     if run_command(cleanup_cmd):
         print(f"Cleaned unrestrict/restrict tokens from {dump_name} ")
     else:
