@@ -18,9 +18,8 @@
 # The only really exportable item is the Certificate class
 #
 
-import sys
 import hashlib
-import secrets
+import sys
 
 try:
     #  python 2
@@ -29,15 +28,10 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 
-from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
-from .server_lib import getServerSecret
-from .server_lib import check_entitlement_by_machine_id
+from spacewalk.common.rhnLog import log_debug, log_error
 
-
-def gen_secret():
-    """Generate a secret"""
-    return secrets.token_hex(32)
+from .server_lib import check_entitlement_by_machine_id, getServerSecret
 
 
 class Checksum:
