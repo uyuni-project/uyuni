@@ -76,7 +76,6 @@ from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
 from urlgrabber.mirror import MirrorGroup
 
-
 # namespace prefix to parse patches.xml file
 PATCHES_XML = "{http://novell.com/package/metadata/suse/patches}"
 REPO_XML = "{http://linux.duke.edu/metadata/repo}"
@@ -613,7 +612,7 @@ class ContentSource:
 
         # keep authtokens for mirroring
         # pylint: disable-next=invalid-name,unused-variable
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        _scheme, _netloc, _path, query, _fragid = urlsplit(url)
         if query:
             self.authtoken = query
 
@@ -796,7 +795,7 @@ class ContentSource:
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
-                    (s, b, p, q, f, o) = urlparse(url)
+                    s, b, p, q, f, o = urlparse(url)
                     if p[-1] != "/":
                         p = p + "/"
                 # pylint: disable-next=unused-variable
@@ -805,7 +804,6 @@ class ContentSource:
 
                 if s not in ["http", "ftp", "file", "https"]:
                     skipped = url
-                    continue
                 else:
                     goodurls.append(urlunparse((s, b, p, q, f, o)))
             return goodurls

@@ -75,16 +75,14 @@ class Server(ServerWrapper):
         self.virt_uuid = None
         self.registration_number = None
 
-    _query_lookup_arch = rhnSQL.Statement(
-        """
+    _query_lookup_arch = rhnSQL.Statement("""
         select sa.id,
                case when at.label = 'rpm' then 1 else 0 end is_rpm_managed
           from rhnServerArch sa,
                rhnArchType at
          where sa.label = :archname
            and sa.arch_type_id = at.id
-    """
-    )
+    """)
 
     def set_arch(self, arch):
         self.archname = arch
@@ -131,8 +129,7 @@ class Server(ServerWrapper):
     __str__ = __repr__
 
     def _get_active_org_admins(self, org_id):
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             SELECT login
             FROM web_contact
             WHERE id in (
@@ -147,8 +144,7 @@ class Server(ServerWrapper):
                             from rhnwebcontactenabled wc
                             where wc.id = ugm.user_id)
                 ORDER BY ugm.user_id);
-        """
-        )
+        """)
         h.execute(org_id=org_id)
         rows = h.fetchall_dict()
         return rows
@@ -308,9 +304,7 @@ class Server(ServerWrapper):
             on your system and has updated your channel subscriptions
             to reflect that.
             Your server has been automatically subscribed to the following
-            channels:\n%s\n""" % (
-                "\n".join(channel_list),
-            )
+            channels:\n%s\n""" % ("\n".join(channel_list),)
         else:
             msg = (
                 # pylint: disable-next=consider-using-f-string
@@ -333,16 +327,14 @@ class Server(ServerWrapper):
     # returns true iff the base channel assigned to this system
     # has been end-of-life'd
     def base_channel_is_eol(self):
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select 1
         from rhnChannel c, rhnServerChannel sc
         where sc.server_id = :server_id
           and sc.channel_id = c.id
           and c.parent_channel IS NULL
           and current_timestamp - c.end_of_life > 0
-        """
-        )
+        """)
         h.execute(server_id=self.getid())
         ret = h.fetchone_dict()
         if ret:
@@ -350,16 +342,14 @@ class Server(ServerWrapper):
 
         return None
 
-    _query_server_custom_info = rhnSQL.Statement(
-        """
+    _query_server_custom_info = rhnSQL.Statement("""
     select cdk.label,
            scdv.value
       from rhnCustomDataKey cdk,
            rhnServerCustomDataValue scdv
      where scdv.server_id = :server_id
        and scdv.key_id = cdk.id
-    """
-    )
+    """)
 
     def load_custom_info(self):
         self.custom_info = {}
@@ -527,18 +517,14 @@ class Server(ServerWrapper):
         self.cert = None
         self.server["secret"] = gen_secret()
 
-    _query_update_uuid = rhnSQL.Statement(
-        """
+    _query_update_uuid = rhnSQL.Statement("""
         update rhnServerUuid set uuid = :uuid
          where server_id = :server_id
-    """
-    )
-    _query_insert_uuid = rhnSQL.Statement(
-        """
+    """)
+    _query_insert_uuid = rhnSQL.Statement("""
         insert into rhnServerUuid (server_id, uuid)
         values (:server_id, :uuid)
-    """
-    )
+    """)
 
     def update_uuid(self, uuid, commit=1):
         log_debug(3, uuid)
@@ -672,11 +658,9 @@ class Server(ServerWrapper):
             raise rhnFault(29, "Could not find server record in the database")
         self.cert = None
         # it is lame that we have to do this
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select label from rhnServerArch where id = :archid
-        """
-        )
+        """)
         h.execute(archid=self.server["server_arch_id"])
         data = h.fetchone_dict()
         if not data:
@@ -694,9 +678,9 @@ class Server(ServerWrapper):
         # XXX: Fix me
         if reload_all:
             # pylint: disable-next=unnecessary-negation
-            if not self.reload_packages_byid(self.server["id"]) == 0:
+            if self.reload_packages_byid(self.server["id"]) != 0:
                 return -1
-            if not self.reload_hardware_byid(self.server["id"]) == 0:
+            if self.reload_hardware_byid(self.server["id"]) != 0:
                 return -1
         return 0
 
@@ -705,28 +689,24 @@ class Server(ServerWrapper):
         server = self.getid()
         ret = {}
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select address as ipaddr
         from rhnservernetinterface rsni
         join rhnservernetaddress4 rsna4 on rsna4.interface_id = rsni.id
         where is_primary = 'Y' and server_id = :serverid
-        """
-        )
+        """)
 
         h.execute(serverid=server)
         data = h.fetchone_dict()
         if data:
             ret.update(data)
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
         select address as ip6addr
         from rhnservernetinterface rsni
         join rhnservernetaddress6 rsna4 on rsna4.interface_id = rsni.id
         where is_primary = 'Y' and server_id = :serverid
-        """
-        )
+        """)
 
         h.execute(serverid=server)
         data = h.fetchone_dict()
@@ -750,7 +730,7 @@ class Server(ServerWrapper):
         sid = row["id"]
         # standard reload based on an ID
         ret = self.reload(sid)
-        if not ret == 0:
+        if ret != 0:
             return ret
 
         # the reload() will never be able to fill in the username.  It
@@ -818,13 +798,11 @@ class Server(ServerWrapper):
         server_id = self.getid()
         user_id = self.user.getid()
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select system_group_id
             from rhnUserDefaultSystemGroups
             where user_id = :user_id
-        """
-        )
+        """)
         h.execute(user_id=user_id)
         while 1:
             row = h.fetchone_dict()
@@ -884,14 +862,12 @@ class Server(ServerWrapper):
 
     def flush_actions(self):
         server_id = self.getid()
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select action_id
               from rhnServerAction
              where server_id = :server_id
                and status in (0, 1) -- Queued or Picked Up
-        """
-        )
+        """)
         h.execute(server_id=server_id)
         while 1:
             row = h.fetchone_dict()
@@ -909,13 +885,11 @@ class Server(ServerWrapper):
     def server_locked(self):
         """Returns true is the server is locked (for actions that are blocked)"""
         server_id = self.getid()
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select 1
               from rhnServerLock
              where server_id = :server_id
-        """
-        )
+        """)
         h.execute(server_id=server_id)
         row = h.fetchone_dict()
         if row:

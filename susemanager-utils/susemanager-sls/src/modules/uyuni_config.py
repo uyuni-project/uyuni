@@ -94,7 +94,7 @@ class RPCClient:
         if self.token is None or refresh:
             try:
                 auth_token_key = "uyuni.auth_token_" + self._user
-                if (not auth_token_key in __context__) or refresh:
+                if (auth_token_key not in __context__) or refresh:
                     __context__[auth_token_key] = self.conn.auth.login(
                         self._user, self._password
                     )
@@ -722,7 +722,7 @@ class UyuniSystems(UyuniRemoteObject):
         :return: Map between minion ID and system ID of all system accessible by authenticated user
         """
         minions_token_key = "uyuni.minions_id_map_" + self.client.get_user()
-        if (not minions_token_key in __context__) or refresh:
+        if (minions_token_key not in __context__) or refresh:
             __context__[minions_token_key] = self.client("system.getMinionIdMap")
         return __context__[minions_token_key]
 

@@ -112,8 +112,8 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.channel_label, "Label")
 
         # these should have been set automatically
-        self.assertEqual(rs.fail, False)
-        self.assertEqual(rs.interactive, True)
+        self.assertFalse(rs.fail)
+        self.assertTrue(rs.interactive)
 
     def test_init_with_custom_url(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE, url="http://example.com")
@@ -136,8 +136,8 @@ class RepoSyncTest(unittest.TestCase):
             self.reposync, "Label", RTYPE, fail=True, noninteractive=True
         )
 
-        self.assertEqual(rs.fail, True)
-        self.assertEqual(rs.interactive, False)
+        self.assertTrue(rs.fail)
+        self.assertFalse(rs.interactive)
 
     def test_init_wrong_url(self):
         """Test generates empty metadata via taskomatic and quits"""
@@ -548,7 +548,7 @@ class RepoSyncTest(unittest.TestCase):
         # pylint: disable-next=protected-access
         processed = rs._updates_process_packages(packages, "a name", [])
         for p in processed:
-            self.assertTrue(isinstance(p, self.reposync.importLib.IncompletePackage))
+            self.assertIsInstance(p, self.reposync.importLib.IncompletePackage)
 
     def test_updates_process_packages_returns_the_right_values(self):
         rs = self._create_mocked_reposync()
@@ -695,7 +695,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         # pylint: disable-next=protected-access
         self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])
-        self.assertEqual(self.reposync.log.call_args, None)
+        self.assertIsNone(self.reposync.log.call_args)
 
     # RedHat has errata with empty package list
     # they removed the check - therefor this is disabled too
@@ -770,7 +770,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_get_errata_no_advisories_found(self):
         rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, None)
-        self.assertEqual(rs.get_errata("bogus"), None)
+        self.assertIsNone(rs.get_errata("bogus"))
 
     def test_get_errata_advisories_but_no_channels(self):
         rs = self._create_mocked_reposync()
