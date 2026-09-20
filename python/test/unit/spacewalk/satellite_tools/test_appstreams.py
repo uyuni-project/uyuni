@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Unit tests for AppStreams reposync module."""
 
 import os
