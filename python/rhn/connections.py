@@ -4,34 +4,30 @@
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
 # Copyright (c) 2022 SUSE, LLC
+# SPDX-License-Identifier: GPL-2.0-only
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 
 
 import base64
-
 # pylint: disable-next=unused-import
 import encodings.idna
 import socket
 from platform import python_version
-from rhn.stringutils import bstr, ustr, sstr
-from rhn import SSL
-from rhn import nonblocking
+
+from rhn import SSL, nonblocking
+from rhn.stringutils import bstr, sstr, ustr
 
 try:  # python2
     import httplib
-
-    # Import into the local namespace some httplib-related names
-    from httplib import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
-
     import xmlrpclib
+    # Import into the local namespace some httplib-related names
+    from httplib import _CS_IDLE, _CS_REQ_SENT, ResponseNotReady
 except ImportError:  # python3
     import http.client as httplib
-
-    # Import into the local namespace some httplib-related names
-    from http.client import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
-
     import xmlrpc.client as xmlrpclib
+    # Import into the local namespace some httplib-related names
+    from http.client import _CS_IDLE, _CS_REQ_SENT, ResponseNotReady
 
 
 class HTTPResponse(httplib.HTTPResponse):
