@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #
 # This is a temporary solution before all
 # tests are running on docker.

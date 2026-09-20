@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # coding: utf-8
 """
 Test embeded diskspace check.
