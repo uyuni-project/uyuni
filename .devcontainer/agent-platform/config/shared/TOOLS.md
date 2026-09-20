@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Tools Reference
 
 Project conventions for tool usage. Each agent runtime already provides per-tool descriptions; this file adds the rules that aren't captured there.

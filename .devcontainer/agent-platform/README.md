@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Agent Platform
 
 Agent Platform is a devcontainer-based runtime for safely configuring and running AI agents (Claude Code, OpenAI Codex, and Opencode) in an isolated environment.
