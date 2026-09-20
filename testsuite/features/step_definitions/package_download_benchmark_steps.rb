@@ -13,11 +13,9 @@ PACKAGE_DOWNLOAD_CACHE_ROOT = '/var/cache/zypp/packages'.freeze
 PACKAGE_DOWNLOAD_IDLE_POLL_SECONDS = 2
 PACKAGE_DOWNLOAD_SOURCE_ARCHES = %w[src nosrc source srcpackage].freeze
 
-# Convert Uyuni API package records into the values used by the benchmark:
-# - exclude source and Debian packages;
-# - build the RPM EVR used for repository checks;
-# - lowercase checksums used to match zypper cache directories; and
-# - retain stable fields for snapshot comparison and result.json.
+# Convert Uyuni API package records into the values used by the benchmark. Source and Debian
+# packages are excluded, the RPM EVR is built for repository checks, checksums are lowercased to
+# match zypper cache directories, and the stable fields are kept for the snapshot and result.json.
 def package_download_packages(records)
   packages =
     records.filter_map do |package|
@@ -126,11 +124,19 @@ def package_download_wait_for_idle(inputs, pod)
   end
 end
 
+# Parse the "<size><TAB><path>" lines printed by find on a minion.
+def package_download_parse_inventory(stdout)
+  stdout.to_s.each_line.filter_map do |line|
+    size, path = line.chomp.split("\t", 2)
+    { 'path' => path, 'size' => size.to_i } unless path.nil? || path.empty?
+  end
+end
+
 # Check one minion's downloaded RPM inventory.
 def package_download_verify_minion(inputs, minion, output)
   raise "#{minion} cache inventory failed" unless output['retcode'].zero?
 
-  payloads = JSON.parse(output['stdout'])
+  payloads = package_download_parse_inventory(output['stdout'])
   expected_root = "#{PACKAGE_DOWNLOAD_CACHE_ROOT}/#{inputs[:repo_alias]}/"
   valid_payloads =
     payloads.select do |payload|
@@ -193,123 +199,144 @@ Given('the Salt package download benchmark inputs are valid') do
   raise 'UYUNI_BENCH_MINIONS contains an invalid Salt ID' unless valid_minions
   raise 'UYUNI_BENCH_MINIONS contains duplicate Salt IDs' unless minions.uniq.length == minions.length
 
-  channel = ENV.fetch('UYUNI_BENCH_CHANNEL', '')
-  raise 'UYUNI_BENCH_CHANNEL is invalid' unless channel.match?(/\A[A-Za-z0-9][A-Za-z0-9_.-]*\z/)
+  # Reuse the channel synced by the reposync benchmark when it ran earlier in this run set.
+  channel = ENV.fetch('UYUNI_BENCH_CHANNEL_LABEL') { $reposync_benchmark_channel_label }.to_s
+  raise 'Set UYUNI_BENCH_CHANNEL_LABEL or run the reposync benchmark first' if channel.empty?
+  raise 'UYUNI_BENCH_CHANNEL_LABEL is invalid' unless channel.match?(/\A[A-Za-z0-9][A-Za-z0-9_.-]*\z/)
 
-  timeout = Integer(ENV.fetch('UYUNI_BENCH_TIMEOUT_SECONDS', PACKAGE_DOWNLOAD_DEFAULT_TIMEOUT.to_s), 10)
-  raise 'UYUNI_BENCH_TIMEOUT_SECONDS must be between 1 and 86400' unless timeout.between?(1, 86_400)
+  timeout = reposync_benchmark_integer_env('UYUNI_BENCH_DOWNLOAD_TIMEOUT', PACKAGE_DOWNLOAD_DEFAULT_TIMEOUT.to_s, minimum: 1)
+  # Every controller command runs through ssh_exec! with DEFAULT_TIMEOUT, so a longer download
+  # timeout would be cut short. Fail here instead of during the measurement.
+  raise ScriptError, "DEFAULT_TIMEOUT (#{DEFAULT_TIMEOUT}) must be at least UYUNI_BENCH_DOWNLOAD_TIMEOUT (#{timeout})" if timeout > DEFAULT_TIMEOUT
 
   @package_download_inputs = {
     minions: minions,
     channel: channel,
     repo_alias: "susemanager:#{channel}",
-    storage_class: ENV.fetch('UYUNI_BENCH_STORAGE_CLASS', nil),
+    storage_backend: reposync_benchmark_storage_backend,
     timeout_seconds: timeout
   }
 rescue JSON::ParserError
   raise 'UYUNI_BENCH_MINIONS must contain valid JSON'
-rescue ArgumentError
-  raise 'UYUNI_BENCH_TIMEOUT_SECONDS must be an integer'
 end
 
-# Prepare a fixed package snapshot before the benchmark:
-# - Read the channel packages, subscribed systems, and Salt-to-Uyuni system ID mapping.
-# - Keep the binary RPMs and verify that every selected minion is registered and subscribed.
-# - Save the package records and their SHA-256 digest for comparison after the download.
-# If the digest changes, the result is invalid because the tested package set was not stable.
-Given('the initial configured channel package snapshot is valid') do
+# Return the Uyuni system IDs subscribed to the benchmark channel.
+def package_download_subscribed_system_ids(channel)
+  systems =
+    $api_test.call(
+      'channel.software.listSubscribedSystems',
+      sessionKey: $api_test.token,
+      channelLabel: channel
+    )
+  systems.map { |system| system['id'] }
+end
+
+# Return true when the server has generated the repository metadata of the channel.
+def package_download_repodata_ready?(channel)
+  repodata = Shellwords.escape("/var/cache/rhn/repodata/#{channel}")
+  _output, code =
+    reposync_benchmark_run_in_server_pod(
+      "test -f #{repodata}/repomd.xml && ! test -f #{repodata}/solv.new",
+      check_errors: false,
+      verbose: false
+    )
+  code.zero?
+end
+
+# Subscribe every configured minion to the benchmark channel through the API. The channel synced
+# by the reposync benchmark is new, so nothing is subscribed to it yet. Uyuni schedules a channel
+# change action that applies the channels state on the minion; wait for it so the repository is
+# configured on every minion before the download.
+Given('the benchmark minions are subscribed to the benchmark channel') do
   inputs = @package_download_inputs
   api = $api_test
 
-  # Read the current channel state from the Uyuni API.
-  packages_response =
-    api.call(
-      'channel.software.listAllPackages',
-      sessionKey: api.token,
-      channelLabel: inputs[:channel]
-    )
-  subscribed =
-    api.call(
-      'channel.software.listSubscribedSystems',
-      sessionKey: api.token,
-      channelLabel: inputs[:channel]
-    )
+  # spacewalk-repo-sync only queues the metadata generation; taskomatic writes repomd.xml later.
+  repeat_until_timeout(timeout: inputs[:timeout_seconds], message: "Repository metadata of #{inputs[:channel]} is not generated") do
+    break if package_download_repodata_ready?(inputs[:channel])
+
+    sleep 10
+  end
+
   id_map = api.call('system.getMinionIdMap', sessionKey: api.token)
-
-  # Validate the packages and selected minions.
-  packages = package_download_packages(packages_response)
-  raise 'The configured channel has no binary RPM packages' if packages.empty?
-
   system_ids = inputs[:minions].to_h { |minion| [minion, id_map[minion]] }
   unregistered = system_ids.select { |_minion, system_id| system_id.nil? }
   raise "Salt minions are not registered in Uyuni: #{unregistered.keys.join(', ')}" unless unregistered.empty?
 
-  subscribed_ids = subscribed.map { |system| system['id'] }
+  subscribed_ids = package_download_subscribed_system_ids(inputs[:channel])
+  parent = api.channel.software.get_details(inputs[:channel])['parent_channel_label'].to_s
+  actions =
+    system_ids.filter_map do |minion, system_id|
+      next if subscribed_ids.include?(system_id)
+
+      # A base channel replaces the current base channel of the minion.
+      # A child channel is added to the current child channels of the minion.
+      if parent.empty?
+        base_label = inputs[:channel]
+        child_labels = []
+      else
+        base_label = parent
+        # scheduleChangeChannels rejects child channels that belong to another base channel.
+        children = api.call('system.listSubscribedChildChannels', sessionKey: api.token, sid: system_id)
+        kept = children.select { |channel| channel['parent_channel_label'] == parent }
+        child_labels = (kept.map { |channel| channel['label'] } + [inputs[:channel]]).uniq
+      end
+      action_id =
+        api.call(
+          'system.scheduleChangeChannels',
+          sessionKey: api.token,
+          sid: system_id,
+          baseChannelLabel: base_label,
+          childLabels: child_labels,
+          earliestOccurrence: api.date_now
+        )
+      log "Scheduled channel change action #{action_id} for #{minion}"
+      action_id
+    end
+  actions.each { |action_id| wait_action_complete(action_id, timeout: PACKAGE_DOWNLOAD_CONTROL_TIMEOUT) }
+
+  subscribed_ids = package_download_subscribed_system_ids(inputs[:channel])
   missing = system_ids.reject { |_minion, system_id| subscribed_ids.include?(system_id) }
   raise "Minions are not subscribed to #{inputs[:channel]}: #{missing.keys.join(', ')}" unless missing.empty?
 
-  # Save the initial package snapshot for the final comparison.
+  @package_download_inputs = inputs.merge(
+    system_ids: system_ids,
+    subscribed_system_count: subscribed_ids.length
+  )
+end
+
+# Save a fixed package snapshot before the benchmark. Keep the binary RPMs and their SHA-256 digest
+# for comparison after the download. If the digest changes, the result is invalid because the
+# tested package set was not stable.
+Given('the initial benchmark channel package snapshot is valid') do
+  inputs = @package_download_inputs
+
+  packages_response =
+    $api_test.call(
+      'channel.software.listAllPackages',
+      sessionKey: $api_test.token,
+      channelLabel: inputs[:channel]
+    )
+  packages = package_download_packages(packages_response)
+  raise 'The benchmark channel has no binary RPM packages' if packages.empty?
+
   snapshot_records =
     packages.map do |package|
       [package[:id], package[:tuple], package[:checksum_type], package[:checksum], package[:retracted]]
     end
   @package_download_inputs = inputs.merge(
     packages: packages,
-    system_ids: system_ids,
     snapshot_captured_at: Time.now.utc,
-    snapshot_digest: Digest::SHA256.hexdigest(JSON.generate(snapshot_records.sort_by(&:first))),
-    subscribed_system_count: subscribed_ids.length
+    snapshot_digest: Digest::SHA256.hexdigest(JSON.generate(snapshot_records.sort_by(&:first)))
   )
 end
 
-Given('a ready server pod is reachable from the benchmark controller') do
-  command =
-    Shellwords.join(
-      [
-        'kubectl',
-        '--namespace',
-        'uyuni',
-        'get',
-        'pods',
-        '--selector',
-        'app.kubernetes.io/component=server',
-        '--output=json'
-      ]
-    )
-  # The testsuite registers its controller as the 'localhost' target.
-  stdout, stderr, code = get_target('localhost').run_local(
-    command,
-    separated_results: true,
-    check_errors: false
-  )
-  raise "Unable to query the Uyuni server pod: #{stderr}" unless code.zero?
-
-  pods = JSON.parse(stdout)['items']
-  ready_pods =
-    pods.select do |pod|
-      status = pod.fetch('status', {})
-      running = status['phase'] == 'Running'
-      ready =
-        Array(status['conditions']).any? do |condition|
-          condition['type'] == 'Ready' && condition['status'] == 'True'
-        end
-
-      running && ready
-    end
-  raise "Expected one ready Uyuni server pod, found #{ready_pods.length}" unless ready_pods.length == 1
-
-  @package_download_pod = ready_pods.first['metadata']['name']
-end
-
-# Check that every configured minion is ready before the measurement:
-# - Apply the Salt channels state to update the minion repository configuration.
-# - Read the OS family and architecture, then require matching SUSE clients.
-# - Verify that the configured Uyuni repository exists and is enabled.
-# - Refresh the repository metadata.
-# - Verify that every RPM from the initial snapshot is available to every minion.
-Given('the benchmark minions are ready for the configured channel') do
+# Check that every configured minion is ready before the measurement: apply the Salt channels
+# state, require SUSE clients of one architecture, verify that the benchmark repository is enabled,
+# refresh its metadata, and verify that every RPM of the snapshot is visible to every minion.
+Given('the benchmark minions are ready for the benchmark channel') do
   inputs = @package_download_inputs
-  pod = @package_download_pod
+  pod = reposync_benchmark_server_pod
 
   # Run `state.apply channels` so Uyuni updates the assigned software channel
   # repository configuration on every minion. The later `pkg.*` calls must use
@@ -409,7 +436,7 @@ end
 
 When('I clear RPM payload caches on the benchmark minions outside the measurement') do
   inputs = @package_download_inputs
-  pod = @package_download_pod
+  pod = reposync_benchmark_server_pod
   package_download_wait_for_idle(inputs, pod)
   control_timeout = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_CONTROL_TIMEOUT].min
   command_timeout = [control_timeout - 15, 1].max
@@ -439,8 +466,11 @@ end
 
 When('I execute and record the channel package downloads') do
   inputs = @package_download_inputs
-  pod = @package_download_pod
+  pod = reposync_benchmark_server_pod
   timeout = inputs[:timeout_seconds]
+  # zypper download only fetches the matching RPMs into the package cache. It never runs the
+  # dependency solver, so conflicting packages in the channel do not matter, and --all-matches
+  # keeps every version instead of only the best one.
   zypper = [
     'zypper',
     '--quiet',
@@ -520,29 +550,14 @@ When('I execute and record the channel package downloads') do
     begin
       package_download_wait_for_idle(inputs, pod)
       control_timeout = [inputs[:timeout_seconds], PACKAGE_DOWNLOAD_CONTROL_TIMEOUT].min
-      inventory_script = <<~PYTHON
-        import json
-        import os
-        import stat
-        import sys
-
-        root = os.path.realpath(sys.argv[1])
-        payloads = []
-        for directory, _subdirectories, filenames in os.walk(root):
-            for filename in filenames:
-                path = os.path.join(directory, filename)
-                metadata = os.lstat(path)
-                if stat.S_ISREG(metadata.st_mode):
-                    payloads.append({"path": path, "size": metadata.st_size})
-        print(json.dumps(sorted(payloads, key=lambda item: item["path"]), separators=(",", ":")))
-      PYTHON
+      # List every downloaded file with its size, one "<size><TAB><path>" line per file.
       inventory =
         package_download_run_salt(
           inputs,
           pod,
           'cmd.run_all',
           [
-            Shellwords.join(['python3', '-c', inventory_script, PACKAGE_DOWNLOAD_CACHE_ROOT]),
+            Shellwords.join(['find', PACKAGE_DOWNLOAD_CACHE_ROOT, '-type', 'f', '-printf', '%s\t%p\n']),
             'python_shell=False',
             'output_loglevel=quiet',
             "timeout=#{[control_timeout - 15, 1].max}"
@@ -638,7 +653,7 @@ When('I execute and record the channel package downloads') do
     schema_version: 2,
     workload: 'zypper.download_all_matches',
     status: errors.empty? ? 'passed' : 'failed',
-    storage_class: inputs[:storage_class],
+    storage_backend: inputs[:storage_backend],
     server_pod: pod,
     api_server: ENV.fetch('SERVER', nil),
     channel: inputs[:channel],
