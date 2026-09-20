@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Integrated Uyuni Dev Container Environment
 
 This repository contains a fully containerized development environment for Uyuni. It utilizes **VS Code DevContainers** and **Docker Compose** to provide a seamless, reproducible workflow that integrates Java development, unit testing, and full system deployment in a single workspace.

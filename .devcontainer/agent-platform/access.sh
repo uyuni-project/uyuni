@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 failed=0
 pass() { echo "PASS: $*"; }
 fail() { echo "FAIL: $*"; failed=1; }
