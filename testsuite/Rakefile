@@ -64,14 +64,14 @@ namespace :cucumber do
       end
       Rake::Task[task_name].enhance([watchdog_task])
     end
-    if filename == :kubernetes_package_download_benchmark
-      # Keep the normal per-scenario watchdog enabled for this benchmark, but allow the configured
-      # package-download timeout plus 30 minutes for preflight, cache reset, and verification.
-      # Invalid timeout values are rejected by the benchmark's first Cucumber step.
-      watchdog_task = :kubernetes_package_download_benchmark_bump_scenario_watchdog
+    if filename == :kubernetes_storage_benchmark
+      # The package download scenario is not tagged @long_running, so the default per-scenario watchdog
+      # applies. Allow the configured download timeout plus 30 minutes for preflight, cache reset, and
+      # verification. Invalid timeout values are rejected by the benchmark's first Cucumber step.
+      watchdog_task = :"#{filename}_bump_scenario_watchdog"
       task watchdog_task do
-        benchmark_timeout = ENV.fetch('UYUNI_BENCH_TIMEOUT_SECONDS', '14400').to_i
-        ENV['SCENARIO_HARD_LIMIT'] ||= (benchmark_timeout + 1800).to_s
+        download_timeout = ENV.fetch('UYUNI_BENCH_DOWNLOAD_TIMEOUT', '14400').to_i
+        ENV['SCENARIO_HARD_LIMIT'] ||= (download_timeout + 1800).to_s
       end
       Rake::Task[task_name].enhance([watchdog_task])
     end
