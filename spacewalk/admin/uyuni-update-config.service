@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 [Unit]
 Description=Uyuni update config
 Before=uyuni-check-database.service cobblerd.service tomcat.service apache2.service rhn-search.service taskomatic.service postfix.service
