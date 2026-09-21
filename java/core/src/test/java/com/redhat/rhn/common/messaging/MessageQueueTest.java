@@ -26,10 +26,18 @@ import com.redhat.rhn.testing.UserForTestCaseExtension;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.lang.reflect.Proxy;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(UserForTestCaseExtension.class)
 public class MessageQueueTest extends BaseTestCase {
@@ -219,6 +227,72 @@ public class MessageQueueTest extends BaseTestCase {
             assertFalse(wasReceived);
         }
 
+    }
+
+    @Test
+    public void testTransactionPolling() throws Exception {
+        logger.debug("testTransactionPolling - start");
+
+        final AtomicReference<TransactionStatus> statusRef =
+            new AtomicReference<>(TransactionStatus.ACTIVE);
+        final AtomicBoolean activeRef = new AtomicBoolean(true);
+
+        Transaction mockTxn = (Transaction) Proxy.newProxyInstance(
+            Transaction.class.getClassLoader(),
+            new Class<?>[] { Transaction.class },
+            (proxy, method, args) -> {
+                if (method.getName().equals("isActive")) {
+                    return activeRef.get();
+                }
+                else if (method.getName().equals("getStatus")) {
+                    return statusRef.get();
+                }
+                return null;
+            }
+        );
+
+        // Create a custom action to catch when it executes
+        final CountDownLatch latch = new CountDownLatch(1);
+        MessageAction testAction = new MessageAction() {
+            @Override
+            public void execute(EventMessage msg) {
+                latch.countDown();
+            }
+            @Override
+            public boolean needsTransactionHandling() {
+                return false;
+            }
+        };
+
+        MessageQueue.registerAction(testAction, TestDBEventMessage.class);
+
+        try {
+            TestDBEventMessage msg = new TestDBEventMessage(mockTxn, "test");
+            MessageQueue.publish(msg);
+
+            // Wait 200 milliseconds; the latch should NOT count down because status is ACTIVE & active is true.
+            boolean completed = latch.await(200, TimeUnit.MILLISECONDS);
+            assertFalse(completed);
+
+            // Transition active to false, but status to COMMITTING.
+            // Under old code, it would have started executing. Under new code, it must still wait.
+            activeRef.set(false);
+            statusRef.set(TransactionStatus.COMMITTING);
+            completed = latch.await(200, TimeUnit.MILLISECONDS);
+            assertFalse(completed);
+
+            // Transition status to COMMITTED. Now it should execute!
+            statusRef.set(TransactionStatus.COMMITTED);
+
+            // Wait up to 5 seconds for the message dispatcher thread to execute.
+            completed = latch.await(5, TimeUnit.SECONDS);
+            assertTrue(completed);
+        }
+        finally {
+            MessageQueue.deRegisterAction(testAction, TestDBEventMessage.class);
+        }
+
+        logger.debug("testTransactionPolling - end");
     }
 
     /**
