@@ -1,0 +1,2 @@
+- Remove obsolete Perl scripts
+- Call the new Python-based rhn-config-satellite
