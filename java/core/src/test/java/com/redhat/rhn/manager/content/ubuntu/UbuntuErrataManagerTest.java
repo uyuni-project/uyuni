@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -22,6 +23,8 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,6 +98,43 @@ class UbuntuErrataManagerTest {
                      (CVE-2026-63072)
                     """, entry.getDescription()
                 )
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"null-cves.json", "missing-cves.json"})
+    void canConvertFromJsonUbuntuErrataWithNullCVEString(String jsonFile) throws Exception {
+        URL testFile = TestUtils.findTestData(jsonFile);
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        assertAll(
+            () -> assertEquals("8706-1", info.getId()),
+            // Ensure the missing cves is converted into am empty list
+            () -> assertEquals(List.of(), info.getCves()),
+            () -> assertEquals("zlib vulnerability", info.getTitle()),
+            () -> assertEquals(
+                "In general, a standard system update will make all the necessary changes.",
+                info.getAction().orElseGet(() -> fail("Action should not be empty"))
+            )
+        );
+    }
+
+    @Test
+    void canConvertFromJsonUbuntuErrataWithSingleCVEString() throws Exception {
+        URL testFile = TestUtils.findTestData("single-cve-as-string.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        assertAll(
+            () -> assertEquals("8706-1", info.getId()),
+            // Ensure the single string is converted into a list
+            () -> assertEquals(List.of("CVE-2026-27171"), info.getCves()),
+            () -> assertEquals("zlib vulnerability", info.getTitle()),
+            () -> assertEquals(
+                "In general, a standard system update will make all the necessary changes.",
+                info.getAction().orElseGet(() -> fail("Action should not be empty"))
+            )
         );
     }
 
