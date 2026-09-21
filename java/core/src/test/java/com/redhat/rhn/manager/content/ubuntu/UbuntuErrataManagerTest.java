@@ -10,61 +10,139 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Test class for the Ubuntu USN database url configuration.
- */
-public class UbuntuErrataManagerTest {
-
-    private static final String CONFIG_KEY = "java.ubuntu_errata_db_download_url";
-    private static final String DEFAULT_URL = "https://usn.ubuntu.com/usn-db/database.json";
-
-    @AfterEach
-    public void tearDown() {
-        Config.clear();
-    }
+class UbuntuErrataManagerTest {
 
     @Test
-    public void testDefaultErrataDbUrl() throws IOException {
-        Config.get().remove(CONFIG_KEY);
-        assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+    void canParseUbuntuErrataWithoutBinaries() throws Exception {
+        URL testFile = TestUtils.findTestData("missing-binaries.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Map<String, UbuntuErrataInfo> errataInfos = Map.of("8678-2", info);
+        Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
+
+        Entry entry = assertDoesNotThrow(() -> UbuntuErrataManager.parseUbuntuErrata(errataInfos, packageNames)
+            .reduce((a, b) -> {
+                throw new IllegalArgumentException("More than one element in the parsed entries stream");
+            })
+            .orElseThrow(() -> new IllegalStateException("No entries in the parsed stream"))
+        );
+
+        assertAll(
+            () -> assertEquals("8678-2", entry.getId()),
+            () -> assertEquals(
+                List.of("CVE-2024-2511", "CVE-2026-63072", "CVE-2026-54874", "CVE-2024-5535"),
+                entry.getCves()
+            ),
+            () -> assertEquals("openssl, openssl1.0 vulnerabilities", entry.getSummary()),
+            () -> assertEquals("""
+                    USN-8678-1 fixed vulnerabilities in OpenSSL. This update provides the
+                    corresponding fix for OpenSSL and OpenSSL 1.0 on Ubuntu 14.04 LTS,
+                    Ubuntu 16.04 LTS, and Ubuntu 18.04 LTS.
+
+                    In addition, this update also fixes the following issues that were
+                    not previously addressed in those releases:
+
+                    It was discovered that OpenSSL incorrectly handled TLS handshake
+                    message buffering. A remote attacker could possibly use this issue to
+                    cause OpenSSL to consume excessive memory, leading to a denial of
+                    service. (LP: #2161371)
+
+                    It was discovered that OpenSSL incorrectly handled session cache
+                    management when processing TLSv1.3 sessions. A remote attacker could
+                    possibly use this issue to cause OpenSSL to consume excessive memory,
+                    leading to a denial of service. This issue only affected OpenSSL 1.1.1
+                    on Ubuntu 18.04 LTS. (CVE-2024-2511)
+
+                    It was discovered that OpenSSL incorrectly handled the SSL_select_next_proto
+                    function when called with an empty client protocol list. A remote attacker
+                    could possibly use this issue to cause OpenSSL to disclose private memory
+                    contents to the peer, leading to a loss of confidentiality. This issue
+                    only affected Ubuntu 16.04 LTS and Ubuntu 18.04 LTS. (CVE-2024-5535)
+
+                    Original advisory details:
+
+                     It was discovered that OpenSSL incorrectly handled buffering of DTLS
+                     records for a future epoch. A remote attacker could possibly use this issue
+                     to cause OpenSSL to use excessive resources, leading to a denial of
+                     service. (CVE-2026-54874)
+
+                     It was discovered that OpenSSL incorrectly handled CMS key unwrapping. A
+                     remote attacker could possibly use this issue to cause a heap buffer
+                     overflow, leading to a denial of service or arbitrary code execution.
+                     (CVE-2026-63072)
+                    """, entry.getDescription()
+                )
+        );
     }
 
-    @Test
-    public void testConfiguredErrataDbUrl() throws IOException {
-        String mirrorUrl = "http://mirror.example.com/usn-db/database.json";
-        Config.get().setString(CONFIG_KEY, mirrorUrl);
-        assertEquals(mirrorUrl, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
-    }
+    // Test class for the Ubuntu USN database url configuration.
+    @Nested
+    class UrlConfiguration {
 
-    @Test
-    public void testEmptyErrataDbUrlFallsBackToDefault() throws IOException {
-        Config.get().setString(CONFIG_KEY, "");
-        assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
-    }
+        private static final String CONFIG_KEY = "java.ubuntu_errata_db_download_url";
 
-    @Test
-    public void testNonHttpErrataDbUrlIsRejected() {
-        Config.get().setString(CONFIG_KEY, "file:///srv/mirror/database.json");
-        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        private static final String DEFAULT_URL = "https://usn.ubuntu.com/usn-db/database.json";
 
-        Config.get().setString(CONFIG_KEY, "/srv/mirror/database.json");
-        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
-    }
+        @AfterEach
+        void tearDown() {
+            Config.clear();
+        }
 
-    @Test
-    public void testMalformedErrataDbUrlIsRejected() {
-        Config.get().setString(CONFIG_KEY, "ht tp://mirror.example.com");
-        assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        @Test
+        void testDefaultErrataDbUrl() throws IOException {
+            Config.get().remove(CONFIG_KEY);
+            assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        }
+
+        @Test
+        void testConfiguredErrataDbUrl() throws IOException {
+            String mirrorUrl = "http://mirror.example.com/usn-db/database.json";
+            Config.get().setString(CONFIG_KEY, mirrorUrl);
+            assertEquals(mirrorUrl, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        }
+
+        @Test
+        void testEmptyErrataDbUrlFallsBackToDefault() throws IOException {
+            Config.get().setString(CONFIG_KEY, "");
+            assertEquals(DEFAULT_URL, ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        }
+
+        @Test
+        void testNonHttpErrataDbUrlIsRejected() {
+            Config.get().setString(CONFIG_KEY, "file:///srv/mirror/database.json");
+            assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+
+            Config.get().setString(CONFIG_KEY, "/srv/mirror/database.json");
+            assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        }
+
+        @Test
+        void testMalformedErrataDbUrlIsRejected() {
+            Config.get().setString(CONFIG_KEY, "ht tp://mirror.example.com");
+            assertThrows(IOException.class, () -> ConfigDefaults.get().getUbuntuErrataDbDownloadUrl());
+        }
     }
 }
