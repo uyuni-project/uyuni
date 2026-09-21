@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.utils.gson.StringOrArrayAdapter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,6 +83,7 @@ public class UbuntuErrataManager {
 
     static final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .registerTypeAdapter(new TypeToken<List<String>>() { }.getType(), new StringOrArrayAdapter())
             .registerTypeAdapter(Instant.class, new TypeAdapter<Instant>() {
                 @Override
                 public void write(JsonWriter jsonWriter, Instant instant) {

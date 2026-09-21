@@ -89,4 +89,22 @@ class UbuntuErrataManagerTest {
                 )
         );
     }
+
+    @Test
+    void canConvertFromJsonUbuntuErrataWithSingleCVEString() throws Exception {
+        URL testFile = TestUtils.findTestData("single-cve-as-string.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        assertAll(
+            () -> assertEquals("8706-1", info.getId()),
+            // Ensure the single string is converted into a list
+            () -> assertEquals(List.of("CVE-2026-27171"), info.getCves()),
+            () -> assertEquals("zlib vulnerability", info.getTitle()),
+            () -> assertEquals(
+                "In general, a standard system update will make all the necessary changes.",
+                info.getAction().orElseGet(() -> fail("Action should not be empty"))
+            )
+        );
+    }
 }
