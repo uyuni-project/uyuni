@@ -98,6 +98,13 @@ const meta = {
       table: { type: { summary: "string" } },
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: "400px", padding: "20px" }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => <StatefulCombobox {...args} />,
 } satisfies Meta<typeof Combobox>;
 
@@ -105,12 +112,65 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Interactive combobox that allows selecting from existing options or creating new ones. Click to open the dropdown.",
+      },
+    },
+  },
+};
 
 export const Empty: Story = {
   args: {
     options: [],
     selectedId: undefined,
     placeholder: "Type to create the first option",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Combobox with no pre-existing options. Type to create a new option.",
+      },
+    },
+  },
+};
+
+export const ManyOptions: Story = {
+  args: {
+    options: [
+      { id: 1, text: "Development" },
+      { id: 2, text: "Quality Assurance" },
+      { id: 3, text: "Staging" },
+      { id: 4, text: "Production" },
+      { id: 5, text: "Testing" },
+      { id: 6, text: "Pre-production" },
+      { id: 7, text: "Demo" },
+      { id: 8, text: "Research" },
+    ],
+    selectedId: 1,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Combobox with multiple options. The dropdown is scrollable when many options are available.",
+      },
+    },
+  },
+};
+
+export const NoSelection: Story = {
+  args: {
+    selectedId: undefined,
+    placeholder: "Choose an environment or create a new one",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Combobox with no initial selection, showing the placeholder.",
+      },
+    },
   },
 };
