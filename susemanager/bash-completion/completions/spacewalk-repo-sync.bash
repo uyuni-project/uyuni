@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 __spacewalk_repo_sync_options="h:help l:list s:show-packages u:url= c:channel=
     p:parent-channel= d:dry-run :latest g:config= t:type= f:fail n:non-interactive
     i:include= e:exclude= :email :traceback-mail= :no-errata :no-packages :sync-kickstart
