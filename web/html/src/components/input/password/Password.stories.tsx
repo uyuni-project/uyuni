@@ -198,51 +198,53 @@ export const WithValidation: Story = {
   },
 };
 
-export const PasswordConfirmation: Story = {
-  render: () => {
-    const [model, setModel] = useState({ password: "", confirm: "" });
+const PasswordConfirmationComponent = () => {
+  const [model, setModel] = useState({ password: "", confirm: "" });
 
-    return (
-      <Form
-        model={model}
-        onChange={(newModel) => {
-          setModel(newModel);
-          action("form changed")(newModel);
-        }}
-        onSubmit={() => {
-          action("form submitted")(model);
-        }}
-        divClass="col-md-12"
-        formDirection="form-horizontal"
-      >
-        <Password
-          name="password"
-          label="New password"
-          required
-          invalidHint="Password must be at least 8 characters"
-          validators={[(value: string) => value.length >= 8]}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          autoComplete="new-password"
-        />
-        <Password
-          name="confirm"
-          label="Confirm password"
-          required
-          invalidHint="Passwords must match"
-          validators={[(value: string) => value === model.password]}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          autoComplete="new-password"
-        />
-        <div className="form-group">
-          <div className="col-md-offset-3 offset-md-3 col-md-6">
-            <SubmitButton className="btn-primary" text="Change password" />
-          </div>
+  return (
+    <Form
+      model={model}
+      onChange={(newModel) => {
+        setModel(newModel);
+        action("form changed")(newModel);
+      }}
+      onSubmit={() => {
+        action("form submitted")(model);
+      }}
+      divClass="col-md-12"
+      formDirection="form-horizontal"
+    >
+      <Password
+        name="password"
+        label="New password"
+        required
+        invalidHint="Password must be at least 8 characters"
+        validators={[(value: string) => value.length >= 8]}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+        autoComplete="new-password"
+      />
+      <Password
+        name="confirm"
+        label="Confirm password"
+        required
+        invalidHint="Passwords must match"
+        validators={[(value: string) => value === model.password]}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+        autoComplete="new-password"
+      />
+      <div className="form-group">
+        <div className="col-md-offset-3 offset-md-3 col-md-6">
+          <SubmitButton className="btn-primary" text="Change password" disabled={model.password !== model.confirm} />
         </div>
-      </Form>
-    );
-  },
+      </div>
+    </Form>
+  );
+};
+
+export const PasswordConfirmation: Story = {
+  render: () => <PasswordConfirmationComponent />,
   parameters: {
     controls: { disable: true },
     docs: {
