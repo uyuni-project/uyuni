@@ -20,7 +20,7 @@ Use the modern DateTimePicker component instead:
 import { DateTimePicker } from "components/datetime";
 
 <DateTimePicker
-  timezone="UTC"
+  serverTimeZone={false}
   value={moment()}
   onChange={(newValue) => console.log(newValue)}
 />
@@ -33,15 +33,15 @@ import { DateTimePicker } from "components/datetime";
 - **Accessibility Issues**: jQuery plugins have limited ARIA support
 - **Maintenance**: jQuery plugins are no longer actively maintained
 
-The new DateTimePicker uses native HTML5 inputs with better:
-- Performance (no jQuery)
-- Accessibility (native browser support)
-- Mobile support (native pickers on mobile devices)
+The new DateTimePicker uses react-datepicker with better:
+- Performance (modern React implementation)
+- Accessibility (better ARIA support)
+- Better integration with React state
 - Smaller bundle size
 
 ## Props
 
-- \`timezone\`: string - Timezone for the picker (e.g., "UTC", "America/New_York", "server")
+- \`serverTimeZone\`: boolean - Whether to use server timezone (default: false)
 - \`value\`: moment.Moment - Current date/time value
 - \`onChange\`: (value: moment.Moment) => void - Callback when value changes
 
@@ -50,7 +50,6 @@ The new DateTimePicker uses native HTML5 inputs with better:
 **Before:**
 \`\`\`tsx
 <DEPRECATED_DateTimePicker
-  timezone="UTC"
   value={this.state.date}
   onChange={this.handleDateChange}
 />
@@ -59,13 +58,13 @@ The new DateTimePicker uses native HTML5 inputs with better:
 **After:**
 \`\`\`tsx
 <DateTimePicker
-  timezone="UTC"
   value={this.state.date}
   onChange={this.handleDateChange}
+  serverTimeZone={false}
 />
 \`\`\`
 
-The API is identical - simply change the import and component name.
+The API is similar - change the import and component name. Use \`serverTimeZone\` prop if you need server timezone handling.
         `,
       },
     },
