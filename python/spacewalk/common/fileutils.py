@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Utility library for working with files and paths.
 
 Extends uyuni.common.fileutils with server-only functions and can be used as a drop-in
