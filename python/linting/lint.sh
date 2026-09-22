@@ -1,4 +1,10 @@
 #!/usr/bin/env -S bash -euo pipefail
+
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # -*- sh-indentation: 2 -*-
 
 # Check pre-requisites

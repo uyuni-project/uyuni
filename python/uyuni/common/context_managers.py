@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Collection of context managers for Uyuni."""
 
 # This module always had a dependency on spacewalk.common.rhnConfig, which is wrong.
