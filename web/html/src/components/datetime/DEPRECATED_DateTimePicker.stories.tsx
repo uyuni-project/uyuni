@@ -1,0 +1,134 @@
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
+
+const meta = {
+  title: "Components/DEPRECATED/DEPRECATED_DateTimePicker",
+  parameters: {
+    docs: {
+      description: {
+        component: `
+**⚠️ DEPRECATED - Do not use in new code**
+
+This component is deprecated. Use \`import { DateTimePicker } from "components/datetime"\` instead.
+
+**Note:** This component cannot be rendered in Storybook because it depends on jQuery datepicker/timepicker plugins that are not loaded in this environment. This is a legacy component that will be removed in a future release.
+
+## Replacement Component
+
+Use the modern DateTimePicker component instead:
+
+\`\`\`tsx
+import { DateTimePicker } from "components/datetime";
+
+<DateTimePicker
+  timezone="UTC"
+  value={moment()}
+  onChange={(newValue) => console.log(newValue)}
+/>
+\`\`\`
+
+## Why This Component is Deprecated
+
+- **jQuery Dependency**: Relies on external jQuery plugins (bootstrap-datepicker, bootstrap-timepicker)
+- **Poor Performance**: Heavy library dependencies
+- **Accessibility Issues**: jQuery plugins have limited ARIA support
+- **Maintenance**: jQuery plugins are no longer actively maintained
+
+The new DateTimePicker uses native HTML5 inputs with better:
+- Performance (no jQuery)
+- Accessibility (native browser support)
+- Mobile support (native pickers on mobile devices)
+- Smaller bundle size
+
+## Props
+
+- \`timezone\`: string - Timezone for the picker (e.g., "UTC", "America/New_York", "server")
+- \`value\`: moment.Moment - Current date/time value
+- \`onChange\`: (value: moment.Moment) => void - Callback when value changes
+
+## Migration Guide
+
+**Before:**
+\`\`\`tsx
+<DEPRECATED_DateTimePicker
+  timezone="UTC"
+  value={this.state.date}
+  onChange={this.handleDateChange}
+/>
+\`\`\`
+
+**After:**
+\`\`\`tsx
+<DateTimePicker
+  timezone="UTC"
+  value={this.state.date}
+  onChange={this.handleDateChange}
+/>
+\`\`\`
+
+The API is identical - simply change the import and component name.
+        `,
+      },
+    },
+  },
+} satisfies Meta;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Documentation: Story = {
+  render: () => (
+    <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+      <div
+        style={{
+          padding: "20px",
+          background: "#fff3cd",
+          border: "1px solid #ffc107",
+          borderRadius: "4px",
+          marginBottom: "20px",
+        }}
+      >
+        <h3 style={{ marginTop: 0, color: "#856404" }}>
+          <i className="fa fa-exclamation-triangle" style={{ marginRight: "8px" }} />
+          Component Cannot Be Rendered
+        </h3>
+        <p style={{ marginBottom: 0 }}>
+          This deprecated component requires jQuery datepicker/timepicker plugins that are not available in Storybook.
+          Please use the modern <strong>DateTimePicker</strong> component instead.
+        </p>
+      </div>
+
+      <div style={{ padding: "20px", background: "#f8f9fa", borderRadius: "4px" }}>
+        <h4>Quick Migration</h4>
+        <p>Replace this component with the modern DateTimePicker:</p>
+        <pre
+          style={{
+            background: "#fff",
+            padding: "15px",
+            borderRadius: "4px",
+            border: "1px solid #dee2e6",
+            overflow: "auto",
+          }}
+        >
+          {`import { DateTimePicker } from "components/datetime";
+
+// Same API, modern implementation
+<DateTimePicker
+  timezone="UTC"
+  value={date}
+  onChange={handleChange}
+/>`}
+        </pre>
+      </div>
+    </div>
+  ),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "⚠️ This component is deprecated and cannot be rendered in Storybook. See the documentation above for migration instructions.",
+      },
+    },
+  },
+};

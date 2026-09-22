@@ -112,10 +112,15 @@ export const InContext: Story = {
       </StoryRow>
       <StoryRow>
         <div>
-          <label>
+          <label htmlFor="activation-key-help-link">
             Activation Key <HelpLink url="reference/systems/activation-keys.html" text="What are activation keys?" />
           </label>
-          <input type="text" className="form-control" placeholder="Enter activation key" />
+          <input
+            id="activation-key-help-link"
+            type="text"
+            className="form-control"
+            placeholder="Enter activation key"
+          />
         </div>
       </StoryRow>
     </StripedStorySection>
@@ -145,9 +150,9 @@ export const Variants: Story = {
         <div>
           <p>
             After label:{" "}
-            <label>
+            <strong>
               Organization Name <HelpLink url="reference/admin/organizations.html" text="About organizations" />
-            </label>
+            </strong>
           </p>
         </div>
       </StoryRow>

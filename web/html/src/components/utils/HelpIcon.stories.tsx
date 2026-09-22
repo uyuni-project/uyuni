@@ -86,26 +86,26 @@ export const InContext: Story = {
     <StripedStorySection>
       <StoryRow>
         <div>
-          <label>
+          <label htmlFor="username-help-icon">
             Username <HelpIcon text="Choose a unique username for your account" />
           </label>
-          <input type="text" className="form-control" placeholder="Enter username" />
+          <input id="username-help-icon" type="text" className="form-control" placeholder="Enter username" />
         </div>
       </StoryRow>
       <StoryRow>
         <div>
-          <label>
+          <label htmlFor="apikey-help-icon">
             API Key <HelpIcon text="Generate an API key from your user profile settings" />
           </label>
-          <input type="password" className="form-control" placeholder="Enter API key" />
+          <input id="apikey-help-icon" type="password" className="form-control" placeholder="Enter API key" />
         </div>
       </StoryRow>
       <StoryRow>
         <div>
-          <label>
+          <label htmlFor="maxconn-help-icon">
             Max Connections <HelpIcon text="Maximum number of concurrent database connections (recommended: 100)" />
           </label>
-          <input type="number" className="form-control" defaultValue="100" />
+          <input id="maxconn-help-icon" type="number" className="form-control" defaultValue="100" />
         </div>
       </StoryRow>
     </StripedStorySection>
