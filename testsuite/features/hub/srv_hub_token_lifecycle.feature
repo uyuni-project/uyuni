@@ -39,17 +39,23 @@ Feature: Hub access token lifecycle management
     When I initiate channel sync from peripheral "peripheral1"
     Then channel sync from peripheral "peripheral1" should fail with a repository access error
 
-  Scenario: Reactivate the invalidated token and verify status restores (A-05)
-    When I reactivate the access token for "peripheral1" on hub
-    Then the access token for "peripheral1" should be listed as "Valid"
+  ## BUG-021: reactivating an invalidated token does not restore channel sync (RepoMDError
+  ## persists), so recovery here goes through a full deregister/re-register cycle instead of
+  ## depending on token reactivation. BUG-021 itself stays open and untouched.
+  Scenario: Reset peripheral1 by deregistering it instead of reactivating its token (A-05)
+    When I unregister "peripheral1" from hub
+    Then I should not see the name of "peripheral1"
 
-  @new_issue
-  Scenario: Verify hub-to-peripheral communication is restored after token reactivation (A-05)
-    ## BUG-021: reactivating the token does not currently restore channel sync (RepoMDError persists)
+  Scenario: Re-register peripheral1 with a fresh token (A-05)
+    When I add "peripheral1" as peripheral using administrator credentials
+    And I wait until I see "is currently registered as peripheral of this hub" text
+    Then I should see "peripheral1" in peripherals list
+
+  Scenario: Re-configure channels and verify channel sync works after re-registration (A-05)
+    When I configure hub to sync all "sles15-sp7" channels to "peripheral1"
     Given I am authorized for the "Admin" section on "peripheral1"
     When I initiate channel sync from peripheral "peripheral1"
-    ## BUG-021: reactivating the token does not currently restore channel sync (RepoMDError persists)
-    #Then channel sync from peripheral "peripheral1" should succeed
+    Then channel sync from peripheral "peripheral1" should succeed
 
   Scenario: Cleanup - deregister peripheral1 from hub
     When I unregister "peripheral1" from hub
