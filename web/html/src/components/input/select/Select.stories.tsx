@@ -81,6 +81,13 @@ const meta = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: "400px", padding: "20px", maxWidth: "600px" }}>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     options: userOptions,
     value: undefined,
@@ -267,7 +274,6 @@ export const Disabled: Story = {
     disabled: true,
   },
   parameters: {
-    controls: { disable: true },
     docs: {
       description: {
         story: "Disabled select dropdown that cannot be interacted with.",
