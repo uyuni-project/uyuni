@@ -19,7 +19,7 @@ const StatefulDateTimeInForm = (args: DateTimeProps) => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => {

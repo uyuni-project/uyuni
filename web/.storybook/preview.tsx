@@ -12,6 +12,8 @@ import jQueryImport from "jquery";
 import { t } from "core/intl";
 import Loggerhead from "core/log/loggerhead";
 
+import { initializeTooltips } from "components/tooltips";
+
 const jQuery = jQueryImport as unknown as JQueryStatic;
 
 const themeNames = ["uyuni", "suse-light", "suse-dark"] as const;
@@ -97,6 +99,7 @@ type StorybookGlobal = typeof globalThis & {
   jQuery: JQueryStatic;
   Loggerhead: Loggerhead;
   handleSst: (...args: any[]) => void;
+  bootstrap: any;
 };
 
 const storybookWindow = window as StorybookWindow;
@@ -122,6 +125,12 @@ storybookGlobal.jQuery = jQuery;
 // but components should still be able to run their normal mount effect.
 storybookGlobal.handleSst ??= () => undefined;
 
+// Import and register Bootstrap after jQuery is available so jQuery plugins can be registered
+const bootstrapReady = import("bootstrap").then((bootstrapImport) => {
+  const bootstrap = bootstrapImport as any;
+  storybookGlobal.bootstrap = bootstrap;
+});
+
 const loggerHead = new Loggerhead("", (headers) => headers);
 loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");
 loggerHead.debug = console.debug.bind(console, "[Loggerhead] DEBUG:");
@@ -130,9 +139,16 @@ loggerHead.error = console.error.bind(console, "[Loggerhead] ERROR:");
 storybookGlobal.Loggerhead = loggerHead;
 
 // Mirror the JSP app shell: exactly one branded stylesheet is active and components render below `.new-theme`.
+let tooltipsInitialized = false;
 const withUyuniTheme: Decorator = (Story, context) => {
   const theme = isThemeName(context.globals.theme) ? context.globals.theme : "uyuni";
   setTheme(theme);
+
+  // Initialize tooltips once, after Bootstrap has loaded
+  if (!tooltipsInitialized) {
+    tooltipsInitialized = true;
+    bootstrapReady.then(() => setTimeout(() => initializeTooltips(), 0));
+  }
 
   return (
     <div className={`theme-${theme} new-theme`}>

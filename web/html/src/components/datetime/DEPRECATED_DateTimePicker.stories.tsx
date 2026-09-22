@@ -111,9 +111,9 @@ export const Documentation: Story = {
         >
           {`import { DateTimePicker } from "components/datetime";
 
-// Same API, modern implementation
+// Use serverTimeZone (boolean) to display in server timezone
 <DateTimePicker
-  timezone="UTC"
+  serverTimeZone
   value={date}
   onChange={handleChange}
 />`}

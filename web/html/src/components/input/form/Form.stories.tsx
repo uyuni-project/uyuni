@@ -236,11 +236,17 @@ const MultipleFieldsComponent = () => {
           divClass="col-md-6"
         />
 
-        <DEPRECATED_Select name="environment" label="Environment" labelClass="col-md-3" divClass="col-md-6">
-          <option value="development">Development</option>
-          <option value="staging">Staging</option>
-          <option value="production">Production</option>
-        </DEPRECATED_Select>
+        <DEPRECATED_Select
+          name="environment"
+          label="Environment"
+          labelClass="col-md-3"
+          divClass="col-md-6"
+          options={[
+            { label: "Development", value: "development" },
+            { label: "Staging", value: "staging" },
+            { label: "Production", value: "production" },
+          ]}
+        />
 
         <div className="form-group">
           <div className="col-md-offset-3 offset-md-3 col-md-6">

@@ -17,7 +17,7 @@ const StatefulTextInForm = (args: TextProps) => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => {

@@ -5,6 +5,8 @@ import { action } from "storybook/actions";
 
 import { Button } from "components/buttons";
 
+import { Utils } from "utils/functions";
+
 import { Column } from "./Column";
 import { Table } from "./Table";
 
@@ -204,7 +206,7 @@ export const Playground: Story = {
         cell={(row: User) => row.id}
         width="10%"
         sortable
-        comparator={(a: User, b: User) => a.id - b.id}
+        comparator={Utils.sortByNumber}
       />
       <Column
         columnKey="name"
@@ -212,7 +214,7 @@ export const Playground: Story = {
         cell={(row: User) => row.name}
         width="25%"
         sortable
-        comparator={(a: User, b: User) => a.name.localeCompare(b.name)}
+        comparator={Utils.sortByText}
       />
       <Column
         columnKey="email"
@@ -220,7 +222,7 @@ export const Playground: Story = {
         cell={(row: User) => row.email}
         width="30%"
         sortable
-        comparator={(a: User, b: User) => a.email.localeCompare(b.email)}
+        comparator={Utils.sortByText}
       />
       <Column
         columnKey="role"
@@ -228,7 +230,7 @@ export const Playground: Story = {
         cell={(row: User) => row.role}
         width="20%"
         sortable
-        comparator={(a: User, b: User) => a.role.localeCompare(b.role)}
+        comparator={Utils.sortByText}
       />
       <Column
         columnKey="status"
@@ -238,7 +240,7 @@ export const Playground: Story = {
         )}
         width="15%"
         sortable
-        comparator={(a: User, b: User) => a.status.localeCompare(b.status)}
+        comparator={Utils.sortByText}
       />
     </Table>
   ),
