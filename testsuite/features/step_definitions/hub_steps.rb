@@ -700,13 +700,31 @@ When(/^I remove synced channels from "([^"]*)"$/) do |host|
   click_apply_channels_button unless checked_boxes.empty?
 end
 
+# Confirms hub-side peripheral deregistration, tolerating the "Error deregistering server"
+# cleanup-timeout modal (BUG-039): the hub's cleanup call to the peripheral can time out, in
+# which case the UI offers a "Deregister without cleanup" fallback that removes the
+# registration anyway. Without this, the step would sit waiting the full DEFAULT_TIMEOUT for
+# a success text that never appears once the timeout modal has taken over.
+def confirm_hub_deregistration(fqdn)
+  step %(I click on "Deregister" in "Confirm deregistration" modal)
+  success_text = "#{fqdn} has been successfully deregistered"
+  cleanup_timeout_text = 'Cleanup timed out. Please check if the machine is reachable.'
+  raise StandardError, "Neither deregistration success nor the cleanup-timeout modal appeared for #{fqdn}" unless
+    check_text?(success_text, text2: cleanup_timeout_text, timeout: DEFAULT_TIMEOUT)
+
+  return unless has_content?(cleanup_timeout_text, wait: 0)
+
+  log "WARN: deregistering #{fqdn} hit the cleanup-timeout modal (BUG-039) - falling back to 'Deregister without cleanup'"
+  step %(I click on "Deregister without cleanup" in "Error deregistering server" modal)
+  step %(I wait until I see "#{success_text}" text)
+end
+
 When(/^I unregister "([^"]*)" from hub$/) do |host|
   fqdn = get_target(host).full_hostname
   step %(I follow the left menu "Admin > Hub Configuration > Peripherals Configuration")
   row_xpath = "//tr[.//a[contains(., '#{fqdn}')]]"
   find(:xpath, "#{row_xpath}//button[contains(., 'Deregister')]", wait: DEFAULT_TIMEOUT).click
-  step %(I click on "Deregister" in "Confirm deregistration" modal)
-  step %(I wait until I see "#{fqdn} has been successfully deregistered" text)
+  confirm_hub_deregistration(fqdn)
   refresh_page
 end
 
@@ -717,8 +735,7 @@ When(/^I unregister "([^"]*)" from hub if registered$/) do |host|
   next unless page.has_xpath?("#{row_xpath}//button[contains(., 'Deregister')]", wait: 5)
 
   find(:xpath, "#{row_xpath}//button[contains(., 'Deregister')]").click
-  step %(I click on "Deregister" in "Confirm deregistration" modal)
-  step %(I wait until I see "#{fqdn} has been successfully deregistered" text)
+  confirm_hub_deregistration(fqdn)
   refresh_page
 end
 
