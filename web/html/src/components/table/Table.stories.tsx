@@ -198,10 +198,38 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   render: (args) => (
     <Table {...args}>
-      <Column columnKey="id" header="ID" cell={(row: User) => row.id} width="10%" />
-      <Column columnKey="name" header="Name" cell={(row: User) => row.name} width="25%" />
-      <Column columnKey="email" header="Email" cell={(row: User) => row.email} width="30%" />
-      <Column columnKey="role" header="Role" cell={(row: User) => row.role} width="20%" />
+      <Column
+        columnKey="id"
+        header="ID"
+        cell={(row: User) => row.id}
+        width="10%"
+        sortable
+        comparator={(a: User, b: User) => a.id - b.id}
+      />
+      <Column
+        columnKey="name"
+        header="Name"
+        cell={(row: User) => row.name}
+        width="25%"
+        sortable
+        comparator={(a: User, b: User) => a.name.localeCompare(b.name)}
+      />
+      <Column
+        columnKey="email"
+        header="Email"
+        cell={(row: User) => row.email}
+        width="30%"
+        sortable
+        comparator={(a: User, b: User) => a.email.localeCompare(b.email)}
+      />
+      <Column
+        columnKey="role"
+        header="Role"
+        cell={(row: User) => row.role}
+        width="20%"
+        sortable
+        comparator={(a: User, b: User) => a.role.localeCompare(b.role)}
+      />
       <Column
         columnKey="status"
         header="Status"
@@ -209,6 +237,8 @@ export const Playground: Story = {
           <span className={`label label-${row.status === "Active" ? "success" : "default"}`}>{row.status}</span>
         )}
         width="15%"
+        sortable
+        comparator={(a: User, b: User) => a.status.localeCompare(b.status)}
       />
     </Table>
   ),

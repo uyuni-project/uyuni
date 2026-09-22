@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
 import { SubmitButton } from "components/buttons";
-import { Check, Password, Radio, Select, Text, TextArea } from "components/input";
+import { DEPRECATED_Check, DEPRECATED_Select, Password, Radio, Text, TextArea } from "components/input";
 
 import { Form } from "./Form";
 
@@ -75,7 +75,7 @@ const SimpleFormComponent = () => {
       <Form
         model={model}
         onChange={(newModel) => {
-          setModel(newModel);
+          setModel({ ...newModel });
           action("form changed")(newModel);
         }}
         onSubmit={() => action("form submitted")(model)}
@@ -129,7 +129,7 @@ const ValidationFormComponent = () => {
       <Form
         model={model}
         onChange={(newModel) => {
-          setModel(newModel);
+          setModel({ ...newModel });
           action("form changed")(newModel);
         }}
         onSubmit={() => action("form submitted")(model)}
@@ -204,7 +204,7 @@ const MultipleFieldsComponent = () => {
       <Form
         model={model}
         onChange={(newModel) => {
-          setModel(newModel);
+          setModel({ ...newModel });
           action("form changed")(newModel);
         }}
         onSubmit={() => action("form submitted")(model)}
@@ -222,7 +222,7 @@ const MultipleFieldsComponent = () => {
 
         <TextArea name="description" label="Description" labelClass="col-md-3" divClass="col-md-6" rows={4} />
 
-        <Check name="enabled" label="Enabled" labelClass="col-md-3" divClass="col-md-6" />
+        <DEPRECATED_Check name="enabled" label="Enabled" labelClass="col-md-3" divClass="col-md-6" />
 
         <Radio
           name="role"
@@ -236,11 +236,11 @@ const MultipleFieldsComponent = () => {
           divClass="col-md-6"
         />
 
-        <Select name="environment" label="Environment" labelClass="col-md-3" divClass="col-md-6">
+        <DEPRECATED_Select name="environment" label="Environment" labelClass="col-md-3" divClass="col-md-6">
           <option value="development">Development</option>
           <option value="staging">Staging</option>
           <option value="production">Production</option>
-        </Select>
+        </DEPRECATED_Select>
 
         <div className="form-group">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
@@ -280,7 +280,7 @@ const PasswordFormComponent = () => {
       <Form
         model={model}
         onChange={(newModel) => {
-          setModel(newModel);
+          setModel({ ...newModel });
           action("form changed")(newModel);
         }}
         onSubmit={() => action("form submitted")(model)}

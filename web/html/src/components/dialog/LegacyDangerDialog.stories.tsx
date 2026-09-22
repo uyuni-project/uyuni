@@ -221,8 +221,9 @@ const AsyncActionComponent = () => {
             </div>
           }
           onConfirmAsync={async () => {
-            await handleAsyncDelete();
+            const result = await handleAsyncDelete();
             setIsOpen(false);
+            return result;
           }}
           onClosePopUp={() => setIsOpen(false)}
         />

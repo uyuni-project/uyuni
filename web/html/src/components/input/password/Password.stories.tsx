@@ -17,7 +17,7 @@ const StatefulPasswordInForm = (args: PasswordProps) => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => {
@@ -205,7 +205,7 @@ const PasswordConfirmationComponent = () => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => {
