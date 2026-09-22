@@ -1,4 +1,4 @@
-import { TopPanel } from "./Panel";
+import { TopPanel } from "./TopPanel";
 
 export default () => {
   return (
