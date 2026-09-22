@@ -104,8 +104,7 @@ const meta = {
     },
     openOption: {
       control: "boolean",
-      description:
-        'Add a custom text input option labeled "Other keyword" for values not in the predefined list.',
+      description: 'Add a custom text input option labeled "Other keyword" for values not in the predefined list.',
       table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     required: {
@@ -236,8 +235,7 @@ export const WithOpenOption: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Radio group with an open text input option. Select "Other keyword" to enable the custom text field.',
+        story: 'Radio group with an open text input option. Select "Other keyword" to enable the custom text field.',
       },
     },
   },
