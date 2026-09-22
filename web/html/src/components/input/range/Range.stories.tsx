@@ -20,7 +20,7 @@ const StatefulRangeInForm = (args: RangeProps) => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => {

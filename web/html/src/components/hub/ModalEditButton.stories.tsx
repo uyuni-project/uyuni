@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
@@ -84,6 +84,10 @@ type Story = StoryObj<typeof meta>;
 
 const PlaygroundComponent = (args: React.ComponentProps<typeof ModalEditButton>) => {
   const [currentValue, setCurrentValue] = useState(args.value);
+
+  useEffect(() => {
+    setCurrentValue(args.value);
+  }, [args.value]);
 
   return (
     <div style={{ padding: "20px" }}>

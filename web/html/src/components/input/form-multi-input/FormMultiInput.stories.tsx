@@ -127,7 +127,11 @@ const SimpleListExample = (args: Partial<FormMultiInputProps>) => {
   };
 
   return (
-    <Form model={model} onChange={setModel} onSubmit={() => action("form submitted")(model)}>
+    <Form
+      model={model}
+      onChange={(newModel) => setModel({ ...newModel })}
+      onSubmit={() => action("form submitted")(model)}
+    >
       <FormMultiInput
         id="email-list"
         title="Email Addresses"
@@ -198,7 +202,7 @@ const RemoteHostsComponent = () => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => action("form submitted")(model)}
@@ -276,7 +280,11 @@ const WithPanelsComponent = () => {
   };
 
   return (
-    <Form model={model} onChange={setModel} onSubmit={() => action("form submitted")(model)}>
+    <Form
+      model={model}
+      onChange={(newModel) => setModel({ ...newModel })}
+      onSubmit={() => action("form submitted")(model)}
+    >
       <FormMultiInput
         id="databases"
         title="Database Connections"
@@ -358,7 +366,11 @@ const WithHeaderComponent = () => {
   };
 
   return (
-    <Form model={model} onChange={setModel} onSubmit={() => action("form submitted")(model)}>
+    <Form
+      model={model}
+      onChange={(newModel) => setModel({ ...newModel })}
+      onSubmit={() => action("form submitted")(model)}
+    >
       <FormMultiInput
         id="env-vars"
         title="Environment Variables"
@@ -421,7 +433,11 @@ const DisabledComponent = () => {
   });
 
   return (
-    <Form model={model} onChange={setModel} onSubmit={() => action("form submitted")(model)}>
+    <Form
+      model={model}
+      onChange={(newModel) => setModel({ ...newModel })}
+      onSubmit={() => action("form submitted")(model)}
+    >
       <FormMultiInput
         id="tags"
         title="Tags (Read-only)"
@@ -485,7 +501,7 @@ const ComplexFormComponent = () => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => action("form submitted")(model)}

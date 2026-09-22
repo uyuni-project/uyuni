@@ -217,7 +217,9 @@ const AsyncActionComponent = () => {
           content={
             <div style={{ padding: "20px" }}>
               <p>This will trigger an async operation (simulated 2 second delay).</p>
-              <p>The button will show loading state during the operation.</p>
+              <p>
+                The modal closes immediately to prevent backdrop leaks; the async operation completes in the background.
+              </p>
             </div>
           }
           onConfirmAsync={async () => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
@@ -13,6 +13,10 @@ type SelectProps = React.ComponentProps<typeof Select<OptionType, string>>;
 
 const StatefulSelect = (args: SelectProps) => {
   const [value, setValue] = useState<string | undefined>(args.value);
+
+  useEffect(() => {
+    setValue(args.value);
+  }, [args.value]);
 
   return (
     <div>
@@ -35,6 +39,10 @@ const StatefulSelect = (args: SelectProps) => {
 
 const StatefulMultiSelect = (args: any) => {
   const [value, setValue] = useState<string[]>(args.value || []);
+
+  useEffect(() => {
+    setValue(args.value || []);
+  }, [args.value]);
 
   return (
     <div>

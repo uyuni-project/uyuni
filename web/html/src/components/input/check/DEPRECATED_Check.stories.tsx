@@ -17,7 +17,7 @@ const StatefulCheckInForm = (args: DEPRECATED_CheckProps) => {
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => action("form submitted")(model)}
@@ -45,7 +45,6 @@ const meta = {
 This component is deprecated. Use one of the following instead:
 - For standalone checkboxes: \`import { Check } from "components/input"\`
 - For Formik forms: \`<Field as={Field.Check} />\`
-- For Uyuni forms: \`import { CheckInput } from "components/input"\`
 
 This component uses the old form context and will be removed in a future release.
         `,
@@ -153,7 +152,11 @@ const MultipleCheckboxesComponent = () => {
   });
 
   return (
-    <Form model={model} onChange={setModel} onSubmit={() => action("form submitted")(model)}>
+    <Form
+      model={model}
+      onChange={(newModel) => setModel({ ...newModel })}
+      onSubmit={() => action("form submitted")(model)}
+    >
       <DEPRECATED_Check name="email" label="Email notifications" />
       <DEPRECATED_Check name="sms" label="SMS notifications" />
       <DEPRECATED_Check name="push" label="Push notifications" />

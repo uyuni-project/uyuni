@@ -17,7 +17,7 @@ const StatefulSelectInForm = (args: DEPRECATED_SelectProps & { options: any[] })
     <Form
       model={model}
       onChange={(newModel) => {
-        setModel(newModel);
+        setModel({ ...newModel });
         action("form changed")(newModel);
       }}
       onSubmit={() => action("form submitted")(model)}
