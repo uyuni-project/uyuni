@@ -13,6 +13,8 @@ package com.redhat.rhn.manager.content.ubuntu;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.testing.TestUtils;
@@ -37,15 +39,8 @@ class UbuntuErrataManagerTest {
         String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
         UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
 
-        Map<String, UbuntuErrataInfo> errataInfos = Map.of("8678-2", info);
         Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
-
-        Entry entry = assertDoesNotThrow(() -> UbuntuErrataManager.parseUbuntuErrata(errataInfos, packageNames)
-            .reduce((a, b) -> {
-                throw new IllegalArgumentException("More than one element in the parsed entries stream");
-            })
-            .orElseThrow(() -> new IllegalStateException("No entries in the parsed stream"))
-        );
+        Entry entry = assertDoesNotThrow(() -> extractProcessedEntry("8678-2", info, packageNames));
 
         assertAll(
             () -> assertEquals("8678-2", entry.getId()),
@@ -130,5 +125,39 @@ class UbuntuErrataManagerTest {
                 info.getAction().orElseGet(() -> fail("Action should not be empty"))
             )
         );
+    }
+
+    @Test
+    void canParseErrataWithoutId() throws Exception {
+        URL testFile = TestUtils.findTestData("missing-id.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
+        Entry entry = assertDoesNotThrow(() -> extractProcessedEntry("id-from-map", info, packageNames));
+
+        assertNull(info.getId());
+        assertEquals("id-from-map", entry.getId());
+    }
+
+    @Test
+    void canParseErrataWithLongDescription() throws Exception {
+        URL testFile = TestUtils.findTestData("long-description.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
+        Entry entry = assertDoesNotThrow(() -> extractProcessedEntry("8678-2", info, packageNames));
+
+        assertTrue(info.getDescription().length() > 4000);
+        assertEquals(4000, entry.getDescription().length());
+    }
+
+    private static Entry extractProcessedEntry(String errataId, UbuntuErrataInfo info, Set<String> packageNames) {
+        return UbuntuErrataManager.parseUbuntuErrata(Map.of(errataId, info), packageNames)
+            .reduce((a, b) -> {
+                throw new IllegalArgumentException("More than one element in the parsed entries stream");
+            })
+            .orElseThrow(() -> new IllegalStateException("No entries in the parsed stream"));
     }
 }
