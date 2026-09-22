@@ -101,7 +101,7 @@ const MemoryFilterComponent = () => {
         </div>
         <div className="panel-body">
           <div style={{ marginBottom: "15px" }}>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Memory (GB)</label>
+            <div style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Memory (GB)</div>
             <NumericSearchField
               name="memory"
               onSearch={(criteria) => {
@@ -205,15 +205,15 @@ const MultipleFiltersComponent = () => {
         <div className="panel-body">
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "15px", marginBottom: "15px" }}>
             <div>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>CPU Cores</label>
+              <div style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>CPU Cores</div>
               <NumericSearchField name="cpu" onSearch={setCpuCriteria} />
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>RAM (GB)</label>
+              <div style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>RAM (GB)</div>
               <NumericSearchField name="ram" onSearch={setRamCriteria} />
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Disk (TB)</label>
+              <div style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Disk (TB)</div>
               <NumericSearchField name="disk" onSearch={setDiskCriteria} />
             </div>
           </div>
