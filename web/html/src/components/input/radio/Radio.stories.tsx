@@ -29,7 +29,7 @@ const StatefulRadioInForm = (args: RadioProps) => {
       <Radio {...args} />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton className="btn-primary" text="Submit" />
+          <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />
         </div>
       </div>
     </Form>
@@ -255,7 +255,6 @@ export const WithDisabledOptions: Story = {
     defaultValue: "dev",
   },
   parameters: {
-    controls: { disable: true },
     docs: {
       description: {
         story:
@@ -274,7 +273,6 @@ export const Disabled: Story = {
     disabled: true,
   },
   parameters: {
-    controls: { disable: true },
     docs: {
       description: {
         story: "Entire radio group disabled. No options can be selected or changed.",

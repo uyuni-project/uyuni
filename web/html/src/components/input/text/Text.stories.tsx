@@ -29,7 +29,7 @@ const StatefulTextInForm = (args: TextProps) => {
       <Text {...args} />
       <div className="form-group">
         <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton className="btn-primary" text="Submit" />
+          <SubmitButton className="btn-primary" text="Submit" disabled={args.disabled} />
         </div>
       </div>
     </Form>
@@ -229,7 +229,6 @@ export const Disabled: Story = {
     disabled: true,
   },
   parameters: {
-    controls: { disable: true },
     docs: {
       description: {
         story: "Disabled text input that cannot be edited.",
