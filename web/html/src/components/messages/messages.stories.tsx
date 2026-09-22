@@ -85,7 +85,7 @@ export const Warning: Story = {
   },
 };
 
-export const Error: Story = {
+export const ErrorMessage: Story = {
   args: {
     items: Messages.error("An error occurred while processing your request. Please try again."),
   },
