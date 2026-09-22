@@ -10,9 +10,11 @@
  */
 package com.redhat.rhn.manager.content.ubuntu;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.testing.TestUtils;
@@ -106,5 +108,39 @@ class UbuntuErrataManagerTest {
                 info.getAction().orElseGet(() -> fail("Action should not be empty"))
             )
         );
+    }
+
+    @Test
+    void canParseErrataWithoutId() throws Exception {
+        URL testFile = TestUtils.findTestData("missing-id.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Map<String, UbuntuErrataInfo> errataInfos = Map.of("id-from-map", info);
+        Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
+
+        Entry entry = assertDoesNotThrow(() -> UbuntuErrataManager.parseUbuntuErrata(errataInfos, packageNames))
+            .reduce((a, b) -> fail("More than one element in the parsed entries stream"))
+            .orElseGet(() -> fail("No entries in the parsed stream"));
+
+        assertNull(info.getId());
+        assertEquals("id-from-map", entry.getId());
+    }
+
+    @Test
+    void canParseErrataWithLongDescription() throws Exception {
+        URL testFile = TestUtils.findTestData("long-description.json");
+        String json = Files.readString(Path.of(testFile.toURI()), StandardCharsets.UTF_8);
+        UbuntuErrataInfo info = UbuntuErrataManager.GSON.fromJson(json, UbuntuErrataInfo.class);
+
+        Map<String, UbuntuErrataInfo> errataInfos = Map.of("8678-2", info);
+        Set<String> packageNames = Set.of("libssl1.0.0", "libssl1.1", "openssl", "openssl1.0");
+
+        Entry entry = assertDoesNotThrow(() -> UbuntuErrataManager.parseUbuntuErrata(errataInfos, packageNames))
+            .reduce((a, b) -> fail("More than one element in the parsed entries stream"))
+            .orElseGet(() -> fail("No entries in the parsed stream"));
+
+        assertTrue(info.getDescription().length() > 4000);
+        assertEquals(4000, entry.getDescription().length());
     }
 }

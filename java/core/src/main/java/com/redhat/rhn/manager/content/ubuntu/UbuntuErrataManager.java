@@ -43,6 +43,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -178,12 +179,10 @@ public class UbuntuErrataManager {
             UbuntuErrataInfo ubuntuErrataInfo = entry.getValue();
 
             // fallback to key if id is not present
-            String errataId = ubuntuErrataInfo.getId() != null ? ubuntuErrataInfo.getId() : entry.getKey();
-
-            String description = ubuntuErrataInfo.getDescription().length() > 4000 ?
-                    ubuntuErrataInfo.getDescription().substring(0, 4000) :
-                    ubuntuErrataInfo.getDescription();
+            String errataId =  Objects.requireNonNullElseGet(ubuntuErrataInfo.getId(), () -> entry.getKey());
+            String description = StringUtils.truncate(ubuntuErrataInfo.getDescription(), 4000);
             boolean reboot = ubuntuErrataInfo.getAction().map(a -> a.contains("you need to reboot")).orElse(false);
+
             List<Tuple3<String, String, List<String>>> packageData = ubuntuErrataInfo.getReleases().entrySet().stream()
                     .flatMap(release ->
                             release.getValue().getBinaries().entrySet().stream().flatMap(binary -> {
