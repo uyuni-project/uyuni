@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <!DOCTYPE module PUBLIC
     "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
     "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">

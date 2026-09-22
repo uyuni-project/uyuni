@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- Always ensure to use the correct XML header as above! --><!--Converted at: Wed Dec 04 11:26:11 CET 2013-->
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration><settings>
