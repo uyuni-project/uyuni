@@ -1,78 +1,59 @@
-import { useEffect, useMemo } from "react";
-
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
 import { localizedMoment } from "utils";
+import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { ScheduleScapScanForm } from "./schedule-scap-scan-form";
 
 type ScheduleScapScanFormProps = React.ComponentProps<typeof ScheduleScapScanForm>;
 
-const originalNetworkGet = Network.get;
-const originalNetworkPost = Network.post;
+const mockNetworkGet = ((url: string) => {
+  if (url.includes("/policy/view/")) {
+    return Utils.cancelable(
+      Promise.resolve({
+        scapContentId: 101,
+        xccdfProfileId: "xccdf_org.ssgproject.content_profile_cis",
+        xccdfProfileTitle: "CIS Server Level 1",
+        tailoringFileId: 201,
+        tailoringProfileId: "xccdf_org.example_profile_web_server",
+        tailoringProfileTitle: "Web server adjustments",
+        ovalFiles: "/usr/share/xml/scap/suse-sles15-cve.xml",
+        advancedArgs: "--remediate",
+        fetchRemoteResources: false,
+      })
+    );
+  }
+
+  if (url.includes("/tailoringFile/")) {
+    return Utils.cancelable(
+      Promise.resolve([
+        { id: "xccdf_org.example_profile_web_server", title: "Web server adjustments" },
+        { id: "xccdf_org.example_profile_database", title: "Database server adjustments" },
+      ])
+    );
+  }
+
+  return Utils.cancelable(
+    Promise.resolve([
+      { id: "xccdf_org.ssgproject.content_profile_cis", title: "CIS Server Level 1" },
+      { id: "xccdf_org.ssgproject.content_profile_standard", title: "Standard System Security Profile" },
+    ])
+  );
+}) as typeof Network.get;
+
+const mockNetworkPost = (() =>
+  Utils.cancelable(
+    Promise.resolve({
+      data: {
+        maintenanceWindowsMultiSchedules: false,
+        maintenanceWindows: null,
+      },
+    })
+  )) as typeof Network.post;
 
 const ScheduleScapScanFormStory = (props: ScheduleScapScanFormProps) => {
-  const mockNetworkGet = useMemo(
-    () =>
-      ((url: string) => {
-        if (url.includes("/policy/view/")) {
-          return Promise.resolve({
-            scapContentId: 101,
-            xccdfProfileId: "xccdf_org.ssgproject.content_profile_cis",
-            xccdfProfileTitle: "CIS Server Level 1",
-            tailoringFileId: 201,
-            tailoringProfileId: "xccdf_org.example_profile_web_server",
-            tailoringProfileTitle: "Web server adjustments",
-            ovalFiles: "/usr/share/xml/scap/suse-sles15-cve.xml",
-            advancedArgs: "--remediate",
-            fetchRemoteResources: false,
-          });
-        }
-
-        if (url.includes("/tailoringFile/")) {
-          return Promise.resolve([
-            { id: "xccdf_org.example_profile_web_server", title: "Web server adjustments" },
-            { id: "xccdf_org.example_profile_database", title: "Database server adjustments" },
-          ]);
-        }
-
-        return Promise.resolve([
-          { id: "xccdf_org.ssgproject.content_profile_cis", title: "CIS Server Level 1" },
-          { id: "xccdf_org.ssgproject.content_profile_standard", title: "Standard System Security Profile" },
-        ]);
-      }) as typeof Network.get,
-    []
-  );
-
-  const mockNetworkPost = useMemo(
-    () =>
-      (() =>
-        Promise.resolve({
-          data: {
-            maintenanceWindowsMultiSchedules: false,
-            maintenanceWindows: null,
-          },
-        })) as typeof Network.post,
-    []
-  );
-
-  Network.get = mockNetworkGet;
-  Network.post = mockNetworkPost;
-
-  useEffect(
-    () => () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    },
-    [mockNetworkGet, mockNetworkPost]
-  );
-
   return (
     <div style={{ maxWidth: "1200px", minHeight: "900px" }}>
       <ScheduleScapScanForm {...props} />
@@ -83,6 +64,21 @@ const ScheduleScapScanFormStory = (props: ScheduleScapScanFormProps) => {
 const meta = {
   title: "Compositions/Compliance/ScheduleScapScanForm",
   component: ScheduleScapScanForm,
+  beforeEach: () => {
+    const originalNetworkGet = Network.get;
+    const originalNetworkPost = Network.post;
+    Network.get = mockNetworkGet;
+    Network.post = mockNetworkPost;
+
+    return () => {
+      if (Network.get === mockNetworkGet) {
+        Network.get = originalNetworkGet;
+      }
+      if (Network.post === mockNetworkPost) {
+        Network.post = originalNetworkPost;
+      }
+    };
+  },
   parameters: {
     docs: {
       description: {

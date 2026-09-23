@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from "react";
-
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
+import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { StatesPicker } from "./states-picker";
@@ -46,31 +45,16 @@ const channels = [
   },
 ];
 
-const originalNetworkGet = Network.get;
+const mockNetworkGet = ((url: string) =>
+  Utils.cancelable(
+    Promise.resolve(
+      url.includes("/content")
+        ? "install_monitoring_agent:\n  pkg.installed:\n    - name: monitoring-agent"
+        : channels.map((channel) => ({ ...channel }))
+    )
+  )) as typeof Network.get;
 
 const StatesPickerStory = (props: StatesPickerProps) => {
-  const mockNetworkGet = useMemo(
-    () =>
-      ((url: string) =>
-        Promise.resolve(
-          url.includes("/content")
-            ? "install_monitoring_agent:\n  pkg.installed:\n    - name: monitoring-agent"
-            : channels.map((channel) => ({ ...channel }))
-        )) as typeof Network.get,
-    []
-  );
-
-  Network.get = mockNetworkGet;
-
-  useEffect(
-    () => () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    },
-    [mockNetworkGet]
-  );
-
   return (
     <div
       className="states-picker-story"
@@ -85,6 +69,16 @@ const StatesPickerStory = (props: StatesPickerProps) => {
 const meta = {
   title: "Compositions/Configuration/StatesPicker",
   component: StatesPicker,
+  beforeEach: () => {
+    const originalNetworkGet = Network.get;
+    Network.get = mockNetworkGet;
+
+    return () => {
+      if (Network.get === mockNetworkGet) {
+        Network.get = originalNetworkGet;
+      }
+    };
+  },
   parameters: {
     layout: "fullscreen",
     docs: {
