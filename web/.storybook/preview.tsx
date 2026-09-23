@@ -2,6 +2,7 @@
 
 import "font-awesome/css/font-awesome.css";
 import "manager/polyfills";
+import "jquery-ui/ui/widgets/sortable";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
 import suseDarkTheme from "branding/css/suse-dark.scss?lazy";
