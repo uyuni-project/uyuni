@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from "react";
-
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
+import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { PoliciesPicker } from "./policies-picker";
@@ -38,33 +37,15 @@ const policies = [
   },
 ];
 
-const originalNetworkGet = Network.get;
+const mockNetworkGet = ((url: string) => {
+  const filter = new URL(url, window.location.origin).searchParams.get("filter")?.toLowerCase() ?? "";
+  const matches = policies.filter(
+    (policy) => policy.policyName.toLowerCase().includes(filter) || policy.dataStreamName.toLowerCase().includes(filter)
+  );
+  return Utils.cancelable(Promise.resolve(matches.map((policy) => ({ ...policy }))));
+}) as typeof Network.get;
 
 const PoliciesPickerStory = (props: PoliciesPickerProps) => {
-  const mockNetworkGet = useMemo(
-    () =>
-      ((url: string) => {
-        const filter = new URL(url, window.location.origin).searchParams.get("filter")?.toLowerCase() ?? "";
-        const matches = policies.filter(
-          (policy) =>
-            policy.policyName.toLowerCase().includes(filter) || policy.dataStreamName.toLowerCase().includes(filter)
-        );
-        return Promise.resolve(matches.map((policy) => ({ ...policy })));
-      }) as typeof Network.get,
-    []
-  );
-
-  Network.get = mockNetworkGet;
-
-  useEffect(
-    () => () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    },
-    [mockNetworkGet]
-  );
-
   return (
     <div style={{ maxWidth: "1200px", minHeight: "420px" }}>
       <PoliciesPicker {...props} />
@@ -75,6 +56,16 @@ const PoliciesPickerStory = (props: PoliciesPickerProps) => {
 const meta = {
   title: "Compositions/Compliance/PoliciesPicker",
   component: PoliciesPicker,
+  beforeEach: () => {
+    const originalNetworkGet = Network.get;
+    Network.get = mockNetworkGet;
+
+    return () => {
+      if (Network.get === mockNetworkGet) {
+        Network.get = originalNetworkGet;
+      }
+    };
+  },
   parameters: {
     docs: {
       description: {

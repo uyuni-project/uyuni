@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from "react";
-
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
+import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { FormulaSelection } from "./formula-selection";
@@ -40,31 +39,16 @@ const formulaData = {
   active: ["timezone", "openssh", "motd"],
 };
 
-const originalNetworkGet = Network.get;
+const mockNetworkGet = (() =>
+  Utils.cancelable(
+    Promise.resolve({
+      formulas: formulaData.formulas.map((formula) => ({ ...formula })),
+      selected: [...formulaData.selected],
+      active: [...formulaData.active],
+    })
+  )) as typeof Network.get;
 
 const FormulaSelectionStory = (props: FormulaSelectionProps) => {
-  const mockNetworkGet = useMemo(
-    () =>
-      (() =>
-        Promise.resolve({
-          formulas: formulaData.formulas.map((formula) => ({ ...formula })),
-          selected: [...formulaData.selected],
-          active: [...formulaData.active],
-        })) as typeof Network.get,
-    []
-  );
-
-  Network.get = mockNetworkGet;
-
-  useEffect(
-    () => () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    },
-    [mockNetworkGet]
-  );
-
   return (
     <div className="formula-selection-story" style={{ minHeight: "650px" }}>
       <style>{`.formula-selection-story .spacewalk-section-toolbar { top: 0 !important; }`}</style>
@@ -76,6 +60,16 @@ const FormulaSelectionStory = (props: FormulaSelectionProps) => {
 const meta = {
   title: "Compositions/Configuration/FormulaSelection",
   component: FormulaSelection,
+  beforeEach: () => {
+    const originalNetworkGet = Network.get;
+    Network.get = mockNetworkGet;
+
+    return () => {
+      if (Network.get === mockNetworkGet) {
+        Network.get = originalNetworkGet;
+      }
+    };
+  },
   parameters: {
     layout: "fullscreen",
     docs: {
