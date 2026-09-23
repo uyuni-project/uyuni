@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # list date when package was last tagged
 # since nightly build pick up every tag and build it,
 # we can assume it is date of package build
