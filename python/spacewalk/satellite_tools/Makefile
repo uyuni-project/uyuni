@@ -5,7 +5,7 @@ TOP	= ..
 
 # Specific stuff
 SUBDIR	= satellite_tools
-SUBDIRS = exporter disk_dumper accounts repo_plugins
+SUBDIRS = accounts repo_plugins
 SPACEWALK_FILES	= __init__ connection constants diskImportLib messages \
             progress_bar req_channels satCerts syncCache \
             sync_handlers \
