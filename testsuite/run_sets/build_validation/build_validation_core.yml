@@ -6,6 +6,10 @@
 
 # initialize SUSE Manager server
 - features/build_validation/core/srv_first_settings.feature
+
+# WORKAROUND: widen errata advisory columns before reposync, see the feature file for details
+- features/build_validation/core/srv_errata_advisory_length_workaround.feature
+
 - features/build_validation/core/srv_user_preferences.feature
 
 # configuration channel and configuration file for smoke tests
