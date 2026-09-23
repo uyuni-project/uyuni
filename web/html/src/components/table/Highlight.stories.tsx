@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { Highlight } from "./Highlight";
 
 const meta = {
-  title: "Components/Table/Highlight",
+  title: "Components/Tables/Highlight",
   component: Highlight,
   parameters: {
     docs: {

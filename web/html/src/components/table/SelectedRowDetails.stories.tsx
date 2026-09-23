@@ -29,7 +29,7 @@ const StatefulSelectedRowDetails = (props: SelectedRowDetailsProps) => {
 };
 
 const meta = {
-  title: "Components/Table/SelectedRowDetails",
+  title: "Components/Tables/SelectedRowDetails",
   component: SelectedRowDetails,
   parameters: {
     docs: {

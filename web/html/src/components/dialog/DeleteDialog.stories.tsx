@@ -6,7 +6,7 @@ import { Button } from "components/buttons";
 import { DeleteDialog } from "./DeleteDialog";
 
 const meta = {
-  title: "Components/Dialogs/DeleteDialog",
+  title: "Deprecated/Dialogs/DeleteDialog",
   component: DeleteDialog,
   parameters: {
     docs: {

@@ -13,7 +13,7 @@ type SelectSearchFieldProps = {
 };
 
 const meta = {
-  title: "Components/Table/SelectSearchField",
+  title: "Components/Tables/SelectSearchField",
   component: SelectSearchField,
   decorators: [
     (Story) => (

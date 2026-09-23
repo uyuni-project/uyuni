@@ -5,7 +5,7 @@ import { RecurringEventPicker } from "./recurring-event-picker";
 type RecurringEventPickerProps = React.ComponentProps<typeof RecurringEventPicker>;
 
 const meta = {
-  title: "Components/DateTime/RecurringEventPicker",
+  title: "Compositions/Scheduling/RecurringEventPicker",
   component: RecurringEventPicker,
   parameters: {
     docs: {

@@ -35,7 +35,7 @@ const StatefulSelectInForm = (args: DEPRECATED_SelectProps & { options: any[] })
 };
 
 const meta = {
-  title: "Components/DEPRECATED/DEPRECATED_Select",
+  title: "Deprecated/Inputs/DEPRECATED_Select",
   component: DEPRECATED_Select,
   decorators: [
     (Story) => (

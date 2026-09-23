@@ -73,7 +73,7 @@ const PoliciesPickerStory = (props: PoliciesPickerProps) => {
 };
 
 const meta = {
-  title: "Components/Data Display/PoliciesPicker",
+  title: "Compositions/Compliance/PoliciesPicker",
   component: PoliciesPicker,
   parameters: {
     docs: {

@@ -11,7 +11,7 @@ import { Form } from "./Form";
 type FormProps = React.ComponentProps<typeof Form>;
 
 const meta = {
-  title: "Components/Form/UyuniForm",
+  title: "Components/Forms/UyuniForm",
   component: Form,
   parameters: {
     docs: {

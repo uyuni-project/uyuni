@@ -10,7 +10,7 @@ import { ActionStatus } from "../action/ActionStatus";
 const TooltipDocs = () => null;
 
 const meta = {
-  title: "Components/Utils/Tooltip",
+  title: "Components/Utilities/Tooltip",
   component: TooltipDocs,
   parameters: {
     docs: {

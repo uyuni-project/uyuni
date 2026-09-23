@@ -53,7 +53,7 @@ const fileSystemData: FileNode[] = [
 ];
 
 const meta = {
-  title: "Components/DEPRECATED/HierarchicalTable",
+  title: "Deprecated/Tables/HierarchicalTable",
   component: DEPRECATED_HierarchicalTable,
   parameters: {
     docs: {

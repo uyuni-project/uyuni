@@ -39,7 +39,7 @@ const StatefulSearchField = (props: SearchFieldProps) => {
 };
 
 const meta = {
-  title: "Components/Table/SearchField",
+  title: "Components/Tables/SearchField",
   component: SearchField,
   parameters: {
     docs: {

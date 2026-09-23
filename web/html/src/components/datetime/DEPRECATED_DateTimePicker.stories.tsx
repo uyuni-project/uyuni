@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 const meta = {
-  title: "Components/DEPRECATED/DEPRECATED_DateTimePicker",
+  title: "Deprecated/DateTime/DEPRECATED_DateTimePicker",
   parameters: {
     docs: {
       description: {

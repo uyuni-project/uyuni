@@ -17,7 +17,7 @@ const systems: StorySystem[] = [
 ];
 
 const meta = {
-  title: "Components/Data Display/TargetSystems",
+  title: "Compositions/System Information/TargetSystems",
   component: TargetSystems,
   parameters: {
     docs: {

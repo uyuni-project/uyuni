@@ -45,7 +45,7 @@ const HeaderlessPopUp = (args: PopUpProps) => {
 };
 
 const meta = {
-  title: "Components/DEPRECATED/PopUp",
+  title: "Deprecated/Dialogs/PopUp",
   component: PopUp,
   parameters: {
     docs: {

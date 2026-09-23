@@ -5,7 +5,7 @@ import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 import { HelpLink } from "./HelpLink";
 
 const meta = {
-  title: "Components/Utils/HelpLink",
+  title: "Components/Utilities/HelpLink",
   component: HelpLink,
   parameters: {
     docs: {

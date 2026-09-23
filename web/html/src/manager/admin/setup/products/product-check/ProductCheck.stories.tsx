@@ -31,7 +31,7 @@ const ControlledProductCheck = (props: ProductCheckProps & { selectionState: Pro
 };
 
 const meta = {
-  title: "Manager/Admin Setup/ProductCheck",
+  title: "Components/Inputs/ProductCheck",
   component: ProductCheck,
   parameters: {
     docs: {

@@ -5,7 +5,7 @@ import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 import HelpIcon from "./HelpIcon";
 
 const meta = {
-  title: "Components/Utils/HelpIcon",
+  title: "Components/Utilities/HelpIcon",
   component: HelpIcon,
   parameters: {
     docs: {

@@ -48,7 +48,7 @@ const StatefulTableFilter = (props: TableFilterProps) => {
 };
 
 const meta = {
-  title: "Components/Table/TableFilter",
+  title: "Components/Tables/TableFilter",
   component: TableFilter,
   parameters: {
     docs: {

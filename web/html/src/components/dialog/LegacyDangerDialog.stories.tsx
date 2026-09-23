@@ -10,7 +10,7 @@ import { DangerDialog } from "./LegacyDangerDialog";
 type LegacyDangerDialogProps = React.ComponentProps<typeof DangerDialog>;
 
 const meta = {
-  title: "Components/DEPRECATED/LegacyDangerDialog",
+  title: "Deprecated/Dialogs/LegacyDangerDialog",
   component: DangerDialog,
   parameters: {
     docs: {

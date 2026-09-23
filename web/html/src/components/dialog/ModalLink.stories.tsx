@@ -5,7 +5,7 @@ import { Dialog } from "./LegacyDialog";
 import { ModalLink } from "./ModalLink";
 
 const meta = {
-  title: "Components/Dialogs/ModalLink",
+  title: "Deprecated/Dialogs/ModalLink",
   component: ModalLink,
   parameters: {
     docs: {

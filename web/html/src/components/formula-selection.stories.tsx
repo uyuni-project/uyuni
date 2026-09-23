@@ -74,7 +74,7 @@ const FormulaSelectionStory = (props: FormulaSelectionProps) => {
 };
 
 const meta = {
-  title: "Components/Form/FormulaSelection",
+  title: "Compositions/Configuration/FormulaSelection",
   component: FormulaSelection,
   parameters: {
     layout: "fullscreen",
