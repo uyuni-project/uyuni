@@ -1,6 +1,6 @@
 import { localizedMoment } from "utils";
 
-import { AccessToken, IssRole, PeripheralDetailData, TokenType } from "./types";
+import { AccessToken, IssRole, MigrationEntry, PeripheralDetailData, PeripheralListData, TokenType } from "./types";
 
 export const peripheralDetails: PeripheralDetailData = {
   id: 42,
@@ -50,5 +50,56 @@ export const createAccessTokens = (): AccessToken[] => [
     modificationDate: localizedMoment("2026-07-01T07:00:00Z").toDate(),
     hubId: null,
     peripheralId: null,
+  },
+];
+
+export const migrationEntries: MigrationEntry[] = [
+  {
+    id: 1,
+    fqdn: "legacy-east.example.com",
+    accessToken: "eyJhbGciOiJIUzI1NiJ9.east",
+    rootCA: null,
+    disabled: false,
+    selected: true,
+  },
+  {
+    id: 2,
+    fqdn: "legacy-west.example.com",
+    accessToken: null,
+    rootCA: ["-----BEGIN CERTIFICATE-----", "MIIBstorybookwestcertificate", "-----END CERTIFICATE-----"].join("\n"),
+    disabled: false,
+    selected: false,
+  },
+  {
+    id: 3,
+    fqdn: "legacy-disabled.example.com",
+    accessToken: "eyJhbGciOiJIUzI1NiJ9.disabled",
+    rootCA: null,
+    disabled: true,
+    selected: false,
+  },
+];
+
+export const peripherals: PeripheralListData[] = [
+  {
+    id: 42,
+    fqdn: "peripheral-europe.example.com",
+    rootCA: ["-----BEGIN CERTIFICATE-----", "MIIBstorybookeuropecertificate", "-----END CERTIFICATE-----"].join("\n"),
+    nSyncedChannels: 18,
+    nSyncedOrgs: 3,
+  },
+  {
+    id: 43,
+    fqdn: "peripheral-lab.example.com",
+    rootCA: null,
+    nSyncedChannels: 4,
+    nSyncedOrgs: 1,
+  },
+  {
+    id: 44,
+    fqdn: "peripheral-empty.example.com",
+    rootCA: null,
+    nSyncedChannels: 0,
+    nSyncedOrgs: 0,
   },
 ];
