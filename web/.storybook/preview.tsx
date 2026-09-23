@@ -8,6 +8,7 @@ import suseDarkTheme from "branding/css/suse-dark.scss?lazy";
 import suseLightTheme from "branding/css/suse-light.scss?lazy";
 import uyuniTheme from "branding/css/uyuni.scss?lazy";
 import jQueryImport from "jquery";
+import ReactModal from "react-modal";
 
 import { t } from "core/intl";
 import Loggerhead from "core/log/loggerhead";
@@ -143,6 +144,13 @@ let tooltipsInitialized = false;
 const withUyuniTheme: Decorator = (Story, context) => {
   const theme = isThemeName(context.globals.theme) ? context.globals.theme : "uyuni";
   setTheme(theme);
+
+  // ReactModal otherwise falls back to document.body outside the application shell. Hiding body
+  // would also hide the modal portal from assistive technologies, so scope aria-hidden to the canvas.
+  const storybookRoot = document.getElementById("storybook-root");
+  if (storybookRoot) {
+    ReactModal.setAppElement(storybookRoot);
+  }
 
   // Initialize tooltips once, after Bootstrap has loaded
   if (!tooltipsInitialized) {

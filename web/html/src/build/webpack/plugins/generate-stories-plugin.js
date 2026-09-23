@@ -79,14 +79,16 @@ export const ${safeName} = {
 };
 `;
 
-const fileTemplate = (content) =>
-  `
+const fileTemplate = (content) => {
+  const generatedContent = content ? `/* eslint-disable */\n${content}` : "export {};";
+
+  return `
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.
  * See: web/html/src/build/webpack/plugins/generate-stories-plugin.js
  */
 
-/* eslint-disable */
-${content}
+${generatedContent}
 `.trim();
+};

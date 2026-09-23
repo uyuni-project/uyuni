@@ -179,39 +179,3 @@ export const ErrorObject: Story = {
     },
   },
 };
-
-export const UsageExample: Story = {
-  render: () => (
-    <div>
-      <MessagesContainer />
-      <div style={{ padding: "1rem", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
-        <p>
-          <strong>Setup:</strong>
-        </p>
-        <pre style={{ fontSize: "12px", backgroundColor: "white", padding: "10px", borderRadius: "4px" }}>
-          {`// Add the container to your app root
-import { MessagesContainer } from "components/toastr";
-
-<MessagesContainer />
-
-// Then show toasts from anywhere
-import { showSuccessToastr } from "components/toastr";
-
-showSuccessToastr("Changes saved!");
-showErrorToastr("Failed to save", { autoHide: false });`}
-        </pre>
-      </div>
-      <div style={{ marginTop: "1rem" }}>
-        <Button className="btn-primary" text="Try it" handler={() => showSuccessToastr("This is how easy it is!")} />
-      </div>
-    </div>
-  ),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Code example showing how to set up and use toast notifications in your application.",
-      },
-    },
-  },
-};

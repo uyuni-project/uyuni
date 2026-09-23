@@ -55,59 +55,6 @@ export const Playground: Story = {
   },
 };
 
-export const Queued: Story = {
-  args: {
-    status: "Queued",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Queued action - displays a blue clock icon indicating the action is waiting to execute.",
-      },
-    },
-  },
-};
-
-export const Failed: Story = {
-  args: {
-    status: "Failed",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Failed action - displays a red X icon indicating the action execution failed.",
-      },
-    },
-  },
-};
-
-export const Completed: Story = {
-  args: {
-    status: "Completed",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Completed action - displays a green checkmark icon indicating successful execution.",
-      },
-    },
-  },
-};
-
-export const PickedUp: Story = {
-  args: {
-    status: "Picked Up",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Picked Up action - displays a blue exchange icon indicating the action has been picked up for execution.",
-      },
-    },
-  },
-};
-
 export const AllStatuses: Story = {
   render: () => (
     <StripedStorySection>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 
-import { Messages, MessageType } from "./messages";
+import { Messages } from "./messages";
 
 const meta = {
   title: "Components/Feedback/Messages",
@@ -41,58 +41,6 @@ export const Playground: Story = {
     docs: {
       description: {
         story: "Interactive message display. Try changing the message text in the controls.",
-      },
-    },
-  },
-};
-
-export const Info: Story = {
-  args: {
-    items: Messages.info("This is an informational message with helpful context."),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Info message with blue styling for general information.",
-      },
-    },
-  },
-};
-
-export const Success: Story = {
-  args: {
-    items: Messages.success("Operation completed successfully!"),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Success message with green styling for successful operations.",
-      },
-    },
-  },
-};
-
-export const Warning: Story = {
-  args: {
-    items: Messages.warning("This action may have unintended consequences. Please review before proceeding."),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Warning message with yellow styling for cautionary information.",
-      },
-    },
-  },
-};
-
-export const ErrorMessage: Story = {
-  args: {
-    items: Messages.error("An error occurred while processing your request. Please try again."),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Error message with red styling for errors and failures.",
       },
     },
   },
@@ -159,43 +107,6 @@ export const AllSeverities: Story = {
     docs: {
       description: {
         story: "All four severity levels displayed for comparison.",
-      },
-    },
-  },
-};
-
-export const UsageExample: Story = {
-  render: () => {
-    const validationMessages: MessageType[] = [
-      Messages.error("Required field 'Email' is missing."),
-      Messages.warning("Password strength is weak."),
-    ];
-
-    return (
-      <div>
-        <h4>Form Validation</h4>
-        <Messages items={validationMessages} />
-        <div style={{ marginTop: "1rem", padding: "1rem", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
-          <p>
-            <strong>Code example:</strong>
-          </p>
-          <pre style={{ fontSize: "12px" }}>
-            {`const messages = [
-  Messages.error("Required field 'Email' is missing."),
-  Messages.warning("Password strength is weak.")
-];
-
-<Messages items={messages} />`}
-          </pre>
-        </div>
-      </div>
-    );
-  },
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Common usage pattern for form validation messages.",
       },
     },
   },

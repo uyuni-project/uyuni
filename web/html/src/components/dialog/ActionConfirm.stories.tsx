@@ -10,7 +10,7 @@ import { ActionConfirm } from "./ActionConfirm";
 type ActionConfirmProps = React.ComponentProps<typeof ActionConfirm>;
 
 const meta = {
-  title: "Components/Dialog/ActionConfirm",
+  title: "Components/Dialogs/ActionConfirm",
   component: ActionConfirm,
   parameters: {
     docs: {

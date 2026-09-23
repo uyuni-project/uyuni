@@ -1,15 +1,13 @@
-import { useState } from "react";
-
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { Dialog } from "./Dialog";
+import { Dialog as LegacyDialog } from "./LegacyDialog";
 import { ModalButton } from "./ModalButton";
 
 type ModalButtonProps = React.ComponentProps<typeof ModalButton>;
 
 const meta = {
-  title: "Components/Dialog/ModalButton",
+  title: "Components/Dialogs/ModalButton",
   component: ModalButton,
   parameters: {
     docs: {
@@ -20,6 +18,7 @@ const meta = {
     },
   },
   args: {
+    target: "modal-button-example",
     text: "Open Modal",
     className: "btn-default",
     disabled: false,
@@ -72,42 +71,29 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const ModalButtonWithDialog = (args: ModalButtonProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div style={{ padding: "20px" }}>
-      <ModalButton
-        {...args}
-        onClick={(item) => {
-          action("button clicked")(item);
-          setIsOpen(true);
-        }}
-      />
-      <Dialog
-        id="example-modal"
-        title="Example Modal"
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        content={
-          <div style={{ padding: "20px" }}>
-            <p>This is the modal content triggered by the ModalButton.</p>
-            <p>You can put any content here: forms, tables, images, etc.</p>
-          </div>
-        }
-        footer={
-          <div className="col-lg-12">
-            <div className="pull-right btn-group">
-              <button className="btn btn-default" onClick={() => setIsOpen(false)}>
-                {t("Close")}
-              </button>
-            </div>
-          </div>
-        }
-      />
-    </div>
-  );
-};
+const ModalButtonWithDialog = (args: ModalButtonProps) => (
+  <div style={{ padding: "20px" }}>
+    <ModalButton {...args} />
+    <LegacyDialog
+      id={args.target ?? "modal-button-example"}
+      title="Example Modal"
+      content={
+        <div style={{ padding: "20px" }}>
+          <p>This dialog is opened through the ModalButton target prop.</p>
+          <p>The target must match the ID of a legacy Bootstrap dialog.</p>
+        </div>
+      }
+      buttons={
+        <button
+          className="btn btn-default"
+          onClick={() => jQuery("#" + (args.target ?? "modal-button-example")).modal("hide")}
+        >
+          {t("Close")}
+        </button>
+      }
+    />
+  </div>
+);
 
 export const Playground: Story = {
   render: (args) => <ModalButtonWithDialog {...args} />,
@@ -171,58 +157,27 @@ export const DangerAction: Story = {
 };
 
 const MultipleButtonsComponent = () => {
-  const [openModal, setOpenModal] = useState<string | null>(null);
-
   return (
     <div style={{ padding: "20px", display: "flex", gap: "10px" }}>
-      <ModalButton
-        text="Modal A"
-        className="btn-default"
-        onClick={() => {
-          action("Modal A clicked")();
-          setOpenModal("modal-a");
-        }}
-      />
+      <ModalButton text="Modal A" className="btn-default" target="modal-a" onClick={action("Modal A clicked")} />
       <ModalButton
         text="Modal B"
         icon="fa-info"
         className="btn-info"
-        onClick={() => {
-          action("Modal B clicked")();
-          setOpenModal("modal-b");
-        }}
+        target="modal-b"
+        onClick={action("Modal B clicked")}
       />
       <ModalButton
         text="Modal C"
         icon="fa-cog"
         className="btn-primary"
-        onClick={() => {
-          action("Modal C clicked")();
-          setOpenModal("modal-c");
-        }}
+        target="modal-c"
+        onClick={action("Modal C clicked")}
       />
 
-      <Dialog
-        id="modal-a"
-        title="Modal A"
-        isOpen={openModal === "modal-a"}
-        onClose={() => setOpenModal(null)}
-        content={<div style={{ padding: "20px" }}>Content for Modal A</div>}
-      />
-      <Dialog
-        id="modal-b"
-        title="Modal B"
-        isOpen={openModal === "modal-b"}
-        onClose={() => setOpenModal(null)}
-        content={<div style={{ padding: "20px" }}>Content for Modal B</div>}
-      />
-      <Dialog
-        id="modal-c"
-        title="Modal C"
-        isOpen={openModal === "modal-c"}
-        onClose={() => setOpenModal(null)}
-        content={<div style={{ padding: "20px" }}>Content for Modal C</div>}
-      />
+      <LegacyDialog id="modal-a" title="Modal A" content={<div>Content for Modal A</div>} />
+      <LegacyDialog id="modal-b" title="Modal B" content={<div>Content for Modal B</div>} />
+      <LegacyDialog id="modal-c" title="Modal C" content={<div>Content for Modal C</div>} />
     </div>
   );
 };

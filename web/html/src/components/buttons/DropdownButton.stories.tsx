@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
+import { action } from "storybook/actions";
 
 import { DropdownButton } from "./index";
 
 const dropdownItems = [
-  <a className="dropdown-item" href="#edit" key="edit">
+  <button className="dropdown-item" type="button" key="edit" onClick={action("edit clicked")}>
     Edit
-  </a>,
-  <a className="dropdown-item" href="#duplicate" key="duplicate">
+  </button>,
+  <button className="dropdown-item" type="button" key="duplicate" onClick={action("duplicate clicked")}>
     Duplicate
-  </a>,
-  <button className="dropdown-item" type="button" key="archive">
+  </button>,
+  <button className="dropdown-item" type="button" key="archive" onClick={action("archive clicked")}>
     Archive
   </button>,
 ];
@@ -81,6 +82,11 @@ const meta = {
       table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
+  render: (args) => (
+    <div style={{ minHeight: "200px" }}>
+      <DropdownButton {...args} />
+    </div>
+  ),
 } satisfies Meta<typeof DropdownButton>;
 
 export default meta;
