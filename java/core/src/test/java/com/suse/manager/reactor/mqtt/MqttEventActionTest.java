@@ -18,10 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,8 +41,27 @@ public class MqttEventActionTest {
 
     @BeforeEach
     public void setUp() {
+        // MqttEventAction.execute() publishes through MqttEventHelper.publishAfterCommit(),
+        // which defers the publication to transaction completion when a Hibernate
+        // transaction is pending on this thread, and publishes synchronously when there is
+        // none. This test owns no database state and asserts on the synchronous path, so
+        // the outcome must not depend on whatever ran before it in the suite. Clear any
+        // session left behind on this thread rather than inheriting one.
+        if (HibernateFactory.inTransaction()) {
+            HibernateFactory.rollbackTransaction();
+        }
+        HibernateFactory.closeSession();
+
         mockPublisherService = new TestMqttPublisherService();
         mqttEventAction = new MqttEventAction(mockPublisherService);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        // The MqttPublisherService constructor registers itself as the global instance.
+        // Leaving it set would make every later test in the suite that reaches
+        // MqttEventHelper.publishAfterCommit(event) publish through this test's service.
+        MqttPublisherService.setInstance(null);
     }
 
     /**
