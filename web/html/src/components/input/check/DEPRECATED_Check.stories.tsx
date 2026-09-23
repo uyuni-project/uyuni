@@ -34,7 +34,7 @@ const StatefulCheckInForm = (args: DEPRECATED_CheckProps) => {
 };
 
 const meta = {
-  title: "Components/DEPRECATED/DEPRECATED_Check",
+  title: "Deprecated/Inputs/DEPRECATED_Check",
   component: DEPRECATED_Check,
   parameters: {
     docs: {

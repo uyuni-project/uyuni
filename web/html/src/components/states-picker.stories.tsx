@@ -83,7 +83,7 @@ const StatesPickerStory = (props: StatesPickerProps) => {
 };
 
 const meta = {
-  title: "Components/Data Display/StatesPicker",
+  title: "Compositions/Configuration/StatesPicker",
   component: StatesPicker,
   parameters: {
     layout: "fullscreen",

@@ -38,7 +38,7 @@ const StatefulSearchPanel = (props: SearchPanelProps) => {
 };
 
 const meta = {
-  title: "Components/Table/SearchPanel",
+  title: "Components/Tables/SearchPanel",
   component: SearchPanel,
   parameters: {
     docs: {

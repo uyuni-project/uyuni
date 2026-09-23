@@ -6,7 +6,7 @@ import { localizedMoment } from "utils";
 import { ActionSchedule } from "./action-schedule";
 
 const meta = {
-  title: "Components/Inputs/ActionSchedule",
+  title: "Compositions/Scheduling/ActionSchedule",
   component: ActionSchedule,
   parameters: {
     docs: {

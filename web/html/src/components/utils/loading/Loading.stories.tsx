@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { Loading, Spinner } from "./Loading";
 
 const meta = {
-  title: "Components/Utils/Loading",
+  title: "Components/Utilities/Loading",
   component: Loading,
   parameters: {
     docs: {

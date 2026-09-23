@@ -10,7 +10,7 @@ import { Utils } from "utils/functions";
 type FormProps = React.ComponentProps<typeof Form>;
 
 const meta = {
-  title: "Components/Form/FormikForm",
+  title: "Components/Forms/FormikForm",
   component: Form,
   parameters: {
     docs: {

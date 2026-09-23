@@ -6,7 +6,7 @@ import { action } from "storybook/actions";
 import { ModalEditButton } from "./ModalEditButton";
 
 const meta = {
-  title: "Components/Dialogs/ModalEditButton",
+  title: "Compositions/Editing/ModalEditButton",
   component: ModalEditButton,
   parameters: {
     docs: {

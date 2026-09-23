@@ -12,7 +12,7 @@ type NumericSearchFieldProps = {
 };
 
 const meta = {
-  title: "Components/Table/NumericSearchField",
+  title: "Components/Tables/NumericSearchField",
   component: NumericSearchField,
   decorators: [
     (Story) => (

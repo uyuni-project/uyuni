@@ -73,7 +73,7 @@ const nestedData: ServerNode[] = [
 ];
 
 const meta = {
-  title: "Components/Table/Table",
+  title: "Components/Tables/Table",
   component: Table,
   parameters: {
     docs: {

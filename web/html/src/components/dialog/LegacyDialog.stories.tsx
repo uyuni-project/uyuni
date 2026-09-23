@@ -10,7 +10,7 @@ import { Dialog } from "./LegacyDialog";
 type LegacyDialogProps = React.ComponentProps<typeof Dialog>;
 
 const meta = {
-  title: "Components/DEPRECATED/LegacyDialog",
+  title: "Deprecated/Dialogs/LegacyDialog",
   component: Dialog,
   parameters: {
     docs: {
