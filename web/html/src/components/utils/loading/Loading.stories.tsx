@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
-
 import { Loading, Spinner } from "./Loading";
 
 const meta = {
@@ -47,32 +45,6 @@ export const Playground: Story = {
   },
 };
 
-export const Default: Story = {
-  args: {
-    text: undefined,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Default loading indicator with standard 'Loading...' text.",
-      },
-    },
-  },
-};
-
-export const CustomText: Story = {
-  args: {
-    text: "Please wait while we process your request...",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Loading indicator with custom text for specific contexts.",
-      },
-    },
-  },
-};
-
 export const WithBorders: Story = {
   args: {
     text: "Loading data...",
@@ -99,41 +71,6 @@ export const SpinnerOnly: Story = {
     docs: {
       description: {
         story: "Standalone `Spinner` component for minimal loading indicators without text or borders.",
-      },
-    },
-  },
-};
-
-export const VariousContexts: Story = {
-  render: () => (
-    <StripedStorySection>
-      <StoryRow>
-        <div>
-          <h4>Fetching systems</h4>
-          <Loading text="Loading systems..." />
-        </div>
-      </StoryRow>
-      <StoryRow>
-        <div>
-          <h4>Processing</h4>
-          <Loading text="Processing configuration..." withBorders />
-        </div>
-      </StoryRow>
-      <StoryRow>
-        <div>
-          <h4>Minimal inline spinner</h4>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
-            <Spinner /> <span>Refreshing...</span>
-          </div>
-        </div>
-      </StoryRow>
-    </StripedStorySection>
-  ),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Loading indicators in different usage contexts.",
       },
     },
   },

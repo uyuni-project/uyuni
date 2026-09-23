@@ -49,47 +49,6 @@ export const Playground: Story = {
   },
 };
 
-export const SystemDetails: Story = {
-  args: {
-    url: "reference/systems/system-details.html",
-    text: "Learn more about system details",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Help link to system details documentation with custom tooltip text.",
-      },
-    },
-  },
-};
-
-export const DefaultTooltip: Story = {
-  args: {
-    url: "reference/admin/organizations.html",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Help link with default tooltip text "Help".',
-      },
-    },
-  },
-};
-
-export const QuickStart: Story = {
-  args: {
-    url: "quickstart/index.html",
-    text: "View quick start guide",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Help link to the quick start guide.",
-      },
-    },
-  },
-};
-
 export const InContext: Story = {
   render: () => (
     <StripedStorySection>
@@ -175,40 +134,6 @@ export const Variants: Story = {
     docs: {
       description: {
         story: "Different usage patterns for help links in various UI contexts.",
-      },
-    },
-  },
-};
-
-export const DocumentationLinks: Story = {
-  render: () => (
-    <StripedStorySection>
-      <StoryRow>
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-          <span>
-            Quick Start <HelpLink url="quickstart/index.html" />
-          </span>
-          <span>
-            Installation <HelpLink url="installation/index.html" />
-          </span>
-          <span>
-            Upgrade <HelpLink url="upgrade/index.html" />
-          </span>
-          <span>
-            Administration <HelpLink url="administration/index.html" />
-          </span>
-          <span>
-            API <HelpLink url="api/index.html" text="API documentation" />
-          </span>
-        </div>
-      </StoryRow>
-    </StripedStorySection>
-  ),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: "Collection of common documentation links.",
       },
     },
   },
