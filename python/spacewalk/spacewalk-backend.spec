@@ -482,14 +482,6 @@ fi
 %{python3rhnroot}/satellite_tools/download.py*
 %{python3rhnroot}/satellite_tools/ulnauth.py*
 %{python3rhnroot}/satellite_tools/appstreams.py*
-%dir %{python3rhnroot}/satellite_tools/disk_dumper
-%{python3rhnroot}/satellite_tools/disk_dumper/__init__.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/iss.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/iss_ui.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/iss_isos.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/iss_actions.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/dumper.py*
-%{python3rhnroot}/satellite_tools/disk_dumper/string_buffer.py*
 %dir %{python3rhnroot}/satellite_tools/repo_plugins
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/reposync
 %{python3rhnroot}/satellite_tools/repo_plugins/__init__.py*
@@ -498,17 +490,14 @@ fi
 %{python3rhnroot}/satellite_tools/repo_plugins/uln_src.py*
 %{python3rhnroot}/satellite_tools/repo_plugins/deb_src.py*
 %dir %{python3rhnroot}/satellite_tools/__pycache__/
-%dir %{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/
 %dir %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/
 %{python3rhnroot}/satellite_tools/__pycache__/*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/__init__.*
-%exclude %{python3rhnroot}/satellite_tools/__pycache__/geniso.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/connection.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
 %exclude %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
-%{python3rhnroot}/satellite_tools/disk_dumper/__pycache__/*
 %{python3rhnroot}/satellite_tools/repo_plugins/__pycache__/*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-charsets.8%{?ext_man}
@@ -531,25 +520,17 @@ fi
 %license LICENSE
 %dir %{python3rhnroot}/satellite_tools
 %{python3rhnroot}/satellite_tools/__init__.py*
-%{python3rhnroot}/satellite_tools/geniso.py*
 # A bunch of modules shared with satellite-tools
 %{python3rhnroot}/satellite_tools/connection.py*
 %{python3rhnroot}/satellite_tools/diskImportLib.py*
 %{python3rhnroot}/satellite_tools/syncLib.py*
 %{python3rhnroot}/satellite_tools/xmlDiskSource.py*
 %{python3rhnroot}/satellite_tools/xmlSource.py*
-%dir %{python3rhnroot}/satellite_tools/exporter
-%{python3rhnroot}/satellite_tools/exporter/__init__.py*
-%{python3rhnroot}/satellite_tools/exporter/exportLib.py*
-%{python3rhnroot}/satellite_tools/exporter/xmlWriter.py*
-%dir %{python3rhnroot}/satellite_tools/exporter/__pycache__/
 %{python3rhnroot}/satellite_tools/__pycache__/__init__.*
-%{python3rhnroot}/satellite_tools/__pycache__/geniso.*
 %{python3rhnroot}/satellite_tools/__pycache__/connection.*
 %{python3rhnroot}/satellite_tools/__pycache__/diskImportLib.*
 %{python3rhnroot}/satellite_tools/__pycache__/syncLib.*
 %{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
 %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
-%{python3rhnroot}/satellite_tools/exporter/__pycache__/*
 
 %changelog
