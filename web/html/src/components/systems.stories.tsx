@@ -1,3 +1,5 @@
+import { type MouseEvent, type ReactElement, cloneElement } from "react";
+
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { StoryRow, StripedStorySection } from "manager/storybook/layout";
@@ -51,14 +53,36 @@ const statuses = [
   "updates",
 ];
 
+type StoryLinkProps = {
+  href?: string | null;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
+};
+
+const preventStoryNavigation = (element: ReactElement<StoryLinkProps>) =>
+  element.props.href
+    ? cloneElement(element, {
+        onClick: (event: MouseEvent<HTMLAnchorElement>) => event.preventDefault(),
+      })
+    : element;
+
+const StoryStatusIndicator = ({ id, statusType, locked }: { id: number; statusType: string; locked: number }) => {
+  const indicator = statusDisplay({ id, statusType, locked }, true);
+  return cloneElement(
+    indicator,
+    undefined,
+    preventStoryNavigation(indicator.props.children[0]),
+    indicator.props.children[1]
+  );
+};
+
 const SystemIndicators = () => (
-  <div onClick={(event) => event.preventDefault()}>
+  <div>
     <StripedStorySection>
       <StoryRow>
         <h4>System identity indicators</h4>
         <div style={{ display: "grid", gap: "12px" }}>
           {identities.map((system) => (
-            <div key={system.id}>{iconAndName(system)}</div>
+            <div key={system.id}>{preventStoryNavigation(iconAndName(system) as ReactElement<StoryLinkProps>)}</div>
           ))}
         </div>
       </StoryRow>
@@ -67,7 +91,7 @@ const SystemIndicators = () => (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(180px, 1fr))", gap: "12px" }}>
           {statuses.map((statusType, index) => (
             <div key={statusType} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {statusDisplay({ id: 200 + index, statusType, locked: index === 6 ? 1 : 0 }, true)}
+              <StoryStatusIndicator id={200 + index} statusType={statusType} locked={index === 6 ? 1 : 0} />
               <span>{statusType}</span>
             </div>
           ))}
