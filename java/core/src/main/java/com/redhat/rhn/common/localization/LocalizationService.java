@@ -102,6 +102,9 @@ public class LocalizationService {
         // Get the list of configured classnames from the config file.
         String[] packages = Config.get().getStringArray(
                 ConfigDefaults.WEB_L10N_RESOURCEBUNDLES);
+        if (packages == null) {
+            packages = new String[]{};
+        }
         for (String packageIn : packages) {
             addKeysToMap(packageIn);
         }
