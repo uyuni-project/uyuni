@@ -1,0 +1,194 @@
+{
+    "action": "In general, a standard system update will make all the necessary changes.",
+    "cves": [
+        "CVE-2024-2511",
+        "CVE-2026-63072",
+        "CVE-2026-54874",
+        "CVE-2024-5535"
+    ],
+    "description": "USN-8678-1 fixed vulnerabilities in OpenSSL. This update provides the\ncorresponding fix for OpenSSL and OpenSSL 1.0 on Ubuntu 14.04 LTS,\nUbuntu 16.04 LTS, and Ubuntu 18.04 LTS.\n\nIn addition, this update also fixes the following issues that were\nnot previously addressed in those releases:\n\nIt was discovered that OpenSSL incorrectly handled TLS handshake\nmessage buffering. A remote attacker could possibly use this issue to\ncause OpenSSL to consume excessive memory, leading to a denial of\nservice. (LP: #2161371)\n\nIt was discovered that OpenSSL incorrectly handled session cache\nmanagement when processing TLSv1.3 sessions. A remote attacker could\npossibly use this issue to cause OpenSSL to consume excessive memory,\nleading to a denial of service. This issue only affected OpenSSL 1.1.1\non Ubuntu 18.04 LTS. (CVE-2024-2511)\n\nIt was discovered that OpenSSL incorrectly handled the SSL_select_next_proto\nfunction when called with an empty client protocol list. A remote attacker\ncould possibly use this issue to cause OpenSSL to disclose private memory\ncontents to the peer, leading to a loss of confidentiality. This issue\nonly affected Ubuntu 16.04 LTS and Ubuntu 18.04 LTS. (CVE-2024-5535)\n\nOriginal advisory details:\n\n It was discovered that OpenSSL incorrectly handled buffering of DTLS\n records for a future epoch. A remote attacker could possibly use this issue\n to cause OpenSSL to use excessive resources, leading to a denial of\n service. (CVE-2026-54874)\n\n It was discovered that OpenSSL incorrectly handled CMS key unwrapping. A\n remote attacker could possibly use this issue to cause a heap buffer\n overflow, leading to a denial of service or arbitrary code execution.\n (CVE-2026-63072)\n",
+    "id": "8678-2",
+    "isummary": "Several security issues were fixed in OpenSSL and OpenSSL 1.0.",
+    "releases": {
+        "bionic": {
+            "allbinaries": {
+                "libssl-dev": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "libssl-doc": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "libssl1.0-dev": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.0.0": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.1": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            },
+            "binaries": {
+                "libssl1.0.0": {
+                    "pocket": "esm-infra",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.1": {
+                    "pocket": "esm-infra",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl": {
+                    "pocket": "esm-infra",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "pocket": "esm-infra",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            },
+            "sources": {
+                "openssl": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            }
+        },
+        "focal": {
+            "allbinaries": {
+                "libssl-dev": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1f-1ubuntu2.24+esm5"
+                },
+                "libssl-doc": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1f-1ubuntu2.24+esm5"
+                },
+                "libssl1.1": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1f-1ubuntu2.24+esm5"
+                },
+                "openssl": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1f-1ubuntu2.24+esm5"
+                }
+            },
+            "sources": {
+                "openssl": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.1.1f-1ubuntu2.24+esm5"
+                }
+            }
+        },
+        "trusty": {
+            "allbinaries": {
+                "libssl-dev": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                },
+                "libssl-doc": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                },
+                "libssl1.0.0": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                },
+                "openssl": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                }
+            },
+            "binaries": {
+                "libssl1.0.0": {
+                    "pocket": "esm-infra-legacy",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                },
+                "openssl": {
+                    "pocket": "esm-infra-legacy",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                }
+            },
+            "sources": {
+                "openssl": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.0.1f-1ubuntu2.27+esm16"
+                }
+            }
+        },
+        "xenial": {
+            "allbinaries": {
+                "libssl-dev": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                },
+                "libssl-doc": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                },
+                "libssl1.0.0": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                },
+                "openssl": {
+                    "pocket": "esm-infra-legacy",
+                    "source": "openssl",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                }
+            },
+            "binaries": {
+                "libssl1.0.0": {
+                    "pocket": "esm-infra-legacy",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                },
+                "openssl": {
+                    "pocket": "esm-infra-legacy",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                }
+            },
+            "sources": {
+                "openssl": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.0.2g-1ubuntu4.20+esm18"
+                }
+            }
+        }
+    },
+    "summary": "openssl, openssl1.0 vulnerabilities",
+    "timestamp": 1787681733.443534,
+    "title": "OpenSSL, OpenSSL 1.0 vulnerabilities"
+}

@@ -1,0 +1,84 @@
+{
+    "action": "In general, a standard system update will make all the necessary changes.",
+    "cves": [
+        "CVE-2024-2511",
+        "CVE-2026-63072",
+        "CVE-2026-54874",
+        "CVE-2024-5535"
+    ],
+    "description": "USN-8678-1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet magna sed elit dictum feugiat a quis velit. Donec quis hendrerit eros. Donec auctor sem ut nunc aliquam maximus. Donec elementum vitae sapien eu dignissim. Ut eu sapien mattis, suscipit diam quis, aliquam nisi. Cras ac diam at arcu venenatis sollicitudin vel vitae ligula. Etiam porttitor ultricies nisl ut fringilla. Nunc quis odio eget lectus eleifend iaculis. Morbi tincidunt pellentesque tellus, at feugiat mauris malesuada eget. Integer egestas aliquet elementum. Donec nulla ante, congue ut lobortis eget, semper non mi. Sed gravida convallis dui in tempus. Quisque eu hendrerit magna. Nunc ante urna, consectetur quis augue vel, efficitur mattis massa.\n\nIn hac habitasse platea dictumst. Integer finibus, enim sed sodales molestie, lorem tortor mollis felis, eget tempor dui ante eleifend mi. Donec dolor ipsum, scelerisque ac ante tincidunt, mollis viverra sapien. Nunc nulla ex, molestie eget metus vitae, finibus ultricies nunc. Etiam fermentum ligula et est tempus, eget sagittis nibh iaculis. Proin commodo nec purus eu elementum. Vestibulum mollis convallis fermentum. Vivamus lobortis tempus orci quis efficitur. Pellentesque euismod fringilla est sed interdum. Pellentesque bibendum, tortor id aliquet interdum, orci odio lacinia tortor, nec tristique velit arcu vel urna.\n\nAenean cursus lacinia luctus. Aliquam quis vulputate tortor. Praesent nec urna metus. Fusce blandit risus ac maximus cursus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus quis iaculis lorem. Cras at consectetur felis, vitae mollis elit. Morbi ullamcorper ullamcorper vestibulum. Nam et suscipit elit. Nulla facilisi.\n\nMauris et quam quis massa fermentum ullamcorper. Praesent blandit odio eu ultrices suscipit. Etiam ut lobortis enim. Quisque cursus at lacus faucibus gravida. Phasellus interdum commodo leo, in accumsan diam dapibus vestibulum. Duis maximus lobortis justo ac maximus. Suspendisse eget risus luctus, sollicitudin sapien at, mollis erat. Phasellus tortor mi, volutpat ut sollicitudin sit amet, porta blandit est. Suspendisse luctus varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.\n\nInteger tristique est varius mi tempor, quis aliquet justo finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempus tellus dolor, vitae porta nisi sodales eget. Nulla facilisi. Vivamus sit amet tincidunt odio. Mauris luctus nulla in fermentum eleifend. Ut in risus commodo justo placerat auctor vitae non mauris. Proin turpis metus, suscipit in tellus vel, dictum feugiat metus. Nulla sodales, magna quis congue faucibus, nibh nulla imperdiet purus, vitae varius enim nibh vitae mi. Ut luctus nibh vel ipsum sagittis dictum. Etiam pellentesque, libero a convallis hendrerit, tortor nunc accumsan lorem, at condimentum orci purus eu lacus. Praesent gravida tortor ac risus sodales vehicula.\n\nAenean ut lorem eget dui ornare viverra. Integer eget eros et augue malesuada auctor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean orci tellus, imperdiet eget feugiat quis, suscipit et dui. Sed venenatis magna sed mi imperdiet posuere. Proin tristique dolor vitae nisi aliquam, nec vehicula metus euismod. Integer at orci ultrices, vulputate lacus a, mollis nunc.\n\nQuisque ac purus nibh. Vivamus congue lobortis dignissim. Quisque scelerisque, lectus at hendrerit sollicitudin, odio turpis porttitor mauris, in consectetur lorem dolor eu risus. Donec porta, nisi in facilisis commodo, velit quam pretium lorem, faucibus semper urna lorem in mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent accumsan, leo eget ullamcorper placerat, sapien odio placerat nisi, non lacinia sapien velit quis justo. Aenean accumsan ligula et neque mattis, maximus iaculis nisi pharetra. Nunc nibh lacus, venenatis at lobortis sed, placerat nec nibh. Cras vitae interdum massa, eu fringilla est. Pellentesque porttitor lectus eu tortor fermentum, quis scelerisque velit aliquam.\n\nDonec semper vestibulum nunc id fermentum. Vivamus facilisis metus sit amet purus fermentum, porttitor porttitor sapien suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec fermentum vitae urna nec auctor. Aliquam ut rutrum neque. Quisque quis rhoncus ex, quis porta massa. Nulla varius dapibus lacus quis finibus. Sed ultricies finibus dui vel consectetur. Phasellus ultrices turpis nisl, at porta odio vestibulum vel. Praesent non fermentum eros. Phasellus facilisis lorem nec justo commodo, ac vehicula purus fermentum. In urna eros, commodo non massa id, sodales sodales eros. Vestibulum sit amet purus et lorem lobortis pellentesque.\n\nQuisque et luctus ante. Nullam volutpat laoreet justo, id laoreet massa tincidunt vitae. Donec consequat velit ut nisl egestas dignissim. Quisque bibendum ipsum sit amet sem scelerisque ultricies. Vestibulum a nibh urna. Vivamus pretium turpis ac tortor faucibus hendrerit. Aliquam iaculis luctus dolor sit amet fringilla.\n\nInteger quis ligula tincidunt, lacinia ante ac, scelerisque purus. Suspendisse potenti. Cras turpis nulla, gravida quis placerat sed, interdum sed sapien. Donec efficitur volutpat leo, non efficitur nunc pretium nec. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec tempor lectus eget placerat hendrerit. Fusce nisl urna, volutpat sed aliquam nec, pellentesque in turpis. Vivamus euismod, est sit amet vestibulum pretium, urna est egestas enim, ac varius massa urna et nunc. Fusce ac felis erat. Morbi sollicitudin interdum mattis. Nulla convallis faucibus mauris ac accumsan. Donec feugiat sodales erat, sed faucibus ex scelerisque nec. Integer ultricies augue risus, in gravida magna commodo eget. Suspendisse bibendum elit nec urna porta justo.\n",
+    "id": "8678-2",
+    "isummary": "Several security issues were fixed in OpenSSL and OpenSSL 1.0.",
+    "releases": {
+        "bionic": {
+            "allbinaries": {
+                "libssl-dev": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "libssl-doc": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "libssl1.0-dev": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.0.0": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.1": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl": {
+                    "pocket": "esm-infra",
+                    "source": "openssl",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "pocket": "esm-infra",
+                    "source": "openssl1.0",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            },
+            "binaries": {
+                "libssl1.0.0": {
+                    "pocket": "esm-infra",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                },
+                "libssl1.1": {
+                    "pocket": "esm-infra",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl": {
+                    "pocket": "esm-infra",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "pocket": "esm-infra",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            },
+            "sources": {
+                "openssl": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.1.1-1ubuntu2.1~18.04.23+esm10"
+                },
+                "openssl1.0": {
+                    "description": "Secure Socket Layer (SSL) cryptographic library and tools",
+                    "version": "1.0.2n-1ubuntu5.13+esm6"
+                }
+            }
+        }
+    },
+    "summary": "openssl, openssl1.0 vulnerabilities",
+    "timestamp": 1787681733.443534,
+    "title": "OpenSSL, OpenSSL 1.0 vulnerabilities"
+}
