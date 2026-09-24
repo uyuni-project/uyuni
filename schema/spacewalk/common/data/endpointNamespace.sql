@@ -8646,8 +8646,18 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.bootstrap_by_proxy_fqdn' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/bootstrapByProxyFqdn' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.bootstrap_with_private_ssh_key' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/system/bootstrapWithPrivateSshKey' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.bootstrap_with_private_ssh_key_by_proxy_fqdn' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/system/bootstrapWithPrivateSshKeyByProxyFqdn' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep

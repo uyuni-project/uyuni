@@ -1233,6 +1233,35 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return the name of the primary FQDN, falling back to the hostname if none is known.
+     *
+     * This is used for connection from proxy or server to minion or child proxy (Salt SSH or monitoring)
+     *
+     * @return the primary FQDN name or the hostname
+     */
+    public String getPrimaryFqdnName() {
+        return Optional.ofNullable(findPrimaryFqdn())
+                .map(ServerFQDN::getName)
+                .orElseGet(this::getHostname);
+    }
+
+    /**
+     * Return the names of all FQDNs except the primary one, sorted alphabetically.
+     *
+     * These fqdns can be used for Salt and http repo connecions from minion or child proxy to (parent) proxy.
+     *
+     * @return the additional (non-primary) FQDN names
+     */
+    public List<String> getAdditionalFqdnNames() {
+        String primary = getPrimaryFqdnName();
+        return this.fqdns.stream()
+                .map(ServerFQDN::getName)
+                .filter(fqdnName -> !fqdnName.equals(primary))
+                .sorted()
+                .toList();
+    }
+
+    /**
      * @param fqdnName The FQDN to be obtained
      * @return The fqdn with the specified name
      */

@@ -110,6 +110,20 @@ public class MinionServer extends Server implements SaltConfigurable {
     }
 
     /**
+     * Return the name of the primary FQDN, falling back to the minion id if none is known.
+     *
+     * This is used for connection from proxy to minion for Salt SSH
+     *
+     * @return the primary FQDN name or the minion id
+     */
+    @Override
+    public String getPrimaryFqdnName() {
+        return Optional.ofNullable(findPrimaryFqdn())
+                .map(ServerFQDN::getName)
+                .orElseGet(this::getMinionId);
+    }
+
+    /**
      * Gets kernel live version.
      *
      * @return the kernel live version
@@ -315,8 +329,9 @@ public class MinionServer extends Server implements SaltConfigurable {
                 // the system is connected to a proxy
                 // check if serverPath already exists
                 Optional<ServerPath> path = ServerFactory.findServerPath(this, proxy.get());
-                if (path.isEmpty() || path.get().getPosition() != 0) {
-                    // proxy path does not exist -> create it
+                if (path.isEmpty() || path.get().getPosition() != 0 ||
+                        !path.get().getHostname().equals(hostname.orElse(proxy.get().getHostname()))) {
+                    // proxy path does not exist or hostname changed -> create it
                     Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(this, proxy.get(),
                                                  hostname.orElse(proxy.get().getHostname()));
                     getServerPaths().clear();

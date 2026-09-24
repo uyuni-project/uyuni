@@ -198,7 +198,7 @@ public class ProxyHandlerTest extends MockObjectTestCase {
                     with(equal(email)), with(equal("ROOT_CA")), with(equal(List.of("CA1", "CA2"))),
                     with(equal(new SSLCertPair("PROXY_CERT", "PROXY_KEY"))),
                     with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)),
-                    with(any(SSLCertManager.class)));
+                    with(any(SSLCertManager.class)), with(equal(List.of())));
             will(returnValue(dummyConfig));
         }});
 
@@ -225,7 +225,7 @@ public class ProxyHandlerTest extends MockObjectTestCase {
                     with(equal(new SSLCertPair("CACert", "CAKey"))), with(equal("CAPass")),
                     with(equal(new SSLCertData(proxy, List.of("cname1", "cname2"), "DE", "Bayern",
                             "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab"))),
-                    with(any(SSLCertManager.class)));
+                    with(any(SSLCertManager.class)), with(equal(List.of("cname1", "cname2"))));
             will(returnValue(dummyConfig));
         }});
 
@@ -233,6 +233,27 @@ public class ProxyHandlerTest extends MockObjectTestCase {
                 .containerConfig(user, proxy, 22, server,
                 2048, email, "CACert", "CAKey", "CAPass", List.of("cname1", "cname2"),
                 "DE", "Bayern", "Nurnberg", "ACME", "ACME Tests", "coyote@acme.lab");
+        assertEquals(dummyConfig, actual);
+    }
+
+    @Test
+    public void testContainerConfigNoSsl() throws Exception {
+        User user = UserTestUtils.createUser();
+        byte[] dummyConfig = "Dummy config".getBytes();
+        String server = "srv.acme.lab";
+        String proxy = "proxy.acme.lab";
+        String email = "admin@acme.lab";
+
+        SystemManager mockSystemManager = mock(SystemManager.class);
+        context().checking(new Expectations() {{
+            allowing(mockSystemManager).createProxyContainerConfig(
+                    with(equal(user)), with(equal(proxy)), with(equal(8022)), with(equal(server)), with(equal(2048L)),
+                    with(equal(email)), with(equal(List.of("extra1.acme.lab", "extra2.acme.lab"))));
+            will(returnValue(dummyConfig));
+        }});
+
+        byte[] actual = new ProxyHandler(xmlRpcSystemHelper, mockSystemManager, proxyConfigUpdateFacade)
+                .containerConfig(user, proxy, 8022, server, 2048, email, List.of("extra1.acme.lab", "extra2.acme.lab"));
         assertEquals(dummyConfig, actual);
     }
 

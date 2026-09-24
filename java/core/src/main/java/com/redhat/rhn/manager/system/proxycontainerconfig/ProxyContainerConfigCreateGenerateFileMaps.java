@@ -34,6 +34,7 @@ public class ProxyContainerConfigCreateGenerateFileMaps implements ProxyContaine
         context.getConfigMap().put("email", context.getEmail());
         context.getConfigMap().put("server_version", ConfigDefaults.get().getProductVersion());
         context.getConfigMap().put("proxy_fqdn", context.getProxyFqdn());
+        context.getConfigMap().put("additional_fqdns", context.getAdditionalFqdns());
         if (context.getRootCaCert() != null) {
             context.getConfigMap().put("ca_crt", context.getRootCaCert());
         }

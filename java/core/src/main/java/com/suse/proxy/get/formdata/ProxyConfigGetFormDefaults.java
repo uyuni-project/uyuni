@@ -15,6 +15,7 @@
 
 package com.suse.proxy.get.formdata;
 
+import static com.suse.proxy.ProxyConfigUtils.PARENT_FQDN_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_TAG;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE;
@@ -22,8 +23,10 @@ import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.notification.types.ManagerVersion;
+import com.redhat.rhn.domain.server.ServerPath;
 
 import java.util.Map;
 
@@ -52,6 +55,11 @@ public class ProxyConfigGetFormDefaults implements ProxyConfigGetFormDataContext
 
         proxyConfigAsMap.put(SOURCE_MODE_FIELD, SOURCE_MODE_RPM);
         proxyConfigAsMap.put(REGISTRY_MODE, REGISTRY_MODE_SIMPLE);
+
+        String parentFqdn = context.getServer().getFirstServerPath()
+                .map(ServerPath::getHostname)
+                .orElse(Config.get().getString(ConfigDefaults.SERVER_HOSTNAME));
+        proxyConfigAsMap.put(PARENT_FQDN_FIELD, parentFqdn);
 
         if (version.isUyuni()) {
             proxyConfigAsMap.put(REGISTRY_BASE_URL, DEFAULT_UYUNI_REGISTRY_URL);
