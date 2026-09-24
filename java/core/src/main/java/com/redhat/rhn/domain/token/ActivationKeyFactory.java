@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -33,6 +34,7 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.HashMap;
@@ -323,6 +325,62 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static ActivationKey lookupById(Long id, Org org) {
         return ActivationKeyFactory.lookupByToken(TokenFactory.lookup(id, org));
+    }
+
+    /**
+     * Add an activated server to an activation key
+     * @param key the activation key
+     * @param server the server
+     */
+    public static void addActivatedServer(ActivationKey key, Server server) {
+        if (key.getToken() == null || key.getToken().getActivatedServers().contains(server)) {
+            // Nothing to do
+            return;
+        }
+
+        // Perform a direct insert to avoid problems with stale state in multi-threading operations
+        Session session = getSession();
+        session.createNativeQuery("INSERT INTO rhnServerTokenRegs (token_id, server_id) VALUES (:tokenId, :serverId)")
+                .addSynchronizedEntityClass(Token.class)
+                .setParameter("tokenId", key.getToken().getId())
+                .setParameter("serverId", server.getId())
+                .executeUpdate();
+
+        if (session.contains(key)) {
+            // If object is attached to the session just refresh it
+            session.refresh(key);
+        }
+        else {
+            // Otherwise manually add the server
+            key.getToken().getActivatedServers().add(server);
+        }
+    }
+
+    /**
+     * Remove an activated server to an activation key
+     * @param key the activation key
+     * @param server the server
+     */
+    public static void removeActivatedServer(ActivationKey key, Server server) {
+        if (key.getToken() == null || !key.getToken().getActivatedServers().contains(server)) {
+            return;
+        }
+
+        Session session = getSession();
+        session.createNativeQuery("DELETE FROM rhnServerTokenRegs WHERE token_id = :tokenId AND server_id = :serverId")
+                .addSynchronizedEntityClass(Token.class)
+                .setParameter("tokenId", key.getToken().getId())
+                .setParameter("serverId", server.getId())
+                .executeUpdate();
+
+        if (session.contains(key)) {
+            // If object is attached to the session just refresh it
+            session.refresh(key);
+        }
+        else {
+            // Otherwise manually add the server
+            key.getToken().getActivatedServers().remove(server);
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2025 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -849,18 +849,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
                 // Remove relations to previously used activation keys
                 List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(minion);
-                keys.forEach(key -> {
-                    Set<Server> activatedServers = key.getToken().getActivatedServers();
-                    activatedServers.remove(minion);
-                });
+                keys.forEach(key -> ActivationKeyFactory.removeActivatedServer(key, minion));
 
                 // add reactivation event to server history
                 ServerHistoryEvent historyEvent = new ServerHistoryEvent();
                 historyEvent.setCreated(new Date());
                 historyEvent.setServer(minion);
                 historyEvent.setSummary("Server reactivated as Salt minion");
-                historyEvent.setDetails(
-                        "System type was changed from Management to Salt");
+                historyEvent.setDetails("System type was changed from Management to Salt");
                 minion.getHistory().add(historyEvent);
 
                 SystemManager.updateSystemOverview(minion.getId());
