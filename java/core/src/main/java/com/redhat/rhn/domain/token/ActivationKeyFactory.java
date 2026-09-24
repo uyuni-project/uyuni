@@ -357,12 +357,12 @@ public class ActivationKeyFactory extends HibernateFactory {
     }
 
     /**
-     * Remove an activated server to an activation key
+     * Remove an activated server from an activation key
      * @param key the activation key
      * @param server the server
      */
     public static void removeActivatedServer(ActivationKey key, Server server) {
-        if (key.getToken() == null || !key.getToken().getActivatedServers().contains(server)) {
+        if (key.getToken() == null) {
             return;
         }
 
@@ -378,7 +378,7 @@ public class ActivationKeyFactory extends HibernateFactory {
             session.refresh(key);
         }
         else {
-            // Otherwise manually add the server
+            // Otherwise manually remove the server
             key.getToken().getActivatedServers().remove(server);
         }
     }
