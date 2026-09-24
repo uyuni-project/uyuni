@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,14 +16,19 @@
 package com.redhat.rhn.domain.token;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -68,5 +74,40 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         activationKey.getToken().getActivatedServers().add(server);
         activationKeys = ActivationKeyFactory.lookupByActivatedServer(server);
         assertEquals(activationKey, activationKeys.get(0));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testAddActivatedServer(boolean clearSession) {
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        int initialActivatedServerCount = activationKey.getToken().getActivatedServers().size();
+        Server newServer = ServerFactoryTest.createTestServer(user, true);
+
+        if (clearSession) {
+            TestUtils.clearSession();
+        }
+
+        ActivationKeyFactory.addActivatedServer(activationKey, newServer);
+
+        assertEquals(initialActivatedServerCount + 1, activationKey.getToken().getActivatedServers().size());
+        assertTrue(activationKey.getToken().getActivatedServers().contains(newServer));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    public void testRemoveActivatedServer(boolean clearSession) {
+        ActivationKey activationKey = ActivationKeyFactory.createNewKey(user, "DEFAULT-KEY");
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        activationKey.getToken().getActivatedServers().add(server);
+        ActivationKeyFactory.save(activationKey);
+
+        if (clearSession) {
+            TestUtils.clearSession();
+        }
+
+        ActivationKeyFactory.removeActivatedServer(activationKey, server);
+
+        assertEquals(0, activationKey.getToken().getActivatedServers().size());
+        assertFalse(activationKey.getToken().getActivatedServers().contains(server));
     }
 }
