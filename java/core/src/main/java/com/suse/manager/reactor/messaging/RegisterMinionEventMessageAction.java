@@ -390,14 +390,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void reactivateSystem(String minionId, String machineId, String reActivationKey) {
         // The machine id may have changed, but we know from the reactivation key
         // which system should become this one
-        LOG.info("Reactivate '{}' with key '{}'", minionId, reActivationKey);
-        of(ActivationKeyFactory.lookupByKey(reActivationKey))
-                .flatMap(ak -> ak.getServer().asMinionServer())
+        Optional<ActivationKey> akOpt = of(ActivationKeyFactory.lookupByKey(reActivationKey));
+        LOG.debug("Reactivate '{}' with key id '{}'", minionId,
+                akOpt.map(ActivationKey::getId).orElse(0L));
+        akOpt.flatMap(ak -> ak.getServer().asMinionServer())
                 .ifPresentOrElse(minion -> {
                             minion.setMachineId(machineId);
                             minion.setMinionId(minionId);
                         },
-                        () -> LOG.warn("Reactivationkey '{}' did not point to a minion", reActivationKey)
+                        () -> LOG.warn("Reactivation key with id '{}' did not point to a minion",
+                                akOpt.map(ActivationKey::getId).orElse(0L))
                 );
     }
 
@@ -556,8 +558,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 "existing server organization. " + ignoreAKMessage);
             }
 
-            LOG.info("Register '{}' to Org '{}' with activation key '{}'. SSH: {} saltboot: {}", minionId,
-                    org.getName(), activationKey.map(ActivationKey::getKey).orElse(""), isSaltSSH, saltbootInitrd);
+            LOG.info("Register '{}' to Org '{}' with activation key id '{}'. SSH: {} saltboot: {}", minionId,
+                    org.getName(), activationKey.map(ActivationKey::getId).orElse(0L), isSaltSSH, saltbootInitrd);
 
             // Set creator to the user who accepted the key if available
             minion.setCreator(creator.orElse(null));
