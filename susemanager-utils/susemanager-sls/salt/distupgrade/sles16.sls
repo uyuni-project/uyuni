@@ -1,6 +1,6 @@
 {# SLES 16 Migration using Distribution Migration System (DMS) #}
 
-{% if grains['osfullname']|upper == 'SLES' and grains['osrelease'] == '15.7' %}
+{% if grains['osfullname']|upper in ['SLES', 'SLE_RT'] and grains['osrelease'] in ['15.5', '15.6', '15.7'] %}
 
 {% set is_s390x = grains['osarch'] == 's390x' %}
 
@@ -83,5 +83,5 @@ sles16_migration_reboot:
 {% else %}
 sles16_migration_error:
   test.fail_without_changes:
-    - name: "This state is only supported on SLES 15 SP7"
+    - name: "This state is only supported on SLES/SLE-RT 15 SP5, SP6 and SP7"
 {% endif %}

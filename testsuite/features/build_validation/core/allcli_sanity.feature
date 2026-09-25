@@ -291,6 +291,20 @@ Feature: Sanity checks
     And "liberty9_sshminion" should communicate with the server using public interface
     And the clock from "liberty9_sshminion" should be exact
 
+@liberty10_minion
+  Scenario: The Liberty 10 Salt minion is healthy
+    Then "liberty10_minion" should have a FQDN
+    And reverse resolution should work for "liberty10_minion"
+    And "liberty10_minion" should communicate with the server using public interface
+    And the clock from "liberty10_minion" should be exact
+
+@liberty10_sshminion
+  Scenario: The Liberty 10 Salt SSH minion is healthy
+    Then "liberty10_sshminion" should have a FQDN
+    And reverse resolution should work for "liberty10_sshminion"
+    And "liberty10_sshminion" should communicate with the server using public interface
+    And the clock from "liberty10_sshminion" should be exact
+
 @oracle9_minion
   Scenario: The Oracle 9 Salt minion is healthy
     Then "oracle9_minion" should have a FQDN
@@ -472,6 +486,20 @@ Feature: Sanity checks
     And reverse resolution should work for "debian13_sshminion"
     And "debian13_sshminion" should communicate with the server using public interface
     And the clock from "debian13_sshminion" should be exact
+
+@raspios13_minion
+  Scenario: The Raspberri Pi OS 13 minion is healthy
+    Then "raspios13_minion" should have a FQDN
+    And reverse resolution should work for "raspios13_minion"
+    And "raspios13_minion" should communicate with the server using public interface
+    And the clock from "raspios13_minion" should be exact
+
+@raspios13_sshminion
+  Scenario: The Raspberri Pi OS 13 Salt SSH minion is healthy
+    Then "raspios13_sshminion" should have a FQDN
+    And reverse resolution should work for "raspios13_sshminion"
+    And "raspios13_sshminion" should communicate with the server using public interface
+    And the clock from "raspios13_sshminion" should be exact
 
 @opensuse156arm_minion
   Scenario: The openSUSE 15.6 ARM minion is healthy

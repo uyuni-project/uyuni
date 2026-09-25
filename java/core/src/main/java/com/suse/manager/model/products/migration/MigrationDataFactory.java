@@ -250,13 +250,16 @@ public class MigrationDataFactory {
         String sourceClass = Optional.ofNullable(sourceBase.getChannelFamily())
                 .map(ChannelFamily::getLabel).orElse("");
         String targetClass = Optional.ofNullable(targetBase.getChannelFamily())
-                .map(ChannelFamily::getLabel).orElse("");
+                .map(ChannelFamily::getLabel)
+                .map(l -> l.replace("-BETA", ""))
+                .map(l -> l.replace("-ALPHA", ""))
+                .orElse("");
         // 2. Products must be in the same family (e.g., SLES to SLES)
         if (!sourceClass.equals(targetClass)) {
             return false;
         }
         // 3. Block SLES 15 -> 16 major jump (DMS is destructive, dry-run is technically impossible)
-        return !(sourceBase.isSles15() && targetBase.isSles16());
+        return !(sourceBase.isSle15() && targetBase.isSle16());
     }
 
     /**

@@ -1,0 +1,2 @@
+- Fix CLM stuck in building by waiting for
+  full DB commit in ActionExecutor
