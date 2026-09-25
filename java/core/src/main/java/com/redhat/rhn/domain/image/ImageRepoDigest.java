@@ -33,17 +33,23 @@ import jakarta.persistence.Table;
 @Table(name = "suseImageRepoDigest")
 public class ImageRepoDigest extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgrepodigest_seq")
+    @SequenceGenerator(name = "imgrepodigest_seq", sequenceName = "suse_img_repodigest_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "repo_digest")
     private String repoDigest;
+
+    @ManyToOne
+    @JoinColumn(name = "image_info_id")
     private ImageInfo imageInfo;
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgrepodigest_seq")
-    @SequenceGenerator(name = "imgrepodigest_seq", sequenceName = "suse_img_repodigest_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -58,7 +64,6 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * @return the repo digest
      */
-    @Column(name = "repo_digest")
     public String getRepoDigest() {
         return repoDigest;
     }
@@ -73,8 +78,6 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * @return the build history
      */
-    @ManyToOne
-    @JoinColumn(name = "image_info_id")
     public ImageInfo getImageInfo() {
         return imageInfo;
     }

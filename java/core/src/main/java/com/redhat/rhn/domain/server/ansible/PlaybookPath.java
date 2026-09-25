@@ -21,7 +21,6 @@ import java.nio.file.Path;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 /**
  * Ansible Playbook path
@@ -47,7 +46,6 @@ public class PlaybookPath extends AnsiblePath {
     }
 
     @Override
-    @Transient
     public Type getEntityType() {
         return Type.PLAYBOOK;
     }

@@ -36,10 +36,23 @@ import jakarta.persistence.Table;
 @Table(name = "suseScapTailoringFile")
 public class TailoringFile extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "file_name")
     private String fileName;
+
+    @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org org;
 
     /**
@@ -61,9 +74,6 @@ public class TailoringFile extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -78,7 +88,6 @@ public class TailoringFile extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -93,7 +102,6 @@ public class TailoringFile extends BaseDomainHelper {
     /**
      * @return the fileName
      */
-    @Column(name = "file_name")
     public String getFileName() {
         return fileName;
     }
@@ -108,7 +116,6 @@ public class TailoringFile extends BaseDomainHelper {
     /**
      * @return the description
      */
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -123,8 +130,6 @@ public class TailoringFile extends BaseDomainHelper {
     /**
      * @return the organization
      */
-    @ManyToOne
-    @JoinColumn(name = "org_id")
     public Org getOrg() {
         return org;
     }

@@ -37,7 +37,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -48,19 +47,29 @@ import jakarta.persistence.Transient;
 @Table(name = "suseSCCRepositoryAuth")
 public abstract class SCCRepositoryAuth extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccrepository_seq")
+    @SequenceGenerator(name = "sccrepository_seq", sequenceName = "suse_sccrepository_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repo_id", nullable = false)
     private SCCRepository repo;
+
+    @ManyToOne(targetEntity = BaseCredentials.class)
+    @JoinColumn(name = "credentials_id", nullable = true)
     private Credentials credentials;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "source_id")
     private ContentSource contentSource;
 
     /**
      * Gets the id.
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccrepository_seq")
-    @SequenceGenerator(name = "sccrepository_seq", sequenceName = "suse_sccrepository_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -77,8 +86,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials or null in case of fromdir
      */
-    @ManyToOne(targetEntity = BaseCredentials.class)
-    @JoinColumn(name = "credentials_id", nullable = true)
     protected Credentials getCredentials() {
         return credentials;
     }
@@ -88,7 +95,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      *  an Optional.empty() is returned
      * @return the credentials or empty
      */
-    @Transient
     public Optional<RemoteCredentials> getOptionalCredentials() {
         return Optional.ofNullable(credentials).flatMap(c -> c.castAs(RemoteCredentials.class));
     }
@@ -104,8 +110,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     /**
      * @return the contentSource
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "source_id")
     public ContentSource getContentSource() {
         return contentSource;
     }
@@ -120,8 +124,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repo_id", nullable = false)
     public SCCRepository getRepo() {
         return repo;
     }
@@ -137,7 +139,6 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * return url with authentication parameters
      * @return the url
      */
-    @Transient
     public abstract String getUrl();
 
     /**

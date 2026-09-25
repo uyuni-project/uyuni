@@ -25,7 +25,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.RHUI)
@@ -34,16 +33,17 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     protected RHUICredentials() {
     }
 
+    @Column(name = "extra_auth")
     private byte[] extraAuthData;
+
+    @Column(name = "payg_ssh_data_id")
     private Long paygSshDataId;
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.RHUI;
     }
 
-    @Column(name = "extra_auth")
     @Override
     public byte[] getExtraAuthData() {
         return extraAuthData;
@@ -54,7 +54,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
         this.extraAuthData = extraAuthDataIn;
     }
 
-    @Column(name = "payg_ssh_data_id")
     protected Long getPaygSshDataId() {
         return paygSshDataId;
     }
@@ -64,7 +63,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     }
 
     @Override
-    @Transient
     public PaygSshData getPaygSshData() {
         if (paygSshDataId == null) {
             return null;
@@ -74,7 +72,6 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
     }
 
     @Override
-    @Transient
     public void setPaygSshData(PaygSshData paygSshDataIn) {
         this.paygSshDataId = paygSshDataIn != null ? paygSshDataIn.getId() : null;
     }

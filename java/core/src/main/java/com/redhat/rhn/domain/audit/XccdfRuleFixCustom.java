@@ -42,14 +42,38 @@ import jakarta.persistence.Table;
 @Table(name = "suseXccdfRuleFixCustom")
 public class XccdfRuleFixCustom {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rule_fix_id", nullable = false)
     private XccdfRuleFix ruleFix;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(name = "custom_remediation_bash")
     private String customRemediationBash;
+
+    @Column(name = "custom_remediation_salt")
     private String customRemediationSalt;
+
+    @Column(name = "created")
     private Date created;
+
+    @Column(name = "modified")
     private Date modified;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
     private User createdBy;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "modified_by")
     private User modifiedBy;
 
     /**
@@ -62,9 +86,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -79,8 +100,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the ruleFix
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rule_fix_id", nullable = false)
     public XccdfRuleFix getRuleFix() {
         return ruleFix;
     }
@@ -95,8 +114,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the org
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "org_id", nullable = false)
     public Org getOrg() {
         return org;
     }
@@ -111,7 +128,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the customRemediationBash
      */
-    @Column(name = "custom_remediation_bash")
     public String getCustomRemediationBash() {
         return customRemediationBash;
     }
@@ -126,7 +142,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the customRemediationSalt
      */
-    @Column(name = "custom_remediation_salt")
     public String getCustomRemediationSalt() {
         return customRemediationSalt;
     }
@@ -141,7 +156,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the created
      */
-    @Column(name = "created")
     public Date getCreated() {
         return created;
     }
@@ -156,7 +170,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the modified
      */
-    @Column(name = "modified")
     public Date getModified() {
         return modified;
     }
@@ -171,8 +184,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the createdBy
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
     public User getCreatedBy() {
         return createdBy;
     }
@@ -187,8 +198,6 @@ public class XccdfRuleFixCustom {
     /**
      * @return the modifiedBy
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "modified_by")
     public User getModifiedBy() {
         return modifiedBy;
     }

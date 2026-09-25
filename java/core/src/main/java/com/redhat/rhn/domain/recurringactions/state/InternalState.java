@@ -33,8 +33,14 @@ import jakarta.persistence.Table;
 @Table(name = "suseInternalState")
 public class InternalState implements Serializable {
 
+
+    @Id
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String label;
 
     /**
@@ -42,7 +48,6 @@ public class InternalState implements Serializable {
      *
      * @return the id
      */
-    @Id
     public Long getId() {
         return id;
     }
@@ -61,7 +66,6 @@ public class InternalState implements Serializable {
      *
      * @return the name
      */
-    @Column
     public String getName() {
         return name;
     }
@@ -80,7 +84,6 @@ public class InternalState implements Serializable {
      *
      * @return the label
      */
-    @Column
     public String getLabel() {
         return label;
     }

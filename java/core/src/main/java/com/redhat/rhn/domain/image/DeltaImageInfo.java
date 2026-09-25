@@ -35,17 +35,27 @@ import jakarta.persistence.Table;
 @Table(name = "suseDeltaImageInfo")
 public class DeltaImageInfo extends BaseDomainHelper {
 
+
+    @Id
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "source_image_id", nullable = false)
     private ImageInfo sourceImageInfo;
+
+    @Id
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_image_id", nullable = false)
     private ImageInfo targetImageInfo;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pillar_id")
     private Pillar pillar;
+
+    @Column(name = "file")
     private String file;
 
     /**
      * @return the source image info
      */
-    @Id
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "source_image_id", nullable = false)
     public ImageInfo getSourceImageInfo() {
         return sourceImageInfo;
     }
@@ -60,9 +70,6 @@ public class DeltaImageInfo extends BaseDomainHelper {
     /**
      * @return the target image info
      */
-    @Id
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "target_image_id", nullable = false)
     public ImageInfo getTargetImageInfo() {
         return targetImageInfo;
     }
@@ -78,7 +85,6 @@ public class DeltaImageInfo extends BaseDomainHelper {
     /**
      * @return the file
      */
-    @Column(name = "file")
     public String getFile() {
         return file;
     }
@@ -93,8 +99,6 @@ public class DeltaImageInfo extends BaseDomainHelper {
     /**
      * @return the pillar
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pillar_id")
     public Pillar getPillar() {
         return pillar;
     }

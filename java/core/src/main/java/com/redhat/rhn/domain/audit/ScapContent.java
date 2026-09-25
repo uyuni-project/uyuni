@@ -33,10 +33,22 @@ import jakarta.persistence.Table;
 @Table(name = "suseScapContent")
 public class ScapContent extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "datastream_file_name")
     private String dataStreamFileName;
+
+    @Column(name = "xccdf_file_name")
     private String xccdfFileName;
+
+    @Column(name = "description")
     private String description;
 
     /**
@@ -49,9 +61,6 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -66,7 +75,6 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -81,7 +89,6 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * @return the dataStreamFileName
      */
-    @Column(name = "datastream_file_name")
     public String getDataStreamFileName() {
         return dataStreamFileName;
     }
@@ -96,7 +103,6 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * @return the xccdfFileName
      */
-    @Column(name = "xccdf_file_name")
     public String getXccdfFileName() {
         return xccdfFileName;
     }
@@ -111,7 +117,6 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * @return the description
      */
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }

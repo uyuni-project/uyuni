@@ -35,14 +35,38 @@ import jakarta.persistence.Table;
 @Table(name = "suseContentEnvironmentDiff")
 public class ContentEnvironmentDiff extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private ContentProject project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "env_id")
     private ContentEnvironment environment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
+
+    @Column(name = "diff_action")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.DiffActionEnumType.class)
     private DiffAction action;
+
+    @Column(name = "entry_id")
     private long entryId;
+
+    @Column(name = "entry_type")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType.class)
     private EntryType entryType;
+
+    @Column(name = "entry_name")
     private String entryName;
+
+    @Column(name = "entry_description")
     private String entryDescription;
 
     /**
@@ -75,8 +99,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         entryDescription = entryDescriptionIn;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -85,8 +107,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         id = idIn;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     public ContentProject getProject() {
         return project;
     }
@@ -95,8 +115,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         project = projectIn;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "env_id")
     public ContentEnvironment getEnvironment() {
         return environment;
     }
@@ -105,8 +123,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         environment = environmentIn;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "channel_id")
     public Channel getChannel() {
         return channel;
     }
@@ -115,8 +131,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         channel = channelIn;
     }
 
-    @Column(name = "diff_action")
-    @Type(value = com.redhat.rhn.domain.contentmgmt.DiffActionEnumType.class)
     public DiffAction getAction() {
         return action;
     }
@@ -125,7 +139,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         action = actionIn;
     }
 
-    @Column(name = "entry_id")
     public long getEntryId() {
         return entryId;
     }
@@ -134,8 +147,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         entryId = entryIdIn;
     }
 
-    @Column(name = "entry_type")
-    @Type(value = com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType.class)
     public EntryType getEntryType() {
         return entryType;
     }
@@ -144,7 +155,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         entryType = entryTypeIn;
     }
 
-    @Column(name = "entry_name")
     public String getEntryName() {
         return entryName;
     }
@@ -153,7 +163,6 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
         entryName = entryNameIn;
     }
 
-    @Column(name = "entry_description")
     public String getEntryDescription() {
         return entryDescription;
     }

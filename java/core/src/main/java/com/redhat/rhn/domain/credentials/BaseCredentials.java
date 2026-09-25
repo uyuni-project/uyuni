@@ -45,8 +45,18 @@ import jakarta.persistence.Table;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class BaseCredentials extends BaseDomainHelper implements Credentials {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_credentials_seq")
+    @SequenceGenerator(name = "suse_credentials_seq", sequenceName = "suse_credentials_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "type", updatable = false, insertable = false)
     private String internalType;
 
     /**
@@ -54,10 +64,6 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
      * @return id
      */
     @Override
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_credentials_seq")
-    @SequenceGenerator(name = "suse_credentials_seq", sequenceName = "suse_credentials_id_seq", allocationSize = 1)
     public Long getId() {
         return this.id;
     }
@@ -76,8 +82,6 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
      * @return user
      */
     @Override
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     public User getUser() {
         return this.user;
     }
@@ -91,7 +95,6 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
         this.user = userIn;
     }
 
-    @Column(name = "type", updatable = false, insertable = false)
     protected String getInternalType() {
         return internalType;
     }

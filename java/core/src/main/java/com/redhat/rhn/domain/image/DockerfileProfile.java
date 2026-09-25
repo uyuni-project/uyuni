@@ -32,12 +32,13 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("dockerfile")
 public class DockerfileProfile extends ImageProfile {
 
+
+    @Column(name = "path")
     private String path;
 
     /**
      * @return the path
      */
-    @Column(name = "path")
     public String getPath() {
         return path;
     }

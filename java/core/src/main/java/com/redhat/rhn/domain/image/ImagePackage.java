@@ -43,18 +43,32 @@ import jakarta.persistence.Table;
 @Table(name = "suseImageInfoPackage")
 public class ImagePackage implements Comparable<ImagePackage>, Serializable {
 
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "name_id")
     private PackageName name;
+
+    @ManyToOne
+    @JoinColumn(name = "package_arch_id")
     private PackageArch arch;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id")
     private ImageInfo imageInfo;
+
+    @Column(name = "installtime")
     private Date installTime;
 
     /**
      * @return imageInfo
      */
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_info_id")
     public ImageInfo getImageInfo() {
         return imageInfo;
     }
@@ -69,8 +83,6 @@ public class ImagePackage implements Comparable<ImagePackage>, Serializable {
     /**
      * @return Returns the arch.
      */
-    @ManyToOne
-    @JoinColumn(name = "package_arch_id")
     public PackageArch getArch() {
         return arch;
     }
@@ -85,9 +97,6 @@ public class ImagePackage implements Comparable<ImagePackage>, Serializable {
     /**
      * @return Returns the evr.
      */
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "evr_id")
     public PackageEvr getEvr() {
         return evr;
     }
@@ -102,9 +111,6 @@ public class ImagePackage implements Comparable<ImagePackage>, Serializable {
     /**
      * @return Returns the name.
      */
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "name_id")
     public PackageName getName() {
         return name;
     }
@@ -120,7 +126,6 @@ public class ImagePackage implements Comparable<ImagePackage>, Serializable {
      * Getter for installTime
      * @return Date when package was installed (as reported by rpm database).
      */
-    @Column(name = "installtime")
     public Date getInstallTime() {
         return this.installTime;
     }
