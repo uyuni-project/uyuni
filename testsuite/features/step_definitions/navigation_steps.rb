@@ -20,6 +20,15 @@ Then(/^I should not see a "(.*)" text in the content area$/) do |text|
   end
 end
 
+Then(/^I should (not )?see the "(.*)" alert (danger|warning)$/) do |negative, message, alert_type|
+  selector = "div.alert.alert-#{alert_type}"
+  if negative
+    raise ScriptError, "Alert #{alert_type} '#{message}' found" unless has_no_css?(selector, text: message)
+  else
+    raise ScriptError, "Alert #{alert_type} '#{message}' not found" unless has_css?(selector, text: message)
+  end
+end
+
 When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |link, item|
   within(:xpath, "//tr[td[contains(.,'#{item}')]]") do
     click_link_or_button_and_wait(link)
