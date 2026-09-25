@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 10:16+0200\n"
-"PO-Revision-Date: 2026-04-08 16:04+0000\n"
+"POT-Creation-Date: 2026-09-25 15:16+0200\n"
+"PO-Revision-Date: 2026-09-18 11:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer %s existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "No s'han pogut desar les claus exportades al fitxer: {}"
 
@@ -1266,7 +1265,6 @@ msgid "Exporting cc %s to %s"
 msgstr "S'està exportant el cc %s a %s"
 
 #: ../src/spacecmd/configchannel.py:1366
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
@@ -1588,7 +1586,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "ús: clau custominfodetails..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "No hi ha cap clau que coincideixi amb l'argument «{}»."
 
@@ -3651,7 +3648,6 @@ msgstr "No s'ha trobat cap organització per al nom %s"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització «{}»"
 
@@ -3681,7 +3677,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "No s'ha trobat l'organització «{}» per a la qual confiar"
 
@@ -3715,7 +3710,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització de confiança «{}»"
 
@@ -4013,6 +4007,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxycontainerconfig: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:46
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4059,6 +4054,7 @@ msgid "proxy_container_config_nossl: create a proxy system and return its config
 msgstr "proxy_container_config_nossl: crea un sistema d'intermediari i retorna el fitxer de configuració sense certificat SSL"
 
 #: ../src/spacecmd/proxy.py:119
+#, python-format
 msgid ""
 "usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4095,6 +4091,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxycontainerconfiggeneratecert: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:174
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4197,7 +4194,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "Clau del client SSL del repositori: %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "No s'ha trobat cap repositori per a la consulta «{}»"
 
@@ -4418,7 +4414,6 @@ msgid "%s  # Systems"
 msgstr "%s   Sistemes"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "No s'ha trobat cap errata per a «{}»"
 
@@ -4843,7 +4838,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "Si no es proporciona cap data, es suprimiran totes les accions arxivades"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "Voleu suprimir ({}) accions arxivades? [s/N]"
 
@@ -4864,7 +4858,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "Si no es proporciona cap data, s'arxivaran totes les accions completades"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "Voleu arxivar ({}) accions completades? [s/N]"
 
@@ -4978,22 +4971,16 @@ msgid "softwarechannel_list: List all available software channels"
 msgstr "softwarechannellist: Llista tots els canals de programari disponibles"
 
 #: ../src/spacecmd/softwarechannel.py:62
-#, fuzzy
-#| msgid ""
-#| "usage: softwarechannel_list [options]')\n"
-#| "options:\n"
-#| "  -v verbose (display label and summary)\n"
-#| "  -t tree view (pretty-print(child-channels))\n"
 msgid ""
 "usage: softwarechannel_list [options]\n"
 "options:\n"
 "  -v verbose (display label and summary)\n"
 "  -t tree view (pretty-print(child-channels))\n"
 msgstr ""
-"ús: softwarechannellist [opcions]')\n"
+"ús: softwarechannel_list [opcions]\n"
 "opcions:\n"
-"  -v verbose (etiqueta de visualització i resum)\n"
-"  -t vista en arbre (pretty-print(child-channels))\n"
+"  -v detallat (mostra l'etiqueta i el resum)\n"
+"  -t vista d'arbre (formatat visual dels canals subordinats)\n"
 
 #: ../src/spacecmd/softwarechannel.py:120
 msgid "softwarechannel_listmanageablechannels: List all software channels"
@@ -5018,19 +5005,14 @@ msgid "softwarechannel_listbasechannels: List all base software channels"
 msgstr "softwarechannellistbasechannels: Llista tots els canals de programari base"
 
 #: ../src/spacecmd/softwarechannel.py:167
-#, fuzzy
-#| msgid ""
-#| "usage: softwarechannel_listbasechannels [options])\n"
-#| "options:\n"
-#| "  -v verbose (display label and summary)"
 msgid ""
 "usage: softwarechannel_listbasechannels [options]\n"
 "options:\n"
 "  -v verbose (display label and summary)"
 msgstr ""
-"ús: softwarechannellistbasechannels [opcions])\n"
+"ús: softwarechannel_listbasechannels [opcions]\n"
 "opcions:\n"
-"  -v verbose (etiqueta de visualització i resum)"
+"  -v detallat (mostra l'etiqueta i el resum)"
 
 #: ../src/spacecmd/softwarechannel.py:196
 msgid "softwarechannel_listchildchannels: List child software channels"
@@ -5106,21 +5088,7 @@ msgid "softwarechannel_setdetails: Modify details of a software channel"
 msgstr "softwarechannelsetdetails: modifica els detalls d'un canal de programari"
 
 #: ../src/spacecmd/softwarechannel.py:421
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: softwarechannel_setdetails [options] <CHANNEL ...>)\n"
-#| "\n"
-#| "options, at least one of which must be given:\n"
-#| "  -n NAME\n"
-#| "  -d DESCRIPTION\n"
-#| "  -s SUMMARY\n"
-#| "  -c CHECKSUM %s\n"
-#| "  -m MAINTAINER_NAME\n"
-#| "  -e MAINTAINER_EMAIL\n"
-#| "  -p MAINTAINER_PHONE\n"
-#| "  -u GPG_URL\n"
-#| "  -i GPG_ID\n"
-#| "  -f GPG_FINGERPRINT"
+#, python-format
 msgid ""
 "usage: softwarechannel_setdetails [options] <CHANNEL ...>\n"
 "\n"
@@ -5136,19 +5104,19 @@ msgid ""
 "  -i GPG_ID\n"
 "  -f GPG_FINGERPRINT"
 msgstr ""
-"ús: softwarechannelsetdetails [opcions] <CHANNEL ...>)\n"
+"ús: softwarechannel_setdetails [opcions] <CANAL ...>\n"
 "\n"
-"opcions, almenys una de les quals s'ha de donar:\n"
+"opcions (se n'ha d'especificar almenys una):\n"
 "  -n NOM\n"
 "  -d DESCRIPCIÓ\n"
 "  -s RESUM\n"
-"  -c CHECKSUM %s\n"
-"  -m NOMMANTENIDOR\n"
-"  -e MAINTAINEREMAIL\n"
-"  -p MANTENIDOR\n"
-"  -u GPGURL\n"
-"  -i GPGID\n"
-"  -f GPGFINGERPRINT"
+"  -c SUMA_DE_VERIFICACIÓ %s\n"
+"  -m NOM_DEL_MANTENIDOR\n"
+"  -e CORREU_DEL_MANTENIDOR\n"
+"  -p TELÈFON_DEL_MANTENIDOR\n"
+"  -u URL_GPG\n"
+"  -i ID_GPG\n"
+"  -f EMPREMTA_GPG"
 
 #: ../src/spacecmd/softwarechannel.py:483
 msgid "At least one attribute to set must be given"
@@ -5360,6 +5328,8 @@ msgid ""
 "\n"
 "WARNING: If you are removing a Base channel, keep in mind that Activation Keys linked to this base channel will also get removed!"
 msgstr ""
+"\n"
+"AVÍS: si elimineu un canal base, tingueu en compte que les claus d'activació vinculades a aquest canal base també se suprimiran!"
 
 #: ../src/spacecmd/softwarechannel.py:825
 msgid "softwarechannel_update: Update a software channel"
@@ -6160,12 +6130,10 @@ msgid "merging errata from softwarechannel "
 msgstr "fusionant errata des del canal de programari "
 
 #: ../src/spacecmd/softwarechannel.py:2894
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} no conté cap errata que no estigui present a {}"
 
 #: ../src/spacecmd/softwarechannel.py:2902
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "errata a afegir al canal {}: "
 
@@ -6179,7 +6147,6 @@ msgid " errata to  "
 msgstr " errata a  "
 
 #: ../src/spacecmd/softwarechannel.py:2918
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "Realitza aquests canvis al canal {} [y/N]:"
 
@@ -7421,10 +7388,9 @@ msgstr ""
 "  -s HORA D'INICI"
 
 #: ../src/spacecmd/system.py:3259
-#, fuzzy, python-format
-#| msgid "Can't find system ID for %s"
+#, python-format
 msgid "Could not find system IDs for: %s"
-msgstr "No es pot trobar l'ID del sistema per a %s"
+msgstr "No s'han pogut trobar els identificadors de sistema per a: %s"
 
 #: ../src/spacecmd/system.py:3301 ../src/spacecmd/system.py:3329
 msgid "This method is deprecated and will be removed in a future API version. Please use system_listeventhistory instead.\n"
@@ -8064,7 +8030,6 @@ msgstr "El servidor no admet claus de reactivació en temps d'arrencada"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:4974
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "S'està arrencant «{}». Això pot trigar una estona."
 
@@ -8078,13 +8043,11 @@ msgstr "system_needrebootafterupdate: mostra si caldria reiniciar si s'apliquess
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5064
-#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "Cal reiniciar el sistema {} després de l'actualització"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5073
-#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "No cal reiniciar el sistema {} després d'aplicar-hi les actualitzacions disponibles"
 
@@ -8436,7 +8399,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "S'omet l'ús de cadenes comunes: el nombre de subcadenes difereix"
 
 #: ../src/spacecmd/utils.py:993
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "El paràmetre {} no és un tipus de cadena, sinó {}."
 
