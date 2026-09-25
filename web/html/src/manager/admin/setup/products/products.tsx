@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { DEPRECATED_Select, Form } from "components/input";
+import { Check, DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -22,9 +22,9 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
-import { getProductSelectionState } from "./product-check/product-selection.utils";
+import { getProductSelectionState, getSelectionSummary } from "./product-check/product-selection.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
-import { searchCriteriaInExtension } from "./products.utils";
+import { filterProducts, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
@@ -473,6 +473,8 @@ class ProductsState {
   popupItem: null | unknown = null;
   archCriteria: any[] = [];
   visibleSubList: any[] = [];
+  showInstalledOnly = false;
+  showSelectedOnly = false;
 }
 
 /**
@@ -485,13 +487,6 @@ class Products extends Component<ProductsProps, ProductsState> {
     return Array.from(new Set(data.map((item) => item.arch)))
       .filter(Boolean) // Some items don't have an arch set so pick those out
       .sort();
-  };
-
-  filterDataByArch = (data: any[]) => {
-    if (this.state.archCriteria.length > 0) {
-      return data.filter((p) => this.state.archCriteria.includes(p.arch));
-    }
-    return data;
   };
 
   handleSelectedItems = (items) => {
@@ -550,13 +545,43 @@ class Products extends Component<ProductsProps, ProductsState> {
         </Form>
       </div>
     );
+
+    const installedFilter = (
+      <div className="d-flex align-items-center me-5">
+        <span className="me-3 mb-1">{t("Filter by:")}</span>
+        <span className="me-4">
+          <Check
+            id="show-installed-only"
+            checked={this.state.showInstalledOnly}
+            onChange={(showInstalledOnly) => this.setState({ showInstalledOnly })}
+            label={t("Installed")}
+          />
+        </span>
+        <span>
+          <Check
+            id="show-selected-only"
+            checked={this.state.showSelectedOnly}
+            onChange={(showSelectedOnly) => this.setState({ showSelectedOnly })}
+            label={t("Selected")}
+          />
+        </span>
+      </div>
+    );
     return (
       <div>
         <CustomDataHandler
-          data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
+          data={this.buildRows(
+            filterProducts([...this.props.data], {
+              archCriteria: this.state.archCriteria,
+              showInstalledOnly: this.state.showInstalledOnly,
+              showSelectedOnly: this.state.showSelectedOnly,
+              selectedItems: this.props.selectedItems,
+            }).sort(this.compareProducts)
+          )}
           identifier={(raw) => raw.identifier}
           loading={this.props.loading}
           additionalFilters={[archFilter]}
+          titleButtons={[installedFilter]}
           searchField={
             <SearchField
               filter={searchCriteriaInExtension}
@@ -731,7 +756,6 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
 
   handleSelectedItem = () => {
     const currentItem = this.props.item;
-
     // add base product first (the server fails if it tries to add extentions first)
     let arr = [this.props.item];
 
@@ -866,6 +890,8 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
 
   render() {
     const currentItem = this.props.item;
+    const selectionState = getProductSelectionState(currentItem, this.props.bypassProps.selectedItems);
+    const selectionSummary = getSelectionSummary(currentItem, this.props.bypassProps.selectedItems);
 
     /** generate item selector content **/
     let selectorContent: ReactNode = null;
@@ -877,10 +903,15 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
           onChange={this.handleSelectedItem}
           selectionState={getProductSelectionState(currentItem, this.props.bypassProps.selectedItems)}
           disabled={this.props.bypassProps.readOnlyMode || this.props.childrenDisabled}
+          data-bs-toggle="tooltip"
           title={
             this.props.childrenDisabled
               ? t("To enable this product, the parent product should be selected first")
-              : t("Select this product")
+              : selectionState === "partially"
+                ? t(`${selectionSummary.selected}/${selectionSummary.total} child products selected`)
+                : selectionState === "checked"
+                  ? t("Product selected")
+                  : t("Select this product")
           }
         />
       );

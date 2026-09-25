@@ -44,3 +44,37 @@ export function getProductSelectionState(item: ProductLike, selectedItems: Produ
 
   return computeState(item, selectedIds);
 }
+
+export function getSelectionSummary(item: ProductLike, selectedItems: ProductLike[]) {
+  const selectedIds = new Set(selectedItems.map((i) => i.identifier));
+
+  return computeSelectionSummary(item, selectedIds);
+}
+
+function computeSelectionSummary(item, selectedIds) {
+  const children = (item.extensions ?? []).filter(hasVisibleCheckbox);
+
+  if (children.length === 0) {
+    const isSelected = item.status === PRODUCT_STATUS.installed || selectedIds.has(item.identifier);
+
+    return {
+      selected: isSelected ? 1 : 0,
+      total: 1,
+    };
+  }
+
+  return children.reduce(
+    (summary, child) => {
+      const childSummary = computeSelectionSummary(child, selectedIds);
+
+      return {
+        selected: summary.selected + childSummary.selected,
+        total: summary.total + childSummary.total,
+      };
+    },
+    {
+      selected: 0,
+      total: 0,
+    }
+  );
+}
