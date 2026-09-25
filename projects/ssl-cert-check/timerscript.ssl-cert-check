@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 CONFIG_FILE=/etc/sysconfig/rhn/ssl-cert-check
 
 unset EXPIRATION CHECK CERTS

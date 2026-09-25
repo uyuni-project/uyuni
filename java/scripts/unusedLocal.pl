@@ -1,5 +1,10 @@
 #!/usr/bin/perl
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # Remove unused local variables from java files.  To use this, run
 # this script as:
 #    ./unusedLocal.pl file_name

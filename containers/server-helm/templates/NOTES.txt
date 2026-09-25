@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 Thank you for installing the {{ .Chart.Description }}!
 Connect to the web UI using the credentials from the admin-credentials secret:
 

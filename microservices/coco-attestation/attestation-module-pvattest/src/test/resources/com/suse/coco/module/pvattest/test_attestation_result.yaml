@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 cuid: '0x3eb912539634cdce660ab840209190e2'
 add: 0xd1f728efd99e1da650e758512621a65f9dd8d77d8d34b1dbbb56904eb373b83cd1f728efd99e1da650e758512621a65f9dd8d77d8d34b1dbbb56904eb373b83c
 add_fields:

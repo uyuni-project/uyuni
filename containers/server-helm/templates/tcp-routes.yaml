@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 {{- if .Values.gateway.enable }}
 {{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
 {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}

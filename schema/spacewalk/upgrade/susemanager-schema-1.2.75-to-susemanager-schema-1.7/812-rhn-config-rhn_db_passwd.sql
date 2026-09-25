@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 delete from rhn_config_macro where name='CFDB_NOTIF_PASSWD';
 delete from rhn_config_macro where name='CFDB_PASSWD';
 delete from rhn_config_macro where name='RHN_DB_PASSWD';

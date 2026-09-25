@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 function getObjectValue(obj: object, path: string, defaultValue?: any) {
   const value = path.split(".").reduce((target, key) => {
     if (Array.isArray(target)) {

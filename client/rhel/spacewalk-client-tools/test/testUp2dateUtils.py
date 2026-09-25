@@ -1,4 +1,10 @@
 #!/usr/bin/python
+
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # pylint: disable=missing-module-docstring,invalid-name
 
 # pylint: disable-next=unused-import

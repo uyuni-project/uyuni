@@ -1,5 +1,6 @@
-# Copyright (c) 2017-2024 SUSE LLC
-# License under the terms of the MIT License.
+# SPDX-FileCopyrightText: 2017-2024, 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
 
 @scope_configuration_channels
 Feature: Clone a channel

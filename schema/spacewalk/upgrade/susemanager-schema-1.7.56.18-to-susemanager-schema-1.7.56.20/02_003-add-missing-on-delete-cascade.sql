@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Recreate FK constraint on rhnChannel
 ALTER TABLE suseCVEServerChannel DROP CONSTRAINT suse_cvesc_cid_fk;
 ALTER TABLE suseCVEServerChannel ADD CONSTRAINT suse_cvesc_cid_fk FOREIGN KEY (channel_id) REFERENCES rhnChannel(id) ON DELETE CASCADE;

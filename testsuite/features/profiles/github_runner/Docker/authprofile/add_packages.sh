@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -e
 
 cp /root/avahi-daemon.conf /etc/avahi/avahi-daemon.conf

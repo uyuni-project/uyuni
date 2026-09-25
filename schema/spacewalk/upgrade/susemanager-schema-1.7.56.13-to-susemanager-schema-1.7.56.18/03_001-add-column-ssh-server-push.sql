@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 ALTER TABLE rhnServer ADD ssh_server_push CHAR(1) DEFAULT ('N') NOT NULL
     CONSTRAINT rhn_ssh_server_push_ck CHECK (ssh_server_push in ('Y', 'N'));

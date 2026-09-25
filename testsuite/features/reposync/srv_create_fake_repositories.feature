@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If any fake channel or repository fails to be created:

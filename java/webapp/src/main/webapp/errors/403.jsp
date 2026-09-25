@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>

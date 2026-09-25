@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
     <callable-mode name="add_product_vulnerable_package">
         <query params="package_name, fix_epoch, fix_version, fix_release, fix_type, product_name, os_product_family, os_product_version, cve_name">

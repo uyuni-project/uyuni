@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 ## Add non MU repositories for rocky8 BEGIN ###
 
 - features/build_validation/add_non_MU_repositories/rocky8_minion_add_iso.feature

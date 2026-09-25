@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '5054e4a45a6340b3', lookup_package_key_type('gpg'), lookup_package_provider('Red Hat Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = '5054e4a45a6340b3'));
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), 'bc4d06a08d8b756f', lookup_package_key_type('gpg'), lookup_package_provider('Oracle Inc.') from dual where not exists (select 1 from rhnPackageKey where key_id = 'bc4d06a08d8b756f'));

@@ -1,4 +1,11 @@
 <%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
+<%--
     Document   : reboot-systems
     Created on : Jul 16, 2013, 2:35:54 PM
     Author     : Bo Maryniuk <bo@suse.de>

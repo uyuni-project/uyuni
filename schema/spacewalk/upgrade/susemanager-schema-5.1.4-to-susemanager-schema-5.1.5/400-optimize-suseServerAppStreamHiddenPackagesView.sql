@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE OR REPLACE VIEW suseServerAppStreamHiddenPackagesView AS
 
 SELECT DISTINCT sasp.package_id AS pid, sc.server_id AS sid

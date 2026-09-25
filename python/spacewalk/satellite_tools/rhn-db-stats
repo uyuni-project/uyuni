@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 if [[ $@ =~ "-h" ]] || [[ $@ =~ "--help" ]] || [ $# -ne 1 -o $# -gt 1 ]; then
         echo "Usage: `basename $0` -h | --help | output-file"
         exit

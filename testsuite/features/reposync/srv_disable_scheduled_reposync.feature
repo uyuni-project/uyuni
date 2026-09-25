@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Do not let Taskomatic tasks interfere with our CI tests
 

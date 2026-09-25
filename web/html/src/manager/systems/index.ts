@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export default {
   "systems/activation-key/activation-key-channels": () => import("./activation-key/activation-key-channels.renderer"),
   "systems/bootstrap/bootstrap-minions": () => import("./bootstrap/bootstrap-minions"),

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- during 05 -> 0.6 schema upgrade RHN_RCM_PVA_DEF_UNIQ had been mis-renamed
 -- to RHN_RCM_PVAR_UNIQ
 

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace function suse_srv_inst_prod_iud_trig_fun() returns trigger as
 $$
 begin

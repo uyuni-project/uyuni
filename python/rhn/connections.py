@@ -3,7 +3,9 @@
 # Connection objects
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only
 # Copyright (c) 2022 SUSE, LLC
+# SPDX-License-Identifier: GPL-2.0-only
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 

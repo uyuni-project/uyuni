@@ -1,5 +1,5 @@
 # Copyright (c) 2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 # After clicking the button we wait until we dont see the text. This normally
 # means that the page was refreshed, but in case of a timeout or other error,
 # we included a manual refresh and a simple navigation step to make sure the UI

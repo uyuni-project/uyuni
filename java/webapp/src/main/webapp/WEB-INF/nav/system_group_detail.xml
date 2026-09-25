@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="system_group_detail" invisible="1" formvar="sgid" title-depth="1">
   <rhn-tab name="Details">
     <rhn-tab-url>/rhn/groups/GroupDetail.do</rhn-tab-url>

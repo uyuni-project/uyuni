@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 [Unit]
 Description=Taskomatic
 After=local-fs.target cobblerd.service sendmail.service apache2.service

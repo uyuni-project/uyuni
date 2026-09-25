@@ -1,6 +1,7 @@
 # pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2021 SUSE LLC
+# SPDX-License-Identifier: MIT
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed

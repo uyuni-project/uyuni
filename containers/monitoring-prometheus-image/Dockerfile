@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 
 #!BuildTag: uyuni/monitoring-prometheus:latest uyuni/monitoring-prometheus:%%prometheus_patch_version%%
 

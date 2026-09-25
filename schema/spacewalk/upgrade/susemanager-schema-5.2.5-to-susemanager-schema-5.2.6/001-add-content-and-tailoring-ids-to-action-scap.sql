@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- Migration: Add scap_content_id and tailoring_file_id to rhnActionScap
 -- This enables per-ID directory file resolution for both policy-based and one-off scans

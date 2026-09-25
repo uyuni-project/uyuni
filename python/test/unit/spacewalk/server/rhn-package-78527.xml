@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-package id="rhn-package-78527" build-host="stripples.devel.redhat.com" source-rpm="tetex-1.0.7-38.4.src.rpm" release="38.4" cookie="stripples.devel.redhat.com 1031312621" version="1.0.7" epoch="" last-modified="1059409136" rpm-version="4.0.4" package-arch="i386" payload-format="cpio" checksum-type="md5" checksum="2f65aac0c10b5bf20cb1bd0d2c71c5e3" build-time="1031330621" package-group="Applications/Publishing
 " package-size="20874090" name="tetex-doc" payload-size="48908784" compat="0"><rhn-package-summary>The documentation files for the TeX text formatting system.
 </rhn-package-summary><rhn-package-description>The tetex-doc package contains documentation for the TeX text

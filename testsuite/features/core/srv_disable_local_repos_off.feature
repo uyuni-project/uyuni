@@ -1,5 +1,5 @@
 # Copyright (c) 2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Turn "disable_local_repos" feature on highstate off
   In order to test the product using shortcuts

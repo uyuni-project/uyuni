@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <factory>
     <template name="Action_queries" filename="xml/Action_queries.xml" />
     <template name="Package_queries" filename="xml/Package_queries.xml" />

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set scap_cache_dir = '/var/cache/salt/minion/scap' -%}
 
 {%- if "content_id" not in pillar.get('mgr_scap_params') %}

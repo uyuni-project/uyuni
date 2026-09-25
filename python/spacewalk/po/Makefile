@@ -1,5 +1,6 @@
 # Makefile for program source directory in GNU NLS utilities package.
 # Copyright (C) 1995-1997, 2000, 2001 by Ulrich Drepper <drepper@gnu.ai.mit.edu>
+# SPDX-License-Identifier: LicenseRef-Gettext-Header
 #
 # This file file be copied and used freely without restrictions.  It can
 # be used in projects which are not available under the GNU Public License

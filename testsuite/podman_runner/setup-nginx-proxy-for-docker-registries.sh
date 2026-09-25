@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 set -xe
 
 # When we run docker inside podman, we will use the docker daemon from

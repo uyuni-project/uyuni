@@ -9,6 +9,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 --
 
 create or replace function rhn_actionsbscrch_mod_trig_fun() returns trigger as

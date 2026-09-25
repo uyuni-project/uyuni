@@ -1,4 +1,11 @@
 <%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
+<%--
     Document   : lock-unlock-system
     Created on : Aug 1, 2013, 3:50:55 PM
     Author     : bo

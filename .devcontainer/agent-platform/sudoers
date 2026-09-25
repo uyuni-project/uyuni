@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh
 Defaults:node env_keep += "AGENT_PLATFORM_ALLOW_INTERNET"
 Defaults:node env_keep += "AGENT_PLATFORM_ALLOW_SSH_AGENT"

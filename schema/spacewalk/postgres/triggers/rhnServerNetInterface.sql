@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 create or replace function rhn_srv_net_iface_mod_trig_fun() returns trigger as
 $$
 begin

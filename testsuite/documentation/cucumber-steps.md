@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Writing your own Cucumber steps, and reusing Cucumber steps
 
 ## Table of Contents

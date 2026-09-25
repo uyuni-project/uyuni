@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ page pageEncoding="iso-8859-1" contentType="text/html;charset=utf-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>

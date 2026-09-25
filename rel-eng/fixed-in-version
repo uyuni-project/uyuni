@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #
 # list tags (package builds) which contain specified commit
 #

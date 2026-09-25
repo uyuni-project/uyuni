@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 [Unit]
 Description=Notify SUSE Manager about newly deployed image
 Requires=venv-salt-minion.service

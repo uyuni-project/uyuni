@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 __mgr_sync_cmds="list add refresh delete sync"
 __mgr_sync_add_cmds="channels credentials products" # list, add
 __mgr_sync_delete_cmds="credentials"

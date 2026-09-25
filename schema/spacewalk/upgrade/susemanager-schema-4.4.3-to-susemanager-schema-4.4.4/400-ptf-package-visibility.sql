@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- New view with all the packages excluding those that are part of a PTF
 CREATE OR REPLACE VIEW susePackageExcludingPartOfPtf AS
   WITH ptfPackages AS (

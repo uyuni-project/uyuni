@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE OR REPLACE FUNCTION
 queue_server(server_id_in IN NUMERIC, immediate_in IN NUMERIC DEFAULT 1)

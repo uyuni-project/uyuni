@@ -1,0 +1,309 @@
+# SPDX-FileCopyrightText: 2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+version = 1
+SPDX-PackageName = "uyuni"
+SPDX-PackageSupplier = "Uyuni Project <>"
+SPDX-PackageDownloadLocation = "https://github.com/uyuni-project/uyuni"
+
+[[annotations]]
+path = ["web/html/src/branding/fonts/Lato/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2010-2014 tyPoland Lukasz Dziedzic <team@latofonts.com>"
+SPDX-License-Identifier = "OFL-1.1-RFN"
+
+[[annotations]]
+path = ["web/html/src/branding/fonts/SUSE/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = [
+    "web/html/src/branding/fonts/Poppins/**",
+    "proxy/proxy-html/*/sources/fonts/Poppins-Regular.ttf"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 Indian Type Foundry"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = ["web/html/src/branding/fonts/Roboto*/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Google Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["web/html/src/branding/fonts/WorkSans/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 The Work Sans Project Authors"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = ["web/html/src/branding/fonts/font-spacewalk/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "GPL-2.0-only"
+
+[[annotations]]
+path = ["testsuite/features/upload_files/Redfish-Mockup-Server/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2016, Contributing Member(s) of Distributed Management Task Force, Inc."
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = [
+  "java/core/src/main/resources/xliff-core-1.1.xsd",
+  "java/scripts/spelling/onlySource.xslt",
+  "java/scripts/spelling/onlyTarget.xslt"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "OASIS Open"
+SPDX-License-Identifier = "LicenseRef-Oasis-IPR"
+
+[[annotations]]
+path = [
+    ".devcontainer/test/id_rsa_test_env",
+    "java/licenses/**",
+    "microservices/coco-attestation/attestation-module-*/src/package/**/*.pem",
+    "microservices/uyuni-java-common/src/test/resources/com/suse/common/security/*.crt",
+    "search-server/spacewalk-search/licenses/*",
+    "web/html/src/vendors/npm.licenses.txt",
+    "web/html/src/vendors/npm.licenses*",
+    "package*.json",
+    "susemanager/pub/empty*/**"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NONE"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [
+  "web/html/src/branding/img/action-add.gif",
+  "web/html/src/branding/img/button-down.gif",
+  "web/html/src/branding/img/button-up.gif",
+  "web/html/src/branding/img/folder-config-sm.png",
+  "web/html/src/branding/img/rhn-icon-preferences.gif",
+  "web/html/src/branding/img/rhn-listicon-channel.gif",
+  "web/html/src/branding/img/rhn-listicon-system.gif",
+  "web/html/src/branding/img/spinner.gif",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "The Tango Project"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [
+  "proxy/proxy-html/uyuni_proxy/sources/img/favicon.ico",
+  "proxy/proxy-html/uyuni_proxy/sources/img/proxy-icon.png"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "CC-BY-SA-3.0"
+
+[[annotations]]
+path = [
+  "proxy/proxy-html/suse_proxy/sources/img/favicon.ico",
+  "proxy/proxy-html/suse_proxy/sources/img/suse-logo-footer.svg",
+  "web/html/src/branding/img/favicon.ico",
+  "web/html/src/branding/img/logo.png",
+  "web/html/src/branding/img/suse-logo-footer-white.svg",
+  "web/html/src/branding/img/suse-logo-footer.svg",
+  "web/html/src/manager/login/susemanager/background.svg",
+  "web/html/src/manager/login/susemanager/logo.svg",
+  "web/html/src/manager/login/susemanager/mobile-logo.svg",
+  "web/html/src/manager/login/uyuni/footer-logo.svg"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "CC-BY-ND-3.0"
+
+[[annotations]]
+path = [
+  "java/core/src/test/resources/com/suse/**/*.json",
+  "java/core/src/test/resources/com/suse/**/*.ics",
+  "java/core/src/test/resources/com/redhat/**/prometheus-exporters-pillar.example",
+  "java/core/src/main/resources/com/suse/manager/webui/templates/*",
+  "java/**/*.jade",
+  "java/**/README",
+  "java/core/src/test/resources/com/suse/manager/attestation/*.txt",
+  "java/core/src/test/resources/com/suse/manager/errata/advisorymap/advisory-map.csv",
+  "java/core/src/test/resources/com/redhat/rhn/manager/content/expected_products.csv",
+  "java/core/src/test/resources/com/suse/manager/attestation/hostKeyDocument.crt",
+  "microservices/coco-attestation/attestation-module-snpguest/src/test/resources/testCerts/**",
+  "microservices/coco-attestation/attestation-module-pvattest/src/test/resources/com/suse/coco/module/pvattest/*",
+  "microservices/coco-attestation/*/src/main/resources/META-INF/services/com.suse.coco.module.AttestationModule",
+  "microservices/uyuni-java-common/src/test/resources/testCerts/**",
+  "microservices/uyuni-java-common/src/test/resources/com/suse/common/configuration/**",
+  "susemanager/src/test/README",
+  "susemanager-utils/supportutils*/*.8",
+  "susemanager-sync-data/*.json",
+  "schema/sm-specific-schema-patches/template/*",
+  "schema/spacewalk/update-messages.txt",
+  "spacewalk/setup/salt/*.conf",
+  "web/.prettier*",
+  "web/README-1.png",
+  "web/html/src/.babelrc",
+  "*/po/Makevars"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "GPL-2.0-only"
+
+[[annotations]]
+path = [
+  "schema/HOWTO",
+  "schema/spacewalk/postgres/README",
+  "search-server/spacewalk-search/README",
+  "search-server/spacewalk-search/buildconf/**",
+  "web/html/robots.txt",
+  "web/modules/rhn/Changes",
+  "web/conf/rhn_web.conf"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "Red Hat, Inc.",
+]
+SPDX-License-Identifier = "GPL-2.0-only"
+
+
+[[annotations]]
+path = [
+  "java/core/src/test/resources/com/redhat/**/*.json",
+  "java/core/src/test/resources/com/redhat/rhn/domain/kickstart/crypto/foo.gpg",
+  "java/core/src/test/resources/com/redhat/rhn/domain/kickstart/crypto/foo.ssl",
+  "java/core/src/test/resources/com/redhat/rhn/manager/system/*.gpg",
+  "java/webapp/src/apidoc/**",
+  "java/conf/eclipse/**",
+  "java/webapp/src/main/webapp/img/inherit.gif",
+  "java/core/src/main/resources/META-INF/services/**",
+  "java/scripts/migrate-tests/**",
+  "java/scripts/spelling/*",
+  "java/buildconf/manager-test*",
+  "java/buildconf/manager-developer-build.properties.example",
+  "java/buildconf/test/**",
+  "java/core/src/main/resources/com/redhat/rhn/frontend/xmlrpc/exception_ranges.txt",
+  "java/core/src/test/resources/com/redhat/rhn/common/conf/conf/default/bug154517.conf.rpmsave",
+  "java/core/src/test/resources/com/redhat/rhn/common/util/test.file",
+  "java/conf/cobbler/snippets/**",
+  "reporting/reports/**",
+  "client/rhel/spacewalk-client-tools/doc/AUTHORS",
+  "projects/ssl-cert-check/ssl-cert-check.8",
+  "projects/perl-Satcon/MANIFEST",
+  "proxy/proxy-html/suse_proxy/sources/img/proxy-icon.png",
+  "python/rhn/README",
+  "python/rhn/copyright",
+  "python/spacewalk/HACKING",
+  "python/spacewalk/README.ULN",
+  "python/spacewalk/satellite_tools/accounts/README",
+  "python/spacewalk/server/importlib/doc.txt",
+  "python/spacewalk/server/rhn.conf.sample",
+  "python/spacewalk/satellite_tools/spacewalk-debug.8",
+  "python/test/unit/spacewalk/satellite_tools/repodata/**",
+  "python/test/unit/spacewalk/common/translations/**",
+  "python/test/unit/spacewalk/common/unit-test.*",
+  "spacewalk/admin/man/*.pod",
+  "spacewalk/certs-tools/*.txt",
+  "spacewalk/config/var/lib/cobbler/snippets/*",
+  "spacewalk/config/usr/share/man/man5/rhn.conf.5",
+  "spacewalk/config/etc/satname",
+  "spacewalk/setup/Changes",
+  "spacewalk/setup/MANIFEST",
+  "spacewalk/setup/README",
+  "spacewalk/setup/doc/*",
+  "spacewalk/setup/share/*",
+  "spacewalk/setup/answers.txt",
+  "web/html/src/branding/img/branch.gif",
+  "web/html/src/branding/img/button-go.gif",
+  "web/html/src/branding/img/channel_child_node.gif",
+  "web/html/src/branding/img/channel_parent_node.gif",
+  "web/html/src/branding/img/icon_up2date.gif",
+  "web/html/src/branding/img/list-collapse.gif",
+  "web/html/src/branding/img/list-expand.gif",
+  "web/html/src/branding/img/rhn-bullet-parentchannel.gif",
+  "web/html/src/branding/img/rhn-listicon-cfg_error.gif",
+  "web/html/src/branding/img/rhn-listicon-sandbox.gif",
+  "web/html/src/branding/img/credentials-help.png",
+  "web/html/src/branding/img/dropdown-arrow.jpg",
+  "web/html/src/branding/img/sub-list-last.png",
+  "web/html/src/branding/img/sub-list.png",
+  "web/html/src/manager/admin/setup/proxy/http-proxy.png"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "Red Hat, Inc.",
+    "SUSE LLC"
+]
+SPDX-License-Identifier = "GPL-2.0-only"
+
+[[annotations]]
+path = [
+  ".devcontainer/**/*.json",
+  ".github/ISSUE_TEMPLATE/*",
+  ".github/PULL_REQUEST_TEMPLATE.md",
+  ".github/Maintenance_Update.md",
+  ".github/RFC_Template.md",
+  ".git-blame-ignore-revs",
+  ".vscode/*.json",
+  ".vscode/*.json.template",
+  "schema/spacewalk/README",
+  "schema/spacewalk/upgrade/*/*README",
+  "schema/sm-specific-schema-patches/*.dif",
+  "scripts/channel-from-system/README",
+  "scripts/sitemap.txt",
+  "scripts/translation/xmlformat.conf",
+  "rel-eng/packages/*",
+  "**.changes*",
+  "testsuite/ext-tools/predictive-test-selection/readme_resources/**",
+  "testsuite/*.json",
+  "susemanager-utils/susemanager-sls/src/tests/data/*",
+  "susemanager-utils/susemanager-sls/test/data/**",
+  "susemanager-utils/susemanager-sls/salt/srvmonitoring/pg_passwd",
+  "susemanager-utils/susemanager-sls/salt/srvmonitoring/*.conf",
+  "susemanager-utils/susemanager-sls/src/doc/*.txt",
+  "susemanager-utils/mgr-libmod/tests/data/*",
+  "susemanager-utils/testing/automation/VERSION.*",
+  "susemanager-utils/testing/docker/scripts/clear-db-answers-pgsql.txt",
+  "susemanager/src/test/fixtures/*",
+  "web/**/*.json",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SUSE LLC"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = [
+  "testsuite/features/upload_files/**",
+  "testsuite/dockerfiles/server-all-in-one-dev/**",
+  "containers/server-image/root/**",
+  "containers/server-image/.env",
+  "containers/*-helm/templates/NOTES.txt",
+  "containers/*-helm/values.schema.json"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 SUSE LLC"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
+  "**/StringResource_*.xml",
+  "**/*.po",
+  "**/*.pot"
+]
+precedence = "override"
+SPDX-FileCopyrightText = [
+    "SUSE LLC and contributors", "Red Hat, Inc.",
+]
+SPDX-License-Identifier = "GFDL-1.2-only"
+
+[[annotations]]
+path = [
+    "spacecmd/src/doc/README",
+    "spacecmd/src/doc/spacecmd.1"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "Red Hat, Inc.",
+    "SUSE LLC"
+]
+SPDX-License-Identifier = "GPL-3.0-or-later"

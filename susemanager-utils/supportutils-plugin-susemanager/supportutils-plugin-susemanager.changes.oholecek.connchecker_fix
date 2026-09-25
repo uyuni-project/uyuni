@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 - Allow 100 connections difference between Apache and Tomcat
 - Fix reading connections from the correct source
 - Add reportdb connections to the database connection limit

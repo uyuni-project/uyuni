@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 =head1 NAME
 
 rhn-install-ssl-cert.pl - utility to install latest certificate mentioned in DIR/latest.txt 

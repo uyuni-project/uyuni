@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <samlp:Response ID="{requestId}" Version="2.0" IssueInstant="2020-01-01T00:00:00Z" Destination="https://localhost/acs.jsp"
             xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
     <saml:Issuer>https://idp</saml:Issuer>

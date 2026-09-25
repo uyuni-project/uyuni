@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #
 # GPG KEYID to sign with
 # Note: The keyid must not include the length of the key, e.g. only "F24F1B08", not "1024D/F24F1B08"

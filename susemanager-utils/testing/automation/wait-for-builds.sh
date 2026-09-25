@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 usage() {
   echo "Usage: $0 -a api -c config_file -p project -u -r repo -x arch"
   echo "project is mandatory. The rest are optionals."

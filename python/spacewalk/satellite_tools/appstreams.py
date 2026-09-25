@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Module to import AppStream modules from a channel's module metadata to the database.
 
 This module provides functionality to validate and import modules from a channel's

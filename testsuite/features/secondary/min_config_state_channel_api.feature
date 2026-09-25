@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2022 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Configuration state channels via API
 

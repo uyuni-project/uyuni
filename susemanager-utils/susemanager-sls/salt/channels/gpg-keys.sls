@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 {%- if grains['os_family'] == 'Debian' %}
 mgr_debian_repo_keyring:

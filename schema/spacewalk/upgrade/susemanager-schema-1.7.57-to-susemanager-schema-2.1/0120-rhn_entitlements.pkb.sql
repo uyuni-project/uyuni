@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- setup search_path so that these functions are created in appropriate schema.
 update pg_settings set setting = 'rhn_entitlements,' || setting where name = 'search_path';

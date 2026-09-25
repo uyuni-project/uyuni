@@ -4,6 +4,7 @@
 # xmlformat - configurable XML file formatter/pretty-printer
 
 # Copyright (c) 2004, 2005 Kitebird, LLC.  All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause
 # Some portions are based on the REX shallow XML parser, which
 # is Copyright (c) 1998, Robert D. Cameron. These include the
 # regular expression parsing variables and the shallow_parse()

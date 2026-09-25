@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 
 #!BuildTag: uyuni/monitoring-blackbox_exporter:latest uyuni/monitoring-blackbox_exporter:%%blackbox_exporter_patch_version%%
 

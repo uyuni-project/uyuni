@@ -1,3 +1,9 @@
+<!--
+ SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+ SPDX-FileCopyrightText: 2026 SUSE LLC
+
+ SPDX-License-Identifier: GPL-2.0-only
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <Benchmark xmlns="http://checklists.nist.gov/xccdf/1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="xccdf_org.ssgproject.content_benchmark_SLE-15" resolved="1" xml:lang="en-US" style="SCAP_1.2">
   <status date="2021-10-06">draft</status>

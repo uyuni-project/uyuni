@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnKSTreeFile disable constraint rhn_kstreefile_kid_fk;
 alter table rhnKickstartDefaults disable constraint rhn_ksd_kstid_fk;
 alter table rhnKickstartSession disable constraint rhn_ks_session_kstid_fk;

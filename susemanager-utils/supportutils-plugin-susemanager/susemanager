@@ -3,7 +3,8 @@
 # Name:        Supportconfig Plugin for SUSE Multi-Linux Manager
 # Description: Gathers important troubleshooting information
 #              about SUSE Multi-Linux Manager
-# License:     GPLv2
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+# SPDX-License-Identifier: GPL-2.0-only
 # Author:      Stefan Bogner <sbogner@suse.com>
 #              Michael Calmer <mc@suse.com>
 # Modified:    2026 March 16

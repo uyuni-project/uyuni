@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # SUSE Multi-Linux Manager for Retail build trigger
 #
 {%- set root_dir   = '/var/lib/Kiwi/' + pillar.get('build_id') %}

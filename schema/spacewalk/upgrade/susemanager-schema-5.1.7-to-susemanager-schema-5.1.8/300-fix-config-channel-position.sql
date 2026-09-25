@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- ensure that the position is numbered starting from 1
 UPDATE suseStateRevisionConfigChannel
 SET position = (

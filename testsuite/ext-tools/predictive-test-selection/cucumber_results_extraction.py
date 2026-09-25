@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Extracts tests/features' results from the Cucumber JSON reports for each PR listed in the CSV file
 produced by the PR data extraction script, and outputs a new CSV file with the

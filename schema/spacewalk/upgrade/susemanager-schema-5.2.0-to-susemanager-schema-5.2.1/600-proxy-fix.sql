@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- rename rhnServerGroupType entry
 UPDATE rhnServerGroupType SET name = 'Proxy Entitled Servers' WHERE name = 'Proxy' AND label = 'proxy_entitled';
 

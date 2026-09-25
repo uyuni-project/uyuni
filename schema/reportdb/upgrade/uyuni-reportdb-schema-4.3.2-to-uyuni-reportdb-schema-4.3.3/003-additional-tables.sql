@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE SystemGroup
     DROP CONSTRAINT IF EXISTS SystemGroup_pk,
     DROP COLUMN IF EXISTS system_id;

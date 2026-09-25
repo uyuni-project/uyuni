@@ -3,6 +3,7 @@
 # Higher-level SSL objects used by rpclib
 #
 # Copyright (c) 2002--2017 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only WITH openvpn-openssl-exception
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 #
@@ -24,16 +25,16 @@
 rhn.SSL builds an abstraction on top of the objects provided by pyOpenSSL
 """
 
+import os
+import select
+import socket
+import ssl as SSL
+import sys
+
 # SSL.crypto is provided to other modules
 # pylint: disable-next=unused-import
 from OpenSSL import crypto
-import ssl as SSL
-import os
-
-import socket
-import select
 from rhn.stringutils import bstr
-import sys
 
 DEFAULT_TIMEOUT = 120
 
@@ -49,7 +50,7 @@ try:
 except ImportError:
     # python 2.6
     # pylint: disable-next=unused-import
-    from backports.ssl_match_hostname import match_hostname, CertificateError
+    from backports.ssl_match_hostname import CertificateError, match_hostname
 
 
 class SSLSocket:

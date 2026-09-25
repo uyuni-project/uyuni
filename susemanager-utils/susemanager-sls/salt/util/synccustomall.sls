@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {#
   Alias for the newer 'util.syncall' for backwards compatibility.
 #}

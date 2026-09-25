@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { ClearIndicatorProps } from "react-select";
 
 import styles from "./ClearIndicator.module.scss";

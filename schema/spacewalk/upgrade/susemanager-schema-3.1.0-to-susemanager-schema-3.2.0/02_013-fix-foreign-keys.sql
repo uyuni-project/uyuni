@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE suseImageCustomDataValue DROP CONSTRAINT suse_icdv_prid_fk;
 ALTER TABLE suseImageCustomDataValue ADD CONSTRAINT  suse_icdv_prid_fk FOREIGN KEY (image_info_id) REFERENCES suseImageInfo (id) ON DELETE CASCADE;
 
