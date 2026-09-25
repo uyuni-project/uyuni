@@ -1,0 +1,4 @@
+- Allow bootstrap with a reactivation key when a Salt key for the
+  host already exists, and rotate that stale key so the reinstalled
+  minion is not denied by the master
+  (gh#uyuni-project/uyuni#11261)
