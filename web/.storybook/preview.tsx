@@ -2,15 +2,19 @@
 
 import "font-awesome/css/font-awesome.css";
 import "manager/polyfills";
+import "jquery-ui/ui/widgets/sortable";
 
 import type { Decorator, Preview } from "@storybook/react-webpack5";
 import suseDarkTheme from "branding/css/suse-dark.scss?lazy";
 import suseLightTheme from "branding/css/suse-light.scss?lazy";
 import uyuniTheme from "branding/css/uyuni.scss?lazy";
 import jQueryImport from "jquery";
+import ReactModal from "react-modal";
 
 import { t } from "core/intl";
 import Loggerhead from "core/log/loggerhead";
+
+import { initializeTooltips } from "components/tooltips";
 
 const jQuery = jQueryImport as unknown as JQueryStatic;
 
@@ -96,6 +100,8 @@ type StorybookGlobal = typeof globalThis & {
   t: typeof t;
   jQuery: JQueryStatic;
   Loggerhead: Loggerhead;
+  handleSst: (...args: any[]) => void;
+  bootstrap: any;
 };
 
 const storybookWindow = window as StorybookWindow;
@@ -117,6 +123,15 @@ storybookWindow.$ = jQuery;
 
 storybookGlobal.t = t;
 storybookGlobal.jQuery = jQuery;
+// The application shell installs the sticky section-toolbar handler. Storybook has no sticky page shell,
+// but components should still be able to run their normal mount effect.
+storybookGlobal.handleSst ??= () => undefined;
+
+// Import and register Bootstrap after jQuery is available so jQuery plugins can be registered
+const bootstrapReady = import("bootstrap").then((bootstrapImport) => {
+  const bootstrap = bootstrapImport as any;
+  storybookGlobal.bootstrap = bootstrap;
+});
 
 const loggerHead = new Loggerhead("", (headers) => headers);
 loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");
@@ -126,9 +141,23 @@ loggerHead.error = console.error.bind(console, "[Loggerhead] ERROR:");
 storybookGlobal.Loggerhead = loggerHead;
 
 // Mirror the JSP app shell: exactly one branded stylesheet is active and components render below `.new-theme`.
+let tooltipsInitialized = false;
 const withUyuniTheme: Decorator = (Story, context) => {
   const theme = isThemeName(context.globals.theme) ? context.globals.theme : "uyuni";
   setTheme(theme);
+
+  // ReactModal otherwise falls back to document.body outside the application shell. Hiding body
+  // would also hide the modal portal from assistive technologies, so scope aria-hidden to the canvas.
+  const storybookRoot = document.getElementById("storybook-root");
+  if (storybookRoot) {
+    ReactModal.setAppElement(storybookRoot);
+  }
+
+  // Initialize tooltips once, after Bootstrap has loaded
+  if (!tooltipsInitialized) {
+    tooltipsInitialized = true;
+    bootstrapReady.then(() => setTimeout(() => initializeTooltips(), 0));
+  }
 
   return (
     <div className={`theme-${theme} new-theme`}>
@@ -173,7 +202,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Components", "Manager", "Legacy Example Stories"],
+        order: ["Components", "Compositions", "Views", "Deprecated", "Legacy Example Stories"],
         method: "alphabetical",
       },
     },

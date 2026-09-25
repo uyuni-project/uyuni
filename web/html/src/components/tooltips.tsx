@@ -1,13 +1,21 @@
 let isListening = false;
+const initializedTooltips = new WeakSet<Element>();
+
 export function initializeTooltips() {
   // Initialize tooltips on existing elements
 
   const initTooltips = () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     tooltipTriggerList.forEach((el) => {
-      const tooltip = new bootstrap.Tooltip(el, {
+      if (initializedTooltips.has(el)) {
+        return;
+      }
+
+      const tooltip = bootstrap.Tooltip.getOrCreateInstance(el, {
         trigger: "hover",
       });
+
+      initializedTooltips.add(el);
 
       el.addEventListener("click", () => tooltip.hide());
       el.addEventListener("mouseleave", () => tooltip.hide());

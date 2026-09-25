@@ -1,5 +1,19 @@
+import type { ComponentType } from "react";
+
 import * as generatedStories from "./stories.generated";
 
-const storyGroups = Object.groupBy(Object.values(generatedStories), (item) => item.groupName);
+type GeneratedStory = {
+  path: string;
+  title: string;
+  groupName: string;
+  component: ComponentType;
+  raw: string;
+};
 
-export default Object.entries(storyGroups).map(([title, stories]) => ({ title, stories }));
+const stories = Object.values(generatedStories) as GeneratedStory[];
+const storyGroups = Object.groupBy(stories, (item) => item.groupName);
+
+export default Object.entries(storyGroups).map(([title, groupedStories]) => ({
+  title,
+  stories: groupedStories ?? [],
+}));

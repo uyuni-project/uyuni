@@ -40,6 +40,12 @@ const scssLoaders = (styleLoaderOptions: Record<string, unknown> = {}) => [
 
 const config: StorybookConfig = {
   stories: ["../html/src/**/*.stories.@(ts|tsx)"],
+  staticDirs: [
+    {
+      from: path.resolve(web, "node_modules/ace-builds/src-noconflict"),
+      to: "/ace",
+    },
+  ],
   addons: ["@storybook/addon-docs"],
   framework: {
     name: "@storybook/react-webpack5",

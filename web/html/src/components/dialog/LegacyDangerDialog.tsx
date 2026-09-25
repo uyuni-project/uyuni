@@ -35,9 +35,9 @@ export function DangerDialog(props: Props) {
           title={props.submitText}
           icon={props.submitIcon}
           defaultType={btnClass}
-          action={() => {
-            props.onConfirmAsync?.(true);
+          action={async () => {
             jQuery("#" + props.id).modal("hide");
+            return await props.onConfirmAsync?.(true);
           }}
         />
       ) : null}
