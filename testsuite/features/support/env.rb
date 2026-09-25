@@ -486,6 +486,19 @@ Before('@run_if_proxy_not_transactional_or_sles15sp7_minion_or_monitoring_server
   skip_this_scenario unless suse_proxy_non_transactional? || ENV.key?(ENV_VAR_BY_HOST['sles15sp7_minion']) || ENV.key?(ENV_VAR_BY_HOST['monitoring_server'])
 end
 
+# A product can be shared by several client families, and the Setup Wizard refuses to add it
+# twice, so such a scenario is tagged @run_if_<family>_or_<family>_client with every family
+# that needs the product, and runs as soon as one of those clients takes part in the run
+Before do |scenario|
+  scenario.source_tag_names.each do |tag|
+    families = tag[/\A@run_if_(.+)_client\z/, 1]
+    next if families.nil?
+
+    hosts = families.split('_or_').flat_map { |family| ["#{family}_minion", "#{family}_sshminion"] }
+    skip_this_scenario unless any_host_configured?(hosts)
+  end
+end
+
 Before('@sle_minion') do
   env_var_name = get_env_var_with_fallback('sle_minion', 'SLES15SP7_MINION')
   skip_this_scenario unless ENV.key?(env_var_name)

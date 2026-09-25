@@ -1288,3 +1288,11 @@ def get_env_var_with_fallback(host_key, fallback_var)
   env_var_name = ENV_VAR_BY_HOST[host_key]
   ENV.key?(env_var_name) ? env_var_name : fallback_var
 end
+
+# Checks whether at least one of the given hosts takes part in the current run
+#
+# @param host_keys [Array<String>] The keys in ENV_VAR_BY_HOST (e.g., ['rhel9_minion', 'rhel9_sshminion'])
+# @return [Boolean] true if any of the hosts has its environment variable set
+def any_host_configured?(host_keys)
+  host_keys.any? { |host_key| ENV_VAR_BY_HOST.key?(host_key) && ENV.key?(ENV_VAR_BY_HOST[host_key]) }
+end
