@@ -593,7 +593,6 @@ class SourcePackageImport(Import):
             key = (package["org_id"], package["source_rpm_id"])
             if key not in uniqdict:
                 uniqdict[key] = package
-                continue
             else:
                 self._comparePackages(package, uniqdict[key])
                 # And invalidate it

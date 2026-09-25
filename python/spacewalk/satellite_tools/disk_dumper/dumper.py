@@ -309,7 +309,6 @@ class XML_Dumper:
         whole_errata=False,
     ):
         log_debug(2)
-        # channels = self._validate_channels(channel_labels=channel_labels)
 
         self._write_dump(
             ChannelsDumper,
@@ -399,16 +398,14 @@ class XML_Dumper:
             self._raw_stream.close()
         return 0
 
-    _query_get_channel_packages = rhnSQL.Statement(
-        """
+    _query_get_channel_packages = rhnSQL.Statement("""
         select cp.package_id,
                TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelPackage cp,
                rhnPackage p
          where cp.channel_id = :channel_id
            and cp.package_id = p.id
-    """
-    )
+    """)
 
     def _cache_channel_packages_short(self, channel_id, key, last_modified):
         """Caches the short package entries for channel_id"""
@@ -610,15 +607,13 @@ class XML_Dumper:
 
         return channels
 
-    _query_validate_kickstarts = rhnSQL.Statement(
-        """
+    _query_validate_kickstarts = rhnSQL.Statement("""
         select kt.label kickstart_label,
                TO_CHAR(kt.modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnKickstartableTree kt
          where kt.channel_id = :channel_id
            and kt.org_id is null
-    """
-    )
+    """)
 
     def _validate_kickstarts(self, kickstart_labels):
         log_debug(4)
@@ -894,8 +889,7 @@ class CachedDumper(exportLib.BaseDumper):
 
 # pylint: disable-next=missing-class-docstring
 class ChannelsDumper(exportLib.ChannelsDumper):
-    _query_list_channels = rhnSQL.Statement(
-        """
+    _query_list_channels = rhnSQL.Statement("""
         select c.id, c.org_id,
                c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.update_tag,
@@ -906,8 +900,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
                left outer join rhnChecksumType ct on c.checksum_type_id = ct.id, rhnChannelArch ca
          where c.id = :channel_id
            and c.channel_arch_id = ca.id
-    """
-    )
+    """)
 
     def __init__(
         self,
@@ -926,7 +919,6 @@ class ChannelsDumper(exportLib.ChannelsDumper):
 
     def dump_subelement(self, data):
         log_debug(6, data)
-        # return exportLib.ChannelsDumper.dump_subelement(self, data)
         # pylint: disable=W0212
         c = exportLib._ChannelDumper(
             self._writer,
@@ -949,8 +941,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
 
 # pylint: disable-next=missing-class-docstring
 class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.installer_updates, c.update_tag, c.org_id,
                TO_CHAR(c.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified,
@@ -967,8 +958,7 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
                rhnChannelArch ca
          where c.id = :channel_id
            and c.channel_arch_id = ca.id
-    """
-    )
+    """)
 
     def _get_key(self, params):
         channel_id = params["channel_id"]
@@ -978,8 +968,7 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
 
 # pylint: disable-next=missing-class-docstring
 class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
             select
                 p.id,
                 p.org_id,
@@ -999,8 +988,7 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
             and p.evr_id = pe.id
             and p.package_arch_id = pa.id
             and p.checksum_id = c.id
-        """
-    )
+        """)
     item_id_key = "package_id"
     hash_factor = 2
     key_template = "xml-short-packages/%s/rhn-package-short-%s.xml"
@@ -1008,8 +996,7 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
 
 # pylint: disable-next=missing-class-docstring
 class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
             select
                 p.id,
                 p.org_id,
@@ -1049,8 +1036,7 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
             and p.package_group = pg.id
             and p.source_rpm_id = sr.id
             and p.checksum_id = c.id
-        """
-    )
+        """)
     item_id_key = "package_id"
     hash_factor = 2
     key_template = "xml-packages/%s/rhn-package-%s.xml"
@@ -1058,8 +1044,7 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
 
 # pylint: disable-next=missing-class-docstring
 class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
             select
                 ps.id,
                 sr.name source_rpm,
@@ -1083,8 +1068,7 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
             and ps.source_rpm_id = sr.id
             and ps.checksum_id = c.id
             and ps.sigchecksum_id = sig.id
-        """
-    )
+        """)
     item_id_key = "package_id"
     hash_factor = 2
     key_template = "xml-packages/%s/rhn-source-package-%s.xml"
@@ -1092,8 +1076,7 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
 
 # pylint: disable-next=missing-class-docstring
 class ErrataDumper(exportLib.ErrataDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
             select
                 e.id,
                 e.org_id,
@@ -1116,8 +1099,7 @@ class ErrataDumper(exportLib.ErrataDumper):
                 e.severity_id
             from rhnErrata e
             where e.id = :errata_id
-        """
-    )
+        """)
 
     def __init__(self, writer, params):
         statement = rhnSQL.prepare(self.iterator_query)
@@ -1127,8 +1109,7 @@ class ErrataDumper(exportLib.ErrataDumper):
 
 # pylint: disable-next=missing-class-docstring
 class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper):
-    iterator_query = rhnSQL.Statement(
-        """
+    iterator_query = rhnSQL.Statement("""
         select kt.id,
                c.label channel,
                kt.base_path "base-path",
@@ -1148,8 +1129,7 @@ class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper)
            and kit.id = kt.install_type
            and kt.org_id is NULL
            and kt.label = :kickstart_label
-    """
-    )
+    """)
 
     def _get_key(self, params):
         kickstart_label = params["kickstart_label"]
