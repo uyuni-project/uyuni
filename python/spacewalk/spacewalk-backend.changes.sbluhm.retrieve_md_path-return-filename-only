@@ -1,0 +1,1 @@
+- Enhance _retrieve_md_path to return only the filename without path, if required.
