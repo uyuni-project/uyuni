@@ -1,4 +1,8 @@
 ---
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: Question
 about: Use this issue template when you have a question about Uyuni.
 title: ''
