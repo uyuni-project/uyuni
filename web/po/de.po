@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/range/Range.tsx:52
+#: ../html/src/components/input/range/Range.tsx:53
+#: ../html/src/components/input/range/Range.tsx:65
+#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 10:16+0200\n"
+"POT-Creation-Date: 2026-09-25 15:16+0200\n"
 "PO-Revision-Date: 2026-08-29 22:13+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -26,16 +30,6 @@ msgstr "übrig"
 #: ../html/javascript/spacewalk-essentials.js:444
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Der Browser Internet Explorer wird nicht unterstützt. Bitte versuchen sie Firefox, Chrome oder Edge"
-
-#: ../html/src/components/CoCoScansList.tsx:78
-#: ../html/src/components/package/PackageListActionScheduler.tsx:84
-#: ../html/src/components/product-migration/utils.tsx:95
-#: ../html/src/manager/appstreams/appstreams.tsx:61
-#: ../html/src/manager/state/highstate.tsx:63
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:71
-msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:85
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -93,10 +87,6 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-
-#: ../html/src/components/FormulaForm.tsx:136
-msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
 msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:167
@@ -281,10 +271,6 @@ msgstr ""
 msgid "Attestations"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
-msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
-
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
 msgstr ""
@@ -362,7 +348,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:65
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:47
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:214
-#: ../html/src/manager/salt/keys/key-management.tsx:196
+#: ../html/src/manager/salt/keys/key-management.tsx:213
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:71
 msgid "Actions"
 msgstr "Aktionen"
@@ -438,7 +424,7 @@ msgid "Unable to retrieve the uploaded file"
 msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:175
-#: ../html/src/manager/minion/coco/coco-settings.tsx:86
+#: ../html/src/manager/minion/coco/coco-settings.tsx:91
 msgid "Settings"
 msgstr ""
 
@@ -1428,7 +1414,7 @@ msgstr "Nach Name filtern"
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:32
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:75
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:36
-#: ../html/src/manager/salt/keys/key-management.tsx:160
+#: ../html/src/manager/salt/keys/key-management.tsx:177
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:77
 msgid "Name"
@@ -1848,14 +1834,6 @@ msgstr "Paketname"
 msgid "Items {from} - {to} of {total}"
 msgstr "Elemente {from} - {to} von {total}"
 
-#: ../html/src/components/pagination.tsx:139
-msgid ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> of # page}\n"
-"            other {<dropdown></dropdown> of # pages}\n"
-"        }"
-msgstr ""
-
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
 msgstr "Sonntag"
@@ -1918,10 +1896,6 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:481
 msgid "Custom Quartz format:"
-msgstr ""
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:491
-msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:510
@@ -2471,14 +2445,6 @@ msgstr "Diesen Kanal erfordern"
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr ""
 
-#: ../html/src/core/intl/index.example.tsx:23
-msgid ""
-"Always use plural forms for numbers: {fooCount, plural,\n"
-"            one {only one item}\n"
-"            other {{fooCount} items}\n"
-"          }."
-msgstr ""
-
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
 msgstr ""
@@ -2507,7 +2473,7 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
-#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/state/highstate-summary.tsx:177
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -2770,63 +2736,63 @@ msgstr ""
 msgid "Refer to the <link>documentation</link> to learn how to consume these metrics."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:236
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:256
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:276
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:298
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:240
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:260
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:280
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:302
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:243
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:263
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:283
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:306
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:247
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:267
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:287
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:310
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:320
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:324
 msgid "{productName} Configuration - Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:327
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:331
 msgid "Set up monitoring for your {productName} server."
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:333
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:337
 msgid "General"
 msgstr "Allgemein"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:338
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:342
 msgid "Bootstrap Script"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:343
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:347
 msgid "Organizations"
 msgstr "Organisationen"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:348
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "Restart"
 msgstr "Neustart"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:353
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 msgid "Cobbler"
 msgstr "Cobbler"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:357
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:366
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:378
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:361
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:370
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
 msgid "Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:360
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:364
 msgid "Password Policy"
 msgstr "Passwortrichtlinie"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:389
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:393
 msgid "Restarting"
 msgstr "Wird neu gestartet"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:390
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr ""
 
@@ -2861,7 +2827,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:222
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:28
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:210
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:171
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:227
 msgid "Create"
 msgstr ""
 
@@ -2892,11 +2858,11 @@ msgid "Hub Details"
 msgstr "Details"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgid "No hub is currently configured for this server. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2920,7 +2886,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -3068,6 +3034,10 @@ msgstr ""
 msgid "Last Status Update"
 msgstr ""
 
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
+msgid "Edit "
+msgstr "Bearbeiten "
+
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr ""
@@ -3160,10 +3130,6 @@ msgstr ""
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:307
-msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr ""
-
 #: ../html/src/manager/admin/setup/products/products.tsx:338
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr ""
@@ -3217,6 +3183,24 @@ msgstr ""
 #: ../html/src/manager/admin/setup/products/products.tsx:661
 msgid "Recommended"
 msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:842
+#, fuzzy
+#| msgid "No channels selected to remove"
+msgid " channels sync failed"
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:850
+#, fuzzy
+#| msgid "No channels selected to remove"
+msgid " channels sync in progress"
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:858
+#, fuzzy
+#| msgid "No channels selected to remove"
+msgid " channels synced"
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "To enable this product, the parent product should be selected first"
@@ -3498,15 +3482,13 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
@@ -3543,15 +3525,11 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
-msgstr ""
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
@@ -3674,6 +3652,11 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr "Beim speichern ist ein Fehler aufgetreten."
 
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:91
+#, fuzzy
+msgid "Edit SCAP Content"
+msgstr "Projekt löschen"
+
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
 msgstr ""
@@ -3698,6 +3681,15 @@ msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
+msgstr ""
+
+#: ../html/src/manager/audit/scap/create-scap-content.tsx:145
+#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:139
+#: ../html/src/manager/images/image-profile-edit.tsx:495
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
+msgid "Update"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:125
@@ -3739,24 +3731,27 @@ msgstr ""
 msgid "Back to List"
 msgstr "Zurück zur Liste"
 
-#: ../html/src/manager/audit/scap/create-scap-policy.tsx:313
-#: ../html/src/manager/images/image-profile-edit.tsx:495
-#: ../html/src/manager/images/image-store-edit.tsx:212
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
-msgid "Update"
-msgstr ""
-
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
 #, fuzzy
 #| msgid "An error occurred on save."
 msgid "An error occurred while saving the tailoring file."
 msgstr "Beim speichern ist ein Fehler aufgetreten."
 
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
+#, fuzzy
+#| msgid "Edit Filter"
+msgid "Edit Tailoring File"
+msgstr "Filter bearbeiten"
+
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
 #, fuzzy
 #| msgid "Create Filter"
 msgid "Current File"
 msgstr "Filter erstellen"
+
+#: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
+msgid "Replace File (optional)"
+msgstr ""
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
 #, fuzzy
@@ -4985,7 +4980,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:700
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
 #: ../html/src/manager/notifications/notifications-list.tsx:139
-#: ../html/src/manager/state/highstate-summary.tsx:76
+#: ../html/src/manager/state/highstate-summary.tsx:90
 msgid "Type"
 msgstr ""
 
@@ -5015,19 +5010,19 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:10
-msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:16
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:30
-msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr ""
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -5225,6 +5220,11 @@ msgid "Create additional custom info keys"
 msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
+#, fuzzy
+msgid "Edit Image Profile: '"
+msgstr "Bearbeiten"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -5291,6 +5291,11 @@ msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr ""
+
+#: ../html/src/manager/images/image-store-edit.tsx:234
+#, fuzzy
+msgid "Edit Image Store: '"
+msgstr "Bearbeiten"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -5375,13 +5380,33 @@ msgstr ""
 msgid "Go to event"
 msgstr ""
 
+#: ../html/src/manager/images/image-view-overview.tsx:56
+msgid " is queued"
+msgstr ""
+
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr ""
 
+#: ../html/src/manager/images/image-view-overview.tsx:68
+#, fuzzy
+#| msgid "No channels selected to remove"
+msgid " in progress"
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
+
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+msgid " is successful"
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+#, fuzzy
+#| msgid "No channels selected to remove"
+msgid " has failed"
+msgstr "Keine Kanäle zum Entfernen ausgewählt"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5401,6 +5426,10 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:534
 msgid "Built externally"
 msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.tsx:134
+msgid " Status"
+msgstr " Status"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5447,11 +5476,6 @@ msgstr "Profil bearbeiten"
 
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
-msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:469
-#: ../html/src/manager/images/image-view.tsx:801
-msgid "Instance Details for \"{name}\""
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
@@ -5916,10 +5940,6 @@ msgstr ""
 msgid "Current Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-msgid "Url \"{url}\" is invalid"
-msgstr ""
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr ""
@@ -6009,6 +6029,12 @@ msgstr ""
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
+#, fuzzy
+#| msgid "Select a schedule"
+msgid "schedule"
+msgstr "Zeitplan auswählen"
+
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr ""
@@ -6017,7 +6043,15 @@ msgstr ""
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:150
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:144
+msgid "successfully"
+msgstr ""
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:177
+msgid "Error when deleting the "
+msgstr ""
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:190
 msgid "Calendar successfully refreshed"
 msgstr ""
 
@@ -6195,10 +6229,6 @@ msgstr ""
 #| msgid "Select a filter"
 msgid "Save the current Playbook"
 msgstr "Filter auswählen"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-msgid "Playbook \"{name}\""
-msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -6438,7 +6468,7 @@ msgstr ""
 
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 #: ../html/src/manager/proxy/container-config.tsx:320
-#: ../html/src/manager/salt/keys/key-management.tsx:188
+#: ../html/src/manager/salt/keys/key-management.tsx:205
 msgid "State"
 msgstr "Bundesland"
 
@@ -6617,6 +6647,10 @@ msgstr ""
 msgid "Registry URL"
 msgstr ""
 
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
+msgid "e.g., "
+msgstr ""
+
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
 msgstr ""
@@ -6704,7 +6738,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
@@ -6724,7 +6758,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
@@ -6831,13 +6865,13 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:45
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:344
-#: ../html/src/manager/shared/websocket/useWebSocket.ts:36
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:37
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 
 #: ../html/src/manager/notifications/notifications.tsx:59
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:365
-#: ../html/src/manager/shared/websocket/useWebSocket.ts:45
+#: ../html/src/manager/shared/websocket/useWebSocket.ts:46
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 
@@ -7303,19 +7337,19 @@ msgstr ""
 msgid "Matching ssh-push minions..."
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:60
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:71
 msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:93
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Formula Catalog"
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:103
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:115
 msgid "Filter by formula name"
 msgstr ""
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:108
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:120
 #: ../html/src/manager/state/highstate-summary.tsx:25
 msgid "Formula"
 msgstr ""
@@ -7344,15 +7378,15 @@ msgstr "abgelehnt"
 msgid "denied"
 msgstr "verweigert"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:148
+#: ../html/src/manager/salt/keys/key-management.tsx:165
 msgid "Keys"
 msgstr ""
 
-#: ../html/src/manager/salt/keys/key-management.tsx:154
+#: ../html/src/manager/salt/keys/key-management.tsx:171
 msgid "Search by name or fingerprint"
 msgstr "Nach Name oder Fingerabdruck suchen"
 
-#: ../html/src/manager/salt/keys/key-management.tsx:177
+#: ../html/src/manager/salt/keys/key-management.tsx:194
 msgid "Fingerprint"
 msgstr "Fingerabdruck"
 
@@ -7400,23 +7434,23 @@ msgstr ""
 msgid "Internal states"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:53
+#: ../html/src/manager/state/highstate-summary.tsx:67
 msgid "Retrieving highstate summary..."
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:70
+#: ../html/src/manager/state/highstate-summary.tsx:84
 msgid "State Source"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:82
+#: ../html/src/manager/state/highstate-summary.tsx:96
 msgid "Inherited From"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:105
+#: ../html/src/manager/state/highstate-summary.tsx:119
 msgid "Show full highstate output"
 msgstr ""
 
-#: ../html/src/manager/state/highstate-summary.tsx:156
+#: ../html/src/manager/state/highstate-summary.tsx:170
 msgid "System Group"
 msgstr ""
 
@@ -7446,6 +7480,14 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:112
 msgid "Base Channel:"
+msgstr ""
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
+msgid "${defaultChannelName}"
+msgstr "${defaultChannelName}"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+msgid "${this.getDefaultBase().name}"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
@@ -7542,6 +7584,10 @@ msgstr ""
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
 msgid "Don't change"
+msgstr ""
+
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
+msgid " (No system to disable)"
 msgstr ""
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
@@ -8226,15 +8272,15 @@ msgstr ""
 msgid "Libvirt API"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:206
 msgid "Add a {type} Virtual Host Manager"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:152
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:208
 msgid "Virtual Host Managers"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:229
 msgid "Add a virtual host manager"
 msgstr ""
 
@@ -8250,61 +8296,9 @@ msgstr ""
 msgid "Resource not found."
 msgstr ""
 
-#~ msgid "Edit "
-#~ msgstr "Bearbeiten "
-
-#, fuzzy
-#~| msgid "No channels selected to remove"
-#~ msgid " channels sync failed"
-#~ msgstr "Keine Kanäle zum Entfernen ausgewählt"
-
-#, fuzzy
-#~| msgid "No channels selected to remove"
-#~ msgid " channels sync in progress"
-#~ msgstr "Keine Kanäle zum Entfernen ausgewählt"
-
-#, fuzzy
-#~| msgid "No channels selected to remove"
-#~ msgid " channels synced"
-#~ msgstr "Keine Kanäle zum Entfernen ausgewählt"
-
-#, fuzzy
-#~ msgid "Edit SCAP Content"
-#~ msgstr "Projekt löschen"
-
-#, fuzzy
-#~| msgid "Edit Filter"
-#~ msgid "Edit Tailoring File"
-#~ msgstr "Filter bearbeiten"
-
-#, fuzzy
-#~ msgid "Edit Image Profile: '"
-#~ msgstr "Bearbeiten"
-
-#, fuzzy
-#~ msgid "Edit Image Store: '"
-#~ msgstr "Bearbeiten"
-
-#, fuzzy
-#~| msgid "No channels selected to remove"
-#~ msgid " in progress"
-#~ msgstr "Keine Kanäle zum Entfernen ausgewählt"
-
-#, fuzzy
-#~| msgid "No channels selected to remove"
-#~ msgid " has failed"
-#~ msgstr "Keine Kanäle zum Entfernen ausgewählt"
-
-#~ msgid " Status"
-#~ msgstr " Status"
-
-#, fuzzy
-#~| msgid "Select a schedule"
-#~ msgid "schedule"
-#~ msgstr "Zeitplan auswählen"
-
-#~ msgid "${defaultChannelName}"
-#~ msgstr "${defaultChannelName}"
+#: ../html/src/utils/network.ts:106
+msgid "HTTP Error code "
+msgstr ""
 
 #~ msgid "First"
 #~ msgstr "Erste"
