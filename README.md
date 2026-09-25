@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6593/badge)](https://bestpractices.coreinfrastructure.org/projects/6593)
 
 Uyuni
