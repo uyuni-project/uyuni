@@ -255,12 +255,6 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
 
-        <!-- should be removed -->
-        <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-        </dependency>
-
         <!-- Runtime Dependencies -->
         <dependency>
             <groupId>org.apache.santuario</groupId>

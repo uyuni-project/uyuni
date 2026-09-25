@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <definitions>
+        <definition id="oval:test:def:malformed" class="vulnerability">
+            <metadata><title>broken-xml</title></metadata>
+        <!-- missing closing tags on purpose -->
