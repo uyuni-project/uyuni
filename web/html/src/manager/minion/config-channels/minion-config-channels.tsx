@@ -9,6 +9,7 @@ import Network from "utils/network";
 declare global {
   interface Window {
     serverId?: any;
+    hasTransactionalSystems?: boolean;
   }
 }
 
@@ -16,11 +17,12 @@ function matchUrl(target?: string) {
   return "/rhn/manager/api/states/match?id=" + window.serverId + "&type=SERVER" + (target ? "&target=" + target : "");
 }
 
-function applyRequest(component) {
+function applyRequest(component, useTransactionalUpdate) {
   return Network.post("/rhn/manager/api/states/apply", {
     id: window.serverId,
     type: "SERVER",
     states: ["custom"],
+    useTransactionalUpdate: Boolean(window.hasTransactionalSystems && useTransactionalUpdate),
   }).then((data) => {
     component.setState({
       messages: MessagesUtils.info(
@@ -43,6 +45,11 @@ function saveRequest(states) {
 
 export const renderer = () =>
   SpaRenderer.renderNavigationReact(
-    <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest} />,
+    <ConfigChannels
+      matchUrl={matchUrl}
+      saveRequest={saveRequest}
+      applyRequest={applyRequest}
+      showTransactionalUpdate={window.hasTransactionalSystems}
+    />,
     document.getElementById("config-channels")
   );

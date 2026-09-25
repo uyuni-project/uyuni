@@ -27,9 +27,11 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.ServerActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -132,7 +134,13 @@ public class MinionActionUtils {
              .isPresent()
         );
 
-        if (!actionIsRunning && !serverAction.isStatusQueued()) {
+        boolean actionIsWaitingForReboot = !serverAction.isStatusQueued() &&
+                TransactionalActionManager.findTransactionalActionHistory(serverAction.getServerId(), actionId)
+                        .filter(history -> ProgressStatus.COMPLETED.equals(history.getPrerequisiteStatus()))
+                        .map(history -> history.isWaitingForReboot())
+                        .orElse(false);
+
+        if (!actionIsRunning && !serverAction.isStatusQueued() && !actionIsWaitingForReboot) {
             String message = "No job return event was received.";
             serverAction.fail(message);
         }
@@ -233,22 +241,15 @@ public class MinionActionUtils {
         // Select only ServerActions that are for minions and where the Action
         // should already be executed or running
         List<ServerAction> serverActions =
-            ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
-                    if (a.getEarliestAction().toInstant()
+            ActionFactory.pendingMinionServerActions().stream()
+                    .filter(serverAction -> serverAction.getParentAction().getEarliestAction().toInstant()
                             .atZone(ZoneId.systemDefault())
-                            .isBefore(now.minusHours(1))) {
-                        return a.getServerActions()
-                                .stream()
-                                .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
-                                        // Do not clean up SSH push tasks
-                                        sa.getServer().getContactMethod().getLabel()
-                                        .equals("default"));
-                    }
-                    else {
-                        return Stream.empty();
-                    }
-                }
-            ).toList();
+                            .isBefore(now.minusHours(1)))
+                    .filter(serverAction -> serverAction.getServer().asMinionServer().isPresent())
+                    // Do not clean up SSH push tasks
+                    .filter(serverAction -> serverAction.getServer().getContactMethod().getLabel()
+                            .equals("default"))
+                    .toList();
 
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()

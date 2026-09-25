@@ -26,6 +26,9 @@ public class RecurringActionDetailsDto {
     /** Is test run */
     private boolean test;
 
+    /** Execute through transactional-update on transactional systems */
+    private boolean useTransactionalUpdate;
+
     /** Schedule creation date **/
     private Date createdAt;
 
@@ -68,6 +71,13 @@ public class RecurringActionDetailsDto {
     }
 
     /**
+     * @return true when transactional systems should execute through transactional-update
+     */
+    public boolean isUseTransactionalUpdate() {
+        return useTransactionalUpdate;
+    }
+
+    /**
      * Sets the cronTimes.
      *
      * @param cronTimesIn the cronTimes
@@ -83,6 +93,15 @@ public class RecurringActionDetailsDto {
      */
     public void setTest(boolean testIn) {
         test = testIn;
+    }
+
+    /**
+     * Sets whether transactional systems should execute through transactional-update.
+     *
+     * @param useTransactionalUpdateIn whether transactional-update should be used
+     */
+    public void setUseTransactionalUpdate(boolean useTransactionalUpdateIn) {
+        useTransactionalUpdate = useTransactionalUpdateIn;
     }
 
     /**
