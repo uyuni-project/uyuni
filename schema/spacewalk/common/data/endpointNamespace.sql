@@ -3484,37 +3484,12 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/systems/ssm/audit/ScheduleXccdf.do' AND ep.http_method = 'GET'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/systems/ssm/audit/ScheduleXccdf.do' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/systems/ssm/audit/ScheduleXccdfConfirm.do' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/audit/XccdfDeleteConfirm.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
     AND ep.endpoint = '/systems/details/audit/XccdfDeleteConfirm.do' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/systems/details/audit/ScheduleXccdf.do' AND ep.http_method = 'GET'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.audit.openscap' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/systems/details/audit/ScheduleXccdf.do' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
@@ -9386,11 +9361,6 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'api.system.scap.schedule_xccdf_scan' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/manager/api/system/scap/scheduleXccdfScan' AND ep.http_method = 'POST'
-    ON CONFLICT DO NOTHING;
-INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
-    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.search.device_description' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/system/search/deviceDescription' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -9724,13 +9694,14 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'api.system.scap.schedule_beta_xccdf_scan_custom' AND ns.access_mode = 'W'
-      AND ep.endpoint = '/manager/api/system/scap/scheduleBetaXccdfScanCustom' AND ep.http_method = 'POST';
+    WHERE ns.namespace = 'api.system.scap.schedule_xccdf_scan_with_policy' AND ns.access_mode = 'W'
+      AND ep.endpoint = '/manager/api/system/scap/scheduleXccdfScanWithPolicy' AND ep.http_method = 'POST';
 
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'api.system.scap.schedule_beta_xccdf_scan_with_policy' AND ns.access_mode = 'W'
-      AND ep.endpoint = '/manager/api/system/scap/scheduleBetaXccdfScanWithPolicy' AND ep.http_method = 'POST';
+    WHERE ns.namespace = 'api.system.scap.schedule_xccdf_scan_custom' AND ns.access_mode = 'W'
+      AND ep.endpoint = '/manager/api/system/scap/scheduleXccdfScanCustom' AND ep.http_method = 'POST';
+
 
 -- Recurring Action Policies (Mapped to Existing Namespaces)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
