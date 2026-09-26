@@ -139,7 +139,12 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for the oscap
+     * tool. Only the options selecting the rules to evaluate and the content to use are passed
+     * on: --profile, --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id,
+     * --xccdf-id, --benchmark-id, --tailoring-file, --tailoring-id, --fetch-remote-resources
+     * and --remediate. Any other option is ignored, the result files being written by the
+     * scan itself.")
      * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List sids,
@@ -161,7 +166,12 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param_desc("string", "xccdfPath", "path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for the oscap
+     * tool. Only the options selecting the rules to evaluate and the content to use are passed
+     * on: --profile, --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id,
+     * --xccdf-id, --benchmark-id, --tailoring-file, --tailoring-id, --fetch-remote-resources
+     * and --remediate. Any other option is ignored, the result files being written by the
+     * scan itself.")
      * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID if SCAP action created")
@@ -186,7 +196,12 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for the oscap
+     * tool. Only the options selecting the rules to evaluate and the content to use are passed
+     * on: --profile, --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id,
+     * --xccdf-id, --benchmark-id, --tailoring-file, --tailoring-id, --fetch-remote-resources
+     * and --remediate. Any other option is ignored, the result files being written by the
+     * scan itself.")
      * @apidoc.param #param_desc("string", "ovalFiles", "Additional OVAL files for oscap tool.")
      * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
@@ -233,7 +248,12 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for the oscap
+     * tool. Only the options selecting the rules to evaluate and the content to use are passed
+     * on: --profile, --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id,
+     * --xccdf-id, --benchmark-id, --tailoring-file, --tailoring-id, --fetch-remote-resources
+     * and --remediate. Any other option is ignored, the result files being written by the
+     * scan itself.")
      * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
@@ -254,7 +274,12 @@ public class SystemScapHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sid")
      * @apidoc.param #param_desc("string", "xccdfPath", "Path to xccdf content on targeted systems.")
-     * @apidoc.param #param_desc("string", "oscapPrams", "Additional parameters for oscap tool.")
+     * @apidoc.param #param_desc("string", "oscapParams", "additional parameters for the oscap
+     * tool. Only the options selecting the rules to evaluate and the content to use are passed
+     * on: --profile, --rule, --skip-rule, --reference, --cpe, --local-files, --datastream-id,
+     * --xccdf-id, --benchmark-id, --tailoring-file, --tailoring-id, --fetch-remote-resources
+     * and --remediate. Any other option is ignored, the result files being written by the
+     * scan itself.")
      * @apidoc.param #param_desc("$date","date",
      *                       "The date to schedule the action")
      * @apidoc.returntype #param_desc("int", "id", "ID of the scap action created")

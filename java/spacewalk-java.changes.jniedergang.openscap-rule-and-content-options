@@ -1,0 +1,3 @@
+- Forward the oscap options that select rules and content, such as
+  --skip-rule, to the scanned system instead of dropping them
+  silently, and document the supported options in the API
