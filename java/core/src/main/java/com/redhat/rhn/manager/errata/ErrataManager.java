@@ -1711,15 +1711,14 @@ public class ErrataManager extends BaseManager {
                 ServerFactory.findUnscheduledErrataByServerIds(user, serverIds);
 
         // if required, check that all specified errata ids are applicable
-        // throw Exception if that's not the case
+        // to at least one of the selected systems; throw Exception if
+        // an erratum applies to none of them
         if (onlyRelevant) {
-            boolean allRelevant = errataIds.isEmpty() ||
-                    (errataIds.stream()
-                    .allMatch(eid -> serverApplicableErrataMap.values().stream()
-                    .allMatch(eids -> eids.contains(eid))) &&
-                    !serverApplicableErrataMap.isEmpty());
+            Set<Long> applicableErrataIds = serverApplicableErrataMap.values().stream()
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toSet());
 
-            if (!allRelevant) {
+            if (!applicableErrataIds.containsAll(errataIds)) {
                 throw new InvalidErrataException();
             }
         }
