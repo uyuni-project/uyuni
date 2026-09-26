@@ -1,0 +1,158 @@
+#! /bin/bash
+
+set -e
+
+PQC_MIN_OPENSSL_VER="3.5.0"
+PQC_SIGNATURE_EXTENSION="p7s"
+PQC_CUSTOM_KEYS_DIR="/root/.pqkeys"
+PQC_CUSTOM_PRIVATE_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-priv.pem"
+PQC_CUSTOM_PUBLIC_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-pub.pem"
+PQC_CUSTOM_CERTIFICATE_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-cert.pem"
+
+
+function check_openssl_available {
+    if command -v /usr/bin/openssl >&2>/dev/null; then
+        #openssl is available
+        :
+    else
+        echo "Error: /usr/bin/openssl is not available"
+        exit 1
+    fi
+}
+
+function check_openssl_min_version {
+    OPENSSL_VER=$(rpm -q --queryformat='%{VERSION}' openssl)
+
+    if { echo "$PQC_MIN_OPENSSL_VER"; echo "$OPENSSL_VER"; } | sort --version-sort --check ; then
+        #version is ok
+        :
+    else
+        echo "Error: /usr/bin/openssl must be at least of version ${PQC_MIN_OPENSSL_VER}"
+        exit 1
+    fi
+}
+
+function check_arguments {
+    #check <input_file_to_sign> has been provided
+    if [ -z "$PDC_FILE_TO_SIGN" ]; then
+        echo "No <input_file_to_sign> provided" >&2
+        usage
+        exit 1
+    fi
+    #check <input_file_to_sign> exists and it's readable
+    if [ !  -r  "$PDC_FILE_TO_SIGN" ]; then
+        echo "No readable <input_file_to_sign> found ($PDC_FILE_TO_SIGN)" >&2
+        usage
+        exit 1
+    fi
+
+    #check <pqc_certificate> has been provided
+    if [ -z "$PQC_CERTIFICATE_FILE" ]; then
+        echo "No <pqc_certificate> provided" >&2
+        usage
+        exit 1
+    fi
+    #check <pqc_certificate> exists and it's readable
+    if [ ! -r "$PQC_CERTIFICATE_FILE" ]; then
+        echo "No readable <pqc_certificate> found ($PQC_CERTIFICATE_FILE)" >&2
+        usage
+        exit 1
+    fi
+
+    #check <pqc_private_key> has been provided
+    if [ -z "$PQC_PRIVATE_KEY_FILE" ]; then
+        echo "No <pqc_private_key> provided" >&2
+        usage
+        exit 1
+    fi
+    #check <pqc_private_key> exists and it's readable
+    if [ ! -r "$PQC_PRIVATE_KEY_FILE" ]; then
+        echo "No readable <pqc_private_key> found ($PQC_PRIVATE_KEY_FILE)" >&2
+        usage
+        exit 1
+    fi
+}
+
+function sign_metadata {
+    #sign
+    /usr/bin/openssl cms -sign -signer "$PQC_CERTIFICATE_FILE" -inkey "$PQC_PRIVATE_KEY_FILE" -md sha512 -in "$PDC_FILE_TO_SIGN" -outform DER -nocerts -out "$PDC_SIGNATURE_FILE"
+}
+
+function usage {
+    echo ""
+    echo "Usage: mgr-pqc-sign-metadata <input_file_to_sign>"
+    echo "                             [[-c|-cert] <pqc_certificate>] "
+    echo "                             [[-p|-priv] <pqc_private_key>] "
+    echo "                             [[-o|-out] <pqc_signature_file>]"
+    echo ""
+    echo "Mandatory Argument:"
+    echo "  <input_file_to_sign>           File to sign"
+    echo "Optional Arguments:"
+    echo "  -c,--cert <pqc_certificate>    PQC public certificate."
+    echo "                                 (default: $PQC_CUSTOM_CERTIFICATE_FILE)"
+    echo "  -p,--priv <pqc_private_key>    PQC private key."
+    echo "                                 (default: $PQC_CUSTOM_PRIVATE_KEY_FILE)"
+    echo "  -o,--out <pqc_signature_file>  PQC signature filename."
+    echo "                                 (default: <input_file_to_sign>.$PQC_SIGNATURE_EXTENSION)"
+    echo "  -h,--help                      Show this help message."
+    echo ""
+}
+
+
+#check openssl is available
+check_openssl_available
+
+#check openssl is at least of version >= 3.5
+check_openssl_min_version
+
+#defaults
+PQC_PRIVATE_KEY_FILE=$PQC_CUSTOM_PRIVATE_KEY_FILE
+PQC_CERTIFICATE_FILE=$PQC_CUSTOM_CERTIFICATE_FILE
+
+PDC_FILE_TO_SIGN="$1"
+shift $(( 1 > $# ? $# : 1))
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    opt="$1"
+    case $opt in
+        -c|--cert)
+            PQC_CERTIFICATE_FILE="$2"
+            shift $(( 2 > $# ? $# : 2))
+            ;;
+        -p|--priv)
+            PQC_PRIVATE_KEY_FILE="$2"
+            shift $(( 2 > $# ? $# : 2))
+            ;;
+        -i|--in)
+            PDC_FILE_TO_SIGN="$2"
+            shift $(( 2 > $# ? $# : 2))
+            ;;
+        -o|--out)
+            PDC_SIGNATURE_FILE="$2"
+            shift $(( 2 > $# ? $# : 2))
+            ;;
+         -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+#check arguments validity
+check_arguments
+
+#compute signature file name if not provided
+[ -z "$PDC_SIGNATURE_FILE" ] && PDC_SIGNATURE_FILE="$PDC_FILE_TO_SIGN.$PQC_SIGNATURE_EXTENSION"
+
+#sign
+sign_metadata
+
+exit 0
+
+

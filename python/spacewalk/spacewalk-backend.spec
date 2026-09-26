@@ -459,6 +459,8 @@ fi
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
+%attr(755,root,root) %{_bindir}/mgr-pqc-sign-metadata
+%attr(755,root,root) %{_bindir}/mgr-pqc-sign-metadata-ctl
 %attr(755,root,root) %{_bindir}/spacewalk-diskcheck
 %attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
 %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
