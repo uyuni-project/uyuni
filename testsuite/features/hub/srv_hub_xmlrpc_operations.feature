@@ -41,5 +41,17 @@ Feature: Hub XMLRPC API operations
     When I call system.list_systems on hub's own XMLRPC endpoint
     Then hub's own system list should not be empty
 
+  Scenario: Execute multicast system list across all peripherals (A-08)
+    Given I am connected to the hub XMLRPC API
+    When I call hub.listServerIds via XMLRPC
+    And I call multicast.system.list_systems via XMLRPC
+    Then multicast response should have successful responses
+
+  Scenario: Verify multicast response contains systems from peripheral (A-08)
+    Then multicast response should contain systems from "peripheral1"
+
+  Scenario: Verify sle_minion is not listed on the hub directly (B-03)
+    Then I should not see "sle_minion" registered on hub
+
   Scenario: Logout from Hub XMLRPC API
     When I logout from hub XMLRPC API

@@ -14,87 +14,17 @@ Feature: Hub full topology - minion managed via peripheral server
   As an authorized user
   I want to register a peripheral, sync channels, and manage minions through the peripheral (plan B-01..B-04)
 
-  # The two A-08 multicast scenarios below (borrowed from srv_hub_xmlrpc_operations.feature)
-  # run here, not there, because this is the only place in run_sets/hub_full_topology.yml
-  # where peripheral1 is registered AND a real minion (sle_minion) exists at the same time.
-  #
-  # This feature intentionally does NOT delete sle_minion in its own cleanup below --
-  # srv_hub_outage_resilience.feature (runs later, must be last in the run set) reuses
-  # this same minion instance and owns its final cleanup instead.
-
-  Background:
-    Given I am authorized for the "Admin" section
-
-  Scenario: Register peripheral1 as a peripheral on the hub (B-01 prerequisite)
-    When I add "peripheral1" as peripheral using administrator credentials
-    And I wait until I see "is currently registered as peripheral of this hub" text
-    Then I should see "peripheral1" in peripherals list
-
-#  @scc_credentials
-#  @susemanager
-#  Scenario: Synchronize SLES 15 SP7 product for minion bootstrap content (B-03 prerequisite)
-#    When I follow the left menu "Admin > Setup Wizard > Products"
-#    And I wait until I do not see "currently running" text
-#    And I wait until I do not see "Loading" text
-#    And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-#    And I select "x86_64" from "product-arch-filter"
-#    And I select "SUSE Linux Enterprise Server 15 SP7" as a product
-#    Then I should see the "SUSE Linux Enterprise Server 15 SP7" selected
-#    When I click the Add Product button
-#    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-#    And I wait until I see "SUSE Linux Enterprise Server 15 SP7" product has been added
-#    And I wait until all synchronized channels for "sles15-sp7" have finished
-
-  Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap (B-03 prerequisite)
-    # "Edit channels" is a parent/child tree -- checking the SLE-Product-SLES15-SP7-Pool row
-    # alone only selects that one row. The client also needs its vendor module channels
-    # (Basesystem, Server Applications, etc.), which are separate child rows with their own
-    # checkboxes. "-SP7-" matches the pool channel and all "SLE-Module-...-SP7-..." /
-    # "...-SP7-Updates" / "...-SP7-Installer-Updates" rows, while excluding unrelated custom
-    # test channels nested under the same parent (e.g. Fake-RPM-SUSE-Channel) which don't
-    # contain that substring.
-    When I configure hub to sync all "-SP7-" channels to "peripheral1"
-#    And I configure hub to sync channel "ManagerTools-SLE15-Pool for x86_64 SP7" to "peripheral1"
-#    And I configure hub to sync channel "ManagerTools-SLE15-Updates for x86_64 SP7" to "peripheral1"
-
-  Scenario: Trigger channel sync from hub to peripheral1 and wait for completion (B-03 prerequisite)
+  Scenario: Log in as admin user
     Given I am authorized for the "Admin" section on "peripheral1"
-    When I initiate channel sync from peripheral "peripheral1"
-    Then I should see a "Successfully scheduled a channels synchronization." text
-    And I wait at most 600 seconds until channel "sle-product-sles15-sp7-pool-x86_64" has been synced on "peripheral1"
-    Then channel "sle-product-sles15-sp7-pool-x86_64" should exist on "peripheral1"
 
   Scenario: Create activation key on peripheral1 peripheral with hub-synced channel (B-03)
     When I create an activation key "1-hub-test-key" on "peripheral1" with channel "sle-product-sles15-sp7-pool-x86_64"
     Then I should see a "1-hub-test-key" text
 
-#  @proxy
-#  Scenario: Verify proxy is registered to peripheral1 with proxy system type before bootstrap (B-02)
-#    Then I should see "proxy" in "peripheral1" system list as proxy type
-
   Scenario: Create the bootstrap repository on peripheral1 peripheral for sle_minion (B-03 prerequisite)
     When I create the bootstrap repository for "sle_minion" on peripheral1
 
   Scenario: Bootstrap sle_minion directly to peripheral1 peripheral (B-03)
-    Given I am authorized for the "Admin" section on "peripheral1"
-    When I bootstrap "sle_minion" to peripheral "peripheral1" using activation key "1-hub-test-key"
-    And I wait until onboarding is completed for "sle_minion"
-    Then I should see "sle_minion" registered on "peripheral1"
-
-  Scenario: Execute multicast system list across all peripherals (A-08)
-    Given I am connected to the hub XMLRPC API
-    When I call hub.listServerIds via XMLRPC
-    And I call multicast.system.list_systems via XMLRPC
-    Then multicast response should have successful responses
-
-  Scenario: Verify multicast response contains systems from peripheral (A-08)
-    Then multicast response should contain systems from "peripheral1"
-
-  Scenario: Verify sle_minion is not listed on the hub directly (B-03)
-    Then I should not see "sle_minion" registered on hub
-
-  @proxy
-  Scenario: Bootstrap sle_minion to peripheral1 via proxy (B-03 via-proxy path)
     Given I am authorized for the "Admin" section on "peripheral1"
     When I bootstrap "sle_minion" to peripheral "peripheral1" using activation key "1-hub-test-key"
     And I wait until onboarding is completed for "sle_minion"
@@ -176,10 +106,3 @@ Feature: Hub full topology - minion managed via peripheral server
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
 
-  Scenario: Cleanup - remove synced channels from peripheral1
-    When I remove synced channels from "peripheral1"
-    Then I should see a "Channel configuration updated" text
-
-  Scenario: Cleanup - deregister peripheral1 from hub
-    When I unregister "peripheral1" from hub
-    Then I should not see the name of "peripheral1"

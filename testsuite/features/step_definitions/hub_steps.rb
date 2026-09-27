@@ -1072,19 +1072,6 @@ Then(/^there should be exactly one entry for "([^"]*)" in hub system list$/) do 
   raise StandardError, "Expected 1 entry for #{host} in hub system list, found #{count}" unless count == 1
 end
 
-When(/^I document the two-entries behavior for "([^"]*)" when bootstrapped after peripheral registration$/) do |host|
-  hub_node = get_target('server')
-  system_name = get_system_name(host)
-  user, password = Credentials.for('server')
-  output, _code = hub_node.run(
-    "spacecmd -u #{user} -p #{password} system_list 2>/dev/null | grep -c '#{system_name}'",
-    check_errors: false
-  )
-  count = output.strip.to_i
-  log "B-01 documented: bootstrapping after peripheral registration results in #{count} entry/entries for #{host}"
-  log 'Per documentation, two entries is expected: one Foreign (peripheral) and one minion (new).'
-end
-
 # B-02 proxy system type verification
 
 Then(/^I should see "([^"]*)" in "([^"]*)" system list as proxy type$/) do |proxy_host, peripheral_host|

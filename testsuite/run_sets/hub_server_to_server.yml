@@ -2,9 +2,6 @@
 # Requires: one hub (SERVER) and one peripheral (SERVER2).
 # No proxy or minion nodes needed.
 # Tag: @hub_server_to_server
-#
-# Run with:
-#   cucumber -r features features/hub/srv_hub_*.feature --tags @hub_server_to_server
 
 ## Hub server-to-server features BEGIN ##
 

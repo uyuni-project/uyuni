@@ -2,9 +2,6 @@
 # Requires: hub (SERVER), peripheral (SERVER2), proxy (PROXY), and a minion (MINION).
 # Includes all server-to-server features (@hub_server_to_server) plus
 # full-topology-only features (@hub_full_topology). The two tag sets are distinct.
-#
-# Run with:
-#   cucumber -r features features/hub/srv_hub_*.feature
 
 ## Hub full topology features BEGIN ##
 
@@ -30,14 +27,16 @@
 - features/hub/srv_hub_minion_on_peripheral.feature
 
 - features/hub/srv_hub_channel_synchronization.feature
+- features/hub/srv_hub_minion_on_peripheral.feature
 - features/hub/srv_hub_xmlrpc_operations.feature
 - features/hub/srv_hub_issv2_export_import.feature
 - features/hub/srv_hub_reporting.feature
 # C-02..C-06: Grafana formula setup and hub reporting dashboard validation (requires monitoring node)
-- features/hub/srv_hub_grafana_setup.feature
-- features/hub/srv_hub_grafana_dashboards.feature
-- features/hub/srv_hub_grafana_data_validation.feature
-- features/hub/srv_hub_verification_cleanup.feature
+# Need monitoring server, probably move to BV
+#- features/hub/srv_hub_grafana_setup.feature
+#- features/hub/srv_hub_grafana_dashboards.feature
+#- features/hub/srv_hub_grafana_data_validation.feature
+#- features/hub/srv_hub_verification_cleanup.feature
 
 
 # B-05: Hub outage resilience (must be last — stops and starts hub services)

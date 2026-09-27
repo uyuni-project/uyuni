@@ -17,12 +17,12 @@ Feature: Hub ISSv3 channel synchronization to peripheral
   Scenario: Log in as admin user for channel sync tests
     Given I am authorized for the "Admin" section
 
-  Scenario: Prerequisite - register peripheral1 as peripheral for channel sync tests (A-06)
+  Scenario: Prerequisite - register peripheral1 as peripheral for channel sync tests
     When I add "peripheral1" as peripheral using administrator credentials
     And I wait until I see "is currently registered as peripheral of this hub" text
     Then I should see "peripheral1" in peripherals list
 
-  Scenario: Clone a channel on hub for sync testing (A-06)
+  Scenario: Clone a channel on hub for sync testing
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
@@ -60,7 +60,16 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155
     # Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
 
-  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on peripheral1 (A-06)
+  Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap
+    When I configure hub to sync all "-SP7-" channels to "peripheral1"
+
+  Scenario: Trigger channel sync from hub to peripheral1
+    Given I am authorized for the "Admin" section on "peripheral1"
+    When I initiate channel sync from peripheral "peripheral1"
+    Then I should see a "Successfully scheduled a channels synchronization." text
+
+  @long_running
+  Scenario: Wait for SLE-Product-SLES15-SP7-Pool channel to be synchronized on peripheral1
     And I wait until all synchronized channels for "sles15-sp7" have finished on peripheral1
 
   Scenario: Verify all channels are solved
