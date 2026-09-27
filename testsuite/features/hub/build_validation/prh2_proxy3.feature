@@ -36,10 +36,6 @@ Feature: Setup containerized proxy3 on peripheral2
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-  Scenario: Wait until the proxy3 host is visible on peripheral2
-    When I follow the left menu "Systems > System List > All"
-    And I wait at most 600 seconds until I see the name of "proxy3", refreshing the page
-
 @transactional_proxy3
   Scenario: Reboot the proxy3 host
     When I reboot the "proxy3" minion through the web UI on peripheral2
@@ -76,6 +72,13 @@ Feature: Setup containerized proxy3 on peripheral2
     And I wait until port "443" is listening on "proxy3" container
     And I visit "Proxy" endpoint of this "proxy3"
 
-  Scenario: The containerized proxy3 should be registered automatically
+  Scenario: Podman containers are running on the proxy
+    Then podman container "uyuni-proxy-httpd" should be running on "proxy3"
+    And podman container "uyuni-proxy-salt-broker" should be running on "proxy3"
+    And podman container "uyuni-proxy-squid" should be running on "proxy3"
+    And podman container "uyuni-proxy-ssh" should be running on "proxy3"
+    And podman container "uyuni-proxy-tftpd" should be running on "proxy3"
+
+  Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy3", refreshing the page

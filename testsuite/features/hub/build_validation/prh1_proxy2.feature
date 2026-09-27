@@ -72,6 +72,13 @@ Feature: Setup containerized proxy2 on peripheral1
     And I wait until port "443" is listening on "proxy2" container
     And I visit "Proxy" endpoint of this "proxy2"
 
-  Scenario: The containerized proxy2 should be registered automatically
+  Scenario: Podman containers are running on the proxy
+    Then podman container "uyuni-proxy-httpd" should be running on "proxy2"
+    And podman container "uyuni-proxy-salt-broker" should be running on "proxy2"
+    And podman container "uyuni-proxy-squid" should be running on "proxy2"
+    And podman container "uyuni-proxy-ssh" should be running on "proxy2"
+    And podman container "uyuni-proxy-tftpd" should be running on "proxy2"
+
+  Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy2", refreshing the page
