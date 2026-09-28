@@ -340,8 +340,8 @@ public class ActivationKeyFactory extends HibernateFactory {
 
         // Perform a direct insert to avoid problems with stale state in multi-threading operations
         Session session = getSession();
-        session.createNativeQuery("INSERT INTO rhnServerTokenRegs (token_id, server_id) VALUES (:tokenId, :serverId)")
-                .addSynchronizedEntityClass(Token.class)
+        session.createNativeMutationQuery(
+                "INSERT INTO rhnServerTokenRegs (token_id, server_id) VALUES (:tokenId, :serverId)")
                 .setParameter("tokenId", key.getToken().getId())
                 .setParameter("serverId", server.getId())
                 .executeUpdate();
@@ -367,8 +367,8 @@ public class ActivationKeyFactory extends HibernateFactory {
         }
 
         Session session = getSession();
-        session.createNativeQuery("DELETE FROM rhnServerTokenRegs WHERE token_id = :tokenId AND server_id = :serverId")
-                .addSynchronizedEntityClass(Token.class)
+        session.createNativeMutationQuery(
+                "DELETE FROM rhnServerTokenRegs WHERE token_id = :tokenId AND server_id = :serverId")
                 .setParameter("tokenId", key.getToken().getId())
                 .setParameter("serverId", server.getId())
                 .executeUpdate();
