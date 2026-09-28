@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-saline:latest
+#!BuildName: server-saline
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 #!BuildTag: uyuni/monitoring-prometheus:latest uyuni/monitoring-prometheus:%%prometheus_patch_version%%
+#!BuildName: monitoring-prometheus
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE
