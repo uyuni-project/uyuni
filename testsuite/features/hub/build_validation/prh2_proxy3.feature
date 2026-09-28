@@ -38,7 +38,7 @@ Feature: Setup containerized proxy3 on peripheral2
 
 @transactional_proxy3
   Scenario: Reboot the proxy3 host
-    When I reboot the "proxy3" minion through the web UI on peripheral2
+    When I reboot the "proxy3" host through SSH, waiting until it comes back
 
   Scenario: Wait until the proxy3 host appears
     When I wait until onboarding is completed for "proxy3"
