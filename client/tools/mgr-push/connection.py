@@ -336,7 +336,7 @@ def parse_url(url, scheme="http", path="/"):
         # pylint: disable-next=broad-exception-raised
         raise Exception()
 
-    (host, port) = splitport(netloc)
+    host, port = splitport(netloc)
 
     if not _path:
         # pylint: disable-next=invalid-name
