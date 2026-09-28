@@ -89,8 +89,13 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
         ActivationKeyFactory.addActivatedServer(activationKey, newServer);
 
+        // Check the collection
         assertEquals(initialActivatedServerCount + 1, activationKey.getToken().getActivatedServers().size());
         assertTrue(activationKey.getToken().getActivatedServers().contains(newServer));
+
+        // Check the database
+        TestUtils.clearSession();
+        assertEquals(1, ActivationKeyFactory.lookupByActivatedServer(newServer).size());
     }
 
     @ParameterizedTest
@@ -107,7 +112,12 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
         ActivationKeyFactory.removeActivatedServer(activationKey, server);
 
+        // Check the collection
         assertEquals(0, activationKey.getToken().getActivatedServers().size());
         assertFalse(activationKey.getToken().getActivatedServers().contains(server));
+
+        // Check the database
+        TestUtils.clearSession();
+        assertTrue(ActivationKeyFactory.lookupByActivatedServer(server).isEmpty());
     }
 }
