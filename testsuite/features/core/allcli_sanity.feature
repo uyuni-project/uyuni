@@ -19,6 +19,7 @@ Feature: Sanity checks
     And service "tomcat" is active on "server"
 
 @containerized_server
+@skip_if_rke2
    Scenario: Podman containers are running
     Then podman container "uyuni-db" should be running on "server"
     And podman container "uyuni-db" should be healthy on "server"
