@@ -312,9 +312,9 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSnapshotInfo;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
-import com.redhat.rhn.domain.server.MinionTransactionalInfo;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
@@ -593,9 +593,9 @@ public class AnnotationRegistry {
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
-            MinionTransactionalActionHistory.class,
-            MinionTransactionalInfo.class,
+            MinionSnapshotInfo.class,
             MinionSummary.class,
+            MinionTransactionalActionHistory.class,
             Modules.class,
             ModuleFilter.class,
             Namespace.class,

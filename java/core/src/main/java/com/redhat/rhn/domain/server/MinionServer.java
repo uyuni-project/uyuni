@@ -80,7 +80,7 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @OneToOne(mappedBy = "minionServer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
     @SuppressWarnings("java:S1948") // Hibernate association; Java serialization is not its persistence contract.
-    private MinionTransactionalInfo transactionalInfo;
+    private MinionSnapshotInfo snapshotInfo;
 
 
     /**
@@ -429,63 +429,63 @@ public class MinionServer extends Server implements SaltConfigurable {
      * @return the number of the currently active (booted) Btrfs snapshot, or null
      */
     public Long getActiveSnapshot() {
-        return transactionalInfo != null ? transactionalInfo.getActiveSnapshot() : null;
+        return snapshotInfo != null ? snapshotInfo.getActiveSnapshot() : null;
     }
 
     /**
      * @param activeSnapshotIn the active snapshot number to set
      */
     public void setActiveSnapshot(Long activeSnapshotIn) {
-        getOrCreateTransactionalInfo().setActiveSnapshot(activeSnapshotIn);
+        getOrCreateSnapshotInfo().setActiveSnapshot(activeSnapshotIn);
     }
 
     /**
      * @return the number of the default (next-boot) Btrfs snapshot, or null
      */
     public Long getDefaultSnapshot() {
-        return transactionalInfo != null ? transactionalInfo.getDefaultSnapshot() : null;
+        return snapshotInfo != null ? snapshotInfo.getDefaultSnapshot() : null;
     }
 
     /**
      * @param defaultSnapshotIn the default snapshot number to set
      */
     public void setDefaultSnapshot(Long defaultSnapshotIn) {
-        getOrCreateTransactionalInfo().setDefaultSnapshot(defaultSnapshotIn);
+        getOrCreateSnapshotInfo().setDefaultSnapshot(defaultSnapshotIn);
     }
 
     /**
      * @return snapshot detail objects, or null when not available
      */
     public List<Map<String, Object>> getSnapshotDetails() {
-        return transactionalInfo != null ? transactionalInfo.getSnapshotDetails() : null;
+        return snapshotInfo != null ? snapshotInfo.getSnapshotDetails() : null;
     }
 
     /**
      * @param snapshotDetailsIn snapshot detail objects, or null to clear
      */
     public void setSnapshotDetails(List<Map<String, Object>> snapshotDetailsIn) {
-        getOrCreateTransactionalInfo().setSnapshotDetails(snapshotDetailsIn);
+        getOrCreateSnapshotInfo().setSnapshotDetails(snapshotDetailsIn);
     }
 
     /**
      * @return when the Btrfs snapshot information was last updated, or null
      */
     public Date getSnapshotUpdated() {
-        return transactionalInfo != null ? transactionalInfo.getSnapshotUpdated() : null;
+        return snapshotInfo != null ? snapshotInfo.getSnapshotUpdated() : null;
     }
 
     /**
      * @param snapshotUpdatedIn when the Btrfs snapshot information was last updated
      */
     public void setSnapshotUpdated(Date snapshotUpdatedIn) {
-        getOrCreateTransactionalInfo().setSnapshotUpdated(snapshotUpdatedIn);
+        getOrCreateSnapshotInfo().setSnapshotUpdated(snapshotUpdatedIn);
     }
 
-    private MinionTransactionalInfo getOrCreateTransactionalInfo() {
-        if (transactionalInfo == null) {
-            transactionalInfo = new MinionTransactionalInfo(this);
+    private MinionSnapshotInfo getOrCreateSnapshotInfo() {
+        if (snapshotInfo == null) {
+            snapshotInfo = new MinionSnapshotInfo(this);
         }
-        return transactionalInfo;
+        return snapshotInfo;
     }
 
 }

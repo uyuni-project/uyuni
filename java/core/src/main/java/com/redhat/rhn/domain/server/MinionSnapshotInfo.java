@@ -27,12 +27,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
- * Transactional-system-specific data for Salt minions running on transactional
- * distributions i.e. openSUSE MicroOS, openSUSE Leap Micro, and SUSE Linux Micro.
+ * Btrfs snapshot information associated with a minion.
  */
 @Entity
-@Table(name = "suseMinionTransactionalInfo")
-public class MinionTransactionalInfo {
+@Table(name = "suseMinionSnapshotInfo")
+public class MinionSnapshotInfo {
 
     @Id
     @Column(name = "minion_server_id")
@@ -59,13 +58,13 @@ public class MinionTransactionalInfo {
     /**
      * Default constructor required by Hibernate.
      */
-    public MinionTransactionalInfo() {
+    public MinionSnapshotInfo() {
     }
 
     /**
      * @param minionServerIn the owning minion server
      */
-    public MinionTransactionalInfo(MinionServer minionServerIn) {
+    public MinionSnapshotInfo(MinionServer minionServerIn) {
         this.minionServer = minionServerIn;
     }
 
