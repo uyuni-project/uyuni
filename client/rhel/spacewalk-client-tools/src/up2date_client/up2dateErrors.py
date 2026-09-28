@@ -242,11 +242,9 @@ class RegistrationDeniedError(RhnServerException):
 
     # pylint: disable-next=invalid-name
     def changeExplanation(self):
-        return _(
-            """
+        return _("""
 Red Hat Network Classic is not supported.
-    """
-        )
+    """)
 
 
 class InvalidProductRegistrationError(NoLogError):
@@ -381,8 +379,7 @@ class InsuffMgmntEntsError(RhnServerException):
     # pylint: disable-next=invalid-name
     def changeExplanation(self, msg):
         # pylint: disable-next=invalid-name
-        newExpln = _(
-            """
+        newExpln = _("""
     Your organization does not have enough Management entitlements to register this
     system. Please notify your organization administrator of this error.
     You should be able to register this system after your organization frees existing
@@ -392,8 +389,7 @@ class InsuffMgmntEntsError(RhnServerException):
     A common cause of this error code is due to having mistakenly setup an
     Activation Key which is set as the universal default.  If an activation key is set
     on the account as a universal default, you can disable this key and retry to avoid
-    requiring a Management entitlement."""
-        )
+    requiring a Management entitlement.""")
 
         term = "Explanation:"
         loc = msg.rindex(term) + len(term)
