@@ -20,7 +20,7 @@ CREATE TABLE rhnRepoRegenQueue
                         CONSTRAINT rhn_reporegenq_id_pk PRIMARY KEY,
     channel_label   VARCHAR(128) NOT NULL,
     client          VARCHAR(128),
-    reason          VARCHAR(128),
+    reason          VARCHAR(256),
     force           CHAR(1),
     bypass_filters  CHAR(1),
     next_action     TIMESTAMPTZ
