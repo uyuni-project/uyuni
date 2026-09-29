@@ -367,6 +367,7 @@ public class TransactionalActionManager {
                 .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
         LocalCall<Map<String, State.ApplyResult>> stateApply = State.apply(states, pillar, queue, test);
 
+        // An empty module list requests a highstate.
         if (states.isEmpty()) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addTransactionalFormulaCalls(
@@ -1063,10 +1064,10 @@ public class TransactionalActionManager {
         if (PREREQUISITE_STATE_BY_STATE.containsKey(state)) {
             return Optional.of(PREREQUISITE_STATE_BY_STATE.get(state));
         }
-        if (!TRANSACTIONAL_STATES.contains(state)) {
-            return Optional.empty();
+        if (TRANSACTIONAL_STATES.contains(state)) {
+            return Optional.of(state);
         }
-        return Optional.of(state);
+        return Optional.empty();
     }
 
     private static Optional<Map<String, Object>> getPillarFromCall(LocalCall<?> call) {
