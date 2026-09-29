@@ -265,8 +265,8 @@ When(/^I add "([^"]*)" as peripheral using administrator credentials$/) do |host
   if ca_content.empty?
     step %(I check radio button "Not needed")
   else
-    step %(I check radio button "Paste the data")
-    find("textarea[name='rootCA_pastedData']").set(ca_content)
+    step %(I check radio button "Root CA certificate paste")
+    find("textarea[name='pastedRootCA']").set(ca_content)
   end
   step %(I click on "Register")
 end
