@@ -395,14 +395,6 @@ public class TransactionalActionManager {
             return;
         }
 
-        Optional<String> stateToApply = findSingleTransactionalStateToApply(states);
-        if (stateToApply.isPresent()) {
-            addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
-            addCall(calls, TransactionalUpdateCalls.apply(List.of(stateToApply.get()), pillar, queue, test),
-                    minionsByTransactionalUpdate.get(true));
-            return;
-        }
-
         if (useTransactionalUpdate) {
             addCall(calls, stateApply, minionsByTransactionalUpdate.get(false));
             addCall(calls, TransactionalUpdateCalls.apply(states, pillar, queue, test),
