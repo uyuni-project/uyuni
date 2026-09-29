@@ -1,27 +1,6 @@
 -- remember the privileges granted on the views which will be affected by the
 -- change, since dropping a view also removes all its privileges
-CREATE TEMPORARY TABLE errata_report_view_acls (
-    view_name       TEXT NOT NULL,
-    -- NULL means the privilege was granted to PUBLIC
-    grantee         TEXT,
-    privilege_type  TEXT NOT NULL,
-    is_grantable    BOOLEAN NOT NULL
-);
-
-INSERT INTO errata_report_view_acls (view_name, grantee, privilege_type, is_grantable)
-  SELECT c.relname
-            , CASE WHEN acl.grantee = 0 THEN NULL ELSE pg_catalog.pg_get_userbyid(acl.grantee) END
-            , acl.privilege_type
-            , acl.is_grantable
-    FROM pg_catalog.pg_class c
-            INNER JOIN pg_catalog.pg_namespace n ON ( n.oid = c.relnamespace )
-            CROSS JOIN LATERAL pg_catalog.aclexplode(c.relacl) AS acl
-   WHERE n.nspname = 'public'
-     AND c.relkind = 'v'
-     AND c.relname IN ( 'erratalistreport', 'erratachannelsreport', 'erratasystemsreport' )
-     -- the privileges of the owner are granted again when the view is re-created
-     AND acl.grantee <> c.relowner
-     AND acl.privilege_type IN ( 'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER' );
+SELECT backup_view_acls(ARRAY['ErrataListReport', 'ErrataChannelsReport', 'ErrataSystemsReport']);
 
 -- drop views which will be affected by the change
 DROP VIEW IF EXISTS ErrataListReport;
@@ -92,17 +71,4 @@ CREATE OR REPLACE VIEW ErrataSystemsReport AS
 ORDER BY SystemErrata.mgm_id, SystemErrata.errata_id, SystemErrata.system_id;
 
 -- restore the privileges which were granted on the views before they were dropped
-DO $$
-DECLARE
-    acl_entry RECORD;
-BEGIN
-    FOR acl_entry IN SELECT * FROM errata_report_view_acls LOOP
-        EXECUTE format('GRANT %s ON public.%I TO %s%s'
-                        , acl_entry.privilege_type
-                        , acl_entry.view_name
-                        , COALESCE(quote_ident(acl_entry.grantee), 'PUBLIC')
-                        , CASE WHEN acl_entry.is_grantable THEN ' WITH GRANT OPTION' ELSE '' END);
-    END LOOP;
-END $$;
-
-DROP TABLE IF EXISTS errata_report_view_acls;
+SELECT restore_view_acls(ARRAY['ErrataListReport', 'ErrataChannelsReport', 'ErrataSystemsReport']);
