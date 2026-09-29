@@ -815,52 +815,143 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testApplyStatesActionUsesTransactionalUpdateForMappedState() {
-        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
-        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+    public void testApplyStatesActionPreservesRecognizedStateForBothFlags() {
+        List<String> states = List.of(SaltParameters.PACKAGES_PKGLOCK);
+        for (boolean useTransactionalUpdate : List.of(false, true)) {
+            MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+            MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
 
-        TransactionalActionManager.addOptionalTransactionalApplyCalls(
-                calls,
-                List.of(SaltParameters.PACKAGES_PKGLOCK),
-                Optional.empty(),
-                Optional.of(true),
-                Optional.empty(),
-                List.of(regularMinion, transactionalMinion),
-                false,
-                1L);
+            Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                    states, useTransactionalUpdate, Optional.empty(), false,
+                    List.of(regularMinion, transactionalMinion));
 
-        assertEquals(2, calls.size());
-        assertTrue(calls.entrySet().stream()
-                .anyMatch(entry -> "state.apply".equals(entry.getKey().getPayload().get("fun")) &&
-                        entry.getValue().equals(List.of(regularMinion))));
-        assertTrue(calls.entrySet().stream()
-                .anyMatch(entry -> "transactional_update.apply".equals(entry.getKey().getPayload().get("fun")) &&
-                        entry.getValue().equals(List.of(transactionalMinion))));
+            assertEquals(2, calls.size());
+            LocalCall<?> regularCall = callForMinion(calls, regularMinion);
+            assertEquals("state.apply", regularCall.getPayload().get("fun"));
+            assertEquals(states, statesForMinion(calls, regularMinion));
+
+            LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
+            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                    transactionalCall.getPayload().get("fun"));
+            assertEquals(states, statesForMinion(calls, transactionalMinion));
+            if (!useTransactionalUpdate) {
+                assertEquals(List.of("direct_call"), transactionalCall.getPayload().get("module_executors"));
+            }
+        }
     }
 
     @Test
-    public void testTransactionalStateMappingTakesPrecedenceWhenTransactionalUpdateRequested() {
-        Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
-        MinionSummary transactionalMinion =
-                new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
+    public void testApplyStatesActionPreservesMultipleRecognizedStatesForBothFlags() {
+        List<String> states = List.of(SaltParameters.PACKAGES_PKGINSTALL, SaltParameters.PACKAGES_PKGUPDATE);
+        for (boolean useTransactionalUpdate : List.of(false, true)) {
+            MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+            Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                    states, useTransactionalUpdate, Optional.empty(), false, List.of(transactionalMinion));
 
-        TransactionalActionManager.addOptionalTransactionalApplyCalls(
-                calls,
+            LocalCall<?> call = callForMinion(calls, transactionalMinion);
+            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                    call.getPayload().get("fun"));
+            assertEquals(states, statesForMinion(calls, transactionalMinion));
+            if (!useTransactionalUpdate) {
+                assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+            }
+        }
+    }
+
+    @Test
+    public void testApplyStatesActionPreservesHardwareProfileUpdateForBothFlags() {
+        List<List<String>> statesToApply = List.of(
                 List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                List.of(transactionalMinion),
-                true,
-                1L);
+                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, SaltParameters.PACKAGES_PKGINSTALL));
 
-        assertEquals(1, calls.size());
-        LocalCall<?> transactionalCall = calls.keySet().iterator().next();
-        assertEquals("transactional_update.apply", transactionalCall.getPayload().get("fun"));
+        for (List<String> states : statesToApply) {
+            for (boolean useTransactionalUpdate : List.of(false, true)) {
+                MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+                Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                        states, useTransactionalUpdate, Optional.empty(), false, List.of(transactionalMinion));
 
-        Map<?, ?> kwargs = (Map<?, ?>) transactionalCall.getPayload().get("kwarg");
-        assertEquals(List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ), kwargs.get("mods"));
+                LocalCall<?> call = callForMinion(calls, transactionalMinion);
+                assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                        call.getPayload().get("fun"));
+                assertEquals(states, statesForMinion(calls, transactionalMinion));
+                if (!useTransactionalUpdate) {
+                    assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testApplyStatesActionPreservesMixedStatesAndFlag() {
+        List<String> states = List.of("custom", ApplyStatesEventMessage.CHANNELS);
+        for (boolean useTransactionalUpdate : List.of(false, true)) {
+            MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+            Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                    states, useTransactionalUpdate, Optional.empty(), false, List.of(transactionalMinion));
+
+            LocalCall<?> call = callForMinion(calls, transactionalMinion);
+            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                    call.getPayload().get("fun"));
+            assertEquals(states, statesForMinion(calls, transactionalMinion));
+            if (!useTransactionalUpdate) {
+                assertEquals(List.of("direct_call"), call.getPayload().get("module_executors"));
+            }
+        }
+    }
+
+    @Test
+    public void testApplyStatesActionPreservesMetadataAndMinionAssociation() {
+        List<String> states = List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, "custom");
+        Map<String, Object> pillar = Map.of("key", "value");
+        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+        MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+
+        Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                states, true, Optional.of(pillar), true, List.of(regularMinion, transactionalMinion));
+
+        LocalCall<?> regularCall = callForMinion(calls, regularMinion);
+        assertEquals("state.apply", regularCall.getPayload().get("fun"));
+        assertEquals(states, statesForMinion(calls, regularMinion));
+        assertEquals(pillar, ((Map<?, ?>) regularCall.getPayload().get("kwarg")).get("pillar"));
+        assertEquals(true, ((Map<?, ?>) regularCall.getPayload().get("kwarg")).get("queue"));
+        assertEquals(true, ((Map<?, ?>) regularCall.getPayload().get("kwarg")).get("test"));
+
+        LocalCall<?> transactionalCall = callForMinion(calls, transactionalMinion);
+        assertEquals(List.of(transactionalMinion), calls.get(transactionalCall));
+        assertEquals(states, statesForMinion(calls, transactionalMinion));
+        assertEquals(pillar, ((Map<?, ?>) transactionalCall.getPayload().get("kwarg")).get("pillar"));
+        assertEquals(true, ((Map<?, ?>) transactionalCall.getPayload().get("kwarg")).get("queue"));
+        assertEquals(true, ((Map<?, ?>) transactionalCall.getPayload().get("kwarg")).get("test"));
+    }
+
+    @Test
+    public void testPrepareSaltCallPreservesApplyStatesDecision() {
+        List<List<String>> statesToApply = List.of(
+                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE, "custom"));
+        Map<String, Object> pillar = Map.of("key", "value");
+
+        for (List<String> states : statesToApply) {
+            for (boolean useTransactionalUpdate : List.of(false, true)) {
+                MinionSummary transactionalMinion = transactionalMinion(2L, "transactional");
+                LocalCall<?> call = callForMinion(applyStatesCalls(
+                        states, useTransactionalUpdate, Optional.of(pillar), true, List.of(transactionalMinion)),
+                        transactionalMinion);
+                Map<?, ?> originalKwargs = Map.copyOf((Map<?, ?>) call.getPayload().get("kwarg"));
+
+                LocalCall<?> preparedCall = TransactionalActionManager.prepareSaltCallForTransactionalMinions(
+                        call, List.of(transactionalMinion));
+                Map<?, ?> preparedKwargs = (Map<?, ?>) preparedCall.getPayload().get("kwarg");
+
+                assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                        preparedCall.getPayload().get("fun"));
+                assertEquals(states, preparedKwargs.get("mods"));
+                assertEquals(originalKwargs, preparedKwargs);
+                assertEquals(useTransactionalUpdate ? null : List.of("direct_call"),
+                        preparedCall.getPayload().get("module_executors"));
+                assertSame(call, preparedCall);
+            }
+        }
     }
 
     @Test
@@ -2065,6 +2156,18 @@ public class TransactionalActionManagerTest {
         details.setUseTransactionalUpdate(useTransactionalUpdate);
         action.setDetails(details);
         return action;
+    }
+
+    private static Map<LocalCall<?>, List<MinionSummary>> applyStatesCalls(
+            List<String> states,
+            boolean useTransactionalUpdate,
+            Optional<Map<String, Object>> pillar,
+            boolean test,
+            List<MinionSummary> minions) {
+        ApplyStatesAction action = applyStatesAction(states, useTransactionalUpdate);
+        action.getDetails().setPillarsMap(pillar);
+        action.getDetails().setTest(test);
+        return action.getSaltCalls(minions);
     }
 
     private static MinionSummary transactionalMinion(Long id, String name) {
