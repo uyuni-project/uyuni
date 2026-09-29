@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-25 15:16+0200\n"
-"PO-Revision-Date: 2026-09-18 11:59+0000\n"
+"PO-Revision-Date: 2026-09-29 09:47+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -2749,10 +2749,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}."
+msgstr "Actualment aquest servidor està registrat com a perifèric del concentrador {fqdn}. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2775,10 +2773,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador."
+msgstr "El servidor {fqdn} està registrat actualment com a perifèric d'aquest concentrador. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -3427,7 +3423,7 @@ msgstr "Estat del pedaç desconegut"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL audit not supported for this system's OS"
-msgstr "Auditoria OVAL no suportada per al SO d'aquest sistema"
+msgstr "L'auditoria OVAL no és compatible amb el sistema operatiu d'aquest sistema."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
@@ -4848,26 +4844,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules."
+msgstr "Si heu escrit aquesta adreça al navegador, comproveu-ne l'ortografia i l'ús de majúscules."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere"
+msgstr "Si heu seguit un enllaç, és possible que l'enllaç sigui incorrecte o obsolet. Feu clic al botó Enrere al "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut"
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
