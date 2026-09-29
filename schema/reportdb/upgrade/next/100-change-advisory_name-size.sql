@@ -105,4 +105,4 @@ BEGIN
     END LOOP;
 END $$;
 
-DROP TABLE errata_report_view_acls;
+DROP TABLE IF EXISTS errata_report_view_acls;
