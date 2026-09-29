@@ -15,7 +15,7 @@ CREATE TABLE ChannelErrata
     channel_id                NUMERIC NOT NULL,
     errata_id                 NUMERIC NOT NULL,
     channel_label             VARCHAR(128),
-    advisory_name             VARCHAR(100),
+    advisory_name             VARCHAR(150),
     synced_date               TIMESTAMPTZ DEFAULT (current_timestamp)
 );
 

@@ -1,0 +1,2 @@
+- Increase advisory name char limit to 150 in Errata tables
+  (bsc#1273846)
