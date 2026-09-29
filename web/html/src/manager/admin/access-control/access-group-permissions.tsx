@@ -5,7 +5,8 @@ import debounce from "lodash/debounce";
 import type { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Button } from "components/buttons";
-import { CheckInput, DEPRECATED_Check, Form } from "components/input";
+import { CheckInput } from "components/input";
+import { CheckFilterGroup } from "components/table/CheckFilterGroup";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -172,12 +173,6 @@ const AccessGroupPermissions = (props: Props) => {
     debouncedGetNamespaces(searchValue);
   }, [searchValue, debouncedGetNamespaces]);
 
-  const setNamespacesCheck = (model) => {
-    setApiNamespace(!!model.apiNamespace);
-    setWebNamespace(!!model.webNamespace);
-    setShowOnlySelected(!!model.showOnlySelected);
-  };
-
   const filteredNamespaces = (namespaces || []).filter((item) => {
     if (apiNamespace && webNamespace) {
       return true;
@@ -192,24 +187,15 @@ const AccessGroupPermissions = (props: Props) => {
   });
 
   const namespacesFilter = (
-    <div key="namespace-filter" className="d-flex">
-      <div className="ms-4">
-        <Form model={{ apiNamespace, webNamespace, showOnlySelected }} onChange={setNamespacesCheck}>
-          <div className="d-flex">
-            <span className="control-label me-3">Filter by:</span>
-            <span className="me-4">
-              <DEPRECATED_Check label={t("API")} name="apiNamespace" key="apiNamespace" />
-            </span>
-            <span className="me-4">
-              <DEPRECATED_Check label={t("Web")} name="webNamespace" key="webNamespace" />
-            </span>
-            <span>
-              <DEPRECATED_Check label={t("Only selected")} name="showOnlySelected" key="showOnlySelected" />
-            </span>
-          </div>
-        </Form>
-      </div>
-    </div>
+    <CheckFilterGroup
+      key="namespace-filter"
+      className="ms-4"
+      options={[
+        { label: t("API"), checked: apiNamespace, onChange: setApiNamespace },
+        { label: t("Web"), checked: webNamespace, onChange: setWebNamespace },
+        { label: t("Only selected"), checked: showOnlySelected, onChange: setShowOnlySelected },
+      ]}
+    />
   );
 
   const getSelectedNamespace = (

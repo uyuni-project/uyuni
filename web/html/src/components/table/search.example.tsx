@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useAsyncState } from "@etheryte/react-hooks";
 
 import { Button } from "components/buttons";
-import { DEPRECATED_Check } from "components/input";
-import { Column, Table } from "components/table";
+import { CheckFilterGroup, Column, Table } from "components/table";
 
 import { useDebounce } from "utils/hooks";
 
@@ -12,6 +11,9 @@ import { getPlaceholderDataWithSearch, PlaceholderRow } from "./search.example.p
 const dataNo = [];
 export default () => {
   const [criteria, setCriteria] = useState("");
+  const [apiNamespace, setApiNamespace] = useState(false);
+  const [webNamespace, setWebNamespace] = useState(false);
+  const [onlySelected, setOnlySelected] = useState(false);
   const data = useAsyncState(() => getPlaceholderDataWithSearch(criteria), [criteria]) ?? [];
 
   const onSearch = useDebounce((newCriteria) => setCriteria(newCriteria), 50);
@@ -25,21 +27,15 @@ export default () => {
   ];
 
   const namespacesFilter = (
-    <div className="d-flex">
-      <div className="ms-4">
-        <div className="d-flex">
-          <span className="me-4">
-            <DEPRECATED_Check label={t("API")} name="apiNamespace" key="apiNamespace" />
-          </span>
-          <span className="me-4">
-            <DEPRECATED_Check label={t("Web")} name="webNamespace" key="webNamespace" />
-          </span>
-          <span>
-            <DEPRECATED_Check label={t("Only selected")} name="showOnlySelected" key="showOnlySelected" />
-          </span>
-        </div>
-      </div>
-    </div>
+    <CheckFilterGroup
+      key="namespaces-filter"
+      className="ms-4"
+      options={[
+        { label: t("API"), checked: apiNamespace, onChange: setApiNamespace },
+        { label: t("Web"), checked: webNamespace, onChange: setWebNamespace },
+        { label: t("Only selected"), checked: onlySelected, onChange: setOnlySelected },
+      ]}
+    />
   );
 
   return (
