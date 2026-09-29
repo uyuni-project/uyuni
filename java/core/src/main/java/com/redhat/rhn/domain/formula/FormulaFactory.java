@@ -732,9 +732,9 @@ public class FormulaFactory {
 
     private static Optional<MetadataFile> getFormulaMetadataFile(String name) {
         String metadataFilePath = name + File.separator + METADATA_FILE;
-        File metadataFileStandalone = new File(metadataDirStandaloneSalt + metadataFilePath);
-        File metadataFileManager = new File(metadataDirManager + metadataFilePath);
-        File metadataFileCustom = new File(metadataDirCustom + metadataFilePath);
+        File metadataFileStandalone = new File(metadataDirStandaloneSalt, metadataFilePath);
+        File metadataFileManager = new File(metadataDirManager, metadataFilePath);
+        File metadataFileCustom = new File(metadataDirCustom, metadataFilePath);
 
         if (metadataFileStandalone.isFile()) {
             return Optional.of(new MetadataFile(metadataFileStandalone, MetadataOrigin.STANDALONE));
@@ -770,9 +770,9 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Map<String, Object> getPillarExample(String name) {
         String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
-        File pillarExampleFileStandalone = new File(metadataDirStandaloneSalt + pillarExamplePath);
-        File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
-        File pillarExampleFileCustom = new File(metadataDirCustom + pillarExamplePath);
+        File pillarExampleFileStandalone = new File(metadataDirStandaloneSalt, pillarExamplePath);
+        File pillarExampleFileManager = new File(metadataDirManager, pillarExamplePath);
+        File pillarExampleFileCustom = new File(metadataDirCustom, pillarExamplePath);
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
