@@ -1,0 +1,2 @@
+- CVE-2026-94288: Disallow external XML entries and DOCTYPE
+  when parsing systemid (bsc#1282990)
