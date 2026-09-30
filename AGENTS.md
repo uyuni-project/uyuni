@@ -168,9 +168,11 @@ the aggregate from the repository root with:
 make -C schema/spacewalk/postgres main
 ```
 
-For an installed-schema change, inspect adjacent upgrade directories and add
-the corresponding forward migration when required. Preserve ordering and
-PostgreSQL compatibility; never hide migration failures.
+For an installed-schema change, add the corresponding forward migration when
+required into schema/spacewalk/upgrade/next. Preserve ordering and PostgreSQL
+compatibility; never hide migration failures.
+
+The reportdb schema in schema/reportdb/ is structured the same way.
 
 ### Acceptance tests
 
