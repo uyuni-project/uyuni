@@ -12,6 +12,7 @@ import { Check, DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { CheckFilterGroup } from "components/table/CheckFilterGroup";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
 import { Toggler } from "components/toggler";
@@ -559,25 +560,24 @@ class Products extends Component<ProductsProps, ProductsState> {
     );
 
     const installedFilter = (
-      <div className="d-flex align-items-center me-5">
-        <span className="me-3 mb-1">{t("Filter by:")}</span>
-        <span className="me-4">
-          <Check
-            id="show-installed-only"
-            checked={this.state.showInstalledOnly}
-            onChange={(showInstalledOnly) => this.setState({ showInstalledOnly })}
-            label={t("Installed")}
-          />
-        </span>
-        <span>
-          <Check
-            id="show-selected-only"
-            checked={this.state.showSelectedOnly}
-            onChange={(showSelectedOnly) => this.setState({ showSelectedOnly })}
-            label={t("Selected")}
-          />
-        </span>
-      </div>
+      <CheckFilterGroup
+        key="installed-filter"
+        className="me-5"
+        options={[
+          {
+            id: "show-installed-only",
+            label: t("Installed"),
+            checked: this.state.showInstalledOnly,
+            onChange: (showInstalledOnly) => this.setState({ showInstalledOnly }),
+          },
+          {
+            id: "show-selected-only",
+            label: t("Selected"),
+            checked: this.state.showSelectedOnly,
+            onChange: (showSelectedOnly) => this.setState({ showSelectedOnly }),
+          },
+        ]}
+      />
     );
     return (
       <div>
