@@ -10,5 +10,6 @@
 - features/kubernetes/srv_install_mlm_on_rke2.feature
 - features/kubernetes/srv_rke2_check_installation.feature
 - features/kubernetes/srv_rke2_configure_controller.feature
+- features/kubernetes/srv_rke2_setup_test_repositories.feature
 
 ## Install MLM server on RKE2 END ##

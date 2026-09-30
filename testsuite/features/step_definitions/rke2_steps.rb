@@ -1,6 +1,37 @@
 # Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'shellwords'
+
+When('I configure the salt bundle pillar on the RKE2 server') do
+  script = <<~SH
+    set -e
+    mkdir -p /srv/pillar
+    cat > /srv/pillar/top.sls <<'TOP_SLS'
+    base:
+      '*':
+        - salt_bundle_config
+    TOP_SLS
+    cat > /srv/pillar/salt_bundle_config.sls <<'SALT_BUNDLE_CONFIG'
+    mgr_force_venv_salt_minion: True
+    SALT_BUNDLE_CONFIG
+  SH
+  get_target('server').run("mgrctl exec -- sh -c #{Shellwords.escape(script)}", runs_in_container: false)
+end
+
+When(/^I download and unzip minima on "([^"]*)"$/) do |target|
+  _out, code = get_target(target).run("mgrctl exec 'curl --output-dir /root -OL https://github.com/uyuni-project/minima/releases/download/v0.4/minima-linux-amd64.tar.gz'", runs_in_container: false)
+  raise ScriptError, 'Failed to download' unless code.zero?
+
+  _out, code = get_target(target).run("mgrctl exec 'tar xf /root/minima-linux-amd64.tar.gz -C /usr/bin", runs_in_container: false)
+  raise ScriptError, 'Failed to download to unzip' unless code.zero?
+end
+
+When(/^I sync minima with data "([^"]*)" on "([^"]*)"$/) do |data, target|
+  _out, code = get_target(target).run("MINIMA_CONFIG=#{data} mgrctl exec -e MINIMA_CONFIG minima sync", runs_in_container: false)
+  raise ScriptError, 'Failed to sync' unless code.zero?
+end
+
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
   cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /var/spacewalk/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
