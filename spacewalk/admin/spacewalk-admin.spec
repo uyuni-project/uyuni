@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-admin
 #
-# Copyright (c) 2026 SUSE LLC
+# Copyright (c) 2026 SUSE LLC and contributors
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -46,6 +46,7 @@ Requires:       spacewalk-base
 Requires:       spacewalk-certs-tools
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
 Requires:       susemanager-schema-utility
+Requires:       crypto-policies-scripts
 Requires:       uyuni-setup-reportdb
 Requires:       perl(MIME::Base64)
 Requires(pre):  uyuni-base-common
