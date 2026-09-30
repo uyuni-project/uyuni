@@ -56,6 +56,9 @@ public class ProductTreeEntry {
 
     private boolean signed;
 
+    @SerializedName("pqc_signed")
+    private boolean pqcSigned;
+
     private boolean mandatory;
 
     private boolean recommended;
@@ -89,6 +92,7 @@ public class ProductTreeEntry {
      * @param rootProductIdIn      root product id
      * @param updateTagIn          update tag
      * @param signedIn             signed flag
+     * @param pqcSignedIn          pqc signed flag
      * @param mandatoryIn          mandatory flag
      * @param recommendedIn        recommended flag
      * @param urlIn                repo url
@@ -99,7 +103,8 @@ public class ProductTreeEntry {
      */
     public ProductTreeEntry(String channelLabelIn, Optional<String> parentChannelLabelIn, String channelNameIn,
                             long productIdIn, long repositoryIdIn, Optional<Long> parentProductIdIn,
-                            long rootProductIdIn, Optional<String> updateTagIn, boolean signedIn, boolean mandatoryIn,
+                            long rootProductIdIn, Optional<String> updateTagIn,
+                            boolean signedIn, boolean pqcSignedIn, boolean mandatoryIn,
                             boolean recommendedIn, String urlIn, ReleaseStage releaseStageIn,
                             Optional<ProductType> productTypeIn, List<String> tagsIn, List<GpgInfoEntry> gpgInfoIn) {
         this.channelLabel = channelLabelIn;
@@ -111,6 +116,7 @@ public class ProductTreeEntry {
         this.rootProductId = rootProductIdIn;
         this.updateTag = updateTagIn;
         this.signed = signedIn;
+        this.pqcSigned = pqcSignedIn;
         this.mandatory = mandatoryIn;
         this.recommended = recommendedIn;
         this.url = urlIn;
@@ -229,7 +235,7 @@ public class ProductTreeEntry {
      * @return the signed flag
      */
     public boolean isPqcSigned() {
-        return false; //PQC_TODO implement content
+        return pqcSigned;
     }
 
     /**
