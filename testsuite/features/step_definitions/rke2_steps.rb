@@ -1,6 +1,24 @@
 # Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'shellwords'
+
+When('I configure the salt bundle pillar on the RKE2 server') do
+  script = <<~SH
+    set -e
+    mkdir -p /srv/pillar
+    cat > /srv/pillar/top.sls <<'TOP_SLS'
+    base:
+      '*':
+        - salt_bundle_config
+    TOP_SLS
+    cat > /srv/pillar/salt_bundle_config.sls <<'SALT_BUNDLE_CONFIG'
+    mgr_force_venv_salt_minion: True
+    SALT_BUNDLE_CONFIG
+  SH
+  get_target('server').run("mgrctl exec -- sh -c #{Shellwords.escape(script)}", runs_in_container: false)
+end
+
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
   cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /var/spacewalk/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
