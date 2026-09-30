@@ -18,22 +18,39 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Optional;
 
 /**
- * Object representation of the results of a call to state.apply snapshots.refresh.
+ * Object representation of snapshot command results returned by state.apply.
  */
 public class SnapshotRefreshSlsResult {
 
     public static final String SNAPPER_LIST_SNAPSHOTS =
             "cmd_|-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run";
+    public static final String PACKAGE_SNAPPER_LIST_SNAPSHOTS =
+            "cmd_|-package-profile-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run";
 
     @SerializedName(SNAPPER_LIST_SNAPSHOTS)
     private Optional<StateApplyResult<CmdResult>> snapperSnapshots = Optional.empty();
+
+    @SerializedName(PACKAGE_SNAPPER_LIST_SNAPSHOTS)
+    private Optional<StateApplyResult<CmdResult>> packageSnapperSnapshots = Optional.empty();
 
     /**
      * Get the raw stdout from {@code snapper --json --no-dbus list}.
      * @return raw snapper JSON output, or empty
      */
     public Optional<String> getSnapperRawStdout() {
-        return snapperSnapshots
+        return getRawStdout(snapperSnapshots);
+    }
+
+    /**
+     * Get the raw stdout from the package profile update snapshot command.
+     * @return raw snapper JSON output, or empty
+     */
+    public Optional<String> getPackageRefreshSnapperRawStdout() {
+        return getRawStdout(packageSnapperSnapshots);
+    }
+
+    private Optional<String> getRawStdout(Optional<StateApplyResult<CmdResult>> result) {
+        return result
                 .map(r -> r.getChanges().getStdout())
                 .filter(out -> out != null && !out.isBlank());
     }
