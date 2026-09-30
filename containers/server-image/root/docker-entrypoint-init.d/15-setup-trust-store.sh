@@ -36,12 +36,10 @@ if [ -f "${MANAGER_COMPLETE}" ]; then
             printf '%s\n' "${root_ca}" > "${TRUST_ANCHORS_DIR}/hub_${fqdn}_root_ca.pem"
         done
 
-    # Copy uyuni CA to salt cert path and public download path (on PVCs)
+    # Copy uyuni CA to salt cert path (the HTTP pub path is served via Apache Alias)
     if [ -f "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT" ]; then
         cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
            /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
-        cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-           /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
     fi
 
     # Regenerate the trust store to include the dynamically added CAs
