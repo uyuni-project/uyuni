@@ -5,6 +5,7 @@ import { Dialog } from "components/dialog/Dialog";
 import { TextField } from "components/fields";
 import { Form, Text } from "components/input";
 import { MessagesContainer, showInfoToastr } from "components/toastr";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import Validation from "components/validation";
 
 import Network from "utils/network";
@@ -185,11 +186,9 @@ export class AddTokenButton extends Component<Props, State> {
         content={
           this.state.generatedToken ? (
             <>
-              <p>
-                {t(
-                  "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
-                )}
-              </p>
+              <Messages items={MessagesUtils.info(t(
+                "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
+              ))}/>
               <Form className="panel-default" divClass="panel-body">
                 <div className="row justify-content-md-center margin-top-sm">
                   <TextField
