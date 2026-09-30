@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.action;
 
 import static com.suse.manager.utils.MinionServerUtils.isMinionServer;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -83,6 +84,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -105,10 +107,12 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -145,6 +149,50 @@ public class ActionManager extends BaseManager {
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private ActionManager() {
+    }
+
+    /**
+     * Prepare Salt calls for regular and transactional minions.
+     *
+     * @param calls Salt calls mapped to their target minions
+     * @return prepared Salt calls with their target minions
+     */
+    public static Map<LocalCall<?>, List<MinionSummary>> prepareSaltCalls(
+            Map<LocalCall<?>, List<MinionSummary>> calls) {
+        Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
+        Map<LocalCall<?>, List<MinionSummary>> transactionalCalls = new HashMap<>();
+
+        calls.forEach((call, minions) -> {
+            if (minions.isEmpty()) {
+                result.put(call, minions);
+                return;
+            }
+
+            Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minions.stream()
+                    .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
+            List<MinionSummary> regularMinions = minionsByTransactionalUpdate.get(false);
+            if (!regularMinions.isEmpty()) {
+                result.put(call, regularMinions);
+            }
+
+            List<MinionSummary> transactionalMinions = minionsByTransactionalUpdate.get(true);
+            if (!transactionalMinions.isEmpty()) {
+                transactionalCalls.put(call, transactionalMinions);
+            }
+        });
+
+        TransactionalActionManager.prepareSaltCalls(transactionalCalls).forEach((call, minions) -> {
+            if (result.containsKey(call)) {
+                List<MinionSummary> mergedMinions = new ArrayList<>(result.get(call));
+                mergedMinions.addAll(minions);
+                result.put(call, mergedMinions);
+            }
+            else {
+                result.put(call, minions);
+            }
+        });
+
+        return result;
     }
 
 
