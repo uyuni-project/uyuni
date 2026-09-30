@@ -429,6 +429,17 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             createdFiles.add(new File(prefix, "repomd.xml.asc"));
             createdFiles.add(new File(prefix, "repomd.xml.key"));
         }
+
+        if (ConfigDefaults.get().isPqcMetadataSigningEnabled()) {
+            String[] pqcSignCommand = new String[2];
+            pqcSignCommand[0] = "/usr/bin/mgr-pqc-sign-metadata";
+            pqcSignCommand[1] = prefix + "repomd.xml";
+            cmdExecutor.execute(pqcSignCommand);
+            createdFiles.add(new File(prefix, "repomd.xml.p7s"));
+            // the script mgr-pqc-sign-metadata does not also save the certificate used to sign
+            // modify the script if needed (and add the file here)
+        }
+
         log.info("Repository metadata generation for '{}' finished in {} seconds", channel.getLabel(),
                 (int) (new Date().getTime() - start.getTime()) / 1000);
 
