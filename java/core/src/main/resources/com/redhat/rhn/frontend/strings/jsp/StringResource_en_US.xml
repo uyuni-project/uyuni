@@ -23147,6 +23147,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.edit.jsp.security.pqc" xml:space="preserve">
+        <source>Security: Post-Quantum Cryptography</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.clone.header" xml:space="preserve">
         <source>Clone Channel</source>
         <context-group name="ctx">
@@ -24202,6 +24208,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.pqccheck" xml:space="preserve">
+        <source>Enable PQC Check </source>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
