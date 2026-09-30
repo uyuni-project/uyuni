@@ -103,11 +103,8 @@ PQC_SIGCHECK_PLUGIN_PATH = os.path.join(
 )
 # The path the PQC sigcheck plugin reads keys from is hardcoded
 PQC_KEYRING_PATH = "/usr/lib/rpm/pqkeys"
-# Base path for PQC certificates Uyuni holds in /var/lib/spacewalk/pqkeys:
-# - vendored: shipped with uyuni or susemanager build-keys in /var/lib/spacewalk/pqkeys
-# - custom: administrator-provided certificates in /var/lib/spacewalk/pqkeys/custom
+# Path to PQC certificates Uyuni holds for repository verification
 SPACEWALK_PQC_KEYS_PATH = os.path.join(SPACEWALK_LIB, "pqkeys")
-PQC_CUSTOM_KEYS_SUBDIRECTORY = "custom"
 PQC_CERTIFICATE_EXTENSIONS = (".pem", ".crt")
 PQC_CERTIFICATE_GLOBS = ("*.pem", "*.crt")
 # Prefix of the certificates temporarily copied into the PQC keys path
@@ -1129,58 +1126,34 @@ type=rpm-md
             "sigcheck plugin.".format(reponame, PQC_SIGCHECK_PLUGIN),
         )
 
-    def _pqc_certificates(self):
-        """
-        Collect the PQC certificates Uyuni holds for this channel.
-
-        :returns: list of paths
-        """
-        reponame = os.path.basename(str(self.channel_label or self.reponame))
-        roots = [
-            SPACEWALK_PQC_KEYS_PATH,
-            os.path.join(SPACEWALK_PQC_KEYS_PATH, PQC_CUSTOM_KEYS_SUBDIRECTORY),
-        ]
-
-        directories = []
-        for root in roots:
-            directories.append(root)
-            if (
-                reponame
-                and reponame not in (os.curdir, os.pardir)
-                and reponame != PQC_CUSTOM_KEYS_SUBDIRECTORY
-            ):
-                directories.append(os.path.join(root, reponame))
-        return self._list_certificates(directories)
-
     @staticmethod
-    def _list_certificates(directories):
+    def _list_certificates(directory):
         """
-        List the certificate files of the given directories
+        List the certificate files of the given directory
 
         :returns: list of paths
         """
-        certificates = set()
-        for directory in directories:
-            try:
-                names = os.listdir(directory)
-            except OSError:
-                continue
-            for name in names:
-                if name.endswith(PQC_CERTIFICATE_EXTENSIONS):
-                    path = os.path.join(directory, name)
-                    if os.path.isfile(path):
-                        certificates.add(path)
+        try:
+            names = os.listdir(directory)
+        except OSError:
+            return []
+        certificates = []
+        for name in names:
+            if name.endswith(PQC_CERTIFICATE_EXTENSIONS):
+                path = os.path.join(directory, name)
+                if os.path.isfile(path):
+                    certificates.append(path)
         return sorted(certificates)
 
     def _install_pqc_certificates(self):
         """
-        Copy the certificates Uyuni holds for this channel into the PQCkeys
+        Copy the certificates Uyuni holds into the PQCkeys
         directory the sigcheck plugin reads
 
         :returns: list of the paths written, to be removed after the verification
         :raises RepoMDError: if the certificates cannot be copied
         """
-        certificates = self._pqc_certificates()
+        certificates = self._list_certificates(SPACEWALK_PQC_KEYS_PATH)
         if not certificates:
             log(
                 3,

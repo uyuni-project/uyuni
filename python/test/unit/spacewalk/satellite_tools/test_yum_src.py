@@ -807,75 +807,18 @@ class YumSrcTest(unittest.TestCase):
             cert_file.write(name)
         return path
 
-    def test_pqc_certificates_vendored_and_custom(self):
-        cs = self._make_dummy_cs()
-        cs.channel_label = "test_repo"
+    def test_list_certificates(self):
         keys_dir = tempfile.mkdtemp()
         try:
-            vendored_cert = self._write_certificate(keys_dir, "vendored.crt")
-            custom_cert = self._write_certificate(
-                os.path.join(keys_dir, "custom"), "custom.pem"
-            )
+            cert = self._write_certificate(keys_dir, "common.crt")
+            # Files in subdirectories should not be listed
+            self._write_certificate(os.path.join(keys_dir, "subdir"), "sub.crt")
 
-            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
-                # pylint: disable-next=protected-access
-                certs = cs._pqc_certificates()
-                self.assertIn(vendored_cert, certs)
-                self.assertIn(custom_cert, certs)
-        finally:
-            shutil.rmtree(keys_dir)
-
-    def test_pqc_certificates_channel_specific(self):
-        cs = self._make_dummy_cs()
-        cs.channel_label = "test_repo"
-        keys_dir = tempfile.mkdtemp()
-        try:
-            vend_channel = self._write_certificate(
-                os.path.join(keys_dir, "test_repo"), "vend_channel.crt"
-            )
-            cust_channel = self._write_certificate(
-                os.path.join(keys_dir, "custom", "test_repo"), "cust_channel.pem"
-            )
-            # Other repo certificates should be ignored
-            self._write_certificate(os.path.join(keys_dir, "other_repo"), "other.crt")
-            self._write_certificate(
-                os.path.join(keys_dir, "custom", "other_repo"), "other2.pem"
-            )
-
-            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
-                # pylint: disable-next=protected-access
-                certs = cs._pqc_certificates()
-                self.assertEqual(sorted(certs), sorted([vend_channel, cust_channel]))
-        finally:
-            shutil.rmtree(keys_dir)
-
-    def test_pqc_certificates_channel_named_custom(self):
-        cs = self._make_dummy_cs()
-        cs.channel_label = "custom"
-        keys_dir = tempfile.mkdtemp()
-        try:
-            vend_common = self._write_certificate(keys_dir, "vend_common.crt")
-            cust_common = self._write_certificate(
-                os.path.join(keys_dir, "custom"), "cust_common.pem"
-            )
-
-            with patch.object(yum_src, "SPACEWALK_PQC_KEYS_PATH", keys_dir):
-                # pylint: disable-next=protected-access
-                certs = cs._pqc_certificates()
-                self.assertEqual(sorted(certs), sorted([cust_common, vend_common]))
-        finally:
-            shutil.rmtree(keys_dir)
-
-    def test_list_certificates_deduplication(self):
-        temp_dir = tempfile.mkdtemp()
-        try:
-            cert = self._write_certificate(temp_dir, "dup.crt")
-            # If the same directory is passed twice, cert should not be duplicated
             # pylint: disable-next=protected-access
-            certs = yum_src.ContentSource._list_certificates([temp_dir, temp_dir])
+            certs = yum_src.ContentSource._list_certificates(keys_dir)
             self.assertEqual(certs, [cert])
         finally:
-            shutil.rmtree(temp_dir)
+            shutil.rmtree(keys_dir)
 
     def test_list_certificates_filtering(self):
         temp_dir = tempfile.mkdtemp()
@@ -888,12 +831,15 @@ class YumSrcTest(unittest.TestCase):
             # Ignored directory named with .pem extension
             os.makedirs(os.path.join(temp_dir, "subdir.pem"))
 
-            non_existent_dir = os.path.join(temp_dir, "non_existent")
             # pylint: disable-next=protected-access
-            certs = yum_src.ContentSource._list_certificates(
-                [non_existent_dir, temp_dir]
-            )
+            certs = yum_src.ContentSource._list_certificates(temp_dir)
             # Should be sorted and only include valid certificate files
             self.assertEqual(certs, [cert_crt, cert_pem])
+
+            non_existent_dir = os.path.join(temp_dir, "non_existent")
+            # pylint: disable-next=protected-access
+            self.assertEqual(
+                yum_src.ContentSource._list_certificates(non_existent_dir), []
+            )
         finally:
             shutil.rmtree(temp_dir)
