@@ -529,6 +529,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(original.getGPGKeyId(), result.getGPGKeyId());
         assertEquals(original.getGPGKeyFp(), result.getGPGKeyFp());
         assertEquals(original.isGPGCheck(), result.isGPGCheck());
+        assertEquals(original.isPqcCheck(), result.isPqcCheck());
         if (original.getEndOfLife() != null) {
             assertEquals(original.getEndOfLife().toString(),
                     result.getEndOfLife().toString());
@@ -557,6 +558,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(ca.getLabel(), c.getChannelArch().getLabel());
         assertEquals(c.getChecksumTypeLabel(), "sha1");
         assertTrue(c.isGPGCheck());
+        assertFalse(c.isPqcCheck());
     }
 
     @Test
@@ -577,6 +579,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(ca.getLabel(), c.getChannelArch().getLabel());
         assertEquals(c.getChecksumTypeLabel(), "sha1");
         assertFalse(c.isGPGCheck());
+        assertFalse(c.isPqcCheck());
     }
 
     @Test
@@ -762,7 +765,9 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(label, chan.getLabel());
         assertEquals(1, chan.getPackages().size());
         assertEquals(original.isGPGCheck(), chan.isGPGCheck());
+        assertEquals(original.isPqcCheck(), chan.isPqcCheck());
         assertFalse(chan.isGPGCheck());
+        assertFalse(chan.isPqcCheck());
 
         // errata cloning is tested in CloneErrataActionTest
 
@@ -794,6 +799,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(label, chan.getLabel());
         assertEquals(1, chan.getPackages().size());
         assertTrue(chan.isGPGCheck());
+        assertFalse(chan.isPqcCheck());
 
         assertTrue(chan.isCloned());
     }
