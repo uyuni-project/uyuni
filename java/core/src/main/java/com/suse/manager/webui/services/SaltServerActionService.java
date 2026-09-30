@@ -157,7 +157,7 @@ public class SaltServerActionService {
             return Collections.emptyMap();
         }
 
-        return TransactionalActionManager.prepareSaltCallsForTransactionalMinions(actionIn.getSaltCalls(minions));
+        return ActionManager.prepareSaltCalls(actionIn.getSaltCalls(minions));
     }
 
     /**

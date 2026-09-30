@@ -29,8 +29,6 @@ import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressSta
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.services.TransactionalUpdateCalls;
-import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.JsonElement;
@@ -739,96 +737,18 @@ public class TransactionalActionManagerTest {
     }
 
     @Test
-    public void testPrepareSaltCallsExecutesWithDirectCallForTransactionalMinions() {
-        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
+    public void testPrepareSaltCallsTransformsTransactionalTargets() {
         MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
         LocalCall<?> call = com.suse.salt.netapi.calls.modules.State.apply(
                 List.of(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty());
 
         Map<LocalCall<?>, List<MinionSummary>> calls =
-                TransactionalActionManager.prepareSaltCallsForTransactionalMinions(Map.of(
-                        call, List.of(regularMinion, transactionalMinion)));
-
-        assertEquals(2, calls.size());
-        assertTrue(calls.entrySet().stream()
-                .anyMatch(entry -> !entry.getKey().getPayload().containsKey("module_executors") &&
-                        entry.getValue().equals(List.of(regularMinion))));
-        assertTrue(calls.entrySet().stream()
-                .anyMatch(entry -> List.of("direct_call").equals(entry.getKey().getPayload().get("module_executors")) &&
-                        entry.getValue().equals(List.of(transactionalMinion))));
-    }
-
-    @Test
-    public void testPrepareSaltCallsPreservesRecipientsForSharedExplicitExecutor() {
-        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
-        List<MinionSummary> minions = new ArrayList<>(List.of(regularMinion, transactionalMinion));
-        LocalCall<?> call = new LocalCallWithExecutors<>(
-                com.suse.salt.netapi.calls.modules.State.apply(
-                        List.of(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()),
-                List.of("direct_call"),
-                Map.of());
-
-        Map<LocalCall<?>, List<MinionSummary>> input = new HashMap<>();
-        input.put(call, minions);
-        Map<LocalCall<?>, List<MinionSummary>> inputCopy = new HashMap<>(input);
-        List<MinionSummary> expectedMinions = List.copyOf(minions);
-        Map<LocalCall<?>, List<MinionSummary>> result =
-                TransactionalActionManager.prepareSaltCallsForTransactionalMinions(input);
-
-        assertEquals(expectedMinions, result.get(call));
-        assertEquals(expectedMinions, minions);
-        assertEquals(inputCopy, input);
-        assertSame(minions, input.get(call));
-    }
-
-    @Test
-    public void testPrepareSaltCallsPreservesRecipientsForOtherSharedExplicitExecutor() {
-        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
-        List<MinionSummary> minions = List.of(regularMinion, transactionalMinion);
-        LocalCall<?> call = new LocalCallWithExecutors<>(
-                com.suse.salt.netapi.calls.modules.State.apply(
-                        List.of(ApplyStatesEventMessage.SYSTEM_INFO), Optional.empty()),
-                List.of("sudo"),
-                Map.of("timeout", 30));
-
-        Map<LocalCall<?>, List<MinionSummary>> result =
-                TransactionalActionManager.prepareSaltCallsForTransactionalMinions(Map.of(call, minions));
-
-        assertEquals(minions, result.get(call));
-        assertEquals(List.of("sudo"), result.keySet().iterator().next().getPayload().get("module_executors"));
-    }
-
-    @Test
-    public void testPrepareSaltCallsPreservesRecipientsForPreparedTransactionalUpdate() {
-        MinionSummary regularMinion = new MinionSummary(1L, "regular", null, null, null, "SLES", false);
-        MinionSummary transactionalMinion = new MinionSummary(2L, "transactional", null, null, null, "SLES", true);
-        List<MinionSummary> minions = List.of(regularMinion, transactionalMinion);
-        LocalCall<?> call = TransactionalUpdateCalls.apply(
-                List.of(SaltParameters.PACKAGES_PKGINSTALL),
-                Optional.of(Map.of("key", "value")),
-                Optional.of(true),
-                Optional.empty());
-
-        Map<LocalCall<?>, List<MinionSummary>> result =
-                TransactionalActionManager.prepareSaltCallsForTransactionalMinions(Map.of(call, minions));
-
-        assertEquals(minions, result.get(call));
-        assertEquals("transactional_update.apply", result.keySet().iterator().next().getPayload().get("fun"));
-    }
-
-    @Test
-    public void testPrepareSaltCallsPreservesEmptyTargetLists() {
-        LocalCall<?> call = com.suse.salt.netapi.calls.modules.State.apply(
-                List.of(SaltParameters.PACKAGES_PKGINSTALL), Optional.empty());
-
-        Map<LocalCall<?>, List<MinionSummary>> calls =
-                TransactionalActionManager.prepareSaltCallsForTransactionalMinions(Map.of(call, List.of()));
+                TransactionalActionManager.prepareSaltCalls(Map.of(call, List.of(transactionalMinion)));
 
         assertEquals(1, calls.size());
-        assertTrue(calls.containsKey(call));
-        assertTrue(calls.get(call).isEmpty());
+        LocalCall<?> preparedCall = calls.keySet().iterator().next();
+        assertEquals(List.of("direct_call"), preparedCall.getPayload().get("module_executors"));
+        assertEquals(List.of(transactionalMinion), calls.get(preparedCall));
     }
 
     @Test

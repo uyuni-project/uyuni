@@ -255,15 +255,14 @@ public class TransactionalActionManager {
     }
 
     /**
-     * Prepare Salt calls for transactional minions.
+     * Prepare Salt calls whose target minions are transactional.
      *
-     * <p>Transactional states are applied explicitly through {@code transactional_update.*}. Other calls targeting
-     * transactional minions use the direct executor so they run against the live system.</p>
+     * <p>The target lists in {@code calls} are expected to contain only transactional minions.</p>
      *
-     * @param calls Salt calls mapped to target minions
-     * @return Salt calls with transactional minions split into direct-call targets when needed
+     * @param calls Salt calls mapped to transactional target minions
+     * @return Salt calls prepared for transactional target minions
      */
-    public static Map<LocalCall<?>, List<MinionSummary>> prepareSaltCallsForTransactionalMinions(
+    public static Map<LocalCall<?>, List<MinionSummary>> prepareSaltCalls(
             Map<LocalCall<?>, List<MinionSummary>> calls) {
         Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
 
@@ -273,21 +272,8 @@ public class TransactionalActionManager {
                 return;
             }
 
-            Map<Boolean, List<MinionSummary>> minionsByTransactionalUpdate = minions.stream()
-                    .collect(partitioningBy(MinionSummary::isTransactionalUpdate));
-
-            addAnyCall(result, call, minionsByTransactionalUpdate.get(false));
-
-            List<MinionSummary> transactionalMinions = minionsByTransactionalUpdate.get(true);
-            LocalCall<?> transactionalCall = prepareSaltCallForTransactionalMinions(call, transactionalMinions);
-            if (!transactionalMinions.isEmpty() && result.containsKey(transactionalCall)) {
-                List<MinionSummary> mergedMinions = new ArrayList<>(result.get(transactionalCall));
-                mergedMinions.addAll(transactionalMinions);
-                result.put(transactionalCall, mergedMinions);
-            }
-            else {
-                addAnyCall(result, transactionalCall, transactionalMinions);
-            }
+            LocalCall<?> transactionalCall = prepareSaltCallForTransactionalMinions(call, minions);
+            addAnyCall(result, transactionalCall, minions);
         });
 
         return result;
