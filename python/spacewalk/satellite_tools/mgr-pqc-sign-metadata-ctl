@@ -1,0 +1,357 @@
+#!/bin/bash
+
+set -e
+
+PQC_MIN_OPENSSL_VER="3.5.0"
+PQC_SIGNATURE_EXTENSION="p7s"
+PQC_CUSTOM_KEYS_DIR="/root/.pqkeys"
+PQC_CUSTOM_PRIVATE_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-priv.pem"
+PQC_CUSTOM_PUBLIC_KEY_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-pub.pem"
+PQC_CUSTOM_CERTIFICATE_FILE="$PQC_CUSTOM_KEYS_DIR/mgr-pqc-cert.pem"
+
+RHN_CONF="/etc/rhn/rhn.conf"
+PQC_CUSTOM_CERTIFICATE_SUBJECT="/CN=Multi-Linux Manager Custom PQC Key/O=Multi-Linux Manager"
+PQC_RHN_CONF_SIGN_ENTRY="sign_pqc_metadata"
+PQC_CUSTOM_SIGNATURE_FILENAME="repomd.xml.$PQC_SIGNATURE_EXTENSION"
+
+PQC_SALT_EXPORT_DIR="/srv/susemanager/salt/pqc"
+PQC_SALT_EXPORT_CERTIFICATE_FILE="$PQC_SALT_EXPORT_DIR/mgr-pqc-cert.pem"
+PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE="$(spacewalk-cfg-get documentroot)/pub/mgr-pqc-cert.pem"
+
+
+function check_openssl_available {
+    if command -v /usr/bin/openssl >&2>/dev/null; then
+        #openssl is available
+        :
+    else
+        echo "Error: /usr/bin/openssl is not available"
+        exit 1
+    fi
+}
+
+function check_openssl_min_version {
+    OPENSSL_VER=$(rpm -qf --queryformat='%{VERSION}' /usr/bin/openssl)
+
+    if { echo "$PQC_MIN_OPENSSL_VER"; echo "$OPENSSL_VER"; } | sort --version-sort --check ; then
+        #version is ok
+        :
+    else
+        echo "Error: /usr/bin/openssl must be at least of version ${PQC_MIN_OPENSSL_VER}"
+        exit 1
+    fi
+}
+
+function remove_old_pqc_keys {
+    rm -f $PQC_CUSTOM_CERTIFICATE_FILE
+    rm -f $PQC_CUSTOM_PUBLIC_KEY_FILE
+    rm -f $PQC_CUSTOM_PRIVATE_KEY_FILE
+    mkdir -p $PQC_CUSTOM_KEYS_DIR
+    chmod 700 $PQC_CUSTOM_KEYS_DIR
+}
+
+function generate_pqc_key_pair_certificate {
+    #PQC key pair
+    /usr/bin/openssl genpkey -algorithm mldsa87 -out $PQC_CUSTOM_PRIVATE_KEY_FILE -outpubkey $PQC_CUSTOM_PUBLIC_KEY_FILE
+    chmod 400 $PQC_CUSTOM_PRIVATE_KEY_FILE
+    chmod 444 $PQC_CUSTOM_PUBLIC_KEY_FILE
+    echo "Generated PQC private key: ${PQC_CUSTOM_PRIVATE_KEY_FILE}"
+    echo "Generated PQC public key: ${PQC_CUSTOM_PUBLIC_KEY_FILE}"
+
+    #certificate
+    /usr/bin/openssl x509 -new -key $PQC_CUSTOM_PRIVATE_KEY_FILE -subj "${PQC_CUSTOM_CERTIFICATE_SUBJECT}" > $PQC_CUSTOM_CERTIFICATE_FILE
+    chmod 444 $PQC_CUSTOM_CERTIFICATE_FILE
+    echo "Generated PQC certificate: ${PQC_CUSTOM_CERTIFICATE_FILE}"
+    /usr/bin/openssl x509 -in "${PQC_CUSTOM_CERTIFICATE_FILE}" -noout -subject
+}
+
+function do_generate_pqc_key {
+    #check openssl is available
+    check_openssl_available
+
+    #check openssl is at least of version >= 3.5
+    check_openssl_min_version
+
+    #remove old keys and certificate
+    remove_old_pqc_keys
+
+    #remove exported certificates
+    remove_pqc_public_certificate_from_salt_dir
+    remove_pqc_public_certificate_to_http_pub_dir
+
+    #create PQC key pair
+    generate_pqc_key_pair_certificate
+}
+
+
+
+function is_pqc_metadata_signing_enabled {
+    grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*1\s*$" $RHN_CONF
+}
+
+function ensure_pqc_metadata_signing_key_exists {
+    if [ ! -f "$PQC_CUSTOM_PRIVATE_KEY_FILE" ]; then
+        echo "ERROR. No PQC private key to sign metadata has been created."
+        echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
+        exit 1
+    fi
+    if [ ! -f "$PQC_CUSTOM_PUBLIC_KEY_FILE" ]; then
+        echo "ERROR. No PQC public key to sign metadata has been created."
+        echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
+        exit 1
+    fi
+    if [ ! -f "$PQC_CUSTOM_CERTIFICATE_FILE" ]; then
+        echo "ERROR. No PQC certificate key to sign metadata has been created."
+        echo "You may want to run 'mgr-pqc-sign-metadata-ctl generate-key'"
+        exit 1
+    fi
+
+    echo "OK. Key ${PQC_CUSTOM_CERTIFICATE_FILE}."
+}
+
+function ensure_pqc_metadata_signing_entry_rhn_conf {
+    # make sure PQC sign metadata entry =1 in rhn.conf
+    if grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*0\s*$" $RHN_CONF; then
+        # edit rhn.conf to enable signing
+        sed -i "s/${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$/${PQC_RHN_CONF_SIGN_ENTRY} = 1/g" $RHN_CONF
+        echo "DONE. Enabled PQC metadata signing in ${RHN_CONF}."
+
+    elif grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*1" $RHN_CONF; then
+        echo "OK. PQC Metadata signing is enabled in ${RHN_CONF}."
+    else
+        # add line to rhn.conf
+        echo "${PQC_RHN_CONF_SIGN_ENTRY} = 1" >> $RHN_CONF
+        echo "DONE. Enabled PQC metadata signing in ${RHN_CONF}."
+    fi
+}
+
+function export_pqc_public_certificate_to_salt_dir {
+    rm -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE"
+
+    mkdir -p "$PQC_SALT_EXPORT_DIR"
+    chown salt:salt "$PQC_SALT_EXPORT_DIR"
+    chmod 775 "$PQC_SALT_EXPORT_DIR"
+
+    cp -fa "$PQC_CUSTOM_CERTIFICATE_FILE" "$PQC_SALT_EXPORT_CERTIFICATE_FILE"
+    chmod 644 ${PQC_SALT_EXPORT_CERTIFICATE_FILE}
+    echo "DONE. Exported public PQC certificate to ${PQC_SALT_EXPORT_CERTIFICATE_FILE}."
+}
+
+function remove_pqc_public_certificate_from_salt_dir {
+    if [ -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE" ]; then
+        rm -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE"
+        echo "DONE. Removed key export file ${PQC_SALT_EXPORT_CERTIFICATE_FILE}."
+    else
+        echo "OK. Key file ${PQC_SALT_EXPORT_CERTIFICATE_FILE} is not present."
+    fi
+}
+
+function export_pqc_public_certificate_to_http_pub_dir {
+    rm -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
+
+    cp -fa "$PQC_CUSTOM_CERTIFICATE_FILE" "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
+    chmod 644 ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}
+    echo "DONE. Exported public PQC certificate to ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}."
+}
+
+function remove_pqc_public_certificate_to_http_pub_dir {
+    if [ -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE" ]; then
+        rm -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE"
+        echo "DONE. Removed key export file ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}."
+    else
+        echo "OK. Key file ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE} is not present."
+    fi
+}
+
+function do_enable_pqc_metadata_signing {
+    # check if the PQC signing key exists
+    ensure_pqc_metadata_signing_key_exists
+    # make sure PQC sign metadata entry =1 in rhn.conf
+    ensure_pqc_metadata_signing_entry_rhn_conf
+    # export the PQC public certificate to the salt dir
+    export_pqc_public_certificate_to_salt_dir
+    # export the PQC public certificate to the http pub dir
+    export_pqc_public_certificate_to_http_pub_dir
+}
+
+
+function do_check_pqc_metadata_signing {
+    # check PQC sign metadata entry in rhn.conf
+    if is_pqc_metadata_signing_enabled; then
+        echo "Metadata PQC signing is enabled in ${RHN_CONF}."
+        echo
+
+        # check salt key export file
+        if [ -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE" ]; then
+            echo "OK. Public PQC certificate was exported to ${PQC_SALT_EXPORT_CERTIFICATE_FILE}."
+        else
+            echo "ERROR. Public PQC certificate file $PQC_SALT_EXPORT_CERTIFICATE_FILE is missing."
+        fi
+
+        # check pub key export file
+        if [ -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE" ]; then
+            echo "OK. Public PQC certificate was exported to ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE}."
+        else
+            echo "ERROR. Public PQC certificate file $PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE is missing."
+        fi
+
+    else
+        echo "Metadata PQC signing is DISABLED in ${RHN_CONF}."
+        echo
+
+        # check salt key export file
+        if [ -f "$PQC_SALT_EXPORT_CERTIFICATE_FILE" ]; then
+            echo "WARNING. Public PQC certificate export file ${PQC_SALT_EXPORT_CERTIFICATE_FILE} is present."
+        else
+            echo "OK. Public PQC certificate file ${PQC_SALT_EXPORT_CERTIFICATE_FILE} is not present."
+        fi
+
+        # check http pub key export file
+        if [ -f "$PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE" ]; then
+            echo "WARNING. Public PQC certificate export file ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE} is present."
+        else
+            echo "OK. Public PQC certificate file ${PQC_HTTP_PUB_EXPORT_CERTIFICATE_FILE} is not present."
+        fi
+    fi
+}
+
+
+function do_disable_pqc_metadata_signing {
+    if grep --quiet "^${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$" $RHN_CONF; then
+        # edit rhn.conf to disable signing
+        sed -i "s/${PQC_RHN_CONF_SIGN_ENTRY}.*=.*$/${PQC_RHN_CONF_SIGN_ENTRY} = 0/g" $RHN_CONF
+    else
+        # add line to rhn.conf
+        echo "${PQC_RHN_CONF_SIGN_ENTRY} = 0" >> $RHN_CONF
+    fi
+    echo "DONE. Disabled PQC metadata signing in ${RHN_CONF}."
+
+    remove_pqc_public_certificate_from_salt_dir
+
+    remove_pqc_public_certificate_to_http_pub_dir
+}
+
+
+function warn_effective_changes {
+    echo
+    echo "NOTE. For the changes to become effective run:"
+    echo "   mgr-pqc-sign-metadata-ctl regen-metadata"
+    echo "and schedule a highstate for all your systems to"
+    echo "apply the new repository configuration."
+    echo
+}
+
+
+
+function read_spacecmd_user_pass {
+    if [[ -z "$SPACECMD_USER" || -z "$SPACECMD_PASS" ]];then
+        echo -n "Server User: ";
+        read -r SPACECMD_USER
+        echo -n "Server Password: ";
+        read -r -s SPACECMD_PASS
+    fi
+    echo
+}
+
+function do_check_channels {
+    if is_pqc_metadata_signing_enabled; then
+        read_spacecmd_user_pass
+        CHANNELS=$(spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS softwarechannel_list)
+        RETVAL=$?
+        if [ $RETVAL -ne 0 ]; then
+            exit 1
+        fi
+        REPODATA_DIR=/var/cache/rhn/repodata # TODO get mount point from cfg
+
+        for ch in $CHANNELS; do
+            if [ ! -d "$REPODATA_DIR/$ch" ]; then
+                echo "ERROR. Channel $ch. Cached metadata not generated."
+            else
+                # Trick to define if a repository is Debian/Ubuntu:
+                # if a file named “$REPODATA_DIR/$ch/Release” is found, then it's debian/ubuntu
+                if [[ -f "$REPODATA_DIR/$ch/Release" ]]; then
+                    #debian/ubuntu case: at the moment do nothing
+                    echo "OK. Channel $ch not supporting PQC at the moment."
+                else
+                      if [[ -f "$REPODATA_DIR/$ch/$PQC_CUSTOM_SIGNATURE_FILENAME" ]]; then
+                          echo "OK. Channel $ch. Cached metadata is PQC-signed."
+                      else
+                          echo "ERROR. Channel $ch. Cached metadata is not PQC-signed."
+                      fi
+                fi
+            fi
+        done
+    else
+        echo "No checking done. Metadata PQC signing is disabled."
+    fi
+}
+
+
+
+function do_regenerate_metadata {
+    echo -n "Restarting Tomcat..."
+    systemctl restart tomcat
+    echo "done."
+    echo -n "Restarting Taskomatic..."
+    systemctl restart taskomatic
+    echo "done."
+    echo
+    read_spacecmd_user_pass
+    echo "Refreshing pillar data..."
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "system_refreshpillar"
+    echo "Scheduling repo metadata regeneration..."
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "\nERROR queuing repo metadata regeneration. Try executing manually: spacecmd softwarechannel_regenerateyumcache \"*\""
+        exit 1
+    fi
+    echo "done."
+}
+
+
+
+function usage {
+    echo "Usage: mgr-pqc-sign-metadata-ctl [generate-key [cert_subj] | enable | disable | check-channels | check-config | regen-metadata]"
+    echo "  generate-key [cert_subj]  Generates PQC keys and certificate."
+    echo "                            Optional: certificate subject. E.g. '/CN=Company PQC Key/O=My Company/emailAddress=me@example.com'"
+    echo "  enable                    Enable PQC signing of repository metadata."
+    echo "  disable                   Disable PQC signing of repository metadata."
+    echo "  check-channels            Check if the cached channels repodata is signed."
+    echo "  check-config              Check configuration and report any problems. This is the default option."
+    echo "  regen-metadata            Restart services and schedule metadata regeneration."
+}
+
+
+if [ -n "$1" ]; then
+
+    if [[  "$1" = "generate-key" ]]; then
+        if [ -n "$2" ]; then
+            PQC_CUSTOM_CERTIFICATE_SUBJECT="$2"
+        fi
+        do_generate_pqc_key
+    elif [[  "$1" = "enable" ]]; then
+        do_enable_pqc_metadata_signing
+        warn_effective_changes
+    elif [[  "$1" = "disable" ]]; then
+        do_disable_pqc_metadata_signing
+        warn_effective_changes
+    elif [[  "$1" = "check-channels" ]]; then
+        do_check_channels
+    elif [[  "$1" = "check-config" ]]; then
+        do_check_pqc_metadata_signing
+    elif [[  "$1" = "regen-metadata" ]]; then
+        do_regenerate_metadata
+    elif [[ "$1" = "help" || "$1" = "--help" || "$1" = "-h" ]]; then
+        usage
+        exit 0
+    else
+        usage
+        exit 1
+    fi
+
+    exit 0
+else
+    do_check_pqc_metadata_signing
+    exit 0
+fi
+
