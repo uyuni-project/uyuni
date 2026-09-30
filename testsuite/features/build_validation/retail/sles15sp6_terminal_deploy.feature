@@ -2,8 +2,8 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature depends on:
-#   features/build_validation/retail/proxy_container_branch_network.feature
-#   features/build_validation/retail/sles15sp6_buildhost_build_kiwi_image.feature
+#   features/build_validation/retail/proxy_rbs_container_branch_network.feature
+#   features/build_validation/retail/sles15sp6_build_kiwi_image.feature
 #   features/build_validation/retail/sles15sp6_terminal_prepare_group_saltboot.feature
 
 @proxy

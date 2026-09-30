@@ -87,6 +87,10 @@ chkconfig sshd on
 echo '** Update sysconfig entries...'
 
 baseUpdateSysConfig /etc/sysconfig/network/dhcp DHCLIENT_SET_HOSTNAME yes
+# wicked defaults to RFC 4361 (DUID-based) client-ids since SLE15, which don't match
+# the branch DHCP server's MAC-based static reservations, so the terminal gets a
+# dynamic lease with no hostname instead of its reserved one
+baseUpdateSysConfig /etc/sysconfig/network/dhcp DHCLIENT_CREATE_CID rfc2132
 
 # Enable firewalld
 chkconfig firewalld on
