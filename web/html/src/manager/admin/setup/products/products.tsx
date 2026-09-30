@@ -24,7 +24,7 @@ import Network from "utils/network";
 import { SetupHeader } from "../setup-header";
 import { getProductSelectionState } from "./product-check/product-selection.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
-import { searchCriteriaInExtension } from "./products.utils";
+import { isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
@@ -162,7 +162,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           });
         }
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.metadataRequest === metadataRequest) {
+          this.handleResponseError(error);
+        }
+      });
 
     const productsRequest = reloadData();
     this.productsRequest = productsRequest;
@@ -179,7 +183,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           scheduledItems: [],
         });
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.productsRequest === productsRequest) {
+          this.handleResponseError(error);
+        }
+      });
   };
 
   handleSelectedItems = (items) => {
@@ -205,6 +213,10 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   updateSccSyncRunning = (sccSyncStatus) => {
+    if (this.isUnmounted) {
+      return;
+    }
+
     // if it was running and now it's finished
     if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
@@ -318,7 +330,7 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   handleResponseError = (jqXHR: JQueryXHR | Error | undefined, arg = {}) => {
-    if (this.isUnmounted || !jqXHR || (!(jqXHR instanceof Error) && jqXHR.status === 0)) {
+    if (this.isUnmounted || isProductRequestCancellation(jqXHR)) {
       return;
     }
 
