@@ -1,5 +1,4 @@
-import { type ReactNode, type ReactNodeArray, forwardRef, useImperativeHandle } from "react";
-
+import type { ReactNode, ReactNodeArray } from "react";
 import { cssTransition, toast, ToastContainer } from "react-toastify";
 
 type OptionalParams = {
@@ -79,9 +78,7 @@ export function showInfoToastr(message: ReactNode, optionalParams: OptionalParam
   show(message, notify);
 }
 
-export const MessagesContainer = forwardRef((props: MessagesContainerProps, ref) => {
-  useImperativeHandle(ref, () => ({}), []);
-
+export const MessagesContainer = (props: MessagesContainerProps) => {
   return (
     <ToastContainer
       className="sticky-container"
@@ -97,4 +94,4 @@ export const MessagesContainer = forwardRef((props: MessagesContainerProps, ref)
       transition={FadeTransition}
     />
   );
-});
+};
