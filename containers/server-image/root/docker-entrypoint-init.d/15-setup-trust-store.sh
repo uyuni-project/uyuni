@@ -37,11 +37,13 @@ if [ -f "${MANAGER_COMPLETE}" ]; then
         done
 
     # Copy uyuni CA to the salt file root. It must stay a real file (not a
-    # symlink): saltfs cannot serve symlinks (bsc#1219577), and the certs/
+    # symlink): saltfs cannot serve symlinks, and the certs/
     # directory also holds .sls states, so it cannot be volume-mounted.
+    # On podman the CA is already mounted there by uyuni-tools as a read-only
+    # secret, so the copy is a harmless no-op that fails silently.
     if [ -f "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT" ]; then
         cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-           /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+           /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>/dev/null || true
     fi
 
     # Regenerate the trust store to include the dynamically added CAs
