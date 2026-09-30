@@ -333,6 +333,29 @@
             </div>
         </div>
 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2><bean:message key="channel.edit.jsp.security.pqc"/></h2>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-lg-3 text-end">
+                        <bean:message key="channel.jsp.pqccheck"/>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="checkbox">
+                            <input type="checkbox" class="select-single"
+                                    name="pqc_check" id="pqc_check"
+                                <c:if test="${requestScope.pqc_check}">
+                                    checked
+                                </c:if>
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <c:if test="${has_access}">
             <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
