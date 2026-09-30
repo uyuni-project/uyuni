@@ -36,7 +36,9 @@ if [ -f "${MANAGER_COMPLETE}" ]; then
             printf '%s\n' "${root_ca}" > "${TRUST_ANCHORS_DIR}/hub_${fqdn}_root_ca.pem"
         done
 
-    # Copy uyuni CA to salt cert path (the HTTP pub path is served via Apache Alias)
+    # Copy uyuni CA to the salt file root. It must stay a real file (not a
+    # symlink): saltfs cannot serve symlinks (bsc#1219577), and the certs/
+    # directory also holds .sls states, so it cannot be volume-mounted.
     if [ -f "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT" ]; then
         cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
            /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
