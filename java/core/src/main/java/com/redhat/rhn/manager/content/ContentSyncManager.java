@@ -168,6 +168,7 @@ public class ContentSyncManager {
 
     private final boolean isPeripheral;
     private final boolean hubHasSignedMetadata;
+    private final boolean hubHasPqcSignedMetadata;
 
     private final List<String> toolsChannelFamilies;
 
@@ -204,6 +205,8 @@ public class ContentSyncManager {
         Optional<IssHub> issHub = hubFactory.lookupIssHub();
         isPeripheral = issHub.isPresent();
         hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
+        //PQC_TODO implement content
+        hubHasPqcSignedMetadata = false;
         toolsChannelFamilies = new ArrayList<>();
         toolsChannelFamilies.add(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL);
         if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
@@ -542,6 +545,7 @@ public class ContentSyncManager {
                             c.getA().getProduct().getVersion(),
                             c.getB(),
                             c.getA().getRepository().isSigned(),
+                            c.getA().getRepository().isPqcSigned(),
                             c.getA().getRepository().getUrl(),
                             c.getA().getUpdateTag()
                     )).collect(Collectors.toSet());
@@ -560,6 +564,7 @@ public class ContentSyncManager {
                             baseRepo.getA().getProduct().getVersion(),
                             baseRepo.getB(),
                             baseRepo.getA().getRepository().isSigned(),
+                            baseRepo.getA().getRepository().isPqcSigned(),
                             baseRepo.getA().getRepository().getUrl(),
                             baseRepo.getA().getUpdateTag()
                     )).toList();
@@ -585,6 +590,7 @@ public class ContentSyncManager {
                                 c.getA().getProduct().getVersion(),
                                 c.getB(),
                                 c.getA().getRepository().isSigned(),
+                                c.getA().getRepository().isPqcSigned(),
                                 c.getA().getRepository().getUrl(),
                                 c.getA().getUpdateTag()
                         )).collect(Collectors.toSet());
@@ -746,6 +752,7 @@ public class ContentSyncManager {
                     .orElse(new ContentSource());
             source.setLabel(channel.getLabel());
             source.setMetadataSigned(auth.getRepo().isSigned());
+            source.setPqcMetadataSigned(auth.getRepo().isPqcSigned());
             source.setOrg(null);
             source.setSourceUrl(url);
             source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
@@ -852,6 +859,10 @@ public class ContentSyncManager {
             }
             if (cs.getMetadataSigned() != auth.getRepo().isSigned()) {
                 cs.setMetadataSigned(auth.getRepo().isSigned());
+                save = true;
+            }
+            if (cs.getPqcMetadataSigned() != auth.getRepo().isPqcSigned()) {
+                cs.setPqcMetadataSigned(auth.getRepo().isPqcSigned());
                 save = true;
             }
             if (save) {
@@ -1096,6 +1107,7 @@ public class ContentSyncManager {
                             ContentSource updateCS = exTAuth.getContentSource();
                             if (updateCS != null) {
                                 updateCS.setMetadataSigned(repo.isSigned());
+                                updateCS.setPqcMetadataSigned(repo.isPqcSigned());
                                 updateCS.setSourceUrl(contentSourceUrlOverwrite(repo, exTAuth.getUrl(), mirrorUrl));
                                 ChannelFactory.save(updateCS);
                             }
@@ -1273,6 +1285,7 @@ public class ContentSyncManager {
 
         SCCRepository repo = new SCCRepository();
         repo.setSigned(isRepoSigned(true));
+        repo.setPqcSigned(isRepoPqcSigned(false));
         repo.update(jrepo);
 
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
@@ -1413,6 +1426,7 @@ public class ContentSyncManager {
                 ContentSource updateCS = exAuth.getContentSource();
                 if (updateCS != null) {
                     updateCS.setMetadataSigned(repo.isSigned());
+                    updateCS.setPqcMetadataSigned(repo.isPqcSigned());
                     updateCS.setSourceUrl(contentSourceUrlOverwrite(repo, exAuth.getUrl(), mirrorUrl));
                     ChannelFactory.save(updateCS);
                 }
@@ -2066,6 +2080,7 @@ public class ContentSyncManager {
                         () -> {
                             SCCRepository repo = repoMap.get(repoJson.getSCCId());
                             repo.setSigned(isRepoSigned(entry.isSigned()));
+                            repo.setPqcSigned(isRepoPqcSigned(entry.isPqcSigned()));
 
                             ChannelTemplate channelTemplate = new ChannelTemplate();
                             channelTemplate.setUpdateTag(entry.getUpdateTag().orElse(null));
@@ -2120,6 +2135,8 @@ public class ContentSyncManager {
                             channelTemplate.setChannelName(entry.getChannelName());
                             channelTemplate.setMandatory(entry.isMandatory());
                             channelTemplate.getRepository().setSigned(isRepoSigned(entry.isSigned()));
+                            channelTemplate.getRepository().setPqcSigned(isRepoPqcSigned(entry.isPqcSigned()));
+
                             if (!entry.getGpgInfo().isEmpty()) {
                                 channelTemplate.setGpgKeyUrl(entry.getGpgInfo()
                                         .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
@@ -2177,10 +2194,7 @@ public class ContentSyncManager {
                     SCCCachingFactory.deleteRepository(r);
                 });
 
-        productMap.values().forEach(SUSEProductFactory::save);
-        extensionsToSave.values().forEach(SUSEProductFactory::save);
-        repoMap.values().forEach(SUSEProductFactory::save);
-        channelTemplatesToSave.values().forEach(SUSEProductFactory::save);
+        saveAllObjects(productMap, extensionsToSave, repoMap, channelTemplatesToSave);
 
         ChannelFactory.listVendorChannels().forEach(c -> {
             updateChannel(c);
@@ -2188,6 +2202,16 @@ public class ContentSyncManager {
                 ChannelManager.disassociateChannelEntries(c);
             }
         });
+    }
+
+    private static void saveAllObjects(Map<Long, SUSEProduct> productMap,
+                                       Map<Tuple3<Long, Long, Long>, SUSEProductExtension> extensionsToSave,
+                                       Map<Long, SCCRepository> repoMap,
+                                       Map<Tuple3<Long, Long, Long>, ChannelTemplate> channelTemplatesToSave) {
+        productMap.values().forEach(SUSEProductFactory::save);
+        extensionsToSave.values().forEach(SUSEProductFactory::save);
+        repoMap.values().forEach(SUSEProductFactory::save);
+        channelTemplatesToSave.values().forEach(SUSEProductFactory::save);
     }
 
     /**
@@ -2589,6 +2613,7 @@ public class ContentSyncManager {
                             source = new ContentSource();
                             source.setLabel(chanTmpl.getChannelLabel());
                             source.setMetadataSigned(repository.isSigned());
+                            source.setPqcMetadataSigned(repository.isPqcSigned());
                             source.setOrg(null);
                             source.setSourceUrl(url);
                             source.setType(ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
@@ -2856,6 +2881,13 @@ public class ContentSyncManager {
             return hubHasSignedMetadata;
         }
         return signedDefault;
+    }
+
+    private boolean isRepoPqcSigned(boolean pqcSignedDefault) {
+        if (isPeripheral) {
+            return hubHasPqcSignedMetadata;
+        }
+        return pqcSignedDefault;
     }
 
     /**
