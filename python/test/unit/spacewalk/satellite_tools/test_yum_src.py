@@ -802,8 +802,7 @@ class YumSrcTest(unittest.TestCase):
         """
         os.makedirs(directory, exist_ok=True)
         path = os.path.join(directory, name)
-        # pylint: disable-next=unspecified-encoding
-        with open(path, "w") as cert_file:
+        with open(path, "w", encoding="utf-8") as cert_file:
             cert_file.write(name)
         return path
 

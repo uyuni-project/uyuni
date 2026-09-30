@@ -970,8 +970,7 @@ type=rpm-md
                     repo_url=_repo_url,
                     url=_url,
                     gpgcheck="0",
-                    # pylint: disable-next=consider-using-f-string
-                    sigcheck="repo_sigcheck_plugin={}\n".format(PQC_SIGCHECK_PLUGIN),
+                    sigcheck=f"repo_sigcheck_plugin={PQC_SIGCHECK_PLUGIN}",
                 )
             )
 
