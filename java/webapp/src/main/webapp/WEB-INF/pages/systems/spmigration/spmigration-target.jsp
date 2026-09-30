@@ -33,19 +33,12 @@
                 <bean:message key="spmigration.jsp.error.up-to-date" />
             </div>
         </c:when>
-        <c:when test="${not isMinion and zyppPluginInstalled and not upgradeSupported}">
-            <div class="alert alert-warning">
-                <bean:message key="spmigration.jsp.error.update-zypp-plugin" />
-            </div>
-        </c:when>
-        <c:when test="${(isMinion and not (isSUSEMinion or isRedHatMinion))
-                       or (not isMinion and not zyppPluginInstalled)
-                       or targetProducts == null}">
+        <c:when test="${not (isSUSEMinion or isRedHatMinion) or targetProducts == null}">
             <div class="alert alert-warning">
                 <bean:message key="spmigration.jsp.error.unsupported" />
             </div>
         </c:when>
-        <c:when test="${isMinion and not isSaltUpToDate}">
+        <c:when test="${not isSaltUpToDate}">
             <div class="alert alert-warning">
                 <bean:message key="spmigration.jsp.error.update-salt-package-needed" arg0="${saltPackage}"/>
             </div>

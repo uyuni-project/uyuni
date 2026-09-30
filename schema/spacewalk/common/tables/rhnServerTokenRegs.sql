@@ -23,17 +23,10 @@ CREATE TABLE rhnServerTokenRegs
     server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_reg_tok_sid_fk
                        REFERENCES rhnServer (id)
-)
+);
 
-;
-
-CREATE INDEX rhn_srv_reg_tok_ts_idx
-    ON rhnServerTokenRegs (token_id, server_id)
-    
-    ;
+CREATE UNIQUE INDEX rhn_srv_reg_tok_ts_uq
+    ON rhnServerTokenRegs (token_id, server_id);
 
 CREATE INDEX RHN_SRVR_TKN_RGS_SID_IDX
-    ON rhnServerTokenRegs (server_id)
-    
-    ;
-
+    ON rhnServerTokenRegs (server_id);

@@ -171,6 +171,7 @@ install_gnupg_debian:
 {%- if grains['os_family'] == 'Suse' and "opensuse" not in grains['oscodename']|lower %}
 mgrchannels_install_products:
   product.all_installed:
+    - onlyif: test -d /etc/ssl/certs
     - require:
       - file: mgrchannels_*
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -191,4 +192,5 @@ mgrchannels_inst_suse_build_key:
     - name: suse-build-key
     - require:
       - file: mgrchannels_repo
+    - onlyif: test -d /etc/ssl/certs
 {%- endif %}

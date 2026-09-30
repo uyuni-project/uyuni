@@ -47,6 +47,8 @@ type State = {
 };
 
 class VirtualHostManager extends Component<Props, State> {
+  private isComponentMounted = false;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -57,15 +59,33 @@ class VirtualHostManager extends Component<Props, State> {
   }
 
   componentDidMount() {
+    this.isComponentMounted = true;
     this.updateView(getHashAction(), getHashId());
-    window.addEventListener("popstate", () => {
-      this.updateView(getHashAction(), getHashId());
-    });
+    window.addEventListener("popstate", this.onPopState);
   }
 
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+    window.removeEventListener("popstate", this.onPopState);
+  }
+
+  onPopState = () => {
+    this.updateView(getHashAction(), getHashId());
+  };
+
   updateView(action, id) {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     if ((action === "edit" || action === "details") && id)
-      this.getVhmDetails(id).then((data) => this.setState({ selected: data.data, action: action }));
+      this.getVhmDetails(id).then((data) => {
+        if (!this.isComponentMounted || !data) {
+          return;
+        }
+
+        this.setState({ selected: data.data, action: action });
+      });
     else if (!action) {
       this.getAvailableModules();
       this.getVhmList();
@@ -76,12 +96,20 @@ class VirtualHostManager extends Component<Props, State> {
   }
 
   handleResponseError = (jqXHR) => {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     this.setState({
       messages: Network.responseErrorMessage(jqXHR),
     });
   };
 
   clearMessages() {
+    if (!this.isComponentMounted) {
+      return;
+    }
+
     this.setState({
       messages: undefined,
     });
@@ -93,13 +121,25 @@ class VirtualHostManager extends Component<Props, State> {
 
   getVhmList() {
     return Network.get("/rhn/manager/api/vhms")
-      .then((data) => this.setState({ action: undefined, selected: undefined, vhms: data.data }))
+      .then((data) => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
+        this.setState({ action: undefined, selected: undefined, vhms: data.data });
+      })
       .catch(this.handleResponseError);
   }
 
   getAvailableModules = () => {
     return Network.get("/rhn/manager/api/vhms/modules")
-      .then((data) => this.setState({ availableModules: data }))
+      .then((data) => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
+        this.setState({ availableModules: data });
+      })
       .catch(this.handleResponseError);
   };
 
@@ -111,6 +151,10 @@ class VirtualHostManager extends Component<Props, State> {
     if (!item) return false;
     return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
       .then(() => {
+        if (!this.isComponentMounted) {
+          return;
+        }
+
         this.handleBackAction();
         this.setState({
           messages: MessagesUtils.info("Virtual Host Manager has been deleted."),
@@ -121,6 +165,10 @@ class VirtualHostManager extends Component<Props, State> {
 
   handleBackAction = () => {
     this.getVhmList().then(() => {
+      if (!this.isComponentMounted) {
+        return;
+      }
+
       const loc = window.location;
       window.history.pushState(null, "", loc.pathname + loc.search);
     });
@@ -129,6 +177,10 @@ class VirtualHostManager extends Component<Props, State> {
 
   handleDetailsAction = (row) => {
     this.getVhmDetails(row.id).then((data) => {
+      if (!this.isComponentMounted || !data) {
+        return;
+      }
+
       this.setState({ selected: data.data, action: "details" });
       window.history.pushState(null, "", "#/details/" + row.id);
     });
@@ -136,6 +188,10 @@ class VirtualHostManager extends Component<Props, State> {
 
   handleEditAction = (row) => {
     this.getVhmDetails(row.id).then((data) => {
+      if (!this.isComponentMounted || !data) {
+        return;
+      }
+
       this.setState({ selected: data.data, action: "edit" });
       window.history.pushState(null, "", "#/edit/" + row.id);
     });

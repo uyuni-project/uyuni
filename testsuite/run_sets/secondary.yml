@@ -71,5 +71,7 @@
 - features/secondary/srv_cobbler_distro.feature
 - features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_cobbler_profile.feature
+# keep the following one at the end since it can cause the server to stop
+- features/secondary/srv_diskcheck.feature
 
 ## Secondary features END ##

@@ -125,7 +125,6 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v ${src_dir}:/manager \
     -v ${src_dir}/schema/spacewalk/spacewalk-schema-upgrade:/usr/bin/spacewalk-schema-upgrade \
     -v ${src_dir}/testsuite:/testsuite \
-    -v ${src_dir}/schema/reportdb/upgrade/:/usr/share/susemanager/db/reportdb-schema-upgrade/ \
     -v ${src_dir}/web:/web \
     -v ${src_dir}/.npmrc:/.npmrc \
     -v ${src_dir}/package.json:/package.json \
@@ -184,6 +183,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
              cp /manager/spacewalk/config/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf && \
              /docker-entrypoint-init.d/00-mgrSetup.sh && \
              /usr/bin/spacewalk-schema-upgrade -y && \
+             /usr/bin/spacewalk-schema-upgrade --reportdb -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
              /testsuite/podman_runner/setup_missing_folders.sh" 

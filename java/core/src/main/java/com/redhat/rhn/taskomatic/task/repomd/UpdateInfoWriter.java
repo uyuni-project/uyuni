@@ -109,7 +109,8 @@ public class UpdateInfoWriter extends RepomdWriter {
      */
     private void addErratum(ErrataOverview erratum, Channel channel) throws SAXException {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
-        attr.addAttribute("from", erratum.getErrataFrom());
+        String errataFrom = erratum.getErrataFrom();
+        attr.addAttribute("from", errataFrom == null ? "" : errataFrom);
         attr.addAttribute("status", erratum.getAdvisoryStatus().getMetadataValue());
         attr.addAttribute("type", mapAdvisoryType(erratum.getAdvisoryType()));
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));

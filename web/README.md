@@ -30,6 +30,8 @@ npm run proxy https://server.tf.local
 
 The external Storybook exists to improve frontend development and review workflows without replacing the legacy in-app style guide. It gives new and actively changed React components a standalone place for interactive documentation, args/controls, local regression checks.
 
+The Storybook for the current `master` branch is published at [https://www.uyuni-project.org/uyuni/storybook/](https://www.uyuni-project.org/uyuni/storybook/). GitHub Actions rebuilds and deploys it after every push to `master`.
+
 ## How to run Storybook?
 
 Inside the web directory run:

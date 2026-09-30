@@ -211,24 +211,6 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2><bean:message key="erratalist.jsp.oval"/></h2>
-        </div>
-        <div class="panel-body">
-            <c:if test="${ovalFile != null}">
-                <div class="page-summary">
-                    <c:out value="${ovalFile}" escapeXml="false" />
-                </div>
-            </c:if>
-            <c:if test="${ovalFile == null}">
-                <div class="page-summary">
-                    <bean:message key="details.jsp.none"/>
-                </div>
-            </c:if>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
             <h2><bean:message key="details.jsp.vendoradvisory"/></h2>
         </div>
         <div class="panel-body">

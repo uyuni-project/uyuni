@@ -22,6 +22,7 @@ import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,6 +50,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "suseProducts")
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
+
+    // product names used for migration from 15 to 16
+    private static final List<String> SLE_PRODUCT_NAMES = List.of("sles", "sles_sap", "sle_rt");
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_seq")
@@ -288,8 +292,8 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      * Helper to determine if this product represents SLES 16.x
      * @return true if this is a SLES 16 base product
      */
-    public boolean isSles16() {
-        return isBase() && "sles".equalsIgnoreCase(getName()) &&
+    public boolean isSle16() {
+        return isBase() && SLE_PRODUCT_NAMES.contains(getName()) &&
                getVersion() != null && getVersion().startsWith("16");
     }
 
@@ -297,8 +301,8 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      * Helper to determine if this product represents SLES 15.x
      * @return true if this is a SLES 15 base product
      */
-    public boolean isSles15() {
-        return isBase() && "sles".equalsIgnoreCase(getName()) &&
+    public boolean isSle15() {
+        return isBase() && SLE_PRODUCT_NAMES.contains(getName()) &&
                getVersion() != null && getVersion().startsWith("15");
     }
     /**

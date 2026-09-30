@@ -13,7 +13,7 @@ CREATE TABLE Errata
 (
     mgm_id                        NUMERIC NOT NULL,
     errata_id                     NUMERIC NOT NULL,
-    advisory_name                 VARCHAR(100),
+    advisory_name                 VARCHAR(150),
     advisory_type                 VARCHAR(32),
     advisory_status               VARCHAR(32),
     issue_date                    TIMESTAMPTZ,

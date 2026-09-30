@@ -1,6 +1,6 @@
 {# SLES 16 Migration using Distribution Migration System (DMS) #}
 
-{% if grains['osfullname']|upper == 'SLES' and grains['osrelease'] == '15.7' %}
+{% if grains['osfullname']|upper in ['SLES', 'SLE_RT'] and grains['osrelease'] in ['15.5', '15.6', '15.7'] %}
 
 {% set is_s390x = grains['osarch'] == 's390x' %}
 
@@ -61,17 +61,6 @@ sles16_migration_marker:
     - require:
       - file: sles16_migration_config
 
-{# Uyuni/MLM needs scp working and the path to the server change in SLE16 (bsc#1261036) #}
-sles16_migration_fix_sshd_config:
-  file.replace:
-    - name: /etc/ssh/sshd_config
-    - pattern: "Subsystem\\s+sftp\\s+.*"
-    - repl: "Subsystem       sftp    /usr/libexec/ssh/sftp-server"
-    - ignore_if_missing: True
-    - unless: rpm -qVf /etc/ssh/sshd_config
-    - require:
-      - file: sles16_migration_marker
-
 {% if is_s390x %}
 sles16_migration_execute:
   cmd.run:
@@ -80,7 +69,6 @@ sles16_migration_execute:
       - pkg: sles16_migration_package
       - file: sles16_migration_config
       - file: sles16_migration_marker
-      - file: sles16_migration_fix_sshd_config
 {% else %}
 sles16_migration_reboot:
   cmd.run:
@@ -90,11 +78,10 @@ sles16_migration_reboot:
       - pkg: sles16_migration_package
       - file: sles16_migration_config
       - file: sles16_migration_marker
-      - file: sles16_migration_fix_sshd_config
 {% endif %}
 
 {% else %}
 sles16_migration_error:
   test.fail_without_changes:
-    - name: "This state is only supported on SLES 15 SP7"
+    - name: "This state is only supported on SLES/SLE-RT 15 SP5, SP6 and SP7"
 {% endif %}

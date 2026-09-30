@@ -1,7 +1,7 @@
 {# DMS Configuration Template for SLES 16 Migration #}
 {# https://documentation.suse.com/suse-distribution-migration-system/15/html/distribution-migration-system/index.html #}
 
-migration_product: SLES/16.0/{{ grains['osarch'] }}
+migration_product: {{ salt['pillar.get']('susemanager:distupgrade:targetbaseproduct:name') }}/{{ salt['pillar.get']('susemanager:distupgrade:targetbaseproduct:version') }}/{{ salt['pillar.get']('susemanager:distupgrade:targetbaseproduct:arch') }}
 use_zypper_migration: false
 pre_checks_fix: true
 network:

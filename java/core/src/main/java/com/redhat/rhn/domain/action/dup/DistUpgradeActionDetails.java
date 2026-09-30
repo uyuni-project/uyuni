@@ -236,8 +236,8 @@ public class DistUpgradeActionDetails extends BaseDomainHelper {
             return false;
         }
         return getProductUpgrades().stream()
-                .anyMatch(u -> u.getFromProduct() != null && u.getFromProduct().isSles15() &&
-                        u.getToProduct() != null && u.getToProduct().isSles16());
+                .anyMatch(u -> u.getFromProduct() != null && u.getFromProduct().isSle15() &&
+                        u.getToProduct() != null && u.getToProduct().isSle16());
     }
 
     /**

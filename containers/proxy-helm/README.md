@@ -211,15 +211,14 @@ mkdir -p /root/proxy-config && cd /root/proxy-config
 tar xzf /root/config.tar.gz   # gives config.yaml, httpd.yaml, ssh.yaml
 
 # 2. Install the chart — proxy-cert and uyuni-ca are created from the tarball values
-CHART=oci://<registry>/proxy   # adjust to your registry
+CHART=oci://registry.opensuse.org/uyuni/proxy-helm   # adjust to your registry
 kubectl create namespace uyuni-proxy
 helm upgrade --install uyuni-proxy $CHART \
   --namespace uyuni-proxy \
+  --description "Proxy installation" \
   --set-file global.config=config.yaml \
   --set-file global.httpd=httpd.yaml \
-  --set-file global.ssh=ssh.yaml \
-  --set ingress.type=traefik \
-  --set ingress.class=traefik
+  --set-file global.ssh=ssh.yaml
 ```
 
 ### K3S
@@ -271,10 +270,11 @@ mkdir -p /root/proxy-config && cd /root/proxy-config
 tar xzf /root/config.tar.gz   # gives config.yaml, httpd.yaml, ssh.yaml
 
 # Install the chart — proxy-cert and uyuni-ca are created from the tarball values
-CHART=oci://<registry>/proxy   # adjust to your registry
+CHART=oci://registry.opensuse.org/uyuni/proxy-helm   # adjust to your registry
 kubectl create namespace uyuni-proxy
 helm upgrade --install uyuni-proxy $CHART \
   --namespace uyuni-proxy \
+  --description "Proxy installation" \
   --set-file global.config=config.yaml \
   --set-file global.httpd=httpd.yaml \
   --set-file global.ssh=ssh.yaml \
@@ -356,7 +356,7 @@ kubectl patch pv $PV --type=json \
   -p '[{"op":"remove","path":"/spec/claimRef"}]'
 
 # Install the proxy using the helm chart, binding to the existing squid PV
-CHART=oci://<registry>/proxy
+CHART=oci://registry.opensuse.org/uyuni/proxy-helm   # adjust to your registry
 helm upgrade --install uyuni-proxy $CHART \
   --namespace uyuni-proxy \
   --set-file global.config=/root/proxy-config/config.yaml \

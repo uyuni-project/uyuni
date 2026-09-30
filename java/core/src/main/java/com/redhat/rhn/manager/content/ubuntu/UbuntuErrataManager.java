@@ -176,7 +176,12 @@ public class UbuntuErrataManager {
     }
 
     private static Stream<Entry> parseUbuntuErrata(Map<String, UbuntuErrataInfo> errataInfo, Set<String> packageNames) {
-        return errataInfo.values().stream().flatMap(ubuntuErrataInfo -> {
+        return errataInfo.entrySet().stream().flatMap(entry -> {
+            UbuntuErrataInfo ubuntuErrataInfo = entry.getValue();
+
+            // fallback to key if id is not present
+            String errataId = ubuntuErrataInfo.getId() != null ? ubuntuErrataInfo.getId() : entry.getKey();
+
             String description = ubuntuErrataInfo.getDescription().length() > 4000 ?
                     ubuntuErrataInfo.getDescription().substring(0, 4000) :
                     ubuntuErrataInfo.getDescription();
@@ -207,18 +212,18 @@ public class UbuntuErrataManager {
                                                     else {
                                                         return Stream.empty();
                                                     }
-                                                }).collect(Collectors.toList());
+                                        }).collect(Collectors.toList());
                                 return Stream.of(new Tuple3<>(name, version, archs));
                             })
                     ).collect(Collectors.toList());
 
             if (packageData.isEmpty()) {
                 // Skip Errata when we have no matching packages
-                LOG.debug("Skipping errata without matching packages: {}", ubuntuErrataInfo.getId());
+                LOG.debug("Skipping errata without matching packages: {}", errataId);
                 return Stream.empty();
             }
             return Stream.of(new Entry(
-                    ubuntuErrataInfo.getId(),
+                    errataId,
                     ubuntuErrataInfo.getCves(),
                     ubuntuErrataInfo.getSummary(),
                     ubuntuErrataInfo.getIsummary().orElse("-"),
@@ -228,7 +233,6 @@ public class UbuntuErrataManager {
                     packageData));
         });
     }
-
     private static Map<String, UbuntuErrataInfo> getUbuntuErrataInfo() throws IOException {
         String jsonDBUrl = "https://usn.ubuntu.com/usn-db/database.json";
         if (isFromDir()) {

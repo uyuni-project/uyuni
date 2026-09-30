@@ -75,14 +75,16 @@ def _get_missing_products(refresh):
         and __grains__.get("osmajorrelease", 0) == 16
     ):
         # pylint: disable-next=undefined-variable
-        if __grains__.get("transactional", False) and "SLES-release" in products:
-            products.remove("SLES-release")
-        elif (
-            # pylint: disable-next=undefined-variable
-            not __grains__.get("transactional", False)
-            and "SLES_immutable-release" in products
-        ):
-            products.remove("SLES_immutable-release")
+        if __grains__.get("transactional", False):
+            if "SLES-release" in products:
+                products.remove("SLES-release")
+            elif "SLES_SAP-release" in products:
+                products.remove("SLES_SAP-release")
+        else:
+            if "SLES_immutable-release" in products:
+                products.remove("SLES_immutable-release")
+            elif "SLES_SAP_immutable-release" in products:
+                products.remove("SLES_SAP_immutable-release")
 
     # Exclude products that are already provided by another to prevent conflicts
     to_install = []

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,6 +15,8 @@
  */
 package com.redhat.rhn.common.util;
 
+
+import com.suse.utils.Exceptions;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -41,17 +44,19 @@ public class TimeUtils {
     /**
      * Helper for logging the time some code took to execute.
      * @param log logger to use.
-     * @param name a name/tag to describe whats being executed
+     * @param name a name/tag to describe what is being executed
      * @param fun the code to time
+     * @param <E> Exception which can be thrown
      */
-    public static void logTime(Logger log, String name, Runnable fun) {
+    public static <E extends Exception> void logTime(Logger log, String name, Exceptions.ThrowingRunnable<E> fun)
+            throws E {
         logTime(log, Level.INFO, name, fun);
     }
 
     /**
      * Helper for logging the time some code took to execute.
      * @param log logger to use.
-     * @param name a name/tag to describe whats being executed
+     * @param name a name/tag to describe what is being executed
      * @param fun the code to time
      * @param <T> type of return value
      * @return returns whatever fun returns
@@ -64,10 +69,12 @@ public class TimeUtils {
      * Helper for logging the time some code took to execute.
      * @param log logger to use.
      * @param logLevel the log level
-     * @param name a name/tag to describe whats being executed
+     * @param name a name/tag to describe what is being executed
      * @param fun the code to time
+     * @param <E> Exception which can be thrown
      */
-    public static void logTime(Logger log, Level logLevel, String name, Runnable fun) {
+    public static <E extends Exception> void logTime(Logger log, Level logLevel, String name,
+                                                     Exceptions.ThrowingRunnable<E> fun) throws E {
         long start = System.nanoTime();
         fun.run();
         long end = System.nanoTime();
@@ -90,6 +97,4 @@ public class TimeUtils {
         log.log(logLevel, "{} took {} seconds.", name, (end - start) / 1e9);
         return result;
     }
-
-
 }

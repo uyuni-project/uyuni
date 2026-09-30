@@ -937,8 +937,9 @@ def channel_packages_are_downloaded?(channel_name)
   #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
   # (ScriptError)
   #
-  get_target('server').run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
-  get_target('server').extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
+  temporal_file_log = '/var/log/rhn/testsuite_reposync_check.log'
+  get_target('server').run("cp /var/log/rhn/reposync.log #{temporal_file_log}")
+  get_target('server').extract(temporal_file_log, log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
     return false

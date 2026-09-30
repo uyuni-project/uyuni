@@ -189,7 +189,7 @@ class DepTab:
             return "".join(s)
 
     # pylint: disable-next=anomalous-backslash-in-string
-    pattern = re.compile("[,\s]+")
+    pattern = re.compile(r"[,\s]+")
 
     def __init__(self):
         self.content = []
@@ -432,7 +432,7 @@ class Writer:
                 self.copy(line[1:].strip(), output)
                 continue
             # pylint: disable-next=anomalous-backslash-in-string
-            if line.startswith("\i"):
+            if line.startswith(r"\i"):
                 self.copy(line[2:].strip(), output)
                 continue
             output.write(line)

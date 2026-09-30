@@ -1,4 +1,4 @@
-import { type ReactNode, Component, useEffect, useState } from "react";
+import { type ReactNode, Component, Fragment, useEffect, useState } from "react";
 
 import _partition from "lodash/partition";
 
@@ -8,7 +8,7 @@ import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
 import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
-import { DEPRECATED_Select, Form } from "components/input";
+import { Check, DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -18,13 +18,14 @@ import { SearchField } from "components/table/SearchField";
 import { Toggler } from "components/toggler";
 import { DEPRECATED_onClick } from "components/utils";
 
+import { Cancelable } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
 import { getProductSelectionState, getSelectionSummary } from "./product-check/product-selection.utils";
 import { ProductCheck } from "./product-check/ProductCheck";
-import { filterProducts, searchCriteriaInExtension } from "./products.utils";
+import { filterProducts, isProductRequestCancellation, searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 
 declare global {
@@ -98,11 +99,20 @@ class ProductsPageWrapperState {
  */
 class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPageWrapperState> {
   state = new ProductsPageWrapperState();
+  private metadataRequest?: Cancelable;
+  private productsRequest?: Cancelable;
+  private isUnmounted = false;
 
   UNSAFE_componentWillMount() {
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
+  }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
+    this.metadataRequest?.cancel();
+    this.productsRequest?.cancel();
   }
 
   forceStartSccSync = () => {
@@ -115,10 +125,22 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   refreshServerData = () => {
+    if (this.isUnmounted) {
+      return;
+    }
+
     this.setState({ loading: true });
 
-    loadMetadata()
+    this.metadataRequest?.cancel();
+    this.productsRequest?.cancel();
+
+    const metadataRequest = loadMetadata();
+    this.metadataRequest = metadataRequest;
+    metadataRequest
       .then((metadata) => {
+        if (this.isUnmounted || this.metadataRequest !== metadataRequest) {
+          return;
+        }
         this.setState({
           issMaster: metadata.issMaster,
           refreshNeeded: metadata.refreshNeeded,
@@ -141,10 +163,19 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           });
         }
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.metadataRequest === metadataRequest) {
+          this.handleResponseError(error);
+        }
+      });
 
-    reloadData()
+    const productsRequest = reloadData();
+    this.productsRequest = productsRequest;
+    productsRequest
       .then((data) => {
+        if (this.isUnmounted || this.productsRequest !== productsRequest) {
+          return;
+        }
         this.setState({
           serverData: data[_DATA_ROOT_ID],
           loading: false,
@@ -153,7 +184,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
           scheduledItems: [],
         });
       })
-      .catch(this.handleResponseError);
+      .catch((error) => {
+        if (this.productsRequest === productsRequest) {
+          this.handleResponseError(error);
+        }
+      });
   };
 
   handleSelectedItems = (items) => {
@@ -179,6 +214,10 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
   };
 
   updateSccSyncRunning = (sccSyncStatus) => {
+    if (this.isUnmounted) {
+      return;
+    }
+
     // if it was running and now it's finished
     if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
@@ -198,6 +237,9 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
       this.state.selectedItems.map((i) => i.identifier)
     )
       .then((data) => {
+        if (this.isUnmounted) {
+          return;
+        }
         // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
         const failedProducts = this.state.selectedItems.filter(
           (i) => !DEPRECATED_unsafeEquals(data[i.identifier], null)
@@ -208,9 +250,9 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
         } else {
           resultMessages = MessagesUtils.warning(
             failedProducts.map((a) => (
-              <>
+              <Fragment key={a.identifier}>
                 {a.label}: {data[a.identifier]}
-              </>
+              </Fragment>
             )),
             true,
             t("The following product installations failed. Please check log files.")
@@ -232,6 +274,9 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
 
       Network.post("/rhn/manager/admin/setup/products", [id])
         .then((data) => {
+          if (this.isUnmounted) {
+            return;
+          }
           // if the id is not present in the response or it is null, the operation went fine.
           if (DEPRECATED_unsafeEquals(data[id], null)) {
             this.setState((innerPrevState) => ({
@@ -256,6 +301,9 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
     this.setState({ addingProducts: true, errors: [] });
     Network.post("/rhn/manager/admin/setup/channels/optional", channels)
       .then((data) => {
+        if (this.isUnmounted) {
+          return;
+        }
         // returned data format is { channel : "error" }. If the value is null or missing the operation succeeded
         const failedChannels = channels.filter((c) => !DEPRECATED_unsafeEquals(data[c], null));
         let resultMessages: MessageType[] | null = null;
@@ -264,9 +312,9 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
         } else {
           resultMessages = MessagesUtils.warning(
             failedChannels.map((c) => (
-              <>
+              <Fragment key={c}>
                 {c}: {data[c]}
-              </>
+              </Fragment>
             )),
             true,
             t('The following channel installations for "{product}" failed. Please check log files.', { product })
@@ -282,7 +330,11 @@ class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPa
       .catch(this.handleResponseError);
   };
 
-  handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
+  handleResponseError = (jqXHR: JQueryXHR | Error | undefined, arg = {}) => {
+    if (this.isUnmounted || isProductRequestCancellation(jqXHR)) {
+      return;
+    }
+
     this.setState((prevState) => {
       const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
         messageMap[msg] ? t(messageMap[msg], arg) : null

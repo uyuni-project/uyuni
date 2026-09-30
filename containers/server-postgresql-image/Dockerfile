@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-postgresql:latest
+#!BuildName: server-postgresql
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 ARG PG_BASE=registry.opensuse.org/opensuse/postgres:18-contrib

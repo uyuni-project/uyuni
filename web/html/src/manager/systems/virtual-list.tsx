@@ -64,7 +64,7 @@ export function VirtualSystems(props: Props) {
             text={t("Download CSV")}
             icon="spacewalk-icon-download-csv"
             className="btn btn-default"
-            data-senna-off="true"
+            disableSenna
           />,
         ]}
       >

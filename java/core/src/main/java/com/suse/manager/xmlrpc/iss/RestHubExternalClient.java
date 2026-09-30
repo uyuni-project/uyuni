@@ -28,6 +28,8 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.security.cert.Certificate;
@@ -40,6 +42,8 @@ import java.util.Optional;
  * HTTP Client for the Hub Inter-Server-Sync External-facing APIs
  */
 public class RestHubExternalClient implements HubExternalClient {
+
+    private static final Logger LOG = LogManager.getLogger(RestHubExternalClient.class);
 
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -71,14 +75,23 @@ public class RestHubExternalClient implements HubExternalClient {
         login(username, password);
     }
 
+    private void handleResponse(HttpResponse response) throws IOException {
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == HttpStatus.SC_OK) {
+            return;
+        }
+        LOG.error(response.getStatusLine().getReasonPhrase());
+        if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+            LOG.error("Unauthorized. Hint: User must have the 'SUSE Manager Administrator' role.");
+        }
+        throw new IOException("Unexpected response code %d".formatted(statusCode));
+    }
+
     @Override
     public String generateAccessToken(String fqdn) throws IOException {
         HttpPost request = createPostRequest("sync.hub", "generateAccessToken", Map.of("fqdn", fqdn));
         HttpResponse response = httpClientAdapter.executeRequest(request);
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK) {
-            throw new IOException("Unexpected response code %d".formatted(statusCode));
-        }
+        handleResponse(response);
 
         String body = EntityUtils.toString(response.getEntity());
         Map<String, Object> responseMap = GSON.fromJson(body, new TypeToken<Map<String, Object>>() { }.getType());
@@ -95,10 +108,7 @@ public class RestHubExternalClient implements HubExternalClient {
     public void storeAccessToken(String fqdn, String token) throws IOException {
         HttpPost request = createPostRequest("sync.hub", "storeAccessToken", Map.of("fqdn", fqdn, "token", token));
         HttpResponse response = httpClientAdapter.executeRequest(request);
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK) {
-            throw new IOException("Unexpected response code %d".formatted(statusCode));
-        }
+        handleResponse(response);
     }
 
     private void login(String username, String password) throws IOException {
@@ -107,11 +117,13 @@ public class RestHubExternalClient implements HubExternalClient {
             HttpResponse response = httpClientAdapter.executeRequest(request, username, password);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
+                LOG.error(response.getStatusLine().getReasonPhrase());
                 throw new IOException("Unexpected response code %d".formatted(statusCode));
             }
 
             List<Cookie> ptxSessionCookie = httpClientAdapter.getCookies("pxt-session-cookie");
             if (ptxSessionCookie.size() != 1) {
+                LOG.error("One and only one ptx-session-cookie is expected");
                 throw new IOException("One and only one ptx-session-cookie is expected");
             }
 
@@ -119,6 +131,7 @@ public class RestHubExternalClient implements HubExternalClient {
         }
         catch (IOException e) {
             sessionCookie = null;
+            LOG.error("{}", e.getMessage(), e);
             throw e;
         }
     }
@@ -132,6 +145,7 @@ public class RestHubExternalClient implements HubExternalClient {
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {
+            LOG.error(response.getStatusLine().getReasonPhrase());
             throw new IOException("Unexpected response code %d".formatted(statusCode));
         }
 

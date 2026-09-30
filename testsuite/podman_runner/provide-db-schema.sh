@@ -26,6 +26,26 @@ install -m 0644 postgres/end.sql /usr/share/susemanager/db/postgres/upgrade-end.
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd /usr/share/susemanager/db/schema-upgrade && tar xf - ) )
 
 
+cd /tmp/schema/reportdb
+export PATH=$PATH:/tmp/schema/spacewalk
+VERSION=`rpm -qf --qf '%{version}'  /usr/share/susemanager/db/reportdb/main.sql`
+make -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION=${VERSION} RELEASE=0
+
+if [ -d /usr/share/susemanager/db/reportdb-schema-upgrade ]; then
+    # remove old migration directories before we install the new
+    rm -r /usr/share/susemanager/db/reportdb-schema-upgrade
+fi
+
+# Install directories
+install -m 0755 -d /usr/share/susemanager/db/reportdb
+install -m 0755 -d /usr/share/susemanager/db/reportdb-schema-upgrade
+
+# Install sql files
+install -m 0644 postgres/main.sql /usr/share/susemanager/db/reportdb
+install -m 0644 postgres/end.sql /usr/share/susemanager/db/reportdb/upgrade-end.sql
+
+( cd upgrade && tar cf - --exclude='*.sql' . | ( cd /usr/share/susemanager/db/reportdb-schema-upgrade && tar xf - ) )
+
 # we changed the schema dir, but we start with a schema which live still in the old location
 # provide a symlink to make the tooling work
 test -d /usr/share/susemanager/db || mkdir -p /usr/share/susemanager/db

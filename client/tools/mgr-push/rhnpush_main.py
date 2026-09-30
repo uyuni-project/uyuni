@@ -460,7 +460,7 @@ class UploadClass(uploadLib.UploadClass):
         if not pack_exist_check:
             self.die(-1, "Pushing to Satellite < 4.1.0 is not supported.")
 
-        (server_digest_hash, pkgs_info, digest_hash) = self.check_package_exists()
+        server_digest_hash, pkgs_info, digest_hash = self.check_package_exists()
 
         for pkg in self.files:
             ret = None  # pkilambi:errors off as not initialized.this fixes it.

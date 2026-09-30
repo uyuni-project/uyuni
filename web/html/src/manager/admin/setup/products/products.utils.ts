@@ -30,6 +30,10 @@ export function searchCriteriaInExtension(baseExtension: any, criteria?: string)
   return true;
 }
 
+export function isProductRequestCancellation(error: JQueryXHR | Error | undefined): error is undefined {
+  return error === undefined;
+}
+
 export function filterProducts(data: any[] = [], filters: ProductFilterOptions = {}) {
   const { archCriteria = [], showInstalledOnly = false, showSelectedOnly = false, selectedItems = [] } = filters;
 

@@ -57,12 +57,20 @@ ENV_VAR_BY_HOST = {
   'centos7_sshminion' => 'CENTOS7_SSHMINION',
   'liberty9_minion' => 'LIBERTY9_MINION',
   'liberty9_sshminion' => 'LIBERTY9_SSHMINION',
+  'liberty10_minion' => 'LIBERTY10_MINION',
+  'liberty10_sshminion' => 'LIBERTY10_SSHMINION',
   'oracle9_minion' => 'ORACLE9_MINION',
   'oracle9_sshminion' => 'ORACLE9_SSHMINION',
   'oracle10_minion' => 'ORACLE10_MINION',
   'oracle10_sshminion' => 'ORACLE10_SSHMINION',
+  'rhel7_minion' => 'RHEL7_MINION',
+  'rhel7_sshminion' => 'RHEL7_SSHMINION',
+  'rhel8_minion' => 'RHEL8_MINION',
+  'rhel8_sshminion' => 'RHEL8_SSHMINION',
   'rhel9_minion' => 'RHEL9_MINION',
   'rhel9_sshminion' => 'RHEL9_SSHMINION',
+  'rhel10_minion' => 'RHEL10_MINION',
+  'rhel10_sshminion' => 'RHEL10_SSHMINION',
   'rocky8_minion' => 'ROCKY8_MINION',
   'rocky8_sshminion' => 'ROCKY8_SSHMINION',
   'rocky9_minion' => 'ROCKY9_MINION',
@@ -79,6 +87,8 @@ ENV_VAR_BY_HOST = {
   'debian12_sshminion' => 'DEBIAN12_SSHMINION',
   'debian13_minion' => 'DEBIAN13_MINION',
   'debian13_sshminion' => 'DEBIAN13_SSHMINION',
+  'raspios13_minion' => 'RASPIOS13_MINION',
+  'raspios13_sshminion' => 'RASPIOS13_SSHMINION',
   'opensuse156arm_minion' => 'OPENSUSE156ARM_MINION',
   'opensuse156arm_sshminion' => 'OPENSUSE156ARM_SSHMINION',
   'opensuse160arm_minion' => 'OPENSUSE160ARM_MINION',
@@ -86,6 +96,19 @@ ENV_VAR_BY_HOST = {
   'sles15sp5s390_minion' => 'SLES15SP5S390_MINION',
   'sles15sp5s390_sshminion' => 'SLES15SP5S390_SSHMINION',
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
+}.freeze
+
+HOST_SSH_PORT = 22
+
+SSH_PORT_BY_HOST = {
+  'rhel7_minion' => 2222,
+  'rhel7_sshminion' => 2222,
+  'rhel8_minion' => 2222,
+  'rhel8_sshminion' => 2222,
+  'rhel9_minion' => 2222,
+  'rhel9_sshminion' => 2222,
+  'rhel10_minion' => 2222,
+  'rhel10_sshminion' => 2222
 }.freeze
 
 # TODO: the values for pxeboot_minion, sles15sp6_terminal, sles15sp7_terminal and proxy can now be set in sumaform
@@ -213,12 +236,20 @@ PACKAGE_BY_CLIENT = {
   'centos7_sshminion' => 'autoconf',
   'liberty9_minion' => 'autoconf',
   'liberty9_sshminion' => 'autoconf',
+  'liberty10_minion' => 'autoconf',
+  'liberty10_sshminion' => 'autoconf',
   'oracle9_minion' => 'autoconf',
   'oracle9_sshminion' => 'autoconf',
   'oracle10_minion' => 'autoconf',
   'oracle10_sshminion' => 'autoconf',
+  'rhel7_minion' => 'autoconf',
+  'rhel7_sshminion' => 'autoconf',
+  'rhel8_minion' => 'autoconf',
+  'rhel8_sshminion' => 'autoconf',
   'rhel9_minion' => 'autoconf',
   'rhel9_sshminion' => 'autoconf',
+  'rhel10_minion' => 'autoconf',
+  'rhel10_sshminion' => 'autoconf',
   'rocky8_minion' => 'bison',
   'rocky8_sshminion' => 'bison',
   'rocky9_minion' => 'autoconf',
@@ -235,6 +266,8 @@ PACKAGE_BY_CLIENT = {
   'debian12_sshminion' => 'bison',
   'debian13_minion' => 'bison',
   'debian13_sshminion' => 'bison',
+  'raspios13_minion' => 'bison',
+  'raspios13_sshminion' => 'bison',
   'opensuse156arm_minion' => 'bison',
   'opensuse156arm_sshminion' => 'bison',
   'opensuse160arm_minion' => 'bison',
@@ -305,12 +338,20 @@ BASE_CHANNEL_BY_CLIENT = {
     'centos7_sshminion' => 'RES-7-LTSS-Updates for x86_64',
     'liberty9_minion' => 'EL9-Pool for x86_64',
     'liberty9_sshminion' => 'EL9-Pool for x86_64',
+    'liberty10_minion' => 'EL10-Pool for x86_64',
+    'liberty10_sshminion' => 'EL10-Pool for x86_64',
     'oracle9_minion' => 'oraclelinux9 for x86_64',
     'oracle9_sshminion' => 'oraclelinux9 for x86_64',
     'oracle10_minion' => 'oraclelinux10 for x86_64',
     'oracle10_sshminion' => 'oraclelinux10 for x86_64',
+    'rhel7_minion' => 'RHEL7-Pool for x86_64',
+    'rhel7_sshminion' => 'RHEL7-Pool for x86_64',
+    'rhel8_minion' => 'RHEL8-Pool for x86_64',
+    'rhel8_sshminion' => 'RHEL8-Pool for x86_64',
     'rhel9_minion' => 'EL9-Pool for x86_64',
     'rhel9_sshminion' => 'EL9-Pool for x86_64',
+    'rhel10_minion' => 'EL10-Pool for x86_64',
+    'rhel10_sshminion' => 'EL10-Pool for x86_64',
     'rocky8_minion' => 'rockylinux-8 for x86_64',
     'rocky8_sshminion' => 'rockylinux-8 for x86_64',
     'rocky9_minion' => 'rockylinux-9 for x86_64',
@@ -327,6 +368,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'debian12_sshminion' => 'debian-12-pool for amd64',
     'debian13_minion' => 'debian-13-pool for amd64',
     'debian13_sshminion' => 'debian-13-pool for amd64',
+    'raspios13_minion' => 'raspberrypios-13-pool for arm64',
+    'raspios13_sshminion' => 'raspberrypios-13-pool for arm64',
     'opensuse156arm_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse156arm_sshminion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse160arm_minion' => 'openSUSE-Leap-16.0 for aarch64',
@@ -388,8 +431,14 @@ BASE_CHANNEL_BY_CLIENT = {
     'liberty9_sshminion' => 'EL9-Pool for x86_64',
     'oracle9_minion' => 'Oracle Linux 9 (x86_64)',
     'oracle9_sshminion' => 'Oracle Linux 9 (x86_64)',
+    'rhel7_minion' => 'RHEL7-Pool for x86_64',
+    'rhel7_sshminion' => 'RHEL7-Pool for x86_64',
+    'rhel8_minion' => 'RHEL8-Pool for x86_64',
+    'rhel8_sshminion' => 'RHEL8-Pool for x86_64',
     'rhel9_minion' => 'EL9-Pool for x86_64',
     'rhel9_sshminion' => 'EL9-Pool for x86_64',
+    'rhel10_minion' => 'EL10-Pool for x86_64',
+    'rhel10_sshminion' => 'EL10-Pool for x86_64',
     'rocky8_minion' => 'Rocky Linux 8 (x86_64)',
     'rocky8_sshminion' => 'Rocky Linux 8 (x86_64)',
     'rocky9_minion' => 'Rocky Linux 9 (x86_64)',
@@ -449,7 +498,10 @@ LABEL_BY_BASE_CHANNEL = {
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'RES-7-LTSS-Updates for x86_64' => 'res-7-ltss-updates-x86_64',
+    'RHEL7-Pool for x86_64' => 'rhel7-pool-x86_64',
+    'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
+    'EL10-Pool for x86_64' => 'el10-pool-x86_64',
     'oraclelinux9 for x86_64' => 'oraclelinux9-x86_64',
     'oraclelinux10 for x86_64' => 'oraclelinux10-x86_64',
     'oraclelinux10-appstream for x86_64' => 'oraclelinux10-appstream-x86_64',
@@ -487,7 +539,10 @@ LABEL_BY_BASE_CHANNEL = {
     'Amazon Linux 2023 x86_64' => 'amazonlinux2023-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'CentOS 7 (x86_64)' => 'centos7-x86_64',
+    'RHEL7-Pool for x86_64' => 'rhel7-pool-x86_64',
+    'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
+    'EL10-Pool for x86_64' => 'el10-pool-x86_64',
     'Oracle Linux 9 (x86_64)' => 'oraclelinux9-x86_64',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64',
@@ -559,7 +614,9 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'amazonlinux2023 for x86_64' => 'amazonlinux-2023-x86_64',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'RES-7-LTSS-Updates for x86_64' => 'SLL7-LTSS-x86_64',
+    'RHEL7-Pool for x86_64' => 'RHEL7-x86_64',
     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
+    'EL10-Pool for x86_64' => 'SUSE-LibertyLinux10-x86_64',
     'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
     'oraclelinux10 for x86_64' => 'oracle-10-x86_64',
     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
@@ -570,6 +627,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
     'debian-13-pool for amd64' => 'debian13-amd64',
+    'raspberrypios-13-pool for arm64' => 'raspberrypios13-arm4',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64',
     'openSUSE-Leap-16.0 for aarch64' => 'openSUSE-Leap-16.0-aarch64'
   },
@@ -596,13 +654,17 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Amazon Linux 2023 x86_64' => 'amazonlinux-2023-x86_64-uyuni',
     'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
     'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
+    'RHEL7-Pool for x86_64' => 'RHEL7-x86_64',
+    'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
     'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
+    'EL10-Pool for x86_64' => 'SUSE-LibertyLinux10-x86_64',
     'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64-uyuni',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
+    'Raspberry Pi OS 13 pool for arm64 for Uyuni' => 'raspberrypios13-arm4-uyuni',
     'openSUSE Leap 15.6 (aarch64)' => 'openSUSE-Leap-15.6-aarch64-uyuni',
     'openSUSE Leap 16.0 (aarch64)' => 'openSUSE-Leap-16.0-aarch64-uyuni'
   }
@@ -637,10 +699,12 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Fake-Base-Channel-SUSE-like' => nil,
     'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
     'RES-7-LTSS-Updates for x86_64' => nil,
+    'RHEL7-Pool for x86_64' => 'rhel7-pool-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
+    'EL10-Pool for x86_64' => 'el10-pool-x86_64',
     'oraclelinux9 for x86_64' => nil,
     'oraclelinux10 for x86_64' => nil,
-    'RHEL8-Pool for x86_64' => nil,
+    'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
     'rockylinux-8 for x86_64' => nil,
     'rockylinux-9 for x86_64' => nil,
     'rockylinux-10 for x86_64' => nil,
@@ -673,7 +737,10 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Amazon Linux 2023 x86_64' => nil,
     'Fake-Base-Channel-SUSE-like' => nil,
     'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
+    'RHEL7-Pool for x86_64' => 'rhel7-pool-x86_64',
+    'RHEL8-Pool for x86_64' => 'rhel8-pool-x86_64',
     'EL9-Pool for x86_64' => 'el9-pool-x86_64',
+    'EL10-Pool for x86_64' => 'el10-pool-x86_64',
     'Oracle Linux 9 (x86_64)' => nil,
     'Rocky Linux 8 (x86_64)' => nil,
     'Rocky Linux 9 (x86_64)' => nil,
@@ -729,12 +796,20 @@ PKGARCH_BY_CLIENT = {
   'centos7_sshminion' => 'x86_64',
   'liberty9_minion' => 'x86_64',
   'liberty9_sshminion' => 'x86_64',
+  'liberty10_minion' => 'x86_64',
+  'liberty10_sshminion' => 'x86_64',
   'oracle9_minion' => 'x86_64',
   'oracle9_sshminion' => 'x86_64',
   'oracle10_minion' => 'x86_64',
   'oracle10_sshminion' => 'x86_64',
+  'rhel7_minion' => 'x86_64',
+  'rhel7_sshminion' => 'x86_64',
+  'rhel8_minion' => 'x86_64',
+  'rhel8_sshminion' => 'x86_64',
   'rhel9_minion' => 'x86_64',
   'rhel9_sshminion' => 'x86_64',
+  'rhel10_minion' => 'x86_64',
+  'rhel10_sshminion' => 'x86_64',
   'rocky8_minion' => 'x86_64',
   'rocky8_sshminion' => 'x86_64',
   'rocky9_minion' => 'x86_64',
@@ -751,6 +826,8 @@ PKGARCH_BY_CLIENT = {
   'debian12_sshminion' => 'amd64',
   'debian13_minion' => 'amd64',
   'debian13_sshminion' => 'amd64',
+  'raspios13_minion' => 'arm64',
+  'raspios13_sshminion' => 'arm64',
   'opensuse156arm_minion' => 'aarch64',
   'opensuse156arm_sshminion' => 'aarch64',
   'opensuse160arm_minion' => 'aarch64',
@@ -839,6 +916,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-13-main-updates-amd64
         managertools-debian13-updates-amd64
       ],
+    'raspberrypios-13' =>
+      %w[
+        raspberrypios-13-pool-arm64
+        raspberrypios-13-main-security-arm64
+        raspberrypios-13-main-updates-arm64
+        managertools-debian13-updates-arm64
+      ],
     'sll-7-ltss' => # CHECKED
       %w[
         res-7-ltss-updates-x86_64
@@ -851,6 +935,18 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sll-as-9-updates-x86_64
         sll-9-updates-x86_64
       ],
+    'el7' => # CHECKED
+      %w[
+        rhel7-pool-x86_64
+        managertools-el7-pool-x86_64
+        managertools-el7-updates-x86_64
+      ],
+    'el8' => # CHECKED
+      %w[
+        rhel8-pool-x86_64
+        managertools-el8-pool-x86_64
+        managertools-el8-updates-x86_64
+      ],
     'el9' => # CHECKED
       %w[
         el9-pool-x86_64
@@ -858,6 +954,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el9-updates-x86_64
         managertools-beta-el9-pool-x86_64
         managertools-beta-el9-updates-x86_64
+      ],
+    'el10' => # CHECKED
+      %w[
+        el10-pool-x86_64
+        managertools-el10-pool-x86_64
+        managertools-el10-updates-x86_64
       ],
     'rockylinux8' => # CHECKED
       %w[
@@ -1259,9 +1361,21 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sll-as-9-updates-x86_64
         sll-cb-9-updates-x86_64
       ],
+    'el7' =>
+      %w[
+        rhel7-pool-x86_64
+      ],
+    'el8' =>
+      %w[
+        rhel8-pool-x86_64
+      ],
     'el9' =>
       %w[
         el9-pool-x86_64
+      ],
+    'el10' =>
+      %w[
+        el10-pool-x86_64
       ],
     'rockylinux8' => # CHECKED
       %w[
@@ -1581,16 +1695,16 @@ ZYPP_LOCK_FAILURE_MARKERS = [
 TIMEOUT_BY_CHANNEL_NAME = {
   'almalinux8-appstream-x86_64' => 1920,
   'almalinux8-uyuni-client-devel-x86_64' => 60,
-  'almalinux8-x86_64' => 1200,
+  'almalinux8-x86_64' => 1560,
   'almalinux8-x86_64-appstream' => 1740,
   'almalinux8-x86_64-extras' => 60,
   'almalinux9-appstream-x86_64' => 660,
   'almalinux9-uyuni-client-devel-x86_64' => 60,
-  'almalinux9-x86_64' => 240,
+  'almalinux9-x86_64' => 420,
   'almalinux9-x86_64-appstream' => 720,
   'almalinux9-x86_64-extras' => 60,
   'almalinux10-appstream-x86_64' => 720,
-  'almalinux10-x86_64' => 240,
+  'almalinux10-x86_64' => 360,
   'amazonlinux2023-uyuni-client-devel-x86_64' => 60,
   'amazonlinux2023-x86_64' => 2460,
   'centos-7-iso' => 660,
@@ -1606,12 +1720,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-pool-amd64-uyuni' => 28_260,
   'debian-13-main-security-amd64' => 300,
   'debian-13-main-updates-amd64' => 120,
-  'debian-13-pool-amd64' => 8400,
+  'debian-13-pool-amd64' => 2520,
   'devel-build-host-channel' => 120,
   'devel-debian-like-channel' => 120,
   'devel-rh-like-channel' => 120,
   'devel-suse-channel' => 120,
   'el9-pool-x86_64' => 60,
+  'el10-pool-x86_64' => 60,
   'fake-base-channel-appstream' => 360,
   'fake-base-channel-debian-like' => 300,
   'fake-base-channel-rh-like' => 360,
@@ -1645,8 +1760,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-el7-updates-x86_64-lbt7' => 60,
   'managertools-el7-pool-x86_64-lbt' => 60,
   'managertools-el7-updates-x86_64-lbt' => 60,
+  'managertools-el7-pool-x86_64' => 60,
+  'managertools-el7-updates-x86_64' => 60,
   'managertools-el8-pool-x86_64' => 60,
   'managertools-el8-pool-x86_64-alma' => 60,
+  'managertools-el8-pool-x86_64-rocky' => 60,
   'managertools-el8-updates-x86_64' => 60,
   'managertools-el8-updates-x86_64-alma' => 60,
   'managertools-el9-pool-x86_64' => 60,
@@ -1657,9 +1775,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-el9-updates-x86_64-alma' => 60,
   'managertools-el9-updates-x86_64-amazon' => 60,
   'managertools-el9-updates-x86_64-rocky' => 60,
+  'managertools-el10-pool-x86_64' => 60,
   'managertools-el10-pool-x86_64-alma' => 60,
   'managertools-el10-pool-x86_64-ol10' => 60,
   'managertools-el10-pool-x86_64-rocky' => 60,
+  'managertools-el10-updates-x86_64' => 60,
   'managertools-el10-updates-x86_64-alma' => 60,
   'managertools-el10-updates-x86_64-ol10' => 60,
   'managertools-el10-updates-x86_64-rocky' => 60,
@@ -1719,31 +1839,37 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_tumbleweed-uyuni-client-x86_64' => 120,
   'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
-  'oraclelinux9-x86_64' => 1620,
-  'oraclelinux10-appstream-x86_64' => 900,
-  'oraclelinux10-x86_64' => 540,
+  'oraclelinux9-x86_64' => 1680,
+  'oraclelinux10-appstream-x86_64' => 1260,
+  'oraclelinux10-x86_64' => 780,
   'res-7-ltss-updates-x86_64' => 1020,
   'res7-x86_64' => 10_080,
   'res8-manager-tools-pool-x86_64-rocky' => 60,
   'res8-manager-tools-updates-x86_64-alma' => 240,
   'managertools-el8-updates-x86_64-rocky' => 60,
   'rhel-x86_64-server-7' => 60,
+  'rhel7-centos-7-iso' => 660,
+  'rhel7-pool-x86_64' => 60,
+  'rhel8-pool-x86_64' => 60,
+  'rhel8-ubi-8' => 2400,
+  'rhel9-ubi-9' => 2400,
+  'rhel10-ubi-10' => 1800,
   'rocky-8-iso' => 1200,
   'rockylinux8-uyuni-client-devel-x86_64' => 120,
   'rockylinux-8-appstream-x86_64' => 1620,
   'rockylinux-8-extras-x86_64' => 420,
-  'rockylinux-8-x86_64' => 900,
+  'rockylinux-8-x86_64' => 1200,
   'rockylinux9-uyuni-client-devel-x86_64' => 120,
   'rockylinux-9-appstream-x86_64' => 780,
   'rockylinux-9-extras-x86_64' => 120,
-  'rockylinux-9-x86_64' => 240,
+  'rockylinux-9-x86_64' => 360,
   'rockylinux-10-appstream-x86_64' => 720,
-  'rockylinux-10-x86_64' => 240,
+  'rockylinux-10-x86_64' => 300,
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle15-sp7-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.3-pool-x86_64' => 180,
-  'sle-micro-5.3-updates-x86_64' => 540,
+  'sle-micro-5.3-updates-x86_64' => 600,
   'sle-micro-5.4-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.4-pool-x86_64' => 60,
   'sle-micro-5.4-updates-x86_64' => 120,
@@ -1763,7 +1889,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp6-pool-x86_64' => 120,
   'sle-module-basesystem15-sp6-updates-x86_64' => 480,
   'sle-module-basesystem15-sp7-pool-x86_64' => 720,
-  'sle-module-basesystem15-sp7-updates-x86_64' => 4140,
+  'sle-module-basesystem15-sp7-updates-x86_64' => 840,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1778,16 +1904,16 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-desktop-applications15-sp5-updates-x86_64' => 60,
   'sle-module-desktop-applications15-sp6-pool-x86_64' => 120,
   'sle-module-desktop-applications15-sp6-updates-x86_64' => 60,
-  'sle-module-desktop-applications15-sp7-pool-x86_64' => 480,
-  'sle-module-desktop-applications15-sp7-updates-x86_64' => 240,
+  'sle-module-desktop-applications15-sp7-pool-x86_64' => 180,
+  'sle-module-desktop-applications15-sp7-updates-x86_64' => 120,
   'sle-module-devtools15-sp4-pool-x86_64' => 120,
   'sle-module-devtools15-sp4-updates-x86_64' => 480,
   'sle-module-devtools15-sp5-pool-x86_64' => 180,
   'sle-module-devtools15-sp5-updates-x86_64' => 1200,
   'sle-module-devtools15-sp6-pool-x86_64' => 120,
   'sle-module-devtools15-sp6-updates-x86_64' => 360,
-  'sle-module-devtools15-sp7-pool-x86_64' => 5520,
-  'sle-module-devtools15-sp7-updates-x86_64' => 2400,
+  'sle-module-devtools15-sp7-pool-x86_64' => 180,
+  'sle-module-devtools15-sp7-updates-x86_64' => 480,
   'sle-module-public-cloud15-sp4-pool-x86_64' => 840,
   'sle-module-public-cloud15-sp4-updates-x86_64' => 600,
   'sle-module-public-cloud15-sp5-pool-x86_64' => 600,
@@ -1818,9 +1944,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp6-pool-x86_64' => 60,
   'sle-module-server-applications15-sp6-updates-x86_64' => 120,
   'sle-module-server-applications15-sp7-pool-x86_64' => 120,
-  'sle-module-server-applications15-sp7-updates-x86_64' => 240,
-  'sles12-sp5-ltss-updates-x86_64' => 540,
-  'sle-product-sles15-sp4-ltss-updates-x86_64' => 1560,
+  'sle-module-server-applications15-sp7-updates-x86_64' => 120,
+  'sles12-sp5-ltss-updates-x86_64' => 660,
+  'sle-product-sles15-sp4-ltss-updates-x86_64' => 1680,
   'sle-product-sles15-sp4-pool-x86_64' => 60,
   'sle-product-sles15-sp4-updates-x86_64' => 60,
   'sle-product-sles15-sp5-pool-s390x' => 60,
@@ -1830,11 +1956,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-ltss-updates-x86_64' => 2760,
   'sle-product-sles15-sp6-pool-x86_64' => 60,
   'sle-product-sles15-sp6-updates-x86_64' => 60,
-  'sle-product-sles15-sp6-ltss-updates-x86_64' => 660,
+  'sle-product-sles15-sp6-ltss-updates-x86_64' => 780,
   'sle-product-sles15-sp7-pool-x86_64' => 60,
   'sle-product-sles15-sp7-updates-x86_64' => 60,
   'sle-product-sles-16.0-aarch64' => 1920,
-  'sle-product-sles-16.0-x86_64' => 1920,
+  'sle-product-sles-16.0-x86_64' => 2220,
   'sles12-sp5-installer-updates-x86_64' => 60,
   'sles12-sp5-pool-x86_64' => 120,
   'sles12-sp5-updates-x86_64' => 1920,
@@ -1844,14 +1970,14 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
   'sles15-sp7-devel-uyuni-client-x86_64' => 120,
   'sles16-devel-uyuni-client-x86_64' => 120,
-  'sll-9-updates-x86_64' => 2580,
+  'sll-9-updates-x86_64' => 2940,
   'sll-as-9-updates-x86_64' => 2460,
-  'sll-cb-9-updates-x86_64' => 2160,
+  'sll-cb-9-updates-x86_64' => 3060,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.0-pool-x86_64' => 1200,
+  'sl-micro-6.0-pool-x86_64' => 1320,
   'managertools-sl-micro-6.0-x86_64' => 60,
   'sl-micro-6.1-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.1-pool-x86_64' => 2760,
+  'sl-micro-6.1-pool-x86_64' => 420,
   'managertools-sl-micro-6.1-x86_64' => 60,
   'sl-micro-6.2-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.2-pool-x86_64' => 300,
@@ -1886,7 +2012,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-main-amd64' => 540,
   'ubuntu-2204-amd64-main-security-amd64' => 2640,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
-  'ubuntu-2204-amd64-main-updates-amd64' => 2160,
+  'ubuntu-2204-amd64-main-updates-amd64' => 3120,
   'ubuntu-2204-amd64-main-updates-uyuni' => 300,
   'ubuntu-2204-amd64-main-uyuni' => 780,
   'ubuntu-2204-amd64-universe-backports-uyuni' => 60,
@@ -1913,7 +2039,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
 }.freeze
 
 EMPTY_CHANNELS = %w[
+  rhel7-pool-x86_64
+  rhel8-pool-x86_64
   el9-pool-x86_64
+  el10-pool-x86_64
   suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7

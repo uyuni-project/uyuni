@@ -82,11 +82,21 @@ type AsyncState = {
  * A button which performs an asynchronous action and displays an animation while waiting for the result.
  */
 export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
+  private isComponentMounted = false;
+
   constructor(props: AsyncProps) {
     super(props);
     this.state = {
       value: props.initialValue ? props.initialValue : "initial",
     };
+  }
+
+  componentDidMount() {
+    this.isComponentMounted = true;
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
   }
 
   trigger = () => {
@@ -102,14 +112,18 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
     }
     future.then(
       () => {
-        this.setState({
-          value: "success",
-        });
+        if (this.isComponentMounted) {
+          this.setState({
+            value: "success",
+          });
+        }
       },
       () => {
-        this.setState({
-          value: "failure",
-        });
+        if (this.isComponentMounted) {
+          this.setState({
+            value: "failure",
+          });
+        }
       }
     );
   };
@@ -210,6 +224,9 @@ type LinkProps = BaseProps & {
   /** to treat the link URL as a download  */
   download?: string;
 
+  /** Disable Senna SPA navigation for this link. */
+  disableSenna?: boolean;
+
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any;
 };
@@ -247,6 +264,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         href={this.props.href}
         onClick={this.props.handler}
         download={this.props.download}
+        data-senna-off={this.props.disableSenna ? "true" : undefined}
         {...targetProps}
       >
         {this.renderIcon()}

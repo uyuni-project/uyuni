@@ -110,5 +110,27 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
         ErrataOverview o = new ErrataOverview();
         o.setIssueDate("2021-11-22");
     }
-}
 
+    @Test
+    public void testNullErrataFromGeneratesEmptyAttribute() throws Exception {
+
+        final ChannelFamily channelFamily = createTestChannelFamily();
+        final SUSEProduct product = createTestSUSEProduct(channelFamily);
+
+        final Channel channel = createTestVendorBaseChannel(channelFamily, createTestChannelProduct());
+        channel.setUpdateTag("SLE-SERVER");
+        createTestSUSEProductChannel(channel, product, true);
+
+        Errata errata = createTestErrata(user.getId());
+        errata.setErrataFrom(null);
+        channel.addErrata(errata);
+
+        StringWriter buffer = new StringWriter();
+        UpdateInfoWriter metadataWriter = new UpdateInfoWriter(buffer);
+        metadataWriter.getUpdateInfo(channel);
+
+        final String xml = buffer.toString();
+        TestUtils.assertContains(xml, "<update");
+        TestUtils.assertContains(xml, "from=\"\"");
+    }
+}

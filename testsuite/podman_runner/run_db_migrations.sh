@@ -1,4 +1,9 @@
 #!/bin/bash -ex
+#
+# Obsolete when we only use /next for schema migrations in future as
+# 07_server_setup.sh call spacewalk-schema-upgrade which apply also /next.
+# Think about to remove this file when everybody is used to use /next.
+# Remove also calling this script from 07_server_setup.sh
 
 if [ $# -ne 1 ];
 then

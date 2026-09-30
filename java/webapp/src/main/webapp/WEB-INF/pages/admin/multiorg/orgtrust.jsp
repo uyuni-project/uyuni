@@ -30,7 +30,7 @@
    <div class="spacewalk-section-toolbar">
       <div class="action-button-wrapper">
       <rhn:submitted/>
-         <button class="btn btn-default" type="submit" name="confirm">
+         <button class="btn btn-default" type="submit" name="confirm" value="confirm">
             ${rhn:localize('org.trust.modify')}
          </button>
       </div>

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 #!BuildTag: uyuni/monitoring-grafana:latest uyuni/monitoring-grafana:%%grafana_patch_version%%
+#!BuildName: monitoring-grafana
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

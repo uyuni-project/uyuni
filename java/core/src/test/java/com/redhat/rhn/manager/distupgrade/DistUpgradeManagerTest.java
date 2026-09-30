@@ -45,21 +45,14 @@ import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductTestUtils;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
-import com.redhat.rhn.manager.system.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
@@ -475,78 +468,25 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
-     */
-    @Test
-    public void testCapabilityMissing() {
-        Server server = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        try {
-            DistUpgradeManager.performServerChecks(server.getId(), user);
-            fail("Missing capability should make the server checks fail!");
-        }
-        catch (DistUpgradeException e) {
-            assertEquals("Dist upgrade not supported for server: " +
-                    server.getId(), e.getMessage());
-        }
-    }
-
-    /**
-     * Test for performServerChecks(): "zypp-plugin-spacewalk" is not installed.
-     * @throws Exception if anything goes wrong
-     */
-    @Test
-    public void testZyppPluginNotInstalled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
-        try {
-            DistUpgradeManager.performServerChecks(server.getId(), user);
-            fail("Missing package zyppPluginSpacewalk should make the server checks fail!");
-        }
-        catch (DistUpgradeException e) {
-            assertEquals("Package zypp-plugin-spacewalk is not installed: " +
-                    server.getId(), e.getMessage());
-        }
-    }
-
-    /**
      * Test for performServerChecks(): a dist upgrade action is already scheduled.
      * @throws Exception if anything goes wrong
      */
     @Test
     public void testDistUpgradeScheduled() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
-
-        // Install the zypp-plugin-spacewalk package
-        Package zyppPlugin = PackageTest.createTestPackage(user.getOrg());
-        PackageName name = PackageManager.lookupPackageName("zypp-plugin-spacewalk");
-        if (name == null) {
-            name = zyppPlugin.getPackageName();
-            name.setName("zypp-plugin-spacewalk");
-            TestUtils.saveAndFlush(name); //reassign variable if still needed
-        }
-        else {
-            // Handle the case that the package name exists in the DB
-            zyppPlugin.setPackageName(name);
-            zyppPlugin = TestUtils.saveAndFlush(zyppPlugin);
-        }
-        ErrataTestUtils.createTestInstalledPackage(zyppPlugin, server);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         // Store a dist upgrade action for this server
         Action action = ActionFactoryTest.createAction(user, ActionTypeEnum.TYPE_DIST_UPGRADE);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
         TestUtils.saveAndFlush(serverAction); //reassign variable if still needed
 
         try {
-            DistUpgradeManager.performServerChecks(server.getId(), user);
+            DistUpgradeManager.performServerChecks(minion.getId(), user);
             fail("A scheduled dist upgrade should make the server checks fail!");
         }
         catch (DistUpgradeException e) {
             assertEquals("Another dist upgrade is in the schedule for server: " +
-                    server.getId(), e.getMessage());
+                    minion.getId(), e.getMessage());
         }
     }
 
