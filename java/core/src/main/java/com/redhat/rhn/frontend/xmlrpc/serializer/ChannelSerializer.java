@@ -104,6 +104,8 @@ public class ChannelSerializer extends ApiResponseSerializer<Channel> {
         builder.add("gpg_key_fp",
                 StringUtils.defaultString(src.getGPGKeyFp()));
         builder.add("gpg_check", src.isGPGCheck());
+        //PQC_TODO add to API
+        //builder.add("pqc_check", src.isPqcCheck());
 
         List<ContentSource> csList = new ArrayList<>(src.getSources().size());
         if (!src.getSources().isEmpty()) {
