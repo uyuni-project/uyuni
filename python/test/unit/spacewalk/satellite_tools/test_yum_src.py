@@ -837,8 +837,7 @@ class YumSrcTest(unittest.TestCase):
 
             non_existent_dir = os.path.join(temp_dir, "non_existent")
             # pylint: disable-next=protected-access
-            self.assertEqual(
-                yum_src.ContentSource._list_certificates(non_existent_dir), []
-            )
+            certs = yum_src.ContentSource._list_certificates(non_existent_dir)
+            self.assertEqual(certs, [])
         finally:
             shutil.rmtree(temp_dir)
