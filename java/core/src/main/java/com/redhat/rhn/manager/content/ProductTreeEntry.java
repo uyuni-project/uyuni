@@ -226,6 +226,13 @@ public class ProductTreeEntry {
     }
 
     /**
+     * @return the signed flag
+     */
+    public boolean isPqcSigned() {
+        return false; //PQC_TODO implement content
+    }
+
+    /**
      * @return the gpg key info
      */
     public List<GpgInfoEntry> getGpgInfo() {
