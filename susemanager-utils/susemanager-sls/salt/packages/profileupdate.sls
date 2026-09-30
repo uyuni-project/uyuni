@@ -70,7 +70,7 @@ kernel_live_version:
 {%- endif %}
 
 {%- if grains.get('transactional', False) %}
-snapper-list-snapshots:
+package-profile-snapper-list-snapshots:
   cmd.run:
     - name: snapper --json --no-dbus list
 {%- endif %}

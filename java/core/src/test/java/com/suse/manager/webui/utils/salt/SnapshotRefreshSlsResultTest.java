@@ -45,7 +45,56 @@ public class SnapshotRefreshSlsResultTest {
     }
 
     @Test
-    public void testIgnoresBlankSnapshotOutputAndInvalidActiveSnapshot() {
+    public void testParsesPackageRefreshCommandResultsWithNewKey() {
+        SnapshotRefreshSlsResult result = resultWithSnapshotResults("""
+                {
+                  "%s": {
+                    "changes": {"stdout": "new"}
+                  }
+                }
+                """.formatted(SnapshotRefreshSlsResult.PACKAGE_SNAPPER_LIST_SNAPSHOTS));
+
+        assertEquals("new", result.getPackageRefreshSnapperRawStdout().orElseThrow());
+    }
+
+    @Test
+    public void testDedicatedSnapshotKeyDoesNotProvidePackageRefreshResult() {
+        SnapshotRefreshSlsResult result = resultWithSnapshotResults("""
+                {
+                  "%s": {
+                    "changes": {"stdout": "legacy"}
+                  }
+                }
+                """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS));
+
+        assertEquals("legacy", result.getSnapperRawStdout().orElseThrow());
+        assertFalse(result.getPackageRefreshSnapperRawStdout().isPresent());
+    }
+
+    @Test
+    public void testSnapshotRefreshCommandsKeepSeparateResults() {
+        SnapshotRefreshSlsResult result = resultWithSnapshotResults("""
+                {
+                  "%s": {"changes": {"stdout": "legacy"}},
+                  "%s": {"changes": {"stdout": "new"}}
+                }
+                """.formatted(
+                SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS,
+                SnapshotRefreshSlsResult.PACKAGE_SNAPPER_LIST_SNAPSHOTS));
+
+        assertEquals("legacy", result.getSnapperRawStdout().orElseThrow());
+        assertEquals("new", result.getPackageRefreshSnapperRawStdout().orElseThrow());
+    }
+
+    @Test
+    public void testPackageRefreshCommandResultsAreOptional() {
+        SnapshotRefreshSlsResult result = resultWithSnapshotResults("{}");
+
+        assertFalse(result.getPackageRefreshSnapperRawStdout().isPresent());
+    }
+
+    @Test
+    public void testIgnoresBlankSnapshotOutput() {
         SnapshotRefreshSlsResult result = Json.GSON.fromJson("""
                 {
                   "%s": {
@@ -53,10 +102,22 @@ public class SnapshotRefreshSlsResultTest {
                     "changes": {
                       "stdout": "   "
                     }
+                  },
+                  "%s": {
+                    "changes": {
+                      "stdout": ""
+                    }
                   }
                 }
-                """.formatted(SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS), SnapshotRefreshSlsResult.class);
+                """.formatted(
+                SnapshotRefreshSlsResult.SNAPPER_LIST_SNAPSHOTS,
+                SnapshotRefreshSlsResult.PACKAGE_SNAPPER_LIST_SNAPSHOTS), SnapshotRefreshSlsResult.class);
 
         assertFalse(result.getSnapperRawStdout().isPresent());
+        assertFalse(result.getPackageRefreshSnapperRawStdout().isPresent());
+    }
+
+    private SnapshotRefreshSlsResult resultWithSnapshotResults(String json) {
+        return Json.GSON.fromJson(json, SnapshotRefreshSlsResult.class);
     }
 }

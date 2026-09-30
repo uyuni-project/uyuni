@@ -105,7 +105,8 @@ public class PackageRefreshListAction extends PackageAction {
                     Json.GSON.fromJson(jsonResult, PkgProfileUpdateSlsResult.class);
             SnapshotRefreshSlsResult snapshotRefreshResult =
                     Json.GSON.fromJson(jsonResult, SnapshotRefreshSlsResult.class);
-            handlePackageProfileUpdate(minionServer, profileUpdateResult, snapshotRefreshResult.getSnapperRawStdout());
+            handlePackageProfileUpdate(minionServer, profileUpdateResult,
+                    snapshotRefreshResult.getPackageRefreshSnapperRawStdout());
         });
     }
 
