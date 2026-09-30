@@ -278,9 +278,16 @@ public class TransactionalActionManager {
 
             addAnyCall(result, call, minionsByTransactionalUpdate.get(false));
 
-            LocalCall<?> transactionalCall = prepareSaltCallForTransactionalMinions(
-                    call, minionsByTransactionalUpdate.get(true));
-            addAnyCall(result, transactionalCall, minionsByTransactionalUpdate.get(true));
+            List<MinionSummary> transactionalMinions = minionsByTransactionalUpdate.get(true);
+            LocalCall<?> transactionalCall = prepareSaltCallForTransactionalMinions(call, transactionalMinions);
+            if (!transactionalMinions.isEmpty() && result.containsKey(transactionalCall)) {
+                List<MinionSummary> mergedMinions = new ArrayList<>(result.get(transactionalCall));
+                mergedMinions.addAll(transactionalMinions);
+                result.put(transactionalCall, mergedMinions);
+            }
+            else {
+                addAnyCall(result, transactionalCall, transactionalMinions);
+            }
         });
 
         return result;
