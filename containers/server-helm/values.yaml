@@ -130,6 +130,14 @@ timezone: "Etc/UTC"
 # placement -- Default node placement rules for all pods
 placement: {}
 
+# @schema
+# type: "boolean"
+# default: "false"
+# @schema
+# skipPreFlight -- Skip pre-flight validation checks (useful with
+# helm template or --dry-run when the cluster cannot be queried).
+skipPreFlight: false
+
 # server -- Server component configuration
 server:
   # @default `nil`
@@ -801,24 +809,6 @@ volumes:
   srv-tftpboot:
     # -- Requested size
     size: 300Mi
-    # @default `nil`
-    storageClass: null
-    # @default `nil`
-    extraLabels: null
-    # @default `nil`
-    annotations: null
-    # @default `nil`
-    volumeName: null
-    # @default `nil`
-    selector: null
-
-  # @schema
-  # $ref: "#/definitions/volumeConfig"
-  # @schema
-  # volumes.ca-certs -- ca-certs volume configuration
-  ca-certs:
-    # -- Requested size
-    size: 10Mi
     # @default `nil`
     storageClass: null
     # @default `nil`

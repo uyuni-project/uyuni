@@ -93,6 +93,53 @@ tests:
                 name: myscccreds
                 optional: false
 
+  - it: should mount the trust-anchors projected volume read-only at /etc/pki/trust/anchors/
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].volumeMounts
+          content:
+            mountPath: /etc/pki/trust/anchors/
+            name: trust-anchors
+            readOnly: true
+
+  - it: should declare the trust-anchors projected volume aggregating uyuni-ca, db-ca and trust-anchors
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: trust-anchors
+            projected:
+              defaultMode: 420
+              sources:
+                - configMap:
+                    name: uyuni-ca
+                    items:
+                      - key: ca.crt
+                        path: LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+                - configMap:
+                    name: db-ca
+                    items:
+                      - key: ca.crt
+                        path: DB-RHN-ORG-TRUSTED-SSL-CERT
+                - configMap:
+                    name: trust-anchors
+                    optional: true
+
+  - it: should not declare the removed ca-certs volume in the deployment
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: ca-certs
+            persistentVolumeClaim:
+              claimName: ca-certs
+
   - it: should fail to render if the repository value is not set
     set:
       global.fqdn: uyuni.example.com
