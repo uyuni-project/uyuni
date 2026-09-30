@@ -68,6 +68,7 @@ public class CreateChannelCommand {
     protected String gpgKeyId;
     protected String gpgKeyFp;
     protected boolean gpgCheck = true;
+    protected boolean pqcCheck = false;
     protected String checksum;
     protected boolean vendorChannel = false;
 
@@ -165,6 +166,13 @@ public class CreateChannelCommand {
      */
     public void setGpgCheck(boolean gpgCheckIn) {
         gpgCheck = gpgCheckIn;
+    }
+
+    /**
+     * @param pqcCheckIn pqcCheck flag
+     */
+    public void setPqcCheck(boolean pqcCheckIn) {
+        pqcCheck = pqcCheckIn;
     }
 
     /**
@@ -314,6 +322,7 @@ public class CreateChannelCommand {
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
         c.setGPGCheck(gpgCheck);
+        c.setPqcCheck(pqcCheck);
         c.setAccess(access);
         c.setMaintainerName(maintainerName);
         c.setMaintainerEmail(maintainerEmail);
