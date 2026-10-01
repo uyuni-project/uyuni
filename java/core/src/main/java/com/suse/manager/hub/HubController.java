@@ -276,7 +276,8 @@ public class HubController {
 
         try {
             hubManager.storeAccessToken(token, tokenToStore);
-            hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA(), registerRequest.getGpgKey());
+            hubManager.saveNewServer(token, IssRole.HUB,
+                    registerRequest.getRootCA(), registerRequest.getGpgKey(), registerRequest.getPqcCert());
 
             // Add a notification to inform the user this server is now a peripheral
             var notificationData = new HubRegistrationChanged(true, IssRole.HUB, token.getServerFqdn());

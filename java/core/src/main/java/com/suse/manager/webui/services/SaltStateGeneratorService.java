@@ -656,8 +656,10 @@ public enum SaltStateGeneratorService {
      * Expose some global configuration options as pillar data.
      */
     public static void generateMgrConfPillar() {
-        boolean metataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
-        Map<String, Object> data = Map.of("mgr_metadata_signing_enabled", metataSigningEnabled);
+        boolean metadataSigningEnabled = ConfigDefaults.get().isMetadataSigningEnabled();
+        boolean pqcMetadataSigningEnabled = ConfigDefaults.get().isPqcMetadataSigningEnabled();
+        Map<String, Object> data = Map.of("mgr_metadata_signing_enabled", metadataSigningEnabled,
+                "mgr_pqc_metadata_signing_enabled", pqcMetadataSigningEnabled);
         Pillar.getGlobalPillars().stream()
                 .filter(pillar -> pillar.getCategory().equals("mgr_conf"))
                 .findFirst()
