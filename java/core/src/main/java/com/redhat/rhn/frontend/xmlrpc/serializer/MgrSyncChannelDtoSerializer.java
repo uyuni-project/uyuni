@@ -32,6 +32,7 @@ import java.util.Optional;
  *     #prop_desc("string", "description", "description of the channel")
  *     #prop_desc("string", "family", "channel family label")
  *     #prop_desc("boolean", "is_signed", "channel has signed metadata")
+ *     #prop_desc("boolean", "is_pqc_signed", "channel has PQC signed metadata")
  *     #prop_desc("string", "label", "label of the channel")
  *     #prop_desc("string", "name", "name of the channel")
  *     #prop_desc("boolean", "optional", "channel is optional")
@@ -59,8 +60,7 @@ public class MgrSyncChannelDtoSerializer extends ApiResponseSerializer<MgrSyncCh
                 .add("description", src.getDescription())
                 .add("family", src.getFamily())
                 .add("is_signed", src.isSigned())
-                //PQCTODO: add pqc_signed here and in the api docs
-                //.add("is_pqc_signed", src.isPqcSigned())
+                .add("is_pqc_signed", src.isPqcSigned())
                 .add("label", src.getLabel())
                 .add("name", src.getName())
                 .add("optional", !src.isMandatory())
