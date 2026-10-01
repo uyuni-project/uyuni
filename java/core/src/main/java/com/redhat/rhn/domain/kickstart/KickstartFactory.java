@@ -776,11 +776,11 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         List<KickstartSession> ksessions = session.createQuery("""
                             FROM KickstartSession AS t
-                            WHERE t.ksdata.id = :ksdata
+                            WHERE t.ksdata.id = :ksdata_id
                             AND t.kickstartMode = :mode
                             ORDER BY created DESC
                             """, KickstartSession.class)
-                .setParameter("ksdata", ksdata.getId(), StandardBasicTypes.LONG)
+                .setParameter("ksdata_id", ksdata.getId(), StandardBasicTypes.LONG)
                 .setParameter("mode", KickstartSession.MODE_DEFAULT_SESSION)
                 .list();
         if (!ksessions.isEmpty()) {
@@ -821,10 +821,10 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
                         FROM KickstartSession AS t
-                        WHERE t.newServer.id = :server OR t.oldServer.id = :server OR t.hostServer.id = :server
+                        WHERE t.newServer.id = :server_id OR t.oldServer.id = :server_id OR t.hostServer.id = :server_id
                         ORDER BY created DESC
                         """, KickstartSession.class)
-                .setParameter("server", sidIn, StandardBasicTypes.LONG)
+                .setParameter("server_id", sidIn, StandardBasicTypes.LONG)
                 .list();
     }
 
@@ -1123,11 +1123,11 @@ public class KickstartFactory extends HibernateFactory {
         return HibernateFactory.getSession()
                 .createQuery("""
                         FROM KickstartPackage AS kp
-                        WHERE kp.ksData.id = :ks_data
-                        AND kp.packageName.id = :package_name
+                        WHERE kp.ksData.id = :ksdata_id
+                        AND kp.packageName.id = :package_name_id
                         """, KickstartPackage.class)
-                .setParameter("ks_data", ksData.getId(), StandardBasicTypes.LONG)
-                .setParameter("package_name", packageName.getId(), StandardBasicTypes.LONG)
+                .setParameter("ksdata_id", ksData.getId(), StandardBasicTypes.LONG)
+                .setParameter("package_name_id", packageName.getId(), StandardBasicTypes.LONG)
                 .list();
     }
 
