@@ -40,22 +40,30 @@ public class PackageExtraTagsKeys implements Serializable {
     @Serial
     private static final long serialVersionUID = 8834129583627927866L;
 
-    private Long id;
-    private String name;
-    private Date created;
 
-    private Set<PackageExtraTag> tags;
-
-
-    /**
-     * @return id to get
-     */
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgxtratagkeys_seq")
     @SequenceGenerator(
             name = "pkgxtratagkeys_seq", sequenceName = "rhn_package_extra_tags_keys_id_seq", allocationSize = 1
     )
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @CreationTimestamp
+    @Column(name = "created")
+    private Date created;
+
+
+    @OneToMany(mappedBy = "key", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PackageExtraTag> tags;
+
+
+    /**
+     * @return id to get
+     */
     public Long getId() {
         return id;
     }
@@ -70,7 +78,6 @@ public class PackageExtraTagsKeys implements Serializable {
     /**
      * @return return the tag
      */
-    @OneToMany(mappedBy = "key", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<PackageExtraTag> getTags() {
         return tags;
     }
@@ -85,7 +92,6 @@ public class PackageExtraTagsKeys implements Serializable {
     /**
      * @return name to get
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -100,8 +106,6 @@ public class PackageExtraTagsKeys implements Serializable {
     /**
      * @return created to get
      */
-    @CreationTimestamp
-    @Column(name = "created")
     public Date getCreated() {
         return created;
     }

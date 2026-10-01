@@ -46,9 +46,21 @@ public abstract class ProjectSource implements Serializable {
     @Serial
     private static final long serialVersionUID = 7767660718074294645L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
+    @SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private Integer position;
+
+    @Enumerated(EnumType.STRING)
+    @Column
     private State state;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private ContentProject contentProject;
 
     /**
@@ -154,9 +166,6 @@ public abstract class ProjectSource implements Serializable {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
-    @SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -170,7 +179,6 @@ public abstract class ProjectSource implements Serializable {
         id = idIn;
     }
 
-    @Column
     public Integer getPosition() {
         return position;
     }
@@ -184,8 +192,6 @@ public abstract class ProjectSource implements Serializable {
      *
      * @return state
      */
-    @Enumerated(EnumType.STRING)
-    @Column
     public State getState() {
         return state;
     }
@@ -220,8 +226,6 @@ public abstract class ProjectSource implements Serializable {
      *
      * @return contentProject
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     public ContentProject getContentProject() {
         return contentProject;
     }

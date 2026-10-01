@@ -32,7 +32,6 @@ import java.util.function.Function;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository loaded from a PAYG instance and linked to a cloud rmt server
@@ -50,7 +49,6 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
      * @return the URL including authentication info
      */
     @Override
-    @Transient
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());

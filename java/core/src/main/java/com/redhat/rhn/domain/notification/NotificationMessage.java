@@ -31,7 +31,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * A notification NotificationMessage Object.
@@ -40,9 +39,22 @@ import jakarta.persistence.Transient;
 @Table(name = "susenotificationmessage")
 public class NotificationMessage implements Serializable {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nmsg_seq")
+    @SequenceGenerator(name = "nmsg_seq", sequenceName = "suse_notif_message_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(columnDefinition = "type")
+    @Type(value = com.redhat.rhn.domain.notification.types.NotificationTypeEnumType.class)
     private NotificationType type;
+
+    @Column(name = "data")
     private String data;
+
+    @CreationTimestamp
+    @Column(name = "created")
     private Date created;
 
     /**
@@ -63,10 +75,6 @@ public class NotificationMessage implements Serializable {
     /**
      * @return Returns the id.
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nmsg_seq")
-    @SequenceGenerator(name = "nmsg_seq", sequenceName = "suse_notif_message_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -81,7 +89,6 @@ public class NotificationMessage implements Serializable {
     /**
      * @return Returns the description.
      */
-    @Column(name = "data")
     public String getData() {
         return data;
     }
@@ -90,7 +97,6 @@ public class NotificationMessage implements Serializable {
      * Set the notification specific data.
      * @param notificationData notification data
      */
-    @Transient
     public void setNotificationData(NotificationData notificationData) {
         this.type = notificationData.getType();
         this.data = new NotificationTypeAdapter(type).toJson(notificationData);
@@ -100,7 +106,6 @@ public class NotificationMessage implements Serializable {
      * Get the notification specific data.
      * @return the notification data
      */
-    @Transient
     public NotificationData getNotificationData() {
         return new NotificationTypeAdapter(type).fromJson(data);
     }
@@ -116,8 +121,6 @@ public class NotificationMessage implements Serializable {
      * Get the type of this notification.
      * @return notification type
      */
-    @Column(columnDefinition = "type")
-    @Type(value = com.redhat.rhn.domain.notification.types.NotificationTypeEnumType.class)
     public NotificationType getType() {
         return type;
     }
@@ -133,8 +136,6 @@ public class NotificationMessage implements Serializable {
     /**
     * @return Returns the created date.
     */
-    @CreationTimestamp
-    @Column(name = "created")
     public Date getCreated() {
         return created;
     }

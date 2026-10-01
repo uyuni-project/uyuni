@@ -37,7 +37,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action for server group implementation
@@ -47,6 +46,9 @@ import jakarta.persistence.Transient;
 @DiscriminatorValue("group")
 public class GroupRecurringAction extends RecurringAction {
 
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
     private ServerGroup group;
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -99,13 +101,11 @@ public class GroupRecurringAction extends RecurringAction {
     }
 
     @Override
-    @Transient
     public Long getEntityId() {
         return getGroup().getId();
     }
 
     @Override
-    @Transient
     public TargetType getTargetType() {
         return TargetType.GROUP;
     }
@@ -115,8 +115,6 @@ public class GroupRecurringAction extends RecurringAction {
      *
      * @return the server group
      */
-    @ManyToOne
-    @JoinColumn(name = "group_id")
     public ServerGroup getGroup() {
         return group;
     }

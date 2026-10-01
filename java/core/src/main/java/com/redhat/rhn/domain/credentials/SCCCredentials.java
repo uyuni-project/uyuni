@@ -23,12 +23,13 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.SCC)
 public class SCCCredentials extends RemoteCredentials {
 
+
+    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     private IssHub issHub;
 
     // No args constructor for hibernate
@@ -42,12 +43,10 @@ public class SCCCredentials extends RemoteCredentials {
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.SCC;
     }
 
-    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
     public IssHub getIssHub() {
         return issHub;
     }
@@ -60,7 +59,6 @@ public class SCCCredentials extends RemoteCredentials {
      * @return if this credential is the current primary scc credential which
      * is at the moment denoted by having the url field set.
      */
-    @Transient
     public boolean isPrimary() {
         return getUrl() != null;
     }

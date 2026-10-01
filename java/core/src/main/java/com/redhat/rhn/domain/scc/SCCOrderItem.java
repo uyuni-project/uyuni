@@ -39,13 +39,32 @@ import jakarta.persistence.Table;
 @Table(name = "suseSCCOrderItem")
 public class SCCOrderItem extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccorderitem_seq")
+    @SequenceGenerator(name = "sccorderitem_seq", sequenceName = "suse_sccorder_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(targetEntity = BaseCredentials.class)
     private Credentials credentials;
+
+    @Column(name = "scc_id")
     private Long sccId;
+
+    @Column(name = "sku")
     private String sku;
+
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "subscription_id")
     private Long subscriptionId;
+
+    @Column(name = "quantity")
     private Long quantity;
 
     /**
@@ -81,10 +100,6 @@ public class SCCOrderItem extends BaseDomainHelper {
      * Gets the id.
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccorderitem_seq")
-    @SequenceGenerator(name = "sccorderitem_seq", sequenceName = "suse_sccorder_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -100,7 +115,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the SCC id
      */
-    @Column(name = "scc_id")
     public Long getSccId() {
         return sccId;
     }
@@ -115,7 +129,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the sku
      */
-    @Column(name = "sku")
     public String getSku() {
         return sku;
     }
@@ -130,7 +143,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the endDate
      */
-    @Column(name = "end_date")
     public Date getEndDate() {
         return endDate;
     }
@@ -145,7 +157,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the startDate
      */
-    @Column(name = "start_date")
     public Date getStartDate() {
         return startDate;
     }
@@ -160,7 +171,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the subscriptionId
      */
-    @Column(name = "subscription_id")
     public Long getSubscriptionId() {
         return subscriptionId;
     }
@@ -183,7 +193,6 @@ public class SCCOrderItem extends BaseDomainHelper {
     /**
      * @return the quantity
      */
-    @Column(name = "quantity")
     public Long getQuantity() {
         return quantity;
     }
@@ -199,7 +208,6 @@ public class SCCOrderItem extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne(targetEntity = BaseCredentials.class)
     public Credentials getCredentials() {
         return credentials;
     }

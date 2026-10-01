@@ -25,7 +25,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for scap policy implementation
@@ -35,7 +34,13 @@ import jakarta.persistence.Transient;
 @Table(name = "suseRecurringScapPolicy")
 public class RecurringScapPolicy extends RecurringActionType {
 
+
+    @Column(name = "test_mode")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
+
+    @ManyToOne
+    @JoinColumn(name = "scap_policy_id", nullable = false)
     private ScapPolicy scapPolicy;
 
     /**
@@ -67,7 +72,6 @@ public class RecurringScapPolicy extends RecurringActionType {
     }
 
     @Override
-    @Transient
     public ActionType getActionType() {
         return ActionType.SCAPPOLICY;
     }
@@ -77,8 +81,6 @@ public class RecurringScapPolicy extends RecurringActionType {
      *
      * @return testMode - if action is testMode
      */
-    @Column(name = "test_mode")
-    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }
@@ -97,8 +99,6 @@ public class RecurringScapPolicy extends RecurringActionType {
      *
      * @return the Scap Policy
      */
-    @ManyToOne
-    @JoinColumn(name = "scap_policy_id", nullable = false)
     public ScapPolicy getScapPolicy() {
         return this.scapPolicy;
     }

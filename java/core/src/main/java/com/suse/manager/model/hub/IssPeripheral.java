@@ -29,15 +29,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSPeripheral")
 public class IssPeripheral extends BaseDomainHelper implements IssServer {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fqdn", unique = true)
     private String fqdn;
+
+    @Column(name = "root_ca")
     private String rootCa;
+
+    @OneToOne(targetEntity = HubSCCCredentials.class)
+    @JoinColumn(name = "mirror_creds_id")
     private HubSCCCredentials mirrorCredentials;
+
+    @OneToMany(mappedBy = "peripheral", fetch = FetchType.LAZY)
     private Set<IssPeripheralChannels> peripheralChannels;
 
     protected IssPeripheral() {
@@ -45,7 +56,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
         // Default empty Constructor for Hibernate
     }
 
-    @Transient
     public IssRole getRole() {
         return IssRole.PERIPHERAL;
     }
@@ -73,9 +83,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
     public Long getId() {
         return id;
@@ -85,7 +92,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the FQDN of the Peripheral Server
      * @return return the FQDN of the Peripheral Server
      */
-    @Column(name = "fqdn", unique = true)
     @Override
     public String getFqdn() {
         return fqdn;
@@ -95,7 +101,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the configured Root CA
      * @return return the root ca
      */
-    @Column(name = "root_ca")
     @Override
     public String getRootCa() {
         return rootCa;
@@ -105,8 +110,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @OneToOne(targetEntity = HubSCCCredentials.class)
-    @JoinColumn(name = "mirror_creds_id")
     public HubSCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
     }
@@ -114,7 +117,6 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     /**
      * @return return channels which should be synced to the peripheral server
      */
-    @OneToMany(mappedBy = "peripheral", fetch = FetchType.LAZY)
     public Set<IssPeripheralChannels> getPeripheralChannels() {
         return peripheralChannels;
     }

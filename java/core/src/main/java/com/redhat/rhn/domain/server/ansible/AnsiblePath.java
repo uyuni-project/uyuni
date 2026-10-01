@@ -34,7 +34,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * Represents path to an Ansible entity (inventory, playbook).
@@ -45,8 +44,18 @@ import jakarta.persistence.Transient;
 @DiscriminatorColumn(name = "type")
 public abstract class AnsiblePath extends BaseDomainHelper {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ansible_path_seq")
+    @SequenceGenerator(name = "ansible_path_seq", sequenceName = "suse_ansible_path_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
     private MinionServer minionServer;
+
+    @Column
+    @Convert(converter = PathConverter.class)
     private Path path;
 
     public enum Type {
@@ -104,7 +113,6 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      * Gets the type of the Path.
      * @return the Path type
      */
-    @Transient
     public abstract Type getEntityType();
 
     /**
@@ -112,9 +120,6 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ansible_path_seq")
-    @SequenceGenerator(name = "ansible_path_seq", sequenceName = "suse_ansible_path_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -133,8 +138,6 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      *
      * @return minionServer
      */
-    @ManyToOne
-    @JoinColumn(name = "server_id")
     public MinionServer getMinionServer() {
         return minionServer;
     }
@@ -153,8 +156,6 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      *
      * @return path
      */
-    @Column
-    @Convert(converter = PathConverter.class)
     public Path getPath() {
         return path;
     }

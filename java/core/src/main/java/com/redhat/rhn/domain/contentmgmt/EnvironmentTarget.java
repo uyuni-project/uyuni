@@ -46,9 +46,21 @@ public abstract class EnvironmentTarget implements Serializable {
     @Serial
     private static final long serialVersionUID = -764569287303965488L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_env_target_seq")
+    @SequenceGenerator(name = "content_prj_env_target_seq", sequenceName = "suse_ct_env_tgt_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "env_id")
     private ContentEnvironment contentEnvironment;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(name = "built_time")
     private Date builtTime;
 
     /**
@@ -105,9 +117,6 @@ public abstract class EnvironmentTarget implements Serializable {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_env_target_seq")
-    @SequenceGenerator(name = "content_prj_env_target_seq", sequenceName = "suse_ct_env_tgt_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -126,8 +135,6 @@ public abstract class EnvironmentTarget implements Serializable {
      *
      * @return contentEnvironment
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "env_id")
     public ContentEnvironment getContentEnvironment() {
         return contentEnvironment;
     }
@@ -146,8 +153,6 @@ public abstract class EnvironmentTarget implements Serializable {
      *
      * @return status
      */
-    @Column
-    @Enumerated(EnumType.STRING)
     public Status getStatus() {
         return status;
     }
@@ -173,7 +178,6 @@ public abstract class EnvironmentTarget implements Serializable {
      * Gets the time of latest build
      * @return Date of latest build
      */
-    @Column(name = "built_time")
     public Date getBuiltTime() {
         return this.builtTime;
     }

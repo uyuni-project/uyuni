@@ -30,7 +30,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * MaintenanceSchedule - store maintenance schedule objects
@@ -38,10 +37,26 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "suseMaintenanceSchedule")
 public class MaintenanceSchedule extends BaseDomainHelper {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
+    @SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "sched_type")
+    @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType;
+
+    @ManyToOne()
+    @JoinColumn(name = "ical_id", nullable = true)
     private MaintenanceCalendar calendar;
 
     public enum ScheduleType {
@@ -83,10 +98,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the maintenance schedule id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
-    @SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -94,8 +105,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the organization
      */
-    @ManyToOne()
-    @JoinColumn(name = "org_id", nullable = false)
     public Org getOrg() {
         return org;
     }
@@ -103,7 +112,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the schedule name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -111,8 +119,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the schedule type
      */
-    @Column(name = "sched_type")
-    @Enumerated(EnumType.STRING)
     public ScheduleType getScheduleType() {
         return scheduleType;
     }
@@ -120,8 +126,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the calendar
      */
-    @ManyToOne()
-    @JoinColumn(name = "ical_id", nullable = true)
     protected MaintenanceCalendar getCalendar() {
         return calendar;
     }
@@ -129,7 +133,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the calendar as optional
      */
-    @Transient
     public Optional<MaintenanceCalendar> getCalendarOpt() {
         return Optional.ofNullable(calendar);
     }

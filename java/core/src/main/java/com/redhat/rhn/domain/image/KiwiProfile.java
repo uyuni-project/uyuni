@@ -32,13 +32,16 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("kiwi")
 public class KiwiProfile extends ImageProfile {
 
+
+    @Column(name = "path")
     private String path;
+
+    @Column(name = "kiwi_options")
     private String kiwiOptions;
 
     /**
      * @return the Kiwi options
      */
-    @Column(name = "kiwi_options")
     public String getKiwiOptions() {
         if (kiwiOptions == null) {
             return "";
@@ -56,7 +59,6 @@ public class KiwiProfile extends ImageProfile {
     /**
      * @return the path
      */
-    @Column(name = "path")
     public String getPath() {
         return path;
     }

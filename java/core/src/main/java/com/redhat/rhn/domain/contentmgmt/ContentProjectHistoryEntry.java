@@ -42,11 +42,27 @@ public class ContentProjectHistoryEntry implements Serializable {
     @Serial
     private static final long serialVersionUID = -4007161635528460287L;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_history_seq")
+    @SequenceGenerator(name = "content_project_history_seq", sequenceName = "suse_ct_prj_hist_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private ContentProject contentProject;
+
+    @Column
     private String message;
+
+    @Column
     private Long version;
+
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
     private Date created = new Date();
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     private User user;
 
     /**
@@ -54,9 +70,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_history_seq")
-    @SequenceGenerator(name = "content_project_history_seq", sequenceName = "suse_ct_prj_hist_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -75,8 +88,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return contentProject
      */
-    @ManyToOne
-    @JoinColumn(name = "project_id")
     public ContentProject getContentProject() {
         return contentProject;
     }
@@ -95,7 +106,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return message
      */
-    @Column
     public String getMessage() {
         return message;
     }
@@ -114,7 +124,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return version
      */
-    @Column
     public Long getVersion() {
         return version;
     }
@@ -133,8 +142,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return created
      */
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
     public Date getCreated() {
         return created;
     }
@@ -153,7 +160,6 @@ public class ContentProjectHistoryEntry implements Serializable {
      *
      * @return user
      */
-    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     public User getUser() {
         return user;
     }

@@ -36,18 +36,23 @@ public class ImageStoreType implements Serializable {
     private static final long serialVersionUID = -1703542510456137197L;
 
     /** The id. */
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstoretype_seq")
+    @SequenceGenerator(name = "imgstoretype_seq", sequenceName = "suse_imgstore_type_id_seq", allocationSize = 1)
     private Long id;
 
+
+    @Column(name = "label")
     private String label;
 
+
+    @Column(name = "name")
     private String name;
 
     /**
      * @return the id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstoretype_seq")
-    @SequenceGenerator(name = "imgstoretype_seq", sequenceName = "suse_imgstore_type_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -55,7 +60,6 @@ public class ImageStoreType implements Serializable {
     /**
      * @return the label
      */
-    @Column(name = "label")
     public String getLabel() {
         return label;
     }
@@ -63,7 +67,6 @@ public class ImageStoreType implements Serializable {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }

@@ -23,22 +23,33 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSHub")
 public class IssHub extends BaseDomainHelper implements IssServer {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fqdn", unique = true)
     private String fqdn;
+
+    @Column(name = "root_ca")
     private String rootCa;
+
+    @Column(name = "gpg_key")
     private String gpgKey;
+
+    @OneToOne(targetEntity = SCCCredentials.class)
+    @JoinColumn(name = "mirror_creds_id")
     private SCCCredentials mirrorCredentials;
 
     protected IssHub() {
         // Default empty Constructor for Hibernate
     }
 
-    @Transient
     public IssRole getRole() {
         return IssRole.HUB;
     }
@@ -65,9 +76,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     /**
      * @return return the ID
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Override
     public Long getId() {
         return id;
@@ -77,7 +85,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the FQDN of the Hub Server
      * @return return the FQDN of the Hub Server
      */
-    @Column(name = "fqdn", unique = true)
     @Override
     public String getFqdn() {
         return fqdn;
@@ -87,7 +94,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the configured Root CA
      * @return return the root ca
      */
-    @Column(name = "root_ca")
     @Override
     public String getRootCa() {
         return rootCa;
@@ -97,7 +103,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the configured GPG Key
      * @return return the gpg key
      */
-    @Column(name = "gpg_key")
     public String getGpgKey() {
         return gpgKey;
     }
@@ -106,8 +111,6 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @OneToOne(targetEntity = SCCCredentials.class)
-    @JoinColumn(name = "mirror_creds_id")
     public SCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
     }

@@ -46,7 +46,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * ImageInfo
@@ -55,40 +54,111 @@ import jakarta.persistence.Transient;
 @Table(name = "suseImageInfo")
 public class ImageInfo extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id", insertable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
+    @SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "version")
     private String version;
+
+    @Column(name = "image_type")
     private String imageType;
+
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
+
+    @Column(name = "curr_revision_num")
     private int revisionNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
     private ImageProfile profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
     private ImageStore store;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "build_server_id")
     private MinionServer buildServer;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "build_action_id")
     private ImageBuildAction buildAction;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inspect_action_id")
     private ImageInspectAction inspectAction;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     private Set<ImageInfoCustomDataValue> customDataValues = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseImageInfoChannel",
+               joinColumns = { @JoinColumn(name = "image_info_id") },
+               inverseJoinColumns = { @JoinColumn(name = "channel_id") })
     private Set<Channel> channels = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
     private Set<ImagePackage> packages = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseImageInfoInstalledProduct",
+               joinColumns = { @JoinColumn(name = "image_info_id") },
+               inverseJoinColumns = { @JoinColumn(name = "installed_product_id") })
     private Set<InstalledProduct> installedProducts = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     private Set<ImageRepoDigest> repoDigests = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_arch_id")
     private ServerArch imageArch;
+
+    @Column(name = "external_image")
+    @Convert(converter = YesNoConverter.class)
     private boolean externalImage;
+
+    @Column(name = "obsolete")
+    @Convert(converter = YesNoConverter.class)
     private boolean obsolete;
+
+    @Column(name = "built")
+    @Convert(converter = YesNoConverter.class)
     private boolean built;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     private Set<ImageFile> imageFiles = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pillar_id")
     private Pillar pillar;
+
+    @OneToMany
+    @JoinColumn(name = "source_image_id", updatable = false)
     private Set<DeltaImageInfo> deltaSourceFor = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_image_id", updatable = false)
     private Set<DeltaImageInfo> deltaTargetFor = new HashSet<>();
+
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "log")
     private String buildLog;
 
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id", insertable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
-    @SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -96,7 +166,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the org
      */
-    @ManyToOne(fetch = FetchType.LAZY)
     public Org getOrg() {
         return org;
     }
@@ -104,8 +173,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the image arch
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_arch_id")
     public ServerArch getImageArch() {
         return imageArch;
     }
@@ -113,7 +180,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -121,7 +187,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the version
      */
-    @Column(name = "version")
     public String getVersion() {
         return version;
     }
@@ -129,7 +194,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the image type
      */
-    @Column(name = "image_type")
     public String getImageType() {
         return imageType;
     }
@@ -137,8 +201,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the checksum
      */
-    @ManyToOne
-    @JoinColumn(name = "checksum_id")
     public Checksum getChecksum() {
         return checksum;
     }
@@ -146,7 +208,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the current (latest) revision number
      */
-    @Column(name = "curr_revision_num")
     public int getRevisionNumber() {
         return revisionNumber;
     }
@@ -154,8 +215,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the image profile
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
     public ImageProfile getProfile() {
         return profile;
     }
@@ -163,8 +222,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the image store
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
     public ImageStore getStore() {
         return store;
     }
@@ -172,8 +229,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the build server
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "build_server_id")
     public MinionServer getBuildServer() {
         return buildServer;
     }
@@ -181,8 +236,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the build action
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "build_action_id")
     public ImageBuildAction getBuildAction() {
         return buildAction;
     }
@@ -197,8 +250,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the inspect action
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inspect_action_id")
     public ImageInspectAction getInspectAction() {
         return inspectAction;
     }
@@ -213,7 +264,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -221,7 +271,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
     public Set<ImagePackage> getPackages() {
         return packages;
     }
@@ -229,10 +278,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the channels
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "suseImageInfoChannel",
-               joinColumns = { @JoinColumn(name = "image_info_id") },
-               inverseJoinColumns = { @JoinColumn(name = "channel_id") })
     public Set<Channel> getChannels() {
         return channels;
     }
@@ -240,10 +285,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the installed installedProducts
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "suseImageInfoInstalledProduct",
-               joinColumns = { @JoinColumn(name = "image_info_id") },
-               inverseJoinColumns = { @JoinColumn(name = "installed_product_id") })
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;
     }
@@ -251,8 +292,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return true if the image has been built outside SUSE Manager
      */
-    @Column(name = "external_image")
-    @Convert(converter = YesNoConverter.class)
     public boolean isExternalImage() {
         return externalImage;
     }
@@ -260,8 +299,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return true if the image is obsolete (has been replaced in the store)
      */
-    @Column(name = "obsolete")
-    @Convert(converter = YesNoConverter.class)
     public boolean isObsolete() {
         return obsolete;
     }
@@ -269,8 +306,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return true if the image has been successfully built
      */
-    @Column(name = "built")
-    @Convert(converter = YesNoConverter.class)
     public boolean isBuilt() {
         return built;
     }
@@ -278,7 +313,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the repo digests
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageRepoDigest> getRepoDigests() {
         return repoDigests;
     }
@@ -286,7 +320,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the files
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageFile> getImageFiles() {
         return imageFiles;
     }
@@ -294,20 +327,14 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the pillar
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pillar_id")
     public Pillar getPillar() {
         return pillar;
     }
 
-    @OneToMany
-    @JoinColumn(name = "source_image_id", updatable = false)
     public Set<DeltaImageInfo> getDeltaSourceFor() {
         return deltaSourceFor;
     }
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "target_image_id", updatable = false)
     public Set<DeltaImageInfo> getDeltaTargetFor() {
         return deltaTargetFor;
     }
@@ -315,8 +342,6 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return build log
      */
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "log")
     public String getBuildLog() {
         return buildLog;
     }
@@ -454,7 +479,6 @@ public class ImageInfo extends BaseDomainHelper {
         this.built = builtIn;
     }
 
-    @Transient
     public PackageType getPackageType() {
         return getImageArch().getArchType().getPackageType();
     }

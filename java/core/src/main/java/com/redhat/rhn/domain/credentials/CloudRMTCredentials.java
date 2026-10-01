@@ -27,14 +27,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.CLOUD_RMT)
 public class CloudRMTCredentials extends RemoteCredentials implements CloudCredentials {
 
     private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
+
+    @Column(name = "extra_auth")
     private byte[] extraAuthData;
+
+    @Column(name = "payg_ssh_data_id")
     private Long paygSshDataId;
 
     // No args constructor for hibernate
@@ -49,12 +52,10 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.CLOUD_RMT;
     }
 
-    @Column(name = "extra_auth")
     public byte[] getExtraAuthData() {
         return extraAuthData;
     }
@@ -63,7 +64,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
         this.extraAuthData = extraAuthDataIn;
     }
 
-    @Column(name = "payg_ssh_data_id")
     protected Long getPaygSshDataId() {
         return paygSshDataId;
     }
@@ -73,7 +73,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
     }
 
     @Override
-    @Transient
     public PaygSshData getPaygSshData() {
         if (paygSshDataId == null) {
             return null;
@@ -93,7 +92,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      *
      * @return true if we have a user and a password, else false
      */
-    @Transient
     public boolean isComplete() {
         return !StringUtils.isEmpty(getUsername()) &&
                 !StringUtils.isEmpty(getEncodedPassword());
@@ -111,7 +109,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      * Check if this credential is valid
      * @return true if valid
      */
-    @Transient
     @Override
     public boolean isValid() {
         return isComplete() && !INVALIDATED_PASSWORD.equals(getEncodedPassword());
@@ -123,7 +120,6 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
      *
      * @return true if we have a user and a password, else false
      */
-    @Transient
     public boolean isEmpty() {
         return StringUtils.isEmpty(getUsername()) &&
                 StringUtils.isEmpty(getEncodedPassword()) &&

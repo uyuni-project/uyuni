@@ -30,14 +30,27 @@ import jakarta.persistence.Table;
 @Table(name = "susePaygProduct")
 public class PaygCredentialsProduct extends BaseDomainHelper {
 
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygProduct_seq")
+    @SequenceGenerator(name = "susePaygProduct_seq", sequenceName = "susePaygProduct_id_seq", allocationSize = 1)
     private Long id;
 
+
+    @Column(name = "credentials_id")
     private Long credentialsId;
 
+
+    @Column(name = "name")
     private String name;
 
+
+    @Column(name = "version")
     private String version;
 
+
+    @Column(name = "arch")
     private String arch;
 
     /**
@@ -58,10 +71,6 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.arch = productInfoIn.getArch();
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygProduct_seq")
-    @SequenceGenerator(name = "susePaygProduct_seq", sequenceName = "susePaygProduct_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -70,7 +79,6 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.id = idIn;
     }
 
-    @Column(name = "credentials_id")
     public Long getCredentialsId() {
         return credentialsId;
     }
@@ -79,7 +87,6 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.credentialsId = credentialsIdIn;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -88,7 +95,6 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.name = nameIn;
     }
 
-    @Column(name = "version")
     public String getVersion() {
         return version;
     }
@@ -97,7 +103,6 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
         this.version = versionIn;
     }
 
-    @Column(name = "arch")
     public String getArch() {
         return arch;
     }

@@ -19,7 +19,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.VIRT_HOST_MANAGER)
@@ -36,7 +35,6 @@ public class VHMCredentials extends PasswordBasedCredentials {
     }
 
     @Override
-    @Transient
     public CredentialsType getType() {
         return CredentialsType.VIRT_HOST_MANAGER;
     }
