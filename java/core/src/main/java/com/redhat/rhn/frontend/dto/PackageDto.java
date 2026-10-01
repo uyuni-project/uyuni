@@ -43,6 +43,7 @@ public class PackageDto extends BaseDto {
     private String archLabel;
     private String checksum;
     private String checksumType;
+    private String remotePath;
     private Long cid;
     private String channelName;
     private String summary;
@@ -253,6 +254,22 @@ public class PackageDto extends BaseDto {
      */
     public void setChecksumType(String checksumTypeIn) {
         this.checksumType = checksumTypeIn;
+    }
+
+    /**
+     *
+     * @return Returns a stored remote package URL
+     */
+    public String getRemotePath() {
+        return remotePath;
+    }
+
+    /**
+     *
+     * @param remotePathIn The remote package URL to set
+     */
+    public void setRemotePath(String remotePathIn) {
+        this.remotePath = remotePathIn;
     }
 
     /**
