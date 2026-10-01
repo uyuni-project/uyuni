@@ -567,7 +567,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addAccessGroup(admin, AccessGroupFactory.getChannelAdmin());
         int i = csh.create(admin, "api-test-chan-label",
                 "apiTestChanName", "apiTestSummary", "channel-x86_64", null,
-                "sha1", new HashMap<>(), false);
+                "sha1", new HashMap<>(), false, false);
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
         assertNotNull(c);
