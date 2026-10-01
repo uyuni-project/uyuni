@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory;
 import com.redhat.rhn.domain.server.MinionTransactionalActionHistory.ProgressStatus;
+import com.redhat.rhn.manager.action.ActionManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltParameters;
@@ -212,6 +213,7 @@ public class TransactionalActionManagerTest {
 
         LocalCall<?> call = callForMinion(calls, transactionalMinion);
         Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+        assertEquals("state.apply", call.getPayload().get("fun"));
         assertEquals(List.of(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE), kwargs.get("mods"));
         assertFalse(kwargs.containsKey("pillar"));
         assertFalse(kwargs.containsKey("test"));
@@ -933,6 +935,35 @@ public class TransactionalActionManagerTest {
                         preparedCall.getPayload().get("module_executors"));
                 assertSame(call, preparedCall);
             }
+        }
+    }
+
+    @Test
+    public void testExplicitHardwarePrerequisitePreservesFlagAfterPreparation() {
+        List<String> states = List.of(SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ);
+        Map<String, Object> pillar = Map.of("key", "value");
+        MinionSummary minion = transactionalMinion(2L, "transactional");
+
+        for (boolean useTransactionalUpdate : List.of(false, true)) {
+            Map<LocalCall<?>, List<MinionSummary>> calls = applyStatesCalls(
+                    states, useTransactionalUpdate, Optional.of(pillar), true, List.of(minion));
+            LocalCall<?> originalCall = callForMinion(calls, minion);
+            Map<?, ?> originalKwargs = Map.copyOf((Map<?, ?>) originalCall.getPayload().get("kwarg"));
+
+            Map<LocalCall<?>, List<MinionSummary>> preparedCalls = ActionManager.prepareSaltCalls(calls);
+            LocalCall<?> call = callForMinion(preparedCalls, minion);
+            Map<?, ?> kwargs = (Map<?, ?>) call.getPayload().get("kwarg");
+
+            assertEquals(useTransactionalUpdate ? "transactional_update.apply" : "state.apply",
+                    call.getPayload().get("fun"));
+            assertEquals(states, kwargs.get("mods"));
+            assertEquals(pillar, kwargs.get("pillar"));
+            assertEquals(true, kwargs.get("queue"));
+            assertEquals(true, kwargs.get("test"));
+            assertEquals(originalKwargs, kwargs);
+            assertEquals(useTransactionalUpdate ? null : List.of("direct_call"),
+                    call.getPayload().get("module_executors"));
+            assertEquals(List.of(minion), preparedCalls.get(call));
         }
     }
 
