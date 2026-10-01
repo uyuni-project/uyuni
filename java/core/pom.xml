@@ -102,6 +102,10 @@
             <artifactId>gson</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-c3p0</artifactId>
         </dependency>
