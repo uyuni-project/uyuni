@@ -223,7 +223,7 @@ public class ServerTest extends BaseTestCaseWithUser {
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
         s.setOs("SLES");
-        s.setRelease("12.1");
+        s.setRelease("15.1");
         assertTrue(s.doesOsSupportsOSImageBuilding());
     }
 

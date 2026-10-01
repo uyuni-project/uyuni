@@ -2564,12 +2564,18 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
-     * Allows everything from SUSE, Leap and LeapMicro
+     * Allows all from SUSE family except SLE10, SLE11 and SLE12
+     * Allows RedHat 9 and 10, Debian 13 and Ubuntu 24.04 and 26.04
      *
      * @return <code>true</code> if OS supports OS Image building
      */
     public boolean doesOsSupportsOSImageBuilding() {
-        return isOsFamilySuse() || isLeap() || isLeapMicro();
+        // SLE15 variants we can use locally installed kiwi-ng or container version
+        // For other OS and variant we require at least podman 4.9.5 which was tested to work with container version
+        return (isOsFamilySuse() && !(isSLES10() || isSLES11() || isSLES12())) ||
+                isRedHat9() || isRedHat10() ||
+                isDebian13() ||
+                isUbuntu2404() || isUbuntu2604();
     }
 
     /**

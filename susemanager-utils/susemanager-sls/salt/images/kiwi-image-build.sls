@@ -123,48 +123,10 @@ mgr_buildimage_kiwi_bundle:
 {%- endif %}
 
 {%- else %} {# kiwi legacy #}
-
-# i586 build on x86_64 host must be called with linux32
-# let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = '/usr/bin/linux32 /usr/sbin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/sbin/kiwi' %}
-
-# in SLES11 Kiwi the --add-repotype is required
-{%- macro kiwi_params() -%}
-  --add-repo {{ common_repo }} --add-repotype rpm-dir --add-repoalias common_repo {{ ' ' }}
-{%- for repo in pillar.get('kiwi_repositories') -%}
-  --add-repo {{ repo }} --add-repotype rpm-md --add-repoalias key_repo{{ loop.index }} {{ ' ' }}
-{%- endfor -%}
-{%- endmacro %}
-
-# old Kiwi can't change cache location, so we have to clear cache before each build
-mgr_kiwi_clear_cache:
-  file.directory:
-    - name: /var/cache/kiwi/
-    - makedirs: True
-    - clean: True
-
-mgr_buildimage_kiwi_prepare:
-  cmd.run:
-    - name: "{{ kiwi }} --logfile {{ root_dir }}/build.log --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
-    - require:
-      - module: mgr_buildimage_prepare_source
-      - file: mgr_buildimage_prepare_activation_key_in_source
-
-mgr_buildimage_kiwi_create:
-  cmd.run:
-    - name: "{{ kiwi }} --logfile {{ root_dir }}/build.log --nocolor --yes --create {{ chroot_dir }} --dest {{ dest_dir }} {{ kiwi_params() }}"
-    - require:
-      - cmd: mgr_buildimage_kiwi_prepare
-
-{%- if use_bundle_build %}
-mgr_buildimage_kiwi_bundle:
-  cmd.run:
-    - name: "{{ kiwi }} --nocolor --yes --bundle-build {{ dest_dir }} --bundle-id {{ build_id }} --destdir {{ bundle_dir }}"
-    - require:
-      - cmd: mgr_buildimage_kiwi_create
-
-{%- endif %} {# use_bundle_build #}
-{%- endif %} {# else kiwi legacy #}
+kiwi_legacy_unsupported:
+  test.fail_without_changes:
+    - name: "Legacy Kiwi is no longer supported"
+{%- endif %}
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:

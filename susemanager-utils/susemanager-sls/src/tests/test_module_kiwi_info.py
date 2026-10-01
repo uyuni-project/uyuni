@@ -2,64 +2,31 @@
 Tests for kiwi_info salt module.
 """
 
-from ..modules import kiwi_info
-
+import os
+import sys
+import pickle
+import tempfile
+from types import ModuleType
 from unittest.mock import MagicMock, patch
 
+from ..modules import kiwi_info
 
-def test_parse_profile():
-    example_profile = """kiwi_align='1048576'
-kiwi_boot_timeout='1'
-kiwi_bootloader='grub2'
-kiwi_cmdline='console=ttyS0 multipath=off net.ifnames=0 nvme_core.io_timeout=4294967295 nvme_core.admin_timeout=4294967295 8250.nr_uarts=4 dis_ucode_ldr'
-kiwi_devicepersistency='by-label'
-kiwi_displayname='SLES 12 SP5'
-kiwi_firmware='uefi'
-kiwi_iname='SLES12-SP5'
-kiwi_initrd_system='dracut'
-kiwi_iversion='1.0.20'
-kiwi_keytable='us.map.gz'
-kiwi_language='en_US'
-kiwi_profiles='EXAMPLE'
-kiwi_revision='11aa83f4567a207260b43caf2bedd22f6ca17a3b'
-kiwi_rootpartuuid='729627f3-e827-46f9-84a9-de390c611ddb'
-kiwi_sectorsize='512'
-kiwi_startsector='2048'
-kiwi_timezone='UTC'
-kiwi_type='vmx'
-"""
-    expected_ret = {
-        "kiwi_align": "1048576",
-        "kiwi_boot_timeout": "1",
-        "kiwi_bootloader": "grub2",
-        "kiwi_cmdline": "console=ttyS0 multipath=off net.ifnames=0 "
-        "nvme_core.io_timeout=4294967295 nvme_core.admin_timeout=4294967295 "
-        "8250.nr_uarts=4 dis_ucode_ldr",
-        "kiwi_devicepersistency": "by-label",
-        "kiwi_displayname": "SLES 12 SP5",
-        "kiwi_firmware": "uefi",
-        "kiwi_iname": "SLES12-SP5",
-        "kiwi_initrd_system": "dracut",
-        "kiwi_iversion": "1.0.20",
-        "kiwi_keytable": "us.map.gz",
-        "kiwi_language": "en_US",
-        "kiwi_profiles": "EXAMPLE",
-        "kiwi_revision": "11aa83f4567a207260b43caf2bedd22f6ca17a3b",
-        "kiwi_rootpartuuid": "729627f3-e827-46f9-84a9-de390c611ddb",
-        "kiwi_sectorsize": "512",
-        "kiwi_startsector": "2048",
-        "kiwi_timezone": "UTC",
-        "kiwi_type": "vmx",
-    }
-    with patch.dict(
-        kiwi_info.__salt__, {"file.file_exists": MagicMock(return_value=True)}
-    ), patch.dict(
-        kiwi_info.__salt__, {"cp.get_file_str": MagicMock(return_value=example_profile)}
-    ):
-        ret = kiwi_info.parse_profile("test")
-        assert ret is not None
-        assert isinstance(ret, dict)
-        assert ret == expected_ret
+
+# Global mock classes for pickle integration tests
+class Result:
+    pass
+
+
+class XMLState:
+    pass
+
+
+class XMLData:
+    pass
+
+
+class BuildType:
+    pass
 
 
 def test_parse_packages():
@@ -173,3 +140,106 @@ def test_inspect_bundles():
             assert ret is not None
             assert isinstance(ret, list)
             assert ret == expected_ret
+
+
+def test_parse_kiwi_result_file_not_found():
+    """
+    Test parse_kiwi_result when the kiwi.result file does not exist.
+    """
+    with patch.dict(
+        kiwi_info.__salt__, {"file.file_exists": MagicMock(return_value=False)}
+    ):
+        ret = kiwi_info.parse_kiwi_result("/nonexistent")
+        assert not ret
+
+
+def test_parse_kiwi_result_invalid_file():
+    """
+    Test parse_kiwi_result when kiwi.result cannot be unpickled.
+    """
+    with tempfile.TemporaryDirectory() as tmpdir:
+        result_path = os.path.join(tmpdir, "kiwi.result")
+        with open(result_path, "wb") as result_file:
+            result_file.write(b"not a pickle")
+
+        with patch.dict(
+            kiwi_info.__salt__, {"file.file_exists": MagicMock(return_value=True)}
+        ):
+            ret = kiwi_info.parse_kiwi_result(tmpdir)
+
+    assert not ret
+
+
+def test_parse_kiwi_result_integration_safe_unpickle():
+    """
+    Integration test for parse_kiwi_result and KiwiResultUnpickler.
+    Generates a mock pickled kiwi.result without KIWI modules installed.
+    """
+    # pylint: disable=attribute-defined-outside-init
+    # Setup mock modules in sys.modules so pickle.dump can locate classes
+    temp_modules = [
+        "kiwi",
+        "kiwi.result",
+        "kiwi.xml_state",
+        "kiwi.xml_data",
+        "kiwi.build_type",
+    ]
+    original_modules = {}
+
+    for m in temp_modules:
+        if m in sys.modules:
+            original_modules[m] = sys.modules[m]
+        sys.modules[m] = ModuleType(m)
+
+    try:
+        sys.modules["kiwi.result"].Result = Result
+        sys.modules["kiwi.xml_state"].XMLState = XMLState
+        sys.modules["kiwi.xml_data"].XMLData = XMLData
+        sys.modules["kiwi.build_type"].BuildType = BuildType
+
+        Result.__module__ = "kiwi.result"
+        XMLState.__module__ = "kiwi.xml_state"
+        XMLData.__module__ = "kiwi.xml_data"
+        BuildType.__module__ = "kiwi.build_type"
+
+        # Construct the structure resembling KIWI's results
+        res = Result()
+        res.xml_state = XMLState()
+        res.xml_state.xml_data = XMLData()
+        res.xml_state.xml_data.name = "kiwi-image-test"
+        res.xml_state.build_type = BuildType()
+        res.xml_state.build_type.image = "kis"
+        res.xml_state.build_type.filesystem = "xfs"
+
+        # Write pickled object into a real temporary directory/file
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result_path = os.path.join(tmpdir, "kiwi.result")
+            with open(result_path, "wb") as f:
+                pickle.dump(res, f)
+
+            for m in temp_modules:
+                sys.modules.pop(m)
+
+            def file_exists_mock(path):
+                return path == result_path
+
+            with patch.dict(
+                kiwi_info.__salt__,
+                {
+                    "file.file_exists": MagicMock(side_effect=file_exists_mock),
+                },
+            ):
+                ret = kiwi_info.parse_kiwi_result(tmpdir)
+
+                assert ret is not None
+                assert ret.get("name") == "kiwi-image-test"
+                assert ret.get("type") == "kis"
+                assert ret.get("filesystem") == "xfs"
+
+    finally:
+        # Restore sys.modules
+        for m in temp_modules:
+            if m in original_modules:
+                sys.modules[m] = original_modules[m]
+            else:
+                sys.modules.pop(m, None)

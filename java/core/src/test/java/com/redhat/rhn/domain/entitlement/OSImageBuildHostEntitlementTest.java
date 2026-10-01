@@ -69,7 +69,8 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
         systemEntitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
-        assertTrue(ent.isAllowedOnServer(minion));
+        // Not allowed on sle12
+        assertFalse(ent.isAllowedOnServer(minion));
         assertFalse(ent.isAllowedOnServer(traditional));
 
         minion.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
@@ -79,8 +80,24 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
         minion.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         minion.setOs(ServerConstants.REDHAT);
-        minion.setRelease("6Server");
+        minion.setRelease("8");
         assertFalse(ent.isAllowedOnServer(minion));
+        minion.setRelease("9");
+        assertTrue(ent.isAllowedOnServer(minion));
+
+        minion.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
+        minion.setOs(ServerConstants.DEBIAN);
+        minion.setRelease("12");
+        assertFalse(ent.isAllowedOnServer(minion));
+        minion.setRelease("13");
+        assertTrue(ent.isAllowedOnServer(minion));
+
+        minion.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
+        minion.setOs(ServerConstants.UBUNTU);
+        minion.setRelease("22.04");
+        assertFalse(ent.isAllowedOnServer(minion));
+        minion.setRelease("24.04");
+        assertTrue(ent.isAllowedOnServer(minion));
     }
 
     @Override
