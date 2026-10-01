@@ -7283,7 +7283,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: ajv@6.12.6
+Package: ajv@6.15.0
 License text:
 
 The MIT License (MIT)
@@ -7311,7 +7311,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: ajv@8.17.1
+Package: ajv@8.20.0
 License text:
 
 The MIT License (MIT)
