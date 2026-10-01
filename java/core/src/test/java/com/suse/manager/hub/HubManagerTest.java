@@ -71,6 +71,7 @@ import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.GpgKeyException;
+import com.suse.utils.PqcKeyException;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -414,16 +415,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canSaveHubAndPeripheralServers() throws TaskomaticApiException, GpgKeyException {
+    public void canSaveHubAndPeripheralServers() throws TaskomaticApiException, GpgKeyException, PqcKeyException {
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data",
-                null);
+                null, null);
 
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
         assertTrue(issHub.isPresent());
         assertEquals("dummy-certificate-data", issHub.get().getRootCa());
         assertNull(issHub.get().getGpgKey());
+        assertNull(issHub.get().getPqcCert());
 
-        hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null, null);
+        hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null, null, null);
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn("dummy.peripheral.fqdn");
         assertTrue(issPeripheral.isPresent());
         assertNull(issPeripheral.get().getRootCa());
@@ -470,14 +472,14 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canSaveRootCaAndGpg() throws TaskomaticApiException, GpgKeyException {
+    public void canSaveRootCaAndGpg() throws TaskomaticApiException, GpgKeyException, PqcKeyException {
         mockTaskomaticApi.resetTaskomaticCall();
         mockTaskomaticApi.setExpectations(1,
                 List.of("tasko.scheduleSingleSatBunchRun"),
                 List.of("root-ca-cert-update-bunch"),
                 "hub_dummy.hub.fqdn_root_ca.pem", "dummy-hub-certificate-data");
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data",
-                "");
+                "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
@@ -485,7 +487,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 List.of(),
                 List.of(),
                 "hub_dummy2.hub.fqdn_root_ca.pem", "");
-        hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
+        hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
@@ -493,7 +495,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 List.of(),
                 List.of(),
                 "hub_dummy3.hub.fqdn_root_ca.pem", "");
-        hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
+        hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null, null);
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
@@ -503,7 +505,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 "peripheral_dummy.periph.fqdn_root_ca.pem",
                 "dummy-periph-certificate-data");
         hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
-                "dummy-periph-certificate-data", null);
+                "dummy-periph-certificate-data", null, null);
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
@@ -511,7 +513,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 List.of(),
                 List.of(),
                 "peripheral_dummy2.periph.fqdn_root_ca.pem", "");
-        hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
+        hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "", "");
         mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
@@ -519,7 +521,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 List.of(),
                 List.of(),
                 "peripheral_dummy3.periph.fqdn_root_ca.pem", "");
-        hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
+        hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null, null);
         mockTaskomaticApi.verifyTaskoCall();
     }
 
@@ -553,7 +555,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         // 4. Call saveNewServer for PERIPHERAL
         IssAccessToken token = getValidToken(fqdn);
-        hubManager.saveNewServer(token, IssRole.PERIPHERAL, null, null);
+        hubManager.saveNewServer(token, IssRole.PERIPHERAL, null, null, null);
 
         // Verify saltServer is still there and has fqdn
         Server updatedSaltServer = ServerFactory.lookupById(saltServer.getId());
@@ -563,9 +565,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canStoreSCCCredentials() throws TaskomaticApiException, GpgKeyException {
+    public void canStoreSCCCredentials() throws TaskomaticApiException, GpgKeyException, PqcKeyException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
-        hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
+        hubManager.saveNewServer(hubToken, IssRole.HUB, null, null, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listSCCCredentials().stream()
@@ -579,9 +581,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canStoreSCCCredentialsWhenTheyAlreadyExist() throws TaskomaticApiException, GpgKeyException {
+    public void canStoreSCCCredentialsWhenTheyAlreadyExist()
+            throws TaskomaticApiException, GpgKeyException, PqcKeyException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
-        IssHub hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
+        IssHub hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null, null);
 
         SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("user", "password");
         CredentialsFactory.storeCredentials(sccCredentials);
@@ -601,7 +604,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canRegenerateSCCCredentialsForAPeripheral()
-            throws TokenException, TaskomaticApiException, CertificateException, IOException, GpgKeyException {
+            throws TokenException, TaskomaticApiException, CertificateException, IOException,
+            GpgKeyException, PqcKeyException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createPeripheralRegistration(fqdn, null);
 
@@ -640,7 +644,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canDeregisterHub() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
-        IssAccessToken token = createHubRegistration(fqdn, null, null);
+        IssAccessToken token = createHubRegistration(fqdn, null, null, null);
         HubInternalClient internalClient = mock(HubInternalClient.class);
 
         context().checking(new Expectations() {{
@@ -666,7 +670,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canDeregisterHubAndDeleteRootCA() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
-        IssAccessToken token = createHubRegistration(fqdn, "---- BEGIN ROOT CA ----", null);
+        IssAccessToken token = createHubRegistration(fqdn, "---- BEGIN ROOT CA ----", null, null);
         HubInternalClient internalClient = mock(HubInternalClient.class);
 
         context().checking(new Expectations() {{
@@ -778,9 +782,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canDeregisterHubWithToken() throws TokenBuildingException, TaskomaticApiException,
-            TokenParsingException, GpgKeyException {
+            TokenParsingException, GpgKeyException, PqcKeyException {
         String fqdn = LOCAL_SERVER_FQDN;
-        IssAccessToken token = createHubRegistration(fqdn, null, null);
+        IssAccessToken token = createHubRegistration(fqdn, null, null, null);
         IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
 
         assertEquals(IssRole.HUB, remoteRole);
@@ -792,7 +796,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canDeregisterPeripheralWithToken() throws TokenBuildingException, TaskomaticApiException,
-            TokenParsingException, GpgKeyException {
+            TokenParsingException, GpgKeyException, PqcKeyException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createPeripheralRegistration(fqdn, null);
         IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
@@ -837,6 +841,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
             allowing(internalClient).registerHub(
                 with(any(String.class)),
+                with(aNull(String.class)),
                 with(aNull(String.class)),
                 with(aNull(String.class))
             );
@@ -884,10 +889,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
      @Test
      public void canReplaceTokensLocal() throws TokenBuildingException, TaskomaticApiException, TokenParsingException,
-             GpgKeyException {
+             GpgKeyException, PqcKeyException {
          String hubFqdn = "hub.domain.top";
 
-         IssAccessToken currentToken = createHubRegistration(hubFqdn, null, null);
+         IssAccessToken currentToken = createHubRegistration(hubFqdn, null, null, null);
          List<String> tokenList = hubFactory.listAccessTokensByFqdn(hubFqdn)
                  .stream().map(IssAccessToken::getToken).toList();
          assertEquals(2, tokenList.size());
@@ -915,7 +920,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canReplaceTokensOnHub() throws TokenBuildingException, TaskomaticApiException, TokenParsingException,
-            CertificateException, IOException, GpgKeyException {
+            CertificateException, IOException, GpgKeyException, PqcKeyException {
         String peripherlaFqdn = "peripheral.domain.top";
         HubInternalClient internalClient = mock(HubInternalClient.class);
 
@@ -952,11 +957,12 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canUpdateServerDetails() throws TokenBuildingException, TaskomaticApiException, TokenParsingException,
-            GpgKeyException {
-        createHubRegistration("hub.domain.com", "---- BEGIN ROOT CA ----", null);
+            GpgKeyException, PqcKeyException {
+        createHubRegistration("hub.domain.com", "---- BEGIN ROOT CA ----", null, null);
         IssHub hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
         assertEquals("---- BEGIN ROOT CA ----", hub.getRootCa());
         assertNull(hub.getGpgKey());
+        assertNull(hub.getPqcCert());
 
         UpdatableServerData data = new UpdatableServerData(Map.of(
             "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
@@ -969,6 +975,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
         assertEquals("---- BEGIN NEW ROOT CA ----", hub.getRootCa());
         assertEquals("---- BEGIN NEW GPG PUB KEY -----", hub.getGpgKey());
+        assertNull(hub.getPqcCert());
         assertThrows(IllegalArgumentException.class,
                 () -> hubManager.updateServerData(satAdmin, "hub1.domain.com", IssRole.valueOf("HUB"), data));
 
@@ -1058,7 +1065,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hub.makeDefaultMaster();
         IssFactory.save(hub);
 
-        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null, null);
 
         hubManager.deleteIssV1Master(token);
 
@@ -1068,7 +1075,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void deleteIssV1MasterDoesNotDeleteIfMasterIsMissing() throws Exception {
-        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null);
+        IssAccessToken token = createHubRegistration(REMOTE_SERVER_FQDN, null, null, null);
 
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> hubManager.deleteIssV1Master(token));
@@ -1161,12 +1168,13 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private IssAccessToken createPeripheralRegistration(String fqdn, String rootCA) throws TaskomaticApiException,
-            TokenBuildingException, TokenParsingException, GpgKeyException {
+            TokenBuildingException, TokenParsingException, GpgKeyException, PqcKeyException {
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, fqdn);
         String peripheralTokenStr = hubManager.issueAccessToken(satAdmin, fqdn);
         hubManager.storeAccessToken(satAdmin, fqdn, peripheralTokenStr);
         IssAccessToken peripheralToken = hubFactory.lookupIssuedToken(peripheralTokenStr);
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, rootCA, null);
+        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL,
+                rootCA, null, null);
         var hubSCCCredentials = CredentialsFactory.createHubSCCCredentials("peripheral-dummy-username",
                 "peripheral-dummy-password", peripheral.getFqdn());
         CredentialsFactory.storeCredentials(hubSCCCredentials);
@@ -1182,13 +1190,14 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         return peripheralToken;
     }
 
-    private IssAccessToken createHubRegistration(String fqdn, String rootCA, String gpgKey)
-            throws TaskomaticApiException, TokenBuildingException, TokenParsingException, GpgKeyException {
+    private IssAccessToken createHubRegistration(String fqdn, String rootCA, String gpgKey, String pqcCert)
+            throws TaskomaticApiException, TokenBuildingException, TokenParsingException,
+            PqcKeyException, GpgKeyException {
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, fqdn);
         String hubTokenStr = hubManager.issueAccessToken(satAdmin, fqdn);
         hubManager.storeAccessToken(satAdmin, fqdn, hubTokenStr);
         IssAccessToken hubToken = hubFactory.lookupIssuedToken(hubTokenStr);
-        hubManager.saveNewServer(hubToken, IssRole.HUB, rootCA, gpgKey);
+        hubManager.saveNewServer(hubToken, IssRole.HUB, rootCA, gpgKey, pqcCert);
         hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
         TestUtils.flushAndClearSession();
 
