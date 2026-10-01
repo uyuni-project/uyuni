@@ -41,6 +41,15 @@
   font-family: "spacewalk-icon";
 }
 
+.Toastify__toast:after {
+    font-family: "FontAwesome";
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    font-size: 12px;
+  }
+
 .alert-info,
 .Toastify__toast--info {
   background-color: $alert-info-bg;

@@ -60,14 +60,14 @@ type State = {
   dismissed: Set<number>;
 };
 
-export class Messages extends Component<Props> {
+export class Messages extends Component<Props, State> {
   state: State = {
     dismissed: new Set(),
   };
 
   handleClose = (index: number) => {
-    this.setState((state) => {
-      const dismissed = new Set(this.state.dismissed);
+    this.setState((prevState) => {
+      const dismissed = new Set(prevState.dismissed);
       dismissed.add(index);
 
       return { dismissed };
@@ -96,38 +96,26 @@ export class Messages extends Component<Props> {
     return { severity: severityIn, text: textIn };
   }
 
-  
-render() {
-    const items: MessageType[] = Array.isArray(this.props.items)
-      ? this.props.items
-      : [this.props.items];
+  render() {
+    const items: MessageType[] = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
 
     if (items.length === 0) return null;
 
-    const msgs = items
-      .map((item, index) => {
-        if (this.state.dismissed.has(index)) {
-          return null;
-        }
+    const msgs = items.map((item, index) => {
+      if (this.state.dismissed.has(index)) {
+        return null;
+      }
 
-        return (
-          <div
-            key={"msg" + index}
-            className={"alert alert-" + _classNames[item.severity]}
-          >
-            {item.text}
+      return (
+        <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
+          {item.text}
 
-            {this.props.dismissible && (
-              <button
-                type="button"
-                className="btn-close"
-                aria-label="Close"
-                onClick={() => this.handleClose(index)}
-              />
-            )}
-          </div>
-        );
-      });
+          {this.props.dismissible && (
+            <button type="button" className="btn-close" aria-label="Close" onClick={() => this.handleClose(index)} />
+          )}
+        </div>
+      );
+    });
 
     return <div>{msgs}</div>;
   }
