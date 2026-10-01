@@ -1,0 +1,1 @@
+- Don't create "/var/spacewalk/gpg" again in CertificateUtils
