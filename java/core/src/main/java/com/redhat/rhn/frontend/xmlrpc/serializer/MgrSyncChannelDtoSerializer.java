@@ -59,7 +59,7 @@ public class MgrSyncChannelDtoSerializer extends ApiResponseSerializer<MgrSyncCh
                 .add("description", src.getDescription())
                 .add("family", src.getFamily())
                 .add("is_signed", src.isSigned())
-                //PQC_TODO: add pqc_signed here and in the api docs
+                //PQCTODO: add pqc_signed here and in the api docs
                 //.add("is_pqc_signed", src.isPqcSigned())
                 .add("label", src.getLabel())
                 .add("name", src.getName())

@@ -36,6 +36,7 @@ public class ChannelInfoDetailsJson {
     private String gpgKeyUrl;
     private String gpgKeyId;
     private String gpgKeyFp;
+    private Boolean pqcCheck;
     private Long endOfLifeDate;
 
     private String channelProductProduct;
@@ -58,6 +59,7 @@ public class ChannelInfoDetailsJson {
         label = labelIn;
 
         gpgCheck = true;
+        pqcCheck = false;
         installerUpdates = false;
         originalChannelLabel = null;
     }
@@ -222,6 +224,20 @@ public class ChannelInfoDetailsJson {
      */
     public void setGpgCheck(Boolean gpgCheckIn) {
         this.gpgCheck = gpgCheckIn;
+    }
+
+    /**
+     * @return the pqcCheck
+     */
+    public Boolean isPqcCheck() {
+        return pqcCheck;
+    }
+
+    /**
+     * @param pqcCheckIn the pqcCheck to set
+     */
+    public void setPqcCheck(Boolean pqcCheckIn) {
+        pqcCheck = pqcCheckIn;
     }
 
     /**
@@ -437,6 +453,7 @@ public class ChannelInfoDetailsJson {
                 Objects.equals(getGpgKeyUrl(), that.getGpgKeyUrl()) &&
                 Objects.equals(getGpgKeyId(), that.getGpgKeyId()) &&
                 Objects.equals(getGpgKeyFp(), that.getGpgKeyFp()) &&
+                Objects.equals(isPqcCheck(), that.isPqcCheck()) &&
                 Objects.equals(getEndOfLifeDate(), that.getEndOfLifeDate()) &&
                 Objects.equals(getChannelProductProduct(), that.getChannelProductProduct()) &&
                 Objects.equals(getChannelProductVersion(), that.getChannelProductVersion()) &&
@@ -454,7 +471,7 @@ public class ChannelInfoDetailsJson {
         return Objects.hash(getLabel(), getPeripheralOrgId(), getOriginalChannelLabel(), getParentChannelLabel(),
                 getChannelArchLabel(), getChecksumTypeLabel(), getBaseDir(), getName(),
                 getSummary(), getDescription(), getProductNameLabel(), isGpgCheck(), getGpgKeyUrl(), getGpgKeyId(),
-                getGpgKeyFp(), getEndOfLifeDate(), getChannelProductProduct(), getChannelProductVersion(),
+                getGpgKeyFp(), isPqcCheck(), getEndOfLifeDate(), getChannelProductProduct(), getChannelProductVersion(),
                 getMaintainerName(), getMaintainerEmail(), getMaintainerPhone(),
                 getSupportPolicy(), getUpdateTag(), isInstallerUpdates(), getRepositoryInfo());
     }

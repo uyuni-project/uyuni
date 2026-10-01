@@ -47,6 +47,8 @@ public final class CertificateUtils {
 
     private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
 
+    private static final Path PQC_PUB_CERT = Path.of("/srv/susemanager/salt/pqc/mgr-pqc-cert.pem");
+
     private static final Path CUSTOMER_GPG_DIR = Path.of("/var/spacewalk/gpg");
 
     private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
@@ -88,6 +90,15 @@ public final class CertificateUtils {
      */
     public static String loadGpgKey() throws IOException {
         return loadTextFile(GPG_PUBKEY);
+    }
+
+    /**
+     * Loads the local PQC certificate used for signing the metadata.
+     * @return a string representation of the PQC certificate
+     * @throws IOException when reading the data from file fails
+     */
+    public static String loadPqcCert() throws IOException {
+        return loadTextFile(PQC_PUB_CERT);
     }
 
     /**
@@ -450,5 +461,28 @@ public final class CertificateUtils {
         }
 
         return keys;
+    }
+
+    /**
+     * Import the public PQC certificate used for signing the metadata.
+     * @param pqcCert the PQC certificate
+     * @throws IOException if something goes wrong
+     */
+    public static void importPqcCert(String pqcCert) throws IOException {
+        if (StringUtils.isBlank(pqcCert)) {
+            LOG.info("No PQC certificate provided");
+            return;
+        }
+        FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
+        Path pqcTempFile = Files.createTempFile("susemanager-pqc-", ".tmp", fileAttributes);
+        try {
+
+            Files.writeString(pqcTempFile, pqcCert, StandardCharsets.UTF_8);
+            executeExtCmd(new String[]{"/usr/sbin/import-suma-build-keys"});
+        }
+        finally {
+            Files.deleteIfExists(pqcTempFile);
+        }
     }
 }

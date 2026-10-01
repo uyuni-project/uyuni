@@ -260,13 +260,15 @@ public class HubManager {
      * @param role the role of the server
      * @param rootCA the root certificate, if needed
      * @param gpgKey the gpg key, if needed
+     * @param pqcCert the PQC certificate, if needed
      * @return the persisted remote server
      */
-    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA, String gpgKey)
+    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role,
+                                   String rootCA, String gpgKey, String pqcCert)
             throws TaskomaticApiException {
         ensureValidToken(accessToken);
 
-        return createServer(role, accessToken.getServerFqdn(), rootCA, gpgKey, null);
+        return createServer(role, accessToken.getServerFqdn(), rootCA, gpgKey, pqcCert, null);
     }
 
     /**
@@ -778,6 +780,10 @@ public class HubManager {
                 issHub.setGpgKey(data.getGpgKey());
             }
 
+            if (data.hasPqcCert() && issServer instanceof IssHub issHub) {
+                issHub.setPqcCert(data.getPqcCert());
+            }
+
             hubFactory.save(issServer);
         }, () -> {
             LOG.error("Server {} not found with role {}", fqdn, role);
@@ -881,7 +887,7 @@ public class HubManager {
 
         parseAndSaveToken(remoteServer, remoteToken);
 
-        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
+        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, null, user);
 
         // Ensure the remote server is a peripheral
         if (!(registeredServer instanceof IssPeripheral peripheral)) {
@@ -904,12 +910,17 @@ public class HubManager {
             // Send the local trusted root, if we needed a different certificate to connect
             String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
             // Send the local GPG key used to sign metadata, if configured.
-            // This force metadata checking on the peripheral server when mirroring from the Hub
+            // This forces metadata checking on the peripheral server when mirroring from the Hub
             String localGpgKey =
                     (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : null;
 
+            // Send the local PQC certificate used to sign metadata, if configured.
+            // This forces metadata checking on the peripheral server when mirroring from the Hub
+            String localPqcCert =
+                    (ConfigDefaults.get().isPqcMetadataSigningEnabled()) ? CertificateUtils.loadPqcCert() : null;
+
             // Register this server on the remote with the hub role
-            internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey);
+            internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey, localPqcCert);
 
             // Generate the scc credentials and send them to the peripheral
             HubSCCCredentials credentials = generateCredentials(peripheral);
@@ -1040,7 +1051,8 @@ public class HubManager {
         };
     }
 
-    private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
+    private IssServer createServer(IssRole role, String serverFqdn, String rootCA,
+                                   String gpgKey, String pqcCert, User user)
             throws TaskomaticApiException {
         if (StringUtils.isNotEmpty(rootCA)) {
             taskomaticApi.scheduleSingleRootCaCertUpdate(role, serverFqdn, rootCA);
@@ -1049,12 +1061,19 @@ public class HubManager {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
                 hub.setGpgKey(gpgKey);
+                hub.setPqcCert(pqcCert);
                 hubFactory.save(hub);
                 try {
                     CertificateUtils.importGpgKey(gpgKey);
                 }
                 catch (IOException e) {
                     throw new RhnRuntimeException("Failed to import the GPG key", e);
+                }
+                try {
+                    CertificateUtils.importPqcCert(pqcCert);
+                }
+                catch (IOException e) {
+                    throw new RhnRuntimeException("Failed to import the PQC certificate", e);
                 }
                 yield hub;
             }

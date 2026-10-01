@@ -2316,6 +2316,8 @@ public class ChannelFactory extends HibernateFactory {
         channelInfo.setGpgKeyId(channel.getGPGKeyId());
         channelInfo.setGpgKeyFp(channel.getGPGKeyFp());
 
+        channelInfo.setPqcCheck(channel.isPqcCheck());
+
         channelInfo.setEndOfLifeDate(channel.getEndOfLife());
         channelInfo.setChecksumTypeLabel(channel.getChecksumTypeLabel());
 
@@ -2461,6 +2463,8 @@ public class ChannelFactory extends HibernateFactory {
         channel.setGPGKeyUrl(channelInfo.getGpgKeyUrl());
         channel.setGPGKeyId(channelInfo.getGpgKeyId());
         channel.setGPGKeyFp(channelInfo.getGpgKeyFp());
+
+        channel.setPqcCheck(channelInfo.isPqcCheck());
 
         channel.setEndOfLife(channelInfo.getEndOfLifeDate());
         channel.setChecksumType(checksumType);
@@ -2634,6 +2638,8 @@ public class ChannelFactory extends HibernateFactory {
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyUrl(), Channel::setGPGKeyUrl);
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyId(), Channel::setGPGKeyId);
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
+
+        setValueIfNotNull(channel, modifyChannelInfo.isPqcCheck(), Channel::setPqcCheck);
 
         //end of life can be null, meaning there is no end of life
         channel.setEndOfLife(modifyChannelInfo.getEndOfLifeDate());

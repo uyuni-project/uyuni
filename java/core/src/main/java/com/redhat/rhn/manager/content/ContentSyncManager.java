@@ -205,8 +205,7 @@ public class ContentSyncManager {
         Optional<IssHub> issHub = hubFactory.lookupIssHub();
         isPeripheral = issHub.isPresent();
         hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
-        //PQC_TODO implement content
-        hubHasPqcSignedMetadata = false;
+        hubHasPqcSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getPqcCert).orElse(""));
         toolsChannelFamilies = new ArrayList<>();
         toolsChannelFamilies.add(ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL);
         if (Config.get().getString(ConfigDefaults.PRODUCT_TREE_TAG, "").equals("Beta")) {
@@ -1193,6 +1192,7 @@ public class ContentSyncManager {
             return;
         }
         boolean metadataSigned = StringUtils.isNotBlank(issHub.getGpgKey());
+        boolean pqcMetadataSigned = StringUtils.isNotBlank(issHub.getPqcCert());
         Set<ContentSource> css = channel.getSources();
         if (css.isEmpty() && null == channel.getOrg()) {
             ContentSource vcss = ChannelFactory.findVendorContentSourceByRepo(repository.getUrl());
@@ -1208,6 +1208,7 @@ public class ContentSyncManager {
             source.setSourceUrl(repository.getUrl());
             source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
             source.setMetadataSigned(metadataSigned);
+            source.setPqcMetadataSigned(pqcMetadataSigned);
             ChannelFactory.save(source);
 
             css.add(source);
@@ -1219,6 +1220,7 @@ public class ContentSyncManager {
             ContentSource source = css.iterator().next();
             source.setSourceUrl(repository.getUrl());
             source.setMetadataSigned(metadataSigned);
+            source.setPqcMetadataSigned(pqcMetadataSigned);
             ChannelFactory.save(source);
         }
         else {
