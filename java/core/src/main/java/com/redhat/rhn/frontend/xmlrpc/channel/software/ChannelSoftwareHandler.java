@@ -666,6 +666,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param checksumType checksum type for this channel
      * @param gpgKey a map consisting of string url, string id, string fingerprint
      * @param gpgCheck GPG check enable/disable
+     * @param pqcCheck PQC check enable/disable
      * @return 1 if creation of channel succeeds.
      * @since 10.9
      * @throws PermissionCheckFailureException  thrown if user does not have
@@ -703,12 +704,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #struct_end()
      * @apidoc.param #param_desc("boolean", "gpgCheck", "true if the GPG check should be
      *     enabled by default, false otherwise")
+     * @apidoc.param #param_desc("boolean", "pqcCheck", "true if the PQC check should be
+     *     enabled by default, false otherwise")
 
      * @apidoc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
                       String summary, String archLabel, String parentLabel,
-                      String checksumType, Map<String, String> gpgKey, boolean gpgCheck)
+                      String checksumType, Map<String, String> gpgKey, boolean gpgCheck, boolean pqcCheck)
             throws PermissionCheckFailureException, InvalidChannelLabelException,
             InvalidChannelNameException, InvalidParentChannelException {
 
@@ -724,7 +727,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ccc.setGpgKeyId(gpgKey.get("id"));
         ccc.setGpgKeyFp(gpgKey.get("fingerprint"));
         ccc.setGpgCheck(gpgCheck);
-        //PQCTODO: add pqcCheck
+        ccc.setPqcCheck(pqcCheck);
 
         return (ccc.create() != null) ? 1 : 0;
     }
@@ -785,7 +788,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                InvalidChannelNameException, InvalidParentChannelException {
 
         return create(loggedInUser, label, name, summary, archLabel, parentLabel,
-                checksumType, gpgKey, true);
+                checksumType, gpgKey, true, false);
     }
 
     /**
