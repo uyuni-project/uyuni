@@ -282,17 +282,8 @@ public final class CertificateUtils {
 
     private static void initializeGpgKeyring() {
         try {
-            if (!Files.isDirectory(CUSTOMER_GPG_DIR)) {
-                FileAttribute<Set<PosixFilePermission>> dirAttrs =
-                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
-                Files.createDirectories(CUSTOMER_GPG_DIR, dirAttrs);
-            }
             executeExtCmd(new String[]{"gpg", "--homedir", CUSTOMER_GPG_DIR.toString(), "--no-default-keyring",
                     "--keyring", CUSTOMER_GPG_RING.toString(), "--fingerprint"});
-        }
-        catch (IOException e) {
-            LOG.error("Failed to create the customer gpg directory {}: {}", CUSTOMER_GPG_DIR, e.getMessage());
-            throw new RhnRuntimeException("Failed to create customer gpg directory " + CUSTOMER_GPG_DIR, e);
         }
         catch (RhnRuntimeException e) {
             LOG.error("Failed to initialize the customer gpg keyring: {}", e.getMessage());
