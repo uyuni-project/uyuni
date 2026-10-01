@@ -8,6 +8,7 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 import { ChannelTreeType, isBaseChannel } from "core/channels/type/channels.type";
 
 import { DEPRECATED_Select } from "components/input";
+import { Messages } from "components/messages/messages";
 import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
@@ -158,6 +159,9 @@ const ChannelsSelection = (props: PropsType) => {
     );
   }
 
+  // Channels picked from a tree other than the new base channel one, they can only be used as combined sources
+  const foreignBaseChannels = channelProcessor.getForeignBaseChannels(selectedChannelIds);
+
   const initialSource = props.initialSelectedSources[0];
   const defaultValueOption = initialSource
     ? {
@@ -191,6 +195,21 @@ const ChannelsSelection = (props: PropsType) => {
           }}
         />
       </div>
+      {foreignBaseChannels.length > 0 && (
+        <div className="row">
+          <div className="col-lg-9 offset-md-3">
+            <Messages
+              items={Messages.warning(
+                <>
+                  {t(
+                    "Some selected channels belong to different base channels and may not be compatible with the new base channel."
+                  )}
+                </>
+              )}
+            />
+          </div>
+        </div>
+      )}
       {rows && (
         <div className="row" style={{ display: "flex" }}>
           <div className="col-lg-3 control-label">

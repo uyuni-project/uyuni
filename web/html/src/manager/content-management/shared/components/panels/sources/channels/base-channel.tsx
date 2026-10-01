@@ -51,6 +51,8 @@ const BaseChannel: FC<Props> = ({
     .map((child) => child.id)
     .reduce((total: number, id: number) => total + Number(props.selectedChannelIds.has(id)), 0);
   const totalSelectedCount = Number(isSelected) + selectedChildrenCount;
+  // Anything selected outside of the new base channel tree is only usable as a combined source, warn about it
+  const hasForeignSelection = !isSelectedBaseChannel && totalSelectedCount > 0;
 
   function renderBaseChannel(): ReactElement {
     return (
@@ -82,6 +84,15 @@ const BaseChannel: FC<Props> = ({
           highlight={search}
         />
         {totalSelectedCount > 0 && <b className={styles.count}>{`(${totalSelectedCount})`}</b>}
+        {hasForeignSelection && (
+          <i
+            className={`fa fa-exclamation-triangle text-warning ${styles.foreign_selection_warning}`}
+            data-bs-toggle="tooltip"
+            title={t(
+              "This is not the new base channel, the selected channels will be combined with the ones of the new base channel"
+            )}
+          />
+        )}
       </h4>
     );
   }
