@@ -503,6 +503,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String vendorChannelTemplateLabel = "sles15-sp7-updates-x86_64";
         String peripheralFQDN = "peripheral.example.com";
         boolean testIsGpgCheck = true;
+        boolean testIsPqcCheck = false;
         boolean testIssInstallerUpdates = false;
         String testArchLabel = "channel-x86_64";
         String testChecksumLabel = "sha256";
@@ -523,8 +524,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
         else {
             ChannelInfoDetailsJson vendorBaseChInfo = testUtils.createChannelInfoDetailsJson(null,
-                    vendorBaseChannelTemplateLabel, "", "",
-                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                    vendorBaseChannelTemplateLabel, "", "", testIsGpgCheck,
+                    testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
             vendorBaseChInfo.setName(vendorBaseChannelTemplateName);
             vendorChannelInfoListIn.add(vendorBaseChInfo);
         }
@@ -535,8 +536,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
         else {
             ChannelInfoDetailsJson vendorChInfo = testUtils.createChannelInfoDetailsJson(null,
-                    vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "",
-                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                    vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "", testIsGpgCheck,
+                    testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
             vendorChInfo.setName(vendorChannelTemplateName);
             vendorChannelInfoListIn.add(vendorChInfo);
         }
@@ -566,6 +567,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @ValueSource(booleans = {true, false})
     public void checkApiSyncCustomChannel(boolean testIncludeTestChannelInChain) throws Exception {
         boolean testIsGpgCheck = true;
+        boolean testIsPqcCheck = false;
         boolean testIssInstallerUpdates = true;
         String testArchLabel = "channel-x86_64";
         String testChecksumLabel = "sha512";
@@ -589,12 +591,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
 
         ChannelInfoDetailsJson vendorBaseChInfo = testUtils.createChannelInfoDetailsJson(null,
-                vendorBaseChannelTemplateLabel, "", "",
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                vendorBaseChannelTemplateLabel, "", "", testIsGpgCheck,
+                testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         ChannelInfoDetailsJson vendorChInfo = testUtils.createChannelInfoDetailsJson(null,
-                vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "",
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "", testIsGpgCheck,
+                testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
 
         //create peripheral vendor Channels
@@ -613,25 +615,25 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
 
         ChannelInfoDetailsJson cloneBaseChInfo = testUtils.createChannelInfoDetailsJson(testPeripheralOrgId,
-                "cloneBaseCh", "", vendorBaseChannelTemplateLabel,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                "cloneBaseCh", "", vendorBaseChannelTemplateLabel, testIsGpgCheck,
+                testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         ChannelInfoDetailsJson cloneDevelChInfo = testUtils.createChannelInfoDetailsJson(testPeripheralOrgId,
-                "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel, testIsGpgCheck,
+                testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         ChannelInfoDetailsJson cloneTestChInfo = null;
         String originalOfProdCh = "cloneDevelCh";
         if (testIncludeTestChannelInChain) {
             cloneTestChInfo = testUtils.createChannelInfoDetailsJson(testPeripheralOrgId,
-                    "cloneTestCh", "", "cloneDevelCh",
-                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                    "cloneTestCh", "", "cloneDevelCh", testIsGpgCheck,
+                    testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
             originalOfProdCh = "cloneTestCh";
         }
 
         ChannelInfoDetailsJson cloneProdChInfo = testUtils.createChannelInfoDetailsJson(testPeripheralOrgId,
-                "cloneProdCh", "", originalOfProdCh,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+                "cloneProdCh", "", originalOfProdCh, testIsGpgCheck,
+                testIsPqcCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
 
 
@@ -907,6 +909,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         modifyInfo.setGpgKeyUrl("gpgKeyUrl_diff");
         modifyInfo.setGpgKeyId("gpgKeyId_diff");
         modifyInfo.setGpgKeyFp("gpgKeyFp_diff");
+        modifyInfo.setPqcCheck(!cloneProdCh.isPqcCheck());
         modifyInfo.setEndOfLifeDate(anotherEndOfLifeDate);
 
         modifyInfo.setChannelProductProduct("channelProductProduct_diff");
