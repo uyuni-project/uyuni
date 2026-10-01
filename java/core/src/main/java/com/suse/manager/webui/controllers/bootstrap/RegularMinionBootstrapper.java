@@ -100,6 +100,17 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         String minionId = input.getHost();
         MinionPendingRegistrationService.addMinion(user, minionId, defaultContactMethod);
 
+        // A reactivation re-registers a system that may still have a stale key on the master, for instance
+        // after the system has been reinstalled or migrated. Such a key does not match the key of the
+        // reinstalled minion anymore, so the master denies the minion and the id ends up both accepted and
+        // denied. Drop the stale key here, otherwise generateKeysAndAccept() below would find an accepted key
+        // and return no key pair at all, leaving the minion with its own denied key.
+        if (input.getReactivationKey().isPresent() &&
+                saltApi.keyExists(minionId, KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+            LOG.info("Reactivating {}, deleting the salt key that already exists for it", minionId);
+            saltApi.deleteKey(minionId);
+        }
+
         // If a key is pending for this minion, temporarily reject it
         boolean weRejectedIt = false;
         if (saltApi.keyExists(minionId, KeyStatus.UNACCEPTED)) {
