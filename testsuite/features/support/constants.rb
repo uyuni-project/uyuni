@@ -929,11 +929,24 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-el7-pool-x86_64-lbt7
         managertools-el7-updates-x86_64-lbt7
       ],
+    # SUSE Liberty Linux 8 still ships under the RES channel labels
+    'sll-8' => # CHECKED
+      %w[
+        res-cb-8-updates-x86_64
+        res-as-8-updates-x86_64
+        res-8-updates-x86_64
+      ],
     'sll-9' => # CHECKED
       %w[
         sll-cb-9-updates-x86_64
         sll-as-9-updates-x86_64
         sll-9-updates-x86_64
+      ],
+    'sll-10' => # CHECKED
+      %w[
+        sll-cb-10-updates-x86_64
+        sll-as-10-updates-x86_64
+        sll-10-updates-x86_64
       ],
     'el7' => # CHECKED
       %w[
@@ -1843,6 +1856,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'oraclelinux10-appstream-x86_64' => 1260,
   'oraclelinux10-x86_64' => 780,
   'res-7-ltss-updates-x86_64' => 1020,
+  'res-8-updates-x86_64' => 2580,
+  'res-as-8-updates-x86_64' => 2460,
+  'res-cb-8-updates-x86_64' => 2160,
   'res7-x86_64' => 10_080,
   'res8-manager-tools-pool-x86_64-rocky' => 60,
   'res8-manager-tools-updates-x86_64-alma' => 240,
@@ -1973,6 +1989,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-9-updates-x86_64' => 2940,
   'sll-as-9-updates-x86_64' => 2460,
   'sll-cb-9-updates-x86_64' => 3060,
+  'sll-10-updates-x86_64' => 1800,
+  'sll-as-10-updates-x86_64' => 900,
+  'sll-cb-10-updates-x86_64' => 900,
   'sl-micro-6.0-devel-uyuni-client-x86_64' => 120,
   'sl-micro-6.0-pool-x86_64' => 1320,
   'managertools-sl-micro-6.0-x86_64' => 60,
