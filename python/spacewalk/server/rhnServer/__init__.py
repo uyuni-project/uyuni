@@ -17,16 +17,15 @@
 #
 
 
+from spacewalk.common.rhnLog import log_debug
+
 # these are pretty much the only entry points
 from uyuni.common.usix import StringType, UnicodeType
-from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.server import rhnUser
+
+from .server_certificate import Certificate
 
 # Local imports
 from .server_class import Server
-from .server_certificate import Certificate
-from .server_token import fetch_token, fetch_org_token
 
 
 def get(system_id, load_user=1):
@@ -45,34 +44,9 @@ def get(system_id, load_user=1):
         return None
 
     # this looks like a real server
-    server = Server(None)
+    server = Server()
     # and load it up
     if not server.loadcert(cert, load_user) == 0:
         return None
     # okay, it is a valid certificate
     return server
-
-
-def search(server_id, username=None):
-    """search for a server in the database and return the Server object"""
-    log_debug(3, server_id, username)
-    s = Server(None)
-    if not s.reload(server_id) == 0:
-        # pylint: disable-next=consider-using-f-string
-        log_error("Reloading server id %d failed" % server_id)
-        # we can't say that the server is not really found
-        raise rhnFault(20)
-    # now that it is reloaded, fix up the s.user field
-    if username:
-        s.user = rhnUser.search(username)
-    return s
-
-
-def search_token(token):
-    log_debug(3, token)
-    return fetch_token(token)
-
-
-def search_org_token(org_id):
-    log_debug(3, org_id)
-    return fetch_org_token(org_id)
