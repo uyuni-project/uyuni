@@ -467,9 +467,11 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKey(String description, Org org) {
         Session session = HibernateFactory.getSession();
         if (org != null) {
-            return session.createQuery(
-                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org = :org_id",
-                            CryptoKey.class)
+            return session.createQuery("""
+                        FROM CryptoKey AS c
+                        WHERE c.description = :description
+                        AND c.org.id = :org_id
+                    """, CryptoKey.class)
                     .setParameter("description", description, StandardBasicTypes.STRING)
                     .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                     .uniqueResult();
@@ -505,7 +507,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         return session.createQuery(
-                "FROM com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey AS c WHERE c.org = :org_id",
+                "FROM com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey AS c WHERE c.org.id = :org_id",
                         SslCryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
@@ -537,7 +539,7 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         return session.createQuery(
-                        "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id", SslCryptoKey.class)
+                        "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org.id = :org_id", SslCryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -611,8 +613,9 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
                         FROM KickstartableTree AS k
-                        WHERE k.channel = :channel_id AND k.org = :org_id
-                        ORDER BY k.label""", KickstartableTree.class).
+                        WHERE k.channel.id = :channel_id AND k.org.id = :org_id
+                        ORDER BY k.label
+                        """, KickstartableTree.class).
                 setParameter("channel_id", channelId, StandardBasicTypes.LONG).
                 setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 //Retrieve from cache if there
@@ -629,8 +632,9 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
                         FROM KickstartableTree AS k
-                        WHERE k.channel = :channel_id AND k.org IS NULL
-                        ORDER BY k.label""", KickstartableTree.class)
+                        WHERE k.channel.id = :channel_id AND k.org IS NULL
+                        ORDER BY k.label
+                        """, KickstartableTree.class)
                 .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
                 // Retrieve from cache if there
                 .setCacheable(true)
@@ -648,11 +652,12 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
                         FROM KickstartableTree AS k
-                        WHERE k.channel.id = :channel_id AND (k.org IS NULL OR k.org = :org_id)
-                        ORDER BY k.label""", KickstartableTree.class).
-                setParameter("channel_id", channelId, StandardBasicTypes.LONG).
-                setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG).
-                list();
+                        WHERE k.channel.id = :channel_id
+                        AND (k.org IS NULL OR k.org.id = :org_id)
+                        ORDER BY k.label""", KickstartableTree.class)
+                .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
+                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                .list();
     }
 
     /**
@@ -729,7 +734,9 @@ public class KickstartFactory extends HibernateFactory {
             Session session = HibernateFactory.getSession();
             return session.createQuery("""
                             FROM KickstartableTree AS k
-                            WHERE k.id = :tree_id AND (k.org = :org_id OR k.org IS NULL)""", KickstartableTree.class)
+                            WHERE k.id = :tree_id
+                            AND (k.org.id = :org_id OR k.org IS NULL)
+                            """, KickstartableTree.class)
                     .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                     .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
                     //Retrieve from cache if there
@@ -767,10 +774,11 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartSession
     lookupDefaultKickstartSessionForKickstartData(KickstartData ksdata) {
         Session session = HibernateFactory.getSession();
-        List<KickstartSession> ksessions = session.createQuery(
-                        """
-                            FROM KickstartSession AS t WHERE
-                            t.ksdata = :ksdata AND t.kickstartMode = :mode ORDER BY created DESC
+        List<KickstartSession> ksessions = session.createQuery("""
+                            FROM KickstartSession AS t
+                            WHERE t.ksdata.id = :ksdata
+                            AND t.kickstartMode = :mode
+                            ORDER BY created DESC
                             """, KickstartSession.class)
                 .setParameter("ksdata", ksdata.getId(), StandardBasicTypes.LONG)
                 .setParameter("mode", KickstartSession.MODE_DEFAULT_SESSION)
@@ -812,9 +820,10 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartSession> lookupAllKickstartSessionsByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        FROM KickstartSession AS t WHERE
-                        t.newServer = :server OR t.oldServer = :server OR t.hostServer = :server
-                        ORDER BY created DESC""", KickstartSession.class)
+                        FROM KickstartSession AS t
+                        WHERE t.newServer.id = :server OR t.oldServer.id = :server OR t.hostServer.id = :server
+                        ORDER BY created DESC
+                        """, KickstartSession.class)
                 .setParameter("server", sidIn, StandardBasicTypes.LONG)
                 .list();
     }
@@ -846,9 +855,10 @@ public class KickstartFactory extends HibernateFactory {
             Session session = HibernateFactory.getSession();
             KickstartableTree tree = session.createQuery("""
                             FROM KickstartableTree AS k
-                            WHERE (k.org IS NULL OR k.org = :org_id) AND
+                            WHERE (k.org IS NULL OR k.org.id = :org_id) AND
                             k.channel.id = :channel_id AND
-                            k.id = :tree_id""", KickstartableTree.class)
+                            k.id = :tree_id
+                            """, KickstartableTree.class)
                     .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
                     .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
                     .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
@@ -964,7 +974,7 @@ public class KickstartFactory extends HibernateFactory {
                 .createQuery("FROM KickstartData AS t WHERE t.isOrgDefault = :isOrgDefault AND t.org = :org",
                         KickstartData.class)
                 .setParameter("org", org)
-                .setParameter("isOrgDefault", "Y", StandardBasicTypes.STRING)
+                .setParameter("isOrgDefault", true)
                 .uniqueResult();
     }
 
@@ -1111,9 +1121,11 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartPackage> lookupKsPackageByKsDataAndPackageName(KickstartData ksData,
                                                                                PackageName packageName) {
         return HibernateFactory.getSession()
-                .createQuery(
-                        "FROM KickstartPackage AS kp WHERE kp.ksData = :ks_data AND kp.packageName = :package_name",
-                        KickstartPackage.class)
+                .createQuery("""
+                        FROM KickstartPackage AS kp
+                        WHERE kp.ksData.id = :ks_data
+                        AND kp.packageName.id = :package_name
+                        """, KickstartPackage.class)
                 .setParameter("ks_data", ksData.getId(), StandardBasicTypes.LONG)
                 .setParameter("package_name", packageName.getId(), StandardBasicTypes.LONG)
                 .list();
