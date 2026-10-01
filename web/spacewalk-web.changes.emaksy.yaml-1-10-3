@@ -1,0 +1,2 @@
+- Update transitive yaml dependency used by Babel tooling from
+  version 1.10.2 to 1.10.3
