@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(UserForTestCaseExtension.class)
 public class RhnSetDeclTest extends BaseTestCase {
 
-    @UserForTest(useClassNameForOrg = true)
+    @UserForTest
     protected User user;
 
     @Test

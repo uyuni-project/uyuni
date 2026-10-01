@@ -26,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,14 +37,19 @@ public class SaltTestCaseExtension extends TestCaseExtension implements BeforeEa
     protected Path temporarySaltRoot;
 
     @Override
-    public void beforeEach(ExtensionContext extensionContextIn) throws Exception {
+    public void beforeEach(ExtensionContext extensionContext) throws Exception {
         temporarySaltRoot = setupSaltConfigurationForTests();
-        extendAnnotatedValue(extensionContextIn, SaltTestRootPath.class, temporarySaltRoot, Path.class);
+        injectAnnotatedFields(extensionContext, SaltTestRootPath.class, Path.class);
     }
 
     @Override
-    public void afterEach(ExtensionContext extensionContextIn) throws Exception {
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
         cleanupSaltConfiguration(temporarySaltRoot);
+    }
+
+    @Override
+    protected Object resolveFieldValue(ExtensionContext extensionContext, Field targetField) {
+        return temporarySaltRoot;
     }
 
     /**
