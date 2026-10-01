@@ -21,11 +21,13 @@ public class RegisterJson {
 
     private String gpgKey;
 
+    private String pqcCert;
+
     /**
      * Default constructor
      */
     public RegisterJson() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
     /**
@@ -33,11 +35,13 @@ public class RegisterJson {
      * @param tokenIn the token
      * @param rootCAIn the root certificate
      * @param gpgKeyIn the gpg key
+     * @param pqcCertIn the PQC cert
      */
-    public RegisterJson(String tokenIn, String rootCAIn, String gpgKeyIn) {
+    public RegisterJson(String tokenIn, String rootCAIn, String gpgKeyIn, String pqcCertIn) {
         this.token = tokenIn;
         this.rootCA = rootCAIn;
         this.gpgKey = gpgKeyIn;
+        this.pqcCert = pqcCertIn;
     }
 
     public String getToken() {
@@ -64,6 +68,14 @@ public class RegisterJson {
         gpgKey = gpgKeyIn;
     }
 
+    public String getPqcCert() {
+        return pqcCert;
+    }
+
+    public void setPqcCert(String pqcCertIn) {
+        pqcCert = pqcCertIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof RegisterJson that)) {
@@ -71,12 +83,13 @@ public class RegisterJson {
         }
         return Objects.equals(getToken(), that.getToken()) &&
                 Objects.equals(getRootCA(), that.getRootCA()) &&
-                Objects.equals(getGpgKey(), that.getGpgKey());
+                Objects.equals(getGpgKey(), that.getGpgKey()) &&
+                Objects.equals(getPqcCert(), that.getPqcCert());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getToken(), getRootCA(), getGpgKey());
+        return Objects.hash(getToken(), getRootCA(), getGpgKey(), getPqcCert());
     }
 
     @Override

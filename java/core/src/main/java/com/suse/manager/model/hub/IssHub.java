@@ -32,6 +32,7 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     private String fqdn;
     private String rootCa;
     private String gpgKey;
+    private String pqcCert;
     private SCCCredentials mirrorCredentials;
 
     protected IssHub() {
@@ -103,6 +104,15 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     }
 
     /**
+     * Get the configured PQC key certificate
+     * @return return the PQC key certificate
+     */
+    @Column(name = "pqc_cert")
+    public String getPqcCert() {
+        return pqcCert;
+    }
+
+    /**
      * Get the mirror credentials.
      * @return the credentials
      */
@@ -140,6 +150,13 @@ public class IssHub extends BaseDomainHelper implements IssServer {
      */
     public void setGpgKey(String gpgKeyIn) {
         gpgKey = gpgKeyIn;
+    }
+
+    /**
+     * @param pqcCertIn the PQC certificate
+     */
+    public void setPqcCert(String pqcCertIn) {
+        pqcCert = pqcCertIn;
     }
 
     /**
