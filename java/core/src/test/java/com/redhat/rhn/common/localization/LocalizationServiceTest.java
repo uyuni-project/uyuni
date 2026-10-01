@@ -201,11 +201,11 @@ public class LocalizationServiceTest extends BaseTestCase {
         Context ctx = Context.getCurrentContext();
         ctx.setTimezone(TimeZone.getTimeZone("GMT"));
         String gmtDate = ls.formatDate(dt, Locale.ENGLISH);
-        String expected = "12/10/04 9:20:00 PM GMT";
+        String expected = "2004-12-10 9:20:00 PM GMT";
         assertEquals(expected, gmtDate);
 
         String shortGmtDate = ls.formatShortDate(dt, Locale.ENGLISH);
-        expected = "12/10/04";
+        expected = "2004-12-10";
         assertEquals(expected, shortGmtDate);
 
         // Now test formatting it to German format in a DE TimeZone.
