@@ -16,7 +16,7 @@ Feature: Install RKE2 server on a transactional system
     And file "/etc/rancher/rke2/config.yaml" should exist on "server"
 
   Scenario: Install RKE2
-    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "server"
+    When I run "set -o pipefail; curl -sfL https://raw.githubusercontent.com/rancher/rke2/master/install.sh | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "server"
 
   @skip_if_transactional_server
   Scenario: Install selinux package

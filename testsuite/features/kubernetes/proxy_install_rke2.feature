@@ -16,7 +16,7 @@ Feature: Install RKE2 proxy on a transactional system
     And file "/etc/rancher/rke2/config.yaml" should exist on "proxy"
 
   Scenario: Install RKE2
-    When I run "set -o pipefail; curl -sfL https://get.rke2.io | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "proxy"
+    When I run "set -o pipefail; curl -sfL https://raw.githubusercontent.com/rancher/rke2/master/install.sh | sudo INSTALL_RKE2_VERSION=$RKE2_VERSION INSTALL_RKE2_METHOD=$RKE2_INSTALL_METHOD sh -" on "proxy"
 
   @skip_if_transactional_server
   Scenario: Install selinux package
