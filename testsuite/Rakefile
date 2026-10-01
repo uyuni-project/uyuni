@@ -27,7 +27,7 @@ namespace :cucumber do
     task_name = "cucumber:#{filename}"
     html_results = "#{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
     # Declare file export path to match the html report
-    path_export_file = "#{result_folder}/#{filename}_html_path.txt"
+    path_export_file = "#{result_folder}/html_paths/#{filename}_html_path.txt"
     html_option = "-f html -o #{html_results}"
     # Define the Cucumber Task
     Cucumber::Rake::Task.new(filename) do |t|
@@ -83,7 +83,7 @@ namespace :cucumber do
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
     Rake::Task[task_name].enhance do
-      sh "echo '#{html_results}' > #{path_export_file}", verbose: false
+      sh "mkdir -p #{File.dirname(path_export_file)} && echo '#{html_results}' > #{path_export_file}", verbose: false
       if File.exist?(html_results)
         html_content = File.read(html_results)
         sort_call = 'i.sort(((e,t)=>(e.uri||"").localeCompare(t.uri||"")))'
