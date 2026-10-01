@@ -499,6 +499,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #prop_desc("string", "gpg_key_fp", "new channel gpg key fingerprint
      *          (optional)")
      *      #prop_desc("string", "gpg_check", "enable/disable gpg check (optional)")
+     *      #prop_desc("string", "pqc_check", "enable/disable PQC check (optional)")
      *
      *  #struct_end()
      *@apidoc.returntype #return_int_success()
@@ -536,6 +537,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          (optional)")
      *      #prop_desc("string", "gpg_check", "enable/disable gpg check
      *          (optional)")
+     *      #prop_desc("string", "pqc_check", "enable/disable PQC check (optional)")
      *  #struct_end()
 
      *@apidoc.returntype #return_int_success()
@@ -556,6 +558,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
         validKeys.add("gpg_check");
+        validKeys.add("pqc_check");
         validKeys.add("vendor_channel");
         validateMap(validKeys, details);
 
@@ -630,6 +633,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (details.containsKey("gpg_check")) {
             command.setGpgCheck(Boolean.parseBoolean(details.get("gpg_check")));
+        }
+
+        if (details.containsKey("pqc_check")) {
+            command.setPqcCheck(Boolean.parseBoolean(details.get("pqc_check")));
         }
 
         if (details.containsKey("vendor_channel")) {
@@ -719,6 +726,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         ccc.setGpgKeyId(gpgKey.get("id"));
         ccc.setGpgKeyFp(gpgKey.get("fingerprint"));
         ccc.setGpgCheck(gpgCheck);
+        //PQCTODO: add pqcCheck
 
         return (ccc.create() != null) ? 1 : 0;
     }
@@ -1708,6 +1716,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
         validKeys.add("gpg_check");
+        validKeys.add("pqc_check");
         validKeys.add("description");
         validKeys.add("checksum");
         validateMap(validKeys, channelDetails);
