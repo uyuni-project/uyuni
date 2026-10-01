@@ -85,7 +85,6 @@ public class TransactionalActionManager {
             ApplyStatesEventMessage.DISTUPGRADE,
             ApplyStatesEventMessage.DISTUPGRADE_SLES16,
             ApplyStatesEventMessage.PACKAGES,
-            SaltParameters.HARDWARE_PROFILE_UPDATE_PREREQ,
             SaltParameters.PACKAGES_PATCHDOWNLOAD,
             SaltParameters.PACKAGES_PATCHINSTALL,
             SaltParameters.PACKAGES_PKGDOWNLOAD,
