@@ -349,9 +349,9 @@ public class ActivationKeyFactory extends HibernateFactory {
                 .setParameter("serverId", server.getId())
                 .executeUpdate();
 
-        if (session.contains(key)) {
-            // If object is attached to the session just refresh it
-            session.refresh(key);
+        if (session.contains(key.getToken())) {
+            // If the token is attached to the session just refresh it
+            session.refresh(key.getToken());
         }
         else {
             // Otherwise manually add the server
@@ -376,9 +376,9 @@ public class ActivationKeyFactory extends HibernateFactory {
                 .setParameter("serverId", server.getId())
                 .executeUpdate();
 
-        if (session.contains(key)) {
-            // If object is attached to the session just refresh it
-            session.refresh(key);
+        if (session.contains(key.getToken())) {
+            // If the token is attached to the session just refresh it
+            session.refresh(key.getToken());
         }
         else {
             // Otherwise manually remove the server
