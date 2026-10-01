@@ -212,7 +212,7 @@ class Certificate:
         elif len(self.__checksum) == 32:
             csum = self.compute_checksum(secret, algo="md5")
         # pylint: disable-next=possibly-used-before-assignment
-        if not csum == self.__checksum:
+        if csum != self.__checksum:
             # fail, current checksum does not match
             log_error(
                 # pylint: disable-next=consider-using-f-string

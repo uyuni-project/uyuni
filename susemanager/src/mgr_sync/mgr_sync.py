@@ -678,7 +678,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             # pylint: disable-next=superfluous-parens
             user = cli_ask(msg=("User to add"))
             pw = cli_ask(msg=("Password to add"), password=True)
-            if not pw == cli_ask(msg=("Confirm password"), password=True):
+            if pw != cli_ask(msg=("Confirm password"), password=True):
                 self.log.error("Passwords do not match")
                 print("Passwords do not match")
                 self.exit_with_error = True
@@ -804,7 +804,6 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     # pylint: disable-next=consider-using-f-string
                     print("Channel '{0}' is not available, skipping".format(channel))
                     self.exit_with_error = True
-                    continue
 
         self._schedule_channel_reposync(channels_to_sync)
 

@@ -145,4 +145,3 @@ class Row(UserDictCase):
         # and now do it
         h.execute(**pdict)
         self.real = 1
-        return

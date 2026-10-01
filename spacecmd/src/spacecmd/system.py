@@ -174,8 +174,6 @@ def manipulate_child_channels(self, args, remove=False):
 
         self.client.system.setChildChannels(self.session, system_id, child_channels)
 
-    return
-
 
 ####################
 
@@ -3573,7 +3571,7 @@ def do_system_eventdetails(self, args):
             print(_("Result code:     %s") % detail.get("result_code"))
 
             additional_info = detail.get("additional_info")
-            if additional_info and additional_info:
+            if additional_info:
                 print("")
                 print(_("Additional info:"))
 
@@ -4737,8 +4735,6 @@ def do_system_listmigrationtargets(self, args):
             print(_("    IDs: ") + tgt["ident"])
             print(_("    Friendly names: ") + tgt["friendly"])
 
-    return
-
 
 ####################
 
@@ -4873,8 +4869,6 @@ def do_system_scheduleproductmigration(self, args):
             print(_("Scheduled action ID: ") + str(result))
         except xmlrpclib.Fault as detail:
             logging.error(_N("Failed to schedule %s") % detail)
-
-    return
 
 
 ####################

@@ -85,7 +85,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             print("  -", clone_advisory)
 
         reply = None
-        while not reply in ("y", "n"):
+        while reply not in ("y", "n"):
             reply = input("Do you want to continue? (Y/n) ")
             if not reply:
                 reply = "y"
@@ -139,13 +139,11 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         Search the channel using the given label.
         Returns None if the channel is not found, otherwise returns the ID of the channel.
         """
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             SELECT id
               FROM rhnChannel
              WHERE label = :channel
-        """
-        )
+        """)
         h.execute(channel=channel)
         res = h.fetchone_dict() or None
         if res:
