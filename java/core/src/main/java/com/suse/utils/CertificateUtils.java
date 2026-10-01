@@ -47,9 +47,16 @@ public final class CertificateUtils {
 
     private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
 
+    private static final Path PQC_PUB_CERT = Path.of("/srv/susemanager/salt/pqc/mgr-pqc-cert.pem");
+
     private static final Path CUSTOMER_GPG_DIR = Path.of("/var/spacewalk/gpg");
 
     private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
+
+    private static final Path PQC_CUSTOMER_DIR = Path.of("/var/spacewalk/pqkeys/");
+    private static final Path PQC_LIB_DIR = Path.of("/var/lib/spacewalk/pqkeys/");
+
+    private static final String PQC_HUB_CERT_FILENAME = "hub-mgr-pqc-cert.pem";
 
     private static final Path PUBRING_DIR = Path.of("/var/lib/spacewalk/gpgdir");
 
@@ -88,6 +95,15 @@ public final class CertificateUtils {
      */
     public static String loadGpgKey() throws IOException {
         return loadTextFile(GPG_PUBKEY);
+    }
+
+    /**
+     * Loads the local PQC certificate used for signing the metadata.
+     * @return a string representation of the PQC certificate
+     * @throws IOException when reading the data from file fails
+     */
+    public static String loadPqcCert() throws IOException {
+        return loadTextFile(PQC_PUB_CERT);
     }
 
     /**
@@ -262,7 +278,7 @@ public final class CertificateUtils {
         }
         FileAttribute<Set<PosixFilePermission>> fileAttributes =
                 PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
-        Path gpgTempFile = null;
+        Path gpgTempFile;
         try {
             gpgTempFile = Files.createTempFile("susemanager-gpg-", ".tmp", fileAttributes);
         }
@@ -494,5 +510,62 @@ public final class CertificateUtils {
         }
 
         return keys;
+    }
+
+    /**
+     * Import the hub PQC certificate as a customer PQC certificate
+     * @param pqcCert the PQC certificate
+     * @throws PqcKeyException if something goes wrong
+     */
+    public static void importHubPqcCert(String pqcCert) throws PqcKeyException {
+        importPqcCert(pqcCert, PQC_HUB_CERT_FILENAME);
+    }
+
+    /**
+     * Removes the hub PQC certificate as a customer PQC certificate
+     * @throws IOException if something goes wrong
+     */
+    public static void removeHubPqcCert() throws IOException {
+        Path pqcFilePath = PQC_CUSTOMER_DIR.resolve(PQC_HUB_CERT_FILENAME);
+        Files.deleteIfExists(pqcFilePath);
+
+        Path pqcLibFilePath = PQC_LIB_DIR.resolve(PQC_HUB_CERT_FILENAME);
+        Files.deleteIfExists(pqcLibFilePath);
+    }
+
+    /**
+     * Import a PQC certificate as a customer PQC certificate
+     * @param pqcCert the PQC certificate
+     * @param certFilename the certificate filename
+     * @throws PqcKeyException if something goes wrong
+     */
+    public static void importPqcCert(String pqcCert, String certFilename) throws PqcKeyException {
+        if (StringUtils.isBlank(pqcCert)) {
+            LOG.info("No PQC certificate provided");
+            return;
+        }
+
+        Path pqcFilePath = PQC_CUSTOMER_DIR.resolve(certFilename);
+        deleteFileIfExists(pqcFilePath);
+
+        FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
+        Path pqcFile;
+        try {
+            pqcFile = Files.createFile(pqcFilePath, fileAttributes);
+        }
+        catch (IOException e) {
+            LOG.error("importPqcCert: Failed to create PQC key file {} : {}", pqcFilePath, e.getMessage());
+            throw new PqcKeyException("Failed to create PQC key file", e);
+        }
+
+        try {
+            Files.writeString(pqcFile, pqcCert, StandardCharsets.UTF_8);
+            runImportSumaBuildKeys();
+        }
+        catch (IOException eIn) {
+            LOG.error("importPqcCert: Error: {}", eIn.getMessage());
+            throw new PqcKeyException(eIn);
+        }
     }
 }
