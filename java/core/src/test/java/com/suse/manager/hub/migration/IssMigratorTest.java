@@ -692,6 +692,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             allowing(internalClientMock).registerHub(
                 with(any(String.class)),
                 with(anyOf(nullValue(String.class), any(String.class))),
+                with(anyOf(nullValue(String.class), any(String.class))),
                 with(anyOf(nullValue(String.class), any(String.class)))
             );
 
@@ -718,6 +719,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
 
             allowing(internalClientMock).registerHub(
                 with(any(String.class)),
+                with(anyOf(nullValue(String.class), any(String.class))),
                 with(anyOf(nullValue(String.class), any(String.class))),
                 with(anyOf(nullValue(String.class), any(String.class)))
             );
