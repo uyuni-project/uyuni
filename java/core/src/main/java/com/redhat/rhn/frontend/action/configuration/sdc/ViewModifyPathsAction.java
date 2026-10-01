@@ -102,7 +102,7 @@ public class ViewModifyPathsAction extends RhnAction implements Listable<ConfigF
 
         //mapping.getParameter() is used to identify the type
         // channel we are trying to process..
-        // the struts-config has paramter set to
+        // the struts-config has parameter set to
         // either 'sandbox' or 'local' or 'central'
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
 
