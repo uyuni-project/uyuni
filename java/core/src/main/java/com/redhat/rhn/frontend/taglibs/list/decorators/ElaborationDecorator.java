@@ -52,7 +52,7 @@ public class ElaborationDecorator extends BaseListDecorator {
                         " This is needed if you are using the ElaborationDecorator." +
                             " Check out TagHelper.bindElaboratorTo.." +
                             " for List -> " + getCurrentList().getUniqueName();
-            throw new RuntimeException(msg);
+            throw new IllegalStateException(msg);
         }
         elab.elaborate(data);
     }
