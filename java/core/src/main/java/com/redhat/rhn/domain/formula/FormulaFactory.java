@@ -355,9 +355,9 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
         String layoutFilePath = name + File.separator + LAYOUT_FILE;
-        File layoutFileStandalone = new File(metadataDirStandaloneSalt + layoutFilePath);
-        File layoutFileManager = new File(metadataDirManager + layoutFilePath);
-        File layoutFileCustom = new File(metadataDirCustom + layoutFilePath);
+        File layoutFileStandalone = new File(metadataDirStandaloneSalt, layoutFilePath);
+        File layoutFileManager = new File(metadataDirManager, layoutFilePath);
+        File layoutFileCustom = new File(metadataDirCustom, layoutFilePath);
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         try {
