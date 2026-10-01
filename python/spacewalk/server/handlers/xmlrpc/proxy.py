@@ -253,8 +253,7 @@ class Proxy(rhnProxyHandler):
             hasattr(CFG, "KS_RESTRICT_CHILD_CHANNELS")
             and CFG.KS_RESTRICT_CHILD_CHANNELS
         ):
-            # pylint: disable-next=undefined-variable
-            return getKickstartChannel(kickstart)
+            return self.__getKickstartChannel(kickstart)
 
         ret = rhnChannel.getChildChannelInfoForKickstart(kickstart, child)
         return self.__getKickstart(kickstart, ret)
