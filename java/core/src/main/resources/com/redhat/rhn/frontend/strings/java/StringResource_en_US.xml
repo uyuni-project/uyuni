@@ -8303,7 +8303,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.supportedregex" xml:space="preserve">
-        <source>Channel name must be at least 6 characters long, begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
+        <source>Channel name must be at least 6 characters long, begin with a letter or digit and may contain only letters, digits, whitespace, apostrophes (&apos;), hyphens ('-'), periods ('.'), underscores ('_'), parentheses and forward slashes ('/').</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
@@ -8354,7 +8354,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.supportedregex" xml:space="preserve">
-        <source>Channel label must be at least 6 characters long, begin with a letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
+        <source>Channel label must be at least 6 characters long, begin with a lowercase letter or digit and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat" xml:space="preserve">
         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
