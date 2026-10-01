@@ -52,6 +52,7 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.GpgKeyException;
+import com.suse.utils.PqcKeyException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -277,7 +278,8 @@ public class HubController {
 
         try {
             hubManager.storeAccessToken(token, tokenToStore);
-            hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA(), registerRequest.getGpgKey());
+            hubManager.saveNewServer(token, IssRole.HUB,
+                    registerRequest.getRootCA(), registerRequest.getGpgKey(), registerRequest.getPqcCert());
 
             // Add a notification to inform the user this server is now a peripheral
             var notificationData = new HubRegistrationChanged(true, IssRole.HUB, token.getServerFqdn());
@@ -297,6 +299,10 @@ public class HubController {
         catch (GpgKeyException ex) {
             LOGGER.error("Unexpected error while processing the GPG key for {}", token.getServerFqdn(), ex);
             return internalServerError(response, "Unexpected error while processing the GPG key");
+        }
+        catch (PqcKeyException ex) {
+            LOGGER.error("Unexpected error while processing the PQC key for {}", token.getServerFqdn(), ex);
+            return internalServerError(response, "Unexpected error while processing the PQC key");
         }
     }
 
