@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_definitions>
+    <objects>
+        <rpminfo_object id="oval:test:obj:only"/>
+    </objects>
+</oval_definitions>
