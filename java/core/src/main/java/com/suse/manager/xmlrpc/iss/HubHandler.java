@@ -443,6 +443,7 @@ public class HubHandler extends BaseHandler {
      *      #struct_begin("data")
      *          #prop_desc("string", "root_ca", "The root ca")
      *          #prop_desc("string", "gpg_key", "The root gpg key - only for role HUB")
+     *          #prop_desc("string", "pqc_cert", "The root PQC key - only for role HUB")
      *      #struct_end()
      *  @apidoc.returntype #return_int_success()
      */
