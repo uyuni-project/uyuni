@@ -1,0 +1,4 @@
+- Update transitive ajv dependency used by ESLint, Babel loader,
+  Storybook and Webpack plugins from version 6.12.6 to 6.15.0
+- Update transitive ajv dependency used for Webpack schema
+  validation from version 8.17.1 to 8.20.0
