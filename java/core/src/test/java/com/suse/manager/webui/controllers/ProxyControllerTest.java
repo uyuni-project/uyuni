@@ -62,7 +62,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
                     with(equal(2048L)), with(equal("coyote@acme.lab")), with(equal("Root CA")),
                     with(equal(List.of("CA1", "CA2"))), with(equal(new SSLCertPair("CERT", "KEY"))),
                     with(aNull(SSLCertPair.class)), with(aNull(String.class)), with(aNull(SSLCertData.class)),
-                    with(any(SSLCertManager.class)));
+                    with(any(SSLCertManager.class)), with(equal(List.of())));
             will(returnValue(data));
         }});
 
@@ -87,7 +87,7 @@ public class ProxyControllerTest extends BaseControllerTestCase {
                     with(equal(new SSLCertPair("CA CERT", "CA KEY"))), with(equal("secret")),
                     with(equal(new SSLCertData("pxy.acme.lab", List.of("cname1", "cname2"), "DE", "Bavaria", "Nurnberg",
                             "SUSE", "SUSE Unit", "roadrunner@acme.lab"))),
-                    with(any(SSLCertManager.class)));
+                    with(any(SSLCertManager.class)), with(equal(List.of("cname1", "cname2"))));
             will(returnValue(data));
         }});
 
