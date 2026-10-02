@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2026-10-02 11:31+0200\n"
 "PO-Revision-Date: 2018-03-16 11:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Kannada (http://www.transifex.com/projects/p/spacewalk/language/kn/)\n"
@@ -29,17 +29,17 @@ msgstr ""
 "X-Generator: Zanata 4.6.2\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/config.py:166
+#: ../src/up2date_client/config.py:167
 #, python-format
 msgid "%s was not found"
 msgstr "%s ವು ಪತ್ತೆಯಾಗಿಲ್ಲ"
 
-#: ../src/up2date_client/rpcServer.py:70
+#: ../src/up2date_client/rpcServer.py:65
 msgid "Error: Server Unavailable. Please try later."
 msgstr "ದೋಷ: ಪರಿಚಾರಕವು ಲಭ್ಯವಿಲ್ಲ; ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:216
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "ದೋಷ: RHNS CA ಕಡತವು ಪತ್ತೆಯಾಗಿಲ್ಲ"
@@ -78,26 +78,27 @@ msgstr "ಪರಿಚಾರಕದಿಂದ ಉಂಟಾದ ವಿಳಂಬ ದೋ
 msgid "Error validating data at server:\n"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಪರಿಚಾರಕದಲ್ಲಿ ಸಕ್ರಮಗೊಳಿಸುವಾಗಿನ ದೋಷ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:246
+#: ../src/up2date_client/up2dateErrors.py:245
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:255
+#: ../src/up2date_client/up2dateErrors.py:253
 msgid "The installation number is invalid"
 msgstr "ಅನುಸ್ಥಾಪನ ಸಂಖ್ಯೆಯು ಅಮಾನ್ಯವಾದುದ್ದಾಗಿದೆ"
 
-#: ../src/up2date_client/up2dateErrors.py:259
+#: ../src/up2date_client/up2dateErrors.py:257
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "oemInfo ಕಡತವನ್ನು ಕ್ಷೇತ್ರದಲ್ಲಿ ಪಾರ್ಸಿಂಗ್ ಮಾಡುವಲ್ಲಿನ ದೋಷ:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:294
+#: ../src/up2date_client/up2dateErrors.py:292
 msgid "Network error: "
 msgstr "ಜಾಲಬಂಧ ದೋಷ"
 
-#: ../src/up2date_client/up2dateErrors.py:385
+#. pylint: disable-next=invalid-name
+#: ../src/up2date_client/up2dateErrors.py:382
 #, fuzzy
 msgid ""
 "\n"

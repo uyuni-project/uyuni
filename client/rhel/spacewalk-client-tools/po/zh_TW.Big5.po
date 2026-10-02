@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2026-10-02 11:31+0200\n"
 "PO-Revision-Date: 2013-02-06 09:40+0000\n"
 "Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/config.py:166
+#: ../src/up2date_client/config.py:167
 #, python-format
 msgid "%s was not found"
 msgstr "找不到 %s"
 
-#: ../src/up2date_client/rpcServer.py:70
+#: ../src/up2date_client/rpcServer.py:65
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:216
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "錯誤：無法找到 RHNS CA 檔"
@@ -68,7 +68,7 @@ msgstr "從伺服器傳來的延遲錯誤。 錯誤訊息是：\n"
 msgid "Error validating data at server:\n"
 msgstr "伺服器驗證資料時發生錯誤：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:246
+#: ../src/up2date_client/up2dateErrors.py:245
 #, fuzzy
 msgid ""
 "\n"
@@ -76,19 +76,20 @@ msgid ""
 "    "
 msgstr "Red Hat Network 的位置（_L）"
 
-#: ../src/up2date_client/up2dateErrors.py:255
+#: ../src/up2date_client/up2dateErrors.py:253
 msgid "The installation number is invalid"
 msgstr "安裝號碼不符"
 
-#: ../src/up2date_client/up2dateErrors.py:259
+#: ../src/up2date_client/up2dateErrors.py:257
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "解析 oeminfo 檔案中的欄位時發生錯誤：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:294
+#: ../src/up2date_client/up2dateErrors.py:292
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:385
+#. pylint: disable-next=invalid-name
+#: ../src/up2date_client/up2dateErrors.py:382
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to register this\n"

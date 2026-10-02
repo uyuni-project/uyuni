@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2026-10-02 11:31+0200\n"
 "PO-Revision-Date: 2024-07-18 11:47+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/de/>\n"
@@ -35,17 +35,17 @@ msgstr ""
 "X-Generator: Weblate 5.6.2\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/config.py:166
+#: ../src/up2date_client/config.py:167
 #, python-format
 msgid "%s was not found"
 msgstr "%s wurde nicht gefunden"
 
-#: ../src/up2date_client/rpcServer.py:70
+#: ../src/up2date_client/rpcServer.py:65
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Fehler: Server nicht verfügbar. Bitte versuchen Sie es später erneut."
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:216
 msgid "ERROR: can not find server CA file"
 msgstr "FEHLER: Kann Server-CA-Datei nicht finden"
 
@@ -83,7 +83,7 @@ msgstr "Nachträglicher Fehler des Servers. Die Meldung war:\n"
 msgid "Error validating data at server:\n"
 msgstr "Fehler beim Prüfen von Daten auf dem Server:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:246
+#: ../src/up2date_client/up2dateErrors.py:245
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
@@ -93,19 +93,20 @@ msgstr ""
 "Red Hat Network Classic wird nicht unterstützt.\n"
 "    "
 
-#: ../src/up2date_client/up2dateErrors.py:255
+#: ../src/up2date_client/up2dateErrors.py:253
 msgid "The installation number is invalid"
 msgstr "Die Installationsnummer ist ungültig"
 
-#: ../src/up2date_client/up2dateErrors.py:259
+#: ../src/up2date_client/up2dateErrors.py:257
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Fehler beim Parsen der Datei oemInfo im Feld:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:294
+#: ../src/up2date_client/up2dateErrors.py:292
 msgid "Network error: "
 msgstr "Netzwerkfehler:"
 
-#: ../src/up2date_client/up2dateErrors.py:385
+#. pylint: disable-next=invalid-name
+#: ../src/up2date_client/up2dateErrors.py:382
 #, fuzzy
 msgid ""
 "\n"

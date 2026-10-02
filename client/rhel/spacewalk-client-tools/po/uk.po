@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2026-10-02 11:31+0200\n"
 "PO-Revision-Date: 2018-03-16 12:46+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/spacewalk/language/uk/)\n"
@@ -29,17 +29,17 @@ msgstr ""
 "X-Generator: Zanata 4.6.2\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/config.py:166
+#: ../src/up2date_client/config.py:167
 #, python-format
 msgid "%s was not found"
 msgstr "%s не існує"
 
-#: ../src/up2date_client/rpcServer.py:70
+#: ../src/up2date_client/rpcServer.py:65
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Помилка: сервер недоступний. Будь ласка, повторіть спробу пізніше."
 
 #. pylint: disable-next=consider-using-f-string
-#: ../src/up2date_client/rpcServer.py:221
+#: ../src/up2date_client/rpcServer.py:216
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "ПОМИЛКА: не вдається знайти файл RHNS CA"
@@ -78,26 +78,27 @@ msgstr "Вийшов час очікування зв'язку з серверо
 msgid "Error validating data at server:\n"
 msgstr "Помилка перевірки даних сервера:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:246
+#: ../src/up2date_client/up2dateErrors.py:245
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:255
+#: ../src/up2date_client/up2dateErrors.py:253
 msgid "The installation number is invalid"
 msgstr "Неправильний номер передплати"
 
-#: ../src/up2date_client/up2dateErrors.py:259
+#: ../src/up2date_client/up2dateErrors.py:257
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Помилка аналізу файлу oemInfo у полі:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:294
+#: ../src/up2date_client/up2dateErrors.py:292
 msgid "Network error: "
 msgstr "Помилка мережі: "
 
-#: ../src/up2date_client/up2dateErrors.py:385
+#. pylint: disable-next=invalid-name
+#: ../src/up2date_client/up2dateErrors.py:382
 #, fuzzy
 msgid ""
 "\n"
