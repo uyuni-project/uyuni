@@ -1,6 +1,8 @@
 # Copyright (c) 2019-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+TASKOMATIC_LOG_PATH = '/var/log/rhn/rhn_taskomatic_daemon.log'.freeze
+
 ENV_VAR_BY_HOST = {
   'localhost' => 'HOSTNAME',
   'proxy' => 'PROXY',
@@ -10,6 +12,9 @@ ENV_VAR_BY_HOST = {
   'server2' => 'SERVER2',
   'server3' => 'SERVER3',
   'server4' => 'SERVER4',
+  'hub' => 'SERVER',
+  'peripheral1' => 'SERVER2',
+  'peripheral2' => 'SERVER3',
   'sle_minion' => 'MINION',
   'sshminion' => 'SSHMINION',
   'rhlike_minion' => 'RHLIKE_MINION',
@@ -109,6 +114,16 @@ SSH_PORT_BY_HOST = {
   'rhel9_sshminion' => 2222,
   'rhel10_minion' => 2222,
   'rhel10_sshminion' => 2222
+}.freeze
+
+# Versioned fallbacks for generic host aliases.
+# Used when MINION/SSHMINION/etc. are not set but the versioned vars are.
+ENV_VAR_FALLBACK_BY_HOST = {
+  'sle_minion'    => 'SLES15SP7_MINION',
+  'sshminion'     => 'SLES15SP7_SSHMINION',
+  'rhlike_minion' => 'ROCKY8_MINION',
+  'deblike_minion' => 'UBUNTU2404_MINION',
+  'build_host'    => 'SLES15SP7_BUILDHOST'
 }.freeze
 
 # TODO: the values for pxeboot_minion, sles15sp6_terminal, sles15sp7_terminal and proxy can now be set in sumaform
@@ -1863,8 +1878,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'rockylinux-9-appstream-x86_64' => 780,
   'rockylinux-9-extras-x86_64' => 120,
   'rockylinux-9-x86_64' => 360,
-  'rockylinux-10-appstream-x86_64' => 720,
-  'rockylinux-10-x86_64' => 300,
+  'rockylinux-10-appstream-x86_64' => 1200,
+  'rockylinux-10-x86_64' => 540,
   'sle15-sp4-installer-updates-x86_64' => 60,
   'sle15-sp7-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
@@ -1980,7 +1995,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sl-micro-6.1-pool-x86_64' => 420,
   'managertools-sl-micro-6.1-x86_64' => 60,
   'sl-micro-6.2-devel-uyuni-client-x86_64' => 120,
-  'sl-micro-6.2-pool-x86_64' => 300,
+  'sl-micro-6.2-pool-x86_64' => 2520,
   'multi-linux-managertools-sle-16-x86_64-6.2' => 60,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
   'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
@@ -2022,7 +2037,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-uyuni-client-devel' => 120,
   'ubuntu-2204-pool-amd64-uyuni' => 60,
   'ubuntu-2404-amd64-main-amd64' => 540,
-  'ubuntu-2404-amd64-main-security-amd64' => 120,
+  'ubuntu-2404-amd64-main-security-amd64' => 1440,
   'ubuntu-2404-amd64-main-security-uyuni' => 2040,
   'ubuntu-2404-amd64-main-updates-amd64' => 1620,
   'ubuntu-2404-amd64-main-updates-uyuni' => 300,
