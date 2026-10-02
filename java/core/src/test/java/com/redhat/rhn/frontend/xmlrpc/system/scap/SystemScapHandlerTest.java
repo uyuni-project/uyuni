@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.system.scap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
@@ -29,7 +28,6 @@ import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
-import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -72,7 +70,6 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         handler = new SystemScapHandler();
         taskomaticApi = mockContext.mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticApi);
-        admin.setBetaFeaturesEnabled(true);
     }
     /**
      * Test listing SCAP content
@@ -90,15 +87,6 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         assertNotNull(result);
         assertTrue(result.stream().anyMatch(c -> c.getName().equals("Test Content")));
         ScapFactory.deleteScapContent(content);
-    }
-    /**
-     * Test listing SCAP content when beta features are disabled
-     * @throws Exception
-     */
-    @Test
-    public void testListScapContentBetaDisabled() {
-        admin.setBetaFeaturesEnabled(false);
-        assertThrows(TaskomaticApiException.class, () -> handler.listScapContent(admin));
     }
     /**
      * Test listing tailoring files
@@ -147,7 +135,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
      * @throws Exception
      */
     @Test
-    public void testScheduleBetaXccdfScanWithPolicy() throws Exception {
+    public void testScheduleXccdfScanWithPolicy() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
         ScapContent content = new ScapContent();
@@ -165,7 +153,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         mockContext.checking(new Expectations() {{
             oneOf(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
         }});
-        Long actionId = handler.scheduleBetaXccdfScanWithPolicy(admin,
+        Long actionId = handler.scheduleXccdfScanWithPolicy(admin,
                 Collections.singletonList(server.getId().intValue()),
                 policy.getId().intValue(),
                 new Date());
@@ -181,7 +169,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
      * @throws Exception
      */
     @Test
-    public void testScheduleBetaXccdfScanCustom() throws Exception {
+    public void testScheduleXccdfScanCustom() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
         ScapContent content = new ScapContent();
@@ -197,7 +185,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
              oneOf(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        Long actionId = handler.scheduleBetaXccdfScanCustom(admin,
+        Long actionId = handler.scheduleXccdfScanCustom(admin,
                 Collections.singletonList(server.getId().intValue()),
                 params,
                 new Date());

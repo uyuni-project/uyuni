@@ -1763,11 +1763,10 @@ public class ScapAuditController {
         // Pass Salt state content via pillar data
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("scap_remediation_state", body.getRemediationContent());
-        // Schedule apply states action with scap_beta.remediation state module
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Collections.singletonList(server.getId()),
-                Collections.singletonList("scap_beta.remediation"),
+                Collections.singletonList("scap.remediation"),
                 Optional.of(pillar),
                 new Date(),
                 Optional.empty()
