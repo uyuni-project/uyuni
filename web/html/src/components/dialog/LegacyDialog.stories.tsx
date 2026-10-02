@@ -18,7 +18,7 @@ const meta = {
         component: `
 **⚠️ DEPRECATED - Do not use in new code**
 
-This component is deprecated. Use \`import { Dialog } from "components/dialog"\` instead.
+This component is deprecated. Use \`import { Dialog } from "components/dialog/Dialog"\` instead.
 
 This component uses jQuery Bootstrap modal and will be removed in a future release.
 The new Dialog component uses React state management with better performance and accessibility.
