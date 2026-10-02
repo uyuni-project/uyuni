@@ -22,6 +22,27 @@ mgr_scap:
         {%- if "rule" in pillar.get('mgr_scap_params') %}
         rule: {{ pillar['mgr_scap_params']['rule'] }}
         {%- endif %}
+        {%- if "skip_rule" in pillar.get('mgr_scap_params') %}
+        skip_rule: {{ pillar['mgr_scap_params']['skip_rule'] }}
+        {%- endif %}
+        {%- if "reference" in pillar.get('mgr_scap_params') %}
+        reference: "{{ pillar['mgr_scap_params']['reference'] }}"
+        {%- endif %}
+        {%- if "cpe" in pillar.get('mgr_scap_params') %}
+        cpe: {{ pillar['mgr_scap_params']['cpe'] }}
+        {%- endif %}
+        {%- if "local_files" in pillar.get('mgr_scap_params') %}
+        local_files: {{ pillar['mgr_scap_params']['local_files'] }}
+        {%- endif %}
+        {%- if "datastream_id" in pillar.get('mgr_scap_params') %}
+        datastream_id: {{ pillar['mgr_scap_params']['datastream_id'] }}
+        {%- endif %}
+        {%- if "xccdf_id" in pillar.get('mgr_scap_params') %}
+        xccdf_id: {{ pillar['mgr_scap_params']['xccdf_id'] }}
+        {%- endif %}
+        {%- if "benchmark_id" in pillar.get('mgr_scap_params') %}
+        benchmark_id: {{ pillar['mgr_scap_params']['benchmark_id'] }}
+        {%- endif %}
         {%- if "remediate" in pillar.get('mgr_scap_params') %}
         remediate: {{ pillar['mgr_scap_params']['remediate'] }}
         {%- endif %}

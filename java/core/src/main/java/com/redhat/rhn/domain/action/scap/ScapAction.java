@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.ScapManager;
 
+import com.suse.manager.webui.utils.ScapUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.State;
@@ -149,11 +150,10 @@ public class ScapAction extends Action {
      */
     private Map<LocalCall<?>, List<MinionSummary>> buildSaltCallsBeta(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        Map<String, Object> pillar = new HashMap<>();
+        Map<String, Object> pillar = new HashMap<>(
+                ScapUtils.parseOscapParameters(scapActionDetails.getParametersContents()));
 
         Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
                 .matcher(scapActionDetails.getParametersContents());
@@ -204,19 +204,10 @@ public class ScapAction extends Action {
             pillar.put("profile", profileMatcher.group(1));
         }
 
-        if (ruleMatcher.find()) {
-            pillar.put("rule", ruleMatcher.group(1));
-        }
         if (tailoringFileMatcher.find()) {
             String tailoringPath = tailoringFileMatcher.group(1);
             String tailoringFilename = new File(tailoringPath).getName();
             pillar.put("tailoring_filename", tailoringFilename);
-        }
-        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
-            pillar.put("fetch_remote_resources", true);
-        }
-        if (scapActionDetails.getParametersContents().contains("--remediate")) {
-            pillar.put("remediate", true);
         }
 
         ret.put(State.apply(singletonList("scap_beta.scan"),
@@ -233,11 +224,10 @@ public class ScapAction extends Action {
      */
     private Map<LocalCall<?>, List<MinionSummary>> buildSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        Map<String, Object> pillar = new HashMap<>();
+        Map<String, Object> pillar = new HashMap<>(
+                ScapUtils.parseOscapParameters(scapActionDetails.getParametersContents()));
 
         Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
-                .matcher(scapActionDetails.getParametersContents());
-        Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher tailoringFileMatcher = Pattern.compile("--tailoring-file (([\\w./-])+)")
                 .matcher(scapActionDetails.getParametersContents());
@@ -257,20 +247,11 @@ public class ScapAction extends Action {
         if (profileMatcher.find()) {
             pillar.put("profile", profileMatcher.group(1));
         }
-        if (ruleMatcher.find()) {
-            pillar.put("rule", ruleMatcher.group(1));
-        }
         if (tailoringFileMatcher.find()) {
             pillar.put("tailoring_file", tailoringFileMatcher.group(1));
         }
         if (tailoringIdMatcher.find()) {
             pillar.put("tailoring_id", tailoringIdMatcher.group(1));
-        }
-        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
-            pillar.put("fetch_remote_resources", true);
-        }
-        if (scapActionDetails.getParametersContents().contains("--remediate")) {
-            pillar.put("remediate", true);
         }
 
         ret.put(State.apply(singletonList("scap"),
