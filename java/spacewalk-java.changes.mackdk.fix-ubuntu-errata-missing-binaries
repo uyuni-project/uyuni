@@ -1,0 +1,5 @@
+- Accept both string and array of string as values for the cves
+  field in Ubuntu erratas (bsc#1280946,
+  gh#uyuni-project/uyuni#12544)
+- Process Ubuntu erratas with no binaries (bsc#1280946,
+  gh#uyuni-project/uyuni#12596)
