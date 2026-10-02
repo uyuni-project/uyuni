@@ -1,0 +1,93 @@
+/*
+ * Node-RED settings for the Uyuni automation image.
+ *
+ * Values come from the environment at startup rather than being substituted
+ * into this file, so a secret containing characters that are special to the
+ * shell or to JavaScript cannot corrupt the file or inject code into it.
+ */
+module.exports = {
+    flowFile: "flows.json",
+    flowFilePretty: true,
+
+    userDir: "/data",
+
+    credentialSecret: process.env.NODERED_CREDENTIAL_SECRET,
+
+    /*
+     * Editor and admin API security.
+     * https://nodered.org/docs/user-guide/runtime/securing-node-red
+     *
+     * The admin API can deploy flows, and a flow can run arbitrary code, so an
+     * unauthenticated editor is remote code execution. The entrypoint refuses
+     * to start unless either a password hash is supplied or the editor is
+     * explicitly disabled.
+     *
+     * Generate the hash with:
+     *   podman run --rm -it <image> node-red admin hash-pw
+     */
+    adminAuth: process.env.NODERED_ADMIN_PASSWORD_HASH ? {
+        type: "credentials",
+        users: [{
+            username: process.env.NODERED_ADMIN_USER || "admin",
+            password: process.env.NODERED_ADMIN_PASSWORD_HASH,
+            permissions: "*"
+        }]
+    } : undefined,
+
+    /*
+     * Set NODERED_DISABLE_EDITOR=true on an appliance-style deployment that
+     * only runs flows shipped in flows.json. The runtime keeps working; the
+     * editor and the admin API are not served at all.
+     */
+    httpAdminRoot: process.env.NODERED_DISABLE_EDITOR === "true" ? false : "/",
+
+    /*
+     * Endpoints created by http-in nodes are separate from the admin API and
+     * are protected only if credentials are supplied for them.
+     */
+    httpNodeAuth: process.env.NODERED_HTTP_NODE_PASSWORD_HASH ? {
+        user: process.env.NODERED_HTTP_NODE_USER || "uyuni",
+        pass: process.env.NODERED_HTTP_NODE_PASSWORD_HASH
+    } : undefined,
+
+    // Only bind beyond the container network when asked to.
+    uiHost: process.env.NODERED_BIND_HOST || "0.0.0.0",
+
+    // Function nodes may not pull in arbitrary npm modules at runtime.
+    functionExternalModules: false,
+
+    // A flow with a runaway loop should not hold the runtime forever.
+    runtimeState: {
+        enabled: false,
+        ui: false
+    },
+
+    functionGlobalContext: {
+        mqttBrokerHost: process.env.MQTT_BROKER_HOST || "mosquitto",
+        mqttBrokerPort: parseInt(process.env.MQTT_BROKER_PORT, 10) || 1883,
+        uyuniServerUrl: process.env.UYUNI_SERVER_URL || "https://uyuni-server"
+    },
+
+    logging: {
+        console: {
+            level: process.env.NODERED_LOG_LEVEL || "info",
+            metrics: false,
+            audit: true
+        }
+    },
+
+    // Flow context must not leak the values above into the editor.
+    exportGlobalContextKeys: false,
+
+    editorTheme: {
+        page: {
+            title: "Uyuni Automation - Node-RED"
+        },
+        header: {
+            title: "Uyuni Automation"
+        },
+        projects: {
+            enabled: false
+        }
+    }
+};

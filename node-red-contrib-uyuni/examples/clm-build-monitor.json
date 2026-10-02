@@ -1,0 +1,75 @@
+[
+  {
+    "id": "flow_clm_mon",
+    "type": "tab",
+    "label": "Uyuni CLM Build Monitor",
+    "disabled": false,
+    "info": "Monitors Content Lifecycle Management (CLM) build events (started and completed) via MQTT."
+  },
+  {
+    "id": "mqtt_conf_1",
+    "type": "uyuni-config",
+    "broker": "mosquitto",
+    "port": "1883",
+    "topicPrefix": "uyuni/+"
+  },
+  {
+    "id": "evt_clm_1",
+    "type": "uyuni-events",
+    "z": "flow_clm_mon",
+    "name": "Listen CLM Events",
+    "server": "mqtt_conf_1",
+    "eventCategory": "clm/#",
+    "x": 140,
+    "y": 140,
+    "wires": [["switch_clm_1"]]
+  },
+  {
+    "id": "switch_clm_1",
+    "type": "switch",
+    "z": "flow_clm_mon",
+    "name": "Route by Event",
+    "property": "topic",
+    "propertyType": "msg",
+    "rules": [
+      { "t": "cont", "v": "clm/build_started", "vt": "str" },
+      { "t": "cont", "v": "clm/build_completed", "vt": "str" }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 360,
+    "y": 140,
+    "wires": [["dbg_started_1"], ["dbg_completed_1"]]
+  },
+  {
+    "id": "dbg_started_1",
+    "type": "debug",
+    "z": "flow_clm_mon",
+    "name": "CLM Build Started",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 600,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "dbg_completed_1",
+    "type": "debug",
+    "z": "flow_clm_mon",
+    "name": "CLM Build Completed",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 610,
+    "y": 180,
+    "wires": []
+  }
+]
