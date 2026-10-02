@@ -18,8 +18,37 @@ import os.path
 import uuid
 import shutil
 import subprocess
+from pathlib import Path
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL
+
+
+def check_and_configure_fips():
+    fips_enabled = False
+    fips_path = Path("/proc/sys/crypto/fips_enabled")
+    try:
+        fips_enabled = fips_path.read_text(encoding="utf-8").strip() == "1"
+    except FileNotFoundError:
+        return
+    except OSError as error:
+        sys.stderr.write(f"Failed to read FIPS status: {error}\n")
+        sys.stderr.flush()
+        return
+
+    if fips_enabled:
+        result = subprocess.run(
+            ["/usr/bin/update-crypto-policies", "--set", "FIPS"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            encoding="utf-8",
+            check=False,
+        )
+        if result.stdout:
+            sys.stdout.write(f"{result.stdout}\n")
+            sys.stdout.flush()
+        if result.returncode:
+            sys.stdout.write("Failed to set crypto policy to FIPS!\n")
+            sys.stdout.flush()
 
 
 def run_uyuni_configfiles_sync():
@@ -79,11 +108,9 @@ def move_config_to_db():
 
 
 def move_configuration(key, value, oldkey=None):
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
             UPDATE rhnConfiguration SET value = :val WHERE key = :key
-            """
-    )
+            """)
     rowcount = h.execute(val=value, key=key)
     if rowcount != 1:
         # update failed
@@ -243,6 +270,7 @@ def change_hostname():
 
 def main():
     init_dirs_and_perms()
+    check_and_configure_fips()
     exitCode = run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
@@ -253,6 +281,7 @@ def main():
 
     exitCode = max(change_hostname(), exitCode)
     return exitCode
+
 
 if __name__ == "__main__":
     sys.exit(abs(main() or 0))

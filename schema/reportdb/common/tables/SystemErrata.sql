@@ -15,7 +15,7 @@ CREATE TABLE SystemErrata
     system_id           NUMERIC NOT NULL,
     errata_id           NUMERIC NOT NULL,
     hostname            VARCHAR(128),
-    advisory_name       VARCHAR(100),
+    advisory_name       VARCHAR(150),
     advisory_type       VARCHAR(32),
     synced_date         TIMESTAMPTZ DEFAULT (current_timestamp)
 );

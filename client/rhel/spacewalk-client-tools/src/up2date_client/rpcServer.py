@@ -2,23 +2,18 @@
 #
 
 import os
-import sys
 
 # pylint: disable-next=unused-import
 import socket
+import sys
 
 # pylint: disable-next=unused-import
 import time
 
-from up2date_client import config
-from up2date_client import up2dateLog
-from up2date_client import up2dateErrors
-from up2date_client import up2dateUtils
-
 # pylint: disable-next=unused-import
-from rhn import SSL
-from rhn import rpclib
+from rhn import SSL, rpclib
 from rhn.tb import raise_with_tb
+from up2date_client import config, up2dateErrors, up2dateLog, up2dateUtils
 
 try:  # python2
     import httplib
@@ -80,7 +75,7 @@ class RetryServer(rpclib.Server):
                     self.serverList.resetServerIndex()
                     raise
 
-                # pylint: disable-next=consider-using-f-string
+                # pylint: disable-next=consider-using-f-string, access-member-before-definition
                 msg = "An error occurred talking to %s:\n" % self._host
                 # pylint: disable-next=consider-using-f-string
                 msg = msg + "%s\n%s\n" % (sys.exc_info()[0], sys.exc_info()[1])

@@ -7,17 +7,14 @@
 DB_CRIT=${DISKTHRESHOLD:-95}
 DB_WARN=${DISKCHECKALERT:-90}
 
-# Determine which database to use (susemanager or uyuni)
-DB_NAME="susemanager"
-if [ -z "$(PGHOST='' PGHOSTADDR='' psql -p "${PGPORT:-5432}" -U "$POSTGRES_USER" --no-password --no-psqlrc -lqt | cut -d \| -f 1 | sed -n "/^\s*$DB_NAME\s*$/p")" ]; then
-  DB_NAME="uyuni"
-fi
+. /usr/lib/uyuni-helpers.sh
+MANAGER_DB_NAME=$(get_manager_db_name) || exit 1
 
 run_sql() {
     PGHOST='' PGHOSTADDR='' psql -v ON_ERROR_STOP=1 \
         -p "${PGPORT:-5432}" \
         -U "$POSTGRES_USER" \
-        --no-password --no-psqlrc -d "$DB_NAME" "$@"
+        --no-password --no-psqlrc -d "$MANAGER_DB_NAME"
 }
 
 cat << EOF | run_sql

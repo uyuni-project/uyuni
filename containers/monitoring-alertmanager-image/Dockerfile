@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 #!BuildTag: uyuni/monitoring-alertmanager:latest uyuni/monitoring-alertmanager:%%alertmanager_patch_version%%
+#!BuildName: monitoring-alertmanager
 
 ARG BASE=registry.suse.com/bci/bci-base:16.0
 FROM $BASE

@@ -1,30 +1,22 @@
 #! /usr/bin/python3
 #  pylint: disable=missing-module-docstring, invalid-name
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2021-2026 SUSE LLC and contributors
+# SPDX-License-Identifier: GPL-2.0-only
 #
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+import glob
+import json
+import os
 import subprocess
+import sys
 import time
 import xml.etree.ElementTree as ET
-from urllib.parse import urlparse
-import json
-import sys
-from pathlib import Path
-import glob
-import os
 from collections import namedtuple
+from pathlib import Path
+from urllib.parse import urlparse
 
 INPUT_TEMPLATE = """RESOLVEURL
 credentials: %s
@@ -386,7 +378,7 @@ if __name__ == "__main__":
         system_exit(9, ["User interrupted process."])
     except SystemExit as ex:
         sys.exit(ex.code)
-    #  pylint: disable=broad-exception-caught
+    #  pylint: disable-next=broad-exception-caught
     except Exception as ex:
         system_exit(9, [f"ERROR: {ex}"])
 

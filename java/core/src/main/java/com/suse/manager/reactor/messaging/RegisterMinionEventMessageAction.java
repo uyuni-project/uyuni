@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2025 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -258,8 +258,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                         },
                         minionServer -> server.asMinionServer().filter(ms -> ms.equals(minionServer)).ifPresentOrElse(
                                 serverAsMinion -> {
-                                    // Case 2.2a - minion_id and machine-id are the same
-                                    updateAlreadyRegisteredInfo(minionId, machineId, minionServer);
+                                    // Case 2.2a - minion_id and machine-id are the same. Just apply start states
                                     applyMinionStartStates(minionId, minionServer, saltbootInitrd);
                                 },
                                 () -> {
@@ -391,12 +390,17 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private void reactivateSystem(String minionId, String machineId, String reActivationKey) {
         // The machine id may have changed, but we know from the reactivation key
         // which system should become this one
-        of(ActivationKeyFactory.lookupByKey(reActivationKey))
-                .flatMap(ak -> ak.getServer().asMinionServer())
-                .ifPresent(minion -> {
-                    minion.setMachineId(machineId);
-                    minion.setMinionId(minionId);
-        });
+        Optional<ActivationKey> akOpt = of(ActivationKeyFactory.lookupByKey(reActivationKey));
+        LOG.debug("Reactivate '{}' with key id '{}'", minionId,
+                akOpt.map(ActivationKey::getId).orElse(0L));
+        akOpt.flatMap(ak -> ak.getServer().asMinionServer())
+                .ifPresentOrElse(minion -> {
+                            minion.setMachineId(machineId);
+                            minion.setMinionId(minionId);
+                        },
+                        () -> LOG.warn("Reactivation key with id '{}' did not point to a minion",
+                                akOpt.map(ActivationKey::getId).orElse(0L))
+                );
     }
 
     private void setMinionName(String minionId, MinionServer minion, Optional<ValueMap> grains) {
@@ -553,6 +557,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                                 "organization selected for registration (" + org + "). Keeping the " +
                                 "existing server organization. " + ignoreAKMessage);
             }
+
+            LOG.info("Register '{}' to Org '{}' with activation key id '{}'. SSH: {} saltboot: {}", minionId,
+                    org.getName(), activationKey.map(ActivationKey::getId).orElse(0L), isSaltSSH, saltbootInitrd);
 
             // Set creator to the user who accepted the key if available
             minion.setCreator(creator.orElse(null));
@@ -844,18 +851,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
                 // Remove relations to previously used activation keys
                 List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(minion);
-                keys.forEach(key -> {
-                    Set<Server> activatedServers = key.getToken().getActivatedServers();
-                    activatedServers.remove(minion);
-                });
+                keys.forEach(key -> ActivationKeyFactory.removeActivatedServer(key, minion));
 
                 // add reactivation event to server history
                 ServerHistoryEvent historyEvent = new ServerHistoryEvent();
                 historyEvent.setCreated(new Date());
                 historyEvent.setServer(minion);
                 historyEvent.setSummary("Server reactivated as Salt minion");
-                historyEvent.setDetails(
-                        "System type was changed from Management to Salt");
+                historyEvent.setDetails("System type was changed from Management to Salt");
                 minion.getHistory().add(historyEvent);
 
                 SystemManager.updateSystemOverview(minion.getId());

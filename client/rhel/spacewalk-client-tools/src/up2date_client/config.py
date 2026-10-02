@@ -10,11 +10,12 @@ This module includes the Config and Up2date Config classes use by the
 up2date agent to hold config info.
 """
 
+import locale
 import os
 import sys
-import locale
+
 from rhn.connections import idn_ascii_to_puny, idn_puny_to_unicode
-from rhn.stringutils import ustr, sstr
+from rhn.stringutils import sstr, ustr
 
 try:  # python2
     from urlparse import urlsplit, urlunsplit
@@ -31,7 +32,7 @@ _ = t.ugettext
 
 # XXX: This could be moved in a more "static" location if it is too
 # much of an eye sore
-Defaults = {
+DEFAULTS = {
     "enableProxy": ("Use a HTTP Proxy", 0),
     "serverURL": ("Remote server URL", "https://your.server.url.here/XMLRPC"),
     "debug": ("Whether or not debugging is enabled", 0),
@@ -56,7 +57,7 @@ Defaults = {
     ),
 }
 
-FileOptions = [
+FILE_OPTIONS = [
     "systemIdPath",
     "sslCACert",
     "tmpDir",
@@ -175,13 +176,13 @@ class ConfigFile:
         f.write("")
         # pylint: disable-next=consider-using-dict-items,consider-iterating-dictionary
         for key in self.dict.keys():
-            (comment, value) = self.dict[key]
+            comment, value = self.dict[key]
             # pylint: disable-next=consider-using-f-string
             f.write(sstr("%s[comment]=%s\n" % (key, comment)))
             # pylint: disable-next=unidiomatic-typecheck
             if type(value) != type([]):
                 value = [value]
-            if key in FileOptions:
+            if key in FILE_OPTIONS:
                 value = map(os.path.abspath, value)
             # pylint: disable-next=consider-using-f-string
             f.write(sstr("%s=%s\n" % (key, ";".join(map(str, value)))))
@@ -234,7 +235,7 @@ class ConfigFile:
 class Config:
     def __init__(self, filename=None):
         self.stored = ConfigFile()
-        self.stored.update(Defaults)
+        self.stored.update(DEFAULTS)
         if filename:
             self.stored.load(filename)
         self.runtime = {}

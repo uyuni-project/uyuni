@@ -1,5 +1,45 @@
 #! /bin/bash
 
+# PQC KEYS
+# there is no such thing as a PQC keyring
+# but we maintain the mechanism of gathering all the keys in one place to be found by zypper/reposync
+# so vendor keys and customer imported keys are simply copied in one place
+
+PQC_UYUNI_VENDOR_KEYS_SRC_DIR="/usr/lib/uyuni/pqkeys"
+PQC_MLM_VENDOR_KEYS_SRC_DIR="/usr/lib/susemanager/pqkeys"
+PQC_CUSTOMER_KEYS_SRC_DIR="/var/spacewalk/pqkeys"
+
+PQC_KEYS_TARGET_DIR="/var/lib/spacewalk/pqkeys"
+
+#create target dir just in case it does not exist
+mkdir -p "${PQC_KEYS_TARGET_DIR}"
+
+#import uyuni vendor PQC keys
+if [ -d ${PQC_UYUNI_VENDOR_KEYS_SRC_DIR} ]; then
+  echo -n "importing Uyuni PQC keys to target directory... "
+  cp -r "${PQC_UYUNI_VENDOR_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+  echo "done."
+fi
+
+#import MLM vendor PQC keys
+if [ -d ${PQC_MLM_VENDOR_KEYS_SRC_DIR} ]; then
+  echo -n "importing SUSE Multi-Linux Manager PQC keys to target directory... "
+  cp -r "${PQC_MLM_VENDOR_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+  echo "done."
+fi
+
+#import custom PQC keys
+if [ -d ${PQC_CUSTOMER_KEYS_SRC_DIR} ]; then
+    echo -n "importing Customers PQC keys to target directory... "
+    cp -r "${PQC_CUSTOMER_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+    echo "done."
+else
+    echo "No customer PQC keys to import"
+fi
+
+
+# GPG KEYS
+
 PUBRINGDIR="/var/lib/spacewalk/gpgdir"
 PUBRING="${PUBRINGDIR}/pubring.gpg"
 PRODUCTRING="/usr/lib/susemanager/susemanager-build-keys.gpg"
@@ -153,4 +193,3 @@ else
     echo "to properly sync repositories using spacewalk-repo-sync."
     exit -1
 fi
-

@@ -89,7 +89,7 @@ LONG_SCENARIO_HARD_LIMIT = ENV.fetch('LONG_SCENARIO_HARD_LIMIT', '9000').to_i
 IMMEDIATE_WAIT = ENV['IMMEDIATE_WAIT'] ? ENV['IMMEDIATE_WAIT'].to_i : 1
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
-$is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
+$is_containerized_server = %w[k3s podman rke2].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_rke2 = ENV.fetch('CONTAINER_RUNTIME', '').include? 'rke2'
 $is_transactional_server = transactional_system?('server', runs_in_container: false)
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
@@ -986,6 +986,10 @@ end
 # do test only if we have a containerized server
 Before('@containerized_server') do
   skip_this_scenario unless $is_containerized_server
+end
+
+Before('@skip_if_rke2') do
+  skip_this_scenario if $is_rke2
 end
 
 Before('@rke2') do

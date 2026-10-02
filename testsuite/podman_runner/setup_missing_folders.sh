@@ -9,3 +9,7 @@ done
 mkdir -p /var/spacewalk/gpg
 chmod 0700 /var/spacewalk/gpg
 chown tomcat:tomcat /var/spacewalk/gpg
+
+mkdir -p /var/spacewalk/pqkeys
+chmod 0700 /var/spacewalk/pqkeys
+chown tomcat:tomcat /var/spacewalk/pqkeys

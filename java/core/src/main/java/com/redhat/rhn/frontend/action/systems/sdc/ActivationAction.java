@@ -62,7 +62,7 @@ public class ActivationAction extends RhnAction {
         // from old version of API. Remove them if multiple.
         if (keys.size() > 1) {
             for (ActivationKey key : keys) {
-                ActivationKeyFactory.removeKey(key);
+                ActivationKeyManager.getInstance().remove(key, user);
             }
             keys = new ArrayList<>();
         }
@@ -74,7 +74,7 @@ public class ActivationAction extends RhnAction {
 
         // if reactivation key is already used up, delete it
         if (key != null && key.isDisabled()) {
-            ActivationKeyFactory.removeKey(key);
+            ActivationKeyManager.getInstance().remove(key, user);
             key = null;
         }
 
@@ -88,7 +88,7 @@ public class ActivationAction extends RhnAction {
 
         if (ctx.isSubmitted()) {
             if (key != null) {
-                ActivationKeyFactory.removeKey(key);
+                ActivationKeyManager.getInstance().remove(key, user);
                 key = null;
             }
             if (ctx.hasParam("generate")) {

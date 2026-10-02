@@ -2015,6 +2015,47 @@ Then(/^podman container "([^"]*)" should be (running|healthy) on "([^"]*)"$/) do
   end
 end
 
+When(/^I (start|restart|stop) the uyuni server$/) do |operation|
+  node = get_target('server')
+  res_out, res_err, code = ssh_command("mgradm #{operation}", node.full_hostname)
+  raise ScriptError, "Uyuni server #{operation} failed: #{res_out}  #{res_err}" unless code.zero?
+end
+
+Then(/^I check the uyuni server (has started|is running|has stopped)$/) do |status|
+  node = get_target('server')
+  repeat_until_timeout(timeout: 130, report_result: true) do
+    cmd = "podman inspect -f '{{.State.Running}}|{{if .State.Health}}{{.State.Health.Status}}{{end}}' uyuni-server"
+    res_out, res_err, code = ssh_command(cmd, node.full_hostname)
+    running, health = res_out.strip.split('|')
+    if ['has started', 'is running'].include? status
+      break if code.zero? && running == 'true' && health == 'healthy'
+    elsif status == 'has stopped'
+      break if code.nonzero? || running != 'true'
+    end
+    sleep 6
+    "return code: #{code};  stdout: #{res_out};  stderr: #{res_err}"
+  end
+end
+
+When(/^I trigger the healthcheck of "([^"]*)" container on "([^"]*)"( and expect it to fail)?$/) do |container, host, negative|
+  node = get_target(host)
+  result, code = node.run("podman healthcheck run #{container}", runs_in_container: false, check_errors: false)
+  if negative
+    raise ScriptError, "podman healthcheck of \"#{container}\" should have failed: #{result}" if code.zero?
+  else
+    raise ScriptError, "podman healthcheck of \"#{container}\" failed: #{result}" unless code.zero?
+  end
+end
+
+Then(/^I wait for the "([^"]*)" container to be running for more than "(\d+)" seconds on "([^"]*)"$/) do |container, seconds, host|
+  node = get_target(host)
+  cmd = "START_STR=$(podman inspect --format='{{.State.StartedAt}}' #{container}) && START=$(date -d \"${START_STR% *}\" +%s) && echo $(($(date +%s) - ${START}))"
+  res_out, res_err, code = ssh_command(cmd, node.full_hostname)
+  raise ScriptError, "An error occurred while getting the container runtime: #{res_out}  #{res_err}" unless code.zero?
+  seconds_to_wait = seconds.to_i - res_out.to_i
+  sleep(seconds_to_wait) unless seconds_to_wait <= 0
+end
+
 When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node = get_target(host)
   node.run('rm -rf /root/server-supportconfig')
