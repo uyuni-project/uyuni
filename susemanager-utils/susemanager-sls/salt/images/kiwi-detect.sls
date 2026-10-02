@@ -1,4 +1,9 @@
 #!jinja|yaml
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # SUSE Multi-Linux Manager kiwi method detection
 #
 # Copyright (c) 2025 SUSE LLC

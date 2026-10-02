@@ -7,6 +7,8 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 SELECT sequence_nextval('rhn_tasko_bunch_id_seq'), 'custom-gpg-key-import-bunch', 'Import a customer GPG key into the keyring', null FROM dual

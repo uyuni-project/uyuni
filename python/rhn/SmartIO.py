@@ -3,6 +3,7 @@
 # Smart IO class
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 

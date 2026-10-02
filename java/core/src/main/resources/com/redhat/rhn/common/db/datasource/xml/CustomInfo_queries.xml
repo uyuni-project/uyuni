@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
 
 <mode name="custom_info_keys_sans_value_for_system">

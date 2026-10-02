@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 DELETE FROM rhnException
 WHERE label = 'invalid_virt_sub_level';
 

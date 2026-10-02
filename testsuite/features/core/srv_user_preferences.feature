@@ -1,5 +1,5 @@
 # Copyright (c) 2021 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Change personal preferences
   In order to set up my personal preferences

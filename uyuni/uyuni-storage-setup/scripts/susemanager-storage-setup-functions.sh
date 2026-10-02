@@ -2,6 +2,7 @@
 
 # Copyright (c) 2019--2025 SUSE Linux GmbH
 # Copyright (c) 2024--2025 SUSE LLC
+# SPDX-License-Identifier: GPL-3.0-only
 #
 # This file is part of uyuni-storage-setup.
 #

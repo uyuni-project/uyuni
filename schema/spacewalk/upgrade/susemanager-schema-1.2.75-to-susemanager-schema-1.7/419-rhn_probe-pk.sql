@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhn_check_probe disable constraint rhn_chkpb_recid_probe_typ_fk;
 alter table rhn_host_probe disable constraint rhn_hstpb_probe_probe_id_fk;
 alter table rhn_probe_param_value disable constraint rhn_ppval_chkpb_probe_id_fk;

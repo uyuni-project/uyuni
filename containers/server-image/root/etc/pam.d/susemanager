@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 #%PAM-1.0
 auth     include        susemanager-auth
 account  include        susemanager-account

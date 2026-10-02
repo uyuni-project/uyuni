@@ -1,4 +1,9 @@
 #! /usr/bin/ruby
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 # Check if a .changes file is added/modified in a pull request *or* the "No
 # changelog needed" box in the pull request description is ticked. If neither of
 # these are true, exit 1 to fail the check.

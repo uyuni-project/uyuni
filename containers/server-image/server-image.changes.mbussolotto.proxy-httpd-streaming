@@ -1,1 +1,5 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - Remove salt-call from server image healthcheck (bsc#1276498)

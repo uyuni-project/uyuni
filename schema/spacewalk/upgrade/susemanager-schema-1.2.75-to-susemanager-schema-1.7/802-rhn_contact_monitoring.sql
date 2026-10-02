@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 drop view rhn_contact_monitoring;
 create or replace view rhn_contact_monitoring as
 select	u.id			as recid,

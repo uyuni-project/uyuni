@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 delete from rhncpu X
 	where server_id in (select server_id from rhncpu group by server_id having count(server_id)>1)
 	 and id<(select max(id) from rhncpu Y where X.server_id=Y.server_id group by server_id having count(server_id)>1);

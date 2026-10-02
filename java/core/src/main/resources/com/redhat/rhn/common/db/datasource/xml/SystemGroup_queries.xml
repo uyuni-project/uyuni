@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <datasource_modes>
 
 <query name="visible_to_user_overview_fast" params="org_id, user_id">

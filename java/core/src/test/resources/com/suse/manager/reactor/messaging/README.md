@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 # How to generate JSON dumps of Salt commands like the ones in this directory
 
 Run on the SUSE Manager server (password is the `server.secret_key` from /etc/rhn/rhn.conf) :

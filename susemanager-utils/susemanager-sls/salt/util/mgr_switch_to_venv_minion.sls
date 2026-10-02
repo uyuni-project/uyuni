@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set venv_is_running = '/venv-salt-minion/' in grains.get('pythonexecutable', '') %}
 {%- if venv_is_running %}
 

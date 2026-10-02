@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 if [ ! -e /etc/postfix/postfix.configured ]; then
 	echo "First configuration of postfix"
         /usr/sbin/config.postfix

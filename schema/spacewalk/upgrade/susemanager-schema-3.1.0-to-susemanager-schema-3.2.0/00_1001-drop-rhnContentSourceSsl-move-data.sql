@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Add columns
 alter table rhnContentSource add ssl_ca_cert_id NUMERIC constraint rhn_cs_cacertid_fk references rhnCryptoKey(id) on delete set null;
 alter table rhnContentSource add ssl_client_cert_id NUMERIC constraint rhn_cs_clcertid_fk references rhnCryptoKey(id) on delete set null;

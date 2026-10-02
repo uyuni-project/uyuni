@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 alter table suseProducts add column if not exists release_stage VARCHAR(10) DEFAULT ('released') NOT NULL;
 alter table suseProducts add column if not exists description VARCHAR(4000);

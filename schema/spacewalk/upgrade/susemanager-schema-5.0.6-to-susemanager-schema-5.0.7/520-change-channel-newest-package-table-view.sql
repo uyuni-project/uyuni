@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 ALTER TABLE rhnChannelNewestPackage
   ADD COLUMN IF NOT EXISTS appstream_id NUMERIC;
 

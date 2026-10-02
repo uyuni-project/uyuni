@@ -1,5 +1,5 @@
 # Copyright (c) 2024-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @sles15sp6_minion
 @sles15sp7_minion

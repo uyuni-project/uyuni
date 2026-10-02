@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Remember the privileges granted on the given views, so that they can be
 -- replayed with restore_view_acls() after the views were dropped and
 -- re-created in a schema migration (dropping a view removes its privileges).

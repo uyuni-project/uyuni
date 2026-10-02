@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE UNIQUE INDEX IF NOT EXISTS suseproductchannel_product_id_channel_id_uq
 ON suseProductChannel (product_id, channel_id);

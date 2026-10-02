@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 insert into rhnPackageEnhances (package_id, capability_id, sense)
   select s.package_id, s.capability_id, s.sense

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnVisibleObjects disable constraint rhn_vis_objs_sess_fk;
 alter table PXTSessions disable constraint pxt_sessions_pk;
 drop index pxt_sessions_pk;

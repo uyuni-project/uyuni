@@ -1,7 +1,8 @@
 # pylint: disable=missing-module-docstring
 #
 # Client code for Update Agent
-# Copyright (c) 1999--2016 Red Hat, Inc.  Distributed under GPLv2.
+# Copyright (c) 1999--2016 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only
 #
 #         Adrian Likins <alikins@redhat.com
 #

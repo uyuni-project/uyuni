@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE OR REPLACE PROCEDURE clone_channel_appstreams(from_channel_id NUMERIC, to_channel_id NUMERIC)
 AS $$
 BEGIN

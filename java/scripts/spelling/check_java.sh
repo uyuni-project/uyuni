@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 dirs=(
 java/core/src/main/resources/com/redhat/rhn/frontend/strings/database
 java/core/src/main/resources/com/redhat/rhn/frontend/strings/java

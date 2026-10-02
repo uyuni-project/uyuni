@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Redis mirror
 
 This Docker container includes a **Redis** instance, which we will use to query information from the test **code coverage** map. This data is preloaded during the Docker **build** process by connecting to the Redis instance hosted on AWS.

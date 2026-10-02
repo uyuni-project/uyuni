@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 SUSE LLC
+//
+// SPDX-License-Identifier: MIT
+
 /**
  * https://github.com/WasiqB/multiple-cucumber-html-reporter
  * Preserves execution order by injecting a sequence number into feature names

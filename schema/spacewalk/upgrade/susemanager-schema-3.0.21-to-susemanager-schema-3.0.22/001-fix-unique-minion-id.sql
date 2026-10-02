@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 -- provide info about possible duplicate minion ids
 select 'DUPLICATE MINION IDs FOUND:' || X.minion_id || ' Manual cleanup required!' message

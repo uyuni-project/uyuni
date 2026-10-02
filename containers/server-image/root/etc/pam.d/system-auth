@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 auth        required                                     pam_env.so
 auth        required                                     pam_faildelay.so delay=2000000
 auth        [default=1 ignore=ignore success=ok]         pam_usertype.so isregular

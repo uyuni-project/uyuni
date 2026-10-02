@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 # Minimalistic simulation setup for ipmi_sim.
 
 # The BMC is the MC at address 20

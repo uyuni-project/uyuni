@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 insert into suseOSTarget (id, os, target, channel_arch_id)
   select sequence_nextval('suse_ostarget_id_seq'), 'sle-15-x86_64', 'sle-15-x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64') from dual
    where not exists (select 1 from suseOSTarget where target = 'sle-15-x86_64');

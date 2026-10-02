@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set avoid_salt_bundle = salt['pillar.get']('mgr_avoid_venv_salt_minion', false) == true %}
 {%- set is_not_salt_ssh = salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 {%- set is_not_saltboot = salt['file.file_exists']('/etc/ImageVersion') == false %}

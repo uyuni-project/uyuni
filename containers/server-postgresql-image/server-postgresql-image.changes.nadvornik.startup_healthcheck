@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - Increase start-period and timeout (bsc#1271124)
 - Check disk space on startup

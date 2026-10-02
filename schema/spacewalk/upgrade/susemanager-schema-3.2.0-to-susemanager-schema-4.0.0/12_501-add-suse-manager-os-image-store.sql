@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO suseImageStoreType (id, label, name) VALUES
     (sequence_nextval('suse_imgstore_type_id_seq'), 'os_image', 'OS Image');
 

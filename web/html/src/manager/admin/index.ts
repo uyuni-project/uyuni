@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export default {
   "admin/config/monitoring": () => import("./config/monitoring.renderer"),
   "admin/setup/products/products": () => import("./setup/products/products"),

@@ -1,8 +1,13 @@
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 # Configuration file for distutils
 [bdist_rpm]
 release = @RELEASE@
 packager = Red Hat, Inc. <http://bugzilla.redhat.com/bugzilla>
 requires = pyOpenSSL python
-doc-files = ChangeLog COPYING README TODO
+doc-files = ChangeLog COPYING README
 changelog = changelog.spec
 build-requires = python-devel

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 update rhnPackageKey set provider_id = lookup_package_provider('CentOS')
  where key_id = '24c6a8a7f4a80eb5';
 

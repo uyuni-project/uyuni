@@ -1,4 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <xccdf-1.2:Benchmark xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xccdf-1.2="http://checklists.nist.gov/xccdf/1.2" id="xccdf_org.ssgproject.content_benchmark_SLE-16" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.2 xccdf-1.2.xsd" style="SCAP_1.2" resolved="true" xml:lang="en-US">
   <xccdf-1.2:status date="2025-12-16">draft</xccdf-1.2:status>
   <xccdf-1.2:title>Guide to the Secure Configuration of SUSE Linux Enterprise Server 16</xccdf-1.2:title>

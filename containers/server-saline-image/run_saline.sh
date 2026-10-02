@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 if test -n "$TZ" -a -f "/usr/share/zoneinfo/$TZ"; then
     ln -sf "/usr/share/zoneinfo/$TZ" /etc/localtime
 fi

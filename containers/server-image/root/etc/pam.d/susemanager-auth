@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 auth	required	pam_env.so	
 auth	sufficient	pam_unix.so	try_first_pass 
 auth	required	pam_sss.so	use_first_pass	

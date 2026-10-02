@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 UPDATE rhnContentSource SET source_url = 'https://mirrors.almalinux.org/mirrorlist/8/baseos'
   WHERE id = (SELECT id FROM rhnContentSource WHERE label LIKE 'External - AlmaLinux 8 (%)' LIMIT 1) AND
   NOT EXISTS (SELECT id FROM rhnContentSource WHERE source_url='https://mirrors.almalinux.org/mirrorlist/8/baseos');

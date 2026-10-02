@@ -1,3 +1,8 @@
+-- SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- oracle equivalent source sha1 ba04438c0afe4d458a358ffe3f806a867308168d
 
 -- setup search_path so that these functions are created in appropriate schema.

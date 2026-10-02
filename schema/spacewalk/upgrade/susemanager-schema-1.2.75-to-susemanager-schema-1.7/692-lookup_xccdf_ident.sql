@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 CREATE OR REPLACE FUNCTION
 lookup_xccdf_ident(system_in IN VARCHAR2, identifier_in IN VARCHAR2)

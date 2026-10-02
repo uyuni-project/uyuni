@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 node_exporter:
   $type: group
   $help: Prometheus exporter for hardware and OS metrics.

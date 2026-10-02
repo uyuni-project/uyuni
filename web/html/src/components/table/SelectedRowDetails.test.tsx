@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { fireEvent, render, screen } from "utils/test-utils";
 
 import { SelectedRowDetails } from "./SelectedRowDetails";

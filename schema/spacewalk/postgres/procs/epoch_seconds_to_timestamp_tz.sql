@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --
 -- Take seconds since epoch (January 1, 1970 UTC) and convert it
 -- to time-zone'd timestamp. Mainly as compatibility with Oracle

@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <project name="search-server" basedir="." default="all">
     <condition property="java_libdir" value="${JAVA_LIBDIR}" else="/usr/share/java">
       <isset property="JAVA_LIBDIR"/>

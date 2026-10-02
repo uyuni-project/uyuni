@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 cd ../core/src/main/resources/com/redhat/rhn/frontend/strings/
 wget --no-check-certificate http://file.bne.redhat.com/~gcintra/$1-xliff.tgz
 mv $1-xliff.tgz $1

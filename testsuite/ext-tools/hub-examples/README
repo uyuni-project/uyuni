@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 The HUB XMLRPC API port use to be blocked by our internal firewall.
 If you want to run these scripts from your local machine, use a SSH tunnel:
 

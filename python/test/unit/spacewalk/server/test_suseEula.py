@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 #  pylint: disable=missing-module-docstring,invalid-name
 import hashlib
 from unittest.mock import MagicMock, call, patch

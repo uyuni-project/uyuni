@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 // See https://stackoverflow.com/a/77724124/1470607
 interface ObjectConstructor {
   /**
