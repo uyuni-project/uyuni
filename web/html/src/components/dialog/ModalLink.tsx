@@ -27,6 +27,7 @@ export function ModalLink(props: Props) {
       className={"btn-tertiary " + (props.className || "")}
       icon={props.icon}
       text={props.text}
+      disabled={props.disabled}
       handler={() => {
         if (props.onClick) props.onClick(props.item);
         showDialog(props.target);

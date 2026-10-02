@@ -19,7 +19,6 @@ const webHtmlSrc = path.resolve(web, "./html/src");
 const dist = path.resolve(webHtmlSrc, "./dist");
 
 import webpackAlias from "./alias.js";
-import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
 
 export default (env, opts) => {
   let pluginsInUse = [];
@@ -89,10 +88,6 @@ export default (env, opts) => {
     new MiniCssExtractPlugin({
       chunkFilename: `css/${moduleName}.css`,
       ignoreOrder: isProductionMode ? false : true,
-    }),
-    new GenerateStoriesPlugin({
-      inputDir: webHtmlSrc,
-      outputFile: path.resolve(webHtmlSrc, "./manager/storybook/stories.generated.ts"),
     }),
   ];
 
