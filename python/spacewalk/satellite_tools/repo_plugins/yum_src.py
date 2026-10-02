@@ -964,8 +964,9 @@ type=rpm-md
         # Zypper is not able to run a sigcheck plugin chrooted into the reposync root,
         # so the PQC signature of the metadata is verified by a Zypper
         # run that is not chrooted and only refreshes the metadata.
+        # ULN repositories are not fetched through repo.urls, so they are not probed.
         pqc_repomd_digest = None
-        if self._has_pqc_signature():
+        if not uln_repo and self._has_pqc_signature():
             pqc_repomd_digest = self._verify_pqc_signature(
                 repo_cfg.format(
                     reponame=self.channel_label or self.reponame,
@@ -1069,20 +1070,70 @@ type=rpm-md
         Check whether the repository provides a PQC (Post-Quantum Cryptography)
         signature of its master index
 
+        :returns: bool, False only if every mirror confirmed the signature is missing
+        :raises RepoMDError: if the signature could not be fetched for another reason
+        """
+        failures = []
+        mirror_group = MirrorGroup(
+            urlgrabber.grabber.URLGrabber(),
+            self.repo.urls,
+            failure_callback=lambda cb_obj: failures.append(cb_obj.exception),
+        )
+        urlgrabber_opts = {}
+        self.set_download_parameters(urlgrabber_opts, PQC_SIGNATURE_PATH)
+        try:
+            mirror_group.urlread(PQC_SIGNATURE_PATH, **urlgrabber_opts)
+            return True
+        except URLGrabError as exc:
+            if failures and all(self._is_missing_file_error(e) for e in failures):
+                log(
+                    2,
+                    # pylint: disable-next=consider-using-f-string
+                    "Repository {} does not provide a PQC signature ({})".format(
+                        self.name, PQC_SIGNATURE_PATH
+                    ),
+                )
+                return False
+            raise RepoMDError(
+                # pylint: disable-next=consider-using-f-string
+                "Cannot determine whether repository '{}' provides a PQC signature: "
+                "fetching {} failed: {}".format(
+                    self.channel_label or self.reponame,
+                    PQC_SIGNATURE_PATH,
+                    "; ".join(self._describe_fetch_error(e) for e in failures)
+                    or self._describe_fetch_error(exc),
+                )
+            ) from exc
+
+    @staticmethod
+    def _is_missing_file_error(exc):
+        """
+        Check whether a URLGrabError confirms the requested file does not exist
+
         :returns: bool
         """
-        try:
-            return self.get_file(PQC_SIGNATURE_PATH) is not None
-        # pylint: disable-next=broad-exception-caught
-        except Exception as exc:
-            log(
-                2,
-                # pylint: disable-next=consider-using-f-string
-                "Could not download {} of repository {}: {}".format(
-                    PQC_SIGNATURE_PATH, self.name, exc
-                ),
-            )
-            return False
+        # urlgrabber reports HTTP(S) errors and curl errors as errno 14, with the
+        # HTTP status or the curl error number as code: HTTP 404, or curl 37
+        # (CURLE_FILE_COULDNT_READ_FILE) for a file:// path that cannot be read
+        return exc.errno == 14 and getattr(exc, "code", None) in (404, 37)
+
+    @staticmethod
+    def _describe_fetch_error(exc):
+        """
+        Describe a URLGrabError without its message, as messages like the timeout
+        one contain the full URL, which may hold authentication tokens
+
+        :returns: str
+        """
+        code = getattr(exc, "code", None)
+        if exc.errno == 14 and code is not None:
+            # HTTP status codes start at 100, curl error numbers are below
+            # pylint: disable-next=consider-using-f-string
+            return ("HTTP error {}" if code >= 100 else "curl error {}").format(code)
+        if exc.errno == 12:
+            return "timeout"
+        # pylint: disable-next=consider-using-f-string
+        return "urlgrabber error {}".format(exc.errno)
 
     def _verify_pqc_signature(self, repo_config):
         """

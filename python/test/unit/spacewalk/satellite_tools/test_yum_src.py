@@ -911,3 +911,77 @@ class YumSrcTest(unittest.TestCase):
         with self.assertRaises(yum_src.RepoMDError) as context:
             self._setup_pqc_repo(validated_digest, b"<repomd>changed</repomd>")
         self.assertIn("not PQC-validated", str(context.exception))
+
+    @staticmethod
+    def _grab_error(errno, code=None, message=None):
+        """
+        Build a URLGrabError as raised by urlgrabber for a failed mirror
+        """
+        exc = URLGrabError(errno, message or f"error {code or errno}")
+        if code is not None:
+            exc.code = code
+        return exc
+
+    def _has_pqc_signature(self, mirror_errors, found=False):
+        """
+        Run _has_pqc_signature against mirrors failing with mirror_errors
+        """
+
+        class FakeMirrorGroup:
+            # pylint: disable-next=unused-argument
+            def __init__(self, grabber, mirrors, failure_callback=None):
+                self.failure_callback = failure_callback
+
+            # pylint: disable-next=unused-argument
+            def urlread(self, url, **kwargs):
+                for exc in mirror_errors:
+                    self.failure_callback(Mock(exception=exc))
+                if found:
+                    return b"signature"
+                raise URLGrabError(256, "No more mirrors to try.")
+
+        cs = self._make_dummy_cs()
+        with patch.object(yum_src, "MirrorGroup", FakeMirrorGroup), patch.object(
+            yum_src.ContentSource, "set_download_parameters", Mock()
+        ):
+            # pylint: disable-next=protected-access
+            return cs._has_pqc_signature()
+
+    def test_has_pqc_signature_found(self):
+        self.assertTrue(self._has_pqc_signature([], found=True))
+        # A failing mirror before a mirror providing the signature is fine
+        self.assertTrue(
+            self._has_pqc_signature([self._grab_error(14, 503)], found=True)
+        )
+
+    def test_has_pqc_signature_missing(self):
+        self.assertFalse(self._has_pqc_signature([self._grab_error(14, 404)]))
+        # A file:// path that cannot be read is reported by curl as error 37
+        self.assertFalse(self._has_pqc_signature([self._grab_error(14, 37)]))
+        self.assertFalse(
+            self._has_pqc_signature(
+                [self._grab_error(14, 404), self._grab_error(14, 404)]
+            )
+        )
+
+    def test_has_pqc_signature_fetch_failure(self):
+        for mirror_errors in (
+            [self._grab_error(14, 403)],
+            [self._grab_error(14, 401)],
+            [self._grab_error(12)],  # timeout
+            [self._grab_error(14, 7)],  # curl: couldn't connect
+            [self._grab_error(14, 404), self._grab_error(14, 503)],
+            [],
+        ):
+            with self.assertRaises(yum_src.RepoMDError):
+                self._has_pqc_signature(mirror_errors)
+
+    def test_has_pqc_signature_error_hides_url(self):
+        timeout = self._grab_error(
+            12, message="Timeout on https://example.com/repo/?secret_token: timed out"
+        )
+        with self.assertRaises(yum_src.RepoMDError) as context:
+            self._has_pqc_signature([timeout, self._grab_error(14, 403)])
+        message = str(context.exception)
+        self.assertNotIn("secret_token", message)
+        self.assertIn("timeout; HTTP error 403", message)
