@@ -39,6 +39,7 @@ import bz2
 
 # pylint: disable-next=unused-import
 import lzma
+import hashlib
 import os
 import re
 import solv
@@ -963,8 +964,9 @@ type=rpm-md
         # Zypper is not able to run a sigcheck plugin chrooted into the reposync root,
         # so the PQC signature of the metadata is verified by a Zypper
         # run that is not chrooted and only refreshes the metadata.
+        pqc_repomd_digest = None
         if self._has_pqc_signature():
-            self._verify_pqc_signature(
+            pqc_repomd_digest = self._verify_pqc_signature(
                 repo_cfg.format(
                     reponame=self.channel_label or self.reponame,
                     repo_url=_repo_url,
@@ -991,6 +993,25 @@ type=rpm-md
             raise RepoMDError(
                 "Cannot access repository. Maybe repository GPG keys are not imported"
             )
+
+        # The refresh above fetches the metadata again, so make sure reposync uses
+        # the same repomd.xml that was PQC-validated. All the other metadata files
+        # are verified by Zypper against the checksums listed in repomd.xml.
+        if pqc_repomd_digest is not None:
+            synced_repomd_digest = self._repomd_digest(
+                os.path.join(repo.root, "var/cache/zypp/raw/")
+            )
+            if synced_repomd_digest != pqc_repomd_digest:
+                raise RepoMDError(
+                    # pylint: disable-next=consider-using-f-string
+                    "Metadata of repository '{}' changed after its PQC signature was "
+                    "verified (validated repomd.xml sha256 {}, synced {}). Refusing "
+                    "to synchronize metadata that was not PQC-validated.".format(
+                        self.channel_label or self.reponame,
+                        pqc_repomd_digest,
+                        synced_repomd_digest,
+                    )
+                )
 
         repo.is_configured = True
 
@@ -1068,6 +1089,7 @@ type=rpm-md
          Verify the PQC (Post-Quantum Cryptography) signature of the repository metadata.
 
         :param repo_config: the Zypper repository configuration to verify with
+        :returns: str, the SHA-256 digest of the validated repomd.xml
          :raises RepoMDError: if the metadata cannot be verified
         """
         reponame = str(self.channel_label or self.reponame)
@@ -1108,6 +1130,13 @@ type=rpm-md
             finally:
                 self._remove_pqc_certificates(certificates)
 
+            # Keep track of the validated repomd.xml before the cache is removed
+            validated_repomd_digest = (
+                None
+                if process.returncode
+                else self._repomd_digest(os.path.join(tmp_dir, "raw"))
+            )
+
         if process.returncode:
             raise RepoMDError(
                 # pylint: disable-next=consider-using-f-string
@@ -1124,6 +1153,32 @@ type=rpm-md
             "Metadata of repository '{}' successfully verified by the '{}' Zypper "
             "sigcheck plugin.".format(reponame, PQC_SIGCHECK_PLUGIN),
         )
+        return validated_repomd_digest
+
+    def _repomd_digest(self, raw_cache_dir):
+        """
+        Calculate the SHA-256 digest of the repomd.xml stored in a Zypper raw cache
+
+        :param raw_cache_dir: path to the Zypper raw-cache directory
+        :returns: str
+        :raises RepoMDError: if the repomd.xml cannot be read
+        """
+        repomd_path = os.path.join(
+            raw_cache_dir,
+            str(self.channel_label or self.reponame),
+            "repodata",
+            "repomd.xml",
+        )
+        try:
+            with open(repomd_path, "rb") as repomd:
+                return hashlib.sha256(repomd.read()).hexdigest()
+        except OSError as exc:
+            raise RepoMDError(
+                # pylint: disable-next=consider-using-f-string
+                "Cannot read {} to check its PQC validation: {}".format(
+                    repomd_path, exc
+                )
+            ) from exc
 
     @staticmethod
     def _list_certificates(directory):

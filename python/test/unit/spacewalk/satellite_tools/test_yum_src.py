@@ -15,6 +15,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import hashlib
 import tempfile
 import shutil
 import os
@@ -841,3 +842,72 @@ class YumSrcTest(unittest.TestCase):
             self.assertEqual(certs, [])
         finally:
             shutil.rmtree(temp_dir)
+
+    @staticmethod
+    def _write_repomd(raw_cache_dir, reponame, content):
+        """
+        Write a repomd.xml into a Zypper raw cache and return its SHA-256 digest
+        """
+        repodata_dir = os.path.join(raw_cache_dir, reponame, "repodata")
+        os.makedirs(repodata_dir, exist_ok=True)
+        with open(os.path.join(repodata_dir, "repomd.xml"), "wb") as repomd:
+            repomd.write(content)
+        return hashlib.sha256(content).hexdigest()
+
+    def test_repomd_digest(self):
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_channel"
+        raw_cache_dir = tempfile.mkdtemp()
+        try:
+            digest = self._write_repomd(raw_cache_dir, "test_channel", b"<repomd/>")
+            # pylint: disable-next=protected-access
+            self.assertEqual(cs._repomd_digest(raw_cache_dir), digest)
+
+            with self.assertRaises(yum_src.RepoMDError):
+                # pylint: disable-next=protected-access
+                cs._repomd_digest(os.path.join(raw_cache_dir, "non_existent"))
+        finally:
+            shutil.rmtree(raw_cache_dir)
+
+    def _setup_pqc_repo(self, validated_digest, synced_repomd):
+        """
+        Run setup_repo on a PQC signed repository whose signature was validated
+        for validated_digest, with synced_repomd as the reposync cached repomd.xml
+        """
+        cs = self._make_dummy_cs()
+        cs.channel_label = "test_channel"
+        root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, root)
+        os.makedirs(os.path.join(root, "etc/zypp/repos.d"))
+        self._write_repomd(
+            os.path.join(root, "var/cache/zypp/raw"), "test_channel", synced_repomd
+        )
+        repo = yum_src.ZypperRepo(root, "http://example.com/repo/", "1")
+        cs.repo = repo
+
+        with patch.object(yum_src.ZyppoSync, "_init_root", MagicMock()), patch.object(
+            yum_src.ContentSource, "_get_mirror_list", MagicMock(return_value=[])
+        ), patch.object(
+            yum_src.ContentSource, "_has_pqc_signature", Mock(return_value=True)
+        ), patch.object(
+            yum_src.ContentSource,
+            "_verify_pqc_signature",
+            Mock(return_value=validated_digest),
+        ), patch.object(
+            yum_src.ContentSource,
+            "_run_zypper_ref",
+            Mock(return_value=Mock(returncode=0, stderr=None)),
+        ):
+            cs.setup_repo(repo)
+        return repo
+
+    def test_setup_repo_pqc_repomd_matches(self):
+        repomd = b"<repomd>validated</repomd>"
+        repo = self._setup_pqc_repo(hashlib.sha256(repomd).hexdigest(), repomd)
+        self.assertTrue(repo.is_configured)
+
+    def test_setup_repo_pqc_repomd_changed(self):
+        validated_digest = hashlib.sha256(b"<repomd>validated</repomd>").hexdigest()
+        with self.assertRaises(yum_src.RepoMDError) as context:
+            self._setup_pqc_repo(validated_digest, b"<repomd>changed</repomd>")
+        self.assertIn("not PQC-validated", str(context.exception))
