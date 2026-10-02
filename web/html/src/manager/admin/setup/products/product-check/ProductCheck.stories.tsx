@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { type ProductSelectionState } from "./product-selection.utils";
 import { ProductCheck } from "./ProductCheck";
@@ -68,8 +68,8 @@ export const Playground: Story = {};
 
 export const States: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <label>
           <ProductCheck selectionState="unchecked" onChange={() => undefined} /> Unchecked
         </label>
@@ -82,8 +82,8 @@ export const States: Story = {
         <label>
           <ProductCheck selectionState="checked" disabled onChange={() => undefined} /> Disabled
         </label>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

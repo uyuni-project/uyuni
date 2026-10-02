@@ -2,7 +2,7 @@ import { type MouseEvent, type ReactElement, cloneElement } from "react";
 
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { type SystemOverview, iconAndName, statusDisplay } from "./systems";
 
@@ -77,16 +77,16 @@ const StoryStatusIndicator = ({ id, statusType, locked }: { id: number; statusTy
 
 const SystemIndicators = () => (
   <div>
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <h4>System identity indicators</h4>
         <div style={{ display: "grid", gap: "12px" }}>
           {identities.map((system) => (
             <div key={system.id}>{preventStoryNavigation(iconAndName(system) as ReactElement<StoryLinkProps>)}</div>
           ))}
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <h4>System status indicators</h4>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(180px, 1fr))", gap: "12px" }}>
           {statuses.map((statusType, index) => (
@@ -96,8 +96,8 @@ const SystemIndicators = () => (
             </div>
           ))}
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   </div>
 );
 

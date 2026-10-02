@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { Label } from "./Label";
 
@@ -53,12 +53,12 @@ export const Playground: Story = {};
 
 export const States: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Label name="Optional field" />
         <Label name="Required field" required />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

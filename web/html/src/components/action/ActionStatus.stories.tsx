@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { ActionStatus } from "./ActionStatus";
 
@@ -57,32 +57,32 @@ export const Playground: Story = {
 
 export const AllStatuses: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <ActionStatus serverId="1000010000" actionId="100" status="Queued" />
           <span>Queued</span>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <ActionStatus serverId="1000010000" actionId="101" status="Picked Up" />
           <span>Picked Up</span>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <ActionStatus serverId="1000010000" actionId="102" status="Completed" />
           <span>Completed</span>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <ActionStatus serverId="1000010000" actionId="103" status="Failed" />
           <span>Failed</span>
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

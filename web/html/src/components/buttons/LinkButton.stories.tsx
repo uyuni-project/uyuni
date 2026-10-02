@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { LinkButton } from "./index";
 
@@ -94,8 +94,8 @@ export const Playground: Story = {};
 
 export const States: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <LinkButton href="#primary" className="btn-primary" text="Primary link" />
         <LinkButton href="#default" className="btn-default" text="Default link" />
         <LinkButton
@@ -106,8 +106,8 @@ export const States: Story = {
           download="report.csv"
         />
         <LinkButton href="#disabled" className="btn-default" text="Disabled link" disabled />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

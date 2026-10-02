@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { IconTag } from "./icontag";
 
@@ -77,16 +77,16 @@ export const Playground: Story = {};
 
 export const CommonStatuses: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <IconTag type="action-pending" title="Pending" />
         <IconTag type="action-running" title="Running" />
         <IconTag type="action-ok" title="Completed" />
         <IconTag type="action-failed" title="Failed" />
         <IconTag type="system-warn" title="Warning" />
         <IconTag type="system-unknown" title="Unknown" />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

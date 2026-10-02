@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
-
 import { Button, SubmitButton } from "components/buttons";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 import { Field, Form, OnSubmit } from "components/formik";
 
 import { Check } from "./Check";
@@ -80,14 +79,14 @@ export const Playground: Story = {};
 
 export const States: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <CheckInput aria-label="Unchecked" />
         <CheckInput aria-label="Checked" defaultChecked />
         <CheckInput aria-label="Indeterminate" indeterminate />
         <CheckInput aria-label="Disabled" disabled />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

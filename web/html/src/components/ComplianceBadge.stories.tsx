@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { ComplianceBadge } from "./ComplianceBadge";
 
@@ -47,15 +47,15 @@ export const Playground: Story = {};
 
 export const Thresholds: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <ComplianceBadge percentage={0} compliant={0} total={0} />
         <ComplianceBadge percentage={30} compliant={3} total={10} />
         <ComplianceBadge percentage={60} compliant={6} total={10} />
         <ComplianceBadge percentage={80} compliant={8} total={10} />
         <ComplianceBadge percentage={100} compliant={10} total={10} />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

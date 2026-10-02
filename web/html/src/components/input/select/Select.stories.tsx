@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { Select } from "./Select";
 
@@ -372,8 +372,8 @@ export const LongList: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div style={{ width: "300px" }}>
           <p>
             <strong>Normal</strong>
@@ -392,8 +392,8 @@ export const Variants: Story = {
           </p>
           <Select options={priorityOptions} value="high" disabled />
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

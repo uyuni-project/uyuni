@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import {
   ActionChainLink,
@@ -67,8 +67,8 @@ export const Playground: Story = {};
 
 export const EntityLinks: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <ChannelLink id={101}>Channel</ChannelLink>
         <ChannelAnchorLink id={101} title="Channel permalink" />
         <ActionLink id={202}>Action</ActionLink>
@@ -76,8 +76,8 @@ export const EntityLinks: Story = {
         <ActionChainLink id={404}>Action chain</ActionChainLink>
         <SystemGroupLink id={505}>System group</SystemGroupLink>
         <PackageLink id={606}>Package</PackageLink>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

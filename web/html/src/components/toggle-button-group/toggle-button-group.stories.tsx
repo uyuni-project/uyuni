@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { ToggleButtonGroup, ToggleButtonOption } from "./toggle-button-group";
 
@@ -191,20 +191,20 @@ export const TextOnly: Story = {
 
 export const VariousContexts: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <h4>View Mode</h4>
           <StatefulToggleButtonGroup options={viewOptions} initialValue="grid" />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <h4>Sort Order (Small)</h4>
           <StatefulToggleButtonGroup options={sortOptions} initialValue="desc" size="sm" />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <h4>Time Range</h4>
           <StatefulToggleButtonGroup
@@ -217,8 +217,8 @@ export const VariousContexts: Story = {
             initialValue="24h"
           />
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

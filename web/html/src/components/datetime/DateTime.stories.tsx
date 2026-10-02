@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { DateTime, HumanDateTime } from "./DateTime";
 
@@ -51,16 +51,16 @@ export const HumanReadable: Story = {
 
 export const Formats: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <span>
           Exact: <DateTime value="2026-09-02T10:30:00Z" />
         </span>
         <span>
           Calendar: <HumanDateTime value="2026-09-02T10:30:00Z" />
         </span>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

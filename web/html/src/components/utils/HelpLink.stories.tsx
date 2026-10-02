@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { HelpLink } from "./HelpLink";
 
@@ -51,16 +51,16 @@ export const Playground: Story = {
 
 export const InContext: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <h4>
             System Groups <HelpLink url="reference/systems/system-groups.html" />
           </h4>
           <p>Organize your systems into groups for easier management.</p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <h4>
             Configuration Channels{" "}
@@ -68,8 +68,8 @@ export const InContext: Story = {
           </h4>
           <p>Manage configuration files across multiple systems.</p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <label htmlFor="activation-key-help-link">
             Activation Key <HelpLink url="reference/systems/activation-keys.html" text="What are activation keys?" />
@@ -81,8 +81,8 @@ export const InContext: Story = {
             placeholder="Enter activation key"
           />
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },
@@ -96,16 +96,16 @@ export const InContext: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <p>
             Inline with text: Learn how to configure systems <HelpLink url="reference/systems/index.html" /> for more
             information.
           </p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <p>
             After label:{" "}
@@ -114,8 +114,8 @@ export const Variants: Story = {
             </strong>
           </p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -126,8 +126,8 @@ export const Variants: Story = {
             <div className="panel-body">Manage the lifecycle of your content across environments.</div>
           </div>
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

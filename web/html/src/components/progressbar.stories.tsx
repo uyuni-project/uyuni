@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StorySection } from "manager/storybook/layout";
+import { ExampleSection } from "components/example-layout";
 
 import { ProgressBar } from "./progressbar";
 
@@ -47,12 +47,12 @@ export const Playground: Story = {};
 
 export const ProgressStates: Story = {
   render: () => (
-    <StorySection>
+    <ExampleSection>
       <ProgressBar progress={0} title="Not started" />
       <ProgressBar progress={35} title="In progress" />
       <ProgressBar progress={75} title="Almost complete" />
       <ProgressBar progress={100} title="Complete" />
-    </StorySection>
+    </ExampleSection>
   ),
   parameters: {
     controls: { disable: true },

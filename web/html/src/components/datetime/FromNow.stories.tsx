@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { localizedMoment } from "utils";
 
@@ -83,48 +83,48 @@ export const WithChildren: Story = {
 
 export const VariousTimeframes: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <strong>Just now:</strong> <FromNow value={localizedMoment().subtract(30, "seconds")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Minutes:</strong> <FromNow value={localizedMoment().subtract(15, "minutes")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Hours:</strong> <FromNow value={localizedMoment().subtract(8, "hours")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Days:</strong> <FromNow value={localizedMoment().subtract(5, "days")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Weeks:</strong> <FromNow value={localizedMoment().subtract(3, "weeks")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Months:</strong> <FromNow value={localizedMoment().subtract(4, "months")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Years:</strong> <FromNow value={localizedMoment().subtract(2, "years")} />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <strong>Future:</strong> <FromNow value={localizedMoment().add(3, "hours")} />
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

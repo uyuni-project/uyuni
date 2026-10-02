@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
-
 import { Button } from "components/buttons";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { ActionStatus } from "../action/ActionStatus";
 
@@ -53,8 +52,8 @@ export const BasicUsage: Story = {
   render: () => (
     <div style={{ padding: "40px" }}>
       <h4>Hover over elements to see tooltips</h4>
-      <StripedStorySection>
-        <StoryRow>
+      <StripedExampleSection>
+        <ExampleRow>
           <Button className="btn-default" title="Add new item" icon="fa-plus" />
           <Button className="btn-tertiary" title="Delete item" icon="fa-trash" />
           <Button className="btn-default" text="Settings" title="Configure settings" icon="fa-cog" />
@@ -67,8 +66,8 @@ export const BasicUsage: Story = {
             title="Additional information"
             style={{ cursor: "pointer" }}
           />
-        </StoryRow>
-      </StripedStorySection>
+        </ExampleRow>
+      </StripedExampleSection>
       <div style={{ marginTop: "2rem", padding: "1rem", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
         <p>
           <strong>Code examples:</strong>
@@ -96,14 +95,14 @@ export const Placement: Story = {
     <div style={{ padding: "80px", textAlign: "center" }}>
       <h4>Tooltip Placement</h4>
       <p>Hover over buttons to see tooltips in different positions</p>
-      <StripedStorySection>
-        <StoryRow>
+      <StripedExampleSection>
+        <ExampleRow>
           <Button className="btn-default" text="Top" tooltipPlacement="top" title="Top tooltip" />
           <Button className="btn-default" text="Right" tooltipPlacement="right" title="Right tooltip" />
           <Button className="btn-default" text="Bottom" tooltipPlacement="bottom" title="Bottom tooltip" />
           <Button className="btn-default" text="Left" tooltipPlacement="left" title="Left tooltip" />
-        </StoryRow>
-      </StripedStorySection>
+        </ExampleRow>
+      </StripedExampleSection>
       <div style={{ marginTop: "2rem" }}>
         <h5>Custom Elements</h5>
         <div style={{ display: "flex", gap: "2rem", justifyContent: "center", marginTop: "1rem" }}>
@@ -151,8 +150,8 @@ export const WideTooltip: Story = {
   render: () => (
     <div style={{ padding: "40px" }}>
       <h4>Wide Tooltip for Multi-line Content</h4>
-      <StripedStorySection>
-        <StoryRow>
+      <StripedExampleSection>
+        <ExampleRow>
           <i
             className="fa fa-info-circle fa-3x"
             style={{ cursor: "pointer" }}
@@ -165,8 +164,8 @@ SLE-Product-SLES15-SP5 - aarch64
 SLE-Module-Server-Applications15-SP5 - aarch64`}
           />
           <span style={{ marginLeft: "2rem" }}>Hover over the icon for multi-line tooltip</span>
-        </StoryRow>
-      </StripedStorySection>
+        </ExampleRow>
+      </StripedExampleSection>
       <div style={{ marginTop: "2rem", padding: "1rem", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
         <p>
           <strong>Code:</strong>
@@ -201,13 +200,13 @@ export const WithActionStatus: Story = {
     <div style={{ padding: "40px" }}>
       <h4>ActionStatus Component with Tooltip</h4>
       <p>ActionStatus automatically includes tooltip support</p>
-      <StripedStorySection>
-        <StoryRow>
+      <StripedExampleSection>
+        <ExampleRow>
           <ActionStatus serverId="server123" actionId="456" status="Queued" data-bs-placement="right" />
           <ActionStatus serverId="server124" actionId="457" status="Completed" data-bs-placement="top" />
           <ActionStatus serverId="server125" actionId="458" status="Failed" data-bs-placement="bottom" />
-        </StoryRow>
-      </StripedStorySection>
+        </ExampleRow>
+      </StripedExampleSection>
     </div>
   ),
   parameters: {
@@ -225,16 +224,16 @@ export const IconButtons: Story = {
     <div style={{ padding: "40px" }}>
       <h4>Icon-only Buttons</h4>
       <p>Icon buttons without visible text should always have tooltips for accessibility</p>
-      <StripedStorySection>
-        <StoryRow>
+      <StripedExampleSection>
+        <ExampleRow>
           <Button className="btn-primary" title="Create new" icon="fa-plus" />
           <Button className="btn-default" title="Edit" icon="fa-pencil" />
           <Button className="btn-danger" title="Delete" icon="fa-trash" />
           <Button className="btn-default" title="Download" icon="fa-download" />
           <Button className="btn-default" title="Refresh" icon="fa-refresh" />
           <Button className="btn-default" title="Settings" icon="fa-cog" />
-        </StoryRow>
-      </StripedStorySection>
+        </ExampleRow>
+      </StripedExampleSection>
       <div style={{ marginTop: "1rem", padding: "1rem", backgroundColor: "#fffbcc", borderRadius: "4px" }}>
         <strong>⚠️ Accessibility Note:</strong> Icon-only buttons must include a <code>title</code> prop for screen
         readers and tooltip display.

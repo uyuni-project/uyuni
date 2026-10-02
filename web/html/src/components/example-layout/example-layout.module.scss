@@ -1,10 +1,5 @@
 :global(.old-theme),
 :global(.new-theme) {
-  .header {
-    padding: 8px 16px;
-    background: #eee;
-  }
-
   .section {
     display: flex;
     flex-direction: column;

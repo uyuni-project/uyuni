@@ -3,11 +3,11 @@ import { Fragment, useEffect, useState } from "react";
 import debugUtils from "core/debugUtils";
 
 import { Button } from "components/buttons";
+import { ExampleRow } from "components/example-layout";
 import { IconTag } from "components/icontag";
 
 import { useQueryParams } from "utils/hooks";
 
-import { StoryRow } from "./layout";
 import stories from "./stories";
 import styles from "./storybook.module.scss";
 
@@ -53,7 +53,7 @@ export const Storybook = () => {
           <code>{document.body.className}</code>
         </p>
 
-        <StoryRow>
+        <ExampleRow>
           <Button
             text="toggle base theme"
             className="btn-default"
@@ -63,7 +63,7 @@ export const Storybook = () => {
             }}
           />
           <Button text="toggle code" className="btn-default" handler={() => toggleShowCode(!showCode)} />
-        </StoryRow>
+        </ExampleRow>
       </div>
 
       <div className="spacewalk-content-nav">

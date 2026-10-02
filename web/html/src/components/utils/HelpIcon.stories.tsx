@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import HelpIcon from "./HelpIcon";
 
@@ -83,32 +83,32 @@ export const NoText: Story = {
 
 export const InContext: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <label htmlFor="username-help-icon">
             Username <HelpIcon text="Choose a unique username for your account" />
           </label>
           <input id="username-help-icon" type="text" className="form-control" placeholder="Enter username" />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <label htmlFor="apikey-help-icon">
             API Key <HelpIcon text="Generate an API key from your user profile settings" />
           </label>
           <input id="apikey-help-icon" type="password" className="form-control" placeholder="Enter API key" />
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <label htmlFor="maxconn-help-icon">
             Max Connections <HelpIcon text="Maximum number of concurrent database connections (recommended: 100)" />
           </label>
           <input id="maxconn-help-icon" type="number" className="form-control" defaultValue="100" />
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },
@@ -122,30 +122,30 @@ export const InContext: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <div>
           <p>
             Short help text: <HelpIcon text="Brief explanation" />
           </p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <p>
             In a sentence: The system will restart automatically <HelpIcon text="Restart occurs at 3:00 AM" /> after
             updates.
           </p>
         </div>
-      </StoryRow>
-      <StoryRow>
+      </ExampleRow>
+      <ExampleRow>
         <div>
           <h4>
             Section Title <HelpIcon text="This section contains important configuration options" />
           </h4>
         </div>
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },

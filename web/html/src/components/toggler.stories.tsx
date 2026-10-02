@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { action } from "storybook/actions";
 
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { ExampleRow, StripedExampleSection } from "components/example-layout";
 
 import { Toggler } from "./toggler";
 
@@ -82,13 +82,13 @@ export const Playground: Story = {};
 
 export const States: Story = {
   render: () => (
-    <StripedStorySection>
-      <StoryRow>
+    <StripedExampleSection>
+      <ExampleRow>
         <Toggler value text="Enabled" handler={() => undefined} />
         <Toggler value={false} text="Disabled value" handler={() => undefined} />
         <Toggler value text="Unavailable" disabled handler={() => undefined} />
-      </StoryRow>
-    </StripedStorySection>
+      </ExampleRow>
+    </StripedExampleSection>
   ),
   parameters: {
     controls: { disable: true },
