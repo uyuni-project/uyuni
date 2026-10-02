@@ -29,20 +29,26 @@
   }
 }
 
-.alert:after,
-.Toastify__toast:after {
-  font-family: "FontAwesome";
-  content: "\f00d";
+.btn-close {
   position: absolute;
-  top: 9px;
-  right: 12px;
-  font-size: 12px;
+  top: 10px;
+  right: 8px;
+  font-size: 10px;
 }
 
 .alert:before,
 .Toastify__toast:before {
   font-family: "spacewalk-icon";
 }
+
+.Toastify__toast:after {
+    font-family: "FontAwesome";
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    font-size: 12px;
+  }
 
 .alert-info,
 .Toastify__toast--info {
