@@ -30,7 +30,7 @@ Name:           spacewalk-search
 Version:        5.3.1
 Release:        0
 Summary:        Spacewalk Full Text Search Server
-License:        Apache-2.0 AND GPL-2.0-only
+License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 # This src.rpm is cannonical upstream
