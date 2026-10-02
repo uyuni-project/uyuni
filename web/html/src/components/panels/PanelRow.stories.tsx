@@ -36,12 +36,10 @@ const meta = {
     className: {
       control: "text",
       description: "Additional CSS classes appended to the Bootstrap `row` class.",
-      table: { type: { summary: "string" } },
     },
     children: {
       control: false,
       description: "Panels or other grid columns rendered inside the row.",
-      table: { type: { summary: "ReactNode" } },
     },
   },
 } satisfies Meta<typeof PanelRow>;

@@ -48,23 +48,19 @@ const meta = {
       control: "select",
       options: iconOptions,
       description: "Semantic Uyuni icon identifier.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes appended to the mapped icon classes.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Optional accessible title and tooltip text.",
-      table: { type: { summary: "string" } },
     },
     tooltipPlacement: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
       description: "Preferred Bootstrap tooltip placement when a title is present.",
-      table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
 } satisfies Meta<typeof IconTag>;

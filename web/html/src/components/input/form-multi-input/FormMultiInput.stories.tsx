@@ -31,68 +31,55 @@ const meta = {
     id: {
       control: "text",
       description: "Unique identifier for the component.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Title displayed in the panel header.",
-      table: { type: { summary: "string" } },
     },
     prefix: {
       control: "text",
       description:
         "Prefix for field names. Fields are named `{prefix}{index}_fieldname`. For example, with prefix 'host', fields become 'host0_name', 'host0_port', etc.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the remove buttons. Add button is always enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     panelIcon: {
       control: false,
       description: "Function returning an icon class for each item's panel. If provided, items are wrapped in panels.",
-      table: { type: { summary: "(index: number) => string" } },
     },
     panelTitle: {
       control: false,
       description: "Function returning a title for each item's panel. If provided, items are wrapped in panels.",
-      table: { type: { summary: "(index: number) => string" } },
     },
     header: {
       control: false,
       description: "Content displayed between the title and the first item.",
-      table: { type: { summary: "ReactNode" } },
     },
     rowClass: {
       control: "text",
       description: "CSS class applied to the row containing each item's fields.",
-      table: { type: { summary: "string" } },
     },
     panelHeading: {
       control: false,
       description: "HTML tag name for panel headers (e.g., 'h2', 'h3').",
-      table: { type: { summary: "keyof JSX.IntrinsicElements" } },
     },
     panelClassName: {
       control: "text",
       description: "CSS class for the wrapping Panel.",
-      table: { type: { summary: "string" } },
     },
     onAdd: {
       action: "item added",
       description: "Callback invoked when adding a new item. Receives the new index as parameter.",
-      table: { type: { summary: "(index: number) => void" } },
     },
     onRemove: {
       action: "item removed",
       description: "Callback invoked when removing an item. Receives the item's index as parameter.",
-      table: { type: { summary: "(index: number) => void" } },
     },
     children: {
       control: false,
       description: "Function that renders the fields for one item. Receives the item's index as parameter.",
-      table: { type: { summary: "(index: number) => ReactNode" } },
     },
   },
 } satisfies Meta<FormMultiInputProps>;

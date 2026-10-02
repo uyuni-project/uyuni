@@ -68,32 +68,23 @@ const meta = {
     value: {
       control: "text",
       description: "Currently selected value.",
-      table: { type: { summary: "string" } },
     },
     options: {
       control: "object",
       description: "Array of button options with value, label, icon, tooltip, and disabled state.",
-      table: {
-        type: {
-          summary: "{ value: string; label?: string; icon?: string; tooltip?: string; disabled?: boolean }[]",
-        },
-      },
     },
     onChange: {
       action: "changed",
       description: "Callback invoked when a button is clicked. Receives the selected value.",
-      table: { type: { summary: "(value: string) => void" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes for the button group container.",
-      table: { type: { summary: "string" } },
     },
     size: {
       control: "select",
       options: [undefined, "sm"],
       description: "Button size. Use 'sm' for small buttons.",
-      table: { type: { summary: '"sm" | undefined' } },
     },
   },
 } satisfies Meta<typeof ToggleButtonGroup>;

@@ -32,57 +32,46 @@ const meta = {
     id: {
       control: "text",
       description: "Unique ID for the dialog element.",
-      table: { type: { summary: "string" } },
     },
     type: {
       control: "text",
       description: "Action type identifier passed to onConfirm callback.",
-      table: { type: { summary: "string" } },
     },
     name: {
       control: "text",
       description: "Display name of the action (e.g., 'Delete', 'Remove', 'Archive').",
-      table: { type: { summary: "string" } },
     },
     itemName: {
       control: "text",
       description: "Singular name of the item type being acted upon (e.g., 'server', 'user', 'package').",
-      table: { type: { summary: "string" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome icon class for the action (e.g., 'fa-trash', 'fa-power-off').",
-      table: { type: { summary: "string" } },
     },
     selected: {
       control: false,
       description: "Array of selected items. Each item should have a 'name' property.",
-      table: { type: { summary: "{ name: string }[]" } },
     },
     canForce: {
       control: "boolean",
       description: "Whether to show a force checkbox for forceful action execution.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     forceName: {
       control: "text",
       description: "Label for the force option when canForce is true (e.g., 'Purge', 'Force delete').",
-      table: { type: { summary: "string" } },
     },
     onConfirm: {
       action: "confirmed",
       description: "Callback when user confirms the action. Receives (type, selected, { force: boolean }).",
-      table: { type: { summary: "(type: string, selected: any[], params: { force?: boolean }) => void" } },
     },
     onClose: {
       action: "closed",
       description: "Callback when dialog is closed (cancel or after confirm).",
-      table: { type: { summary: "() => void" } },
     },
     isOpen: {
       control: "boolean",
       description: "Controls dialog visibility.",
-      table: { type: { summary: "boolean" } },
     },
   },
 } satisfies Meta<ActionConfirmProps>;

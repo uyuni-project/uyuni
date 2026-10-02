@@ -43,32 +43,26 @@ const meta = {
     id: {
       control: "text",
       description: "HTML identifier assigned to the input.",
-      table: { type: { summary: "string" } },
     },
     value: {
       control: "text",
       description: "Current controlled value of the input.",
-      table: { type: { summary: "string | number | readonly string[]" } },
     },
     placeholder: {
       control: "text",
       description: "Hint displayed while the input is empty.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes for the input. Defaults to `form-control`.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "form-control" } },
     },
     onChange: {
       action: "changed",
       description: "Called with the input change event whenever its value changes.",
-      table: { type: { summary: "ChangeEventHandler<HTMLInputElement>" } },
     },
     onPressEnter: {
       action: "enter pressed",
       description: "Called with the keyboard event when Enter is pressed.",
-      table: { type: { summary: "(event: KeyboardEvent<HTMLInputElement>) => void" } },
     },
   },
   render: (args) => <ControlledTextField {...args} />,

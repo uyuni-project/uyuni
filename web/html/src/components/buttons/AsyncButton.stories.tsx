@@ -35,62 +35,51 @@ const meta = {
       control: false,
       description:
         "Action invoked on click. Return a promise to enable pending and result states, or `false`/void to reset.",
-      table: { type: { summary: "(...args: any[]) => Promise<any> | false | void" } },
     },
     text: {
       control: "text",
       description: "Content displayed after the icon. `children` can be used instead.",
-      table: { type: { summary: "ReactNode" } },
     },
     children: {
       control: false,
       description: "Alternative button content used when `text` is omitted.",
-      table: { type: { summary: "ReactNode" } },
     },
     icon: {
       control: "select",
       options: iconOptions,
       description: "Font Awesome class displayed before the button text.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Accessible name and tooltip text.",
-      table: { type: { summary: "string" } },
     },
     defaultType: {
       control: "select",
       options: buttonTypes,
       description: "Uyuni button variant used for the normal and pending states.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "btn-default" } },
     },
     initialValue: {
       control: "select",
       options: ["initial", "failure"],
       description: "Initial visual state of the button.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "initial" } },
     },
     type: {
       control: "select",
       options: ["button", "submit", "reset"],
       description: "Native HTML button type.",
-      table: { type: { summary: '"button" | "submit" | "reset"' }, defaultValue: { summary: "button" } },
     },
     disabled: {
       control: "boolean",
       description: "Prevents the action from being triggered.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes appended to the button.",
-      table: { type: { summary: "string" } },
     },
     tooltipPlacement: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
       description: "Preferred placement of the tooltip.",
-      table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
   render: (args) => <AsyncButton key={args.initialValue} {...args} />,

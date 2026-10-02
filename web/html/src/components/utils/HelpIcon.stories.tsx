@@ -23,7 +23,6 @@ const meta = {
       control: "text",
       description:
         "Tooltip text displayed when hovering over the icon. If `null` or empty, the component renders nothing.",
-      table: { type: { summary: "string | null" } },
     },
   },
 } satisfies Meta<typeof HelpIcon>;

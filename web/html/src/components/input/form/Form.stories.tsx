@@ -25,38 +25,31 @@ const meta = {
     model: {
       control: false,
       description: "Form data model object. Each key represents a field name.",
-      table: { type: { summary: "Record<string, any>" } },
     },
     onChange: {
       action: "form changed",
       description: "Callback when any form field changes. Receives the updated model.",
-      table: { type: { summary: "(model: Record<string, any>) => void" } },
     },
     onSubmit: {
       action: "form submitted",
       description: "Callback when form is submitted.",
-      table: { type: { summary: "() => void" } },
     },
     onValidate: {
       control: false,
       description: "Callback for custom form validation.",
-      table: { type: { summary: "(isValid: boolean) => void" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes for the form wrapper div.",
-      table: { type: { summary: "string" } },
     },
     formDirection: {
       control: "select",
       options: ["form-horizontal", "form-vertical"],
       description: "Form layout direction.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "form-horizontal" } },
     },
     className: {
       control: "text",
       description: "CSS classes for the form element.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<FormProps>;

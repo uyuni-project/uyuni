@@ -42,23 +42,19 @@ const meta = {
     label: {
       control: "text",
       description: "Placeholder text displayed in the dropdown.",
-      table: { type: { summary: "string" } },
     },
     criteria: {
       control: "text",
       description: "Initial selected value. If not provided or doesn't match an option, defaults to 'All'.",
-      table: { type: { summary: "string" } },
     },
     options: {
       control: "object",
       description: "Array of {value, label} objects for the dropdown options. 'All' is automatically prepended.",
-      table: { type: { summary: "Array<{value: string, label: string}>" } },
     },
     onSearch: {
       action: "search triggered",
       description:
         "Callback invoked when selection changes. Receives the selected value (empty string for 'All', otherwise the option value).",
-      table: { type: { summary: "(value: string) => void" } },
     },
   },
 } satisfies Meta<SelectSearchFieldProps>;

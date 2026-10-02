@@ -37,47 +37,38 @@ The new DangerDialog component uses React state management with better performan
     id: {
       control: "text",
       description: "Unique ID for the dialog.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Dialog title displayed in the header.",
-      table: { type: { summary: "ReactNode" } },
     },
     content: {
       control: false,
       description: "Content to display in the dialog body.",
-      table: { type: { summary: "ReactNode" } },
     },
     submitText: {
       control: "text",
       description: "Text for the danger/submit button.",
-      table: { type: { summary: "string" } },
     },
     submitIcon: {
       control: "text",
       description: "Icon for the danger/submit button (Font Awesome class).",
-      table: { type: { summary: "string" } },
     },
     btnClass: {
       control: "text",
       description: "CSS class for the submit button.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "btn-danger" } },
     },
     onConfirm: {
       action: "confirmed",
       description: "Callback when submit button is clicked (sync).",
-      table: { type: { summary: "(item?: any) => void" } },
     },
     onConfirmAsync: {
       action: "confirmed async",
       description: "Callback when submit button is clicked (async).",
-      table: { type: { summary: "() => Promise<any>" } },
     },
     item: {
       control: false,
       description: "Data item to pass to onConfirm callback.",
-      table: { type: { summary: "any" } },
     },
   },
 } satisfies Meta<LegacyDangerDialogProps>;

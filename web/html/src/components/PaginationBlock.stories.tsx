@@ -47,17 +47,14 @@ const meta = {
     currentPage: {
       control: { type: "number", min: 1, step: 1 },
       description: "Currently selected one-based page number.",
-      table: { type: { summary: "number" } },
     },
     lastPage: {
       control: { type: "number", min: 1, step: 1 },
       description: "Number of the final available page. Pagination is hidden when this is one.",
-      table: { type: { summary: "number" } },
     },
     onPageChange: {
       action: "page changed",
       description: "Called with the requested one-based page number.",
-      table: { type: { summary: "(page: number) => any" } },
     },
   },
   render: (args) => <StatefulPaginationBlock {...args} />,

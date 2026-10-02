@@ -76,92 +76,71 @@ const meta = {
     name: {
       control: "text",
       description: "Name of the field to map in the form model. Used as the HTML `name` attribute for all radios.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text displayed for the radio group.",
-      table: { type: { summary: "string" } },
     },
     items: {
       control: "object",
       description: "Array of radio options with label, value, optional title, and optional disabled state.",
-      table: {
-        type: {
-          summary: "{ label: ReactNode; value: string; title?: string; disabled?: boolean }[]",
-        },
-      },
     },
     defaultValue: {
       control: "text",
       description: "Initial selected value if none is set in the form model.",
-      table: { type: { summary: "string" } },
     },
     inline: {
       control: "boolean",
       description: "Display radio buttons horizontally in a line instead of vertically stacked.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     openOption: {
       control: "boolean",
       description: 'Add a custom text input option labeled "Other keyword" for values not in the predefined list.',
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     required: {
       control: "boolean",
       description: "Marks the field as required. Shows validation errors when no option is selected.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables all radio buttons in the group.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hint: {
       control: "text",
       description: "Help text displayed below the radio group.",
-      table: { type: { summary: "ReactNode" } },
     },
     invalidHint: {
       control: "text",
       description: "Error message shown when validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     validators: {
       control: false,
       description:
         "Array of validation functions. Each validator receives the value and returns `true` for valid or `false` for invalid.",
-      table: { type: { summary: "((value: string) => boolean | Promise<boolean>)[]" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes applied to the label element.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes applied to the wrapper div containing the radios and hints.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes applied to the form group wrapper.",
-      table: { type: { summary: "string" } },
     },
     inputClass: {
       control: "text",
       description: "CSS classes applied to each radio input element.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for the radio inputs.",
-      table: { type: { summary: "string" } },
     },
     onChange: {
       action: "changed",
       description: "Callback invoked when the selected value changes. Receives the field name and new value.",
-      table: { type: { summary: "(name: string, value: string) => void" } },
     },
   },
   render: (args) => <StatefulRadioInForm {...args} />,

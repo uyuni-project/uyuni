@@ -61,83 +61,67 @@ const meta = {
     name: {
       control: "text",
       description: "Name of the field to map in the form model. Used as the HTML `name` and `id` attributes.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text displayed for the field.",
-      table: { type: { summary: "string" } },
     },
     defaultValue: {
       control: "text",
       description: "Initial value if none is set in the form model.",
-      table: { type: { summary: "string" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder text displayed when the field is empty.",
-      table: { type: { summary: "string" } },
     },
     required: {
       control: "boolean",
       description: "Marks the field as required. Shows validation errors when empty.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the input field.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hint: {
       control: "text",
       description: "Help text displayed below the input.",
-      table: { type: { summary: "ReactNode" } },
     },
     invalidHint: {
       control: "text",
       description: "Error message shown when validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     validators: {
       control: false,
       description:
         "Array of validation functions. Each validator receives the value and returns `true` for valid or `false` for invalid. Can be sync or async.",
-      table: { type: { summary: "((value: string) => boolean | Promise<boolean>)[]" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes applied to the label element.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes applied to the wrapper div containing the input and hints.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes applied to the form group wrapper.",
-      table: { type: { summary: "string" } },
     },
     inputClass: {
       control: "text",
       description: "CSS classes applied directly to the input element.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for the input element.",
-      table: { type: { summary: "string" } },
     },
     autoComplete: {
       control: "text",
       description: "HTML autocomplete attribute. Use 'current-password' or 'new-password' for password managers.",
-      table: { type: { summary: "string" } },
     },
     onChange: {
       action: "changed",
       description: "Callback invoked when the input value changes. Receives the field name and new value.",
-      table: { type: { summary: "(name: string, value: string) => void" } },
     },
   },
   render: (args) => <StatefulPasswordInForm {...args} />,

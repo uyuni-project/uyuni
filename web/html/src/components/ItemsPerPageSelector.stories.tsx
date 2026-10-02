@@ -46,27 +46,22 @@ const meta = {
       control: "select",
       options: [5, 10, 15, 25, 50, 100, 250, 500],
       description: "Currently selected number of items per page.",
-      table: { type: { summary: "number" } },
     },
     itemCount: {
       control: { type: "number", min: 0, step: 1 },
       description: "Total number of items in the result set.",
-      table: { type: { summary: "number" } },
     },
     fromItem: {
       control: { type: "number", min: 0, step: 1 },
       description: "One-based number of the first visible item.",
-      table: { type: { summary: "number" } },
     },
     toItem: {
       control: { type: "number", min: 0, step: 1 },
       description: "One-based number of the last visible item.",
-      table: { type: { summary: "number" } },
     },
     onChange: {
       action: "page size changed",
       description: "Called with the selected page size.",
-      table: { type: { summary: "(value: number) => any" } },
     },
   },
   render: (args) => <StatefulItemsPerPageSelector {...args} />,

@@ -112,7 +112,6 @@ const meta = {
     systemId: 1000010001,
     getFormulaUrl: (formulaId) => `/storybook/formula/${formulaId}`,
     scope: "system",
-    messageTexts: {},
     addFormulaNavBar: (formulaList, activeFormulaId) =>
       action("formula navigation updated")({ formulaList, activeFormulaId }),
   },

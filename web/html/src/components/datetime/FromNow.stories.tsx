@@ -44,12 +44,10 @@ const meta = {
       options: timePresets,
       description:
         "Date/time value to display relative to now. Select from presets or use the text control to enter a custom ISO string.",
-      table: { type: { summary: "string | moment.Moment | Date" } },
     },
     children: {
       control: false,
       description: "Alternative way to provide the value as children. `value` prop takes precedence.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof FromNow>;

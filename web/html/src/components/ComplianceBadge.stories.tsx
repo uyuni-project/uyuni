@@ -24,17 +24,14 @@ const meta = {
     percentage: {
       control: { type: "number", min: 0, max: 100, step: 1 },
       description: "Compliance percentage used to select the badge color.",
-      table: { type: { summary: "number" } },
     },
     compliant: {
       control: { type: "number", min: 0, step: 1 },
       description: "Number of compliant scans displayed before the total.",
-      table: { type: { summary: "number" } },
     },
     total: {
       control: { type: "number", min: 0, step: 1 },
       description: "Total number of scans. A value of zero displays the no-scans state.",
-      table: { type: { summary: "number" } },
     },
   },
 } satisfies Meta<typeof ComplianceBadge>;

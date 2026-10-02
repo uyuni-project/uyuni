@@ -61,22 +61,18 @@ const meta = {
     items: {
       control: "object",
       description: "Ordered data items to display. An empty array renders no rows or placeholder.",
-      table: { type: { summary: "T[]" } },
     },
     renderItem: {
       control: false,
       description: "Function that renders one data item as a list row.",
-      table: { type: { summary: "(item: T) => JSX.Element" } },
     },
     itemKey: {
       control: false,
       description: "Function that returns a stable React key for one item.",
-      table: { type: { summary: "(item: T) => string | number" } },
     },
     defaultItemHeight: {
       control: { type: "number", min: 1, step: 1 },
       description: "Estimated row height used before the list has measured rendered items.",
-      table: { type: { summary: "number" } },
     },
   },
 } satisfies Meta<typeof ExampleVirtualList>;

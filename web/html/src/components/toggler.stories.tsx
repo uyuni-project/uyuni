@@ -48,27 +48,22 @@ const meta = {
     handler: {
       action: "toggled",
       description: "Called with the next boolean value when the toggle is activated.",
-      table: { type: { summary: "(value: boolean) => void" } },
     },
     text: {
       control: "text",
       description: "Label displayed alongside the toggle icon.",
-      table: { type: { summary: "ReactNode" } },
     },
     value: {
       control: "boolean",
       description: "Current boolean value represented by the toggle.",
-      table: { type: { summary: "boolean" } },
     },
     disabled: {
       control: "boolean",
       description: "Prevents interaction and applies muted styling.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the outer element.",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <ControlledToggler {...args} />,

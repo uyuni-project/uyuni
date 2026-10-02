@@ -23,11 +23,6 @@ const meta = {
       control: "object",
       description:
         "Message object(s) to display. Can be a single message or an array of messages. Each message has `severity` and `text` properties.",
-      table: {
-        type: {
-          summary: "MessageType | MessageType[]",
-        },
-      },
     },
   },
 } satisfies Meta<typeof Messages>;

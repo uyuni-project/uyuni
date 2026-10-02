@@ -19,7 +19,6 @@ const meta = {
     containerId: {
       control: "text",
       description: "Optional container ID for using multiple toast containers.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof MessagesContainer>;

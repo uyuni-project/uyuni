@@ -54,48 +54,39 @@ const meta = {
     id: {
       control: "text",
       description: "HTML identifier assigned to the underlying select.",
-      table: { type: { summary: "string" } },
     },
     name: {
       control: "text",
       description: "Form field name assigned to the underlying select.",
-      table: { type: { summary: "string" } },
     },
     options: {
       control: "object",
       description: "Existing values offered by the combobox.",
-      table: { type: { summary: "ComboboxItem[]" } },
     },
     selectedId: {
       control: "select",
       options: [1, 2, 3],
       description: "Identifier of the currently selected item.",
-      table: { type: { summary: "number | string | null" } },
     },
     placeholder: {
       control: "text",
       description: "Hint displayed when no item is selected.",
-      table: { type: { summary: "string" } },
     },
     onFocus: {
       action: "focused",
       description: "Called when the combobox receives focus.",
-      table: { type: { summary: "() => void" } },
     },
     onSelect: {
       action: "selected",
       description: "Called with the selected or newly created `{ id, text }` item.",
-      table: { type: { summary: "(value: ComboboxItem) => void" } },
     },
     getNewOptionData: {
       control: false,
       description: "Optional factory used by react-select to create a new option object from user input.",
-      table: { type: { summary: "(userInput: string, label: string) => object" } },
     },
     "data-testid": {
       control: "text",
       description: "Base identifier used to create test attributes for the select's internal elements.",
-      table: { type: { summary: "string" } },
     },
   },
   decorators: [

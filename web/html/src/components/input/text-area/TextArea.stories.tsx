@@ -54,102 +54,82 @@ const meta = {
     name: {
       control: "text",
       description: "Required form-model key and HTML name/id for the textarea.",
-      table: { type: { summary: "string" } },
     },
     defaultValue: {
       control: "text",
       description: "Initial value used when the form model has no value for `name`.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Form label displayed next to the textarea.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Native title assigned to the textarea.",
-      table: { type: { summary: "string" } },
     },
     hideLabel: {
       control: "boolean",
       description: "Hides the label while retaining the rest of the field layout.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hint: {
       control: "text",
       description: "Supporting content displayed below the textarea.",
-      table: { type: { summary: "ReactNode" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes applied to the field label.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes applied to the input-side wrapper.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes applied to the outer form group.",
-      table: { type: { summary: "string" } },
     },
     required: {
       control: "boolean",
       description: "Marks the field as required and enables required-value validation.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Prevents editing when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     validators: {
       control: false,
       description: "Synchronous or asynchronous validation function, or an array of validators.",
-      table: { type: { summary: "Validator | Validator[]" } },
     },
     invalidHint: {
       control: "text",
       description: "Message displayed when custom or required validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     onChange: {
       action: "value changed",
       description: "Called with the model key and new textarea value.",
-      table: { type: { summary: "(name: string | undefined, value: string) => void" } },
     },
     autoComplete: {
       control: "text",
       description: "Browser autocomplete hint passed through the field.",
-      table: { type: { summary: "string" } },
     },
     rows: {
       control: { type: "number", min: 1, step: 1 },
       description: "Visible number of text rows.",
-      table: { type: { summary: "number" } },
     },
     cols: {
       control: { type: "number", min: 1, step: 1 },
       description: "Suggested visible width measured in character columns.",
-      table: { type: { summary: "number" } },
     },
     placeholder: {
       control: "text",
       description: "Hint displayed while the textarea is empty.",
-      table: { type: { summary: "string" } },
     },
     inputClass: {
       control: "text",
       description: "Additional CSS classes applied directly to the textarea.",
-      table: { type: { summary: "string" } },
     },
     children: {
       control: false,
       description: "Reserved by `InputBase`; `TextArea` supplies its own input renderer.",
-      table: { type: { summary: "function" } },
     },
   },
   render: (args) => <StatefulTextArea {...args} />,

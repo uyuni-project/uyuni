@@ -31,22 +31,18 @@ const meta = {
     active: {
       control: "boolean",
       description: "Applies the active-tab presentation when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hash: {
       control: "text",
       description: "Hash URL assigned to the tab link. Defaults to `#`.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "#" } },
     },
     onClick: {
       action: "clicked",
       description: "Optional click handler, normally supplied by `TabContainer`.",
-      table: { type: { summary: "(...args: any[]) => any" } },
     },
     text: {
       control: "text",
       description: "Content displayed in the tab link.",
-      table: { type: { summary: "ReactNode" } },
     },
   },
 } satisfies Meta<typeof TabLabel>;

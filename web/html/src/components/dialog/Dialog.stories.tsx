@@ -63,47 +63,38 @@ const meta = {
     isOpen: {
       control: "boolean",
       description: "Whether the modal is currently visible.",
-      table: { type: { summary: "boolean" } },
     },
     onClose: {
       action: "closed",
       description: "Called when the close button, Escape key, or overlay requests that the dialog close.",
-      table: { type: { summary: "() => void" } },
     },
     id: {
       control: "text",
       description: "HTML identifier assigned to the modal.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the modal dialog element.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Content displayed in the dialog heading.",
-      table: { type: { summary: "ReactNode" } },
     },
     content: {
       control: "text",
       description: "Main content rendered in the dialog body.",
-      table: { type: { summary: "ReactNode" } },
     },
     footer: {
       control: "text",
       description: "Optional content rendered in the dialog footer.",
-      table: { type: { summary: "ReactNode" } },
     },
     hideHeader: {
       control: "boolean",
       description: "Hides the complete header, including its title and close button.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     closableModal: {
       control: "boolean",
       description: "Allows closing through the close button, Escape key, or overlay.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "true" } },
     },
   },
   render: (args) => <StatefulDialog {...args} />,

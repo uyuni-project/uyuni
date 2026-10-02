@@ -25,22 +25,18 @@ const meta = {
     name: {
       control: "text",
       description: "Visible label text.",
-      table: { type: { summary: "string" } },
     },
     htmlFor: {
       control: "text",
       description: "Identifier of the form control labelled by this element.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the label.",
-      table: { type: { summary: "string" } },
     },
     required: {
       control: "boolean",
       description: "Adds the required-field asterisk before the trailing colon.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
   },
 } satisfies Meta<typeof Label>;

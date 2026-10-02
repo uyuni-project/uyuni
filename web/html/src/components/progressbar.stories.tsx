@@ -24,17 +24,14 @@ const meta = {
     progress: {
       control: { type: "range", min: 0, max: 100, step: 1 },
       description: "Completion percentage shown as both text and bar width.",
-      table: { type: { summary: "number" } },
     },
     width: {
       control: "text",
       description: "CSS width of the progress bar wrapper. Defaults to `100%`.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "100%" } },
     },
     title: {
       control: "text",
       description: "Optional native tooltip text for the progress bar.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof ProgressBar>;

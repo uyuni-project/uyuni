@@ -31,17 +31,14 @@ const meta = {
     isError: {
       control: "boolean",
       description: "Adds the Bootstrap `has-error` class when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the row.",
-      table: { type: { summary: "string" } },
     },
     children: {
       control: false,
       description: "Form controls and supporting content rendered inside the row.",
-      table: { type: { summary: "ReactNode" } },
     },
   },
 } satisfies Meta<typeof FormGroup>;

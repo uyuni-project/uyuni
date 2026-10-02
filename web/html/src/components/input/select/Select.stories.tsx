@@ -108,104 +108,84 @@ const meta = {
     options: {
       control: "object",
       description: "Array of options to display in the dropdown.",
-      table: { type: { summary: "{ label: string; value: string }[]" } },
     },
     value: {
       control: "text",
       description: "Currently selected value. For multi-select, this is an array of values.",
-      table: { type: { summary: "string | string[] | undefined" } },
     },
     onChange: {
       action: "changed",
       description:
         "Callback invoked when selection changes. For single select receives the value, for multi-select receives an array of values.",
-      table: { type: { summary: "(value: string | string[] | undefined) => void" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder text displayed when no option is selected.",
-      table: { type: { summary: "ReactNode" } },
     },
     isClearable: {
       control: "boolean",
       description: "Allow clearing the selected value by clicking the clear button.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     isMulti: {
       control: "boolean",
       description: "Enable multi-select mode allowing selection of multiple options.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disable the select dropdown.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     isLoading: {
       control: "boolean",
       description: "Show a loading indicator inside the dropdown.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     name: {
       control: "text",
       description: "Name attribute for the select input.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "ARIA label for accessibility when no visual label is present.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the select container.",
-      table: { type: { summary: "string" } },
     },
     getOptionValue: {
       control: false,
       description: "Function to extract the value from an option object. Default: `option => option.value`",
-      table: { type: { summary: "(option: O) => V" } },
     },
     getOptionLabel: {
       control: false,
       description: "Function to extract the label from an option object. Default: `option => option.label`",
-      table: { type: { summary: "(option: O) => string" } },
     },
     formatOptionLabel: {
       control: false,
       description: "Custom renderer for option labels in the menu and control. Receives option and metadata.",
-      table: { type: { summary: "(option: any, meta: any) => ReactNode" } },
     },
     onBlur: {
       action: "blurred",
       description: "Callback invoked when the select loses focus.",
-      table: { type: { summary: "(event: React.FocusEvent<HTMLInputElement>) => void" } },
     },
     loadOptions: {
       control: false,
       description:
         "Async function to load options dynamically. Receives search string and returns a promise of options.",
-      table: { type: { summary: "(searchString: string) => Promise<O[]>" } },
     },
     cacheOptions: {
       control: "boolean",
       description: "Cache loaded async options to avoid redundant requests.",
-      table: { type: { summary: "boolean" } },
     },
     paginate: {
       control: "boolean",
       description: "Enable pagination for async options loading.",
-      table: { type: { summary: "boolean" } },
     },
     defaultValueOption: {
       control: false,
       description: "Default option object for async selects when the value is pre-selected.",
-      table: { type: { summary: "O" } },
     },
     "data-testid": {
       control: "text",
       description: "Test ID for automated testing.",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <StatefulSelect {...args} />,

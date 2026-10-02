@@ -28,42 +28,34 @@ const meta = {
     id: {
       control: "text",
       description: "HTML identifier for the Bootstrap modal dialog.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Dialog title displayed in the header.",
-      table: { type: { summary: "ReactNode" } },
     },
     content: {
       control: "text",
       description: "Main confirmation message or content.",
-      table: { type: { summary: "ReactNode" } },
     },
     item: {
       control: "object",
       description: "Data item being deleted, passed to the onConfirm callback.",
-      table: { type: { summary: "any" } },
     },
     onConfirm: {
       action: "confirmed",
       description: "Synchronous callback invoked when the Delete button is clicked. Receives the item as parameter.",
-      table: { type: { summary: "(item: any) => any" } },
     },
     onConfirmAsync: {
       control: false,
       description: "Alternative async callback that returns a Promise. Used for async delete operations.",
-      table: { type: { summary: "() => Promise<any>" } },
     },
     onClosePopUp: {
       action: "closed",
       description: "Called when the dialog is closed via Cancel, close button, or after confirmation.",
-      table: { type: { summary: "() => void" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes for the modal dialog.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof DeleteDialog>;

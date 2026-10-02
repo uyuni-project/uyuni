@@ -62,58 +62,47 @@ const meta = {
     name: {
       control: "text",
       description: "Name of the field to map in the form model. Used as the HTML `name` attribute.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text displayed for the date/time input.",
-      table: { type: { summary: "string" } },
     },
     defaultValue: {
       control: false,
       description: "Initial value if none is set in the form model. Must be a moment.Moment object.",
-      table: { type: { summary: "moment.Moment" } },
     },
     required: {
       control: "boolean",
       description: "Marks the field as required. Shows validation errors when empty.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the date/time picker.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hint: {
       control: "text",
       description: "Help text displayed below the input.",
-      table: { type: { summary: "ReactNode" } },
     },
     invalidHint: {
       control: "text",
       description: "Error message shown when validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     validators: {
       control: false,
       description:
         "Array of validation functions. Each validator receives the moment.Moment value and returns `true` for valid or `false` for invalid.",
-      table: { type: { summary: "((value: moment.Moment) => boolean | Promise<boolean>)[]" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes applied to the label element.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes applied to the wrapper div containing the picker and hints.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes applied to the form group wrapper.",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <StatefulDateTimeInForm {...args} />,

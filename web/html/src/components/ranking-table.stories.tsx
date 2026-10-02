@@ -44,7 +44,6 @@ const meta = {
     items: {
       control: false,
       description: "Items containing label, name, type, and optional one-based position fields.",
-      table: { type: { summary: "RankingItem[]" } },
     },
     emptyMsg: {
       control: "text",
@@ -53,7 +52,6 @@ const meta = {
     onUpdate: {
       action: "ranking updated",
       description: "Called with cloned items after their positions have been updated.",
-      table: { type: { summary: "(items: RankingItem[]) => any" } },
     },
   },
 } satisfies Meta<typeof RankingTable>;

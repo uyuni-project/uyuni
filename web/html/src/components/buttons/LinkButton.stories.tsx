@@ -28,60 +28,49 @@ const meta = {
     href: {
       control: "text",
       description: "Destination assigned to the anchor's `href` attribute.",
-      table: { type: { summary: "string" } },
     },
     target: {
       control: "select",
       options: ["_self", "_blank", "_parent", "_top"],
       description: "Browsing context in which to open the link. `_blank` automatically receives a safe `rel` value.",
-      table: { type: { summary: "string" } },
     },
     download: {
       control: "text",
       description: "Optional filename that makes the link download its target.",
-      table: { type: { summary: "string" } },
     },
     handler: {
       action: "clicked",
       description: "Optional callback invoked when the anchor is clicked.",
-      table: { type: { summary: "(...args: any[]) => any" } },
     },
     text: {
       control: "text",
       description: "Visible link content. `children` can be used instead.",
-      table: { type: { summary: "ReactNode" } },
     },
     children: {
       control: false,
       description: "Alternative content used when `text` is omitted.",
-      table: { type: { summary: "ReactNode" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome class displayed before the text.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "select",
       options: ["btn-primary", "btn-default", "btn-danger", "btn-tertiary"],
       description: "Uyuni button variant and optional additional CSS classes.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "btn-default" } },
     },
     title: {
       control: "text",
       description: "Accessible name and tooltip text.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Adds disabled styling to the link.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     tooltipPlacement: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
       description: "Preferred tooltip placement.",
-      table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
 } satisfies Meta<typeof LinkButton>;

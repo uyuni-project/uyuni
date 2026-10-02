@@ -24,27 +24,22 @@ const meta = {
     initialValues: {
       control: false,
       description: "Initial form values object. Each key represents a field name.",
-      table: { type: { summary: "Record<string, any>" } },
     },
     onSubmit: {
       control: false,
       description: "Callback when form is submitted. Receives values and Formik helpers.",
-      table: { type: { summary: "(values: any, helpers: FormikHelpers) => void | Promise<void>" } },
     },
     validationSchema: {
       control: false,
       description: "Yup validation schema for form validation.",
-      table: { type: { summary: "Yup.ObjectSchema" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes for field labels.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes for field wrapper divs.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<FormProps>;

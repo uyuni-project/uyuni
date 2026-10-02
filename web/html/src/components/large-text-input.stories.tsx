@@ -50,62 +50,50 @@ const meta = {
     name: {
       control: "text",
       description: "Prefix used for the mode, upload, and pasted-data form-model keys.",
-      table: { type: { summary: "string" } },
     },
     required: {
       control: "boolean",
       description: "Removes the `Not needed` choice and initially selects file upload when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     label: {
       control: "text",
       description: "Label displayed for the input-mode choices.",
-      table: { type: { summary: "string" } },
     },
     hint: {
       control: "text",
       description: "Supporting text displayed below the input-mode choices.",
-      table: { type: { summary: "string" } },
     },
     notNeededOptionLabel: {
       control: "text",
       description: "Custom label for the optional no-data mode.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Not needed" } },
     },
     uploadOptionLabel: {
       control: "text",
       description: "Custom label for the file-upload mode.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Upload a file" } },
     },
     pasteOptionLabel: {
       control: "text",
       description: "Custom label for the pasted-data mode.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Paste the data" } },
     },
     uploadLabel: {
       control: "text",
       description: "Label displayed beside the file input.",
-      table: { type: { summary: "string" } },
     },
     uploadHint: {
       control: "text",
       description: "Supporting text displayed below the file input.",
-      table: { type: { summary: "string" } },
     },
     pasteLabel: {
       control: "text",
       description: "Label displayed beside the paste textarea.",
-      table: { type: { summary: "string" } },
     },
     pasteHint: {
       control: "text",
       description: "Supporting text displayed below the paste textarea.",
-      table: { type: { summary: "string" } },
     },
     pastePlaceholder: {
       control: "text",
       description: "Placeholder displayed in the paste textarea.",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <StatefulLargeTextInput key={`${args.name}-${args.required}`} {...args} />,

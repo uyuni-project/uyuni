@@ -28,57 +28,46 @@ const meta = {
       control: "select",
       options: ["h1", "h2", "h3", "h4", "h5", "h6"],
       description: "HTML heading element used for the panel title.",
-      table: { type: { summary: "keyof JSX.IntrinsicElements" }, defaultValue: { summary: "h1" } },
     },
     collapseId: {
       control: "text",
       description: "Unique identifier that enables the collapsible panel body when provided.",
-      table: { type: { summary: "string | null" } },
     },
     customIconClass: {
       control: "text",
       description: "Additional classes applied to the collapse chevrons.",
-      table: { type: { summary: "string | null" } },
     },
     title: {
       control: "text",
       description: "Text displayed in the panel heading.",
-      table: { type: { summary: "string | null" } },
     },
     className: {
       control: "text",
       description: "Panel variant or other CSS classes.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "panel-default" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome class displayed before the title.",
-      table: { type: { summary: "string | null" } },
     },
     header: {
       control: "text",
       description: "Additional content rendered inside the panel heading.",
-      table: { type: { summary: "ReactNode" } },
     },
     footer: {
       control: "text",
       description: "Content rendered in the panel footer.",
-      table: { type: { summary: "ReactNode" } },
     },
     children: {
       control: "text",
       description: "Main panel body content.",
-      table: { type: { summary: "ReactNode" } },
     },
     buttons: {
       control: false,
       description: "Action content positioned on the right side of the heading.",
-      table: { type: { summary: "ReactNode" } },
     },
     collapsClose: {
       control: "boolean",
       description: "Starts a collapsible panel closed when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
   },
 } satisfies Meta<typeof Panel>;

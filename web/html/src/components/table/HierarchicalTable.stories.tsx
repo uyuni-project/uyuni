@@ -85,48 +85,39 @@ The new Table component with expandable rows is simpler, faster, and better inte
     data: {
       control: false,
       description: "Array of hierarchical data. Each item should have id, parentId, and optional children array.",
-      table: { type: { summary: "HierarchicalRow[]" } },
     },
     identifier: {
       control: false,
       description: "Function to extract unique identifier from each row.",
-      table: { type: { summary: "(row: HierarchicalRow) => string | number" } },
     },
     initiallyExpanded: {
       control: "boolean",
       description: "Whether all rows should be expanded initially.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     expandColumnKey: {
       control: "text",
       description: "Column key where expand/collapse controls should appear.",
-      table: { type: { summary: "string" } },
     },
     initialSortColumnKey: {
       control: "text",
       description: "Column key to sort by initially.",
-      table: { type: { summary: "string" } },
     },
     initialSortDirection: {
       control: "select",
       options: [1, -1],
       description: "Initial sort direction: 1 for ascending, -1 for descending.",
-      table: { type: { summary: "1 | -1" } },
     },
     selectable: {
       control: "boolean",
       description: "Enable row selection with checkboxes.",
-      table: { type: { summary: "boolean | ((row: any) => boolean)" } },
     },
     onSelect: {
       action: "rows selected",
       description: "Callback when selection changes.",
-      table: { type: { summary: "(items: any[]) => void" } },
     },
     indentSize: {
       control: "number",
       description: "Indent size in pixels per nesting level.",
-      table: { type: { summary: "number" }, defaultValue: { summary: "20" } },
     },
   },
 } satisfies Meta<HierarchicalTableProps>;

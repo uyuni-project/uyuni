@@ -26,37 +26,30 @@ const meta = {
     title: {
       control: "text",
       description: "Section heading text.",
-      table: { type: { summary: "string" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome class displayed before the heading.",
-      table: { type: { summary: "string" } },
     },
     buttons: {
       control: false,
       description: "Actions placed on the right side of the section toolbar.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     buttonsLeft: {
       control: false,
       description: "Actions placed on the left side of the section toolbar.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     children: {
       control: "text",
       description: "Main content displayed inside the bordered panel body.",
-      table: { type: { summary: "ReactNode" } },
     },
     summary: {
       control: "text",
       description: "Optional explanatory content displayed below the heading.",
-      table: { type: { summary: "ReactNode" } },
     },
     helpUrl: {
       control: "text",
       description: "Documentation path used to display a help link beside the heading.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof InnerPanel>;

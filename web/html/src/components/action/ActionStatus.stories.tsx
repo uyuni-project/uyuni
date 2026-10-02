@@ -24,19 +24,16 @@ const meta = {
     serverId: {
       control: "text",
       description: "ID of the server the action is running on. Used to construct the link URL.",
-      table: { type: { summary: "string" } },
     },
     actionId: {
       control: "text",
       description: "ID of the action to display. Used to construct the link URL.",
-      table: { type: { summary: "string" } },
     },
     status: {
       control: "select",
       options: ["Queued", "Failed", "Completed", "Picked Up"],
       description:
         "Status name of the action. Determines the icon and color: Queued (clock), Failed (X), Completed (checkmark), Picked Up (exchange).",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof ActionStatus>;

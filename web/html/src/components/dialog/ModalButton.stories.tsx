@@ -27,42 +27,34 @@ const meta = {
     text: {
       control: "text",
       description: "Text label displayed on the button.",
-      table: { type: { summary: "string" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome icon class (e.g., 'fa-edit', 'fa-plus').",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes for the button. Use Bootstrap button classes (btn-default, btn-primary, etc.).",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for tooltip on hover.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the button and prevents modal from opening.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     target: {
       control: "text",
       description: "ID of the modal dialog to show when button is clicked.",
-      table: { type: { summary: "string" } },
     },
     onClick: {
       action: "clicked",
       description: "Callback invoked before showing the modal. Receives the item prop as parameter.",
-      table: { type: { summary: "(item?: any) => void" } },
     },
     item: {
       control: false,
       description: "Optional data object passed to onClick callback.",
-      table: { type: { summary: "any" } },
     },
   },
 } satisfies Meta<typeof ModalButton>;

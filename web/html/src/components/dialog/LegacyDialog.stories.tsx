@@ -35,32 +35,26 @@ The new Dialog component uses React state management with better performance and
     id: {
       control: "text",
       description: "Unique ID for the dialog.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Dialog title displayed in the header.",
-      table: { type: { summary: "ReactNode" } },
     },
     content: {
       control: false,
       description: "Content to display in the dialog body.",
-      table: { type: { summary: "ReactNode" } },
     },
     buttons: {
       control: false,
       description: "Footer buttons for the dialog.",
-      table: { type: { summary: "ReactNode" } },
     },
     closableModal: {
       control: "boolean",
       description: "Whether the dialog can be closed by clicking outside or pressing ESC.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "true" } },
     },
     autoFocus: {
       control: "boolean",
       description: "Automatically focus the first input when dialog opens.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "true" } },
     },
   },
 } satisfies Meta<LegacyDialogProps>;

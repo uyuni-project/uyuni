@@ -34,27 +34,22 @@ const meta = {
     id: {
       control: "text",
       description: "Entity identifier inserted into the generated Uyuni URL.",
-      table: { type: { summary: "string | number" } },
     },
     newWindow: {
       control: "boolean",
       description: "Opens the target in a new window and adds `noopener noreferrer` when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     children: {
       control: "text",
       description: "Visible content of link variants that accept children.",
-      table: { type: { summary: "ReactNode" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes supported by the action, system, chain, group, and package links.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Optional native tooltip text supported by `ChannelLink`.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof ChannelLink>;

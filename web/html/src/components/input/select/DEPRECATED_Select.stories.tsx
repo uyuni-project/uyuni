@@ -78,37 +78,30 @@ This component uses the old form context and will be removed in a future release
     name: {
       control: "text",
       description: "Name of the field in the form model.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text for the select.",
-      table: { type: { summary: "string" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder text when no option is selected.",
-      table: { type: { summary: "ReactNode" } },
     },
     options: {
       control: "object",
       description: "Array of options with value and label properties.",
-      table: { type: { summary: "Array<{value: string, label: string}>" } },
     },
     isClearable: {
       control: "boolean",
       description: "Allow clearing the selected value.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     isMulti: {
       control: "boolean",
       description: "Allow selecting multiple values.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disable the select.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
   },
   render: (args) => <StatefulSelectInForm {...args} />,

@@ -24,12 +24,10 @@ const meta = {
       control: "text",
       description:
         "Relative documentation URL (without the `/docs/{locale}/` prefix). The locale is determined from user preferences.",
-      table: { type: { summary: "string" } },
     },
     text: {
       control: "text",
       description: 'Tooltip text for the help icon. Defaults to "Help" if not provided.',
-      table: { type: { summary: "string" }, defaultValue: { summary: "Help" } },
     },
   },
 } satisfies Meta<typeof HelpLink>;

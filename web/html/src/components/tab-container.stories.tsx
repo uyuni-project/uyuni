@@ -31,28 +31,23 @@ const meta = {
     labels: {
       control: "object",
       description: "Ordered labels for the tabs. Use `null` at an index to hide that label.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     hashes: {
       control: "object",
       description: "Ordered URL hashes corresponding to `labels` and `tabs`; each value must begin with `#`.",
-      table: { type: { summary: "string[]" } },
     },
     tabs: {
       control: false,
       description: "Ordered content nodes corresponding to the hash at the same index.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     initialActiveTabHash: {
       control: "select",
       options: tabHashes,
       description: "Hash selected when the component is initialized or receives updated props.",
-      table: { type: { summary: "string" } },
     },
     onTabHashChange: {
       action: "tab changed",
       description: "Called with the newly selected hash.",
-      table: { type: { summary: "(hash: string) => any" } },
     },
   },
 } satisfies Meta<typeof TabContainer>;

@@ -92,103 +92,83 @@ const meta = {
     data: {
       control: false,
       description: "Array of data items or URL endpoint string. Each item represents a row.",
-      table: { type: { summary: "any[] | string" } },
     },
     identifier: {
       control: false,
       description: "Function that extracts a unique key from each row object.",
-      table: { type: { summary: "(row: any) => any" } },
     },
     initialSortColumnKey: {
       control: "text",
       description: "Column key to sort by initially.",
-      table: { type: { summary: "string" } },
     },
     initialSortDirection: {
       control: "select",
       options: [1, -1],
       description: "Initial sort direction: 1 for ascending, -1 for descending.",
-      table: { type: { summary: "1 | -1" } },
     },
     initialItemsPerPage: {
       control: "number",
       description: "Number of rows to display per page.",
-      table: { type: { summary: "number" } },
     },
     selectable: {
       control: "boolean",
       description: "Enable row selection with checkboxes. Can also be a function for conditional selection.",
-      table: { type: { summary: "boolean | ((row: any) => boolean)" } },
     },
     onSelect: {
       action: "rows selected",
       description: "Callback when selection changes. Receives array of selected row identifiers.",
-      table: { type: { summary: "(items: any[]) => void" } },
     },
     selectedItems: {
       control: false,
       description: "Array of currently selected row identifiers.",
-      table: { type: { summary: "any[]" } },
     },
     onSearch: {
       action: "search",
       description: "Callback when search input changes. Enables search field when provided.",
-      table: { type: { summary: "(criteria: string) => void" } },
     },
     searchField: {
       control: false,
       description: "Custom SearchField component for advanced search UI.",
-      table: { type: { summary: "ReactElement<SearchField>" } },
     },
     expandable: {
       control: "boolean",
       description: "Enable expandable rows. Rows with `children` array can be expanded.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     deletable: {
       control: "boolean",
       description: "Show delete buttons for rows. Can also be a function for conditional deletion.",
-      table: { type: { summary: "boolean | ((row: any) => boolean)" } },
     },
     onDelete: {
       action: "row deleted",
       description: "Callback when delete button is clicked. Receives the row object.",
-      table: { type: { summary: "(row: any) => void" } },
     },
     emptyText: {
       control: "text",
       description: "Message to display when there are no rows.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "No data available" } },
     },
     loading: {
       control: "boolean",
       description: "Show loading state.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     loadingText: {
       control: "text",
       description: "Message to display while loading.",
-      table: { type: { summary: "string" } },
     },
     stickyHeader: {
       control: "boolean",
       description: "Make table header sticky when scrolling.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     titleButtons: {
       control: false,
       description: "Action buttons to display in the table header.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     additionalFilters: {
       control: false,
       description: "Additional filter components to display above the table.",
-      table: { type: { summary: "ReactNode[]" } },
     },
     children: {
       control: false,
       description: "Column components defining the table structure.",
-      table: { type: { summary: "Column[]" } },
     },
   },
 } satisfies Meta<TableProps>;

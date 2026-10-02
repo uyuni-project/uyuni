@@ -57,73 +57,59 @@ const meta = {
     submitText: {
       control: "text",
       description: "Text displayed on the confirmation button.",
-      table: { type: { summary: "string" } },
     },
     submitIcon: {
       control: "text",
       description: "Font Awesome class displayed on the confirmation button.",
-      table: { type: { summary: "string" } },
     },
     btnClass: {
       control: "select",
       options: ["btn-danger", "btn-primary", "btn-default"],
       description: "Uyuni variant applied to the confirmation button.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "btn-danger" } },
     },
     item: {
       control: "object",
       description: "Caller-owned value passed to the synchronous confirmation callback.",
-      table: { type: { summary: "any" } },
     },
     onConfirm: {
       action: "confirmed",
       description: "Synchronous confirmation callback receiving `item`.",
-      table: { type: { summary: "(item: any) => any" } },
     },
     onConfirmAsync: {
       control: false,
       description: "Alternative promise-based confirmation callback.",
-      table: { type: { summary: "(item: any) => Promise<any>" } },
     },
     isOpen: {
       control: "boolean",
       description: "Whether the dialog is currently visible.",
-      table: { type: { summary: "boolean" } },
     },
     onClose: {
       action: "closed",
       description: "Called when confirmation, cancellation, or the dialog close control requests closure.",
-      table: { type: { summary: "() => void" } },
     },
     id: {
       control: "text",
       description: "HTML identifier assigned to the dialog.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the dialog element.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Content displayed in the dialog heading.",
-      table: { type: { summary: "ReactNode" } },
     },
     content: {
       control: "text",
       description: "Main confirmation message or content.",
-      table: { type: { summary: "ReactNode" } },
     },
     hideHeader: {
       control: "boolean",
       description: "Hides the dialog header.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     closableModal: {
       control: "boolean",
       description: "Allows closing through the close button, Escape key, or overlay.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "true" } },
     },
   },
   render: (args) => <StatefulDangerDialog {...args} />,

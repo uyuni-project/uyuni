@@ -60,53 +60,43 @@ const meta = {
     onSearch: {
       action: "criteria changed",
       description: "Called when a child reports a new search criterion.",
-      table: { type: { summary: "(criteria: string) => void" } },
     },
     onSearchField: {
       action: "field changed",
       description: "Called when a child reports a new search field.",
-      table: { type: { summary: "(field: string) => void" } },
     },
     criteria: {
       control: "text",
       description: "Current search criterion injected into child fields.",
-      table: { type: { summary: "string" } },
     },
     field: {
       control: "select",
       options: options.map((option) => option.value),
       description: "Current search-field value injected into child fields.",
-      table: { type: { summary: "string" } },
     },
     children: {
       control: false,
       description: "Search-field components that receive the panel's state and callbacks.",
-      table: { type: { summary: "ReactNode" } },
     },
     searchPanelInline: {
       control: "boolean",
       description: "Uses the compact inline layout when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     onClear: {
       control: false,
       description: "Selection-related compatibility callback; it is not rendered directly by `SearchPanel`.",
-      table: { type: { summary: "() => void" } },
     },
     onSelectAll: {
       control: false,
       description: "Selection-related compatibility callback; it is not rendered directly by `SearchPanel`.",
-      table: { type: { summary: "() => void" } },
     },
     selectedCount: {
       control: false,
       description: "Selection-related compatibility value; it is not rendered directly by `SearchPanel`.",
-      table: { type: { summary: "number" } },
     },
     selectable: {
       control: false,
       description: "Selection-related compatibility flag; it is not rendered directly by `SearchPanel`.",
-      table: { type: { summary: "boolean" } },
     },
   },
   render: (args) => <StatefulSearchPanel {...args} />,

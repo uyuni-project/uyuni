@@ -71,38 +71,31 @@ const meta = {
     filterOptions: {
       control: "object",
       description: "Definitions for available filters and their input type.",
-      table: { type: { summary: "FilterOption[]" } },
     },
     field: {
       control: "select",
       options: filterOptions.map((option) => option.value),
       description: "Value of the active filter definition.",
-      table: { type: { summary: "string" } },
     },
     criteria: {
       control: "text",
       description: "Current criterion passed to the active input.",
-      table: { type: { summary: "string" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder for text-filter input.",
-      table: { type: { summary: "string" } },
     },
     name: {
       control: "text",
       description: "HTML name assigned to numeric or text inputs.",
-      table: { type: { summary: "string" } },
     },
     onSearch: {
       action: "criteria changed",
       description: "Called when the active filter criterion changes.",
-      table: { type: { summary: "(criteria: string | null) => void" } },
     },
     onSearchField: {
       action: "field changed",
       description: "Called when a different filter definition is selected.",
-      table: { type: { summary: "(field: string) => void" } },
     },
   },
   render: (args) => <StatefulTableFilter {...args} />,

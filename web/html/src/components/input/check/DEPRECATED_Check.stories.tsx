@@ -62,37 +62,30 @@ This component uses the old form context and will be removed in a future release
     name: {
       control: "text",
       description: "Name of the field in the form model.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text displayed next to the checkbox.",
-      table: { type: { summary: "ReactNode" } },
     },
     defaultValue: {
       control: "boolean",
       description: "Initial checked state.",
-      table: { type: { summary: "boolean" } },
     },
     required: {
       control: "boolean",
       description: "Makes the checkbox required.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the checkbox.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for tooltip.",
-      table: { type: { summary: "string" } },
     },
     inputClass: {
       control: "text",
       description: "CSS class for the input element.",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <StatefulCheckInForm {...args} />,

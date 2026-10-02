@@ -112,7 +112,6 @@ const meta = {
       },
     },
   },
-  argTypes: {},
 } satisfies Meta<typeof SystemIndicators>;
 
 export default meta;

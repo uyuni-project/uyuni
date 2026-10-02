@@ -36,19 +36,16 @@ const meta = {
     name: {
       control: "text",
       description: "HTML name attribute for the numeric input field.",
-      table: { type: { summary: "string" } },
     },
     criteria: {
       control: "text",
       description:
         "Initial criteria value in the format 'matcher+value' (e.g., '>=100', '<50', '=42'). The component will parse this into matcher and value.",
-      table: { type: { summary: "string" } },
     },
     onSearch: {
       action: "search triggered",
       description:
         "Callback invoked when matcher or value changes. Receives a criteria string (e.g., '>=100') or null if value is empty.",
-      table: { type: { summary: "(criteria: string | null) => void" } },
     },
   },
 } satisfies Meta<NumericSearchFieldProps>;

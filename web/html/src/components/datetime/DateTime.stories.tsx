@@ -22,12 +22,10 @@ const meta = {
     value: {
       control: "text",
       description: "Timestamp to format, supplied as a string or Moment value.",
-      table: { type: { summary: "string | moment.Moment" } },
     },
     children: {
       control: false,
       description: "Alternative string timestamp used when `value` is omitted.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof DateTime>;

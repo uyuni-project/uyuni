@@ -38,19 +38,14 @@ const meta = {
     steps: {
       control: false,
       description: "Ordered step definitions containing a title, content, and optional validation callback.",
-      table: {
-        type: { summary: "{ title: string; content: ReactNode; validate?: () => boolean | Promise<boolean> }[]" },
-      },
     },
     onCreate: {
       action: "created",
       description: "Called when the user confirms the final step.",
-      table: { type: { summary: "() => void" } },
     },
     onCancel: {
       control: "text",
       description: "Destination used by the cancel link.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof StepsProgressBar>;

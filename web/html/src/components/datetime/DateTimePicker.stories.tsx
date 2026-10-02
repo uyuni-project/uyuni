@@ -53,42 +53,34 @@ const meta = {
     value: {
       control: false,
       description: "Current date/time value as a moment.js object.",
-      table: { type: { summary: "moment.Moment" } },
     },
     onChange: {
       action: "changed",
       description: "Callback invoked when date/time changes. Receives a moment.Moment object.",
-      table: { type: { summary: "(value: moment.Moment) => void" } },
     },
     id: {
       control: "text",
       description: "HTML identifier for the picker inputs (suffixed with _date and _time).",
-      table: { type: { summary: "string" } },
     },
     legacyId: {
       control: "text",
       description: "Legacy ID format for compatibility with Java DateTimePickerTag.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Disable the date and time pickers.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hideDatePicker: {
       control: "boolean",
       description: "Hide the date picker, showing only the time picker.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hideTimePicker: {
       control: "boolean",
       description: "Hide the time picker, showing only the date picker.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     serverTimeZone: {
       control: "boolean",
       description: "Use server timezone instead of user's configured timezone.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
   },
 } satisfies Meta<typeof DateTimePicker>;

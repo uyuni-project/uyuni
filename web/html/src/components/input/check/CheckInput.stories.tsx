@@ -50,22 +50,18 @@ const meta = {
     indeterminate: {
       control: "boolean",
       description: "Sets the checkbox's DOM `indeterminate` property.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     checked: {
       control: "boolean",
       description: "Current checked state of the checkbox.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Prevents the checkbox from being changed.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     onChange: {
       action: "changed",
       description: "Called with the checkbox's next checked value.",
-      table: { type: { summary: "(checked: boolean) => void" } },
     },
   },
   render: (args) => <ControlledCheckInput {...args} />,

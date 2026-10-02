@@ -27,53 +27,43 @@ const meta = {
     buttonLabel: {
       control: "text",
       description: "Text displayed on the trigger button.",
-      table: { type: { summary: "string" } },
     },
     buttonIcon: {
       control: "text",
       description: "Optional Font Awesome icon class for the button (e.g., 'fa-edit', 'fa-pencil').",
-      table: { type: { summary: "string" } },
     },
     modalTitle: {
       control: "text",
       description: "Title displayed in the modal dialog header.",
-      table: { type: { summary: "string" } },
     },
     fieldLabel: {
       control: "text",
       description: "Label for the text input field inside the modal.",
-      table: { type: { summary: "string" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder text for the input field.",
-      table: { type: { summary: "string" } },
     },
     value: {
       control: "text",
       description: "Initial value shown in the input field when the modal opens.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables the button and prevents opening the modal.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     validators: {
       control: false,
       description:
         "Array of validation functions. Each receives the value and returns true for valid, false for invalid.",
-      table: { type: { summary: "Validator | Validator[]" } },
     },
     invalidHint: {
       control: "text",
       description: "Error message displayed when validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     onSave: {
       action: "value saved",
       description: "Callback invoked when user clicks Save. Receives the new value as parameter.",
-      table: { type: { summary: "(value: string) => void | Promise<void>" } },
     },
   },
 } satisfies Meta<typeof ModalEditButton>;

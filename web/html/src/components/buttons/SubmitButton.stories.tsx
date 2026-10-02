@@ -23,39 +23,32 @@ const meta = {
     text: {
       control: "text",
       description: "Visible button content. `children` can be used instead.",
-      table: { type: { summary: "ReactNode" } },
     },
     children: {
       control: false,
       description: "Alternative content used when `text` is omitted.",
-      table: { type: { summary: "ReactNode" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome class displayed before the text.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "select",
       options: ["btn-primary", "btn-default", "btn-danger", "btn-tertiary"],
       description: "Uyuni button variant and optional additional CSS classes.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "Accessible name and tooltip text.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Prevents form submission when enabled.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     tooltipPlacement: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
       description: "Preferred tooltip placement.",
-      table: { type: { summary: '"top" | "right" | "bottom" | "left"' } },
     },
   },
   render: (args) => (

@@ -40,12 +40,10 @@ const meta = {
     top: {
       control: "text",
       description: "Numeric top offset in pixels, without the `px` suffix.",
-      table: { type: { summary: "string" } },
     },
     children: {
       control: false,
       description: "Selection controls and action buttons rendered inside the toolbar.",
-      table: { type: { summary: "ReactNode" } },
     },
   },
 } satisfies Meta<typeof SectionToolbar>;

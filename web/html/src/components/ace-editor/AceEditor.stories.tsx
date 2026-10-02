@@ -60,7 +60,6 @@ const meta = {
     content: {
       control: "text",
       description: "Editor content.",
-      table: { type: { summary: "string" } },
     },
     minLines: {
       control: { type: "number", min: 1 },

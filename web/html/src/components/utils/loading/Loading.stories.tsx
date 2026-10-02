@@ -21,12 +21,10 @@ const meta = {
     text: {
       control: "text",
       description: "Text displayed below the spinner. Defaults to 'Loading...' if not provided.",
-      table: { type: { summary: "string" } },
     },
     withBorders: {
       control: "boolean",
       description: "Show horizontal line separators above and below the loading content.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
   },
 } satisfies Meta<typeof Loading>;

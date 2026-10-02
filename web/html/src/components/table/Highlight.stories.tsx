@@ -23,22 +23,18 @@ const meta = {
     text: {
       control: "text",
       description: "Complete text to display.",
-      table: { type: { summary: "string" } },
     },
     highlight: {
       control: "text",
       description: "Case-insensitive substring to mark within `text`.",
-      table: { type: { summary: "string" } },
     },
     enabled: {
       control: "boolean",
       description: "Enables substring highlighting. Disabled text is rendered unchanged.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes applied to the outer span.",
-      table: { type: { summary: "string" } },
     },
   },
 } satisfies Meta<typeof Highlight>;

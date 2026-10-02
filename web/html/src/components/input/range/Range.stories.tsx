@@ -66,78 +66,63 @@ const meta = {
       control: "text",
       description:
         "Name prefix for the two fields. Creates `{prefix}_start` and `{prefix}_end` fields in the form model.",
-      table: { type: { summary: "string" } },
     },
     label: {
       control: "text",
       description: "Label text displayed for the range input group.",
-      table: { type: { summary: "string" } },
     },
     defaultStart: {
       control: "text",
       description: "Default value for the start field if not set in the form model.",
-      table: { type: { summary: "string" } },
     },
     defaultEnd: {
       control: "text",
       description: "Default value for the end field if not set in the form model.",
-      table: { type: { summary: "string" } },
     },
     placeholder: {
       control: "text",
       description: "Placeholder text for both start and end inputs.",
-      table: { type: { summary: "string" } },
     },
     required: {
       control: "boolean",
       description: "Marks both fields as required. Shows validation errors when empty.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     disabled: {
       control: "boolean",
       description: "Disables both input fields.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     hint: {
       control: "text",
       description: "Help text displayed below the inputs.",
-      table: { type: { summary: "ReactNode" } },
     },
     invalidHint: {
       control: "text",
       description: "Error message shown when validation fails.",
-      table: { type: { summary: "ReactNode" } },
     },
     validators: {
       control: false,
       description:
         "Array of validation functions. Receives an object with both values: `{ prefix_start: string, prefix_end: string }`.",
-      table: { type: { summary: "((values: object) => boolean | Promise<boolean>)[]" } },
     },
     labelClass: {
       control: "text",
       description: "CSS classes applied to the label element.",
-      table: { type: { summary: "string" } },
     },
     divClass: {
       control: "text",
       description: "CSS classes applied to the wrapper div containing the inputs and hints.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "CSS classes applied to the form group wrapper.",
-      table: { type: { summary: "string" } },
     },
     inputClass: {
       control: "text",
       description: "CSS classes applied directly to both input elements.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for the input elements (suffixed with 'start' and 'end').",
-      table: { type: { summary: "string" } },
     },
   },
   render: (args) => <StatefulRangeInForm {...args} />,

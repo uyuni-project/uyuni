@@ -55,38 +55,28 @@ const meta = {
     data: {
       control: "object",
       description: "Tree data structure containing items and root ID.",
-      table: {
-        type: {
-          summary: "{ rootId: string; items: TreeItem[] }",
-        },
-      },
     },
     renderItem: {
       control: false,
       description:
         "Function to render each tree item. Receives the item and a renderNameColumn helper for the expandable name column.",
-      table: { type: { summary: "(item: TreeItem, renderNameColumn: (name: ReactNode) => ReactNode) => ReactNode" } },
     },
     header: {
       control: false,
       description: "Optional header content displayed above the tree.",
-      table: { type: { summary: "ReactNode" } },
     },
     initiallyExpanded: {
       control: "object",
       description: "Array of item IDs that should be expanded when the tree first renders.",
-      table: { type: { summary: "string[]" } },
     },
     initiallySelected: {
       control: "object",
       description: "Array of item IDs that should be selected (checked) when the tree first renders.",
-      table: { type: { summary: "string[]" } },
     },
     onItemSelectionChanged: {
       action: "selection changed",
       description:
         "Callback when a checkbox is toggled. When provided, checkboxes appear next to each item. Receives the item and checked state.",
-      table: { type: { summary: "(item: TreeItem, checked: boolean) => void" } },
     },
   },
 } satisfies Meta<typeof Tree>;

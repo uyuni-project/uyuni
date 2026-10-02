@@ -41,52 +41,42 @@ const meta = {
     value: {
       control: "text",
       description: "Stored text value. `null` represents an attachment that has not been provided.",
-      table: { type: { summary: "string | null" } },
     },
     filename: {
       control: "text",
       description: "Suggested filename used by the download action.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "attachment.txt" } },
     },
     hideMessage: {
       control: "boolean",
       description: "Hides the status message displayed before the action buttons.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     presentMessage: {
       control: "text",
       description: "Status message displayed when `value` is present.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Data is present." } },
     },
     absentMessage: {
       control: "text",
       description: "Status message displayed when `value` is `null`.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Data is not present." } },
     },
     editable: {
       control: "boolean",
       description: "Shows add or edit controls and, when data is present, the delete control.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     downloadable: {
       control: "boolean",
       description: "Shows the download action when data is present.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "true" } },
     },
     editDialogTitle: {
       control: "text",
       description: "Heading used by the add and edit dialog.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Edit" } },
     },
     editMessage: {
       control: "text",
       description: "Optional explanatory message displayed above the edit form.",
-      table: { type: { summary: "string" } },
     },
     confirmDeleteMessage: {
       control: "text",
       description: "Message displayed in the delete confirmation dialog.",
-      table: { type: { summary: "string" }, defaultValue: { summary: "Are you sure?" } },
     },
     buttonMode: {
       control: "select",
@@ -97,25 +87,18 @@ const meta = {
         [ButtonMode.Icon]: "Icon",
       },
       description: "Determines whether action buttons display text, icons, or both.",
-      table: {
-        type: { summary: "ButtonMode" },
-        defaultValue: { summary: "ButtonMode.TextAndIcon" },
-      },
     },
     disabled: {
       control: "boolean",
       description: "Disables all available attachment actions.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     onEdit: {
       control: false,
       description: "Promise-based callback invoked with the replacement text after a valid edit is submitted.",
-      table: { type: { summary: "(value: string) => Promise<any>" } },
     },
     onDelete: {
       control: false,
       description: "Promise-based callback invoked after deletion is confirmed.",
-      table: { type: { summary: "() => Promise<any>" } },
     },
   },
 } satisfies Meta<typeof LargeTextAttachment>;

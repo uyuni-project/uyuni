@@ -25,47 +25,38 @@ const meta = {
     target: {
       control: "text",
       description: "ID of the modal dialog to open.",
-      table: { type: { summary: "string" } },
     },
     text: {
       control: "text",
       description: "Link text to display.",
-      table: { type: { summary: "ReactNode" } },
     },
     icon: {
       control: "text",
       description: "Font Awesome icon class to display before the text.",
-      table: { type: { summary: "string" } },
     },
     id: {
       control: "text",
       description: "HTML identifier for the link element.",
-      table: { type: { summary: "string" } },
     },
     className: {
       control: "text",
       description: "Additional CSS classes appended to the button. Base class is 'btn-tertiary'.",
-      table: { type: { summary: "string" } },
     },
     title: {
       control: "text",
       description: "HTML title attribute for accessibility.",
-      table: { type: { summary: "string" } },
     },
     disabled: {
       control: "boolean",
       description: "Disable the link.",
-      table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
     },
     item: {
       control: "object",
       description: "Optional data passed to the onClick callback.",
-      table: { type: { summary: "any" } },
     },
     onClick: {
       action: "clicked",
       description: "Callback invoked before opening the modal. Receives the item as parameter.",
-      table: { type: { summary: "(item: any) => any" } },
     },
   },
 } satisfies Meta<typeof ModalLink>;
