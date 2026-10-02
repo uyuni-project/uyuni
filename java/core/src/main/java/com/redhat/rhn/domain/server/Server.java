@@ -2587,13 +2587,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Return <code>true</code> if OS on this system supports Transactional Update,
-     * <code>false</code> otherwise.
+     * Return the effective transactional classification of this system.
      *
-     * @return <code>true</code> if OS supports Transactional Update
+     * @return <code>true</code> if the system has to be treated as transactional
      */
-    public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
+    public boolean isTransactionalUpdate() {
+        return ServerConstants.isTransactionalByOsName(getOs());
     }
 
     /**

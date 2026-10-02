@@ -334,7 +334,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         request.setAttribute("has_script_run",
                               SystemManager.clientCapable(server.getId(), "script.run"));
         request.setAttribute("has_transactional_update",
-                              server.doesOsSupportsTransactionalUpdate());
+                              server.isTransactionalUpdate());
 
         // Process submit
         if (form.get(RhnAction.SUBMITTED) != null) {

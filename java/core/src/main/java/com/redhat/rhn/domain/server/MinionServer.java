@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -71,6 +73,10 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Column(name = "container_runtime")
     private String containerRuntime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transactional_mode")
+    private TransactionalMode transactionalMode = TransactionalMode.UNKNOWN;
 
     @Column
     private String uname;
@@ -372,6 +378,44 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setContainerRuntime(String containerRuntimeIn) {
         this.containerRuntime = containerRuntimeIn;
+    }
+
+    /**
+     * @return the mode indicated by the transactional grain
+     */
+    public TransactionalMode getTransactionalMode() {
+        return transactionalMode;
+    }
+
+    /**
+     * @param transactionalModeIn the mode indicated by the transactional grain
+     */
+    public void setTransactionalMode(TransactionalMode transactionalModeIn) {
+        this.transactionalMode = transactionalModeIn;
+    }
+
+    /**
+     * Update the mode indicated by the transactional grain when it has a valid boolean value.
+     *
+     * @param transactional the transactional grain, if present and valid
+     */
+    public void updateTransactionalMode(Optional<Boolean> transactional) {
+        transactional.ifPresent(value -> setTransactionalMode(
+                value ? TransactionalMode.TRANSACTIONAL : TransactionalMode.NON_TRANSACTIONAL));
+    }
+
+    /**
+     * Return the effective transactional classification of this minion.
+     *
+     * A valid observation of the transactional grain prevails over the operating system name.
+     * While the observation is still {@link TransactionalMode#UNKNOWN} the classification by
+     * the operating system name is used as a fallback.
+     *
+     * @return <code>true</code> if the minion has to be treated as transactional
+     */
+    @Override
+    public boolean isTransactionalUpdate() {
+        return transactionalMode.isTransactional(getOs());
     }
 
     /**

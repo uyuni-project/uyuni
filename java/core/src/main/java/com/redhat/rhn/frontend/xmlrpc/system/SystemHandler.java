@@ -9552,7 +9552,7 @@ public class SystemHandler extends BaseHandler {
                 .asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException(
                         "System " + sid + " is not a Salt minion"));
-        if (!minion.doesOsSupportsTransactionalUpdate()) {
+        if (!minion.isTransactionalUpdate()) {
             throw new UnsupportedOperationException(
                     "System " + sid + " is not a transactional system");
         }
@@ -9584,7 +9584,7 @@ public class SystemHandler extends BaseHandler {
                 .asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException(
                         "System " + sid + " is not a Salt minion"));
-        if (!minion.doesOsSupportsTransactionalUpdate()) {
+        if (!minion.isTransactionalUpdate()) {
             throw new UnsupportedOperationException(
                     "System " + sid + " is not a transactional system");
         }

@@ -376,6 +376,6 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable<Sys
     private static boolean hasTransactionalSystems(Collection<Long> serverIds, User user) {
         return serverIds.stream()
                 .map(id -> SystemManager.lookupByIdAndUser(id, user))
-                .anyMatch(Server::doesOsSupportsTransactionalUpdate);
+                .anyMatch(Server::isTransactionalUpdate);
     }
 }

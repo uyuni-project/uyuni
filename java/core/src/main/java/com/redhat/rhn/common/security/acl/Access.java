@@ -745,7 +745,7 @@ public class Access extends BaseHandler {
             return false;
         }
 
-        return server.doesOsSupportsTransactionalUpdate();
+        return server.isTransactionalUpdate();
     }
 
     /**

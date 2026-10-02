@@ -89,7 +89,7 @@ public class SystemDetailsMessageFilter implements Filter {
     private void processMinionMessages(HttpServletRequest req, MinionServer minion) {
         addMessageIfNecessary(
             req,
-            minion.doesOsSupportsTransactionalUpdate() && Boolean.TRUE.equals(minion.isRebootNeeded()),
+            minion.isTransactionalUpdate() && Boolean.TRUE.equals(minion.isRebootNeeded()),
             REBOOT_MESSAGE_KEY
         );
     }

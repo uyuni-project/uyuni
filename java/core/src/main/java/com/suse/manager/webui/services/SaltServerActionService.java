@@ -1303,7 +1303,7 @@ public class SaltServerActionService {
                 long actionId = checkActionID(actionStateApply);
                 minionServerOpt.ifPresent(minionServer -> {
 
-                        if (minionServer.doesOsSupportsTransactionalUpdate() &&
+                        if (minionServer.isTransactionalUpdate() &&
                                 actionId != 0 && checkIfRebootRequired(actionStateApply)) {
                             /*
                              * Transactional update does not contain reboot in sls files, but apply a reboot using

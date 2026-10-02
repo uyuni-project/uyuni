@@ -233,7 +233,8 @@ public class MinionServerFactory extends HibernateFactory {
                                    s.digitalServerId,
                                    s.machineId,
                                    c.label,
-                                   s.os
+                                   s.os,
+                                   s.transactionalMode
                                    )
                         FROM   ServerAction AS sa
                         JOIN   sa.server AS s

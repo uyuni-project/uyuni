@@ -1,4 +1,1 @@
-- Store snapshot information and transactional action workflow
-  history.
-- Add transactional-update options for actions and recurring
-  states.
+- Add schema support for transactional system management

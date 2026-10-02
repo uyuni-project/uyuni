@@ -891,6 +891,7 @@ public class SaltUtils {
     public void updateSystemInfo(SystemInfo systemInfo, MinionServer minion) {
         systemInfo.getKerneRelese().ifPresent(minion::setRunningKernel);
         systemInfo.getKernelLiveVersion().ifPresent(minion::setKernelLiveVersion);
+        minion.updateTransactionalMode(systemInfo.getTransactional());
         ServerFactory.save(minion);
 
         if (!ContactMethodUtil.isSSHPushContactMethod(minion.getContactMethod())) {

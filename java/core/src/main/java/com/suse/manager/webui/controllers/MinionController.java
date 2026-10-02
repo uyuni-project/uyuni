@@ -465,7 +465,7 @@ public class MinionController {
      */
     public static ModelAndView minionCustomStates(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        data.put("hasTransactionalSystems", server.doesOsSupportsTransactionalUpdate());
+        data.put("hasTransactionalSystems", server.isTransactionalUpdate());
         return new ModelAndView(data, "templates/minion/custom.jade");
     }
 
@@ -484,7 +484,7 @@ public class MinionController {
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("isControlNode", server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
         data.put("betaEnabled", user.getBetaFeaturesEnabled());
-        data.put("hasTransactionalSystems", server.doesOsSupportsTransactionalUpdate());
+        data.put("hasTransactionalSystems", server.isTransactionalUpdate());
         return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 
@@ -872,6 +872,6 @@ public class MinionController {
 
     private static boolean hasTransactionalSystems(List<Server> servers) {
         return MinionServerUtils.filterSaltMinions(servers)
-                .anyMatch(Server::doesOsSupportsTransactionalUpdate);
+                .anyMatch(Server::isTransactionalUpdate);
     }
 }

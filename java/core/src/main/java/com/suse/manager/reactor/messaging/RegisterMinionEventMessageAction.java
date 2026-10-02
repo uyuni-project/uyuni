@@ -372,7 +372,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param minion the minion
      */
     private void schedulePackageListRefresh(MinionServer minion) {
-        if (!minion.doesOsSupportsTransactionalUpdate()) {
+        if (!minion.isTransactionalUpdate()) {
             // no package list refresh wanted on startup
             return;
         }
@@ -435,8 +435,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId,
                     registeredMinion.getMachineId());
 
-            Optional<ValueMap> grainsOptional = saltApi.getSystemInfoFull(minionId).map(SystemInfo::getGrains);
+            Optional<SystemInfo> systemInfoOptional = saltApi.getSystemInfoFull(minionId);
+            Optional<ValueMap> grainsOptional = systemInfoOptional.map(SystemInfo::getGrains);
             setMinionName(minionId, registeredMinion, grainsOptional);
+            systemInfoOptional.map(SystemInfo::getTransactional)
+                    .ifPresent(registeredMinion::updateTransactionalMode);
 
             registeredMinion.setMinionId(minionId);
             ServerFactory.save(registeredMinion);
@@ -611,6 +614,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             }
             minion.updateServerInfo();
             mapHardwareGrains(minion, grains);
+            minion.updateTransactionalMode(systemInfo.getTransactional());
             ServerFactory.save(minion);
 
             if (isSaltSSH) {

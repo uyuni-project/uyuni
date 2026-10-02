@@ -52,6 +52,18 @@ public class ServerConstants {
     }
 
     /**
+     * Return <code>true</code> if the given operating system name is one of the names historically
+     * classified as transactional.
+     *
+     * @param osIn the operating system name, as stored from the osfullname grain
+     * @return <code>true</code> if the operating system name is classified as transactional
+     */
+    static boolean isTransactionalByOsName(String osIn) {
+        return SLEMICRO.equals(osIn) || SLMICRO.equals(osIn) ||
+                LEAPMICRO.equals(osIn) || OPENSUSEMICROOS.equals(osIn);
+    }
+
+    /**
      * The constant representing the i686 ServerArch
      * @return ServerArch
      */
