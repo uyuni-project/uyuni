@@ -12,15 +12,15 @@ describe("initializeTooltips", () => {
     );
     document.body.innerHTML = '<button data-bs-toggle="tooltip">Help</button>';
     const hide = jest.fn();
-    const getOrCreateInstance = jest.fn(() => ({ hide }));
+    const Tooltip = jest.fn(() => ({ hide }));
     (globalThis as any).bootstrap = {
-      Tooltip: { getOrCreateInstance },
+      Tooltip,
     };
 
     initializeTooltips();
     initializeTooltips();
 
-    expect(getOrCreateInstance).toBeCalledTimes(1);
+    expect(Tooltip).toBeCalledTimes(1);
 
     document.querySelector("button")?.dispatchEvent(new Event("click"));
     expect(hide).toBeCalledTimes(1);

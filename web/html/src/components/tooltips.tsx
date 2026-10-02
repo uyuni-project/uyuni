@@ -11,7 +11,7 @@ export function initializeTooltips() {
         return;
       }
 
-      const tooltip = bootstrap.Tooltip.getOrCreateInstance(el, {
+      const tooltip = new bootstrap.Tooltip(el, {
         trigger: "hover",
       });
 
