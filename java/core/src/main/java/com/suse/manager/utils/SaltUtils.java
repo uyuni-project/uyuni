@@ -46,10 +46,12 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.action.TransactionalActionManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapError;
 import com.suse.manager.webui.controllers.bootstrap.SaltBootstrapError;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.TransactionalUpdateCalls;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -462,7 +464,7 @@ public class SaltUtils {
      */
     public void updateServerAction(ServerAction serverAction, long retcode, boolean success, String jid,
                                    JsonElement jsonResult, Optional<Xor<String[], String>> function, Date endTime) {
-        serverAction.setCompletionTime(Optional.ofNullable(endTime).orElse(new Date()));
+        Date completionTime = Optional.ofNullable(endTime).orElse(new Date());
 
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
@@ -470,15 +472,33 @@ public class SaltUtils {
         // If the State was not executed due 'require' statement
         // we directly set the action to FAILED.
         if (jsonResult == null && function.isEmpty()) {
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
             serverAction.setResultMsg("Prerequisite failed");
             return;
         }
 
+        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
+        boolean transactionalResult = TransactionalUpdateCalls.isApplyFunction(function);
+        boolean hasPostTransactionalState = hasPostTransactionalStateForResult(
+                action, serverAction, transactionalResult);
+
+        if (transactionalResult &&
+                action instanceof ApplyStatesAction applyStatesAction &&
+                !hasPostTransactionalState) {
+            applyStatesAction.storeApplyStatesResult(serverAction, jsonResult, retcode);
+        }
+
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
-            LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
+            LOG.debug("Status of action {} being set to Failed.", action.getId());
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusFailed();
+            if (transactionalResult) {
+                setTransactionalResultMsg(serverAction, jsonResult);
+                LOG.debug("Finished update server action for action {}", action.getId());
+                return;
+            }
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
             if (output.startsWith("'ERROR") && output.contains("Minion in blackout mode")) {
@@ -504,18 +524,59 @@ public class SaltUtils {
                 }
             }
         }
+        else if (transactionalResult) {
+            var result = setTransactionalResultMsg(serverAction, jsonResult);
+            if (result.isFailed()) {
+                serverAction.setCompletionTime(completionTime);
+                serverAction.setStatusFailed();
+            }
+            else if (hasPostTransactionalState) {
+                serverAction.setCompletionTime(null);
+            }
+            else {
+                serverAction.setCompletionTime(completionTime);
+                serverAction.setStatusCompleted();
+            }
+            LOG.debug("Finished update server action for action {}", action.getId());
+            return;
+        }
         else {
+            serverAction.setCompletionTime(completionTime);
             serverAction.setStatusCompleted();
         }
 
         Action.UpdateAuxArgs auxArgs = new Action.UpdateAuxArgs(retcode, success, jid, this,
                 saltApi, systemQuery);
-
-        Action action = HibernateFactory.unproxy(serverAction.getParentAction());
-
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
+        if (isStateApplyFunction(function)) {
+            serverAction.getServer().asMinionServer()
+                    .ifPresent(minion -> TransactionalActionManager.recordPostTransactionalContinuationResult(
+                            minion.getId(), action.getId(), serverAction.isStatusFailed()));
+        }
+
         LOG.debug("Finished update server action for action {}", action.getId());
+    }
+
+    private static boolean isStateApplyFunction(Optional<Xor<String[], String>> function) {
+        return function
+                .map(xor -> xor.fold(Arrays::asList, List::of))
+                .orElseGet(List::of)
+                .contains("state.apply");
+    }
+
+    private static TransactionalActionManager.TransactionalResult setTransactionalResultMsg(
+            ServerAction serverAction, JsonElement jsonResult) {
+        TransactionalActionManager.TransactionalResult result = serverAction.getServer().asMinionServer()
+                .map(minionServer -> TransactionalActionManager.handleTransactionalResult(
+                                minionServer.getId(),
+                                serverAction.getParentAction().getId(),
+                                jsonResult,
+                                serverAction.isStatusFailed()))
+                .orElseGet(() -> TransactionalActionManager.TransactionalResult.failed(
+                        "Unable to process transactional action result."));
+        serverAction.setResultMsg(result.getMessage());
+        return result;
     }
 
     /**
@@ -562,14 +623,16 @@ public class SaltUtils {
     /**
      * Check if an action is failed based on the return event data. The status depends on
      * the "success" and "retcode" attributes as well as on the single states results in
-     * case we are looking at the results of a state.apply.
+     * case we are looking at the results of a state apply operation.
      *
      * @return true if the action has failed, false otherwise
      */
     private static boolean actionFailed(Optional<Xor<String[], String>> function, JsonElement rawResult,
             boolean success, long retcode) {
-        // For state.apply based actions verify the result of each state
-        if (function.map(x -> x.fold(Arrays::asList, List::of).contains("state.apply")).orElse(false)) {
+        // For state apply based actions verify the result of each state
+        if (function.map(x -> x.fold(Arrays::asList, List::of).stream()
+                .anyMatch(fun -> "state.apply".equals(fun) || TransactionalUpdateCalls.isApplyFunction(fun)))
+                .orElse(false)) {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
                 () -> true,
@@ -1011,6 +1074,18 @@ public class SaltUtils {
         );
 
         return new SaltBootstrapError(message, standardOuput, standardError, resultText);
+    }
+
+    static boolean hasPostTransactionalStateForResult(
+            Action action, ServerAction serverAction, boolean transactionalResult) {
+        return transactionalResult && hasPostTransactionalState(action, serverAction);
+    }
+
+    private static boolean hasPostTransactionalState(Action action, ServerAction serverAction) {
+        return TransactionalActionManager.findTransactionalActionHistory(
+                        serverAction.getServer().getId(), action.getId())
+                .map(history -> TransactionalActionManager.hasPostTransactionalState(action, history))
+                .orElseGet(() -> TransactionalActionManager.hasPostTransactionalState(action));
     }
 
     /**

@@ -1,0 +1,4 @@
+- Store snapshot information and transactional action workflow
+  history.
+- Add transactional-update options for actions and recurring
+  states.

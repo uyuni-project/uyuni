@@ -1,0 +1,8 @@
+- Add transactional action progress tracking and snapshot refresh
+  support.
+- Support live execution through direct_call on transactional
+  systems.
+- Add transactional execution options for Apply States and remote
+  commands.
+- Support highstate continuation and transactional formula
+  workflows, including recurring formula actions.
