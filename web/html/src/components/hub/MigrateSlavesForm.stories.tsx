@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { MigrateSlavesForm } from "./MigrateSlavesForm";
 import { migrationEntries } from "./story-fixtures";
@@ -27,16 +28,7 @@ const mockNetworkPost = (() =>
 const meta = {
   title: "Compositions/Hub/MigrateSlavesForm",
   component: MigrateSlavesForm,
-  beforeEach: () => {
-    const originalNetworkPost = Network.post;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ post: mockNetworkPost }),
   parameters: {
     layout: "fullscreen",
     docs: {

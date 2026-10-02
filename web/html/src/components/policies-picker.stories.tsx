@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { PoliciesPicker } from "./policies-picker";
 
@@ -56,16 +57,7 @@ const PoliciesPickerStory = (props: PoliciesPickerProps) => {
 const meta = {
   title: "Compositions/Compliance/PoliciesPicker",
   component: PoliciesPicker,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    Network.get = mockNetworkGet;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet }),
   parameters: {
     docs: {
       description: {

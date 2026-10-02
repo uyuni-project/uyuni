@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { RegisterPeripheralForm } from "./RegisterPeripheralForm";
 
@@ -10,16 +11,7 @@ const mockNetworkPost = (() => Utils.cancelable(Promise.resolve({ data: 42 }))) 
 const meta = {
   title: "Compositions/Hub/RegisterPeripheralForm",
   component: RegisterPeripheralForm,
-  beforeEach: () => {
-    const originalNetworkPost = Network.post;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ post: mockNetworkPost }),
   parameters: {
     layout: "fullscreen",
     docs: {

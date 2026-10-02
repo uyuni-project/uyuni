@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { PeripheralsList } from "./PeripheralsList";
 import { peripherals } from "./story-fixtures";
@@ -20,21 +21,7 @@ const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof 
 const meta = {
   title: "Compositions/Hub/PeripheralsList",
   component: PeripheralsList,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    const originalNetworkDelete = Network.del;
-    Network.get = mockNetworkGet;
-    Network.del = mockNetworkDelete;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-      if (Network.del === mockNetworkDelete) {
-        Network.del = originalNetworkDelete;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet, del: mockNetworkDelete }),
   parameters: {
     layout: "fullscreen",
     docs: {

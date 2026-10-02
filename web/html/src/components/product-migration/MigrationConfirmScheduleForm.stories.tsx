@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { MigrationConfirmScheduleForm } from "./MigrationConfirmScheduleForm";
 import { migrationSource, migrationTargetProduct, selectedChannelTree, systemsData } from "./story-fixtures";
@@ -20,16 +21,7 @@ const mockNetworkPost = (() =>
 const meta = {
   title: "Compositions/Product Migration/MigrationConfirmScheduleForm",
   component: MigrationConfirmScheduleForm,
-  beforeEach: () => {
-    const originalNetworkPost = Network.post;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ post: mockNetworkPost }),
   parameters: {
     layout: "fullscreen",
     docs: {

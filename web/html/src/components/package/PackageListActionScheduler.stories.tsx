@@ -4,6 +4,7 @@ import { Column } from "components/table/Column";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { PackageListActionScheduler } from "./PackageListActionScheduler";
 
@@ -91,21 +92,7 @@ const packageColumns = [
 const meta = {
   title: "Compositions/Package Management/PackageListActionScheduler",
   component: PackageListActionScheduler,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    const originalNetworkPost = Network.post;
-    Network.get = mockNetworkGet;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet, post: mockNetworkPost }),
   parameters: {
     layout: "fullscreen",
     docs: {

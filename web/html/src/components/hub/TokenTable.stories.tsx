@@ -6,6 +6,7 @@ import { action } from "storybook/actions";
 import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { AddTokenButton, AddTokenMethod } from "./AddTokenButton";
 import { createAccessTokens } from "./story-fixtures";
@@ -51,26 +52,7 @@ const TokenManagementStory = (props: TokenTableProps) => {
 const meta = {
   title: "Compositions/Hub/TokenTable",
   component: TokenTable,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    const originalNetworkPost = Network.post;
-    const originalNetworkDelete = Network.del;
-    Network.get = mockNetworkGet;
-    Network.post = mockNetworkPost;
-    Network.del = mockNetworkDelete;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-      if (Network.del === mockNetworkDelete) {
-        Network.del = originalNetworkDelete;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet, post: mockNetworkPost, del: mockNetworkDelete }),
   parameters: {
     layout: "fullscreen",
     docs: {

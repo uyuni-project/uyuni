@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { FormulaSelection } from "./formula-selection";
 
@@ -60,16 +61,7 @@ const FormulaSelectionStory = (props: FormulaSelectionProps) => {
 const meta = {
   title: "Compositions/Configuration/FormulaSelection",
   component: FormulaSelection,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    Network.get = mockNetworkGet;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet }),
   parameters: {
     layout: "fullscreen",
     docs: {

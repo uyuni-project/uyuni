@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { StatesPicker } from "./states-picker";
 
@@ -69,16 +70,7 @@ const StatesPickerStory = (props: StatesPickerProps) => {
 const meta = {
   title: "Compositions/Configuration/StatesPicker",
   component: StatesPicker,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    Network.get = mockNetworkGet;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet }),
   parameters: {
     layout: "fullscreen",
     docs: {

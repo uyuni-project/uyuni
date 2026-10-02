@@ -4,6 +4,7 @@ import { action } from "storybook/actions";
 import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { ScheduleScapScanForm } from "./schedule-scap-scan-form";
 
@@ -64,21 +65,7 @@ const ScheduleScapScanFormStory = (props: ScheduleScapScanFormProps) => {
 const meta = {
   title: "Compositions/Compliance/ScheduleScapScanForm",
   component: ScheduleScapScanForm,
-  beforeEach: () => {
-    const originalNetworkGet = Network.get;
-    const originalNetworkPost = Network.post;
-    Network.get = mockNetworkGet;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.get === mockNetworkGet) {
-        Network.get = originalNetworkGet;
-      }
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ get: mockNetworkGet, post: mockNetworkPost }),
   parameters: {
     docs: {
       description: {

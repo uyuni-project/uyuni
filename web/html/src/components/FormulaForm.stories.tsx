@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import FormulaForm from "./FormulaForm";
 
@@ -85,16 +86,7 @@ const mockNetworkPost = ((url: string, data: unknown) => {
 const meta = {
   title: "Compositions/Configuration/FormulaForm",
   component: FormulaForm,
-  beforeEach: () => {
-    const originalNetworkPost = Network.post;
-    Network.post = mockNetworkPost;
-
-    return () => {
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ post: mockNetworkPost }),
   parameters: {
     layout: "fullscreen",
     docs: {

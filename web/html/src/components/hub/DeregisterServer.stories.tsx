@@ -3,6 +3,7 @@ import { action } from "storybook/actions";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { DeregisterServer } from "./DeregisterServer";
 import { IssRole } from "./types";
@@ -12,16 +13,7 @@ const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof 
 const meta = {
   title: "Compositions/Hub/DeregisterServer",
   component: DeregisterServer,
-  beforeEach: () => {
-    const originalNetworkDelete = Network.del;
-    Network.del = mockNetworkDelete;
-
-    return () => {
-      if (Network.del === mockNetworkDelete) {
-        Network.del = originalNetworkDelete;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ del: mockNetworkDelete }),
   parameters: {
     layout: "fullscreen",
     docs: {

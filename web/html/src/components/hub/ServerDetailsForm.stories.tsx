@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-webpack5";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+import { mockNetwork } from "utils/storybook/mock-network";
 
 import { ServerDetailsForm } from "./ServerDetailsForm";
 import { peripheralDetails } from "./story-fixtures";
@@ -16,21 +17,7 @@ const mockNetworkDelete = (() => Utils.cancelable(Promise.resolve())) as typeof 
 const meta = {
   title: "Compositions/Hub/ServerDetailsForm",
   component: ServerDetailsForm,
-  beforeEach: () => {
-    const originalNetworkPost = Network.post;
-    const originalNetworkDelete = Network.del;
-    Network.post = mockNetworkPost;
-    Network.del = mockNetworkDelete;
-
-    return () => {
-      if (Network.post === mockNetworkPost) {
-        Network.post = originalNetworkPost;
-      }
-      if (Network.del === mockNetworkDelete) {
-        Network.del = originalNetworkDelete;
-      }
-    };
-  },
+  beforeEach: () => mockNetwork({ post: mockNetworkPost, del: mockNetworkDelete }),
   parameters: {
     layout: "fullscreen",
     docs: {
