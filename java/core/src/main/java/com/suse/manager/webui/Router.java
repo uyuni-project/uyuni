@@ -67,7 +67,6 @@ import com.suse.manager.webui.controllers.ScapAuditController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.controllers.StorybookController;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
@@ -280,9 +279,6 @@ public class Router implements SparkApplication {
 
         // Saltboot
         SaltbootController.initRoutes();
-
-        // Storybook
-        StorybookController.initRoutes(jade);
 
         // ISSv3 Sync
         initISSv3Routes(taskomaticApi);

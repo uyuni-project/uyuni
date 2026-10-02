@@ -78,7 +78,7 @@ type HierarchicalTableProps = {
 };
 
 /**
- * @deprecated Use `Table` instead, it supports nested data, see `/rhn/manager/storybook`.
+ * @deprecated Use `Table` instead, which supports nested data.
  */
 export const DEPRECATED_HierarchicalTable = forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
   const {
