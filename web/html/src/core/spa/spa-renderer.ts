@@ -1,7 +1,6 @@
 // This binds the global translation logic
 import "core/intl";
 
-import { cloneElement } from "react";
 import ReactDOM from "react-dom";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -18,6 +17,10 @@ window.pageRenderers.spa.reactRenderers = window.pageRenderers.spa.reactRenderer
 // Previous renderers of all the react apps in the current route
 window.pageRenderers.spa.previousReactRenderers = window.pageRenderers.spa.previousReactRenderers || [];
 
+type GlobalRenderer = {
+  onSPAEndNavigation?: () => void;
+};
+
 function addReactApp(appName: string) {
   window.pageRenderers?.spa?.reactAppsName?.push(appName);
 }
@@ -31,11 +34,12 @@ function renderGlobalReact(element: JSX.Element, container: Element | null | und
     throw new Error("The DOM element is not present.");
   }
 
-  function registerGlobalRender(instance) {
+  // React 16 returns the component instance for class roots and null for function roots.
+  // The generic JSX.Element type selects the void overload, so preserve the runtime contract explicitly.
+  const instance = ReactDOM.render(element, container) as unknown as GlobalRenderer | null;
+  if (instance) {
     window.pageRenderers?.spa?.globalRenderersToUpdate?.push(instance);
   }
-  const elementWithRef = cloneElement(element, { ref: registerGlobalRender });
-  ReactDOM.render(elementWithRef, container);
 }
 
 function renderNavigationReact(element: JSX.Element, container: Element | null | undefined) {
