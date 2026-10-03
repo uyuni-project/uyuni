@@ -33,6 +33,7 @@ import java.util.Optional;
  *      #prop_desc("string", "status", "status of the event")
  *      #prop_desc("string", "summary", "summary of the event")
  *      #prop_desc("$date", "completed", "date that the event occurred")
+ *      #prop_desc("boolean", "pending_reboot", "true when the action is waiting for a reboot")
  *  #struct_end()
  *
  */
@@ -51,6 +52,7 @@ public class SystemEventDtoSerializer extends ApiResponseSerializer<SystemEventD
                 .add("status", src.getHistoryStatus())
                 .add("summary", src.getSummary())
                 .add("completed", src.getCompleted())
+                .add("pending_reboot", src.isPendingRebootAction())
                 .build();
     }
 }
