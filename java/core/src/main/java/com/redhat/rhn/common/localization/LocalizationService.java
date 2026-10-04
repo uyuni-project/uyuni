@@ -408,12 +408,7 @@ public class LocalizationService {
     public String formatShortDate(Date date, Locale locale) {
 
         StringBuilder dbuff = new StringBuilder();
-        DateFormat dateI;
-        if (locale != null && "en".equals(locale.getLanguage())) {
-            dateI = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateI = DateFormat.getDateInstance(DateFormat.SHORT, locale);
-        }
+        DateFormat dateI = DateFormat.getDateInstance(DateFormat.SHORT, locale);
 
         dbuff.append(dateI.format(date));
 
@@ -441,12 +436,7 @@ public class LocalizationService {
     public String formatDate(Date date, Locale locale) {
         // Example: 2004-12-10 13:20:00 PST
         StringBuilder dbuff = new StringBuilder();
-        DateFormat dateI;
-        if (locale != null && "en".equals(locale.getLanguage())) {
-            dateI = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateI = DateFormat.getDateInstance(DateFormat.SHORT, locale);
-        }
+        DateFormat dateI = DateFormat.getDateInstance(DateFormat.SHORT, locale);
         dateI.setTimeZone(determineTimeZone());
         DateFormat timeI = DateFormat.getTimeInstance(DateFormat.LONG, locale);
         timeI.setTimeZone(determineTimeZone());
