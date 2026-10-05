@@ -470,15 +470,17 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   wait_for_channels([channel], "channel '#{channel}'", margin: margin)
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |os_product_version, host|
+  host ||= 'server'
   channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
   raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
 
   channels_to_sync = filter_channels(channels_to_sync, ['beta']) unless $beta_enabled
-  wait_for_channels(channels_to_sync, "product '#{os_product_version}'")
+  wait_for_channels(channels_to_sync, "product '#{os_product_version}'", host: host)
 end
 
-When(/^I wait until all synchronized channels have solved their dependencies$/) do
+When(/^I wait until all synchronized channels have solved their dependencies(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host|
+  host ||= 'server'
   add_context('channels_failed_without_solv_file', [])
   channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
   accumulated_timeout = get_context('channels_timeout')
@@ -499,7 +501,7 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
     deadline_elapsed = optimized_timeout
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
-      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
+      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel, host: host) }
       break if channels_to_wait_solv_file.empty?
 
       if channels_to_wait_solv_file.count < prev_count
