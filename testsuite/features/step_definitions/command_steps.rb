@@ -1198,12 +1198,13 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   end
 end
 
-When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
+When(/^I create the bootstrap repository for "([^"]*)" on (?:the server|(server2|server3|hub|peripheral1|peripheral2))((?: without flushing)?)$/) do |host, target, without_flushing|
+  target ||= 'server'
   host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
-  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target(target).wait_while_process_running('mgr-create-bootstrap-repo')
 
   log "base_channel: #{base_channel}"
   log "channel: #{channel}"
@@ -1218,9 +1219,9 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
 
   cmd += ' --flush' unless without_flushing
 
-  log 'Creating the bootstrap repository on the server:'
+  log "Creating the bootstrap repository on #{target}:"
   log "  #{cmd}"
-  get_target('server').run(cmd, exec_option: '-it')
+  get_target(target).run(cmd, exec_option: '-it')
 end
 
 When(/^I create the bootstrap repositories including custom channels$/) do
@@ -1473,8 +1474,8 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
   get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
-Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
+Then(/^"(.*?)" folder on (server|hub|server2|server3|peripheral1|peripheral2) is ISS v2 export directory$/) do |folder, host|
+  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target(host), "#{folder}/sql_statements.sql.gz")
 end
 
 When(/^I ensure folder "(.*?)" doesn't exist on "(.*?)"$/) do |folder, host|
@@ -1637,45 +1638,46 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
   node.run('iptables -F INPUT')
 end
 
-When(/^I generate the configuration "([^"]*)" of containerized proxy on the server$/) do |file_path|
+When(/^I generate the configuration "([^"]*)" of containerized (proxy\d*) on the (?:server|(server|server2|server3|hub|peripheral1|peripheral2))$/) do |file_path, proxy, mgr_server|
+  mgr_server ||= 'server'
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
-    generate_certificate('proxy', get_target('proxy').full_hostname)
+    generate_certificate(proxy, get_target(proxy).full_hostname)
 
     # Copy the cert files in the container to use them with spacecmd
     %w[proxy.crt proxy.key ca.crt].each do |file|
-      get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
+      get_target(mgr_server).inject("/tmp/#{file}", "/tmp/#{file}")
     end
 
     command = 'spacecmd -u admin -p admin ' \
               "proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     command = 'echo spacewalk > ca_pass && ' \
               'spacecmd --nossl -u admin -p admin ' \
               "proxy_container_config_generate_cert -- -o #{file_path} " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
               'rm ca_pass'
   end
-  get_target('server').run(command)
+  get_target(mgr_server).run(command)
 end
 
-When(/^I copy the configuration "([^"]*)" of containerized proxy from the server to the proxy$/) do |file_path|
-  get_target('server').extract(file_path, file_path)
-  get_target('proxy').inject(file_path, file_path)
+When(/^I copy the configuration "([^"]*)" of containerized proxy from the (?:server|(server|server2|server3|hub|peripheral1|peripheral2)) to the (proxy\d*)$/) do |file_path, mgr_server, proxy|
+  get_target(mgr_server || 'server').extract(file_path, file_path)
+  get_target(proxy).inject(file_path, file_path)
 end
 
-When(/^I add avahi hosts in containerized proxy configuration$/) do
+When(/^I add avahi hosts in containerized (proxy\d*) configuration$/) do |proxy|
   if get_target('server').full_hostname.include? 'tf.local'
     hosts_list = ''
     $host_by_node.each do |node, _host|
       hosts_list += "--add-host=#{node.full_hostname}:#{node.public_ip} "
     end
     hosts_list = escape_regex(hosts_list)
-    get_target('proxy').run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
+    get_target(proxy).run("echo 'export UYUNI_PODMAN_ARGS=\"#{hosts_list}\"' >> ~/.bashrc && source ~/.bashrc", runs_in_container: false)
     log "Avahi hosts added: #{hosts_list}"
     log 'The Development team has not been working to support avahi in containerized proxy, yet. This is best effort.'
   else
@@ -1737,17 +1739,19 @@ When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) d
   node.wait_until_online
 end
 
-When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
-  steps %(
-    Given I am on the Systems overview page of this "#{host}"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
-    Then I should see a "This action's status is: Completed" text
-  )
+When(/^I reboot the "([^"]*)" minion through the web UI(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, server|
+  using_server(server) do
+    steps %(
+      Given I am on the Systems overview page of this "#{host}"#{" on #{server}" if server}
+      When I follow first "Schedule System Reboot"
+      Then I should see a "System Reboot Confirmation" text
+      And I should see a "Reboot system" button
+      When I click on "Reboot system"
+      Then I should see a "Reboot scheduled for system" text
+      And I wait at most 600 seconds until event "System reboot scheduled by #{$current_user}" is completed
+      Then I should see a "This action's status is: Completed" text
+    )
+  end
 end
 
 When(/^I reboot the "([^"]*)" if it is a transactional system$/) do |host|
@@ -1964,21 +1968,22 @@ When(/^I wait until a new "([^"]*)" event is completed for "([^"]*)"$/) do |even
   wait_action_complete(target_event['id'])
 end
 
-When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, package, host|
-  system_name = get_system_name(host)
-  last_event_before_action = get_last_events(host).first
+When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API(?: from (server|server2|server3|hub|peripheral1|peripheral2))?( if needed)?$/) do |action, package, host, mgr_server, if_needed|
+  mgr_server ||= 'server'
+  system_name = get_system_name(host, mgr_server: mgr_server)
+  last_event_before_action = get_last_events(host, mgr_server: mgr_server).first
   last_event = last_event_before_action
   case action
   when 'upgrade'
-    trigger_upgrade(system_name, package)
+    next unless trigger_upgrade(system_name, package, mgr_server: mgr_server, allow_up_to_date: !if_needed.nil?)
   when 'install'
-    trigger_install(system_name, package)
+    trigger_install(system_name, package, mgr_server: mgr_server)
   end
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
-    last_event = get_last_events(host).first
+    last_event = get_last_events(host, mgr_server: mgr_server).first
     break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
-  wait_action_complete(last_event['id'])
+  wait_action_complete(last_event['id'], mgr_server: mgr_server)
 end
 
 When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|
