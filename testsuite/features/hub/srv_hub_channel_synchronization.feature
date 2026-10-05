@@ -51,14 +51,13 @@ Feature: Hub ISSv3 channel synchronization to peripheral
     When I initiate channel sync from peripheral "peripheral1"
     Then I should see a "Successfully scheduled a channels synchronization." text
 
-  Scenario: Wait for cloned channel to appear on peripheral1
-    # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155 (clone channel ISS sync is currently broken)
-    # When I wait until channel "clone-fake-rpm-suse-channel" has been fully synchronized on "peripheral1"
-    # Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
-
-  Scenario: Verify cloned channel on peripheral1 has expected packages
-    # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155
-    # Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
+  # workaround: https://bugzilla.suse.com/show_bug.cgi?id=1272155 (clone channel ISS sync is currently broken)
+  # Scenario: Wait for cloned channel to appear on peripheral1
+  #   When I wait until channel "clone-fake-rpm-suse-channel" has been fully synchronized on "peripheral1"
+  #   Then channel "clone-fake-rpm-suse-channel" should exist on "peripheral1"
+  #
+  # Scenario: Verify cloned channel on peripheral1 has expected packages
+  #   Then channel "clone-fake-rpm-suse-channel" on "peripheral1" should have "4" packages
 
   Scenario: Sync the SLES 15 SP7 base channel and its modules from hub to peripheral1 for minion bootstrap
     When I configure hub to sync all "-SP7-" channels to "peripheral1"
