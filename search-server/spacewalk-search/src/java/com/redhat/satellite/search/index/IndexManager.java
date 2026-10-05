@@ -17,6 +17,7 @@ package com.redhat.satellite.search.index;
 
 import com.redhat.satellite.search.config.Configuration;
 import com.redhat.satellite.search.index.builder.BuilderFactory;
+import com.redhat.satellite.search.index.ngram.ServerNameTokenizer;
 import com.redhat.satellite.search.index.ngram.NGramAnalyzer;
 import com.redhat.satellite.search.index.ngram.NGramQueryParser;
 import com.redhat.satellite.search.rpc.handlers.IndexHandler;
@@ -24,7 +25,10 @@ import com.redhat.satellite.search.rpc.handlers.IndexHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.ngram.NGramTokenFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
@@ -661,15 +665,18 @@ public class IndexManager {
     }
 
     private Analyzer getServerAnalyzer() {
-        PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+        Analyzer defaultAnalyzer = new NGramAnalyzer(min_ngram, max_ngram);
+        Analyzer serverNameAnalyzer = new ServerNameNGramAnalyzer(min_ngram, max_ngram);
+
+        PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(defaultAnalyzer);
+        analyzer.addAnalyzer("name", serverNameAnalyzer);
+        analyzer.addAnalyzer("hostname", serverNameAnalyzer);
         analyzer.addAnalyzer("checkin", new KeywordAnalyzer());
         analyzer.addAnalyzer("registered", new KeywordAnalyzer());
         analyzer.addAnalyzer("ram", new KeywordAnalyzer());
         analyzer.addAnalyzer("swap", new KeywordAnalyzer());
         analyzer.addAnalyzer("cpuMHz", new KeywordAnalyzer());
         analyzer.addAnalyzer("cpuNumberOfCpus", new KeywordAnalyzer());
-
 
         return analyzer;
     }
@@ -730,6 +737,23 @@ public class IndexManager {
         analyzer.addAnalyzer("release", new KeywordAnalyzer());
         analyzer.addAnalyzer("filename", new KeywordAnalyzer());
         return analyzer;
+    }
+
+    private static class ServerNameNGramAnalyzer extends Analyzer {
+        private final int minNgram;
+        private final int maxNgram;
+
+        public ServerNameNGramAnalyzer(int minNgram, int maxNgram) {
+            this.minNgram = minNgram;
+            this.maxNgram = maxNgram;
+        }
+
+        public TokenStream tokenStream(String fieldName, java.io.Reader reader) {
+            TokenStream result = new ServerNameTokenizer(reader);
+            result = new LowerCaseFilter(result);
+            result = new NGramTokenFilter(result, minNgram, maxNgram);
+            return result;
+        }
     }
 
 }
