@@ -48,8 +48,20 @@ Mechanical rules live in tooling, not here: RuboCop (`testsuite/.rubocop.yml`, r
 - Guard any `rm -rf $(...)` against an empty or multi-line result (#12615).
 - Query the path directly (`df --output=pcent "$DIR"`) instead of parsing `df | grep` output (#12615).
 
+## Multi-server and run-set flow
+
+- Every UI or API step in a hub or peripheral scenario names its host. Never rely on the browser session or API client a previous scenario or feature left behind.
+- Walk the run set in order. Each feature starts from the state the previous one leaves (registrations, synced channels, stopped services) and cleans up what the next one cannot tolerate.
+- A new feature appears in a run set, and a feature commented out of one is not counted as coverage in the PR description or test plan.
+- A tag the feature relies on (`@skip`, `@test_issue`) has a hook or profile that acts on it. A hook on a feature-level tag runs after every scenario, so restrict it (for example to failed scenarios).
+- A negative scenario isolates its cause: remove every other reason it could fail, such as a leftover registration, before asserting the error.
+- A step uses its captured arguments. A step that ignores its host or value argument is misnamed or incomplete.
+- Code loaded outside Cucumber (`Rakefile`, `ext-tools`) requires everything it calls. `ruby -c` does not catch a missing `require`.
+- Optional roles can be defined alone (only `PROXY2`) or be absent from a lookup table. Guard the nil lookup and do not gate generation on the generic role.
+
 ## Before pushing
 
 - Run `bundle exec rubocop features Rakefile ext-tools`. CI runs the same command and #12615 reached review with 14 offenses.
 - Run the acceptance suite only through Jenkins or the PR check, never locally.
 - Grep `features/**/*.feature` for the old value whenever you remove or move a path, tag or default. The assertions live there, not in the step definitions.
+- Grep the whole of `testsuite/` (steps, `Rakefile`, `run_sets`, docs) for every global, constant, helper or step you remove or rename. The migration is done when the grep is empty.
