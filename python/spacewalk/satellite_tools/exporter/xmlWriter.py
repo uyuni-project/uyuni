@@ -117,7 +117,6 @@ class XMLWriter:
         c = match_object.group()
         if c in self._escaped_chars:
             return self._escaped_chars[c]
-        # return "&#%d;" % ord(c)
         return "?"
 
     def flush(self):
