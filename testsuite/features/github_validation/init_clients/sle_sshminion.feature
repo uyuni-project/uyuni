@@ -1,21 +1,21 @@
 # Copyright (c) 2023-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@ssh_minion
+@sshminion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Register this SSH minion for service pack migration
-    Given "ssh_minion" is not already registered
-    When I bootstrap "ssh_minion" via the UI
+    Given "sshminion" is not already registered
+    When I bootstrap "sshminion" via the UI
     And I follow the left menu "Systems > System List > All"
-    And I wait until I see the name of "ssh_minion", refreshing the page
+    And I wait until I see the name of "sshminion", refreshing the page
 
   Scenario: Subscribe the SSH minion to a base channel
-    Given "ssh_minion" is not already registered
-    And I am on the Systems overview page of this "ssh_minion"
+    Given "sshminion" is not already registered
+    And I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text

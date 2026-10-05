@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  UYUNI_PROJECT: szachovy
-  UYUNI_VERSION: update-uyuni-base-image-2026.01
+  UYUNI_PROJECT: uyuni-project
+  UYUNI_VERSION: master
 
 jobs:
   determine_tests:
