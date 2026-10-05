@@ -1200,7 +1200,12 @@ end
 
 When(/^I create the bootstrap repository for "([^"]*)" on (?:the server|(server2|server3|hub|peripheral1|peripheral2))((?: without flushing)?)$/) do |host, target, without_flushing|
   target ||= 'server'
-  host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
+  # proxy2/proxy3 share the 'proxy' channel entries; transactional-ness is checked on the proxy host itself
+  if host.match?(/^proxy\d+$/)
+    host = host_transactional?(host) ? 'proxy' : 'proxy_nontransactional'
+  elsif host == 'proxy' && !$is_transactional_server
+    host = 'proxy_nontransactional'
+  end
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
