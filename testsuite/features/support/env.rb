@@ -190,7 +190,7 @@ Before do |scenario|
   current_feature_file = scenario.location.file
   if $feature_scope_file && $feature_scope_file != current_feature_file
     Capybara.session_name = :default
-    Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
+    Capybara.app_host = "https://#{get_target('server').full_hostname}"
     $current_ui_host = 'server'
   end
   $feature_scope_file = current_feature_file

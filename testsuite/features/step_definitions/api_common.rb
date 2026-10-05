@@ -394,7 +394,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     proxy_host = { 'peripheral1' => 'proxy2', 'peripheral2' => 'proxy3' }.fetch(host, 'proxy')
     client = 'proxy_nontransactional' unless host_transactional?(proxy_host)
   end
-  client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
+  client = 'server_nontransactional' if client == 'server' && !host_transactional?(host)
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
 
   key = api_test.activationkey.create(id, description, base_channel_label, 100)

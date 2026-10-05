@@ -32,7 +32,7 @@ class RemoteNode
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
-    uyuni_not_installed = @host == 'server' && server_not_deployed?
+    uyuni_not_installed = %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host]) && server_not_deployed?
     if %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?

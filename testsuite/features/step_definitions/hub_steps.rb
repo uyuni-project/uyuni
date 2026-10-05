@@ -152,7 +152,7 @@ Then(/^multicast response should contain systems from "([^"]*)"$/) do |host|
   server_id = hub_server_id_of(host)
   index = successful.fetch('ServerIds', []).index(server_id)
   raise StandardError, "#{host} (server ID #{server_id}) has no successful multicast response: #{successful}" if index.nil?
-  raise StandardError, "Multicast response for #{host} contains no systems" if successful['Responses'][index].to_a.empty?
+  raise StandardError, "Multicast response for #{host} contains no systems" if successful.fetch('Responses', [])[index].to_a.empty?
 end
 
 When(/^I logout from hub XMLRPC API$/) do
