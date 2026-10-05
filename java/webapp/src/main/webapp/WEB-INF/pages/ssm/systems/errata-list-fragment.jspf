@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>

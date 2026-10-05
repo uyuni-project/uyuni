@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 insert into rhnXccdfRuleresultType values (1, 'P', 'pass',
     'The target system satisfied all the conditions of the xccdf:Rule.');

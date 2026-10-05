@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 drop trigger if exists rhn_cpu_up_trig on rhnCpu;
 
 create trigger

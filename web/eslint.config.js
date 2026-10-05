@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 SUSE LLC
+//
+// SPDX-License-Identifier: GPL-2.0-only
+
 import eslint from "@eslint/js";
 import { defineConfig, globalIgnores } from "eslint/config";
 import jsxA11y from "eslint-plugin-jsx-a11y";

@@ -1,4 +1,14 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
 
 <image schemaversion="7.4" name="POS_Image-JeOS7_SLES15SP6">
     <description type="system">

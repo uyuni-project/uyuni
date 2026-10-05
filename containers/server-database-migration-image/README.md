@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: MIT
+-->
+
 Postgresql database major version migration image for Uyuni.
 
 This image cannot be used independently.

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Verify the GPG signature of a file.
 
 The GPG signature can exist as part of the signed document (`--sign` or `--clear-sign`),

@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_salt_install_with_staging.feature

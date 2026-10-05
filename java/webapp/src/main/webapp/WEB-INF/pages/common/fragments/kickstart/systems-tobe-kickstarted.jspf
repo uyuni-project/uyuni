@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc.
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <h2 style="clear: both;"><bean:message key="kickstart.jsp.scheduled"/></h2>
 
 <rl:list dataset="sysToBeKickstarted"

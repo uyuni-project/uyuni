@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set salt_config_dir = '/etc/salt' %}
 {# Use venv-salt-minion if the state applied with it #}

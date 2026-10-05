@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
     SELECT sequence_nextval('rhn_tasko_bunch_id_seq'), 'notifications-cleanup-bunch', 'Cleanup expired notification messages', null
     FROM dual WHERE NOT EXISTS (

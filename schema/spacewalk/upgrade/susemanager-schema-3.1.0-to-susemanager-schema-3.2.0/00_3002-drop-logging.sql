@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 DROP TRIGGER if exists web_contact_log_trig ON web_contact;
 DROP FUNCTION if exists web_contact_log_trig_fun();

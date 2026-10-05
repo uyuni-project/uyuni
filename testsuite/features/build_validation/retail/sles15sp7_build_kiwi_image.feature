@@ -1,5 +1,5 @@
 # Copyright (c) 2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature depends on:
 #   features/build_validation/retail/init_sles15sp7_buildhost.feature

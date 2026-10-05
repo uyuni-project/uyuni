@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Infer possible placeholder and tag values for a given translatable string, e.g. for `"example {foo}"`, infer

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { mapFilterFormToRequest, mapResponseToFilterForm } from "./filter.utils";
 
 // TODO: This should be the correct type, but the tests don't line up with this

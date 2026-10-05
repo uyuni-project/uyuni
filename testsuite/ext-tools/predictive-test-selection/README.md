@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Predictive Test Selection
 
 This project is one of three that were accepted for Uyuni as part of Google Summer of Code 2025.

@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 CREATE OR REPLACE function suse_ansible_path_mod_trig_fun() RETURNS TRIGGER AS
 $$
 BEGIN

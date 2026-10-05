@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnConfiguration disable trigger rhn_conf_mod_trig;
 
 INSERT INTO rhnConfiguration (key, description, value, default_value)

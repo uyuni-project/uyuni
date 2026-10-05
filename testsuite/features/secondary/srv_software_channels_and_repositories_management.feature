@@ -1,5 +1,5 @@
 # Copyright (c) 2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_software_channels_and_repositories
 @scope_hibernate

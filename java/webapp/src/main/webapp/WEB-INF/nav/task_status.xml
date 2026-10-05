@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="task_status" title-depth="1">
   <rhn-tab name="task.status.last.execution">
     <rhn-tab-url>/rhn/admin/TaskStatus.do</rhn-tab-url>

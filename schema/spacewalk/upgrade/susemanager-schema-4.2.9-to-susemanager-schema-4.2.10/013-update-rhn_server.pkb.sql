@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 --update pg_setting
 update pg_settings set setting = 'rhn_server,' || setting where name = 'search_path';
 

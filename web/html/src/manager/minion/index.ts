@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 export default {
   "minion/details/support-data": () => import("./details/support-data.renderer"),
   "minion/config-channels/minion-config-channels": () => import("./config-channels/minion-config-channels"),

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 session     optional                   pam_umask.so silent
 session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
 session     [default=1]                pam_lastlog.so nowtmp showfailed

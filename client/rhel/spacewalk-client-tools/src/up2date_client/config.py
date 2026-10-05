@@ -1,5 +1,6 @@
 # This file is a portion of the Red Hat Update Agent
-# Copyright (c) 1999--2016 Red Hat, Inc.  Distributed under GPL
+# Copyright (c) 1999--2016 Red Hat, Inc.
+# SPDX-License-Identifier: GPL-2.0-only
 #
 # Authors:
 #       Cristian Gafton <gafton@redhat.com>

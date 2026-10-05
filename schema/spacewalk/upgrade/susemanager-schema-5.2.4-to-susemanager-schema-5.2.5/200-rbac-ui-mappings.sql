@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- Set POST instead of GET
 DELETE FROM access.endpoint WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'GET'
     AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'POST');

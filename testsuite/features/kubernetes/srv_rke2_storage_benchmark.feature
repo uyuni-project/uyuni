@@ -1,5 +1,5 @@
 # Copyright (c) 2026 Akash Kumar <meakash7902@gmail.com>
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 
 @rke2

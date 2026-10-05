@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { type CheckInputProps, CheckInput } from "components/input";
 
 import { type ProductSelectionState } from "./product-selection.utils";

@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 # Handling dates and times
 
 All dates and times on the frontend should be handled via `localizedMoment`. `localizedMoment` is a wrapper around [Moment](https://momentjs.com/docs/) and [Moment Timezone](https://momentjs.com/timezone/) and can be initialized the same way a regular moment can:  

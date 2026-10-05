@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - Use custom entry id for grub saltboot entries
   (bsc#1258382, bsc#1208800)

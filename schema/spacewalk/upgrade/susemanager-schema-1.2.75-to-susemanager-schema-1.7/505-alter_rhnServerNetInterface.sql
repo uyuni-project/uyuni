@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 alter table rhnServerNetInterface add id number;
 
 create sequence rhn_srv_net_iface_id_seq;

@@ -1,3 +1,11 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 {%- if grains['osrelease']|int == 6 %}
 enable_ca_store:
   cmd.run:

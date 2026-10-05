@@ -1,5 +1,10 @@
 #! /bin/sh
 
+# SPDX-FileCopyrightText: 2026 Red Hat, Inc.
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 . /etc/os-release
 
 MAJ_VER=$(echo $VERSION_ID | awk -F. '{print $1}')

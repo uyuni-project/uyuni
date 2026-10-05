@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2026 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 #  1) bootstrap a new RHEL 9 minion via salt-ssh
 #  2) subscribe it to a base channel for testing

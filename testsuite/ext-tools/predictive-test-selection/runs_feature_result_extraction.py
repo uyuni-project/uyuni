@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Extracts feature results from each run folder within PR cucumber report directories
 and saves the results to JSON files for further analysis.

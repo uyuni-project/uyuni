@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO access.namespace (namespace, access_mode, description)
     SELECT 'api.proxy.backup_configuration', 'W', 'Saves the configuration of a proxy to the server for later conversion'
     WHERE NOT EXISTS (SELECT 1 FROM access.namespace WHERE namespace = 'api.proxy.backup_configuration' AND access_mode = 'W');

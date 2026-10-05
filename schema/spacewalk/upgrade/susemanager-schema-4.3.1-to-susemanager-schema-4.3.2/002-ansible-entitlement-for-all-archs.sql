@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 SELECT
     lookup_server_arch('aarch64-redhat-linux'),

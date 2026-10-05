@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import HighstateSummary, { StateSource } from "manager/state/highstate-summary";
 
 import { Cancelable } from "utils/functions";

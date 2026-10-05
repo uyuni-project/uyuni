@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 FROM registry.opensuse.org/opensuse/leap:15.5@sha256:6314283eea5f0d34e644673aa18f01f602de60947775de0e1c5ce4ed2b3b5b47
 RUN zypper ref -f && \
     zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.5/ tools && \

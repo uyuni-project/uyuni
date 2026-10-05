@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 BUILDDIR=$(CURDIR)/build
 INSTALL_DIR=$(DESTDIR)/usr/share/bash-completion/completions/
 

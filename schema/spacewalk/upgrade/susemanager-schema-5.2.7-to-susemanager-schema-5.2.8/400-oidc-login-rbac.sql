@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 -- Set POST instead of GET
 DELETE FROM access.endpoint WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'GET'

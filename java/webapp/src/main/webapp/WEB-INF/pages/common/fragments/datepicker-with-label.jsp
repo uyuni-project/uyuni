@@ -1,3 +1,10 @@
+<%--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+--%>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <div class="row">
   <label class="col-md-3 control-label"><bean:message key="${param.label_text}" /></label>

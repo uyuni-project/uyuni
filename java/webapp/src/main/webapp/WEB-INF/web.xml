@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
          version="2.4">
   <!--

@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 --
 
 update rhn_command_queue_commands set description = 'SUSE Manager configuration installation', notes = '"Install Changes" on a SUSE Manager (i.e. push the monitoring config)' where recid = 1 ;

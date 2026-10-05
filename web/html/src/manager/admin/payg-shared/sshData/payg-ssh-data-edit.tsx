@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 SUSE LLC
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
+
 import { paygProperties } from "manager/admin/payg/payg";
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
 import PaygSshDataForm from "manager/admin/payg-shared/sshData/payg-ssh-data-form";

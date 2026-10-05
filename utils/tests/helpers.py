@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 2012 Aron Parsons <aronparsons@gmail.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # coding: utf-8
 """
 Helpers for the test suite.

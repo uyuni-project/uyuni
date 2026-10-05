@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 -- ChannelsReport view was missing in previous update files
 DROP VIEW IF EXISTS ChannelsReport;
 CREATE OR REPLACE VIEW ChannelsReport AS

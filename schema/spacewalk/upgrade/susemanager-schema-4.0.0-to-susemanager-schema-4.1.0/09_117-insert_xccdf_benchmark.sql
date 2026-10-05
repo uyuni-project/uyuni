@@ -1,3 +1,6 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
 
 create or replace function
 insert_xccdf_benchmark(identifier_in in varchar, version_in in varchar)

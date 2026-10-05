@@ -1,1 +1,5 @@
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: MIT
+
 - features/kubernetes/srv_rke2_storage_benchmark.feature

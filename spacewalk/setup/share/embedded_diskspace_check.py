@@ -1,4 +1,10 @@
 #!/usr/bin/python
+
+# SPDX-FileCopyrightText: Red Hat, Inc
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-only
+
 """Checks diskspace sizes for for /rhnsat and /opt.
 Used only by the install.sh code.
 

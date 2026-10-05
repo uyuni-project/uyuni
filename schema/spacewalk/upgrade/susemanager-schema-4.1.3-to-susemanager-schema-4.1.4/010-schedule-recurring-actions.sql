@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2026 SUSE LLC
+--
+-- SPDX-License-Identifier: GPL-2.0-only
+
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 SELECT sequence_nextval('rhn_tasko_bunch_id_seq'), 'recurring-state-apply-bunch', 'Applies salt state to minion/group/org', null
 WHERE NOT EXISTS ( SELECT 1 FROM rhnTaskoBunch WHERE name = 'recurring-state-apply-bunch');

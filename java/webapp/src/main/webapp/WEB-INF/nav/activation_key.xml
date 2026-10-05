@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
+
+<!--
+SPDX-FileCopyrightText: Red Hat, Inc
+SPDX-FileCopyrightText: SUSE LLC
+
+SPDX-License-Identifier: GPL-2.0-only
+-->
+
 <rhn-navi-tree label="activation_key" invisible="1" title-depth="1" formvar="tid">
   <rhn-tab name="Details" url="/rhn/activationkeys/Edit.do" />
 
