@@ -894,6 +894,13 @@ end
 # to store the SSL build artifacts, mirroring the rhn-ssl-tool default.
 HUB_SSL_BUILD_DIR = '/root/ssl-build'.freeze
 
+# Returns the directory name rhn-ssl-tool uses under HUB_SSL_BUILD_DIR for an FQDN:
+# it strips the last two labels (xxx.yyy.zzz.com -> xxx.yyy), see sslToolLib.getMachineName.
+def ssl_tool_machine_name(fqdn)
+  labels = fqdn.split('.')
+  labels.length < 3 ? fqdn : labels[0..-3].join('.')
+end
+
 # Returns the paths of the hub-signed CA, server certificate and server key
 # as laid out on the peripheral host for the given FQDN.
 def hub_signed_cert_paths(fqdn)
@@ -933,7 +940,7 @@ end
 When(/^I generate hub-signed SSL certificates for "([^"]*)" on "([^"]*)"$/) do |peripheral, hub|
   hub_node = get_target(hub)
   fqdn = get_target(peripheral).full_hostname
-  machine_name = fqdn.split('.').first
+  machine_name = ssl_tool_machine_name(fqdn)
   _out, code = hub_node.run(
     "find #{HUB_SSL_BUILD_DIR} -mindepth 2 -maxdepth 2 -name server.crt -path '*/#{machine_name}/server.crt' | grep -q .",
     check_errors: false
@@ -952,7 +959,7 @@ When(/^I copy the hub-signed SSL certificates for "([^"]*)" from "([^"]*)"$/) do
   hub_node = get_target(hub)
   peripheral_node = get_target(peripheral)
   fqdn = peripheral_node.full_hostname
-  machine_name = fqdn.split('.').first
+  machine_name = ssl_tool_machine_name(fqdn)
   cert_dir, = hub_node.run(
     "find #{HUB_SSL_BUILD_DIR} -mindepth 2 -maxdepth 2 -name server.crt -path '*/#{machine_name}/server.crt' -exec dirname {} \\; | head -1"
   )
