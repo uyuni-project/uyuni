@@ -32,10 +32,8 @@ class RemoteNode
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
-    uyuni_not_installed = false
-    if @host == 'server'
-      uyuni_not_installed = !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
-
+    uyuni_not_installed = @host == 'server' && server_not_deployed?
+    if %w[SERVER SERVER2 SERVER3 SERVER4].include?(ENV_VAR_BY_HOST[@host])
       @has_mgrctl = ssh('which mgrctl', host: @target).last.zero? && !uyuni_not_installed
       @has_kubectl = ssh('which kubectl', host: @target).last.zero?
     end
@@ -363,6 +361,11 @@ class RemoteNode
   end
 
   private
+
+  # Returns true if the target runs neither a Kubernetes uyuni deployment nor the uyuni-server container.
+  def server_not_deployed?
+    !ssh('which kubectl && kubectl get deployment uyuni -n ${SERVER_NAMESPACE:-uyuni}', host: @target).last.zero? && !ssh('podman container exists uyuni-server', host: @target).last.zero?
+  end
 
   # Empties /etc/motd, or any output from run will contain the content of /etc/motd.
   # Container based nodes also run commands on their host, which keeps its own /etc/motd.

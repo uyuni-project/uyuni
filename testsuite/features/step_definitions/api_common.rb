@@ -35,9 +35,9 @@ When(/^I delete all the imported terminals$/) do
   end
 end
 
-When(/^I delete "([^"]*)" system using the api$/) do |host|
+When(/^I delete "([^"]*)" system using the api(?: from "([^"]*)")?$/) do |host, mgr_server|
   system_name = get_system_name(host)
-  $api_test.system.delete_systems_by_name([system_name])
+  (mgr_server ? api_client_for(mgr_server) : $api_test).system.delete_systems_by_name([system_name])
 end
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
@@ -214,8 +214,7 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
 end
 
 Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
-  $current_user = user
-  $current_password = password
+  Credentials.login_as(user, password)
   next if $api_test.user.list_users.to_s.include? user
 
   begin
@@ -384,27 +383,34 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
   raise ScriptError unless details['description'] == description
 end
 
-When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
+When(/^I create an activation key including custom channels for "([^"]*)" via API(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |client, host|
+  host ||= 'server'
+  api_test = api_client_for(host)
+
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
+  if client == 'proxy'
+    # In hub BV topologies peripheral1/peripheral2 use proxy2/proxy3, not the generic 'proxy' host.
+    proxy_host = { 'peripheral1' => 'proxy2', 'peripheral2' => 'proxy3' }.fetch(host, 'proxy')
+    client = 'proxy_nontransactional' unless host_transactional?(proxy_host)
+  end
   client = 'server_nontransactional' if client == 'server' && !$is_transactional_server
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][BASE_CHANNEL_BY_CLIENT[product][client]]
 
-  key = $api_test.activationkey.create(id, description, base_channel_label, 100)
+  key = api_test.activationkey.create(id, description, base_channel_label, 100)
   raise StandardError, 'Error creating activation key via the API' if key.nil?
 
   $stdout.puts "Activation key #{key} created"
   contact_method = client.include?('sshminion') ? 'ssh-push' : 'default'
-  success = $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
+  success = api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
   raise 'Failed to set activation key details' unless success
 
-  $api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
+  api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
 
   # Attach the child channels appropriate for this client's role
   child_channels = child_channels_for_activation_key(client, base_channel_label)
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
-  $api_test.activationkey.add_child_channels(key, child_channels)
+  api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 # actionchain namespace

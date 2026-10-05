@@ -1,0 +1,7 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## Hub build validation BEGIN ###
+
+- features/hub/build_validation/prh2_server_setup.feature
+
+## Hub build validation END ###
