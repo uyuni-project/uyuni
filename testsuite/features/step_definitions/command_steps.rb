@@ -1657,14 +1657,25 @@ When(/^I generate the configuration "([^"]*)" of containerized (proxy\d*) on the
               "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
+    # A peripheral holds only the hub CA certificate, not its private key, which spacecmd needs to sign the
+    # proxy certificate. Run spacecmd on the hub (the CA owner) against the peripheral's API instead.
+    peripheral = %w[server2 server3 peripheral1 peripheral2].include?(mgr_server)
+    runner = peripheral ? 'server' : mgr_server
+    server_option = peripheral ? "-s #{get_target(mgr_server).full_hostname}" : '--nossl'
     command = 'echo spacewalk > ca_pass && ' \
-              'spacecmd --nossl -u admin -p admin ' \
+              "spacecmd #{server_option} -u admin -p admin " \
               "proxy_container_config_generate_cert -- -o #{file_path} " \
               "#{get_target(proxy).full_hostname} #{get_target(mgr_server).full_hostname} 2048 galaxy-noise@suse.de " \
               '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
               'rm ca_pass'
   end
-  get_target(mgr_server).run(command)
+  runner ||= mgr_server
+  get_target(runner).run(command)
+  next if runner == mgr_server
+
+  # The following copy step reads the configuration from the peripheral
+  get_target(runner).extract(file_path, file_path)
+  get_target(mgr_server).inject(file_path, file_path)
 end
 
 When(/^I copy the configuration "([^"]*)" of containerized proxy from the (?:server|(server|server2|server3|hub|peripheral1|peripheral2)) to the (proxy\d*)$/) do |file_path, mgr_server, proxy|
