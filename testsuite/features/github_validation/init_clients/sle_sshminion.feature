@@ -14,8 +14,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I wait until I see the name of "sshminion", refreshing the page
 
   Scenario: Subscribe the SSH minion to a base channel
-    Given "sshminion" is not already registered
-    And I am on the Systems overview page of this "sshminion"
+    Given I am on the Systems overview page of this "sshminion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
