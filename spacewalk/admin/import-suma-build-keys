@@ -17,21 +17,21 @@ mkdir -p "${PQC_KEYS_TARGET_DIR}"
 #import uyuni vendor PQC keys
 if [ -d ${PQC_UYUNI_VENDOR_KEYS_SRC_DIR} ]; then
   echo -n "importing Uyuni PQC keys to target directory... "
-  cp -r "${PQC_UYUNI_VENDOR_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+  cp -r "${PQC_UYUNI_VENDOR_KEYS_SRC_DIR}"/. "${PQC_KEYS_TARGET_DIR}"
   echo "done."
 fi
 
 #import MLM vendor PQC keys
 if [ -d ${PQC_MLM_VENDOR_KEYS_SRC_DIR} ]; then
   echo -n "importing SUSE Multi-Linux Manager PQC keys to target directory... "
-  cp -r "${PQC_MLM_VENDOR_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+  cp -r "${PQC_MLM_VENDOR_KEYS_SRC_DIR}"/. "${PQC_KEYS_TARGET_DIR}"
   echo "done."
 fi
 
 #import custom PQC keys
 if [ -d ${PQC_CUSTOMER_KEYS_SRC_DIR} ]; then
     echo -n "importing Customers PQC keys to target directory... "
-    cp -r "${PQC_CUSTOMER_KEYS_SRC_DIR}"/ "${PQC_KEYS_TARGET_DIR}"
+    cp -r "${PQC_CUSTOMER_KEYS_SRC_DIR}"/. "${PQC_KEYS_TARGET_DIR}"
     echo "done."
 else
     echo "No customer PQC keys to import"
