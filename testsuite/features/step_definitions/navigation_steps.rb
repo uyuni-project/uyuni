@@ -1494,11 +1494,11 @@ When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
     while (Time.now - poll_start) < 360
       sleep 60
       step 'I follow the left menu "Systems > System List > All"'
-      if has_text?(system_name, wait: 10)
-        log "#{system_name} appeared after #{(Time.now - poll_start).to_i}s polling"
-        registered = true
-        break
-      end
+      next unless has_text?(system_name, wait: 10)
+
+      log "#{system_name} appeared after #{(Time.now - poll_start).to_i}s polling"
+      registered = true
+      break
     end
     raise ScriptError, "Bootstrap failed for #{host} — system not registered" unless registered
   end
