@@ -1,0 +1,2 @@
+- Align ssh-push-tunnel SSH parameters in the Uyuni roster
+  module with bootstrap SSH parameters (bsc#1281404)
