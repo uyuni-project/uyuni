@@ -56,6 +56,51 @@ Then(/^it should be possible to reach the test packages$/) do
   get_target('server').run("curl --insecure --location #{url} --output /dev/null")
 end
 
+# Base URL of the test package repositories: the CI mirror host (BUILD_SOURCES, as $mirror is only a flag) if configured, otherwise download.opensuse.org.
+def test_packages_base_url(path)
+  "http://#{($mirror && $build_sources) || 'download.opensuse.org'}/repositories/systemsmanagement:/Uyuni:/Test-Packages:/#{path}"
+end
+
+# Downloads the given hrefs (relative to base_url) into dir on the server, in a single command.
+def download_hrefs(server, base_url, dir, hrefs)
+  list = hrefs.map { |href| "'#{href}'" }.join(' ')
+  server.run("cd #{dir} && printf '%s\\n' #{list} | xargs -P4 -I{} sh -c 'mkdir -p $(dirname {}) && curl -sLf --retry 3 #{base_url}/{} -o {}'", timeout: 1800)
+end
+
+# Downloads all RPM packages and repodata from base_url into dest on the server.
+# Everything lands in a temporary directory that is moved to dest only when complete,
+# so an interrupted run never leaves a partial repository behind.
+def mirror_repo_locally(server, base_url, dest)
+  _out, rc = server.run("test -f #{dest}/repodata/repomd.xml", check_errors: false)
+  return if rc.zero?
+
+  tmp = "#{dest}.tmp"
+  server.run("rm -rf #{tmp} && mkdir -p #{tmp}/repodata")
+  download_hrefs(server, base_url, tmp, ['repodata/repomd.xml'])
+  repomd_xml, = server.run("cat #{tmp}/repodata/repomd.xml")
+  download_hrefs(server, base_url, tmp, repomd_xml.scan(/href="([^"]+)"/).flatten)
+  primary_href = repomd_xml.match(/href="(repodata\/[^"]*primary[^"]*\.xml\.gz)"/)[1]
+  rpm_hrefs, = server.run("gzip -dc #{tmp}/#{primary_href} | grep -o 'href=\"[^\"]*\\.rpm\"' | sed 's/href=\"//;s/\"//'")
+  download_hrefs(server, base_url, tmp, rpm_hrefs.split("\n"))
+  server.run("rm -rf #{dest} && mv #{tmp} #{dest}")
+end
+
+# Mirrors the RPM test repository and points AnotherRepo at it.
+def mirror_rpm_test_packages
+  server = get_target('server')
+  mirror_repo_locally(server, test_packages_base_url('Updates/rpm'), '/srv/www/htdocs/pub/TestRepoRpmUpdates')
+  # -T: fail instead of nesting the link when AnotherRepo is a real directory
+  server.run('ln -sfnT /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/AnotherRepo')
+end
+
+Given(/^I mirror the RPM test packages locally$/) do
+  mirror_rpm_test_packages
+end
+
+Given(/^I mirror the AppStream test packages locally$/) do
+  mirror_repo_locally(get_target('server'), test_packages_base_url('Appstream/rhlike'), '/srv/www/htdocs/pub/TestRepoAppStream')
+end
+
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
   # Proxy Password: P4$$w/ord With%and&
@@ -103,6 +148,7 @@ end
 
 # Channels
 When(/^I prepare a channel clone for strict mode testing$/) do
+  mirror_rpm_test_packages
   get_target('server').run('cp -r /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST')
   get_target('server').run('rm -rf /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/repodata')
   %w[i586 src x86_64].each do |folder|
