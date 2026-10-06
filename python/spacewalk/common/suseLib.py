@@ -249,45 +249,46 @@ def accessible(url):
 
     :arg url: the url which is tried to access
 
-    Returns True if url is accessible, otherwise False.
+    Returns the HTTP status code of a HEAD request, 0 on transport error.
 
     """
-    timeout = 120
-    if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
-        timeout = CFG.TIMEOUT
-    curl = pycurl.Curl()
+    status = 0
+    # bsc#1277719: short connect timeout + retries, so a single dropped SYN
+    # does not stall the request for the full 120s
+    for _ in range(3):
+        curl = pycurl.Curl()
 
-    curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
-    curl.setopt(pycurl.URL, url)
-    curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
-    curl.setopt(pycurl.VERBOSE, True)
-    proxy_url, proxy_user, proxy_pass = get_proxy(url)
-    if proxy_url:
-        curl.setopt(pycurl.PROXY, proxy_url)
-    log_debug(2, f"Connect to {url}")
+        curl.setopt(pycurl.CONNECTTIMEOUT, 10)
+        curl.setopt(pycurl.URL, url)
+        curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
+        curl.setopt(pycurl.VERBOSE, True)
+        proxy_url, proxy_user, proxy_pass = get_proxy(url)
+        if proxy_url:
+            curl.setopt(pycurl.PROXY, proxy_url)
+        log_debug(2, f"Connect to {url}")
 
-    curl.setopt(pycurl.FOLLOWLOCATION, True)
-    curl.setopt(pycurl.NOBODY, True)
+        curl.setopt(pycurl.FOLLOWLOCATION, True)
+        curl.setopt(pycurl.NOBODY, True)
 
-    try:
-        curl.perform()
-    except pycurl.error as e:
-        if e.args[0] == 56:  # Proxy requires authentication
-            log_debug(2, e.args[1])
-            if not (proxy_user and proxy_pass):
-                # pylint: disable-next=raise-missing-from
-                raise TransferException(
-                    "Proxy requires authentication, "
-                    "but reading credentials from "
-                    f"{YAST_PROXY} failed."
-                )
-            curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
+        try:
+            curl.perform()
+        except pycurl.error as e:
+            if e.args[0] == 56:  # Proxy requires authentication
+                log_debug(2, e.args[1])
+                if not (proxy_user and proxy_pass):
+                    # pylint: disable-next=raise-missing-from
+                    raise TransferException(
+                        "Proxy requires authentication, "
+                        "but reading credentials from "
+                        f"{YAST_PROXY} failed."
+                    )
+                curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
 
-    status = curl.getinfo(pycurl.HTTP_CODE)
-    # OK or file
-    if status == 200 or (URL(url).scheme == "file" and status == 0):
-        return True
-    return False
+        status = curl.getinfo(pycurl.HTTP_CODE)
+        if status != 0:
+            break
+
+    return status
 
 
 def get_proxy(url=None):
